@@ -150,11 +150,13 @@ public final class NaturalLanguageTemplateBoServiceImplGenTest {
             // check for template attribute definition, create if not there
             KrmsAttributeDefinition attrDef = krmsAttributeDefinitionService.getAttributeDefinitionByNameAndNamespace(
                     attributeEntry.getKey(), type.getNamespace());
-            if (null == attrDef) {
+
+          // rebuild attributes in all cases until Constraint Error found and corrected
+          //  if (null == attrDef) {
                 KrmsAttributeDefinition.Builder attrDefBuilder =
                         KrmsAttributeDefinition.Builder.create(null, attributeEntry.getKey(), type.getNamespace());
                 krmsAttributeDefinitionService.createAttributeDefinition(attrDefBuilder.build());
-            }
+          //  }
         }
 
         naturalLanguageTemplate = naturalLanguageTemplateBoServiceImpl.createNaturalLanguageTemplate(def);

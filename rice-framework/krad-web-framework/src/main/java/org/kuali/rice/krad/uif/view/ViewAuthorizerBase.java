@@ -18,8 +18,10 @@ package org.kuali.rice.krad.uif.view;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.krad.UserSessionUtils;
 import org.kuali.rice.krad.bo.DataObjectAuthorizerBase;
 import org.kuali.rice.krad.datadictionary.AttributeSecurity;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -30,14 +32,14 @@ import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.element.Action;
-import org.kuali.rice.krad.uif.element.ActionSecurity;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
-import org.kuali.rice.krad.uif.field.FieldSecurity;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.widget.Widget;
+import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
+import org.kuali.rice.krad.web.form.DocumentFormBase;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -152,6 +154,12 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
             return true;
         }
 
+        // don't mask empty fields when user is the initiator (allows document creation when masked field exists)
+        String fieldValue = ObjectPropertyUtils.getPropertyValue(model, field.getBindingInfo().getBindingPath());
+        if (StringUtils.isBlank(fieldValue) && isInitiator(model, user)) {
+            return true;
+        }
+
         // for non-production environments the ability to unmask can be disabled by a system parameter
         if (isNonProductionEnvAndUnmaskingTurnedOff()) {
             return false;
@@ -176,6 +184,28 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
         return isAuthorizedByTemplate(dataObjectForContext, KRADConstants.KNS_NAMESPACE,
                 KimConstants.PermissionTemplateNames.FULL_UNMASK_FIELD, user.getPrincipalId(), permissionDetails,
                 roleQualifications);
+    }
+
+    /**
+     * Checks if the user is the initiator for the current document
+     *
+     * <p>
+     * For non-documents the user is always the initiator.
+     * <p>
+     *
+     * @param model object containing the view data
+     * @param user user we are authorizing
+     * @return true if user is the initiator, false otherwise
+     */
+    protected boolean isInitiator(ViewModel model, Person user) {
+        if (model instanceof DocumentFormBase) {
+            WorkflowDocument workflowDocument = UserSessionUtils.getWorkflowDocument(GlobalVariables.getUserSession(),
+                    ((DocumentFormBase) model).getDocument().getDocumentNumber());
+            return StringUtils.equals(user.getPrincipalId(), workflowDocument.getInitiatorPrincipalId());
+
+        }
+
+        return true;
     }
 
     /**

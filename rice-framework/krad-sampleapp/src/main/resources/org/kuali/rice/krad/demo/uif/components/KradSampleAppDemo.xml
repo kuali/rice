@@ -511,7 +511,8 @@
         <bean parent="Uif-Link" p:linkText="Tooltip" p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Tooltip-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="DatePicker" p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DatePicker-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="SyntaxHighlighter" p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-SyntaxHighlighter-View&amp;methodToCall=start"/>
-        <!--<bean parent="Uif-Link" p:linkText="Growls" p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Growls-View&amp;methodToCall=start"/>-->
+        <bean parent="Uif-Link" p:linkText="Growls" p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Growls-View&amp;methodToCall=start"/>
+        <!--<bean parent="Uif-Link" p:linkText="BlockUI" p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-BlockUI-View&amp;methodToCall=start"/>-->
       </list>
     </property>
   </bean>

@@ -45,47 +45,10 @@
     </section>
     <section xml:id="cache_legacy">
         <title>Legacy Caching</title>
-        <para>Currently Rice does caching in two ways which are explained below.</para>
-        <section>
-            <title>RichCacheAdministrator</title>
-            <para>The RiceCacheAdministrator handles local caching and distributed cache flush
-                through a central service. To use the RiceCacheAdministrator you must do the
-                following:
-                <programlisting>public Foo getFoo(String id) {
-  RiceCacheAdministrator cache = ...
-  Foo f = cache.get(getFooCacheKey(id));
-  if (f != null) {
-    return f;
-  }
- 
-  f = getFooFromDB(id);
-  cache.putInCache(f, getFooCacheKey(id));
- 
-  return f;
-}
- 
- 
-public Foo updatefoo(Foo f) {
-  RiceCacheAdministrator cache = ...
-  Foo f = updateinDB(f);
-  cache.putInCache(f, getFooCacheKey(id));
-  return f;
-}
-public static getFooCacheKey(String id) {
-  return "Foo" + id;
-}</programlisting>
-            </para><para>As you can see, this is very verbose. In fact, one might argue that the caching logic is 
-                hiding what we are doing in our service - reading and writing to a database. There is also the 
-                possibility of cache key conflicts with other Rice code and Rice client apps. In addition to the 
-                verbosity, the RiceCacheAdministrator has been plagued with performance problems. Finally, the 
-                RiceCacheAdministrator is using a dead technology - OSCache. The good thing about this approach is 
-                that a client who wants to force a cache flush can go straight to the RiceCacheAdministrator without 
-                a service directly exposing cache flush methods. The other good thing about this approach is cache 
-                behavior can be tuned through OSCache configuration.</para>
-        </section>
+        <para>Currently Rice does caching as per below.</para>
         <section>
             <title>Service-specific solutions</title>
-            <para>Since the RiceCacheAdministrator was not acceptable from a performance
+            <para>Since the obsolete RiceCacheAdministrator was not acceptable from a performance
                 perspective, many of our KIM services did their own thing with caching. The solution
                 in the KIM APIs has been to have several synchronized Maps along with exposing cache
                 flush methods. For example:
@@ -119,7 +82,7 @@ public void removeFromCache(String cacheKey) {
 }</programlisting>
             </para>
             <para>
-                This solution solved some of the performance problems of the RiceCacheAdministrator. This approach 
+                This solution solved some of the performance problems of the (now obsolete) RiceCacheAdministrator. This approach 
                 was even more verbose than the RiceCacheAdministrator. It also was very error prone; it was easy to 
                 incorrectly synchronize, store mutable objects, forget to flush, etc. There have been numerous bugs 
                 as a result of the complexity of rolling our own caching. Furthermore, there wasn't a standard 

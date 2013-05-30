@@ -114,7 +114,7 @@ public Foo updatefoo(Foo f) {
     </section>
     <section xml:id="cache_implement">
         <title>The Implementation</title>
-        <para>The above proposal has been put to code while addressing many of the Open Points listed above. Here is the code 
+        <para>The above proposal has been put to code, which here is  
             explained in more detail. To understand the various parts of the Spring Cache abstraction and the implementation 
             it is recommended to read the 
             <link xlink:href="http://static.springsource.org/spring/docs/3.1.0.M2/spring-framework-reference/html/cache.html">
@@ -289,18 +289,18 @@ interface FooService {
                     CacheManager allows client apps to use Rice's caching infrastructure without sending distributed 
                     cache flush messages to apps that don't care. For example: KC exposes a remote service 
                     (AwardService) to KFS. KC hands KFS a fully cache annotated service interface. KFS and KC 
-                    clusters can participate is distributed cache messages w/o bothering other Kuali apps that 
+                    clusters can participate is distributed cache messages without bothering other Kuali apps that 
                     don't ever call the AwardService and don't have a AwardCacheService exposed remotely. Another 
                     interesting prospect is a Kuali ecosystem may have Rice installs with different "modules" enabled. 
                     This design allows the Rice installs to only receive messages for the modules they have enabled 
-                    (XXXCacheService available)</para>
+                    (XXXCacheService available).</para>
                 <para xml:id="spanning_cachemanagers"><emphasis role="bold">Spanning CacheManagers: </emphasis>This design cannot currently handle 
                     flushing across CacheManagers. This is a current limitation although in practice it may not be 
                     needed. For example: Say the GenericType object is used and cached in KIM and KEW (KimCacheManager, 
                     KewCacheManager). If a Kim api updates the GenericType object the KimCacheManager will handle 
                     flushing the kim module cache but the KewCacheManager's cache will be stale.</para>
                 <para>One way we can handle this in the situations that we definitively need to access another cache 
-                    manager. We could execute the following code in the service implementation (in normal cases this 
+                    manager, is to execute the following code in the service implementation (in normal cases this 
                     should be avoided):
                 <programlisting>
 GlobalResourceLoader.getService("alternateDistributedCacheManager").getCache("the_cache_to_retrieve").evict("the_specific_key");</programlisting>
@@ -317,7 +317,7 @@ GlobalResourceLoader.getService("alternateDistributedCacheManager").getCache("th
                     be an option implementers can turn on but not enabled by default. Tuning the cache setting 
                     (like ehcache settings) is probably a more important thing to do than proxy versus code weaving.</para>
                 <para><emphasis role="bold">pushing/priming:</emphasis> Distributed cache updates (pushing updates 
-                    to clients), cache priming or cache warming is currently not supported.</para>
+                    to clients), cache priming, or cache warming is currently not supported.</para>
                 <para><emphasis role="bold">where to cache?</emphasis> Although we have primarily targeted our 
                     remotable services for caching, there is no reason why caching couldn't get used anywhere in 
                     Rice or a client application. We just need to be mindful of the version compatibility rules.</para>
@@ -438,7 +438,7 @@ GlobalResourceLoader.getService("alternateDistributedCacheManager").getCache("th
                 <title>Option 2: replacing the Distributed CacheManager</title>
                 <para>Doing Option 1 changes the caching implementation but still uses the Kuali Service Bus for 
                     transaction-aware flush messages. Many Caching implementations already provide these facilities. 
-                    You could remove or replace the following following:
+                    You could remove or replace the following:
                 <programlisting>&lt;bean id="sharedDataDistributedCacheManager" class="org.Kuali.Rice.core.impl.cache.DistributedCacheManagerDecorator">
   &lt;property name="cacheManager" ref="sharedDataLocalCacheManager" />
   &lt;property name="messageHelper" ref="Rice.ksb.messageHelper" />

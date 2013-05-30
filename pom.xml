@@ -949,6 +949,7 @@
               <htmlStylesheet>../css/stylesheet.css</htmlStylesheet>
               <targetDirectory>${rice.docbook.dest}/html</targetDirectory>
               <tableBordersWithCss>true</tableBordersWithCss>
+              <calloutGraphicsPath>../images/callouts/</calloutGraphicsPath>
             </configuration>
           </execution>
           <execution>
@@ -972,6 +973,7 @@
               <chunkedOutput>true</chunkedOutput>
               <htmlStylesheet>../../css/stylesheet.css</htmlStylesheet>
               <targetDirectory>${rice.docbook.dest}/html-multi</targetDirectory>
+              <calloutGraphicsPath>../../images/callouts/</calloutGraphicsPath>
               <imgSrcPath>../</imgSrcPath>
               <tableBordersWithCss>true</tableBordersWithCss>
             </configuration>

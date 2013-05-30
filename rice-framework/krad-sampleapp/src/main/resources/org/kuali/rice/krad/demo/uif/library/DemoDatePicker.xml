@@ -28,10 +28,12 @@
     <property name="demoGroups">
       <list>
         <ref bean="Demo-DatePicker-Example1"/>
+        <ref bean="Demo-DatePicker-Example2"/>
       </list>
     </property>
   </bean>
 
+  <!-- Default -->
   <bean id="Demo-DatePicker-Example1" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
@@ -46,6 +48,25 @@
           </property>
         </bean>
         <!-- ex:Demo-DatePicker-Example1 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- DatePicker with different options set-->
+  <bean id="Demo-DatePicker-Example2" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-DatePicker-Example2 start-->
+        <bean parent="Uif-InputField" p:label="Date Field" p:propertyName="inputField1" p:widgetInputOnly="true">
+          <property name="control">
+            <bean parent="Uif-TextControl" p:size="10">
+              <property name="datePicker">
+                <bean parent="Uif-DatePicker" />
+              </property>
+            </bean>
+          </property>
+        </bean>
+        <!-- ex:Demo-DatePicker-Example2 end-->
       </list>
     </property>
   </bean>

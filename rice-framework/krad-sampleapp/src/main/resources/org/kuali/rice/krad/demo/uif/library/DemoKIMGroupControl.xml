@@ -28,6 +28,7 @@
     <property name="demoGroups">
       <list>
         <ref bean="Demo-KIMGroupControl-Example1"/>
+        <ref bean="Demo-KIMGroupControl-Example2"/>
       </list>
     </property>
   </bean>
@@ -45,6 +46,23 @@
           </property>
         </bean>
         <!-- ex:Demo-KIMGroupControl-Example1 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- KIMGroupControl with different options set-->
+  <bean id="Demo-KIMGroupControl-Example2" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-KIMGroupControl-Example2 start-->
+        <bean parent="Uif-InputField" p:propertyName="inputField2" p:label="Namespace Code" p:defaultValue="KUALI"/>
+        <bean parent="Uif-InputField" p:propertyName="inputField1" p:label="Name" p:widgetInputOnly="true">
+          <property name="control">
+            <bean parent="Uif-KimGroupControl" p:groupIdPropertyName="testGroupId"
+                  p:namespaceCodePropertyName="inputField2"/>
+          </property>
+        </bean>
+        <!-- ex:Demo-KIMGroupControl-Example2 end-->
       </list>
     </property>
   </bean>

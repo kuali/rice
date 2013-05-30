@@ -30,6 +30,7 @@
         <ref bean="Demo-SpinnerControl-Example1"/>
         <ref bean="Demo-SpinnerControl-Example2"/>
         <ref bean="Demo-SpinnerControl-Example3"/>
+        <ref bean="Demo-SpinnerControl-Example4"/>
       </list>
     </property>
   </bean>
@@ -99,6 +100,21 @@
                 </bean>
               </property>
             </bean>
+          </property>
+        </bean>
+        <!-- ex:Demo-SpinnerControl-Example3 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- SpinnerControl with different options set-->
+  <bean id="Demo-SpinnerControl-Example4" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-SpinnerControl-Example4 start-->
+        <bean parent="Uif-InputField" p:propertyName="inputField1" p:widgetInputOnly="true">
+          <property name="control">
+            <bean parent="Uif-SpinnerControl"/>
           </property>
         </bean>
         <!-- ex:Demo-SpinnerControl-Example3 end-->

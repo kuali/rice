@@ -28,6 +28,7 @@
     <property name="demoGroups">
       <list>
         <ref bean="Demo-KIMUserControl-Example1"/>
+        <ref bean="Demo-KIMUserControl-Example2"/>
       </list>
     </property>
   </bean>
@@ -44,6 +45,22 @@
           </property>
         </bean>
         <!-- ex:Demo-KIMUserControl-Example1 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- KIMUserControl with different options set-->
+  <bean id="Demo-KIMUserControl-Example2" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-KIMUserControl-Example2 start-->
+        <bean parent="Uif-InputField" p:propertyName="testPerson.principalName" p:widgetInputOnly="true">
+          <property name="control">
+            <bean parent="Uif-KimPersonControl" p:principalIdPropertyName="testPersonId"
+                  p:personNamePropertyName="testPerson.name"/>
+          </property>
+        </bean>
+        <!-- ex:Demo-KIMUserControl-Example2 end-->
       </list>
     </property>
   </bean>

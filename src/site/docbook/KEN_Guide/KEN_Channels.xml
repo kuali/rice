@@ -74,16 +74,26 @@
                     any channel where the Subscription Flag is set to "Yes". </para>
             </listitem>
             <listitem>
-                <para><emphasis role="bold">Default Recipients</emphasis> – Each channel has
-                    a list of users and groups that receive all channel notifications.
-                </para>
+                <para><emphasis role="bold">Default Recipients</emphasis> – Each channel has a list
+                        of users and groups that receive all channel notifications. To view the
+                        complete list of default recipients for a channel, run the following query
+                        replacing ? with your channel
+                        id:<programlisting>SELECT * FROM KREN_RECIP_LIST_T
+WHERE CHNL_ID = '?';</programlisting>
+                    </para>
             </listitem>
         </itemizedlist></para>
         <para>Channels can be subscribed to through the UI and also through the direct access to
             the data store. To add a channel that can be subscribed to simply run the following
             SQL statement against the data store customizing value entries to your needs: </para>
         <programlisting>INSERT INTO KREN_CHNL_T (CHNL_ID,DESC_TXT,NM,SUBSCRB_IND,VER_NBR)
- VALUES (2, 'This channel is used for sending out information about Library Events.', 'Library Events Channel', 'Y', 1)</programlisting>
+VALUES (2, 'This channel is used for sending out information about Library Events.', 'Library Events Channel', 'Y', 1)</programlisting>
+        <para>To add default recipients to a channel, first locate the recipients through the Person Lookup 
+            function as described <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/KIM_Guide.html#KIM_Person">here</link> in the KIM Guide.</para>
+        <para>Then, for each person's Principal ID, execute the following SQL where 'X' is the next
+            RECIP_LIST_ID, 'Y' is the channel ID, and 'Z' is the Principal ID:
+            <programlisting>INSERT INTO KREN_RECIP_LIST_T (RECIP_LIST_ID, CHNL_ID, RECIP_TYP_CD, RECIP_ID, OBJ_ID, VER_NBR)
+VALUES ('X', 'Y', 'USER', 'Z', '', 1);  </programlisting></para>
     </section>
     <section>
         <title>Managing Subscribers</title>

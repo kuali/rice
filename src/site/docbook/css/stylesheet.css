@@ -223,7 +223,7 @@ table {
 .table thead th {
 	vertical-align:bottom;
 }
-tr:nth-child(odd) {
+tr:nth-child(even) {
 	background-color:#EEEEEE;
 }
 .sidebar {
@@ -298,7 +298,7 @@ th {
 	border-bottom-style:solid;
 	border-bottom-color:#CCC;
 }
-tr:nth-child(odd) {
+tr:nth-child(even) {
 	background-color:#EEEEEE;
 }
 td {

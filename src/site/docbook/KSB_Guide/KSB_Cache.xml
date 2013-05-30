@@ -25,7 +25,7 @@
             caching becomes more important. Previously in Rice we didn't approach caching with a standard 
             comprehensive solution. This was problematic for many reasons explained later in the document. 
             As caching starts to take a greater role in Rice it is clear that we must have a well thought out 
-            plan for caching. The caching solution we are looking for must have the following properties:
+            plan for caching. The caching solution we are looking for and have implemented must have the following properties:
         </para>
         <para>
             <orderedlist>
@@ -43,59 +43,8 @@
             </orderedlist>
         </para>
     </section>
-    <section xml:id="cache_legacy">
-        <title>Legacy Caching</title>
-        <para>Currently Rice does caching as per below.</para>
-        <section>
-            <title>Service-specific solutions</title>
-            <para>Since the obsolete RiceCacheAdministrator was not acceptable from a performance
-                perspective, many of our KIM services did their own thing with caching. The solution
-                in the KIM APIs has been to have several synchronized Maps along with exposing cache
-                flush methods. For example:
-                <programlisting>private static Map FOO_CACHE ...
- 
-public Foo getFoo(String id) {
-  Foo f = FOO_CACHE.get(getFooCacheKey(id));
-  if (f != null) {
-    return f;
-  }
- 
-  f = getFooFromDB(id);
-  FOO_CACHE.put(f, getFooCacheKey(id));
- 
-  return f;
-}
- 
- 
-public Foo updatefoo(Foo f) {
-  Foo f = updateinDB(f);
-  removeFromCache(getFooCacheKey(id));
-  cache.put(f, getFooCacheKey(id));
-  return f;
-}
-public static getFooCacheKey(String id) {
-  return "Foo" + id;
-}
- 
-public void removeFromCache(String cacheKey) {
-  //do a distributed flush
-}</programlisting>
-            </para>
-            <para>
-                This solution solved some of the performance problems of the (now obsolete) RiceCacheAdministrator. This approach 
-                was even more verbose than the RiceCacheAdministrator. It also was very error prone; it was easy to 
-                incorrectly synchronize, store mutable objects, forget to flush, etc. There have been numerous bugs 
-                as a result of the complexity of rolling our own caching. Furthermore, there wasn't a standard 
-                approach for caching, so every service was a little different. Finally, in order to support 
-                distributed cache flushes, each service had to expose a cache flush method. This is known as a leaky 
-                abstraction. Caching by definition should be hidden from the client. Exposing cache flush methods 
-                on a remote service forces Rice to support these methods in the future for version compatibility 
-                purposes.
-            </para>
-        </section>
-    </section>
     <section xml:id="cache_proposal">
-        <title>Proposal</title>
+        <title>Proposal that was Implemented</title>
         <para>Spring 3.1 includes a declarative cache abstraction API. This is an annotation driven
             approach which significantly reduces caching logic. The only thing service authors
             should have to do is annotate service interfaces (or implementation code) with Spring
@@ -114,13 +63,13 @@ public Foo updatefoo(Foo f) {
   return updateinDB(f);
 }</programlisting>
         </para>
-        <para>As you can see, all the boilerplate caching logic was magically melted away through the wonders of 
-            AOP proxies. When Spring creates a Spring managed service (bean) it will automatically returns a proxy 
-            containing caching logic. This works great for most cases but falls apart when clients are calling 
-            services remotely. This is because the remote proxy is not created by Spring but is instead created by 
+        <para>All the boilerplate caching logic has been magically melted away through the wonders of 
+            AOP proxies. When Spring creates a Spring managed service (bean) it will automatically return a proxy 
+            containing caching logic. This works great for most cases, but falls apart when clients are calling 
+            services remotely. This is because the remote proxy is not created by Spring, but is instead created by 
             the KSB (ServiceConnectorFactory). In order to handle this case, we will need to directly cache proxy 
             our remote proxies.</para>
-        <para>To make sure the annotations are actually being read by Spring we must include the
+        <para>To make sure the annotations are actually being read by Spring, we must include the
             following in our Spring xml files:
             <programlisting>&lt;cache:annotation-driven /></programlisting> and declare a cache
             manager like:
@@ -136,6 +85,7 @@ public Foo updatefoo(Foo f) {
             <title>Cache Proposal</title>
             <mediaobject><imageobject><imagedata fileref="../images/KSB_Guide/caching_in_Rice.png" width="100%" scalefit="1"/></imageobject></mediaobject>
         </figure>
+        <!-- This section needs to have answers, then retitled and reworded accordingly. See KULRICE-9660 Caching in Rice: Open Questions.
         <section>
             <title>Open Points</title>
             <para><itemizedlist>
@@ -160,7 +110,7 @@ public Foo updatefoo(Foo f) {
                     allowing different configurations per cache manager. Would having a single soap endpoint for all cache messages be 
                     a bottleneck? This is addressed below, as these are important considerations.</para></listitem>
             </itemizedlist></para>
-        </section>    
+        </section>    -->
     </section>
     <section xml:id="cache_implement">
         <title>The Implementation</title>
@@ -447,15 +397,6 @@ GlobalResourceLoader.getService("alternateDistributedCacheManager").getCache("th
                     <listitem><para>We have not identified the need to do a complete flush of all caches across the Kuali-ecosystem from a single point. For example: If you wanted to flush KFS specific cache you would have to login to the KFS admin screen to perform that action rather than pushing an uber-flush button from Rice.</para></listitem>
                     <listitem><para>We have not identified the need to dynamically disable caching from a UI on a running application</para></listitem>
                 </itemizedlist></para>
-            </section>
-            <section>
-                <title>Notes</title>
-                <para>We should probably use KRAD to produce our UI. This will be a good "dogfood" test for KRAD. 
-                    This is non-traditional in that cache information is not backed by a database or DataObjects 
-                    like most KRAD screen have. We could certainly make DataObject representations of all the cache 
-                    information. If we did that, we may want to be careful and load the information lazily 
-                    (possibly via ajax or something) because may not want to iterate over all cache information 
-                    to render a screen. There could be considerable overhead in doing that.</para>
             </section>
         </section>
         <section>

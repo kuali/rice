@@ -188,6 +188,13 @@
         documents, and checking information about documents that have been in a workflow. KEW is
         built by and for higher education institutions and is especially designed for
         automatically routing work across departmental boundaries.</para>
+    <para>The following architectural diagram represents the flow of messages
+        in a typical Rice Environment, and illustrates the integration between KEW and the post-processor lifecycle. </para>
+    <figure>
+        <title>KEW and KEN Process Flow</title>
+        <mediaobject><imageobject><imagedata fileref="../images/KEN_Guide/KEN_message_flow.png" scalefit="1" width="100%"></imagedata></imageobject></mediaobject>
+    </figure>
+    <para>For more information, please see the <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/KEN_Guide.html">KEN Guide</link>.</para>
     <para>Using KEW you can:<itemizedlist>
         <listitem>
             <para>Automatically send (route) documents to individuals, groups, or roles

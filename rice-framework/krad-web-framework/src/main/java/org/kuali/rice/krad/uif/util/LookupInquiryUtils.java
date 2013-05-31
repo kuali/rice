@@ -66,7 +66,7 @@ public class LookupInquiryUtils {
 			}
 		}
 
-		if (StringUtils.isNotBlank(parameterValue)
+		if (parameterValue != null
 				&& lookupObjectClass != null
 				&& KRADServiceLocatorWeb.getDataObjectAuthorizationService()
 						.attributeValueNeedsToBeEncryptedOnFormsAndLinks(lookupObjectClass, propertyName)) {

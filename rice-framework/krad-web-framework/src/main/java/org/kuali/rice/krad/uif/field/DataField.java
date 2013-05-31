@@ -317,9 +317,11 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
         if (isApplyMask()) {
             Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, getBindingInfo().getBindingPath());
             readOnlyDisplayReplacement = getMaskFormatter().maskValue(fieldValue);
-
-            // mask values are forced to be readonly
-            setReadOnly(true);
+            if ((this instanceof InputField) && StringUtils.isNotBlank(((InputField) this).getQuickfinder().getDataObjectClassName())) {
+                ((InputField) this).setWidgetInputOnly(true);
+            } else {
+                setReadOnly(true);
+            }
             return;
         }
 

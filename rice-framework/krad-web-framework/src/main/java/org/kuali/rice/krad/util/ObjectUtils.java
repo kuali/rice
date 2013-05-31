@@ -481,7 +481,7 @@ public final class ObjectUtils {
                 EncryptionService es = CoreApiServiceLocator.getEncryptionService();
                 try {
                     if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
-                        propertyValue = (Object) es.decrypt(StringUtils.stripEnd(propVal, EncryptionService.ENCRYPTION_POST_PREFIX));
+                        propertyValue = (Object) es.decrypt(StringUtils.removeEnd(propVal, EncryptionService.ENCRYPTION_POST_PREFIX));
                     }
                 } catch (GeneralSecurityException gse) {
                     gse.printStackTrace();

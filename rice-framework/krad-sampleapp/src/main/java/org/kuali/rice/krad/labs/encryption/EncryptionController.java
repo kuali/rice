@@ -55,6 +55,7 @@ public class EncryptionController extends UifControllerBase {
 
     /**
      * Encrypt the text of the input field.
+     *
      * <p>
      * The encryptedText and decryptedText filds are populated when encryption is successful.  An error message
      * is displayed otherwise.
@@ -79,6 +80,7 @@ public class EncryptionController extends UifControllerBase {
 
     /**
      * Decrypt the text of the input field.
+     *
      * <p>
      * The encryptedText and decryptedText filds are populated when decryption is successful.  An error message
      * is displayed otherwise.

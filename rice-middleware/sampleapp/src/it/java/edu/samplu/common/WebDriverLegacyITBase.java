@@ -350,10 +350,25 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     public static final String VALIDATION_FRAMEWORK_DEMO_XPATH = "(//a[contains(text(),'Validation Framework Demo')])[2]";
 
     /**
+     * Kuali :: Collection Totaling
+     */
+    public static final String KUALI_COLLECTION_TOTALLING_WINDOW_XPATH = "Kuali :: Collection Totaling";
+
+    /**
+     * //a[text()='Collection Totaling']
+     */
+    public static final String KUALI_COLLECTION_TOTALLING_XPATH = "//a[text()='Collection Totaling']";
+    
+    /**
      * XML Ingester
      */
     public static final String XML_INGESTER_LINK_TEXT = "XML Ingester";
 
+    /**
+     * //a[@title='FiscalOfficerInfo Maintenance (New)']
+     */
+    public static final String FISCAL_OFFICER_INFO_MAINTENANCE_NEW_XPATH = "//a[@title='FiscalOfficerInfo Maintenance (New)']";
+    
     static ChromeDriverService chromeDriverService;
 
     protected WebDriver driver;

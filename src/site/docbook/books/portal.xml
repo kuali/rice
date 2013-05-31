@@ -108,12 +108,12 @@
                             since the size of the diagrams may be illegible in IE.</para>
 
                         <!-- https://wiki.kuali.org/display/KULRICE/Schema+Spy+Publish+to+site.kuali.org -->
-<!-- TODO: regenerate and add back in
+                        <!-- Hard code last minor version SchemaSpy was run against -->
                         <listitem>
-                            <para><link xlink:show="new" xlink:href="../html/schema-spy/index.html">Schema Spy</link></para>
+                            <para><link xlink:show="new" xlink:href="../../2.2.0-SNAPSHOT/reference/html/schema-spy/index.html">Schema Spy</link></para>
                         </listitem>
 
-
+<!-- 
                         <listitem>
                             <para><link xlink:show="new" xlink:href="../db_diagrams/schema.html">Schema</link></para>
                         </listitem>

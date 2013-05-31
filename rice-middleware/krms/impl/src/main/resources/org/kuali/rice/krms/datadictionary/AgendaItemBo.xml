@@ -182,39 +182,33 @@
     <property name="singlePageView" value="true"/>
     <property name="items">
         <list>
-            <bean parent="Uif-Page" p:id="page1">
+            <bean parent="Uif-Disclosure-GridSection">
+                <property name="layoutManager.numberOfColumns" value="2"/>
                 <property name="items">
-                    <list>
-                      <bean parent="Uif-Disclosure-GridSection">
-                          <property name="layoutManager.numberOfColumns" value="2"/>
-                          <property name="items">
-                            <list>
-                              <bean parent="Uif-InputField" p:propertyName="id"/>
-                              <bean parent="Uif-InputField" p:propertyName="ruleId"/>
-                            </list>
-                          </property>
-                          <property name="headerText" value="Agenda Item Attributes"/>
-                      </bean>
-                                   <bean parent="Uif-Disclosure-StackedCollectionSection">
-						              <property name="headerText" value="Always"/>  
-						              <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.AgendaItemBo"/>
-						              <property name="propertyName" value="alwaysList"/>
-						              <property name="items">
-						                <list>
-						                  <bean parent="Uif-InputField" p:propertyName="id"/>
-						                  <bean parent="Uif-InputField" p:propertyName="ruleId"/>
-						                </list>
-						              </property>      
-						              <property name="layoutManager.summaryTitle" value="Agenda Item"/> 
-						              <property name="layoutManager.summaryFields">
-						                <list>
-						                  <value>id</value>
-						                </list>
-						              </property>
-						           </bean>
-                    </list>
+                  <list>
+                    <bean parent="Uif-InputField" p:propertyName="id"/>
+                    <bean parent="Uif-InputField" p:propertyName="ruleId"/>
+                  </list>
                 </property>
+                <property name="headerText" value="Agenda Item Attributes"/>
             </bean>
+            <bean parent="Uif-Disclosure-StackedCollectionSection">
+                <property name="headerText" value="Always"/>
+                <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.AgendaItemBo"/>
+                <property name="propertyName" value="alwaysList"/>
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:propertyName="id"/>
+                    <bean parent="Uif-InputField" p:propertyName="ruleId"/>
+                  </list>
+                </property>
+                <property name="layoutManager.summaryTitle" value="Agenda Item"/>
+                <property name="layoutManager.summaryFields">
+                  <list>
+                    <value>id</value>
+                  </list>
+                </property>
+             </bean>
         </list>
     </property>
   </bean>

@@ -142,36 +142,30 @@
     <property name="singlePageView" value="true"/>
     <property name="items">
       <list>
-        <bean parent="Uif-Page" p:id="page1">
+        <bean parent="Uif-Disclosure-GridSection">
+          <property name="layoutManager.numberOfColumns" value="2"/>
           <property name="items">
             <list>
-      			  <bean parent="Uif-Disclosure-GridSection">
-					      <property name="layoutManager.numberOfColumns" value="2"/>
-					      <property name="items">
-					        <list>
-					          <bean parent="Uif-InputField" p:propertyName="id"/>
-					          <bean parent="Uif-InputField" p:propertyName="name"/>
-					          <bean parent="Uif-InputField" p:propertyName="namespace"/>
-                    <bean parent="Uif-InputField" p:propertyName="typeId" p:label="Context Type"/>
-                    <bean parent="Uif-InputField" p:propertyName="description"/>
-					        </list>
-					      </property>
-					      <property name="headerText" value="Context Attributes"/>
-					    </bean>
-              <bean parent="Uif-Disclosure-TableCollectionSection"  p:layoutManager.numberOfColumns="3">
-                <property name="headerText" value="Agendas"/>
-                <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.AgendaBo"/>
-                <property name="propertyName" value="agendas"/>
-                <property name="layoutManager.renderSequenceField" value="false"/>
-                <property name="items">
-                  <list>
-                    <bean parent="Uif-InputField" p:propertyName="id"/>
-                    <bean parent="Uif-InputField" p:propertyName="name"/>
-                    <bean parent="Uif-InputField" p:propertyName="typeId" p:label="Agenda Type"/>
-                   </list>
-                </property>
-              </bean>
+              <bean parent="Uif-InputField" p:propertyName="id"/>
+              <bean parent="Uif-InputField" p:propertyName="name"/>
+              <bean parent="Uif-InputField" p:propertyName="namespace"/>
+              <bean parent="Uif-InputField" p:propertyName="typeId" p:label="Context Type"/>
+              <bean parent="Uif-InputField" p:propertyName="description"/>
             </list>
+          </property>
+          <property name="headerText" value="Context Attributes"/>
+        </bean>
+        <bean parent="Uif-Disclosure-TableCollectionSection"  p:layoutManager.numberOfColumns="3">
+          <property name="headerText" value="Agendas"/>
+          <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.AgendaBo"/>
+          <property name="propertyName" value="agendas"/>
+          <property name="layoutManager.renderSequenceField" value="false"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:propertyName="id"/>
+              <bean parent="Uif-InputField" p:propertyName="name"/>
+              <bean parent="Uif-InputField" p:propertyName="typeId" p:label="Agenda Type"/>
+             </list>
           </property>
         </bean>
       </list>

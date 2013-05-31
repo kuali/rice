@@ -127,9 +127,6 @@
     <property name="singlePageView" value="true"/>
     <property name="items">
         <list>
-            <bean parent="Uif-Page" p:id="page1">
-                <property name="items">
-                    <list>
 					  <bean parent="Uif-Disclosure-GridSection">
 					      <property name="layoutManager.numberOfColumns" value="2"/>
 					      <property name="items">
@@ -143,9 +140,6 @@
 					      </property>
 					      <property name="headerText" value="Proposition Attributes"/>
 					  </bean>
-                    </list>
-                </property>
-            </bean>
         </list>
     </property>
   </bean>

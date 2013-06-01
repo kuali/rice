@@ -110,7 +110,7 @@
                         <!-- https://wiki.kuali.org/display/KULRICE/Schema+Spy+Publish+to+site.kuali.org -->
                         <!-- Hard code last minor version SchemaSpy was run against -->
                         <listitem>
-                            <para><link xlink:show="new" xlink:href="../../2.2.0-SNAPSHOT/reference/html/schema-spy/index.html">Schema Spy</link></para>
+                            <para><link xlink:show="new" xlink:href="../../../2.2.0-SNAPSHOT/reference/html/schema-spy/index.html">Schema Spy</link></para>
                         </listitem>
 
 <!-- 

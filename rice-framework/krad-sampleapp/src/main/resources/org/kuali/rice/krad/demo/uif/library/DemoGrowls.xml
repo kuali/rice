@@ -28,6 +28,7 @@
     <property name="demoGroups">
       <list>
         <ref bean="Demo-Growls-Example1"/>
+        <ref bean="Demo-Growls-Example2"/>
       </list>
     </property>
   </bean>
@@ -43,5 +44,14 @@
     </property>
   </bean>
 
-  <!--<bean parent="Uif-PrimaryActionButton" p:actionLabel="Test Button" p:actionScript="jQuery.growl('title', 'message')"/>-->
+  <bean id="Demo-Growls-Example2" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Growls-Example1 start-->
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Growl" p:actionScript='jQuery.growlUI("Growl Test", "This is a test growl message");'/>
+        <!-- ex:Demo-Growls-Example1 end-->
+      </list>
+    </property>
+  </bean>
+
 </beans>

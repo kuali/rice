@@ -203,7 +203,7 @@ max_connections=1000 <co xml:id="max_connections-co" linkends="max_connections"/
                     <callout arearefs="max_connections-co" xml:id="max_connections"><para>Leaving the max_connections at the default value of 151 may result in a "too many connections" error. Please see <link xlink:href="http://docs.oracle.com/cd/E17952_01/refman-5.6-en/too-many-connections.html">this link</link> for more information.</para></callout>
                 </calloutlist>
                 </note>
-                    <para>Note that the <emphasis role="bold">[mysqld]</emphasis> section may already be
+                <para>Note that the <emphasis role="bold">[mysqld]</emphasis> section may already be
                         in your my.cnf file. If so, you can just add the options listed above underneath
                         that section.</para>
                 <caution>

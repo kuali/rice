@@ -19,8 +19,8 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:fo="http://www.w3.org/1999/XSL/Format">
     <xsl:import href="http://docbook.sourceforge.net/release/xsl/current/fo/docbook.xsl"/>	
     <xsl:import href="appendix.xsl"/>
-	<xsl:import href="xref.xsl"/>
-	<xsl:import href="titlepage.xsl"/>
+    <xsl:import href="xref.xsl"/>
+    <xsl:import href="titlepage.xsl"/>
     <xsl:param name="callout.graphics.path">src/site/docbook/images/callouts/</xsl:param>
     <xsl:template match="*[@role = 'keyword']" mode="class.value">
         <xsl:value-of select="'keyword'"/>
@@ -39,11 +39,19 @@
         <xsl:attribute name="wrap-option">wrap</xsl:attribute>
         <xsl:attribute name="font-size">7pt</xsl:attribute>
         <xsl:attribute name="start-indent">0pt</xsl:attribute>
+<<<<<<< .working
         <xsl:attribute name="end-indent">0pt</xsl:attribute>
         <xsl:attribute name="border">1px solid #e1e1e8</xsl:attribute>
         <xsl:attribute name="background-color">#f5f5f5</xsl:attribute>
         <xsl:attribute name="padding">9.5px</xsl:attribute>
     </xsl:attribute-set> 
+=======
+        <xsl:attribute name="end-indent">0pt</xsl:attribute>
+        <xsl:attribute name="border">1px solid #e1e1e8</xsl:attribute>
+        <xsl:attribute name="background-color">#f5f5f5</xsl:attribute>
+        <xsl:attribute name="padding">9.5px</xsl:attribute>
+    </xsl:attribute-set>
+>>>>>>> .merge-right.r39478
     <xsl:template name="table.cell.block.properties">
         <xsl:attribute name="font-size">7pt</xsl:attribute>
     </xsl:template>

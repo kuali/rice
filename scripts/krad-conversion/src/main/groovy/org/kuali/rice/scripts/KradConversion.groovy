@@ -22,6 +22,7 @@
  *  using the struts-config.xml the file is parsed and processed into creating a basic web-overlay project
  *  so the generated code can be tested without mixing with existing source
  */
+import org.apache.commons.io.FilenameUtils
 import org.apache.commons.lang.StringUtils
 import org.kuali.rice.scripts.ConversionUtils
 import org.kuali.rice.scripts.DictionaryConverter
@@ -35,8 +36,8 @@ def config = ConversionUtils.getConfig(configFilePath, projectConfigFilePath)
 
 
 // load any config-specific members
-def inputDir = config.input.dir
-def outputDir = config.output.dir
+def inputDir = FilenameUtils.normalize(config.input.dir, true)
+def outputDir = FilenameUtils.normalize(config.output.dir, true)
 def outputPathList = config.output.path.list
 
 def outputResourceDir = outputDir + config.output.path.src.resources

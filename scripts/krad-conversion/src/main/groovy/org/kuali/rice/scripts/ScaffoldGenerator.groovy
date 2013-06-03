@@ -57,9 +57,9 @@ class ScaffoldGenerator {
 
     def init(projectProps_, inputDir_, inputPaths_, outputDir_, outputPaths_, servletProps_) {
         projectProps = projectProps_
-        inputDir = inputDir_
+        inputDir = FilenameUtils.normalize(inputDir_,true)
         inputPaths = inputPaths_
-        outputDir = outputDir_
+        outputDir = FilenameUtils.normalize(outputDir_,true)
         outputPaths = outputPaths_
         servletProps = servletProps_
     }
@@ -139,7 +139,7 @@ class ScaffoldGenerator {
     }
 
     def buildValidationTestBinding(targetPath, springXmlFilePathList) {
-        def resourcePath = FilenameUtils.concat(targetPath, outputPaths.src.resources)
+        def resourcePath = FilenameUtils.normalize(FilenameUtils.concat(targetPath, outputPaths.src.resources),true)
         def binding = ["springBeanFiles": []]
         def rdvSpringXmlPathList = []
         springXmlFilePathList.removeAll(springXmlFilePathList.findAll { path -> path =~ /META-INF/ })

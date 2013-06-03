@@ -24,6 +24,7 @@ package org.kuali.rice.scripts
 
 import groovy.util.logging.Log
 import org.apache.commons.lang.ClassUtils
+import org.apache.commons.io.FilenameUtils
 import org.apache.commons.lang.StringUtils
 
 @Log
@@ -69,9 +70,9 @@ class StrutsConverter {
 
     def init(projectProps_, inputDir_, inputPaths_, outputDir_, outputPaths_, tagMap_, actionClassMap_, actionFormMap_) {
         projectProps = projectProps_
-        inputDir = inputDir_
+        inputDir = FilenameUtils.normalize(inputDir_, true)
         inputPaths = inputPaths_
-        outputDir = outputDir_
+        outputDir = FilenameUtils.normalize(outputDir_,true)
         outputPaths = outputPaths_
         tagMap = tagMap_
         actionClassMap = actionClassMap_

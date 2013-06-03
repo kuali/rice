@@ -216,9 +216,11 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
             // progressive anded with render, will not render at least one of the two are false
             ExpressionEvaluator expressionEvaluator =
                     view.getViewHelperService().getExpressionEvaluator();
+            expressionEvaluator.initializeEvaluationContext(model);
 
             String adjustedProgressiveRender = expressionEvaluator.replaceBindingPrefixes(view, this,
                     progressiveRender);
+
             Boolean progRenderEval = (Boolean) expressionEvaluator.evaluateExpression(context,
                     adjustedProgressiveRender);
 

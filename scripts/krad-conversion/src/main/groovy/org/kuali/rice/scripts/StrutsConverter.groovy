@@ -127,7 +127,7 @@ class StrutsConverter {
                 def controllerText = buildController(controllerBinding)
 
                 // build controller file
-                def controllerFileName = actionBeanData.controller.name + ".java"
+                def controllerFileName = ClassUtils.getShortClassName(controllerBinding.className) + ".java"
                 def controllerFilePath = javaClassOutputDirPath + ConversionUtils.getRelativePathFromPackage(controllerBinding.package)
                 ConversionUtils.buildFile(controllerFilePath, controllerFileName, controllerText)
                 log.finer "generating new controller file: " + controllerFileName

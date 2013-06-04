@@ -215,16 +215,17 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      */
     protected void sortSearchResults(LookupForm form, List<?> searchResults) {
         List<String> defaultSortColumns = null;
-
+        boolean defaultSortAscending = true;
         // first choice is to get default sort columns off posted view, since that will include the full
         // lifecycle and expression evaluations
         if (form.getPostedView() != null) {
             defaultSortColumns = ((LookupView) form.getPostedView()).getDefaultSortAttributeNames();
+            defaultSortAscending = ((LookupView) form.getPostedView()).isDefaultSortAscending();
         }
         // now try view being built, if default sort attributes have any expression (entry is null) we can't use them
         else if (form.getView() != null) {
             defaultSortColumns = ((LookupView) form.getView()).getDefaultSortAttributeNames();
-
+            defaultSortAscending = ((LookupView) form.getView()).isDefaultSortAscending();
             boolean hasExpression = false;
             if (defaultSortColumns != null) {
                 for (String sortColumn : defaultSortColumns) {
@@ -239,8 +240,13 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             }
         }
 
-        if ((defaultSortColumns != null) && (defaultSortColumns.size() > 0)) {
-            Collections.sort(searchResults, new BeanPropertyComparator(defaultSortColumns, true));
+        if ((defaultSortColumns != null) && (!defaultSortColumns.isEmpty())) {
+            BeanPropertyComparator comparator = new BeanPropertyComparator(defaultSortColumns, true);
+            if (defaultSortAscending) {
+                Collections.sort(searchResults, comparator);
+            } else {
+                Collections.sort(searchResults, Collections.reverseOrder(comparator));
+            }
         }
     }
 
@@ -248,8 +254,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      * Process the search criteria to be used with the lookup
      *
      * <p>
-     * Processing entails primarily of the removal of filtered and unused/blank search criteria.  Encrypted field values
-     * are decrypted in this process as well.
+     * Processing entails primarily of the removal of filtered and unused/blank search criteria.  Encrypted field
+     * values are decrypted in this process as well.
      * </p>
      *
      * @param lookupForm lookup form instance containing the lookup data
@@ -262,8 +268,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             criteriaFields = getCriteriaFieldsForValidation((LookupView) lookupForm.getPostedView(), lookupForm);
         }
 
-        Map<String, String> filteredSearchCriteria = new HashMap<String,String>(searchCriteria);
-        for (String fieldName: searchCriteria.keySet()) {
+        Map<String, String> filteredSearchCriteria = new HashMap<String, String>(searchCriteria);
+        for (String fieldName : searchCriteria.keySet()) {
             InputField inputField = criteriaFields.get(fieldName);
             if ((inputField == null) || !(inputField instanceof LookupInputField)) {
                 continue;
@@ -290,7 +296,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                 if (fieldValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
                     String encryptedValue = StringUtils.removeEnd(fieldValue, EncryptionService.ENCRYPTION_POST_PREFIX);
                     try {
-                        if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                        if (CoreApiServiceLocator.getEncryptionService().isEnabled()) {
                             fieldValue = getEncryptionService().decrypt(encryptedValue);
                         }
                     } catch (GeneralSecurityException e) {
@@ -546,7 +552,6 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                 return valid;
             }
 
-
             // verify the property sent is a valid to search on
             if ((inputField == null) && !searchPropertyName.contains(
                     KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
@@ -555,14 +560,13 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
             if (inputField != null) {
                 if (StringUtils.isBlank(searchPropertyValue) && inputField.getRequired()) {
-                    GlobalVariables.getMessageMap().putError(inputField.getPropertyName(), RiceKeyConstants.ERROR_REQUIRED,
-                            inputField.getLabel());
+                    GlobalVariables.getMessageMap().putError(inputField.getPropertyName(),
+                            RiceKeyConstants.ERROR_REQUIRED, inputField.getLabel());
                 }
 
                 validateSearchParameterWildcardAndOperators(inputField, searchPropertyValue);
             }
         }
-
         if (GlobalVariables.getMessageMap().hasErrors()) {
             valid = false;
         }
@@ -716,9 +720,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                     returnLink.setActionScript(script.append("closeLightbox();").toString());
                 } else {
                     // Close the light box if return target is not _self or _parent
-                    returnLink.setActionScript(
-                            "e.preventDefault();closeLightbox();showLoading();" +
-                            "returnLookupResultReload(\"" + href + "\", '" + returnTarget +"');");
+                    returnLink.setActionScript("e.preventDefault();closeLightbox();showLoading();" +
+                            "returnLookupResultReload(\"" + href + "\", '" + returnTarget + "');");
                 }
             }
         } else {
@@ -790,7 +793,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
             props.put(returnKey, returnValue);
         }
-       // props.put(UifParameters.AJAX_REQUEST,"false");
+        // props.put(UifParameters.AJAX_REQUEST,"false");
         return props;
     }
 

@@ -88,7 +88,7 @@
             <stringProp name="CounterConfig.end">499</stringProp>
             <stringProp name="CounterConfig.incr">1</stringProp>
             <stringProp name="CounterConfig.name">USER</stringProp>
-            <stringProp name="CounterConfig.format">loadtester0</stringProp>
+            <stringProp name="CounterConfig.format">loadtester</stringProp>
             <boolProp name="CounterConfig.per_user">false</boolProp>
           </CounterConfig>
           <hashTree/>

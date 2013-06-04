@@ -20,12 +20,12 @@
           </elementProp>
           <elementProp name="PORT" elementType="Argument">
             <stringProp name="Argument.name">PORT</stringProp>
-            <stringProp name="Argument.value">${__P(port)}</stringProp>
+            <stringProp name="Argument.value">${__P(port,80)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="PATH" elementType="Argument">
             <stringProp name="Argument.name">PATH</stringProp>
-            <stringProp name="Argument.value">${__P(path)}</stringProp>
+            <stringProp name="Argument.value">${__P(path,)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="LOOPS" elementType="Argument">
@@ -88,9 +88,21 @@
             <stringProp name="CounterConfig.end">499</stringProp>
             <stringProp name="CounterConfig.incr">1</stringProp>
             <stringProp name="CounterConfig.name">USER</stringProp>
-            <stringProp name="CounterConfig.format">loadtester0</stringProp>
+            <stringProp name="CounterConfig.format">loadtester</stringProp>
             <boolProp name="CounterConfig.per_user">false</boolProp>
           </CounterConfig>
+          <hashTree/>
+          <UserParameters guiclass="UserParametersGui" testclass="UserParameters" testname="User Parameters" enabled="true">
+            <collectionProp name="UserParameters.names">
+              <stringProp name="84303">URL</stringProp>
+            </collectionProp>
+            <collectionProp name="UserParameters.thread_values">
+              <collectionProp name="960218966">
+                <stringProp name="1330894003">${SERVER}:${PORT}${PATH}</stringProp>
+              </collectionProp>
+            </collectionProp>
+            <boolProp name="UserParameters.per_iteration">false</boolProp>
+          </UserParameters>
           <hashTree/>
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="/kr-krad/labs" enabled="true">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
@@ -117,7 +129,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
             <stringProp name="HTTPSampler.protocol">http</stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">/kr-krad/labs</stringProp>
+            <stringProp name="HTTPSampler.path">${PATH}/kr-krad/labs</stringProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -220,7 +232,7 @@
             </HeaderManager>
             <hashTree/>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="/listener" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="/listener" enabled="false">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
               <collectionProp name="Arguments.arguments">
                 <elementProp name="methodToCall" elementType="HTTPArgument">
@@ -285,7 +297,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Flabs%3FviewId%3DLab-PerformanceMedium%26pageId%3DLab-Performance-Page1</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Flabs%3FviewId%3DLab-PerformanceMedium%26pageId%3DLab-Performance-Page1</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -299,7 +311,7 @@
             </HeaderManager>
             <hashTree/>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="/1/statuses/user_timeline.json" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="/1/statuses/user_timeline.json" enabled="false">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
               <collectionProp name="Arguments.arguments">
                 <elementProp name="screen_name" elementType="HTTPArgument">
@@ -335,12 +347,14 @@
                   <stringProp name="Argument.name">callback</stringProp>
                   <stringProp name="Argument.value">jQuery183006750196715624557_1370027160536</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
                 <elementProp name="_" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
                   <stringProp name="Argument.name">_</stringProp>
                   <stringProp name="Argument.value">1370027160861</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
               </collectionProp>
             </elementProp>
@@ -376,7 +390,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Flabs%3FviewId%3DLab-PerformanceMedium%26pageId%3DLab-Performance-Page1</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Flabs%3FviewId%3DLab-PerformanceMedium%26pageId%3DLab-Performance-Page1</stringProp>
                 </elementProp>
                 <elementProp name="Accept-Encoding" elementType="Header">
                   <stringProp name="Header.name">Accept-Encoding</stringProp>
@@ -451,7 +465,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Flabs%3FviewId%3DLab-PerformanceMedium%26pageId%3DLab-Performance-Page1</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Flabs%3FviewId%3DLab-PerformanceMedium%26pageId%3DLab-Performance-Page1</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -473,24 +487,28 @@
                   <stringProp name="Argument.name">methodToCall</stringProp>
                   <stringProp name="Argument.value">retrieveMessage</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
                 <elementProp name="ajaxRequest" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
                   <stringProp name="Argument.name">ajaxRequest</stringProp>
                   <stringProp name="Argument.value">true</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
                 <elementProp name="ajaxReturnType" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
                   <stringProp name="Argument.name">ajaxReturnType</stringProp>
                   <stringProp name="Argument.value">update-none</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
                 <elementProp name="key" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
                   <stringProp name="Argument.name">key</stringProp>
                   <stringProp name="Argument.value">message.errorFieldModified</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
               </collectionProp>
             </elementProp>
@@ -526,7 +544,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Flabs%3FviewId%3DLab-PerformanceMedium%26pageId%3DLab-Performance-Page1</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Flabs%3FviewId%3DLab-PerformanceMedium%26pageId%3DLab-Performance-Page1</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -605,7 +623,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Flabs%3FviewId%3DLab-PerformanceMedium%26pageId%3DLab-Performance-Page1</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Flabs%3FviewId%3DLab-PerformanceMedium%26pageId%3DLab-Performance-Page1</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -627,24 +645,28 @@
                   <stringProp name="Argument.name">methodToCall</stringProp>
                   <stringProp name="Argument.value">retrieveMessage</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
                 <elementProp name="ajaxRequest" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
                   <stringProp name="Argument.name">ajaxRequest</stringProp>
                   <stringProp name="Argument.value">true</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
                 <elementProp name="ajaxReturnType" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
                   <stringProp name="Argument.name">ajaxReturnType</stringProp>
                   <stringProp name="Argument.value">update-none</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
                 <elementProp name="key" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
                   <stringProp name="Argument.name">key</stringProp>
                   <stringProp name="Argument.value">message.information</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
               </collectionProp>
             </elementProp>
@@ -680,7 +702,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Flabs%3FviewId%3DLab-PerformanceMedium%26pageId%3DLab-Performance-Page1</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Flabs%3FviewId%3DLab-PerformanceMedium%26pageId%3DLab-Performance-Page1</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -759,7 +781,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Flabs%3FviewId%3DLab-PerformanceMedium%26pageId%3DLab-Performance-Page1</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Flabs%3FviewId%3DLab-PerformanceMedium%26pageId%3DLab-Performance-Page1</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -781,24 +803,28 @@
                   <stringProp name="Argument.name">methodToCall</stringProp>
                   <stringProp name="Argument.value">retrieveMessage</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
                 <elementProp name="ajaxRequest" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
                   <stringProp name="Argument.name">ajaxRequest</stringProp>
                   <stringProp name="Argument.value">true</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
                 <elementProp name="ajaxReturnType" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
                   <stringProp name="Argument.name">ajaxReturnType</stringProp>
                   <stringProp name="Argument.value">update-none</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
                 <elementProp name="key" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
                   <stringProp name="Argument.name">key</stringProp>
                   <stringProp name="Argument.value">message.closeDetails</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
               </collectionProp>
             </elementProp>
@@ -834,7 +860,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Flabs%3FviewId%3DLab-PerformanceMedium%26pageId%3DLab-Performance-Page1</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Flabs%3FviewId%3DLab-PerformanceMedium%26pageId%3DLab-Performance-Page1</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -994,7 +1020,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Flabs%3FviewId%3DLab-PerformanceMedium%26pageId%3DLab-Performance-Page1&amp;formKey=34ab5884-2af8-45d5-8ad1-f9727881355f&amp;cacheKey=4slqph8vdry65ixohm85nb</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Flabs%3FviewId%3DLab-PerformanceMedium%26pageId%3DLab-Performance-Page1&amp;</stringProp>
                 </elementProp>
                 <elementProp name="Accept-Encoding" elementType="Header">
                   <stringProp name="Header.name">Accept-Encoding</stringProp>
@@ -1024,7 +1050,7 @@
                 <elementProp name="__login_user" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
                   <stringProp name="Argument.name">__login_user</stringProp>
-                  <stringProp name="Argument.value">loadtester0</stringProp>
+                  <stringProp name="Argument.value">${USER}</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                   <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
@@ -1062,7 +1088,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Flabs%3FviewId%3DLab-PerformanceMedium%26pageId%3DLab-Performance-Page1&amp;formKey=34ab5884-2af8-45d5-8ad1-f9727881355f&amp;cacheKey=4slqph8vdry65ixohm85nb</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Flabs%3FviewId%3DLab-PerformanceMedium%26pageId%3DLab-Performance-Page1</stringProp>
                 </elementProp>
                 <elementProp name="Accept-Encoding" elementType="Header">
                   <stringProp name="Header.name">Accept-Encoding</stringProp>
@@ -1123,7 +1149,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Flabs%3FviewId%3DLab-PerformanceMedium%26pageId%3DLab-Performance-Page1&amp;formKey=34ab5884-2af8-45d5-8ad1-f9727881355f&amp;cacheKey=4slqph8vdry65ixohm85nb</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Flabs%3FviewId%3DLab-PerformanceMedium%26pageId%3DLab-Performance-Page1</stringProp>
                 </elementProp>
                 <elementProp name="Accept-Encoding" elementType="Header">
                   <stringProp name="Header.name">Accept-Encoding</stringProp>
@@ -1133,7 +1159,7 @@
             </HeaderManager>
             <hashTree/>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="/listener" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="/listener" enabled="false">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
               <collectionProp name="Arguments.arguments">
                 <elementProp name="methodToCall" elementType="HTTPArgument">
@@ -1141,24 +1167,28 @@
                   <stringProp name="Argument.name">methodToCall</stringProp>
                   <stringProp name="Argument.value">retrieveMessage</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
                 <elementProp name="ajaxRequest" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
                   <stringProp name="Argument.name">ajaxRequest</stringProp>
                   <stringProp name="Argument.value">true</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
                 <elementProp name="ajaxReturnType" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
                   <stringProp name="Argument.name">ajaxReturnType</stringProp>
                   <stringProp name="Argument.value">update-none</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
                 <elementProp name="key" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
                   <stringProp name="Argument.name">key</stringProp>
                   <stringProp name="Argument.value">message.loading</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
               </collectionProp>
             </elementProp>
@@ -1194,7 +1224,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page1</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page1</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -1208,7 +1238,7 @@
             </HeaderManager>
             <hashTree/>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="/1/statuses/user_timeline.json" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="/1/statuses/user_timeline.json" enabled="false">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
               <collectionProp name="Arguments.arguments">
                 <elementProp name="screen_name" elementType="HTTPArgument">
@@ -1287,7 +1317,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page1</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page1</stringProp>
                 </elementProp>
                 <elementProp name="Accept-Encoding" elementType="Header">
                   <stringProp name="Header.name">Accept-Encoding</stringProp>
@@ -1362,7 +1392,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page1</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page1</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -1441,7 +1471,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page1</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page1</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -1520,7 +1550,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page1</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page1</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -1599,7 +1629,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page1</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page1</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -1621,24 +1651,28 @@
                   <stringProp name="Argument.name">methodToCall</stringProp>
                   <stringProp name="Argument.value">retrieveMessage</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
                 <elementProp name="ajaxRequest" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
                   <stringProp name="Argument.name">ajaxRequest</stringProp>
                   <stringProp name="Argument.value">true</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
                 <elementProp name="ajaxReturnType" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
                   <stringProp name="Argument.name">ajaxReturnType</stringProp>
                   <stringProp name="Argument.value">update-none</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
                 <elementProp name="key" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
                   <stringProp name="Argument.name">key</stringProp>
                   <stringProp name="Argument.value">message.warning</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
               </collectionProp>
             </elementProp>
@@ -1674,7 +1708,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page1</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page1</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -1753,7 +1787,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page1</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page1</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -1832,7 +1866,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page1</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page1</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -1911,7 +1945,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page1</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page1</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>

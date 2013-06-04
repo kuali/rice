@@ -140,13 +140,26 @@
           <property name="layoutManager.generateAutoSequence" value="true"/>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"/>
-              <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"/>
-              <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"/>
-              <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4"/>
+              <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1">
+                  <property name="control">
+                    <bean parent="Uif-TextControl" p:size="@{#isAddLine ? 10 : #line.field1?.length()}"/>
+                  </property>
+              </bean>
+              <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"
+                    p:constraintText="@{#line.field2}(x)"/>
+              <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3">
+                <property name="quickfinder.dataObjectClassName" value="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
+                <property name="quickfinder.fieldConversions">
+                  <map>
+                    <entry key="number" value="field3"/>
+                  </map>
+                </property>
+              </bean>
+              <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4"
+                    p:readOnly="@{#line.field2 eq 'ab extra'}"/>
               <bean parent="Uif-InputField" p:propertyName="field5" p:label="Field 5"/>
               <bean parent="Uif-InputField" p:propertyName="field6" p:label="Field 6"/>
-              <bean parent="Uif-InputField" p:propertyName="field7" p:label="Field 7"/>
+              <bean parent="Uif-MessageField" p:messageText="@{#line.field3} and @{#line.field4}" p:label="Message"/>
               <bean parent="Uif-InputField" p:propertyName="field8" p:label="Field 8"/>
             </list>
           </property>

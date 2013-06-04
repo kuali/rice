@@ -92,10 +92,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     public static final String CANCEL_NAME = "methodToCall.cancel";
 
     /**
-     * //a[contains(text(), 'Cancel')]
+     * //a[contains(text(), 'ancel')]
      * Different cancel than CANCEL_NAME
      */
-    public static final String CANCEL2_XPATH = "//a[contains(text(), 'Cancel')]";
+    public static final String CANCEL2_XPATH = "//a[contains(text(), 'ancel')]";
 
     /**
      * //*[@title='close this window']

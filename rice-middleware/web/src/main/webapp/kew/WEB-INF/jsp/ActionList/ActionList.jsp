@@ -445,7 +445,7 @@
 							href="<c:url value="RouteLog.do"><c:param name="documentId" value="${result.documentId}"/></c:url>"
 							<c:if test="${ActionListForm.routeLogPopup}">target="_blank"</c:if>>
 						<img alt="Route Log for Document"
-							src="images/my_route_log.gif" /> </a></div>
+							src="/my_route_log.gif" /> </a></div>
 					</display:column>
 				</display:table>
 				</td>

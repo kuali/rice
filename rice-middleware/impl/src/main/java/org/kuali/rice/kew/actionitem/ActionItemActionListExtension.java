@@ -23,12 +23,17 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtensio
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.web.RowStyleable;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.kew.api.WorkflowDocument;
 
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,6 +75,40 @@ public class ActionItemActionListExtension extends ActionItem implements RowStyl
     private boolean delegatorNameInitialized = false;
     @Transient
     private boolean groupNameInitialized = false;
+
+
+
+    //KRAD ActionList Stuff TODO
+    private String routeHeaderRouteStatus;
+    private Timestamp routeHeaderCreateDate;
+    private String routeHeaderInitiatorName;
+    private Timestamp routeHeaderApprovedDate;
+    private String routeHeaderCurrentRouteLevelName;
+    private String routeHeaderInitiatorWorkflowId;
+
+    public String getRouteHeaderRouteStatus() {
+        return routeHeader.getDocRouteStatus();
+    }
+
+    public Timestamp getRouteHeaderCreateDate() {
+        return routeHeader.getCreateDate();
+    }
+
+    public String getRouteHeaderInitiatorName() {
+        return routeHeader.getInitiatorName();
+    }
+
+    public Timestamp getRouteHeaderApprovedDate() {
+        return routeHeader.getApprovedDate();
+    }
+
+    public String getRouteHeaderCurrentRouteLevelName() {
+        return routeHeader.getCurrentRouteLevelName();
+    }
+
+    public String getRouteHeaderInitiatorWorkflowId() {
+        return routeHeader.getInitiatorWorkflowId();
+    }
 
     public Integer getActionListIndex() {
         return actionListIndex;

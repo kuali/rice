@@ -420,6 +420,7 @@ public abstract class RemoteModuleServiceBase implements ModuleService {
             return externalizableBusinessObjectInterface;
         } else {
             Class<E> implementationClass = ebos.get(externalizableBusinessObjectInterface);
+
             int implClassModifiers = implementationClass.getModifiers();
             if (Modifier.isInterface(implClassModifiers) || Modifier.isAbstract(implClassModifiers)) {
                 throw new RuntimeException("Implementation class must be non-abstract class: ebo interface: "

@@ -58,6 +58,36 @@ public class ActionListFilter implements Serializable {
     private boolean excludeDelegationType;
     private boolean filterOn;
 
+    public ActionListFilter() {}
+
+    public ActionListFilter(ActionListFilter another) {
+        this.filterLegend = another.filterLegend;
+        this.documentTitle = another.documentTitle;
+        this.excludeDocumentTitle = another.excludeDocumentTitle;
+        this.docRouteStatus = another.docRouteStatus;
+        this.excludeRouteStatus = another.excludeRouteStatus;
+        this.actionRequestCd = another.actionRequestCd ;
+        this.excludeActionRequestCd = another.excludeActionRequestCd ;
+        this.groupId = another.groupId ;
+        this.groupIdString = another.groupIdString ;
+        this.groupName = another.groupName ;
+        this.excludeGroupId = another.excludeGroupId ;
+        this.documentType = another.documentType ;
+        this.excludeDocumentType = another.excludeDocumentType ;
+        this.createDateFrom = another.createDateFrom ;
+        this.createDateTo = another.createDateTo ;
+        this.excludeCreateDate = another.excludeCreateDate ;
+        this.lastAssignedDateFrom = another.lastAssignedDateFrom ;
+        this.lastAssignedDateTo = another.lastAssignedDateTo ;
+        this.excludeLastAssignedDate = another.excludeLastAssignedDate ;
+        this.delegatorId = another.delegatorId ;
+        this.primaryDelegateId = another.primaryDelegateId ;
+        this.excludeDelegatorId = another.excludeDelegatorId ;
+        this.delegationType = another.delegationType ;
+        this.excludeDelegationType = another.excludeDelegationType ;
+        this.filterOn = another.filterOn ;
+    }
+
     public String getActionRequestCd() {
         return actionRequestCd;
     }

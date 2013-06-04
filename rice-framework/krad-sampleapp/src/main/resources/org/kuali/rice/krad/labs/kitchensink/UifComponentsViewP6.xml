@@ -27,7 +27,7 @@
       <property name="items">
         <list>
           <bean parent="GenericTextField" p:readOnly="true" p:propertyName="field59" p:defaultValue="a2">
-            <property name="inquiry.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
+            <property name="inquiry.dataObjectClassName" value="org.kuali.rice.krad.demo.travel.account.TravelAccount" />
             <property name="inquiry.inquiryParameters">
               <map>
                 <entry key="field59" value="number" />
@@ -36,7 +36,7 @@
           </bean>
           <bean parent="GenericTextField" p:propertyName="field70">
             <property name="inquiry.dataObjectClassName"
-              value="edu.sampleu.travel.bo.TravelAccount" />
+              value="org.kuali.rice.krad.demo.travel.account.TravelAccount" />
             <property name="inquiry.inquiryParameters">
               <map>
                 <entry key="field70" value="number" />
@@ -45,7 +45,7 @@
           </bean>
           <bean parent="GenericTextField" p:propertyName="field71">
             <property name="inquiry.dataObjectClassName"
-                      value="edu.sampleu.travel.bo.TravelAccount"/>
+                      value="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
             <property name="inquiry.viewName"
                       value="ks_inquiry"/>
             <property name="inquiry.inquiryParameters">
@@ -57,7 +57,7 @@
           <bean parent="GenericTextField" p:propertyName="field72">
             <property name="propertyNamesForAdditionalDisplay" value="field73,field74" />
             <property name="attributeQuery">
-              <bean parent="Uif-AttributeQueryConfig" p:dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
+              <bean parent="Uif-AttributeQueryConfig" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
                 p:queryFieldMapping="field72:number" p:returnFieldMapping="name:field73,subAccountName:field74" />
             </property>
           </bean>
@@ -88,7 +88,7 @@
 
 
           <bean parent="GenericTextField" p:propertyName="field60">
-            <property name="quickfinder.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
+            <property name="quickfinder.dataObjectClassName" value="org.kuali.rice.krad.demo.travel.account.TravelAccount" />
             <property name="quickfinder.fieldConversions">
               <map>
                 <entry key="number" value="field60" />
@@ -99,7 +99,7 @@
             <property name="quickfinder">
               <bean parent="Uif-QuickFinderByScript"/>
             </property>
-            <property name="quickfinder.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
+            <property name="quickfinder.dataObjectClassName" value="org.kuali.rice.krad.demo.travel.account.TravelAccount" />
             <property name="quickfinder.fieldConversions">
               <map>
                 <entry key="number" value="field90" />
@@ -107,7 +107,7 @@
             </property>
           </bean>
           <bean parent="GenericTextField" p:propertyName="field87">
-            <property name="quickfinder.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
+            <property name="quickfinder.dataObjectClassName" value="org.kuali.rice.krad.demo.travel.account.TravelAccount" />
             <property name="quickfinder.fieldConversions">
               <map>
                 <entry key="number" value="field87" />
@@ -117,7 +117,7 @@
           <bean parent="GenericTextField" p:propertyName="field61">
             <property name="suggest">
                 <bean parent="Uif-Suggest" p:render="true" p:valuePropertyName="accountTypeCode"
-                      p:suggestQuery.dataObjectClassName="edu.sampleu.travel.bo.TravelAccountType"/>
+                      p:suggestQuery.dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
             </property>
           </bean>
         </list>

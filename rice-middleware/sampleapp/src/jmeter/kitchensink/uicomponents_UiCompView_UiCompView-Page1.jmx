@@ -20,12 +20,12 @@
           </elementProp>
           <elementProp name="PORT" elementType="Argument">
             <stringProp name="Argument.name">PORT</stringProp>
-            <stringProp name="Argument.value">${__P(port)}</stringProp>
+            <stringProp name="Argument.value">${__P(port,80)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="PATH" elementType="Argument">
             <stringProp name="Argument.name">PATH</stringProp>
-            <stringProp name="Argument.value">${__P(path)}</stringProp>
+            <stringProp name="Argument.value">${__P(path,)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="LOOPS" elementType="Argument">
@@ -91,6 +91,18 @@
             <stringProp name="CounterConfig.format">loadtester0</stringProp>
             <boolProp name="CounterConfig.per_user">false</boolProp>
           </CounterConfig>
+          <hashTree/>
+          <UserParameters guiclass="UserParametersGui" testclass="UserParameters" testname="User Parameters" enabled="true">
+            <collectionProp name="UserParameters.names">
+              <stringProp name="84303">URL</stringProp>
+            </collectionProp>
+            <collectionProp name="UserParameters.thread_values">
+              <collectionProp name="960218966">
+                <stringProp name="1330894003">${SERVER}:${PORT}${PATH}</stringProp>
+              </collectionProp>
+            </collectionProp>
+            <boolProp name="UserParameters.per_iteration">false</boolProp>
+          </UserParameters>
           <hashTree/>
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="/" enabled="true">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
@@ -262,7 +274,7 @@
             </HeaderManager>
             <hashTree/>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="/listener" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="/listener" enabled="false">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
               <collectionProp name="Arguments.arguments">
                 <elementProp name="methodToCall" elementType="HTTPArgument">
@@ -327,7 +339,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -341,7 +353,7 @@
             </HeaderManager>
             <hashTree/>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="/1/statuses/user_timeline.json" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="/1/statuses/user_timeline.json" enabled="false">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
               <collectionProp name="Arguments.arguments">
                 <elementProp name="screen_name" elementType="HTTPArgument">
@@ -420,7 +432,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
                 </elementProp>
                 <elementProp name="Accept-Encoding" elementType="Header">
                   <stringProp name="Header.name">Accept-Encoding</stringProp>
@@ -495,7 +507,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -574,7 +586,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -653,7 +665,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -732,7 +744,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -811,7 +823,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
+                  <stringProp name="Header.value">http://${url}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -890,7 +902,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -1050,7 +1062,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart&amp;formKey=33c0c15e-45fb-4c07-9f56-df0ca0b6d74e&amp;cacheKey=oxq24jl2fype77aety09o</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart&amp;formKey=33c0c15e-45fb-4c07-9f56-df0ca0b6d74e&amp;cacheKey=oxq24jl2fype77aety09o</stringProp>
                 </elementProp>
                 <elementProp name="Accept-Encoding" elementType="Header">
                   <stringProp name="Header.name">Accept-Encoding</stringProp>
@@ -1080,7 +1092,7 @@
                 <elementProp name="__login_user" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
                   <stringProp name="Argument.name">__login_user</stringProp>
-                  <stringProp name="Argument.value">admin</stringProp>
+                  <stringProp name="Argument.value">${USER}</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                   <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
@@ -1118,7 +1130,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart&amp;formKey=33c0c15e-45fb-4c07-9f56-df0ca0b6d74e&amp;cacheKey=oxq24jl2fype77aety09o</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart&amp;formKey=33c0c15e-45fb-4c07-9f56-df0ca0b6d74e&amp;cacheKey=oxq24jl2fype77aety09o</stringProp>
                 </elementProp>
                 <elementProp name="Accept-Encoding" elementType="Header">
                   <stringProp name="Header.name">Accept-Encoding</stringProp>
@@ -1179,7 +1191,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart&amp;formKey=33c0c15e-45fb-4c07-9f56-df0ca0b6d74e&amp;cacheKey=oxq24jl2fype77aety09o</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart&amp;formKey=33c0c15e-45fb-4c07-9f56-df0ca0b6d74e&amp;cacheKey=oxq24jl2fype77aety09o</stringProp>
                 </elementProp>
                 <elementProp name="Accept-Encoding" elementType="Header">
                   <stringProp name="Header.name">Accept-Encoding</stringProp>
@@ -1189,7 +1201,7 @@
             </HeaderManager>
             <hashTree/>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="/listener" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="/listener" enabled="false">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
               <collectionProp name="Arguments.arguments">
                 <elementProp name="methodToCall" elementType="HTTPArgument">
@@ -1254,7 +1266,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -1268,7 +1280,7 @@
             </HeaderManager>
             <hashTree/>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="/1/statuses/user_timeline.json" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="/1/statuses/user_timeline.json" enabled="false">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
               <collectionProp name="Arguments.arguments">
                 <elementProp name="screen_name" elementType="HTTPArgument">
@@ -1347,7 +1359,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
                 </elementProp>
                 <elementProp name="Accept-Encoding" elementType="Header">
                   <stringProp name="Header.name">Accept-Encoding</stringProp>
@@ -1422,7 +1434,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -1501,7 +1513,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -1580,7 +1592,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -1659,7 +1671,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -1738,7 +1750,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -1817,7 +1829,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -1888,7 +1900,7 @@
             </HeaderManager>
             <hashTree/>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="/listener" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="/listener" enabled="false">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
               <collectionProp name="Arguments.arguments">
                 <elementProp name="methodToCall" elementType="HTTPArgument">
@@ -1953,7 +1965,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-krad/uicomponents?viewId=UifCompView&amp;pageId=UifCompView-Page1</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-krad/uicomponents?viewId=UifCompView&amp;pageId=UifCompView-Page1</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -1967,7 +1979,7 @@
             </HeaderManager>
             <hashTree/>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="/1/statuses/user_timeline.json" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="/1/statuses/user_timeline.json" enabled="false">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
               <collectionProp name="Arguments.arguments">
                 <elementProp name="screen_name" elementType="HTTPArgument">
@@ -2046,7 +2058,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-krad/uicomponents?viewId=UifCompView&amp;pageId=UifCompView-Page1</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-krad/uicomponents?viewId=UifCompView&amp;pageId=UifCompView-Page1</stringProp>
                 </elementProp>
                 <elementProp name="Accept-Encoding" elementType="Header">
                   <stringProp name="Header.name">Accept-Encoding</stringProp>
@@ -2121,7 +2133,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-krad/uicomponents?viewId=UifCompView&amp;pageId=UifCompView-Page1</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-krad/uicomponents?viewId=UifCompView&amp;pageId=UifCompView-Page1</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -2200,7 +2212,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-krad/uicomponents?viewId=UifCompView&amp;pageId=UifCompView-Page1</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-krad/uicomponents?viewId=UifCompView&amp;pageId=UifCompView-Page1</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -2279,7 +2291,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-krad/uicomponents?viewId=UifCompView&amp;formKey=faafbb66-9a6e-4429-ba5c-11c594f269de&amp;cacheKey=ib4wluckky9djtmanwg3r&amp;pageId=UifCompView-Page1</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-krad/uicomponents?viewId=UifCompView&amp;formKey=faafbb66-9a6e-4429-ba5c-11c594f269de&amp;cacheKey=ib4wluckky9djtmanwg3r&amp;pageId=UifCompView-Page1</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -2358,7 +2370,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-krad/uicomponents?viewId=UifCompView&amp;formKey=faafbb66-9a6e-4429-ba5c-11c594f269de&amp;cacheKey=ib4wluckky9djtmanwg3r&amp;pageId=UifCompView-Page1</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-krad/uicomponents?viewId=UifCompView&amp;formKey=faafbb66-9a6e-4429-ba5c-11c594f269de&amp;cacheKey=ib4wluckky9djtmanwg3r&amp;pageId=UifCompView-Page1</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -2437,7 +2449,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}/kr-krad/uicomponents?viewId=UifCompView&amp;formKey=faafbb66-9a6e-4429-ba5c-11c594f269de&amp;cacheKey=ib4wluckky9djtmanwg3r&amp;pageId=UifCompView-Page1</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-krad/uicomponents?viewId=UifCompView&amp;formKey=faafbb66-9a6e-4429-ba5c-11c594f269de&amp;cacheKey=ib4wluckky9djtmanwg3r&amp;pageId=UifCompView-Page1</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>

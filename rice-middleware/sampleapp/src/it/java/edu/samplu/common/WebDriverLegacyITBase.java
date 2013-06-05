@@ -3458,10 +3458,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     protected void testViewHelp() throws Exception {
         // test tooltip help
         fireMouseOverEventByXpath("//h1/span[@class='uif-headerText-span']");
-        SeleneseTestBase.assertEquals("View help", getText("td.jquerybubblepopup-innerHtml"));
+        SeleneseTestBase.assertEquals("Sample text for view help", getText("td.jquerybubblepopup-innerHtml"));
 
         // test external help
-        waitAndClickByXpath("//input[@alt='Help for Configuration Test View']");
+        waitAndClickByXpath("//input[@alt='Help for Configuration Test View - Help']");
         Thread.sleep(5000);
         switchToWindow("Kuali Foundation");
         Thread.sleep(5000);

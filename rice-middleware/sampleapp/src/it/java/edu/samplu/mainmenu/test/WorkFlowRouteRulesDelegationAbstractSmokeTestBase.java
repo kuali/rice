@@ -61,6 +61,6 @@ public abstract class WorkFlowRouteRulesDelegationAbstractSmokeTestBase extends 
     }
     
     public void testCreateNewRRDTravelRequestDestRouting() throws Exception {
-        testCreateNewRRDTravelRequestDestRouting();
+        super.testCreateNewRRDTravelRequestDestRouting();
     }
 }

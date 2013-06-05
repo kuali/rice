@@ -39,19 +39,11 @@
         <xsl:attribute name="wrap-option">wrap</xsl:attribute>
         <xsl:attribute name="font-size">7pt</xsl:attribute>
         <xsl:attribute name="start-indent">0pt</xsl:attribute>
-<<<<<<< .working
-        <xsl:attribute name="end-indent">0pt</xsl:attribute>
-        <xsl:attribute name="border">1px solid #e1e1e8</xsl:attribute>
-        <xsl:attribute name="background-color">#f5f5f5</xsl:attribute>
-        <xsl:attribute name="padding">9.5px</xsl:attribute>
-    </xsl:attribute-set> 
-=======
         <xsl:attribute name="end-indent">0pt</xsl:attribute>
         <xsl:attribute name="border">1px solid #e1e1e8</xsl:attribute>
         <xsl:attribute name="background-color">#f5f5f5</xsl:attribute>
         <xsl:attribute name="padding">9.5px</xsl:attribute>
     </xsl:attribute-set>
->>>>>>> .merge-right.r39478
     <xsl:template name="table.cell.block.properties">
         <xsl:attribute name="font-size">7pt</xsl:attribute>
     </xsl:template>

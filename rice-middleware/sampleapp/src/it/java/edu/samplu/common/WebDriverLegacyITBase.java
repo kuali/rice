@@ -443,10 +443,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         }
 
         // login via either KRAD or KNS login page
-        String loginUif = System.getProperty(REMOTE_LOGIN_UIF);
-        if (loginUif == null) {
-            loginUif = ITUtil.REMOTE_UIF_KRAD;
-        }
         if (isKradLogin()){
             WebDriverUtil.kradLogin(driver, user, this);
         } else {
@@ -4244,7 +4240,13 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * Use the KRAD Login Screen or the old KNS Login Screen
      */
     protected boolean isKradLogin(){
-        return (ITUtil.REMOTE_UIF_KRAD.equalsIgnoreCase(System.getProperty(REMOTE_LOGIN_UIF)));
+        // check system property, default to KRAD
+        String loginUif = System.getProperty(REMOTE_LOGIN_UIF);
+        if (loginUif == null) {
+            loginUif = ITUtil.REMOTE_UIF_KRAD;
+        }
+
+        return (ITUtil.REMOTE_UIF_KRAD.equalsIgnoreCase(loginUif));
     }
 
     /**

@@ -1286,6 +1286,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     protected void testAttributeDefinitionLookUp() throws Exception {
         waitForPageToLoad();
         selectFrameIframePortlet();
+        checkForIncidentReport("testAttributeDefinitionLookUp");
         waitAndClickByXpath("//button[contains(.,'earch')]");
         Thread.sleep(3000);
         waitForPageToLoad();
@@ -3486,6 +3487,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void testVerifyAddDeleteFiscalOfficerLegacy() throws Exception {
         selectFrameIframePortlet();
+        checkForIncidentReport("testVerifyAddDeleteFiscalOfficerLegacy");
         waitAndTypeByName("document.documentHeader.documentDescription", ITUtil.DTS_TWO);
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].number","1234567890");
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].foId", "2");
@@ -3509,7 +3511,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndClickByName("newCollectionLines['document.notes'].noteText");
         waitAndTypeByName("newCollectionLines['document.notes'].noteText", "Test note");
         waitAndClick("button[title='Add a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
-        waitForElementPresentByName("document.notes[0].noteText");
+//        waitForElementPresentByName("document.notes[0].noteText");
         SeleneseTestBase.assertEquals("Test note", getTextByXpath("//pre"));
         waitAndClick("button[title='Delete a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
         SeleneseTestBase.assertEquals(Boolean.FALSE, (Boolean) isElementPresentByName("document.notes[0].noteText"));

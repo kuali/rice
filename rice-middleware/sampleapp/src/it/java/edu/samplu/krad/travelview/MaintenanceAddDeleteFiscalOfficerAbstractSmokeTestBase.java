@@ -29,7 +29,7 @@ public abstract class MaintenanceAddDeleteFiscalOfficerAbstractSmokeTestBase ext
      * ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK
      */
     public static final String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=Travel%20Account%20Maintenance%20(New)&channelUrl=" + ITUtil.getBaseUrlString() +
-            "/kr-krad/maintenance?methodToCall=start&dataObjectClassName=org.kuali.rice.krad.demo.travel.account.TravelAccount&viewName=ks_maintenance&returnLocation=" +
+            "/kr-krad/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&viewName=ks_maintenance&returnLocation=" +
             ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
     /**
      * {@inheritDoc}

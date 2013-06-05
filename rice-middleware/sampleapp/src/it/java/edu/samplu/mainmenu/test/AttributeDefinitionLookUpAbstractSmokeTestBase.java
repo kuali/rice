@@ -34,7 +34,7 @@ public abstract class AttributeDefinitionLookUpAbstractSmokeTestBase extends Mai
             + ITUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
             + "org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo"
             + ITUtil.SHOW_MAINTENANCE_LINKS
-            + "returnLocation=" + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
+            + "&returnLocation=" + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
     /**
      * {@inheritDoc}
      * Attribute Definition Lookup

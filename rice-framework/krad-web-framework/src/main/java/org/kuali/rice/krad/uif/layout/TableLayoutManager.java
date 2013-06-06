@@ -533,7 +533,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         }
 
         // capture the first row of fields for widgets that build off the table
-        if (lineIndex == 0) {
+        if (lineIndex == 0 || this.firstRowFields.isEmpty()) {
             this.firstRowFields = lineFields;
         }
 

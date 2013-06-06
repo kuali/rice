@@ -344,9 +344,10 @@ public class RichTable extends WidgetBase {
                 getTemplateOptions().put(UifConstants.TableToolsKeys.AO_COLUMN_DEFS,
                         tableToolsColumnOptions.toString());
             } else if (layoutManager instanceof TableLayoutManager) {
-                // build column defs from the first row of the table
-                // TODO: does this handle multiple rows correctly?
-                for (Component component : ((TableLayoutManager) layoutManager).getFirstRowFields()) {
+                List<Field> rowFields = ((TableLayoutManager) layoutManager).getFirstRowFields();
+
+                // build column defs from the the first row of the table
+                for (Component component : rowFields) {
                     if (actionFieldVisible && columnIndex + 1 == actionIndex) {
                         String actionColOptions = constructTableColumnOptions(columnIndex, false, null, null);
                         tableToolsColumnOptions.append(actionColOptions + " , ");

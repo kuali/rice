@@ -43,6 +43,7 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.RichTable;
 import org.kuali.rice.krad.uif.widget.Tooltip;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
@@ -82,7 +83,6 @@ public class LightTable extends Group implements DataBinding {
     private static final String EXPRESSION_TOKEN = "@e@";
     private static final String RENDER = "render";
     private static final String ID_TOKEN = "@id@";
-    private static final String QUOTE_TOKEN = "@quot@";
     private static final String A_TOKEN = "@";
     private static final String SEPARATOR = "@@@";
 
@@ -370,7 +370,7 @@ public class LightTable extends Group implements DataBinding {
         // construct aaData option to set data in dataTable options (speed enhancement)
         String aaData = StringUtils.removeEnd(rows.toString(), ",");
         aaData = "[" + aaData  + "]";
-        aaData = aaData.replace(QUOTE_TOKEN, "\"");
+        aaData = aaData.replace(KRADConstants.QUOTE_PLACEHOLDER, "\"");
 
         //set the aaData option on datatable for faster rendering
         richTable.getTemplateOptions().put(UifConstants.TableToolsKeys.AA_DATA, aaData);

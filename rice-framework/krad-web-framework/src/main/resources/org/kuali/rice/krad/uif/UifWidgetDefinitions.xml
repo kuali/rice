@@ -100,7 +100,7 @@
     <property name="templateOptions">
       <map>
         <entry key="bAutoWidth" value="false"/>
-        <entry key="sDom" value="fTrtip"/>
+        <entry key="sDom" value="lrtip"/>
         <entry key="bRetrieve" value="true"/>
         <entry key="sPaginationType" value="full_numbers"/>
         <entry key="oTableTools"
@@ -127,10 +127,12 @@
       <map merge="true">
         <entry key="sDom" value="fTrt"/>
         <entry key="bScrollInfinite" value="true"/>
+        <entry key="bDeferRender" value="false"/>
         <entry key="bScrollCollapse" value="true"/>
         <entry key="sScrollY" value="100%"/>
       </map>
     </property>
+    <property name="forceAjaxJsonData" value="false"/>
   </bean>
 
   <bean id="Uif-QuickFinder" parent="Uif-QuickFinder-parentBean"/>

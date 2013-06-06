@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.widget;
 
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.core.api.util.type.KualiInteger;
 import org.kuali.rice.core.api.util.type.KualiPercent;
@@ -24,7 +25,9 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.ComponentBase;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.control.CheckboxControl;
 import org.kuali.rice.krad.uif.control.CheckboxGroupControl;
@@ -32,6 +35,7 @@ import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.RadioGroupControl;
 import org.kuali.rice.krad.uif.control.SelectControl;
 import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.MessageField;
@@ -39,9 +43,12 @@ import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -66,8 +73,14 @@ public class RichTable extends WidgetBase {
 
     private boolean forceAoColumnDefsOverride;
 
+    private boolean forceAjaxJsonData;
+    private boolean forceLocalJsonData;
+    private int nestedLevel;
+    private String aaData;
+
     private Set<String> hiddenColumns;
     private Set<String> sortableColumns;
+    private List<String> cellCssClasses;
 
     private String ajaxSource;
 
@@ -78,6 +91,7 @@ public class RichTable extends WidgetBase {
     public RichTable() {
         super();
         groupingOptionsJSString = "null";
+        cellCssClasses = new ArrayList<String>();
     }
 
     /**
@@ -93,43 +107,96 @@ public class RichTable extends WidgetBase {
 
         UifFormBase formBase = (UifFormBase) model;
 
-        if (isRender()) {
-            if (StringUtils.isNotBlank(getEmptyTableMessage()) && !getTemplateOptions().containsKey(
-                    UifConstants.TableToolsKeys.LANGUAGE)) {
-                getTemplateOptions().put(UifConstants.TableToolsKeys.LANGUAGE,
-                        "{\"" + UifConstants.TableToolsKeys.EMPTY_TABLE + "\" : \"" + getEmptyTableMessage() + "\"}");
-            }
+        if (!isRender()) {
+            return;
+        }
 
-            if (!isShowSearchAndExportOptions()) {
-                Object domOption = getTemplateOptions().get(UifConstants.TableToolsKeys.SDOM);
-                if (domOption instanceof String) {
-                    String sDomOption = (String) domOption;
+        if (StringUtils.isNotBlank(getEmptyTableMessage()) && !getTemplateOptions().containsKey(
+                UifConstants.TableToolsKeys.LANGUAGE)) {
+            getTemplateOptions().put(UifConstants.TableToolsKeys.LANGUAGE,
+                    "{\"" + UifConstants.TableToolsKeys.EMPTY_TABLE + "\" : \"" + getEmptyTableMessage() + "\"}");
+        }
 
-                    if (StringUtils.isNotBlank(sDomOption)) {
-                        sDomOption = StringUtils.remove(sDomOption, "T"); //Removes Export option
-                        sDomOption = StringUtils.remove(sDomOption, "f"); //Removes search option
-                        getTemplateOptions().put(UifConstants.TableToolsKeys.SDOM, sDomOption);
-                    }
+        if (!isShowSearchAndExportOptions()) {
+            Object domOption = getTemplateOptions().get(UifConstants.TableToolsKeys.SDOM);
+            if (domOption instanceof String) {
+                String sDomOption = (String) domOption;
+
+                if (StringUtils.isNotBlank(sDomOption)) {
+                    sDomOption = StringUtils.remove(sDomOption, "T"); //Removes Export option
+                    sDomOption = StringUtils.remove(sDomOption, "f"); //Removes search option
+                    getTemplateOptions().put(UifConstants.TableToolsKeys.SDOM, sDomOption);
                 }
             }
+        }
 
-            // for add events, disable initial sorting
-            if (UifConstants.ActionEvents.ADD_LINE.equals(formBase.getActionEvent()) || UifConstants.ActionEvents
-                    .ADD_BLANK_LINE.equals(formBase.getActionEvent())) {
-                getTemplateOptions().put(UifConstants.TableToolsKeys.AASORTING, "[]");
+        // for add events, disable initial sorting
+        if (UifConstants.ActionEvents.ADD_LINE.equals(formBase.getActionEvent()) || UifConstants.ActionEvents
+                .ADD_BLANK_LINE.equals(formBase.getActionEvent())) {
+            getTemplateOptions().put(UifConstants.TableToolsKeys.AASORTING, "[]");
+        }
+
+        if ((component instanceof CollectionGroup)) {
+            LayoutManager layoutManager = ((CollectionGroup) component).getLayoutManager();
+
+            //if forceAjaxJsonData is true, add the css cell styling to the template options so it can still be used
+            //since this will not go through the grid ftl
+            if (layoutManager instanceof TableLayoutManager && (this.forceAjaxJsonData || this.forceLocalJsonData)) {
+                addCellStyling((TableLayoutManager) layoutManager);
             }
 
-            if ((component instanceof CollectionGroup)) {
-                buildTableOptions((CollectionGroup) component);
-                setTotalOptions((CollectionGroup) component);
-            }
+            buildTableOptions((CollectionGroup) component);
+            setTotalOptions((CollectionGroup) component);
+        }
 
-            if (isDisableTableSort()) {
-                getTemplateOptions().put(UifConstants.TableToolsKeys.TABLE_SORT, "false");
-            }
+        if (isDisableTableSort()) {
+            getTemplateOptions().put(UifConstants.TableToolsKeys.TABLE_SORT, "false");
+        }
 
-            if (StringUtils.isNotBlank(ajaxSource)) {
-                getTemplateOptions().put(UifConstants.TableToolsKeys.SAJAX_SOURCE, ajaxSource);
+        if (StringUtils.isNotBlank(ajaxSource)) {
+            getTemplateOptions().put(UifConstants.TableToolsKeys.SAJAX_SOURCE, ajaxSource);
+        } else if (component instanceof CollectionGroup && this.forceAjaxJsonData) {
+            String kradUrl = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                    UifConstants.ConfigProperties.KRAD_URL);
+
+            //build sAjaxSource url to call
+            getTemplateOptions().put(UifConstants.TableToolsKeys.SAJAX_SOURCE, kradUrl
+                    + ((UifFormBase) model).getControllerMapping()
+                    + "?"
+                    + UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME
+                    + "="
+                    + UifConstants.MethodToCallNames.TABLE_JSON
+                    + "&"
+                    + UifParameters.TABLE_ID
+                    + "="
+                    + component.getId()
+                    + "&"
+                    + UifParameters.FORM_KEY
+                    + "="
+                    + ((UifFormBase) model).getFormKey()
+                    + "&"
+                    + UifParameters.AJAX_RETURN_TYPE
+                    + "="
+                    + UifConstants.AjaxReturnTypes.UPDATENONE.getKey()
+                    + "&"
+                    + UifParameters.AJAX_REQUEST
+                    + "="
+                    + "true");
+        }
+
+    }
+
+    /**
+     * Add the css style to the cellCssClasses by column index, later used by the aoColumnDefs
+     *
+     * @param manager the tableLayoutManager that contains the original fields
+     */
+    private void addCellStyling(TableLayoutManager manager) {
+        if (manager.getAllRowFields() != null) {
+            for (int index = 0; index < manager.getNumberOfColumns(); index++) {
+                String cellStyleClasses = ((ComponentBase) manager.getAllRowFields().get(index))
+                        .getCellStyleClassesAsString();
+                cellCssClasses.add(cellStyleClasses);
             }
         }
     }
@@ -202,11 +269,24 @@ public class RichTable extends WidgetBase {
 
             if (layoutManager instanceof TableLayoutManager && ((TableLayoutManager) layoutManager)
                     .isRenderSequenceField()) {
+
+                //add mData handling if using a json data source
+                String mDataOption = "";
+                if (this.forceAjaxJsonData || this.forceLocalJsonData) {
+                    mDataOption = "\""
+                            + UifConstants.TableToolsKeys.MDATA
+                            +
+                            "\" : function(row,type,newVal){ return _handleColData(row,type,'c"
+                            + columnIndex
+                            + "',newVal);}, ";
+                }
+
                 tableToolsColumnOptions.append("{\""
                         + UifConstants.TableToolsKeys.SORT_TYPE
                         + "\" : \""
                         + UifConstants.TableToolsValues.NUMERIC
                         + "\", "
+                        + mDataOption
                         + "\""
                         + UifConstants.TableToolsKeys.TARGETS
                         + "\": ["
@@ -236,7 +316,7 @@ public class RichTable extends WidgetBase {
                 tableToolsColumnOptions.append(StringUtils.substring(jsArray, startBrace + 1, endBrace) + ", ");
 
                 if (actionFieldVisible && (actionIndex == -1 || actionIndex >= columnIndex)) {
-                    String actionColOptions = constructTableColumnOptions(actionIndex, false, null, null);
+                    String actionColOptions = constructTableColumnOptions(columnIndex, false, null, null);
                     tableToolsColumnOptions.append(actionColOptions);
                 } else {
                     tableToolsColumnOptions = new StringBuffer(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
@@ -253,7 +333,7 @@ public class RichTable extends WidgetBase {
                 tableToolsColumnOptions.append(StringUtils.substring(jsArray, startBrace + 1, endBrace) + ", ");
 
                 if (actionFieldVisible && (actionIndex == -1 || actionIndex >= columnIndex)) {
-                    String actionColOptions = constructTableColumnOptions(actionIndex, false, null, null);
+                    String actionColOptions = constructTableColumnOptions(columnIndex, false, null, null);
                     tableToolsColumnOptions.append(actionColOptions);
                 } else {
                     tableToolsColumnOptions = new StringBuffer(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
@@ -273,6 +353,17 @@ public class RichTable extends WidgetBase {
                         columnIndex++;
                     }
 
+                    //add mData handling if using a json data source
+                    String mDataOption = "";
+                    if (this.forceAjaxJsonData || this.forceLocalJsonData) {
+                        mDataOption = "\""
+                                + UifConstants.TableToolsKeys.MDATA
+                                +
+                                "\" : function(row,type,newVal){ return _handleColData(row,type,'c"
+                                + columnIndex
+                                + "',newVal);}, ";
+                    }
+
                     // for FieldGroup, get the first field from that group
                     if (component instanceof FieldGroup) {
                         component = ((FieldGroup) component).getItems().get(0);
@@ -287,7 +378,9 @@ public class RichTable extends WidgetBase {
                                     + UifConstants.TableToolsKeys.VISIBLE
                                     + ": "
                                     + UifConstants.TableToolsValues.FALSE
-                                    + ", \""
+                                    + ", "
+                                    + mDataOption
+                                    + "\""
                                     + UifConstants.TableToolsKeys.TARGETS
                                     + "\": ["
                                     + columnIndex
@@ -303,7 +396,9 @@ public class RichTable extends WidgetBase {
                                         + UifConstants.TableToolsKeys.SORTABLE
                                         + "': "
                                         + UifConstants.TableToolsValues.FALSE
-                                        + ", \""
+                                        + ", "
+                                        + mDataOption
+                                        + "\""
                                         + UifConstants.TableToolsKeys.TARGETS
                                         + "\": ["
                                         + columnIndex
@@ -323,7 +418,9 @@ public class RichTable extends WidgetBase {
                                 + UifConstants.TableToolsKeys.VISIBLE
                                 + ": "
                                 + UifConstants.TableToolsValues.FALSE
-                                + ", \""
+                                + ", "
+                                + mDataOption
+                                + "\""
                                 + UifConstants.TableToolsKeys.TARGETS
                                 + "\": ["
                                 + columnIndex
@@ -338,7 +435,7 @@ public class RichTable extends WidgetBase {
                 }
 
                 if (actionFieldVisible && (actionIndex == -1 || actionIndex >= columnIndex)) {
-                    String actionColOptions = constructTableColumnOptions(actionIndex, false, null, null);
+                    String actionColOptions = constructTableColumnOptions(columnIndex, false, null, null);
                     tableToolsColumnOptions.append(actionColOptions);
                 } else {
                     tableToolsColumnOptions = new StringBuffer(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
@@ -428,8 +525,25 @@ public class RichTable extends WidgetBase {
                 sortType = UifConstants.TableToolsValues.STRING;
             }
 
-            colOptions = "\"" + UifConstants.TableToolsKeys.SORT_DATA_TYPE + "\" : \"" + sortDataType + "\"";
-            colOptions += " , \"" + UifConstants.TableToolsKeys.SORT_TYPE + "\" : \"" + sortType + "\"";
+            colOptions = "\"" + UifConstants.TableToolsKeys.SORT_TYPE + "\" : \"" + sortType + "\"";
+
+            if (!this.forceAjaxJsonData && !this.forceLocalJsonData) {
+                colOptions += ", \"" + UifConstants.TableToolsKeys.SORT_DATA_TYPE + "\" : \"" + sortDataType + "\"";
+            }
+        }
+
+        if (target < cellCssClasses.size() && target >= 0) {
+            colOptions += ", \""
+                    + UifConstants.TableToolsKeys.CELL_CLASS
+                    + "\" : \""
+                    + cellCssClasses.get(target)
+                    + "\"";
+        }
+
+        // only use the mDataProp when using json data (only relevant for this table type)
+        if (this.forceAjaxJsonData || this.forceLocalJsonData) {
+            colOptions += ", \"" + UifConstants.TableToolsKeys.MDATA +
+                    "\" : function(row,type,newVal){ return _handleColData(row,type,'c" + target + "',newVal);}";
         }
 
         if (!colOptions.equals("null")) {
@@ -583,11 +697,185 @@ public class RichTable extends WidgetBase {
         this.groupingOptionsJSString = groupingOptionsJSString;
     }
 
+    /**
+     * If set to true and the aoColumnDefs template option is explicitly defined in templateOptions, those aoColumnDefs
+     * will be used for this table.  Otherwise, if false, the aoColumnDefs will attempt to be merged with those that
+     * are automatically generated by RichTable
+     *
+     * @return true if the aoColumnDefs set will completely override those that are generated automatically by
+     *         RichTable
+     */
     public boolean isForceAoColumnDefsOverride() {
         return forceAoColumnDefsOverride;
     }
 
+    /**
+     * Set forceAoColumnDefsOverride
+     *
+     * @param forceAoColumnDefsOverride
+     */
     public void setForceAoColumnDefsOverride(boolean forceAoColumnDefsOverride) {
         this.forceAoColumnDefsOverride = forceAoColumnDefsOverride;
+    }
+
+    /**
+     * If true, the table will automatically call the tableJsonRetrieval method on the controller with the tableId and
+     * formKey necessary to retrieve the aaData generated by this table
+     *
+     * <p>If set, this will always take precedence over the forceLocalJsonData flag.
+     * This forces the table backed by this RichTable to get its content from an ajax source.  This will turn
+     * the sAjaxSource template option to true automatically, automatically skip row generation in the template, and
+     * cause the table to call a server method asynchronously to render its data after the table is created.  The
+     * effect is faster initial page loading times, but small waits per table for content to be returned which may
+     * lock up some browsers if the view contains multiple visible tables.  It also
+     * allows the table to take advantage of bDeferRender option (automatically set to true)
+     * when this table is a paged table (performance increase).
+     * This option is ignored and not used for the LightTable component implementation.</p>
+     *
+     * @return true if backed by the default ajax source method (also enables the necessary framework automation to
+     *         call this correctly), false otherwise
+     */
+    public boolean isForceAjaxJsonData() {
+        return forceAjaxJsonData;
+    }
+
+    /**
+     * Set the forceAjaxJsonData flag to force the data to be retrieved after the page loads
+     *
+     * @param forceAjaxJsonData
+     */
+    public void setForceAjaxJsonData(boolean forceAjaxJsonData) {
+        this.forceAjaxJsonData = forceAjaxJsonData;
+    }
+
+    /**
+     * If true, the table will automatically use row JSON data generated by this widget
+     *
+     * <p>This forces the table backed by this RichTable to get its content from a template option called aaData.  This
+     * will automatically skip row generation in the template, and cause
+     * the table receive its data from the aaData template option automatically generated and set by this RichTable.
+     * This allows the table to take advantage of the bDeferRender option (also automatically set to true)
+     * when this table is a paged table (performance increase for tables that are more than one page).
+     * Note: the forceAjaxJsonData flag will always override this functionality if it is also true.</p>
+     *
+     * @return true if backed by the aaData option in JSON, that is generated during the ftl rendering process by
+     *         this widget for this table
+     */
+    public boolean isForceLocalJsonData() {
+        return forceLocalJsonData;
+    }
+
+    /**
+     * Set the forceLocalJsonData flag to force this table to use generated row json data
+     *
+     * @param forceLocalJsonData
+     */
+    public void setForceLocalJsonData(boolean forceLocalJsonData) {
+        this.forceLocalJsonData = forceLocalJsonData;
+    }
+
+    /**
+     * The nestedLevel property represents how many collection tables deep this particular table is
+     *
+     * <p>This property must be manually set if the flag forceLocalJsonData is being used and the collection table this
+     * RichTable represents is a subcollection of a TABLE collection (not stacked collection).  If this is true,
+     * add 1 for each level deep (ex. subCollection would be 1, sub-subCollection would be 2).  If this property is
+     * not set javascript errors will occur on the page, as this determines how deep to escape certain characters.</p>
+     *
+     * @return the nestedLevel representing the
+     */
+    public int getNestedLevel() {
+        return nestedLevel;
+    }
+
+    /**
+     * Set the nestedLevel for this table - must be set if using forceLocalJsonData and this is a subCollection of
+     * a TableCollection (also using forceLocalJsonData)
+     *
+     * @param nestedLevel
+     */
+    public void setNestedLevel(int nestedLevel) {
+        this.nestedLevel = nestedLevel;
+    }
+
+    /**
+     * Get the translated aaData array generated by calls to addRowToTableData by the ftl
+     *
+     * <p>This data is in JSON format and expected to be consumed by datatables when utilizing the forceLocalJsonData
+     * option or forceAjaxJsonData options.
+     * This will be populated automatically if either flag is set to true.</p>
+     *
+     * @return the generated aaData
+     */
+    public String getAaData() {
+        return aaData;
+    }
+
+    /**
+     * Get the simple value as a string that represents the field's sortable value, to be used as val in the custom
+     * uif json data object (accessed by mDataProp option on datatables - automated by framework) when using the
+     * forceAjaxJsonData or forceLocalJsonData option
+     *
+     * @param model model the current model
+     * @param field the field to retrieve a sortable value from for use in custom json data
+     * @return the value as a String
+     */
+    public String getCellValue(Object model, Field field) {
+        String value = KRADUtils.getSimpleFieldValue(model, field);
+
+        if (value == null) {
+            value = "null";
+        } else {
+            value = KRADConstants.QUOTE_PLACEHOLDER + value + KRADConstants.QUOTE_PLACEHOLDER;
+        }
+
+        return value;
+    }
+
+    /**
+     * Add row content passed from table ftl to the aaData array by converting and escaping the content
+     * to an object (in an array of objects) in JSON format
+     *
+     * <p>The data in aaData is expected to be consumed by a call by the datatables plugin using sAjaxSource or aaData.
+     * The addRowToTableData generation call is additive must be made per a row in the ftl.</p>
+     *
+     * @param row the row of content with each cell content surrounded by the @quot@ token and followed by a comma
+     */
+    public void addRowToTableData(String row) {
+        String escape = "";
+
+        // if nestedLevel is set add the appropriate amount of escape characters per a level of nesting
+        for (int i = 0; i < nestedLevel && forceLocalJsonData; i++) {
+            escape = escape + "\\";
+        }
+
+        // remove newlines and replace quotes and single quotes with unicode characters
+        row = row.trim().replace("\"", escape + "\\u0022").replace("'", escape + "\\u0027").replace("\n", "").replace(
+                "\r", "");
+
+        // remove hanging comma
+        row = StringUtils.removeEnd(row, ",");
+
+        // replace all quote placeholders with actual quote characters
+        row = row.replace(KRADConstants.QUOTE_PLACEHOLDER, "\"");
+        row = "{" + row + "}";
+
+        // if first call create aaData and force defer render option, otherwise append
+        if (StringUtils.isBlank(aaData)) {
+            aaData = "[" + row + "]";
+
+            if (this.getTemplateOptions().get(UifConstants.TableToolsKeys.DEFER_RENDER) == null) {
+                //make sure deferred rendering is forced if not explicitly set
+                this.getTemplateOptions().put(UifConstants.TableToolsKeys.DEFER_RENDER,
+                        UifConstants.TableToolsValues.TRUE);
+            }
+        } else if (StringUtils.isNotBlank(row)) {
+            aaData = aaData.substring(0, aaData.length() - 1) + "," + row + "]";
+        }
+
+        //force json data use if forceLocalJsonData flag is set and forceAjaxJsonData is not
+        if (forceLocalJsonData && !forceAjaxJsonData) {
+            this.getTemplateOptions().put(UifConstants.TableToolsKeys.AA_DATA, aaData);
+        }
     }
 }

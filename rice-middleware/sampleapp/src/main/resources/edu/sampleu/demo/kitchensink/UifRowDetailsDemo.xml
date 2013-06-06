@@ -210,6 +210,7 @@
               value="edu.sampleu.demo.kitchensink.UITestObject"/>
     <property name="layoutManager.sequencePropertyName" value="field1"/>
     <property name="layoutManager.generateAutoSequence" value ="false"/>
+    <property name="layoutManager.richTable.nestedLevel" value="1"/>
     <property name="layoutManager.sequenceFieldPrototype">
       <bean parent="Uif-InputField" p:propertyName="field1" p:readOnly="true"/>
     </property>
@@ -364,6 +365,7 @@
     <property name="collectionObjectClass"
               value="edu.sampleu.demo.kitchensink.UITestObject"/>
     <property name="readOnly" value="true"/>
+    <property name="layoutManager.richTable.nestedLevel" value="1"/>
     <property name="layoutManager.renderSequenceField" value="false"/>
     <property name="layoutManager.rowDetailsGroup">
       <bean parent="Uif-VerticalBoxGroup">
@@ -401,6 +403,7 @@
     <property name="readOnly" value="false"/>
     <property name="layoutManager.rowDetailsOpen" value="true"/>
     <property name="layoutManager.showToggleAllDetails" value="true"/>
+    <property name="layoutManager.richTable.forceAjaxJsonData" value="true"/>
     <property name="layoutManager.rowDetailsGroup">
       <bean parent="Uif-VerticalBoxGroup">
         <property name="items">

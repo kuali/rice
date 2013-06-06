@@ -25,18 +25,31 @@ import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.coreservice.framework.parameter.ParameterConstants;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.messages.Message;
 import org.kuali.rice.krad.messages.MessageService;
 import org.kuali.rice.krad.service.DataObjectMetaDataService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.service.ModuleService;
-import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.element.Action;
+import org.kuali.rice.krad.uif.element.Image;
+import org.kuali.rice.krad.uif.element.Link;
+import org.kuali.rice.krad.uif.field.ActionField;
+import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.field.Field;
+import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.field.ImageField;
+import org.kuali.rice.krad.uif.field.LinkField;
+import org.kuali.rice.krad.uif.field.MessageField;
+import org.kuali.rice.krad.uif.field.SpaceField;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
-import org.springframework.util.Assert;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.springframework.util.Assert;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -804,7 +817,7 @@ public final class KRADUtils {
      * @param form the form
      * @param view the view
      * @return the headerText with the title attribute in paranthesis or just the headerText if it title attribute
-     * cannot be determined
+     *         cannot be determined
      */
     public static String generateUniqueViewTitle(UifFormBase form, View view) {
         String title = view.getHeader().getHeaderText();
@@ -866,13 +879,89 @@ public final class KRADUtils {
     }
 
     /**
+     * Attempts to extract a string value out of the field passed in, varies depending on field type
+     *
+     * <p>If the field is a dataField, it will use its propertyName to retrieve a value, otherwise it will try to
+     * retrieve textual content out of various component types.  If the field is a FieldGroup, only the first
+     * component's determined value will be used.  This function is used for sorting.</p>
+     *
+     * @param model the current model
+     * @param field the field to get a value from
+     * @return the field's String value, false if it cant be determined
+     */
+    public static String getSimpleFieldValue(Object model, Field field) {
+        if (field == null) {
+            return null;
+        }
+
+        String value = null;
+        // check for what type of field this is
+        if (field instanceof DataField) {
+            String propertyPath = ((DataField) field).getBindingInfo().getBindingPath();
+            Object valueObject = null;
+
+            // check if readable
+            if (ObjectPropertyUtils.isReadableProperty(model, propertyPath)){
+                valueObject = ObjectPropertyUtils.getPropertyValue(model, propertyPath);
+            }
+
+            // use object's string value
+            if (valueObject != null) {
+                value = valueObject.toString();
+            }
+        } else if (field instanceof ActionField) {
+            value = ((ActionField) field).getActionLabel();
+
+            // use image alt text if any
+            if (StringUtils.isBlank(value) && ((ActionField) field).getActionImage() != null) {
+                value = ((ActionField) field).getActionImage().getAltText();
+            }
+        } else if (field instanceof LinkField) {
+            value = ((LinkField) field).getLinkText();
+        } else if (field instanceof ImageField) {
+            value = ((ImageField) field).getAltText();
+        } else if (field instanceof MessageField && ((MessageField) field).getMessage() != null) {
+            value = ((MessageField) field).getMessage().getMessageText();
+        } else if (field instanceof SpaceField) {
+            value = "";
+        } else if (field instanceof FieldGroup
+                && ((FieldGroup) field).getGroup() != null
+                && ((FieldGroup) field).getGroup().getItems() != null
+                && !((FieldGroup) field).getGroup().getItems().isEmpty()) {
+            // using first components type for assumed value
+            Component firstComponent = ((FieldGroup) field).getGroup().getItems().get(0);
+
+            // check first component type to extract value
+            if (firstComponent != null && firstComponent instanceof Field) {
+                value = getSimpleFieldValue(model, field);
+            } else if (firstComponent instanceof Action
+                    && StringUtils.isNotBlank(((Action) firstComponent).getActionLabel())) {
+                value = ((Action) firstComponent).getActionLabel();
+            } else if (firstComponent instanceof Action
+                    && ((Action) firstComponent).getActionImage() != null) {
+                value = ((Action) firstComponent).getActionImage().getAltText();
+            } else if (firstComponent instanceof Link) {
+                value = ((Link) firstComponent).getLinkText();
+            } else if (firstComponent instanceof Image) {
+                value = ((Image) firstComponent).getAltText();
+            } else if (firstComponent instanceof Message) {
+                value = ((Message) firstComponent).getText();
+            } else {
+                value = null;
+            }
+        }
+
+        return value;
+    }
+
+    /**
      * Helper method to change common characters into HTML attribute safe characters
      *
      * @param message the string to convert
      * @return the converted string with quotes, sing quotes, and slash replaced
      */
-    public static String convertToHTMLAttributeSafeString(String message){
-        if(StringUtils.isBlank(message)){
+    public static String convertToHTMLAttributeSafeString(String message) {
+        if (StringUtils.isBlank(message)) {
             return message;
         }
 

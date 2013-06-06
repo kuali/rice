@@ -722,9 +722,7 @@ function createTable(tableId, additionalOptions, groupingOptions) {
                             }
         }
 
-        jQuery.extend(options, additionalOptions);
-
-        //options.bDestroy = true;
+        options = jQuery.extend(options, additionalOptions);
 
         var oTable = table.dataTable(options);
 

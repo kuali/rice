@@ -3928,10 +3928,14 @@
                 }
 
                 /* Remove the rows to be skipped in sorting prior to sorting */
+                var removed = false;
                 for ( i=0, iLen=oSettings.aiSortingSkipRows.length ; i<iLen ; i++ )
                 {
                     var iaddRowIndex = aiRowIndex.indexOf(oSettings.aiSortingSkipRows[i]); // Find the index
-                    if(iaddRowIndex != -1) aiRowIndex.splice(iaddRowIndex, 1); // Remove it if really found!
+                    if(iaddRowIndex != -1){
+                        aiRowIndex.splice(iaddRowIndex, 1); // Remove it if really found!
+                        removed = true;
+                    }
                 }
 				
 				/* Do the sort - here we want multi-column sorting based on a given data source (column)
@@ -3985,7 +3989,9 @@
 
                 /* Insert back the rows skipped in sorting in to the exact pos */
                 for (i = 0,iLen = oSettings.aiSortingSkipRows.length; i < iLen; i++) {
-                    oSettings.aiDisplayMaster.splice(oSettings.aiSortingSkipRows[i], 0, oSettings.aiSortingSkipRows[i]);
+                    if (removed){
+                        oSettings.aiDisplayMaster.splice(oSettings.aiSortingSkipRows[i], 0, oSettings.aiSortingSkipRows[i]);
+                    }
                 }
 
                 /*

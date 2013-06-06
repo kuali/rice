@@ -419,9 +419,10 @@ function evalHiddenScript(jqueryObj) {
     if (jqueryObj.attr("name") === undefined || jqueryObj.closest("div[data-open='false']").length){
         return;
     }
-    eval(jqueryObj.val());
     jqueryObj.attr("script", "first_run");
     jqueryObj.removeAttr("name");
+    eval(jqueryObj.val());
+
 }
 
 /**
@@ -1338,10 +1339,28 @@ function initializeTotalsFooter(nRow, aaData, iStart, iEnd, aiDisplay, columns) 
                             var groupCellsToTotal = new Array();
 
                             for (var i = 0; i < aaData.length; i++) {
-                                var groupingValue = aaData[i][0];
+                                var currentRow = aaData[i];
+                                var groupingValue;
+                                var isRowObject = currentRow != null && typeof currentRow === 'object'
+                                        && !jQuery.isArray(currentRow);
+                                //check if row is a rowObject - using mData setting
+                                if (isRowObject) {
+                                    groupingValue = currentRow['c0'].val;
+                                }
+                                else {
+                                    groupingValue = currentRow[0];
+                                }
+
                                 if (groupingValue != undefined &&
                                         normalizeGroupString(groupingValue).toLowerCase() == groupValue) {
-                                    groupCellsToTotal.push(aaData[i][columns[c]]);
+
+                                    if (isRowObject){
+                                        groupCellsToTotal.push(currentRow['c' + columns[c]]);
+                                    }
+                                    else{
+                                        groupCellsToTotal.push(currentRow[columns[c]]);
+                                    }
+
                                 }
                             }
                             groupTotalRow.show();
@@ -1397,20 +1416,42 @@ function calculateGroupTotal(cellsToTotal, totalTd, groupTotalDiv, rowIndex, col
 
     for (var i = 0; i < cellsToTotal.length; i++) {
         var currentCell = cellsToTotal[i];
+        var isCellObject = currentCell != null && typeof currentCell === 'object';
 
-        if (currentCell && jQuery(currentCell).find(":input[name^='newCollectionLines']").length == 0) {
-            var value = coerceTableCellValue(currentCell);
-            //set hasInvalidValues to true if value is undefined
-            if (value == undefined) {
-                hasInvalidValues = true;
-                break;
-            }
+        var value;
 
-            //skip over value when blank
-            if (value != "") {
-                value = parseFloat(value);
-                values.push(value);
+        //check if cell is a cellObject - using mData setting
+        if (isCellObject) {
+            value = currentCell.val;
+
+            if(value == null){
+                value = "";
             }
+        }
+
+        var isAddLine = !isCellObject && currentCell
+                && jQuery(currentCell).find(":input[name^='newCollectionLines']").length;
+
+        // skip over add line
+        if (!isAddLine) {
+            value = coerceTableCellValue(currentCell, true);
+        }
+        else{
+            continue;
+        }
+
+        value = convertComplexNumericValue(value);
+
+        //set hasInvalidValues to true if value is undefined
+        if (value == undefined || (value && !jQuery.isNumeric(value))) {
+            hasInvalidValues = true;
+            continue;
+        }
+
+        //skip over value when blank
+        if (value != "") {
+            value = parseFloat(value);
+            values.push(value);
         }
     }
 
@@ -1473,27 +1514,51 @@ function calculateTotal(totalDiv, start, end, currentColumn, aaData, aiDisplay) 
 
         // Calculate the total for all rows, even outside this page
         for (var i = start; i < end; i++) {
+            var currentRow;
             var currentCell;
+
             if (totalType == "total") {
-                currentCell = aaData[i][dataIndex];
+                currentRow = aaData[i];
             }
             else if (totalType = "pageTotal") {
-                currentCell = aaData[aiDisplay[i]][dataIndex];
+                currentRow = aaData[aiDisplay[i]];
             }
-            //skip over cells which contain add line content
-            if (currentCell && jQuery(currentCell).find(":input[name^='newCollectionLines']").length == 0) {
-                var value = coerceTableCellValue(currentCell);
-                //set hasInvalidValues to true if value is undefined
-                if (value == undefined) {
-                    hasInvalidValues = true;
-                    break;
-                }
 
-                //skip over value when blank
-                if (value != "") {
-                    value = parseFloat(value);
-                    values.push(value);
+            var value;
+            //check if row is a rowObject - using mData setting
+            if (currentRow != null && typeof currentRow === 'object' && !jQuery.isArray(currentRow)) {
+                value = currentRow['c' + dataIndex].val;
+
+                if(value == null){
+                    value = "";
                 }
+            }
+            else {
+                currentCell = currentRow[dataIndex];
+            }
+
+            var isAddLine = currentCell && jQuery(currentCell).find(":input[name^='newCollectionLines']").length;
+
+            //skip over cells which contain add line content
+            if (!isAddLine) {
+                value = coerceTableCellValue(currentCell, true);
+            }
+            else {
+                continue;
+            }
+
+            value = convertComplexNumericValue(value);
+
+            //set hasInvalidValues to true if value is undefined
+            if (value == undefined || (value && !jQuery.isNumeric(value))) {
+                hasInvalidValues = true;
+                continue;
+            }
+
+            //skip over value when blank
+            if (value != "") {
+                value = parseFloat(value);
+                values.push(value);
             }
         }
 
@@ -1519,6 +1584,24 @@ function calculateTotal(totalDiv, start, end, currentColumn, aaData, aiDisplay) 
             totalDiv.append(newSpan);
         }
     }
+}
+
+/**
+ * Converts "complex" numeric values that may contain commas, currency symbols, or % so they can be totalled correctly;
+ * this is a stop-gap until complete formatters are supported on the client
+ *
+ * @param value the numeric value to convert
+ * @return {*} the value without symbols that do not allow for calculations to occur
+ */
+function convertComplexNumericValue(value){
+    //TODO support this functionality with client formatters
+    if (!value) {
+        return value;
+    }
+
+    return value.replace("$", "").replace(",", "").replace("&yen;", "").replace("&euro;",
+            "").replace("&pound;", "").replace("&curren;", "").replace("%", "").replace("&#8355;",
+            "").replace("&#8356;", "").replace("&#8359;", "").replace("&cent;", "");
 }
 
 /**
@@ -1620,12 +1703,11 @@ function refreshDatatableCellRedraw(input) {
 /**
  * Get the value from a table cell
  *
- * @param td
- * @return value the value if a numeric value, if blank or disabled returns empty string, if an invalid value
- * returns undefined
+ * @param element
+ * @return value the value
  */
-function coerceTableCellValue(td) {
-    var tdObject = jQuery(td);
+function coerceTableCellValue(element) {
+    var tdObject = jQuery(element);
 
     var inputField = tdObject.find(':input');
     var inputFieldValue;
@@ -1641,19 +1723,48 @@ function coerceTableCellValue(td) {
             inputFieldValue = inputField.text().replace(/\s+/g, "");
         } else {
             // after sorting
-            inputFieldValue = td;
+            inputFieldValue = element;
         }
     }
 
     if (inputFieldValue === "" || inputField.prop("disabled") || tdObject.hasClass("uif-groupRow")) {
         //skip these situations - blank, disabled, grouping td
         return "";
-    }
-    else if (jQuery.isNumeric(inputFieldValue)) {
-        return inputFieldValue;
     } else {
-        return undefined;
+        return inputFieldValue;
     }
+}
+
+/**
+ * Private function called by the mDataProp option in the datatables jquery plugin and is used specifically to
+ * supply the correct display and value information
+ * from the rowData used by the uif in our RichTable widget which are backed by custom uif json object arrays
+ *
+ * @param rowObject the current object containing columns denotated by 'c' + column index
+ * @param type the type of value handling requested handling set, sort, display here
+ * @param colName the column name to retrieve ('c' + column index) from the rowObject
+ * @param newVal the new value to set during a set call
+ * @return {*} the value requested or nothing during a set
+ * @private
+ */
+function _handleColData(rowObject, type, colName, newVal){
+    var colObj = rowObject[colName];
+
+    if(!colObj){
+        return "";
+    }
+
+    if (type === "set" && newVal && newVal != colObj.val){
+        colObj.render = jQuery(newVal).html();
+        colObj.val = coerceTableCellValue(newVal);
+        return;
+    } else if(type === "display"){
+        return colObj.render;
+    } else if (type === "sort" && colObj.val == null){
+        return colObj.render;
+    }
+
+    return colObj.val;
 }
 
 function normalizeGroupString(sGroup) {

@@ -123,6 +123,7 @@ public class UifConstants {
         public static final String REFRESH = "refresh";
         public static final String CANCEL = "cancel";
         public static final String SESSION_TIMEOUT = "sessionTimeout";
+        public static final String TABLE_JSON = "tableJsonRetrieval";
     }
 
     public static class ActionEvents {
@@ -191,6 +192,8 @@ public class UifConstants {
         public static final String AASORTING = "aaSorting";
         public static final String BAUTO_TYPE = "bAutoType";
         public static final String SDOM = "sDom";
+        public static final String CELL_CLASS = "sClass";
+        public static final String MDATA = "mDataProp";
         public static final String LANGUAGE = "oLanguage";
         public static final String EMPTY_TABLE = "sEmptyTable";
         public static final String AO_COLUMNS = "aoColumns";

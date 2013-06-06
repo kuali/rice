@@ -154,6 +154,13 @@ KradResponse.prototype = {
             displayWithLabel.parent().show();
         }
 
+        // assume this content is open if being refreshed
+        var open = newComponent.attr("data-open");
+        if (open != undefined && open == "false"){
+            newComponent.attr("data-open", "true");
+            newComponent.show();
+        }
+
         // runs scripts on the span or div with id
         runHiddenScripts(id);
 

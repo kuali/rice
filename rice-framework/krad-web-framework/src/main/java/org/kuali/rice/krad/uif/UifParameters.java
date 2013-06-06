@@ -63,6 +63,7 @@ public class UifParameters {
 	public static final String SHOW_MAINTENANCE_LINKS = "showMaintenanceLinks";
 	public static final String SUPPRESS_ACTIONS = "suppressActions";
 	public static final String SUPPLEMENTAL_ACTIONS_ENABLED = "supplementalActionsEnabled";
+    public static final String TABLE_ID = "tableId";
 	public static final String PAGE_ID = "pageId";
 	public static final String NAVIGATE_TO_PAGE_ID = "navigateToPageId";
 	public static final String VIEW_ID = "viewId";

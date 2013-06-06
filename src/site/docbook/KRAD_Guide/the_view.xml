@@ -626,9 +626,9 @@
                 view or the value "start" to start a new HistoryFlow.  The flowKey can be retrieved
                 from the current form in the "flowKey" property of the form (or hidden input with
                 name "flowKey" on the client-side).</para>
-            <para>
+            
                 <para>Taking the above into acount the following setup is required for Path-based
-                    Breadcrumbs to function:<itemizedlist>
+                    Breadcrumbs to function:</para><itemizedlist>
                         <listitem>
                             <para>The flow request parameter must be set on the request to either
                                 the flow key of the previous View or the keyword "start"</para>
@@ -642,8 +642,8 @@
                                 from the current View, that link must pass this View's flowKey
                                 forward as a request parameter</para>
                         </listitem>
-                    </itemizedlist></para>
-            </para>
+                    </itemizedlist>
+            
             <para>Example of setting up path-based breadcrumbs and a link which will continue the
                 flow (continue collecting BreadcrumbItems for the trail) when clicked.  If the view
                 we are navigating to is also using path-based breadcrumbs, then the collected items
@@ -661,9 +661,9 @@
         </section>
         <section>
             <title>Understanding Breadcrumb Rendering order</title>
-            <para>
+            
                 <para>Breadcrumbs are rendered in the following order through its template (note:
-                    any option that is not configured is not rendered):<itemizedlist>
+                    any option that is not configured is not rendered):</para><itemizedlist>
                         <listitem>
                             <para>homewardPathBreadcrumbs</para>
                         </listitem>
@@ -687,11 +687,12 @@
                                     </listitem>
                                 </itemizedlist></para>
                         </listitem>
-                    </itemizedlist>For example, in most views, you would like breadcrumbs to appear
+                    </itemizedlist>
+            <para>For example, in most views, you would like breadcrumbs to appear
                     as: "Home > View1 > Page".  The only setup that needs to be done is to either
                     setup homewardPathBreadcrumbs with a home BreadcrumbItem or use the View's
                     ParentLocation pointing to a home url (because the "View1" and "Page"
-                    breadcrumbs are automated if not configured).  </para>
+                    breadcrumbs are automated if not configured).  
             </para>
             <para>Inorder to chose the appropriate mechanism to use in this scenario, it is up to
                 your application needs, but if this View potentially links to another View, using

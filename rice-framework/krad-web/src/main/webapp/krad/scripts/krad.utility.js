@@ -2403,13 +2403,13 @@ function hideEmptyCells() {
     // get all the td elements
     jQuery('td.' + kradVariables.GRID_LAYOUT_CELL_CLASS).each( function() {
         // check if the children is hidden (progressive) or if there is no content(render=false)
-        var cellEmpty = !jQuery(this).children().is(':visible') || jQuery(this).is(':empty');
+        var cellEmpty = jQuery(this).children().is(".uif-placeholder") || jQuery(this).is(":empty");
 
         // hide the header only if the cell and the header is empty
         if(cellEmpty) {
-            var hd = jQuery(this).siblings('th');
+            var hd = jQuery(this).siblings("th");
 
-            var headerEmpty = !jQuery(hd).children().is(':visible') || jQuery(hd).is(':empty');
+            var headerEmpty = jQuery(hd).children().is(":hidden") || jQuery(hd).is(":empty");
             if (headerEmpty) {
                 hd.hide();
             }

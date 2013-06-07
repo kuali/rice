@@ -88,7 +88,9 @@ public class GridLayoutManager extends LayoutManagerBase {
         }
 
         for (Component component : container.getItems()) {
-            component.addCellCssClass("uif-gridLayoutCell");
+            if (this instanceof TableLayoutManager) {
+                component.addCellCssClass("uif-gridLayoutCell");
+            }
             setCellAttributes(component);
         }
     }

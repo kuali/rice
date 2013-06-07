@@ -73,7 +73,7 @@
 		    </display:column>
         <display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="false" title="<div style='text-align:center;vertical-align:top;'>Actions</div>" >
          <c:choose>
-           <c:when test="${not empty result.jobDetail.jobDataMap.get(MessageServiceExecutorJob.MESSAGE_KEY)}">
+           <c:when test="${not empty result.jobDetail.jobDataMap[MessageServiceExecutorJob.MESSAGE_KEY]}">
             <a href='Quartz.do?methodToCall=moveToRouteQueue&jobName=<c:out value="${result.jobDetail.name}" />&jobGroup=<c:out value="${result.jobDetail.group}"/>'>Put in message queue</a>
            </c:when>
            <c:otherwise>

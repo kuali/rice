@@ -38,7 +38,7 @@ public class ScriptUtilsTest {
      */
     public void testEscapeHtml() throws Exception {
         assertEquals("wasn&apos;t", ScriptUtils.escapeHtml("wasn't"));
-        assertEquals("&quot;wasn&apos;t&quot;", ScriptUtils.escapeHtml("\"wasn't\""));
+        assertEquals("\\u0022wasn&apos;t\\u0022", ScriptUtils.escapeHtml("\"wasn't\""));
     }
 
     @Test
@@ -46,7 +46,7 @@ public class ScriptUtilsTest {
      * tests {@link ScriptUtils#escapeHtml(java.util.List)}
      */
     public void testEscapeHtmlStringList() {
-        String[] escaped = {"wasn&apos;t", "&quot;wasn&apos;t&quot;"};
+        String[] escaped = {"wasn&apos;t", "\\u0022wasn&apos;t\\u0022"};
         String[] unEscaped = {"wasn't", "\"wasn't\""};
         assertEquals(Arrays.asList(escaped), ScriptUtils.escapeHtml(Arrays.asList(unEscaped)));
 

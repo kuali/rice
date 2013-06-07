@@ -41,8 +41,11 @@ var summaryTextExistence = new Object();
 var clientErrorExistsCheck = false;
 var skipPageSetup = false;
 
-//dirty form state management
+// dirty form state management
 var dirtyFormState;
+
+// view state
+var initialViewLoad = false;
 
 var originalPageTitle;
 var errorImage;
@@ -79,6 +82,10 @@ jQuery(document).on(kradVariables.PAGE_LOAD_EVENT, function (event) {
 // common event registering done here through JQuery ready event
 jQuery(document).ready(function () {
     time(true, "viewSetup-phase-1");
+
+    // mark initial view load
+    initialViewLoad = true;
+
     // determine whether we need to refresh or update the page
     skipPageSetup = handlePageAndCacheRefreshing();
     dirtyFormState = new DirtyFormState();
@@ -133,6 +140,7 @@ jQuery(document).ready(function () {
 
     // focus on first field
     jQuery(document).on(kradVariables.PAGE_LOAD_EVENT, function(){
+        initialViewLoad = false;
         performFocus("FIRST");
     });
 
@@ -145,7 +153,7 @@ jQuery(document).ready(function () {
 function setupStickyHeaderAndFooter(){
 
     //sticky(header) content variables must be initialized here to retain sticky location across page request
-    stickyContent = jQuery("[data-sticky='true']");
+    stickyContent = jQuery("[data-sticky='true']:visible");
     if (stickyContent.length) {
         stickyContent.each(function () {
             jQuery(this).data("offset", jQuery(this).offset())
@@ -157,7 +165,7 @@ function setupStickyHeaderAndFooter(){
     }
 
     //find and initialize stickyFooters
-    stickyFooterContent = jQuery("[data-sticky_footer='true']");
+    stickyFooterContent = jQuery("[data-sticky_footer='true']:visible");
     applicationFooter = jQuery("#" + kradVariables.APPLICATION_FOOTER_WRAPPER);
 
     initStickyFooterContent();
@@ -608,10 +616,16 @@ function setupPage(validate) {
         return;
     }
 
-    //update the support title
-    var supportTitleUpdate = jQuery("#" + kradVariables.SUPPORT_TITLE_WRAPPER).find("> span").detach();
-    if (supportTitleUpdate.length){
-        jQuery(".uif-supportTitle-wrapper").replaceWith(supportTitleUpdate);
+    // update the top group per page
+    var topGroupUpdate = jQuery("#" + kradVariables.TOP_GROUP_UPDATE).find("> div").detach();
+    if (topGroupUpdate.length && !initialViewLoad){
+        jQuery("#Uif-TopGroupWrapper > div").replaceWith(topGroupUpdate);
+    }
+
+    // update the view header per page
+    var viewHeaderUpdate = jQuery("#" + kradVariables.VIEW_HEADER_UPDATE).find(".uif-viewHeader").detach();
+    if (viewHeaderUpdate.length && !initialViewLoad){
+        jQuery(".uif-viewHeader").replaceWith(viewHeaderUpdate);
     }
 
     originalPageTitle = document.title;

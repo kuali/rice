@@ -46,7 +46,7 @@
       <bean parent="Uif-VerticalBoxGroup" p:style="background-color: lightBlue; width: 100%;">
         <property name="items">
           <list>
-            <bean parent="Uif-Message" p:messageText="Top Group Content" p:style="font-size: 24px;"
+            <bean parent="Uif-Message" p:messageText="Top Group Content @{viewId}-@{pageId}" p:style="font-size: 24px;"
                     p:additionalCssClasses="addTestClass">
               <property name="cssClasses">
                 <list merge="true">

@@ -32,4 +32,9 @@ public class ConstraintsSTJUnitNavGen extends ConstraintsSTJUnitBase {
     public void testConstraintsField9Nav() throws Exception {
         testConstraintsField9Nav(this);
     }
+
+    @Test
+    public void testPreRequisiteConstraintNav() throws Exception {
+        testPreRequisiteConstraintNav(this);
+    }
 }

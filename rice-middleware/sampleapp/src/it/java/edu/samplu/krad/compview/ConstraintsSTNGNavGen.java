@@ -34,4 +34,10 @@ public class ConstraintsSTNGNavGen extends ConstraintsSTNGBase {
     public void testConstraintsField9Nav() throws Exception {
         testConstraintsField9Nav(this);
     }
+
+    @Test(groups = { "all", "fast", "default", "nav" }, description = "testPreRequisiteConstraintNav")
+    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
+    public void testPreRequisiteConstraintNav() throws Exception {
+        testPreRequisiteConstraintNav(this);
+    }
 }

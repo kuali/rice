@@ -70,40 +70,18 @@ public abstract class ConstraintsAbstractSmokeTestBase extends WebDriverLegacyIT
         passed();
     }
 
-    private void testField9FocusBlur() throws InterruptedException {
-        fireEvent("field9", "focus");
-        waitAndTypeByName("field9", "1");
-        fireEvent("field9", "blur");
-        assertAttributeClassRegexMatches("field9", REGEX_ERROR); // Sometimes get a failure here.
-
-        fireEvent("field9", "focus");
-        clearTextByName("field9");
-        waitAndTypeByName("field9", "12345");
-        fireEvent("field9", "blur");
-        assertAttributeClassRegexMatches("field9", REGEX_VALID);
+    protected void testPreRequisiteConstraintNav(Failable failable) throws Exception {
+        navigation();
+        testPreRequisiteConstraint();
+        passed();
     }
 
-    protected void testConstraints() throws Exception {
-        checkForIncidentReport("testConstraints");
+    protected void testPreRequisiteConstraintBookmark(Failable failable) throws Exception {
+        testPreRequisiteConstraint();
+        passed();
+    }
 
-        // TODO break out into smaller methods, especially if a test flaps.
-        fireEvent("field10", "focus");
-        waitAndTypeByName("field10", "2");
-        fireEvent("field10", "blur");
-        assertAttributeClassRegexMatches("field10", REGEX_ERROR);
-
-        fireEvent("field10", "focus");
-        clearTextByName("field10");
-        waitAndTypeByName("field10", "51");
-        fireEvent("field10", "blur");
-        assertAttributeClassRegexMatches("field10", REGEX_ERROR);
-
-        fireEvent("field10", "focus");
-        clearTextByName("field10");
-        waitAndTypeByName("field10", "25");
-        fireEvent("field10", "blur");
-        assertAttributeClassRegexMatches("field10", REGEX_VALID);
-
+    private void testPreRequisiteConstraint() throws Exception {
         fireEvent("field6", "focus");
         waitAndTypeByName("field6", "A");
         fireEvent("field6", "blur");
@@ -154,6 +132,42 @@ public abstract class ConstraintsAbstractSmokeTestBase extends WebDriverLegacyIT
         assertAttributeClassRegexMatches("field6", REGEX_VALID);
         assertAttributeClassRegexMatches("field7", REGEX_ERROR);
         assertAttributeClassRegexMatches("field8", REGEX_VALID);
+        passed();
+    }
+
+    private void testField9FocusBlur() throws InterruptedException {
+        fireEvent("field9", "focus");
+        waitAndTypeByName("field9", "1");
+        fireEvent("field9", "blur");
+        assertAttributeClassRegexMatches("field9", REGEX_ERROR); // Sometimes get a failure here.
+
+        fireEvent("field9", "focus");
+        clearTextByName("field9");
+        waitAndTypeByName("field9", "12345");
+        fireEvent("field9", "blur");
+        assertAttributeClassRegexMatches("field9", REGEX_VALID);
+    }
+
+    protected void testConstraints() throws Exception {
+        checkForIncidentReport("testConstraints");
+
+        // TODO break out into smaller methods, especially if a test flaps. https://jira.kuali.org/browse/KULRICE-9711
+        fireEvent("field10", "focus");
+        waitAndTypeByName("field10", "2");
+        fireEvent("field10", "blur");
+        assertAttributeClassRegexMatches("field10", REGEX_ERROR);
+
+        fireEvent("field10", "focus");
+        clearTextByName("field10");
+        waitAndTypeByName("field10", "51");
+        fireEvent("field10", "blur");
+        assertAttributeClassRegexMatches("field10", REGEX_ERROR);
+
+        fireEvent("field10", "focus");
+        clearTextByName("field10");
+        waitAndTypeByName("field10", "25");
+        fireEvent("field10", "blur");
+        assertAttributeClassRegexMatches("field10", REGEX_VALID);
 
         waitAndTypeByName("field14", "A");
         fireEvent("field14", "blur");

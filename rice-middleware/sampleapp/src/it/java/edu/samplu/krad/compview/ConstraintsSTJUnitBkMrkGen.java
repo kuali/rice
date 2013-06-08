@@ -37,4 +37,9 @@ public class ConstraintsSTJUnitBkMrkGen extends ConstraintsSTJUnitBase {
     public void testConstraintsField9Bookmark() throws Exception {
         testConstraintsField9Bookmark(this);
     }
+
+    @Test
+    public void testPreRequisiteConstraintBookmark() throws Exception {
+        testPreRequisiteConstraintBookmark(this);
+    }
 }

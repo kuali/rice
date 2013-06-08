@@ -39,4 +39,10 @@ public class ConstraintsSTNGBkMrkGen extends ConstraintsSTNGBase {
     public void testConstraintsField9Bookmark() throws Exception {
         testConstraintsField9Bookmark(this);
     }
+
+    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testPreRequisiteConstraintBookmark")
+    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
+    public void testPreRequisiteConstraintBookmark() throws Exception {
+        testPreRequisiteConstraintBookmark(this);
+    }
 }

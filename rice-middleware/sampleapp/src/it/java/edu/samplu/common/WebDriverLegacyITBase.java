@@ -4208,7 +4208,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * @param message
      * @throws InterruptedException
      */
-    private void waitFor(By by, String message) throws InterruptedException {
+    protected void waitFor(By by, String message) throws InterruptedException {
         WebDriverUtil.waitFor(this.driver, this.waitSeconds, by, message);
     }
 

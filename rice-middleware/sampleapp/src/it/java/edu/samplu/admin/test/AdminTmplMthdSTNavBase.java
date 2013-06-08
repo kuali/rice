@@ -15,7 +15,9 @@
  */
 package edu.samplu.admin.test;
 
+import edu.samplu.common.Failable;
 import edu.samplu.common.NavTemplateMethodSTBase;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -53,5 +55,14 @@ public abstract class AdminTmplMthdSTNavBase extends NavTemplateMethodSTBase {
     public void testEditCancel() throws Exception {
         gotoMenuLinkLocator();
         testSearchEditCancel();
+    }
+
+    public void testSearchEditBack(Failable failable) throws Exception {
+        String pageBannerText = getTextByXpath("//span[@class='pagebanner']");
+        waitAndClickByLinkText("edit");
+        waitFor(By.name("methodToCall.blanketApprove"));
+        driver.navigate().back();
+        waitFor(By.linkText("CSV "), "Going back from Edit Search results not available");
+        assertTextPresent("Going back from Edit Search results not available", pageBannerText);
     }
 }

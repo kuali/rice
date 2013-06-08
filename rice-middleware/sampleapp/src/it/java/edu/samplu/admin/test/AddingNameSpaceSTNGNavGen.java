@@ -28,4 +28,10 @@ public class AddingNameSpaceSTNGNavGen extends AddingNameSpaceSTNGBase {
     public void testAddingNamespaceNav() throws Exception {
         testAddingNamespaceNav(this);
     }
+
+    @Test(groups = { "all", "fast", "default", "nav" }, description = "testSearchSearchBackNav")
+    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
+    public void testSearchEditBackNav() throws Exception {
+        testSearchEditBackNav(this);
+    }
 }

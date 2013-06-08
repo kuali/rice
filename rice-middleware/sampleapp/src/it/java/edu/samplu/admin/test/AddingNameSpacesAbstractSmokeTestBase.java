@@ -42,9 +42,17 @@ public abstract class AddingNameSpacesAbstractSmokeTestBase extends AdminTmplMth
         testAddingNamespace(this);
         passed();
     }
+
     public void testAddingNamespaceNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
         testAddingNamespace(this);
+        passed();
+    }
+
+    public void testSearchEditBackNav(Failable failable) throws Exception {
+        gotoMenuLinkLocator();
+        waitAndClickSearch2();
+        testSearchEditBack(this);
         passed();
     }
 }

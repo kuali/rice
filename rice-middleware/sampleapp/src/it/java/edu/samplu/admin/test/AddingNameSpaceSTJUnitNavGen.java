@@ -28,4 +28,9 @@ public class AddingNameSpaceSTJUnitNavGen extends AddingNameSpaceSTJUnitBase {
     public void testAddingNamespaceNav() throws Exception {
         testAddingNamespaceNav(this);
     }
+
+    @Test
+    public void testSearchEditBackNav() throws Exception {
+        testSearchEditBackNav(this);
+    }
 }

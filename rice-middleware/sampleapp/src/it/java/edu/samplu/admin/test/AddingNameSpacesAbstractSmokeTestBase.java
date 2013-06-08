@@ -51,8 +51,13 @@ public abstract class AddingNameSpacesAbstractSmokeTestBase extends AdminTmplMth
 
     public void testSearchEditBackNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
-        waitAndClickSearch2();
         testSearchEditBack(this);
+        passed();
+    }
+
+    public void testSearchSearchBackNav(Failable failable) throws Exception {
+        gotoMenuLinkLocator();
+        testSearchSearchBack(this, "code", "KR-SYS");
         passed();
     }
 }

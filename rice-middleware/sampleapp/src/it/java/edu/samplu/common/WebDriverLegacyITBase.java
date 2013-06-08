@@ -655,6 +655,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         }
     }
 
+    protected void back() {
+        driver.navigate().back();
+    }
+
     /**
      * Tests blanket approve action.
      * This method is used by several different tests which perform various types of blanket approvals.

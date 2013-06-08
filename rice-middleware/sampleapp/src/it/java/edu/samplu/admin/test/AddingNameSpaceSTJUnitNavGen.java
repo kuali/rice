@@ -33,4 +33,9 @@ public class AddingNameSpaceSTJUnitNavGen extends AddingNameSpaceSTJUnitBase {
     public void testSearchEditBackNav() throws Exception {
         testSearchEditBackNav(this);
     }
+
+    @Test
+    public void testSearchSearchBackNav() throws Exception {
+        testSearchSearchBackNav(this);
+    }
 }

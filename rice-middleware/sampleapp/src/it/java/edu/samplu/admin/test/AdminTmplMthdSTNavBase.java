@@ -30,6 +30,7 @@ public abstract class AdminTmplMthdSTNavBase extends NavTemplateMethodSTBase {
     public static final String ADMIN_LOCATOR = "Administration";
     public static final String LABEL_KUALI_KUALI_SYSTEMS = "KUALI - Kuali Systems";
     public static final String LABEL_KUALI_DEFAULT = "KUALI : Default";
+    public static final String SPAN_CLASS_PAGEBANNER = "//span[@class='pagebanner']";
 
     @Override
     protected String getCreateNewLinkLocator() {
@@ -58,11 +59,20 @@ public abstract class AdminTmplMthdSTNavBase extends NavTemplateMethodSTBase {
     }
 
     public void testSearchEditBack(Failable failable) throws Exception {
-        String pageBannerText = getTextByXpath("//span[@class='pagebanner']");
+        waitAndClickSearch2();
+        String pageBannerText = getTextByXpath(SPAN_CLASS_PAGEBANNER);
         waitAndClickByLinkText("edit");
-        waitFor(By.name("methodToCall.blanketApprove"));
-        driver.navigate().back();
-        waitFor(By.linkText("CSV "), "Going back from Edit Search results not available");
+        waitFor(By.name(BLANKET_APPROVE_NAME));
+        back();
         assertTextPresent("Going back from Edit Search results not available", pageBannerText);
+    }
+
+    public void testSearchSearchBack(Failable failable, String fieldName, String searchText) throws Exception {
+        waitAndClickSearch2();
+        String pageBannerText = getTextByXpath(SPAN_CLASS_PAGEBANNER);
+        waitAndTypeByName(fieldName, searchText);
+        waitAndClickSearch2();
+        back();
+        assertTextPresent("Going back from Search to Search results not available", pageBannerText);
     }
 }

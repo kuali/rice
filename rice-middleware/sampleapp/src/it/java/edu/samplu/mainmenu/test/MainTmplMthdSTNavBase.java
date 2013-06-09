@@ -15,12 +15,16 @@
  */
 package edu.samplu.mainmenu.test;
 
+import edu.samplu.common.Failable;
 import edu.samplu.common.NavTemplateMethodSTBase;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class MainTmplMthdSTNavBase extends NavTemplateMethodSTBase {
+
+    public static final String DATA_TABLES_INFO = "dataTables_info";
 
     @Override
     protected String getCreateNewLinkLocator() {
@@ -30,5 +34,30 @@ public abstract class MainTmplMthdSTNavBase extends NavTemplateMethodSTBase {
     @Override
     protected String getMenuLinkLocator() {
         return "Main Menu";
+    }
+
+    protected void testSearchEditBack(Failable failable) throws Exception {
+        waitAndClickSearch3();
+        waitForElementPresentByClassName(DATA_TABLES_INFO);
+        String pageBannerText = getText(By.className(DATA_TABLES_INFO));
+        waitAndClickEdit();
+        waitForElementPresentByClassName("uif-headerText-span");
+        back();
+        waitForElementPresentByClassName(DATA_TABLES_INFO);
+        if (!pageBannerText.equals(getText(By.className(DATA_TABLES_INFO)))) {
+            failable.fail("Going back from Search to Edit results not available");
+        }
+    }
+
+    protected void testSearchSearchBack(Failable failable, String fieldName, String searchText) throws Exception {
+        waitAndClickSearch3();
+        waitForElementPresentByClassName(DATA_TABLES_INFO);
+        String pageBannerText = getText(By.className(DATA_TABLES_INFO));
+        waitAndTypeByName(fieldName, searchText);
+        waitAndClickSearch3();
+        waitForElementPresentByClassName(DATA_TABLES_INFO, "Problem with second search");
+        back();
+        waitForElementPresentByClassName(DATA_TABLES_INFO, "Going back from Search to Search results not available");
+        assertTextPresent("Going back from Search to Search results not available", pageBannerText);
     }
 }

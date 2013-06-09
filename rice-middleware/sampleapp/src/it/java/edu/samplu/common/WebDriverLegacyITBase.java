@@ -321,7 +321,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     /**
      * //button[contains(text(),'Search')]
      */
-    public static final String SEARCH_XPATH_3 = "//button[contains(text(),'Search')]";
+    public static final String SEARCH_XPATH_3 = "//button[contains(text(),'earch')]";
 
     /**
      * div.uif-group.uif-collectionGroup.uif-tableCollectionGroup.uif-tableSubCollection.uif-disclosure span.uif-headerText-span
@@ -4115,6 +4115,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndClickByXpath(SEARCH_XPATH_2);
     }
 
+    protected void waitAndClickSearch3() throws InterruptedException {
+        waitAndClickByXpath(SEARCH_XPATH_3);
+    }
+
     protected String waitForDocId() throws InterruptedException {
         waitForElementPresentByXpath(DOC_ID_XPATH);
 
@@ -4125,12 +4129,20 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         jiraAwareWaitFor(By.cssSelector(locator), "");
     }
 
-    protected void waitForElementPresentByXpath(String locator) throws InterruptedException {
-        jiraAwareWaitFor(By.xpath(locator), "");
+    protected void waitForElementPresentByClassName(String name) throws InterruptedException {
+        jiraAwareWaitFor(By.className(name), "");
+    }
+
+    protected void waitForElementPresentByClassName(String name, String message) throws InterruptedException {
+        jiraAwareWaitFor(By.className(name), message);
     }
 
     protected void waitForElementPresentByName(String name) throws InterruptedException {
         jiraAwareWaitFor(By.name(name), "");
+    }
+
+    protected void waitForElementPresentByXpath(String locator) throws InterruptedException {
+        jiraAwareWaitFor(By.xpath(locator), "");
     }
 
     protected void waitForTitleToEqualKualiPortalIndex() throws InterruptedException {

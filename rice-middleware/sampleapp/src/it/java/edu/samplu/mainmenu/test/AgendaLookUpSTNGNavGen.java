@@ -28,4 +28,16 @@ public class AgendaLookUpSTNGNavGen extends AgendaLookUpSTNGBase {
     public void testAgendaLookUpNav() throws Exception {
         testAgendaLookUpNav(this);
     }
+
+    @Test(groups = { "all", "fast", "default", "nav" }, description = "testSearchEditBackNav")
+    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
+    public void testSearchEditBackNav() throws Exception {
+        testSearchEditBackNav(this);
+    }
+
+    @Test(groups = { "all", "fast", "default", "nav" }, description = "testSearchSearchBackNav")
+    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
+    public void testSearchSearchBackNav() throws Exception {
+        testSearchSearchBackNav(this);
+    }
 }

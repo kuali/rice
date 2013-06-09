@@ -27,4 +27,14 @@ public class AgendaLookUpSTJUnitNavGen extends AgendaLookUpSTJUnitBase {
     public void testAgendaLookUpNav() throws Exception {
         testAgendaLookUpNav(this);
     }
+
+    @Test
+    public void testSearchEditBackNav() throws Exception {
+        testSearchEditBackNav(this);
+    }
+
+    @Test
+    public void testSearchSearchBackNav() throws Exception {
+        testSearchSearchBackNav(this);
+    }
 }

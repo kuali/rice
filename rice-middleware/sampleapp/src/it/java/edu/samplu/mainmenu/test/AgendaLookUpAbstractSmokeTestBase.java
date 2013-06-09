@@ -49,9 +49,22 @@ public abstract class AgendaLookUpAbstractSmokeTestBase extends MainTmplMthdSTNa
         agendaLookupAssertions();
         passed();
     }
+
     public void testAgendaLookUpNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
         agendaLookupAssertions();
+        passed();
+    }
+
+    public void testSearchEditBackNav(Failable failable) throws Exception {
+        gotoMenuLinkLocator();
+        testSearchEditBack(this);
+        passed();
+    }
+
+    public void testSearchSearchBackNav(Failable failable) throws Exception {
+        gotoMenuLinkLocator();
+        testSearchSearchBack(this, "lookupCriteria[id]", "T1000");
         passed();
     }
 }

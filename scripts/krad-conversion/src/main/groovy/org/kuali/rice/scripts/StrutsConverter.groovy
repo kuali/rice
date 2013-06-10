@@ -72,7 +72,7 @@ class StrutsConverter {
         projectProps = projectProps_
         inputDir = FilenameUtils.normalize(inputDir_, true)
         inputPaths = inputPaths_
-        outputDir = FilenameUtils.normalize(outputDir_,true)
+        outputDir = FilenameUtils.normalize(outputDir_, true)
         outputPaths = outputPaths_
         tagMap = tagMap_
         actionClassMap = actionClassMap_
@@ -146,6 +146,10 @@ class StrutsConverter {
 
             }
         }
+
+        // loads any relevant spring files for module configuration
+        classpaths = getClasspaths(outputDir + outputPaths.src.resources)
+
         // build module spring beans.xml
         buildModuleSpringBeansFiles(classpaths, prefixes, bundles)
 
@@ -161,19 +165,22 @@ class StrutsConverter {
         return strutsConfig
     }
 
+    private def getClasspaths(searchDir) {
+        def classpaths = []
+        def springXmlFiles = ConversionUtils.findFilesByPattern(searchDir, ~/\.xml$/, ~/META-INF/)
+        (0..<springXmlFiles.size()).each {
+            def relativePath = ConversionUtils.getRelativePath(searchDir, springXmlFiles[it].path)
+            classpaths.add(relativePath + springXmlFiles[it].name)
+        }
+        return classpaths
+
+    }
+
     private void buildModuleSpringBeansFiles(ArrayList classpaths, ArrayList prefixes, ArrayList bundles) {
         log.finer "generating spring beans and servlet xml"
         def outputResourcePath = outputDir + outputPaths.src.resources
         def outputWebappPath = outputDir + outputPaths.src.webapp
 
-        // loads any relevant spring files for module configuration
-        def springXmlFiles = ConversionUtils.findFilesByPattern(outputResourcePath, ~/\.xml$/)
-        (0..<springXmlFiles.size()).each {
-            def relativePath = springXmlFiles[it].path.replaceFirst(~/${outputResourcePath}/, "")
-            if (!relativePath.find(~/META-INF/)) {
-                classpaths.add(relativePath)
-            }
-        }
         def springBeanBinding = ["app": projectProps.app, "namespace": projectProps.namespace, "classpaths": classpaths.unique(), "prefixes": prefixes.unique(), "bundles": bundles.unique(), "databaseRepositoryFilePath": []]
         //"OJB-repository-" + app + ".xml"]
         // adding a replace krad servlet to wire in on top of current krad settings

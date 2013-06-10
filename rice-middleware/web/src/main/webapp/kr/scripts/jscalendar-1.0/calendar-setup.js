@@ -1,3 +1,26 @@
+/*  Copyright Mihai Bazon, 2002, 2003  |  http://dynarch.com/mishoo/
+ * ---------------------------------------------------------------------------
+ *
+ * The DHTML Calendar
+ *
+ * Details and latest version at:
+ * http://dynarch.com/mishoo/calendar.epl
+ *
+ * This script is distributed under the GNU Lesser General Public License.
+ * Read the entire license text here: http://www.gnu.org/licenses/lgpl.html
+ *
+ * This file defines helper functions for setting up the calendar.  They are
+ * intended to help non-programmers get a working calendar on their site
+ * quickly.  This script should not be seen as part of the calendar.  It just
+ * shows you what one can do with the calendar, while in the same time
+ * providing a quick and simple method for setting it up.  If you need
+ * exhaustive customization of the calendar creation process feel free to
+ * modify this code to suit your needs (this is recommended and much better
+ * than modifying calendar.js itself).
+ */
+
+// $Id: calendar-setup.js,v 1.25 2005/03/07 09:51:33 mishoo Exp $
+
 /**
  *  This function "patches" an input field (or other element) to use a calendar
  *  widget for date selection.

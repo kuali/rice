@@ -333,12 +333,14 @@
 
                 <!-- js plugin folders -->
                 <exclude>**/datatables/**</exclude>
+                <exclude>**/easyXDM/**</exclude>
                 <exclude>**/jscalendar-1.0/**</exclude>
                 <exclude>**/plugins/cookie/**</exclude>
                 <exclude>**/plugins/dirtyform/**</exclude>
                 <exclude>**/plugins/easing/**</exclude>
                 <exclude>**/plugins/easydrag/**</exclude>
                 <exclude>**/plugins/fancybox/**</exclude>
+                <exclude>**/plugins/globalize/**</exclude>
                 <exclude>**/plugins/infusion/**</exclude>
                 <exclude>**/plugins/jgrowl/**</exclude>
                 <exclude>**/plugins/jqform/**</exclude>
@@ -346,6 +348,7 @@
                 <exclude>**/plugins/jqueryUI/**</exclude>
                 <exclude>**/plugins/json/**</exclude>
                 <exclude>**/plugins/jstree/**</exclude>
+                <exclude>**/plugins/prettify/**</exclude>
                 <exclude>**/plugins/scrollto/**</exclude>
                 <exclude>**/plugins/validate/**</exclude>
                 <exclude>**/plugins/watermark/**</exclude>
@@ -356,6 +359,9 @@
                 <exclude>scripts/bean-rename/cssReplacements.txt</exclude>
                 <exclude>**/jquery.*</exclude>
                 <exclude>**/smartspinner.*</exclude>
+                <exclude>**/kew/scripts/cal2.js</exclude>
+                <exclude>**/kew/scripts/cal_conf2.js</exclude>
+                <exclude>**/kew/scripts/prototype.js</exclude>
 
                 <!-- File type excludes -->
                 <exclude>**/*.pdf</exclude>

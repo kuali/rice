@@ -7,6 +7,7 @@
  * Dual licensed under the MIT or GPL Version 2 licenses.
  * http://jquery.org/license
  */
+
 (function( window, undefined ) {
 
 var Globalize,

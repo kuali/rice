@@ -1,3 +1,19 @@
+/*
+ * jQuery JSON Plugin
+ * version: 2.1 (2009-08-14)
+ *
+ * This document is licensed as free software under the terms of the
+ * MIT License: http://www.opensource.org/licenses/mit-license.php
+ *
+ * Brantley Harris wrote this plugin. It is based somewhat on the JSON.org
+ * website's http://www.json.org/json2.js, which proclaims:
+ * "NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.", a sentiment that
+ * I uphold.
+ *
+ * It is also influenced heavily by MochiKit's serializeJSON, which is
+ * copyrighted 2005 by Bob Ippolito.
+ */
+
 (function($) {
     /** jQuery.toJSON( json-serializble )
         Converts the given argument into a JSON respresentation.

@@ -326,6 +326,7 @@
                 <exclude>**/plugins/easing/**</exclude>
                 <exclude>**/plugins/easydrag/**</exclude>
                 <exclude>**/plugins/fancybox/**</exclude>
+                <exclude>**/plugins/globalize/**</exclude>
                 <exclude>**/plugins/infusion/**</exclude>
                 <exclude>**/plugins/jgrowl/**</exclude>
                 <exclude>**/plugins/jqform/**</exclude>
@@ -333,6 +334,7 @@
                 <exclude>**/plugins/jqueryUI/**</exclude>
                 <exclude>**/plugins/json/**</exclude>
                 <exclude>**/plugins/jstree/**</exclude>
+                <exclude>**/plugins/prettify/**</exclude>
                 <exclude>**/plugins/scrollto/**</exclude>
                 <exclude>**/plugins/validate/**</exclude>
                 <exclude>**/plugins/watermark/**</exclude>

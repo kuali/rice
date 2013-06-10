@@ -50,24 +50,26 @@ public abstract class HelpAbstractSmokeTestBase extends WebDriverLegacyITBase {
     }
 
     protected void testHelpNav(Failable failable) throws Exception {
+        // Call super tests else passed gets called before all tests are run.
         navigation();
-        testViewHelp();
+        super.testViewHelp();
         navigation();
-        testPageHelp();
+        super.testPageHelp();
         navigation();
-        testTooltipHelp();
+        super.testTooltipHelp();
         navigation();
-        testDisplayOnlyTooltipHelp();
+        super.testDisplayOnlyTooltipHelp();
         navigation();
-        testMissingTooltipHelp();         
+        super.testMissingTooltipHelp();
     }
 
     protected void testHelpBookmark(Failable failable) throws Exception {
-        testViewHelp();
-        testPageHelp();        
-        testTooltipHelp();        
-        testDisplayOnlyTooltipHelp();        
-        testMissingTooltipHelp();
+        // Call super tests else passed gets called before all tests are run.
+        super.testViewHelp();
+        super.testPageHelp();
+        super.testTooltipHelp();
+        super.testDisplayOnlyTooltipHelp();
+        super.testMissingTooltipHelp();
         passed();
     }
     
@@ -75,7 +77,7 @@ public abstract class HelpAbstractSmokeTestBase extends WebDriverLegacyITBase {
      * Test the tooltip and external help on the view
      */
     public void testViewHelp() throws Exception {
-        testViewHelp();
+        super.testViewHelp();
         passed();
     }
 
@@ -83,7 +85,7 @@ public abstract class HelpAbstractSmokeTestBase extends WebDriverLegacyITBase {
      * Test the tooltip and external help on the page
      */
     public void testPageHelp() throws Exception {
-        testPageHelp();
+        super.testPageHelp();
         passed();
     }
 
@@ -91,7 +93,7 @@ public abstract class HelpAbstractSmokeTestBase extends WebDriverLegacyITBase {
      * Test the tooltip help on the section and fields
      */
     public void testTooltipHelp() throws Exception {
-        testTooltipHelp();
+        super.testTooltipHelp();
         passed();
     }
 
@@ -99,7 +101,7 @@ public abstract class HelpAbstractSmokeTestBase extends WebDriverLegacyITBase {
      * Test the tooltip help on the sub-section and fields that are display only
      */
     public void testDisplayOnlyTooltipHelp() throws Exception {
-        testDisplayOnlyTooltipHelp();
+        super.testDisplayOnlyTooltipHelp();
         passed();
     }
 
@@ -107,7 +109,7 @@ public abstract class HelpAbstractSmokeTestBase extends WebDriverLegacyITBase {
      * Test the tooltip help on the section and fields with no content
      */
     public void testMissingTooltipHelp() throws Exception {
-        testMissingTooltipHelp();
+        super.testMissingTooltipHelp();
         passed();
     }
 }

@@ -50,23 +50,25 @@ public abstract class Help2AbstractSmokeTestBase extends WebDriverLegacyITBase {
     }
 
     protected void testHelp2Nav(Failable failable) throws Exception {
+        // Call super tests else passed gets called before all tests are run.
         navigation();
-        testViewHelp2();
+        super.testViewHelp2();
         navigation();
-        testExternalHelp2();
+        super.testExternalHelp2();
         navigation();
-        testDisplayOnlyExternalHelp2();
+        super.testDisplayOnlyExternalHelp2();
         navigation();
-        testMissingExternalHelp2();
+        super.testMissingExternalHelp2();
         passed();
     }
 
     protected void testHelp2Bookmark(Failable failable) throws Exception {
-        testViewHelp();
-        testPageHelp();        
-        testTooltipHelp();        
-        testDisplayOnlyTooltipHelp();        
-        testMissingTooltipHelp();
+        // Call super tests else passed gets called before all tests are run.
+        super.testViewHelp();
+        super.testPageHelp();
+        super.testTooltipHelp();
+        super.testDisplayOnlyTooltipHelp();
+        super.testMissingTooltipHelp();
         passed();
     }
     
@@ -74,7 +76,7 @@ public abstract class Help2AbstractSmokeTestBase extends WebDriverLegacyITBase {
      * Test the tooltip and external help on the view
      */
     public void testViewHelp2() throws Exception {
-        testViewHelp2();
+        super.testViewHelp2();
         passed();
     }
 
@@ -82,7 +84,7 @@ public abstract class Help2AbstractSmokeTestBase extends WebDriverLegacyITBase {
      * Test the tooltip and external help on the page
      */
     public void testExternalHelp2() throws Exception {
-        testExternalHelp2();
+        super.testExternalHelp2();
         passed();
     }
 
@@ -90,7 +92,7 @@ public abstract class Help2AbstractSmokeTestBase extends WebDriverLegacyITBase {
      * Test the tooltip help on the section and fields
      */
     public void testDisplayOnlyExternalHelp2() throws Exception {
-        testDisplayOnlyExternalHelp2();
+        super.testDisplayOnlyExternalHelp2();
         passed();
     }
 
@@ -98,7 +100,7 @@ public abstract class Help2AbstractSmokeTestBase extends WebDriverLegacyITBase {
      * Test the tooltip help on the sub-section and fields that are display only
      */
     public void testMissingExternalHelp2() throws Exception {
-        testMissingExternalHelp2();
+        super.testMissingExternalHelp2();
         passed();
     }    
 }

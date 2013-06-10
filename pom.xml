@@ -294,6 +294,7 @@
 
                 <!-- js plugin folders -->
                 <exclude>**/datatables/**</exclude>
+                <exclude>**/easyXDM/**</exclude>
                 <exclude>**/jscalendar-1.0/**</exclude>
                 <exclude>**/plugins/cookie/**</exclude>
                 <exclude>**/plugins/dirtyform/**</exclude>
@@ -315,6 +316,9 @@
                 <exclude>LICENSE.txt</exclude>
                 <exclude>**/jquery.*</exclude>
                 <exclude>**/smartspinner.*</exclude>
+                <exclude>**/kew/scripts/cal2.js</exclude>
+                <exclude>**/kew/scripts/cal_conf2.js</exclude>
+                <exclude>**/kew/scripts/prototype.js</exclude>
 
                 <!-- File type excludes -->
                 <exclude>**/*.pdf</exclude>

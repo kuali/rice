@@ -143,6 +143,11 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     public static final String DIV_LEFT_ERRMSG = "//div[@class='left-errmsg-tab']/div/div";
 
     /**
+     * //input[@id='document.newMaintainableObject.code']
+     */
+    public static final String DOC_CODE_XPATH = "//input[@id='document.newMaintainableObject.code']";
+
+    /**
      * //div[@id='headerarea']/div/table/tbody/tr[1]/td[1]
      */
     public static final String DOC_ID_XPATH = "//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]";
@@ -529,7 +534,8 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     protected void assertAttributeClassRegexMatches(String field, String regex) throws InterruptedException {
         String attribute = getAttributeByName(field, "class");
         SeleneseTestBase.assertTrue("getAttributeByName(" + field + ", \"class\") should not be null", attribute != null);
-        SeleneseTestBase.assertTrue("attribute " + attribute + " doesn't match regex " + regex, attribute.matches(regex));
+        SeleneseTestBase.assertTrue("attribute " + attribute + " doesn't match regex " + regex, attribute.matches(
+                regex));
     }
 
     protected void assertBlanketApproveButtonsPresent() {
@@ -659,6 +665,15 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         driver.navigate().back();
     }
 
+    private void blanketApproveAssert() throws InterruptedException {
+        checkForDocError();
+        ITUtil.checkForIncidentReport(driver.getPageSource(), DOC_SEARCH_XPATH, this, "Blanket Approve failure");
+        waitAndClickDocSearch();
+        SeleneseTestBase.assertEquals("Kuali Portal Index", driver.getTitle());
+        selectFrameIframePortlet();
+        waitAndClickSearch();
+    }
+
     /**
      * Tests blanket approve action.
      * This method is used by several different tests which perform various types of blanket approvals.
@@ -672,13 +687,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
                 "No blanket approve button does the user " + getUserName() + " have permission?");
         Thread.sleep(2000);
 
-        checkForDocError();
-
-        ITUtil.checkForIncidentReport(driver.getPageSource(), DOC_SEARCH_XPATH, this, "Blanket Approve failure");
-        waitAndClickDocSearch();
-        SeleneseTestBase.assertEquals("Kuali Portal Index", driver.getTitle());
-        selectFrameIframePortlet();
-        waitAndClickSearch();
+        blanketApproveAssert();
     }
 
     protected void check(By by) throws InterruptedException {
@@ -714,20 +723,38 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     public void checkForDocError() {
+        if (hasDocError()) {
+            String errorText = driver.findElement(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).getText();
+            errorText = ITUtil.blanketApprovalCleanUpErrorText(errorText);
+            if (driver.findElements(By.xpath(ITUtil.DIV_EXCOL_LOCATOR)).size() > 0) { // not present if errors are at the bottom of the page (see left-errmsg below)
+                errorText = ITUtil.blanketApprovalCleanUpErrorText(driver.findElement(
+                        By.xpath(ITUtil.DIV_EXCOL_LOCATOR)).getText()); // replacing errorText as DIV_EXCOL_LOCATOR includes the error count
+            }
+            if (driver.findElements(By.xpath(DIV_LEFT_ERRMSG)).size() > 0) {
+                errorText = errorText + ITUtil.blanketApprovalCleanUpErrorText(driver.findElement(By.xpath(DIV_LEFT_ERRMSG)).getText());
+            }
+            SeleneseTestBase.fail(errorText);
+        }
+    }
+
+    public boolean hasDocError() {
         if (driver.findElements(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).size() > 0) {
             String errorText = driver.findElement(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).getText();
             if (errorText != null && errorText.contains("error(s) found on page.")) {
-                errorText = ITUtil.blanketApprovalCleanUpErrorText(errorText);
-                if (driver.findElements(By.xpath(ITUtil.DIV_EXCOL_LOCATOR)).size() > 0) { // not present if errors are at the bottom of the page (see left-errmsg below)
-                    errorText = ITUtil.blanketApprovalCleanUpErrorText(driver.findElement(
-                            By.xpath(ITUtil.DIV_EXCOL_LOCATOR)).getText()); // replacing errorText as DIV_EXCOL_LOCATOR includes the error count
-                }
-                if (driver.findElements(By.xpath(DIV_LEFT_ERRMSG)).size() > 0) {
-                    errorText = errorText + ITUtil.blanketApprovalCleanUpErrorText(driver.findElement(By.xpath(DIV_LEFT_ERRMSG)).getText());
-                }
-                SeleneseTestBase.fail(errorText);
+                return true;
             }
         }
+        return false;
+    }
+
+    public boolean hasDocError(String errorTextToMatch) {
+        if (driver.findElements(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).size() > 0) {
+            String errorText = driver.findElement(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).getText();
+            if (errorText != null && errorText.contains("error(s) found on page.")) {
+                return errorText.contains(errorTextToMatch);
+            }
+        }
+        return false;
     }
 
     protected void checkForIncidentReport() {
@@ -778,7 +805,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         String dtsPlusTwoChars = ITUtil.createUniqueDtsPlusTwoRandomChars();
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Namespace " + dtsPlusTwoChars);
         assertBlanketApproveButtonsPresent();
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", "VTN" + dtsPlusTwoChars);
+        waitAndTypeByXpath(DOC_CODE_XPATH, "VTN" + dtsPlusTwoChars);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']",
                 "Validation Test NameSpace " + dtsPlusTwoChars);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.applicationId']", "RICE");
@@ -1192,7 +1219,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         //Enter details for Namespace.
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Adding PEANUTS");
         waitAndTypeByXpath("//*[@id='document.documentHeader.explanation']", "I want to add PEANUTS to test KIM");
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", "PEANUTS");
+        waitAndTypeByXpath(DOC_CODE_XPATH, "PEANUTS");
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "The Peanuts Gang");
         checkByXpath("//input[@id='document.newMaintainableObject.active']");
         waitAndClickByXpath(SAVE_XPATH_2);
@@ -1834,7 +1861,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         String twoUpperCaseLetters = RandomStringUtils.randomAlphabetic(2).toUpperCase();
         String countryName = "Validation Test Country " + ITUtil.DTS + " " + twoUpperCaseLetters;
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, countryName);
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", twoUpperCaseLetters);
+        waitAndTypeByXpath(DOC_CODE_XPATH, twoUpperCaseLetters);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", countryName);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.alternateCode']", "V" + twoUpperCaseLetters);
         blanketApproveTest();
@@ -1853,7 +1880,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndTypeByName("code", "US");
         waitAndClickSearch();
         waitAndClickReturnValue();
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", RandomStringUtils.randomAlphabetic(2).toUpperCase());
+        waitAndTypeByXpath(DOC_CODE_XPATH, RandomStringUtils.randomAlphabetic(2).toUpperCase());
         String stateLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.state.StateBo!!).(((countryCode:document.newMaintainableObject.countryCode,code:document.newMaintainableObject.stateCode,))).((`document.newMaintainableObject.countryCode:countryCode,document.newMaintainableObject.stateCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
                 + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
         waitAndClickByXpath(stateLookUp);
@@ -1880,7 +1907,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndClickSearch();
         waitAndClickReturnValue();
         String code = RandomStringUtils.randomNumeric(5);
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", code);
+        waitAndTypeByXpath(DOC_CODE_XPATH, code);
         String stateLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.state.StateBo!!).(((countryCode:document.newMaintainableObject.countryCode,code:document.newMaintainableObject.stateCode,))).((`document.newMaintainableObject.countryCode:countryCode,document.newMaintainableObject.stateCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
                 + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
         waitAndClickByXpath(stateLookUp);
@@ -1906,7 +1933,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndClickSearch();
         waitAndClickReturnValue();
         String code = RandomStringUtils.randomAlphabetic(2).toUpperCase();
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", code);
+        waitAndTypeByXpath(DOC_CODE_XPATH, code);
         String state = "Validation Test State " + code;
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", state);
         waitAndClickByXpath("//input[@id='document.newMaintainableObject.active']");
@@ -3266,9 +3293,17 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         String docId = waitForDocId();
         assertBlanketApproveButtonsPresent();
         String dtsTwo = ITUtil.createUniqueDtsPlusTwoRandomChars();
+        // The Document Description contains 9 continuous digits or 9 digits grouped in the following pattern: ###-##-####, which may represent a Tax Number.
+        // The Document Description is not secure and its contents may be viewed by other application users. Please revise the Document Description to not contain digits in those patterns.
+        dtsTwo = dtsTwo.substring(0, 4) + dtsTwo.substring(13, 14) + dtsTwo.substring(5, 12);
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Campus Type " + dtsTwo);
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", RandomStringUtils.randomAlphabetic(2));
+        waitAndTypeByXpath(DOC_CODE_XPATH, RandomStringUtils.randomAlphabetic(1));
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "Indianapolis" + dtsTwo);
+        int attemptCount = 1;
+        while (hasDocError("same primary key already exists") && attemptCount < 25) {
+            clearTextByXpath(DOC_CODE_XPATH);
+            waitAndTypeByXpath(DOC_CODE_XPATH, Character.toString((char) ('A' + attemptCount++)));
+        }
         blanketApproveTest();
         assertDocFinal(docId);
     }

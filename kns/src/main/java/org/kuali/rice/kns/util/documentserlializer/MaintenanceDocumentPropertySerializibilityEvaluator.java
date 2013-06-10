@@ -21,18 +21,21 @@ import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSubSectionHeaderDefinition;
+import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluator;
 import org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluatorBase;
 import org.kuali.rice.krad.util.documentserializer.PropertySerializerTrie;
+import org.kuali.rice.krad.util.documentserializer.PropertyType;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
-
-public class MaintenanceDocumentPropertySerializibilityEvaluator 
+public class MaintenanceDocumentPropertySerializibilityEvaluator
 				extends PropertySerializabilityEvaluatorBase implements PropertySerializabilityEvaluator {
 
     /**
@@ -50,7 +53,32 @@ public class MaintenanceDocumentPropertySerializibilityEvaluator
         serializableProperties.addSerializablePropertyName("boNotes", true);
         serializableProperties.addSerializablePropertyName("boNotes.attachment", true);
     }
-    
+
+    /**
+     * @see org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluator#determinePropertyType(java.lang.Object)
+     */
+    @Override
+    public PropertyType determinePropertyType(Object propertyValue) {
+        if (propertyValue == null) {
+            return PropertyType.PRIMITIVE;
+        }
+
+        if (propertyValue instanceof BusinessObject) {
+            return PropertyType.BUSINESS_OBJECT;
+        }
+
+        if (propertyValue instanceof Collection) {
+            return PropertyType.COLLECTION;
+        }
+
+        // In the case of Maintenance Documents treat Maps as PRIMITIVE
+        if (propertyValue instanceof Map) {
+            return PropertyType.PRIMITIVE;
+        }
+
+        return PropertyType.PRIMITIVE;
+    }
+
     private void populateSerializableProperties(List<MaintainableSectionDefinition> maintainableSectionDefinitions){
         for(MaintainableSectionDefinition maintainableSectionDefinition: maintainableSectionDefinitions){
         	populateSerializablePropertiesWithItems("", maintainableSectionDefinition.getMaintainableItems());

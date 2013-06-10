@@ -89,8 +89,8 @@ public abstract class ComponentAbstractSmokeTestBase extends WebDriverLegacyITBa
     protected void testComponentParameter() throws Exception {
         //Create New
         waitAndCreateNew();
-        String componentName = "TestName" + ITUtil.DTS_TWO;
-        String componentCode = "TestCode" + ITUtil.DTS_TWO;
+        String componentName = "TestName" + ITUtil.createUniqueDtsPlusTwoRandomChars();
+        String componentCode = "TestCode" + ITUtil.createUniqueDtsPlusTwoRandomChars();
         docId = testCreateNewComponent(componentName, componentCode, FOR_TEST_MESSAGE);
 
         //Lookup

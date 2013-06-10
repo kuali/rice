@@ -65,6 +65,7 @@ public class ITUtil {
 
     /**
      * Calendar.getInstance().getTimeInMillis() + "" + RandomStringUtils.randomAlphabetic(2).toLowerCase()
+     * @Deprecated {@link ITUtil#createUniqueDtsPlusTwoRandomChars()}
      */
     public static final String DTS_TWO = Calendar.getInstance().getTimeInMillis() + "" + RandomStringUtils.randomAlphabetic(2).toLowerCase();
 
@@ -147,6 +148,10 @@ public class ITUtil {
     public static String blanketApprovalCleanUpErrorText(String errorText) {
         errorText = errorText.replace("* required field", "").replace("\n", " ").trim(); // bit of extra ui text we don't care about
         return errorText;
+    }
+
+    public static String createUniqueDtsPlusTwoRandomChars() {
+        return Calendar.getInstance().getTimeInMillis() + "" + RandomStringUtils.randomAlphabetic(2).toLowerCase();
     }
 
     protected static void checkForIncidentReport(String contents, String linkLocator, Failable failable, String message) {

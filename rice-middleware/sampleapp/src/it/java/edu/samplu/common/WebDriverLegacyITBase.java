@@ -775,11 +775,12 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected String configNameSpaceBlanketApprove() throws Exception {
         String docId = waitForDocId();
-        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Namespace " + ITUtil.DTS_TWO);
+        String dtsPlusTwoChars = ITUtil.createUniqueDtsPlusTwoRandomChars();
+        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Namespace " + dtsPlusTwoChars);
         assertBlanketApproveButtonsPresent();
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", "VTN" + ITUtil.DTS_TWO);
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", "VTN" + dtsPlusTwoChars);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']",
-                "Validation Test NameSpace " + ITUtil.DTS_TWO);
+                "Validation Test NameSpace " + dtsPlusTwoChars);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.applicationId']", "RICE");
 
         return docId;
@@ -1222,7 +1223,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndTypeByName("document.documentHeader.explanation", "I want to add Brown Group to test KIM");
         selectOptionByName("document.groupNamespace", "KR-IDM");
         waitForPageToLoad();
-        String groupName = "BrownGroup " + ITUtil.DTS_TWO;
+        String groupName = "BrownGroup " + ITUtil.createUniqueDtsPlusTwoRandomChars();
         waitAndTypeByName("document.groupName", groupName);
         checkByName("document.active");
         waitAndClickByXpath(SAVE_XPATH_2);
@@ -1334,10 +1335,11 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndClickByXpath(componentLookUp);
         waitAndClickSearch();
         waitAndClickReturnValue();
-        String parameterName = "ValidationTestParameter" + ITUtil.DTS;
+        String dtsTwo = ITUtil.createUniqueDtsPlusTwoRandomChars();
+        String parameterName = "ValidationTestParameter" + dtsTwo;
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", parameterName);
         waitAndTypeByXpath("//textarea[@id='document.newMaintainableObject.description']",
-                "Validation Test Parameter Description" + ITUtil.DTS);
+                "Validation Test Parameter Description" + dtsTwo);
         selectByXpath("//select[@id='document.newMaintainableObject.parameterTypeCode']", "Document Validation");
         waitAndClickByXpath("//input[@id='document.newMaintainableObject.evaluationOperatorCodeAllowed']");
         waitForPageToLoad();
@@ -1383,7 +1385,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndClickSearch();
         waitForPageToLoad();
         waitAndClickReturnValue();
-        String docTypeName = "TestDocType" + ITUtil.DTS;
+        String docTypeName = "TestDocType" + ITUtil.createUniqueDtsPlusTwoRandomChars();
         waitForElementPresentByXpath("//input[@id='document.newMaintainableObject.name']");
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", docTypeName);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedDocHandlerUrl']","${kr.url}/maintenance.do?methodToCall=docHandler");
@@ -1417,7 +1419,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-WKFLW");
         waitAndTypeByName("document.newMaintainableObject.componentCode", "ActionList");
         waitAndTypeByName("document.newMaintainableObject.applicationId", "KUALI");
-        parameterName = "TestIndicator" + ITUtil.DTS_TWO;
+        parameterName = "TestIndicator" + ITUtil.createUniqueDtsPlusTwoRandomChars();
         waitAndTypeByName("document.newMaintainableObject.name", parameterName);
         waitAndTypeByName("document.newMaintainableObject.value", "Y");
         waitAndTypeByName("document.newMaintainableObject.description", "for testing");
@@ -1451,7 +1453,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndTypeByName("document.documentHeader.documentDescription", "Adding Test Parameter Type");
         parameterCode = RandomStringUtils.randomAlphabetic(4).toLowerCase();
         waitAndTypeByName("document.newMaintainableObject.code", parameterCode);
-        parameterType = "testing " + ITUtil.DTS_TWO;
+        parameterType = "testing " + ITUtil.createUniqueDtsPlusTwoRandomChars();
         waitAndTypeByName("document.newMaintainableObject.name", parameterType);
         waitAndClickSave();
         waitAndClickSubmit();
@@ -1492,7 +1494,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-WKFLW");
         waitAndTypeByName("document.newMaintainableObject.componentCode", "ActionList");
         waitAndTypeByName("document.newMaintainableObject.applicationId", "KUALI");
-        parameterName = "TestIndicator" + ITUtil.DTS_TWO;
+        parameterName = "TestIndicator" + ITUtil.createUniqueDtsPlusTwoRandomChars();
         waitAndTypeByName("document.newMaintainableObject.name", parameterName);
         waitAndClickSave();
         waitAndClickSubmit();
@@ -1523,7 +1525,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         parameterCode = RandomStringUtils.randomAlphabetic(4).toLowerCase();
         waitAndTypeByName("document.newMaintainableObject.code", parameterCode);
         clearTextByName("document.newMaintainableObject.name");
-        parameterType = "testing " + ITUtil.DTS_TWO;
+        parameterType = "testing " + ITUtil.createUniqueDtsPlusTwoRandomChars();
         waitAndTypeByName("document.newMaintainableObject.name", parameterType);
         waitAndClickSave();
         waitAndClickSubmit();
@@ -1579,7 +1581,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         docId = waitForDocId();
         waitAndTypeByName("document.documentHeader.documentDescription", "Editing Test Parameter");
         clearTextByName("document.newMaintainableObject.name");
-        parameterType = "testing " + ITUtil.DTS_TWO;
+        parameterType = "testing " + ITUtil.createUniqueDtsPlusTwoRandomChars();
         waitAndTypeByName("document.newMaintainableObject.name", parameterType);
         waitAndClickSave();
         waitAndClickSubmit();
@@ -1709,10 +1711,11 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         selectFrameIframePortlet();
         waitAndCreateNew();                
         String docId = waitForDocId();
-        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Group " + ITUtil.DTS_TWO);
+        String dtsTwo = ITUtil.createUniqueDtsPlusTwoRandomChars();
+        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Group " + dtsTwo);
         assertBlanketApproveButtonsPresent();
         selectByXpath("//select[@id='document.groupNamespace']", AdminTmplMthdSTNavBase.LABEL_KUALI_KUALI_SYSTEMS);
-        waitAndTypeByXpath("//input[@id='document.groupName']", "Validation Test Group1 " + ITUtil.DTS_TWO);
+        waitAndTypeByXpath("//input[@id='document.groupName']", "Validation Test Group1 " + dtsTwo);
         waitAndClickByName(
                 "methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
         waitAndClickSearch();
@@ -1727,8 +1730,9 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         selectFrameIframePortlet();
         waitAndCreateNew();        
         String docId = waitForDocId();
+        String dtsTwo = ITUtil.createUniqueDtsPlusTwoRandomChars();
         waitAndTypeByXpath("//input[@name='document.documentHeader.documentDescription']",
-                "Validation Test Permission " + ITUtil.DTS_TWO);
+                "Validation Test Permission " + dtsTwo);
         assertBlanketApproveButtonsPresent();
         waitAndTypeByXpath("//input[@name='document.documentHeader.organizationDocumentNumber']", "10012");
         selectByXpath("//select[@name='document.newMaintainableObject.namespaceCode']",
@@ -1736,7 +1740,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         selectByXpath("//select[@name='document.newMaintainableObject.templateId']",
                 AdminTmplMthdSTNavBase.LABEL_KUALI_DEFAULT);
         waitAndTypeByXpath("//input[@name='document.newMaintainableObject.name']",
-                "ValidationTestPermission" + ITUtil.DTS_TWO);
+                "ValidationTestPermission" + dtsTwo);
         blanketApproveTest();
         assertDocFinal(docId);
     }
@@ -1770,14 +1774,15 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         selectFrameIframePortlet();
         waitAndCreateNew();        
         String docId = waitForDocId();
-        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Responsibility " + ITUtil.DTS_TWO);
+        String dtsTwo = ITUtil.createUniqueDtsPlusTwoRandomChars();
+        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Responsibility " + dtsTwo);
         assertBlanketApproveButtonsPresent();
         selectByXpath("//select[@id='document.newMaintainableObject.namespaceCode']",
                 AdminTmplMthdSTNavBase.LABEL_KUALI_KUALI_SYSTEMS);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']",
-                "Validation Test Responsibility " + ITUtil.DTS_TWO);
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.documentTypeName']", "Test " + ITUtil.DTS_TWO);
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.routeNodeName']", "Test " + ITUtil.DTS_TWO);
+                "Validation Test Responsibility " + dtsTwo);
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.documentTypeName']", "Test " + dtsTwo);
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.routeNodeName']", "Test " + dtsTwo);
         waitAndClickByXpath("//input[@id='document.newMaintainableObject.actionDetailsAtRoleMemberLevel']");
         waitAndClickByXpath("//input[@id='document.newMaintainableObject.required']");
         blanketApproveTest();
@@ -1790,10 +1795,11 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndClickByXpath(SEARCH_XPATH, "No search button to click.");
         waitAndClickByLinkText(RETURN_VALUE_LINK_TEXT, "No return value link");        
         String docId = waitForDocId();
-        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Role " + ITUtil.DTS_TWO);
+        String dtsTwo = ITUtil.createUniqueDtsPlusTwoRandomChars();
+        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Role " + dtsTwo);
         assertBlanketApproveButtonsPresent();
         selectByXpath("//select[@id='document.roleNamespace']", AdminTmplMthdSTNavBase.LABEL_KUALI_KUALI_SYSTEMS);
-        waitAndTypeByXpath("//input[@id='document.roleName']", "Validation Test Role " + ITUtil.DTS_TWO,
+        waitAndTypeByXpath("//input[@id='document.roleName']", "Validation Test Role " + dtsTwo,
                 "No Role Name input to type in.");
         waitAndClickByName(
                 "methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
@@ -1809,11 +1815,12 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         selectFrameIframePortlet();
         waitAndCreateNew();        
         String docId = waitForDocId();
-        waitAndTypeByName("document.documentHeader.documentDescription", "Validation Test Campus");
+        String twoLetters = RandomStringUtils.randomAlphabetic(2);
+        waitAndTypeByName("document.documentHeader.documentDescription", "Validation Test Campus " + twoLetters);
         assertBlanketApproveButtonsPresent();
         waitAndTypeByName("document.newMaintainableObject.code", RandomStringUtils.randomAlphabetic(2));
-        waitAndTypeByName("document.newMaintainableObject.name", "Validation Test Campus" + ITUtil.DTS);
-        waitAndTypeByName("document.newMaintainableObject.shortName", "VTC");
+        waitAndTypeByName("document.newMaintainableObject.name", "Validation Test Campus" + ITUtil.createUniqueDtsPlusTwoRandomChars());
+        waitAndTypeByName("document.newMaintainableObject.shortName", "VTC " + twoLetters);
         selectByName("document.newMaintainableObject.campusTypeCode", "B - BOTH");
         blanketApproveTest();
         assertDocFinal(docId);
@@ -2074,7 +2081,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         assertElementPresentByXpath("//div[contains(.,'Permission Name (Permission Name) is a required field.')]/img[@alt='error']");
         selectOptionByName("document.newMaintainableObject.templateId", "36");
         selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-SYS");
-        permissionName = "removeme" + ITUtil.DTS_TWO;
+        permissionName = "removeme" + ITUtil.createUniqueDtsPlusTwoRandomChars();
         waitAndTypeByName("document.newMaintainableObject.name", permissionName);
         waitAndTypeByName("document.newMaintainableObject.description", "namespaceCode=KR*");
         checkByName("document.newMaintainableObject.active");
@@ -2145,7 +2152,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndTypeByName("document.documentHeader.explanation", "I want to add Charlie Brown to test KIM");
         
         //here You should also check for lower case validation for principalName, but it is skipped for now as there is an incident report error there.
-        personName = "cbrown" + ITUtil.DTS_TWO;
+        personName = "cbrown" + ITUtil.createUniqueDtsPlusTwoRandomChars();
         waitAndTypeByName("document.principalName", personName);
         waitAndClickSave();
         waitForPageToLoad();
@@ -3258,9 +3265,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndCreateNew();
         String docId = waitForDocId();
         assertBlanketApproveButtonsPresent();
-        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Campus Type " + ITUtil.DTS_TWO);
+        String dtsTwo = ITUtil.createUniqueDtsPlusTwoRandomChars();
+        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Campus Type " + dtsTwo);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.code']", RandomStringUtils.randomAlphabetic(2));
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "Indianapolis" + ITUtil.DTS_TWO);
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "Indianapolis" + dtsTwo);
         blanketApproveTest();
         assertDocFinal(docId);
     }
@@ -3488,7 +3496,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     protected void testVerifyAddDeleteFiscalOfficerLegacy() throws Exception {
         selectFrameIframePortlet();
         checkForIncidentReport("testVerifyAddDeleteFiscalOfficerLegacy");
-        waitAndTypeByName("document.documentHeader.documentDescription", ITUtil.DTS_TWO);
+        waitAndTypeByName("document.documentHeader.documentDescription", ITUtil.createUniqueDtsPlusTwoRandomChars());
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].number","1234567890");
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].foId", "2");
         waitAndClickByXpath("//button[@data-loadingmessage='Adding Line...']");

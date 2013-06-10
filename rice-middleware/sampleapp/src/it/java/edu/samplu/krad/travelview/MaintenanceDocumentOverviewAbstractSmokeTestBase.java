@@ -43,10 +43,12 @@ public abstract class MaintenanceDocumentOverviewAbstractSmokeTestBase extends K
 
     public void testMaintenanceDocumentOverviewBookmark(Failable failable) throws Exception {
         testVerifyDocumentOverviewLegacy();
+        passed();
     }
     
     public void testMaintenanceDocumentOverviewNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
         testVerifyDocumentOverviewLegacy();
+        passed();
     }
 }

@@ -43,10 +43,12 @@ public abstract class MaintenanceAddDeleteNoteAbstractSmokeTestBase extends Krad
 
     public void testMaintenanceAddDeleteNoteBookmark(Failable failable) throws Exception {
         testVerifyAddDeleteNoteLegacy();
+        passed();
     }
     
     public void testMaintenanceAddDeleteNoteNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
         testVerifyAddDeleteNoteLegacy();
+        passed();
     }
 }

@@ -43,10 +43,12 @@ public abstract class MaintenanceSaveAbstractSmokeTestBase extends KradTmplMthdS
 
     public void testMaintenanceSaveBookmark(Failable failable) throws Exception {
         testVerifySave();
+        passed();
     }
     
     public void testMaintenanceSaveNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
         testVerifySave();
+        passed();
     }
 }

@@ -15,8 +15,6 @@
  */
 package edu.samplu.mainmenu.test;
 
-import org.junit.Test;
-
 import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
 
@@ -47,20 +45,10 @@ public abstract class WorkFlowRouteRulesDelegationAbstractSmokeTestBase extends 
         testCreateNewRRDTravelRequestDestRouting();
         passed();
     }
+
     public void testWorkFlowRouteRulesDelegationNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
         testCreateNewRRDTravelRequestDestRouting();
         passed();
-    }
-    
-    /**
-     * tests that a Routing Rule Delegation maintenance document is created for an edit operation originating from a lookup screen
-     */
-    public void testEditRouteRulesDelegation() throws Exception {
-        super.testEditRouteRulesDelegation();
-    }
-    
-    public void testCreateNewRRDTravelRequestDestRouting() throws Exception {
-        super.testCreateNewRRDTravelRequestDestRouting();
     }
 }

@@ -43,10 +43,12 @@ public abstract class MaintenanceRouteLogAbstractSmokeTestBase extends KradTmplM
 
     public void testMaintenanceRouteLogBookmark(Failable failable) throws Exception {
         testVerifyRouteLog();
+        passed();
     }
     
     public void testMaintenanceRouteLogNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
         testVerifyRouteLog();
+        passed();
     }
 }

@@ -19,7 +19,6 @@ import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
 
-
 /**
  * Tests the Component section in Rice.
  *
@@ -117,6 +116,4 @@ public abstract class TravelAccountLookupAbstractSmokeTestBase extends WebDriver
         //waitAndClickByXpath("//button[@id='u13']");
         //selectFrame("iframeportlet");
     }
-
-
 }

@@ -43,10 +43,12 @@ public abstract class MaintenanceSubsidizedPercentWatermarkAbstractSmokeTestBase
 
     public void testMaintenanceSubsidizedPercentWatermarkBookmark(Failable failable) throws Exception {
         testVerifySubsidizedPercentWatermarkLegacy();
+        passed();
     }
     
     public void testMaintenanceSubsidizedPercentWatermarkNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
         testVerifySubsidizedPercentWatermarkLegacy();
+        passed();
     }
 }

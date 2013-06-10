@@ -46,13 +46,15 @@ public abstract class WorkFlowDocTypeAbstractSmokeTestBase extends AdminTmplMthd
     public void testWorkFlowDocTypeBookmark(Failable failable) throws Exception {
         testCreateNewCancel();
         testSearchEditCancel();
-        testCreateDocType();       
+        testCreateDocType();
+        passed();
     }
 
     public void testWorkFlowDocTypeNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
         testCreateNewCancel();
         testSearchEditCancel();
-        testCreateDocType();  
+        testCreateDocType();
+        passed();
     }
 }

@@ -43,10 +43,12 @@ public abstract class MaintenanceQuickfinderIconsAbstractSmokeTestBase extends K
 
     public void testMaintenanceQuickfinderIconsBookmark(Failable failable) throws Exception {
         testVerifyQuickfinderIconsLegacy();
+        passed();
     }
     
     public void testMaintenanceQuickfinderIconsNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
         testVerifyQuickfinderIconsLegacy();
+        passed();
     }
 }

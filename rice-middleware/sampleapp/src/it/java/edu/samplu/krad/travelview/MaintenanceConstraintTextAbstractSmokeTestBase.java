@@ -43,10 +43,12 @@ public abstract class MaintenanceConstraintTextAbstractSmokeTestBase extends Kra
 
     public void testMaintenanceConstraintTextBookmark(Failable failable) throws Exception {
         testVerifyConstraintText();
+        passed();
     }
     
     public void testMaintenanceConstraintTextNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
         testVerifyConstraintText();
+        passed();
     }
 }

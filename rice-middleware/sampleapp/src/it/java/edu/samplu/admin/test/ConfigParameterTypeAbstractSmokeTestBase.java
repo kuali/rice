@@ -45,11 +45,13 @@ public abstract class ConfigParameterTypeAbstractSmokeTestBase extends AdminTmpl
     public void testConfigParameterTypeBookmark(Failable failable) throws Exception {
         testSearchEditCancel();
         testCreateNewCancel();
+        passed();
     }
 
     public void testConfigParameterTypeNav(Failable failable) throws Exception {
         testEditCancel(); 
         gotoMenuLinkLocator();        
         testCreateNewCancel();
+        passed();
     }    
 }

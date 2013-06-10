@@ -16,9 +16,6 @@
 
 package edu.samplu.krad.configview;
 
-import org.junit.Test;
-
-import com.thoughtworks.selenium.SeleneseTestBase;
 import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
@@ -60,7 +57,8 @@ public abstract class Help2AbstractSmokeTestBase extends WebDriverLegacyITBase {
         navigation();
         testDisplayOnlyExternalHelp2();
         navigation();
-        testMissingExternalHelp2();       
+        testMissingExternalHelp2();
+        passed();
     }
 
     protected void testHelp2Bookmark(Failable failable) throws Exception {
@@ -68,7 +66,8 @@ public abstract class Help2AbstractSmokeTestBase extends WebDriverLegacyITBase {
         testPageHelp();        
         testTooltipHelp();        
         testDisplayOnlyTooltipHelp();        
-        testMissingTooltipHelp();       
+        testMissingTooltipHelp();
+        passed();
     }
     
     /**

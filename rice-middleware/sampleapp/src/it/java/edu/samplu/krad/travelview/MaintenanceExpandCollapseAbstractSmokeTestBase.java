@@ -43,10 +43,12 @@ public abstract class MaintenanceExpandCollapseAbstractSmokeTestBase extends Kra
 
     public void testMaintenanceExpandCollapseBookmark(Failable failable) throws Exception {
         testVerifyExpandCollapse();
+        passed();
     }
     
     public void testMaintenanceExpandCollapseNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
         testVerifyExpandCollapse();
+        passed();
     }
 }

@@ -43,10 +43,12 @@ public abstract class MaintenanceFieldsAbstractSmokeTestBase extends KradTmplMth
 
     public void testMaintenanceFieldsBookmark(Failable failable) throws Exception {
         testVerifyFieldsLegacy();
+        passed();
     }
     
     public void testMaintenanceFieldsNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
         testVerifyFieldsLegacy();
+        passed();
     }
 }

@@ -30,8 +30,7 @@ public abstract class ValidCharsConstraintAbstractSmokeTestBase extends WebDrive
      * /kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page4
      */
     public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page4";
-    
-       
+
     /**
      * Nav tests start at {@link edu.samplu.common.ITUtil#PORTAL}.  Bookmark Tests should override and return {@link ValidCharsConstraintAbstractSmokeTestBase#BOOKMARK_URL}
      * {@inheritDoc}
@@ -59,5 +58,4 @@ public abstract class ValidCharsConstraintAbstractSmokeTestBase extends WebDrive
         testValidCharsConstraintIT();
         passed();
     }
-  
 }

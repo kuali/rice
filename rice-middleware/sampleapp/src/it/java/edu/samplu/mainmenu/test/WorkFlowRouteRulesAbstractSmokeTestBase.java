@@ -15,8 +15,6 @@
  */
 package edu.samplu.mainmenu.test;
 
-import org.junit.Test;
-
 import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
 
@@ -46,25 +44,13 @@ public abstract class WorkFlowRouteRulesAbstractSmokeTestBase extends MainTmplMt
     public void testWorkFlowRouteRulesBookmark(Failable failable) throws Exception {
         testWorkFlowRouteRulesCreateNew();
         testWorkFlowRouteRulesEditRouteRules();
+        passed();
     }
     
     public void testWorkFlowRouteRulesNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
         testWorkFlowRouteRulesCreateNew();
         testWorkFlowRouteRulesEditRouteRules();
-    }
-    
-    /**
-     * tests that a new Routing Rule maintenance document can be cancelled
-     */
-    public void testWorkFlowRouteRulesCreateNew() throws Exception {
-       testWorkFlowRouteRulesCreateNew();
-    }
-   
-    /**
-     * tests that a Routing Rule maintenance document is created for an edit operation originating from a lookup screen
-     */
-    public void testWorkFlowRouteRulesEditRouteRules() throws Exception {
-        testWorkFlowRouteRulesEditRouteRules();
+        passed();
     }
 }

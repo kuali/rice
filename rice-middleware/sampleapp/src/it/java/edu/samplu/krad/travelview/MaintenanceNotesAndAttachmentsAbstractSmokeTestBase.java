@@ -43,10 +43,12 @@ public abstract class MaintenanceNotesAndAttachmentsAbstractSmokeTestBase extend
 
     public void testMaintenanceNotesAndAttachmentsBookmark(Failable failable) throws Exception {
         testVerifyNotesAndAttachments();
+        passed();
     }
     
     public void testMaintenanceNotesAndAttachmentsNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
         testVerifyNotesAndAttachments();
+        passed();
     }
 }

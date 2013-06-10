@@ -43,10 +43,12 @@ public abstract class MaintenanceLookupAddMultipleLinesAbstractSmokeTestBase ext
 
     public void testMaintenanceLookupAddMultipleLinesBookmark(Failable failable) throws Exception {
         testVerifyLookupAddMultipleLinesLegacy();
+        passed();
     }
     
     public void testMaintenanceLookupAddMultipleLinesNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
         testVerifyLookupAddMultipleLinesLegacy();
+        passed();
     }
 }

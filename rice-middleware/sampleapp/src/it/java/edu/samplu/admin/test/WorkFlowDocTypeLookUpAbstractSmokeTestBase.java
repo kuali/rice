@@ -45,10 +45,12 @@ public abstract class WorkFlowDocTypeLookUpAbstractSmokeTestBase extends AdminTm
    
     public void testWorkFlowDocTypeLookUpBookmark(Failable failable) throws Exception {
         testDocTypeLookup();
+        passed();
     }
 
     public void testWorkFlowDocTypeLookUpNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
         testDocTypeLookup();
+        passed();
     }
 }

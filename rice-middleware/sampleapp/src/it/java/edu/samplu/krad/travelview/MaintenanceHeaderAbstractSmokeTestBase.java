@@ -43,10 +43,12 @@ public abstract class MaintenanceHeaderAbstractSmokeTestBase extends KradTmplMth
 
     public void testMaintenanceHeaderBookmark(Failable failable) throws Exception {
         testVerifyHeaderFieldsLegacy();
+        passed();
     }
     
     public void testMaintenanceHeaderNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
         testVerifyHeaderFieldsLegacy();
+        passed();
     }
 }

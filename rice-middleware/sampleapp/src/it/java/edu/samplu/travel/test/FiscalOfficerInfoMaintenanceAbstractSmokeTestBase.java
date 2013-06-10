@@ -15,7 +15,6 @@
  */
 package edu.samplu.travel.test;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
 import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;

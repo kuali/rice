@@ -620,6 +620,4 @@ public abstract class UIFComponentValidationRegexPatternAbstractSmokeTestBase ex
         clearTextByName("field68");
         passed();
     }
-
-
 }

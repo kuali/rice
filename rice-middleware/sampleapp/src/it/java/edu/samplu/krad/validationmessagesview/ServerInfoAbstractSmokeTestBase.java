@@ -15,11 +15,9 @@
  */
 package edu.samplu.krad.validationmessagesview;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
 import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
-import org.openqa.selenium.By;
 
 /**
  * Tests the Component section in Rice.

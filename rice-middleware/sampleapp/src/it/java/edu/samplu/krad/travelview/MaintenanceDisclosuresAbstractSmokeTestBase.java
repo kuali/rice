@@ -43,10 +43,12 @@ public abstract class MaintenanceDisclosuresAbstractSmokeTestBase extends KradTm
 
     public void testMaintenanceDisclosuresBookmark(Failable failable) throws Exception {
         testVerifyDisclosures();
+        passed();
     }
     
     public void testMaintenanceDisclosuresNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
         testVerifyDisclosures();
+        passed();
     }
 }

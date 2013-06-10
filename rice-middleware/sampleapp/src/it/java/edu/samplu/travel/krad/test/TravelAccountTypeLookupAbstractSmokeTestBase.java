@@ -90,5 +90,4 @@ public abstract class TravelAccountTypeLookupAbstractSmokeTestBase extends WebDr
 
         //Currently No links available for Travel Account Type Inquiry so cant verify heading and values.
     }
-
 }

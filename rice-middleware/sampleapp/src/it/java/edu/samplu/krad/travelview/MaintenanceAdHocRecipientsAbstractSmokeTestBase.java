@@ -43,10 +43,12 @@ public abstract class MaintenanceAdHocRecipientsAbstractSmokeTestBase extends Kr
 
     public void testMaintenanceAdHocRecipientsBookmark(Failable failable) throws Exception {
         testVerifyAdHocRecipientsLegacy();
+        passed();
     }
     
     public void testMaintenanceAdHocRecipientsNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
         testVerifyAdHocRecipientsLegacy();
+        passed();
     }
 }

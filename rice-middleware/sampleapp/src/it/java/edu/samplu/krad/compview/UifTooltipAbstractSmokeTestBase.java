@@ -54,10 +54,11 @@ public abstract class UifTooltipAbstractSmokeTestBase extends WebDriverLegacyITB
         navigation();
         waitAndClickByLinkText("Other Examples");
         testUifTooltip(NAME_FIELD_1, NAME_FIELD_2);
+        passed();
     }
 
     protected void testUifTooltipBookmark(Failable failable) throws Exception {
         testUifTooltip(NAME_FIELD_1, NAME_FIELD_2);
+        passed();
     }
-  
 }

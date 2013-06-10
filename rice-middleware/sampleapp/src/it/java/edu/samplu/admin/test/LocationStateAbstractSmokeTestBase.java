@@ -15,8 +15,6 @@
  */
 package edu.samplu.admin.test;
 
-import java.util.List;
-
 import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
 
@@ -48,10 +46,12 @@ public abstract class LocationStateAbstractSmokeTestBase extends AdminTmplMthdST
     public void testLocationStateBookmark(Failable failable) throws Exception {
         testSearchEditCancel();
         testCreateNewCancel();
+        passed();
     }
 
     public void testLocationStateNav(Failable failable) throws Exception {
         testEditCancel();
         testCreateNewCancelNav();
+        passed();
     }
 }

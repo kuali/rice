@@ -15,9 +15,6 @@
  */
 package edu.samplu.travel.krad.test;
 
-import org.junit.Test;
-
-import com.thoughtworks.selenium.SeleneseTestBase;
 import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
@@ -72,6 +69,7 @@ public abstract class ConfigurationTestViewAbstractSmokeTestBase extends WebDriv
         testAddLineWithAllDay();
         navigation();
         testAddLineAllDay();
+        passed();
     }
 
     protected void testConfigurationTestViewBookmark(Failable failable) throws Exception {

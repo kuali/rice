@@ -43,10 +43,12 @@ public abstract class MaintenanceAddDeleteFiscalOfficerAbstractSmokeTestBase ext
 
     public void testMaintenanceAddDeleteFiscalOfficerBookmark(Failable failable) throws Exception {
         testVerifyAddDeleteFiscalOfficerLegacy();
+        passed();
     }
     
     public void testMaintenanceAddDeleteFiscalOfficerNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
         testVerifyAddDeleteFiscalOfficerLegacy();
+        passed();
     }
 }

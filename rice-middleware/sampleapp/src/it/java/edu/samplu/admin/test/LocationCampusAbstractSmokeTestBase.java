@@ -15,11 +15,8 @@
  */
 package edu.samplu.admin.test;
 
-import java.util.List;
-
 import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -49,10 +46,12 @@ public abstract class LocationCampusAbstractSmokeTestBase extends AdminTmplMthdS
     public void testLocationCampusBookmark(Failable failable) throws Exception {
         testSearchEditCancel();
         testCreateNewCancel();
+        passed();
     }
 
     public void testLocationCampusNav(Failable failable) throws Exception {
         testEditCancel();
         testCreateNewCancelNav();
+        passed();
     }
 }

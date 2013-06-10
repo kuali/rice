@@ -44,11 +44,13 @@ public abstract class ReferenceCampusTypeAbstractSmokeTestBase extends AdminTmpl
     }
    
     public void testReferenceCampusTypeBookmark(Failable failable) throws Exception {
-        testSearchEditCancel();     
+        testSearchEditCancel();
+        passed();
     }
 
     public void testReferenceCampusTypeNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
         testSearchEditCancel();
+        passed();
     }
 }

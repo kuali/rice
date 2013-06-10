@@ -15,11 +15,8 @@
  */
 package edu.samplu.admin.test;
 
-import java.util.List;
-
 import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -48,10 +45,12 @@ public abstract class LocationCampusBlanketAppAbstractSmokeTestBase extends Admi
    
     public void testLocationCampusBlanketAppBookmark(Failable failable) throws Exception {
         testLocationCampusBlanketApprove();
+        passed();
     }
 
     public void testLocationCampusBlanketAppNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
         testLocationCampusBlanketApprove();
+        passed();
     }
 }

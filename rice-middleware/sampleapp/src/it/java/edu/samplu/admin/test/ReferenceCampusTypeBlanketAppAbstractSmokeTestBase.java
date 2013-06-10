@@ -44,11 +44,13 @@ public abstract class ReferenceCampusTypeBlanketAppAbstractSmokeTestBase extends
     }
    
     public void testReferenceCampusTypeBlanketAppBookmark(Failable failable) throws Exception {
-        testReferenceCampusTypeBlanketApprove();     
+        testReferenceCampusTypeBlanketApprove();
+        passed();
     }
 
     public void testReferenceCampusTypeBlanketAppNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
         testReferenceCampusTypeBlanketApprove();
+        passed();
     }
 }

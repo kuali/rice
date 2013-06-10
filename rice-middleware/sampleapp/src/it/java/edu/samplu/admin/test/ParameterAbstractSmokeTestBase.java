@@ -75,6 +75,7 @@ public abstract class ParameterAbstractSmokeTestBase extends AdminTmplMthdSTNavB
         open(ITUtil.getBaseUrlString()+BOOKMARK_URL);
         selectFrame("iframeportlet");
         testVerifyModifiedParameter(params.get(0), params.get(1));
+        passed();
     }
 
     public void testParameterNav(Failable failable) throws Exception {
@@ -101,5 +102,6 @@ public abstract class ParameterAbstractSmokeTestBase extends AdminTmplMthdSTNavB
         //Verify if its copied
         gotoMenuLinkLocator();
         testVerifyModifiedParameter(params.get(0), params.get(1));
+        passed();
     }
 }

@@ -43,11 +43,13 @@ public abstract class ConfigParameterBlanketAppAbstractSmokeTestBase extends Adm
     }
 
     public void testConfigParameterBlanketAppBookmark(Failable failable) throws Exception {
-        testConfigParamaterBlanketApprove();        
+        testConfigParamaterBlanketApprove();
+        passed();
     }
 
     public void testConfigParameterBlanketAppNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
-        testConfigParamaterBlanketApprove();        
+        testConfigParamaterBlanketApprove();
+        passed();
     }    
 }

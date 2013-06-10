@@ -48,10 +48,12 @@ public abstract class IdentityGroupBlanketAppAbstractSmokeTestBase extends Admin
    
     public void testIdentityGroupBlanketAppBookmark(Failable failable) throws Exception {
         testIdentityGroupBlanketApprove();
+        passed();
     }
 
     public void testIdentityGroupBlanketAppNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
         testIdentityGroupBlanketApprove();
+        passed();
     }
 }

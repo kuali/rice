@@ -15,11 +15,8 @@
  */
 package edu.samplu.admin.test;
 
-import java.util.List;
-
 import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -48,10 +45,12 @@ public abstract class IdentityResponsibilityBlanketAppAbstractSmokeTestBase exte
    
     public void testIdentityResponsibilityBlanketAppBookmark(Failable failable) throws Exception {
         testIdentityResponsibilityBlanketApprove();
+        passed();
     }
 
     public void testIdentityResponsibilityBlanketAppNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
         testIdentityResponsibilityBlanketApprove();
+        passed();
     }
 }

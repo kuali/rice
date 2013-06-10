@@ -15,11 +15,8 @@
  */
 package edu.samplu.admin.test;
 
-import java.util.List;
-
 import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -47,11 +44,13 @@ public abstract class IdentityRoleBlanketAppAbstractSmokeTestBase extends AdminT
     }
    
     public void testIdentityRoleBlanketAppBookmark(Failable failable) throws Exception {
-        testIdentityRoleBlanketApprove();     
+        testIdentityRoleBlanketApprove();
+        passed();
     }
 
     public void testIdentityRoleBlanketAppNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
-        testIdentityRoleBlanketApprove();     
+        testIdentityRoleBlanketApprove();
+        passed();
     }
 }

@@ -63,6 +63,7 @@ public abstract class PersonAbstractSmokeTestBase extends AdminTmplMthdSTNavBase
 
         //Verify Person
         testVerifyPerson(params.get(0), params.get(1));
+        passed();
     }
 
     public void testPersonNav(Failable failable) throws Exception {
@@ -78,5 +79,6 @@ public abstract class PersonAbstractSmokeTestBase extends AdminTmplMthdSTNavBase
 
         //Verify Person
         testVerifyPerson(params.get(0), params.get(1));
+        passed();
     }
 }

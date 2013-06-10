@@ -69,6 +69,7 @@ public abstract class PermissionAbstractSmokeTestBase extends AdminTmplMthdSTNav
         open(ITUtil.getBaseUrlString()+BOOKMARK_URL);
         selectFrame("iframeportlet");
         params=testVerifyPermission(params.get(0), params.get(1));
+        passed();
     }
 
     public void testPermissionNav(Failable failable) throws Exception {
@@ -89,5 +90,6 @@ public abstract class PermissionAbstractSmokeTestBase extends AdminTmplMthdSTNav
         selectTopFrame();
         gotoMenuLinkLocator();
         params = testVerifyPermission(params.get(0), params.get(1));
+        passed();
     }
 }

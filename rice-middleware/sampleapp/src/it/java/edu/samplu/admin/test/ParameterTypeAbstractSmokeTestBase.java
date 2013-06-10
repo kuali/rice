@@ -76,6 +76,7 @@ public abstract class ParameterTypeAbstractSmokeTestBase extends AdminTmplMthdST
         open(ITUtil.getBaseUrlString()+BOOKMARK_URL);
         selectFrame("iframeportlet");
         testVerifyCopyParameterType(params.get(0), params.get(1),params.get(2));
+        passed();
     }
 
     public void testParameterTypeNav(Failable failable) throws Exception {
@@ -102,5 +103,6 @@ public abstract class ParameterTypeAbstractSmokeTestBase extends AdminTmplMthdST
         //Verify if its copied
         gotoMenuLinkLocator();
         testVerifyCopyParameterType(params.get(0), params.get(1),params.get(2));
+        passed();
     }
 }

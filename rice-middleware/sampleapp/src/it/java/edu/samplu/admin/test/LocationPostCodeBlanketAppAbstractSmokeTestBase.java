@@ -15,8 +15,6 @@
  */
 package edu.samplu.admin.test;
 
-import java.util.List;
-
 import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
 
@@ -46,11 +44,13 @@ public abstract class LocationPostCodeBlanketAppAbstractSmokeTestBase extends Ad
     }
    
     public void testLocationPostCodeBlanketAppBookmark(Failable failable) throws Exception {
-        testLocationPostBlanketApprove();     
+        testLocationPostBlanketApprove();
+        passed();
     }
 
     public void testLocationPostCodeBlanketAppNav(Failable failable) throws Exception {
         gotoMenuLinkLocator();
-        testLocationPostBlanketApprove(); 
+        testLocationPostBlanketApprove();
+        passed();
     }
 }

@@ -45,7 +45,9 @@ class ActionConverterTest {
                 "className": "SampleController",
                 "parentClass": "UifControllerBase",
                 "imports": ["org.kuali.rice.kns.web.struts.form.BookOrderForm"], "methods": []]
+
         def actionElement = config.map.binding.actionBean
+        actionElement.controller.name = "org.kuali.rice.scripts.SampleController"
         def expectedControllerBinding = config.map.binding.uifcontroller
 
         def resultControllerBinding = actionConverter.buildControllerBinding(formBeanData, actionElement, actionClass)

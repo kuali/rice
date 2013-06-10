@@ -17,6 +17,7 @@ package org.kuali.rice.scripts
 
 import groovy.util.logging.Log
 import org.apache.commons.io.FilenameUtils
+import org.apache.commons.lang.ClassUtils
 
 /**
  * Converts action bean and class data into relevant uif related components (i.e. controller and view)
@@ -118,7 +119,8 @@ class ActionConverter {
         def actionTransform = getActionClassTransform(actionClass.parentClass)
         controllerBinding.imports.add(actionTransform.form)
         controllerBinding.uri = actionElement.uri;
-        controllerBinding.className = actionElement.controller.name
+
+        controllerBinding.className = ClassUtils.getShortClassName(actionElement.controller.name)
         controllerBinding.parentClassName = actionTransform.controller
         //actionElement.controller.parentClassName ?: "UifControllerBase"
 

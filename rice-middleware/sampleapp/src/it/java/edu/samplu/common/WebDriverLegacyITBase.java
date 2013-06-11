@@ -942,6 +942,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         return driver.findElement(by).getText();
     }
 
+    protected String getTextByClassName(String className) throws InterruptedException {
+        return getText(By.className(className));
+    }
+
     protected String getTextById(String id) throws InterruptedException {
         return getText(By.id(id));
     }
@@ -1892,10 +1896,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         String stateLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.state.StateBo!!).(((countryCode:document.newMaintainableObject.countryCode,code:document.newMaintainableObject.stateCode,))).((`document.newMaintainableObject.countryCode:countryCode,document.newMaintainableObject.stateCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
                 + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
         waitAndClickByXpath(stateLookUp);
-        waitAndTypeByName("code", "IN");
+        waitAndTypeByName("code", RandomStringUtils.randomAlphabetic(2));
         waitAndClickSearch();
         waitAndClickReturnValue();
-        String countyName = "Validation Test County" + ITUtil.DTS;
+        String countyName = "Validation Test County" + ITUtil.createUniqueDtsPlusTwoRandomChars();
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", countyName);
         waitAndClickByXpath("//input[@id='document.newMaintainableObject.active']");
         blanketApproveTest();

@@ -12,9 +12,12 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */package edu.samplu.krad.compview;
+ */
+package edu.samplu.krad.compview;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
+import edu.samplu.common.Failable;
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
 
 /**
@@ -42,6 +45,32 @@ public abstract class BreadcrumbSmokeTestBase extends WebDriverLegacyITBase {
      */
     public static final String SECOND_DOWN_TRIANGLE_XPATH = "//*[@id='Uif-BreadcrumbWrapper']/ol/li[3]/a";
 
+    /**
+     * Nav tests start at {@link edu.samplu.common.ITUtil#PORTAL}.  Bookmark Tests should override and return {@link BreadcrumbSmokeTestBase#BOOKMARK_URL}
+     * {@inheritDoc}
+     * @return
+     */
+    @Override
+    public String getTestUrl() {
+        return ITUtil.PORTAL;
+    }
+
+    protected void navigation() throws Exception {
+        waitAndClickKRAD();
+        waitAndClickByXpath(KITCHEN_SINK_XPATH);
+        switchToWindow(KUALI_UIF_COMPONENTS_WINDOW_XPATH);
+    }
+
+    protected void testBreadcrumbBookmark(Failable failable) throws Exception {
+        testBreadcrumbs();
+        passed();
+    }
+
+    protected void testBreadcrumbNav(Failable failable) throws Exception {
+        navigation();
+        testBreadcrumbs();
+        passed();
+    }
 
     protected void testBreadcrumb(int pageNumber) throws Exception {
         // <ul id="u13_control" class="uif-optionList" data-control_for="u13" tabindex="0"><li class="uif-optionList-item uif-optionList-selectedItem"><a href="http://env1.rice.kuali.org/kr-krad/uicomponents?methodToCall=start&pageId=UifCompView-Page1&viewId=UifCompView" data-key="UifCompView-Page1">

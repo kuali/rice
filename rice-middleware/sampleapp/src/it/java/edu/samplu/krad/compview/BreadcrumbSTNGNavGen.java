@@ -21,20 +21,11 @@ import org.testng.annotations.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class BreadcrumbSTNGBkMrkGen extends BreadcrumbSTNGBase {
+public class BreadcrumbSTNGNavGen extends BreadcrumbSTNGBase {
 
-    /**
-     * {@inheritDoc}
-     * @return
-     */
-    @Override
-    public String getTestUrl() {
-        return BOOKMARK_URL;
-    }
-
-    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testBreadcrumbBookmark")
+    @Test(groups = { "all", "fast", "default", "nav" }, description = "testBreadcrumbNav")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
-    public void testBreadcrumbBookmark() throws Exception {
-        testBreadcrumbBookmark(this);
+    public void testBreadcrumbNav() throws Exception {
+        testBreadcrumbNav(this);
     }
 }

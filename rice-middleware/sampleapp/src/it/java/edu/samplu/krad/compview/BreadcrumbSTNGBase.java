@@ -15,26 +15,16 @@
  */
 package edu.samplu.krad.compview;
 
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class BreadcrumbSTNGBkMrkGen extends BreadcrumbSTNGBase {
+public abstract class BreadcrumbSTNGBase extends BreadcrumbSmokeTestBase {
 
-    /**
-     * {@inheritDoc}
-     * @return
-     */
     @Override
-    public String getTestUrl() {
-        return BOOKMARK_URL;
-    }
-
-    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testBreadcrumbBookmark")
-    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
-    public void testBreadcrumbBookmark() throws Exception {
-        testBreadcrumbBookmark(this);
+    public void fail(String message){
+        passed = false;
+        AssertJUnit.fail(message);
     }
 }

@@ -15,26 +15,15 @@
  */
 package edu.samplu.krad.compview;
 
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class BreadcrumbSTNGBkMrkGen extends BreadcrumbSTNGBase {
+public class BreadcrumbSTJUnitNavGen extends BreadcrumbSTJUnitBase {
 
-    /**
-     * {@inheritDoc}
-     * @return
-     */
-    @Override
-    public String getTestUrl() {
-        return BOOKMARK_URL;
-    }
-
-    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testBreadcrumbBookmark")
-    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
-    public void testBreadcrumbBookmark() throws Exception {
-        testBreadcrumbBookmark(this);
+    @Test
+    public void testBreadcrumbNav() throws Exception {
+        testBreadcrumbNav(this);
     }
 }

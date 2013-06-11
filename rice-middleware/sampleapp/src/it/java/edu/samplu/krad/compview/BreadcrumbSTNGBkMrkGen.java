@@ -39,7 +39,7 @@ public class BreadcrumbSTNGBkMrkGen extends WebDriverLegacyITBase {
     /**
      * u13_control
      */
-    public static final String SECOND_BREADCRUMB_NAV_ID = "u13_control";
+    public static final String SECOND_BREADCRUMB_NAV_XPATH = "//*[@class='uif-optionList']";
 
     /**
      * //*[@id='Uif-BreadcrumbWrapper']/ol/li[3]/a
@@ -81,12 +81,26 @@ public class BreadcrumbSTNGBkMrkGen extends WebDriverLegacyITBase {
         waitAndClickByLinkText("▼");
         SeleneseTestBase.assertTrue(isVisibleById(NAVIGATE_TO_LABEL_ID));
         SeleneseTestBase.assertEquals("Navigate to:",getTextById(NAVIGATE_TO_LABEL_ID));
+        // the first ▼
         waitAndClickByLinkText("▼");
         SeleneseTestBase.assertFalse(isVisibleById(NAVIGATE_TO_LABEL_ID));
 
-        SeleneseTestBase.assertFalse(isVisibleById(SECOND_BREADCRUMB_NAV_ID));
-        // The second ▼
-        waitAndClickByXpath(SECOND_DOWN_TRIANGLE_XPATH);
+        testBreadcrumb(2);
+        testBreadcrumb(3);
+        testBreadcrumb(4);
+        testBreadcrumb(5);
+        testBreadcrumb(6);
+        testBreadcrumb(7);
+        testBreadcrumb(8);
+        testBreadcrumb(9);
+        testBreadcrumb(10);
+        testBreadcrumb(11);
+        testBreadcrumb(1);
+
+        passed();
+    }
+
+    protected void testBreadcrumb(int pageNumber) throws Exception {
         // <ul id="u13_control" class="uif-optionList" data-control_for="u13" tabindex="0"><li class="uif-optionList-item uif-optionList-selectedItem"><a href="http://env1.rice.kuali.org/kr-krad/uicomponents?methodToCall=start&pageId=UifCompView-Page1&viewId=UifCompView" data-key="UifCompView-Page1">
         //         Input Fields and Controls
         // </a></li>
@@ -94,17 +108,18 @@ public class BreadcrumbSTNGBkMrkGen extends WebDriverLegacyITBase {
         //         Other Fields
         // </a></li>
         // etc.
-        SeleneseTestBase.assertTrue(isVisibleById(SECOND_BREADCRUMB_NAV_ID));
+        SeleneseTestBase.assertFalse(isVisibleByXpath(SECOND_BREADCRUMB_NAV_XPATH));
+        // The second ▼
         waitAndClickByXpath(SECOND_DOWN_TRIANGLE_XPATH);
-        SeleneseTestBase.assertFalse(isVisibleById(SECOND_BREADCRUMB_NAV_ID));
+        SeleneseTestBase.assertTrue(isVisibleByXpath(SECOND_BREADCRUMB_NAV_XPATH));
+        waitAndClickByXpath(SECOND_DOWN_TRIANGLE_XPATH);
+        SeleneseTestBase.assertFalse(isVisibleByXpath(SECOND_BREADCRUMB_NAV_XPATH));
         waitAndClickByXpath(SECOND_DOWN_TRIANGLE_XPATH);
 
         // The Second selection of the second ▼
-        // you can't just click "Other Fields" by link text as the same clickable text is on the left navigation.
-        waitAndClickByXpath("//*[@id=\"u13_control\"]/li[2]/a");
-        waitForElementPresentById("TopLink2"); // bottom jump to top link
-        driver.getCurrentUrl().contains("pageId=UifCompView-Page2"); // Other Fields pageId
-
-        passed();
+        // you can't just click by link text as the same clickable text is on the left navigation.
+        waitAndClickByXpath(SECOND_BREADCRUMB_NAV_XPATH +"/li[" + pageNumber + "]/a");
+        waitForElementPresentById("TopLink" + pageNumber); // bottom jump to top link
+        driver.getCurrentUrl().contains("pageId=UifCompView-Page" + pageNumber);
     }
 }

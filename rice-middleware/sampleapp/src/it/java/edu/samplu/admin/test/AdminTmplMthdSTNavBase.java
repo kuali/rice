@@ -64,6 +64,7 @@ public abstract class AdminTmplMthdSTNavBase extends NavTemplateMethodSTBase {
         waitAndClickByLinkText("edit");
         waitFor(By.name(BLANKET_APPROVE_NAME));
         back();
+        checkForIncidentReport();
         assertTextPresent("Going back from Edit Search results not available", pageBannerText);
     }
 

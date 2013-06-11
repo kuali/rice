@@ -192,7 +192,10 @@ public class ITUtil {
                         + "\nContents that triggered exception: "
                         + deLinespace(contents));
             }
+        }
 
+        if (contents.contains("Document Expired")) { // maybe Firefox specific
+            failable.fail("Document Expired message.");
         }
     }
 

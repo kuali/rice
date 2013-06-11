@@ -350,6 +350,7 @@
                 <exclude>**/plugins/jstree/**</exclude>
                 <exclude>**/plugins/prettify/**</exclude>
                 <exclude>**/plugins/scrollto/**</exclude>
+                <exclude>**/plugins/tooltip/**</exclude>
                 <exclude>**/plugins/validate/**</exclude>
                 <exclude>**/plugins/watermark/**</exclude>
 
@@ -358,10 +359,11 @@
                 <exclude>scripts/bean-rename/beanReplacements.txt</exclude>
                 <exclude>scripts/bean-rename/cssReplacements.txt</exclude>
                 <exclude>**/jquery.*</exclude>
-                <exclude>**/smartspinner.*</exclude>
                 <exclude>**/kew/scripts/cal2.js</exclude>
                 <exclude>**/kew/scripts/cal_conf2.js</exclude>
                 <exclude>**/kew/scripts/prototype.js</exclude>
+                <exclude>**/plugins/rice/menu/tabs.css</exclude>
+                <exclude>**/smartspinner.*</exclude>
 
                 <!-- File type excludes -->
                 <exclude>**/*.pdf</exclude>

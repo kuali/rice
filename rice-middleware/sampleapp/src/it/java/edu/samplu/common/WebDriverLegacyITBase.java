@@ -942,6 +942,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         return driver.findElement(by).getText();
     }
 
+    protected String getTextById(String id) throws InterruptedException {
+        return getText(By.id(id));
+    }
+
     protected String getTextByName(String name) throws InterruptedException {
         return getText(By.name(name));
     }
@@ -1066,6 +1070,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected boolean isVisible(By by) {
         return driver.findElement(by).isDisplayed();
+    }
+
+    protected boolean isVisibleById(String id) {
+        return isVisible(By.id(id));
     }
 
     protected boolean isVisibleByXpath(String locator) {
@@ -4178,6 +4186,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void waitForElementPresentByClassName(String name, String message) throws InterruptedException {
         jiraAwareWaitFor(By.className(name), message);
+    }
+
+    protected void waitForElementPresentById(String id) throws InterruptedException {
+        jiraAwareWaitFor(By.id(id), "");
     }
 
     protected void waitForElementPresentByName(String name) throws InterruptedException {

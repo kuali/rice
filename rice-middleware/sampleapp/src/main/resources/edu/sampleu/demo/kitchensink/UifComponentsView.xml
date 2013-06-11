@@ -156,6 +156,7 @@
               <ref bean="UifCompView-LinkFields"/>
               <ref bean="UifCompView-OtherFields"/>
               <ref bean="UifCompView-ScrollableGroups"/>
+              <bean parent="Uif-JumpToTopLink" id="TopLink2"/>
             </list>
           </property>
         </bean>
@@ -168,6 +169,7 @@
               <ref bean="preReqSection"/>
               <ref bean="mustOccursSection"/>
               <ref bean="caseConstraintSection"/>
+              <bean parent="Uif-JumpToTopLink" id="TopLink3"/>
             </list>
           </property>
         </bean>
@@ -176,6 +178,7 @@
           <property name="items">
             <list>
               <ref bean="regex1"/>
+              <bean parent="Uif-JumpToTopLink" id="TopLink4"/>
             </list>
           </property>
         </bean>
@@ -187,6 +190,7 @@
               <ref bean="prog2"/>
               <ref bean="prog3"/>
               <ref bean="Uif-CollectionRefresh"/>
+              <bean parent="Uif-JumpToTopLink" id="TopLink5"/>
             </list>
           </property>
         </bean>
@@ -195,6 +199,7 @@
           <property name="items">
             <list>
               <ref bean="lookups1"/>
+              <bean parent="Uif-JumpToTopLink" id="TopLink6"/>
             </list>
           </property>
         </bean>
@@ -211,6 +216,7 @@
               <ref bean="collection4"/>
               <ref bean="collection5"/>
               <ref bean="UifCompView-CollectionList"/>
+              <bean parent="Uif-JumpToTopLink" id="TopLink7"/>
             </list>
           </property>
           <property name="header">
@@ -225,6 +231,7 @@
               <ref bean="Demo-HeaderLevels"/>
               <ref bean="Demo-Disclosure-HeaderLevels"/>
               <ref bean="Demo-HeaderGroups"/>
+              <bean parent="Uif-JumpToTopLink" id="TopLink8"/>
             </list>
           </property>
         </bean>
@@ -242,6 +249,7 @@
               <ref bean="UifCompView-SecureLineEdit"/>
               <ref bean="UifCompView-SecureLineFields"/>
               <ref bean="UifCompView-SecureLineActions"/>
+              <bean parent="Uif-JumpToTopLink" id="TopLink9"/>
             </list>
           </property>
           <property name="componentSecurity.viewAuthz" value="true"/>
@@ -255,6 +263,7 @@
               <ref bean="miscGroup"/>
               <ref bean="toolTipGroup"/>
               <ref bean="UifCompDataTable"/>
+              <bean parent="Uif-JumpToTopLink" id="TopLink10"/>
             </list>
           </property>
         </bean>
@@ -266,6 +275,7 @@
               <ref bean="UifCompView-WindowEventsGroup"/>
               <ref bean="UifCompView-MouseEventsGroup"/>
               <ref bean="UifCompView-KeyEventsGroup"/>
+              <bean parent="Uif-JumpToTopLink" id="TopLink11"/>
             </list>
           </property>
         </bean>

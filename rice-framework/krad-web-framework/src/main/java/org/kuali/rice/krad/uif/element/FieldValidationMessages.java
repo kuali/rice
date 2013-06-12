@@ -17,12 +17,14 @@ package org.kuali.rice.krad.uif.element;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.View;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * ValidationMessages for logic and options specific to groups
@@ -48,22 +50,34 @@ public class FieldValidationMessages extends ValidationMessages {
         }
         HashMap<String, Object> validationMessagesDataAttributes = new HashMap<String, Object>();
 
+        Map<String, String> dataDefaults =
+                        (Map<String, String>) (KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
+                                "Uif-FieldValidationMessages-DataDefaults"));
+
         //display
-        validationMessagesDataAttributes.put("displayMessages", this.isDisplayMessages());
+        this.addValidationDataSettingsValue(validationMessagesDataAttributes, dataDefaults, "displayMessages",
+                this.isDisplayMessages());
 
         //options
-        validationMessagesDataAttributes.put("useTooltip", useTooltip);
-        validationMessagesDataAttributes.put("messagingEnabled", this.isDisplayMessages());
-        validationMessagesDataAttributes.put("hasOwnMessages", hasMessages);
-        validationMessagesDataAttributes.put("showIcons", showIcons);
+        this.addValidationDataSettingsValue(validationMessagesDataAttributes, dataDefaults, "useTooltip", useTooltip);
+        this.addValidationDataSettingsValue(validationMessagesDataAttributes, dataDefaults, "messagingEnabled",
+                this.isDisplayMessages());
+        this.addValidationDataSettingsValue(validationMessagesDataAttributes, dataDefaults, "hasOwnMessages",
+                hasMessages);
+        this.addValidationDataSettingsValue(validationMessagesDataAttributes, dataDefaults, "showIcons", showIcons);
 
         //server messages
-        validationMessagesDataAttributes.put("serverErrors", ScriptUtils.escapeHtml(this.getErrors()));
-        validationMessagesDataAttributes.put("serverWarnings", ScriptUtils.escapeHtml(this.getWarnings()));
-        validationMessagesDataAttributes.put("serverInfo", ScriptUtils.escapeHtml(this.getInfos()));
+        this.addValidationDataSettingsValue(validationMessagesDataAttributes, dataDefaults, "serverErrors",
+                ScriptUtils.escapeHtml(this.getErrors()));
+        this.addValidationDataSettingsValue(validationMessagesDataAttributes, dataDefaults, "serverWarnings",
+                ScriptUtils.escapeHtml(this.getWarnings()));
+        this.addValidationDataSettingsValue(validationMessagesDataAttributes, dataDefaults, "serverInfo",
+                ScriptUtils.escapeHtml(this.getInfos()));
 
-        parent.addDataAttribute(UifConstants.DataAttributes.VALIDATION_MESSAGES, ScriptUtils.translateValue(
-                        validationMessagesDataAttributes));
+        if (!validationMessagesDataAttributes.isEmpty()){
+            parent.addDataAttribute(UifConstants.DataAttributes.VALIDATION_MESSAGES, ScriptUtils.translateValue(
+                validationMessagesDataAttributes));
+        }
     }
 
     /**

@@ -23,6 +23,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.state.StateMapping;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
@@ -386,7 +387,22 @@ public class View extends ContainerBase {
 
         this.setOnDocumentReadyScript(onReadyScript);
 
+        // breadcrumb handling
         finalizeBreadcrumbs(model);
+
+        // add validation default js options for validation framework to View's data attributes
+        Object groupValidationDataDefaults = KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
+                UifConstants.GROUP_VALIDATION_DEFAULTS_MAP_ID);
+        Object fieldValidationDataDefaults = KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
+                UifConstants.FIELD_VALIDATION_DEFAULTS_MAP_ID);
+
+        this.addDataAttribute(UifConstants.DataAttributes.GROUP_VALIDATION_DEFAULTS,
+                        ScriptUtils.convertToJsValue((Map<String,String>)groupValidationDataDefaults));
+        this.addDataAttribute(UifConstants.DataAttributes.FIELD_VALIDATION_DEFAULTS,
+                ScriptUtils.convertToJsValue((Map<String,String>)fieldValidationDataDefaults));
+
+        // give view role attribute for js selections
+        this.addDataAttribute(UifConstants.DataAttributes.ROLE, "view");
     }
 
     /**
@@ -833,7 +849,6 @@ public class View extends ContainerBase {
     public void setApplicationFooter(Group applicationFooter) {
         this.applicationFooter = applicationFooter;
     }
-
 
     /**
      * If true, the top group will be sticky (fixed to top of window)
@@ -1843,7 +1858,6 @@ public class View extends ContainerBase {
     public void setBreadcrumbItem(BreadcrumbItem breadcrumbItem) {
         this.breadcrumbItem = breadcrumbItem;
     }
-
 
     /**
      * The parentLocation defines urls that represent the parent of a View in a conceptial site hierarchy.

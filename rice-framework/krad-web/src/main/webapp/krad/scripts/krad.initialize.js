@@ -256,7 +256,7 @@ function initFieldHandlers() {
                     + "div[data-role='InputField'] textarea",
             function (event) {
                 var fieldId = jQuery(this).closest("div[data-role='InputField']").attr("id");
-                var data = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
+                var data = getValidationData(jQuery("#" + fieldId));
                 if (data && data.useTooltip) {
                     var elementInfo = getHoverElement(fieldId);
                     var element = elementInfo.element;
@@ -297,7 +297,7 @@ function initFieldHandlers() {
                         }
 
                         if (show) {
-                            var data = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
+                            var data = getValidationData(jQuery("#" + fieldId));
                             validationTooltipOptions.themeName = data.tooltipTheme;
                             validationTooltipOptions.innerHTML = jQuery("[data-messages_for='" + fieldId + "']").html();
                             //set the margin to offset it from the left appropriately
@@ -320,7 +320,7 @@ function initFieldHandlers() {
                     + "div[data-role='InputField'] textarea",
             function (event) {
                 var fieldId = jQuery(this).closest("div[data-role='InputField']").attr("id");
-                var data = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
+                var data = getValidationData(jQuery("#" + fieldId));
                 if (data && data.useTooltip) {
                     var elementInfo = getHoverElement(fieldId);
                     var element = elementInfo.element;
@@ -350,7 +350,7 @@ function initFieldHandlers() {
                 var id = getAttributeId(jQuery(this).attr('id'));
 
                 //keep track of what errors it had on initial focus
-                var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
+                var data = getValidationData(jQuery("#" + id));
                 if (data && data.errors) {
                     data.focusedErrors = data.errors;
                 }
@@ -369,7 +369,7 @@ function initFieldHandlers() {
                     + "div[data-role='InputField'] textarea",
             function (event) {
                 var id = getAttributeId(jQuery(this).attr('id'));
-                var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
+                var data = getValidationData(jQuery("#" + id));
                 var hadError = false;
                 if (data && data.focusedErrors) {
                     hadError = data.focusedErrors.length;
@@ -417,10 +417,12 @@ function initFieldHandlers() {
                     + "div[data-role='InputField'] input:radio",
             function () {
                 var id = getAttributeId(jQuery(this).attr('id'));
-                var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
+                var field = jQuery("#" + id);
+
+                var data = getValidationData(field);
                 if (data) {
                     data.fieldModified = true;
-                    jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
+                    field.data(kradVariables.VALIDATION_MESSAGES, data);
                 }
             });
 
@@ -459,7 +461,7 @@ function initFieldHandlers() {
             function () {
                 var parent = jQuery(this).parent();
                 var id = getAttributeId(jQuery(this).attr('id'));
-                var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
+                var data = getValidationData(jQuery("#" + id));
                 //mouse in tooltip check
                 var mouseInTooltip = false;
                 if (data && data.useTooltip && data.mouseInTooltip) {
@@ -736,11 +738,14 @@ jQuery.validator.setDefaults({
     onkeyup: function (element) {
         if (validateClient) {
             var id = getAttributeId(jQuery(element).attr('id'));
-            var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
+            var data = getValidationData(jQuery("#" + id));
 
             //if this field previously had errors validate on key up
             if (data && data.focusedErrors && data.focusedErrors.length) {
-                validateFieldValue(element);
+                var valid = validateFieldValue(element);
+                if (!valid){
+                    showMessageTooltip(id, false, true);
+                }
             }
         }
     },
@@ -753,11 +758,12 @@ jQuery.validator.setDefaults({
         jQuery(element).removeAttr("aria-invalid");
 
         var id = getAttributeId(jQuery(element).attr("id"));
-        var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
+        var field = jQuery("#" + id);
+        var data = getValidationData(field);
 
         if (data) {
             data.errors = [];
-            jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
+            field.data(kradVariables.VALIDATION_MESSAGES, data);
 
             if (messageSummariesShown) {
                 handleMessagesAtField(id);
@@ -782,8 +788,8 @@ jQuery.validator.setDefaults({
             var element = elementObjectList[i].element;
             var message = elementObjectList[i].message;
             var id = getAttributeId(jQuery(element).attr('id'));
-
-            var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
+            var field = jQuery("#" + id);
+            var data = getValidationData(field);
 
             var exists = false;
             if (data && data.errors && data.errors.length) {
@@ -797,7 +803,7 @@ jQuery.validator.setDefaults({
             if (!exists) {
                 data.errors = [];
                 data.errors.push(message);
-                jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
+                field.data(kradVariables.VALIDATION_MESSAGES, data);
             }
 
             if (data) {
@@ -826,10 +832,13 @@ jQuery.validator.setDefaults({
             id = getAttributeId(id);
         }
 
-        var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
+        var field = jQuery("#" + id);
+        var data = getValidationData(field);
+
+
         if (data && data.errors && data.errors.length) {
             data.errors = [];
-            jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
+            field.data(kradVariables.VALIDATION_MESSAGES, data);
             if (messageSummariesShown) {
                 handleMessagesAtField(id);
             }

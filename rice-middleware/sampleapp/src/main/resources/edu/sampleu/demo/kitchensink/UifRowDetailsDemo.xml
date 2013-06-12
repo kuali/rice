@@ -86,7 +86,7 @@
           <list>
             <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"
                   p:required="true"/>
-            <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4"
+            <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4"  p:progressiveRender="false"
                   p:required="true"/>
           </list>
         </property>

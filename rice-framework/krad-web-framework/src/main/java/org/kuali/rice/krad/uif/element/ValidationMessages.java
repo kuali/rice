@@ -68,6 +68,8 @@ public class ValidationMessages extends ContentElementBase {
     private List<String> warnings;
     private List<String> infos;
 
+    private Map<String, String> validationDataDefaults;
+
     /**
      * PerformFinalize will generate the messages and counts used by the
      * errorsField based on the keys that were matched from the MessageMap for
@@ -249,7 +251,7 @@ public class ValidationMessages extends ContentElementBase {
      *
      * @return the additionalKeysToMatch
      */
-    @BeanTagAttribute(name="additionalKeysToMatch",type= BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute(name = "additionalKeysToMatch", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getAdditionalKeysToMatch() {
         return this.additionalKeysToMatch;
     }
@@ -286,7 +288,7 @@ public class ValidationMessages extends ContentElementBase {
      *
      * @return the displayMessages
      */
-    @BeanTagAttribute(name="displayMessages")
+    @BeanTagAttribute(name = "displayMessages")
     public boolean isDisplayMessages() {
         return this.displayMessages;
     }
@@ -304,7 +306,7 @@ public class ValidationMessages extends ContentElementBase {
      *
      * @return the errors
      */
-    @BeanTagAttribute(name="errors",type= BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute(name = "errors", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getErrors() {
         return this.errors;
     }
@@ -315,7 +317,7 @@ public class ValidationMessages extends ContentElementBase {
      *
      * @return the warnings
      */
-    @BeanTagAttribute(name="warnings",type= BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute(name = "warnings", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getWarnings() {
         return this.warnings;
     }
@@ -326,9 +328,25 @@ public class ValidationMessages extends ContentElementBase {
      *
      * @return the infos
      */
-    @BeanTagAttribute(name="infos",type= BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute(name = "infos", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getInfos() {
         return this.infos;
     }
 
+    public Map<String, String> getValidationDataDefaults() {
+        return validationDataDefaults;
+    }
+
+    public void setValidationDataDefaults(Map<String, String> validationDataDefaults) {
+        this.validationDataDefaults = validationDataDefaults;
+    }
+
+    protected void addValidationDataSettingsValue(Map<String, Object> valueMap, Map<String, String> defaults,
+            String key, Object value) {
+        String defaultValue = defaults.get(key);
+        if ((defaultValue != null && !value.toString().equals(defaultValue)) || (defaultValue != null && defaultValue
+                .equals("[]") && value instanceof List && !((List) value).isEmpty()) || defaultValue == null) {
+            valueMap.put(key, value);
+        }
+    }
 }

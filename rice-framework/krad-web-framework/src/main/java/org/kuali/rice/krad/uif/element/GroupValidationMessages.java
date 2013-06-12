@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.element;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
@@ -34,6 +35,7 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * ValidationMessages for logic and options specific to groups
@@ -105,37 +107,51 @@ public class GroupValidationMessages extends ValidationMessages {
 
         HashMap<String, Object> validationMessagesDataAttributes = new HashMap<String, Object>();
 
+        Map<String, String> dataDefaults =
+                (Map<String, String>) (KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
+                        "Uif-GroupValidationMessages-DataDefaults"));
+
         //add necessary data attributes to map
         //display related
-        validationMessagesDataAttributes.put(UifConstants.DataAttributes.SUMMARIZE, true);
-        validationMessagesDataAttributes.put(UifConstants.DataAttributes.DISPLAY_MESSAGES, this.isDisplayMessages());
-        validationMessagesDataAttributes.put(UifConstants.DataAttributes.COLLAPSE_FIELD_MESSAGES,
-                collapseAdditionalFieldLinkMessages);
-        validationMessagesDataAttributes.put(UifConstants.DataAttributes.SHOW_PAGE_SUMMARY_HEADER,
-                showPageSummaryHeader);
-        validationMessagesDataAttributes.put(UifConstants.DataAttributes.DISPLAY_LABEL, displayFieldLabelWithMessages);
-        validationMessagesDataAttributes.put(UifConstants.DataAttributes.DISPLAY_HEADER_SUMMARY,
-                displayHeaderMessageSummary);
+        this.addValidationDataSettingsValue(validationMessagesDataAttributes, dataDefaults,
+                UifConstants.DataAttributes.SUMMARIZE, true);
+        this.addValidationDataSettingsValue(validationMessagesDataAttributes, dataDefaults,
+                UifConstants.DataAttributes.DISPLAY_MESSAGES, this.isDisplayMessages());
+        this.addValidationDataSettingsValue(validationMessagesDataAttributes, dataDefaults,
+                UifConstants.DataAttributes.COLLAPSE_FIELD_MESSAGES, collapseAdditionalFieldLinkMessages);
+        this.addValidationDataSettingsValue(validationMessagesDataAttributes, dataDefaults,
+                UifConstants.DataAttributes.SHOW_PAGE_SUMMARY_HEADER, showPageSummaryHeader);
+        this.addValidationDataSettingsValue(validationMessagesDataAttributes, dataDefaults,
+                UifConstants.DataAttributes.DISPLAY_LABEL, displayFieldLabelWithMessages);
+        this.addValidationDataSettingsValue(validationMessagesDataAttributes, dataDefaults,
+                UifConstants.DataAttributes.DISPLAY_HEADER_SUMMARY, displayHeaderMessageSummary);
 
         //options
-        validationMessagesDataAttributes.put(UifConstants.DataAttributes.HAS_OWN_MESSAGES, hasMessages);
-        validationMessagesDataAttributes.put(UifConstants.DataAttributes.PAGE_LEVEL, pageLevel);
-        validationMessagesDataAttributes.put(UifConstants.DataAttributes.FORCE_SHOW, forceShow);
+        this.addValidationDataSettingsValue(validationMessagesDataAttributes, dataDefaults,
+                UifConstants.DataAttributes.HAS_OWN_MESSAGES, hasMessages);
+        this.addValidationDataSettingsValue(validationMessagesDataAttributes, dataDefaults,
+                UifConstants.DataAttributes.PAGE_LEVEL, pageLevel);
+        this.addValidationDataSettingsValue(validationMessagesDataAttributes, dataDefaults,
+                UifConstants.DataAttributes.FORCE_SHOW, forceShow);
 
         //order related
-        validationMessagesDataAttributes.put(UifConstants.DataAttributes.SECTIONS,sectionIds);
-        validationMessagesDataAttributes.put(UifConstants.DataAttributes.ORDER, fieldOrder);
+        this.addValidationDataSettingsValue(validationMessagesDataAttributes, dataDefaults,
+                UifConstants.DataAttributes.SECTIONS, sectionIds);
+        this.addValidationDataSettingsValue(validationMessagesDataAttributes, dataDefaults,
+                UifConstants.DataAttributes.ORDER, fieldOrder);
 
         //server messages
-        validationMessagesDataAttributes.put(UifConstants.DataAttributes.SERVER_ERRORS, ScriptUtils.escapeHtml(
-                this.getErrors()));
-        validationMessagesDataAttributes.put(UifConstants.DataAttributes.SERVER_WARNINGS, ScriptUtils.escapeHtml(
-                this.getWarnings()));
-        validationMessagesDataAttributes.put(UifConstants.DataAttributes.SERVER_INFO, ScriptUtils.escapeHtml(
-                this.getInfos()));
+        this.addValidationDataSettingsValue(validationMessagesDataAttributes, dataDefaults,
+                UifConstants.DataAttributes.SERVER_ERRORS, ScriptUtils.escapeHtml(this.getErrors()));
+        this.addValidationDataSettingsValue(validationMessagesDataAttributes, dataDefaults,
+                UifConstants.DataAttributes.SERVER_WARNINGS, ScriptUtils.escapeHtml(this.getWarnings()));
+        this.addValidationDataSettingsValue(validationMessagesDataAttributes, dataDefaults,
+                UifConstants.DataAttributes.SERVER_INFO, ScriptUtils.escapeHtml(this.getInfos()));
 
-        parent.addDataAttribute(UifConstants.DataAttributes.VALIDATION_MESSAGES, ScriptUtils.translateValue(
-                validationMessagesDataAttributes));
+        if (!validationMessagesDataAttributes.isEmpty()){
+            parent.addDataAttribute(UifConstants.DataAttributes.VALIDATION_MESSAGES, ScriptUtils.translateValue(
+                            validationMessagesDataAttributes));
+        }
     }
 
     /**

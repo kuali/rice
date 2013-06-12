@@ -556,13 +556,13 @@ function createDatePicker(controlId, options) {
         datePickerControl.datepicker(options);
         datePickerControl.datepicker('option', 'onClose',
                 function () {
-                    jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES).messagingEnabled = true;
+                    getValidationData(jQuery("#" + fieldId)).messagingEnabled = true;
                     jQuery(this).trigger("focusout");
                     jQuery(this).trigger("focus");
                 });
         datePickerControl.datepicker('option', 'beforeShow',
                 function () {
-                    jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES).messagingEnabled = false;
+                    getValidationData(jQuery("#" + fieldId)).messagingEnabled = false;
                 });
 
         //KULRICE-7310 can't change only month or year with picker (jquery limitation)
@@ -1361,7 +1361,7 @@ function isControlWithMessages(id) {
  */
 function hasMessage(id) {
     var fieldId = getAttributeId(id);
-    var messageData = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
+    var messageData = getValidationData(jQuery("#" + fieldId));
     if (messageData && (messageData.serverErrors.length || (messageData.errors && messageData.errors.length)
             || messageData.serverWarnings.length || (messageData.warnings && messageData.warnings.length)
             || messageData.serverInfo.length || (messageData.info && messageData.info.length))) {
@@ -1439,7 +1439,7 @@ function hideTooltip(fieldId) {
         //for checkbox/radio fieldsets we put the tooltip on the label of the first input
         element = jQuery(element).filter("label:first");
     }
-    var data = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
+    var data = getValidationData(jQuery("#" + fieldId));
     if (data && data.showTimer) {
         clearTimeout(data.showTimer);
     }

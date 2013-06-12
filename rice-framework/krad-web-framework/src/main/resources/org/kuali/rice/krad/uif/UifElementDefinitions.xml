@@ -17,9 +17,9 @@
 
 -->
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
   <bean id="Uif-ContentElementBase" abstract="true" parent="Uif-ContentElementBase-parentBean"/>
   <bean id="Uif-ContentElementBase-parentBean" abstract="true"
@@ -41,7 +41,60 @@
       </list>
     </property>
     <property name="displayMessages" value="true"/>
+    <property name="validationDataDefaults">
+      <map>
+        <entry key="summarize" value="true"/>
+        <entry key="displayMessages" value="true"/>
+        <entry key="collapseFieldMessages" value="true"/>
+        <entry key="showPageSummaryHeader" value="true"/>
+
+        <entry key="displayLabel" value="true"/>
+        <entry key="displayHeaderSummary" value="true"/>
+        <entry key="hasOwnMessages" value="false"/>
+        <entry key="pageLevel" value="false"/>
+        <entry key="forceShow" value="false"/>
+        <entry key="serverErrors" value="[]"/>
+        <entry key="serverWarnings" value="[]"/>
+        <entry key="serverInfo" value="[]"/>
+        <entry key="serverErrors" value="[]"/>
+      </map>
+    </property>
   </bean>
+
+
+  <util:map id="Uif-GroupValidationMessages-DataDefaults">
+    <entry key="summarize" value="true"/>
+    <entry key="displayMessages" value="true"/>
+    <entry key="collapseFieldMessages" value="true"/>
+    <entry key="showPageSummaryHeader" value="true"/>
+    <entry key="displayLabel" value="true"/>
+    <entry key="displayHeaderSummary" value="true"/>
+    <entry key="hasOwnMessages" value="false"/>
+    <entry key="pageLevel" value="false"/>
+    <entry key="forceShow" value="false"/>
+    <entry key="order" value="[]"/>
+    <entry key="sections" value="[]"/>
+    <entry key="errors" value="[]"/>
+    <entry key="warnings" value="[]"/>
+    <entry key="info" value="[]"/>
+    <entry key="serverErrors" value="[]"/>
+    <entry key="serverWarnings" value="[]"/>
+    <entry key="serverInfo" value="[]"/>
+  </util:map>
+
+  <util:map id="Uif-FieldValidationMessages-DataDefaults">
+    <entry key="displayMessages" value="true"/>
+    <entry key="useTooltip" value="true"/>
+    <entry key="messagingEnabled" value="true"/>
+    <entry key="hasOwnMessages" value="false"/>
+    <entry key="showIcons" value="false"/>
+    <entry key="errors" value="[]"/>
+    <entry key="warnings" value="[]"/>
+    <entry key="info" value="[]"/>
+    <entry key="serverErrors" value="[]"/>
+    <entry key="serverWarnings" value="[]"/>
+    <entry key="serverInfo" value="[]"/>
+  </util:map>
 
   <bean id="Uif-FieldValidationMessages" parent="Uif-FieldValidationMessages-parentBean"/>
   <bean id="Uif-FieldValidationMessages-parentBean" parent="Uif-ValidationMessagesBase"

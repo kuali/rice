@@ -52,6 +52,8 @@ public class UifConstants {
     public static final String MESSAGE_VIEW_ID = "Uif-MessageView";
     public static final String SESSION_TIMEOUT_VIEW_ID = "Uif-SessionTimeoutView";
     public static final String LOGGED_OUT_VIEW_ID = "Uif-LoggedOutView";
+    public static final String GROUP_VALIDATION_DEFAULTS_MAP_ID = "Uif-GroupValidationMessages-DataDefaults";
+    public static final String FIELD_VALIDATION_DEFAULTS_MAP_ID = "Uif-FieldValidationMessages-DataDefaults";
     public static final String REFERER = "Referer";
     public static final String NO_RETURN = "NO_RETURN";
 
@@ -299,6 +301,8 @@ public class UifConstants {
         public static final String SUBMIT_DATA = "submit_data";
         public static final String SERVER_MESSAGES = "server_messages";
         public static final String VALIDATION_MESSAGES = "validation_messages";
+        public static final String GROUP_VALIDATION_DEFAULTS = "group_validation_defaults";
+        public static final String FIELD_VALIDATION_DEFAULTS = "field_validation_defaults";
         public static final String MESSAGES_FOR = "messages_for";
         public static final String PARENT = "parent";
         public static final String SUMMARIZE = "summarize";

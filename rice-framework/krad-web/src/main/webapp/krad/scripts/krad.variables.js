@@ -123,6 +123,8 @@ JavascriptKradVariables.prototype = {
      VALIDATION_MESSAGES_CLASS : "uif-validationMessagesList",
      VALIDATION_PAGE_HEADER_CLASS : "uif-pageValidationHeader",
      VALIDATION_SETUP_EVENT : "validationSetup",
+     GROUP_VALIDATION_DEFAULTS : "group_validation_defaults",
+     FIELD_VALIDATION_DEFAULTS : "field_validation_defaults",
      PAGE_LOAD_EVENT : "pageLoad",
      VIEW_CONTENT_HEADER_CLASS : "Uif-ViewContentWrapper",
      VIEW_STATE : "ViewState",

@@ -13,6 +13,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/**
+ * Get validation data for the component element by merging custom settings with defaults
+ *
+ * @param jqComponent a jq object that represents the component to retrieve validation data for
+ * @param isGroup true if the component represents a group, false for fields
+ * @return {*} data that represent validation message data and options for the component
+ */
+function getValidationData(jqComponent, isGroup) {
+    var data = jqComponent.data(kradVariables.VALIDATION_MESSAGES);
+
+    // determine defaults
+    var defaults;
+    if (isGroup) {
+        defaults = jQuery("div[data-role='view']").data(kradVariables.GROUP_VALIDATION_DEFAULTS);
+    }
+    else {
+        defaults = jQuery("div[data-role='view']").data(kradVariables.FIELD_VALIDATION_DEFAULTS);
+    }
+
+    if (!defaults) {
+        defaults = {};
+    }
+
+    // merge defaults into data if it exists, otherwise defaults are the data
+    if (data) {
+        data = jQuery.extend({}, defaults, data);
+        jqComponent.data(kradVariables.VALIDATION_MESSAGES, data);
+    }
+    else {
+        data = jQuery.extend({}, defaults);
+        jqComponent.data(kradVariables.VALIDATION_MESSAGES, data);
+    }
+
+    return data;
+}
+
+
 /**
  * Hide the message tooltip associated with the field by id
  * @param fieldId the id of the field
@@ -25,7 +63,7 @@ function hideMessageTooltip(fieldId) {
         element = jQuery(element).filter(".uif-tooltip");
     }
 
-    var data = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
+    var data = getValidationData(jQuery("#" + fieldId));
     if (data && data.showTimer) {
         clearTimeout(data.showTimer);
     }
@@ -169,7 +207,9 @@ function mouseOutBubblePopupCheck(event, fieldId, triggerElements, callingElemen
  * @param change forces the tooltip show call to deal with placement issues when changing internal content
  */
 function showMessageTooltip(fieldId, showAndClose, change) {
-    var data = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
+    var field = jQuery("#" + fieldId);
+    var data = getValidationData(field);
+
     if (data && data.useTooltip && data.messagingEnabled && !haltValidationMessaging) {
         var elementInfo = getHoverElement(fieldId);
         var tooltipElement = jQuery(elementInfo.element);
@@ -245,7 +285,7 @@ function showMessageTooltip(fieldId, showAndClose, change) {
                 if (showAndClose) {
                     //setup a timer to close the tooltip automatically
                     data.tooltipTimer = setTimeout("hideMessageTooltip('" + fieldId + "')", 3000);
-                    jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES, data);
+                    field.data(kradVariables.VALIDATION_MESSAGES, data);
                 }
             }
 
@@ -263,8 +303,8 @@ function showMessageTooltip(fieldId, showAndClose, change) {
  * @param id id of the field to write messages to
  */
 function writeMessagesAtField(id) {
-
-    var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
+    var field = jQuery("#" + id);
+    var data = getValidationData(field);
 
     if (data && data.displayMessages) {
         //initialize data if not present
@@ -313,16 +353,16 @@ function writeMessagesAtField(id) {
 
         var showImage = data.showIcons;
         //do not show the message icon next to field if this field is in a table collection layout
-        if (jQuery("#" + id).parents(".uif-tableCollectionLayout").length) {
+        if (field.parents(".uif-tableCollectionLayout").length) {
             showImage = false;
         }
 
         //remove any image and previous styles that may already be present
         jQuery("#" + id + " > .uif-validationImage").remove();
-        jQuery("#" + id).removeClass(kradVariables.HAS_ERROR_CLASS);
-        jQuery("#" + id).removeClass(kradVariables.HAS_MODIFIED_ERROR_CLASS);
-        jQuery("#" + id).removeClass(kradVariables.HAS_WARNING_CLASS);
-        jQuery("#" + id).removeClass(kradVariables.HAS_INFO_CLASS);
+        field.removeClass(kradVariables.HAS_ERROR_CLASS);
+        field.removeClass(kradVariables.HAS_MODIFIED_ERROR_CLASS);
+        field.removeClass(kradVariables.HAS_WARNING_CLASS);
+        field.removeClass(kradVariables.HAS_INFO_CLASS);
 
         //show appropriate icons/styles based on message severity level
         if (jQuery(messagesDiv).find(".uif-errorMessageItem-field").length) {
@@ -333,13 +373,13 @@ function writeMessagesAtField(id) {
             if (data.fieldModified && data.errors.length == 0) {
                 //This is to represent the field has been changed after a server error, but may or
                 //may not be fixed - greyed out image/border
-                jQuery("#" + id).addClass(kradVariables.HAS_MODIFIED_ERROR_CLASS);
+                field.addClass(kradVariables.HAS_MODIFIED_ERROR_CLASS);
                 if (showImage) {
                     jQuery(messagesDiv).before(errorGreyImage);
                 }
             }
             else {
-                jQuery("#" + id).addClass(kradVariables.HAS_ERROR_CLASS);
+                field.addClass(kradVariables.HAS_ERROR_CLASS);
                 if (showImage) {
                     jQuery(messagesDiv).before(errorImage);
                 }
@@ -358,7 +398,7 @@ function writeMessagesAtField(id) {
             if (data.warnings.length) {
                 jQuery(messagesDiv).find(".uif-clientMessageItems").addClass(kradVariables.CLIENT_WARNING_DIV_CLASS);
             }
-            jQuery("#" + id).addClass(kradVariables.HAS_WARNING_CLASS);
+            field.addClass(kradVariables.HAS_WARNING_CLASS);
             if (showImage) {
                 jQuery(messagesDiv).before(warningImage);
             }
@@ -376,7 +416,7 @@ function writeMessagesAtField(id) {
             if (data.info.length) {
                 jQuery(messagesDiv).find(".uif-clientMessageItems").addClass("uif-clientInfoDiv");
             }
-            jQuery("#" + id).addClass(kradVariables.HAS_INFO_CLASS);
+            field.addClass(kradVariables.HAS_INFO_CLASS);
             if (showImage) {
                 jQuery(messagesDiv).before(infoImage);
             }
@@ -408,7 +448,8 @@ function writeMessagesAtField(id) {
  * @param pageSetupPhase(optional) is this the page setup phase?
  */
 function handleMessagesAtField(id, pageSetupPhase) {
-    var skip = jQuery("#" + id).data("vignore");
+    var field = jQuery("#" + id);
+    var skip = field.data("vignore");
 
     if (pageSetupPhase == undefined) {
         pageSetupPhase = false;
@@ -422,12 +463,12 @@ function handleMessagesAtField(id, pageSetupPhase) {
     }
 
     if (!(skip == "yes")) {
-        var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
+        var data = getValidationData(field);
         if (data) {
             if (!pageSetupPhase || (pageSetupPhase && data.hasOwnMessages)) {
                 writeMessagesAtField(id);
 
-                var parent = jQuery("#" + id).data("parent");
+                var parent = field.data("parent");
 
                 if (parent && !skipBubble) {
                     handleMessagesAtGroup(parent, id, data, pageSetupPhase);
@@ -448,9 +489,11 @@ function handleMessagesAtField(id, pageSetupPhase) {
  * @param fieldData - the new validation data for the field being updated
  */
 function handleMessagesAtGroup(id, fieldId, fieldData, pageSetupPhase) {
-    var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
+    var group = jQuery("#" + id);
+    var data = getValidationData(group, true);
+
     var pageLevel = false;
-    var parent = jQuery("#" + id).data("parent");
+    var parent = group.data("parent");
     if (data) {
         var messageMap = data.messageMap;
         pageLevel = data.pageLevel;
@@ -490,7 +533,6 @@ function handleMessagesAtGroup(id, fieldId, fieldData, pageSetupPhase) {
     }
 
     if (!pageLevel && parent) {
-        var parentData = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
         handleMessagesAtGroup(parent, fieldId, fieldData, pageSetupPhase);
     }
 }
@@ -703,7 +745,7 @@ function writeMessagesForPage() {
     var summaryTextExistence = new Object();
     var page = jQuery("[data-type='Page']");
     var pageId = page.attr("id");
-    var data = page.data(kradVariables.VALIDATION_MESSAGES);
+    var data = getValidationData(page, true);
 
     if (data) {
         var messageMap = data.messageMap;
@@ -729,7 +771,7 @@ function writeMessagesForChildGroups(parentId) {
 
         var currentGroup = jQuery(this);
         var id = currentGroup.attr("id");
-        var data = currentGroup.data(kradVariables.VALIDATION_MESSAGES);
+        var data = getValidationData(currentGroup, true);
 
         if (data) {
             var messageMap = data.messageMap;
@@ -797,7 +839,7 @@ function generateSectionLevelMessages(id, data, newList) {
         }
 
         jQuery("#" + id).find("div[data-parent='" + id + "']").not("div[data-role='InputField']").each(function () {
-            var groupData = jQuery(this).data(kradVariables.VALIDATION_MESSAGES);
+            var groupData = getValidationData(jQuery(this), true);
             if (groupData && !groupData.isSection) {
                 newList = generateSectionLevelMessages(jQuery(this).attr("id"), groupData, newList);
             }
@@ -856,7 +898,7 @@ function recursiveGroupMessageCount(parentId) {
     }
 
     jQuery("#" + parentId).find("div[data-parent='" + parentId + "']").not("div[data-role='InputField']").each(function () {
-        var groupData = jQuery(this).data(kradVariables.VALIDATION_MESSAGES);
+        var groupData = getValidationData(jQuery(this), true);
         if (groupData) {
             data.errorTotal = data.errorTotal + groupData.serverErrors.length + (groupData.errors ? groupData.errors.length : 0);
             data.warningTotal = data.warningTotal + groupData.serverWarnings.length + (groupData.warnings ? groupData.warnings.length : 0);
@@ -991,11 +1033,11 @@ function clearMessages(messagesForId, hide) {
 
 /**
  * Write the new messages to the messages div
- * @param messagesForId - id of the group or field to write messages for
+ * @param messagesForId - id of the group to write messages for
  * @param newList - the new content to write
  */
 function writeMessages(messagesForId, newList) {
-    var data = jQuery("#" + messagesForId).data(kradVariables.VALIDATION_MESSAGES);
+    var data = getValidationData(jQuery("#" + messagesForId), true);
     var messagesDiv = jQuery("[data-messages_for='" + messagesForId + "']");
     if (newList.children().length && data.displayMessages) {
         jQuery(messagesDiv).show();
@@ -1063,7 +1105,7 @@ function generateListItems(messageArray, itemClass, startIndex, focusable, image
  * @param newList - the ul being built by this call
  */
 function generateSummaries(id, messageMap, sections, order, newList) {
-    var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
+    var data = getValidationData(jQuery("#" + id), true);
     //if no nested sections just output the fieldLinks
     if (sections.length == 0) {
         for (var key in messageMap) {
@@ -1538,7 +1580,7 @@ function generateSummaryLink(sectionId) {
         sectionId = jQuery("#" + sectionId).data("group");
     }
 
-    var sectionData = jQuery("#" + sectionId).data(kradVariables.VALIDATION_MESSAGES);
+    var sectionData = getValidationData(jQuery("#" + sectionId), true);
     var summaryLink = null;
     var summaryMessage = "";
     var image = "";

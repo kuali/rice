@@ -171,6 +171,29 @@ public class ScriptUtils {
     }
 
     /**
+     * Converts a map of string values to a json equivalent by converting the string values through the
+     * convertToJsValue(String) method; this will output a string representation of the map
+     * in json format
+     *
+     * @param stringMap the map of String values to convert to a simple json object representation
+     * @return the json object as a string (for use in js)
+     */
+    public static String convertToJsValue(Map<String,String> stringMap){
+        if (stringMap == null || stringMap.isEmpty()){
+            return "{}";
+        }
+
+        String convertedValue = "{";
+        for (String key: stringMap.keySet()){
+            convertedValue = convertedValue + "\"" + key + "\":" + convertToJsValue(stringMap.get(key)) + ",";
+        }
+        convertedValue = StringUtils.removeEnd(convertedValue, ",");
+        convertedValue = convertedValue + "}";
+
+        return convertedValue;
+    }
+
+    /**
      * Convert a string to a javascript value - especially for use for options used to initialize widgets such as the
      * tree and rich table
      *

@@ -49,7 +49,7 @@ public abstract class PersonAbstractSmokeTestBase extends AdminTmplMthdSTNavBase
     }
    
     public void testPersonBookmark(Failable failable) throws Exception {
-        //Create New Permission
+        //Create New Person
         selectFrame("iframeportlet");
         waitAndCreateNew();
         List<String> params;

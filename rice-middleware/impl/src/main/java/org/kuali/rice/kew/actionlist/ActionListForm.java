@@ -43,13 +43,18 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * Struts form for action ActionListAction
+ * Action List form implementation for the action list.
+ *
+ * <p>
+ *   Holds properties necessary to determine the {@code View} instance that
+ *   will be used to render the UI for the action list.
+ * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionListForm extends UifFormBase {
 
-    private static final long serialVersionUID = -6246391732337228007L;
+    private static final long serialVersionUID = -6246391732337228107L;
 
     private String delegator;
     private String methodToCall = "";
@@ -68,40 +73,22 @@ public class ActionListForm extends UifFormBase {
     private Boolean documentPopup;
     private List<WebFriendlyRecipient> primaryDelegates;
     private String primaryDelegateId;
-
     private Boolean hasDisplayParameters;
 
-    // "sticky" parameters for paginated action list
-    private Integer currentPage;
-    private String currentSort;
-    private String currentDir;
-
-    // parameters for paginated action list
-    private Integer page;
-    private String sort;
-    private String dir;
-
-    private int count;
     private String cssFile = "kuali.css";
     private String logoAlign = "left";
     private String viewOutbox;
     private String[] outboxItems;
     private boolean outBoxEmpty;
     private Boolean showOutbox;
-    //private List<ExtraButton> headerButtons = new ArrayList<ExtraButton>();
-
-
 
     //moved from session
-    private String sortCriteria;
     private boolean requeryActionList;
     private Preferences preferences;
     private boolean updateActionList;
-    private PaginatedList actionListPage;
     private boolean outBoxMode;
     private Principal helpDeskActionListPrincipal;
     private Person helpDeskActionListPerson;
-
 
     //moved from filter
     private static String CREATE_DATE_FROM = "createDateFrom";
@@ -119,10 +106,6 @@ public class ActionListForm extends UifFormBase {
     private String docTypeFullName;
     private List userWorkgroups;
 
-    //filter = new ActionListFilter();
-
-
-
     public String getCreateDateTo() {
         return createDateTo;
     }
@@ -134,9 +117,11 @@ public class ActionListForm extends UifFormBase {
             this.createDateTo = createDateTo.trim();
         }
     }
+
     public String getLastAssignedDateFrom() {
         return lastAssignedDateFrom;
     }
+
     public void setLastAssignedDateFrom(String lastAssignedDateFrom) {
         if(lastAssignedDateFrom == null){
             lastAssignedDateFrom = "";
@@ -145,9 +130,11 @@ public class ActionListForm extends UifFormBase {
             this.lastAssignedDateFrom = lastAssignedDateFrom.trim();
         }
     }
+
     public String getCreateDateFrom() {
         return createDateFrom;
     }
+
     public void setCreateDateFrom(String createDate) {
         if(createDate == null){
             createDate = "";
@@ -162,11 +149,6 @@ public class ActionListForm extends UifFormBase {
     }
 
     public void setFilter(ActionListFilter filter) {
-
-//        if(this.filter==null) {
-//            filter = new ActionListFilter();
-//        }
-
         this.filter = filter;
         if (filter.getCreateDateFrom() != null) {
             setCreateDateFrom(RiceConstants.getDefaultDateFormat().format(filter.getCreateDateFrom()));
@@ -308,14 +290,6 @@ public class ActionListForm extends UifFormBase {
         this.helpDeskActionListPerson = helpDeskActionListPerson;
     }
 
-    public PaginatedList getActionListPage() {
-        return actionListPage;
-    }
-
-    public void setActionListPage(PaginatedList actionListPage) {
-        this.actionListPage = actionListPage;
-    }
-
     public boolean isOutBoxMode() {
         return outBoxMode;
     }
@@ -324,26 +298,12 @@ public class ActionListForm extends UifFormBase {
         this.outBoxMode = outBoxMode;
     }
 
-    public void setCount(Integer count) {
-        this.count = count;
+    public void setUser(String user) {
+        this.user = user;
     }
-
-    public String getMaxActionItemDateAssigned() {
-        return maxActionItemDateAssigned;
-    }
-
-    public void setMaxActionItemDateAssigned(String maxActionItemDateAssigned) {
-        this.maxActionItemDateAssigned = maxActionItemDateAssigned;
-    }
-
-    private String maxActionItemDateAssigned;
 
     public String getUser() {
         return user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
     }
 
     private String user;
@@ -399,14 +359,6 @@ public class ActionListForm extends UifFormBase {
 
     public void setUpdateActionList(boolean updateActionList) {
         this.updateActionList = updateActionList;
-    }
-
-    public String getSortCriteria() {
-        return sortCriteria;
-    }
-
-    public void setSortCriteria(String sortCriteria) {
-        this.sortCriteria = sortCriteria;
     }
 
     public String getHelpDeskActionListUserName() {
@@ -525,62 +477,6 @@ public class ActionListForm extends UifFormBase {
         this.hasCustomActions = hasCustomActions;
     }
 
-    public String getDir() {
-        return dir;
-    }
-
-    public void setDir(String dir) {
-        this.dir = dir;
-    }
-
-    public Integer getPage() {
-        return page;
-    }
-
-    public void setPage(Integer page) {
-        this.page = page;
-    }
-
-    public String getSort() {
-        return sort;
-    }
-
-    public void setSort(String sort) {
-        this.sort = sort;
-    }
-
-    public Integer getCurrentPage() {
-        return currentPage;
-    }
-
-    public void setCurrentPage(Integer currentPage) {
-        this.currentPage = currentPage;
-    }
-
-    public String getCurrentDir() {
-        return currentDir;
-    }
-
-    public void setCurrentDir(String currentDir) {
-        this.currentDir = currentDir;
-    }
-
-    public String getCurrentSort() {
-        return currentSort;
-    }
-
-    public void setCurrentSort(String currentSort) {
-        this.currentSort = currentSort;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
     public String getCssFile() {
         return cssFile;
     }
@@ -629,14 +525,6 @@ public class ActionListForm extends UifFormBase {
         this.showOutbox = showOutbox;
     }
 
-//    public List<ExtraButton> getHeaderButtons() {
-//        return this.headerButtons;
-//    }
-//
-//    public void setHeaderButtons(List<ExtraButton> headerButtons) {
-//        this.headerButtons = headerButtons;
-//    }
-
     public String getMenuBar() {
         String url = "";
         Properties parameters = new Properties();
@@ -647,18 +535,15 @@ public class ActionListForm extends UifFormBase {
                 + "\"><img src=\""
                 + krBaseUrl
                 + "/images/tinybutton-preferences.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
+
         return url;
     }
-
 
     @Override
     public void postBind(HttpServletRequest request) {
 
         //add the preferences to the form
         setPreferences((Preferences)(GlobalVariables.getUserSession().retrieveObject(KewApiConstants.PREFERENCES)));
-
-
-
 
         String principalId = GlobalVariables.getUserSession().getPrincipalId();
         final Principal hdalPrinc = (Principal) GlobalVariables.getUserSession().retrieveObject(
@@ -724,6 +609,7 @@ public class ActionListForm extends UifFormBase {
             apiActionItems.add(
                     org.kuali.rice.kew.api.action.ActionItem.Builder.create(actionItemObj).build());
         }
+
         return apiActionItems;
     }
 }

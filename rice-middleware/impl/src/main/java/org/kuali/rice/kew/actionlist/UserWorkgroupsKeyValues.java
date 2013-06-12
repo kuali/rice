@@ -46,10 +46,11 @@ public class UserWorkgroupsKeyValues extends UifKeyValuesFinderBase {
         KeyValue keyValue = null;
         keyValue = new ConcreteKeyValue(KewApiConstants.NO_FILTERING, KewApiConstants.NO_FILTERING);
         sortedUserWorkgroups.add(keyValue);
+
         if (userGroupsToSort != null && userGroupsToSort.size() > 0) {
             Collections.sort(userGroupsToSort);
-
             Group group;
+
             for (String groupId : userGroupsToSort)
             {
                 group = KimApiServiceLocator.getGroupService().getGroup(groupId);
@@ -57,6 +58,7 @@ public class UserWorkgroupsKeyValues extends UifKeyValuesFinderBase {
                 sortedUserWorkgroups.add(keyValue);
             }
         }
+
         return sortedUserWorkgroups;
     }
 

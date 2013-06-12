@@ -3971,6 +3971,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         jiraAwareWaitAndClick(By.cssSelector(locator), message);
     }
 
+    protected void waitAndClickButtonByText(String buttonText) throws InterruptedException {
+        waitAndClickByXpath("//button[contains(text(), '" + buttonText + "')]");
+    }
+
     protected void waitAndClickByLinkText(String text) throws InterruptedException {
         jiraAwareWaitAndClick(By.linkText(text), "");
     }

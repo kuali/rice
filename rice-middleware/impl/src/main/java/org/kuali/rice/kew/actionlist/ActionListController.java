@@ -53,6 +53,7 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.web.ui.ExtraButton;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.exception.AuthorizationException;
+import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.springframework.stereotype.Controller;
@@ -81,29 +82,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * A controller for the action list view.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 @Controller
 @RequestMapping(value = "/new/actionList")
 public class ActionListController extends UifControllerBase{
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionListController.class);
     protected static final String MAX_ACTION_ITEM_DATE_FORMAT = "yyyy-MM-dd hh:mm:ss.S";
-
-    //private static final String ACTION_LIST_KEY = "actionList";
-    //private static final String ACTION_LIST_PAGE_KEY = "actionListPage";
-    //private static final String ACTION_LIST_USER_KEY = "actionList.user";
-    /*private static final String REQUERY_ACTION_LIST_KEY = "requeryActionList";*/
-    //private static final String ACTION_ITEM_COUNT_FOR_USER_KEY = "actionList.count";
-    //private static final String MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY = "actionList.maxActionItemDateAssigned";
-
-    //private static final String ACTIONREQUESTCD_PROP = "actionRequestCd";
-    //private static final String CUSTOMACTIONLIST_PROP = "customActionList";
-   //private static final String ACTIONITEM_PROP = "actionitem";
-    //private static final String HELPDESK_ACTIONLIST_USERNAME = "helpDeskActionListUserName";
-
-    //private static final String ACTIONITEM_ACTIONREQUESTCD_INVALID_ERRKEY = "actionitem.actionrequestcd.invalid";
-    //private static final String ACTIONLIST_BAD_CUSTOM_ACTION_LIST_ITEMS_ERRKEY = "actionlist.badCustomActionListItems";
-   // private static final String ACTIONLIST_BAD_ACTION_ITEMS_ERRKEY = "actionlist.badActionItems";
-   // private static final String HELPDESK_LOGIN_EMPTY_ERRKEY = "helpdesk.login.empty";
-    //private static final String HELPDESK_LOGIN_INVALID_ERRKEY = "helpdesk.login.invalid";
 
     private static final ActionType [] actionListActionTypes =
             { ActionType.APPROVE, ActionType.DISAPPROVE, ActionType.CANCEL, ActionType.ACKNOWLEDGE, ActionType.FYI };
@@ -113,162 +101,206 @@ public class ActionListController extends UifControllerBase{
         return new ActionListForm();
     }
 
-    private List<ExtraButton> getHeaderButtons(){
-        List<ExtraButton> headerButtons = new ArrayList<ExtraButton>();
-        ExtraButton eb = new ExtraButton();
-        String krBaseUrl = ConfigContext.getCurrentContextConfig().getKRBaseURL();
-        eb.setExtraButtonSource( krBaseUrl + "/images/tinybutton-preferences.gif");
-        eb.setExtraButtonOnclick("Preferences.do?returnMapping=viewActionList");
-
-        headerButtons.add(eb);
-        eb = new ExtraButton();
-        eb.setExtraButtonSource(krBaseUrl + "/images/tinybutton-refresh.gif");
-        eb.setExtraButtonProperty("methodToCall.refresh");
-
-        headerButtons.add(eb);
-        eb = new ExtraButton();
-        eb.setExtraButtonSource(krBaseUrl + "/images/tinybutton-filter.gif");
-        eb.setExtraButtonOnclick("javascript: window.open('ActionListFilter.do?methodToCall=start');");
-        headerButtons.add(eb);
-
-        return headerButtons;
-    }
-
+    /**
+    * Refresh request mapping.
+    *
+    * <p>
+    * Handles requests where the methodToCall parameter
+    * is 'refresh'.
+    * </p>
+    *
+    * @param form - ActionListForm form
+    * @param result - Spring form binding result
+    * @param request - http request
+    * @param response - http response
+    * @return start - forwards to start method
+    */
     @RequestMapping(params = "methodToCall=refresh")
     public ModelAndView refresh(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response){
         ActionListForm actionListForm = (ActionListForm)form;
-        //replaced  request.getSession().setAttribute(KewApiConstants.REQUERY_ACTION_LIST_KEY, "true");
         actionListForm.setRequeryActionList(true);
+
         return start(form,result,request,response);
     }
 
+    /**
+    * Initializes filter.
+    *
+    * <p>
+    * Sets up the action list filter
+    * </p>
+    *
+    * @param form - ActionListForm form
+    */
+    protected void initializeFilter(ActionListForm form) {
+        if (form.getFilter() == null) {
+            ActionListFilter filter = new ActionListFilter();
+            filter.setDelegationType(DelegationType.SECONDARY.getCode());
+            filter.setExcludeDelegationType(true);
+            form.setFilter(filter);
+        }
+    }
+
+    /**
+    * Initializes principal id.
+    *
+    * <p>
+    * Sets up the principal id in the form.
+    * </p>
+    *
+    * @param actionListForm - ActionListForm form
+    * @param filter - action list filter
+    * @return String
+    */
+    protected String initializePrinicpalId(ActionListForm actionListForm,ActionListFilter filter) {
+        String principalId = null;
+        Principal principal = actionListForm.getHelpDeskActionListPrincipal();
+        if (principal != null) {
+            principalId = principal.getPrincipalId();
+        } else {
+            if (!StringUtils.isEmpty(actionListForm.getDocType())) {
+                initializeDocType(actionListForm,filter);
+            }
+            final UserSession uSession = getUserSession();
+            principalId = uSession.getPerson().getPrincipalId();
+        }
+
+        return principalId;
+    }
+
+    /**
+    * Initializes Document Type.
+    *
+    * <p>
+    * Sets up the document type in the form.
+    * </p>
+    *
+    * @param actionListForm - ActionListForm form
+    * @param filter - action list filter
+    * @return void
+    */
+    protected void initializeDocType(ActionListForm actionListForm,ActionListFilter filter) {
+        filter.setDocumentType(actionListForm.getDocType());
+        filter.setExcludeDocumentType(false);
+        actionListForm.setRequeryActionList(true);
+    }
+
+    /**
+    * Initializes Delegates.
+    *
+    * <p>
+    * Sets up the primary delegator and primary delegates in the form.
+    * </p>
+    *
+    * @param actionListForm - ActionListForm form
+    * @param filter - action list filter
+    * @param actionList - list of action items
+    * @param request - http request
+    * @return void
+    */
+    protected void initializeDelegates(ActionListForm actionListForm,ActionListFilter filter,List<? extends ActionItemActionListExtension> actionList,HttpServletRequest request)   {
+        //**** initialize delegateId
+        if (!StringUtils.isEmpty(actionListForm.getDelegationId())) {
+            if (!KewApiConstants.DELEGATION_DEFAULT.equals(actionListForm.getDelegationId())) {
+                // If the user can filter by both primary and secondary delegation, and both drop-downs have non-default values assigned,
+                // then reset the primary delegation drop-down's value when the primary delegation drop-down's value has remained unaltered
+                // but the secondary drop-down's value has been altered; but if one of these alteration situations does not apply, reset the
+                // secondary delegation drop-down.
+
+                if (StringUtils.isNotBlank(actionListForm.getPrimaryDelegateId()) && !KewApiConstants.PRIMARY_DELEGATION_DEFAULT.equals(actionListForm.getPrimaryDelegateId())){
+                    if (actionListForm.getPrimaryDelegateId().equals(request.getParameter("oldPrimaryDelegateId")) &&
+                            !actionListForm.getDelegationId().equals(request.getParameter("oldDelegationId"))) {
+                        actionListForm.setPrimaryDelegateId(KewApiConstants.PRIMARY_DELEGATION_DEFAULT);
+                    } else {
+                        actionListForm.setDelegationId(KewApiConstants.DELEGATION_DEFAULT);
+                    }
+                } else if (StringUtils.isNotBlank(filter.getPrimaryDelegateId()) &&
+                        !KewApiConstants.PRIMARY_DELEGATION_DEFAULT.equals(filter.getPrimaryDelegateId())) {
+                    // If the primary delegation drop-down is invisible but a primary delegation filter is in place, and if the secondary delegation
+                    // drop-down has a non-default value selected, then reset the primary delegation filtering.
+                    filter.setPrimaryDelegateId(KewApiConstants.PRIMARY_DELEGATION_DEFAULT);
+                }
+            }
+            // Enable the secondary delegation filtering.
+            filter.setDelegatorId(actionListForm.getDelegationId());
+            filter.setExcludeDelegatorId(false);
+            actionList = null;
+        }
+
+        //**** initialize primary delegate
+        if (!StringUtils.isEmpty(actionListForm.getPrimaryDelegateId())) {
+
+            // If the secondary delegation drop-down is invisible but a secondary delegation filter is in place, and if the primary delegation
+            // drop-down has a non-default value selected, then reset the secondary delegation filtering.
+            if (StringUtils.isBlank(actionListForm.getDelegationId()) && !KewApiConstants.PRIMARY_DELEGATION_DEFAULT.equals(actionListForm.getPrimaryDelegateId()) &&
+                    StringUtils.isNotBlank(filter.getDelegatorId()) &&
+                    !KewApiConstants.DELEGATION_DEFAULT.equals(filter.getDelegatorId())) {
+                filter.setDelegatorId(KewApiConstants.DELEGATION_DEFAULT);
+            }
+
+            // Enable the primary delegation filtering.
+            filter.setPrimaryDelegateId(actionListForm.getPrimaryDelegateId());
+            filter.setExcludeDelegatorId(false);
+            actionList = null;
+        }
+
+    }
+
+    /**
+    * Start request mapping.
+    *
+    * <p>
+    * Handles requests where the methodToCall parameter
+    * is 'start'.  Runs on most requests and sets up the
+    * basic variables.
+    * </p>
+    *
+    * @param form - ActionListForm form
+    * @param result - Spring form binding result
+    * @param request - http request
+    * @param response - http response
+    * @return ModelAndView - uses standard KRAD getUIFModelAndView()
+    */
     @Override
     @RequestMapping(params = "methodToCall=start")
     public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         ActionListForm actionListForm = (ActionListForm)form;
         request.setAttribute("preferences", actionListForm.getPreferences());
-        //actionListForm.setHeaderButtons(getHeaderButtons());
 
         PerformanceLogger plog = new PerformanceLogger();
         plog.log("Starting ActionList fetch");
         ActionListService actionListSrv = KEWServiceLocator.getActionListService();
 
-        // process display tag parameters
-        Integer page = actionListForm.getPage();
-        String sortCriterion = actionListForm.getSort();
-        SortOrderEnum sortOrder = SortOrderEnum.ASCENDING;
-
-        if (actionListForm.getDir() != null) {
-            try {
-                sortOrder = parseSortOrder(actionListForm.getDir());
-            }
-            catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        // if both the page and the sort criteria are null, that means its the first entry into the page, use defaults
-        if (page == null && sortCriterion == null) {
-            page = 1;
-            sortCriterion = ActionItemComparator.ACTION_LIST_DEFAULT_SORT;
-        }
-        else if ( !StringUtils.isEmpty(actionListForm.getSortCriteria()))     {
-            sortCriterion = actionListForm.getSortCriteria();
-        }
-        // if the page is still null, that means the user just performed a sort action, pull the currentPage off of the form
-        if (page == null) {
-            page = actionListForm.getCurrentPage();
-        }
-
-        // update the values of the "current" display tag parameters
-        actionListForm.setCurrentPage(page);
-        if (!StringUtils.isEmpty(sortCriterion)) {
-            actionListForm.setCurrentSort(sortCriterion);
-            actionListForm.setCurrentDir(getSortOrderValue(sortOrder));
-        }
-
         // reset the default action on the form
         actionListForm.setDefaultActionToTake("NONE");
-
         boolean freshActionList = true;
+
         // retrieve cached action list
         List<? extends ActionItemActionListExtension> actionList = (List<? extends ActionItemActionListExtension>)actionListForm.getActionList();
         plog.log("Time to initialize");
-        try {
-            String principalId = null;
-            if (actionListForm.getFilter() == null) {
-                ActionListFilter filter = new ActionListFilter();
-                filter.setDelegationType(DelegationType.SECONDARY.getCode());
-                filter.setExcludeDelegationType(true);
-                actionListForm.setFilter(filter);
-            }
 
+
+        try {
+
+            initializeFilter(actionListForm);
             final ActionListFilter filter = actionListForm.getFilter();
+
+            String principalId = initializePrinicpalId(actionListForm,filter);
+
             /* 'forceListRefresh' variable used to signify that the action list filter has changed
              * any time the filter changes the action list must be refreshed or filter may not take effect on existing
              * list items... only exception is if action list has not loaded previous and fetching of the list has not
              * occurred yet
              */
             boolean forceListRefresh = actionListForm.isRequeryActionList();
-            Principal principal = actionListForm.getHelpDeskActionListPrincipal();
-            if (principal != null) {
-                principalId = principal.getPrincipalId();
-            } else {
-                if (!StringUtils.isEmpty(actionListForm.getDocType())) {
-                    filter.setDocumentType(actionListForm.getDocType());
-                    filter.setExcludeDocumentType(false);
-                    forceListRefresh = true;
-                }
-                final UserSession uSession = getUserSession();
-                principalId = uSession.getPerson().getPrincipalId();
-            }
 
             final Preferences preferences = (Preferences)actionListForm.getPreferences();
 
-            if (!StringUtils.isEmpty(actionListForm.getDelegationId())) {
-                if (!KewApiConstants.DELEGATION_DEFAULT.equals(actionListForm.getDelegationId())) {
-                    // If the user can filter by both primary and secondary delegation, and both drop-downs have non-default values assigned,
-                    // then reset the primary delegation drop-down's value when the primary delegation drop-down's value has remained unaltered
-                    // but the secondary drop-down's value has been altered; but if one of these alteration situations does not apply, reset the
-                    // secondary delegation drop-down.
-                    if (StringUtils.isNotBlank(actionListForm.getPrimaryDelegateId()) && !KewApiConstants.PRIMARY_DELEGATION_DEFAULT.equals(actionListForm.getPrimaryDelegateId())){
-                        if (actionListForm.getPrimaryDelegateId().equals(request.getParameter("oldPrimaryDelegateId")) &&
-                                !actionListForm.getDelegationId().equals(request.getParameter("oldDelegationId"))) {
-                            actionListForm.setPrimaryDelegateId(KewApiConstants.PRIMARY_DELEGATION_DEFAULT);
-                        } else {
-                            actionListForm.setDelegationId(KewApiConstants.DELEGATION_DEFAULT);
-                        }
-                    } else if (StringUtils.isNotBlank(filter.getPrimaryDelegateId()) &&
-                            !KewApiConstants.PRIMARY_DELEGATION_DEFAULT.equals(filter.getPrimaryDelegateId())) {
-                        // If the primary delegation drop-down is invisible but a primary delegation filter is in place, and if the secondary delegation
-                        // drop-down has a non-default value selected, then reset the primary delegation filtering.
-                        filter.setPrimaryDelegateId(KewApiConstants.PRIMARY_DELEGATION_DEFAULT);
-                    }
-                }
-                // Enable the secondary delegation filtering.
-                filter.setDelegatorId(actionListForm.getDelegationId());
-                filter.setExcludeDelegatorId(false);
-                actionList = null;
-            }
-
-            if (!StringUtils.isEmpty(actionListForm.getPrimaryDelegateId())) {
-                // If the secondary delegation drop-down is invisible but a secondary delegation filter is in place, and if the primary delegation
-                // drop-down has a non-default value selected, then reset the secondary delegation filtering.
-                if (StringUtils.isBlank(actionListForm.getDelegationId()) && !KewApiConstants.PRIMARY_DELEGATION_DEFAULT.equals(actionListForm.getPrimaryDelegateId()) &&
-                        StringUtils.isNotBlank(filter.getDelegatorId()) &&
-                        !KewApiConstants.DELEGATION_DEFAULT.equals(filter.getDelegatorId())) {
-                    filter.setDelegatorId(KewApiConstants.DELEGATION_DEFAULT);
-                }
-                // Enable the primary delegation filtering.
-                filter.setPrimaryDelegateId(actionListForm.getPrimaryDelegateId());
-                filter.setExcludeDelegatorId(false);
-                actionList = null;
-            }
+            initializeDelegates(actionListForm,filter,actionList,request);
 
             // if the user has changed, we need to refresh the action list
-
             if (!principalId.equals(actionListForm.getUser())) {
                 actionList = null;
             }
@@ -280,61 +312,22 @@ public class ActionListController extends UifControllerBase{
                 actionListForm.setActionList((ArrayList) actionList);
             } else {
 
-                SimpleDateFormat dFormatter = new SimpleDateFormat(MAX_ACTION_ITEM_DATE_FORMAT);
                 if (actionList == null) {
-                    List<Object> countAndMaxDate = actionListSrv.getMaxActionItemDateAssignedAndCountForUser(principalId);
-                    if (countAndMaxDate.isEmpty() || countAndMaxDate.get(0) == null ) {
-                        if (countAndMaxDate.isEmpty()) {
-                            countAndMaxDate.add(0, new Date(0));
-                            countAndMaxDate.add(1, 0);
-                        } else {
-                            countAndMaxDate.set(0, new Date(0));
-                        }
-                    }
-                    //request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, dFormatter.format(countAndMaxDate.get(0)));
-                    actionListForm.setMaxActionItemDateAssigned(dFormatter.format(countAndMaxDate.get(0)));
-
-                    //request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, (Integer)countAndMaxDate.get(1));
-                    actionListForm.setCount((Integer)countAndMaxDate.get(1));
-
                     // fetch the action list
                     actionList = new ArrayList<ActionItemActionListExtension>(actionListSrv.getActionList(principalId, filter));
-
-                    //request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
                     actionListForm.setUser(principalId);
                 } else if (forceListRefresh) {
                     // force a refresh... usually based on filter change or parameter specifying refresh needed
                     actionList = new ArrayList<ActionItemActionListExtension>(actionListSrv.getActionList(principalId, filter));
-                    //request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
                     actionListForm.setUser(principalId);
-                    List<Object> countAndMaxDate = actionListSrv.getMaxActionItemDateAssignedAndCountForUser(principalId);
-                    if (countAndMaxDate.isEmpty() || countAndMaxDate.get(0) == null ) {
-                        if (countAndMaxDate.isEmpty()) {
-                            countAndMaxDate.add(0, new Date(0));
-                            countAndMaxDate.add(1, 0);
-                        } else {
-                            countAndMaxDate.set(0, new Date(0));
-                        }
-                    }
-                    //request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, dFormatter.format(countAndMaxDate.get(0)));
-                    actionListForm.setMaxActionItemDateAssigned(dFormatter.format(countAndMaxDate.get(0)));
-                    //request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, (Integer)countAndMaxDate.get(1));
-                    actionListForm.setCount((Integer)countAndMaxDate.get(1));
-
-                }else if (refreshList(actionListForm,principalId)){
-                    actionList = new ArrayList<ActionItemActionListExtension>(actionListSrv.getActionList(principalId, filter));
-                    //request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
-                    actionListForm.setUser(principalId);
-
                 } else {
                     Boolean update = actionListForm.isUpdateActionList();
                 }
 
                 actionListForm.setActionList((ArrayList) actionList);
-
             }
+
             // reset the requery action list key
-            //request.getSession().setAttribute(KewApiConstants.REQUERY_ACTION_LIST_KEY, null);
             actionListForm.setRequeryActionList(false);
 
             // build the drop-down of delegators
@@ -355,31 +348,17 @@ public class ActionListController extends UifControllerBase{
             plog.log("Setting attributes");
 
             int pageSize = getPageSize(preferences);
+
             // initialize the action list if necessary
             if (freshActionList) {
                 plog.log("calling initializeActionList");
                 initializeActionList(actionList, preferences);
                 plog.log("done w/ initializeActionList");
-                // put this in to resolve EN-112 (http://beatles.uits.indiana.edu:8081/jira/browse/EN-112)
-                // if the action list gets "refreshed" in between page switches, we need to be sure and re-sort it, even though we don't have sort criteria on the request
-                if (sortCriterion == null) {
-                    sortCriterion = actionListForm.getCurrentSort();
-                    sortOrder = parseSortOrder(actionListForm.getCurrentDir());
-                }
-            }
-            // sort the action list if necessary
-            if (sortCriterion != null) {
-                sortActionList(actionList, sortCriterion, sortOrder);
             }
 
-            plog.log("calling buildCurrentPage");
-            PaginatedList currentPage = buildCurrentPage(actionList, actionListForm.getCurrentPage(), actionListForm.getCurrentSort(),
-                    actionListForm.getCurrentDir(), pageSize, preferences, actionListForm);
-            plog.log("done w/ buildCurrentPage");
-
-            //request.setAttribute(ACTION_LIST_PAGE_KEY, currentPage);
-            actionListForm.setActionListPage(currentPage);
-
+            plog.log("start addActions");
+            addCustomActions(actionList,preferences,actionListForm);
+            plog.log("done w/ addCustomActions");
             actionListForm.setUpdateActionList(false);
             plog.log("finished setting attributes, finishing action list fetch");
         } catch (Exception e) {
@@ -397,113 +376,35 @@ public class ActionListController extends UifControllerBase{
         return getUIFModelAndView(actionListForm,returnPage);
     }
 
-    /**
-     * Sets the maxActionItemDate and actionItemcount for user in the session
-     * @param form
-     * @param principalId
-     * @param actionListSrv
-     */
-    private void setCountAndMaxDate(ActionListForm form,String principalId,ActionListService actionListSrv ){
-        SimpleDateFormat dFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.S");
-        List<Object> countAndMaxDate = actionListSrv.getMaxActionItemDateAssignedAndCountForUser(principalId);
-        String maxActionItemDateAssignedForUserKey = "";
-        if(countAndMaxDate.get(0)!= null){
-            maxActionItemDateAssignedForUserKey = dFormatter.format(countAndMaxDate.get(0));
-        }
-        //request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, maxActionItemDateAssignedForUserKey);
-        form.setMaxActionItemDateAssigned(maxActionItemDateAssignedForUserKey);
-        //request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, (Integer)countAndMaxDate.get(1));
-        form.setCount((Integer)countAndMaxDate.get(1));
-    }
-
-    private boolean refreshList(ActionListForm form,String principalId ){
-        List<Object> maxActionItemDateAssignedAndCount = KEWServiceLocator.getActionListService().getMaxActionItemDateAssignedAndCountForUser(
-                principalId);
-        int count = (Integer) maxActionItemDateAssignedAndCount.get(1);
-        int previousCount = 0;
-        //Object actionItemCountFromSession = request.getSession().getAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY);
-        Object actionItemCountFromSession = form.getCount();
-        if ( actionItemCountFromSession != null ) {
-            previousCount = Integer.parseInt(actionItemCountFromSession.toString());
-        }
-        SimpleDateFormat dFormatter = new SimpleDateFormat(MAX_ACTION_ITEM_DATE_FORMAT);
-        Date maxActionItemDateAssigned = (Date) maxActionItemDateAssignedAndCount.get(0);
-        if ( maxActionItemDateAssigned == null ) {
-            maxActionItemDateAssigned = new Date(0);
-        }
-        Date previousMaxActionItemDateAssigned= null;
-        try{
-            //Object dateAttributeFromSession = request.getSession().getAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY);
-            Object dateAttributeFromSession = form.getMaxActionItemDateAssigned();
-            if ( dateAttributeFromSession != null ) {
-                previousMaxActionItemDateAssigned = dFormatter.parse(dateAttributeFromSession.toString());
-            }
-        } catch (ParseException e){
-            LOG.warn( "maximum item date assigned in session did not have expected date format.  "
-                    + "Was: " + form.getMaxActionItemDateAssigned(), e );
-        }
-        if(previousCount!= count){
-            //request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, dFormatter.format(
-            //        maxActionItemDateAssigned));
-            form.setMaxActionItemDateAssigned(dFormatter.format(maxActionItemDateAssigned));
-            //request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, count);
-            form.setCount(count);
-            return true;
-        }else if(previousMaxActionItemDateAssigned == null || previousMaxActionItemDateAssigned.compareTo(maxActionItemDateAssigned)!=0){
-            //request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, dFormatter.format(
-            //        maxActionItemDateAssigned));
-            form.setMaxActionItemDateAssigned(dFormatter.format(maxActionItemDateAssigned));
-            //request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, count);
-            form.setCount(count);
-            return true;
-        } else{
-            return false;
-        }
-
-    }
-
-    private SortOrderEnum parseSortOrder(String dir) throws WorkflowException {
-        if ("asc".equals(dir)) {
-            return SortOrderEnum.ASCENDING;
-        } else if ("desc".equals(dir)) {
-            return SortOrderEnum.DESCENDING;
-        }
-        throw new WorkflowException("Invalid sort direction: " + dir);
-    }
-
-    private String getSortOrderValue(SortOrderEnum sortOrder) {
-        if (SortOrderEnum.ASCENDING.equals(sortOrder)) {
-            return "asc";
-        } else if (SortOrderEnum.DESCENDING.equals(sortOrder)) {
-            return "desc";
-        }
-        return null;
-    }
-
     private static final String OUT_BOX_MODE = "_OUT_BOX_MODE";
 
     /**
-     * this method is setting 2 props on the {@link org.kuali.rice.kew.actionlist.web.ActionListForm} that controls outbox behavior.
-     *  alForm.setViewOutbox("false"); -> this is set by user preferences and the actionlist.outbox.off config prop
-     *  alForm.setShowOutbox(false); -> this is set by user action clicking the ActionList vs. Outbox links.
-     *
-     * @param alForm
-     * @param request
-     * @return boolean indication whether the outbox should be fetched
-     */
+    *  Determines whether the page is in outbox mode.
+    *
+    *  <p>
+    *  This method is setting 2 props on the {@link org.kuali.rice.kew.actionlist.web.ActionListForm} that controls outbox behavior.
+    *  alForm.setViewOutbox("false"); -> this is set by user preferences and the actionlist.outbox.off config prop
+    *  alForm.setShowOutbox(false); -> this is set by user action clicking the ActionList vs. Outbox links.
+    *  </p>
+    *
+    * @param alForm - action list form
+    * @param request - http request
+    * @return boolean indication whether the outbox should be fetched
+    */
     private boolean isOutboxMode(ActionListForm alForm, HttpServletRequest request, Preferences preferences) {
 
         boolean outBoxView = false;
 
         if (! preferences.isUsingOutbox() || ! ConfigContext.getCurrentContextConfig().getOutBoxOn()) {
-            //request.getSession().setAttribute(OUT_BOX_MODE, Boolean.FALSE);
             alForm.setOutBoxMode(Boolean.FALSE);
             alForm.setViewOutbox("false");
             alForm.setShowOutbox(false);
+
             return false;
         }
 
         alForm.setShowOutbox(true);
+
         if (StringUtils.isNotEmpty(alForm.getViewOutbox())) {
             if (!Boolean.valueOf(alForm.getViewOutbox())) {
                 //request.getSession().setAttribute(OUT_BOX_MODE, Boolean.FALSE);
@@ -515,42 +416,34 @@ public class ActionListController extends UifControllerBase{
                 outBoxView = true;
             }
         } else {
-
-//            if (alForm.getOutBoxMode == null) {
-//                outBoxView = false;
-//            } else {
-//                outBoxView = (Boolean) request.getSession().getAttribute(OUT_BOX_MODE);
-//            }
             outBoxView = alForm.isOutBoxMode();
         }
+
         if (outBoxView) {
             alForm.setViewOutbox("true");
         } else {
             alForm.setViewOutbox("false");
         }
+
         return outBoxView;
     }
 
-    private void sortActionList(List<? extends ActionItemActionListExtension> actionList, String sortName, SortOrderEnum sortOrder) {
-        if (StringUtils.isEmpty(sortName)) {
-            return;
-        }
-        Comparator<ActionItemActionListExtension> comparator = new ActionItemComparator(sortName);
-        if (SortOrderEnum.DESCENDING.equals(sortOrder)) {
-            comparator = ComparatorUtils.reversedComparator(comparator);
-        }
-        Collections.sort(actionList, comparator);
-        // re-index the action items
-        int index = 0;
-        for (ActionItemActionListExtension actionItem : actionList) {
-            actionItem.setActionListIndex(index++);
-        }
-    }
-
+    /**
+     *  Initializes the action list.
+     *
+     *  <p>
+     *  Checks for errors in the action list upon initial load.
+     *  </p>
+     *
+     * @param actionList list of action items
+     * @param preferences KEW user preferences
+     * @return void
+     */
     private void initializeActionList(List<? extends ActionItemActionListExtension> actionList, Preferences preferences) {
         List<String> actionItemProblemIds = new ArrayList<String>();
         int index = 0;
         generateActionItemErrors(actionList);
+
         for (Iterator<? extends ActionItemActionListExtension> iterator = actionList.iterator(); iterator.hasNext();) {
             ActionItemActionListExtension actionItem = iterator.next();
             if (actionItem.getDocumentId() == null) {
@@ -558,6 +451,7 @@ public class ActionListController extends UifControllerBase{
                 iterator.remove();
                 continue;
             }
+
             try {
                 actionItem.initialize(preferences);
                 actionItem.setActionListIndex(index);
@@ -570,65 +464,77 @@ public class ActionListController extends UifControllerBase{
                 actionItemProblemIds.add(actionItem.getDocumentId());
             }
         }
+
         generateActionItemErrors("actionitem", "actionlist.badActionItems", actionItemProblemIds);
     }
 
     /**
-     * Gets the page size of the Action List.  Uses the user's preferences for page size unless the action list
-     * has been throttled by an application constant, in which case it uses the smaller of the two values.
-     */
+    *  Get the action list page size.
+    *
+    *  <p>
+    *  Gets the page size of the Action List.  Uses the user's preferences for page size unless the action list
+    *  has been throttled by an application constant, in which case it uses the smaller of the two values.
+    *  </p>
+    *
+    * @param preferences KEW user preferences
+    * @return int
+    */
     protected int getPageSize(Preferences preferences) {
         return Integer.parseInt(preferences.getPageSize());
     }
 
-    protected PaginatedList buildCurrentPage(List<? extends ActionItemActionListExtension> actionList, Integer page, String sortCriterion, String sortDirection,
-            int pageSize, Preferences preferences, ActionListForm form) throws WorkflowException {
-        List<ActionItemActionListExtension> currentPage = new ArrayList<ActionItemActionListExtension>(pageSize);
+    /**
+    *  Adds custom actions to action items.
+    *
+    *  <p>
+    *  Goes through each item in the action list and adds the custom actions.  It also adds flags for whether each
+    *  item has actions.  Finally, creates list of actions and flag for the entire action list.
+    *  </p>
+    *
+    * @param actionList list of action items
+    * @param preferences KEW preferences
+    * @form action list form
+    * @return void
+    */
+    protected void addCustomActions(List<? extends ActionItemActionListExtension> actionList,
+            Preferences preferences, ActionListForm form) throws WorkflowException {
 
         boolean haveCustomActions = false;
         boolean haveDisplayParameters = false;
 
         final boolean showClearFyi = KewApiConstants.PREFERENCES_YES_VAL.equalsIgnoreCase(preferences.getShowClearFyi());
 
-        // collects all the actions for items on this page
+        // collects all the actions for items
         Set<ActionType> pageActions = new HashSet<ActionType>();
 
         List<String> customActionListProblemIds = new ArrayList<String>();
-        SortOrderEnum sortOrder = parseSortOrder(sortDirection);
-        int startIndex = (page - 1) * pageSize;
-        int endIndex = startIndex + pageSize;
         generateActionItemErrors(actionList);
 
         LOG.info("Beginning processing of Action List Customizations (total: " + actionList.size() + " Action Items)");
         long start = System.currentTimeMillis();
-
         Map<String, ActionItemCustomization> customizationMap =
                 getActionListCustomizationMediator().getActionListCustomizations(
                         getUserSession().getPrincipalId(), convertToApiActionItems(actionList)
                 );
-
         long end = System.currentTimeMillis();
         LOG.info("Finished processing of Action List Customizations (total time: " + (end - start) + " ms)");
 
-        for (int index = startIndex; index < endIndex && index < actionList.size(); index++) {
-            ActionItemActionListExtension actionItem = actionList.get(index);
+        for(ActionItemActionListExtension actionItem : actionList ){
             // evaluate custom action list component for mass actions
             try {
                 ActionItemCustomization customization = customizationMap.get(actionItem.getId());
+
                 if (customization != null) {
                     ActionSet actionSet = customization.getActionSet();
 
                     // If only it were this easy: actionItem.setCustomActions(customization.getActionSet());
-
                     Map<String, String> customActions = new LinkedHashMap<String, String>();
                     customActions.put("NONE", "NONE");
 
                     for (ActionType actionType : actionListActionTypes) {
                         if (actionSet.hasAction(actionType.getCode()) &&
                                 isActionCompatibleRequest(actionItem, actionType.getCode())) {
-
                             final boolean isFyi = ActionType.FYI == actionType; // make the conditional easier to read
-
                             if (!isFyi || (isFyi && showClearFyi)) { // deal with special FYI preference
                                 customActions.put(actionType.getCode(), actionType.getLabel());
                                 pageActions.add(actionType);
@@ -642,7 +548,6 @@ public class ActionListController extends UifControllerBase{
                     }
 
                     actionItem.setDisplayParameters(customization.getDisplayParameters());
-
                     haveDisplayParameters = haveDisplayParameters || (actionItem.getDisplayParameters() != null);
                 }
 
@@ -651,7 +556,6 @@ public class ActionListController extends UifControllerBase{
                 LOG.error("Problem loading custom action list attribute", e);
                 customActionListProblemIds.add(actionItem.getDocumentId());
             }
-            currentPage.add(actionItem);
         }
 
         // configure custom actions on form
@@ -662,9 +566,8 @@ public class ActionListController extends UifControllerBase{
 
         for (ActionType actionType : actionListActionTypes) {
             if (pageActions.contains(actionType)) {
-
-                final boolean isFyi = ActionType.FYI == actionType;
                 // special logic for FYIs:
+                final boolean isFyi = ActionType.FYI == actionType;
                 if (isFyi) {
                     // clearing FYIs can be done in any action list not just a customized one
                     if(showClearFyi) {
@@ -682,22 +585,42 @@ public class ActionListController extends UifControllerBase{
         }
 
         form.setHasDisplayParameters(haveDisplayParameters);
-
         generateActionItemErrors("customActionList", "actionlist.badCustomActionListItems", customActionListProblemIds);
-        return new PaginatedActionList(currentPage, actionList.size(), page, pageSize, "actionList", sortCriterion, sortOrder);
+
     }
 
-    // convert a List of org.kuali.rice.kew.actionitem.ActionItemS to org.kuali.rice.kew.api.action.ActionItemS
+    /**
+    *  Converts actionItems to list.
+    *
+    *  <p>
+    *  Convert a List of org.kuali.rice.kew.actionitem.ActionItemS to org.kuali.rice.kew.api.action.ActionItemS.
+    *  </p>
+    *
+    * @param actionList list of action items
+    * @return List<org.kuali.rice.kew.api.action.ActionItem>
+    */
     private List<org.kuali.rice.kew.api.action.ActionItem> convertToApiActionItems(List<? extends ActionItemActionListExtension> actionList) {
         List<org.kuali.rice.kew.api.action.ActionItem> apiActionItems = new ArrayList<org.kuali.rice.kew.api.action.ActionItem>(actionList.size());
-
         for (ActionItemActionListExtension actionItemObj : actionList) {
             apiActionItems.add(
                     org.kuali.rice.kew.api.action.ActionItem.Builder.create(actionItemObj).build());
         }
+
         return apiActionItems;
     }
 
+    /**
+    *  Creates action item errors.
+    *
+    *  <p>
+    *  Creates an error for each action item that has an empty ID.
+    *  </p>
+    *
+    * @param propertyName the property name
+    * @param errorKey  string of the error key
+    * @param documentIds list of document IDs
+    * @return void
+    */
     private void generateActionItemErrors(String propertyName, String errorKey, List<String> documentIds) {
         if (!documentIds.isEmpty()) {
             String documentIdsString = StringUtils.join(documentIds.iterator(), ", ");
@@ -705,6 +628,16 @@ public class ActionListController extends UifControllerBase{
         }
     }
 
+    /**
+    *  Creates action item errors.
+    *
+    *  <p>
+    *  Creates an error for each action item that has an empty ID.
+    *  </p>
+    *
+    * @param actionList list of action items.
+    * @return void
+    */
     private void generateActionItemErrors(List<? extends ActionItemActionListExtension> actionList) {
         for (ActionItemActionListExtension actionItem : actionList) {
             if(!KewApiConstants.ACTION_REQUEST_CODES.containsKey(actionItem.getActionRequestCd())) {
@@ -713,16 +646,35 @@ public class ActionListController extends UifControllerBase{
         }
     }
 
+    /**
+     * Process taking mass action on action items
+     *
+     * <p>
+     * Handles requests where the methodToCall parameter
+     * is 'takeMassActions'.  Iterates through action items that have custom actions and process each selected action.
+     * </p>
+     *
+     * @param form - ActionListForm form
+     * @param result - Spring form binding result
+     * @param request - http request
+     * @param response - http response
+     * @return start - forwards to the start method
+     */
     @RequestMapping(params = "methodToCall=takeMassActions")
     protected ModelAndView takeMassActions(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response){
         ActionListForm actionListForm = (ActionListForm) form;
+
+        Object obj = ObjectPropertyUtils.getPropertyValue(form, "extensionData['actionInputField_actionSelect_line2']");
+
         List<? extends ActionItemActionListExtension> actionList = (List<? extends ActionItemActionListExtension>) actionListForm.getActionList();
         if (actionList == null) {
             return getUIFModelAndView(form);
         }
+
         ActionMessages messages = new ActionMessages();
         List<ActionInvocation> invocations = new ArrayList<ActionInvocation>();
+
         int index = 0;
         for (Object element : actionListForm.getActionsToTake()) {
             ActionToTake actionToTake = (ActionToTake) element;
@@ -739,47 +691,66 @@ public class ActionListController extends UifControllerBase{
             }
             index++;
         }
+
         KEWServiceLocator.getWorkflowDocumentService().takeMassActions(getUserSession().getPrincipalId(), invocations);
         messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.routing.processed"));
-        //TODO fix
-        //saveMessages(request, messages);
+
         org.kuali.rice.kew.actionlist.web.ActionListForm
                 cleanForm = new org.kuali.rice.kew.actionlist.web.ActionListForm();
-
-        //TODO fix
-        //request.setAttribute(mapping.getName(), cleanForm);
-        //request.getSession().setAttribute(KewApiConstants.REQUERY_ACTION_LIST_KEY, "true");
         actionListForm.setRequeryActionList(true);
+
         return start(actionListForm,result,request,response);
     }
 
+    /**
+    * Gets action item from list.
+    *
+    * <p>
+    * Gets the action item from the action item list based on the ID.
+    * </p>
+    *
+    * @param actionList - list of action items
+    * @param actionItemId - primary key for action item
+    * @return ActionItemActionListExtension or null
+    */
     protected ActionItemActionListExtension getActionItemFromActionList(List<? extends ActionItemActionListExtension> actionList, String actionItemId) {
         for (ActionItemActionListExtension actionItem : actionList) {
             if (actionItem.getId().equals(actionItemId)) {
                 return actionItem;
             }
         }
+
         return null;
     }
 
+    /**
+     * Sets up view for help desk login.
+     *
+     * <p>
+     * Setups the view for the help desk login.  User can see other's action items but can't take action on them.
+     * </p>
+     *
+     * @param form - ActionListForm form
+     * @param result - Spring form binding result
+     * @param request - http request
+     * @param response - http response
+     * @return start() - forwards to start method to refresh action list
+     */
     @RequestMapping(params = "methodToCall=helpDeskActionListLogin")
     public ModelAndView helpDeskActionListLogin(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response){
         ActionListForm actionListForm = (ActionListForm) form;
+
         String name = actionListForm.getHelpDeskActionListUserName();
         if (!actionListForm.isHelpDeskActionList()) {
             throw new AuthorizationException(getUserSession().getPrincipalId(), "helpDeskActionListLogin", getClass().getSimpleName());
         }
+
         try
         {
             final Principal helpDeskActionListPrincipal = KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName(name);
             final Person helpDeskActionListPerson = KEWServiceLocator.getIdentityHelperService().getPersonByPrincipalName(name);
-
-
-            //GlobalVariables.getUserSession().addObject(KewApiConstants.HELP_DESK_ACTION_LIST_PRINCIPAL_ATTR_NAME, helpDeskActionListPrincipal);
             actionListForm.setHelpDeskActionListPrincipal(helpDeskActionListPrincipal);
-
-            //GlobalVariables.getUserSession().addObject(KewApiConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME, helpDeskActionListPerson);
             actionListForm.setHelpDeskActionListPerson(helpDeskActionListPerson);
         }
         catch (RiceRuntimeException rre)
@@ -793,41 +764,84 @@ public class ActionListController extends UifControllerBase{
         {
             GlobalVariables.getMessageMap().putError("null", "helpdesk.login.empty", name);
         }
+
         actionListForm.setDelegator(null);
-        //request.getSession().setAttribute(KewApiConstants.REQUERY_ACTION_LIST_KEY, "true");
         actionListForm.setRequeryActionList(true);
+
         return start(actionListForm,result,request,response);
     }
 
+    /**
+    * Clears the action list filter.
+    *
+    * <p>
+    * Clears the action list filter so all action items are shown.
+    * </p>
+    *
+    * @param form - ActionListForm form
+    * @param result - Spring form binding result
+    * @param request - http request
+    * @param response - http response
+    * @return start() - forwards to start to refresh action list
+    */
     @RequestMapping(params = "methodToCall=clearFilter")
     public ModelAndView clearFilter(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response){
         ActionListForm actionListForm = (ActionListForm) form;
-        LOG.debug("clearFilter ActionListAction");
+
+        LOG.debug("clearFilter ActionListController");
         final org.kuali.rice.krad.UserSession commonUserSession = getUserSession();
-        //commonUserSession.removeObject(KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME);
         actionListForm.setFilter(new ActionListFilter());
-        //request.getSession().setAttribute(KewApiConstants.REQUERY_ACTION_LIST_KEY, "true");
         ActionListFilter filter = new ActionListFilter();
         filter.setDelegationType(DelegationType.SECONDARY.getCode());
         filter.setExcludeDelegationType(true);
         actionListForm.setFilter(filter);
-        LOG.debug("end clearFilter ActionListAction");
+        LOG.debug("end clearFilter ActionListController");
+
         return start(actionListForm,result,request,response);
     }
 
+    /**
+    * Clears the action list filter.
+    *
+    * <p>
+    * Clears the action list filter so all action items are shown.  Clears filter from secondary page and then
+    * forwards to the correct page after the start method runs.
+    * </p>
+    *
+    * @param form - ActionListForm form
+    * @param result - Spring form binding result
+    * @param request - http request
+    * @param response - http response
+    * @return clearFilter() - forwards to clearFilter method
+    */
     @RequestMapping(params = "methodToCall=clear")
     public ModelAndView clear(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response){
         return clearFilter(form,result,request,response);
     }
 
+    /**
+    * Sets the filter.
+    *
+    * <p>
+    * Sets the action list filter in the form.
+    * </p>
+    *
+    * @param form - ActionListForm form
+    * @param result - Spring form binding result
+    * @param request - http request
+    * @param response - http response
+    * @return start() forwards to start method to refresh action list
+    */
     @RequestMapping(params = "methodToCall=setFilter")
     public ModelAndView setFilter(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response){
         ActionListForm actionListForm = (ActionListForm) form;
+
         //validate the filter through the actionitem/actionlist service (I'm thinking actionlistservice)
         final UserSession uSession = getUserSession();
+
         ActionListFilter alFilter = actionListForm.getLoadedFilter();
         if (StringUtils.isNotBlank(alFilter.getDelegatorId()) && !KewApiConstants.DELEGATION_DEFAULT.equals(alFilter.getDelegatorId()) &&
                 StringUtils.isNotBlank(alFilter.getPrimaryDelegateId()) && !KewApiConstants.PRIMARY_DELEGATION_DEFAULT.equals(alFilter.getPrimaryDelegateId())){
@@ -835,70 +849,57 @@ public class ActionListController extends UifControllerBase{
             // then reset the secondary delegation drop-down to its default value.
             alFilter.setDelegatorId(KewApiConstants.DELEGATION_DEFAULT);
         }
-        //uSession.addObject(KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME, alFilter);
+
         actionListForm.setFilter(alFilter);
         if (GlobalVariables.getMessageMap().hasNoErrors()) {
-            //request.getSession().setAttribute(KewApiConstants.REQUERY_ACTION_LIST_KEY, "true");
             actionListForm.setRequeryActionList(true);
             return start(actionListForm,result,request,response);
         }
+
         return start(actionListForm,result,request,response);
     }
 
-    private List<? extends KeyValue> getUserWorkgroupsDropDownList(String principalId) {
-        List<String> userWorkgroups =
-                KimApiServiceLocator.getGroupService().getGroupIdsByPrincipalId(principalId);
-
-        //note that userWorkgroups is unmodifiable so we need to create a new list that we can sort
-        List<String> userGroupsToSort = new ArrayList<String>(userWorkgroups);
-
-        List<KeyValue> sortedUserWorkgroups = new ArrayList<KeyValue>();
-        KeyValue keyValue = null;
-        keyValue = new ConcreteKeyValue(KewApiConstants.NO_FILTERING, KewApiConstants.NO_FILTERING);
-        sortedUserWorkgroups.add(keyValue);
-        if (userGroupsToSort != null && userGroupsToSort.size() > 0) {
-            Collections.sort(userGroupsToSort);
-
-            Group group;
-            for (String groupId : userGroupsToSort)
-            {
-                group = KimApiServiceLocator.getGroupService().getGroup(groupId);
-                keyValue = new ConcreteKeyValue(groupId, group.getName());
-                sortedUserWorkgroups.add(keyValue);
-            }
-        }
-        return sortedUserWorkgroups;
-    }
-
+    /**
+    * Clears help desk login.
+    *
+    * <p>
+    * Set the form back to display the logged in user's action list.
+    * </p>
+    *
+    * @param form - ActionListForm form
+    * @param result - Spring form binding result
+    * @param request - http request
+    * @param response - http response
+    * @return start() - forwards to start method to refresh the action list
+    */
     @RequestMapping(params = "methodToCall=clearHelpDeskActionListUser")
     public ModelAndView clearHelpDeskActionListUser(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response){
         ActionListForm actionListForm = (ActionListForm) form;
+
         LOG.debug("clearHelpDeskActionListUser ActionListAction");
-        //GlobalVariables.getUserSession().removeObject(KewApiConstants.HELP_DESK_ACTION_LIST_PRINCIPAL_ATTR_NAME);
         actionListForm.setHelpDeskActionListPrincipal(null);
-        //GlobalVariables.getUserSession().removeObject(KewApiConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME);
         actionListForm.setHelpDeskActionListPerson(null);
         LOG.debug("end clearHelpDeskActionListUser ActionListAction");
+
         actionListForm.setRequeryActionList(true);
+
         return start((UifFormBase)actionListForm,result,request,response);
     }
 
     /**
-     * Generates an Action List count.
-     */
-    @RequestMapping(params = "methodToCall=count")
-    public ModelAndView count(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response){
-        ActionListForm actionListForm = (ActionListForm)form;
-        Person user = getUserSession().getPerson();
-        actionListForm.setCount(KEWServiceLocator.getActionListService().getCount(user.getPrincipalId()));
-        LOG.info("Fetched Action List count of " + actionListForm.getCount() + " for user " + user.getPrincipalName());
-        //TODO verify correct
-        //return mapping.findForward("count");
-        return getUIFModelAndView(actionListForm);
-    }
-
+    * Removes outbox items.
+    *
+    * <p>
+    * Removes any outbox items that are selected.
+    * </p>
+    *
+    * @param form - ActionListForm form
+    * @param result - Spring form binding result
+    * @param request - http request
+    * @param response - http response
+    * @return start() forwards to start to refresh the outbox.
+    */
     @RequestMapping(params = "methodToCall=removeOutboxItems")
     public ModelAndView removeOutboxItems(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response){
@@ -915,40 +916,85 @@ public class ActionListController extends UifControllerBase{
 
         actionListForm.setViewOutbox("true");
         actionListForm.setRequeryActionList(true);
+
         return start(actionListForm,result,request,response);
     }
 
     /**
-     * Navigate to the Action List Filter page, preserving any newly-modified primary/secondary delegation filters as necessary.
-     */
-
+    * Navigates to filter view.
+    *
+    * <p>
+    * Navigate to the Action List Filter page, preserving any newly-modified primary/secondary delegation filters as necessary.
+    * </p>
+    *
+    * @param form - ActionListForm form
+    * @param result - Spring form binding result
+    * @param request - http request
+    * @param response - http response
+    * @return ModelAndView - forwards to the standard KRAD getUIFModelAndView method
+    */
     @RequestMapping(params = "methodToCall=viewFilter")
     public ModelAndView viewFilter(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response){
         ActionListForm actionListForm = (ActionListForm)form;
         actionListForm.setOldFilter(new ActionListFilter(actionListForm.getFilter()));
+
         return getUIFModelAndView(actionListForm,"ActionListPage2");
     }
 
+    /**
+    * Revert to previous filter.
+    *
+    * <p>
+    * When user changes the filter but presses cancel, the filter goes back to the old filter.
+    * </p>
+    *
+    * @param form - ActionListForm form
+    * @param result - Spring form binding result
+    * @param request - http request
+    * @param response - http response
+    * @return start() forwards to start method to refresh teh action list
+    */
     @RequestMapping(params = "methodToCall=cancelFilter")
     public ModelAndView cancelFilter(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response){
         ActionListForm actionListForm = (ActionListForm)form;
         actionListForm.setFilter(new ActionListFilter(actionListForm.getOldFilter()));
+
         return start(actionListForm,result,request,response);
     }
 
     /**
-     * Navigate to the user's Preferences page, preserving any newly-modified primary/secondary delegation filters as necessary.
-     */
+    * Navigate to preferences page.
+    *
+    * <p>
+    * Navigate to the user's Preferences page, preserving any newly-modified primary/secondary delegation filters as
+    * necessary.
+    * </p>
+    *
+    * @param form - ActionListForm form
+    * @param result - Spring form binding result
+    * @param request - http request
+    * @param response - http response
+    * @return ModelAndView - forwards to KRAD standard getUIFModelAndView method
+    */
     @RequestMapping(params = "methodToCall=viewPreferences")
     public ModelAndView viewPreferences(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response){
-        //start(mapping, actionForm, request, response);
-        //return mapping.findForward("viewPreferences");
         return getUIFModelAndView(form,"ActionListPage3");
     }
 
+    /**
+    * Is the action item a compatible request.
+    *
+    * <p>
+    * Checks whether the action taken is valid for the action item.
+    * </p>
+    *
+    * @param actionItem - an action item
+    * @param actionTakenCode - code of action taken on the action item
+    * @return boolean
+    */
     private boolean isActionCompatibleRequest(ActionItemActionListExtension actionItem, String actionTakenCode) {
         boolean actionCompatible = false;
         String requestCd = actionItem.getActionRequestCd();
@@ -976,66 +1022,53 @@ public class ActionListController extends UifControllerBase{
         return actionCompatible;
     }
 
+    /**
+    * Gets session.
+    *
+    * <p>
+    * Gets the user session object.
+    * </p>
+    *
+    * @return UserSession
+    */
     private UserSession getUserSession(){
         return GlobalVariables.getUserSession();
     }
 
-    private static class ActionItemComparator implements Comparator<ActionItemActionListExtension> {
-
-        private static final String ACTION_LIST_DEFAULT_SORT = "routeHeader.createDate";
-
-        private final String sortName;
-
-        public ActionItemComparator(String sortName) {
-            if (StringUtils.isEmpty(sortName)) {
-                sortName = ACTION_LIST_DEFAULT_SORT;
-            }
-            this.sortName = sortName;
-        }
-
-        @Override
-        public int compare(ActionItemActionListExtension actionItem1, ActionItemActionListExtension actionItem2) {
-            try {
-                // invoke the power of the lookup functionality provided by the display tag library, this LookupUtil method allows for us
-                // to evaulate nested bean properties (like workgroup.groupNameId.nameId) in a null-safe manner.  For example, in the
-                // example if workgroup evaluated to NULL then LookupUtil.getProperty would return null rather than blowing an exception
-                Object property1 = LookupUtil.getProperty(actionItem1, sortName);
-                Object property2 = LookupUtil.getProperty(actionItem2, sortName);
-                if (property1 == null && property2 == null) {
-                    return 0;
-                } else if (property1 == null) {
-                    return -1;
-                } else if (property2 == null) {
-                    return 1;
-                }
-                if (property1 instanceof Comparable) {
-                    return ((Comparable)property1).compareTo(property2);
-                }
-                return property1.toString().compareTo(property2.toString());
-            } catch (Exception e) {
-                if (e instanceof RuntimeException) {
-                    throw (RuntimeException) e;
-                }
-                throw new RuntimeException("Could not sort for the given sort name: " + sortName, e);
-            }
-        }
-    }
-
-    // Lazy initialization holder class (see Effective Java Item #71)
+    /**
+    * Lazy initialization holder class
+    *
+    * <p>
+    * Lazy initialization holder static class (see Effective Java Item #71)
+    * </p>
+    *
+    */
     private static class ActionListCustomizationMediatorHolder {
         static final ActionListCustomizationMediator actionListCustomizationMediator =
                 KewFrameworkServiceLocator.getActionListCustomizationMediator();
     }
 
+    /**
+    * Action list customization mediator.
+    *
+    * <p>
+    * Action list customization mediator.
+    * </p>
+    *
+    * @return ActionListCustomizationMediatorHolder.actionListCustomizationMediator
+    */
     private ActionListCustomizationMediator getActionListCustomizationMediator() {
         return ActionListCustomizationMediatorHolder.actionListCustomizationMediator;
     }
 
     /**
-     * Simple class which defines the key of a partition of Action Items associated with an Application ID.
-     *
-     * <p>This class allows direct field access since it is intended for internal use only.</p>
-     */
+    * Simple class which defines the key of a partition of Action Items associated with an Application ID.
+    *
+    * <p>
+    * This class allows direct field access since it is intended for internal use only.
+    * </p>
+    *
+    */
     private static final class PartitionKey {
         String applicationId;
         Set<String> customActionListAttributeNames;
@@ -1061,6 +1094,7 @@ public class ActionListController extends UifControllerBase{
             EqualsBuilder builder = new EqualsBuilder();
             builder.append(applicationId, key.applicationId);
             builder.append(customActionListAttributeNames, key.customActionListAttributeNames);
+
             return builder.isEquals();
         }
 
@@ -1069,6 +1103,7 @@ public class ActionListController extends UifControllerBase{
             HashCodeBuilder builder = new HashCodeBuilder();
             builder.append(applicationId);
             builder.append(customActionListAttributeNames);
+
             return builder.hashCode();
         }
     }

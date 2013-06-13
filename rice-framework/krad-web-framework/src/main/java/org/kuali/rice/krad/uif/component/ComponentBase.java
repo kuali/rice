@@ -216,7 +216,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
             // progressive anded with render, will not render at least one of the two are false
             ExpressionEvaluator expressionEvaluator =
                     view.getViewHelperService().getExpressionEvaluator();
-            expressionEvaluator.initializeEvaluationContext(model);
 
             String adjustedProgressiveRender = expressionEvaluator.replaceBindingPrefixes(view, this,
                     progressiveRender);
@@ -1706,17 +1705,19 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     @Override
     public String getSimpleDataAttributes() {
         String attributes = "";
+
         if (getDataAttributes() == null) {
             return attributes;
-        } else {
-            for (Map.Entry<String, String> data : getDataAttributes().entrySet()) {
-                if (data != null && data.getValue() != null) {
-                    attributes = attributes + " " + "data-" + data.getKey() + "=\"" +
-                            KRADUtils.convertToHTMLAttributeSafeString(data.getValue()) + "\"";
-                }
-            }
-            return attributes;
         }
+
+        for (Map.Entry<String, String> data : getDataAttributes().entrySet()) {
+            if (data != null && data.getValue() != null) {
+                attributes = attributes + " " + "data-" + data.getKey() + "=\"" +
+                        KRADUtils.convertToHTMLAttributeSafeString(data.getValue()) + "\"";
+            }
+        }
+
+        return attributes;
     }
 
     /**

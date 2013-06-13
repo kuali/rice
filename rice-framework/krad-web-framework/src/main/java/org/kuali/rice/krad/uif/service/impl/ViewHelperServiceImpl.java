@@ -243,6 +243,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             nestedComponent.pushAllToContext(origComponent.getContext());
         }
 
+        // initialize the expression evaluator
+        view.getViewHelperService().getExpressionEvaluator().initializeEvaluationContext(model);
+
         // the expression graph for refreshed components is captured in the view index (initially it might expressions
         // might have come from a parent), after getting the expression graph then we need to populate the expressions
         // on the configurable for which they apply
@@ -1197,6 +1200,14 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         if (!component.isSelfRendered() && StringUtils.isNotBlank(component.getTemplate()) &&
                 !view.getViewTemplates().contains(component.getTemplate())) {
             view.getViewTemplates().add(component.getTemplate());
+        }
+
+        if (component instanceof Container) {
+            LayoutManager layoutManager = ((Container) component).getLayoutManager();
+
+            if ((layoutManager != null) && !view.getViewTemplates().contains(layoutManager.getTemplate())) {
+                view.getViewTemplates().add(layoutManager.getTemplate());
+            }
         }
 
         // get components children and recursively update state

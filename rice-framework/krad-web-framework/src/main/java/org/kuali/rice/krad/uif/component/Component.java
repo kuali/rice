@@ -134,6 +134,30 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
     void setTemplate(String template);
 
     /**
+     * The name for which the template can be invoked by
+     *
+     * <p>
+     * Whether the template name is needed depends on the underlying rendering engine being used. In the example of
+     * Freemarker, the template points to the actual source file, which then loads a macro. From then on the macro is
+     * simply invoked to execute the template
+     * </p>
+     *
+     * <p>
+     * e.g. 'uif_text'
+     * </p>
+     *
+     * @return
+     */
+    public String getTemplateName();
+
+    /**
+     * Setter for the name of the template (a name which can be used to invoke)
+     *
+     * @param templateName
+     */
+    public void setTemplateName(String templateName);
+
+    /**
      * The component title
      *
      * <p>

@@ -415,11 +415,17 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         this.template = template;
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#getTemplateName()
+     */
     @BeanTagAttribute(name = "templateName")
     public String getTemplateName() {
         return templateName;
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#setTemplateName(java.lang.String)
+     */
     public void setTemplateName(String templateName) {
         this.templateName = templateName;
     }

@@ -159,10 +159,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
 	}
 
     /**
-     * The name of the layout manager template
-     *
-     * @return template name
-     * @see #getTemplate()
+     * @see org.kuali.rice.krad.uif.layout.LayoutManager#getTemplateName()
      */
     @BeanTagAttribute(name="tempateName")
     public String getTemplateName() {
@@ -170,9 +167,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     }
 
     /**
-     * Setter for the layout managers template name
-     *
-     * @param templateName
+     * @see org.kuali.rice.krad.uif.layout.LayoutManager#setTemplateName(java.lang.String)
      */
     public void setTemplateName(String templateName) {
         this.templateName = templateName;

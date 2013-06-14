@@ -103,126 +103,81 @@
     </section>
     <section xml:id="items_addressed_in_rice">
         <title>Items Addressed in Rice ${project.version}</title>
-        <itemizedlist>
-            <listitem>
-                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-7930"
-                        >KULRICE-7930</link>] - Person document is allowing add of role memberships
-                    with bad information</para>
-            </listitem>
-            <listitem>
-                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-8844"
-                        >KULRICE-8844</link>] - KualiDocumentFormBase permission checks are more
-                    expensive than they have to be</para>
-            </listitem>
-            <listitem>
-                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-8967"
-                        >KULRICE-8967</link>] - VC integration test
-                    KewWsdlCompatibilityTest.compareKewApiWsdls false negatives</para>
-            </listitem>
-            <listitem>
-                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9143"
-                        >KULRICE-9143</link>] - Non data dictionary attributes missing shortLabel in
-                    DataDictionaryTypeServiceBase</para>
-            </listitem>
-            <listitem>
-                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9144"
-                        >KULRICE-9144</link>] - NPE from AttributesMapBuilder when maxLength not set
-                    on AttributeDefinition</para>
-            </listitem>
-            <listitem>
-                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9145"
-                        >KULRICE-9145</link>] - Upgrade mysql version references from 5.1.18 to
-                    latest</para>
-            </listitem>
-            <listitem>
-                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9149"
-                        >KULRICE-9149</link>] - Remove usage of
-                    org.kuali.rice.krad.service.impl.SessionDocumentServiceImpl in KRAD</para>
-            </listitem>
-            <listitem>
-                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9153"
-                        >KULRICE-9153</link>] - Analyze IU patch for preventing role member lookup
-                    from causing out of memory exceptions</para>
-            </listitem>
-            <listitem>
-                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9155"
-                        >KULRICE-9155</link>] - The docHandlerUrl is not passed to email style
-                    service for processing by email stylesheets</para>
-            </listitem>
-            <listitem>
-                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9156"
-                        >KULRICE-9156</link>] - DataDictionaryTypeServiceBase does not work if
-                    DataObjectEntry is used</para>
-            </listitem>
-            <listitem>
-                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9157"
-                        >KULRICE-9157</link>] - DataDictionaryTypeServiceHelper should check for a
-                    null control</para>
-            </listitem>
-            <listitem>
-                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9158"
-                        >KULRICE-9158</link>] - Null safety issues in
-                    DataDictionaryTypeServiceBase.getDataDictionaryAttributeDefinition</para>
-            </listitem>
-            <listitem>
-                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9159"
-                        >KULRICE-9159</link>] - Show/hide active rows on a collection doesn't
-                    work</para>
-            </listitem>
-            <listitem>
-                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9185"
-                        >KULRICE-9185</link>] - KRAD lookup framework is caching whether or not to
-                    render "create new" link with extreme prejudice </para>
-            </listitem>
-            <listitem>
-                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9263"
-                        >KULRICE-9263</link>] - Remove unnecessary references to System.exit() in
-                    our code base</para>
-            </listitem>
-            <listitem>
-                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9265"
-                        >KULRICE-9265</link>] - Validation change to support ad hoc routing</para>
-            </listitem>
-            <listitem>
-                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9268"
-                        >KULRICE-9268</link>] - Investigate
-                    QuickLinksServiceTest.testGetRecentSearches</para>
-            </listitem>
-            <listitem>
-                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9272"
-                        >KULRICE-9272</link>] - Instructions to setting up a Rice cluster are
-                    incorrect (installation guide)</para>
-            </listitem>
-            <listitem>
-                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9276"
-                        >KULRICE-9276</link>] - Merge changes from KULRICE-5390 back into 2.2 for
-                    KPME</para>
-            </listitem>
-            <listitem>
-                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9288"
-                        >KULRICE-9288</link>] -
-                    org.kuali.rice.kns.service.impl.PessimisticLockServiceTest fails with Column
-                    'SESN_ID' cannot be null</para>
-            </listitem>
-            <listitem>
-                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9299"
-                        >KULRICE-9299</link>] - Entering nothing into the Login prompt and hitting
-                    enter returns stack trace</para>
-            </listitem>
-            <listitem>
-                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9358"
-                        >KULRICE-9358</link>] - Form and WorkflowDocument no longer being persisted
-                    to session after disabling the SessionDocumentService</para>
-            </listitem>
-            <listitem>
-                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9386"
-                        >KULRICE-9386</link>] - Issues with doctype xml ingestion</para>
-            </listitem>
-            <listitem>
-                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-9395"
-                    >KULRICE-9395</link>] - KRAD UserControl not sending valid parameters for Lookup</para>
-            </listitem>
-        </itemizedlist>           
+        <section>
+            <title>Bug Fix</title>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-6103'>KULRICE-6103</link>] - Ensure we don't have any remaining references to "edu.iu" in our documentation</para>
+                    </listitem>
+                    <listitem>
+                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7864'>KULRICE-7864</link>] - CONTRIB: do not ignore validation when ad hoc route for completion request is receiving positive action (complete, approve, blanket approve)</para>
+                    </listitem>
+                    <listitem>
+                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8724'>KULRICE-8724</link>] - Make sure document explanation and description fields have no sensitive data entered</para>
+                    </listitem>
+                    <listitem>
+                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8762'>KULRICE-8762</link>] - CONTRIB: "Approve &amp; Blanket Approve" button should be disabled for a person who is doing COMPLETE action and "CANCEL" button should be enabled</para>
+                    </listitem>
+                    <listitem>
+                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9021'>KULRICE-9021</link>] - Impex tool does not import into mysql properly for MySQL 5.6.x and indexes on large columns</para>
+                    </listitem>
+                    <listitem>
+                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9125'>KULRICE-9125</link>] - Readonly=true overridden in collections</para>
+                    </listitem>
+                    <listitem>
+                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9369'>KULRICE-9369</link>] - Upgrade Script Error</para>
+                    </listitem>
+                    <listitem>
+                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9411'>KULRICE-9411</link>] - KEN Web Service URL incorrect in 2.x TRG</para>
+                    </listitem>
+                    <listitem>
+                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9563'>KULRICE-9563</link>] - Editing permission that has perm id prefixed by "KFS" - receive error message: "The Permission Identifier (Permission Identifier) may only consist of digits." </para>
+                    </listitem>
+                    <listitem>
+                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9683'>KULRICE-9683</link>] - Quartz link in system admin tab throws a stack trace.</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </section>
         
+        
+        <section>
+            <title>Improvement</title>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8799'>KULRICE-8799</link>] - version compatibility integration test is over-sensitive</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </section>
+        
+        
+        <section>
+            <title>Task</title>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-6140'>KULRICE-6140</link>] - Document Delivery Types - User Guide</para>
+                    </listitem>
+                    <listitem>
+                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9020'>KULRICE-9020</link>] - Update documentation to reflect mysql settings for the latest version (5.6.x)</para>
+                    </listitem>
+                    <listitem>
+                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9137'>KULRICE-9137</link>] - Fix copyright plugin excludes and restore original headers on non-foundation authored files</para>
+                    </listitem>
+                    <listitem>
+                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9438'>KULRICE-9438</link>] - Not able to edit rules that have attributes - the attribute disappears once the doc is saved or submitted</para>
+                    </listitem>
+                    <listitem>
+                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9588'>KULRICE-9588</link>] - Correct KEW documentation on implementing a thin client</para>
+                    </listitem>
+                    <listitem>
+                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9714'>KULRICE-9714</link>] - Update or remove incorrect directory information from README.txt</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </section>
     </section>
 </article>

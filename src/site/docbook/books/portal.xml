@@ -108,16 +108,10 @@
                             since the size of the diagrams may be illegible in IE.</para>
 
                         <!-- https://wiki.kuali.org/display/KULRICE/Schema+Spy+Publish+to+site.kuali.org -->
-                        <!-- Hard code last minor version SchemaSpy was run against -->
+                        <!-- Hard code last version SchemaSpy was run against -->
                         <listitem>
-                            <para><link xlink:show="new" xlink:href="../../../2.2.0-SNAPSHOT/reference/html/schema-spy/index.html">Schema Spy</link></para>
+                            <para><link xlink:show="new" xlink:href="http://site.kuali.org/rice/2.1.1/reference/html/schema-spy/index.html">Schema Spy</link></para>
                         </listitem>
-
-<!-- 
-                        <listitem>
-                            <para><link xlink:show="new" xlink:href="../db_diagrams/schema.html">Schema</link></para>
-                        </listitem>
--->
                         <listitem>
                             <para>Rice KREN (KEN): <link xlink:show="new" xlink:href="../db_diagrams/rice-kren.png"
                                     >png*</link> / <link xlink:show="new" xlink:href="../db_diagrams/rice-kren.pdf"

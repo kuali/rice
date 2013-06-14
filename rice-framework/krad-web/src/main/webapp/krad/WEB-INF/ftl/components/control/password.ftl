@@ -47,6 +47,10 @@
 
     <@spring.formPasswordInput id="${control.id}" path="KualiForm.${field.bindingInfo.bindingPath}" attributes="${attributes}"/>
 
+    <#if control.watermarkText?has_content>
+        <@krad.script value="createWatermark('${control.id}', '${control.watermarkText?js_string}');"/>
+    </#if>
+
     <@krad.disable control=field.control type="text"/>
 
 </#macro>

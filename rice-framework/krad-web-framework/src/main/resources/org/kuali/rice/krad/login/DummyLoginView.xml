@@ -100,7 +100,7 @@
                     <bean parent="Uif-HeaderOne" p:headerText="Login"/>
 
                     <bean parent="Uif-InputField"
-                          id="UserName"
+                          id="Rice-UserName"
                           p:propertyName="login_user"
                           p:label="UserName">
                       <property name="control">
@@ -109,7 +109,7 @@
                     </bean>
 
                     <bean parent="Uif-InputField" p:propertyName="login_pw"
-                          id="Password"
+                          id="Rice-Password"
                           p:label="Password"
                           p:progressiveRender="@{#ConfigProperties['showPassword'] eq 'true'}">
                       <property name="control">
@@ -118,14 +118,14 @@
                     </bean>
 
                     <bean parent="Uif-DataField"
-                          id="LoginMessage"
+                          id="Rice-LoginMessage"
                           p:label=""
                           p:labelPlacement="LEFT"
                           p:propertyName="login_message"/>
 
                     <bean parent="Uif-SpaceField-parentBean"/>
                     <bean parent="Uif-PrimaryActionButton-Small"
-                          id="LoginButton"
+                          id="Rice-LoginButton"
                           p:methodToCall="submit"
                           p:actionLabel="Login"
                           p:performDirtyValidation="false"

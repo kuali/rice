@@ -32,13 +32,15 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "passwordControl-bean", parent = "Uif-PasswordControl")})
+@BeanTag(name = "passwordControl-bean", parent = "Uif-PasswordControl")
 public class PasswordControl extends ControlBase implements SizedControl {
     private static final long serialVersionUID = -8267606288443759880L;
 
     private int size;
     private Integer maxLength;
     private Integer minLength;
+
+    private String watermarkText = StringUtils.EMPTY;
 
     public PasswordControl() {
         super();
@@ -127,4 +129,34 @@ public class PasswordControl extends ControlBase implements SizedControl {
         this.minLength = minLength;
     }
 
+    /**
+     * Gets the watermark text for this PasswordControl.
+     *
+     * <p>
+     * A watermark typically appears as light gray text within the Password input element whenever the
+     * element is empty and does not have focus. This provides a hint to the user as to what the input
+     * is used for, or the type of input that is required.
+     * </p>
+     *
+     * @return the watermarkText
+     */
+    @BeanTagAttribute(name = "watermarkText")
+    public String getWatermarkText() {
+        return this.watermarkText;
+    }
+
+    /**
+     * Sets the watermark text for this PasswordControl
+     *
+     * @param watermarkText the watermarkText to set
+     */
+    public void setWatermarkText(String watermarkText) {
+        //to avoid users from putting in the same value as the watermark adding some spaces here
+        //see watermark troubleshooting for more info
+        if (StringUtils.isNotEmpty(watermarkText)) {
+            watermarkText = watermarkText + "   ";
+        }
+
+        this.watermarkText = watermarkText;
+    }
 }

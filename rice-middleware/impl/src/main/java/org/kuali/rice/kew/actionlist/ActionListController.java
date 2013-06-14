@@ -187,10 +187,10 @@ public class ActionListController extends UifControllerBase{
     }
 
     /**
-    * Initializes Delegates.
+    * Initializes Delegators
     *
     * <p>
-    * Sets up the primary delegator and primary delegates in the form.
+    * Sets up the delegators for the form and filter
     * </p>
     *
     * @param actionListForm - ActionListForm form
@@ -199,36 +199,62 @@ public class ActionListController extends UifControllerBase{
     * @param request - http request
     * @return void
     */
-    protected void initializeDelegates(ActionListForm actionListForm,ActionListFilter filter,List<? extends ActionItemActionListExtension> actionList,HttpServletRequest request)   {
-        //**** initialize delegateId
-        if (!StringUtils.isEmpty(actionListForm.getDelegationId())) {
-            if (!KewApiConstants.DELEGATION_DEFAULT.equals(actionListForm.getDelegationId())) {
-                // If the user can filter by both primary and secondary delegation, and both drop-downs have non-default values assigned,
-                // then reset the primary delegation drop-down's value when the primary delegation drop-down's value has remained unaltered
-                // but the secondary drop-down's value has been altered; but if one of these alteration situations does not apply, reset the
-                // secondary delegation drop-down.
+    protected void initializeDelegators(ActionListForm actionListForm,ActionListFilter filter,List<? extends ActionItemActionListExtension> actionList,HttpServletRequest request)   {
+        if (!KewApiConstants.DELEGATION_DEFAULT.equals(actionListForm.getDelegationId())) {
+            // If the user can filter by both primary and secondary delegation, and both drop-downs have non-default values assigned,
+            // then reset the primary delegation drop-down's value when the primary delegation drop-down's value has remained unaltered
+            // but the secondary drop-down's value has been altered; but if one of these alteration situations does not apply, reset the
+            // secondary delegation drop-down.
 
-                if (StringUtils.isNotBlank(actionListForm.getPrimaryDelegateId()) && !KewApiConstants.PRIMARY_DELEGATION_DEFAULT.equals(actionListForm.getPrimaryDelegateId())){
-                    if (actionListForm.getPrimaryDelegateId().equals(request.getParameter("oldPrimaryDelegateId")) &&
-                            !actionListForm.getDelegationId().equals(request.getParameter("oldDelegationId"))) {
-                        actionListForm.setPrimaryDelegateId(KewApiConstants.PRIMARY_DELEGATION_DEFAULT);
-                    } else {
-                        actionListForm.setDelegationId(KewApiConstants.DELEGATION_DEFAULT);
-                    }
-                } else if (StringUtils.isNotBlank(filter.getPrimaryDelegateId()) &&
-                        !KewApiConstants.PRIMARY_DELEGATION_DEFAULT.equals(filter.getPrimaryDelegateId())) {
-                    // If the primary delegation drop-down is invisible but a primary delegation filter is in place, and if the secondary delegation
-                    // drop-down has a non-default value selected, then reset the primary delegation filtering.
-                    filter.setPrimaryDelegateId(KewApiConstants.PRIMARY_DELEGATION_DEFAULT);
-                }
+            if (StringUtils.isNotBlank(actionListForm.getPrimaryDelegateId()) && !KewApiConstants.PRIMARY_DELEGATION_DEFAULT.equals(actionListForm.getPrimaryDelegateId())){
+                setDelegationId(actionListForm,request);
+            } else if (StringUtils.isNotBlank(filter.getPrimaryDelegateId()) &&
+                    !KewApiConstants.PRIMARY_DELEGATION_DEFAULT.equals(filter.getPrimaryDelegateId())) {
+                // If the primary delegation drop-down is invisible but a primary delegation filter is in place, and if the secondary delegation
+                // drop-down has a non-default value selected, then reset the primary delegation filtering.
+                filter.setPrimaryDelegateId(KewApiConstants.PRIMARY_DELEGATION_DEFAULT);
             }
-            // Enable the secondary delegation filtering.
-            filter.setDelegatorId(actionListForm.getDelegationId());
-            filter.setExcludeDelegatorId(false);
-            actionList = null;
         }
+        // Enable the secondary delegation filtering.
+        filter.setDelegatorId(actionListForm.getDelegationId());
+        filter.setExcludeDelegatorId(false);
+        actionList = null;
+    }
 
-        //**** initialize primary delegate
+    /**
+     * Sets the delegation id
+     *
+     * <p>
+     * Sets the delegation id on the form
+     * </p>
+     *
+     * @param actionListForm - ActionListForm form
+     * @param request - http request
+     * @return void
+     */
+    protected void setDelegationId(ActionListForm actionListForm,HttpServletRequest request)   {
+        if (actionListForm.getPrimaryDelegateId().equals(request.getParameter("oldPrimaryDelegateId")) &&
+                !actionListForm.getDelegationId().equals(request.getParameter("oldDelegationId"))) {
+            actionListForm.setPrimaryDelegateId(KewApiConstants.PRIMARY_DELEGATION_DEFAULT);
+        } else {
+            actionListForm.setDelegationId(KewApiConstants.DELEGATION_DEFAULT);
+        }
+    }
+
+    /**
+     * Initializes primary delegate.
+     *
+     * <p>
+     * Sets up the primary delegate in the form.
+     * </p>
+     *
+     * @param actionListForm - ActionListForm form
+     * @param filter - action list filter
+     * @param actionList - list of action items
+     * @param request - http request
+     * @return void
+     */
+    protected void initializePrimaryDelegate(ActionListForm actionListForm,ActionListFilter filter,List<? extends ActionItemActionListExtension> actionList,HttpServletRequest request)   {
         if (!StringUtils.isEmpty(actionListForm.getPrimaryDelegateId())) {
 
             // If the secondary delegation drop-down is invisible but a secondary delegation filter is in place, and if the primary delegation
@@ -244,7 +270,6 @@ public class ActionListController extends UifControllerBase{
             filter.setExcludeDelegatorId(false);
             actionList = null;
         }
-
     }
 
     /**
@@ -298,7 +323,15 @@ public class ActionListController extends UifControllerBase{
 
             final Preferences preferences = (Preferences)actionListForm.getPreferences();
 
-            initializeDelegates(actionListForm,filter,actionList,request);
+            //set primary delegation id
+            if (!StringUtils.isEmpty(actionListForm.getDelegationId())) {
+                initializeDelegators(actionListForm,filter,actionList,request);
+            }
+
+            //set primary delegate
+            if (!StringUtils.isEmpty(actionListForm.getPrimaryDelegateId())) {
+                initializePrimaryDelegate(actionListForm,filter,actionList,request);
+            }
 
             // if the user has changed, we need to refresh the action list
             if (!principalId.equals(actionListForm.getUser())) {

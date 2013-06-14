@@ -70,6 +70,56 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractAgendaBoT
     static final String PREREQ_TERM_VALUE = "prereqValue";
     static final String NAMESPACE_CODE = "namespaceCode";
 
+    static boolean localInitNeeded = true;
+
+    /**
+     *   Override of setup of AbstractAgendaBoTest (not setUp) to ensure correct test values
+     */
+    @Override
+    @Before
+    public void setup() {
+        // Reset TestActionTypeService
+        TestActionTypeService.resetActionsFired();
+
+        termBoService = KrmsRepositoryServiceLocator.getTermBoService();
+        contextRepository = KrmsRepositoryServiceLocator.getContextBoService();
+        krmsTypeRepository = KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService();
+
+        ruleBoService = KrmsRepositoryServiceLocator.getRuleBoService();
+        agendaBoService = KrmsRepositoryServiceLocator.getAgendaBoService();
+        actionBoService = KrmsRepositoryServiceLocator.getBean("actionBoService");
+        functionBoService = KrmsRepositoryServiceLocator.getBean("functionRepositoryService");
+        krmsAttributeDefinitionService = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService();
+
+        ContextDefinition contextDefintion1 = contextRepository.getContextByNameAndNamespace(CONTEXT1, NAMESPACE1);
+
+        // only set this stuff up if we don't already have Context1 (we don't clear out KRMS tables between test methods)
+        // run at least once in case previous tests have used this context and to ensure correct values
+        if (contextDefintion1 == null || localInitNeeded) {
+            localInitNeeded = false;
+            PerformanceLogger perfLog = new PerformanceLogger();
+            perfLog.log("starting agenda creation");
+
+            contextDefintion1 = createContextDefinition(NAMESPACE1, CONTEXT1, Collections.singletonMap(CONTEXT1_QUALIFIER,
+                    CONTEXT1_QUALIFIER_VALUE));
+            createAgendaDefinition(AGENDA1, contextDefintion1, TSUNAMI_EVENT, NAMESPACE1);
+
+            ContextDefinition contextDefinition2 = createContextDefinition(NAMESPACE2, CONTEXT2,
+                    Collections.singletonMap(CONTEXT2_QUALIFIER, CONTEXT2_QUALIFIER_VALUE));
+
+            ContextDefinition contextDefinition3 = createContextDefinition(NAMESPACE1, CONTEXT3,
+                    Collections.<String,String>emptyMap());
+
+            // Create multiple agendas so that we can test selection
+            createAgendaDefinition(AGENDA2, contextDefinition2, EARTHQUAKE_EVENT, NAMESPACE2);
+            createAgendaDefinition(AGENDA3, contextDefinition2, EARTHQUAKE_EVENT, NAMESPACE2);
+            createAgendaDefinition(AGENDA4, contextDefinition2, TSUNAMI_EVENT, NAMESPACE2);
+            createAgendaDefinition2(AGENDA5, contextDefinition3, NAMESPACE1);
+
+            perfLog.log("finished agenda creation", true);
+        }
+    }
+
     @Transactional
     @Test
     public void testNullFact() {

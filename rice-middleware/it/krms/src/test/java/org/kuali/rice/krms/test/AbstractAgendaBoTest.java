@@ -79,11 +79,11 @@ public class AbstractAgendaBoTest extends AbstractBoTest {
     static final String NULL_FACT = "nullFact";
 
     //    // Services needed for creation:
-    private TermBoService termBoService;
-    private RuleBoService ruleBoService;
-    private AgendaBoService agendaBoService;
-    private ActionBoService actionBoService;
-    private FunctionBoServiceImpl functionBoService;
+    protected TermBoService termBoService;
+    protected RuleBoService ruleBoService;
+    protected AgendaBoService agendaBoService;
+    protected ActionBoService actionBoService;
+    protected FunctionBoServiceImpl functionBoService;
 
     private static String lastTestClass = null;
 
@@ -154,7 +154,7 @@ public class AbstractAgendaBoTest extends AbstractBoTest {
         }
     }
 
-    private void createAgendaDefinition(String agendaName, ContextDefinition contextDefinition, String eventName, String nameSpace ) {
+    protected void createAgendaDefinition(String agendaName, ContextDefinition contextDefinition, String eventName, String nameSpace ) {
         KrmsTypeDefinition krmsGenericTypeDefinition = createKrmsGenericTypeDefinition(nameSpace, "testAgendaTypeService", "event name", "Event");
 
         AgendaDefinition agendaDef =
@@ -193,7 +193,7 @@ public class AbstractAgendaBoTest extends AbstractBoTest {
         agendaBoService.updateAgenda(agendaDef);
     }
 
-    private void createAgendaDefinition2(String agendaName, ContextDefinition contextDefinition, String nameSpace ) {
+    protected void createAgendaDefinition2(String agendaName, ContextDefinition contextDefinition, String nameSpace ) {
 
         AgendaDefinition agendaDef =
                 AgendaDefinition.Builder.create(null, agendaName, null, contextDefinition.getId()).build();

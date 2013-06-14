@@ -4240,7 +4240,7 @@ image&quot; p:source=&quot;@{#ConfigProperties[&apos;krad.externalizable.images.
     <para>For an example let's build a link to the kuali.org website that displays the text 'Kuali
       Website' to the user. In the XML this will be:</para>
     <programlisting>
-&lt;bean parent="Uif-Link" p:hrefText="www.kuali.org" p:linkLabel="Kuali Website"/&gt;
+&lt;bean parent="Uif-Link" p:hrefText="www.kuali.org" p:linkText="Kuali Website"/&gt;
         </programlisting>
     <para>Below shows the resulting link.</para>
     <figure>
@@ -4263,7 +4263,7 @@ image&quot; p:source=&quot;@{#ConfigProperties[&apos;krad.externalizable.images.
     <para>By setting the <emphasis role="keyword">lightBox</emphasis> property to &quot;Uif-LightBox&quot;, the link will be opened
       in a lightbox.</para>
     <programlisting>
-      &lt;bean parent="Uif-Link" p:hrefText="www.kuali.org"&#160; p:linkLabel="Kuali Website"/&gt;
+      &lt;bean parent="Uif-Link" p:hrefText="www.kuali.org"&#160; p:linkText="Kuali Website"/&gt;
         &lt;property name="lightBox"&gt;
           &lt;bean parent="Uif-LightBox"/&gt;
         &lt;/property&gt;

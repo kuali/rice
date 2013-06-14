@@ -374,25 +374,22 @@
       </mediaobject>
     </figure>
     <para>Now suppose we want to add other content to the header group. For example, we might want
-      to display links or buttons to the right of the header text. We do this just like adding
-      content to any other group, using the items property:</para>
+      to display links or buttons to the right of the header text. We do this configuring the rightGroup
+      header property with a Uif-HeaderRightGroup bean:</para>
     <programlisting>
 &lt;bean id="MySection" parent="Uif-VerticalBoxSection" p:title="Section 1 Title"&gt;
-    &lt;property name="header.items"&gt;
-     &lt;list&gt;
-      &lt;bean parent="Uif-ActionLink&quot; p:actionLabel=&quot;copy&quot; p:methodToCall="copy"/&gt;
-      &lt;bean parent="Uif-ActionLink&quot; p:actionLabel=&quot;edit&quot; p:methodToCall="edit"/&gt;
-     &lt;/list&gt;
+    &lt;property name="header.rightGroup"&gt;
+      &lt;bean parent="Uif-HeaderRightGroup"&gt;
+        &lt;items&gt;
+          &lt;bean parent="Uif-ActionLink&quot; p:actionLabel=&quot;copy&quot; p:methodToCall="copy"/&gt;
+          &lt;bean parent="Uif-ActionLink&quot; p:actionLabel=&quot;edit&quot; p:methodToCall="edit"/&gt;
+        &lt;/items&gt;
+      &lt;/bean&gt;
     &lt;/property&gt;
 &lt;/bean&gt;
-        </programlisting>
-    <para>Note we set the items directly on the header component instead of its nested group. We
-            can do this because the header component provides a convenience getter and setter that
-            uses the nested group items property.</para>
-    <para>With the use of a style class, we can make our header group contents push to the far
-            right of the header area (likewise we can flush it next to the header text, wrap to a
-            new line, or use another of the many possible visual treatments). </para>
-    <para>We can accomplish a lot with the use of header items. The following Screen Shot shows a
+    </programlisting>
+    <para>Like the rightGroup header property, a lowerGroup and upperGroup property are also available.</para>
+    <para>We can accomplish a lot with the use of these header properties. The following Screen Shot shows a
       couple more examples. In the first one, the standard view header for document views is used,
       which contains a group that displays information about the document. The second header is a
       page header that contains buttons for expanding or collapsing all the disclosure groups on the
@@ -440,9 +437,8 @@
             header will display differently than a section header)</para>
         </listitem>
         <listitem>
-          <para>We can add items to the header by setting the header.items property. With CSS we can
-            make our content display next to the header, to the far right, wrap to a new line, or
-            use any other of the many possible visual treatments)</para>
+          <para>We can add items to the header by setting the rightGroup, lowerGroup or upperGroup
+            header property. Each property contains a group bean where components can be added.</para>
         </listitem>
       </itemizedlist>
     </section>
@@ -1416,9 +1412,9 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
 &lt;bean parent="Uif-LinkGroup" p:headerText="Link Group" p:linkSeparator="|" p:groupBeginDelimiter="[" p:groupEndDelimiter="]"&gt;
    &lt;property name="items"&gt;
      &lt;list&gt;
-       &lt;bean parent="Uif-Link" p:href="http:myapp/home" p:linkLabel="Home"/&gt;
-       &lt;bean parent="Uif-Link" p:href="http:myapp/register" p:linkLabel="Register"/&gt;
-       &lt;bean parent="Uif-Link" p:href="http:myapp/about" p:linkLabel="About"/&gt;
+       &lt;bean parent="Uif-Link" p:href="http:myapp/home" p:linkText="Home"/&gt;
+       &lt;bean parent="Uif-Link" p:href="http:myapp/register" p:linkText="Register"/&gt;
+       &lt;bean parent="Uif-Link" p:href="http:myapp/about" p:linkText="About"/&gt;
      &lt;/list&gt;
    &lt;/property&gt;
 &lt;/bean&gt;

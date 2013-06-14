@@ -105,7 +105,7 @@
                         <!-- https://wiki.kuali.org/display/KULRICE/Schema+Spy+Publish+to+site.kuali.org -->
                         <!-- hard code to last version of 2.1 Schema Spy was run on -->
                         <listitem>
-                            <para><link xlink:show="new" xlink:href="../../../../2.1.3/refernce/html/schema-spy/index.html">Schema Spy</link></para>
+                            <para><link xlink:show="new" xlink:href="http://site.kuali.org/rice/2.1.1/reference/html/schema-spy/index.html">Schema Spy</link></para>
                         </listitem>
 
 <!-- TODO: regenerate and add back in

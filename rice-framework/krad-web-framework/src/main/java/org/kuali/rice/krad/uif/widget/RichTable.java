@@ -38,6 +38,7 @@ import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
@@ -387,7 +388,7 @@ public class RichTable extends WidgetBase {
                                     + columnIndex
                                     + "]"
                                     + "}, ");
-                            // if sortableColumns is present and a field is marked as sortable or unspecified
+                        // if sortableColumns is present and a field is marked as sortable or unspecified
                         } else if (getSortableColumns() != null && !getSortableColumns().isEmpty()) {
                             if (getSortableColumns().contains(field.getPropertyName())) {
                                 tableToolsColumnOptions.append(getDataFieldColumnOptions(columnIndex, collectionGroup,
@@ -427,6 +428,10 @@ public class RichTable extends WidgetBase {
                                 + columnIndex
                                 + "]"
                                 + "}, ");
+                        columnIndex++;
+                    } else if (component instanceof LinkField) {
+                        String colOptions = constructTableColumnOptions(columnIndex, true, String.class, UifConstants.TableToolsValues.DOM_TEXT);
+                        tableToolsColumnOptions.append(colOptions + " , ");
                         columnIndex++;
                     } else {
                         String colOptions = constructTableColumnOptions(columnIndex, false, null, null);

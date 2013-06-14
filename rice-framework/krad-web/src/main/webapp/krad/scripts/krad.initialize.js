@@ -1026,18 +1026,26 @@ jQuery.fn.dataTableExt.afnSortData['dom-text'] = function (oSettings, iColumn, i
     var aData = [];
     jQuery(oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
         var td = jQuery('>td:eq(' + iVisColumn + '):first', this);
+        var link =  jQuery(td).find('input:text');
         var input = jQuery(td).find('input:text');
         if (input.length != 0) {
             aData.push(input.val());
         } else {
-            // find span for the data or input field and get its text
-            var input1 = jQuery(td).find('.uif-field');
-            if (input1.length != 0) {
-                aData.push(jQuery.trim(input1.find("span:first").text()));
+            // check for linkField
+            var linkField = jQuery(td).find('.uif-linkField');
+            if(linkField.length !=0) {
+                aData.push(jQuery(td).find('.uif-linkField').text().trim());
             } else {
-                // just use the text within the cell
-                aData.push(jQuery(td).text());
+                // find span for the data or input field and get its text
+                var inputField = jQuery(td).find('.uif-field');
+                if (inputField.length != 0) {
+                    aData.push(jQuery.trim(inputField.find("span:first").text()));
+                } else {
+                    // just use the text within the cell
+                    aData.push(jQuery(td).text());
+                }
             }
+
         }
 
     });

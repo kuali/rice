@@ -164,6 +164,14 @@ public class ITUtil {
         return Calendar.getInstance().getTimeInMillis() + "" + RandomStringUtils.randomAlphabetic(2).toLowerCase();
     }
 
+    // The Document Description contains 9 continuous digits or 9 digits grouped in the following pattern: ###-##-####, which may represent a Tax Number.
+    // The Document Description is not secure and its contents may be viewed by other application users. Please revise the Document Description to not contain digits in those patterns.
+    public static String createUniqueDtsPlusTwoRandomCharsNot9Digits() {
+        String dtsTwo = ITUtil.createUniqueDtsPlusTwoRandomChars();
+        dtsTwo = dtsTwo.substring(0, 5) + dtsTwo.substring(13, 14) + dtsTwo.substring(6, 12);
+        return dtsTwo;
+    }
+
     protected static void checkForIncidentReport(String contents, String linkLocator, Failable failable, String message) {
         if (contents == null) { //guard clause
             return;

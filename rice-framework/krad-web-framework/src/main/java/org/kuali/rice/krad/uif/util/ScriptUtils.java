@@ -187,6 +187,7 @@ public class ScriptUtils {
         for (String key: stringMap.keySet()){
             convertedValue = convertedValue + "\"" + key + "\":" + convertToJsValue(stringMap.get(key)) + ",";
         }
+
         convertedValue = StringUtils.removeEnd(convertedValue, ",");
         convertedValue = convertedValue + "}";
 

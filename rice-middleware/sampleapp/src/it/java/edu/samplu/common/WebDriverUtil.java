@@ -314,7 +314,7 @@ public class WebDriverUtil {
         if (System.getProperty(ITUtil.REMOTE_AUTOLOGIN_PROPERTY) == null) {
             driver.findElement(By.name("login_user")).clear();
             driver.findElement(By.name("login_user")).sendKeys(userName);
-            driver.findElement(By.id("LoginButton")).click();
+            driver.findElement(By.id("Rice-LoginButton")).click();
             Thread.sleep(1000);
             String contents = driver.getPageSource();
             ITUtil.failOnInvalidUserName(userName, contents, failable);

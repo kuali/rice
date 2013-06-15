@@ -55,6 +55,7 @@ public class ComponentUtilsTest {
     private FieldBase initializeFieldBase() {
         FieldBase fieldBase = new FieldBase();
         fieldBase = (FieldBase) initializeComponentBase(fieldBase);
+        fieldBase.setShortLabel("Label");
 
         return fieldBase;
     }
@@ -176,6 +177,7 @@ public class ComponentUtilsTest {
         FieldBase fieldBaseCopy = ComponentUtils.copyUsingCloning(fieldBaseOriginal);
 
         assertTrue(ComponentCopyPropertiesMatch(fieldBaseOriginal, fieldBaseCopy));
+        assertTrue(fieldBaseOriginal.getShortLabel().equals(fieldBaseCopy.getShortLabel()));
     }
 
     private boolean ComponentCopyPropertiesMatch(ComponentBase originalComponent, ComponentBase copiedComponent) {

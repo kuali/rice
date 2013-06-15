@@ -370,6 +370,8 @@ public class FieldBase extends ComponentBase implements Field {
     @Override
     protected FieldBase copyProperties(Cloneable fieldBase) {
         fieldBase = super.copyProperties(fieldBase);
+        ((FieldBase)fieldBase).shortLabel = this.shortLabel;
+        ((FieldBase)fieldBase).labelRendered = this.labelRendered;
 
         return (FieldBase)fieldBase;
     }

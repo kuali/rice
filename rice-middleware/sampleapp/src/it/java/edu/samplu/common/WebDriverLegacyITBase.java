@@ -28,6 +28,7 @@ import org.junit.rules.TestName;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriverService;
@@ -1192,6 +1193,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     protected void selectOption(By by, String optionValue) throws InterruptedException {
         WebElement select1 = driver.findElement(by);
         List<WebElement> options = select1.findElements(By.tagName("option"));
+
+        if (options == null || options.size() == 0) {
+            fail("No options for select " + select1.toString() + " was looking for value " + optionValue + " using " + by.toString());
+        }
 
         for (WebElement option : options) {
             if (option.getAttribute("value").equals(optionValue)) {
@@ -4184,6 +4189,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         return driver.findElement(By.xpath(DOC_ID_XPATH)).getText();
     }
 
+    protected void waitForElementPresent(By by) throws InterruptedException {
+        jiraAwareWaitFor(by, "");
+    }
+
     protected void waitForElementPresent(String locator) throws InterruptedException {
         jiraAwareWaitFor(By.cssSelector(locator), "");
     }
@@ -4215,13 +4224,48 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     protected void waitIsVisible(By by) throws InterruptedException {
         for (int second = 0;; second++) {
             if (second >= waitSeconds) {
-                SeleneseTestBase.fail(TIMEOUT_MESSAGE);
+                SeleneseTestBase.fail(TIMEOUT_MESSAGE + " " + by.toString());
             }
             if (isVisible(by)) {
                 break;
             }
             Thread.sleep(1000);
         }
+    }
+
+    protected void waitIsVisible(By by, String message) throws InterruptedException {
+        for (int second = 0;; second++) {
+            if (second >= waitSeconds) {
+                SeleneseTestBase.fail(TIMEOUT_MESSAGE + " " + by.toString() + " " + message);
+            }
+            if (isVisible(by)) {
+                break;
+            }
+            Thread.sleep(1000);
+        }
+    }
+
+    protected boolean waitAreAnyVisible(By[] bys) throws InterruptedException {
+        if (bys == null) {
+            return false;
+        }
+        boolean visable = false;
+        for (int second = 0; second < waitSeconds; second++) {
+            for (int i = 0, s = bys.length; i < s; i++) {
+                try {
+                    if (isVisible(bys[i])) {
+                        visable = true;
+                        break;
+                    } else if (second >= waitSeconds) {
+                        break;
+                    }
+                } catch (NoSuchElementException nsee) {
+                    // don't fail
+                }
+                Thread.sleep(1000);
+            }
+        }
+        return visable;
     }
 
     protected void waitForElementVisible(String elementLocator, String message) throws InterruptedException {
@@ -4249,6 +4293,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void waitIsVisibleByXpath(String locator) throws InterruptedException {
         waitIsVisible(By.xpath(locator));
+    }
+
+    protected void waitIsVisibleByXpath(String locator, String message) throws InterruptedException {
+        waitIsVisible(By.xpath(locator), message);
     }
 
     protected void waitForTitleToEqualKualiPortalIndex(String message) throws InterruptedException {

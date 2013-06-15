@@ -13,36 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.samplu.krad.compview;
+package edu.samplu.krad.labs.kitchensink.compview;
 
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class BreadcrumbSTNGNavGen extends BreadcrumbSTNGBase {
+public class BreadcrumbKradSTJUnitNavGen extends BreadcrumbKradSTJUnitBase {
 
-    @Test(groups = { "all", "fast", "default", "nav" }, description = "testBreadcrumbNav")
-    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
+    @Test
     public void testBreadcrumbNav() throws Exception {
         testBreadcrumbNav(this);
     }
 
-    @Test(groups = { "all", "fast", "default", "nav" }, description = "testBreadcrumbNav")
-    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
+    @Test
     public void testBreadcrumbShuffledNav() throws Exception {
         testBreadcrumbShuffledNav(this);
     }
 
-    @Test(groups = { "all", "fast", "default", "nav" }, description = "testBreadcrumbNavigateToNav")
-    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
+    @Test
     public void testBreadcrumbNavigateToNav() throws Exception {
         testBreadcrumbNavigateToNav(this);
     }
 
-    @Test(groups = { "all", "fast", "default", "nav" }, description = "testBreadcrumbNavigateToShuffledNav")
-    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
+    @Test
     public void testBreadcrumbNavigateToShuffledNav() throws Exception {
         testBreadcrumbNavigateToShuffledNav(this);
     }

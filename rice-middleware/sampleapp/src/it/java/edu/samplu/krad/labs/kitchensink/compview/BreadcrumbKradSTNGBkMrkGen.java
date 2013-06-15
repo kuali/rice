@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.samplu.krad.compview;
+package edu.samplu.krad.labs.kitchensink.compview;
 
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -21,7 +21,7 @@ import org.testng.annotations.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class BreadcrumbSTNGBkMrkGen extends BreadcrumbSTNGBase {
+public class BreadcrumbKradSTNGBkMrkGen extends BreadcrumbKradSTNGBase {
 
     /**
      * {@inheritDoc}

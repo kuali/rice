@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.samplu.krad.compview;
+package edu.samplu.krad.labs.kitchensink.compview;
 
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class BreadcrumbSTNGBkMrkGen extends BreadcrumbSTNGBase {
+public class BreadcrumbKradSTJUnitBkMrkGen extends BreadcrumbKradSTJUnitBase {
 
     /**
      * {@inheritDoc}
@@ -32,26 +31,22 @@ public class BreadcrumbSTNGBkMrkGen extends BreadcrumbSTNGBase {
         return BOOKMARK_URL;
     }
 
-    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testBreadcrumbBookmark")
-    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
+    @Test
     public void testBreadcrumbBookmark() throws Exception {
         testBreadcrumbBookmark(this);
     }
 
-    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testBreadcrumbShuffledBookmark")
-    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
+    @Test
     public void testBreadcrumbShuffledBookmark() throws Exception {
         testBreadcrumbShuffledBookmark(this);
     }
 
-    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testBreadcrumbNavigateToBookmark")
-    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
+    @Test
     public void testBreadcrumbNavigateToBookmark() throws Exception {
         testBreadcrumbNavigateToBookmark(this);
     }
 
-    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testBreadcrumbNavigateToShuffledBookmark")
-    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
+    @Test
     public void testBreadcrumbNavigateToShuffledBookmark() throws Exception {
         testBreadcrumbNavigateToShuffledBookmark(this);
     }

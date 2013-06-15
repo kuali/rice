@@ -13,32 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.samplu.krad.compview;
+package edu.samplu.krad.labs.kitchensink.compview;
 
-import org.junit.Test;
+import org.testng.AssertJUnit;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class BreadcrumbSTJUnitNavGen extends BreadcrumbSTJUnitBase {
+public abstract class BreadcrumbKradSTNGBase extends BreadcrumbKradSmokeTestBase {
 
-    @Test
-    public void testBreadcrumbNav() throws Exception {
-        testBreadcrumbNav(this);
-    }
-
-    @Test
-    public void testBreadcrumbShuffledNav() throws Exception {
-        testBreadcrumbShuffledNav(this);
-    }
-
-    @Test
-    public void testBreadcrumbNavigateToNav() throws Exception {
-        testBreadcrumbNavigateToNav(this);
-    }
-
-    @Test
-    public void testBreadcrumbNavigateToShuffledNav() throws Exception {
-        testBreadcrumbNavigateToShuffledNav(this);
+    @Override
+    public void fail(String message){
+        passed = false;
+        AssertJUnit.fail(message);
     }
 }

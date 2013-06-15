@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.samplu.krad.compview;
+package edu.samplu.krad.labs.kitchensink.compview;
 
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -21,38 +21,29 @@ import org.testng.annotations.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class BreadcrumbSTNGBkMrkGen extends BreadcrumbSTNGBase {
+public class BreadcrumbKradSTNGNavGen extends BreadcrumbKradSTNGBase {
 
-    /**
-     * {@inheritDoc}
-     * @return
-     */
-    @Override
-    public String getTestUrl() {
-        return BOOKMARK_URL;
+    @Test(groups = { "all", "fast", "default", "nav" }, description = "testBreadcrumbNav")
+    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
+    public void testBreadcrumbNav() throws Exception {
+        testBreadcrumbNav(this);
     }
 
-    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testBreadcrumbBookmark")
+    @Test(groups = { "all", "fast", "default", "nav" }, description = "testBreadcrumbNav")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
-    public void testBreadcrumbBookmark() throws Exception {
-        testBreadcrumbBookmark(this);
+    public void testBreadcrumbShuffledNav() throws Exception {
+        testBreadcrumbShuffledNav(this);
     }
 
-    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testBreadcrumbShuffledBookmark")
+    @Test(groups = { "all", "fast", "default", "nav" }, description = "testBreadcrumbNavigateToNav")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
-    public void testBreadcrumbShuffledBookmark() throws Exception {
-        testBreadcrumbShuffledBookmark(this);
+    public void testBreadcrumbNavigateToNav() throws Exception {
+        testBreadcrumbNavigateToNav(this);
     }
 
-    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testBreadcrumbNavigateToBookmark")
+    @Test(groups = { "all", "fast", "default", "nav" }, description = "testBreadcrumbNavigateToShuffledNav")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
-    public void testBreadcrumbNavigateToBookmark() throws Exception {
-        testBreadcrumbNavigateToBookmark(this);
-    }
-
-    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testBreadcrumbNavigateToShuffledBookmark")
-    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
-    public void testBreadcrumbNavigateToShuffledBookmark() throws Exception {
-        testBreadcrumbNavigateToShuffledBookmark(this);
+    public void testBreadcrumbNavigateToShuffledNav() throws Exception {
+        testBreadcrumbNavigateToShuffledNav(this);
     }
 }

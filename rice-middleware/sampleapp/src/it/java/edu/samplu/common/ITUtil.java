@@ -100,9 +100,19 @@ public class ITUtil {
     public static final String KNS_LOOKUP_METHOD =  "/kr/lookup.do?methodToCall=start&businessObjectClassName=";
 
     /**
+     * /kr-krad/labs?viewId=LabsMenuView
+     */
+    public static final  String LABS = "/kr-krad/labs?viewId=LabsMenuView";
+
+    /**
+     * ITUtil.getBaseUrlString() + LABS
+     */
+    public static final String LABS_URL = ITUtil.getBaseUrlString() + LABS;
+
+    /**
      * /portal.do
      */
-    public static final  String PORTAL = "/portal.do";
+    public static final String PORTAL = "/portal.do";
 
     /**
      * ITUtil.getBaseUrlString() + ITUtil.PORTAL
@@ -229,8 +239,8 @@ public class ITUtil {
         viewId = viewId.substring(viewId.lastIndexOf(">") + 2, viewId.length());
 
         String stackTrace = chunk.substring(chunk.lastIndexOf("(only in dev mode)"), chunk.length());
-        stackTrace = stackTrace.substring(stackTrace.indexOf("<span id=\"") + 3, stackTrace.length());
-        stackTrace = stackTrace.substring(stackTrace.indexOf("\">") + 2, stackTrace.indexOf("</span>"));
+        stackTrace = stackTrace.substring(stackTrace.indexOf("<pre>") + 5, stackTrace.length());
+        stackTrace = stackTrace.substring(0, stackTrace.indexOf("</"));
 
         //            System.out.println(docId);
         //            System.out.println(viewId);

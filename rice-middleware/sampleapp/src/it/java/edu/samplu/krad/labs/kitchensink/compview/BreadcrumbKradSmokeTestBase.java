@@ -13,32 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.samplu.krad.compview;
+package edu.samplu.krad.labs.kitchensink.compview;
 
-import org.junit.Test;
+import edu.samplu.common.ITUtil;
+import edu.samplu.krad.compview.BreadcrumbSmokeTestBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class BreadcrumbSTJUnitNavGen extends BreadcrumbSTJUnitBase {
 
-    @Test
-    public void testBreadcrumbNav() throws Exception {
-        testBreadcrumbNav(this);
+public class BreadcrumbKradSmokeTestBase extends BreadcrumbSmokeTestBase {
+
+    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView";
+
+    @Override
+    public String getTestUrl() {
+        return ITUtil.LABS;
     }
 
-    @Test
-    public void testBreadcrumbShuffledNav() throws Exception {
-        testBreadcrumbShuffledNav(this);
-    }
-
-    @Test
-    public void testBreadcrumbNavigateToNav() throws Exception {
-        testBreadcrumbNavigateToNav(this);
-    }
-
-    @Test
-    public void testBreadcrumbNavigateToShuffledNav() throws Exception {
-        testBreadcrumbNavigateToShuffledNav(this);
+    @Override
+    protected void navigation() throws Exception {
+        waitAndClickByLinkText("Kitchen Sink");
     }
 }

@@ -52,7 +52,7 @@ import java.util.Map;
  * @see org.kuali.rice.krad.uif.field.Field
  * @see org.kuali.rice.krad.uif.widget.Widget
  */
-public interface Component extends UifDictionaryBean, Serializable, Ordered, ScriptEventSupport {
+public interface Component extends UifDictionaryBean, Serializable, Ordered, ScriptEventSupport, Cloneable {
 
     /**
      * The unique id (within a given tree) for the component
@@ -1238,4 +1238,11 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
      * @param postRenderContent
      */
     public void setPostRenderContent(String postRenderContent);
+
+    /**
+     * Clone the object
+     *
+     * @return the cloned object
+     */
+    public <T extends Component> T clone();
 }

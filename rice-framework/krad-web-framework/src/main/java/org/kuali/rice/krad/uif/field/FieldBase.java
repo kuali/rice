@@ -348,4 +348,29 @@ public class FieldBase extends ComponentBase implements Field {
     protected Class<? extends ComponentSecurity> getComponentSecurityClass() {
         return FieldSecurity.class;
     }
+
+    /**
+     * Returns a clone of the component.
+     *
+     * @return ComponentBase clone of the component
+     */
+    @Override
+    public <T extends Component> T clone() {
+        try {
+            T clonedClass = (T)this.getClass().newInstance();
+            clonedClass = (T)copyProperties(clonedClass);
+
+            return clonedClass;
+        }
+        catch(Exception exception) {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    protected FieldBase copyProperties(Cloneable fieldBase) {
+        fieldBase = super.copyProperties(fieldBase);
+
+        return (FieldBase)fieldBase;
+    }
 }

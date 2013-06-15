@@ -1845,4 +1845,84 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         }
     }
 
+    /**
+     * Returns a clone of the component.
+     *
+     * @return ComponentBase clone of the component
+     */
+    @Override
+    public <T extends Component> T clone() {
+        try {
+            T clonedClass = (T)this.getClass().newInstance();
+            clonedClass = (T)copyProperties(clonedClass);
+
+            return clonedClass;
+        }
+        catch(Exception exception) {
+            throw new RuntimeException();
+        }
+    }
+
+    protected ComponentBase copyProperties(Cloneable component) {
+        ((ComponentBase)component).additionalComponentsToRefresh = new ArrayList<String>(this.getAdditionalComponentsToRefresh());
+        ((ComponentBase)component).additionalCssClasses = new ArrayList<String>(this.getAdditionalCssClasses());
+        ((ComponentBase)component).align = this.align;
+        ((ComponentBase)component).cellCssClasses = new ArrayList<String>(this.getCellCssClasses());
+        ((ComponentBase)component).cellStyle = this.cellStyle;
+        ((ComponentBase)component).cellWidth = this.cellWidth;
+        ((ComponentBase)component).colSpan = this.colSpan;
+        ((ComponentBase)component).conditionalRefresh = this.conditionalRefresh;
+        ((ComponentBase)component).cssClasses = new ArrayList<String>(this.getCssClasses());
+        ((ComponentBase)component).dataAttributes = new HashMap<String, String>(this.getDataAttributes());
+        ((ComponentBase)component).disableSessionPersistence = this.disableSessionPersistence;
+        ((ComponentBase)component).disclosedByAction = this.disclosedByAction;
+        ((ComponentBase)component).finalizeMethodToCall = this.finalizeMethodToCall;
+        ((ComponentBase)component).forceSessionPersistence = this.forceSessionPersistence;
+        ((ComponentBase)component).hidden = this.hidden;
+        ((ComponentBase)component).methodToCallOnRefresh = this.methodToCallOnRefresh;
+        ((ComponentBase)component).onBlurScript = this.onBlurScript;
+        ((ComponentBase)component).onChangeScript = this.onChangeScript;
+        ((ComponentBase)component).onClickScript = this.onClickScript;
+        ((ComponentBase)component).onCloseScript = this.onCloseScript;
+        ((ComponentBase)component).onDblClickScript = this.onDblClickScript;
+        ((ComponentBase)component).onDocumentReadyScript = this.onDocumentReadyScript;
+        ((ComponentBase)component).onFocusScript = this.onFocusScript;
+        ((ComponentBase)component).onKeyDownScript = this.onKeyDownScript;
+        ((ComponentBase)component).onKeyPressScript = this.onKeyPressScript;
+        ((ComponentBase)component).onKeyUpScript = this.onKeyUpScript;
+        ((ComponentBase)component).onLoadScript = this.onLoadScript;
+        ((ComponentBase)component).onMouseDownScript = this.onMouseDownScript;
+        ((ComponentBase)component).onMouseMoveScript = this.onMouseMoveScript;
+        ((ComponentBase)component).onMouseOutScript = this.onMouseOutScript;
+        ((ComponentBase)component).onMouseOverScript = this.onMouseOverScript;
+        ((ComponentBase)component).onMouseUpScript = this.onMouseUpScript;
+        ((ComponentBase)component).onSubmitScript = this.onSubmitScript;
+        ((ComponentBase)component).onUnloadScript = this.onUnloadScript;
+        ((ComponentBase)component).order = this.order;
+        ((ComponentBase)component).postRenderContent = this.postRenderContent;
+        ((ComponentBase)component).preRenderContent = this.preRenderContent;
+        ((ComponentBase)component).progressiveRender = this.progressiveRender;
+        ((ComponentBase)component).progressiveRenderViaAJAX = this.progressiveRenderViaAJAX;
+        ((ComponentBase)component).readOnly = this.readOnly;
+        ((ComponentBase)component).refreshedByAction = this.refreshedByAction;
+        ((ComponentBase)component).refreshTimer = this.refreshTimer;
+        ((ComponentBase)component).refreshWhenChangedPropertyNames = new ArrayList<String>(this.refreshWhenChangedPropertyNames);
+        ((ComponentBase)component).render = this.render;
+        ((ComponentBase)component).renderedHtmlOutput = this.renderedHtmlOutput;
+        ((ComponentBase)component).required = this.required;
+        ((ComponentBase)component).resetDataOnRefresh = this.resetDataOnRefresh;
+        ((ComponentBase)component).rowSpan = this.rowSpan;
+        ((ComponentBase)component).selfRendered = this.selfRendered;
+        ((ComponentBase)component).skipInTabOrder = this.skipInTabOrder;
+        ((ComponentBase)component).style = this.style;
+        ((ComponentBase)component).template = this.template;
+        ((ComponentBase)component).templateName = this.templateName;
+        ((ComponentBase)component).templateOptions = new HashMap<String, String>(this.templateOptions);
+        ((ComponentBase)component).templateOptionsJSString = this.templateOptionsJSString;
+        ((ComponentBase)component).title = this.title;
+        ((ComponentBase)component).valign = this.valign;
+        ((ComponentBase)component).width = this.width;
+
+        return (ComponentBase)component;
+    }
 }

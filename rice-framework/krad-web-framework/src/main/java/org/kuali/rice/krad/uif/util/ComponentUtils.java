@@ -51,6 +51,11 @@ public class ComponentUtils {
         return copy(component, null);
     }
 
+    // This method should not be used by actual code; it will eventually replace the current copy method
+    public static <T extends Component> T copyUsingCloning(T component) {
+        return component.clone();
+    }
+
     public static <T extends Component> T copy(T component, String idSuffix) {
         T copy = copyObject(component);
 

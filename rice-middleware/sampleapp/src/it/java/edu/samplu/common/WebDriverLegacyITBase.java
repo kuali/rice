@@ -4243,26 +4243,42 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected boolean waitAreAnyVisible(By[] bys) throws InterruptedException {
-        if (bys == null) {
+        if (bys == null || bys.length == 0 ) {
             return false;
         }
-        boolean visable = false;
+
         for (int second = 0; second < waitSeconds; second++) {
-            for (int i = 0, s = bys.length; i < s; i++) {
-                try {
-                    if (isVisible(bys[i])) {
-                        visable = true;
-                        break;
-                    } else if (second >= waitSeconds) {
-                        break;
-                    }
-                } catch (NoSuchElementException nsee) {
-                    // don't fail
-                }
-                Thread.sleep(1000);
+
+            if (isVisible(bys)) {
+                return true;
             }
+
+            Thread.sleep(1000);
         }
-        return visable;
+
+        return false;
+    }
+
+    protected boolean isVisible(By[] bys) {
+        if (bys == null || bys.length == 0 ) {
+            return false;
+        }
+
+        for (int i = 0, s = bys.length; i < s; i++) {
+
+            try {
+
+                if (isVisible(bys[i])) {
+                    return true;
+                }
+
+            } catch (NoSuchElementException nsee) {
+                // don't fail
+            }
+
+        }
+
+        return false;
     }
 
     protected void waitForElementVisible(String elementLocator, String message) throws InterruptedException {

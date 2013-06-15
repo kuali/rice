@@ -420,7 +420,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     /**
-     * Setup the WebDriver properties, test, and login.  Named stetUp so it runs after TestNG's startSession(Method)
+     * Setup the WebDriver properties, test, and login.  Named beforeSetUp so it runs after TestNG's startSession(Method)
      *
      * {@link WebDriverUtil#determineUser(String)}
      * {@link WebDriverUtil#setUp(String, String, String, String)}
@@ -428,7 +428,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      */
     @Before
     @BeforeMethod
-    public void stetUp() throws Exception {
+    public void beforeSetUp() throws Exception {
 
         if (testName != null && testName.getMethodName() != null) { // JUnit
             testMethodName = testName.getMethodName();
@@ -3309,10 +3309,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndCreateNew();
         String docId = waitForDocId();
         assertBlanketApproveButtonsPresent();
-        String dtsTwo = ITUtil.createUniqueDtsPlusTwoRandomChars();
-        // The Document Description contains 9 continuous digits or 9 digits grouped in the following pattern: ###-##-####, which may represent a Tax Number.
-        // The Document Description is not secure and its contents may be viewed by other application users. Please revise the Document Description to not contain digits in those patterns.
-        dtsTwo = dtsTwo.substring(0, 4) + dtsTwo.substring(13, 14) + dtsTwo.substring(5, 12);
+        String dtsTwo = ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits();
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Campus Type " + dtsTwo);
         waitAndTypeByXpath(DOC_CODE_XPATH, RandomStringUtils.randomAlphabetic(1));
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "Indianapolis" + dtsTwo);

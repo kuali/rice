@@ -420,7 +420,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     /**
-     * Setup the WebDriver properties, test, and login.  Named beforeSetUp so it runs after TestNG's startSession(Method)
+     * Setup the WebDriver properties, test, and login.  Named testSetUp so it runs after TestNG's startSession(Method)
      *
      * {@link WebDriverUtil#determineUser(String)}
      * {@link WebDriverUtil#setUp(String, String, String, String)}
@@ -428,7 +428,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      */
     @Before
     @BeforeMethod
-    public void beforeSetUp() throws Exception {
+    public void testSetUp() throws Exception {
 
         if (testName != null && testName.getMethodName() != null) { // JUnit
             testMethodName = testName.getMethodName();

@@ -66,6 +66,11 @@ public class FieldValidationMessages extends ValidationMessages {
                 hasMessages);
         this.addValidationDataSettingsValue(validationMessagesDataAttributes, dataDefaults, "showIcons", showIcons);
 
+        //add property directly for selections
+        if (hasMessages) {
+            parent.addDataAttribute(UifConstants.DataAttributes.HAS_MESSAGES, Boolean.toString(hasMessages));
+        }
+
         //server messages
         this.addValidationDataSettingsValue(validationMessagesDataAttributes, dataDefaults, "serverErrors",
                 ScriptUtils.escapeHtml(this.getErrors()));

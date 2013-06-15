@@ -380,7 +380,7 @@ public class UifComponentsTestForm extends UifFormBase {
         doubleGroupedList.add(new UITestObject("Spring", "2003", "CCC123", "3"));
         doubleGroupedList.add(new UITestObject("Spring", "2003", "DDD123", "2"));
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 22; i++) {
             UITestObject newObj = new UITestObject(RandomStringUtils.randomAlphanumeric(6), RandomStringUtils.randomAlphanumeric(6),
                                 RandomStringUtils.randomAlphanumeric(6), RandomStringUtils.randomNumeric(1));
             if(i%2 == 0){

@@ -1107,14 +1107,14 @@ function generateListItems(messageArray, itemClass, startIndex, focusable, image
 function generateSummaries(id, messageMap, sections, order, newList) {
     var data = getValidationData(jQuery("#" + id), true);
     //if no nested sections just output the fieldLinks
-    if (sections.length == 0) {
+    if (sections.length == 0 || data.isTableCollection == "true") {
         for (var key in messageMap) {
             var link = generateFieldLink(messageMap[key], key, data.collapseFieldMessages, data.displayLabel);
             newList = writeMessageItemToList(link, newList);
         }
     }
     else {
-        var currentFields = {};
+        var currentFields = [];
         var currentSectionId;
 
         //if sections are present iterate over the fields and sections in order by collecting fields that are considered
@@ -1126,7 +1126,16 @@ function generateSummaries(id, messageMap, sections, order, newList) {
         jQuery.each(order, function (index, value) {
             //if it doesn't start with an s$ its not a section or f$ its not a field group
             if (!(value.indexOf("s$") == 0) && !(value.indexOf("f$") == 0)) {
-                currentFields[index] = value;
+                currentFields.push(value);
+            }
+            else if (value.indexOf("c$") == 0){
+                var collectionId = value.substring(2);
+                var collectionData = getValidationData(jquery("#" + collectionId), true);
+                for (var key in collectionData.messageMap) {
+                    var link = generateFieldLink(collectionData.messageMap[key],
+                            key, collectionData.collapseFieldMessages, collectionData.displayLabel);
+                    newList = writeMessageItemToList(link, newList);
+                }
             }
             else {
                 var sectionId = value.substring(2);
@@ -1139,7 +1148,7 @@ function generateSummaries(id, messageMap, sections, order, newList) {
                     newList = writeMessageItemToList(sublist, newList);
                     var summaryLink = generateSummaryLink(currentSectionId);
                     newList = writeMessageItemToList(summaryLink, newList);
-                    currentFields = {};
+                    currentFields = [];
                 }
             }
         });

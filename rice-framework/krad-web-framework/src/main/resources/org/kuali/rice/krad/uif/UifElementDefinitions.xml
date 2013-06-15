@@ -72,6 +72,7 @@
     <entry key="hasOwnMessages" value="false"/>
     <entry key="pageLevel" value="false"/>
     <entry key="forceShow" value="false"/>
+    <entry key="isTableCollection" value="false"/>
     <entry key="order" value="[]"/>
     <entry key="sections" value="[]"/>
     <entry key="errors" value="[]"/>

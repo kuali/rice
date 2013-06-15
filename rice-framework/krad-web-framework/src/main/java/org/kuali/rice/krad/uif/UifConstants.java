@@ -299,6 +299,7 @@ public class UifConstants {
         public static final String ROLE = "role";
         public static final String ONCLICK = "onclick";
         public static final String SUBMIT_DATA = "submit_data";
+        public static final String HAS_MESSAGES = "has_messages";
         public static final String SERVER_MESSAGES = "server_messages";
         public static final String VALIDATION_MESSAGES = "validation_messages";
         public static final String GROUP_VALIDATION_DEFAULTS = "group_validation_defaults";
@@ -311,6 +312,7 @@ public class UifConstants {
         public static final String DISPLAY_LABEL = "displayLabel";
         public static final String SHOW_PAGE_SUMMARY_HEADER = "showPageSummaryHeader";
         public static final String DISPLAY_HEADER_SUMMARY = "displayHeaderSummary";
+        public static final String IS_TABLE_COLLECTION = "isTableCollection";
         public static final String HAS_OWN_MESSAGES = "hasOwnMessages";
         public static final String PAGE_LEVEL = "pageLevel";
         public static final String FORCE_SHOW = "forceShow";

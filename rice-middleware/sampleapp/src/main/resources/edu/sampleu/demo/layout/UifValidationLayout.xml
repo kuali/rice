@@ -190,6 +190,24 @@
             </list>
           </property>
         </bean>
+        <bean id="Demo-ValidationLayout-DetailsCollectionPage" parent="Uif-Page" p:headerText="Details Collection">
+          <property name="items">
+            <list>
+              <ref bean="Demo-RowDetails-Section6"/>
+            </list>
+          </property>
+        </bean>
+        <bean id="Demo-ValidationLayout-LightTablePage" parent="Uif-Page" p:headerText="LightTable">
+          <property name="items">
+            <list>
+              <bean parent="Demo-LightTableGroup">
+                <!--<property name="header">
+                  <bean parent="Uif-HeaderTwo" p:headerText="Collection"/>
+                </property>-->
+              </bean>
+            </list>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>
@@ -227,6 +245,11 @@
               p:actionLabel="Collection Add Message"/>
         <bean parent="Uif-NavigationActionLink" p:navigateToPageId="Demo-ValidationLayout-FieldGroupPage"
               p:actionLabel="FieldGroups/Tabs"/>
+
+        <bean parent="Uif-NavigationActionLink" p:navigateToPageId="Demo-ValidationLayout-DetailsCollectionPage"
+                      p:actionLabel="Details Collection"/>
+        <bean parent="Uif-NavigationActionLink" p:navigateToPageId="Demo-ValidationLayout-LightTablePage"
+                      p:actionLabel="LightTable"/>
       </list>
     </property>
   </bean>

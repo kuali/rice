@@ -733,6 +733,14 @@ function createTable(tableId, additionalOptions, groupingOptions) {
         //insure scripts (if any) are run on each draw, fixes bug with scripts lost when paging after a refresh
         jQuery(oTable).on("dataTables.tableDraw", function (){
             runHiddenScripts(tableId, false, true);
+            jQuery("div[data-role='InputField'][data-has_messages='true']", "#" + tableId).each(function(){
+                var id = jQuery(this).attr('id');
+                var validationData = getValidationData(jQuery("#" + id));
+
+                if (validationData && validationData.hasOwnMessages){
+                    handleMessagesAtField(id);
+                }
+            });
         });
 
         //handle row details related functionality setup

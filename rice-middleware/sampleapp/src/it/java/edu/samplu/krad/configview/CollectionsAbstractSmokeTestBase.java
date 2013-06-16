@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package edu.samplu.krad.configview;
 
-import org.junit.Test;
-
-import com.thoughtworks.selenium.SeleneseTestBase;
 import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
@@ -72,53 +68,16 @@ public abstract class CollectionsAbstractSmokeTestBase extends WebDriverLegacyIT
         navigation();
         testColumnSequence();
         navigation();
-        testSequencerow();        
+        testSequencerow();
+        passed();
     }
 
     protected void testCollectionsBookmark(Failable failable) throws Exception {
         testDefaultTestsTableLayout();
-        testAddBlankLine();        
-        testActionColumnPlacement();        
-        testAddViaLightbox();        
-        testColumnSequence();        
-        testSequencerow();
-    }
-    
-    /**
-     * Test adding a column of values to the Default Tests Table Layout
-     */
-    public void testDefaultTestsTableLayout() throws Exception {
-        testDefaultTestsTableLayout();
-        passed();
-    }
-
-    /**
-     * Test adding a column of values to the Add Blank Line Tests Table Layout
-     */
-    public void testAddBlankLine() throws Exception {
         testAddBlankLine();
-        passed();
-    }
-
-    /**
-     * Test action column placement in table layout collections
-     */
-    public void testActionColumnPlacement() throws Exception {
         testActionColumnPlacement();
-        passed();
-    }
-
-    public void testAddViaLightbox() throws Exception {
         testAddViaLightbox();
-        passed();
-    }
-
-    public void testColumnSequence() throws Exception {
         testColumnSequence();
-        passed();
-    }
-    
-    public void testSequencerow() throws Exception {
         testSequencerow();
         passed();
     }

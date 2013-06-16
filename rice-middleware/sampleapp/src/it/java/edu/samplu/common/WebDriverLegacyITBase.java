@@ -2415,7 +2415,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         SeleneseTestBase.assertEquals("asdf3", getAttributeByName("list1[0].field3", "value"));
         SeleneseTestBase.assertEquals("asdf4", getAttributeByName("list1[0].field4", "value"));
         SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@id='Collections-Base-TableLayout_disclosureContent']/div/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button"));
-        passed();
     }
     /**
      * Test adding a column of values to the Add Blank Line Tests Table Layout

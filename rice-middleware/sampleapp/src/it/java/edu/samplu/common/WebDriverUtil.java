@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package edu.samplu.common;
 
 import org.apache.commons.lang.StringUtils;
@@ -38,7 +37,6 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
-
 
 /**
  * The goal of the WebDriverUtil class is to invert the dependencies on WebDriver from WebDriverLegacyITBase for reuse
@@ -318,6 +316,7 @@ public class WebDriverUtil {
             Thread.sleep(1000);
             String contents = driver.getPageSource();
             ITUtil.failOnInvalidUserName(userName, contents, failable);
+            ITUtil.checkForIncidentReport(driver.getPageSource(), "Krad Login", failable, "Krad Login failure");
         }
     }
 
@@ -336,6 +335,7 @@ public class WebDriverUtil {
             Thread.sleep(1000);
             String contents = driver.getPageSource();
             ITUtil.failOnInvalidUserName(userName, contents, failable);
+            ITUtil.checkForIncidentReport(driver.getPageSource(), "KNS Login", failable, "KNS Login failure");
         }
     }
 

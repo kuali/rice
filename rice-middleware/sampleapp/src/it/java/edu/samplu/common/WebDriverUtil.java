@@ -49,7 +49,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class WebDriverUtil {
 
-    public static boolean jGrowlEnabled = true;
+    public static boolean jGrowlEnabled = false;
     /**
      * TODO apparent dup WebDriverITBase.DEFAULT_WAIT_SEC
      * TODO parametrize for JVM Arg
@@ -127,8 +127,8 @@ public class WebDriverUtil {
      * @throws Exception
      */
     public static WebDriver setUp(String username, String url, String className, String testName) throws Exception {
-        if ("false".equals(System.getProperty(REMOTE_JGROWL_ENABLED, "true"))) {
-            jGrowlEnabled = false;
+        if ("true".equals(System.getProperty(REMOTE_JGROWL_ENABLED, "true"))) {
+            jGrowlEnabled = true;
         }
 
         WebDriver driver = null;

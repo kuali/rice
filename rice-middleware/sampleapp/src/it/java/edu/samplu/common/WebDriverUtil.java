@@ -127,7 +127,7 @@ public class WebDriverUtil {
      * @throws Exception
      */
     public static WebDriver setUp(String username, String url, String className, String testName) throws Exception {
-        if ("true".equals(System.getProperty(REMOTE_JGROWL_ENABLED, "true"))) {
+        if ("true".equals(System.getProperty(REMOTE_JGROWL_ENABLED, "false"))) {
             jGrowlEnabled = true;
         }
 

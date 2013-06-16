@@ -62,55 +62,20 @@ public abstract class ConfigurationTestViewAbstractSmokeTestBase extends WebDriv
 
     protected void testConfigurationTestViewNav(Failable failable) throws Exception {     
         navigation();
-        testConfigurationTestView();
+        testConfigurationTestView(idPrefix);
         navigation();
-        testAddLineWithSpecificTime();
+        testAddLineWithSpecificTime(idPrefix, addLineIdSuffix);
         navigation();
-        testAddLineWithAllDay();
+        testAddLineWithAllDay(idPrefix, addLineIdSuffix);
         navigation();
-        testAddLineAllDay();
+        testAddLineAllDay(idPrefix, addLineIdSuffix);
         passed();
     }
 
     protected void testConfigurationTestViewBookmark(Failable failable) throws Exception {
-        testConfigurationTestView();
-        testAddLineWithSpecificTime();
-        testAddLineWithAllDay();
-        testAddLineAllDay();
-        passed();
-    }    
-    
-    /**
-     * test for text input field label - style setting and refreshWhenChanged for components not in collection
-     */
-    public void testConfigurationTestView() throws Exception {
         testConfigurationTestView(idPrefix);
-        passed();
-    }
-
-    /**
-     * test adding a line to a collection which uses an add line that has spring expressions that are evaluated on refresh
-     * a specific time is set
-     */
-    public void testAddLineWithSpecificTime() throws Exception{
         testAddLineWithSpecificTime(idPrefix, addLineIdSuffix);
-        passed();
-    }
-
-    /**
-     * test adding a line to a collection which has the property refreshWhenChangedPropertyNames set
-     * on more than one component.
-     */
-    public void testAddLineWithAllDay() throws Exception {
         testAddLineWithAllDay(idPrefix, addLineIdSuffix);
-        passed();
-    }
-
-    /**
-     * test adding a line to a collection which uses an add line that has spring expressions that are evaluated on refresh
-     * a specific time is set
-     */
-    public void testAddLineAllDay() throws Exception{
         testAddLineAllDay(idPrefix, addLineIdSuffix);
         passed();
     }

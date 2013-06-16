@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package edu.samplu.krad.configview;
 
 import edu.samplu.common.Failable;
@@ -50,57 +49,23 @@ public abstract class Help2AbstractSmokeTestBase extends WebDriverLegacyITBase {
     }
 
     protected void testHelp2Nav(Failable failable) throws Exception {
-        // Call super tests else passed gets called before all tests are run.
         navigation();
-        super.testViewHelp2();
+        testViewHelp2();
         navigation();
-        super.testExternalHelp2();
+        testExternalHelp2();
         navigation();
-        super.testDisplayOnlyExternalHelp2();
+        testDisplayOnlyExternalHelp2();
         navigation();
-        super.testMissingExternalHelp2();
+        testMissingExternalHelp2();
         passed();
     }
 
     protected void testHelp2Bookmark(Failable failable) throws Exception {
-        // Call super tests else passed gets called before all tests are run.
-        super.testViewHelp();
-        super.testPageHelp();
-        super.testTooltipHelp();
-        super.testDisplayOnlyTooltipHelp();
-        super.testMissingTooltipHelp();
+        testViewHelp();
+        testPageHelp();
+        testTooltipHelp();
+        testDisplayOnlyTooltipHelp();
+        testMissingTooltipHelp();
         passed();
     }
-    
-    /**
-     * Test the tooltip and external help on the view
-     */
-    public void testViewHelp2() throws Exception {
-        super.testViewHelp2();
-        passed();
-    }
-
-    /**
-     * Test the tooltip and external help on the page
-     */
-    public void testExternalHelp2() throws Exception {
-        super.testExternalHelp2();
-        passed();
-    }
-
-    /**
-     * Test the tooltip help on the section and fields
-     */
-    public void testDisplayOnlyExternalHelp2() throws Exception {
-        super.testDisplayOnlyExternalHelp2();
-        passed();
-    }
-
-    /**
-     * Test the tooltip help on the sub-section and fields that are display only
-     */
-    public void testMissingExternalHelp2() throws Exception {
-        super.testMissingExternalHelp2();
-        passed();
-    }    
 }

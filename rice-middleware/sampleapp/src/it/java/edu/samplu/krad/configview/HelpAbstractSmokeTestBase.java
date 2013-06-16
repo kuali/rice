@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package edu.samplu.krad.configview;
 
 import edu.samplu.common.Failable;
@@ -50,66 +49,24 @@ public abstract class HelpAbstractSmokeTestBase extends WebDriverLegacyITBase {
     }
 
     protected void testHelpNav(Failable failable) throws Exception {
-        // Call super tests else passed gets called before all tests are run.
         navigation();
-        super.testViewHelp();
+        testViewHelp();
         navigation();
-        super.testPageHelp();
+        testPageHelp();
         navigation();
-        super.testTooltipHelp();
+        testTooltipHelp();
         navigation();
-        super.testDisplayOnlyTooltipHelp();
+        testDisplayOnlyTooltipHelp();
         navigation();
-        super.testMissingTooltipHelp();
+        testMissingTooltipHelp();
     }
 
     protected void testHelpBookmark(Failable failable) throws Exception {
-        // Call super tests else passed gets called before all tests are run.
-        super.testViewHelp();
-        super.testPageHelp();
-        super.testTooltipHelp();
-        super.testDisplayOnlyTooltipHelp();
-        super.testMissingTooltipHelp();
-        passed();
-    }
-    
-    /**
-     * Test the tooltip and external help on the view
-     */
-    public void testViewHelp() throws Exception {
-        super.testViewHelp();
-        passed();
-    }
-
-    /**
-     * Test the tooltip and external help on the page
-     */
-    public void testPageHelp() throws Exception {
-        super.testPageHelp();
-        passed();
-    }
-
-    /**
-     * Test the tooltip help on the section and fields
-     */
-    public void testTooltipHelp() throws Exception {
-        super.testTooltipHelp();
-        passed();
-    }
-
-    /**
-     * Test the tooltip help on the sub-section and fields that are display only
-     */
-    public void testDisplayOnlyTooltipHelp() throws Exception {
-        super.testDisplayOnlyTooltipHelp();
-        passed();
-    }
-
-    /**
-     * Test the tooltip help on the section and fields with no content
-     */
-    public void testMissingTooltipHelp() throws Exception {
-        super.testMissingTooltipHelp();
+        testViewHelp();
+        testPageHelp();
+        testTooltipHelp();
+        testDisplayOnlyTooltipHelp();
+        testMissingTooltipHelp();
         passed();
     }
 }

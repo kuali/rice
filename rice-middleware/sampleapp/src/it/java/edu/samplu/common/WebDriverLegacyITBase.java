@@ -428,13 +428,13 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      */
     @Before
     @BeforeMethod
-    public void testSetUp() throws Exception {
+    public void testSetUp() {
+        try { // Don't throw any exception from this methods, exceptions in Before annotations really mess up maven, surefire, or failsafe
 
-        if (testName != null && testName.getMethodName() != null) { // JUnit
-            testMethodName = testName.getMethodName();
-        }
+            if (testName != null && testName.getMethodName() != null) { // JUnit
+                testMethodName = testName.getMethodName();
+            }
 
-        try {
             waitSeconds = Integer.parseInt(System.getProperty(REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY, DEFAULT_WAIT_SEC + ""));
             String givenUser = WebDriverUtil.determineUser(this.toString());
             if (givenUser != null) {
@@ -443,21 +443,23 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
             driver = WebDriverUtil.setUp(getUserName(), getTestUrl(), getClass().getSimpleName(), testMethodName);
             this.sessionId = ((RemoteWebDriver) driver).getSessionId().toString();
-        } catch (Exception e) {
-            fail("Exception in setUp " + e.getMessage());
-            e.printStackTrace();
-        }
 
-        // login via either KRAD or KNS login page
-        if (isKradLogin()){
-            WebDriverUtil.kradLogin(driver, user, this);
-        } else {
-            WebDriverUtil.login(driver, user, this);
-        }
+            // login via either KRAD or KNS login page
+            if (isKradLogin()){
+                WebDriverUtil.kradLogin(driver, user, this);
+            } else {
+                WebDriverUtil.login(driver, user, this);
+            }
 
-        jGrowlHeader = getClass().getSimpleName() + "." + testMethodName;
-        System.out.println(jGrowlHeader + " sessionId is " + sessionId);
-        jGrowl("setUp");
+            jGrowlHeader = getClass().getSimpleName() + "." + testMethodName;
+            System.out.println(jGrowlHeader + " sessionId is " + sessionId);
+            jGrowl("setUp");
+
+        } catch (Throwable t) {
+            System.out.println("Throwable " + t.getMessage() + " in Before annotated method is very bad, ignoring and letting first method of test class to fail.");
+            t.printStackTrace();
+            System.out.println("Throwable " + t.getMessage() + " in Before annotated method is very bad, ignoring and letting first method of test class to fail.");
+        }
     }
 
     /**

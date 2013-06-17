@@ -44,7 +44,7 @@ public abstract class FreemarkerSTBase extends WebDriverLegacyITBase {
     @Override
     @Before
     @BeforeMethod
-    public void testSetUp() throws Exception {
+    public void testSetUp() {
         super.testSetUp();
         // generated load users and group resources
         cfg = new Configuration();

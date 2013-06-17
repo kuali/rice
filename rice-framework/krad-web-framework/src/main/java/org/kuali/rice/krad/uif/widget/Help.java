@@ -88,6 +88,7 @@ public class Help extends WidgetBase {
      * In addition to the standard finalization the following tasks are performed:
      * <li>Build the external help Url</li>
      * <li>Set the javascript action which opens the external help in window</li>
+     * <li>Set render to false if help not configured</li>
      * </p>
      *
      * @see org.kuali.rice.krad.uif.widget.WidgetBase#performFinalize(org.kuali.rice.krad.uif.view.View,
@@ -99,6 +100,11 @@ public class Help extends WidgetBase {
 
         buildExternalHelp(view, parent);
         buildTooltipHelp(parent);
+
+        // if help is not configured don't render the component
+        if (StringUtils.isBlank(this.externalHelpUrl) && StringUtils.isBlank(this.tooltipHelpContent)) {
+            setRender(false);
+        }
     }
 
     /**

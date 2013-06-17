@@ -92,15 +92,19 @@
         p:id="uLookupResults" p:layoutManager.suppressLineWrapping="true">
     <property name="showInactiveLines" value="true"/>
     <property name="propertyName" value="lookupResults"/>
+    <property name="headerText" value="Lookup Results"/>
+    <property name="header.cssClasses" value="uif-hideHeaderText"/>
+    <property name="validationMessages.displayHeaderMessageSummary" value="false"/>
     <property name="layoutManager.renderSequenceField" value="false"/>
     <property name="renderLineActions" value="@{(!#view.suppressActions and view.showMaintenanceLinks) or
            (!#empty(returnFormKey) and !#empty(returnLocation) and !view.hideReturnLinks)}"/>
     <property name="layoutManager.actionColumnPlacement" value="LEFT"/>
     <property name="layoutManager.selectFieldPrototype.finalizeMethodToCall" value="setMultiValueLookupSelect"/>
-    <property name="layoutManager.selectFieldPrototype.control.onChangeScript" value="setMultivalueLookupReturnButton(this)"/>
+    <property name="layoutManager.selectFieldPrototype.control.onChangeScript"
+              value="setMultivalueLookupReturnButton(this)"/>
     <property name="renderAddLine" value="false"/>
     <property name="readOnly" value="false"/>
-    <property name="collectionLookup.render" value="false" />
+    <property name="collectionLookup.render" value="false"/>
     <property name="includeLineSelectionField" value="@{#view.multipleValuesSelect}"/>
     <property name="header.lowerGroup">
       <bean parent="Uif-VerticalBoxGroup"/>
@@ -115,7 +119,8 @@
               <value>maintenanceEdit</value>
             </list>
           </property>
-          <property name="render" value="@{#ViewHelper.allowsMaintenanceEditAction(#line) and view.showMaintenanceLinks}"/>
+          <property name="render"
+                    value="@{#ViewHelper.allowsMaintenanceEditAction(#line) and view.showMaintenanceLinks}"/>
         </bean>
         <bean parent="Uif-ActionLink" p:order="20">
           <property name="actionLabel" value="copy"/>
@@ -125,7 +130,8 @@
               <value>maintenanceCopy</value>
             </list>
           </property>
-          <property name="render" value="@{#ViewHelper.allowsMaintenanceNewOrCopyAction() and view.showMaintenanceLinks}"/>
+          <property name="render"
+                    value="@{#ViewHelper.allowsMaintenanceNewOrCopyAction() and view.showMaintenanceLinks}"/>
         </bean>
         <bean parent="Uif-ActionLink" p:order="30">
           <property name="actionLabel" value="delete"/>
@@ -135,13 +141,20 @@
               <value>maintenanceDelete</value>
             </list>
           </property>
-          <property name="render" value="@{#ViewHelper.allowsMaintenanceDeleteAction(#line) and view.showMaintenanceLinks}"/>
+          <property name="render"
+                    value="@{#ViewHelper.allowsMaintenanceDeleteAction(#line) and view.showMaintenanceLinks}"/>
         </bean>
         <bean parent="Uif-ActionLink">
           <property name="actionLabel" value="Return Value"/>
           <property name="finalizeMethodToCall" value="getReturnUrlForResults"/>
-          <property name="render" value="@{!#empty(returnFormKey) and !#empty(returnLocation) and !view.hideReturnLinks}"/>
+          <property name="render"
+                    value="@{!#empty(returnFormKey) and !#empty(returnLocation) and !view.hideReturnLinks}"/>
         </bean>
+      </list>
+    </property>
+    <property name="validationMessages.additionalKeysToMatch">
+      <list merge="true">
+        <value>LookupResultMessages</value>
       </list>
     </property>
     <property name="footer">
@@ -170,7 +183,7 @@
   </bean>
 
   <bean id="Uif-CreateNewLink" parent="Uif-ActionLink" p:actionLabel="Create New"
-         p:render="@{!#view.suppressActions and #view.showMaintenanceLinks and #ViewHelper.allowsMaintenanceNewOrCopyAction()}">
+        p:render="@{!#view.suppressActions and #view.showMaintenanceLinks and #ViewHelper.allowsMaintenanceNewOrCopyAction()}">
     <property name="cssClasses">
       <list merge="true">
         <value>uif-createNewLink</value>
@@ -214,11 +227,11 @@
               p:preSubmitCall="setMultiValueReturnTarget();return true;"
               p:successCallback="closeLightbox()" p:errorCallback="closeLightbox()"
               p:methodToCall="returnSelected" p:actionLabel="return selected" p:disabled="true">
-            <property name="cssClasses">
-              <list merge="true">
-                <value>uif-returnSelectedAction</value>
-              </list>
-            </property>
+          <property name="cssClasses">
+            <list merge="true">
+              <value>uif-returnSelectedAction</value>
+            </list>
+          </property>
         </bean>
       </list>
     </property>

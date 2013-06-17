@@ -473,22 +473,32 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     @AfterMethod
     public void tearDown() throws Exception {
         try {
+
             if (!passed) {
                 jGrowlSticky("FAILURE!");
             }
+
             WebDriverUtil.tearDown(passed, sessionId, this.toString().trim(), user);
         } catch (Exception e) {
             System.out.println("Exception in tearDown " + e.getMessage());
             e.printStackTrace();
         } finally {
-            if (driver != null) {
-                if (ITUtil.dontTearDownPropertyNotSet()) {
-                    driver.close();
-                    driver.quit();
+            try {
+
+                if (driver != null) {
+                    if (ITUtil.dontTearDownPropertyNotSet()) {
+                        driver.close();
+                        driver.quit();
+                    }
+                } else {
+                    System.out.println("WebDriver is null for " + this.getClass().toString() + ", if using saucelabs, has" +
+                            " sauceleabs been uncommented in WebDriverUtil.java?  If using a remote hub did you include the port?");
                 }
-            } else {
-                System.out.println("WebDriver is null for " + this.getClass().toString() + ", if using saucelabs, has" +
-                " sauceleabs been uncommented in WebDriverUtil.java?  If using a remote hub did you include the port?");
+
+            } catch (Throwable t) {
+                System.out.println(t.getMessage() + " occured during tearDown, ignoring to avoid killing test run.");
+                t.printStackTrace();
+                System.out.println(t.getMessage() + " occured during tearDown, ignoring to avoid killing test run.");
             }
         }
     }

@@ -116,6 +116,11 @@
   </filter-mapping>
 
   <filter-mapping>
+    <filter-name>encodingFilter</filter-name>
+    <servlet-name>action</servlet-name>
+  </filter-mapping>
+
+  <filter-mapping>
     <filter-name>BootstrapFilter</filter-name>
     <servlet-name>notification</servlet-name>
   </filter-mapping>

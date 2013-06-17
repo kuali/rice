@@ -32,7 +32,7 @@ public class InvalidUserNameWDIT extends WebDriverLegacyITBase {
     }
 
     @Override
-    public void testSetUp() throws Exception {
+    public void testSetUp()  {
         System.setProperty(ITUtil.REMOTE_AUTOLOGIN_PROPERTY, "notnull");
         super.testSetUp();
     }

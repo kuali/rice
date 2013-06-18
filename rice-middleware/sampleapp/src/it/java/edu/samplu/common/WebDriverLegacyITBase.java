@@ -463,7 +463,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     /**
-     * Tear down test as configured.
+     * Tear down test as configured.  Do not allow exceptions to be thrown by tearDown, it kills the test run.
      * {@link WebDriverUtil#tearDown(boolean, String, String, String)}
      * {@link WebDriverLegacyITBase#REMOTE_PUBLIC_USERPOOL_PROPERTY}
      * {@link edu.samplu.common.ITUtil#dontTearDownPropertyNotSet()}
@@ -471,36 +471,49 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      */
     @After
     @AfterMethod
-    public void tearDown() throws Exception {
+    public void tearDown() {
         try {
-
             if (!passed) {
                 jGrowlSticky("FAILURE!");
             }
 
             WebDriverUtil.tearDown(passed, sessionId, this.toString().trim(), user);
-        } catch (Exception e) {
-            System.out.println("Exception in tearDown " + e.getMessage());
-            e.printStackTrace();
-        } finally {
+        }
+
+        catch (Throwable t) {
+            System.out.println("Exception in tearDown " + t.getMessage());
+            t.printStackTrace();
+        }
+
+        finally {
             try {
+                closeAndQuitWebDriver();
+            }
 
-                if (driver != null) {
-                    if (ITUtil.dontTearDownPropertyNotSet()) {
-                        driver.close();
-                        driver.quit();
-                    }
-                } else {
-                    System.out.println("WebDriver is null for " + this.getClass().toString() + ", if using saucelabs, has" +
-                            " sauceleabs been uncommented in WebDriverUtil.java?  If using a remote hub did you include the port?");
-                }
-
-            } catch (Throwable t) {
+            catch (Throwable t) {
                 System.out.println(t.getMessage() + " occured during tearDown, ignoring to avoid killing test run.");
                 t.printStackTrace();
                 System.out.println(t.getMessage() + " occured during tearDown, ignoring to avoid killing test run.");
             }
+
         }
+
+    }
+
+    private void closeAndQuitWebDriver() {
+        if (driver != null) {
+            if (ITUtil.dontTearDownPropertyNotSet()) {
+                driver.close();
+                driver.quit();
+            }
+
+        }
+
+        else {
+            System.out.println("WebDriver is null for " + this.getClass().toString() + ", if using saucelabs, has" +
+                    " sauceleabs been uncommented in WebDriverUtil.java?  If using a remote hub did you include the port?");
+        }
+
     }
 
     /**

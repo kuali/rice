@@ -21,28 +21,23 @@ import org.testng.annotations.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoTravelAccountInquirySTNGBkMrkGen extends DemoTravelAccountInquirySTNGBase {
+public class DemoTravelAccountInquirySTNGNavGen extends DemoTravelAccountInquirySTNGBase {
 
-    @Override
-    public String getTestUrl() {
-        return BOOKMARK_URL;
+    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testInquiryCollapseExpandNav")
+    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
+    public void testInquiryCollapseExpandNav() throws Exception {
+        testInquiryCollapseExpandNav(this);
     }
 
-    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testInquiryCollapseExpandBookmark")
+    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testInquiryLightBoxNav")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
-    public void testInquiryCollapseExpandBookmark() throws Exception {
-        testInquiryCollapseExpandBookmark(this);
+    public void testInquiryLightBoxNav() throws Exception {
+        testInquiryLightBoxNav(this);
     }
 
-    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testInquiryLightBoxBookmark")
+    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testInquiryBackButtonNav")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
-    public void testInquiryLightBoxBookmark() throws Exception {
-        testInquiryLightBoxBookmark(this);
-    }
-
-    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testInquiryBackButtonBookmark")
-    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
-    public void testInquiryBackButtonBookmark() throws Exception {
-        testInquiryBackButtonBookmark(this);
+    public void testInquiryBackButtonNav() throws Exception {
+        testInquiryBackButtonNav(this);
     }
 }

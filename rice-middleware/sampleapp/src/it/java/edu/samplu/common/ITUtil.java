@@ -100,6 +100,16 @@ public class ITUtil {
     public static final String KNS_LOOKUP_METHOD =  "/kr/lookup.do?methodToCall=start&businessObjectClassName=";
 
     /**
+     * /kr-krad/kradsampleapp?viewId=KradSampleAppHome
+     */
+    public static final String KRAD_PORTAL = "/kr-krad/kradsampleapp?viewId=KradSampleAppHome";
+
+    /**
+     * /kr-krad/kradsampleapp?viewId=KradSampleAppHome
+     */
+    public static final String KRAD_PORTAL_URL = ITUtil.getBaseUrlString() + KRAD_PORTAL;
+
+    /**
      * /kr-krad/labs?viewId=LabsMenuView
      */
     public static final  String LABS = "/kr-krad/labs?viewId=LabsMenuView";

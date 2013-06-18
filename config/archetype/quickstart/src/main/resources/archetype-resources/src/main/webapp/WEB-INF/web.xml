@@ -50,7 +50,7 @@ This file contains custom application specific web.xml content.
 
   <filter>
     <filter-name>BootstrapFilter</filter-name>
-    <filter-class>org.kuali.rice.kew.web.BootstrapFilter</filter-class>
+    <filter-class>org.kuali.rice.krad.web.filter.BootstrapFilter</filter-class>
   </filter>
 
   <filter>

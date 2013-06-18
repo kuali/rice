@@ -70,7 +70,6 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
     private transient DataObjectMetaDataService dataObjectMetaDataService;
     private transient DocumentDictionaryService documentDictionaryService;
     private transient EncryptionService encryptionService;
-    private transient BusinessObjectService businessObjectService;
     private transient MaintenanceDocumentService maintenanceDocumentService;
 
     /**
@@ -580,17 +579,6 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
 
     public void setEncryptionService(EncryptionService encryptionService) {
         this.encryptionService = encryptionService;
-    }
-
-    protected BusinessObjectService getBusinessObjectService() {
-        if (businessObjectService == null) {
-            businessObjectService = KRADServiceLocator.getBusinessObjectService();
-        }
-        return businessObjectService;
-    }
-
-    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
     }
 
     protected MaintenanceDocumentService getMaintenanceDocumentService() {

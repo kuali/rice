@@ -67,9 +67,8 @@ public interface ViewHelperService {
 	 * was created based on the parameters sent to the view service
 	 * </p>
 	 *
-	 * @param view
-	 *            - View instance that should be initialized
-     * @param model - object instance containing the view data
+	 * @param view View instance that should be initialized
+     * @param model object instance containing the view data
 	 */
 	void performInitialization(View view, Object model);
 
@@ -81,11 +80,9 @@ public interface ViewHelperService {
 	 * to initialize the constructed component
 	 * </p>
 	 *
-	 * @param view
-	 *            - view instance the component belongs to
-     * @param model - object instance containing the view data
-	 * @param component
-	 *            - component instance that should be initialized
+	 * @param view view instance the component belongs to
+     * @param model  object instance containing the view data
+	 * @param component component instance that should be initialized
 	 */
 	void performComponentInitialization(View view, Object model, Component component);
 
@@ -109,10 +106,8 @@ public interface ViewHelperService {
 	 * (typically only once per request)
 	 * </p>
 	 *
-	 * @param view
-	 *            - View instance that the model should be applied to
-	 * @param model
-	 *            - Top level object containing the data (could be the form or a
+	 * @param view View instance that the model should be applied to
+	 * @param model Top level object containing the data (could be the form or a
 	 *            top level business object, dto)
 	 */
 	void performApplyModel(View view, Object model);
@@ -121,10 +116,8 @@ public interface ViewHelperService {
      * Gets global objects for the context map and pushes them to the context
      * for the component
      *
-     * @param view
-     *            - view instance for component
-     * @param component
-     *            - component instance to push context to
+     * @param view view instance for component
+     * @param component component instance to push context to
      */
     Map<String, Object> getCommonContext(View view, Component component);
 
@@ -139,10 +132,8 @@ public interface ViewHelperService {
 	 * </p>
 	 *
 	 *
-	 * @param view
-	 *            - view instance that should be finalized for rendering
-	 * @param model
-	 *            - top level object containing the data
+	 * @param view view instance that should be finalized for rendering
+	 * @param model top level object containing the data
 	 */
 	void performFinalize(View view, Object model);
 
@@ -150,7 +141,7 @@ public interface ViewHelperService {
      * Invoked after the view has been rendered to clear out objects that are not necessary to keep around for
      * the post, this helps reduce the view size and overall cost to store the form in session
      *
-     * @param view - view instance to be cleaned
+     * @param view view instance to be cleaned
      */
     void cleanViewAfterRender(View view);
 
@@ -164,12 +155,24 @@ public interface ViewHelperService {
      * the current id within the view.
      * </p>
      *
-     * @param view - view instance the component belongs to
-     * @param model - object containing the full view data
-     * @param component - component instance to perform lifecycle for
-     * @param origId - id of the component within the view, used to pull the current component from the view
+     * @param view view instance the component belongs to
+     * @param model object containing the full view data
+     * @param component component instance to perform lifecycle for
+     * @param origId id of the component within the view, used to pull the current component from the view
      */
     void performComponentLifecycle(View view, Object model, Component component, String origId);
+
+    /**
+     * Update the reference objects listed in referencesToRefresh of the model
+     * <p>
+     * The the individual references in the referencesToRefresh string are separated by
+     * KRADConstants.REFERENCES_TO_REFRESH_SEPARATOR).
+     * </p>
+     *
+     * @param model top level object containing the data
+     * @param referencesToRefresh list of references to refresh (
+     */
+    void refreshReferences(Object model, String referencesToRefresh);
 
 	/**
 	 * Invoked when the add line action is chosen for a collection. The
@@ -179,14 +182,10 @@ public interface ViewHelperService {
 	 * the line should be added to the collection, otherwise errors should be
 	 * added to the global <code>MessageMap</code>
 	 *
-	 * @param view
-	 *            - view instance that is being presented (the action was taken
-	 *            on)
-	 * @param model
-	 *            - Top level object containing the view data including the
+	 * @param view view instance that is being presented (the action was taken on)
+	 * @param model Top level object containing the view data including the
 	 *            collection and new line
-	 * @param collectionPath
-	 *            - full path to the collection on the model
+	 * @param collectionPath full path to the collection on the model
 	 */
 	void processCollectionAddLine(View view, Object model, String collectionPath);
 
@@ -197,9 +196,9 @@ public interface ViewHelperService {
      * Adds a new collection item to the collection and applies any default values.
      * </p>
      *
-     * @param view - view instance that is being presented (the action was taken on)
-     * @param model - Top level object containing the view data including the collection and new line
-     * @param collectionPath - full path to the collection on the model
+     * @param view view instance that is being presented (the action was taken on)
+     * @param model Top level object containing the view data including the collection and new line
+     * @param collectionPath full path to the collection on the model
      */
     void processCollectionAddBlankLine(View view, Object model, String collectionPath);
 
@@ -207,9 +206,9 @@ public interface ViewHelperService {
      * Invoked when the save line action is chosen for a collection. This method only does server side validation by
      * default but creates hook for client applications to add additional logic like persisting data.
      *
-     * @param view - view instance that is being presented (the action was taken on)
-     * @param model - Top level object containing the view data including the collection and new line
-     * @param collectionPath - full path to the collection on the model
+     * @param view view instance that is being presented (the action was taken on)
+     * @param model Top level object containing the view data including the collection and new line
+     * @param collectionPath full path to the collection on the model
      */
     void processCollectionSaveLine(View view, Object model, String collectionPath, int selectedLineIndex);
 
@@ -221,16 +220,10 @@ public interface ViewHelperService {
 	 * collection, otherwise errors should be added to the global
 	 * <code>MessageMap</code>
 	 *
-	 * @param view
-	 *            - view instance that is being presented (the action was taken
-	 *            on)
-	 * @param model
-	 *            - Top level object containing the view data including the
-	 *            collection
-	 * @param collectionPath
-	 *            - full path to the collection on the model
-	 * @param lineIndex
-	 *            - index of the collection line that was selected for removal
+	 * @param view view instance that is being presented (the action was taken on)
+	 * @param model Top level object containing the view data including the collection
+	 * @param collectionPath full path to the collection on the model
+	 * @param lineIndex index of the collection line that was selected for removal
 	 */
     void processCollectionDeleteLine(View view, Object model, String collectionPath, int lineIndex);
 
@@ -238,10 +231,10 @@ public interface ViewHelperService {
      * Process the results returned from a multi-value lookup populating the lines for the collection given
      * by the path
      *
-     * @param view - view instance the collection belongs to
-     * @param model - object containing the view data
-     * @param collectionPath - binding path to the collection to populated
-     * @param lookupResultValues - String containing the selected line values
+     * @param view view instance the collection belongs to
+     * @param model object containing the view data
+     * @param collectionPath binding path to the collection to populated
+     * @param lookupResultValues String containing the selected line values
      */
     void processMultipleValueLookupResults(View view, Object model, String collectionPath, String lookupResultValues);
 
@@ -258,12 +251,9 @@ public interface ViewHelperService {
 	 * build the link field.
 	 * </p>
 	 *
-	 * @param dataObject
-	 *            - parent object for the inquiry property
-	 * @param propertyName
-	 *            - name of the property the inquiry is being built for
-	 * @param inquiry
-	 *            - instance of the inquiry widget being built for the property
+	 * @param dataObject parent object for the inquiry property
+	 * @param propertyName name of the property the inquiry is being built for
+	 * @param inquiry instance of the inquiry widget being built for the property
 	 */
     void buildInquiryLink(Object dataObject, String propertyName, Inquiry inquiry);
 
@@ -271,14 +261,10 @@ public interface ViewHelperService {
      * Applies configured default values for the line fields to the line
      * instance
      *
-     * @param view
-     *            - view instance the collection line belongs to
-     * @param model
-     *            - object containing the full view data
-     * @param collectionGroup
-     *            - collection group component the line belongs to
-     * @param line
-     *            - line instance to apply default values to
+     * @param view view instance the collection line belongs to
+     * @param model object containing the full view data
+     * @param collectionGroup collection group component the line belongs to
+     * @param line line instance to apply default values to
      */
     void applyDefaultValuesForCollectionLine(View view, Object model, CollectionGroup collectionGroup, Object line);
 

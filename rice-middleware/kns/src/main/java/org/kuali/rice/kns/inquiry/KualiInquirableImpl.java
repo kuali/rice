@@ -40,12 +40,9 @@ import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeSecurity;
 import org.kuali.rice.krad.inquiry.InquirableImpl;
 import org.kuali.rice.krad.lookup.CollectionIncomplete;
-import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LookupService;
 import org.kuali.rice.krad.service.ModuleService;
-import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -79,9 +76,7 @@ public class KualiInquirableImpl extends InquirableImpl implements Inquirable {
 	protected BusinessObjectAuthorizationService businessObjectAuthorizationService;
 	protected BusinessObjectDictionaryService businessObjectDictionaryService;
 	protected BusinessObjectMetaDataService businessObjectMetaDataService;
-	protected PersistenceStructureService persistenceStructureService;
 	protected EncryptionService encryptionService;
-	protected static BusinessObjectService businessObjectService;
 
 	protected Map<String, Boolean> inactiveRecordDisplay;
 
@@ -536,17 +531,6 @@ public class KualiInquirableImpl extends InquirableImpl implements Inquirable {
 		this.businessObjectDictionaryService = businessObjectDictionaryService;
 	}
 
-	protected PersistenceStructureService getPersistenceStructureService() {
-		if (persistenceStructureService == null) {
-			persistenceStructureService = KRADServiceLocator.getPersistenceStructureService();
-		}
-		return this.persistenceStructureService;
-	}
-
-	public void setPersistenceStructureService(PersistenceStructureService persistenceStructureService) {
-		this.persistenceStructureService = persistenceStructureService;
-	}
-
 	protected EncryptionService getEncryptionService() {
 		if (encryptionService == null) {
 			encryptionService = CoreApiServiceLocator.getEncryptionService();
@@ -571,13 +555,6 @@ public class KualiInquirableImpl extends InquirableImpl implements Inquirable {
 
 	public void setBusinessObjectMetaDataService(BusinessObjectMetaDataService businessObjectMetaDataService) {
 		this.businessObjectMetaDataService = businessObjectMetaDataService;
-	}
-
-	protected BusinessObjectService getBusinessObjectService() {
-		if (businessObjectService == null) {
-			businessObjectService = KRADServiceLocator.getBusinessObjectService();
-		}
-		return businessObjectService;
 	}
 
 	protected BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {

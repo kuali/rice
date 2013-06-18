@@ -507,6 +507,11 @@ public abstract class UifControllerBase {
                     lookupCollectionName, selectedLineValues);
         }
 
+        if (request.getParameterMap().containsKey(KRADConstants.REFERENCES_TO_REFRESH)) {
+            String referencesToRefresh = request.getParameter(KRADConstants.REFERENCES_TO_REFRESH);
+            form.getPostedView().getViewHelperService().refreshReferences(form, referencesToRefresh);
+        }
+
         return getUIFModelAndView(form);
     }
 

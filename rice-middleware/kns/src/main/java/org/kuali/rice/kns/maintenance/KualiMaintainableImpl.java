@@ -89,7 +89,6 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
     // TODO: rename once 'newCollectionLines' is removed
     protected Set<String> newCollectionLineNames = new HashSet<String>();
 
-	protected transient PersistenceStructureService persistenceStructureService;
 	protected transient BusinessObjectDictionaryService businessObjectDictionaryService;
 	protected transient PersonService personService;
 	protected transient BusinessObjectMetaDataService businessObjectMetaDataService;
@@ -1432,13 +1431,6 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 		return super.isOldDataObjectInDocument();
 	}
 
-	protected PersistenceStructureService getPersistenceStructureService() {
-		if (persistenceStructureService == null) {
-			persistenceStructureService = KRADServiceLocator.getPersistenceStructureService();
-		}
-		return persistenceStructureService;
-	}
-
 	protected BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
 		if (businessObjectDictionaryService == null) {
 			businessObjectDictionaryService = KNSServiceLocator.getBusinessObjectDictionaryService();
@@ -1472,10 +1464,6 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 			documentHelperService = KNSServiceLocator.getDocumentHelperService();
 		}
 		return documentHelperService;
-	}
-
-	public void setPersistenceStructureService(PersistenceStructureService persistenceStructureService) {
-		this.persistenceStructureService = persistenceStructureService;
 	}
 
 	public void setBusinessObjectDictionaryService(BusinessObjectDictionaryService businessObjectDictionaryService) {

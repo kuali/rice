@@ -17,18 +17,15 @@ package org.kuali.rice.krad.inquiry;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.datadictionary.exception.UnknownBusinessClassAttributeException;
-import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DataObjectAuthorizationService;
 import org.kuali.rice.krad.service.DataObjectMetaDataService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.service.ModuleService;
@@ -350,10 +347,6 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
 
     protected EncryptionService getEncryptionService() {
         return CoreApiServiceLocator.getEncryptionService();
-    }
-
-    protected BusinessObjectService getBusinessObjectService() {
-        return KRADServiceLocator.getBusinessObjectService();
     }
 
 }

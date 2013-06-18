@@ -29,6 +29,7 @@ import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 
 import java.util.HashMap;
@@ -161,6 +162,7 @@ public class QuickFinder extends WidgetBase {
             // adjust paths based on associated attribute field
             updateFieldConversions(field.getBindingInfo());
             updateLookupParameters(field.getBindingInfo());
+            updateReferencesToRefresh(field.getBindingInfo());
         } else if (parent instanceof CollectionGroup) {
             CollectionGroup collectionGroup = (CollectionGroup) parent;
 
@@ -313,6 +315,32 @@ public class QuickFinder extends WidgetBase {
         }
 
         this.lookupParameters = adjustedLookupParameters;
+    }
+
+    /**
+     * Adjust the path on the referencesToRefresh parameter to match the binding path
+     * prefix of the given <code>BindingInfo</code>
+     *
+     * @param bindingInfo binding info instance to copy binding path prefix from
+     */
+    public void updateReferencesToRefresh (BindingInfo bindingInfo) {
+        String adjustedReferencesToRefresh = new String();
+
+        if (referencesToRefresh == null) {
+            referencesToRefresh = adjustedReferencesToRefresh;
+        }
+
+        for (String reference : StringUtils.split(referencesToRefresh, KRADConstants.REFERENCES_TO_REFRESH_SEPARATOR )){
+
+            // add separator between references to refresh
+            if (StringUtils.isNotBlank(adjustedReferencesToRefresh)) {
+                adjustedReferencesToRefresh = adjustedReferencesToRefresh + KRADConstants.REFERENCES_TO_REFRESH_SEPARATOR;
+            }
+
+            String adjustedReference = bindingInfo.getPropertyAdjustedBindingPath(reference);
+            adjustedReferencesToRefresh = adjustedReferencesToRefresh + adjustedReference;
+        }
+        this.referencesToRefresh = adjustedReferencesToRefresh;
     }
 
     /**

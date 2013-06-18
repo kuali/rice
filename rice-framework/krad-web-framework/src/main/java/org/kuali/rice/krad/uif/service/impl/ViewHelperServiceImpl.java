@@ -21,12 +21,17 @@ import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
+import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.inquiry.Inquirable;
 import org.kuali.rice.krad.messages.MessageService;
+import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataDictionaryService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
+import org.kuali.rice.krad.service.PersistenceService;
+import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.container.Group;
@@ -99,6 +104,9 @@ import java.util.Set;
 public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ViewHelperServiceImpl.class);
 
+    private transient BusinessObjectService businessObjectService;
+    private transient PersistenceService persistenceService;
+    private transient PersistenceStructureService persistenceStructureService;
     private transient DataDictionaryService dataDictionaryService;
     private transient ExpressionEvaluator expressionEvaluator;
     private transient ViewDictionaryService viewDictionaryService;
@@ -1336,6 +1344,87 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
+     * @see org.kuali.rice.krad.uif.service.ViewHelperService#refreshReferences(Object, String)
+     */
+    public void refreshReferences(Object model, String referencesToRefresh) {
+        for (String reference : StringUtils.split(referencesToRefresh, KRADConstants.REFERENCES_TO_REFRESH_SEPARATOR)) {
+            if (StringUtils.isBlank(reference)) {
+                continue;
+            }
+
+            //ToDo: handle add line
+
+            if (ObjectUtils.isNestedAttribute(reference)) {
+                String parentPath = ObjectUtils.getNestedAttributePrefix(reference);
+                Object parentObject = ObjectPropertyUtils.getPropertyValue(model, parentPath);
+                String referenceObjectName = ObjectUtils.getNestedAttributePrimitive(reference);
+
+                if (parentObject == null) {
+                    LOG.warn("Unable to refresh references for " + referencesToRefresh +
+                            ". Object not found in model. Nothing refreshed.");
+                    continue;
+                }
+
+                refreshReference(parentObject, referenceObjectName);
+            } else {
+                refreshReference(model, reference);
+            }
+        }
+    }
+
+    /**
+     * Perform a database or data dictionary based refresh of a specific property object
+     *
+     * <p>
+     * The object needs to be of type PersistableBusinessObject.
+     * </p>
+     *
+     *
+     * @param parentObject parent object that references the object to be refreshed
+     * @param referenceObjectName property name of the parent object to be refreshed
+     */
+    private void refreshReference(Object parentObject, String referenceObjectName) {
+        if (!(parentObject instanceof PersistableBusinessObject)) {
+            LOG.warn("Could not refresh reference " + referenceObjectName + " off class "
+                    + parentObject.getClass().getName() + ". Class not of type PersistableBusinessObject");
+            return;
+        }
+
+        if ( getPersistenceStructureService().hasReference(parentObject.getClass(), referenceObjectName)
+                || getPersistenceStructureService().hasCollection(parentObject.getClass(), referenceObjectName)) {
+            // refresh via database mapping
+            getPersistenceService().retrieveReferenceObject(parentObject, referenceObjectName);
+        } else if (getDataDictionaryService().hasRelationship(parentObject.getClass().getName(), referenceObjectName)) {
+            // refresh via data dictionary mapping
+            Object referenceObject = ObjectUtils.getPropertyValue(parentObject, referenceObjectName);
+            if (!(referenceObject instanceof PersistableBusinessObject)) {
+                LOG.warn("Could not refresh reference " + referenceObjectName + " off class "
+                        + parentObject.getClass().getName() + ". Class not of type PersistableBusinessObject");
+                return;
+            }
+
+            referenceObject = getBusinessObjectService().retrieve((PersistableBusinessObject) referenceObject);
+            if (referenceObject == null) {
+                LOG.warn("Could not refresh reference " + referenceObjectName + " off class "
+                        + parentObject.getClass().getName() + ".");
+                return;
+            }
+
+            try {
+                ObjectUtils.setObjectProperty(parentObject, referenceObjectName, referenceObject);
+            } catch (Exception e) {
+                LOG.error("Unable to refresh persistable business object: " + referenceObjectName + "\n" + e
+                        .getMessage());
+                throw new RuntimeException("Unable to refresh persistable business object: " + referenceObjectName + "\n" + e.getMessage());
+            }
+        } else {
+            LOG.warn("Could not refresh reference " + referenceObjectName + " off class "
+                    + parentObject.getClass().getName() + ".");
+        }
+    }
+
+
+    /**
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#processCollectionAddLine(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object, java.lang.String)
      */
@@ -1760,7 +1849,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      *
      * @param view view instance containing the component
      * @param component component instance to apply model to
-     * @param model Top level object containing the data (could be the form or a
+     * @param model Top level object containing the data (could be the model or a
      * top level business object, dto)
      */
     protected void performCustomApplyModel(View view, Component component, Object model) {
@@ -1860,6 +1949,70 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     protected void logAndThrowRuntime(String message) {
         LOG.error(message);
         throw new RuntimeException(message);
+    }
+
+    /**
+     * Gets the business object service
+     *
+     * @return business object service
+     */
+    public BusinessObjectService getBusinessObjectService() {
+        if (this.businessObjectService == null) {
+            this.businessObjectService = KRADServiceLocator.getBusinessObjectService();
+        }
+        return businessObjectService;
+    }
+
+    /**
+     * Set the business object service
+     *
+     * @param businessObjectService
+     */
+    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
+        this.businessObjectService = businessObjectService;
+    }
+
+    /**
+     * Gets the persistence service
+     *
+     * @return persistence service
+     */
+    public PersistenceService getPersistenceService() {
+        if (this.persistenceService == null) {
+            this.persistenceService = KRADServiceLocator.getPersistenceService();
+        }
+
+        return this.persistenceService;
+    }
+
+    /**
+     * Set the persistence service
+     *
+     * @param persistenceService
+     */
+    public void setPersistenceService(PersistenceService persistenceService) {
+        this.persistenceService = persistenceService;
+    }
+
+    /**
+     * Get the persistence structure service
+     *
+     * @return persistence structure service
+     */
+    public PersistenceStructureService getPersistenceStructureService() {
+        if (this.persistenceStructureService == null) {
+            this.persistenceStructureService = KRADServiceLocator.getPersistenceStructureService();
+        }
+        return this.persistenceStructureService;
+    }
+
+    /**
+     * Set the persistence structure service
+     *
+     * @param persistenceStructureService
+     */
+    public void setPersistenceStructureService(PersistenceStructureService persistenceStructureService) {
+        this.persistenceStructureService = persistenceStructureService;
     }
 
     /**

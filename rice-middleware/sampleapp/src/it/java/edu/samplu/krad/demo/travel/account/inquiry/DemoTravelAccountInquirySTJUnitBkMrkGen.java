@@ -15,16 +15,30 @@
  */
 package edu.samplu.krad.demo.travel.account.inquiry;
 
-import org.testng.Assert;
+import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoTravelAccountInquirySTNGBase extends DemoTravelAccountInquirySmokeTestBase {
+public class DemoTravelAccountInquirySTJUnitBkMrkGen extends DemoTravelAccountInquirySTJUnitBase {
 
     @Override
-    public void fail(String message) {
-        passed = false;
-        Assert.fail(message);
+    public String getTestUrl() {
+        return BOOKMARK_URL;
+    }
+
+    @Test
+    public void testInquiryCollapseExpandBookmark() throws Exception {
+        testInquiryCollapseExpandBookmark(this);
+    }
+
+    @Test
+    public void testInquiryLightBoxBookmark() throws Exception {
+        testInquiryLightBoxBookmark(this);
+    }
+
+    @Test
+    public void testInquiryBackButtonBookmark() throws Exception {
+        testInquiryBackButtonBookmark(this);
     }
 }

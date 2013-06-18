@@ -15,12 +15,12 @@
  */
 package edu.samplu.krad.demo.travel.account.inquiry;
 
-import org.testng.Assert;
+import org.junit.Assert;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoTravelAccountInquirySTNGBase extends DemoTravelAccountInquirySmokeTestBase {
+public class DemoTravelAccountInquirySTJUnitBase extends DemoTravelAccountInquirySmokeTestBase {
 
     @Override
     public void fail(String message) {

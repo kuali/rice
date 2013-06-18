@@ -15,16 +15,25 @@
  */
 package edu.samplu.krad.demo.travel.account.inquiry;
 
-import org.testng.Assert;
+import org.testng.annotations.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoTravelAccountInquirySTNGBase extends DemoTravelAccountInquirySmokeTestBase {
+public class DemoTravelAccountInquirySTJUnitNavGen extends DemoTravelAccountInquirySTJUnitBase {
 
-    @Override
-    public void fail(String message) {
-        passed = false;
-        Assert.fail(message);
+    @Test
+    public void testInquiryCollapseExpandNav() throws Exception {
+        testInquiryCollapseExpandNav(this);
+    }
+
+    @Test
+    public void testInquiryLightBoxNav() throws Exception {
+        testInquiryLightBoxNav(this);
+    }
+
+    @Test
+    public void testInquiryBackButtonNav() throws Exception {
+        testInquiryBackButtonNav(this);
     }
 }

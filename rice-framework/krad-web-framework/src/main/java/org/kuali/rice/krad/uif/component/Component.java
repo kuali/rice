@@ -300,6 +300,27 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
     void setRender(boolean render);
 
     /**
+     * When true, this component will render as a placeholder component instead of rendering normally
+     *
+     * <p>Placeholder components are used for ajax retrievals.  In particular, this flag is useful for use in
+     * combination with the showLightboxComponent js function which will automatically retrieve the real content of
+     * a component through ajax if a placeholder component is detected.  This allows for the full content to only
+     * be retrieved when the lightbox is first opened.  When this flag is set to true, the forceSessionPersistence
+     * flag is set to true AUTOMATICALLY because it is implied that this component will be retrieved by an ajax call
+     * in the future.  This may also be useful for direct calls to retrieveComponent function.</p>
+     *
+     * @return true if this component is being rendered as a placeholder, false otherwise
+     */
+    public boolean isRenderAsPlaceholder();
+
+    /**
+     * When set to true, this component will be rendered as a placeholder instead of rendering normally
+     *
+     * @param renderAsPlaceholder
+     */
+    public void setRenderAsPlaceholder(boolean renderAsPlaceholder);
+
+    /**
      * Indicates whether the component should be hidden in the UI
      *
      * <p>

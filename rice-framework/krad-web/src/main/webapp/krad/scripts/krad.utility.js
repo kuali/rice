@@ -1022,10 +1022,11 @@ function showLightboxComponent(componentId, overrideOptions) {
 
     if (jQuery('#' + componentId).hasClass('uif-placeholder')) {
         retrieveComponent(componentId, undefined, function () {
-            _showLightboxComponentHelper(componentId, overrideOptions)
-        });
+            _showLightboxComponentHelper(componentId, overrideOptions);
+        }, {}, true);
+
     } else {
-        _showLightboxComponentHelper(componentId, overrideOptions)
+        _showLightboxComponentHelper(componentId, overrideOptions);
     }
 }
 
@@ -1144,7 +1145,7 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
         openSpeed: 200,
         closeSpeed: 200,
         minHeight: 10,
-        minWidth: 10,
+        //minWidth: 10,
         helpers: {overlay: {css: {cursor: 'arrow'}, closeClick: false}}
     };
 

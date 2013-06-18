@@ -62,6 +62,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     private String title;
 
     private boolean render;
+    private boolean renderAsPlaceholder;
 
     @KeepExpression
     private String progressiveRender;
@@ -244,6 +245,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         ExpressionEvaluator expressionEvaluator =
                 view.getViewHelperService().getExpressionEvaluator();
 
+        // progressiveRender expression setup
         if (StringUtils.isNotEmpty(progressiveRender)) {
             progressiveRender = expressionEvaluator.replaceBindingPrefixes(view, this, progressiveRender);
             progressiveDisclosureControlNames = new ArrayList<String>();
@@ -251,6 +253,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
                     progressiveDisclosureControlNames);
         }
 
+        // conditional refresh expression setup
         if (StringUtils.isNotEmpty(conditionalRefresh)) {
             conditionalRefresh = expressionEvaluator.replaceBindingPrefixes(view, this, conditionalRefresh);
             conditionalRefreshControlNames = new ArrayList<String>();
@@ -263,7 +266,14 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
             adjustedRefreshPropertyNames.add(
                     expressionEvaluator.replaceBindingPrefixes(view, this, refreshPropertyName));
         }
+
         refreshWhenChangedPropertyNames = adjustedRefreshPropertyNames;
+
+        // renderAsPlaceholder forces session persistence because it assumes that this component will be retrieved by
+        // some ajax retrieval call
+        if (renderAsPlaceholder){
+            forceSessionPersistence = true;
+        }
 
         // add the align, valign, and width settings to style
         if (StringUtils.isNotBlank(getAlign()) && !StringUtils.contains(getStyle(), CssConstants.TEXT_ALIGN)) {
@@ -312,8 +322,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         }
 
         // setup refresh timer
-
-
         // if the refreshTimer property has been set then pre-append the call to refreshComponetUsingTimer
         // to the onDocumentReadyScript
         if (refreshTimer > 0) {
@@ -503,6 +511,20 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     public void setRender(boolean render) {
         this.render = render;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#isRenderAsPlaceholder()
+     */
+    public boolean isRenderAsPlaceholder() {
+        return renderAsPlaceholder;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#setRenderAsPlaceholder(boolean)
+     */
+    public void setRenderAsPlaceholder(boolean renderAsPlaceholder) {
+        this.renderAsPlaceholder = renderAsPlaceholder;
     }
 
     /**

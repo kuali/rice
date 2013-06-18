@@ -25,8 +25,9 @@
 
     <#-- check to see if the component should render, if this has progressiveDisclosure and not getting disclosed via ajax
          still render, but render in a hidden container -->
-    <#if component.render || (component.progressiveRender?has_content && !component.progressiveRenderViaAJAX
-     && !component.progressiveRenderAndRefresh)>
+    <#if (component.render && !component.renderAsPlaceholder)
+     || (component.render && component.renderAsPlaceholder && componentUpdate)
+     || (component.progressiveRender?has_content && !component.progressiveRenderViaAJAX && !component.progressiveRenderAndRefresh)>
 
         <#if component.preRenderContent?has_content>
             ${component.preRenderContent?html}
@@ -84,7 +85,8 @@
 
     <#-- alternate ajax placeholder setup -->
     <#if (component.progressiveRenderViaAJAX && !(component.progressiveRender!?length > 0))
-    || (!component.render && (component.disclosedByAction || component.refreshedByAction))>
+    || (!component.render && (component.disclosedByAction || component.refreshedByAction))
+    || (component.renderAsPlaceholder)>
         <span id="${component.id}" data-role="placeholder" class="uif-placeholder"></span>
     </#if>
 

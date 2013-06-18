@@ -175,8 +175,9 @@ function validateForm() {
  * @param methodToCall - name of the method that should be invoked for the refresh call (if custom method is needed)
  * @param successCallback - (optional) additional callback function to be executed after the component is retrieved
  * @param additionalData - (optional) additional data to be submitted with the request
+ * @param disableBlocking - (optional) turns off blocking and loading messaging
  */
-function retrieveComponent(id, methodToCall, successCallback, additionalData) {
+function retrieveComponent(id, methodToCall, successCallback, additionalData, disableBlocking) {
     var refreshComp = jQuery("#" + id);
 
     // if a call is made from refreshComponentUsingTimer() and the component does not exist on the page or is hidden
@@ -202,6 +203,10 @@ function retrieveComponent(id, methodToCall, successCallback, additionalData) {
     kradRequest.successCallback = successCallback;
     kradRequest.additionalData = additionalData;
     kradRequest.refreshId = id;
+
+    if(disableBlocking){
+        kradRequest.disableBlocking = disableBlocking;
+    }
 
     kradRequest.send();
 }

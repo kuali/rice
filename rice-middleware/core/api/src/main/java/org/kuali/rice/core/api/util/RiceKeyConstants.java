@@ -23,7 +23,7 @@ public final class RiceKeyConstants {
     public static final String ERROR_EXPIRED = "error.expired";
     public static final String ERROR_INACTIVE = "error.inactive";
     public static final String ERROR_CLOSED = "error.closed";
-    public static final String ERROR_DUPLICATE_ELEMENT="error.duplicate.element";
+    public static final String ERROR_DUPLICATE_ELEMENT = "error.duplicate.element";
     public static final String ERROR_INVALIDNEGATIVEAMOUNT = "error.invalidNegativeAmount";
     public static final String ERROR_REQUIRED = "error.required";
     public static final String ERROR_REQUIRED_FOR_US = "error.requiredForUs";
@@ -54,29 +54,32 @@ public final class RiceKeyConstants {
     public static final String ERROR_OUT_OF_RANGE = "error.outOfRange";
 
     public static final String ERROR_INACTIVATION_BLOCKED = "error.inactivation.blocked";
-    
+
     // KULRICE-7419: Adhoc route completion validation rule
     public static final String ERROR_ADHOC_COMPLETE_PERSON_IS_INITIATOR = "error.adhoc.complete.person.is.initiator";
-    
+
     // KULRICE-8760: Multiple complete adhoc requests should not be allowed on the same document
     public static final String ERROR_ADHOC_COMPLETE_MORE_THAN_ONE = "error.adhoc.complete.more.than.one.request";
-    
+
     // KULRICE-7864: blanket approve should not be allowed when adhoc route for completion request is newly added 
-    public static final String ERROR_ADHOC_COMPLETE_BLANKET_APPROVE_NOT_ALLOWED = "error.adhoc.complete.blanket.approve.not.allowed";    
-    
+    public static final String ERROR_ADHOC_COMPLETE_BLANKET_APPROVE_NOT_ALLOWED =
+            "error.adhoc.complete.blanket.approve.not.allowed";
+
     public static final String ERROR_INVALID_ADHOC_PERSON_ID = "error.adhoc.invalid.person";
     public static final String ERROR_MISSING_ADHOC_PERSON_ID = "error.adhoc.missing.person";
     public static final String ERROR_UNAUTHORIZED_ADHOC_PERSON_ID = "error.adhoc.unauthorized.person";
     public static final String ERROR_INACTIVE_ADHOC_PERSON_ID = "error.adhoc.inactive.person";
     public static final String ERROR_INVALID_ADHOC_WORKGROUP_ID = "error.adhoc.invalid.workgroup";
     public static final String ERROR_MISSING_ADHOC_WORKGROUP_ID = "error.adhoc.missing.workgroup";
-    public static final String ERROR_INVALID_ADHOC_WORKGROUP_NAMESPACECODE = "error.adhoc.invalid.workgroupNamespaceCode";
+    public static final String ERROR_INVALID_ADHOC_WORKGROUP_NAMESPACECODE =
+            "error.adhoc.invalid.workgroupNamespaceCode";
     public static final String ERROR_UNAUTHORIZED_ADHOC_WORKGROUP_ID = "error.adhoc.unauthorized.workgroup";
     public static final String MESSAGE_ADHOC_ANNOTATION = "message.adhoc.annotation";
-    
+
     //  KULRICE-8091: Adhoc routing tab utilizing Groups on all documents missing asterisks 
-    public static final String ERROR_ADHOC_INVALID_WORKGROUP_NAMESPACE_MISSING="error.adhoc.invalid.workgroup.namespace.missing";
-    public static final String ERROR_ADHOC_INVALID_WORKGROUP_NAMESPACE= "error.adhoc.invalid.workgroup.namespace";
+    public static final String ERROR_ADHOC_INVALID_WORKGROUP_NAMESPACE_MISSING =
+            "error.adhoc.invalid.workgroup.namespace.missing";
+    public static final String ERROR_ADHOC_INVALID_WORKGROUP_NAMESPACE = "error.adhoc.invalid.workgroup.namespace";
 
     public static final String ERROR_SECURE_FIELD = "error.secureField";
     public static final String ERROR_SEND_NOTE_NOTIFICATION_RECIPIENT = "error.send.note.notification.recipient";
@@ -97,10 +100,11 @@ public final class RiceKeyConstants {
     public static final String AUTHORIZATION_ERROR_DOCUMENT = "error.authorization.document";
     public static final String AUTHORIZATION_ERROR_MAINTENANCE_NEWCOPY = "error.authorization.maintenance.newCopy";
     public static final String AUTHORIZATION_ERROR_MODULE = "error.authorization.module";
-	public static final String AUTHORIZATION_ERROR_DOCUMENT_WORKGROUP = "error.authorization.workgroupInitiation";
+    public static final String AUTHORIZATION_ERROR_DOCUMENT_WORKGROUP = "error.authorization.workgroupInitiation";
 
     // Document-specific errors
-    public static final String ERROR_DOCUMENT_ANNOTATION_MAX_LENGTH_EXCEEDED = "error.document.annotation.maxLength.exceeded";
+    public static final String ERROR_DOCUMENT_ANNOTATION_MAX_LENGTH_EXCEEDED =
+            "error.document.annotation.maxLength.exceeded";
     public static final String ERROR_DOCUMENT_DISAPPROVE_REASON_REQUIRED = "error.document.disapprove.reasonRequired";
     public static final String ERROR_DOCUMENT_RECALL_REASON_REQUIRED = "error.document.recall.reasonRequired";
     public static final String ERROR_DOCUMENT_NO_DESCRIPTION = "error.document.noDescription";
@@ -110,21 +114,29 @@ public final class RiceKeyConstants {
     public static final String ERROR_UNIMPLEMENTED = "error.unimplemented";
     public static final String ERROR_OPTIMISTIC_LOCK = "error.document.optimisticLockException";
 
-    public static final String QUESTION_CONTINUATION_ACCOUNT_SELECTION = "document.question.selectContinuationAccount.text";
+    public static final String QUESTION_CONTINUATION_ACCOUNT_SELECTION =
+            "document.question.selectContinuationAccount.text";
     public static final String QUESTION_SAVE_BEFORE_CLOSE = "document.question.saveBeforeClose.text";
 
     // General Maintenance Document Error Messages
-    public static final String ERROR_DOCUMENT_MAINTENANCE_PRIMARY_KEYS_CHANGED_ON_EDIT = "error.document.maintenance.general.primaryKeysChangedOnEdit";
-    public static final String ERROR_DOCUMENT_MAINTENANCE_KEYS_ALREADY_EXIST_ON_CREATE_NEW = "error.document.maintenance.general.objectAlreadyExistsByPrimaryKeysOnCreateNew";
-    public static final String ERROR_DOCUMENT_AUTHORIZATION_RESTRICTED_FIELD_CHANGED = "error.document.maintenance.authorization.restrictedFieldChanged";
-    public static final String ERROR_DOCUMENT_MAINTENANCE_PARTIALLY_FILLED_OUT_REF_FKEYS = "error.document.maintenance.partiallyFilledOutReferenceForeignKeys";
-    public static final String ERROR_DOCUMENT_MAINTENANCE_FORMATTING_ERROR = "error.document.maintenance.formattingError";
-    public static final String ERROR_DOCUMENT_INVALID_VALUE_ALLOWED_VALUES_PARAMETER = "error.document.invalid.value.allowedValuesParameter";
-    public static final String ERROR_DOCUMENT_INVALID_VALUE_DENIED_VALUES_PARAMETER = "error.document.invalid.value.deniedValuesParameter";
+    public static final String ERROR_DOCUMENT_MAINTENANCE_PRIMARY_KEYS_CHANGED_ON_EDIT =
+            "error.document.maintenance.general.primaryKeysChangedOnEdit";
+    public static final String ERROR_DOCUMENT_MAINTENANCE_KEYS_ALREADY_EXIST_ON_CREATE_NEW =
+            "error.document.maintenance.general.objectAlreadyExistsByPrimaryKeysOnCreateNew";
+    public static final String ERROR_DOCUMENT_AUTHORIZATION_RESTRICTED_FIELD_CHANGED =
+            "error.document.maintenance.authorization.restrictedFieldChanged";
+    public static final String ERROR_DOCUMENT_MAINTENANCE_PARTIALLY_FILLED_OUT_REF_FKEYS =
+            "error.document.maintenance.partiallyFilledOutReferenceForeignKeys";
+    public static final String ERROR_DOCUMENT_MAINTENANCE_FORMATTING_ERROR =
+            "error.document.maintenance.formattingError";
+    public static final String ERROR_DOCUMENT_INVALID_VALUE_ALLOWED_VALUES_PARAMETER =
+            "error.document.invalid.value.allowedValuesParameter";
+    public static final String ERROR_DOCUMENT_INVALID_VALUE_DENIED_VALUES_PARAMETER =
+            "error.document.invalid.value.deniedValuesParameter";
 
     // Person errors
-    public static final String ERROR_DOCUMENT_KUALIUSERMAINT_UNIQUE_EMPLID = "error.document.PersonMaintenance.UniqueEmplId";
-
+    public static final String ERROR_DOCUMENT_KUALIUSERMAINT_UNIQUE_EMPLID =
+            "error.document.PersonMaintenance.UniqueEmplId";
 
     public static final String ERROR_CUSTOM = "error.custom";
     public static final String ERROR_INQUIRY = "error.inquiry";
@@ -157,9 +169,13 @@ public final class RiceKeyConstants {
     public static final String MESSAGE_DISAPPROVAL_NOTE_TEXT_INTRO = "message.disapprove.noteTextIntro";
     public static final String MESSAGE_RECALL_NOTE_TEXT_INTRO = "message.recall.noteTextIntro";
 
-    public static final String MESSAGE_DELETE="message.delete";
-    public static final String MESSAGE_DELETED="mesage.deleted";
+    public static final String INFO_LOOKUP_RESULTS_DISPLAY_LIMIT = "lookup.results.found.display.limit";
+    public static final String INFO_LOOKUP_RESULTS_DISPLAY_ALL = "lookup.results.found.display.all";
+    public static final String INFO_LOOKUP_RESULTS_SHOWING_ENTRIES = "lookup.results.showing.entries";
+    public static final String INFO_LOOKUP_RESULTS_EXCEEDS_LIMIT = "lookup.results.exceeds.limit";
 
+    public static final String MESSAGE_DELETE = "message.delete";
+    public static final String MESSAGE_DELETED = "mesage.deleted";
 
     public static final String QUESTION_DISAPPROVE_DOCUMENT = "document.question.disapprove.text";
     public static final String QUESTION_RECALL_DOCUMENT = "document.question.recall.text";
@@ -168,15 +184,18 @@ public final class RiceKeyConstants {
     public static final String ERROR_MISSING = "error.missing";
 
     // Application Parameter Component errors
-    public static final String ERROR_APPLICATION_PARAMETERS_ALLOWED_RESTRICTION = "error.applicationParametersAllowedRestriction";
-    public static final String ERROR_APPLICATION_PARAMETERS_DENIED_RESTRICTION = "error.applicationParametersDeniedRestriction";
+    public static final String ERROR_APPLICATION_PARAMETERS_ALLOWED_RESTRICTION =
+            "error.applicationParametersAllowedRestriction";
+    public static final String ERROR_APPLICATION_PARAMETERS_DENIED_RESTRICTION =
+            "error.applicationParametersDeniedRestriction";
     public static final String ERROR_PAYMENT_REASON_ALLOWED_RESTRICTION = "error.paymentReasonAllowedRestriction";
     public static final String ERROR_PAYMENT_REASON_DENIED_RESTRICTION = "error.paymentReasonDeniedRestriction";
 
     public static final Object WARNING_LINE_IMPORT_LENGTH_MISMATCH = "warning.core.bo.AccountImportLengthMismatch";
 
     // kim role document
-    public static final String QUESTION_ACTIVE_DELEGATES_FOR_INACTIVE_MEMBERS = "question.document.maintenance.role.activeDelegatesForInactiveRoleMembers";
+    public static final String QUESTION_ACTIVE_DELEGATES_FOR_INACTIVE_MEMBERS =
+            "question.document.maintenance.role.activeDelegatesForInactiveRoleMembers";
 
     // kim person document
     public static final String ERROR_MULTIPLE_DEFAULT_SELETION = "error.multiple.default.selection";
@@ -194,7 +213,8 @@ public final class RiceKeyConstants {
     public static final String ERROR_POPULATE_GROUP = "error.populate.group";
     public static final String ERROR_ACTIVE_TO_DATE_BEFORE_FROM_DATE = "error.active.todate.before.fromdate";
     public static final String ERROR_NOT_EMPLOYMENT_AFFILIATION_TYPE = "error.not.employment.affilationType";
-    public static final String ERROR_NOT_UNIQUE_AFFILIATION_TYPE_PER_CAMPUE = "error.not.unique.affilationType.per.campus";
+    public static final String ERROR_NOT_UNIQUE_AFFILIATION_TYPE_PER_CAMPUE =
+            "error.not.unique.affilationType.per.campus";
     public static final String ERROR_ROLE_QUALIFIER_REQUIRED = "error.role.qualifier.required";
     public static final String MESSAGE_SEND_AD_HOC_REQUESTS_SUCCESSFUL = "message.sendAdHocRequests.successful";
     public static final String ERROR_ONE_ITEM_REQUIRED = "error.one.item.required";
@@ -211,22 +231,24 @@ public final class RiceKeyConstants {
     public static final String ERROR_ASSIGN_ROLE_MEMBER_CIRCULAR = "error.assign.role.member.circular";
     public static final String ERROR_ASSIGN_GROUP_MEMBER_CIRCULAR = "error.assign.group.member.circular";
 
-
     //parameter document
     public static final String AUTHORIZATION_ERROR_PARAMETER = "error.authorization.parameter";
 
-    public static final String ERROR_DOCUMENT_FIELD_CONTAINS_POSSIBLE_SENSITIVE_DATA = "error.document.fieldContainsPossibleSensitiveData";
+    public static final String ERROR_DOCUMENT_FIELD_CONTAINS_POSSIBLE_SENSITIVE_DATA =
+            "error.document.fieldContainsPossibleSensitiveData";
 
-    public static final String ERROR_WILDCARDS_AND_OPERATORS_NOT_ALLOWED_ON_FIELD = "error.wildcards.and.operators.not.allowed.on.field";
-    public static final String INFO_WILDCARDS_AND_OPERATORS_TREATED_LITERALLY = "info.wildcards.and.operators.treated.literally";
-
-    public static final String ERROR_DOCUMENT_IDENTITY_MANAGEMENT_PERSON_QUALIFIER_VALUE_NOT_UNIQUE = "error.document.identityManagementPerson.qualifier.valueNotUnique";
+    public static final String ERROR_WILDCARDS_AND_OPERATORS_NOT_ALLOWED_ON_FIELD =
+            "error.wildcards.and.operators.not.allowed.on.field";
+    public static final String INFO_WILDCARDS_AND_OPERATORS_TREATED_LITERALLY =
+            "info.wildcards.and.operators.treated.literally";
+    public static final String ERROR_DOCUMENT_IDENTITY_MANAGEMENT_PERSON_QUALIFIER_VALUE_NOT_UNIQUE =
+            "error.document.identityManagementPerson.qualifier.valueNotUnique";
 
     // PeopleFlow
     public static final String PEOPLEFLOW_DUPLICATE = "peopleFlow.duplicate";
 
     private RiceKeyConstants() {
-		throw new UnsupportedOperationException("do not call");
-	}
+        throw new UnsupportedOperationException("do not call");
+    }
 }
 

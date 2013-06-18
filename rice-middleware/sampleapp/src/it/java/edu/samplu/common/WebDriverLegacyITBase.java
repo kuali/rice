@@ -638,6 +638,18 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         }
     }
 
+    protected void assertIsVisibleByXpath(String xpath, String message) {
+        if (!isVisibleByXpath(xpath)) {
+            fail(xpath + " not visible " + message);
+        }
+    }
+
+    protected void assertIsNotVisibleByXpath(String xpath, String message) {
+        if (isVisibleByXpath(xpath)) {
+            fail(xpath + " visible " + message);
+        }
+    }
+
     /**
      * Assert that clicking an element causes a popup window with a specific URL
      *

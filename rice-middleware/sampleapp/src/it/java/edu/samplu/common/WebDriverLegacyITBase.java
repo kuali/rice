@@ -495,9 +495,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
                 t.printStackTrace();
                 System.out.println(t.getMessage() + " occured during tearDown, ignoring to avoid killing test run.");
             }
-
         }
-
     }
 
     private void closeAndQuitWebDriver() {
@@ -506,14 +504,12 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
                 driver.close();
                 driver.quit();
             }
-
         }
-
+        
         else {
             System.out.println("WebDriver is null for " + this.getClass().toString() + ", if using saucelabs, has" +
                     " sauceleabs been uncommented in WebDriverUtil.java?  If using a remote hub did you include the port?");
         }
-
     }
 
     /**

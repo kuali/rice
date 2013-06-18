@@ -412,7 +412,7 @@
             <bean parent="Uif-ActionLink" p:actionLabel="Click to show a dialog"
                   p:actionScript="showLightboxComponent('Demo-RowDetails-LightBoxContent@{#lineSuffix}')"/>
             <bean id="Demo-RowDetails-LightBoxContent" parent="Uif-VerticalBoxGroup"
-                  p:renderAsPlaceholder="true">
+                  p:useAjaxCallForContent="true">
               <property name="items">
                 <list>
                   <bean parent="Uif-Message" p:messageText="This is my content"/>

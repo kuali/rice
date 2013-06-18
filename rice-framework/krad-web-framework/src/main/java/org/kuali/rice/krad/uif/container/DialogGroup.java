@@ -81,7 +81,6 @@ public class DialogGroup extends Group {
 
     private boolean reverseButtonOrder;
     private boolean displayExplanation;
-    private boolean useAjaxCallForContent;
 
     private String onDialogResponseScript;
     private String onShowDialogScript;
@@ -189,13 +188,6 @@ public class DialogGroup extends Group {
     @Override
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
-
-        // if ajax, just render a placeholder
-        if (useAjaxCallForContent) {
-            setProgressiveRenderViaAJAX(useAjaxCallForContent);
-            setProgressiveRender("");
-            setRender(false);
-        }
 
         if (responseInputField != null) {
             String responseInputSelector = "#" + responseInputField.getId() + " [name='" +
@@ -393,35 +385,6 @@ public class DialogGroup extends Group {
      */
     public void setReverseButtonOrder(boolean reverseButtonOrder) {
         this.reverseButtonOrder = reverseButtonOrder;
-    }
-
-    /**
-     * Indicates which approach is used to fill the lightbox content for this dialog.
-     *
-     * <p>
-     * Two techniques are used for filling the content of the lightbox when displaying this dialog.
-     * <ul>
-     * <li>a hidden group on the page is used as content</li>
-     * <li>an ajax call is made to the server to get the content</li>
-     * </ul>
-     * The default approach is to use a hidden form.
-     * </p>
-     *
-     * @return boolean
-     */
-    @BeanTagAttribute(name = "useAjaxCallForContent")
-    public boolean isUseAjaxCallForContent() {
-        return useAjaxCallForContent;
-    }
-
-    /**
-     * Sets whether the content for the dialog will be filled via ajax call or hidden group
-     *
-     * @param useAjaxCallForContent boolean set to true if ajax call is used to get content,
-     * false if hidden group is used for content.
-     */
-    public void setUseAjaxCallForContent(boolean useAjaxCallForContent) {
-        this.useAjaxCallForContent = useAjaxCallForContent;
     }
 
     /**

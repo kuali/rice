@@ -62,7 +62,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     private String title;
 
     private boolean render;
-    private boolean renderAsPlaceholder;
+    private boolean useAjaxCallForContent;
 
     @KeepExpression
     private String progressiveRender;
@@ -269,9 +269,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
         refreshWhenChangedPropertyNames = adjustedRefreshPropertyNames;
 
-        // renderAsPlaceholder forces session persistence because it assumes that this component will be retrieved by
+        // useAjaxCallForContent forces session persistence because it assumes that this component will be retrieved by
         // some ajax retrieval call
-        if (renderAsPlaceholder){
+        if (useAjaxCallForContent){
             forceSessionPersistence = true;
         }
 
@@ -514,17 +514,18 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#isRenderAsPlaceholder()
+     * @see org.kuali.rice.krad.uif.component.Component#isUseAjaxCallForContent()
      */
-    public boolean isRenderAsPlaceholder() {
-        return renderAsPlaceholder;
+    @BeanTagAttribute(name = "useAjaxCallForContent")
+    public boolean isUseAjaxCallForContent() {
+        return useAjaxCallForContent;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#setRenderAsPlaceholder(boolean)
+     * @see org.kuali.rice.krad.uif.component.Component#setUseAjaxCallForContent(boolean)
      */
-    public void setRenderAsPlaceholder(boolean renderAsPlaceholder) {
-        this.renderAsPlaceholder = renderAsPlaceholder;
+    public void setUseAjaxCallForContent(boolean useAjaxCallForContent) {
+        this.useAjaxCallForContent = useAjaxCallForContent;
     }
 
     /**

@@ -300,25 +300,28 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
     void setRender(boolean render);
 
     /**
-     * When true, this component will render as a placeholder component instead of rendering normally
+     * When true, this component will render as a placeholder component instead of rendering normally because the
+     * content will be later retrieved through manually ajax retrieval calls in the js
      *
      * <p>Placeholder components are used for ajax retrievals.  In particular, this flag is useful for use in
      * combination with the showLightboxComponent js function which will automatically retrieve the real content of
      * a component through ajax if a placeholder component is detected.  This allows for the full content to only
      * be retrieved when the lightbox is first opened.  When this flag is set to true, the forceSessionPersistence
      * flag is set to true AUTOMATICALLY because it is implied that this component will be retrieved by an ajax call
-     * in the future.  This may also be useful for direct calls to retrieveComponent function.</p>
+     * in the future.  This may also be useful for direct custom calls to retrieveComponent function, as well.</p>
      *
-     * @return true if this component is being rendered as a placeholder, false otherwise
+     * @return true if this component is being rendered as a placeholder for use in replacement during and ajax call,
+     * false otherwise
      */
-    public boolean isRenderAsPlaceholder();
+    public boolean isUseAjaxCallForContent();
 
     /**
-     * When set to true, this component will be rendered as a placeholder instead of rendering normally
+     * When true, this component will render as a placeholder component instead of rendering normally because the
+     * content will be later retrieved through manually ajax retrieval calls in the js
      *
-     * @param renderAsPlaceholder
+     * @param useAjaxCallForContent
      */
-    public void setRenderAsPlaceholder(boolean renderAsPlaceholder);
+    public void setUseAjaxCallForContent(boolean useAjaxCallForContent);
 
     /**
      * Indicates whether the component should be hidden in the UI

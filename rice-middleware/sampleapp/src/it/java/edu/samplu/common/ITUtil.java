@@ -272,7 +272,7 @@ public class ITUtil {
                 + " Doc Id: "
                 + docId.trim()
                 + "\nStackTrace: "
-                + stackTrace.trim();
+                + stackTrace.trim().replace(" at ", "");
     }
 
     private static String extractIncidentReportKim(String contents, String linkLocator, String message) {
@@ -291,7 +291,7 @@ public class ITUtil {
                 + " Doc Id: "
                 + docId.trim()
                 + "\nStackTrace: "
-                + stackTrace.trim();
+                + stackTrace.trim().replace(" at ", "");
     }
 
     public static void failOnInvalidUserName(String userName, String contents, Failable failable) {
@@ -415,7 +415,7 @@ public class ITUtil {
         String stackTrace = contents.substring(contents.indexOf("Error: on line"), contents.indexOf("more<") - 1);
         failable.fail(
                 "\nFreemarker Exception " + message + " navigating to " + linkLocator + "\nStackTrace: " + stackTrace
-                        .trim());
+                        .trim().replace(" at ", ""));
     }
 
 /*
@@ -467,7 +467,6 @@ public class ITUtil {
         PrintWriter pw = new PrintWriter(wrt);
         throwable.printStackTrace(pw);
         pw.flush();
-        return wrt.toString().replace("at" ,"");
+        return wrt.toString().replace(" at " ,"");
     }
-
 }

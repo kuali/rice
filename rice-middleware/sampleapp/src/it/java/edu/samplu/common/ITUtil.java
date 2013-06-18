@@ -458,7 +458,7 @@ public class ITUtil {
     }
 
     /**
-     * Write the given stack trace into a String
+     * Write the given stack trace into a String remove the ats in an attempt to not cause Jenkins problems.
      * @param throwable whose stack trace to return
      * @return String of the given throwable's stack trace.
      */
@@ -467,7 +467,7 @@ public class ITUtil {
         PrintWriter pw = new PrintWriter(wrt);
         throwable.printStackTrace(pw);
         pw.flush();
-        return wrt.toString();
+        return wrt.toString().replace("at" ,"");
     }
 
 }

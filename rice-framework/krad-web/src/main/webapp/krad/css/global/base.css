@@ -168,18 +168,18 @@ ul.uif-readOnlyStringList li {
 
 /** sticky content ****************************************************************************/
 
-.uif-sticky{
+.uif-sticky {
     z-index: 5;
     width: 100%;
 }
 
-.uif-stickyFooter{
+.uif-stickyFooter {
     z-index: 4;
     width: 100%;
     margin: 0 !important;
 }
 
-.uif-stickyButtonFooter{
+.uif-stickyButtonFooter {
     background-color: lightGray;
     border: 1px solid gray;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
@@ -203,11 +203,11 @@ ul.uif-readOnlyStringList li {
     z-index: 3;
 }
 
-.uif-header-contentWrapper{
+.uif-header-contentWrapper {
     width: 100%;
 }
 
-.uif-header{
+.uif-header {
     position: relative;
 }
 
@@ -222,11 +222,11 @@ ul.uif-readOnlyStringList li {
     top: 0;
 }
 
-#Uif-BreadcrumbWrapper, #Uif-ApplicationHeader-Wrapper, #Uif-ApplicationFooter-Wrapper, #Uif-TopGroupWrapper{
+#Uif-BreadcrumbWrapper, #Uif-ApplicationHeader-Wrapper, #Uif-ApplicationFooter-Wrapper, #Uif-TopGroupWrapper {
     width: 100%;
 }
 
-#Uif-ApplicationFooter-Wrapper{
+#Uif-ApplicationFooter-Wrapper {
     position: absolute;
 }
 
@@ -323,6 +323,10 @@ img.uif-disclosure-image {
     padding-top: 15px;
 }
 
+.uif-lookupPage > .uif-header-contentWrapper {
+    min-height: 15px;
+}
+
 .uif-group > .uif-instructionalMessage, .uif-group > .uif-disclosureContent > .uif-instructionalMessage,
 .uif-page > .uif-instructionalMessage, .uif-page > .uif-disclosureContent > .uif-instructionalMessage {
     max-width: 64em;
@@ -339,20 +343,20 @@ img.uif-disclosure-image {
 
 /** Breadcrumbs *****************************************************************************************/
 
-#Uif-BreadcrumbWrapper{
+#Uif-BreadcrumbWrapper {
     background-color: white;
     width: 100%;
     z-index: 10 !important;
     line-height: 18px;
     background: #ffffff;
-   	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlYWVhZWEiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-   	background: -moz-linear-gradient(top,  #ffffff 0%, #eaeaea 100%);
-   	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#eaeaea));
-   	background: -webkit-linear-gradient(top,  #ffffff 0%,#eaeaea 100%);
-   	background: -o-linear-gradient(top,  #ffffff 0%,#eaeaea 100%);
-   	background: -ms-linear-gradient(top,  #ffffff 0%,#eaeaea 100%);
-   	background: linear-gradient(to bottom,  #ffffff 0%,#eaeaea 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eaeaea',GradientType=0 );
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlYWVhZWEiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+    background: -moz-linear-gradient(top, #ffffff 0%, #eaeaea 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #eaeaea));
+    background: -webkit-linear-gradient(top, #ffffff 0%, #eaeaea 100%);
+    background: -o-linear-gradient(top, #ffffff 0%, #eaeaea 100%);
+    background: -ms-linear-gradient(top, #ffffff 0%, #eaeaea 100%);
+    background: linear-gradient(to bottom, #ffffff 0%, #eaeaea 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#ffffff', endColorstr = '#eaeaea', GradientType = 0);
     border-bottom: 1px solid #cdcdcd;
     border-top: 1px solid #cdcdcd;
     height: 28px;
@@ -365,13 +369,11 @@ ol.uif-breadcrumbs {
     height: 28px;
 }
 
-
-
 .uif-breadcrumbs > li > a {
     text-decoration: none;
 }
 
-.uif-breadcrumbs > li > a,  .uif-breadcrumbs > li > span{
+.uif-breadcrumbs > li > a, .uif-breadcrumbs > li > span {
     padding: .4em 0 0 1em;
     float: left;
     color: #5B5B5B;
@@ -395,7 +397,7 @@ ol.uif-breadcrumbs {
     background-repeat: no-repeat;
 }
 
-.uif-breadcrumbs > li:last-child{
+.uif-breadcrumbs > li:last-child {
     background-image: none;
 }
 
@@ -416,7 +418,7 @@ ol.uif-breadcrumbs, .uif-breadcrumbs > li {
     content: "";
 }
 
-.uif-breadcrumbSiblingLink{
+.uif-breadcrumbSiblingLink {
     padding-left: .8em !important;
     font-size: 9px;
 }
@@ -1463,8 +1465,8 @@ ul.uif-pageValidationMessage-single {
 
 /***** Syntax Highlighter *********************************************************************/
 /*div.uif-syntaxHighlighter {*/
-    /*max-height: 400px;*/
-    /*overflow: auto;*/
+/*max-height: 400px;*/
+/*overflow: auto;*/
 /*}*/
 
 .uif-syntaxHighlighter li {

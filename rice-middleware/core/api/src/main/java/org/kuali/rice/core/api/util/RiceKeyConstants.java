@@ -169,9 +169,10 @@ public final class RiceKeyConstants {
     public static final String MESSAGE_DISAPPROVAL_NOTE_TEXT_INTRO = "message.disapprove.noteTextIntro";
     public static final String MESSAGE_RECALL_NOTE_TEXT_INTRO = "message.recall.noteTextIntro";
 
-    public static final String INFO_LOOKUP_RESULTS_DISPLAY_LIMIT = "lookup.results.found.display.limit";
     public static final String INFO_LOOKUP_RESULTS_DISPLAY_ALL = "lookup.results.found.display.all";
-    public static final String INFO_LOOKUP_RESULTS_SHOWING_ENTRIES = "lookup.results.showing.entries";
+    public static final String INFO_LOOKUP_RESULTS_DISPLAY_ONE = "lookup.results.found.display.one";
+    public static final String INFO_LOOKUP_RESULTS_NONE_FOUND = "lookup.results.none.found";
+    public static final String INFO_LOOKUP_RESULTS_USING_PRIMARY_KEY = "lookup.using.primary.keys";
     public static final String INFO_LOOKUP_RESULTS_EXCEEDS_LIMIT = "lookup.results.exceeds.limit";
 
     public static final String MESSAGE_DELETE = "message.delete";

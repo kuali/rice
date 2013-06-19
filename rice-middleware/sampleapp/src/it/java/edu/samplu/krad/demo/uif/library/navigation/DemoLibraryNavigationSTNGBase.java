@@ -15,22 +15,16 @@
  */
 package edu.samplu.krad.demo.uif.library.navigation;
 
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
+import org.testng.Assert;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoLibraryNavigationSTNGBkMrkGen extends DemoLibraryNavigationSTNGBase {
+public class DemoLibraryNavigationSTNGBase extends DemoLibraryNavigationSmokeTestBase {
 
     @Override
-    public String getTestUrl() {
-        return BOOKMARK_URL;
-    }
-
-    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testNavigationMenuBookmark")
-    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
-    public void testNavigationMenuBookmark() throws Exception {
-        testNavigationMenuBookmark(this);
+    public void fail(String message) {
+        passed = false;
+        Assert.fail(message);
     }
 }

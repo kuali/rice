@@ -21,16 +21,16 @@ import org.testng.annotations.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoLibraryNavigationSTNGBkMrkGen extends DemoLibraryNavigationSTNGBase {
+public class DemoLibraryNavigationSTNGNavGen extends DemoLibraryNavigationSTNGBase {
 
     @Override
     public String getTestUrl() {
         return BOOKMARK_URL;
     }
 
-    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testNavigationMenuBookmark")
+    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testNavigationMenuNav")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
-    public void testNavigationMenuBookmark() throws Exception {
-        testNavigationMenuBookmark(this);
+    public void testNavigationMenuNav() throws Exception {
+        testNavigationMenuNav(this);
     }
 }

@@ -165,6 +165,9 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         // lookups first and apply to the local lookup
         try {
             Integer searchResultsLimit = null;
+            List<String> pkNames = getDataObjectMetaDataService().listPrimaryKeyFieldNames(getDataObjectClass());
+            Boolean isUsingPrimaryKey = nonBlankSearchCriteria.keySet().containsAll(pkNames);
+
             if (!unbounded) {
                 searchResultsLimit = LookupUtils.getSearchResultsLimit(getDataObjectClass(), form);
             }
@@ -183,6 +186,9 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                 searchResults = (List<?>) getLookupService().findCollectionBySearchHelper(getDataObjectClass(),
                         nonBlankSearchCriteria, unbounded, searchResultsLimit);
             }
+            Integer searchResultsSize = searchResults != null ? searchResults.size() : 0;
+            generateLookupResultsMessages(unbounded, isUsingPrimaryKey, searchResultsSize, searchResultsLimit, pkNames);
+
         } catch (IllegalAccessException e) {
             throw new RuntimeException("Error trying to perform search", e);
         } catch (InstantiationException e1) {
@@ -196,6 +202,46 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         }
 
         return searchResults;
+    }
+
+    /**
+     * helper function used to build primary key and other messages related to result count
+     *
+     * @param unbounded
+     * @param usingPrimaryKey
+     * @param searchResultsSize
+     * @param searchResultsLimit
+     * @param pkNames
+     */
+    private void generateLookupResultsMessages(boolean unbounded, boolean usingPrimaryKey, Integer searchResultsSize,
+            Integer searchResultsLimit, List<String> pkNames) {
+
+        Boolean resultsExceedsLimit = !unbounded
+                && searchResultsLimit != null
+                && searchResultsSize > 0
+                && searchResultsSize > searchResultsLimit ? true : false;
+        String resultsPropertyName = "LookupResultMessages";
+
+        if (usingPrimaryKey) {
+            GlobalVariables.getMessageMap().putInfoForSectionId(resultsPropertyName,
+                    RiceKeyConstants.INFO_LOOKUP_RESULTS_USING_PRIMARY_KEY, StringUtils.join(pkNames, ","));
+        }
+        if (searchResultsSize == 0) {
+            GlobalVariables.getMessageMap().putInfoForSectionId(resultsPropertyName,
+                    RiceKeyConstants.INFO_LOOKUP_RESULTS_NONE_FOUND);
+        } else if (searchResultsSize == 1) {
+            GlobalVariables.getMessageMap().putInfoForSectionId(resultsPropertyName,
+                    RiceKeyConstants.INFO_LOOKUP_RESULTS_DISPLAY_ONE);
+        } else if (searchResultsSize > 1) {
+            if (!unbounded && resultsExceedsLimit) {
+                GlobalVariables.getMessageMap().putInfoForSectionId(resultsPropertyName,
+                        RiceKeyConstants.INFO_LOOKUP_RESULTS_EXCEEDS_LIMIT, searchResultsSize.toString(),
+                        searchResultsLimit.toString());
+            } else {
+                GlobalVariables.getMessageMap().putInfoForSectionId(resultsPropertyName,
+                        RiceKeyConstants.INFO_LOOKUP_RESULTS_DISPLAY_ALL, searchResultsSize.toString());
+            }
+        }
     }
 
     /**

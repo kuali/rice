@@ -36,8 +36,10 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.element.Action;
+import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.util.ViewCleaner;
 import org.kuali.rice.krad.uif.view.DefaultExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
@@ -76,6 +78,7 @@ import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.GrowlMessage;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
@@ -736,14 +739,12 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         // evaluate expressions on component security
         ComponentSecurity componentSecurity = component.getComponentSecurity();
-        getExpressionEvaluator().evaluateExpressionsOnConfigurable(view, componentSecurity,
-                component.getContext());
+        getExpressionEvaluator().evaluateExpressionsOnConfigurable(view, componentSecurity, component.getContext());
 
         // evaluate expressions on the binding info object
         if (component instanceof DataBinding) {
             BindingInfo bindingInfo = ((DataBinding) component).getBindingInfo();
-            getExpressionEvaluator().evaluateExpressionsOnConfigurable(view, bindingInfo,
-                    component.getContext());
+            getExpressionEvaluator().evaluateExpressionsOnConfigurable(view, bindingInfo, component.getContext());
         }
 
         // set context evaluate expressions on the layout manager
@@ -811,12 +812,12 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 adjustedId = id + nextAdjustSeq;
             }
 
-            visitedIds.put(adjustedId, new Integer(1));
+            visitedIds.put(adjustedId, Integer.valueOf(1));
 
             nextAdjustSeq = nextAdjustSeq + 1;
             visitedIds.put(id, nextAdjustSeq);
         } else {
-            visitedIds.put(id, new Integer(1));
+            visitedIds.put(id, Integer.valueOf(1));
         }
 
         return adjustedId;
@@ -1111,6 +1112,192 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
+     * Generates table formatted data based on data collected from the table model
+     *
+     * @param view view instance where the table is located
+     * @param model top level object containing the data
+     * @param tableId id of the table being generated
+     * @param formatType format which the table should be generated in
+     * @return
+     */
+    public String buildExportTableData(View view, Object model, String tableId, String formatType) {
+
+        // load table format elements used for generated particular style
+        Map<String, String> tableDataFormatMap = getTableDataFormatMap(formatType);
+        String startTable = tableDataFormatMap.get("startTable");
+        String endTable = tableDataFormatMap.get("endTable");
+        String startRow = tableDataFormatMap.get("startRow");
+        String endRow = tableDataFormatMap.get("endRow");
+        String startColumn = tableDataFormatMap.get("startColumn");
+        String endColumn = tableDataFormatMap.get("endColumn");
+        boolean appendLastColumn = Boolean.valueOf(tableDataFormatMap.get("appendLastColumn"));
+
+        Component component = view.getViewIndex().getComponentById(tableId);
+        StringBuilder tableRows = new StringBuilder("");
+
+        // table layout manager is needed for header and gathering field data
+        if (component instanceof CollectionGroup && ((CollectionGroup) component)
+                .getLayoutManager() instanceof TableLayoutManager) {
+
+            CollectionGroup collectionGroup = (CollectionGroup) component;
+            TableLayoutManager layoutManager = (TableLayoutManager) collectionGroup.getLayoutManager();
+            List<Label> headerLabels = layoutManager.getHeaderLabels();
+            List<Field> rowFields = layoutManager.getAllRowFields();
+            int actionColumnIndex = layoutManager.getActionColumnIndex();
+            int numberOfColumns = layoutManager.getNumberOfColumns();
+            boolean renderActions = collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly();
+            boolean renderSelectField = collectionGroup.isIncludeLineSelectionField();
+            boolean renderSequenceField = layoutManager.isRenderSequenceField();
+
+            // append table header data as first row
+            if (headerLabels.size() > 0) {
+                String row = "";
+                int columnIndex = 0;
+                for (Label label : headerLabels) {
+                    if (shouldRenderColumn(columnIndex, numberOfColumns, actionColumnIndex, renderActions,
+                            renderSelectField, renderSequenceField)) {
+                        row += startColumn + label.getLabelText() + endColumn;
+                    }
+                    columnIndex++;
+                }
+                if (!appendLastColumn) {
+                    row = StringUtils.removeEnd(row, endColumn);
+                }
+                tableRows.append(startRow + row + endRow);
+            }
+
+            // load all subsequent rows to the table
+            if (rowFields.size() > 0) {
+                String row = "";
+                int columnIndex = 0;
+                // add header labels
+                for (Field field : rowFields) {
+                    if (shouldRenderColumn(columnIndex, numberOfColumns, actionColumnIndex, renderActions,
+                            renderSelectField, renderSequenceField)) {
+                        row += startColumn + KRADUtils.getSimpleFieldValue(model, field) + endColumn;
+                    }
+                    columnIndex++;
+                    if (columnIndex >= numberOfColumns) {
+                        if (!appendLastColumn) {
+                            row = StringUtils.removeEnd(row, endColumn);
+                        }
+                        tableRows.append(startRow + row + endRow);
+                        columnIndex = 0;
+                        row = "";
+                    }
+                }
+            }
+        }
+
+        String tableData = startTable + tableRows.toString() + endTable;
+        return tableData;
+    }
+
+    /**
+     * Helper function to determine whether if column should be displayed.  Used to help
+     * extract columns used in screen format such as action or select that is not needed for export.
+     *
+     * @param columnIndex
+     * @param numberOfColumns
+     * @param actionColumnIndex
+     * @param renderActions
+     * @param renderSelectField
+     * @param renderSequenceField
+     * @return
+     */
+    private boolean shouldRenderColumn(int columnIndex, int numberOfColumns, int actionColumnIndex,
+            boolean renderActions, boolean renderSelectField, boolean renderSequenceField) {
+        if (renderActions || renderSelectField || renderSequenceField) {
+            int shiftColumn = 0;
+            if (renderSelectField) {
+                if (columnIndex == shiftColumn) {
+                    return false;
+                }
+                shiftColumn++;
+            }
+            if (renderSequenceField) {
+                if (columnIndex == shiftColumn) {
+                    return false;
+                }
+                shiftColumn++;
+            }
+            if (renderActions) {
+                // handle left sided index
+                if (actionColumnIndex == 1 && columnIndex == shiftColumn) {
+                    return false;
+
+                }
+                // handle right sided elements
+                else if (actionColumnIndex == -1 && columnIndex == numberOfColumns - 1) {
+                    return false;
+                }
+                // handle numeric action column index
+                else if (actionColumnIndex > 1 && columnIndex == actionColumnIndex) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Identify table formatting elements based on formatType.  Defaults to txt format if not found
+     *
+     * @param formatType
+     * @return
+     */
+    private Map<String, String> getTableDataFormatMap(String formatType) {
+        HashMap<String, String> map = new HashMap<String, String>();
+
+        map.put("contentType", "text/plain");
+        map.put("formatType", "txt");
+        map.put("startTable", "");
+        map.put("endTable", "");
+        map.put("startRow", "");
+        map.put("endRow", "\n");
+        map.put("startColumn", "");
+        map.put("endColumn", ", ");
+        map.put("appendLastColumn", "false");
+
+        if ("csv".equals(formatType)) {
+            map.put("contentType", "text/csv");
+            map.put("formatType", "csv");
+            map.put("startTable", "");
+            map.put("endTable", "");
+            map.put("startRow", "");
+            map.put("endRow", "\n");
+            map.put("startColumn", "");
+            map.put("endColumn", ", ");
+            map.put("appendLastColumn", "false");
+
+        } else if ("xls".equals(formatType)) {
+            map.put("contentType", "application/vnd.ms-excel");
+            map.put("formatType", "xls");
+            map.put("startTable", "");
+            map.put("endTable", "");
+            map.put("startRow", "");
+            map.put("endRow", "\n");
+            map.put("startColumn", "\"");
+            map.put("endColumn", "\"\t");
+            map.put("appendLastColumn", "true");
+
+        } else if ("xml".equals(formatType)) {
+            map.put("contentType", "application/xml");
+            map.put("formatType", "xml");
+            map.put("startTable", "<table>\n");
+            map.put("endTable", "</table>\n");
+            map.put("startRow", "  <row>\n");
+            map.put("endRow", "  </row>\n");
+            map.put("startColumn", "    <column>");
+            map.put("endColumn", "</column>\n");
+            map.put("appendLastColumn", "true");
+
+        }
+
+        return map;
+    }
+
+    /**
      * Builds JS script that will invoke the show growl method to display a growl message when the page is
      * rendered
      *
@@ -1203,7 +1390,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         // invoke component modifiers setup to run in the finalize phase
         runComponentModifiers(view, component, model, UifConstants.ViewPhases.FINALIZE);
-        
+
         // add the components template to the views list of components
         if (!component.isSelfRendered() && StringUtils.isNotBlank(component.getTemplate()) &&
                 !view.getViewTemplates().contains(component.getTemplate())) {
@@ -1379,18 +1566,17 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * The object needs to be of type PersistableBusinessObject.
      * </p>
      *
-     *
      * @param parentObject parent object that references the object to be refreshed
      * @param referenceObjectName property name of the parent object to be refreshed
      */
     private void refreshReference(Object parentObject, String referenceObjectName) {
         if (!(parentObject instanceof PersistableBusinessObject)) {
-            LOG.warn("Could not refresh reference " + referenceObjectName + " off class "
-                    + parentObject.getClass().getName() + ". Class not of type PersistableBusinessObject");
+            LOG.warn("Could not refresh reference " + referenceObjectName + " off class " + parentObject.getClass()
+                    .getName() + ". Class not of type PersistableBusinessObject");
             return;
         }
 
-        if ( getPersistenceStructureService().hasReference(parentObject.getClass(), referenceObjectName)
+        if (getPersistenceStructureService().hasReference(parentObject.getClass(), referenceObjectName)
                 || getPersistenceStructureService().hasCollection(parentObject.getClass(), referenceObjectName)) {
             // refresh via database mapping
             getPersistenceService().retrieveReferenceObject(parentObject, referenceObjectName);
@@ -1398,15 +1584,15 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             // refresh via data dictionary mapping
             Object referenceObject = ObjectUtils.getPropertyValue(parentObject, referenceObjectName);
             if (!(referenceObject instanceof PersistableBusinessObject)) {
-                LOG.warn("Could not refresh reference " + referenceObjectName + " off class "
-                        + parentObject.getClass().getName() + ". Class not of type PersistableBusinessObject");
+                LOG.warn("Could not refresh reference " + referenceObjectName + " off class " + parentObject.getClass()
+                        .getName() + ". Class not of type PersistableBusinessObject");
                 return;
             }
 
             referenceObject = getBusinessObjectService().retrieve((PersistableBusinessObject) referenceObject);
             if (referenceObject == null) {
-                LOG.warn("Could not refresh reference " + referenceObjectName + " off class "
-                        + parentObject.getClass().getName() + ".");
+                LOG.warn("Could not refresh reference " + referenceObjectName + " off class " + parentObject.getClass()
+                        .getName() + ".");
                 return;
             }
 
@@ -1415,14 +1601,15 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             } catch (Exception e) {
                 LOG.error("Unable to refresh persistable business object: " + referenceObjectName + "\n" + e
                         .getMessage());
-                throw new RuntimeException("Unable to refresh persistable business object: " + referenceObjectName + "\n" + e.getMessage());
+                throw new RuntimeException(
+                        "Unable to refresh persistable business object: " + referenceObjectName + "\n" + e
+                                .getMessage());
             }
         } else {
-            LOG.warn("Could not refresh reference " + referenceObjectName + " off class "
-                    + parentObject.getClass().getName() + ".");
+            LOG.warn("Could not refresh reference " + referenceObjectName + " off class " + parentObject.getClass()
+                    .getName() + ".");
         }
     }
-
 
     /**
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#processCollectionAddLine(org.kuali.rice.krad.uif.view.View,
@@ -1783,10 +1970,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         String defaultValue = dataField.getDefaultValue();
         Object[] defaultValues = dataField.getDefaultValues();
 
-        if (StringUtils.isBlank(defaultValue) && defaultValues != null && defaultValues.length > 0)     {
+        if (StringUtils.isBlank(defaultValue) && defaultValues != null && defaultValues.length > 0) {
             ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValues);
-        }
-        else {
+        } else {
             if (StringUtils.isBlank(defaultValue) && (dataField.getDefaultValueFinderClass() != null)) {
                 ValueFinder defaultValueFinder = ObjectUtils.newInstance(dataField.getDefaultValueFinderClass());
                 defaultValue = defaultValueFinder.getValue();
@@ -1803,7 +1989,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 // Skip nullable non-null non-empty objects when setting default
                 Object currentValue = ObjectPropertyUtils.getPropertyValue(object, bindingPath);
                 Class currentClazz = ObjectPropertyUtils.getPropertyType(object, bindingPath);
-                if(currentValue == null || StringUtils.isBlank(currentValue.toString()) ||
+                if (currentValue == null || StringUtils.isBlank(currentValue.toString()) ||
                         ClassUtils.isPrimitiveOrWrapper(currentClazz)) {
                     ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValue);
                 }

@@ -35,82 +35,82 @@ import java.util.Map;
  */
 public interface ViewHelperService {
 
-	/**
-	 * Populates the <code>View</code> properties from the given request
-	 * parameters
-	 *
-	 * <p>
-	 * The <code>View</code> instance is inspected for fields that have the
-	 * <code>RequestParameter</code> annotation and if corresponding parameters
-	 * are found in the request parameter map, the request value is used to set
-	 * the view property. The Map of parameter name/values that match are placed
-	 * in the view so they can be later retrieved to rebuild the view. Custom
-	 * <code>ViewServiceHelper</code> implementations can add additional
-	 * parameter key/value pairs to the returned map if necessary.
-	 * </p>
-	 *
-	 * @see org.kuali.rice.krad.uif.component.RequestParameter
-	 */
-	void populateViewFromRequestParameters(View view, Map<String, String> parameters);
+    /**
+     * Populates the <code>View</code> properties from the given request
+     * parameters
+     *
+     * <p>
+     * The <code>View</code> instance is inspected for fields that have the
+     * <code>RequestParameter</code> annotation and if corresponding parameters
+     * are found in the request parameter map, the request value is used to set
+     * the view property. The Map of parameter name/values that match are placed
+     * in the view so they can be later retrieved to rebuild the view. Custom
+     * <code>ViewServiceHelper</code> implementations can add additional
+     * parameter key/value pairs to the returned map if necessary.
+     * </p>
+     *
+     * @see org.kuali.rice.krad.uif.component.RequestParameter
+     */
+    void populateViewFromRequestParameters(View view, Map<String, String> parameters);
 
-	/**
-	 * Performs the Initialization phase for the <code>View</code>. During this
-	 * phase each component of the tree is invoked to setup state based on the
-	 * configuration and request options.
-	 *
-	 * <p>
-	 * The initialize phase is only called once per <code>View</code> lifecycle
-	 * </p>
-	 *
-	 * <p>
-	 * Note the <code>View</code> instance also contains the context Map that
-	 * was created based on the parameters sent to the view service
-	 * </p>
-	 *
-	 * @param view View instance that should be initialized
+    /**
+     * Performs the Initialization phase for the <code>View</code>. During this
+     * phase each component of the tree is invoked to setup state based on the
+     * configuration and request options.
+     *
+     * <p>
+     * The initialize phase is only called once per <code>View</code> lifecycle
+     * </p>
+     *
+     * <p>
+     * Note the <code>View</code> instance also contains the context Map that
+     * was created based on the parameters sent to the view service
+     * </p>
+     *
+     * @param view View instance that should be initialized
      * @param model object instance containing the view data
-	 */
-	void performInitialization(View view, Object model);
+     */
+    void performInitialization(View view, Object model);
 
-	/**
-	 * Performs the Initialization phase for the given <code>Component</code>
-	 *
-	 * <p>
-	 * Can be called for component instances constructed via code or prototypes
-	 * to initialize the constructed component
-	 * </p>
-	 *
-	 * @param view view instance the component belongs to
-     * @param model  object instance containing the view data
-	 * @param component component instance that should be initialized
-	 */
-	void performComponentInitialization(View view, Object model, Component component);
+    /**
+     * Performs the Initialization phase for the given <code>Component</code>
+     *
+     * <p>
+     * Can be called for component instances constructed via code or prototypes
+     * to initialize the constructed component
+     * </p>
+     *
+     * @param view view instance the component belongs to
+     * @param model object instance containing the view data
+     * @param component component instance that should be initialized
+     */
+    void performComponentInitialization(View view, Object model, Component component);
 
-	/**
-	 * Executes the ApplyModel phase. During this phase each component of the
-	 * tree if invoked to setup any state based on the given model data
-	 *
-	 * <p>
-	 * Part of the view lifecycle that applies the model data to the view.
-	 * Should be called after the model has been populated before the view is
-	 * rendered. The main things that occur during this phase are:
-	 * <ul>
-	 * <li>Generation of dynamic fields (such as collection rows)</li>
-	 * <li>Execution of conditional logic (hidden, read-only, required settings
-	 * based on model values)</li>
-	 * </ul>
-	 * </p>
-	 *
-	 * <p>
-	 * The update phase can be called multiple times for the view's lifecycle
-	 * (typically only once per request)
-	 * </p>
-	 *
-	 * @param view View instance that the model should be applied to
-	 * @param model Top level object containing the data (could be the form or a
-	 *            top level business object, dto)
-	 */
-	void performApplyModel(View view, Object model);
+    /**
+     * Executes the ApplyModel phase. During this phase each component of the
+     * tree if invoked to setup any state based on the given model data
+     *
+     * <p>
+     * Part of the view lifecycle that applies the model data to the view.
+     * Should be called after the model has been populated before the view is
+     * rendered. The main things that occur during this phase are:
+     * <ul>
+     * <li>Generation of dynamic fields (such as collection rows)</li>
+     * <li>Execution of conditional logic (hidden, read-only, required settings
+     * based on model values)</li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * The update phase can be called multiple times for the view's lifecycle
+     * (typically only once per request)
+     * </p>
+     *
+     * @param view View instance that the model should be applied to
+     * @param model Top level object containing the data (could be the form or a
+     * top level business object, dto)
+     */
+    void performApplyModel(View view, Object model);
 
     /**
      * Gets global objects for the context map and pushes them to the context
@@ -121,21 +121,20 @@ public interface ViewHelperService {
      */
     Map<String, Object> getCommonContext(View view, Component component);
 
-	/**
-	 * The last phase before the view is rendered. Here final preparations can
-	 * be made based on the updated view state
-	 *
-	 * <p>
-	 * The finalize phase runs after the apply model phase and can be called
-	 * multiple times for the view's lifecylce (however typically only once per
-	 * request)
-	 * </p>
-	 *
-	 *
-	 * @param view view instance that should be finalized for rendering
-	 * @param model top level object containing the data
-	 */
-	void performFinalize(View view, Object model);
+    /**
+     * The last phase before the view is rendered. Here final preparations can
+     * be made based on the updated view state
+     *
+     * <p>
+     * The finalize phase runs after the apply model phase and can be called
+     * multiple times for the view's lifecylce (however typically only once per
+     * request)
+     * </p>
+     *
+     * @param view view instance that should be finalized for rendering
+     * @param model top level object containing the data
+     */
+    void performFinalize(View view, Object model);
 
     /**
      * Invoked after the view has been rendered to clear out objects that are not necessary to keep around for
@@ -174,20 +173,20 @@ public interface ViewHelperService {
      */
     void refreshReferences(Object model, String referencesToRefresh);
 
-	/**
-	 * Invoked when the add line action is chosen for a collection. The
-	 * collection path gives the full path to the collection that action was
-	 * selected for. Here validation can be performed on the line as well as
-	 * further processing on the line such as defaults. If the action is valid
-	 * the line should be added to the collection, otherwise errors should be
-	 * added to the global <code>MessageMap</code>
-	 *
-	 * @param view view instance that is being presented (the action was taken on)
-	 * @param model Top level object containing the view data including the
-	 *            collection and new line
-	 * @param collectionPath full path to the collection on the model
-	 */
-	void processCollectionAddLine(View view, Object model, String collectionPath);
+    /**
+     * Invoked when the add line action is chosen for a collection. The
+     * collection path gives the full path to the collection that action was
+     * selected for. Here validation can be performed on the line as well as
+     * further processing on the line such as defaults. If the action is valid
+     * the line should be added to the collection, otherwise errors should be
+     * added to the global <code>MessageMap</code>
+     *
+     * @param view view instance that is being presented (the action was taken on)
+     * @param model Top level object containing the view data including the
+     * collection and new line
+     * @param collectionPath full path to the collection on the model
+     */
+    void processCollectionAddLine(View view, Object model, String collectionPath);
 
     /**
      * Adds a blank line to the collection
@@ -212,19 +211,19 @@ public interface ViewHelperService {
      */
     void processCollectionSaveLine(View view, Object model, String collectionPath, int selectedLineIndex);
 
-	/**
-	 * Invoked when the delete line action is chosen for a collection. The
-	 * collection path gives the full path to the collection that action was
-	 * selected for. Here validation can be performed to make sure the action is
-	 * allowed. If the action is valid the line should be deleted from the
-	 * collection, otherwise errors should be added to the global
-	 * <code>MessageMap</code>
-	 *
-	 * @param view view instance that is being presented (the action was taken on)
-	 * @param model Top level object containing the view data including the collection
-	 * @param collectionPath full path to the collection on the model
-	 * @param lineIndex index of the collection line that was selected for removal
-	 */
+    /**
+     * Invoked when the delete line action is chosen for a collection. The
+     * collection path gives the full path to the collection that action was
+     * selected for. Here validation can be performed to make sure the action is
+     * allowed. If the action is valid the line should be deleted from the
+     * collection, otherwise errors should be added to the global
+     * <code>MessageMap</code>
+     *
+     * @param view view instance that is being presented (the action was taken on)
+     * @param model Top level object containing the view data including the collection
+     * @param collectionPath full path to the collection on the model
+     * @param lineIndex index of the collection line that was selected for removal
+     */
     void processCollectionDeleteLine(View view, Object model, String collectionPath, int lineIndex);
 
     /**
@@ -238,23 +237,23 @@ public interface ViewHelperService {
      */
     void processMultipleValueLookupResults(View view, Object model, String collectionPath, String lookupResultValues);
 
-	/**
-	 * Invoked by the <code>Inquiry</code> widget to build the inquiry link
-	 *
-	 * <p>
-	 * Note this is used primarily for custom <code>Inquirable</code>
-	 * implementations to customize the inquiry class or parameters for an
-	 * inquiry. Instead of building the full inquiry link, implementations can
-	 * make a callback to
-	 * org.kuali.rice.krad.uif.widget.Inquiry.buildInquiryLink(Object, String,
-	 * Class<?>, Map<String, String>) given an inquiry class and parameters to
-	 * build the link field.
-	 * </p>
-	 *
-	 * @param dataObject parent object for the inquiry property
-	 * @param propertyName name of the property the inquiry is being built for
-	 * @param inquiry instance of the inquiry widget being built for the property
-	 */
+    /**
+     * Invoked by the <code>Inquiry</code> widget to build the inquiry link
+     *
+     * <p>
+     * Note this is used primarily for custom <code>Inquirable</code>
+     * implementations to customize the inquiry class or parameters for an
+     * inquiry. Instead of building the full inquiry link, implementations can
+     * make a callback to
+     * org.kuali.rice.krad.uif.widget.Inquiry.buildInquiryLink(Object, String,
+     * Class<?>, Map<String, String>) given an inquiry class and parameters to
+     * build the link field.
+     * </p>
+     *
+     * @param dataObject parent object for the inquiry property
+     * @param propertyName name of the property the inquiry is being built for
+     * @param inquiry instance of the inquiry widget being built for the property
+     */
     void buildInquiryLink(Object dataObject, String propertyName, Inquiry inquiry);
 
     /**
@@ -269,7 +268,8 @@ public interface ViewHelperService {
     void applyDefaultValuesForCollectionLine(View view, Object model, CollectionGroup collectionGroup, Object line);
 
     /**
-     * Return an instance of {@link org.kuali.rice.krad.uif.view.ExpressionEvaluator} that can be used for evaluating expressions
+     * Return an instance of {@link org.kuali.rice.krad.uif.view.ExpressionEvaluator} that can be used for evaluating
+     * expressions
      * contained on the view
      *
      * <p>
@@ -280,5 +280,16 @@ public interface ViewHelperService {
      * @return instance of ExpressionEvaluator
      */
     public ExpressionEvaluator getExpressionEvaluator();
+
+    /**
+     * Generates table formatted data based on data collected from the table model
+     *
+     * @param view view instance where the table is located
+     * @param model top level object containing the data
+     * @param tableId id of the table being generated
+     * @param formatType format which the table should be generated in
+     * @return
+     */
+    String buildExportTableData(View view, Object model, String tableId, String formatType);
 
 }

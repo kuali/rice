@@ -126,6 +126,7 @@ public class UifConstants {
         public static final String CANCEL = "cancel";
         public static final String SESSION_TIMEOUT = "sessionTimeout";
         public static final String TABLE_JSON = "tableJsonRetrieval";
+        public static final String TABLE_DATA = "tableDataRetrieval";
     }
 
     public static class ActionEvents {
@@ -211,6 +212,7 @@ public class UifConstants {
         public static final String FOOTER_CALLBACK = "fnFooterCallback";
         public static final String AA_DATA = "aaData";
         public static final String DEFER_RENDER = "bDeferRender";
+        public static final String SDOWNLOAD_SOURCE = "sDownloadSource";
     }
 
     public static class TableToolsValues {
@@ -228,6 +230,11 @@ public class UifConstants {
         public static final String TRUE = "true";
 
         public static final int ADD_ROW_DEFAULT_INDEX = 0;
+    }
+
+    public static class TableLayoutValues {
+        public static final int ACTIONS_COLUMN_LEFT_INDEX = 1;
+        public static final int ACTIONS_COLUMN_RIGHT_INDEX = -1;
     }
 
     public static class ReordererOptionKeys {
@@ -344,7 +351,7 @@ public class UifConstants {
         public static final String GREATER_THAN = "greater_than";
         public static final String LESS_THAN = "less_than";
     }
-    
+
     public static final class JsFunctions {
         public static final String INITIALIZE_VIEW_STATE = "initializeViewState";
         public static final String INITIALIZE_SESSION_TIMERS = "initializeSessionTimers";

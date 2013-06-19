@@ -31,13 +31,10 @@
         </#if>
 
         <#-- invoke layout manager -->
-        <#include "${group.layoutManager.template}" parse=true/>
+        <#local templateName=".main.${group.layoutManager.templateName}"/>
+        <#local templateParms="items=group.items manager=group.layoutManager container=group"/>
 
-        <#local macroInvokeSrc="<" + "@${group.layoutManager.templateName} items=group.items"/>
-        <#local macroInvokeSrc="${macroInvokeSrc} manager=group.layoutManager container=group/>"/>
-        <#local macroInvoke = macroInvokeSrc?interpret>
-
-        <@macroInvoke />
+        <#dyncall templateName templateParms/>
 
         <#if group.renderAddBlankLineButton && (group.addLinePlacement == 'BOTTOM')>
             <@krad.template component=group.addBlankLineAction/>

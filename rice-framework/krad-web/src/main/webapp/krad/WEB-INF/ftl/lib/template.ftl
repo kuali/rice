@@ -35,24 +35,56 @@
 
         <#if component.selfRendered>
             ${component.renderedHtmlOutput}
+        <#-- in progress, string render -->
+        <#--<#elseif StringRenderContext.supportsStringRender(component) && !inStringRenderInvocation!false>-->
+            <#--<#local stringRenderTemplateHolder=StringRenderContext.getStringRenderTemplateHolder(component)/>-->
+
+            <#--<#if !stringRenderTemplateHolder.stringTemplate?has_content>-->
+                <#--<#global inStringRenderInvocation=true/>-->
+                <#--<#local componentModel=stringRenderTemplateHolder.componentModel/>-->
+
+                <#--<#local stringTemplate>-->
+                    <#--<#if includeSrc>-->
+                        <#--<#include "${component.template}" parse=true/>-->
+                    <#--</#if>-->
+
+                    <#--<#local templateName=".main.${component.templateName}"/>-->
+
+                    <#--<#local templateParms="${component.componentTypeName}=component "/>-->
+                    <#--<#list tmplParms?keys as parm>-->
+                        <#--<#local templateParms="${templateParms} ${parm}=tmplParms['${parm}']!"/>-->
+                    <#--</#list>-->
+
+                    <#--<#if body?trim?has_content>-->
+                        <#--<#local templateParms="${templateParms} body='${body}'"/>-->
+                    <#--</#if>-->
+
+                    <#--<#dyncall templateName templateParms/>-->
+                <#--</#local>-->
+
+                <#--<#global inStringRenderInvocation=false/>-->
+
+                <#--${stringRenderTemplateHolder.setStringTemplate(stringTemplate)}-->
+            <#--</#if>-->
+
+             <#--${stringRenderTemplateHolder.render(component)}-->
         <#else>
             <#if includeSrc>
                 <#include "${component.template}" parse=true/>
             </#if>
 
-            <#local macroInvokeSrc="<" + "@.main.${component.templateName} ${component.componentTypeName}=component "/>
+            <#local templateName=".main.${component.templateName}"/>
+
+            <#local templateParms="${component.componentTypeName}=component "/>
             <#list tmplParms?keys as parm>
-                <#local macroInvokeSrc="${macroInvokeSrc} ${parm}=tmplParms['${parm}']!"/>
+                <#local templateParms="${templateParms} ${parm}=tmplParms['${parm}']!"/>
             </#list>
 
             <#if body?trim?has_content>
-                <#local macroInvokeSrc="${macroInvokeSrc} body='${body}'"/>
+                <#local templateParms="${templateParms} body='${body}'"/>
             </#if>
 
-            <#local macroInvokeSrc="${macroInvokeSrc}/>"/>
-
-            <#local macroInvoke = macroInvokeSrc?interpret>
-            <@macroInvoke />
+            <#dyncall templateName templateParms/>
         </#if>
 
         <#-- generate event code for component -->

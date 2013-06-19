@@ -121,7 +121,7 @@
     <dwr.version>3.0.RC2</dwr.version>
     <ehcache.version>2.5.0</ehcache.version>
     <filemonitor.version>1.0-kuali</filemonitor.version>
-    <freemarker.version>2.3.18</freemarker.version>
+    <freemarker.version>2.3.19-patch1</freemarker.version>
     <groovy.version>1.8.5</groovy.version>
     <guava.version>11.0</guava.version>
     <hibernate.version>3.6.9.Final</hibernate.version>

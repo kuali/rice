@@ -29,7 +29,11 @@ public class DemoLibraryNavigationSmokeTestBase extends WebDriverLegacyITBase{
      * /kr-krad/kradsampleapp?viewId=ComponentLibraryHome
      */
     public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=ComponentLibraryHome";
-//    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=NavigationGroup-NavigationView&methodToCall=start";
+
+    /**
+     * /kr-krad/kradsampleapp?viewId=NavigationGroup-NavigationView&methodToCall=start
+     */
+    public static final String BOOKMARK_VIEW_URL = "/kr-krad/kradsampleapp?viewId=NavigationGroup-NavigationView&methodToCall=start";
 
     @Override
     public String getTestUrl() {
@@ -76,6 +80,11 @@ public class DemoLibraryNavigationSmokeTestBase extends WebDriverLegacyITBase{
         navigation();
         navigationMenu();
         testNavigationMenu();
+        testNavigationView();
+        passed();
+    }
+
+    public void testNavigationViewBookmark(Failable failable) throws Exception {
         testNavigationView();
         passed();
     }

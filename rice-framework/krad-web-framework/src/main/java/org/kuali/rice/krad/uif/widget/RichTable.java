@@ -154,12 +154,11 @@ public class RichTable extends WidgetBase {
             getTemplateOptions().put(UifConstants.TableToolsKeys.TABLE_SORT, "false");
         }
 
+        String kradUrl = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                UifConstants.ConfigProperties.KRAD_URL);
         if (StringUtils.isNotBlank(ajaxSource)) {
             getTemplateOptions().put(UifConstants.TableToolsKeys.SAJAX_SOURCE, ajaxSource);
         } else if (component instanceof CollectionGroup && this.forceAjaxJsonData) {
-            String kradUrl = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
-                    UifConstants.ConfigProperties.KRAD_URL);
-
             //build sAjaxSource url to call
             getTemplateOptions().put(UifConstants.TableToolsKeys.SAJAX_SOURCE, kradUrl
                     + ((UifFormBase) model).getControllerMapping()
@@ -184,6 +183,30 @@ public class RichTable extends WidgetBase {
                     + "="
                     + "true");
         }
+
+        //build sAjaxSource url to call
+        getTemplateOptions().put(UifConstants.TableToolsKeys.SDOWNLOAD_SOURCE, kradUrl
+                + ((UifFormBase) model).getControllerMapping()
+                + "?"
+                + UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME
+                + "="
+                + UifConstants.MethodToCallNames.TABLE_DATA
+                + "&"
+                + UifParameters.TABLE_ID
+                + "="
+                + component.getId()
+                + "&"
+                + UifParameters.FORM_KEY
+                + "="
+                + ((UifFormBase) model).getFormKey()
+                + "&"
+                + UifParameters.AJAX_RETURN_TYPE
+                + "="
+                + UifConstants.AjaxReturnTypes.UPDATENONE.getKey()
+                + "&"
+                + UifParameters.AJAX_REQUEST
+                + "="
+                + "true");
 
     }
 
@@ -255,14 +278,14 @@ public class RichTable extends WidgetBase {
             StringBuffer tableToolsColumnOptions = new StringBuffer("[");
 
             int columnIndex = 0;
-            int actionIndex = -1;
+            int actionIndex = UifConstants.TableLayoutValues.ACTIONS_COLUMN_RIGHT_INDEX;
             boolean actionFieldVisible = collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly();
 
             if (layoutManager instanceof TableLayoutManager) {
                 actionIndex = ((TableLayoutManager) layoutManager).getActionColumnIndex();
             }
 
-            if (actionIndex == 1 && actionFieldVisible) {
+            if (actionIndex == UifConstants.TableLayoutValues.ACTIONS_COLUMN_LEFT_INDEX && actionFieldVisible) {
                 String actionColOptions = constructTableColumnOptions(columnIndex, false, null, null);
                 tableToolsColumnOptions.append(actionColOptions + " , ");
                 columnIndex++;
@@ -388,7 +411,7 @@ public class RichTable extends WidgetBase {
                                     + columnIndex
                                     + "]"
                                     + "}, ");
-                        // if sortableColumns is present and a field is marked as sortable or unspecified
+                            // if sortableColumns is present and a field is marked as sortable or unspecified
                         } else if (getSortableColumns() != null && !getSortableColumns().isEmpty()) {
                             if (getSortableColumns().contains(field.getPropertyName())) {
                                 tableToolsColumnOptions.append(getDataFieldColumnOptions(columnIndex, collectionGroup,
@@ -430,7 +453,8 @@ public class RichTable extends WidgetBase {
                                 + "}, ");
                         columnIndex++;
                     } else if (component instanceof LinkField) {
-                        String colOptions = constructTableColumnOptions(columnIndex, true, String.class, UifConstants.TableToolsValues.DOM_TEXT);
+                        String colOptions = constructTableColumnOptions(columnIndex, true, String.class,
+                                UifConstants.TableToolsValues.DOM_TEXT);
                         tableToolsColumnOptions.append(colOptions + " , ");
                         columnIndex++;
                     } else {

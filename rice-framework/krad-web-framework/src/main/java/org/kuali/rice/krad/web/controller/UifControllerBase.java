@@ -956,6 +956,80 @@ public abstract class UifControllerBase {
     }
 
     /**
+     * Generates exportable table data based on the rich table selected
+     *
+     * @param form
+     * @param result
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=" + UifConstants.MethodToCallNames.TABLE_DATA,
+            produces = {"text/csv", "application/xml", "application/vnd.ms-excel"})
+    @ResponseBody
+    public String retrieveTableData(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        LOG.debug("processing table data request");
+
+        String tableData = "";
+        String formatType = getValidatedFormatType(request.getParameter("formatType"));
+        String contentType = getContentType(formatType);
+
+        UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
+        String formKey = request.getParameter(UifParameters.FORM_KEY);
+        String tableId = request.getParameter(UifParameters.TABLE_ID);
+        UifFormBase currentForm = uifFormManager.getSessionForm(formKey);
+        View view;
+        if (form.getPostedView() != null) {
+            view = currentForm.getPostedView();
+        } else {
+            view = currentForm.getView();
+        }
+
+        LOG.debug("identifying table from model and form");
+        tableData = view.getViewHelperService().buildExportTableData(view, form, tableId, formatType);
+
+        // if table data to be returned, format response appropriately
+        response.setHeader("content-type", contentType);
+        response.setHeader("Content-disposition", "attachment; filename=\"export." + formatType + "\"");
+        response.setHeader("Expires", "0");
+        response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+        response.setHeader("Pragma", "public");
+
+        return tableData;
+    }
+
+    /**
+     * Reviews and returns a valid format type, defaults to csv
+     *
+     * @param formatType
+     * @return
+     */
+    private String getValidatedFormatType(String formatType) {
+        if ("xls".equals(formatType) || "xml".equals(formatType) || "csv".equals(formatType)) {
+            return formatType;
+        }
+        return "csv";
+    }
+
+    /**
+     * Reviews and returns a valid content type, defaults to text/csv
+     *
+     * @param formatType
+     * @return
+     */
+    private String getContentType(String formatType) {
+        if ("csv".equals(formatType)) {
+            return "text/csv";
+        } else if ("xls".equals(formatType)) {
+            return "application/vnd.ms-excel";
+        } else if ("xml".equals(formatType)) {
+            return "application/xml";
+        }
+        return "text/csv";
+    }
+
+    /**
      * Get method for getting aaData for jquery datatables which are using sAjaxSource option.
      *
      * <p>This will return

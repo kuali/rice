@@ -21,16 +21,20 @@ import org.testng.annotations.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ${className}STNGBkMrkGen extends ${className}STNGBase {
+public class ${baseName}STNGBkMrkGen extends ${baseName}STNGBase {
 
     @Override
     public String getTestUrl() {
         return BOOKMARK_URL;
     }
+<#list tests as test>
+    <#if test?ends_with("Bookmark")>
 
-    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "test${className}Bookmark")
+    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "${test}")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
-    public void test${className}Bookmark() throws Exception {
-        test${className}Bookmark(this);
+    public void ${test}() throws Exception {
+        ${test}(this);
     }
+    </#if>
+</#list>
 }

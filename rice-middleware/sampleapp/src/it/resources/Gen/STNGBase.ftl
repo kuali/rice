@@ -20,7 +20,7 @@ import org.testng.AssertJUnit;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ${className}STNGBase extends ${className}AbstractSmokeTestBase {
+public abstract class ${baseName}STNGBase extends ${baseName}AbstractSmokeTestBase {
 
     @Override
     public void fail(String message) {

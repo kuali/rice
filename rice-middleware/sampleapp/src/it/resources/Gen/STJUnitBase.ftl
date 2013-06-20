@@ -20,7 +20,7 @@ import org.junit.Assert;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ${className}STJUnitBase extends ${className}AbstractSmokeTestBase {
+public abstract class ${baseName}STJUnitBase extends ${baseName}AbstractSmokeTestBase {
 
     @Override
     public void fail(String message) {

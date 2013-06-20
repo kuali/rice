@@ -21,11 +21,15 @@ import org.testng.annotations.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ${className}STNGNavGen extends ${className}STNGBase {
+public class ${baseName}STNGNavGen extends ${baseName}STNGBase {
+<#list tests as test>
+    <#if test?ends_with("Nav")>
 
-    @Test(groups = { "all", "fast", "default", "nav" }, description = "test${className}Nav")
+    @Test(groups = { "all", "fast", "default", "nav" }, description = "${test}")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
-    public void test${className}Nav() throws Exception {
-        test${className}Nav(this);
+    public void ${test}() throws Exception {
+        ${test}(this);
     }
+    </#if>
+</#list>
 }

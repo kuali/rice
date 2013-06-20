@@ -25,6 +25,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -62,7 +65,13 @@ public class FreemarkerUtil {
      */
     public static File ftlWrite(String key, File output, Template template, InputStream inputStream) throws IOException, TemplateException {
         Properties props = loadProperties(inputStream);
+        props.put("baseName", output.getName().substring(0, output.getName().indexOf("ST")));
+        if (output.getName().contains("TmplMthd")) { // Template method pattern
+            props.put("className", output.getName().substring(0, output.getName().indexOf("TmplMthd")));
+        }
+
         systemPropertiesOverride(props, key);
+        transformNumberedTestPropertiesToList(props);
         File outputFile = writeTemplateToFile(output, template, props);
 
         return outputFile;
@@ -76,6 +85,25 @@ public class FreemarkerUtil {
         }
 
         return props;
+    }
+
+    protected static void transformNumberedTestPropertiesToList(Properties props) {
+        Iterator keys = props.keySet().iterator();
+        Map<String, String> keyLists = new HashMap<String, String>();
+        while (keys.hasNext()) {
+            String key = (String)keys.next();
+            if (Character.isDigit(key.charAt(key.length()-1))) {
+                keyLists.put(key, props.getProperty(key));
+            }
+        }
+
+        Iterator listKeys = keyLists.keySet().iterator();
+        while (listKeys.hasNext()) {
+            String key = (String)listKeys.next();
+            props.remove(key);
+        }
+
+        props.put("tests", keyLists.values());
     }
 
     /**

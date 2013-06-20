@@ -21,10 +21,14 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ${className}STJUnitNavGen extends ${className}STJUnitBase {
+public class ${baseName}STJUnitNavGen extends ${baseName}STJUnitBase {
+<#list tests as test>
+    <#if test?ends_with("Nav")>
 
     @Test
-    public void test${className}Nav() throws Exception {
-        test${className}Nav(this);
+    public void ${test}() throws Exception {
+        ${test}(this);
     }
+    </#if>
+</#list>
 }

@@ -21,15 +21,19 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ${className}STJUnitBkMrkGen extends ${className}STJUnitBase {
+public class ${baseName}STJUnitBkMrkGen extends ${baseName}STJUnitBase {
 
     @Override
     public String getTestUrl() {
         return BOOKMARK_URL;
     }
+<#list tests as test>
+    <#if test?ends_with("Bookmark")>
 
     @Test
-    public void test${className}Bookmark() throws Exception {
-        test${className}Bookmark(this);
+    public void ${test}() throws Exception {
+    ${test}(this);
     }
+    </#if>
+</#list>
 }

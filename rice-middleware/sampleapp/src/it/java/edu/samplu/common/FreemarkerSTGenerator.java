@@ -17,14 +17,10 @@ package edu.samplu.common;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.Properties;
 
-import org.apache.commons.io.FileUtils;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.TemplateLoader;
 import freemarker.template.Configuration;
-import sun.applet.Main;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -36,49 +32,40 @@ public class FreemarkerSTGenerator {
     private static String DIR_TMPL = "/Gen/";
 
     //Configuration
-    private static TemplateLoader templateLoader = new ClassTemplateLoader(Main.class, DIR_TMPL);
+    private static TemplateLoader templateLoader = new ClassTemplateLoader(FreemarkerSTGenerator.class, DIR_TMPL);
+
+    private static String STJUNITBASE_TMPL = "STJUnitBase.ftl";
+    private static String STJUNITBKMRKGEN_TMPL = "STJUnitBkMrkGen.ftl";
+    private static String STJUNITNAVGEN_TMPL = "STJUnitNavGen.ftl";
+    private static String STNGBASE_TMPL = "STNGBase.ftl";
+    private static String STNGBKMRKGEN_TMPL = "STNGBkMrkGen.ftl";
+    private static String STNGNAVGEN_TMPL = "STNGNavGen.ftl";
 
     public static void main(String[] args) throws Exception {
         cfg.setTemplateLoader(templateLoader);
 
-        String DEFAULT_PROPS_LOCATION = "/GenFiles/Group.properties";
-        String STJUNITBASE_TMPL = "STJUnitBase.ftl";
-        String STJUNITBKMRKGEN_TMPL = "STJUnitBkMrkGen.ftl";
-        String STJUNITNAVGEN_TMPL = "STJUnitNavGen.ftl";
-        String STNGBASE_TMPL = "STNGBase.ftl";
-        String STNGBKMRKGEN_TMPL = "STNGBkMrkGen.ftl";
-        String STNGNAVGEN_TMPL = "STNGNavGen.ftl";
+        String propsLocation = "/GenFiles/Group.properties";
+        if (args.length > 0) {
+            propsLocation = "/GenFiles/" + args[0];
+        }
 
         //Here we can prepare a list of template & properties file and can iterate to generate files dynamically on single run.
-        createFile(DEFAULT_PROPS_LOCATION, STJUNITBASE_TMPL);
-        createFile(DEFAULT_PROPS_LOCATION, STJUNITBKMRKGEN_TMPL);
-        createFile(DEFAULT_PROPS_LOCATION, STJUNITNAVGEN_TMPL);
-        createFile(DEFAULT_PROPS_LOCATION, STNGBASE_TMPL);
-        createFile(DEFAULT_PROPS_LOCATION, STNGBKMRKGEN_TMPL);
-        createFile(DEFAULT_PROPS_LOCATION, STNGNAVGEN_TMPL);
+        createFile(propsLocation, STJUNITBASE_TMPL);
+        createFile(propsLocation, STJUNITBKMRKGEN_TMPL);
+        createFile(propsLocation, STJUNITNAVGEN_TMPL);
+        createFile(propsLocation, STNGBASE_TMPL);
+        createFile(propsLocation, STNGBKMRKGEN_TMPL);
+        createFile(propsLocation, STNGNAVGEN_TMPL);
     }
 
-    private static void createFile(String DEFAULT_PROPS_LOCATION, String TMPL) throws Exception {
+    private static void createFile(String propLocation, String template) throws Exception {
         try {
-            //Loading Properties file
-            Properties props = new Properties();
-            InputStream in = null;
-            in = Main.class.getResourceAsStream(DEFAULT_PROPS_LOCATION);
-
-            if (in != null) {
-                props.load(in);
-                in.close();
-            } else {
-                throw new Exception("Problem with input stream.");
-            }
-
-            // build file STJUnitBase and add to array              
+            InputStream in = FreemarkerSTGenerator.class.getResourceAsStream(propLocation);
             File f1 = new File("src" + File.separatorChar + "it" + File.separatorChar + "resources"
-                    + File.separatorChar + "GenFiles" + File.separatorChar + props.getProperty("className")
-                    + TMPL.substring(0, TMPL.length() - 4) + ".java");
-
-            //Write Content in file
-            FreemarkerUtil.writeTemplateToFile(f1, cfg.getTemplate(TMPL), props);
+                    + File.separatorChar + "GenFiles" + File.separatorChar
+                    + propLocation.substring(propLocation.lastIndexOf("/"), propLocation.lastIndexOf("."))
+                    + template.substring(0, template.length() - 4) + ".java");
+            FreemarkerUtil.ftlWrite(f1, cfg.getTemplate(template), in);
 
         } catch (Exception e) {
             e.printStackTrace();

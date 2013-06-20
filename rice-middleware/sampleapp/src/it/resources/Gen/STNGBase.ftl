@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2012 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,11 @@ import org.testng.AssertJUnit;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ${className}STNGBase extends ${className}AbstractSmokeTestBase{
+public abstract class ${className}STNGBase extends ${className}AbstractSmokeTestBase {
 
     @Override
-    public void fail(String message){
+    public void fail(String message) {
+        passed = false;
         AssertJUnit.fail(message);
     }
 }

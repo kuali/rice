@@ -45,7 +45,7 @@ public class FreemarkerUtil {
      * @throws java.io.IOException
      * @throws freemarker.template.TemplateException
      */
-    public File ftlWrite(File output, Template template, InputStream inputStream) throws IOException, TemplateException {
+    public static File ftlWrite(File output, Template template, InputStream inputStream) throws IOException, TemplateException {
 
         return ftlWrite(output.getName(), output, template, inputStream);
     }

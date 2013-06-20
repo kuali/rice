@@ -57,6 +57,7 @@ JavascriptKradVariables.prototype = {
      KEEP_SESSION_ALIVE_METHOD_TO_CALL : "keepSessionAlive",
      KRAD_URL : "kradUrl",
      KUALI_FORM : "kualiForm",
+     LIGHTBOX_PARAM: "lightbox",
      MESSAGE_COUNT_CLASS : "uif-messageCount",
      MESSAGE_KEY_DIRTY_FIELDS : "message.dirtyFields",
      MESSAGE_ERROR : "message.error",

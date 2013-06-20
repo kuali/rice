@@ -71,11 +71,56 @@ function handlePageAndCacheRefreshing() {
         return false;
     }
 
+    // is a lightbox being closed by the back button
+    var lightboxBackClose = false;
+
+    // handlers for lightbox events to close lightbox on back by adding a history entry on load and removing it on close
+    jQuery(document).bind("afterLoad", function(e){
+        if(history.replaceState){
+            history.pushState({lightbox: true}, null, window.location + "&" + kradVariables.LIGHTBOX_PARAM + "=true");
+        }
+        else{
+            window.location.hash = window.location.hash + "&" + kradVariables.LIGHTBOX_PARAM + "=true"
+        }
+    });
+
+    // TODO the back button only works correctly after a lightbox close on firefox because of other browser problems
+    jQuery(document).bind("afterClose", function(e){
+        // force a history back on close (if back button wasn't clicked to close)
+        if(!lightboxBackClose && history.replaceState &&  window.location &&
+                (window.location).toString().indexOf(kradVariables.LIGHTBOX_PARAM + "=true")){
+            // TODO webkit incorrectly still stores the history of iframes after removal, back will cause bad behavior
+            if (!jQuery.browser.webkit){
+                history.back();
+            }
+        }
+        else if(!lightboxBackClose && window.location.hash &&
+                (window.location.hash).toString().indexOf("lightbox=true")){
+            // TODO just removing attribute because IE has a bug with erasing the hash history so back cant be
+            // used as we would like it to
+            var hash = window.location.hash.toString();
+            hash = hash.replace("&" + kradVariables.LIGHTBOX_PARAM + "=true", "");
+            hash = hash.replace(kradVariables.LIGHTBOX_PARAM + "=true&", "");
+            window.location.replace(hash);
+        }
+        lightboxBackClose = false;
+    });
+
     // setup handlers for page id changes
     // add listener for popstate to change pages
     jQuery(window).bind("popstate", function (e) {
-        if (e.state && e.state.pageId && e.state.pageId != getCurrentPageId()) {
-            navigateToPage(e.state.pageId);
+        var state = e.state;
+        if(!state){
+            state = e.originalEvent.state;
+        }
+
+        if (state && state.pageId && state.pageId != getCurrentPageId()) {
+            navigateToPage(state.pageId);
+        }
+
+        if ((!state || (state && state.pageId == getCurrentPageId())) && jQuery.fancybox.isOpen){
+            lightboxBackClose = true;
+            jQuery.fancybox.close();
         }
     });
 
@@ -86,8 +131,15 @@ function handlePageAndCacheRefreshing() {
             pageId = getUrlParameter(kradVariables.PAGE_ID, window.location.hash);
         }
 
+        var inLightbox = getUrlParameter(kradVariables.LIGHTBOX_PARAM, window.location.hash);
+
         if (pageId && (pageId != getCurrentPageId())) {
             navigateToPage(pageId);
+        }
+
+        if (!inLightbox && jQuery.fancybox.isOpen){
+            lightboxBackClose = true;
+            jQuery.fancybox.close();
         }
     });
 
@@ -118,6 +170,7 @@ function handlePageAndCacheRefreshing() {
  * @param pageId id for the page currently loaded
  */
 function updateRequestUrl(pageId) {
+
     var formKeyField = jQuery("#" + kradVariables.FORM_KEY);
 
     // generate unique cache key (only has to be unique with a given form key)
@@ -153,6 +206,10 @@ function updateRequestUrl(pageId) {
         }
 
         var updatedPageUrl = "?" + queryString + window.location.hash;
+
+        if (!(getContext().fancybox.isOpen)){
+            updatedPageUrl = updatedPageUrl.replace("&" + kradVariables.LIGHTBOX_PARAM + "=true", "");
+        }
 
         var urlPageId = getUrlParameter(kradVariables.PAGE_ID);
         if (urlPageId && pageId && (urlPageId != pageId)) {

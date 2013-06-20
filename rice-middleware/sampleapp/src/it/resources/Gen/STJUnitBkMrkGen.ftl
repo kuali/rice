@@ -32,7 +32,7 @@ public class ${baseName}STJUnitBkMrkGen extends ${baseName}STJUnitBase {
 
     @Test
     public void ${test}() throws Exception {
-    ${test}(this);
+        ${test}(this);
     }
     </#if>
 </#list>

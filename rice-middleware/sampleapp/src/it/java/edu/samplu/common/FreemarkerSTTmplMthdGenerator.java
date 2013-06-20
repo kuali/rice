@@ -19,8 +19,6 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.apache.commons.io.FileUtils;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.TemplateLoader;
 import freemarker.template.Configuration;
@@ -36,39 +34,26 @@ public class FreemarkerSTTmplMthdGenerator {
     private static String DIR_TMPL = "/Gen/";
 
     //Configuration
-    private static TemplateLoader templateLoader = new ClassTemplateLoader(Main.class, DIR_TMPL);
+    private static TemplateLoader templateLoader = new ClassTemplateLoader(FreemarkerSTTmplMthdGenerator.class, DIR_TMPL);
 
     public static void main(String[] args) throws Exception {
         cfg.setTemplateLoader(templateLoader);
 
-        String DEFAULT_PROPS_LOCATION = "/GenFiles/MainTmplMthdSTNavBase.properties";
-        String TMPLMTHDSTNAVBASE_TMPL = "TmplMthdSTNavBase.ftl";
+        String propLocation = "/GenFiles/MainTmplMthdSTNavBase.properties";
+        String template = "TmplMthdSTNavBase.ftl";
 
-        //Here we can prepare a list of template & properties file and can iterate to generate files dynamically on single run.
-        createFile(DEFAULT_PROPS_LOCATION, TMPLMTHDSTNAVBASE_TMPL);        
+        createFile(propLocation, template);
     }
 
-    private static void createFile(String DEFAULT_PROPS_LOCATION, String TMPL) throws Exception {
+    private static void createFile(String propLocation, String template) throws Exception {
         try {
-            //Loading Properties file
-            Properties props = new Properties();
-            InputStream in = null;
-            in = Main.class.getResourceAsStream(DEFAULT_PROPS_LOCATION);
-
-            if (in != null) {
-                props.load(in);
-                in.close();
-            } else {
-                throw new Exception("Problem with input stream.");
-            }
-
-            // build file STJUnitBase and add to array              
+            InputStream in = FreemarkerSTTmplMthdGenerator.class.getResourceAsStream(propLocation);
             File f1 = new File("src" + File.separatorChar + "it" + File.separatorChar + "resources"
-                    + File.separatorChar + "GenFiles" + File.separatorChar + props.getProperty("className")
-                    + TMPL.substring(0, TMPL.length() - 4) + ".java");
+                    + File.separatorChar + "GenFiles" + File.separatorChar
+                    + propLocation.substring(propLocation.lastIndexOf("/"), propLocation.lastIndexOf("."))
+                    + template.substring(0, template.length() - 4) + ".java");
+            FreemarkerUtil.ftlWrite(f1, cfg.getTemplate(template), in);
 
-            //Write Content in file
-            FreemarkerUtil.writeTemplateToFile(f1, cfg.getTemplate(TMPL), props);
         } catch (Exception e) {
             e.printStackTrace();
             throw new Exception("Unable to generate files", e);

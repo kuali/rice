@@ -17,7 +17,6 @@ package org.kuali.rice.krad.demo.uif.controller;
 
 import org.kuali.rice.krad.demo.uif.form.KradSampleAppForm;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.ViewTheme;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.controller.UifControllerBase;

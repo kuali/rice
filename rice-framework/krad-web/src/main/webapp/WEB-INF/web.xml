@@ -54,11 +54,6 @@
   </filter>
 
   <filter>
-    <filter-name>UserPreferencesFilter</filter-name>
-    <filter-class>org.kuali.rice.kew.web.UserPreferencesFilter</filter-class>
-  </filter>
-
-  <filter>
     <filter-name>Log4JContextClearingFilter</filter-name>
     <filter-class>org.kuali.rice.core.web.Log4JContextClearingFilter</filter-class>
   </filter>

@@ -35,8 +35,6 @@
         </div>
     </#if>
 
-
-
     <#include "group.ftl" parse=true/>
     <@uif_group group=group/>
 

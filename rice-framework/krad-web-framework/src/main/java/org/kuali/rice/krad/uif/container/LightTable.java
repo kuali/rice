@@ -55,8 +55,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * LightTable is a light-weight collection table implementation that supports a subset of features.
+ * LightTable is a light-weight collection table implementation that supports a subset of features,
  * Current known supported features are:
+ *
  * <ul>
  * <li>DataField</li>
  * <li>InputField with TextControl, CheckboxControl, or single SelectControl</li>
@@ -73,11 +74,14 @@ import java.util.regex.Pattern;
  * Other features are not guaranteed to work, but may work at your own risk.  The intent of this table is to be a
  * light-weight alternative to the fully featured table already available in KRAD and it is more suited to displaying
  * large sets of simple data to the user.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTags({@BeanTag(name = "lightTableGroup-bean", parent = "Uif-LightTableGroup"),
         @BeanTag(name = "lightTableSection-bean", parent = "Uif-LightTableSection"),
         @BeanTag(name = "lightTableSubSection-bean", parent = "Uif-LightTableSubSection")})
 public class LightTable extends Group implements DataBinding {
+    private static final long serialVersionUID = -8930885219866835711L;
 
     private static final String VALUE_TOKEN = "@v@";
     private static final String EXPRESSION_TOKEN = "@e@";

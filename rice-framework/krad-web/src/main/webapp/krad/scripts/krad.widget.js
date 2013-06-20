@@ -23,7 +23,7 @@
 function setupBreadcrumbs(displayBreadcrumbsWhenOne) {
     var breadcrumbsWrapper = jQuery("div#Uif-BreadcrumbWrapper");
 
-    if (!breadcrumbsWrapper.length){
+    if (!breadcrumbsWrapper.length) {
         return;
     }
 
@@ -42,42 +42,40 @@ function setupBreadcrumbs(displayBreadcrumbsWhenOne) {
     }
 
     //set up sibling breadcrumb handler
-    jQuery(breadcrumbList).on("click", ".uif-breadcrumbSiblingLink", function(){
+    jQuery(breadcrumbList).on("click", ".uif-breadcrumbSiblingLink", function () {
         var content = jQuery(this).parent().find("div.uif-breadcrumbSiblingContent");
         var breadcrumb = jQuery(this).parent().find("[data-role='breadcrumb']");
         var siblingLink = this;
 
-        if(content.length && !content.is(":visible") && breadcrumb.length && !jQuery(siblingLink).data("close")){
+        if (content.length && !content.is(":visible") && breadcrumb.length && !jQuery(siblingLink).data("close")) {
             content.attr("style", "");
             content.position({
-            my: "left top",
-            at: "left bottom+5",
-            of: breadcrumb
+                my: "left top",
+                at: "left bottom+5",
+                of: breadcrumb
             });
             content.show();
 
-            jQuery(document).on("mouseup.bc-sibling", function (e)
-            {
+            jQuery(document).on("mouseup.bc-sibling", function (e) {
                 var container = jQuery("div.uif-breadcrumbSiblingContent:visible");
 
                 //if not in the breadcrumb sibling content, close and remove this handler
-                if (container.has(e.target).length === 0)
-                {
+                if (container.has(e.target).length === 0) {
                     container.hide();
                     jQuery(document).off("mouseup.bc-sibling");
                 }
 
                 //if the target clicked is the siblingLink, mark it with a close flag (so click handler does not
                 //reopen - processed after the mouseup)
-                if(e.target == siblingLink){
-                   jQuery(siblingLink).data("close", true);
+                if (e.target == siblingLink) {
+                    jQuery(siblingLink).data("close", true);
                 }
             });
 
         }
 
         //remove the close flag
-        if(jQuery(siblingLink).data("close")){
+        if (jQuery(siblingLink).data("close")) {
             jQuery(siblingLink).data("close", false);
         }
     });
@@ -219,7 +217,7 @@ function createLightBoxLink(linkId, options, addAppParms) {
 
         // first time content is brought up in lightbox we don't want to continue history
         var flow = 'start';
-        if (renderedInLightBox){
+        if (renderedInLightBox) {
             flow = jQuery("#flowKey").val();
         }
 
@@ -249,13 +247,13 @@ function createLightBoxLink(linkId, options, addAppParms) {
     });
 }
 
-function handleLightboxOpen(link, options, addAppParms, event){
+function handleLightboxOpen(link, options, addAppParms, event) {
     event.preventDefault();
     var renderedInLightBox = isCalledWithinLightbox();
 
     // first time content is brought up in lightbox we don't want to continue history
     var flow = 'start';
-    if (renderedInLightBox){
+    if (renderedInLightBox) {
         flow = jQuery("#flowKey").val();
     }
 
@@ -268,7 +266,6 @@ function handleLightboxOpen(link, options, addAppParms, event){
             link.attr('href', href + '&renderedInLightBox=true&flow=' + flow);
         }
     }
-
 
     // Check if this is called within a light box
     if (!renderedInLightBox) {
@@ -379,7 +376,7 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
  * @return true if called within a lightbox, false otherwise
  */
 function isCalledWithinLightbox() {
-    if (jQuery('#renderedInLightBox').val() == undefined){
+    if (jQuery('#renderedInLightBox').val() == undefined) {
         return false;
     }
 
@@ -710,19 +707,53 @@ function createTable(tableId, additionalOptions, groupingOptions) {
         }
 
         var options = {
-            "bDestory" : true,
-            "bStateSave" : true,
-            "fnStateSave" : function (oSettings, oData) {
-                              setComponentState(tableId, 'richTableState', oData);
-                            },
-            "fnStateLoad" : function (oSettings) {
-                              var oData = getComponentState(tableId, 'richTableState');
+            "bDestory": true,
+            "bStateSave": true,
+            "fnStateSave": function (oSettings, oData) {
+                setComponentState(tableId, 'richTableState', oData);
+            },
+            "fnStateLoad": function (oSettings) {
+                var oData = getComponentState(tableId, 'richTableState');
 
-                              return oData;
-                            }
+                return oData;
+            }
         }
 
         options = jQuery.extend(options, additionalOptions);
+
+        var exportOptions = {
+            "sDownloadSource": additionalOptions.sDownloadSource,
+            "oTableTools": {
+                "aButtons": [
+                    {
+                        "sExtends": "text",
+                        "sButtonText": "csv",
+                        "fnClick": function (nButton, oConfig) {
+                            window.location.href = additionalOptions.sDownloadSource + "&formatType=csv";
+                        },
+                    },
+                    {
+                        "sExtends": "text",
+                        "sButtonText": "xml",
+                        "fnClick": function (nButton, oConfig) {
+                            window.location.href = additionalOptions.sDownloadSource + "&formatType=xml";
+                        },
+                    },
+                    {
+                        "sExtends": "text",
+                        "sButtonText": "xls",
+                        "fnClick": function (nButton, oConfig) {
+                            window.location.href = additionalOptions.sDownloadSource + "&formatType=xls";
+                        },
+                    }
+                ]
+            }
+        }
+
+        /// check that the export feature is turned on
+        if (options.sDom.search("T") >= 0) {
+            options = jQuery.extend(options, exportOptions)
+        }
 
         var oTable = table.dataTable(options);
 
@@ -731,13 +762,13 @@ function createTable(tableId, additionalOptions, groupingOptions) {
         initBubblePopups();
 
         //insure scripts (if any) are run on each draw, fixes bug with scripts lost when paging after a refresh
-        jQuery(oTable).on("dataTables.tableDraw", function (){
+        jQuery(oTable).on("dataTables.tableDraw", function () {
             runHiddenScripts(tableId, false, true);
-            jQuery("div[data-role='InputField'][data-has_messages='true']", "#" + tableId).each(function(){
+            jQuery("div[data-role='InputField'][data-has_messages='true']", "#" + tableId).each(function () {
                 var id = jQuery(this).attr('id');
                 var validationData = getValidationData(jQuery("#" + id));
 
-                if (validationData && validationData.hasOwnMessages){
+                if (validationData && validationData.hasOwnMessages) {
                     handleMessagesAtField(id);
                 }
             });
@@ -984,7 +1015,7 @@ function deselectAllLines(collectionId) {
 function selectAllPagesLines(collectionId) {
     // get a handle on the datatables plugin object for the results collection
     var oTable = getDataTableHandle(jQuery("#" + collectionId).find("table").attr('id'));
-    jQuery('input:checkbox.kr-select-line', oTable.fnGetNodes()).prop('checked',true);
+    jQuery('input:checkbox.kr-select-line', oTable.fnGetNodes()).prop('checked', true);
     setMultivalueLookupReturnButton(jQuery("#" + collectionId + " input:checkbox.kr-select-line"));
 }
 
@@ -997,7 +1028,7 @@ function selectAllPagesLines(collectionId) {
 function deselectAllPagesLines(collectionId) {
     // get a handle on the datatables plugin object for the results collection
     var oTable = getDataTableHandle(jQuery("#" + collectionId).find("table").attr('id'));
-    jQuery('input:checkbox.kr-select-line', oTable.fnGetNodes()).prop('checked',false);
+    jQuery('input:checkbox.kr-select-line', oTable.fnGetNodes()).prop('checked', false);
     setMultivalueLookupReturnButton(jQuery("#" + collectionId + " input:checkbox.kr-select-line"));
 }
 
@@ -1132,17 +1163,15 @@ function createTabs(id, widgetId, options, position) {
  * @param valueProp the property name that holds the value for the plugin
  * @param returnCustomObj if true, the full object is expected as return value
  */
-function createSuggest(controlId, options, queryFieldId, queryParameters, localSource, suggestOptions,
-                       labelProp, valueProp, returnCustomObj) {
+function createSuggest(controlId, options, queryFieldId, queryParameters, localSource, suggestOptions, labelProp, valueProp, returnCustomObj) {
     if (localSource) {
         options.source = suggestOptions;
     }
     else {
 
-
         options.source = function (request, response) {
             var successFunction = function (data) {
-                        response(data.resultData);
+                response(data.resultData);
             };
 
             //special success logic for the object return case with label/value props specified
@@ -1226,9 +1255,7 @@ function createSuggest(controlId, options, queryFieldId, queryParameters, localS
  * @param valueProp the property name that holds the value for the plugin
  * @param returnCustomObj if true, the full object is expected as return value
  */
-function createLocationSuggest(baseUrl, hrefProperty, addUrlProperty, requestParamNamesObj, requestParameterString,
-                               controlId, options, queryFieldId, queryParameters, localSource, suggestOptions,
-                               labelProp, valueProp, returnCustomObj) {
+function createLocationSuggest(baseUrl, hrefProperty, addUrlProperty, requestParamNamesObj, requestParameterString, controlId, options, queryFieldId, queryParameters, localSource, suggestOptions, labelProp, valueProp, returnCustomObj) {
 
     var originalFunction = undefined;
     if (options.select != undefined) {

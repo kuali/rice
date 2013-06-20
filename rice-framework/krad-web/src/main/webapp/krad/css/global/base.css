@@ -857,7 +857,7 @@ div.blockElement {
     top: 40%;
     left: 0 !important;
     background-color: white;
-    textAlign: center;
+    text-align: center;
     color: #000;
     border: 3px solid #aaa;
     cursor: wait;
@@ -870,13 +870,12 @@ div.blockPage {
     width: 30%;
     top: 40%;
     left: 35%;
-    textAlign: center;
+    text-align: center;
     color: #000;
     border: 3px solid #aaa;
     background-color: white;
     cursor: wait;
     z-index: 10101 !important;
-    text-align: center;
 }
 
 /** Autocomplete customizations ************************************************************************/

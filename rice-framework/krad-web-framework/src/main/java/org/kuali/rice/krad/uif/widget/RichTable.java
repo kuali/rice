@@ -86,6 +86,8 @@ public class RichTable extends WidgetBase {
     private String ajaxSource;
 
     private boolean showSearchAndExportOptions = true;
+    private boolean showSearchOption = false;
+    private boolean showExportOption = false;
 
     private String groupingOptionsJSString;
 
@@ -124,8 +126,12 @@ public class RichTable extends WidgetBase {
                 String sDomOption = (String) domOption;
 
                 if (StringUtils.isNotBlank(sDomOption)) {
-                    sDomOption = StringUtils.remove(sDomOption, "T"); //Removes Export option
-                    sDomOption = StringUtils.remove(sDomOption, "f"); //Removes search option
+                    if (!isShowExportOption()) {
+                        sDomOption = StringUtils.remove(sDomOption, "T"); //Removes Export option
+                    }
+                    if (!isShowSearchOption()) {
+                        sDomOption = StringUtils.remove(sDomOption, "f"); //Removes search option
+                    }
                     getTemplateOptions().put(UifConstants.TableToolsKeys.SDOM, sDomOption);
                 }
             }
@@ -634,12 +640,51 @@ public class RichTable extends WidgetBase {
     }
 
     /**
-     * Show/Hide the search and export options in tabletools
+     * Returns true if search option is enabled
+     *
+     * @return the showSearchOption
+     */
+    @BeanTagAttribute(name = "showSearchOption")
+    public boolean isShowSearchOption() {
+        return this.showSearchOption;
+    }
+
+    /**
+     * Returns true if export option is enabled
+     *
+     * @return the showExportOption
+     */
+    @BeanTagAttribute(name = "showExportOption")
+    public boolean isShowExportOption() {
+        return this.showExportOption;
+    }
+
+    /**
+     * Show/Hide the search and export options in tabletools.  This option supercedes
+     * the individual 'show search' option and 'show export' option
      *
      * @param showSearchAndExportOptions the showSearchAndExportOptions to set
      */
     public void setShowSearchAndExportOptions(boolean showSearchAndExportOptions) {
         this.showSearchAndExportOptions = showSearchAndExportOptions;
+    }
+
+    /**
+     * Show/Hide the search option in tabletools
+     *
+     * @param showSearchOption the showSearchOptions to set
+     */
+    public void setShowSearchOption(boolean showSearchOption) {
+        this.showSearchOption = showSearchOption;
+    }
+
+    /**
+     * Show/Hide the search and export option in tabletools
+     *
+     * @param showExportOption the showExportOptions to set
+     */
+    public void setShowExportOption(boolean showExportOption) {
+        this.showExportOption = showExportOption;
     }
 
     /**

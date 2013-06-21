@@ -109,6 +109,8 @@
     </property>
     <property name="emptyTableMessage" value="No records found"/>
     <property name="showSearchAndExportOptions" value="false"/>
+    <property name="showSearchOption" value="false"/>
+    <property name="showExportOption" value="true"/>
     <property name="forceAoColumnDefsOverride" value="false"/>
   </bean>
 

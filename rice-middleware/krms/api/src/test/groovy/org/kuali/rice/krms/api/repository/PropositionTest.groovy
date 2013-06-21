@@ -27,6 +27,7 @@ import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinitionContract;
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameterContract;
+import org.kuali.rice.krms.api.repository.term.TermDefinition;
 
 
 /**
@@ -37,7 +38,7 @@ import org.kuali.rice.krms.api.repository.proposition.PropositionParameterContra
  */
 class PropositionTest {
 	
-	private static final String PROP_ID = "202"
+	private static final String PROP_ID = "2001"
 	private static final String DESCRIPTION = "is Campus Bloomington"
     private static final String RULE_ID = "1"
 	private static final String TYPE_ID = "1"
@@ -56,7 +57,7 @@ class PropositionTest {
 	private static final Integer SEQUENCE_NUMBER_1 = new Integer(1)
 	private static final String SIMPLE_PROP_XML = """
 		<proposition xmlns="http://rice.kuali.org/krms/v2_0">
-			<id>202</id>
+			<id>2001</id>
 			<description>is Campus Bloomington</description>
             <ruleId>1</ruleId>
 			<typeId>1</typeId>
@@ -86,6 +87,7 @@ class PropositionTest {
 					<sequenceNumber>2</sequenceNumber>
 					<versionNumber>1</versionNumber>
 				</parameter>
+                                <compoundSequenceNumber>1</compoundSequenceNumber>
 			</parameters>
 			<versionNumber>1</versionNumber>
 		</proposition>
@@ -133,6 +135,7 @@ class PropositionTest {
 							<versionNumber>1</versionNumber>
 						</parameter>
 					</parameters>
+					<compoundSequenceNumber>1</compoundSequenceNumber>
 					<compoundComponents/>
 					<versionNumber>1</versionNumber>
 				</proposition>
@@ -168,6 +171,7 @@ class PropositionTest {
 							<versionNumber>1</versionNumber>
 						</parameter>
 					</parameters>
+					<compoundSequenceNumber>1</compoundSequenceNumber>
 					<compoundComponents/>
 					<versionNumber>1</versionNumber>
 				</proposition>
@@ -245,6 +249,7 @@ class PropositionTest {
             def String ruleId = "1"
 			def String typeId = "1"
 			def String propositionTypeCode = "C"
+                        def Integer compoundSequenceNumber = new Integer (1)
 			def List<? extends PropositionParameterContract> parameters = new ArrayList<PropositionParameter.Builder>()
 			def String compoundOpCode = LogicalOperator.OR.getCode()
 			def List<? extends PropositionDefinition> compoundComponents = Arrays.asList(PropositionTest.PROP_A_BUILDER, PropositionTest.PROP_B_BUILDER)
@@ -260,6 +265,7 @@ class PropositionTest {
             def String ruleId = "1"
 			def String typeId = "1"
 			def String propositionTypeCode = "C"
+                        def Integer compoundSequenceNumber = new Integer (1)
 			def List<? extends PropositionParameterContract> parameters = new ArrayList<PropositionParameter.Builder>()
 			def String compoundOpCode = LogicalOperator.OR.getCode()
 			def List<? extends PropositionDefinition> compoundComponents = Arrays.asList(PropositionTest.PROP_A_BUILDER, PropositionTest.PROP_B_BUILDER)
@@ -279,7 +285,7 @@ class PropositionTest {
 	    StringWriter sw = new StringWriter()
 	    marshaller.marshal(myProp, sw)
 	    String xml = sw.toString()
-        print xml
+//        print xml
         
 	    Unmarshaller unmarshaller = jc.createUnmarshaller();
 	    Object actual = unmarshaller.unmarshal(new StringReader(xml))
@@ -311,6 +317,7 @@ class PropositionTest {
             def String ruleId = "1"
 			def String typeId = "1"
 			def String propositionTypeCode = "C"
+                        def Integer compoundSequenceNumber = null
 			def List<? extends PropositionParameterContract> parameters = new ArrayList<PropositionParameter.Builder>()
 			def String compoundOpCode = LogicalOperator.OR.getCode()
 			def List<? extends PropositionDefinition> compoundComponents = Arrays.asList(PropositionTest.PROP_A_BUILDER, PropositionTest.PROP_B_BUILDER)
@@ -354,6 +361,8 @@ class PropositionTest {
 	  Assert.assertEquals(pList.get(1).description, myProp.compoundComponents.get(1).description)
 	  Assert.assertEquals(pList.get(1).typeId, myProp.compoundComponents.get(1).typeId)
 	  Assert.assertEquals(pList.get(1).propositionTypeCode, myProp.compoundComponents.get(1).propositionTypeCode)
+	  Assert.assertEquals(pList.get(0).compoundSequenceNumber, myProp.compoundComponents.get(0).compoundSequenceNumber)
+	  Assert.assertEquals(pList.get(1).compoundSequenceNumber, myProp.compoundComponents.get(1).compoundSequenceNumber)
 	  Assert.assertEquals(pList.get(0).parameters, myProp.compoundComponents.get(0).parameters)
 	  Assert.assertEquals(pList.get(1).parameters, myProp.compoundComponents.get(1).parameters)
 	}
@@ -367,7 +376,10 @@ class PropositionTest {
 		  def String value = "campusCode"
 		  def String parameterType = "T"
 		  def Integer sequenceNumber = new Integer(0)
-		  def Long versionNumber = new Long(1)
+		  def Long versionNumber = new Long(1)                  
+                  public TermDefinition getTermValue () {
+                      return null;
+                  }
 	  })
 	  PropositionParameter.Builder ppBuilder2 = PropositionParameter.Builder.create(new PropositionParameterContract() {
 		  def String id = "1001"
@@ -376,6 +388,9 @@ class PropositionTest {
 		  def String parameterType = "C"
 		  def Integer sequenceNumber = new Integer(1)
 		  def Long versionNumber = new Long(1)
+                  public TermDefinition getTermValue () {
+                      return null;
+                  }
 	  })
 	  PropositionParameter.Builder ppBuilder3 = PropositionParameter.Builder.create(new PropositionParameterContract() {
 		  def String id = "1003"
@@ -384,6 +399,9 @@ class PropositionTest {
 		  def String parameterType = "F"
 		  def Integer sequenceNumber = new Integer(2)
 		  def Long versionNumber = new Long(1)
+                  public TermDefinition getTermValue () {
+                      return null;
+                  }
 	  })
 	  for ( ppb in [ppBuilder1, ppBuilder2, ppBuilder3]){
 		  propParms.add (ppb)
@@ -399,6 +417,9 @@ class PropositionTest {
 		  def String parameterType = "T"
 		  def Integer sequenceNumber = new Integer(0)
 		  def Long versionNumber = new Long(1)
+                  public TermDefinition getTermValue () {
+                      return null;
+                  }
 	  })
 	  PropositionParameter.Builder ppBuilder2 = PropositionParameter.Builder.create(new PropositionParameterContract() {
 		  def String id = "2001"
@@ -407,6 +428,9 @@ class PropositionTest {
 		  def String parameterType = "C"
 		  def Integer sequenceNumber = new Integer(1)
 		  def Long versionNumber = new Long(1)
+                  public TermDefinition getTermValue () {
+                      return null;
+                  }
 	  })
 	  PropositionParameter.Builder ppBuilder3 = PropositionParameter.Builder.create(new PropositionParameterContract() {
 		  def String id = "2002"
@@ -415,6 +439,9 @@ class PropositionTest {
 		  def String parameterType = "F"
 		  def Integer sequenceNumber = new Integer(2)
 		  def Long versionNumber = new Long(1)
+                  public TermDefinition getTermValue () {
+                      return null;
+                  }
 	  })
 	  for ( ppb in [ppBuilder1, ppBuilder2, ppBuilder3]){
 		  propParms.add (ppb)
@@ -430,6 +457,9 @@ class PropositionTest {
 		  def String parameterType = "T"
 		  def Integer sequenceNumber = new Integer("0")
 		  def Long versionNumber = new Long(1)
+                  public TermDefinition getTermValue () {
+                      return null;
+                  }
 	  })
 	  PropositionParameter.Builder ppBuilder2 = PropositionParameter.Builder.create(new PropositionParameterContract() {
 		  def String id = "2011"
@@ -438,6 +468,9 @@ class PropositionTest {
 		  def String parameterType = "C"
 		  def Integer sequenceNumber = new Integer("1")
 		  def Long versionNumber = new Long(1)
+                  public TermDefinition getTermValue () {
+                      return null;
+                  }
 	  })
 	  PropositionParameter.Builder ppBuilder3 = PropositionParameter.Builder.create(new PropositionParameterContract() {
 		  def String id = "2012"
@@ -446,6 +479,9 @@ class PropositionTest {
 		  def String parameterType = "F"
 		  def Integer sequenceNumber = new Integer("2")
 		  def Long versionNumber = new Long(1)
+                  public TermDefinition getTermValue () {
+                      return null;
+                  }
 	  })
 	  for ( ppb in [ppBuilder1, ppBuilder2, ppBuilder3]){
 		  propParms.add (ppb)
@@ -459,6 +495,7 @@ class PropositionTest {
           def String ruleId = "1"
 		  def String typeId = "1"
 		  def String propositionTypeCode = "S"
+                  def Integer compoundSequenceNumber = new Integer (1)
 		  def List<? extends PropositionParameterContract> parameters = PropositionTest.PARM_LIST_A
 		  def String compoundOpCode = null
 		  def List<? extends PropositionDefinition> compoundComponents = new ArrayList<PropositionDefinition>()
@@ -473,6 +510,7 @@ class PropositionTest {
           def String ruleId = "1"
 		  def String typeId = "1"
 		  def String propositionTypeCode = "S"
+                  def Integer compoundSequenceNumber = new Integer (1)
 		  def List<? extends PropositionParameterContract> parameters = PropositionTest.PARM_LIST_B
 		  def String compoundOpCode = null
 		  def List<? extends PropositionDefinition> compoundComponents = new ArrayList<PropositionDefinition>()

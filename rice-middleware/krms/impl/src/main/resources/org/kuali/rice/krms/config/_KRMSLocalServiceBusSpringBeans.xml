@@ -34,6 +34,18 @@
 		</property>
 	</bean>
 
+  <bean id="rice.krms.ruleManagementService.exporter" parent="krmsServiceExporter">
+    <property name="serviceDefinition">
+      <bean parent="krmsService">
+        <property name="service">
+          <ref bean="ruleManagementService" />
+        </property>
+        <property name="localServiceName" value="ruleManagementService" />
+        <property name="busSecurity" value="${rice.krms.ruleManagementService.secure}" />
+      </bean>
+    </property>
+  </bean>
+
   <bean id="rice.krms.functionRepositoryService.exporter" parent="krmsServiceExporter">
     <property name="serviceDefinition">
       <bean parent="krmsService">

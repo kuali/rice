@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,19 +33,19 @@ import org.springframework.cache.annotation.Cacheable;
 public interface TermBoService extends TermRepositoryService {
 	
 	// TODO: javadocs
-    @Cacheable(value= TermSpecificationDefinition.Cache.NAME, key="'id=' + #p0")
+    //@Cacheable(value= TermSpecificationDefinition.Cache.NAME, key="'id=' + #p0")
 	TermSpecificationDefinition getTermSpecificationById(String id);
 
-    @CacheEvict(value={TermSpecificationDefinition.Cache.NAME, TermDefinition.Cache.NAME}, allEntries = true)
+    //@CacheEvict(value={TermSpecificationDefinition.Cache.NAME, TermDefinition.Cache.NAME}, allEntries = true)
 	TermSpecificationDefinition createTermSpecification(TermSpecificationDefinition termSpec);
 
-    @Cacheable(value= TermDefinition.Cache.NAME, key="'id=' + #p0")
+    //@Cacheable(value= TermDefinition.Cache.NAME, key="'id=' + #p0")
     TermDefinition getTerm(String id);
 
-    @CacheEvict(value={TermDefinition.Cache.NAME}, allEntries = true)
+    //@CacheEvict(value={TermDefinition.Cache.NAME}, allEntries = true)
 	TermDefinition createTerm(TermDefinition termDef);
 
-    @Cacheable(value= TermResolverDefinition.Cache.NAME, key="'id=' + #p0")
+    //@Cacheable(value= TermResolverDefinition.Cache.NAME, key="'id=' + #p0")
 	TermResolverDefinition getTermResolverById(String id);
 
     /**
@@ -56,12 +56,12 @@ public interface TermBoService extends TermRepositoryService {
      * @param namespace the namespace to search
      * @return the List of term resolvers found.  If none are found, an empty list will be returned.
      */
-    @Cacheable(value= TermResolverDefinition.Cache.NAME, key="'id=' + #p0 + '|' + 'namespace=' + #p1")
+    //@Cacheable(value= TermResolverDefinition.Cache.NAME, key="'id=' + #p0 + '|' + 'namespace=' + #p1")
     List<TermResolverDefinition> findTermResolversByOutputId(String id, String namespace);
 
-    @Cacheable(value= TermResolverDefinition.Cache.NAME, key="'namespace=' + #p0")
+    //@Cacheable(value= TermResolverDefinition.Cache.NAME, key="'namespace=' + #p0")
     List<TermResolverDefinition> findTermResolversByNamespace(String namespace);
 
-    @CacheEvict(value={TermResolverDefinition.Cache.NAME, TermDefinition.Cache.NAME}, allEntries = true)
+    //@CacheEvict(value={TermResolverDefinition.Cache.NAME, TermDefinition.Cache.NAME}, allEntries = true)
 	TermResolverDefinition createTermResolver(TermResolverDefinition termResolver);
 }

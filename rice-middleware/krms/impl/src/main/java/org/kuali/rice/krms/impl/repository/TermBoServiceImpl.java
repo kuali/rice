@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,11 +26,9 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krms.api.repository.term.TermDefinition;
-import org.kuali.rice.krms.api.repository.term.TermRepositoryService;
 import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
 import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
-import org.kuali.rice.krms.impl.repository.ContextValidTermBo;
-import org.kuali.rice.krms.impl.repository.TermSpecificationBo;
+import org.kuali.rice.krms.impl.util.KrmsImplConstants;
 import org.springframework.util.CollectionUtils;
 
 /**
@@ -39,7 +37,7 @@ import org.springframework.util.CollectionUtils;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class TermBoServiceImpl implements TermBoService, TermRepositoryService {
+public class TermBoServiceImpl implements TermBoService {
 	
 	private BusinessObjectService businessObjectService;
 
@@ -57,16 +55,6 @@ public class TermBoServiceImpl implements TermBoService, TermRepositoryService {
 	public TermSpecificationDefinition getTermSpecificationById(String id) {
 		TermSpecificationBo termSpecificationBo = 
 			businessObjectService.findBySinglePrimaryKey(TermSpecificationBo.class, id);
-
-        // avoid the expense of loading ContextBos by directly looking at ContextValidTermBo reln
-        Collection<ContextValidTermBo> contextValidTerms =
-                businessObjectService.findMatching(ContextValidTermBo.class, Collections.singletonMap("termSpecificationId", id));
-
-        // populate TermSpecificationBo.contextIds collection
-        if (contextValidTerms != null) for (ContextValidTermBo contextValidTerm : contextValidTerms) {
-            termSpecificationBo.getContextIds().add(contextValidTerm.getContextId());
-        }
-
 		return TermSpecificationDefinition.Builder.create(termSpecificationBo).build();
 	}
 	
@@ -93,7 +81,55 @@ public class TermBoServiceImpl implements TermBoService, TermRepositoryService {
 		
 		return TermSpecificationBo.to(termSpecBo);
 	}
-	
+
+    @Override
+    public void updateTermSpecification(TermSpecificationDefinition termSpec) throws RiceIllegalArgumentException {
+        if (termSpec == null) {
+            throw new IllegalArgumentException("term specification is null");
+        }
+
+        // must already exist to be able to update
+        final String termSpecificationId = termSpec.getId();
+        final TermSpecificationBo existing = businessObjectService.findBySinglePrimaryKey(TermSpecificationBo.class, termSpecificationId);
+        if (existing == null) {
+            throw new IllegalStateException("the term specification does not exist: " + termSpec);
+        }
+        final TermSpecificationDefinition toUpdate;
+        if (!existing.getId().equals(termSpec.getId())) {
+            // if passed in id does not match existing id, correct it
+            final TermSpecificationDefinition.Builder builder = TermSpecificationDefinition.Builder.create(termSpec);
+            builder.setId(existing.getId());
+            toUpdate = builder.build();
+        } else {
+            toUpdate = termSpec;
+        }
+
+        // copy all updateable fields to bo
+        TermSpecificationBo boToUpdate = TermSpecificationBo.from(toUpdate);
+
+//        // delete any old, existing attributes DOES NOT HAVE ANY
+//        Map<String, String> fields = new HashMap<String, String>(1);
+//        fields.put(KrmsImplConstants.PropertyNames.TermSpecification.TERM_SPECIFICATION_ID, toUpdate.getId());
+//        businessObjectService.deleteMatching(TermSpecificationAttributeBo.class, fields);
+
+        // update the rule and create new attributes
+        businessObjectService.save(boToUpdate);
+
+    }
+
+    @Override
+    public void deleteTermSpecification(String id) throws RiceIllegalArgumentException {
+        if (id == null) {
+            throw new RiceIllegalArgumentException("agendaId is null");
+        }
+        final TermSpecificationBo existing = businessObjectService.findBySinglePrimaryKey(TermSpecificationBo.class, id);
+        if (existing == null) {
+            throw new IllegalStateException("the TermSpecification to delete does not exists: " + id);
+        }
+        businessObjectService.delete(existing);
+    }
+	  
+        
 	/**
 	 * @see org.kuali.rice.krms.impl.repository.TermBoService#createTerm(org.kuali.rice.krms.api.repository.term.TermDefinition)
 	 */
@@ -110,6 +146,57 @@ public class TermBoServiceImpl implements TermBoService, TermRepositoryService {
 		return TermBo.to(termBo);
 	}
 	
+            @Override
+    public void updateTerm (TermDefinition term) throws RiceIllegalArgumentException {
+        if (term == null) {
+            throw new IllegalArgumentException("term is null");
+        }
+
+        // must already exist to be able to update
+        final String termId = term.getId();
+        final TermBo existing = businessObjectService.findBySinglePrimaryKey(TermBo.class, termId);
+        if (existing == null) {
+            throw new IllegalStateException("the term resolver does not exist: " + term);
+        }
+        final TermDefinition toUpdate;
+        if (!existing.getId().equals(term.getId())) {
+            // if passed in id does not match existing id, correct it
+            final TermDefinition.Builder builder = TermDefinition.Builder.create(term);
+            builder.setId(existing.getId());
+            toUpdate = builder.build();
+        } else {
+            toUpdate = term;
+        }
+
+        // copy all updateable fields to bo
+        TermBo boToUpdate = TermBo.from(toUpdate);
+
+        // delete any old, existing parameters
+        Map<String, String> fields = new HashMap<String, String>(1);
+        fields.put(KrmsImplConstants.PropertyNames.Term.TERM_ID, toUpdate.getId());
+        businessObjectService.deleteMatching(TermParameterBo.class, fields);
+
+        // update the rule and create new attributes
+        businessObjectService.save(boToUpdate);
+    }
+
+    @Override
+    public void deleteTerm(String id) throws RiceIllegalArgumentException {
+        if (id == null) {
+            throw new RiceIllegalArgumentException("termId is null");
+        }
+        TermBo existing =
+                businessObjectService.findBySinglePrimaryKey(TermBo.class, id);
+        if (existing == null) {
+            throw new IllegalStateException("the term to delete does not exists: " + id);
+        }
+        businessObjectService.delete(existing);
+    }   
+    
+        
+        
+        
+        
 	/**
 	 * @see org.kuali.rice.krms.impl.repository.TermBoService#createTermResolver(org.kuali.rice.krms.api.repository.term.TermResolverDefinition)
 	 */
@@ -125,7 +212,54 @@ public class TermBoServiceImpl implements TermBoService, TermRepositoryService {
 		
 		return TermResolverBo.to(termResolverBo);
 	}
-	
+
+    @Override
+    public void updateTermResolver(TermResolverDefinition termResolver) throws RiceIllegalArgumentException {
+        if (termResolver == null) {
+            throw new IllegalArgumentException("term resolver is null");
+        }
+
+        // must already exist to be able to update
+        final String termResolverId = termResolver.getId();
+        final TermResolverBo existing = businessObjectService.findBySinglePrimaryKey(TermResolverBo.class, termResolverId);
+        if (existing == null) {
+            throw new IllegalStateException("the term resolver does not exist: " + termResolver);
+        }
+        final TermResolverDefinition toUpdate;
+        if (!existing.getId().equals(termResolver.getId())) {
+            // if passed in id does not match existing id, correct it
+            final TermResolverDefinition.Builder builder = TermResolverDefinition.Builder.create(termResolver);
+            builder.setId(existing.getId());
+            toUpdate = builder.build();
+        } else {
+            toUpdate = termResolver;
+        }
+
+        // copy all updateable fields to bo
+        TermResolverBo boToUpdate = TermResolverBo.from(toUpdate);
+
+        // delete any old, existing attributes
+        Map<String, String> fields = new HashMap<String, String>(1);
+        fields.put(KrmsImplConstants.PropertyNames.TermResolver.TERM_RESOLVER_ID, toUpdate.getId());
+        businessObjectService.deleteMatching(TermResolverAttributeBo.class, fields);
+
+        // update the rule and create new attributes
+        businessObjectService.save(boToUpdate);
+    }
+
+    @Override
+    public void deleteTermResolver(String id) throws RiceIllegalArgumentException {
+        if (id == null) {
+            throw new RiceIllegalArgumentException("agendaId is null");
+        }
+        TermSpecificationBo existing =
+                businessObjectService.findBySinglePrimaryKey(TermSpecificationBo.class, id);
+        if (existing == null) {
+            throw new IllegalStateException("the TermResolver to delete does not exists: " + id);
+        }
+        businessObjectService.delete(existing);
+    }   
+    
 	/**
 	 * @see org.kuali.rice.krms.impl.repository.TermBoService#getTerm(java.lang.String)
 	 */
@@ -219,28 +353,39 @@ public class TermBoServiceImpl implements TermBoService, TermRepositoryService {
 
         return results;
     }
-    
-    @Override
-    public List<TermSpecificationDefinition> findAllTermSpecificationsByContextId(String contextId){
-        List<TermSpecificationDefinition> results = null;
-        
-        if (StringUtils.isBlank(contextId)){
-            throw new RiceIllegalArgumentException("contextId must not be blank or null");        
-        }
-        
-        Collection<ContextValidTermBo> contextValidTerms = 
-                    businessObjectService.findMatching(ContextValidTermBo.class, 
-                                    Collections.singletonMap("contextId", contextId));
-        
-        if (!CollectionUtils.isEmpty(contextValidTerms)) {
-            results = new ArrayList<TermSpecificationDefinition>(contextValidTerms.size());
-            for (ContextValidTermBo validTerm : contextValidTerms) {
-                results.add(TermSpecificationBo.to(validTerm.getTermSpecification()));
-            }        
-        } else {
-            results = Collections.emptyList();
-        }
 
-        return results;
+    @Override
+    public TermResolverDefinition getTermResolverByNameAndNamespace(String name, String namespace)
+            throws RiceIllegalArgumentException {
+        if (StringUtils.isBlank(name)) {
+            throw new IllegalArgumentException("name is null or blank");
+        }
+        if (StringUtils.isBlank(namespace)) {
+            throw new IllegalArgumentException("namespace is null or blank");
+        }
+        final Map<String, Object> map = new HashMap<String, Object>();
+        map.put("name", name);
+        map.put("namespace", namespace);
+        TermResolverBo bo = businessObjectService.findByPrimaryKey(TermResolverBo.class, map);
+        return TermResolverBo.to(bo);
     }
+
+    @Override
+    public TermSpecificationDefinition getTermSpecificationByNameAndNamespace(String name, String namespace) 
+            throws RiceIllegalArgumentException {
+        if (StringUtils.isBlank(name)) {
+            throw new IllegalArgumentException("name is null or blank");
+        }
+        if (StringUtils.isBlank(namespace)) {
+            throw new IllegalArgumentException("namespace is null or blank");
+        }
+        final Map<String, Object> map = new HashMap<String, Object>();
+        map.put("name", name);
+        map.put("namespace", namespace);
+        TermSpecificationBo bo = businessObjectService.findByPrimaryKey(TermSpecificationBo.class, map);
+        return TermSpecificationBo.to(bo);
+    }
+    
+    
+    
 }

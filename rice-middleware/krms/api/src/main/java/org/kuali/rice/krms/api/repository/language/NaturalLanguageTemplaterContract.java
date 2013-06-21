@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,11 @@
  */
 package org.kuali.rice.krms.api.repository.language;
 
+
+import java.util.Map;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+
 public interface NaturalLanguageTemplaterContract {
-    public String template(NaturalLanguageTemplate naturalLanguageTemplate);
+    public String translate(NaturalLanguageTemplate naturalLanguageTemplate, Map<String,Object>variables)
+              throws RiceIllegalArgumentException;
 }

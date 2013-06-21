@@ -17,8 +17,8 @@ package org.kuali.rice.krms.test;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeBoService;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
-import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
 import org.kuali.rice.krms.impl.repository.KrmsTypeBoServiceImpl;
 import org.kuali.rice.krms.impl.repository.PropositionBoService;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
@@ -29,13 +29,13 @@ public class PropositionBoServiceTest extends AbstractBoTest {
 //public class PropositionBoServiceTest extends LightWeightBoTest {
 	
 	private PropositionBoService propositionBoService;
-	private KrmsTypeRepositoryService krmsTypeRepository;
+	private KrmsTypeBoService krmsTypeBoService;
 	
 	@Before
 	public void setup() {
 
-		krmsTypeRepository = new KrmsTypeBoServiceImpl();
-		((KrmsTypeBoServiceImpl) krmsTypeRepository).setBusinessObjectService(getBoService());
+		krmsTypeBoService = new KrmsTypeBoServiceImpl();
+		((KrmsTypeBoServiceImpl) krmsTypeBoService).setBusinessObjectService(getBoService());
 		
 //		dao.setJcdAlias("krmsDataSource");
 //		
@@ -56,7 +56,7 @@ public class PropositionBoServiceTest extends AbstractBoTest {
 
 		// KrmsType for context
 		KrmsTypeDefinition krmsContextTypeDefinition = KrmsTypeDefinition.Builder.create("KrmsTestContextType", "KRMS").build();
-		krmsContextTypeDefinition = krmsTypeRepository.createKrmsType(krmsContextTypeDefinition);
+		krmsContextTypeDefinition = krmsTypeBoService.createKrmsType(krmsContextTypeDefinition);
 
 //		// Context
 //		ContextDefinition.Builder contextBuilder = ContextDefinition.Builder.create("KRMS", "testContext");

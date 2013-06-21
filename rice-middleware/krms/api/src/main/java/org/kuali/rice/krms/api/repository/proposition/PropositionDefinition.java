@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.kuali.rice.krms.api.repository.term.TermParameterDefinition;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
@@ -67,6 +68,7 @@ import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 		PropositionDefinition.Elements.PROP_TYPE_CODE,
 		PropositionDefinition.Elements.PARAMETERS,									// xml element name differs from class property name
 		PropositionDefinition.Elements.CMPND_OP_CODE,
+		PropositionDefinition.Elements.CMPND_SEQ_NO,
 		PropositionDefinition.Elements.CMPND_COMPONENTS,
         CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
@@ -77,40 +79,43 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
 	// TODO: change this to field name to id
 	@XmlElement(name = Elements.ID, required=true)
 	private String id;
-	
+
 	@XmlElement(name = Elements.DESC, required=true)
 	private String description;
-	
+
 	@XmlElement(name = Elements.TYPE_ID, required=true)
 	private String typeId;
-	
+
     @XmlElement(name = Elements.RULE_ID, required=true)
     private String ruleId;
-    
+
     @XmlElement(name = Elements.PROP_TYPE_CODE, required=true)
 	private String propositionTypeCode;
 
 	@XmlElementWrapper(name = Elements.PARAMETERS)
 	@XmlElement(name = Elements.PARAMETER, required=false)
 	private List<PropositionParameter> parameters;
-	
+
 	@XmlElement(name = Elements.CMPND_OP_CODE, required=false)
 	private String compoundOpCode;
-	
+        
+	@XmlElement(name = Elements.CMPND_SEQ_NO, required=false)
+	private Integer compoundSequenceNumber;
+        
 	@XmlElementWrapper(name = Elements.CMPND_COMPONENTS, required=false)
 	@XmlElement(name = Elements.CMPND_COMPONENT, required=false)
 	private List<PropositionDefinition> compoundComponents;
-	
+
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
-    	
+
 	@SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<org.w3c.dom.Element> _futureElements = null;
-	
-	
-	 /** 
-     * This constructor should never be called.  It is only present for use during JAXB unmarshalling. 
+
+
+	 /**
+     * This constructor should never be called.  It is only present for use during JAXB unmarshalling.
      */
     private PropositionDefinition() {
     	this.id = null;
@@ -119,14 +124,15 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
     	this.propositionTypeCode = null;
     	this.parameters = null;
     	this.compoundOpCode = null;
+    	this.compoundSequenceNumber = null;
     	this.compoundComponents = null;
         this.versionNumber = null;
     }
-    
+
     /**
-	 * Constructs a KRMS Proposition from the given builder.  
+	 * Constructs a KRMS Proposition from the given builder.
 	 * This constructor is private and should only ever be invoked from the builder.
-	 * 
+	 *
 	 * @param builder the Builder from which to construct the KRMS Proposition
 	 */
     private PropositionDefinition(Builder builder) {
@@ -135,16 +141,18 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
         this.ruleId = builder.getRuleId();
         this.typeId = builder.getTypeId();
         this.propositionTypeCode = builder.getPropositionTypeCode();
-        
+
         // Build parameter list
         List<PropositionParameter> paramList = new ArrayList<PropositionParameter>();
         for (PropositionParameter.Builder b : builder.parameters){
+                b.setProposition(builder);
         	paramList.add(b.build());
         }
         this.parameters = Collections.unmodifiableList(paramList);
-        
+
         // Build Compound Proposition properties
         this.compoundOpCode = builder.getCompoundOpCode();
+        this.compoundSequenceNumber = builder.getCompoundSequenceNumber();
         List <PropositionDefinition> componentList = new ArrayList<PropositionDefinition>();
         if (builder.compoundComponents != null){
         	for (PropositionDefinition.Builder b : builder.compoundComponents){
@@ -154,7 +162,7 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
         }
         this.versionNumber = builder.getVersionNumber();
     }
-    
+
 	@Override
 	public String getId() {
 		return this.id;
@@ -180,35 +188,40 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
 
 	@Override
 	public String getPropositionTypeCode() {
-		return this.propositionTypeCode; 
+		return this.propositionTypeCode;
 	}
 
 	@Override
 	public List<PropositionParameter> getParameters() {
-		return this.parameters; 
+		return this.parameters;
 	}
 
 	@Override
 	public String getCompoundOpCode() {
-		return this.compoundOpCode; 
+		return this.compoundOpCode;
+	}
+        
+	@Override
+	public Integer getCompoundSequenceNumber() {
+            return this.compoundSequenceNumber;
 	}
 
 	@Override
 	public List<PropositionDefinition> getCompoundComponents() {
-		return this.compoundComponents; 
+		return this.compoundComponents;
 	}
 
     @Override
     public Long getVersionNumber() {
         return versionNumber;
     }
-        
+
 	/**
      * This builder is used to construct instances of KRMS Proposition.  It enforces the constraints of the {@link PropositionDefinitionContract}.
      */
     public static class Builder implements PropositionDefinitionContract, ModelBuilder, Serializable {
     	private static final long serialVersionUID = -6889320709850568900L;
-		
+
         private String id;
         private String description;
         private String ruleId;
@@ -216,6 +229,7 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
         private String propositionTypeCode;
         private List<PropositionParameter.Builder> parameters;
         private String compoundOpCode;
+        private Integer compoundSequenceNumber;
         private List<PropositionDefinition.Builder> compoundComponents;
         private RuleDefinition.Builder rule;
         private Long versionNumber;
@@ -268,10 +282,10 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
         public static Builder create(String propId, String propTypeCode, String ruleId, String typeId, List<PropositionParameter.Builder> parameters){
         	return new Builder(propId, propTypeCode, ruleId, typeId, parameters);
         }
-        
+
         /**
          * Creates a builder by populating it with data from the given {@link PropositionDefinitionContract}.
-         * 
+         *
          * @param contract the contract from which to populate this builder
          * @return an instance of the builder populated with data from the contract
          */
@@ -287,7 +301,7 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
         		}
         	}
             Builder builder =  new Builder(contract.getId(), contract.getPropositionTypeCode(), contract.getRuleId(), contract.getTypeId(), paramBuilderList);
-            
+
         	List <PropositionDefinition.Builder> componentBuilderList = new ArrayList<PropositionDefinition.Builder>();
         	if (contract.getCompoundComponents() != null) {
         		for (PropositionDefinitionContract cContract : contract.getCompoundComponents()){
@@ -297,6 +311,7 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
                 builder.setCompoundComponents(componentBuilderList);
         	}
         	builder.setCompoundOpCode(contract.getCompoundOpCode());
+        	builder.setCompoundSequenceNumber(contract.getCompoundSequenceNumber());
             builder.setDescription(contract.getDescription());
             builder.setVersionNumber(contract.getVersionNumber());
             return builder;
@@ -304,13 +319,13 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
 
 		/**
 		 * Sets the value of the propId on this builder to the given value.
-		 * 
+		 *
 		 * @param propId the propId value to set
          * @throws IllegalArgumentException if the propId is null or blank
 		 */
         public void setId(String propId) {
             if (propId != null && StringUtils.isBlank(propId)) {
-                throw new IllegalArgumentException("proposition id must not be blank");            	
+                throw new IllegalArgumentException("proposition id must not be blank");
             }
 			this.id = propId;
 		}
@@ -398,6 +413,17 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
 			}
 			this.compoundOpCode = opCode;
 		}
+                
+        /**
+         * Sets the value of the compound sequence no on this builder to the
+         * given value.
+         *
+         * @param seqNo the sequence number for this compound prop
+         * @throws IllegalArgumentException if the seqNo invalid
+         */
+        public void setCompoundSequenceNumber(Integer seqNo) {
+            this.compoundSequenceNumber = seqNo;
+        }
 
         /**
          * Sets the value of the components on this builder to the given value.
@@ -420,7 +446,7 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
         public void setVersionNumber(Long versionNumber){
             this.versionNumber = versionNumber;
         }
-        
+
 		@Override
 		public String getId() {
 			return id;
@@ -430,7 +456,7 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
 		public String getDescription() {
 			return description;
 		}
-		
+
 		@Override
 		public String getRuleId() {
 		    return ruleId;
@@ -445,7 +471,7 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
 		public String getPropositionTypeCode() {
 			return propositionTypeCode;
 		}
-		
+
 		@Override
 		public List<PropositionParameter.Builder> getParameters() {
 			return parameters;
@@ -455,7 +481,12 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
 		public String getCompoundOpCode() {
 			return compoundOpCode;
 		}
-		
+
+		@Override
+		public Integer getCompoundSequenceNumber() {
+			return compoundSequenceNumber;
+		}
+
 		@Override
 		public List<PropositionDefinition.Builder> getCompoundComponents() {
 			return compoundComponents;
@@ -468,16 +499,16 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
 
 		/**
 		 * Builds an instance of a Proposition based on the current state of the builder.
-		 * 
+		 *
 		 * @return the fully-constructed Proposition
 		 */
         @Override
         public PropositionDefinition build() {
             return new PropositionDefinition(this);
         }
-		
+
     }
-	
+
 	/**
 	 * Defines some internal constants used on this class.
 	 */
@@ -485,7 +516,7 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
 		final static String ROOT_ELEMENT_NAME = "proposition";
 		final static String TYPE_NAME = "PropositionType";
 	}
-	
+
 	/**
 	 * A private class which exposes constants which define the XML element names to use
 	 * when this object is marshalled to XML.
@@ -499,6 +530,7 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
 		final static String PARAMETER = "parameter";
 		final static String PARAMETERS = "parameters";
 		final static String CMPND_OP_CODE = "compoundOpCode";
+		final static String CMPND_SEQ_NO = "compoundSequenceNumber";
 		final static String CMPND_COMPONENTS = "compoundComponents";
 		final static String CMPND_COMPONENT = "proposition";
 	}

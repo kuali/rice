@@ -32,6 +32,7 @@ import org.kuali.rice.krms.api.repository.proposition.PropositionDefinitionContr
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameterType;
 import org.kuali.rice.krms.api.repository.proposition.PropositionType;
+import org.kuali.rice.krms.api.repository.term.TermDefinition;
 import org.kuali.rice.krms.framework.engine.BasicExecutionEnvironment;
 import org.kuali.rice.krms.framework.engine.Proposition;
 import org.kuali.rice.krms.framework.engine.PropositionResult;
@@ -93,6 +94,7 @@ class CompoundPropositionTypeServiceTest {
                     String ruleId = "1";
 					String typeId = "true";
 					String propositionTypeCode = PropositionType.SIMPLE.getCode();
+                                        Integer compoundSequenceNumber = new Integer (1)
 					String compoundOpCode = null;
 					List parameters = [ PropositionParameter.Builder.create("1", "2", "true", PropositionParameterType.CONSTANT.getCode(), 1) ];
 					List compoundComponents = []; 
@@ -107,6 +109,7 @@ class CompoundPropositionTypeServiceTest {
                     String ruleId = "1";
 					String typeId = null;
 					String propositionTypeCode = PropositionType.SIMPLE.getCode();
+                                        Integer compoundSequenceNumber = new Integer (1)
 					String compoundOpCode = null;
 					List parameters = [ PropositionParameter.Builder.create("1", "2", "false", PropositionParameterType.CONSTANT.getCode(), 1) ];
 					List compoundComponents = [];
@@ -122,6 +125,7 @@ class CompoundPropositionTypeServiceTest {
 			String typeId = CompoundPropositionTypeServiceTest.TYPE_ID;
 			String propositionTypeCode = PropositionType.COMPOUND.getCode();
 			String compoundOpCode = logicalOperator.getCode();
+                        Integer compoundSequenceNumber = new Integer (1)
 			List parameters = [];
 			List compoundComponents = [
 				CompoundPropositionTypeServiceTest.createTrueProp(),

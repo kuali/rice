@@ -73,6 +73,11 @@
     <property name="serviceName" value="persistenceServiceOjb" />
   </bean>
 
+  <bean id="sequenceAccessorService"
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="sequenceAccessorService" />
+  </bean>
+
   <bean id="krmsModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
     <property name="namespaceCode" value="krms"/>
     <property name="dataSourceName" value="krmsDataSource"/>
@@ -125,7 +130,7 @@
     <property name="businessObjectService" ref="businessObjectService"/>
   </bean>
 
-  <bean id="krmsTypeRepositoryService" class="org.kuali.rice.krms.impl.repository.KrmsTypeBoServiceImpl">
+  <bean id="krmsTypeRepositoryService" class="org.kuali.rice.krms.impl.repository.KrmsTypeRepositoryServiceImpl">
     <property name="businessObjectService" ref="businessObjectService"/>
   </bean>
 
@@ -159,6 +164,28 @@
   <bean id="agendaAuthorizationService" class="org.kuali.rice.krms.impl.authorization.AgendaAuthorizationServiceImpl">
   </bean>
 
+  <!-- RuleMangementService prerequisites for natural language translation -->
+
+  <bean id="translationContextRegistry" class="org.kuali.rice.krms.impl.repository.language.TranslationContextRegistry"/>
+
+  <bean id="propositionNaturalLanguageTemplater" class="org.kuali.rice.krms.impl.repository.language.PropositionNaturalLanguageTemplater">
+    <property name="krmsTypeRepositoryService" ref="krmsTypeRepositoryService"/>
+    <property name="translationContextRegistry" ref="translationContextRegistry"/>
+  </bean>
+
+  <bean id="naturalLanguageTemplateBoService" class="org.kuali.rice.krms.impl.repository.NaturalLanguageTemplateBoServiceImpl">
+    <property name="attributeDefinitionService" ref="krmsAttributeDefinitionService"/>
+    <property name="businessObjectService" ref="businessObjectService"/>
+    <property name="naturalLanguageTemplater" ref="propositionNaturalLanguageTemplater"/>
+  </bean>
+
+  <bean id="referenceObjectBindingBoService" class="org.kuali.rice.krms.impl.repository.ReferenceObjectBindingBoServiceImpl">
+    <property name="attributeDefinitionService" ref="krmsAttributeDefinitionService"/>
+    <property name="businessObjectService" ref="businessObjectService"/>
+    <property name="criteriaLookupService" ref="criteriaLookupService"/>
+  </bean>
+
+
   <!-- wire up services needed for execution -->
 
   <bean id="ruleRepositoryService" class="org.kuali.rice.krms.impl.repository.RuleRepositoryServiceImpl">
@@ -168,6 +195,30 @@
 
   <bean id="functionRepositoryService" class="org.kuali.rice.krms.impl.repository.FunctionBoServiceImpl">
     <property name="businessObjectService" ref="businessObjectService" />
+  </bean>
+
+
+  <bean id="naturalLanguageUsageBoService" class="org.kuali.rice.krms.impl.repository.NaturalLanguageUsageBoServiceImpl">
+    <property name="businessObjectService" ref="businessObjectService"/>
+    <property name="attributeDefinitionService" ref="krmsAttributeDefinitionService"/>
+  </bean>
+
+  <bean id="ruleManagementService" class="org.kuali.rice.krms.impl.repository.RuleManagementServiceImpl">
+    <property name="actionBoService" ref="actionBoService"/>
+    <property name="agendaBoService" ref="agendaBoService"/>
+    <property name="businessObjectService" ref="businessObjectService"/>
+    <property name="contextBoService" ref="contextBoService"/>
+    <property name="criteriaLookupService" ref="criteriaLookupService"/>
+    <property name="propositionBoService" ref="propositionBoService"/>
+    <property name="ruleBoService" ref="ruleBoService"/>
+    <property name="termRepositoryService" ref="termRepositoryService"/>
+
+    <!-- Natural Language related services -->
+    <property name="naturalLanguageTemplateBoService" ref="naturalLanguageTemplateBoService"/>
+    <property name="naturalLanguageUsageBoService" ref="naturalLanguageUsageBoService"/>
+    <property name="referenceObjectBindingBoService" ref="referenceObjectBindingBoService"/>
+    <property name="sequenceAccessorService" ref="sequenceAccessorService"/>
+    <property name="templater" ref="propositionNaturalLanguageTemplater"/>
   </bean>
 
 </beans>

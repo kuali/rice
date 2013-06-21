@@ -64,7 +64,7 @@ public final class NaturalLanguageTemplateIntegrationGenTest extends AbstractBoT
     public static NaturalLanguageTemplaterContract newStringReplaceTemplater() {
         return new NaturalLanguageTemplaterContract() {
             @Override
-            public String template(NaturalLanguageTemplate naturalLanguageTemplate) {
+            public String translate(NaturalLanguageTemplate naturalLanguageTemplate, Map<String,Object>variables) {
                 String template = naturalLanguageTemplate.getTemplate();
                 Map<String, String> attributes = naturalLanguageTemplate.getAttributes();
                 Iterator<String> keys = attributes.keySet().iterator();

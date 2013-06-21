@@ -16,6 +16,7 @@
 package org.kuali.rice.krms.impl.repository
 
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krms.api.repository.term.TermDefinition
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameter
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameterContract
 
@@ -26,8 +27,20 @@ public class PropositionParameterBo extends PersistableBusinessObjectBase implem
 	def String value
 	def String parameterType
 	def Integer sequenceNumber
-	
-	
+    
+        TermDefinition termValue;
+
+   public TermDefinition getTermValue(){
+       return termValue;
+   }
+   
+   public void setTermValue(TermDefinition termValue){
+       if (termValue != null) {
+           value = termValue.getId();
+       }
+       this.termValue = termValue;
+   }
+   
 	/**
 	* Converts a mutable bo to it's immutable counterpart
 	* @param bo the mutable business object
@@ -63,6 +76,7 @@ public class PropositionParameterBo extends PersistableBusinessObjectBase implem
 	   bo.id = im.id
 	   bo.propId = im.propId
 	   bo.value = im.value
+           bo.setTermValue (im.getTermValue());
 	   bo.parameterType = im.parameterType
 	   bo.sequenceNumber = im.sequenceNumber
 	   bo.versionNumber = im.versionNumber

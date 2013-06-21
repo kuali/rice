@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,9 @@ public interface NaturalLanguageTemplateBoService {
 
 
     /**
-     * This will create a {@link NaturalLanguageTemplate} exactly like the parameter passed in.
+     * This will create a {@link NaturalLanguageTemplate} exactly like the
+     * parameter passed in except the id will be assigned and create date/user 
+     * will be set.
      * 
      * @param naturalLanguageTemplate  The NaturalLanguageTemplate to create.
      * @throws IllegalArgumentException if the NaturalLanguageTemplate is null.
@@ -97,5 +99,4 @@ public interface NaturalLanguageTemplateBoService {
      */
     public NaturalLanguageTemplateBo from(NaturalLanguageTemplate naturalLanguageTemplate);
 
-    public String template(NaturalLanguageTemplate naturalLanguageTemplate);
 }

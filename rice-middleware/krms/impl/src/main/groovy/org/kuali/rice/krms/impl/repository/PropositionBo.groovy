@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -196,6 +196,7 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
 		   bo.parameters.add (PropositionParameterBo.from(parm))
 	   }
 	   bo.compoundOpCode = im.compoundOpCode
+	   bo.compoundSequenceNumber = im.compoundSequenceNumber
 	   bo.compoundComponents = new ArrayList<PropositionBo>()
 	   for (prop in im.compoundComponents){
 		   bo.compoundComponents.add (PropositionBo.from(prop))
@@ -317,6 +318,7 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
         newProp.setPropositionTypeCode( existing.getPropositionTypeCode() );
         newProp.setTypeId( existing.getTypeId() );
         newProp.setCompoundOpCode( existing.getCompoundOpCode() );
+        newProp.setCompoundSequenceNumber( existing.getCompoundSequenceNumber() );
         // parameters
         List<PropositionParameterBo> newParms = new ArrayList<PropositionParameterBo>();
         for (PropositionParameterBo parm : existing.getParameters()){

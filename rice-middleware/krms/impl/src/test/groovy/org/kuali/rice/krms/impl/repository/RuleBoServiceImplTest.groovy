@@ -27,6 +27,7 @@ import org.kuali.rice.krms.api.repository.action.ActionDefinition
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameterContract
+import org.kuali.rice.krms.api.repository.term.TermDefinition
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition
 
 class RuleBoServiceImplTest {
@@ -296,6 +297,7 @@ class RuleBoServiceImplTest {
 					def String id = "1000"
 					def String propId = "2001"
 					def String value = "campusCode"
+                                        def TermDefinition termValue = null
 					def String parameterType = "T"
 					def Integer sequenceNumber = new Integer(0)
 					def Long versionNumber = new Long(1);
@@ -304,6 +306,7 @@ class RuleBoServiceImplTest {
 					def String id = "1001"
 					def String propId = "2001"
 					def String value = "BL"
+                                        def TermDefinition termValue = null
 					def String parameterType = "C"
 					def Integer sequenceNumber = new Integer(1)
 					def Long versionNumber = new Long(1);
@@ -312,6 +315,7 @@ class RuleBoServiceImplTest {
 					def String id = "1003"
 					def String propId = "2001"
 					def String value = "EQUALS"
+                                        def TermDefinition termValue = null
 					def String parameterType = "F"
 					def Integer sequenceNumber = new Integer(2)
 					def Long versionNumber = new Long(1);

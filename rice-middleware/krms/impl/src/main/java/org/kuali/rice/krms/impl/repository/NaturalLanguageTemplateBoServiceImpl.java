@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.krad.service.BusinessObjectService;
@@ -32,6 +31,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.krms.impl.repository.language.SimpleNaturalLanguageTemplater;
 
 /**
  * Implementation of the @{link NaturalLanguageTemplateBoService} interface for accessing  {@link NaturalLanguageTemplateBo} related business objects.
@@ -45,7 +46,7 @@ public final class NaturalLanguageTemplateBoServiceImpl
 
     private BusinessObjectService businessObjectService;
     private KrmsAttributeDefinitionService attributeDefinitionService;
-    private NaturalLanguageTemplaterContract naturalLanguageTemplater;
+    private NaturalLanguageTemplaterContract naturalLanguageTemplater = new SimpleNaturalLanguageTemplater ();
 
     /**
      * Sets the value of BusinessObjectService to the given value.
@@ -151,7 +152,9 @@ public final class NaturalLanguageTemplateBoServiceImpl
     }
 
     @Override
-    public NaturalLanguageTemplate findNaturalLanguageTemplateByLanguageCodeTypeIdAndNluId(String languageCode, String typeId, String naturalLanguageUsageId) {
+    public NaturalLanguageTemplate findNaturalLanguageTemplateByLanguageCodeTypeIdAndNluId(String languageCode,
+            String typeId,
+            String naturalLanguageUsageId) {
         if (org.apache.commons.lang.StringUtils.isBlank(languageCode)) {
             throw new IllegalArgumentException("languageCode is null or blank");
         }
@@ -160,8 +163,13 @@ public final class NaturalLanguageTemplateBoServiceImpl
         map.put("naturalLanguageUsageId", naturalLanguageUsageId);
         map.put("typeId", typeId);
         List<NaturalLanguageTemplateBo> bos = (List<NaturalLanguageTemplateBo>) businessObjectService.findMatching(NaturalLanguageTemplateBo.class, map);
-        List<NaturalLanguageTemplate> immutables = convertBosToImmutables(bos);
-        return CollectionUtils.isEmpty(immutables) ? null : immutables.get(0);
+        if (bos.isEmpty()) {
+            return null;
+        }
+        if (bos.size() > 1) {
+            throw new RiceIllegalArgumentException (languageCode + typeId +  naturalLanguageUsageId + " is supposed to be unique");
+        }
+        return convertBosToImmutables(bos).get(0);
     }
 
     @Override
@@ -216,11 +224,6 @@ public final class NaturalLanguageTemplateBoServiceImpl
 
     public NaturalLanguageTemplateBo from(NaturalLanguageTemplate naturalLanguageTemplate) {
         return NaturalLanguageTemplateBo.from(naturalLanguageTemplate);
-    }
-
-    @Override
-    public String template(NaturalLanguageTemplate naturalLanguageTemplate) {
-        return naturalLanguageTemplater.template(naturalLanguageTemplate);
     }
 
     private Collection<NaturalLanguageTemplateAttributeBo> buildAttributes(NaturalLanguageTemplate im, Collection<NaturalLanguageTemplateAttributeBo> attributes) {

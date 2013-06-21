@@ -27,6 +27,7 @@ import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameterContract
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
+import org.kuali.rice.krms.api.repository.term.TermDefinition;
 
 
 /**
@@ -64,7 +65,7 @@ class RuleDefinitionTest {
         		<parameters>
         			<parameter>
             			<id>1000</id>
-            			<propId>2001</propId>
+            			<propId>PROP-001</propId>
             			<value>campusCode</value>
             			<parameterType>T</parameterType>
             			<sequenceNumber>0</sequenceNumber>
@@ -72,7 +73,7 @@ class RuleDefinitionTest {
         			</parameter>
         			<parameter>
 						<id>1001</id>
-            			<propId>2001</propId>
+            			<propId>PROP-001</propId>
             			<value>BL</value>
             			<parameterType>C</parameterType>
             			<sequenceNumber>1</sequenceNumber>
@@ -80,7 +81,7 @@ class RuleDefinitionTest {
         			</parameter>
         			<parameter>
 						<id>1003</id>
-            			<propId>2001</propId>
+            			<propId>PROP-001</propId>
             			<value>EQUALS</value>
             			<parameterType>F</parameterType>
             			<sequenceNumber>2</sequenceNumber>
@@ -299,7 +300,10 @@ class RuleDefinitionTest {
 			def String value = "campusCode"
 			def String parameterType = "T"
 			def Integer sequenceNumber = new Integer(0)
-			def Long versionNumber = new Long(1)
+			def Long versionNumber = new Long(1)                 
+                        public TermDefinition getTermValue () {
+                            return null;
+                        }
 		})
 		PropositionParameter.Builder ppBuilder2 = PropositionParameter.Builder.create(new PropositionParameterContract() {
 			def String id = "1001"
@@ -307,7 +311,10 @@ class RuleDefinitionTest {
 			def String value = "BL"
 			def String parameterType = "C"
 			def Integer sequenceNumber = new Integer(1)
-			def Long versionNumber = new Long(1)
+			def Long versionNumber = new Long(1)              
+                        public TermDefinition getTermValue () {
+                            return null;
+                        }
 		})
 		PropositionParameter.Builder ppBuilder3 = PropositionParameter.Builder.create(new PropositionParameterContract() {
 			def String id = "1003"
@@ -315,7 +322,10 @@ class RuleDefinitionTest {
 			def String value = "EQUALS"
 			def String parameterType = "F"
 			def Integer sequenceNumber = new Integer(2)
-			def Long versionNumber = new Long(1)
+			def Long versionNumber = new Long(1)              
+                        public TermDefinition getTermValue () {
+                            return null;
+                        }
 		})
 		for ( ppb in [ppBuilder1, ppBuilder2, ppBuilder3]){
 			propParms.add (ppb)

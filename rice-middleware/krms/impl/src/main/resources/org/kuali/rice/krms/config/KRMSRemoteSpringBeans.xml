@@ -36,6 +36,11 @@
         p:serviceName="ruleRepositoryService"
         p:objectType="org.kuali.rice.krms.api.repository.RuleRepositoryService"/>
 
+  <bean id="ruleManagementService"
+        parent="rice.krms.remote.import"
+        p:serviceName="ruleManagementService"
+        p:objectType="org.kuali.rice.krms.api.repository.RuleManagementService"/>
+
   <bean id="functionRepositoryService"
         parent="rice.krms.remote.import"
         p:serviceName="functionRepositoryService"

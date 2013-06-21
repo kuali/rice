@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,6 +53,27 @@ public class KrmsImplConstants {
 
         public static final class Context {
             public static final String CONTEXT_ID ="contextId";
+            public static final String NAME = "name";
+            public static final String NAMESPACE = "namespace";
+            public static final String ATTRIBUTE_BOS = "attributeBos";
+        }
+        
+        public static final class TermResolver {
+            public static final String TERM_RESOLVER_ID ="termResolverId";
+            public static final String NAME = "name";
+            public static final String NAMESPACE = "namespace";
+            public static final String ATTRIBUTE_BOS = "attributeBos";
+        }
+
+        public static final class TermSpecification {
+            public static final String TERM_SPECIFICATION_ID ="termSpecificationId";
+            public static final String NAME = "name";
+            public static final String NAMESPACE = "namespace";
+            public static final String ATTRIBUTE_BOS = "attributeBos";
+        }
+        
+        public static final class Term {
+            public static final String TERM_ID ="termId";
             public static final String NAME = "name";
             public static final String NAMESPACE = "namespace";
             public static final String ATTRIBUTE_BOS = "attributeBos";

@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package org.kuali.rice.krms.api.repository.proposition;
 
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.krms.api.repository.term.TermDefinition;
 
 /**
  * The contract for {@link PropositionParameter}
@@ -45,6 +46,18 @@ public interface PropositionParameterContract extends Identifiable, Versioned {
 	 */
 	public String getValue();
 
+        
+	/**
+	 * Returns the term value of the proposition parameter if the 
+         * proposition parameter is a term.
+	 *
+	 * <p>
+	 * It is the term value of the parameter
+	 * </p>
+	 * @return value of the term parameter
+	 */
+	public TermDefinition getTermValue();
+        
 	/**
 	 * Returns the type of the parameter.
 	 * Proposition parameters are one of the following types:

@@ -89,6 +89,7 @@ import java.util.Set;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeBoService;
 
 /**
  * Validation Integration Test
@@ -107,7 +108,7 @@ public class ValidationIntegrationTest extends AbstractBoTest {
     private static final String VALIDATION_ACTION_TYPE_SERVICE = "validationActionTypeService";
     private static final String VALIDATION_RULE_TYPE_SERVICE = "validationRuleTypeService";
 
-    private KrmsTypeRepositoryService krmsTypeRepositoryService;
+    private KrmsTypeBoService krmsTypeBoService;
     private KrmsAttributeDefinitionService krmsAttributeDefinitionService;
     private PropositionBoService propositionBoService;
     private TermBoService termBoService;
@@ -121,8 +122,8 @@ public class ValidationIntegrationTest extends AbstractBoTest {
 	public void setup() {
 
         krmsAttributeDefinitionService = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService();
-        krmsTypeRepositoryService = new KrmsTypeBoServiceImpl();
-        ((KrmsTypeBoServiceImpl)krmsTypeRepositoryService).setBusinessObjectService(getBoService());
+        krmsTypeBoService = new KrmsTypeBoServiceImpl();
+        ((KrmsTypeBoServiceImpl)krmsTypeBoService).setBusinessObjectService(getBoService());
 
         // like RepositoryCreateAndExecuteIntegrationTest
         propositionBoService = new PropositionBoServiceImpl();
@@ -146,15 +147,15 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         KrmsAttributeTypeDefinitionAndBuilders ruleDefs = createKrmsAttributeTypeDefinitionAndBuilders(
                 ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
                 ValidationRuleType.VALID.toString(), true, ValidationRuleType.VALID.toString(),
-                ValidationRuleType.VALID.getCode(), VALIDATION_RULE_TYPE_SERVICE, krmsTypeRepositoryService, 1);
+                ValidationRuleType.VALID.getCode(), VALIDATION_RULE_TYPE_SERVICE, krmsTypeBoService, 1);
         KrmsAttributeTypeDefinitionAndBuilders actionDef = createKrmsAttributeTypeDefinitionAndBuilders(
                 ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
                 ValidationActionType.WARNING.toString(), true, ValidationActionType.WARNING.toString(),
-                ValidationActionType.WARNING.getCode(), VALIDATION_ACTION_TYPE_SERVICE, krmsTypeRepositoryService, 1);
+                ValidationActionType.WARNING.getCode(), VALIDATION_ACTION_TYPE_SERVICE, krmsTypeBoService, 1);
         KrmsAttributeTypeDefinitionAndBuilders actionMessageDef = createKrmsAttributeTypeDefinitionAndBuilders(
                 ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
                 "Valdiation Action Message", true, "Valdiation Action Message",
-                WARNING_MESSAGE, VALIDATION_ACTION_TYPE_SERVICE, krmsTypeRepositoryService, 1);
+                WARNING_MESSAGE, VALIDATION_ACTION_TYPE_SERVICE, krmsTypeBoService, 1);
 
         List<KrmsAttributeTypeDefinitionAndBuilders> actionDefs = new LinkedList<KrmsAttributeTypeDefinitionAndBuilders>();
         actionDefs.add(actionDef);
@@ -173,15 +174,15 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         KrmsAttributeTypeDefinitionAndBuilders ruleDefs = createKrmsAttributeTypeDefinitionAndBuilders(
                 ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
                 ValidationRuleType.INVALID.toString(), true, ValidationRuleType.INVALID.toString(),
-                ValidationRuleType.INVALID.getCode(), VALIDATION_RULE_TYPE_SERVICE, krmsTypeRepositoryService, 1);
+                ValidationRuleType.INVALID.getCode(), VALIDATION_RULE_TYPE_SERVICE, krmsTypeBoService, 1);
         KrmsAttributeTypeDefinitionAndBuilders actionDef = createKrmsAttributeTypeDefinitionAndBuilders(
                 ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
                 ValidationActionType.WARNING.toString(), true, ValidationActionType.WARNING.toString(),
-                ValidationActionType.WARNING.getCode(), VALIDATION_ACTION_TYPE_SERVICE, krmsTypeRepositoryService, 1);
+                ValidationActionType.WARNING.getCode(), VALIDATION_ACTION_TYPE_SERVICE, krmsTypeBoService, 1);
         KrmsAttributeTypeDefinitionAndBuilders actionMessageDef = createKrmsAttributeTypeDefinitionAndBuilders(
                 ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
                 "Valdiation Action Message", true, "Valdiation Action Message",
-                WARNING_MESSAGE, VALIDATION_ACTION_TYPE_SERVICE, krmsTypeRepositoryService, 1);
+                WARNING_MESSAGE, VALIDATION_ACTION_TYPE_SERVICE, krmsTypeBoService, 1);
 
         List<KrmsAttributeTypeDefinitionAndBuilders> actionDefs = new LinkedList<KrmsAttributeTypeDefinitionAndBuilders>();
         actionDefs.add(actionDef);
@@ -203,15 +204,15 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         KrmsAttributeTypeDefinitionAndBuilders ruleDefs = createKrmsAttributeTypeDefinitionAndBuilders(
                 ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
                 ValidationRuleType.VALID.toString(), true, ValidationRuleType.VALID.toString(),
-                ValidationRuleType.VALID.getCode(), VALIDATION_RULE_TYPE_SERVICE, krmsTypeRepositoryService, 1);
+                ValidationRuleType.VALID.getCode(), VALIDATION_RULE_TYPE_SERVICE, krmsTypeBoService, 1);
         KrmsAttributeTypeDefinitionAndBuilders actionDef = createKrmsAttributeTypeDefinitionAndBuilders(
                 ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
                 ValidationActionType.ERROR.toString(), true, ValidationActionType.ERROR.toString(),
-                ValidationActionType.ERROR.getCode(), VALIDATION_ACTION_TYPE_SERVICE, krmsTypeRepositoryService, 1);
+                ValidationActionType.ERROR.getCode(), VALIDATION_ACTION_TYPE_SERVICE, krmsTypeBoService, 1);
         KrmsAttributeTypeDefinitionAndBuilders actionMessageDef = createKrmsAttributeTypeDefinitionAndBuilders(
                 ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
                 "Valdiation Action Message", true, "Valdiation Action Message",
-                ERROR_MESSAGE, VALIDATION_ACTION_TYPE_SERVICE, krmsTypeRepositoryService, 1);
+                ERROR_MESSAGE, VALIDATION_ACTION_TYPE_SERVICE, krmsTypeBoService, 1);
         List<KrmsAttributeTypeDefinitionAndBuilders> actionDefs = new LinkedList<KrmsAttributeTypeDefinitionAndBuilders>();
         actionDefs.add(actionDef);
         actionDefs.add(actionMessageDef);
@@ -230,15 +231,15 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         KrmsAttributeTypeDefinitionAndBuilders ruleDefs = createKrmsAttributeTypeDefinitionAndBuilders(
                 ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
                 ValidationRuleType.INVALID.toString(), true, ValidationRuleType.INVALID.toString(),
-                ValidationRuleType.INVALID.getCode(), VALIDATION_RULE_TYPE_SERVICE, krmsTypeRepositoryService, 1);
+                ValidationRuleType.INVALID.getCode(), VALIDATION_RULE_TYPE_SERVICE, krmsTypeBoService, 1);
         KrmsAttributeTypeDefinitionAndBuilders actionDef = createKrmsAttributeTypeDefinitionAndBuilders(
                 ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
                 ValidationActionType.ERROR.toString(), true, ValidationActionType.ERROR.toString(),
-                ValidationActionType.ERROR.getCode(), VALIDATION_ACTION_TYPE_SERVICE, krmsTypeRepositoryService, 1);
+                ValidationActionType.ERROR.getCode(), VALIDATION_ACTION_TYPE_SERVICE, krmsTypeBoService, 1);
         KrmsAttributeTypeDefinitionAndBuilders actionMessageDef = createKrmsAttributeTypeDefinitionAndBuilders(
                 ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
                 "Valdiation Action Message", true, "Valdiation Action Message",
-                ERROR_MESSAGE, VALIDATION_ACTION_TYPE_SERVICE, krmsTypeRepositoryService, 1);
+                ERROR_MESSAGE, VALIDATION_ACTION_TYPE_SERVICE, krmsTypeBoService, 1);
         List<KrmsAttributeTypeDefinitionAndBuilders> actionDefs = new LinkedList<KrmsAttributeTypeDefinitionAndBuilders>();
         actionDefs.add(actionDef);
         actionDefs.add(actionMessageDef);
@@ -275,7 +276,7 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         KrmsTypeDefinition.Builder krmsContextTypeDefnBuilder = KrmsTypeDefinition.Builder.create("KrmsTestContextType", nameSpace);
         krmsContextTypeDefnBuilder.setAttributes(Collections.singletonList(krmsTypeAttrBuilder));
         KrmsTypeDefinition krmsContextTypeDefinition = krmsContextTypeDefnBuilder.build();
-        krmsContextTypeDefinition = krmsTypeRepositoryService.createKrmsType(krmsContextTypeDefinition);
+        krmsContextTypeDefinition = krmsTypeBoService.createKrmsType(krmsContextTypeDefinition);
 
         // Context
         ContextDefinition.Builder contextBuilder = ContextDefinition.Builder.create(nameSpace, CONTEXT_NAME);
@@ -336,14 +337,14 @@ public class ValidationIntegrationTest extends AbstractBoTest {
     private KrmsTypeDefinition createKrmsCampusTypeDefinition(String nameSpace) {
 	    // KrmsType for campus svc
         KrmsTypeDefinition.Builder krmsCampusTypeDefnBuilder = KrmsTypeDefinition.Builder.create("CAMPUS", nameSpace);
-        KrmsTypeDefinition krmsCampusTypeDefinition = krmsTypeRepositoryService.createKrmsType(krmsCampusTypeDefnBuilder.build());
+        KrmsTypeDefinition krmsCampusTypeDefinition = krmsTypeBoService.createKrmsType(krmsCampusTypeDefnBuilder.build());
         return krmsCampusTypeDefinition;
     }
 
     private KrmsTypeDefinition createKrmsActionTypeDefinition(String nameSpace) {
         KrmsTypeDefinition.Builder krmsActionTypeDefnBuilder = KrmsTypeDefinition.Builder.create("KrmsActionResolverType", nameSpace);
         krmsActionTypeDefnBuilder.setServiceName("testActionTypeService");
-        KrmsTypeDefinition krmsActionTypeDefinition = krmsTypeRepositoryService.createKrmsType(krmsActionTypeDefnBuilder.build());
+        KrmsTypeDefinition krmsActionTypeDefinition = krmsTypeBoService.createKrmsType(krmsActionTypeDefnBuilder.build());
 
         return krmsActionTypeDefinition;
     }
@@ -378,7 +379,7 @@ public class ValidationIntegrationTest extends AbstractBoTest {
     private ContextBo createContext() {
         KrmsAttributeTypeDefinitionAndBuilders defs = createKrmsAttributeTypeDefinitionAndBuilders(
                 "ContextAttributeName", KrmsConstants.KRMS_NAMESPACE, "ContextLabel", true, "ContextTypeName",
-                "ContextTypeId", "ContextServiceName", krmsTypeRepositoryService, 1);
+                "ContextTypeId", "ContextServiceName", krmsTypeBoService, 1);
 
         ContextBo contextBo = new ContextBo();
         contextBo.setNamespace(KrmsConstants.KRMS_NAMESPACE);
@@ -389,7 +390,7 @@ public class ValidationIntegrationTest extends AbstractBoTest {
 
     private KrmsAttributeTypeDefinitionAndBuilders createKrmsAttributeTypeDefinitionAndBuilders(String attributeName,
             String namespace, String label, boolean active, String typeName, String typeId, String serviceName,
-            KrmsTypeRepositoryService krmsTypeRepositoryService, Integer sequenceNumber) {
+            KrmsTypeBoService krmsTypeBoService, Integer sequenceNumber) {
         KrmsAttributeDefinitionBo attributeDefinitionBo = new KrmsAttributeDefinitionBo();
         attributeDefinitionBo.setNamespace(namespace);
         attributeDefinitionBo.setName(attributeName);
@@ -404,7 +405,7 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         typeDefinition.setServiceName(serviceName);
         KrmsTypeAttribute.Builder attribDefinitionBuilder = KrmsTypeAttribute.Builder.create(typeId, attribDef.getId(), sequenceNumber);
         typeDefinition.getAttributes().add(attribDefinitionBuilder);
-        KrmsTypeDefinition typeDef = krmsTypeRepositoryService.createKrmsType(typeDefinition.build());
+        KrmsTypeDefinition typeDef = krmsTypeBoService.createKrmsType(typeDefinition.build());
         assertNotNull(typeDef);
 
         return new KrmsAttributeTypeDefinitionAndBuilders(attribDef, attribDefinitionBuilder, typeDef, typeDefinition);

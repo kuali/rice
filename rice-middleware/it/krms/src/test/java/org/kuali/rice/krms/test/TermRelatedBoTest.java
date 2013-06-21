@@ -24,8 +24,8 @@ import org.kuali.rice.krms.api.repository.term.TermDefinition;
 import org.kuali.rice.krms.api.repository.term.TermParameterDefinition;
 import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
 import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeBoService;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
-import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
 import org.kuali.rice.krms.impl.repository.ContextBoService;
 import org.kuali.rice.krms.impl.repository.ContextBoServiceImpl;
 import org.kuali.rice.krms.impl.repository.KrmsTypeBoServiceImpl;
@@ -39,7 +39,7 @@ public class TermRelatedBoTest extends AbstractBoTest {
 	
 	private TermBoService termBoService;
 	private ContextBoService contextRepository;
-	private KrmsTypeRepositoryService krmsTypeRepository;
+	private KrmsTypeBoService krmsTypeBoService;
 	
 	@Before
 	public void setup() {
@@ -52,8 +52,8 @@ public class TermRelatedBoTest extends AbstractBoTest {
 		contextRepository = new ContextBoServiceImpl();
 		((ContextBoServiceImpl)contextRepository).setBusinessObjectService(getBoService());
 		
-		krmsTypeRepository = new KrmsTypeBoServiceImpl();
-		((KrmsTypeBoServiceImpl)krmsTypeRepository).setBusinessObjectService(getBoService());
+		krmsTypeBoService = new KrmsTypeBoServiceImpl();
+		((KrmsTypeBoServiceImpl)krmsTypeBoService).setBusinessObjectService(getBoService());
 	}
 	
 	@Test
@@ -61,7 +61,7 @@ public class TermRelatedBoTest extends AbstractBoTest {
 
 		// KrmsType for context
 		KrmsTypeDefinition krmsContextTypeDefinition = KrmsTypeDefinition.Builder.create("KrmsTestContextType", "KRMS").build();
-		krmsContextTypeDefinition = krmsTypeRepository.createKrmsType(krmsContextTypeDefinition);
+		krmsContextTypeDefinition = krmsTypeBoService.createKrmsType(krmsContextTypeDefinition);
 
 		// Context
 		ContextDefinition.Builder contextBuilder = ContextDefinition.Builder.create("KRMS", "testContext");
@@ -83,7 +83,7 @@ public class TermRelatedBoTest extends AbstractBoTest {
 
 		// KrmsType for TermResolver
 		KrmsTypeDefinition krmsTermResolverTypeDefinition = KrmsTypeDefinition.Builder.create("KrmsTestResolverType", "KRMS").build();
-		krmsTermResolverTypeDefinition = krmsTypeRepository.createKrmsType(krmsTermResolverTypeDefinition);
+		krmsTermResolverTypeDefinition = krmsTypeBoService.createKrmsType(krmsTermResolverTypeDefinition);
 
 		// TermResolver
 		TermResolverDefinition termResolverDef = 

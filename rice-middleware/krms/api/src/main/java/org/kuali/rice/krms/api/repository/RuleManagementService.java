@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.List;
 import java.util.Set;
+import org.kuali.rice.krms.api.repository.action.ActionDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaTreeDefinition;
+import org.kuali.rice.krms.api.repository.context.ContextDefinition;
+import org.kuali.rice.krms.api.repository.context.ContextSelectionCriteria;
+import org.kuali.rice.krms.api.repository.language.NaturalLanguageTemplate;
 
 /**
  * The rule maintenance service operations facilitate management of rules and
@@ -44,8 +49,8 @@ import java.util.Set;
  */
 @WebService(name = "ruleManagementService", targetNamespace = KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL,
-        parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
-public interface RuleManagementService extends RuleRepositoryService {
+parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
+public interface RuleManagementService extends TranslateBusinessMethods {
 
     /**
      * Create RefObject-KRMS object binding
@@ -122,7 +127,27 @@ public interface RuleManagementService extends RuleRepositoryService {
     public List<ReferenceObjectBinding> findReferenceObjectBindingsByKrmsDiscriminatorType(
             @WebParam(name = "referenceObjectKrmsDiscriminatorType") String referenceObjectKrmsDiscriminatorType) throws RiceIllegalArgumentException;
 
-
+    
+    /**
+     * Retrieves list of ReferenceObjectBinding objects for the given obj
+     * discriminator type and reference object id
+     *
+     * @param referenceObjectReferenceDiscriminatorType  reference object type
+     * @param referenceObjectId reference object id
+     * @return list of ReferenceObjectBinding objects for the given discriminator
+     *         type
+     * @throws RiceIllegalArgumentException if the given  referenceObjectKrmsDiscriminatorType or id is
+     *                                      blank or invalid
+     */
+    @WebMethod(operationName = "findReferenceObjectBindingsByReferenceObject")
+    @XmlElementWrapper(name = "referenceObjectBindings", required = true)
+    @XmlElement(name = "referenceObjectBinding", required = false)
+    @WebResult(name = "referenceObjectBindings")
+    public List<ReferenceObjectBinding> findReferenceObjectBindingsByReferenceObject (
+            @WebParam(name = "referenceObjectReferenceDiscriminatorType") String referenceObjectReferenceDiscriminatorType, 
+            @WebParam(name = "referenceObjectId") String referenceObjectId) 
+            throws RiceIllegalArgumentException;
+    
     /**
      * Retrieves list of ReferenceObjectBinding objects for the given KRMS obj
      * id.
@@ -178,8 +203,11 @@ public interface RuleManagementService extends RuleRepositoryService {
     @WebResult(name = "referenceObjectBindingIds")
     List<String> findReferenceObjectBindingIds(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
 
+    ////
+    //// agenda methods
+    ////
     /**
-     * Create Agenda
+     * Create Agenda and an empty first item
      *
      * @param agendaDefinition data for the new Agenda to be created
      * @return newly created Agenda
@@ -189,6 +217,18 @@ public interface RuleManagementService extends RuleRepositoryService {
     @WebMethod(operationName = "createAgenda")
     @WebResult(name = "agenda")
     public AgendaDefinition createAgenda(@WebParam(name = "AgendaDefinition") AgendaDefinition agendaDefinition) throws RiceIllegalArgumentException;
+
+    /**
+     * Create Agenda if not found by contextId and name
+     *
+     * @param agendaDefinition data for the new Agenda to be created
+     * @return newly created or found Agenda
+     * @throws RiceIllegalArgumentException if the given agendaDefinition is
+     *                                      null or invalid
+     */
+    @WebMethod(operationName = "findCreateAgenda")
+    @WebResult(name = "agenda")
+    public AgendaDefinition findCreateAgenda(@WebParam(name = "AgendaDefinition") AgendaDefinition agendaDefinition) throws RiceIllegalArgumentException;
 
     /**
      * Retrieve Agenda for the specified id
@@ -201,6 +241,21 @@ public interface RuleManagementService extends RuleRepositoryService {
     @WebResult(name = "agenda")
     public AgendaDefinition getAgenda(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
 
+    /**
+     * Retrieves an Agenda from the repository based on the provided agenda name
+     * and context id.
+     *
+     * @param name the name of the Agenda to retrieve.
+     * @param contextId the id of the context that the agenda belongs to.
+     * @return an {@link AgendaDefinition} identified by the given name and namespace.  
+     * A null reference is returned if an invalid or non-existent name and
+     * namespace combination is supplied.
+     */
+    @WebMethod(operationName = "getAgendaByNameAndContextId")
+    @WebResult(name = "agenda")
+    public AgendaDefinition getAgendaByNameAndContextId (@WebParam(name = "name") String name,
+                                                         @WebParam(name = "contextId") String contextId);
+    
     /**
      * Retrieve Agendas of the specified type
      *
@@ -264,6 +319,9 @@ public interface RuleManagementService extends RuleRepositoryService {
     @WebMethod(operationName = "deleteAgenda")
     public void deleteAgenda(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
 
+    ////
+    //// agenda item methods
+    ////
     /**
      * Create AgendaItem
      *
@@ -350,7 +408,9 @@ public interface RuleManagementService extends RuleRepositoryService {
     @WebMethod(operationName = "deleteAgendaItem")
     public void deleteAgendaItem(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
 
-
+    ////
+    //// rule methods
+    ////
     /**
      * Create Rule
      *
@@ -376,9 +436,25 @@ public interface RuleManagementService extends RuleRepositoryService {
      */
     @WebMethod(operationName = "getRule")
     @WebResult(name = "rule")
-    @Cacheable(value = RuleDefinition.Cache.NAME, key = "'ruleId=' + #p0")
     public RuleDefinition getRule(@WebParam(name = "ruleId") String ruleId);
 
+    /**
+     * Retrieves an Rule from the repository based on the provided rule name
+     * and namespace.
+     *
+     * @param name the name of the Rule to retrieve.
+     * @param namespace the namespace that the rule is under.
+     * @return an {@link RuleDefinition} identified by the given name and namespace.
+     * A null reference is returned if an invalid or non-existent name and
+     * namespace combination is supplied.
+     * @throws IllegalArgumentException if the either the name or the namespace
+     * is null or blank.
+     */
+    @WebMethod(operationName = "getRuleByNameAndNamespace")
+    @WebResult(name = "rule")
+    public RuleDefinition getRuleByNameAndNamespace(@WebParam(name = "name") String name, 
+                                                    @WebParam(name = "namespace") String namespace);
+	
     /**
      * Retrieves all of the rules for the given list of ruleIds.  The rule
      * includes the propositions which define the condition that is to be
@@ -423,6 +499,82 @@ public interface RuleManagementService extends RuleRepositoryService {
     @WebMethod(operationName = "deleteRule")
     public void deleteRule(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
 
+    ////
+    //// action methods
+    ////
+    /**
+     * Create Action
+     *
+     * @param actionDefinition data for the new Action to be created
+     * @return newly created Action
+     * @throws RiceIllegalArgumentException if the given actionDefinition is null
+     * or invalid
+     */
+    @WebMethod(operationName = "createAction")
+    @WebResult(name = "action")
+    public ActionDefinition createAction(@WebParam(name = "actionDefinition") ActionDefinition actionDefinition) throws RiceIllegalArgumentException;
+
+    /**
+     * Retrieves the action for the given actionId. The action includes the
+     * propositions which define the condition that is to be evaluated on the
+     * action. It also defines a collection of actions which will be invoked if
+     * the action succeeds.
+     *
+     * @param actionId the id of the action to retrieve
+     * @return the action definition, or null if no action could be located for the
+     * given actionId
+     * @throws IllegalArgumentException if the given actionId is null
+     */
+    @WebMethod(operationName = "getAction")
+    @WebResult(name = "action")
+    public ActionDefinition getAction(@WebParam(name = "actionId") String actionId) throws RiceIllegalArgumentException;
+
+    /**
+     * Retrieves all of the actions for the given list of actionIds.
+     * <p/>
+     * <p>The list which is returned from this operation may not be the same
+     * size as the list which is passed to this method. If a action doesn't exist
+     * for a given action id then no result for that id will be returned in the
+     * list. As a result of this, the returned list can be empty, but it will
+     * never be null.
+     *
+     * @param actionIds the list of action ids for which to retrieve the actions
+     * @return the list of actions for the given ids, this list will only contain
+     * actions for the ids that were resolved successfully, it will never return
+     * null but could return an empty list if no actions could be loaded for the
+     * given set of ids
+     * @throws IllegalArgumentException if the given list of actionIds is null
+     */
+    @WebMethod(operationName = "getActions")
+    @XmlElementWrapper(name = "actions", required = true)
+    @XmlElement(name = "action", required = false)
+    @WebResult(name = "actions")
+    public List<ActionDefinition> getActions(@WebParam(name = "actionIds") List<String> actionIds)  throws RiceIllegalArgumentException;
+
+    /**
+     * Update the Action specified by the identifier in the DTO
+     *
+     * @param actionDefinition updated Action information, object specified by the
+     * id
+     * @throws RiceIllegalArgumentException if the given actionDefinition is null
+     * or invalid
+     */
+    @WebMethod(operationName = "updateAction")
+    public void updateAction(@WebParam(name = "actionDefinition") ActionDefinition actionDefinition) throws RiceIllegalArgumentException;
+
+    /**
+     * Delete the specified Action
+     *
+     * @param id identifier of the Action to be deleted
+     * @throws RiceIllegalArgumentException if the given id is null or invalid
+     */
+    @WebMethod(operationName = "deleteAction")
+    public void deleteAction(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
+  
+    
+    ////
+    //// proposition methods
+    ////
     /**
      * Create a Proposition
      *
@@ -494,6 +646,9 @@ public interface RuleManagementService extends RuleRepositoryService {
     @WebMethod(operationName = "deleteProposition")
     public void deleteProposition(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
 
+    ////
+    //// natural language usages
+    ////
     /**
      * Create NaturalLanguageUsage
      *
@@ -518,6 +673,23 @@ public interface RuleManagementService extends RuleRepositoryService {
     public NaturalLanguageUsage getNaturalLanguageUsage(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
 
     /**
+     * Retrieve NaturalLanguageUsage specified by name and namespace
+     *
+     * @param name the name of the natural language usage to retrieve.
+     * @param namespace the namespace that the natural language usage is under.
+     * @return an {@link NaturalLanguageUsage} identified by the given name and
+     * namespace. A null reference is returned if an invalid or non-existent
+     * name and namespace combination is supplied.
+     * @throws RiceIllegalArgumentException if the either the name or the
+     * namespace is null or blank.
+     */
+    @WebMethod(operationName = "getNaturalLanguageUsageByNameAndNamespace")
+    @WebResult(name = "naturalLanguageUsage")
+    public NaturalLanguageUsage getNaturalLanguageUsageByNameAndNamespace(@WebParam(name = "name") String name,
+            @WebParam(name = "namespace") String namespace)
+            throws RiceIllegalArgumentException;
+
+    /**
      * Update NaturalLanguageUsage
      *
      * @param naturalLanguageUsage updated data for the NaturalLanguageUsage object specified by the id
@@ -533,13 +705,229 @@ public interface RuleManagementService extends RuleRepositoryService {
      * @param naturalLanguageUsageId  identifier of the NaturalLanguageUsage to be deleted
      * @throws RiceIllegalArgumentException  if the given naturalLanguageUsageId is null or invalid
      */
-    @WebMethod(operationName = "deleteNaturalLanguageUsageType")
-    public void deleteNaturalLanguageUsageType(@WebParam(name = "naturalLanguageUsageId") String naturalLanguageUsageId) throws RiceIllegalArgumentException;
+    @WebMethod(operationName = "deleteNaturalLanguageUsage")
+    public void deleteNaturalLanguageUsage(@WebParam(name = "naturalLanguageUsageId") String naturalLanguageUsageId) throws RiceIllegalArgumentException;
 
     /**
      * Translates and retrieves a NaturalLanguage for a given KRMS object (e.g, proposition
      * or agenda), NaturalLanguage usage type (context) and language into natural language
      * TODO: Add appropriate caching annotation
+     *
+     * @param namespace namespace to search on.
+     * @return list of NaturalLanguageUsages in a particular namespace
+     */
+    @WebMethod(operationName = "getNaturalLanguageUsagesByNamespace")
+    @XmlElementWrapper(name = "naturalLanguageUsages", required = true)
+    @XmlElement(name = "naturalLanguageUsage", required = false)
+    @WebResult(name = "naturalLanguageUsages")
+    public List<NaturalLanguageUsage> getNaturalLanguageUsagesByNamespace(@WebParam(name = "namespace") String namespace)
+            throws RiceIllegalArgumentException;
+
+    ////
+    //// context methods
+    ////
+    /**
+     * Create Context
+     *
+     * @param contextDefinition data for the new Context to be created
+     * @return newly created Context
+     * @throws RiceIllegalArgumentException if the given contextDefinition is
+     * null or invalid or already in use.
+     */
+    @WebMethod(operationName = "createContext")
+    @WebResult(name = "context")
+    public ContextDefinition createContext(@WebParam(name = "contextDefinition") ContextDefinition contextDefinition) throws RiceIllegalArgumentException;
+
+    
+    /**
+     * find Create Context
+     * 
+     * Searches for an existing context with the same name and namespace and returns it
+     * otherwise it creates the context.
+     *
+     * @param contextDefinition data for the new Context to be created
+     * @return newly created Context
+     * @throws RiceIllegalArgumentException if the given contextDefinition is
+     * null or invalid
+     */
+    @WebMethod(operationName = "findCreateContext")
+    @WebResult(name = "context")
+    public ContextDefinition findCreateContext(@WebParam(name = "contextDefinition") ContextDefinition contextDefinition) throws RiceIllegalArgumentException;
+
+    
+    /**
+     * Update the Context specified by the identifier in the input DTO
+     *
+     * @param contextDefinition DTO with updated info and identifier of the
+     * object to be updated
+     * @throws RiceIllegalArgumentException if the given contextDefinition is
+     * null or invalid
+     */
+    @WebMethod(operationName = "updateContext")
+    public void updateContext(@WebParam(name = "contextDefinition") ContextDefinition contextDefinition) throws RiceIllegalArgumentException;
+
+    /**
+     * Delete the specified Context
+     *
+     * @param id identifier of the object to be deleted
+     * @throws RiceIllegalArgumentException if the given id is null or invalid
+     */
+    @WebMethod(operationName = "deleteContext")
+    public void deleteContext(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
+
+    /**
+     * Retrieve Context for the specified id
+     *
+     * @param id identifier for the Context
+     * @return specified Context
+     * @throws RiceIllegalArgumentException if the given id is null or invalid
+     */
+    @WebMethod(operationName = "getContext")
+    @WebResult(name = "context")
+    public ContextDefinition getContext(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
+
+    /**
+     * Retrieves an Context from the repository based on the provided context
+     * name and namespace.
+     *
+     * @param name the name of the Context to retrieve.
+     * @param namespace the namespace that the context is under.
+     * @return an {@link ContextDefinition} identified by the given name and
+     * namespace. A null reference is returned if an invalid or non-existent
+     * name and namespace combination is supplied.
+     * @throws RiceIllegalArgumentException if the either the name or the
+     * namespace is null or blank.
+     */
+    @WebMethod(operationName = "getContextByNameAndNamespace")
+    @WebResult(name = "context")
+    public ContextDefinition getContextByNameAndNamespace(@WebParam(name = "name") String name,
+            @WebParam(name = "namespace") String namespace)
+            throws RiceIllegalArgumentException;
+
+    //// natural languatge template methods
+    /**
+     * This will create a {@link NaturalLanguageTemplate} exactly like the
+     * parameter passed in except the id will be assigned and create date/user 
+     * will be set.
+     *
+     * @param naturalLanguageTemplate The NaturalLanguageTemplate to create.
+     * @throws RiceIllegalArgumentException if the NaturalLanguageTemplate is null.
+     * @throws IllegalStateException if the NaturalLanguageTemplate already
+     * exists in the system.
+     * @return a {@link NaturalLanguageTemplate} exactly like the parameter
+     * passed in.
+     *
+     */
+    @WebMethod(operationName = "createNaturalLanguageTemplate")
+    @WebResult(name = "naturalLanguageTemplate")
+    public NaturalLanguageTemplate createNaturalLanguageTemplate(@WebParam(name = "naturalLanguageTemplate") NaturalLanguageTemplate naturalLanguageTemplate)
+            throws RiceIllegalArgumentException;
+
+    /**
+     * Retrieves a NaturalLanguageTemplate from the repository based on the
+     * given id.
+     *
+     * @param naturalLanguageTemplateId to retrieve.
+     * @return a {@link NaturalLanguageTemplate} identified by the given id. 
+     * @throws IllegalArgumentException if the given actionId is null     *
+     */
+    @WebMethod(operationName = "getNaturalLanguageTemplate")
+    @WebResult(name = "naturalLanguageTemplate")
+    public NaturalLanguageTemplate getNaturalLanguageTemplate(@WebParam(name = "naturalLanguageTemplateId") String naturalLanguageTemplateId)
+            throws RiceIllegalArgumentException;
+
+    /**
+     * This will update an existing {@link NaturalLanguageTemplate}.
+     *
+     * @param naturalLanguageTemplate The NaturalLanguageTemplate to update.
+     * @throws RiceIllegalArgumentException if the NaturalLanguageTemplate is null.
+     * exists in the system.
+     *
+     */
+    @WebMethod(operationName = "updateNaturalLanguageTemplate")
+    public void updateNaturalLanguageTemplate(@WebParam(name = "naturalLanguageTemplate") NaturalLanguageTemplate naturalLanguageTemplate)
+            throws RiceIllegalArgumentException;
+
+    /**
+     * Delete the {@link NaturalLanguageTemplate} with the given id.
+     *
+     * @param naturalLanguageTemplateId to delete.
+     * @throws RiceIllegalArgumentException if the NaturalLanguageTemplate is null.
+     *
+     */
+    @WebMethod(operationName = "deleteNaturalLanguageTemplate")
+    public void deleteNaturalLanguageTemplate(@WebParam(name = "naturalLanguageTemplateId") String naturalLanguageTemplateId)
+            throws RiceIllegalArgumentException;
+
+    /**
+     * Finds all the natural language templates for a particular language
+     *
+     * @param languageCode language on which to search
+     * @return list of templates for that language
+     */
+    @WebMethod(operationName = "findNaturalLanguageTemplatesByLanguageCode")
+    @XmlElementWrapper(name = "naturalLangaugeTemplates", required = true)
+    @XmlElement(name = "naturalLangaugeTemplate", required = false)
+    @WebResult(name = "naturalLangaugeTemplates")
+    public List<NaturalLanguageTemplate> findNaturalLanguageTemplatesByLanguageCode(@WebParam(name = "languageCode") String languageCode)
+            throws RiceIllegalArgumentException;
+
+    @WebMethod(operationName = "findNaturalLanguageTemplateByLanguageCodeTypeIdAndNluId")
+    @WebResult(name = "naturalLangaugeTemplate")
+    public NaturalLanguageTemplate findNaturalLanguageTemplateByLanguageCodeTypeIdAndNluId(@WebParam(name = "languageCode") String languageCode,
+            @WebParam(name = "typeId") String typeId,
+            @WebParam(name = "naturalLanguageUsageId") String naturalLanguageUsageId)
+            throws RiceIllegalArgumentException;
+
+    /**
+     * Find all the natural language templates for a particular usage
+     *
+     * @param naturalLanguageUsageId the usage on which to search
+     * @return list of templates that match the usage
+     */
+    @WebMethod(operationName = "findNaturalLanguageTemplatesByNaturalLanguageUsage")
+    @XmlElementWrapper(name = "naturalLangaugeTemplates", required = true)
+    @XmlElement(name = "naturalLangaugeTemplate", required = false)
+    @WebResult(name = "naturalLangaugeTemplates")
+    public List<NaturalLanguageTemplate> findNaturalLanguageTemplatesByNaturalLanguageUsage(@WebParam(name = "naturalLanguageUsageId") String naturalLanguageUsageId)
+            throws RiceIllegalArgumentException;
+
+    /**
+     * Find all the natural language templates of a particular type
+     *
+     * Template types are keys that identify the message that is to be expressed
+     * in different languages and in different usage scenarios
+     *
+     * @param typeId on which to search
+     * @return list of templates matching that type
+     */
+    @WebMethod(operationName = "findNaturalLanguageTemplatesByType")
+    @XmlElementWrapper(name = "naturalLangaugeTemplates", required = true)
+    @XmlElement(name = "naturalLangaugeTemplate", required = false)
+    @WebResult(name = "naturalLangaugeTemplates")
+    public List<NaturalLanguageTemplate> findNaturalLanguageTemplatesByType(@WebParam(name = "typeId") String typeId)
+            throws RiceIllegalArgumentException;
+
+    /**
+     * Find the natural language template using the actual text of the template.
+     *
+     * @param template text to match exactly
+     * @return list of matching templates
+     */
+    @WebMethod(operationName = "findNaturalLanguageTemplatesByTemplate")
+    @XmlElementWrapper(name = "naturalLangaugeTemplates", required = true)
+    @XmlElement(name = "naturalLangaugeTemplate", required = false)
+    @WebResult(name = "naturalLangaugeTemplates")
+    public List<NaturalLanguageTemplate> findNaturalLanguageTemplatesByTemplate(@WebParam(name = "template") String template)
+            throws RiceIllegalArgumentException;
+
+    ////
+    //// translation methods
+    ////
+    /**
+     * Translates and retrieves a NaturalLanguage for a given KRMS object (e.g,
+     * proposition or agenda), NaturalLanguage usage type (context) and language
+     * into natural language TODO: Add appropriate caching annotation
      *
      * @param naturalLanguageUsageId Natural language usage information
      * @param typeId    KRMS object type id (for example, could refer to agenda
@@ -551,9 +939,11 @@ public interface RuleManagementService extends RuleRepositoryService {
      *                                      krmsObjectId or language is null or
      *                                      invalid
      */
-    @WebMethod(operationName = "getNaturalLanguageForType")
+    @WebMethod(operationName = "translateNaturalLanguageForObject")
     @WebResult(name = "naturalLanguage")
-    public String getNaturalLanguageForType(@WebParam(name = "naturalLanguageUsageId") String naturalLanguageUsageId, @WebParam(name = "typeId") String typeId, @WebParam(name = "krmsObjectId") String krmsObjectId,
+    @Override
+    public String translateNaturalLanguageForObject(@WebParam(name = "naturalLanguageUsageId") String naturalLanguageUsageId,
+            @WebParam(name = "typeId") String typeId, @WebParam(name = "krmsObjectId") String krmsObjectId,
             @WebParam(name = "languageCode") String languageCode) throws RiceIllegalArgumentException;
 
     /**
@@ -561,9 +951,195 @@ public interface RuleManagementService extends RuleRepositoryService {
      *
      * @return list of NaturalLanguageUsages
      */
-    @WebMethod(operationName = "getNaturalLanguageUsages")
-    @XmlElementWrapper(name = "naturalLanguageUsages", required = true)
-    @XmlElement(name = "naturalLanguageUsage", required = false)
-    @WebResult(name = "naturalLanguageUsages")
-    public Set<NaturalLanguageUsage> getNaturalLanguageUsages();
+    @WebMethod(operationName = "translateNaturalLanguageForProposition")
+    @WebResult(name = "naturalLanguage")
+    @Override
+    public String translateNaturalLanguageForProposition(@WebParam(name = "naturalLanguageUsageId") String naturalLanguageUsageId,
+            @WebParam(name = "propositionDefinintion") PropositionDefinition propositionDefinintion,
+            @WebParam(name = "languageCode") String languageCode)
+            throws RiceIllegalArgumentException;
+
+    /**
+     * Translates NaturalLanguage for a given proposition, returning a tree of
+     * the NaturalLanguage.
+     *
+     * This method is used to "preview" the proposition in a tree structure
+     * before saving.
+     *
+     * @param naturalLanguageUsageId Natural language usage information
+     * @param propositionDefinintion proposition to be translated
+     * @param languageCode desired
+     * @return natural language tree corresponding to the NaturalLanguage usage,
+     * proposition and desired language
+     * @throws RiceIllegalArgumentException if the given naturalLanguageUsageId,
+     * proposition, or language is null or invalid
+     */
+    @WebMethod(operationName = "translateNaturalLanguageTreeForProposition")
+    @WebResult(name = "naturalLanguageTree")
+    @Override
+    public NaturalLanguageTree translateNaturalLanguageTreeForProposition(@WebParam(name = "naturalLanguageUsageId") String naturalLanguageUsageId,
+            @WebParam(name = "propositionDefinintion") PropositionDefinition propositionDefinintion,
+            @WebParam(name = "languageCode") String languageCode)
+            throws RiceIllegalArgumentException;
+
+  
+    /**
+     * Query for Context ids based on the given search criteria which is a Map
+     * of Context field names to values.
+     * <p/>
+     * <p> This method returns it's results as a List of Context ids that match
+     * the given search criteria. </p>
+     *
+     * @param queryByCriteria the criteria. Cannot be null.
+     * @return a list of ids matching the given criteria properties. An empty
+     * list is returned if an invalid or non-existent criteria is supplied.
+     * @throws RiceIllegalArgumentException if the queryByCriteria is null
+     */
+    @WebMethod(operationName = "findContextIds")
+    @XmlElementWrapper(name = "contextIds", required = true)
+    @XmlElement(name = "context", required = false)
+    @WebResult(name = "contextIds")
+    List<String> findContextIds(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
+
+    /**
+     * Query for Agenda ids based on the given search criteria which is a Map of
+     * Agenda field names to values.
+     * <p/>
+     * <p> This method returns it's results as a List of Agenda ids that match
+     * the given search criteria. </p>
+     *
+     * @param queryByCriteria the criteria. Cannot be null.
+     * @return a list of ids matching the given criteria properties. An empty
+     * list is returned if an invalid or non-existent criteria is supplied.
+     * @throws RiceIllegalArgumentException if the queryByCriteria is null
+     */
+    @WebMethod(operationName = "findAgendaIds")
+    @XmlElementWrapper(name = "contextIds", required = true)
+    @XmlElement(name = "agenda", required = false)
+    @WebResult(name = "agendaIds")
+    List<String> findAgendaIds(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
+
+    /**
+     * Query for Rule ids based on the given search criteria which is a Map of
+     * Rule field names to values.
+     * <p/>
+     * <p> This method returns it's results as a List of Rule ids that match the
+     * given search criteria. </p>
+     *
+     * @param queryByCriteria the criteria. Cannot be null.
+     * @return a list of ids matching the given criteria properties. An empty
+     * list is returned if an invalid or non-existent criteria is supplied.
+     * @throws RiceIllegalArgumentException if the queryByCriteria is null
+     */
+    @WebMethod(operationName = "findRuleIds")
+    @XmlElementWrapper(name = "ruleIds", required = true)
+    @XmlElement(name = "rule", required = false)
+    @WebResult(name = "ruleIds")
+    List<String> findRuleIds(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
+
+    /**
+     * Query for Proposition ids based on the given search criteria which is a
+     * Map of Proposition field names to values.
+     * <p/>
+     * <p> This method returns it's results as a List of Proposition ids that
+     * match the given search criteria. </p>
+     *
+     * @param queryByCriteria the criteria. Cannot be null.
+     * @return a list of ids matching the given criteria properties. An empty
+     * list is returned if an invalid or non-existent criteria is supplied.
+     * @throws RiceIllegalArgumentException if the queryByCriteria is null
+     */
+    @WebMethod(operationName = "findPropositionIds")
+    @XmlElementWrapper(name = "propositionIds", required = true)
+    @XmlElement(name = "proposition", required = false)
+    @WebResult(name = "propositionIds")
+    List<String> findPropositionIds(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
+
+    /**
+     * Query for Action ids based on the given search criteria which is a Map
+     * of Action field names to values.
+     * <p/>
+     * <p> This method returns it's results as a List of Action ids that match
+     * the given search criteria. </p>
+     *
+     * @param queryByCriteria the criteria. Cannot be null.
+     * @return a list of ids matching the given criteria properties. An empty
+     * list is returned if an invalid or non-existent criteria is supplied.
+     * @throws RiceIllegalArgumentException if the queryByCriteria is null
+     */
+    @WebMethod(operationName = "findActionIds")
+    @XmlElementWrapper(name = "actionIds", required = true)
+    @XmlElement(name = "action", required = false)
+    @WebResult(name = "actionIds")
+    List<String> findActionIds(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
+    
+    ////
+    //// extra methods from RuleRepositoryService copied here so I can break the dependence on that service
+    //// and then implement different caching schemes for each 
+    ////
+    
+    
+      /**
+     * Locates a ContextDefinition based on the given map of context qualifiers.
+     * The requirements for valid selection criteria are implementation
+     * dependent. An IllegalArgumentException may be thrown if the
+     * implementation can't operate with the given criteria.
+     *
+     * @param contextSelectionCriteria
+     * @return
+     * @see ContextSelectionCriteria
+     * @throws RiceIllegalArgumentException if the implementation can't handle
+     * the given ContextSelectionCriteria
+     */
+    @WebMethod(operationName = "selectContext")
+    @WebResult(name = "contextDefinition")
+    public ContextDefinition selectContext(@WebParam(name = "contextSelectionCriteria") ContextSelectionCriteria contextSelectionCriteria)
+            throws RiceIllegalArgumentException;
+
+    /**
+     * Retrieves the agenda tree for the given agendaId. The agenda tree
+     * includes the entire agenda definition in the appropriate order and with
+     * the defined agenda branching.
+     *
+     * @param agendaId the id of the agenda for which to retrieve the agenda
+     * tree
+     * @return the agenda tree, or null if no agenda could be located for the
+     * given agendaId
+     *
+     * @throws RiceIllegalArgumentException if the given agendaId is null
+     */
+    @WebMethod(operationName = "getAgendaTree")
+    @WebResult(name = "agendaTree")
+    public AgendaTreeDefinition getAgendaTree(@WebParam(name = "agendaId") String agendaId)
+            throws RiceIllegalArgumentException;
+
+    /**
+     * Retrieves all of the agendas trees for the given list of agendaIds. The
+     * agenda tree includes the entire agenda definition in the appropriate
+     * order and with the defined agenda branching.
+     *
+     * <p>The list which is returned from this operation may not be the same
+     * size as the list which is passed to this method. If an agenda doesn't
+     * exist for a given agenda id then no result for that id will be returned
+     * in the list. As a result of this, the returned list can be empty, but it
+     * will never be null.
+     *
+     * @param agendaIds the list of agenda ids for which to retrieve the agenda
+     * trees
+     * @return the list of agenda trees for the given ids, this list will only
+     * contain agenda trees for the ids that were resolved successfully, it will
+     * never return null but could return an empty list if no agenda trees could
+     * be loaded for the given set of ids
+     *
+     * @throws RiceIllegalArgumentException if the given list of agendaIds is
+     * null
+     */
+    @WebMethod(operationName = "getAgendaTrees")
+    @XmlElementWrapper(name = "agendaTrees", required = true)
+    @XmlElement(name = "agendaTree", required = false)
+    @WebResult(name = "agendaTrees")
+    public List<AgendaTreeDefinition> getAgendaTrees(@WebParam(name = "agendaIds") List<String> agendaIds)
+            throws RiceIllegalArgumentException;
+
+   
 }

@@ -29,6 +29,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.krms.api.repository.term.TermDefinition;
 
 /**
  * Concrete model object implementation of KRMS Proposition Parameter 
@@ -43,6 +44,7 @@ import org.kuali.rice.core.api.mo.ModelBuilder;
 		PropositionParameter.Elements.ID,
 		PropositionParameter.Elements.PROP_ID,
 		PropositionParameter.Elements.VALUE,
+		PropositionParameter.Elements.TERM_VALUE,
 		PropositionParameter.Elements.PARM_TYPE,
 		PropositionParameter.Elements.SEQUENCE,
         CoreConstants.CommonElements.VERSION_NUMBER,
@@ -57,6 +59,8 @@ public final class PropositionParameter extends AbstractDataTransferObject imple
 	private String propId;
 	@XmlElement(name = Elements.VALUE, required=true)
 	private String value;
+	@XmlElement(name = Elements.TERM_VALUE, required=true)
+	private TermDefinition termValue;
 	@XmlElement(name = Elements.PARM_TYPE, required=true)
 	private String parameterType;
 	@XmlElement(name = Elements.SEQUENCE, required=true)
@@ -76,6 +80,7 @@ public final class PropositionParameter extends AbstractDataTransferObject imple
     	this.id = null;
     	this.propId = null;
     	this.value = null;
+    	this.termValue = null;
     	this.parameterType = null;
     	this.sequenceNumber = null;
         this.versionNumber = null;
@@ -91,6 +96,7 @@ public final class PropositionParameter extends AbstractDataTransferObject imple
         this.id = builder.getId();
         this.propId = builder.getPropId();
         this.value = builder.getValue();
+        this.termValue = builder.getTermValue();
         this.parameterType = builder.getParameterType();
         this.sequenceNumber = builder.getSequenceNumber();
         this.versionNumber = builder.getVersionNumber();
@@ -109,6 +115,11 @@ public final class PropositionParameter extends AbstractDataTransferObject imple
 	@Override
 	public String getValue() {
 		return this.value;
+	}
+        
+        @Override
+	public TermDefinition getTermValue() {
+		return this.termValue;
 	}
 
 	@Override
@@ -135,6 +146,7 @@ public final class PropositionParameter extends AbstractDataTransferObject imple
 		private String id;
         private String propId;
         private String value;
+        private TermDefinition termValue;
         private String parameterType;
         private Integer sequenceNumber;
         private Long versionNumber;
@@ -181,6 +193,40 @@ public final class PropositionParameter extends AbstractDataTransferObject imple
             }
             Builder builder =  new Builder(contract.getId(), contract.getPropId(), contract.getValue(), contract.getParameterType(), contract.getSequenceNumber());
             builder.setVersionNumber(contract.getVersionNumber());
+            builder.setTermValue(contract.getTermValue());
+            return builder;
+        }
+
+        /**
+         * Creates a builder by populating it with data from the given {@link PropositionParameterContract}.
+         * 
+         * @param propositionParameter the contract from which to populate this builder
+         * @return an instance of the builder populated with data from the contract
+         */
+        public static PropositionParameter.Builder create(PropositionParameter propositionParameter) {
+        	if (propositionParameter == null) {
+                throw new IllegalArgumentException("parameter is null");
+            }
+            Builder builder =  new Builder(propositionParameter.getId(), propositionParameter.getPropId(), propositionParameter.getValue(), propositionParameter.getParameterType(), propositionParameter.getSequenceNumber());
+            builder.setVersionNumber(propositionParameter.getVersionNumber());
+            builder.setTermValue(propositionParameter.getTermValue());
+            return builder;
+        }
+
+
+        /**
+         * Creates a builder by populating it with data from the given {@link PropositionParameterContract}.
+         * 
+         * @param inputBuilder the contract from which to populate this builder
+         * @return an instance of the builder populated with data from the contract
+         */
+        public static PropositionParameter.Builder create(Builder inputBuilder) {
+        	if (inputBuilder == null) {
+                throw new IllegalArgumentException("inputBuilder is null");
+            }
+            Builder builder =  new Builder(inputBuilder.getId(), inputBuilder.getPropId(), inputBuilder.getValue(), inputBuilder.getParameterType(), inputBuilder.getSequenceNumber());
+            builder.setVersionNumber(inputBuilder.getVersionNumber());
+            builder.setTermValue(inputBuilder.getTermValue());
             return builder;
         }
 
@@ -222,6 +268,15 @@ public final class PropositionParameter extends AbstractDataTransferObject imple
                 throw new IllegalArgumentException("value must contain non-whitespace characters");
             }
 			this.value = value;
+		}
+                        
+        /**
+         * Sets the value of the termValue on this builder to the given value.
+         * 
+         * @param termValue the termValue value to set, may be null
+         */
+		public void setTermValue(TermDefinition termValue) {
+			this.termValue = termValue;
 		}
 
         /**
@@ -290,6 +345,11 @@ public final class PropositionParameter extends AbstractDataTransferObject imple
 			return value;
 		}
 
+                @Override
+		public TermDefinition getTermValue() {
+			return termValue;
+		}
+
 		@Override
 		public String getParameterType() {
 			return parameterType;
@@ -336,6 +396,7 @@ public final class PropositionParameter extends AbstractDataTransferObject imple
 		final static String ID = "id";
 		final static String PROP_ID = "propId";
 		final static String VALUE = "value";
+		final static String TERM_VALUE = "termValue";
 		final static String PARM_TYPE = "parameterType";
 		final static String SEQUENCE = "sequenceNumber";
 	}

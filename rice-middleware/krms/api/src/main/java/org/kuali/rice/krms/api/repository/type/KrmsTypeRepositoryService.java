@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,12 +29,34 @@ import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.List;
+import org.kuali.rice.krms.api.repository.typerelation.RelationshipType;
+import org.kuali.rice.krms.api.repository.typerelation.TypeTypeRelation;
 
 
 @WebService(name = "KRMSTypeService", targetNamespace = KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface KrmsTypeRepositoryService {
 
+    public static final String CONTEXT_SERVICE_NAME = "contextTypeService";
+    public static final String AGENDA_SERVICE_NAME = "agendaTypeService";
+    public static final String RULE_SERVICE_NAME = "ruleTypeService";
+    public static final String SIMPLE_PROPOSITION_SERVICE_NAME = "simplePropositionTypeService";
+    public static final String COMPOUND_PROPOSITION_SERVICE_NAME = "compoundPropositionTypeService";
+    public static final String TERM_PROPOSITION_PARAMETER_SERVICE_NAME = "termPropositionParameterTypeService";
+    public static final String OPERATOR_PROPOSITION_PARAMETER_SERVICE_NAME = "operatorPropositionParameterTypeService";
+    public static final String CONSTANT_VALUE_PROPOSITION_PARAMETER_SERVICE_NAME = "constantPropositionParameterTypeService";
+    public static final String FUNCTION_PROPOSITION_PARAMETER_SERVICE_NAME = "functionPropositionParameterTypeService";
+    public static final String[] PROPOSITION_SERVICE_NAMES = {SIMPLE_PROPOSITION_SERVICE_NAME,
+        COMPOUND_PROPOSITION_SERVICE_NAME};
+    public static final String[] PROPOSITION_PARAMETER_SERVICE_NAMES = {TERM_PROPOSITION_PARAMETER_SERVICE_NAME,
+        OPERATOR_PROPOSITION_PARAMETER_SERVICE_NAME,
+        CONSTANT_VALUE_PROPOSITION_PARAMETER_SERVICE_NAME,
+        FUNCTION_PROPOSITION_PARAMETER_SERVICE_NAME};
+    public static final String TERM_PARAMETER_SERVICE_NAME = "termParameterTypeService";
+    
+    ////
+    //// type methods
+    ////
     /**
      * This will create a {@link KrmsTypeDefinition} exactly like the parameter passed in.
      *
@@ -47,7 +69,7 @@ public interface KrmsTypeRepositoryService {
     @WebResult(name = "krmsType")
     @CacheEvict(value={KrmsTypeDefinition.Cache.NAME}, allEntries = true)
     KrmsTypeDefinition createKrmsType(@WebParam(name = "krmsType") KrmsTypeDefinition krmsType)
-        throws RiceIllegalArgumentException, RiceIllegalStateException;
+            throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
      * This will update an existing {@link KrmsTypeDefinition}
@@ -60,7 +82,7 @@ public interface KrmsTypeRepositoryService {
     @WebResult(name = "krmsType")
     @CacheEvict(value={KrmsTypeDefinition.Cache.NAME}, allEntries = true)
     KrmsTypeDefinition updateKrmsType(@WebParam(name = "krmsType") KrmsTypeDefinition krmsType)
-        throws RiceIllegalArgumentException, RiceIllegalStateException;
+            throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
      * Lookup a krms type based on the given id.
@@ -73,19 +95,19 @@ public interface KrmsTypeRepositoryService {
     @WebResult(name = "type")
     @Cacheable(value= KrmsTypeDefinition.Cache.NAME, key="'id=' + #p0")
     KrmsTypeDefinition getTypeById(@WebParam(name = "id") String id)
-        throws RiceIllegalArgumentException;
+            throws RiceIllegalArgumentException;
 
     /**
      * Get a krms type object based on name and namespace
      *
      * @param namespaceCode the given type namespace
      * @param name the given type name
-     * 
+     *
      * @return A krms type object with the given namespace and name if one with that name and namespace
      *         exists.  Otherwise, null is returned.
      *
-     * @throws IllegalArgumentException if the given namespaceCode or name is a null or blank value
-     * @throws IllegalStateException if multiple krms types exist with the same name and namespace
+     * @throws RiceIllegalArgumentException if the given namespaceCode or name is a null or blank value
+     * @throws RiceIllegalStateException if multiple krms types exist with the same name and namespace
      */
     @WebMethod(operationName = "getTypeByName")
     @WebResult(name = "type")
@@ -93,9 +115,9 @@ public interface KrmsTypeRepositoryService {
     KrmsTypeDefinition getTypeByName(
             @WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "name") String name)
-        throws RiceIllegalArgumentException, RiceIllegalStateException;
+            throws RiceIllegalArgumentException, RiceIllegalStateException;
 
-   /**
+    /**
      * Returns all KRMS types that for a given namespace.
      *
      * @return all KRMS types for a namespace
@@ -107,8 +129,8 @@ public interface KrmsTypeRepositoryService {
     @WebResult(name = "namespaceTypes")
     @Cacheable(value= KrmsTypeDefinition.Cache.NAME, key="'allByNamespaceCode=' + #p0")
     List<KrmsTypeDefinition> findAllTypesByNamespace(
-    		@WebParam(name = "namespaceCode") String namespaceCode)
-        throws RiceIllegalArgumentException;
+            @WebParam(name = "namespaceCode") String namespaceCode)
+            throws RiceIllegalArgumentException;
 
     /**
      * Returns all KRMS types
@@ -136,7 +158,7 @@ public interface KrmsTypeRepositoryService {
     @Cacheable(value= KrmsTypeDefinition.Cache.NAME, key="'{AgendaType}contextId=' + #p0")
     List<KrmsTypeDefinition> findAllAgendaTypesByContextId(
             @WebParam(name="contextId") String contextId)
-        throws RiceIllegalArgumentException;
+            throws RiceIllegalArgumentException;
 
     /**
      * Return the agenda type by agendaItemId for the given contextId.
@@ -152,7 +174,7 @@ public interface KrmsTypeRepositoryService {
     KrmsTypeDefinition getAgendaTypeByAgendaTypeIdAndContextId(
             @WebParam(name="agendaTypeId") String agendaTypeId,
             @WebParam(name="contextId") String contextId)
-        throws RiceIllegalArgumentException;
+            throws RiceIllegalArgumentException;
 
     /**
      * Returns all rule types for the given contextId.
@@ -168,7 +190,7 @@ public interface KrmsTypeRepositoryService {
     @Cacheable(value= KrmsTypeDefinition.Cache.NAME, key="'{RuleType}contextId=' + #p0")
     List<KrmsTypeDefinition> findAllRuleTypesByContextId(
             @WebParam(name="contextId") String contextId)
-        throws RiceIllegalArgumentException;
+            throws RiceIllegalArgumentException;
 
     /**
      * Return the rule type by ruleItemId for the given contextId.
@@ -184,7 +206,7 @@ public interface KrmsTypeRepositoryService {
     KrmsTypeDefinition getRuleTypeByRuleTypeIdAndContextId(
             @WebParam(name="ruleTypeId") String ruleTypeId,
             @WebParam(name="contextId") String contextId)
-        throws RiceIllegalArgumentException;
+            throws RiceIllegalArgumentException;
 
     /**
      * Returns all action types for the given contextId.
@@ -200,7 +222,7 @@ public interface KrmsTypeRepositoryService {
     @Cacheable(value= KrmsTypeDefinition.Cache.NAME, key="'{ActionType}contextId=' + #p0")
     List<KrmsTypeDefinition> findAllActionTypesByContextId(
             @WebParam(name="contextId") String contextId)
-        throws RiceIllegalArgumentException;
+            throws RiceIllegalArgumentException;
 
     /**
      * Return the action type by actionItemId for the given contextId.
@@ -216,7 +238,7 @@ public interface KrmsTypeRepositoryService {
     KrmsTypeDefinition getActionTypeByActionTypeIdAndContextId(
             @WebParam(name="actionTypeId") String actionTypeId,
             @WebParam(name="contextId") String contextId)
-        throws RiceIllegalArgumentException;
+            throws RiceIllegalArgumentException;
 
     /**
      * Retrieves an attribute definition for the given id.
@@ -249,6 +271,259 @@ public interface KrmsTypeRepositoryService {
     @Cacheable(value= KrmsAttributeDefinition.Cache.NAME, key="'namespaceCode=' + #p0 + '|' + 'name=' + #p1")
     KrmsAttributeDefinition getAttributeDefinitionByName(
             @WebParam(name = "namespaceCode") String namespaceCode,
-            @WebParam(name = "name") String name
-    ) throws RiceIllegalArgumentException;
+            @WebParam(name = "name") String name) throws RiceIllegalArgumentException;
+
+    ////
+    //// type type relation methods
+    ////
+    /**
+     * This will create a {@link TypeTypeRelation} exactly like the parameter
+     * passed in.
+     *
+     * @param typeTypeRelation The TypeTypeRelation to create.
+     * @throws IllegalArgumentException if the TypeTypeRelation is null.
+     * @throws IllegalStateException if the TypeTypeRelation already exists in
+     * the system.
+     * @return a {@link TypeTypeRelation} exactly like the parameter passed in.
+     *
+     */
+    @WebMethod(operationName = "createTypeTypeRelation")
+    @WebResult(name = "typeTypeRelation")
+    TypeTypeRelation createTypeTypeRelation(@WebParam(name = "typeTypeRelation") TypeTypeRelation typeTypeRelation)
+            throws RiceIllegalArgumentException;
+
+    /**
+     * Retrieves a TypeTypeRelation from the repository based on the given id.
+     *
+     * @param typeTypeRelationId to retrieve.
+     * @return a {@link TypeTypeRelation} identified by the given id. A null
+     * reference is returned if an invalid or non-existent id is supplied.
+     *
+     */
+    @WebMethod(operationName = "getTypeTypeRelation")
+    @WebResult(name = "typeTypeRelation")
+    TypeTypeRelation getTypeTypeRelation(@WebParam(name = "typeTypeRelationId") String typeTypeRelationId)
+            throws RiceIllegalArgumentException;
+
+    /**
+     * This will update an existing {@link TypeTypeRelation}.
+     *
+     * @param typeTypeRelation The TypeTypeRelation to update.
+     * @throws IllegalArgumentException if the TypeTypeRelation is null.
+     * @throws IllegalStateException if the TypeTypeRelation does not exists in
+     * the system.
+     *
+     */
+    @WebMethod(operationName = "updateTypeTypeRelation")
+    void updateTypeTypeRelation(@WebParam(name = "typeTypeRelation") TypeTypeRelation typeTypeRelation)
+            throws RiceIllegalArgumentException;
+
+    /**
+     * Delete the {@link TypeTypeRelation} with the given id.
+     *
+     * @param typeTypeRelationId to delete.
+     * @throws IllegalArgumentException if the TypeTypeRelation is null.
+     * @throws IllegalStateException if the TypeTypeRelation does not exists in
+     * the system
+     *
+     */
+    @WebMethod(operationName = "deleteTypeTypeRelation")
+    void deleteTypeTypeRelation(@WebParam(name = "typeTypeRelationId") String typeTypeRelationId)
+            throws RiceIllegalArgumentException;
+
+    /**
+     * find type type relations by from type
+     *
+     * @param fromTypeId to search on
+     * @return relations that match the from type
+     */
+    @WebMethod(operationName = "findTypeTypeRelationsByFromType")
+    @XmlElementWrapper(name = "typeTypeRelations", required = true)
+    @XmlElement(name = "typeTypeRelation", required = false)
+    @WebResult(name = "typeTypeRelations")
+    List<TypeTypeRelation> findTypeTypeRelationsByFromType(@WebParam(name = "fromTypeId") String fromTypeId)
+            throws RiceIllegalArgumentException;
+
+    /**
+     * find type type relations by To type
+     *
+     * @param toTypeId to type to search on
+     * @return types with that type in the 2nd position in the relationship
+     */
+    @WebMethod(operationName = "findTypeTypeRelationsByToType")
+    @XmlElementWrapper(name = "typeTypeRelations", required = true)
+    @XmlElement(name = "typeTypeRelation", required = false)
+    @WebResult(name = "typeTypeRelations")
+    List<TypeTypeRelation> findTypeTypeRelationsByToType(@WebParam(name = "toTypeId") String toTypeId)
+            throws RiceIllegalArgumentException;
+
+    /**
+     * find type type relations by relationship type
+     *
+     * @param relationshipType to search on
+     * @return type type relations given the specified type
+     */
+    @WebMethod(operationName = "findTypeTypeRelationsByRelationshipType")
+    @XmlElementWrapper(name = "typeTypeRelations", required = true)
+    @XmlElement(name = "typeTypeRelation", required = false)
+    @WebResult(name = "typeTypeRelations")
+    List<TypeTypeRelation> findTypeTypeRelationsByRelationshipType(@WebParam(name = "relationshipType") RelationshipType relationshipType)
+            throws RiceIllegalArgumentException;
+
+    /**
+     * Returns all KRMS types that for a given serviceName
+     *
+     * @return all KRMS types for a serviceName
+     * @throws IllegalArgumentException if the given serviceName is a null or
+     * blank value
+     */
+    @WebMethod(operationName = "findAllTypesByServiceName")
+    @XmlElementWrapper(name = "serviceNameTypes", required = true)
+    @XmlElement(name = "serviceNameType", required = false)
+    @WebResult(name = "serviceNameTypes")
+    // TODO: put in CACHING if we want/need it
+//    @Cacheable(value= KrmsTypeDefinition.Cache.NAME, key="'allByNamespaceCode=' + #p0")
+    List<KrmsTypeDefinition> findAllTypesByServiceName(
+            @WebParam(name = "serviceName") String serviceName)
+            throws RiceIllegalArgumentException;
+
+    /**
+     * find all context types
+     *
+     * @return types that are valid for contexts
+     */
+    @WebMethod(operationName = "findAllContextTypes")
+    @XmlElementWrapper(name = "contextTypes", required = true)
+    @XmlElement(name = "contextType", required = false)
+    @WebResult(name = "contextTypes")
+    List<KrmsTypeDefinition> findAllContextTypes()
+            throws RiceIllegalArgumentException;
+
+    /**
+     * find all agenda types
+     *
+     * @return types that are valid for agendas
+     */
+    @WebMethod(operationName = "findAllAgendaTypes")
+    @XmlElementWrapper(name = "agendaTypes", required = true)
+    @XmlElement(name = "agendaType", required = false)
+    @WebResult(name = "agendaTypes")
+    List<KrmsTypeDefinition> findAllAgendaTypes()
+            throws RiceIllegalArgumentException;
+
+    /**
+     * find all agenda types for context type
+     *
+     * @param contextTypeId to search on
+     * @return types that are valid for agendas
+     */
+    @WebMethod(operationName = "findAgendaTypesForContextType")
+    @XmlElementWrapper(name = "agendaTypes", required = true)
+    @XmlElement(name = "agendaType", required = false)
+    @WebResult(name = "agendaTypes")
+    List<KrmsTypeDefinition> findAgendaTypesForContextType(@WebParam(name = "contextTypeId") String contextTypeId)
+            throws RiceIllegalArgumentException;
+
+    /**
+     * find all agenda types for context type
+     *
+     * @param agendaTypeId to search on
+     * @return types that are valid for agendas
+     */
+    @WebMethod(operationName = "findAgendaTypesForAgendaType")
+    @XmlElementWrapper(name = "agendaTypes", required = true)
+    @XmlElement(name = "agendaType", required = false)
+    @WebResult(name = "agendaTypes")
+    List<KrmsTypeDefinition> findAgendaTypesForAgendaType(@WebParam(name = "agendaTypeId") String agendaTypeId)
+            throws RiceIllegalArgumentException;
+
+    /**
+     * find all rule types
+     *
+     * @return types that are valid for rules
+     */
+    @WebMethod(operationName = "findAllRuleTypes")
+    @XmlElementWrapper(name = "ruleTypes", required = true)
+    @XmlElement(name = "ruleType", required = false)
+    @WebResult(name = "ruleTypes")
+    List<KrmsTypeDefinition> findAllRuleTypes()
+            throws RiceIllegalArgumentException;
+
+    /**
+     * find the rule types for the specified agenda type
+     *
+     * @param agendaTypeId to search on
+     * @return types that are valid for rules
+     */
+    @WebMethod(operationName = "findRuleTypesForAgendaType")
+    @XmlElementWrapper(name = "ruleTypes", required = true)
+    @XmlElement(name = "ruleType", required = false)
+    @WebResult(name = "ruleTypes")
+    List<KrmsTypeDefinition> findRuleTypesForAgendaType(@WebParam(name = "agendaTypeId") String agendaTypeId)
+            throws RiceIllegalArgumentException;
+
+    /**
+     * find all Proposition types
+     *
+     * @return types that are valid for propositions
+     */
+    @WebMethod(operationName = "findAllPropositionTypes")
+    @XmlElementWrapper(name = "propositionTypes", required = true)
+    @XmlElement(name = "propositionType", required = false)
+    @WebResult(name = "propositionTypes")
+    List<KrmsTypeDefinition> findAllPropositionTypes()
+            throws RiceIllegalArgumentException;
+
+    /**
+     * find all Proposition types for the specified rule type
+     *
+     * @param ruleTypeId to search on
+     * @return types that are valid for propositions
+     */
+    @WebMethod(operationName = "findPropositionTypesForRuleType")
+    @XmlElementWrapper(name = "propositionTypes", required = true)
+    @XmlElement(name = "propositionType", required = false)
+    @WebResult(name = "propositionTypes")
+    List<KrmsTypeDefinition> findPropositionTypesForRuleType(@WebParam(name = "ruleTypeId") String ruleTypeId)
+            throws RiceIllegalArgumentException;
+
+    /**
+     * find all Proposition Parameter types
+     *
+     * @return types that are valid for proposition parameters
+     */
+    @WebMethod(operationName = "findAllPropositionParameterTypes")
+    @XmlElementWrapper(name = "propositionParameterTypes", required = true)
+    @XmlElement(name = "propositionParameterType", required = false)
+    @WebResult(name = "propositionParameterTypes")
+    List<KrmsTypeDefinition> findAllPropositionParameterTypes()
+            throws RiceIllegalArgumentException;
+
+    /**
+     * find Proposition Parameter types for the specified proposition type
+     *
+     * @param propositionTypeId to search on
+     * @return types that are valid for proposition parameters
+     */
+    @WebMethod(operationName = "findPropositionParameterTypesForPropositionType")
+    @XmlElementWrapper(name = "propositionParameterTypes", required = true)
+    @XmlElement(name = "propositionParameterType", required = false)
+    @WebResult(name = "propositionParameterTypes")
+    List<KrmsTypeDefinition> findPropositionParameterTypesForPropositionType(@WebParam(name = "propositionTypeId") String propositionTypeId)
+            throws RiceIllegalArgumentException;
+    
+
+    /**
+     * find term parameter types for the given Term based Proposition Parameter type
+     *
+     * @param termPropositionParameterTypeId to search on
+     * @return types that are valid as term parameters
+     */
+    @WebMethod(operationName = "findTermParameterTypesForTermPropositionParameterType")
+    @XmlElementWrapper(name = "termParameterTypes", required = true)
+    @XmlElement(name = "termParameterType", required = false)
+    @WebResult(name = "termParameterTypes")
+    List<KrmsTypeDefinition> findTermParameterTypesForTermPropositionParameterType(@WebParam(name = "termPropositionParameterTypeId") String termPropositionParameterTypeId)
+            throws RiceIllegalArgumentException;
+
 }

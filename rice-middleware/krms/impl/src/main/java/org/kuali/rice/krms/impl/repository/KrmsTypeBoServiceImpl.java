@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,8 +32,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeBoService;
 
-public final class KrmsTypeBoServiceImpl implements KrmsTypeRepositoryService {
+public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
 
     private BusinessObjectService businessObjectService;
 
@@ -121,6 +122,20 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeRepositoryService {
         }
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("namespace", namespaceCode);
+        map.put("active", Boolean.TRUE);
+
+        Collection<KrmsTypeBo> krmsTypeBos = businessObjectService.findMatching(KrmsTypeBo.class, Collections.unmodifiableMap(map));
+
+        return convertListOfBosToImmutables(krmsTypeBos);
+    }
+
+    @Override
+    public List<KrmsTypeDefinition> findAllTypesByServiceName(String serviceName) throws RiceIllegalArgumentException {
+        if (StringUtils.isBlank(serviceName)) {
+            throw new RiceIllegalArgumentException("serviceName was a null or blank value");
+        }
+        final Map<String, Object> map = new HashMap<String, Object>();
+        map.put("serviceName", serviceName);
         map.put("active", Boolean.TRUE);
 
         Collection<KrmsTypeBo> krmsTypeBos = businessObjectService.findMatching(KrmsTypeBo.class, Collections.unmodifiableMap(map));

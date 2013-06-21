@@ -432,6 +432,7 @@
   <param name="krms.mode" override="false">REMOTE</param>
   <param name="krms.soapExposedService.jaxws.security" override="false">true</param>
   <param name="rice.krms.ruleRepositoryService.secure" override="false">true</param>
+  <param name="rice.krms.ruleManagementService.secure" override="false">true</param>
   <param name="rice.krms.functionRepositoryService.secure" override="false">true</param>
   <param name="rice.krms.termRepositoryService.secure" override="false">true</param>
   <param name="rice.krms.krmsTypeRepositoryService.secure" override="false">true</param>

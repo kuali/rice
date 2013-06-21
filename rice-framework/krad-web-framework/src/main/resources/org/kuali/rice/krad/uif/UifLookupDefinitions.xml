@@ -223,9 +223,9 @@
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="deselectAllPage"
               p:actionLabel="deselect all from this page"
               p:actionScript="deselectAllLines('@{#collectionGroup.id}');"/>
-        <bean parent="Uif-PrimaryActionButton" p:ajaxSubmit="false"
+        <bean parent="Uif-PrimaryActionButton" p:ajaxSubmit="true"
               p:preSubmitCall="setMultiValueReturnTarget();return true;"
-              p:successCallback="closeLightbox()" p:errorCallback="closeLightbox()"
+              p:successCallback="closeLightboxReloadPage();" p:errorCallback="closeLightbox()"
               p:methodToCall="returnSelected" p:actionLabel="return selected" p:disabled="true">
           <property name="cssClasses">
             <list merge="true">

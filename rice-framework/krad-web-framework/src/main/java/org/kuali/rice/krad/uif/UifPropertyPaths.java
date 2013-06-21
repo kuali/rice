@@ -43,6 +43,7 @@ public class UifPropertyPaths {
     public static final String ROW_SPAN = "rowSpan";
     public static final String SELECTED_COLLECTION_LINES = "selectedCollectionLines";
     public static final String SEARCH_RESULTS = "searchResults";
+    public static final String LOOKUP_RESULTS = "lookupResults";
     public static final String SESSION_POLICY = "sessionPolicy";
     public static final String VIEW_HELPER_SERVICE_CLASS = "viewHelperServiceClass";
 }

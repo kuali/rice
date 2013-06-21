@@ -230,7 +230,7 @@ public class LookupController extends UifControllerBase {
 
         // build string of select line identifiers
         String selectedLineValues = "";
-        Set<String> selectedLines = lookupForm.getSelectedCollectionLines().get(UifPropertyPaths.SEARCH_RESULTS);
+        Set<String> selectedLines = lookupForm.getSelectedCollectionLines().get(UifPropertyPaths.LOOKUP_RESULTS);
         if (selectedLines != null) {
             for (String selectedLine : selectedLines) {
                 selectedLineValues += selectedLine + ",";

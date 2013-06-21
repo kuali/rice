@@ -122,6 +122,7 @@
     <ehcache.version>2.5.0</ehcache.version>
     <filemonitor.version>1.0-kuali</filemonitor.version>
     <freemarker.version>2.3.19-patch3</freemarker.version>
+    <wro4j.version>1.7.0</wro4j.version>
     <groovy.version>1.8.5</groovy.version>
     <guava.version>11.0</guava.version>
     <hibernate.version>3.6.9.Final</hibernate.version>
@@ -2110,6 +2111,18 @@
         <groupId>org.freemarker</groupId>
         <artifactId>freemarker</artifactId>
         <version>${freemarker.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>ro.isdc.wro4j</groupId>
+        <artifactId>wro4j-core</artifactId>
+        <version>${wro4j.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>ro.isdc.wro4j</groupId>
+        <artifactId>wro4j-extensions</artifactId>
+        <version>${wro4j.version}</version>
       </dependency>
 
     </dependencies>

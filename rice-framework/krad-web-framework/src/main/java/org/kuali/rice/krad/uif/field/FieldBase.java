@@ -350,9 +350,9 @@ public class FieldBase extends ComponentBase implements Field {
     }
 
     /**
-     * Returns a clone of the component.
+     * Returns a clone of the field.
      *
-     * @return ComponentBase clone of the component
+     * @return FieldBase clone of the field
      */
     @Override
     public <T extends Component> T clone() {
@@ -370,8 +370,8 @@ public class FieldBase extends ComponentBase implements Field {
     @Override
     protected FieldBase copyProperties(Cloneable fieldBase) {
         fieldBase = super.copyProperties(fieldBase);
-        ((FieldBase)fieldBase).shortLabel = this.shortLabel;
-        ((FieldBase)fieldBase).labelRendered = this.labelRendered;
+        ((FieldBase)fieldBase).setShortLabel(this.shortLabel);
+        ((FieldBase)fieldBase).setLabelRendered(this.labelRendered);
 
         return (FieldBase)fieldBase;
     }

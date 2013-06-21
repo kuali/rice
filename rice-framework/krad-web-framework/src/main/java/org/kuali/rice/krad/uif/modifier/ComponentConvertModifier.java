@@ -183,4 +183,28 @@ public class ComponentConvertModifier extends ComponentModifierBase {
         this.componentReplacementPrototype = componentReplacementPrototype;
     }
 
+    /**
+     * Returns a clone of the component convert modifier.
+     *
+     * @return ComponentModifier clone of the component
+     */
+    @Override
+    public <T extends ComponentModifier> T clone() {
+        try {
+            T clonedClass = (T)this.getClass().newInstance();
+            clonedClass = (T)copyProperties(clonedClass);
+
+            return clonedClass;
+        }
+        catch(Exception exception) {
+            throw new RuntimeException();
+        }
+    }
+
+    protected ComponentConvertModifier copyProperties(Cloneable componentConvertModifier) {
+        ((ComponentConvertModifier)componentConvertModifier).setComponentReplacementPrototype(this.getComponentReplacementPrototype().clone());
+        ((ComponentConvertModifier)componentConvertModifier).setComponentTypeToReplace(this.componentTypeToReplace);
+
+        return (ComponentConvertModifier)componentConvertModifier;
+    }
 }

@@ -421,4 +421,37 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
         this.comparables = comparables;
     }
 
+    /**
+     * Returns a clone of the component modifier.
+     *
+     * @return ComponentModifierBase clone of the component
+     */
+    @Override
+    public <T extends ComponentModifier> T clone() {
+        try {
+            T clonedClass = (T)this.getClass().newInstance();
+            clonedClass = (T)copyProperties(clonedClass);
+
+            return clonedClass;
+        }
+        catch(Exception exception) {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    protected CompareFieldCreateModifier copyProperties(Cloneable componentModifier) {
+        componentModifier = super.copyProperties(componentModifier);
+        ((CompareFieldCreateModifier) componentModifier).setDefaultOrderSequence(this.defaultOrderSequence);
+        ((CompareFieldCreateModifier) componentModifier).setGenerateCompareHeaders(this.generateCompareHeaders);
+
+        List<ComparableInfo> comparables = new ArrayList<ComparableInfo>();
+        for (ComparableInfo comparable : this.comparables) {
+            comparables.add(comparable.clone());
+        }
+
+        ((CompareFieldCreateModifier) componentModifier).setComparables(comparables);
+
+        return (CompareFieldCreateModifier) componentModifier;
+    }
 }

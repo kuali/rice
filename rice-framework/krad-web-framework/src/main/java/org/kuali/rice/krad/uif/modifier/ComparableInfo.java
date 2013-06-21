@@ -41,7 +41,7 @@ import java.io.Serializable;
  * @see org.kuali.rice.krad.uif.modifier.CompareFieldCreateModifier
  */
 @BeanTag(name = "compareConfig-bean", parent = "Uif-CompareConfig")
-public class ComparableInfo extends UifDictionaryBeanBase implements Serializable, Ordered  {
+public class ComparableInfo extends UifDictionaryBeanBase implements Serializable, Ordered, Cloneable  {
 	private static final long serialVersionUID = -5926058412202550266L;
 
 	private String bindingObjectPath;
@@ -236,4 +236,32 @@ public class ComparableInfo extends UifDictionaryBeanBase implements Serializabl
         this.highlightValueChange = highlightValueChange;
     }
 
+    /**
+     * Returns a clone of the comparable info.
+     *
+     * @return ComparableInfo clone of the component
+     */
+    public <T extends ComparableInfo> T clone() {
+        try {
+            T clonedClass = (T)this.getClass().newInstance();
+            clonedClass = (T)copyProperties(clonedClass);
+
+            return clonedClass;
+        }
+        catch(Exception exception) {
+            throw new RuntimeException();
+        }
+    }
+
+    protected ComparableInfo copyProperties(Cloneable comparableInfo) {
+        ((ComparableInfo) comparableInfo).setBindingObjectPath(this.bindingObjectPath);
+        ((ComparableInfo) comparableInfo).setCompareToForValueChange(this.compareToForValueChange);
+        ((ComparableInfo) comparableInfo).setHeaderText(this.headerText);
+        ((ComparableInfo) comparableInfo).setHighlightValueChange(this.highlightValueChange);
+        ((ComparableInfo) comparableInfo).setIdSuffix(this.idSuffix);
+        ((ComparableInfo) comparableInfo).setOrder(this.order);
+        ((ComparableInfo) comparableInfo).setReadOnly(this.readOnly);
+
+        return (ComparableInfo) comparableInfo;
+    }
 }

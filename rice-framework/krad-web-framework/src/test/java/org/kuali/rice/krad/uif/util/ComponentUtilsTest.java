@@ -19,6 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
+import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.FieldBase;
 import org.kuali.rice.krad.uif.field.InputField;
 
@@ -58,6 +59,28 @@ public class ComponentUtilsTest {
         fieldBase.setShortLabel("Label");
 
         return fieldBase;
+    }
+
+    private DataField initializeDataField() {
+        DataField dataField = new DataField();
+        dataField = (DataField) initializeComponentBase(dataField);
+        dataField.setAddHiddenWhenReadOnly(true);
+
+        List<String> additionalHiddenPropertyNames = new ArrayList<String>();
+        additionalHiddenPropertyNames.add("HiddenA");
+        additionalHiddenPropertyNames.add("HiddenB");
+        additionalHiddenPropertyNames.add("HiddenC");
+        dataField.setAdditionalHiddenPropertyNames(additionalHiddenPropertyNames);
+
+        dataField.setApplyMask(true);
+        dataField.setDefaultValue("default");
+        dataField.setDictionaryAttributeName("DictionaryName");
+        dataField.setDictionaryObjectEntry("DictionaryObjectEntry");
+        dataField.setEscapeHtmlInPropertyValue(true);
+        dataField.setForcedValue("Forced");
+        dataField.setMultiLineReadOnlyDisplay(true);
+
+        return dataField;
     }
 
     private ComponentBase initializeComponentBase(ComponentBase componentBase) {
@@ -178,6 +201,17 @@ public class ComponentUtilsTest {
 
         assertTrue(ComponentCopyPropertiesMatch(fieldBaseOriginal, fieldBaseCopy));
         assertTrue(fieldBaseOriginal.getShortLabel().equals(fieldBaseCopy.getShortLabel()));
+    }
+
+    @Test
+    /**
+     * test {@link ComponentUtils#copyUsingCloning} using a DataField object
+     */
+    public void testCopyUsingCloningWithDataFieldSucceeds() {
+        DataField dataFieldOriginal = initializeDataField();
+        DataField dataFieldCopy = ComponentUtils.copyUsingCloning(dataFieldOriginal);
+
+        assertTrue(ComponentCopyPropertiesMatch(dataFieldOriginal, dataFieldCopy));
     }
 
     private boolean ComponentCopyPropertiesMatch(ComponentBase originalComponent, ComponentBase copiedComponent) {

@@ -1137,4 +1137,47 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
 
         super.completeValidation(tracer.getCopy());
     }
+
+    /**
+     * Returns a clone of the data field.
+     *
+     * @return DataField clone of the data field
+     */
+    @Override
+    public <T extends Component> T clone() {
+        try {
+            T clonedClass = (T)this.getClass().newInstance();
+            clonedClass = (T)copyProperties(clonedClass);
+
+            return clonedClass;
+        }
+        catch(Exception exception) {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    protected DataField copyProperties(Cloneable dataField) {
+        dataField = super.copyProperties(dataField);
+        ((DataField)dataField).setAddHiddenWhenReadOnly(this.addHiddenWhenReadOnly);
+        ((DataField)dataField).setAdditionalHiddenPropertyNames(new ArrayList<String>(this.additionalHiddenPropertyNames));
+        ((DataField)dataField).setApplyMask(this.applyMask);
+        ((DataField)dataField).setBindingInfo(this.bindingInfo);
+        ((DataField)dataField).setDefaultValue(this.defaultValue);
+        ((DataField)dataField).setDictionaryAttributeName(this.dictionaryAttributeName);
+        ((DataField)dataField).setDictionaryObjectEntry(this.dictionaryObjectEntry);
+        ((DataField)dataField).setEscapeHtmlInPropertyValue(this.escapeHtmlInPropertyValue);
+        ((DataField)dataField).setForcedValue(this.forcedValue);
+        ((DataField)dataField).setMultiLineReadOnlyDisplay(this.multiLineReadOnlyDisplay);
+        ((DataField)dataField).setPropertyName(this.propertyName);
+        ((DataField)dataField).setPropertyNamesForAdditionalDisplay(new ArrayList<String>(this.propertyNamesForAdditionalDisplay));
+        ((DataField)dataField).setReadOnlyDisplayReplacement(this.readOnlyDisplayReplacement);
+        ((DataField)dataField).setReadOnlyDisplayReplacementPropertyName(this.readOnlyDisplayReplacementPropertyName);
+        ((DataField)dataField).setReadOnlyDisplaySuffix(this.readOnlyDisplaySuffix);
+        ((DataField)dataField).setReadOnlyDisplaySuffixPropertyName(this.readOnlyDisplaySuffixPropertyName);
+        ((DataField)dataField).setReadOnlyListDelimiter(this.readOnlyListDelimiter);
+        ((DataField)dataField).setReadOnlyListDisplayType(this.readOnlyListDisplayType);
+
+        return (DataField)dataField;
+    }
 }

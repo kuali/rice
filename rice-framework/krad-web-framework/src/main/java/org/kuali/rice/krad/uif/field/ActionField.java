@@ -478,4 +478,29 @@ public class ActionField extends FieldBase {
 
         super.completeValidation(tracer.getCopy());
     }
+
+    /**
+     * Returns a clone of the action field.
+     *
+     * @return ActionField clone of the action field
+     */
+    @Override
+    public <T extends Component> T clone() {
+        try {
+            T clonedClass = (T)this.getClass().newInstance();
+            clonedClass = (T)copyProperties(clonedClass);
+
+            return clonedClass;
+        }
+        catch(Exception exception) {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    protected ActionField copyProperties(Cloneable actionField) {
+        actionField = super.copyProperties(actionField);
+
+        return (ActionField)actionField;
+    }
 }

@@ -48,7 +48,7 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface ComponentModifier extends UifDictionaryBean, Serializable, Ordered {
+public interface ComponentModifier extends UifDictionaryBean, Serializable, Ordered, Cloneable {
 
     /**
      * Should be called to initialize the ComponentModifier
@@ -141,4 +141,10 @@ public interface ComponentModifier extends UifDictionaryBean, Serializable, Orde
      */
     public void setOrder(int order);
 
+    /**
+     * Clone the object
+     *
+     * @return the cloned object
+     */
+    public <T extends ComponentModifier> T clone();
 }

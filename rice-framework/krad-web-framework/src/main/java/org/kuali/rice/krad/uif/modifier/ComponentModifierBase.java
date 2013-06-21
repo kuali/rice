@@ -117,4 +117,29 @@ public abstract class ComponentModifierBase extends UifDictionaryBeanBase implem
 		this.order = order;
 	}
 
+    /**
+     * Returns a clone of the component.
+     *
+     * @return ComponentBase clone of the component
+     */
+    @Override
+    public <T extends ComponentModifier> T clone() {
+        try {
+            T clonedClass = (T)this.getClass().newInstance();
+            clonedClass = (T)copyProperties(clonedClass);
+
+            return clonedClass;
+        }
+        catch(Exception exception) {
+            throw new RuntimeException();
+        }
+    }
+
+    protected ComponentModifierBase copyProperties(Cloneable componentModifier) {
+        ((ComponentModifierBase)componentModifier).setOrder(this.order);
+        ((ComponentModifierBase)componentModifier).setRunCondition(this.runCondition);
+        ((ComponentModifierBase)componentModifier).setRunPhase(this.runPhase);
+
+        return (ComponentModifierBase)componentModifier;
+    }
 }

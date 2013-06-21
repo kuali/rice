@@ -82,6 +82,11 @@
         <value>uif-detailsAction</value>
       </list>
     </property>
+    <property name="dataAttributes">
+      <map merge="true">
+        <entry key="swap" value="true"/>
+      </map>
+    </property>
     <property name="actionParameters">
       <map>
         <entry key="lineIndex" value="@{#index}"/>

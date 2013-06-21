@@ -22,6 +22,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.component.Ordered;
 import org.kuali.rice.krad.uif.container.Container;
+import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
@@ -380,6 +381,11 @@ public class ComponentUtils {
     public static void updateIdWithSuffix(Component component, String idSuffix) {
         if (component != null && !StringUtils.isEmpty(idSuffix)) {
             component.setId(component.getId() + idSuffix);
+        }
+
+        if (component instanceof Group){
+            LayoutManager manager = ((Group) component).getLayoutManager();
+            manager.setId(manager.getId() + idSuffix);
         }
     }
 

@@ -254,6 +254,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             nestedComponent.pushAllToContext(origComponent.getContext());
         }
 
+        // make sure the dataAttributes are the same as original
+        component.setDataAttributes(origComponent.getDataAttributes());
+
         // initialize the expression evaluator
         view.getViewHelperService().getExpressionEvaluator().initializeEvaluationContext(model);
 

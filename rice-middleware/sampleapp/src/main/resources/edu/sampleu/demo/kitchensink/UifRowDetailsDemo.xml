@@ -403,6 +403,7 @@
     <property name="readOnly" value="false"/>
     <property name="layoutManager.rowDetailsOpen" value="true"/>
     <property name="layoutManager.showToggleAllDetails" value="true"/>
+    <property name="layoutManager.ajaxDetailsRetrieval" value="true"/>
     <property name="layoutManager.rowDetailsGroup">
       <bean parent="Uif-VerticalBoxGroup">
         <property name="items">

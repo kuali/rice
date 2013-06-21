@@ -880,12 +880,8 @@ function openDetails(oTable, row, actionComponent, animate) {
     //make sure scripts are run on the now shown group
     runHiddenScripts(detailsGroup, true, true);
 
-    if (animate && !ajaxRetrieval) {
-        detailsGroup.slideDown();
-    }
-    else {
-        detailsGroup.show();
-    }
+    //show the group
+    detailsGroup.show();
 
     if (ajaxRetrieval) {
         var kradRequest = new KradRequest(jQuery(actionComponent));
@@ -939,8 +935,9 @@ function closeAllDetails(tableId, animate, forceClose) {
  * @param animate if true, the close will have an animation effect
  */
 function closeDetails(oTable, row, actionComponent, animate) {
-    var fieldGroupWrapper = row.find("div[data-role='detailsFieldGroup'] fieldset div.uif-verticalBoxLayout");
-    var detailsContent = row.next().first().find("div[data-role='details'], span[data-role='placeholder']").filter(":first");
+    var fieldGroupWrapper = row.find("> td > div[data-role='detailsFieldGroup']");
+    var detailsContent = row.next().first().find("> td > div[data-role='details'], "
+            + "> td > span[data-role='placeholder']").filter(":first");
 
     if (actionComponent && jQuery(actionComponent).data("swap") && jQuery(actionComponent).find("img").length) {
         jQuery(actionComponent).find("img").replaceWith(detailsOpenImage.clone());
@@ -948,17 +945,9 @@ function closeDetails(oTable, row, actionComponent, animate) {
 
     detailsContent.attr("data-open", "false");
 
-    if (animate) {
-        detailsContent.slideUp(function () {
-            fieldGroupWrapper.append(detailsContent.detach());
-            oTable.fnClose(row[0]);
-        });
-    }
-    else {
-        detailsContent.hide();
-        fieldGroupWrapper.append(detailsContent.detach());
-        oTable.fnClose(row[0]);
-    }
+    detailsContent.hide();
+    fieldGroupWrapper.append(detailsContent.detach());
+    oTable.fnClose(row[0]);
 
 }
 

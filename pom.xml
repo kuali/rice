@@ -2123,6 +2123,16 @@
         <groupId>ro.isdc.wro4j</groupId>
         <artifactId>wro4j-extensions</artifactId>
         <version>${wro4j.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
 
     </dependencies>

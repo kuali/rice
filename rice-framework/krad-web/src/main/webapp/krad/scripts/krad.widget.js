@@ -751,7 +751,7 @@ function createTable(tableId, additionalOptions, groupingOptions) {
         }
 
         /// check that the export feature is turned on
-        if (options.sDom.search("T") >= 0) {
+        if (options.sDom && options.sDom.search("T") >= 0) {
             options = jQuery.extend(options, exportOptions)
         }
 

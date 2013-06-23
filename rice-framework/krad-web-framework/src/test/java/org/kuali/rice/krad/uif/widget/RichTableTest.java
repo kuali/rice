@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.widget;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.krad.datadictionary.validation.Employee;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
@@ -33,8 +34,7 @@ import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * test the RichTable widget
@@ -43,7 +43,7 @@ import static org.mockito.Mockito.when;
 public class RichTableTest {
 
     public static final String S_TYPE = "{\"sType\" : \"numeric\", \"aTargets\": [0]}";
-    public static final String S_SORT_DATA_TARGETS_1 = "{\"sSortDataType\" : \"dom-text\" , \"sType\" : \"string\", \"aTargets\": [1]}";
+    public static final String S_SORT_DATA_TARGETS_1 = "{\"sType\" : \"string\", \"sSortDataType\" : \"dom-text\", \"aTargets\": [1]}";
     public static final String S_SORT_DATA_TARGETS_2 = S_SORT_DATA_TARGETS_1.replace("1", "2");
     public static final String S_SORT_DATA_TARGETS_3 = S_SORT_DATA_TARGETS_1.replace("1", "3");
 
@@ -62,16 +62,18 @@ public class RichTableTest {
     //private
     @Before
     public void setup() {
-
         richTable = new RichTable();
+
+        richTable = spy(richTable);
+
+        ConfigurationService configurationService = mock(ConfigurationService.class);
+        doReturn(configurationService).when(richTable).getConfigurationService();
 
         group = new CollectionGroup();
         group.setCollectionObjectClass(Employee.class);
+
         TableLayoutManager layoutManager = new TableLayoutManager();
         layoutManager.setRenderSequenceField(true);
-        group.setLayoutManager(layoutManager);
-        group.setIncludeLineSelectionField(false);
-        group.setRenderLineActions(false);
 
         List<Component> items = new ArrayList<Component>(1);
         DataField name = new DataField();
@@ -83,6 +85,13 @@ public class RichTableTest {
         DataField contactEmail = new DataField();
         contactEmail.setPropertyName("contactEmail");
         items.add(contactEmail);
+
+        layoutManager = spy(layoutManager);
+        doReturn(items).when(layoutManager).getFirstRowFields();
+
+        group.setLayoutManager(layoutManager);
+        group.setIncludeLineSelectionField(false);
+        group.setRenderLineActions(false);
 
         group.setItems(items);
 

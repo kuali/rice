@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.widget;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.core.api.util.type.KualiInteger;
 import org.kuali.rice.core.api.util.type.KualiPercent;
@@ -160,8 +161,7 @@ public class RichTable extends WidgetBase {
             getTemplateOptions().put(UifConstants.TableToolsKeys.TABLE_SORT, "false");
         }
 
-        String kradUrl = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
-                UifConstants.ConfigProperties.KRAD_URL);
+        String kradUrl = getConfigurationService().getPropertyValueAsString(UifConstants.ConfigProperties.KRAD_URL);
         if (StringUtils.isNotBlank(ajaxSource)) {
             getTemplateOptions().put(UifConstants.TableToolsKeys.SAJAX_SOURCE, ajaxSource);
         } else if (component instanceof CollectionGroup && this.forceAjaxJsonData) {
@@ -952,5 +952,9 @@ public class RichTable extends WidgetBase {
         if (forceLocalJsonData && !forceAjaxJsonData) {
             this.getTemplateOptions().put(UifConstants.TableToolsKeys.AA_DATA, aaData);
         }
+    }
+
+    protected ConfigurationService getConfigurationService() {
+        return CoreApiServiceLocator.getKualiConfigurationService();
     }
 }

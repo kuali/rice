@@ -659,6 +659,18 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         }
     }
 
+    protected void assertIsVisible(String locator) {
+        if (!isVisible(locator)) {
+            fail(locator + " is not visible and should be");
+        }
+    }
+
+    protected void assertIsNotVisible(String locator) {
+        if (isVisible(locator)) {
+            fail(locator + " is visible and should not be");
+        }
+    }
+
     /**
      * Assert that clicking an element causes a popup window with a specific URL
      *
@@ -692,6 +704,13 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     protected void assertTextPresent(String text, String message) {
         if (!driver.getPageSource().contains(text)) {
             SeleneseTestBase.fail(text + " not present " + message);
+        }
+    }
+
+    protected void assertTextPresent(String text, String cssSelector, String message){
+        WebElement element = driver.findElement(By.cssSelector(cssSelector));
+        if (!element.getText().contains(text)){
+            SeleneseTestBase.fail(text + " for " + cssSelector + " not present " + message);
         }
     }
 
@@ -4435,6 +4454,22 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         return (ITUtil.REMOTE_UIF_KRAD.equalsIgnoreCase(getUiFramework()));
     }
 
+    protected WebElement getElementByDataAttributeValue(String dataAttributeName, String value){
+        return driver.findElement(By.cssSelector("[data-" + dataAttributeName + "='" + value +"']"));
+    }
+
+    protected WebElement getElementByDataAttribute(String dataAttributeName){
+        return driver.findElement(By.cssSelector("[data-" + dataAttributeName + "]"));
+    }
+
+    protected WebElement getElementByAttributeValue(String attributeName, String value){
+        return driver.findElement(By.cssSelector("[" + attributeName + "='" + value +"']"));
+    }
+
+    protected WebElement getElementByAttribute(String attributeName){
+        return driver.findElement(By.cssSelector("[" + attributeName + "]"));
+    }
+
     /**
      * Determines whether KRAD or KNS UIF is used for this test.
      * Useful if trying to re-use a test for both a KNS and KRAD screens that have different paths to the elements.
@@ -4450,4 +4485,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     public void setUiFramework(String uiFramework) {
         this.uiFramework = uiFramework;
     }
+
+
 }

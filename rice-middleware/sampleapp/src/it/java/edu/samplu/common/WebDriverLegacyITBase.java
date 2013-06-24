@@ -414,6 +414,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      */
     public abstract String getTestUrl();
 
+    protected void navigateInternal() throws Exception {
+        // just a hook...for now...
+    }
+
     @BeforeMethod
     protected void startSession(Method method) throws Exception {
         testMethodName = method.getName(); // TestNG
@@ -454,6 +458,8 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
             jGrowlHeader = getClass().getSimpleName() + "." + testMethodName;
             System.out.println(jGrowlHeader + " sessionId is " + sessionId);
             jGrowl("setUp");
+
+            navigateInternal();
 
         } catch (Throwable t) {
             System.out.println("Throwable " + t.getMessage() + " in Before annotated method is very bad, ignoring and letting first method of test class to fail.");

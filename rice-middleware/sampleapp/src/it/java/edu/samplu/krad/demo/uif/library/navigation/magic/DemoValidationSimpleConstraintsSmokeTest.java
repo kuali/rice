@@ -42,6 +42,7 @@ public class DemoValidationSimpleConstraintsSmokeTest extends MagicWebDriverLega
         passed();
     }
 
+    @Test
     public void testRequiredBookmark() throws Exception {
         testRequired();
     }

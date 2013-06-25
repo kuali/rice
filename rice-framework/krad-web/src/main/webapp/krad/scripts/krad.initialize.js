@@ -1026,7 +1026,6 @@ jQuery.fn.dataTableExt.afnSortData['dom-text'] = function (oSettings, iColumn, i
     var aData = [];
     jQuery(oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
         var td = jQuery('>td:eq(' + iVisColumn + '):first', this);
-        var link =  jQuery(td).find('input:text');
         var input = jQuery(td).find('input:text');
         if (input.length != 0) {
             aData.push(input.val());
@@ -1034,7 +1033,7 @@ jQuery.fn.dataTableExt.afnSortData['dom-text'] = function (oSettings, iColumn, i
             // check for linkField
             var linkField = jQuery(td).find('.uif-linkField');
             if(linkField.length !=0) {
-                aData.push(jQuery(td).find('.uif-linkField').text().trim());
+                aData.push(linkField.text().trim());
             } else {
                 // find span for the data or input field and get its text
                 var inputField = jQuery(td).find('.uif-field');
@@ -1045,9 +1044,7 @@ jQuery.fn.dataTableExt.afnSortData['dom-text'] = function (oSettings, iColumn, i
                     aData.push(jQuery(td).text());
                 }
             }
-
         }
-
     });
 
     return aData;

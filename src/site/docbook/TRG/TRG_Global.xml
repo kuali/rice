@@ -451,7 +451,7 @@
                 <title>Thin Client Implementation</title>
                 <para>To implement a thin client version of Rice, modify the configuration files as
                     per the following</para>
-                <para>config.xml:<programlisting>&lt;config>
+                <para>config.xml:<programlisting linenumbering = "numbered">&lt;config>
     &lt;param name="environment" override="false">dev&lt;/param>
     &lt;param name="application.id">rice-remote-test-client&lt;/param>
     &lt;param name="message.persistence">false&lt;/param>
@@ -463,7 +463,7 @@
     &lt;param name="config.location">classpath:META-INF/common-config-defaults.xml&lt;/param>
 &lt;/config>
                 </programlisting></para>
-                <para>SpringBeans.xml:<programlisting>&lt;beans xmlns="http://www.springframework.org/schema/beans"
+                <para>SpringBeans.xml:<programlisting linenumbering = "numbered">&lt;beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
@@ -504,7 +504,7 @@
                     import Rice services into a Spring context with the help of the
                     ResourceLoaderServiceFactoryBean:</para>
                 <para>
-                    <programlisting>&lt;!-- import a Rice service from the ResourceLoader stack -->
+                    <programlisting linenumbering = "numbered">&lt;!-- import a Rice service from the ResourceLoader stack -->
 &lt;bean id="aRiceService" class="org.kuali.rice.resourceloader.support.ResourceLoaderServiceFactoryBean"/>
 </programlisting>
                 </para>
@@ -522,7 +522,7 @@
                 <para>Add this bean definition to the top of your Spring configuration file to
                     configure the Spring extension:</para>
                 <para>
-                    <programlisting>&lt;bean class="org.kuali.rice.core.util.GRLServiceInjectionPostProcessor"/></programlisting>
+                    <programlisting linenumbering = "numbered">&lt;bean class="org.kuali.rice.core.util.GRLServiceInjectionPostProcessor"/></programlisting>
                 </para>
                 <para>Add the @RiceService annotation to any field or method, following the normal
                     Spring rules for injection annotations. The annotation requires a name property
@@ -530,7 +530,7 @@
                     namespace other than the current context namespace, you must specify the
                     namespace as a prefix (for example, "{KEW}actionListService").</para>
                 <para>
-                    <programlisting>@RiceService(name="workflowDocumentService")
+                    <programlisting linenumbering = "numbered">@RiceService(name="workflowDocumentService")
 protected WorkflowDocumentService workflowDocumentService;
 </programlisting>
                 </para>
@@ -542,7 +542,7 @@ protected WorkflowDocumentService workflowDocumentService;
                     to accomplish this using the RiceSpringResourceLoaderConfigurer as shown
                     below:</para>
                 <para>
-                    <programlisting>&lt;!—- Publish all services from this Spring context to the GRL -->
+                    <programlisting linenumbering = "numbered">&lt;!—- Publish all services from this Spring context to the GRL -->
 &lt;bean class="org.kuali.rice.core.resourceloader.RiceSpringResourceLoaderConfigurer"/>
 
 &lt;bean id="myService1" class="my.app.package.MyService1"/>
@@ -586,7 +586,7 @@ protected WorkflowDocumentService workflowDocumentService;
                         RootResourceLoader of the RiceConfigurer using the rootResourceLoader
                         property, as shown below:</para>
                     <para>
-                        <programlisting>&lt;!-- a Rice bean we want to override in our application -->
+                        <programlisting linenumbering = "numbered">&lt;!-- a Rice bean we want to override in our application -->
 &lt;bean id="overriddenRiceBean" class="my.app.package.MyRiceServiceImpl"/>
 
 
@@ -623,7 +623,7 @@ protected WorkflowDocumentService workflowDocumentService;
                         various modules by injecting a list of additional spring files to load as in
                         the following example:</para>
                     <para>
-                        <programlisting>&lt;bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
+                        <programlisting linenumbering = "numbered">&lt;bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
     ...
     &lt;property name="additionalSpringFiles" ref="appResourceLoader">
         &lt;list>
@@ -654,7 +654,7 @@ protected WorkflowDocumentService workflowDocumentService;
                         parameter in your Rice configuration XML, as in the following
                         example:</para>
                     <para>
-                        <programlisting>&lt;param name="rice.additionalSpringFiles"
+                        <programlisting linenumbering = "numbered">&lt;param name="rice.additionalSpringFiles"
 value="classpath:my/app/package/MyCustomSpringFile.xml"/>
 </programlisting>
                     </para>
@@ -771,7 +771,7 @@ value="classpath:my/app/package/MyCustomSpringFile.xml"/>
                                         Settings\user\.m2\settings.xml</emphasis>. Add this line to
                                     the file somewhere inside the &lt;settings> tag: </para>
                                 <para>
-                                    <programlisting>&lt;localRepository>C:\work\m2&lt;/localRepository></programlisting>
+                                    <programlisting linenumbering = "numbered">&lt;localRepository>C:\work\m2&lt;/localRepository></programlisting>
                                 </para>
                             </listitem>
                         </orderedlist></para>
@@ -1016,7 +1016,7 @@ value="classpath:my/app/package/MyCustomSpringFile.xml"/>
                                 <listitem>
                                     <para>Oracle</para>
                                     <para>
-                                        <programlisting>&lt;param name="datasource.url">jdbc:oracle:thin:@localhost:1521:XE&lt;/param>
+                                        <programlisting linenumbering = "numbered">&lt;param name="datasource.url">jdbc:oracle:thin:@localhost:1521:XE&lt;/param>
 &lt;param name="datasource.username">oracle.username&lt;/param>
 &lt;param name="datasource.password">oracle.password&lt;/param></programlisting>
                                     </para>
@@ -1024,7 +1024,7 @@ value="classpath:my/app/package/MyCustomSpringFile.xml"/>
                                 <listitem>
                                     <para>MySQL</para>
                                     <para>
-                                        <programlisting>&lt;param name="datasource.url">jdbc:mysql://localhost:3306/kulrice&lt;/param>
+                                        <programlisting linenumbering = "numbered">&lt;param name="datasource.url">jdbc:mysql://localhost:3306/kulrice&lt;/param>
 &lt;param name="datasource.username">mysql.username&lt;/param>
 &lt;param name="datasource.password">mysql.password&lt;/param></programlisting>
                                     </para>
@@ -1091,7 +1091,7 @@ value="classpath:my/app/package/MyCustomSpringFile.xml"/>
                 <para>The easiest way to tell if you need to do this is that there will be a warning
                     in the console after building, stating that the settings.xml file is missing.
                     All you need to do is create a settings.xml file with this content:</para>
-                <programlisting>&lt;settings/></programlisting>
+                <programlisting linenumbering = "numbered">&lt;settings/></programlisting>
                 <para>Rebuild, and the warning should no longer appear.</para>
                 <note>
                     <para>You do <emphasis role="bold">NOT</emphasis> ever need to run any of the
@@ -1167,7 +1167,7 @@ alter system set sessions=150 scope=spfile;
                         </listitem>
                         <listitem>
                             <para>Lower the pool size in your rice config.xml: </para>
-                            <programlisting>&lt;param name="datasource.pool.maxSize">10&lt;/param></programlisting>
+                            <programlisting linenumbering = "numbered">&lt;param name="datasource.pool.maxSize">10&lt;/param></programlisting>
                         </listitem>
                     </orderedlist></para>
                 <para>Disconnect any other clients and then restart Oracle-XE.</para>
@@ -1218,7 +1218,7 @@ alter system set sessions=150 scope=spfile;
                 <para>Below is an example of a configuration XML file. Note that the white space
                     (spaces, tabs, and new lines) is stripped from the beginning and end of the
                     values.</para>
-                <programlisting>&lt;config>
+                <programlisting linenumbering = "numbered">&lt;config>
     &lt;param name="client1.location">${basedir}/src/test/clients/TestClient1&lt;/param>
     &lt;param name="client2.location">${basedir}/src/test/clients/TestClient2&lt;/param>
     &lt;param name="ksb.client1.port">9913&lt;/param>
@@ -1250,7 +1250,7 @@ config.parseConfig();             </programlisting>
                     include parameters that are maintained by system administrators in secure
                     locations. The parameters in the included file are parsed as if they had been in
                     the original file at that place. Here is an example:</para>
-                <programlisting>&lt;config>
+                <programlisting linenumbering = "numbered">&lt;config>
     &lt;param name="config.location">file:/my_secure_dir/my_secure_file.xml&lt;/param>
 &lt;/config></programlisting>
             </section>
@@ -1258,7 +1258,7 @@ config.parseConfig();             </programlisting>
                 <title>Building Parameter Values from Other Parameters</title>
                 <para>Once you have defined a parameter, you can use it in the definition of another
                     parameter. For example:</para>
-                <programlisting>&lt;config>
+                <programlisting linenumbering = "numbered">&lt;config>
     &lt;param name="apple">red delicious&lt;/param>
     &lt;param name="taste">yummy yummy&lt;/param>
     &lt;param name="apple.taste">${apple} ${taste}&lt;/param>
@@ -1275,7 +1275,7 @@ config.parseConfig();             </programlisting>
                 <para>You typically use this in Spring to parse a configuration and put its
                     properties in a PropertyPlaceHolderConfigurer so that the parameters are
                     available in the Spring configuration file:</para>
-                <programlisting>&lt;bean id="config" class="org.kuali.rice.core.config.spring.ConfigFactoryBean">
+                <programlisting linenumbering = "numbered">&lt;bean id="config" class="org.kuali.rice.core.config.spring.ConfigFactoryBean">
     &lt;property name="configLocations">
         &lt;list>
             &lt;value>classpath:my-config.xml&lt;/value>
@@ -1294,7 +1294,7 @@ config.parseConfig();             </programlisting>
 &lt;/bean></programlisting>
                 <para>Once this is complete, the configuration parameters can be used like standard
                     Spring tokens in the bean configurations:</para>
-                <programlisting>&lt;bean id="dataSource" class="org.kuali.rice.core.database.XAPoolDataSource">
+                <programlisting linenumbering = "numbered">&lt;bean id="dataSource" class="org.kuali.rice.core.database.XAPoolDataSource">
     &lt;property name="transactionManager" ref="jotm" />
     &lt;property name="driverClassName" value="${datasource.driver.name}" />
     &lt;property name="url" value="${datasource.url}" />
@@ -1312,7 +1312,7 @@ config.parseConfig();             </programlisting>
                     Spring and it will initialize the configuration context with those configuration
                     parameters.</para>
                 <para>This is done as follows:</para>
-                <programlisting>&lt;bean id="config" class="org.kuali.rice.core.config.spring.ConfigFactoryBean">
+                <programlisting linenumbering = "numbered">&lt;bean id="config" class="org.kuali.rice.core.config.spring.ConfigFactoryBean">
     ...
 &lt;/bean>
 
@@ -1329,7 +1329,7 @@ config.parseConfig();             </programlisting>
                     any number of times; the last value encountered while parsing the file will be
                     the value that is retained.</para>
                 <para>For example, when parsing the file:</para>
-                <programlisting>&lt;config>
+                <programlisting linenumbering = "numbered">&lt;config>
     &lt;param name="taste">yummy yummy&lt;/param>
     &lt;param name="taste">good stuff&lt;/param>
 &lt;/config>
@@ -1338,7 +1338,7 @@ config.parseConfig();             </programlisting>
                     be <emphasis role="bold">good stuff</emphasis> since that was the last value
                     listed in the file.</para>
                 <para>As another example, when parsing the file:</para>
-                <programlisting>&lt;config>
+                <programlisting linenumbering = "numbered">&lt;config>
     &lt;param name="taste">yummy yummy&lt;/param>
     &lt;param name="apple.taste">apple ${taste}&lt;/param>
     &lt;param name="taste">good stuff&lt;/param>
@@ -1351,7 +1351,7 @@ config.parseConfig();             </programlisting>
                 <para>Additionally, you can define certain parameters in such that they won't
                     override an existing parameter value if it's already set.</para>
                 <para>As an example of this, consider the following configuration file:</para>
-                <programlisting>&lt;config>
+                <programlisting linenumbering = "numbered">&lt;config>
     &lt;param name="taste" override="false">even yummier&lt;/param>
     &lt;param name="brand.new.param" override="false">brand new value&lt;/param>
 
@@ -1438,7 +1438,7 @@ config.parseConfig();             </programlisting>
                 <para>Configure the JOTM transaction manager and user transaction objects as Spring
                     beans in your application's Spring configuration file. Here is an
                     example:</para>
-                <programlisting>&lt;bean id="transactionManagerXAPool" class="org.springframework.transaction.jta.JotmFactoryBean">
+                <programlisting linenumbering = "numbered">&lt;bean id="transactionManagerXAPool" class="org.springframework.transaction.jta.JotmFactoryBean">
     &lt;property name="defaultTimeout" value="3600"/>
 &lt;/bean>
     
@@ -1447,7 +1447,7 @@ config.parseConfig();             </programlisting>
                 <para>You can use these beans in the configuration of Spring's JTA transaction
                     manager and the Rice configurer. This configuration might look like the
                     following:</para>
-                <programlisting>&lt;bean id="springTransactionManager" class="org.springframework.transaction.jta.JtaTransactionManager">
+                <programlisting linenumbering = "numbered">&lt;bean id="springTransactionManager" class="org.springframework.transaction.jta.JtaTransactionManager">
     &lt;property name="userTransaction">
         &lt;ref local="userTransaction" />
     &lt;/property>
@@ -1472,7 +1472,7 @@ config.parseConfig();             </programlisting>
                     org.kuali.rice.core.database.XAPoolDataSource class provided with Rice. Here is
                     an example of a Spring configuration using this data source
                     implementation:</para>
-                <programlisting>&lt;bean id="myDataSource" class="org.kuali.rice.core.database.XAPoolDataSource">
+                <programlisting linenumbering = "numbered">&lt;bean id="myDataSource" class="org.kuali.rice.core.database.XAPoolDataSource">
     &lt;property name="transactionManager" ref="jtaTransactionManager" />
     &lt;property name="driverClassName" value="${datasource.driver.name}" />
     &lt;property name="url" value="${datasource.url}" />
@@ -1493,7 +1493,7 @@ config.parseConfig();             </programlisting>
                         <link xlink:href="http://www.quartz-scheduler.org/docs/faq.html">FAQ
                         entry</link> with more details on the problem). Here is an example of a
                     non-transactional data source configuration:</para>
-                <programlisting>&lt;bean id="nonTransactionalDataSource"
+                <programlisting linenumbering = "numbered">&lt;bean id="nonTransactionalDataSource"
  class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
     &lt;property name="driverClassName" value="${datasource.driver.name}"/>
     &lt;property name="url" value="${datasource.url}"/>
@@ -1509,7 +1509,7 @@ config.parseConfig();             </programlisting>
                 <para>You need to either inject this non-transactional data source into the Quartz
                     SchedulerFactory Spring bean (if you are explicitly defining it) or into the
                     rice bean in the Spring Beans config file as follows:</para>
-                <programlisting>&lt;bean id="rice" class="org.kuali.rice.config.RiceConfigurer">
+                <programlisting linenumbering = "numbered">&lt;bean id="rice" class="org.kuali.rice.config.RiceConfigurer">
     ...
     &lt;property name="nonTransactionalDataSource" ref="nonTransactionalDataSource" />
     ...
@@ -1521,7 +1521,7 @@ config.parseConfig();             </programlisting>
                   transaction manager and user transaction objects as Spring
                   beans in your application's Spring configuration file. Here is an
                   example:</para>
-              <programlisting>&lt;bean id="btmConfig" factory-method="getConfiguration"
+              <programlisting linenumbering = "numbered">&lt;bean id="btmConfig" factory-method="getConfiguration"
           class="bitronix.tm.TransactionManagerServices" lazy-init="true"/>
 &lt;bean id="transactionManagerBitronix" class="bitronix.tm.TransactionManagerServices"
           factory-method="getTransactionManager" depends-on="btmConfig" destroy-method="shutdown" lazy-init="true"/>
@@ -1530,7 +1530,7 @@ config.parseConfig();             </programlisting>
 &lt;alias name="transactionManagerBitronix" alias="jtaUserTransaction"/></programlisting>
               <para>You can use these beans in the configuration of the Rice configurer. This configuration might look like the
                   following:</para>
-              <programlisting>&lt;bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
+              <programlisting linenumbering = "numbered">&lt;bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
     &lt;property name="transactionManager" ref="jtaTransactionManager" />
     &lt;property name="userTransaction" ref="jtaUserTransaction" />
   ...
@@ -1539,7 +1539,7 @@ config.parseConfig();             </programlisting>
             <section>
               <title>Configuring Bitronix Transactional Data Sources</title>
               <para>An example configuration of Btironix Transactional Data Sources:</para>
-  <programlisting>&lt;bean id="riceDataSourceBitronixXa" class="bitronix.tm.resource.jdbc.PoolingDataSource" init-method="init"
+  <programlisting linenumbering = "numbered">&lt;bean id="riceDataSourceBitronixXa" class="bitronix.tm.resource.jdbc.PoolingDataSource" init-method="init"
          destroy-method="close" lazy-init="true">
     &lt;property name="className" value="oracle.jdbc.xa.client.OracleXADataSource" />
     &lt;property name="uniqueName" ref="ds-random-string" />
@@ -1566,7 +1566,7 @@ config.parseConfig();             </programlisting>
               <title>Configuring Bitronix Non-Transactional Data Sources</title>
               <para>Notice the addition of the driverClassName prop in the dirverProperties in the non-transaction data
                 source configuration</para>
-  <programlisting>&lt;bean id="riceDataSourceBitronix" class="bitronix.tm.resource.jdbc.PoolingDataSource" init-method="init"
+  <programlisting linenumbering = "numbered">&lt;bean id="riceDataSourceBitronix" class="bitronix.tm.resource.jdbc.PoolingDataSource" init-method="init"
         destroy-method="close" lazy-init="true">
     &lt;property name="className" value="bitronix.tm.resource.jdbc.lrc.LrcXADataSource" />
     &lt;property name="uniqueName" ref="ds-random-string" />

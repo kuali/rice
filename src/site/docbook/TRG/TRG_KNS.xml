@@ -79,7 +79,7 @@
                 central services that use data in the Rice server database. This includes such data
                 as System Parameters, Namespaces, Campuses, States and Countries.</para>
             <para>Here is an example of Spring configuration for a KNS client:</para>
-            <programlisting>&lt;bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
+            <programlisting linenumbering = "numbered">&lt;bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
     ...
     &lt;property name="knsConfigurer">
         &lt;bean class="org.kuali.rice.kns.config.KNSConfigurer"
@@ -114,7 +114,7 @@
                         >ActionServlet</emphasis> is provided to help with the loading of the struts
                     modules. It can be configured in the application's <emphasis role="bold"
                         >web.xml</emphasis> as in the following example:</para>
-                <programlisting>&lt;servlet>
+                <programlisting linenumbering = "numbered">&lt;servlet>
     &lt;servlet-name>action&lt;/servlet-name>
     &lt;servlet-class>org.kuali.rice.kns.web.struts.action.KualiActionServlet&lt;/servlet-class>
     &lt;init-param>
@@ -161,7 +161,7 @@
                     used to actually initialize the Spring context that loads Rice.</para>
                 <para>Here is an example of what this configuration might look like in
                 web.xml:</para>
-                <programlisting>&lt;listener>
+                <programlisting linenumbering = "numbered">&lt;listener>
     &lt;listener-class>my.app.package.ListenerThatStartsRice&lt;/listener-class>
 
 &lt;/listener>
@@ -185,12 +185,12 @@
                     KualiPropertyMessageResources, which takes in a comma delimited list of
                     .properties files.</para>
                 <para>This is set up in the struts-config.xml files near the end of the file:</para>
-                <programlisting>&lt;message-resources factory="org.kuali.rice.kns.web.struts.action.KualiPropertyMessageResourceFactory" parameter="" /></programlisting>
+                <programlisting linenumbering = "numbered">&lt;message-resources factory="org.kuali.rice.kns.web.struts.action.KualiPropertyMessageResourceFactory" parameter="" /></programlisting>
                 <para>When the parameter above is set to an empty string, Rice uses the default
                     value of properties files. The default value is set by the
                     rice.struts.message.resources property the common-config-defaults.xml file. This
                     is the default setting:</para>
-                <programlisting>&lt;param name="rice.struts.message.resources">KR-ApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.messaging.ApplicationResources,KIM-ApplicationResources" /></programlisting>
+                <programlisting linenumbering = "numbered">&lt;param name="rice.struts.message.resources">KR-ApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.messaging.ApplicationResources,KIM-ApplicationResources" /></programlisting>
                 <para>This can be overridden in rice-config.xml. This value should be in a comma
                     delimited format. The list of files is loaded from left to right, with any
                     duplicated properties being overridden in that order. Therefore, in the list
@@ -205,7 +205,7 @@
                         role="bold">org.kuali.rice.kns.web.servlet.KualiDWRServlet</emphasis> must
                     be configured in the application's <emphasis role="bold">web.xml </emphasis>as
                     follows:</para>
-                <programlisting>&lt;servlet>
+                <programlisting linenumbering = "numbered">&lt;servlet>
     &lt;servlet-name>dwr-invoker&lt;/servlet-name>
     &lt;servlet-class>org.kuali.rice.kns.web.servlet.KualiDWRServlet&lt;/servlet-class>
     &lt;init-param>
@@ -259,7 +259,7 @@
                     </listitem>
                 </itemizedlist></para>
             <para>Here is an example of what this configuration might look like:</para>
-            <programlisting>&lt;bean id="sampleAppModuleConfiguration"
+            <programlisting linenumbering = "numbered">&lt;bean id="sampleAppModuleConfiguration"
  class="org.kuali.rice.kns.bo.ModuleConfiguration">
     &lt;property name="namespaceCode" value="tv"/>
     &lt;property name="initializeDataDictionary" value="true"/>
@@ -484,7 +484,7 @@
                 It is possible to do so however. </para>
             <para>To enable it again, a bean definition overriding the knsSessionDocumentService bean needs to be created and configured to load into the correct Spring context. 
                 Create a file such as the following which we'll name KNSOverrideSpringBeans.xml:</para>
-            <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+            <programlisting linenumbering = "numbered">&lt;?xml version="1.0" encoding="UTF-8"?>
 &lt;beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
@@ -503,7 +503,7 @@
             <para>This file needs to be added to your web project so that it can be accessed from the classpath. 
                 For this example, it has been added to src/main/resources/edu/sampleu within our web project. 
                 With that in place, the following (adjusting for the actual path) should be added to your rice-config.xml file:</para>
-            <programlisting>&lt;param name="rice.kr.additionalSpringFiles">classpath:edu/sampleu/KNSOverrideSpringBeans.xml&lt;/param></programlisting>
+            <programlisting linenumbering = "numbered">&lt;param name="rice.kr.additionalSpringFiles">classpath:edu/sampleu/KNSOverrideSpringBeans.xml&lt;/param></programlisting>
             <para>Note that if you already have a <code>rice.kr.additionalSpringFiles</code> configuration parameter specified, the value is treated as a comma separated list, so you can add a comma at the end of the present value and append on the configuration for the KNSOverrideSpringBeans.xml file.</para>
             
         </section>
@@ -679,7 +679,7 @@
                     <para>Both OJB and the KNS offer a number of FieldConversion implementations
                         beyond these two for use in client applications.</para>
                     <para>Example converter declaration for a sample Business Object</para>
-                    <programlisting>&lt;field-descriptor name="bankAccountNbr" column="BNK_ACCT_NBR" jdbc-type="VARCHAR" conversion="org.kuali.core.util.OjbKualiEncryptDecryptFieldConversion"/></programlisting>
+                    <programlisting linenumbering = "numbered">&lt;field-descriptor name="bankAccountNbr" column="BNK_ACCT_NBR" jdbc-type="VARCHAR" conversion="org.kuali.core.util.OjbKualiEncryptDecryptFieldConversion"/></programlisting>
                 </section>
                 <section>
                     <title>When to use OJB vs. data dictionary relationships</title>
@@ -701,7 +701,7 @@
                     <title>Example OJB Mapping</title>
                     <para>Here is an example directly from Rice in the file
                         OJB-repository-kns.xml:</para>
-                    <programlisting>&lt;class-descriptor class="org.kuali.rice.kns.bo.StateImpl" table="KR_STATE_T">
+                    <programlisting linenumbering = "numbered">&lt;class-descriptor class="org.kuali.rice.kns.bo.StateImpl" table="KR_STATE_T">
     &lt;field-descriptor name="postalCountryCode" column="POSTAL_CNTRY_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
     &lt;field-descriptor name="postalStateCode" column="POSTAL_STATE_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
     &lt;field-descriptor name="postalStateName" column="POSTAL_STATE_NM" jdbc-type="VARCHAR" />
@@ -783,7 +783,7 @@
                 <section>
                     <title>Example OJB Mapping for Collection Descriptor</title>
                     <para>A mapping may also define a collection-descriptor tag as follows:</para>
-                    <programlisting>&lt;class-descriptor class="org.kuali.rice.kns.test.document.bo.AccountManager" table="TRV_ACCT_FO">
+                    <programlisting linenumbering = "numbered">&lt;class-descriptor class="org.kuali.rice.kns.test.document.bo.AccountManager" table="TRV_ACCT_FO">
     &lt;field-descriptor name="id" column="acct_fo_id" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="TRV_FO_ID_S" />
     &lt;field-descriptor name="userName" column="acct_fo_user_name" jdbc-type="VARCHAR" />
 
@@ -881,7 +881,7 @@
                     Therefore, the CampusImpl BO may have a referenced CampusTypeImpl object, which
                     represents the campus type row referred to by the campus' campus type code. Here
                     is the CampusImpl OJB mapping:</para>
-                <programlisting>&lt;class-descriptor class="org.kuali.rice.kns.bo.CampusImpl" table="KRNS_CAMPUS_T">
+                <programlisting linenumbering = "numbered">&lt;class-descriptor class="org.kuali.rice.kns.bo.CampusImpl" table="KRNS_CAMPUS_T">
     &lt;field-descriptor name="campusCode" column="CAMPUS_CD" jdbc-type="VARCHAR" primarykey="true" index="true" />
     &lt;field-descriptor name="campusName" column="CAMPUS_NM" jdbc-type="VARCHAR" />
     &lt;field-descriptor name="campusShortName" column="CAMPUS_SHRT_NM" jdbc-type="VARCHAR" />
@@ -1138,7 +1138,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                         configured by setting the groupByAttributesForEffectiveDating property on
                         the data dictionary BusinessObjectEntry.</para>
                     <para><emphasis role="italic">Example:</emphasis></para>
-                    <programlisting>&lt;bean id="TravelAccountUseRate-parentBean" abstract="true" parent="BusinessObjectEntry">
+                    <programlisting linenumbering = "numbered">&lt;bean id="TravelAccountUseRate-parentBean" abstract="true" parent="BusinessObjectEntry">
     &lt;property name="businessObjectClass" value="org.kuali.rice.krad.demo.travel.account.TravelAccountUseRate"/>
     &lt;property name="inquiryDefinition">
         &lt;ref bean="TravelAccountUseRate-inquiryDefinition"/>
@@ -1226,14 +1226,14 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     These are used to facilitate easy overriding of beans from Rice in a client
                     application or a customized Rice standalone server installation. Take the
                     following example where the "RealBean" may be defined within Rice:</para>
-                <programlisting>&lt;bean id="RealBean" parent="RealBean-parent" />
+                <programlisting linenumbering = "numbered">&lt;bean id="RealBean" parent="RealBean-parent" />
 
 &lt;bean id="RealBean-parent" abstract="true" /></programlisting>
                 <para>Client applications overriding this bean definition should always retain the
                     id "RealBean". This allows for any developer working with overriding data
                     dictionary files to easily define an override using the following parent bean
                     structure:</para>
-                <programlisting>&lt;bean id="RealBean" parent="RealBean-client-parent" />
+                <programlisting linenumbering = "numbered">&lt;bean id="RealBean" parent="RealBean-client-parent" />
 
 
 &lt;bean id="RealBean-client-parent" abstract="true" parent="RealBean-parent" >
@@ -1255,7 +1255,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                 <title>Data Dictionary File Layout</title>
                 <para>A sample Data Dictionary file to show typical organization of various beans
                     that may be defined:</para>
-                <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+                <programlisting linenumbering = "numbered">&lt;?xml version="1.0" encoding="UTF-8"?>
 &lt;beans>
     &lt;bean id="Account" parent="Account-parentBean"/>
     &lt;bean id="Account-parentBean" abstract="true" parent="BusinessObjectEntry">
@@ -1298,7 +1298,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                 <para>A more specific Rice example might be the CampusImpl object (whose business
                     object data dictionary file is Campus.xml). Here is the main bean definition
                     from that file:</para>
-                <programlisting>&lt;bean id="Campus-parentBean" abstract="true" parent="BusinessObjectEntry">
+                <programlisting linenumbering = "numbered">&lt;bean id="Campus-parentBean" abstract="true" parent="BusinessObjectEntry">
     &lt;property name="businessObjectClass" value="org.kuali.rice.kns.bo.CampusImpl"/>
     &lt;property name="inquiryDefinition">
         &lt;ref bean="Campus-inquiryDefinition"/>
@@ -1337,7 +1337,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                 <para>Attribute definitions are used to provide metadata about the attributes (i.e.
                     fields) of a business object. The following is a sampling of attribute
                     definitions from the CampusImpl business object data dictionary file:</para>
-                <programlisting>&lt;bean id="Campus-campusCode-parentBean" abstract="true" parent="AttributeDefinition">
+                <programlisting linenumbering = "numbered">&lt;bean id="Campus-campusCode-parentBean" abstract="true" parent="AttributeDefinition">
     &lt;property name="forceUppercase" value="true"/>
     &lt;property name="shortLabel" value="Campus Code"/>
     &lt;property name="maxLength" value="2"/>
@@ -1381,11 +1381,11 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                         role="bold">postalCountryCode</emphasis> fields in StateImpl and CountryImpl
                     are identical, a simple attribute definition bean in the Business Object data
                     dictionary file (State.xml) can be used:</para>
-                <programlisting>&lt;bean id="State-postalCountryCode" parent="Country-postalCountryCode-parentBean"/></programlisting>
+                <programlisting linenumbering = "numbered">&lt;bean id="State-postalCountryCode" parent="Country-postalCountryCode-parentBean"/></programlisting>
                 <para>The definition of the <emphasis role="bold"
                         >Country-postalCountryCode-parentBean</emphasis> bean is seen inside the
                     Country.xml file (for the CountryImpl business object):</para>
-                <programlisting>&lt;bean id="Country-postalCountryCode-parentBean" abstract="true" parent="AttributeDefinition">
+                <programlisting linenumbering = "numbered">&lt;bean id="Country-postalCountryCode-parentBean" abstract="true" parent="AttributeDefinition">
     &lt;property name="name" value="postalCountryCode"/>
     &lt;property name="forceUppercase" value="true"/>
     &lt;property name="label" value="Country Code"/>
@@ -1411,7 +1411,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     central location so that other business object attribute definitions can use
                     them as parent beans. Here is how the Campus business object uses the version
                     number attribute:</para>
-                <programlisting>&lt;bean id="Campus-versionNumber-parentBean" abstract="true" parent="AttributeReference-versionNumber"></programlisting>
+                <programlisting linenumbering = "numbered">&lt;bean id="Campus-versionNumber-parentBean" abstract="true" parent="AttributeReference-versionNumber"></programlisting>
                 <para>All business object data dictionary files need to have the version number
                     field bean defined. This will verify that the UI will have the version number as
                     a hidden field.</para>
@@ -1425,7 +1425,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                         displayed on a lookup form for that business object. A typical lookupField
                         (shown here with the parent property for context) in the Spring
                         configuration for a Business Object will look like this: </para>
-                    <programlisting>&lt;property name="lookupFields">
+                    <programlisting linenumbering = "numbered">&lt;property name="lookupFields">
     &lt;list>
         ...
         &lt;bean parent="FieldDefinition" p:attributeName="campusCode"/>
@@ -1438,7 +1438,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     <title>Lookup default values</title>
                     <para>You can set a global default for that lookup field using the defaultValue
                     property: </para>
-                    <programlisting>&lt;bean parent="FieldDefinition" p:attributeName="campusCode" p:defaultValue="BL"/></programlisting>
+                    <programlisting linenumbering = "numbered">&lt;bean parent="FieldDefinition" p:attributeName="campusCode" p:defaultValue="BL"/></programlisting>
                     <para>The effect of this is that every time the lookup for this Business Object
                         is rendered, the campusCode text input will have "BL" in it. </para>
                 </section>
@@ -1455,7 +1455,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                         relationship, you may wish to set default values for certain fields on that
                         related Business Object's lookup form, but only when the quickfinder from
                         this Business Object is used. </para>
-                    <programlisting>&lt;bean parent="FieldDefinition" p:attributeName="campusCode" p:quickfinderParameterString="campusTypeCode=P,active=Y" /> 
+                    <programlisting linenumbering = "numbered">&lt;bean parent="FieldDefinition" p:attributeName="campusCode" p:quickfinderParameterString="campusTypeCode=P,active=Y" /> 
 </programlisting>
                     <para>The effect of this is different than the defaultValue in that the defaults
                         apply not to the lookup form Business Object that we are currently defining
@@ -1469,7 +1469,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     <para>This is perhaps better explained through a simple example with two BOs
                         that have a relationship, Building and Campus. Here is the LookupDefinition
                         for Building: </para>
-                    <programlisting>&lt;bean id="Building-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition" p:title="Building Lookup">
+                    <programlisting linenumbering = "numbered">&lt;bean id="Building-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition" p:title="Building Lookup">
     ...
     &lt;property name="lookupFields">
         &lt;list>
@@ -1507,7 +1507,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                         the resultFields, the total line will be rendered and totals displayed for
                         each field indicated.</para>
                     <para><emphasis role="italic">Example:</emphasis></para>
-                    <programlisting>&lt;property name="resultFields" >
+                    <programlisting linenumbering = "numbered">&lt;property name="resultFields" >
     &lt;list>
         &lt;bean parent="FieldDefinition" p:attributeName="kemid" />
         &lt;bean parent="FieldDefinition"
@@ -1554,7 +1554,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     <para>The first way is to disable the buttons through the data dictionary. This
                         is done by setting the property disableSearchButtons to true in the data
                         dictionary lookup definition:</para>
-                    <programlisting>&lt;bean id="CustomerProfile-lookupDefinition" parent="CustomerProfile-lookupDefinition-parentBean"/>
+                    <programlisting linenumbering = "numbered">&lt;bean id="CustomerProfile-lookupDefinition" parent="CustomerProfile-lookupDefinition-parentBean"/>
 &lt;bean id="CustomerProfile-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
 &lt;property name="title" value="Customer Profile Lookup"/>
 &lt;property name="disableSearchButtons" value="true"/>
@@ -1576,7 +1576,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                         >DataDictionaryBeanOverride</emphasis>. In the example below, we wish to add
                     a custom attribute named <emphasis role="bold">Campus Code</emphasis> to KFS's
                     existing Account bean. </para>
-                <programlisting>&lt;beans>
+                <programlisting linenumbering = "numbered">&lt;beans>
     ...
     &lt;bean id="Account" parent="Account-parentBean">
     &lt;property name="attributes">
@@ -1594,7 +1594,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     it such that <emphasis role="bold">Campus Code</emphasis> is displayed right
                     after the <emphasis role="bold">Sub-Fund Group Code</emphasis> attribute in the
                     Account lookup screen and search results.</para>
-                <programlisting>&lt;beans>
+                <programlisting linenumbering = "numbered">&lt;beans>
     ...
     &lt;bean id="Account-lookupDefinition-override" parent="DataDictionaryBeanOverride">
         &lt;property name="beanName" value="Account-lookupDefinition" />
@@ -1646,7 +1646,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                         >DataDictionaryBeanOverride</emphasis>. In the example below, we wish to add
                     a custom attribute named <emphasis role="bold">Campus Code</emphasis> to KFS's
                     existing Account bean. </para>
-                <programlisting>&lt;beans>
+                <programlisting linenumbering = "numbered">&lt;beans>
     ...
     &lt;bean id="Account" parent="Account-parentBean">
         &lt;property name="attributes">
@@ -1665,7 +1665,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     it such that <emphasis role="bold">Campus Code</emphasis> is displayed right
                     after the <emphasis role="bold">Sub-Fund Group Code</emphasis> attribute in the
                     Account inquiry screen.</para>
-                <programlisting>&lt;beans>
+                <programlisting linenumbering = "numbered">&lt;beans>
     ...
     &lt;bean id="Account-inquiryDefinition-override" parent="DataDictionaryBeanOverride">
         &lt;property name="beanName" value="Account-inquiryDefinition" />
@@ -1774,7 +1774,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     >org/kuali/rice/kns/document/datadictionary/</emphasis> is where the <emphasis
                     role="bold">ParameterMaintenanceDocument</emphasis> can be found in Rice if
                     below is difficult to view.</para>
-            <programlisting>&lt;bean id="ParameterMaintenanceDocument" parent="ParameterMaintenanceDocument-parentBean"/>
+            <programlisting linenumbering = "numbered">&lt;bean id="ParameterMaintenanceDocument" parent="ParameterMaintenanceDocument-parentBean"/>
 
 &lt;bean id="ParameterMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
     &lt;property name="businessObjectClass" value="org.kuali.rice.kns.bo.Parameter"/>
@@ -1857,7 +1857,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     particular business object is defined specifically as a Maintenance Document.
                     Inside the "ParameterMaintenanceDocument-parentBean" bean we see several
                     properties being set:</para>
-                <programlisting>&lt;property name="businessObjectClass" value="org.kuali.rice.kns.bo.Parameter"/>
+                <programlisting linenumbering = "numbered">&lt;property name="businessObjectClass" value="org.kuali.rice.kns.bo.Parameter"/>
 &lt;property name="maintainableClass" value="org.kuali.rice.kns.document.ParameterMaintainable"/></programlisting>
                 <para>First and foremost the Maintenance Document Data Dictionary file should define
                     the business object that will be maintained by this particular document using
@@ -1882,7 +1882,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     omnipresent that they can simply be declared - typically validations that
                     certain fields of a document are required. Here are the default existence checks
                     for the <emphasis role="bold">ParameterMaintenanceDocument</emphasis>:</para>
-                <programlisting>&lt;property name="defaultExistenceChecks">
+                <programlisting linenumbering = "numbered">&lt;property name="defaultExistenceChecks">
     &lt;list>
         &lt;bean parent="ReferenceDefinition" p:attributeName="parameterNamespace" p:attributeToHighlightOnFail="parameterNamespaceCode"/>
     &lt;/list>
@@ -1925,7 +1925,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     document to create that locking representation. Here's the locking
                     representation configuration for the <emphasis role="bold"
                         >ParameterMaintenanceDocument</emphasis>:</para>
-                <programlisting>&lt;property name="lockingKeys">
+                <programlisting linenumbering = "numbered">&lt;property name="lockingKeys">
     &lt;list>
         &lt;value>parameterNamespaceCode&lt;/value>
         &lt;value>parameterDetailTypeCode&lt;/value>
@@ -1952,7 +1952,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     the section list property being set on the
                     "ParameterMaintenanceDocument-parentBean" bean (only one section in this
                     document):</para>
-                <programlisting>&lt;property name="maintainableSections">
+                <programlisting linenumbering = "numbered">&lt;property name="maintainableSections">
     &lt;list>
         &lt;ref bean="ParameterMaintenanceDocument-EditParameter"/>
     &lt;/list>
@@ -1961,7 +1961,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     each 'Section Definition' bean is defined below in the file. Here is the
                         <emphasis role="bold">ParameterMaintenanceDocument</emphasis> example of the
                     "ParameterMaintenanceDocument-EditParameter" bean definition:</para>
-                <programlisting>&lt;bean id="ParameterMaintenanceDocument-EditParameter-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+                <programlisting linenumbering = "numbered">&lt;bean id="ParameterMaintenanceDocument-EditParameter-parentBean" abstract="true" parent="MaintainableSectionDefinition">
     &lt;property name="maintainableItems">
         &lt;list>
             &lt;bean parent="MaintainableFieldDefinition" p:required="true" p:name="parameterNamespaceCode"/>
@@ -2000,7 +2000,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                         >ParameterMaintenanceDocument</emphasis> data dictionary file. For instance,
                     default values for any field can be set by using the <emphasis role="bold"
                         >defaultValue</emphasis> property, like so:</para>
-                <programlisting>&lt;bean parent="MaintainableFieldDefinition">
+                <programlisting linenumbering = "numbered">&lt;bean parent="MaintainableFieldDefinition">
     &lt;property name="name" value="parameterApplicationNamespaceCode"/>
     &lt;property name="required" value="true"/>
     &lt;property name="defaultValue" value="KUALI"/>
@@ -2020,7 +2020,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                         >IdentityManagementGenericPermissionMaintenanceDocument</emphasis>) on how
                     to use the <emphasis role="bold">defaultValueFinderClass</emphasis>
                     property:</para>
-                <programlisting>&lt;bean parent="MaintainableFieldDefinition">
+                <programlisting linenumbering = "numbered">&lt;bean parent="MaintainableFieldDefinition">
     &lt;property name="name" value="permissionId"/>
     &lt;property name="unconditionallyReadOnly" value="true"/>
     &lt;property name="required" value="true"/>
@@ -2035,7 +2035,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     on a particular field operates. Lookups will be described in detail later in
                     this documentation. Below is a simulated example that does not exist in the Rice
                     code:</para>
-                <programlisting>&lt;bean parent="MaintainableFieldDefinition">
+                <programlisting linenumbering = "numbered">&lt;bean parent="MaintainableFieldDefinition">
     &lt;property name="name" value="reconcilerGroup.groupName"/>
     &lt;property name="required" value="true"/>
     &lt;property name="overrideFieldConversions" value="groupId:cardGroupId,groupName:reconcilerGroup.groupName"/>
@@ -2064,7 +2064,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                 <para>For each MaintainableFieldDefinition bean defined in a maintenance document,
                     there are a few fields that can help adjust the User Interface for a KNS client.
                     Here is a sample example:</para>
-                <programlisting>     ...
+                <programlisting linenumbering = "numbered">     ...
 1    &lt;property name="maintainableItems">
 2        &lt;list>
 3            &lt;bean parent="MaintainableFieldDefinition" p:name="Code" p:required="true" />
@@ -2103,7 +2103,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                 <para>Some maintenance documents include collections of business objects. Below is
                     an example from the RoutingRuleMaintenanceDocument data dictionary file from
                     Rice:</para>
-                <programlisting>&lt;bean id="RoutingRuleMaintenanceDocument-PersonResponsibilities-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+                <programlisting linenumbering = "numbered">&lt;bean id="RoutingRuleMaintenanceDocument-PersonResponsibilities-parentBean" abstract="true" parent="MaintainableSectionDefinition">
     &lt;property name="id" value="PersonsMaintenance"/>
     &lt;property name="title" value="Persons"/>
     &lt;property name="maintainableItems">
@@ -2173,7 +2173,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     element with those same values cannot be added.</para>
                 <para>There are also a few more advanced type attributes that can be used. Take the
                     above example and the abbreviated alteration below.</para>
-                <programlisting>     ...
+                <programlisting linenumbering = "numbered">     ...
 1    &lt;property name="maintainableItems">
 2        &lt;list>
 3            &lt;bean parent="MaintainableCollectionDefinition" >
@@ -2218,7 +2218,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     displayed since the view is always read-only. For maintenance documents, the
                     field attribute will display when the document is editable, and the alternate
                     attribute will display when the document is read-only.</para>
-                <programlisting>&lt;bean id="CustomerProfile-lookupDefinition" parent="CustomerProfile-lookupDefinition-parentBean"/>
+                <programlisting linenumbering = "numbered">&lt;bean id="CustomerProfile-lookupDefinition" parent="CustomerProfile-lookupDefinition-parentBean"/>
 &lt;bean id="CustomerProfile-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
     &lt;property name="title" value="Customer Profile Lookup"/>
 
@@ -2289,7 +2289,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                     LookupDefinition, or InquiryDefinition with the property
                     'translateCodes'.</para>
                 <para>For example, in the MaintenanceDocumentEntry:</para>
-                <programlisting>&lt;bean id="CustomerProfileMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
+                <programlisting linenumbering = "numbered">&lt;bean id="CustomerProfileMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
     &lt;property name="businessObjectClass" value="org.kuali.kfs.pdp.businessobject.CustomerProfile"/>
     &lt;property name="maintainableClass" value="org.kuali.kfs.pdp.document.datadictionary.CustomerProfileMaintenanceDocumentMaintainableImpl"/>
     &lt;property name="maintainableSections">
@@ -2358,7 +2358,7 @@ getConditionallyHiddenPropertyNames(BusinessObject businessObject)
                     maintenance context this will again be the MaintenanceDocument and can be cast
                     after doing an instanceof check.</para>
                 <para><emphasis role="italic">Example:</emphasis></para>
-                <programlisting>@Override
+                <programlisting linenumbering = "numbered">@Override
 public Set&lt;String> getConditionallyRequiredPropertyNames(MaintenanceDocument document) {
     Set&lt;String> required = new HashSet&lt;String>();
     SubAccount subAccount = (SubAccount) document.getNewMaintainableObject().getBusinessObject();
@@ -2401,7 +2401,7 @@ public Set&lt;String> getConditionallyHiddenPropertyNames();</programlisting>
                     Therefore basing conditional logic off these values will correctly reflect the
                     values being returned to the search fields.</para>
                 <para><emphasis role="italic">Example:</emphasis></para>
-                <programlisting>@Override
+                <programlisting linenumbering = "numbered">@Override
 public Set&lt;String> getConditionallyHiddenPropertyNames() {
     Set&lt;String> hiddenPropertyNames = new HashSet&lt;String>();
 
@@ -2422,10 +2422,10 @@ public Set&lt;String> getConditionallyHiddenPropertyNames() {
                     all field values are available to the conditional methods regardless of which
                     one triggered the refresh). To indicate a field should trigger a refresh, set
                     the triggerOnChange attribute to true on the MaintainableFieldDefinition:</para>
-                <programlisting>&lt;bean parent="MaintainableFieldDefinition" p:name="financialReportChartCode" p:triggerOnChange="true"/></programlisting>
+                <programlisting linenumbering = "numbered">&lt;bean parent="MaintainableFieldDefinition" p:name="financialReportChartCode" p:triggerOnChange="true"/></programlisting>
                 <para>For lookups, set the triggerOnChange attribute to true on the lookup
                     FieldDefinition within the lookupFields property:</para>
-                <programlisting>&lt;property name="lookupFields" >
+                <programlisting linenumbering = "numbered">&lt;property name="lookupFields" >
     &lt;list>
         &lt;bean parent="FieldDefinition" p:attributeName="payeeTypeCode"/>
         &lt;bean parent="FieldDefinition" p:attributeName="taxNumber" />
@@ -2459,7 +2459,7 @@ public Set&lt;String> getConditionallyHiddenPropertyNames() {
                 >/kns/src/test/resources/META-INF</emphasis> directory. </para>
         <para>The <emphasis role="italic">kns-test-config.xml file</emphasis> contains this code
         snippet:</para>
-        <programlisting>&lt;param name="module.name">sample-app&lt;/param>
+        <programlisting linenumbering = "numbered">&lt;param name="module.name">sample-app&lt;/param>
 &lt;param name="service.namespace">RICE&lt;/param>
 &lt;param name="filter.login.class">org.kuali.rice.krad.web.filter.DummyLoginFilter&lt;/param>
 &lt;param name="filtermapping.login.1">/*&lt;/param>
@@ -2483,7 +2483,7 @@ public Set&lt;String> getConditionallyHiddenPropertyNames() {
                 put in a different database than the application's logic, if needed. Currently,
                 KNSTestSpringBeans.xml uses JOTM to configure JTA without an application server.
                 Below is the bean definition for JOTM that can be found in Spring.</para>
-            <programlisting>&lt;bean id="transactionManagerXAPool" class="org.springframework.transaction.jta.JotmFactoryBean">
+            <programlisting linenumbering = "numbered">&lt;bean id="transactionManagerXAPool" class="org.springframework.transaction.jta.JotmFactoryBean">
     &lt;property name="defaultTimeout" value="${transaction.timeout}"/>
 
 &lt;/bean>
@@ -2571,7 +2571,7 @@ public Set&lt;String> getConditionallyHiddenPropertyNames() {
                 </orderedlist></para>
             <para>An excellent example of this can be found in the sample "Recipe application" which
                 ships with Rice, in edu.sampleu.recipe.document.rule.RecipeRules:</para>
-            <programlisting>@Override
+            <programlisting linenumbering = "numbered">@Override
 protected boolean processCustomSaveDocumentBusinessRules(MaintenanceDocument document) {
     boolean valid = super.processCustomSaveDocumentBusinessRules(document);
     if (valid) {
@@ -2768,7 +2768,7 @@ public final class AddCashControlDetailEvent extends KualiDocumentEventBase {
                 this interface. Finally, the rules have to be called; that occurs when an event is
                 created and sent to the KualiRuleService, which is typically done in the web layer's
                 controller. In our example, this occurs in the CashControlDocumentAction:</para>
-            <programlisting>// apply rules for the new cash control detail
+            <programlisting linenumbering = "numbered">// apply rules for the new cash control detail
 rulePassed &amp;= ruleService.applyRules(new AddCashControlDetailEvent(ArConstants.NEW_CASH_CONTROL_DETAIL_ERROR_PATH_PREFIX, cashControlDocument, newCashControlDetail));</programlisting>
             <para>Now the new action will be validated properly.</para>
         </section>
@@ -2783,7 +2783,7 @@ rulePassed &amp;= ruleService.applyRules(new AddCashControlDetailEvent(ArConstan
         <para>Once the Rice application has been generated, in src/main/resources, there will be a
             file named configurationServiceData.xml. That file lists a number of properties files
             which will be loaded:</para>
-        <programlisting>&lt;configuration>
+        <programlisting linenumbering = "numbered">&lt;configuration>
     &lt;properties fileName="KR-ApplicationResources.properties" />
     &lt;properties fileName="KIM-ApplicationResources.properties" />
 &lt;/configuration></programlisting>
@@ -2856,7 +2856,7 @@ document.question.saveBeforeClose.text=Would you like to save this document befo
             <para>Messages to be loaded to struts are configured via the client application's
                 project configuration file, in the <emphasis role="bold"
                     >rice.struts.message.resources</emphasis> property, like so:</para>
-            <programlisting>&lt;param name="rice.struts.message.resources">KR-ApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.messaging.ApplicationResources,KIM-ApplicationResources&lt;/param></programlisting>
+            <programlisting linenumbering = "numbered">&lt;param name="rice.struts.message.resources">KR-ApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.messaging.ApplicationResources,KIM-ApplicationResources&lt;/param></programlisting>
             <para>Again, the files are listed relative to the src/main/resources directory. There is
                 nothing to prevent programmers from using one user message file for both the
                 KualiConfigurationService messages and the Struts messages.</para>
@@ -2864,7 +2864,7 @@ document.question.saveBeforeClose.text=Would you like to save this document befo
                 jsp TAG file. Indeed, a great many of the delivered Rice tags make use of these
                 message resources in order to display information, as seen from this sample from the
                 standard <emphasis role="bold">kul:page</emphasis> tag:</para>
-            <programlisting>&lt;title>&lt;bean:message key="app.title" /> :: ${headerTitle}&lt;/title></programlisting>
+            <programlisting linenumbering = "numbered">&lt;title>&lt;bean:message key="app.title" /> :: ${headerTitle}&lt;/title></programlisting>
             <para>In this case, the user message – set in KR-ApplicationResources.properties – with
                 the property key of "app.title" will be displayed (which, by default as
                 "Kuali").</para>
@@ -2894,7 +2894,7 @@ document.question.saveBeforeClose.text=Would you like to save this document befo
             <para>This kind of prompt is easily accomplished by giving the document an <emphasis
                     role="bold">org.kuali.rice.kns.rule.PromptBeforeValidation</emphasis>
                 implementation. This is done via the data dictionary:</para>
-            <programlisting>&lt;bean id="BudgetAdjustmentDocument" parent="AccountingDocumentEntry">
+            <programlisting linenumbering = "numbered">&lt;bean id="BudgetAdjustmentDocument" parent="AccountingDocumentEntry">
     &lt;property name="documentTypeName" value="BA"/>
     &lt;property name="documentClass" value="org.kuali.kfs.fp.document.BudgetAdjustmentDocument"/>
     &lt;property name="promptBeforeValidationClass" value="org.kuali.kfs.fp.document.validation.impl.BudgetAdjustmentDocumentPreRules"/>
@@ -2917,7 +2917,7 @@ document.question.saveBeforeClose.text=Would you like to save this document befo
                     >org.kuali.kfs.module.ar.document.validation.impl.CustomerPreRules</emphasis>
                 will be examined. Here is how it overrides the <emphasis role="bold"
                     >doPrompts</emphasis> method:</para>
-            <programlisting>@Override
+            <programlisting linenumbering = "numbered">@Override
 public boolean doPrompts(Document document) {
     boolean preRulesOK = true;
     preRulesOK &amp;= conditionallyAskQuestion(document);
@@ -2989,7 +2989,7 @@ public boolean doPrompts(Document document) {
                 e.g. [tag/].</para>
             <para>The following is a list of the tags supported along with the corresponding HTML
                 translation.</para>
-            <programlisting>* All 1 character HTML tags
+            <programlisting linenumbering = "numbered">* All 1 character HTML tags
 Examples:
 [p] ... [/p] translates to &lt;p> .... &lt;/p>
 [b] ... [/b] translates to &lt;b> .... &lt;/b>
@@ -3051,7 +3051,7 @@ Example:
             an example, associated with the Organization Maintenance Document. First, the <emphasis
                 role="bold">DerivedValuesSetter</emphasis> is set in the data dictionary for the
             document:</para>
-        <programlisting>&lt;bean id="OrganizationMaintenanceDocument" parent="MaintenanceDocumentEntry">
+        <programlisting linenumbering = "numbered">&lt;bean id="OrganizationMaintenanceDocument" parent="MaintenanceDocumentEntry">
     &lt;property name="businessObjectClass" value="org.kuali.kfs.coa.businessobject.Organization"/>
     &lt;property name="documentTypeName" value="ORGN"/>
     &lt;property name="promptBeforeValidationClass" value="org.kuali.kfs.coa.document.validation.impl.OrgPreRules"/>
@@ -3137,18 +3137,18 @@ Example:
         <para>Setting the configuration parameter is easiest of all. In the <emphasis role="bold"
                 >{project name}-config.xml</emphasis> file for most client applications, there
             already exists a generated line which looks like this:</para>
-        <programlisting>&lt;param name="javascript.files">kr/scripts/core.js,kr/scripts/dhtml.js,kr/scripts/documents.js,kr/scripts/my_common.js,kr/scripts/objectInfo.js&lt;/param></programlisting>
+        <programlisting linenumbering = "numbered">&lt;param name="javascript.files">kr/scripts/core.js,kr/scripts/dhtml.js,kr/scripts/documents.js,kr/scripts/my_common.js,kr/scripts/objectInfo.js&lt;/param></programlisting>
         <para>These scripts will be pulled in on every page which uses the <emphasis role="bold"
                 >kul:page</emphasis> tag. Note that the file path is relative to the root path of
             the project. It bears mentioning, too, that the css.files property works the same way
             for CSS files:</para>
-        <programlisting>&lt;param name="css.files">kr/css/kuali.css&lt;/param></programlisting>
+        <programlisting linenumbering = "numbered">&lt;param name="css.files">kr/css/kuali.css&lt;/param></programlisting>
         <para>It's not always the best idea to include Javascript pages, which the browser must
             parse, onto every single page. If only certain documents or even a single document needs
             a given Javascript file, it is easiest to simply tell the data dictionary entry to
             import the file. Here is an example from KFS's Account Maintenance Document (<emphasis
                 role="bold">AccountMaintenanceDocument.xml</emphasis>):</para>
-        <programlisting>&lt;bean id="AccountMaintenanceDocument" parent="AccountMaintenanceDocument-parentBean"/>
+        <programlisting linenumbering = "numbered">&lt;bean id="AccountMaintenanceDocument" parent="AccountMaintenanceDocument-parentBean"/>
 
 &lt;bean id="AccountMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry" p:businessObjectClass="org.kuali.kfs.coa.businessobject.Account" p:maintainableClass="org.kuali.kfs.coa.document.KualiAccountMaintainableImpl">
 
@@ -3193,7 +3193,7 @@ Example:
             <para>To accomplish this, in the data dictionary file for the <emphasis role="bold"
                     >AccountMaintenanceDocument</emphasis>, extra JavaScript files are
                 imported.</para>
-            <programlisting>&lt;property name="webScriptFiles">
+            <programlisting linenumbering = "numbered">&lt;property name="webScriptFiles">
     &lt;list>
         &lt;value>../dwr/interface/SubFundGroupService.js&lt;/value>
         &lt;value>../scripts/coa/accountDocument.js&lt;/value>
@@ -3212,7 +3212,7 @@ Example:
                 DWR.</para>
             <para>Maintainable fields can then trip off the AJAX call when certain events
                 happen:</para>
-            <programlisting>&lt;bean parent="MaintainableFieldDefinition" p:name="subFundGroupCode" p:required="true" p:webUILeaveFieldFunction="onblur_subFundGroup" p:webUILeaveFieldCallbackFunction="checkRestrictedStatusCode_Callback"/></programlisting>
+            <programlisting linenumbering = "numbered">&lt;bean parent="MaintainableFieldDefinition" p:name="subFundGroupCode" p:required="true" p:webUILeaveFieldFunction="onblur_subFundGroup" p:webUILeaveFieldCallbackFunction="checkRestrictedStatusCode_Callback"/></programlisting>
             <para>In the above example, when the user leaves the UI field for the sub-fund group
                 code, the <emphasis role="bold">onblur_subFundGroup</emphasis> JavaScript function
                 will be called, and that should populate the name of the sub-fund group in the page
@@ -3233,7 +3233,7 @@ Example:
             records: one for the field name, and one for the business object component name. That
             masking will automatically be applied to every use of the business object's field: on
             inquiries, lookups, maintenance documents, transactional documents, and screens.</para>
-        <programlisting>&lt;bean id="IdentityManagementPersonDocument-taxId-parentBean" parent="AttributeDefinition" abstract="true" p:name="taxId" p:forceUppercase="true" p:label="Tax Identification Number" p:shortLabel="Tax Id" p:maxLength="100" p:required="false">
+        <programlisting linenumbering = "numbered">&lt;bean id="IdentityManagementPersonDocument-taxId-parentBean" parent="AttributeDefinition" abstract="true" p:name="taxId" p:forceUppercase="true" p:label="Tax Identification Number" p:shortLabel="Tax Id" p:maxLength="100" p:required="false">
     &lt;property name="control">
         &lt;bean parent="TextControlDefinition" p:size="20"/>
     &lt;/property>
@@ -3331,7 +3331,7 @@ Example:
         <para>Of course, calling these functions – especially those which do KIM permission checks –
             can be computationally expensive. It is always better to check if masking has been
             turned on by checking the data dictionary attribute for the field first, like so:</para>
-        <programlisting>&lt;c:if test="${!empty attributeEntry.attributeSecurityMask &amp;&amp; attributeEntry.attributeSecurityMask == true  }">
+        <programlisting linenumbering = "numbered">&lt;c:if test="${!empty attributeEntry.attributeSecurityMask &amp;&amp; attributeEntry.attributeSecurityMask == true  }">
     &lt;c:set var="displayMask" value="${kfunc:canFullyUnmaskField(className, fieldName,KualiForm)? 'false' : 'true'}" />
 &lt;/c:if></programlisting>
         <para>Alternatively, application developers can simply use the <emphasis role="bold"
@@ -3386,7 +3386,7 @@ Example:
         <para>The classes for both the document authorizer and presentation controller are set in
             the document in the data dictionary. Here's an example, from the sample travel
             application:</para>
-        <programlisting>&lt;bean id="TravelRequest" parent="TravelRequest-parentBean"/>
+        <programlisting linenumbering = "numbered">&lt;bean id="TravelRequest" parent="TravelRequest-parentBean"/>
 
 &lt;bean id="TravelRequest-parentBean" abstract="true" parent="TransactionalDocumentEntry">
     &lt;property name="documentTypeName" value="TravelRequest"/>
@@ -3745,7 +3745,7 @@ public Set&lt;String> getConditionallyReadOnlySectionIds(MaintenanceDocument doc
 
 }</programlisting>
             <para>Then, in Example.jsp, we may have code that looks like this:</para>
-            <programlisting>&lt;c:if test="${!KualiForm.editingMode['NO_EXTRA_SECTION']}">
+            <programlisting linenumbering = "numbered">&lt;c:if test="${!KualiForm.editingMode['NO_EXTRA_SECTION']}">
     &lt;kul:tab tabTitle="Extra Section" defaultOpen="true" tabErrorKey="${Constants.EXTRA_SECTION_ERRORS}">
         ...
     &lt;/kul:tab>
@@ -3828,7 +3828,7 @@ public Set&lt;String> getConditionallyReadOnlySectionIds(MaintenanceDocument doc
             files created. The developer's own struts-config.xml, of course, exists in
             {project_root}/src/main/webapp/WEB-INF. It will automatically be created with the
             following entry:</para>
-        <programlisting>&lt;global-exceptions>
+        <programlisting linenumbering = "numbered">&lt;global-exceptions>
     &lt;exception type="java.lang.Throwable"
  handler="org.kuali.rice.kns.web.struts.pojo.StrutsExceptionIncidentHandler"
  key="meaningless" />
@@ -3838,7 +3838,7 @@ public Set&lt;String> getConditionallyReadOnlySectionIds(MaintenanceDocument doc
                 role="bold"
                 >org.kuali.rice.kns.web.struts.pojo.StrutsExceptionIncidentHandler</emphasis>. This
             handler, in turn, redirects to the following forward:</para>
-        <programlisting>&lt;action path="/kualiExceptionIncidentReport"
+        <programlisting linenumbering = "numbered">&lt;action path="/kualiExceptionIncidentReport"
  type="org.kuali.rice.kns.web.struts.action.KualiExceptionHandlerAction">
     &lt;forward name="basic" path="/kr/kualiExceptionIncidentReport.do" />
 &lt;/action></programlisting>
@@ -3853,7 +3853,7 @@ public Set&lt;String> getConditionallyReadOnlySectionIds(MaintenanceDocument doc
                 >KualiExceptionIncidentServiceImpl.REPORT_MAIL_LIST</emphasis> configuration
             parameter. The rest of the mail can be configured by overriding the service bean's
             message template:</para>
-        <programlisting>&lt;bean id="knsExceptionIncidentService" class="org.kuali.rice.kns.service.impl.KualiExceptionIncidentServiceImpl">
+        <programlisting linenumbering = "numbered">&lt;bean id="knsExceptionIncidentService" class="org.kuali.rice.kns.service.impl.KualiExceptionIncidentServiceImpl">
     &lt;property name="mailService">&lt;ref bean="mailService"/>&lt;/property>
     &lt;property name="messageTemplate">
         &lt;bean class="org.kuali.rice.kns.mail.MailMessage">
@@ -4107,7 +4107,7 @@ if (parameterService.parameterExists(document.getClass(), "EXAMPLE_VALUE")) {
             <para>For instance, the variable Constants is used to give web layer developers access
                 to <emphasis role="bold">org.kuali.rice.kns.util.KNSConstants</emphasis>, as
                 so:</para>
-            <programlisting>&lt;c:if test="${KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}">
+            <programlisting linenumbering = "numbered">&lt;c:if test="${KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}">
     Howdy, end user!  You can edit this page!
 &lt;/c:if></programlisting>
             <para>Client applications often overload this variable to hold not only KNS constants
@@ -4121,15 +4121,15 @@ if (parameterService.parameterExists(document.getClass(), "EXAMPLE_VALUE")) {
                 >org.kuali.rice.kns.util.KNSPropertyConstants</emphasis>.</para>
             <para>All configuration properties are loaded into a variable <emphasis role="bold"
                     >ConfigProperties</emphasis></para>
-            <programlisting>&lt;p>
+            <programlisting linenumbering = "numbered">&lt;p>
 application namespace is &lt;c:out value="${ConfigProperties['config.namespace']}" />
 &lt;/p></programlisting>
             <para>The entirety of the data dictionary as also exposed in the map constant <emphasis
                     role="bold">DataDictionary</emphasis>. The keys for this map are either the
                 simple class name of a business object:</para>
-            <programlisting>&lt;c:set var="countryBODataDictionaryEntry" value="${DataDictionary['CountryImpl']}" /></programlisting>
+            <programlisting linenumbering = "numbered">&lt;c:set var="countryBODataDictionaryEntry" value="${DataDictionary['CountryImpl']}" /></programlisting>
             <para>Or, for documents, the KEW document type name:</para>
-            <programlisting>&lt;c:set var="identityManagementPersonDocumentEntry" value="${DataDictionary['IdentityManagementPersonDocument']}" /></programlisting>
+            <programlisting linenumbering = "numbered">&lt;c:set var="identityManagementPersonDocumentEntry" value="${DataDictionary['IdentityManagementPersonDocument']}" /></programlisting>
             <para>Data dictionary values can then be accessed via JSP EL.</para>
             <para>The final implicit variable to mention is <emphasis role="bold"
                     >KualiForm</emphasis>. This is the Struts form for the current page. For JSP
@@ -4260,7 +4260,7 @@ application namespace is &lt;c:out value="${ConfigProperties['config.namespace']
             <para>The basic tag for showing a field is kul:htmlControlAttribute. Dozens of examples
                 can be found in even the simplest Rice client application. Here is the tag being
                 used in travelDocument2.jsp in the Rice sample travel application:</para>
-            <programlisting>&lt;table width="100%" border="0" cellpadding="0" cellspacing="0" class="datatable">
+            <programlisting linenumbering = "numbered">&lt;table width="100%" border="0" cellpadding="0" cellspacing="0" class="datatable">
     &lt;tr>
         &lt;kul:htmlAttributeHeaderCell labelFor="document.traveler" attributeEntry="${travelAttributes.traveler}" align="left" />
         &lt;td>&lt;kul:htmlControlAttribute property="document.traveler" attributeEntry="${travelAttributes.traveler}" readOnly="${readOnly}" />&lt;/td>
@@ -4278,7 +4278,7 @@ application namespace is &lt;c:out value="${ConfigProperties['config.namespace']
                 attribute is required. Also required is the <emphasis role="bold"
                     >attributeEntry</emphasis> attribute, which takes in the DataDictionary
                 attribute entry for the attribute that is being displayed:</para>
-            <programlisting>&lt;c:set var="travelAttributes" value="${DataDictionary.TravelRequest.attributes}" /></programlisting>
+            <programlisting linenumbering = "numbered">&lt;c:set var="travelAttributes" value="${DataDictionary.TravelRequest.attributes}" /></programlisting>
             <para>There are also many optional attributes. One is seen in both examples above:
                     <emphasis role="bold">readOnly</emphasis>, which determines if the field will
                 simply have a read only version of its value displayed, or a control will be
@@ -4287,7 +4287,7 @@ application namespace is &lt;c:out value="${ConfigProperties['config.namespace']
                     role="bold">readOnly</emphasis> is determined based on the whether there's an
                 action "can edit" in the form's <emphasis role="bold">documentActions</emphasis>
                 map:</para>
-            <programlisting>&lt;c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" /></programlisting>
+            <programlisting linenumbering = "numbered">&lt;c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" /></programlisting>
             <para>As covered earlier, masking is handled automatically if the field is read only. If
                 the value of the property should not be displayed at all, the attribute <emphasis
                     role="bold">readOnlyBody</emphasis> can be set to true and the value of the
@@ -4344,7 +4344,7 @@ application namespace is &lt;c:out value="${ConfigProperties['config.namespace']
                 transactional tag, right after the <emphasis role="bold">kul:documentPage</emphasis>
                 tag: <emphasis role="bold">kul:hiddenDocumentFields</emphasis>. Here is its use in
                 travelDocument2.jsp:</para>
-            <programlisting>&lt;kul:documentPage showDocumentInfo="true" htmlFormAction="travelDocument2"
+            <programlisting linenumbering = "numbered">&lt;kul:documentPage showDocumentInfo="true" htmlFormAction="travelDocument2"
  documentTypeName="TravelRequest" renderMultipart="true" showTabButtons="true" auditCount="0">
 &lt;kul:hiddenDocumentFields />
 </programlisting>
@@ -4383,7 +4383,7 @@ application namespace is &lt;c:out value="${ConfigProperties['config.namespace']
                 control. To get one of those to display, the <emphasis role="bold">kul:lookup
                     tag</emphasis> must be utilized, precisely as it is on <emphasis role="bold"
                     >travelRequest2.jsp</emphasis>:</para>
-            <programlisting>&lt;kul:htmlControlAttribute property="travelAccount.number" attributeEntry="${accountAttributes.number}" readOnly="${readOnly}" />
+            <programlisting linenumbering = "numbered">&lt;kul:htmlControlAttribute property="travelAccount.number" attributeEntry="${accountAttributes.number}" readOnly="${readOnly}" />
 &lt;kul:lookup boClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount" fieldConversions="number:travelAccount.number" />
 &lt;kul:directInquiry boClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount" inquiryParameters="travelAccount.number:number" /></programlisting>
             <para>Right after the <emphasis role="bold">travelAccount.number</emphasis> control is
@@ -4408,7 +4408,7 @@ application namespace is &lt;c:out value="${ConfigProperties['config.namespace']
                 the <emphasis role="bold">kul:inquiry</emphasis> tag should be used. Here is an
                 example from the KFS <emphasis role="bold"
                     >procurementCardTransactions.tag</emphasis>:</para>
-            <programlisting>&lt;kul:inquiry boClassName="org.kuali.kfs.fp.businessobject.ProcurementCardTransactionDetail" keyValues="documentNumber=${currentTransaction.documentNumber}&amp;financialDocumentTransactionLineNumber=${currentTransaction.financialDocumentTransactionLineNumber}" render="true">
+            <programlisting linenumbering = "numbered">&lt;kul:inquiry boClassName="org.kuali.kfs.fp.businessobject.ProcurementCardTransactionDetail" keyValues="documentNumber=${currentTransaction.documentNumber}&amp;financialDocumentTransactionLineNumber=${currentTransaction.financialDocumentTransactionLineNumber}" render="true">
     &lt;bean:write name="KualiForm" property="document.transactionEntries[${ctr}].transactionReferenceNumber" />
 
 &lt;/kul:inquiry></programlisting>
@@ -4430,7 +4430,7 @@ application namespace is &lt;c:out value="${ConfigProperties['config.namespace']
                 which supports multiple value lookups, <emphasis role="bold"
                     >kul:multipleValueLookup</emphasis>. Here is an example from KC's
                 awardKeywords.tag:</para>
-            <programlisting>&lt;kul:multipleValueLookup boClassName="org.kuali.kra.bo.ScienceKeyword" lookedUpCollectionName="keywords" anchor="${tabKey}"/></programlisting>
+            <programlisting linenumbering = "numbered">&lt;kul:multipleValueLookup boClassName="org.kuali.kra.bo.ScienceKeyword" lookedUpCollectionName="keywords" anchor="${tabKey}"/></programlisting>
             <para>Once again, <emphasis role="bold">boClassName</emphasis> of the business object
                 class to be looked up is a required attribute. Also required is the <emphasis
                     role="bold">lookedUpCollectionName</emphasis> attribute. Once the multiple
@@ -4446,7 +4446,7 @@ application namespace is &lt;c:out value="${ConfigProperties['config.namespace']
                 draws the row of controls on the very bottom of the page, thereby allowing end users
                 to route, save, approve, cancel, and otherwise work with the document.
                 travelRequest2.jsp uses it:</para>
-            <programlisting>&lt;kul:panelFooter />
+            <programlisting linenumbering = "numbered">&lt;kul:panelFooter />
 &lt;kul:documentControls transactionalDocument="false" /></programlisting>
             <para>Properly utilized this control appears just beneath the kul:panelFooter. The only
                 required attribute is the <emphasis role="bold">transactionalDocument</emphasis>
@@ -4485,7 +4485,7 @@ application namespace is &lt;c:out value="${ConfigProperties['config.namespace']
                 overriding the form's <emphasis role="bold">getExtraButtons()</emphasis> method.
                 Then the extra buttons are simply sent from the form into the <emphasis role="bold"
                     >kul:documentControls</emphasis> tag, as so:</para>
-            <programlisting>&lt;kul:documentControls transactionalDocument="false" extraButtons="${KualiForm.extraButtons}" /></programlisting>
+            <programlisting linenumbering = "numbered">&lt;kul:documentControls transactionalDocument="false" extraButtons="${KualiForm.extraButtons}" /></programlisting>
             <para>The <emphasis role="bold">kul:documentControls</emphasis> tag will then render all
                 of the extra buttons. Given its extra flexibility, this is the preferred method of
                 adding extra buttons.</para>
@@ -4499,7 +4499,7 @@ application namespace is &lt;c:out value="${ConfigProperties['config.namespace']
                 so frankly, every document should have a place to enter notes. Documents should also
                 have the route log of the document, and a place where ad hoc KEW recipients can be
                 added. The KNS makes adding all of these tabs easy:</para>
-            <programlisting>&lt;kul:notes />
+            <programlisting linenumbering = "numbered">&lt;kul:notes />
 &lt;kul:adHocRecipients />
 &lt;kul:routeLog /></programlisting>
             <para>The names of the tags are self-explanatory; and as easy as that, these three

@@ -261,7 +261,7 @@
       application, the application needs to configure a URL similar to the
       following:</para>
 
-      <programlisting>&lt;param name="rice.ksb.registry.serviceUrl"&gt;http://localhost:8080/kr-dev/remoting/serviceRegistrySoap&lt;/param&gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;param name="rice.ksb.registry.serviceUrl"&gt;http://localhost:8080/kr-dev/remoting/serviceRegistrySoap&lt;/param&gt;</programlisting>
 
       <para>Currently, this connector is only configured to understand a SOAP
       interface to the service registry which is secured by digital
@@ -284,7 +284,7 @@
       Module using Spring. Here is an example XML snippet showing how to
       configure Rice and KSB using Spring:</para>
 
-      <programlisting>&lt;beans&gt;
+      <programlisting linenumbering = "numbered">&lt;beans&gt;
   ...
   &lt;bean id="coreConfigurer" class="org.kuali.rice.core.impl.config.module.CoreConfigurer"&gt;
     &lt;property name="dataSource" ref="riceDataSource${connection.pool.impl}" /&gt;
@@ -308,7 +308,7 @@
       is the xml file: ksb-test-config.xml located in the
       /ksb/src/test/resources/META-INF directory.</para>
 
-      <programlisting>&lt;bean id="config" class="org.kuali.rice.core.config.spring.ConfigFactoryBean"&gt;
+      <programlisting linenumbering = "numbered">&lt;bean id="config" class="org.kuali.rice.core.config.spring.ConfigFactoryBean"&gt;
     &lt;property name="configLocations"&gt;
         &lt;list&gt;
             &lt;value&gt;classpath:META-INF/ksb-test-config.xml&lt;/value&gt;
@@ -357,7 +357,7 @@
 
       <para>Let's take a look at the ksb-test-config.xml file:</para>
 
-      <programlisting>&lt;config&gt;
+      <programlisting linenumbering = "numbered">&lt;config&gt;
     &lt;param name="config.location"&gt;classpath:META-INF/common-derby-connection-config.xml&lt;/param&gt;
     &lt;param name="config.location"&gt;classpath:META-INF/common-config-test-locations.xml&lt;/param&gt;
     &lt;param name="client1.location"&gt;${basedir}/src/test/clients/TestClient1&lt;/param&gt;
@@ -405,7 +405,7 @@
       Below is the bean definition for JOTM that you can find in
       Spring:</para>
 
-      <programlisting>&lt;bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean"&gt;
+      <programlisting linenumbering = "numbered">&lt;bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean"&gt;
     &lt;property name="defaultTimeout" value="${transaction.timeout}"/&gt;
 
 &lt;/bean&gt;
@@ -434,7 +434,7 @@
 
       <para>Next, you must inject the JOTM into the RiceConfigurer:</para>
 
-      <programlisting>&lt;bean id="rice" class="org.kuali.rice.core.impl.config.module.CoreConfigurer"&gt;
+      <programlisting linenumbering = "numbered">&lt;bean id="rice" class="org.kuali.rice.core.impl.config.module.CoreConfigurer"&gt;
     &lt;property name="dataSource" ref="dataSource" /&gt;
     &lt;property name="transactionManager" ref="jotm" /&gt;
     &lt;property name="userTransaction" ref="jotm" /&gt;  
@@ -478,7 +478,7 @@
       JTA, the following transaction and DataSource configuration is
       declared:</para>
 
-      <programlisting>&lt;bean id="ojbConfigurer" class="org.springmodules.orm.ojb.support.LocalOjbConfigurer" /&gt;
+      <programlisting linenumbering = "numbered">&lt;bean id="ojbConfigurer" class="org.springmodules.orm.ojb.support.LocalOjbConfigurer" /&gt;
 
 
 &lt;bean id="transactionManager" class="org.springmodules.orm.ojb.PersistenceBrokerTransactionManager"&gt;
@@ -510,7 +510,7 @@
       FactoryBean. Next, we inject the DataSource and transactionManager (now
       a Spring PlatformTransactionManager).</para>
 
-      <programlisting>&lt;bean id="rice" class="org.kuali.rice.core.impl.config.module.CoreConfigurer"&gt;
+      <programlisting linenumbering = "numbered">&lt;bean id="rice" class="org.kuali.rice.core.impl.config.module.CoreConfigurer"&gt;
     &lt;property name="dataSource" ref="dataSource" /&gt;
     &lt;property name="nonTransactionalDataSource" ref="dataSource" /&gt;
     ...
@@ -539,7 +539,7 @@
       bus-connected node, you must configure the KSBDispatcherServlet in the
       web applications web.xml file. For example:</para>
 
-      <programlisting>&lt;servlet&gt;
+      <programlisting linenumbering = "numbered">&lt;servlet&gt;
     &lt;servlet-name&gt;remoting&lt;/servlet-name&gt;
     &lt;servlet-class&gt;org.kuali.rice.ksb.messaging.servlet.KSBDispatcherServlet&lt;/servlet-class&gt;
     &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
@@ -944,7 +944,7 @@
       done using Spring or programmatically. We'll use Spring because it's the
       easiest way to get things configured:</para>
 
-      <programlisting>&lt;bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean"&gt;
+      <programlisting linenumbering = "numbered">&lt;bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean"&gt;
     &lt;property name="defaultTimeout" value="${transaction.timeout}"/&gt;
 &lt;/bean&gt;
 
@@ -989,7 +989,7 @@
       The following configures JOTM, which is currently required to run
       KSB.</para>
 
-      <programlisting>&lt;bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean" /&gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean" /&gt;</programlisting>
 
       <para>Next, we configure the XAPoolDataSource and the non transactional
       BasicDataSource. This is pretty much standard data source configuration
@@ -998,7 +998,7 @@
       JTA, require this configuration step so the datasource will use
       JTA.</para>
 
-      <programlisting>&lt;bean id="dataSource" class=" org.kuali.rice.core.database.XAPoolDataSource "&gt;
+      <programlisting linenumbering = "numbered">&lt;bean id="dataSource" class=" org.kuali.rice.core.database.XAPoolDataSource "&gt;
     &lt;property name="transactionManager" ref="jotm"/&gt;
     &lt;property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/&gt;
     &lt;property name="url" value="jdbc:oracle:thin:@LOCALHOST:1521:XE"/&gt;
@@ -1024,7 +1024,7 @@
 
       <para>Next, we configure the bus:</para>
 
-      <programlisting>&lt;bean id="rice" class="org.kuali.rice.core.config.CoreConfigurer"&gt;
+      <programlisting linenumbering = "numbered">&lt;bean id="rice" class="org.kuali.rice.core.config.CoreConfigurer"&gt;
     &lt;property name="dataSource" ref="dataSource" /&gt;
     &lt;property name="nonTransactionalDataSource" ref="nonTransactionalDataSource" /&gt;
     &lt;property name="transactionManager" ref="jotm" /&gt;
@@ -1157,7 +1157,7 @@
       <para>If the application is already running a quartz scheduler, you can
       inject a custom quartz scheduler using code like this:</para>
 
-      <programlisting>&lt;bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer"&gt;
+      <programlisting linenumbering = "numbered">&lt;bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer"&gt;
     ...
     &lt;property name="exceptionMessagingScheduler"&gt;
         &lt;bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean"&gt;
@@ -1244,7 +1244,7 @@ soapService.doTheThing("hello");</programlisting>
       create a bean that is exported as a SOAP service. This is the
       server-side service declaration in a Spring file:</para>
 
-      <programlisting>&lt;bean id="ksbConfigurer" class="org.kuali.rice.ksb.messaging.config.KSBConfigurer"&gt;
+      <programlisting linenumbering = "numbered">&lt;bean id="ksbConfigurer" class="org.kuali.rice.ksb.messaging.config.KSBConfigurer"&gt;
   ...
   &lt;property name="services"&gt;
     &lt;list&gt;
@@ -1279,7 +1279,7 @@ String result = echoService.echo(echoValue);</programlisting>
       This is the server-side service declaration that deploys a bean using
       Spring's HttpInvoker as the underlying transport:</para>
 
-      <programlisting>&lt;bean id="ksbConfigurer" class="org.kuali.rice.ksb.messaging.config.KSBConfigurer"&gt;
+      <programlisting linenumbering = "numbered">&lt;bean id="ksbConfigurer" class="org.kuali.rice.ksb.messaging.config.KSBConfigurer"&gt;
   ...
   &lt;property name="services"&gt;
     &lt;list&gt;
@@ -1535,7 +1535,7 @@ KEWSampleJavaService testJavaAsyncService = (KEWSampleJavaService) KsbApiService
       expose this service to the bus. This is taken from the file <emphasis
       role="italic">TestClient1SpringBeans.xml</emphasis>:</para>
 
-      <programlisting>&lt;!-- bean declaration --&gt;
+      <programlisting linenumbering = "numbered">&lt;!-- bean declaration --&gt;
 &lt;bean id="sharedQueue" class=" org.kuali.rice.ksb.testclient1.ClientApp1SharedQueue" /&gt;
 
 &lt;bean id="ksbConfigurer" class="org.kuali.rice.ksb.messaging.config.KSBConfigurer"&gt;
@@ -1767,7 +1767,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
       <para>A service can be exposed by explicitly registering it with the
       KSBConfigurer module, services property:</para>
 
-      <programlisting>&lt;bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer"&gt;
+      <programlisting linenumbering = "numbered">&lt;bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer"&gt;
     &lt;property name="serviceServletUrl" value="${base url}/MYAPP/remoting/" /&gt;
     ...
     &lt;property name="services"&gt;
@@ -1797,7 +1797,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
       ServiceBusExporter (or PropertyConditionalServiceBusExporter) bean. Note
       that KSBConfigurer must also be defined in your RiceConfigurer.</para>
 
-      <programlisting>&lt;bean id="myapp.serviceBus"
+      <programlisting linenumbering = "numbered">&lt;bean id="myapp.serviceBus"
         class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"&gt;
     &lt;property name="serviceName" value="rice.ksb.serviceBus"/&gt;
 &lt;/bean&gt;
@@ -1938,7 +1938,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
         packaged.</para>
 
         <para>Typical configuration might look like the
-        following:<programlisting>&lt;bean id="sampleAppPeopleFlowTypeService.exporter"
+        following:<programlisting linenumbering = "numbered">&lt;bean id="sampleAppPeopleFlowTypeService.exporter"
       class="org.kuali.rice.ksb.api.bus.support.CallbackServiceExporter"
       p:serviceBus-ref="rice.ksb.serviceBus"
       p:callbackService-ref="sampleAppPeopleFlowTypeService"
@@ -2179,7 +2179,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
       application context in Configuring KSB Client in Spring. Using this
       technique, you can also publish Rice services on the KSB:</para>
 
-      <programlisting>&lt;!-- import a Rice service from the ResourceLoader stack --&gt;
+      <programlisting linenumbering = "numbered">&lt;!-- import a Rice service from the ResourceLoader stack --&gt;
 &lt;bean id="myapp.aRiceService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"&gt;
     &lt;property name="serviceName" value="aRiceService"/&gt;
 &lt;/bean
@@ -2293,7 +2293,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
         implements the ResourceLoader interface into the RiceConfigurer
         rootResourceLoader property. For example:</para>
 
-        <programlisting>&lt;!-- a Rice bean we want to override in our application --&gt;
+        <programlisting linenumbering = "numbered">&lt;!-- a Rice bean we want to override in our application --&gt;
 &lt;bean id="overriddenRiceBean" class="my.app.package.MyRiceServiceImpl"/&gt;
 
 &lt;!-- supplies services from this Spring context --&gt;
@@ -2342,7 +2342,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
         Each rice module has a corresponding configuration parameter that can
         be pointed to a file that will override any existing services.</para>
 
-        <programlisting>&lt;param name="rice.kew.additionalSpringFiles"&gt;classpath:myapp/config/MyAppKewOverrideSpringBeans.xml&lt;/param&gt;
+        <programlisting linenumbering = "numbered">&lt;param name="rice.kew.additionalSpringFiles"&gt;classpath:myapp/config/MyAppKewOverrideSpringBeans.xml&lt;/param&gt;
 
 &lt;param name="rice.ksb.additionalSpringFiles"&gt;classpath:myapp/config/MyAppKsbOverrideSpringBeans.xml&lt;/param&gt;
 
@@ -2350,7 +2350,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
 
 &lt;param name="rice.kim.additionalSpringFiles"&gt;classpath:myapp/config/MyAppKimOverrideSpringBeans.xml&lt;/param&gt;</programlisting>
 
-        <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+        <programlisting linenumbering = "numbered">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd"&gt;
 &lt;!-- override of KNS encryption service --&gt;
 &lt;beans&gt;
@@ -2425,7 +2425,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
         <para>Here is a code snippet that shows the changes needed to
         configure KSB security on the server side:</para>
 
-        <programlisting>&lt;bean id="ksbConfigurer" class="org.kuali.rice.ksb.messaging.config.KSBConfigurer"&gt;
+        <programlisting linenumbering = "numbered">&lt;bean id="ksbConfigurer" class="org.kuali.rice.ksb.messaging.config.KSBConfigurer"&gt;
     &lt;!-- Other properties removed --&gt;
     &lt;property name="services"&gt;
         &lt;list&gt;
@@ -2464,7 +2464,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
       <section>
         <title>KSB security: Client side configuration</title>
 
-        <programlisting>&lt;bean id="customCredentialsSourceFactory" class="edu.myinstituition.myapp.security.credentials.CredentialsSourceFactory" /&gt;
+        <programlisting linenumbering = "numbered">&lt;bean id="customCredentialsSourceFactory" class="edu.myinstituition.myapp.security.credentials.CredentialsSourceFactory" /&gt;
 
 &lt;bean id="coreConfigurer" class="org.kuali.rice.core.impl.config.module.CoreConfigurer"&gt;
     &lt;!-- Other properties removed --&gt;
@@ -2575,7 +2575,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
         <para>The following params are needed in the xml config to allow the
         ksb to use the keystore:</para>
 
-        <programlisting>&lt;param name="keystore.file"&gt;/usr/local/rice/rice.keystore&lt;/param&gt;
+        <programlisting linenumbering = "numbered">&lt;param name="keystore.file"&gt;/usr/local/rice/rice.keystore&lt;/param&gt;
 &lt;param name="keystore.alias"&gt;rice&lt;/param&gt;
 &lt;param name="keystore.password"&gt; password &lt;/param&gt;
 </programlisting>
@@ -2608,7 +2608,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
         <para><itemizedlist>
           <listitem>
         <para>Add the following bean to a spring bean file that is loaded as a part of the KEW module.
-        <programlisting>&lt;bean id="rice.kew.workflowDocumentActionServiceBasicAuthentication.exporter"
+        <programlisting linenumbering = "numbered">&lt;bean id="rice.kew.workflowDocumentActionServiceBasicAuthentication.exporter"
               parent="kewServiceExporter" lazy-init="false"&gt;
     &lt;property name="serviceDefinition"&gt;
         &lt;bean parent="kewService"&gt;
@@ -2627,7 +2627,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
 
         <listitem>
         <para>Add the following bean to a spring bean file that is loaded as a part of the KSB module.
-        <programlisting>&lt;bean class="org.kuali.rice.ksb.service.BasicAuthenticationCredentials"&gt;
+        <programlisting linenumbering = "numbered">&lt;bean class="org.kuali.rice.ksb.service.BasicAuthenticationCredentials"&gt;
     &lt;property name="serviceNameSpaceURI"
           value="http://rice.kuali.org/kew/v2_0" /&gt;
     &lt;property name="localServiceName"
@@ -2643,7 +2643,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
         <listitem>
         <para>Add the following config parameters to a secure file that is loaded when the application is started.
 
-        <programlisting>&lt;param name="WorkflowDocumentActionsService.username"&gt;username&lt;/param&gt;
+        <programlisting linenumbering = "numbered">&lt;param name="WorkflowDocumentActionsService.username"&gt;username&lt;/param&gt;
 &lt;param name="WorkflowDocumentActionsService.password"&gt;pw&lt;/param&gt;</programlisting></para>
         </listitem>
 
@@ -2651,7 +2651,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
         <para>To verify the new service can be called, it can be tested using a tool such as soapUI.
           Here is an example call which will invoke the method <emphasis role="bold">logAnnotation</emphasis> on
           <emphasis role="bold">WorkflowDocumentActionsServiceImpl</emphasis>.
-        <programlisting>&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+        <programlisting linenumbering = "numbered">&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
                 xmlns:v2="http://rice.kuali.org/kew/v2_0"&gt;
   &lt;soapenv:Header&gt;
     &lt;wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"
@@ -3236,7 +3236,7 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
       follow this recipe for your spring configuration (which comes from the
       Rice unit tests):</para>
 
-      <programlisting>&lt;!-- The service implementation you want to expose --&gt;
+      <programlisting linenumbering = "numbered">&lt;!-- The service implementation you want to expose --&gt;
 
 &lt;bean id="baseballCardCollectionService" class="org.kuali.rice.ksb.testclient1.BaseballCardCollectionServiceImpl"/&gt;
 
@@ -3268,7 +3268,7 @@ value="org.kuali.rice.ksb.messaging.remotedservices.BaseballCardCollectionServic
       <para>The following java interface uses JAX-RS annotations to specify
       its RESTful interface:</para>
 
-      <programlisting>// … eliding package and imports
+      <programlisting linenumbering = "numbered">// … eliding package and imports
 
 @Path("/")
 public interface BaseballCardCollectionService {
@@ -3351,7 +3351,7 @@ List&lt;BaseballCard&gt; allMyMickeyMantles = baseballCardCollection.get("Mickey
       that service over the KSB. Here is a simple example of a composite
       service definition (which also comes from the Rice unit tests):</para>
 
-      <programlisting>&lt;bean class="org.kuali.rice.ksb.messaging.RESTServiceDefinition"&gt;
+      <programlisting linenumbering = "numbered">&lt;bean class="org.kuali.rice.ksb.messaging.RESTServiceDefinition"&gt;
     &lt;property name="serviceNameSpaceURI" value="test" /&gt;
     &lt;property name="localServiceName" value="kms" /&gt;
     &lt;property name="resources"&gt;

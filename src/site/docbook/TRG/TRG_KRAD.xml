@@ -217,7 +217,7 @@
         <para><emphasis role="bold"><emphasis role="underline">Code snippet example follows:
                 </emphasis></emphasis></para>
         <para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 1.  &lt;bean id="GenericAttributes-genericDate" parent="GenericAttributes-genericDate-parentBean"/>
 2.  &lt;bean id="GenericAttributes-genericDate-parentBean" abstract="true" parent="AttributeDefinition">
 3.    &lt;property name="name" value="genericDate"/>
@@ -374,7 +374,7 @@
             <para><emphasis role="bold"><emphasis role="underline">A code snippet example
                         follows:</emphasis></emphasis>
             </para>
-            <programlisting> 1. &lt;bean id="DataObject-countryCode" parent="AttributeDefinition">
+            <programlisting linenumbering = "numbered"> 1. &lt;bean id="DataObject-countryCode" parent="AttributeDefinition">
  2.   &lt;property name="name" value="countryCode"/>
  3.   &lt;property name="caseConstraint">
  4.     &lt;bean class="org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint">
@@ -492,7 +492,7 @@
                 adds a constraint as follows,</para>
             <para><emphasis role="bold"><emphasis role="underline">A code snippet example follows:
                     </emphasis></emphasis></para>
-            <programlisting> 1. &lt;bean name="AddCourseDocument" parent="BusinessObjectEntry">
+            <programlisting linenumbering = "numbered"> 1. &lt;bean name="AddCourseDocument" parent="BusinessObjectEntry">
  2.   ...
  3.   &lt;property name="collections">
  4.     &lt;list>
@@ -563,7 +563,7 @@
                 instance, if a "required" constraint has been violated, the user will get the
                 following message: </para>
             <para>
-            <programlisting> 
+            <programlisting linenumbering = "numbered"> 
             Phone Number is a required field. 
             </programlisting> 
             </para>
@@ -658,7 +658,7 @@
                 of the ConstraintProcessors for KRAD passed into it.  See the following code
                 snippets.  For example, if we assume the following 5 lines of code, </para>
             <para>
-            <programlisting> 3.	  &lt;property name="collectionConstraintProcessors">
+            <programlisting linenumbering = "numbered"> 3.	  &lt;property name="collectionConstraintProcessors">
  4.	    &lt;list>
  5.		  &lt;bean class="org.kuali.rice.kns.datadictionary.validation.processor.CollectionSizeConstraintProcessor"/>
  6.		&lt;/list>
@@ -688,7 +688,7 @@
             <para><emphasis role="bold"><emphasis role="underline">Code snippet example
             follows:</emphasis></emphasis></para>
             <para>
-            <programlisting> 1. &lt;bean id="dictionaryValidationService" class="org.kuali.rice.kns.service.impl.DictionaryValidationServiceImpl">
+            <programlisting linenumbering = "numbered"> 1. &lt;bean id="dictionaryValidationService" class="org.kuali.rice.kns.service.impl.DictionaryValidationServiceImpl">
       ...
       contents trimmed
       ...
@@ -806,7 +806,7 @@
             <para>In some cases it may be desirable to only use the KNS without KRAD. For example if you're timelines push a conversion to KRAD out into the future, you may
             see some benefits with startup performance and with memory usage.</para>
             <para>You can override the kradApplicationModuleConfiguration bean to not include any of the files in the UIF folder. That is, you only need to include these files:</para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 &lt;property name="dataDictionaryPackages">
 &lt;list>
 &lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/AdHocRoutePerson.xml&lt;/value>
@@ -868,7 +868,7 @@
 
         <para><filename>sample-app-config.xml</filename></para>
 
-        <programlisting>  &lt;param name="filter.login.class"&gt;org.kuali.rice.krad.web.filter.DummyLoginFilter&lt;/param&gt;
+        <programlisting linenumbering = "numbered">  &lt;param name="filter.login.class"&gt;org.kuali.rice.krad.web.filter.DummyLoginFilter&lt;/param&gt;
           &lt;param name="filtermapping.login.1"&gt;/*&lt;/param&gt;
           &lt;param name="filterexclude.login"&gt;.*/kr-kradguest/.*&lt;/param&gt;
 
@@ -883,7 +883,7 @@
           mapped to the kradguest servlet can be done in the
           <filename>kradguest-servlet.xml</filename> : <filename/></para>
 
-        <programlisting>&lt;beans xmlns="http://www.springframework.org/schema/beans"
+        <programlisting linenumbering = "numbered">&lt;beans xmlns="http://www.springframework.org/schema/beans"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xmlns:p="http://www.springframework.org/schema/p"
           xmlns:context="http://www.springframework.org/schema/context"
@@ -914,7 +914,7 @@
 
         <para><filename><replaceable>Ex : </replaceable></filename></para>
 
-        <programlisting>@Controller
+        <programlisting linenumbering = "numbered">@Controller
           @RequestMapping(value = "<emphasis role="bold">/guestviews"</emphasis>)
           public class UifGuestController extends UifControllerBase {
 

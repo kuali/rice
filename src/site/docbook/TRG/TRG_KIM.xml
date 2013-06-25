@@ -877,7 +877,7 @@ WHERE NMSPC_CD = 'MyNamespace' AND NM = 'MyPermissionTemplate'</programlisting><
       <para>Assuming you have already wired up your custom
       PermissionTypeService implementation in your Spring file under a bean id
       of "myPermissionTypeService", an example Spring configuration which will
-      publish the service would look like the following:<programlisting>&lt;bean id="myPermissionTypeService.exporter"
+      publish the service would look like the following:<programlisting linenumbering = "numbered">&lt;bean id="myPermissionTypeService.exporter"
       class="org.kuali.rice.ksb.api.bus.support.CallbackServiceExporter"
       p:callbackService-ref="myPermissionTypeService"
       p:serviceNameSpaceURI="http://myapp.myu.edu"

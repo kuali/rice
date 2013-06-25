@@ -347,7 +347,7 @@
             <para><emphasis role="bold">xsd</emphasis> - The XSD attribute contains the complete
                     <link xlink:href="http://www.w3.org/XML/Schema">W3C XML Schema</link> compliant
                 code. </para>
-            <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+            <programlisting linenumbering = "numbered">&lt;?xml version="1.0" encoding="UTF-8"?>
 &lt;!-- This schema defines a generic event notification type in order for it to be accepted into the system. -->
 &lt;schema xmlns="http://www.w3.org/2001/XMLSchema"         
         xmlns:c="ns:notification/common"         
@@ -386,7 +386,7 @@
             <para><emphasis role="bold">xsl</emphasis> - The XSD attribute contains the complete XSL
                 code that will be used to transform a notification in XML to html for rendering in
                 an Action List. </para>
-            <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+            <programlisting linenumbering = "numbered">&lt;?xml version="1.0" encoding="UTF-8"?>
 &lt;!-- style sheet declaration: be very careful editing the following, the
  default namespace must be used otherwise elements will not match -->
 &lt;xsl:stylesheet
@@ -592,7 +592,7 @@
                     role="italic">Event</emphasis> Content Types:</para>
             <section>
                 <title>Sample XML for a Simple Notification</title>
-                <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+                <programlisting linenumbering = "numbered">&lt;?xml version="1.0" encoding="UTF-8"?>
 &lt;!-- A Simple Notification Message -->
 &lt;notification xmlns="ns:notification/NotificationRequest"
     xmlns:xsi=http://www.w3.org/2001/XMLSchema-instance
@@ -662,7 +662,7 @@
             </section>
             <section>
                 <title>Sample XML for an Event Notification</title>
-                <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+                <programlisting linenumbering = "numbered">&lt;?xml version="1.0" encoding="UTF-8"?>
 
 
 &lt;notification xmlns="ns:notification/NotificationMessage"
@@ -747,7 +747,7 @@
             <title>Notification Response</title>
             <para>When KEN sends a notification, it always returns a response. This is an outline in
             XML of that response:</para>
-            <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+            <programlisting linenumbering = "numbered">&lt;?xml version="1.0" encoding="UTF-8"?>
 &lt;response>
     &lt;status>success&lt;/status>
 &lt;/response>
@@ -842,7 +842,7 @@
                 called <emphasis role="bold"
                     >org.kuali.rice.kew.deliverer.NotificationMessageDeliverer</emphasis>. The
                 source code of the interface: </para>
-            <programlisting>/*
+            <programlisting linenumbering = "numbered">/*
  * Copyright 2007 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");

@@ -107,7 +107,7 @@ public class FreemarkerUtil {
         if (keyLists.values().size() == 0) { // backwards compatibility
             keyLists.put("test1", (String)props.get("className"));
         }
-        
+
         props.put("tests", keyLists.values());
     }
 

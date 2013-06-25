@@ -520,7 +520,7 @@
   <bean id="ComponentLibrary-Nav-Navigation" p:headerText="Navigation" parent="ComponentLibrary-Nav">
     <property name="items">
       <list>
-        <bean parent="Uif-Link" p:linkText="Left Menu"
+        <bean parent="Uif-Link" p:linkText="Navigation Group"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-NavigationGroup-View&amp;methodToCall=start"/>
       </list>
     </property>

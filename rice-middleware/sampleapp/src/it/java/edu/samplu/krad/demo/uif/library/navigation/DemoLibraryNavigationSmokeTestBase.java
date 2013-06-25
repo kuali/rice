@@ -19,16 +19,17 @@ import com.thoughtworks.selenium.SeleneseTestBase;
 import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
+import edu.samplu.krad.demo.uif.library.DemoLibraryITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoLibraryNavigationSmokeTestBase extends WebDriverLegacyITBase{
+public class DemoLibraryNavigationSmokeTestBase extends DemoLibraryITBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=ComponentLibraryHome
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=ComponentLibraryHome";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-NavigationGroup-View";
 
     /**
      * /kr-krad/kradsampleapp?viewId=NavigationGroup-NavigationView&methodToCall=start
@@ -40,18 +41,11 @@ public class DemoLibraryNavigationSmokeTestBase extends WebDriverLegacyITBase{
         return ITUtil.KRAD_PORTAL;
     }
 
-    protected void navigation() throws Exception {
-        waitAndClickById("Demo-LibraryLink", "");
-    }
+    protected void testNavigationTabs() throws Exception {
+        navigateToExample("Demo-NavigationGroup-Example1");
 
-    protected void navigationMenu() throws Exception {
-        waitAndClickByLinkText("Navigation");
-        waitAndClickByLinkText("Left Menu");
         waitAndClickByLinkText("Navigation Group Tab Example");
         selectWindow(driver.getWindowHandles().toArray()[1].toString());
-    }
-
-    protected void testNavigationMenu() throws Exception {
         waitForElementPresentByClassName("uif-headerText-span");
         SeleneseTestBase.assertTrue(driver.getTitle().contains("Kuali :: Navigation View"));
         assertTextPresent("Navigation View");
@@ -70,16 +64,14 @@ public class DemoLibraryNavigationSmokeTestBase extends WebDriverLegacyITBase{
     }
 
     public void testNavigationMenuBookmark(Failable failable) throws Exception {
-        navigationMenu();
-        testNavigationMenu();
+        testNavigationTabs();
         testNavigationView();
         passed();
     }
 
     public void testNavigationMenuNav(Failable failable) throws Exception {
-        navigation();
-        navigationMenu();
-        testNavigationMenu();
+        navigateToLibraryDemo("Navigation", "Navigation Group");
+        testNavigationTabs();
         testNavigationView();
         passed();
     }

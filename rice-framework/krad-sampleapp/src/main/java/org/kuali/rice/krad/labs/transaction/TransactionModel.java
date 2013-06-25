@@ -22,11 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Brian
- * Date: 6/20/13
- * Time: 4:00 PM
- * To change this template use File | Settings | File Templates.
+ * Test transaction model.  For testing only; does not represent any real object.
  */
 public class TransactionModel implements Serializable {
     private static final long serialVersionUID = -437696877653987556L;

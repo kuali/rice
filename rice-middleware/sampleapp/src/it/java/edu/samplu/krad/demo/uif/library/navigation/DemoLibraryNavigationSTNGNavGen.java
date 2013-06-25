@@ -23,12 +23,7 @@ import org.testng.annotations.Test;
  */
 public class DemoLibraryNavigationSTNGNavGen extends DemoLibraryNavigationSTNGBase {
 
-    @Override
-    public String getTestUrl() {
-        return BOOKMARK_URL;
-    }
-
-    @Test(groups = { "all", "fast", "default", "bookmark" }, description = "testNavigationMenuNav")
+    @Test(groups = { "all", "fast", "default", "navigation" }, description = "testNavigationMenuNav")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
     public void testNavigationMenuNav() throws Exception {
         testNavigationMenuNav(this);

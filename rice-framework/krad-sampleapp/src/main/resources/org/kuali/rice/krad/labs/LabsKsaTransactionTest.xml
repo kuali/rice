@@ -35,7 +35,16 @@
                 <bean parent="Uif-Page" p:id="RollUpTransactions" p:title="View Transactions">
                     <property name="items">
                         <list>
-                            <ref bean="rollupList"/>
+                          <bean parent="Uif-InputField-LabelTop" p:label="Type to refresh" p:propertyName="testField"/>
+                          <bean parent="Uif-VerticalBoxSection" p:title="Section">
+                            <property name="refreshWhenChangedPropertyNames" value="testField"/>
+                            <property name="items">
+                              <list>
+                                <ref bean="rollupList"/>
+                              </list>
+                            </property>
+                          </bean>
+
                         </list>
                     </property>
                 </bean>
@@ -45,7 +54,7 @@
 
     <bean id="rollupList" parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="2">
         <property name="title" value="Roll-Up"/>
-        <property name="readOnly" value="true"/>
+        <!--<property name="readOnly" value="true"/>-->
         <property name="collectionObjectClass" value="org.kuali.rice.krad.labs.transaction.TransactionModel"/>
         <property name="propertyName" value="rollupTransactions"/>
         <property name="layoutManager.sequencePropertyName" value="id"/>
@@ -155,7 +164,24 @@
                     </list>
                     </property>
                 </bean>
-                <bean parent="Uif-InputField" p:propertyName="chargeAmount" p:label="Charges" p:style="text-align: right; width: 10%;"/>
+                <bean parent="Uif-InputField" p:propertyName="chargeAmount" p:label="Charges" p:style="text-align: right; width: 10%;">
+                  <property name="suggest">
+                                    <bean parent="Uif-Suggest" p:render="true" p:retrieveAllSuggestions="true">
+                                      <property name="suggestOptions">
+                                        <list>
+                                          <value>TypeA</value>
+                                          <value>TypeB</value>
+                                        </list>
+                                      </property>
+                                      <property name="templateOptions">
+                                        <map>
+                                          <entry key="minLength" value="0"/>
+                                          <entry key="delay" value="0"/>
+                                        </map>
+                                      </property>
+                                    </bean>
+                                  </property>
+                </bean>
           </list>
         </property>
     </bean>
@@ -238,7 +264,24 @@
         <bean parent="Uif-GridSection" p:style="width: 40%;">
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:propertyName="transactionDisplayType" p:label="Transaction Type"/>
+              <bean parent="Uif-InputField" p:propertyName="transactionDisplayType" p:label="Transaction Type">
+                <property name="suggest">
+                  <bean parent="Uif-Suggest" p:render="true" p:retrieveAllSuggestions="true">
+                    <property name="suggestOptions">
+                      <list>
+                        <value>TypeA</value>
+                        <value>TypeB</value>
+                      </list>
+                    </property>
+                    <property name="templateOptions">
+                      <map>
+                        <entry key="minLength" value="0"/>
+                        <entry key="delay" value="0"/>
+                      </map>
+                    </property>
+                  </bean>
+                </property>
+              </bean>
             </list>
           </property>
         </bean>

@@ -155,6 +155,7 @@ public class UifConstants {
         public static final String SUGGEST = "_suggest";
         public static final String QUICK_FINDER = "_quickfinder";
         public static final String SPAN = "_span";
+        public static final String TAB = "_tab";
     }
 
     public static class ViewPhases {
@@ -339,6 +340,7 @@ public class UifConstants {
         public static final String HEADER_FOR = "header_for";
         public static final String STICKY_FOOTER = "sticky_footer";
         public static final String DETAILS_DEFAULT_OPEN = "details_default_open";
+        public static final String TAB_FOR = "tabfor";
     }
 
     public static final class CaseConstraintOperators {

@@ -1138,6 +1138,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         return isElementPresent(By.linkText(locator));
     }
 
+    protected boolean isElementPresentByDataAttributeValue(String dataAttributeName, String dataAttributeValue) {
+        return isElementPresent(By.cssSelector("[data-" + dataAttributeName +"='"+ dataAttributeValue +"']"));
+    }
+
     protected Boolean isTextPresent(String text) {
         if (driver.getPageSource().contains(text)) {
             return Boolean.TRUE;

@@ -26,6 +26,7 @@ import java.util.List;
 public class TransactionForm extends UifFormBase {
     private static final long serialVersionUID = 7158452291069882385L;
     private List<TransactionModel> rollupTransactions = new ArrayList<TransactionModel>();
+    private String testField;
 
     public TransactionForm(){
         for (int i = 0; i < 20; i++){
@@ -39,5 +40,13 @@ public class TransactionForm extends UifFormBase {
 
     public void setRollupTransactions(List<TransactionModel> rollupTransactions) {
         this.rollupTransactions = rollupTransactions;
+    }
+
+    public String getTestField() {
+        return testField;
+    }
+
+    public void setTestField(String testField) {
+        this.testField = testField;
     }
 }

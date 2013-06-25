@@ -174,7 +174,7 @@ public class ComponentLibraryView extends FormView {
                     List<KeyValue> values = new ArrayList<KeyValue>();
                     int i = 0;
                     for (Group demoGroup : demoGroups) {
-                        values.add(new ConcreteKeyValue(String.valueOf(i), demoGroup.getHeader().getHeaderText()));
+                        values.add(new ConcreteKeyValue(demoGroup.getId(), demoGroup.getHeader().getHeaderText()));
                         i++;
                     }
 

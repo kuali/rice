@@ -40,95 +40,94 @@
             <para><emphasis role="bold">KNS Code example:</emphasis></para>
             <para>
                 
-                <programlisting linenumbering = "numbered">1   &lt;bean id="EntityType-lookupDefinition" parent="LookupDefinition">
-2     &lt;property name="title" value="Entity Type Lookup"/>
-3     &lt;property name="menubar" value="&amp;lt;a href=&amp;quot;javascript:void(0)&amp;quot; 
-4         onclick=&amp;quot;alert('JavaScript triggered action.')&amp;quot;&amp;gt;Custom Button&amp;lt;/a&amp;gt;"/>
-5     &lt;property name="numOfColumns" value="2"/>
-6     &lt;property name="extraButtonSource" value="images/tinybutton-createnew.gif"/>
-7     &lt;property name="extraButtonParams" value="createNew"/>
-8     &lt;property name="disableSearchButtons" value="true"/>
-9     &lt;property name="lookupFields">
-10      &lt;list>
-11        &lt;bean parent="FieldDefinition" p:attributeName="code" p:treadWildcardsAndOperatorsAsLiteral="true"/>
-12        &lt;bean parent="FieldDefinition" p:attributeName="name" p:noLookup="true"
-13                                       p:treadWildcardsAndOperatorsAsLiteral="true"/>
-13        &lt;bean parent="FieldDefinition" p:attributeName="active" p:defaultValue="Y"/>
-14       &lt;/list>
-15    &lt;/property>
-16    &lt;property name="resultFields">
-17      &lt;list>
-18        &lt;bean parent="FieldDefinition" p:attributeName="code" p:triggerOnChange="true"/>
-19        &lt;bean parent="FieldDefinition" p:attributeName="name" p:noLookup="true"/>
-20        &lt;bean parent="FieldDefinition" p:attributeName="sortCode" p:forceInquiry="true"/>
-21        &lt;bean parent="FieldDefinition" p:attributeName="ammount" p:total="true"/>
-21        &lt;bean parent="FieldDefinition" p:attributeName="active"/>
-22      &lt;/list>
-23    &lt;/property>
-24    &lt;property name="defaultSort">
-25      &lt;bean parent="SortDefinition">
-26        &lt;property name="sortAscending" value="false" />
-27        &lt;property name="attributeNames">
-28          &lt;list>
-29            &lt;value>code&lt;/value>
-30          &lt;/list>
-31        &lt;/property>
-32      &lt;/bean>
-33    &lt;/property>
-34  &lt;/bean></programlisting>    
+                <programlisting linenumbering = "numbered">   &lt;bean id="EntityType-lookupDefinition" parent="LookupDefinition">
+     &lt;property name="title" value="Entity Type Lookup"/>
+     &lt;property name="menubar" value="&amp;lt;a href=&amp;quot;javascript:void(0)&amp;quot; 
+         onclick=&amp;quot;alert('JavaScript triggered action.')&amp;quot;&amp;gt;Custom Button&amp;lt;/a&amp;gt;"/>
+     &lt;property name="numOfColumns" value="2"/>
+     &lt;property name="extraButtonSource" value="images/tinybutton-createnew.gif"/>
+     &lt;property name="extraButtonParams" value="createNew"/>
+     &lt;property name="disableSearchButtons" value="true"/>
+     &lt;property name="lookupFields">
+      &lt;list>
+        &lt;bean parent="FieldDefinition" p:attributeName="code" p:treadWildcardsAndOperatorsAsLiteral="true"/>
+        &lt;bean parent="FieldDefinition" p:attributeName="name" p:noLookup="true" p:treadWildcardsAndOperatorsAsLiteral="true"/>
+        &lt;bean parent="FieldDefinition" p:attributeName="active" p:defaultValue="Y"/>
+       &lt;/list>
+    &lt;/property>
+    &lt;property name="resultFields">
+      &lt;list>
+        &lt;bean parent="FieldDefinition" p:attributeName="code" p:triggerOnChange="true"/>
+        &lt;bean parent="FieldDefinition" p:attributeName="name" p:noLookup="true"/>
+        &lt;bean parent="FieldDefinition" p:attributeName="sortCode" p:forceInquiry="true"/>
+        &lt;bean parent="FieldDefinition" p:attributeName="ammount" p:total="true"/>
+        &lt;bean parent="FieldDefinition" p:attributeName="active"/>
+      &lt;/list>
+    &lt;/property>
+    &lt;property name="defaultSort">
+      &lt;bean parent="SortDefinition">
+        &lt;property name="sortAscending" value="false" />
+        &lt;property name="attributeNames">
+          &lt;list>
+            &lt;value>code&lt;/value>
+          &lt;/list>
+        &lt;/property>
+      &lt;/bean>
+    &lt;/property>
+  &lt;/bean></programlisting>    
             </para>
             <para>
                 <emphasis role="bold">KRAD code example:</emphasis>
-                <programlisting linenumbering = "numbered">1   &lt;bean id="EntityTypeLookupView" parent="Uif-LookupView">
-2     &lt;property name="dataObjectClassName" value="org.kuali.rice.kim.impl.identity.EntityTypeBo"/>
-3     &lt;property name="headerText" value="Entity Type Lookup" />
-4     &lt;property name="page.header.lowerGroup.items">
-5       &lt;list merge="true">
-6         &lt;bean parent="Uif-SecondaryActionButton" p:actionLabel="Custom Button"
-7               p:actionScript="alert('JavaScript triggered action.')"/>
-8       &lt;/list>
-9     &lt;/property>
-10    &lt;property name="renderLookupCriteria" value="false"/>
-11    &lt;property name="criteriaGroup.layoutManager.numberOfColumns" value="4"/>
-12    &lt;property name="criteriaGroup.footer">
-13      &lt;bean parent="Uif-LookupCriteriaFooter">
-14        &lt;property name="items">
-15          &lt;list merge="true">
-16            &lt;bean parent="Uif-PrimaryActionButton" p:methodToCall="createNew" p:actionLabel="create new"/>
-17          &lt;/list>
-18        &lt;/property>
-19      &lt;/bean>
-20    &lt;/property>
-21    &lt;property name="renderSearchButtons" value="false"/>
-22    &lt;property name="criteriaFields">
-23      &lt;list>
-24        &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="code" p:triggerOnChange="true"/>
-25        &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" p:quickfinder.render="false"
-26                                                    p:disableWildcardsAndOperators="true"/>
-26        &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="active" p:defaultValue="Y"/>
-27      &lt;/list>
-28    &lt;/property>
-29    &lt;property name="resultFields">
-30      &lt;list>
-31        &lt;bean parent="Uif-DataField" p:propertyName="code"/>
-32        &lt;bean parent="Uif-DataField" p:propertyName="name"/>
-33        &lt;bean parent="Uif-DataField" p:propertyName="sortCode"/>
-34        &lt;bean parent="Uif-DataField" p:propertyName="ammount"/>
-34        &lt;bean parent="Uif-DataField" p:propertyName="active"/>
-35      &lt;/list>
-36    &lt;/property>
-37    &lt;property name="defaultSortAscending" value="false"/>
-38    &lt;property name="defaultSortAttributeNames">
-39      &lt;list>
-40        &lt;value>code&lt;/value>
-41      &lt;/list>
-42    &lt;/property>
-43    &lt;property name="resultsGroup.layoutManager.columnCalculations">
+                <programlisting linenumbering = "numbered">   &lt;bean id="EntityTypeLookupView" parent="Uif-LookupView">
+     &lt;property name="dataObjectClassName" value="org.kuali.rice.kim.impl.identity.EntityTypeBo"/>
+     &lt;property name="headerText" value="Entity Type Lookup" />
+     &lt;property name="page.header.lowerGroup.items">
+       &lt;list merge="true">
+         &lt;bean parent="Uif-SecondaryActionButton" p:actionLabel="Custom Button"
+               p:actionScript="alert('JavaScript triggered action.')"/>
+       &lt;/list>
+     &lt;/property>
+    &lt;property name="renderLookupCriteria" value="false"/>
+    &lt;property name="criteriaGroup.layoutManager.numberOfColumns" value="4"/>
+    &lt;property name="criteriaGroup.footer">
+      &lt;bean parent="Uif-LookupCriteriaFooter">
+        &lt;property name="items">
+          &lt;list merge="true">
+            &lt;bean parent="Uif-PrimaryActionButton" p:methodToCall="createNew" p:actionLabel="create new"/>
+          &lt;/list>
+        &lt;/property>
+      &lt;/bean>
+    &lt;/property>
+    &lt;property name="renderSearchButtons" value="false"/>
+    &lt;property name="criteriaFields">
+      &lt;list>
+        &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="code" p:triggerOnChange="true"/>
+        &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" p:quickfinder.render="false"
+                                                    p:disableWildcardsAndOperators="true"/>
+        &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="active" p:defaultValue="Y"/>
+      &lt;/list>
+    &lt;/property>
+    &lt;property name="resultFields">
+      &lt;list>
+        &lt;bean parent="Uif-DataField" p:propertyName="code"/>
+        &lt;bean parent="Uif-DataField" p:propertyName="name"/>
+        &lt;bean parent="Uif-DataField" p:propertyName="sortCode"/>
+        &lt;bean parent="Uif-DataField" p:propertyName="ammount"/>
+        &lt;bean parent="Uif-DataField" p:propertyName="active"/>
+      &lt;/list>
+    &lt;/property>
+    &lt;property name="defaultSortAscending" value="false"/>
+    &lt;property name="defaultSortAttributeNames">
+      &lt;list>
+        &lt;value>code&lt;/value>
+      &lt;/list>
+    &lt;/property>
+    &lt;property name="resultsGroup.layoutManager.columnCalculations">
         &lt;list>
           &lt;bean parent="Uif-ColumnCalculationInfo-Sum" p:propertyName="ammount" />
         &lt;/list>
       &lt;/property>
-43  &lt;/bean></programlisting>
+  &lt;/bean></programlisting>
             </para>
         </section>
         <section><title>Base Lookup Bean</title>

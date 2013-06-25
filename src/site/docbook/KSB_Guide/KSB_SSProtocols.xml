@@ -171,7 +171,7 @@
             application, the application needs to configure a URL similar to the
             following:</para>
         
-        <programlisting>&lt;param name="rice.ksb.registry.serviceUrl"&gt;http://localhost:8080/kr-dev/remoting/serviceRegistrySoap&lt;/param&gt;</programlisting>
+        <programlisting linenumbering = "numbered">&lt;param name="rice.ksb.registry.serviceUrl"&gt;http://localhost:8080/kr-dev/remoting/serviceRegistrySoap&lt;/param&gt;</programlisting>
         
         <para>Currently, this connector is only configured to understand a SOAP
             interface to the service registry which is secured by digital

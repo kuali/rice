@@ -32,7 +32,7 @@
         <para>If the application is already running a quartz scheduler, you can
             inject a custom quartz scheduler using code like this:</para>
         
-        <programlisting>&lt;bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer"&gt;
+        <programlisting linenumbering = "numbered">&lt;bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer"&gt;
     ...
     &lt;property name="exceptionMessagingScheduler"&gt;
         &lt;bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean"&gt;

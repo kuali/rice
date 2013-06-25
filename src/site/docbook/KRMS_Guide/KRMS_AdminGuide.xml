@@ -78,7 +78,7 @@
                     <para>For example, below is a code snippet for setting up the Agenda Type
                         service:</para>
                     <para>
-                        <programlisting>&lt;bean id="campusAgendaTypeService"
+                        <programlisting linenumbering = "numbered">&lt;bean id="campusAgendaTypeService"
       class="edu.sampleu.krms.impl.CampusAgendaTypeService">
     &lt;property name="configurationService" ref="configurationService"/>
 &lt;/bean>                                                   </programlisting>

@@ -98,7 +98,7 @@
                 implements the ResourceLoader interface into the RiceConfigurer
                 rootResourceLoader property. For example:</para>
             
-            <programlisting>&lt;!-- a Rice bean we want to override in our application --&gt;
+            <programlisting linenumbering = "numbered">&lt;!-- a Rice bean we want to override in our application --&gt;
 &lt;bean id="overriddenRiceBean" class="my.app.package.MyRiceServiceImpl"/&gt;
 
 &lt;!-- supplies services from this Spring context --&gt;
@@ -147,7 +147,7 @@
                 Each rice module has a corresponding configuration parameter that can
                 be pointed to a file that will override any existing services.</para>
             
-            <programlisting>&lt;param name="rice.kew.additionalSpringFiles"&gt;classpath:myapp/config/MyAppKewOverrideSpringBeans.xml&lt;/param&gt;
+            <programlisting linenumbering = "numbered">&lt;param name="rice.kew.additionalSpringFiles"&gt;classpath:myapp/config/MyAppKewOverrideSpringBeans.xml&lt;/param&gt;
 
 &lt;param name="rice.ksb.additionalSpringFiles"&gt;classpath:myapp/config/MyAppKsbOverrideSpringBeans.xml&lt;/param&gt;
 
@@ -155,7 +155,7 @@
 
 &lt;param name="rice.kim.additionalSpringFiles"&gt;classpath:myapp/config/MyAppKimOverrideSpringBeans.xml&lt;/param&gt;</programlisting>
             
-            <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+            <programlisting linenumbering = "numbered">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd"&gt;
 &lt;!-- override of KNS encryption service --&gt;
 &lt;beans&gt;

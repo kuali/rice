@@ -58,7 +58,7 @@
             follow this recipe for your spring configuration (which comes from the
             Rice unit tests):</para>
         
-        <programlisting>&lt;!-- The service implementation you want to expose --&gt;
+        <programlisting linenumbering = "numbered">&lt;!-- The service implementation you want to expose --&gt;
 
 &lt;bean id="baseballCardCollectionService" class="org.kuali.rice.ksb.testclient1.BaseballCardCollectionServiceImpl"/&gt;
 
@@ -90,7 +90,7 @@ value="org.kuali.rice.ksb.messaging.remotedservices.BaseballCardCollectionServic
         <para>The following java interface uses JAX-RS annotations to specify
             its RESTful interface:</para>
         
-        <programlisting>// … eliding package and imports
+        <programlisting linenumbering = "numbered">// … eliding package and imports
 
 @Path("/")
 public interface BaseballCardCollectionService {
@@ -173,7 +173,7 @@ List&lt;BaseballCard&gt; allMyMickeyMantles = baseballCardCollection.get("Mickey
             that service over the KSB. Here is a simple example of a composite
             service definition (which also comes from the Rice unit tests):</para>
         
-        <programlisting>&lt;bean class="org.kuali.rice.ksb.messaging.RESTServiceDefinition"&gt;
+        <programlisting linenumbering = "numbered">&lt;bean class="org.kuali.rice.ksb.messaging.RESTServiceDefinition"&gt;
     &lt;property name="serviceNameSpaceURI" value="test" /&gt;
     &lt;property name="localServiceName" value="kms" /&gt;
     &lt;property name="resources"&gt;

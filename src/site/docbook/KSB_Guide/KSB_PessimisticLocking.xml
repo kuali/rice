@@ -67,7 +67,7 @@
         <para>To enable Pessimistic Locking on a document the attribute 'usePessimisticLocking' must be set to 'true' 
             in the transactional document's entry. </para>
         <para><emphasis role="bold">Example:</emphasis>
-            <programlisting>&lt;dictionaryEntry>
+            <programlisting linenumbering = "numbered">&lt;dictionaryEntry>
     &lt;transactionalDocument>
         ...
         &lt;usePessimisticLocking>true&lt;/usePessimisticLocking>
@@ -178,7 +178,7 @@
             <emphasis role="keyword">useWorkflowPessimisticLocking</emphasis> must be set to 'true' in the transactional document's entry.
         </para>
         <para><emphasis role="bold">Example</emphasis></para>
-        <programlisting>&lt;dictionaryEntry>
+        <programlisting linenumbering = "numbered">&lt;dictionaryEntry>
     &lt;transactionalDocument>
         ...
         &lt;useWorkflowPessimisticLocking>true&lt;/useWorkflowPessimisticLocking>

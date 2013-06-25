@@ -49,7 +49,7 @@
             approach which significantly reduces caching logic. The only thing service authors
             should have to do is annotate service interfaces (or implementation code) with Spring
             cache annotations. For example:
-            <programlisting>@Cacheable(value="foo", key="#p0")
+            <programlisting linenumbering = "numbered">@Cacheable(value="foo", key="#p0")
 public Foo getFoo(String id);
  
 @CacheEvict(value = "foos", allEntries=true)
@@ -71,9 +71,9 @@ public Foo updatefoo(Foo f) {
             our remote proxies.</para>
         <para>To make sure the annotations are actually being read by Spring, we must include the
             following in our Spring xml files:
-            <programlisting>&lt;cache:annotation-driven /></programlisting> and declare a cache
+            <programlisting linenumbering = "numbered">&lt;cache:annotation-driven /></programlisting> and declare a cache
             manager like:
-            <programlisting>&lt;bean id="cacheManager" class="org.springframework.cache.ehcache.EhcacheCacheManager" p:cache-manager="ehcache"/>
+            <programlisting linenumbering = "numbered">&lt;bean id="cacheManager" class="org.springframework.cache.ehcache.EhcacheCacheManager" p:cache-manager="ehcache"/>
  
 &lt;!-- Ehcache library setup -->
 &lt;bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" p:config-location="ehcache.xml"/></programlisting>Due
@@ -173,7 +173,7 @@ public Foo updatefoo(Foo f) {
         </section>
         <section>
             <title>A Real Example</title>
-            <programlisting><emphasis role="bold">FooService.java</emphasis>
+            <programlisting linenumbering = "numbered"><emphasis role="bold">FooService.java</emphasis>
 interface FooService {
    
   //demonstrates a simple argument
@@ -198,7 +198,7 @@ interface FooService {
   @CacheEvict(value=Foo.Cache.NAME, allEntries=true)
   void addFoos(Collection&lt;Foo> foos);
 }</programlisting>
-            <programlisting><emphasis role="bold">FooSpringBeans.xml</emphasis>
+            <programlisting linenumbering = "numbered"><emphasis role="bold">FooSpringBeans.xml</emphasis>
 &lt;beans>
   &lt;!-- tell Spring to look for cache annotations and which CacheManager to use -->
   &lt;cache:annotation-driven cache-manager="fooDistributedCacheManager" />
@@ -244,7 +244,7 @@ interface FooService {
   &lt;bean id="fooCacheService" class="org.Kuali.Rice.core.impl.cache.CacheServiceImpl"
         p:cacheManager-ref="fooLocalCacheManager" />
 &lt;/beans></programlisting>
-            <programlisting><emphasis role="bold">FooServiceBusSpringBeans.xml</emphasis>
+            <programlisting linenumbering = "numbered"><emphasis role="bold">FooServiceBusSpringBeans.xml</emphasis>
 &lt;beans>
   &lt;!-- export the CacheService on the service bus to receive distributed cache messages for the foo module-->
   &lt;bean parent="fooRemoteServiceExporter">
@@ -302,7 +302,7 @@ interface FooService {
                 <para>One way we can handle this in the situations that we definitively need to access another cache 
                     manager, is to execute the following code in the service implementation (in normal cases this 
                     should be avoided):
-                <programlisting>
+                <programlisting linenumbering = "numbered">
 GlobalResourceLoader.getService("alternateDistributedCacheManager").getCache("the_cache_to_retrieve").evict("the_specific_key");</programlisting>
                     <emphasis role="bold">Same object, multiple cache keys:</emphasis> See <link xlink:href="https://jira.springsource.org/browse/SPR-8629">Spring enhancement JIRA #2</link> for more info. Seems like we will be doing a lot of @CacheEvict(value="cache_name" allEntries=true) because the same object may be present under multiple cache keys. Not exactly sure what to do about this...We could have a cache per method but that will be hard to manage. Maybe the underlying caching implementations can handle this for us?
                 </para>
@@ -349,8 +349,8 @@ GlobalResourceLoader.getService("alternateDistributedCacheManager").getCache("th
                 <para><emphasis role="bold">cache keys:</emphasis> Cache keys should be made up of the important 
                     arguments to a method and optionally the method name. They key is meant to uniquely identify 
                     a method's return value in a cache. A few examples are:
-                <programlisting>@Cacheable(value= Group.Cache.NAME, key="'{getAttributes}' + 'groupId=' + #p0")</programlisting>
-                <programlisting>@Cacheable(value= Group.Cache.NAME, key="'id=' + #p0")</programlisting></para>
+                <programlisting linenumbering = "numbered">@Cacheable(value= Group.Cache.NAME, key="'{getAttributes}' + 'groupId=' + #p0")</programlisting>
+                <programlisting linenumbering = "numbered">@Cacheable(value= Group.Cache.NAME, key="'id=' + #p0")</programlisting></para>
             </section>
         </section>
         <section>
@@ -423,13 +423,13 @@ GlobalResourceLoader.getService("alternateDistributedCacheManager").getCache("th
             <section>
                 <title>Option 1: replacing the default caching implementation</title>
                 <para>To do this you must replace(or override) the following Spring entries for the <emphasis role="bold">local</emphasis> CacheManagers. For example:
-                <programlisting>&lt;bean id="sharedDataLocalCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+                <programlisting linenumbering = "numbered">&lt;bean id="sharedDataLocalCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
   &lt;property name="cacheManager">
     &lt;bean class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
        p:config-location="${shareddata.ehcache.config.location}"/>
   &lt;/property>
 &lt;/bean></programlisting>Could be replaced with:
-                <programlisting>&lt;!-- this assumes org.jboss.JBossCacheManager implements the org.springframework.cache.support.CacheManager interface -->
+                <programlisting linenumbering = "numbered">&lt;!-- this assumes org.jboss.JBossCacheManager implements the org.springframework.cache.support.CacheManager interface -->
 &lt;bean id="sharedDataLocalCacheManager" class="org.jboss.JBossCacheManager">
   &lt;!--...-->
 &lt;/bean></programlisting></para>
@@ -439,15 +439,15 @@ GlobalResourceLoader.getService("alternateDistributedCacheManager").getCache("th
                 <para>Doing Option 1 changes the caching implementation but still uses the Kuali Service Bus for 
                     transaction-aware flush messages. Many Caching implementations already provide these facilities. 
                     You could remove or replace the following:
-                <programlisting>&lt;bean id="sharedDataDistributedCacheManager" class="org.Kuali.Rice.core.impl.cache.DistributedCacheManagerDecorator">
+                <programlisting linenumbering = "numbered">&lt;bean id="sharedDataDistributedCacheManager" class="org.Kuali.Rice.core.impl.cache.DistributedCacheManagerDecorator">
   &lt;property name="cacheManager" ref="sharedDataLocalCacheManager" />
   &lt;property name="messageHelper" ref="Rice.ksb.messageHelper" />
   &lt;property name="serviceName" value="{http://Rice.Kuali.org/shareddata}sharedDataCacheServiceSoap" />
 &lt;/bean></programlisting>Doing this may mean that the CacheService endpoints are no longer used so the 
                     following entries could be removed as well:
-                <programlisting>&lt;bean id="sharedDataCacheService" class="org.Kuali.Rice.core.impl.cache.CacheServiceImpl"
+                <programlisting linenumbering = "numbered">&lt;bean id="sharedDataCacheService" class="org.Kuali.Rice.core.impl.cache.CacheServiceImpl"
   p:cacheManager-ref="sharedDataLocalCacheManager" /></programlisting>
-                <programlisting>&lt;bean parent="sharedDataRemoteServiceExporter">
+                <programlisting linenumbering = "numbered">&lt;bean parent="sharedDataRemoteServiceExporter">
   &lt;property name="serviceBus" ref="Rice.ksb.serviceBus"/>
   &lt;property name="serviceDefinition">
     &lt;bean parent="sharedDataJaxWsSoapService"
@@ -456,14 +456,14 @@ GlobalResourceLoader.getService("alternateDistributedCacheManager").getCache("th
   &lt;/property>
   &lt;property name="exportIf" value="sharedDataCacheServiceSOAP.expose"/>
 &lt;/bean></programlisting>And finally, remember to update the cache section of the Spring files like the following:
-                <programlisting>&lt;cache:annotation-driven cache-manager="jbossDistributedCacheManager" /></programlisting></para>
+                <programlisting linenumbering = "numbered">&lt;cache:annotation-driven cache-manager="jbossDistributedCacheManager" /></programlisting></para>
             </section>
             <section>
                 <title>Option 3: Aspect Weaving</title>
                 <para>There have been some concerns that Rice's choice to use jdk proxying may cause 
                     some overhead. To switch to aspect weaving which is more performant change the following:
-                <programlisting>&lt;cache:annotation-driven cache-manager="sharedDataDistributedCacheManager" /></programlisting>to
-                <programlisting>&lt;cache:annotation-driven cache-manager="sharedDataDistributedCacheManager" mode="aspectj" /></programlisting>
+                <programlisting linenumbering = "numbered">&lt;cache:annotation-driven cache-manager="sharedDataDistributedCacheManager" /></programlisting>to
+                <programlisting linenumbering = "numbered">&lt;cache:annotation-driven cache-manager="sharedDataDistributedCacheManager" mode="aspectj" /></programlisting>
                     You must also include the spring-aspectj.jar on the classpath.</para>
             </section>
         </section>

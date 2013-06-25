@@ -89,7 +89,7 @@ soapService.doTheThing("hello");</programlisting>
       create a bean that is exported as a SOAP service. This is the
       server-side service declaration in a Spring file:</para>
 
-      <programlisting>&lt;bean id="ksbConfigurer" class="org.kuali.rice.ksb.messaging.config.KSBConfigurer"&gt;
+      <programlisting linenumbering = "numbered">&lt;bean id="ksbConfigurer" class="org.kuali.rice.ksb.messaging.config.KSBConfigurer"&gt;
   ...
   &lt;property name="services"&gt;
     &lt;list&gt;
@@ -124,7 +124,7 @@ String result = echoService.echo(echoValue);</programlisting>
       This is the server-side service declaration that deploys a bean using
       Spring's HttpInvoker as the underlying transport:</para>
 
-      <programlisting>&lt;bean id="ksbConfigurer" class="org.kuali.rice.ksb.messaging.config.KSBConfigurer"&gt;
+      <programlisting linenumbering = "numbered">&lt;bean id="ksbConfigurer" class="org.kuali.rice.ksb.messaging.config.KSBConfigurer"&gt;
   ...
   &lt;property name="services"&gt;
     &lt;list&gt;
@@ -380,7 +380,7 @@ KEWSampleJavaService testJavaAsyncService = (KEWSampleJavaService) KsbApiService
       expose this service to the bus. This is taken from the file <emphasis
       role="italic">TestClient1SpringBeans.xml</emphasis>:</para>
 
-      <programlisting>&lt;!-- bean declaration --&gt;
+      <programlisting linenumbering = "numbered">&lt;!-- bean declaration --&gt;
 &lt;bean id="sharedQueue" class=" org.kuali.rice.ksb.testclient1.ClientApp1SharedQueue" /&gt;
 
 &lt;bean id="ksbConfigurer" class="org.kuali.rice.ksb.messaging.config.KSBConfigurer"&gt;

@@ -26,7 +26,7 @@
       Module using Spring. Here is an example XML snippet showing how to
       configure Rice and KSB using Spring:</para>
 
-      <programlisting>&lt;beans&gt;
+      <programlisting linenumbering = "numbered">&lt;beans&gt;
   ...
   &lt;bean id="coreConfigurer" class="org.kuali.rice.core.impl.config.module.CoreConfigurer"&gt;
     &lt;property name="dataSource" ref="riceDataSource${connection.pool.impl}" /&gt;
@@ -50,7 +50,7 @@
       is the xml file: ksb-test-config.xml located in the
       /ksb/src/test/resources/META-INF directory.</para>
 
-      <programlisting>&lt;bean id="config" class="org.kuali.rice.core.config.spring.ConfigFactoryBean"&gt;
+      <programlisting linenumbering = "numbered">&lt;bean id="config" class="org.kuali.rice.core.config.spring.ConfigFactoryBean"&gt;
     &lt;property name="configLocations"&gt;
         &lt;list&gt;
             &lt;value&gt;classpath:META-INF/ksb-test-config.xml&lt;/value&gt;
@@ -99,7 +99,7 @@
 
       <para>Let's take a look at the ksb-test-config.xml file:</para>
 
-      <programlisting>&lt;config&gt;
+      <programlisting linenumbering = "numbered">&lt;config&gt;
     &lt;param name="config.location"&gt;classpath:META-INF/common-derby-connection-config.xml&lt;/param&gt;
     &lt;param name="config.location"&gt;classpath:META-INF/common-config-test-locations.xml&lt;/param&gt;
     &lt;param name="client1.location"&gt;${basedir}/src/test/clients/TestClient1&lt;/param&gt;
@@ -147,7 +147,7 @@
       Below is the bean definition for JOTM that you can find in
       Spring:</para>
 
-      <programlisting>&lt;bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean"&gt;
+      <programlisting linenumbering = "numbered">&lt;bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean"&gt;
     &lt;property name="defaultTimeout" value="${transaction.timeout}"/&gt;
 
 &lt;/bean&gt;
@@ -176,7 +176,7 @@
 
       <para>Next, you must inject the JOTM into the RiceConfigurer:</para>
 
-      <programlisting>&lt;bean id="rice" class="org.kuali.rice.core.impl.config.module.CoreConfigurer"&gt;
+      <programlisting linenumbering = "numbered">&lt;bean id="rice" class="org.kuali.rice.core.impl.config.module.CoreConfigurer"&gt;
     &lt;property name="dataSource" ref="dataSource" /&gt;
     &lt;property name="transactionManager" ref="jotm" /&gt;
     &lt;property name="userTransaction" ref="jotm" /&gt;  
@@ -220,7 +220,7 @@
       JTA, the following transaction and DataSource configuration is
       declared:</para>
 
-      <programlisting>&lt;bean id="ojbConfigurer" class="org.springmodules.orm.ojb.support.LocalOjbConfigurer" /&gt;
+      <programlisting linenumbering = "numbered">&lt;bean id="ojbConfigurer" class="org.springmodules.orm.ojb.support.LocalOjbConfigurer" /&gt;
 
 
 &lt;bean id="transactionManager" class="org.springmodules.orm.ojb.PersistenceBrokerTransactionManager"&gt;
@@ -252,7 +252,7 @@
       FactoryBean. Next, we inject the DataSource and transactionManager (now
       a Spring PlatformTransactionManager).</para>
 
-      <programlisting>&lt;bean id="rice" class="org.kuali.rice.core.impl.config.module.CoreConfigurer"&gt;
+      <programlisting linenumbering = "numbered">&lt;bean id="rice" class="org.kuali.rice.core.impl.config.module.CoreConfigurer"&gt;
     &lt;property name="dataSource" ref="dataSource" /&gt;
     &lt;property name="nonTransactionalDataSource" ref="dataSource" /&gt;
     ...
@@ -281,7 +281,7 @@
       bus-connected node, you must configure the KSBDispatcherServlet in the
       web applications web.xml file. For example:</para>
 
-      <programlisting>&lt;servlet&gt;
+      <programlisting linenumbering = "numbered">&lt;servlet&gt;
     &lt;servlet-name&gt;remoting&lt;/servlet-name&gt;
     &lt;servlet-class&gt;org.kuali.rice.ksb.messaging.servlet.KSBDispatcherServlet&lt;/servlet-class&gt;
     &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
@@ -686,7 +686,7 @@
       done using Spring or programmatically. We'll use Spring because it's the
       easiest way to get things configured:</para>
 
-      <programlisting>&lt;bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean"&gt;
+      <programlisting linenumbering = "numbered">&lt;bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean"&gt;
     &lt;property name="defaultTimeout" value="${transaction.timeout}"/&gt;
 &lt;/bean&gt;
 
@@ -731,7 +731,7 @@
       The following configures JOTM, which is currently required to run
       KSB.</para>
 
-      <programlisting>&lt;bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean" /&gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean" /&gt;</programlisting>
 
       <para>Next, we configure the XAPoolDataSource and the non transactional
       BasicDataSource. This is pretty much standard data source configuration
@@ -740,7 +740,7 @@
       JTA, require this configuration step so the datasource will use
       JTA.</para>
 
-      <programlisting>&lt;bean id="dataSource" class=" org.kuali.rice.core.database.XAPoolDataSource "&gt;
+      <programlisting linenumbering = "numbered">&lt;bean id="dataSource" class=" org.kuali.rice.core.database.XAPoolDataSource "&gt;
     &lt;property name="transactionManager" ref="jotm"/&gt;
     &lt;property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/&gt;
     &lt;property name="url" value="jdbc:oracle:thin:@LOCALHOST:1521:XE"/&gt;
@@ -766,7 +766,7 @@
 
       <para>Next, we configure the bus:</para>
 
-      <programlisting>&lt;bean id="rice" class="org.kuali.rice.core.config.CoreConfigurer"&gt;
+      <programlisting linenumbering = "numbered">&lt;bean id="rice" class="org.kuali.rice.core.config.CoreConfigurer"&gt;
     &lt;property name="dataSource" ref="dataSource" /&gt;
     &lt;property name="nonTransactionalDataSource" ref="nonTransactionalDataSource" /&gt;
     &lt;property name="transactionManager" ref="jotm" /&gt;

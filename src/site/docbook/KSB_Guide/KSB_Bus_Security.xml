@@ -55,7 +55,7 @@
                 easily human readable.</para>
             <para>From the list of services on the demo Rice server, the CampusService has the following attributes:
             <itemizedlist>
-                <listitem><para>ServiceName:</para><programlisting>{http://rice.kuali.org/location/v2_0}campusService</programlisting></listitem>
+                <listitem><para>ServiceName:</para><programlisting linenumbering = "numbered">{http://rice.kuali.org/location/v2_0}campusService</programlisting></listitem>
                 <listitem><para>Endpoint URL:</para><programlisting>http://demo.rice.kuali.org/remoting/soap/location/v2_0/campusService</programlisting></listitem>
                 <listitem><para>Type: SOAP</para><simplelist>
                     <member>Because the type is SOAP, the WSDL can be found at <link xlink:href="http://demo.rice.kuali.org/remoting/soap/location/v2_0/campusService?wsdl">http://demo.rice.kuali.org/remoting/soap/location/v2_0/campusService?wsdl</link></member>
@@ -117,7 +117,7 @@
             alias since the new keystore will not be used by the server. You can use the new keystore but only with 
             the alias (representing the cert) that the server is expecting - namely 'rice'.</para>
         <para><emphasis role="bold">keytool inspection of keystore</emphasis>
-            <programlisting>$ keytool -list -v -keystore rice.keystore
+            <programlisting linenumbering = "numbered">$ keytool -list -v -keystore rice.keystore
 Enter keystore password:
  
 Keystore type: JKS
@@ -299,7 +299,7 @@ Certificate fingerprints:
                 <listitem><para>http://demo.rice.kuali.org/remoting/soap/location/v2_0/campusService?wsdl the WSDL location to the <emphasis role="bold">campusService</emphasis> service</para></listitem>
             </itemizedlist>
                 Your output should look similar to this listing.
-                <programlisting><emphasis role="keyword">wsimport</emphasis>
+                <programlisting linenumbering = "numbered"><emphasis role="keyword">wsimport</emphasis>
 $ wsimport -keep -Xnocompile -verbose http://demo.rice.kuali.org/remoting/soap/location/v2_0/campusService?wsdl
 parsing WSDL...
  
@@ -368,7 +368,7 @@ org\kuali\rice\location\v2_0\package-info.java</programlisting>
                 <listitem><para>csf-rt-ws-security</para></listitem>
                 <listitem><para>junit (test scope)</para></listitem>
             </itemizedlist>
-                <programlisting><emphasis role="bold">pom.xml</emphasis>
+                <programlisting linenumbering = "numbered"><emphasis role="bold">pom.xml</emphasis>
 &lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   &lt;modelVersion>4.0.0&lt;/modelVersion>
   &lt;groupId>edu.somewhere&lt;/groupId>
@@ -405,7 +405,7 @@ Apache CXF provides very convenient classes and functionality to take the XML of
                 <listitem><para><emphasis role="bold">client-sign.properties</emphasis> at src/main/resources</para></listitem>
                 <listitem><para><emphasis role="bold">rice.keystore</emphasis> included at src/main/resources</para></listitem>
             </itemizedlist>
-            <programlisting><emphasis role="bold">client-sign.properties</emphasis>
+            <programlisting linenumbering = "numbered"><emphasis role="bold">client-sign.properties</emphasis>
 # Properties for the KSB Client Test classes
  
 # properties for accessing the java keystore using Merlin
@@ -417,7 +417,7 @@ org.apache.ws.security.crypto.merlin.keystore.file=rice.keystore            </pr
             <para> Your Java code will include the following: <itemizedlist>
                     <listitem>
                         <para><emphasis role="bold">KSBCampusServiceClient.java</emphasis></para>
-                        <programlisting><emphasis role="bold">KSBCampusServiceClient.java</emphasis>
+                        <programlisting linenumbering = "numbered"><emphasis role="bold">KSBCampusServiceClient.java</emphasis>
 package edu.somewhere;
  
 import java.net.URL;
@@ -469,7 +469,7 @@ public class KSBCampusServiceClient
                     </listitem>
                     <listitem>
                         <para><emphasis role="bold">KSBClientCallbackHandler.java</emphasis></para>
-                        <programlisting><emphasis role="bold">KSBClientCallbackHandler.java</emphasis>
+                        <programlisting linenumbering = "numbered"><emphasis role="bold">KSBClientCallbackHandler.java</emphasis>
 package edu.somewhere;
  
 import java.io.IOException;
@@ -513,7 +513,7 @@ public class KSBClientCallbackHandler implements CallbackHandler
                     <listitem>
                         <para><emphasis role="bold">KSBCampusServiceClientTest.java
                             </emphasis></para>
-                        <programlisting><emphasis role="bold">KSBCampusServiceClientTest.java</emphasis>
+                        <programlisting linenumbering = "numbered"><emphasis role="bold">KSBCampusServiceClientTest.java</emphasis>
 package edu.somewhere;
  
 import static org.junit.Assert.*;
@@ -567,12 +567,12 @@ public class KSBCampusServiceClientTest
                 </simplelist></listitem>
                 <listitem><para>eclipse project</para></listitem>
                 <listitem><para>maven project</para>
-                    <programlisting><emphasis role="bold">get the code</emphasis>
+                    <programlisting linenumbering = "numbered"><emphasis role="bold">get the code</emphasis>
 $ hg clone https://bitbucket.org/majorbanzai/kuali-kode 
 $ cd kuali-kode/ksbclient
 $ mvn test</programlisting></listitem>
                 <listitem><para>KSBCampusServiceClientTest integration test</para>
-                    <programlisting><emphasis role="bold">KSBCampusServiceClientTest output</emphasis>
+                    <programlisting linenumbering = "numbered"><emphasis role="bold">KSBCampusServiceClientTest output</emphasis>
 BL : BLOOMINGTON : BLOOMINGTON 
 BX : BLGTN OFF CA : BLGTN OFF CAMPUS 
 CO : COLUMBUS : COLUMBUS 
@@ -601,7 +601,7 @@ UA : UNIVER ADMIN : UNIVERSITY ADMINISTRATION </programlisting></listitem>
                 network sniffer to watch the traffic. Your SOAP message looks like the following:
                 <informalexample>
                     <?dbfo pgwide="1"?>
-                <programlisting><emphasis role="bold">SOAP request</emphasis>
+                <programlisting linenumbering = "numbered"><emphasis role="bold">SOAP request</emphasis>
 &lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v2="http://rice.kuali.org/location/v2_0">
    &lt;soapenv:Header>
       &lt;wsse:Security soapenv:mustUnderstand="1" 

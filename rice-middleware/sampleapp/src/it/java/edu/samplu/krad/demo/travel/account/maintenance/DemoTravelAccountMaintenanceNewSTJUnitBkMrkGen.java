@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package edu.samplu.krad.demo.travel.account.inquiry;
+package edu.samplu.krad.demo.travel.account.maintenance;
 
 import org.junit.Test;
 

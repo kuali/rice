@@ -13,18 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.samplu.krad.demo.travel.account.inquiry;
+package edu.samplu.krad.demo.travel.account.maintenance;
 
-import org.testng.AssertJUnit;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class DemoTravelAccountMaintenanceNewSTNGBase extends DemoTravelAccountMaintenanceNewAbstractSmokeTestBase {
+public class DemoTravelAccountMaintenanceNewSTNGNavGen extends DemoTravelAccountMaintenanceNewSTNGBase {
 
-    @Override
-    public void fail(String message) {
-        passed = false;
-        AssertJUnit.fail(message);
+	@Test(groups = { "all", "fast", "default", "nav" }, description = "testDemoTravelAccountMaintenanceNewNav")
+    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
+    public void testDemoTravelAccountMaintenanceNewNav() throws Exception {
+        testDemoTravelAccountMaintenanceNewNav(this);
     }
 }

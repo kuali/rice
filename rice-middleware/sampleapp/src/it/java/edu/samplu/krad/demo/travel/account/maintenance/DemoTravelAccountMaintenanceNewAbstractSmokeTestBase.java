@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.samplu.krad.demo.travel.account.inquiry;
+package edu.samplu.krad.demo.travel.account.maintenance;
 
 import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;

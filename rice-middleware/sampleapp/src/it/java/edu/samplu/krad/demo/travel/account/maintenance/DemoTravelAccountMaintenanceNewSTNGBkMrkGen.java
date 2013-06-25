@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.samplu.krad.demo.travel.account.inquiry;
+package edu.samplu.krad.demo.travel.account.maintenance;
 
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -21,11 +21,16 @@ import org.testng.annotations.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoTravelAccountMaintenanceNewSTNGNavGen extends DemoTravelAccountMaintenanceNewSTNGBase {
+public class DemoTravelAccountMaintenanceNewSTNGBkMrkGen extends DemoTravelAccountMaintenanceNewSTNGBase {
 
-	@Test(groups = { "all", "fast", "default", "nav" }, description = "testDemoTravelAccountMaintenanceNewNav")
+    @Override
+    public String getTestUrl() {
+        return BOOKMARK_URL;
+    }
+    
+	@Test(groups = { "all", "fast", "default", "bookmark" }, description = "testDemoTravelAccountMaintenanceNewBookmark")
     @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
-    public void testDemoTravelAccountMaintenanceNewNav() throws Exception {
-        testDemoTravelAccountMaintenanceNewNav(this);
+    public void testDemoTravelAccountMaintenanceNewBookmark() throws Exception {
+        testDemoTravelAccountMaintenanceNewBookmark(this);
     }
 }

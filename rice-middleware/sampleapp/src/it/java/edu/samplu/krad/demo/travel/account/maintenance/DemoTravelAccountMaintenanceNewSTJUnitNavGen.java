@@ -13,18 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.samplu.krad.demo.travel.account.inquiry;
 
-import org.junit.Assert;
+package edu.samplu.krad.demo.travel.account.maintenance;
+
+import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class DemoTravelAccountMaintenanceNewSTJUnitBase extends DemoTravelAccountMaintenanceNewAbstractSmokeTestBase {
-
-    @Override
-    public void fail(String message) {
-        passed = false;
-        Assert.fail(message);
+public class DemoTravelAccountMaintenanceNewSTJUnitNavGen extends DemoTravelAccountMaintenanceNewSTJUnitBase {
+ @Test
+    public void testDemoTravelAccountMaintenanceNewNav() throws Exception {
+        testDemoTravelAccountMaintenanceNewNav(this);
     }
 }

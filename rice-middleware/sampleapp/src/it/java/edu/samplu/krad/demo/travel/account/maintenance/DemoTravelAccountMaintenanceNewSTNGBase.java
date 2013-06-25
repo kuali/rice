@@ -13,24 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.samplu.krad.demo.travel.account.inquiry;
+package edu.samplu.krad.demo.travel.account.maintenance;
 
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoTravelAccountMaintenanceNewSTNGBkMrkGen extends DemoTravelAccountMaintenanceNewSTNGBase {
+public abstract class DemoTravelAccountMaintenanceNewSTNGBase extends DemoTravelAccountMaintenanceNewAbstractSmokeTestBase {
 
     @Override
-    public String getTestUrl() {
-        return BOOKMARK_URL;
-    }
-    
-	@Test(groups = { "all", "fast", "default", "bookmark" }, description = "testDemoTravelAccountMaintenanceNewBookmark")
-    @Parameters( { "seleniumHost", "seleniumPort", "os", "browser", "version", "webSite" })
-    public void testDemoTravelAccountMaintenanceNewBookmark() throws Exception {
-        testDemoTravelAccountMaintenanceNewBookmark(this);
+    public void fail(String message) {
+        passed = false;
+        AssertJUnit.fail(message);
     }
 }

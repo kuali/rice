@@ -40,7 +40,7 @@
             <para><emphasis role="bold">KNS Code example:</emphasis></para>
             <para>
                 
-                <programlisting>1   &lt;bean id="EntityType-lookupDefinition" parent="LookupDefinition">
+                <programlisting linenumbering = "numbered">1   &lt;bean id="EntityType-lookupDefinition" parent="LookupDefinition">
 2     &lt;property name="title" value="Entity Type Lookup"/>
 3     &lt;property name="menubar" value="&amp;lt;a href=&amp;quot;javascript:void(0)&amp;quot; 
 4         onclick=&amp;quot;alert('JavaScript triggered action.')&amp;quot;&amp;gt;Custom Button&amp;lt;/a&amp;gt;"/>
@@ -79,7 +79,7 @@
             </para>
             <para>
                 <emphasis role="bold">KRAD code example:</emphasis>
-                <programlisting>1   &lt;bean id="EntityTypeLookupView" parent="Uif-LookupView">
+                <programlisting linenumbering = "numbered">1   &lt;bean id="EntityTypeLookupView" parent="Uif-LookupView">
 2     &lt;property name="dataObjectClassName" value="org.kuali.rice.kim.impl.identity.EntityTypeBo"/>
 3     &lt;property name="headerText" value="Entity Type Lookup" />
 4     &lt;property name="page.header.lowerGroup.items">

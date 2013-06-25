@@ -720,6 +720,25 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         }
     }
 
+    /**
+     * Asset that the given text does not occur in the page
+     * @param text the text to search for
+     */
+    protected void assertTextNotPresent(String text) {
+        assertTextNotPresent(text, "");
+    }
+
+    /**
+     * Assert that the given text does not occur in the page, and add an additional message to the failure
+     * @param text the text to search for
+     * @param message the message to add to the failure
+     */
+    protected void assertTextNotPresent(String text, String message) {
+        if (driver.getPageSource().contains(text)) {
+            SeleneseTestBase.fail(text + " not present " + message);
+        }
+    }
+
     protected void back() {
         driver.navigate().back();
     }
@@ -4491,6 +4510,4 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     public void setUiFramework(String uiFramework) {
         this.uiFramework = uiFramework;
     }
-
-
 }

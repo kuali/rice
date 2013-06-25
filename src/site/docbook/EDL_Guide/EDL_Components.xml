@@ -50,7 +50,7 @@
                     are common across all eDocLites, so this guide does not discuss them. </para>
                 <para>In this example, any XML markup that has no value shown or that is not
                     explained offers options that are not important at this time.</para>
-                <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+                <programlisting linenumbering = "numbered">&lt;?xml version="1.0" encoding="UTF-8"?>
 &lt;data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
     &lt;edoclite xmlns="ns:workflow/eDocLite " xsi:schemaLocation="ns:workflow/eDocLite  resource:eDocLite ">
 
@@ -188,7 +188,7 @@
                 >editable</emphasis>, or <emphasis role="keyword">hidden</emphasis>.</para>
                 <para>Below is the style sheet section of the EDL XML form for our example. It
                     contains embedded comments.</para>
-                <programlisting>&lt;!-- widgets is simply more xslt that contains common functionality that greatly simplifies html rendering 
+                <programlisting linenumbering = "numbered">&lt;!-- widgets is simply more xslt that contains common functionality that greatly simplifies html rendering 
 It is somewhat complicated but does not require changes or full understanding unless enhancements are required.  -->
 &lt;xsl:include href="widgets" />
 &lt;xsl:output indent="yes" method="html" omit-xml-declaration="yes" version="4.01" />

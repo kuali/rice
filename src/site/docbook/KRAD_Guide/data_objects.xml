@@ -164,7 +164,7 @@
                 which indicates the date on which the record becomes inactive. This field can have a
                 null value indicating the record has no inactive date set. </para>
             <para> Record is active if:
-                <programlisting>(activeFromDate == null ||
+                <programlisting linenumbering = "numbered">(activeFromDate == null ||
     asOfDate >= activeFromDate.getMillis()) &amp;&amp;  (activeToDate == null ||
     asOfDate &lt; activeToDate.getMillis());   </programlisting>
                 where the asOfDate is the current date or a date we wish to simulate the active
@@ -292,7 +292,7 @@
         <para>We make use of OJB with XML that provides the mapping metadata. Generally each
             application module has one or more files that contain this XML. These files are picked
             up through the module configuration (see New Project Setup):
-            <programlisting>&lt;bean id="sampleAppModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
+            <programlisting linenumbering = "numbered">&lt;bean id="sampleAppModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
     ... 
     &lt;property name="databaseRepositoryFilePaths">
         &lt;list>
@@ -304,13 +304,13 @@
             <title> OJB XML METADATA </title>
             <para>All OJB files must begin with the standard XML declaration, and then the OJB
                 doctype tag (root element):
-                <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+                <programlisting linenumbering = "numbered">&lt;?xml version="1.0" encoding="UTF-8"?>
 &lt;descriptor-repository version="1.0">
 ...
 &lt;/descriptor-repository>  </programlisting></para>
             <para>Next, our OJB file must contain a jdbc-connection-descriptor which configures the
                 database connection OJB will use for the contained mappings:
-                <programlisting>&lt;jdbc-connection-descriptor
+                <programlisting linenumbering = "numbered">&lt;jdbc-connection-descriptor
     jcd-alias="dataSource"  default-connection="false"
     jdbc-level="3.0" eager-release="false" batch-mode="false" useAutoCommit="0"
     ignoreAutoCommitExceptions="false">  &lt;object-cache
@@ -331,7 +331,7 @@
                 jdbc-connection-descriptor. With the class descriptor, we must specify the fully
                 qualified java class for mapping with the class attribute and the database table
                 name with the table attribute:
-                <programlisting>&lt;class-descriptor class="org.kuali.rice.krad.demo.travel.account.TravelAccount" table="TRV_ACCT">
+                <programlisting linenumbering = "numbered">&lt;class-descriptor class="org.kuali.rice.krad.demo.travel.account.TravelAccount" table="TRV_ACCT">
     ... 
 &lt;/class-descriptor>      </programlisting></para>
         </section>
@@ -345,7 +345,7 @@
                 we need to specify the JDBC type for the table column using the jdbc-type attribute.
                 This indicates to OJB how it should convert the value between the database and
                 object layers. </para>
-            <programlisting>&lt;field-descriptor name="name" column="acct_name" jdbc-type="VARCHAR" /&gt;     </programlisting>
+            <programlisting linenumbering = "numbered">&lt;field-descriptor name="name" column="acct_name" jdbc-type="VARCHAR" /&gt;     </programlisting>
             <para> Some common jdbc types and their corresponding Java type are as follows: <table
                 frame="all" tabstyle="striped">
                     <title>JDBC Types to Java Type</title>
@@ -446,7 +446,7 @@
             <para>Once we have a converter class (or one is provided), we need to tell OJB to use it
                 by specifying the full class name for the converter on the field descriptor using
                 the conversion attribute:
-                <programlisting> &lt;field-descriptor name="price"
+                <programlisting linenumbering = "numbered"> &lt;field-descriptor name="price"
         column="PRICE" jdbc-type="DECIMAL"
         conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiDecimalFieldConversion"/>  </programlisting></para>
             <para> It is necessary to add the conversion attribute for each property that has a
@@ -533,14 +533,14 @@
                 primary keys are used for linking relationships. </para>
             <para>Compound keys are configured by adding the primarykey="true" attribute to more
                 than one field:
-                <programlisting>&lt;class-descriptor class="org.kuali.rice.kew.doctype.DocumentTypePolicy" table="KREW_DOC_TYP_PLCY_RELN_T">
+                <programlisting linenumbering = "numbered">&lt;class-descriptor class="org.kuali.rice.kew.doctype.DocumentTypePolicy" table="KREW_DOC_TYP_PLCY_RELN_T">
     &lt;field-descriptor name="documentTypeId" column="DOC_TYP_ID" jdbc-type="VARCHAR" primarykey="true"/>
     &lt;field-descriptor name="policyName" column="DOC_PLCY_NM" jdbc-type="VARCHAR" primarykey="true"/>
 ...          </programlisting></para>
             <para>A single primary key field can also be a surrogate key for which a sequence is
                 used to generate the key values. We can indicate to OJB that the primary key is a
                 sequence using the autoincrement and sequence-name attributes:
-                <programlisting>&lt;class-descriptor class="edu.sampleu.bookstore.bo.Book" table="BK_BOOK_T">
+                <programlisting linenumbering = "numbered">&lt;class-descriptor class="edu.sampleu.bookstore.bo.Book" table="BK_BOOK_T">
     &lt;field-descriptor name="id" column="BOOK_ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" 
      sequence-name="BK_BOOK_ID_S" /> 
 ...  </programlisting></para>
@@ -557,7 +557,7 @@
             <para>Now that we have our primary key fields set, recall the recommendation that all
                 persisted objects carry the version number and object id properties. We can map
                 these properties with the follow field descriptors:
-                <programlisting>&lt;field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+                <programlisting linenumbering = "numbered">&lt;field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 &lt;field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />   </programlisting></para>
             <para>Note the locking and indexed attributes. The locking attribute tells OJB to use
                 this column to perform optimistic locking and only one field descriptor may have
@@ -584,13 +584,13 @@
 ...
     private BookType bookType;       </programlisting></para>
             <para> Our corresponding reference descriptor will then be:
-                <programlisting>&lt;reference-descriptor name="bookType" class-ref="edu.sampleu.bookstore.bo.BookType"/&gt;     </programlisting></para>
+                <programlisting linenumbering = "numbered">&lt;reference-descriptor name="bookType" class-ref="edu.sampleu.bookstore.bo.BookType"/&gt;     </programlisting></para>
             <para>We are not quite finished though with our reference descriptor. OJB can now
                 determine we have a foreign key relationship from Book to BookType, and it knows the
                 primary key fields for BookType, but which fields of Book are the actual foreign
                 keys? To fill in this information, within our reference descriptor we must add a
                 foreign key field for each primary key field of BookType. </para>
-            <programlisting>&lt;reference-descriptor name="bookType" class-ref="edu.sampleu.bookstore.bo.BookType">
+            <programlisting linenumbering = "numbered">&lt;reference-descriptor name="bookType" class-ref="edu.sampleu.bookstore.bo.BookType">
     &lt;foreignkey field-ref="typeCode" />
 &lt;/reference-descriptor></programlisting>
             <para>When using the foreignkey tag, we must specify the field-ref attribute whose value
@@ -600,7 +600,7 @@
                 declared must match the order in which they join to the primary keys. For example,
                 if our reference target class has primary key fields code and subCode, and we have
                 foreign keys fkCode and fkSubCode, the following configuration would be incorrect:
-                <programlisting>&lt;reference-descriptor name="subCode" class-ref="edu.sampleu.SubCode">
+                <programlisting linenumbering = "numbered">&lt;reference-descriptor name="subCode" class-ref="edu.sampleu.SubCode">
     &lt;foreignkey field-ref="fkSubCode"/>
     &lt;foreignkey field-ref="fkCode" />
 &lt;/reference-descriptor></programlisting></para>
@@ -682,12 +682,12 @@
     ... 
     private List&lt;Author> authors;   </programlisting></para>
             <para> Our corresponding collection descriptor will then be:
-                <programlisting>&lt;collection-descriptor name="authors" class-ref="edu.sampleu.bookstore.bo.Author"/&gt;     </programlisting></para>
+                <programlisting linenumbering = "numbered">&lt;collection-descriptor name="authors" class-ref="edu.sampleu.bookstore.bo.Author"/&gt;     </programlisting></para>
             <para>When configuring a collection descriptor, the foreign key direction goes from the
                 target class to the source. That is, we need to specify the field in the target
                 class (in this case Author) that maps to the primary key of the source class (Book).
                 This is done using the inverse-foreignkey tag:
-                <programlisting>&lt;collection-descriptor name="bookType" class-ref="edu.sampleu.bookstore.bo.Author">
+                <programlisting linenumbering = "numbered">&lt;collection-descriptor name="bookType" class-ref="edu.sampleu.bookstore.bo.Author">
     &lt;inverse-foreignkey field-ref="bookId" />  
 &lt;/collection-descriptor>        </programlisting></para>
             <para>The collection descriptor supports the same auto-x attributes we saw in reference

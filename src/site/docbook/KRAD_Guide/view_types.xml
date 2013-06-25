@@ -54,7 +54,7 @@
       <para>Extending a lookup from the Uif-LookupView not only provides a standard look, but it
         also removes the burden of creating the individual sections by simply specifying the
         criteria and result fields.  </para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean id="BookLookupView" parent="Uif-LookupView"&gt;
 &lt;property name="title" value="Book Lookup" /&gt;
 &lt;property name="dataObjectClassName" value="org.gutenberg.catalog.BookBo" /&gt;
@@ -88,7 +88,7 @@
         needed, the LookupableImpl can be extended and the necessary methods overridden. </para>
       <para>If we implement our own Lookupable, we specify this in the viewHelperServiceClass
         property of the view. </para>
-      <programlisting>&lt;property name="viewHelperServiceClass" value="org.gutenberg.catalog.BookLookupableImpl" /&gt;
+      <programlisting linenumbering = "numbered">&lt;property name="viewHelperServiceClass" value="org.gutenberg.catalog.BookLookupableImpl" /&gt;
       </programlisting>
     </section>
     <section>
@@ -136,7 +136,7 @@
         on a book title that will bring up the inquiry view of that book with the book's details
         such as author, summary, number of pages, etc. </para>
       <para>To create a document-specific inquiry view, the Uif-InquiryView is extended. </para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean id="BookInquiryView" parent="Uif-InquiryView"&gt;
 &lt;property name="title" value="Book Inquiry" /&gt;
 &lt;property name="dataObjectClassName" value="org.gutenberg.catalog.BookBo" /&gt;
@@ -171,7 +171,7 @@
         needed, the InquirableImpl can be extended, and the necessary methods overridden. </para>
       <para>If we implement our own Inquirable, we specify this in the viewHelperServiceClass
         property of the view. </para>
-      <programlisting>&lt;property name="viewHelperServiceClass" value="org.gutenberg.catalog.BookInquirableImpl" /&gt;
+      <programlisting linenumbering = "numbered">&lt;property name="viewHelperServiceClass" value="org.gutenberg.catalog.BookInquirableImpl" /&gt;
       </programlisting>
     </section>
     <section>
@@ -182,7 +182,7 @@
       <para>If your view contains a field that creates an inquiry link to the same data object, you
         most likely want to suppress this to avoid unnecessary recursive inquiries that might
         confuse the user.  To do so, set the fieldInquiry.render property to false. </para>
-      <programlisting>&lt;bean parent="Uif-InputField" p:propertyName="title" p:fieldInquiry.render="false" /&gt;
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-InputField" p:propertyName="title" p:fieldInquiry.render="false" /&gt;
       </programlisting>
     </section>
   </section>
@@ -205,7 +205,7 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean id="BookMaintenanceView" parent="Uif-MaintenanceView"&gt;
 &lt;property name="title" value="Book Maintenance" /&gt;
 &lt;property name="dataObjectClassName" value="org.gutenberg.catalog.BookBo" /&gt;
@@ -244,7 +244,7 @@
         needed, the MaintainableImpl can be extended, and the necessary methods overridden. </para>
       <para>If we implement our own Maintainable, we specify this in the viewHelperServiceClass
         property of the view. </para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;property name="viewHelperServiceClass" value="org.gutenberg.catalog.BookMaintainableImpl" /&gt;
       </programlisting>
     </section>
@@ -268,7 +268,7 @@
           on its fields that uniquely identify the document.  Often these fields are the
           primary keys of the data object.
         </para>
-        <programlisting>
+        <programlisting linenumbering = "numbered">
 &lt;bean id="BookMaintenanceDocument" parent="uifMaintenanceDocumentEntry"&gt;
  ...
 &lt;property name="lockingKeys" &gt;
@@ -702,7 +702,7 @@
         configuration for document types in the same vocabulary through the legendary "ingester".
          All of this means that most developers find it easiest to understand a document through its
         XML representation.  Here's an example from KFS: the Vendor maintenance document. </para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
         &lt;?xml version="1.0" encoding="UTF-8"?&gt;
         &lt;data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="ns:workflow resource:WorkflowData"&gt;
@@ -957,7 +957,7 @@
         role?  The answer to that question is back in the document type definition where the
         role node was set up:
       </para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
         &lt;role name="Initiator"&gt;
         &lt;qualifierResolverClass&gt;org.kuali.rice.kns.workflow.attribute.DataDictionaryQualifierResolver&lt;/qualifierResolverClass&gt;
         &lt;/role&gt;
@@ -979,7 +979,7 @@
         document, a data dictionary bean definition which will be passed to the
         documentEntry's workflowAttribute's property:
       </para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
         &lt;bean id="RequisitionDocument-workflowAttributes-parentBean" abstract="true" parent="WorkflowAttributes"&gt;
         &lt;property name="routingTypeDefinitions"&gt;
         &lt;map&gt;
@@ -1000,7 +1000,7 @@
         node with no qualified roles, then there does not need to be a map entry for that
         point.  A sample of a RoutingTypeDefinition bean looks like this:
       </para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
         &lt;bean id="RoutingType-RequisitionDocument-Organization"
         class="org.kuali.rice.krad.datadictionary.RoutingTypeDefinition"&gt;
         &lt;property name="routingAttributes"&gt;
@@ -1044,7 +1044,7 @@
         qualification will be generated for every item returned by the
         getAccountsForAwardRouting() method.
       </para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
         &lt;bean id="RoutingType-PurchasingDocument-Award"
         class="org.kuali.rice.kns.datadictionary.RoutingTypeDefinition"&gt;
         &lt;property name="routingAttributes"&gt;
@@ -1087,7 +1087,7 @@
         notifications, document search customization options, and rule qualifiers.  Here is
         a configuration of a rule attribute for an XPathQualifierResolver:
       </para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
         &lt;data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="ns:workflow resource:WorkflowData"&gt;
         &lt;ruleAttributes xmlns="ns:workflow/RuleAttribute"
@@ -1123,7 +1123,7 @@
         then uses that to get values for the specific XPath expressions.  The assumption
         here is that the document has been serialized as so:
       </para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
         &lt;?xml version="1.0" ?&gt;
         &lt;xmlData&gt;
         &lt;chartOrg&gt;
@@ -1143,7 +1143,7 @@
       <para>The document type then uses this attribute, not via the qualifierResolverClassName
         tag but rather the qualifierResolver tag in the document type:
       </para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
         &lt;role name="Role1"&gt;
         &lt;activationType&gt;P&lt;/activationType&gt;
         &lt;qualifierResolver&gt;RoleRouteModule-TestQualifierResolver&lt;/qualifierResolver&gt;
@@ -1187,7 +1187,7 @@
         up as a rule attribute, just as the configuration for the XPathQualifierResolver
         was:
       </para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
         &lt;data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="ns:workflow resource:WorkflowData"&gt;
         &lt;ruleAttributes xmlns="ns:workflow/RuleAttribute"
@@ -1238,7 +1238,7 @@
       <para>This attribute then can
         be associated with a document type, through the attributes tag.
       </para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
         &lt;data xmlns="ns:workflow" xmlns:fo="http://www.w3.org/1999/XSL/Format"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="ns:workflow resource:WorkflowData"&gt;
@@ -1264,7 +1264,7 @@
         org.kuali.rice.krad.workflow.attribute.DataDictionarySearchableAttribute.  It is
         defined as follows:
       </para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
         &lt;ruleAttribute&gt;
         &lt;name&gt;DataDictionarySearchableAttribute&lt;/name&gt;
           &lt;className&gt;
@@ -1278,7 +1278,7 @@
         which is injected to the workflowAttributes property of a document's data dictionary
         entry.  The declaration looks like this:
       </para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
         &lt;bean id="PersonDocument-workflowAttributes" parent="WorkflowAttributes"&gt;
           &lt;property name="searchingTypeDefinitions"&gt;
             &lt;list&gt;
@@ -1317,7 +1317,7 @@
       <para>This searchable attribute would have been set up in the document type as
         follows:
       </para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
         &lt;data xmlns="ns:workflow" xmlns:fo="http://www.w3.org/1999/XSL/Format"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="ns:workflow resource:WorkflowData"&gt;
@@ -1366,7 +1366,7 @@
       <para>The base bean definition for the message view has an id of <code>Uif-MessageView
         </code>and is shown below:</para>
       <para>
-        <programlisting>  &lt;bean id="Uif-MessageView" parent="Uif-MessageView-parentBean"/>
+        <programlisting linenumbering = "numbered">  &lt;bean id="Uif-MessageView" parent="Uif-MessageView-parentBean"/>
   &lt;bean id="Uif-MessageView-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.view.MessageView" parent="Uif-FormView">
     &lt;property name="page">
@@ -1406,7 +1406,7 @@
         the default message view, and set the custom message text through code. The following
         demonistrates using the helper method for the module locked example: </para>
       <para>
-        <programlisting>    /**
+        <programlisting linenumbering = "numbered">    /**
      * Retrieves the module locked message test from a system parameter and then returns the message view
      */
     @RequestMapping(value = "/module-locked")

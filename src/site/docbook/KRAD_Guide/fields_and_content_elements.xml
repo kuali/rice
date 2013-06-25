@@ -40,21 +40,21 @@
     <para>One commonly used content element we have is the Label component. As you might have
       guessed, this component will render an HTML Label element. To create a new label component, we
       create a new bean with parent="Uif-Label":</para>
-    <programlisting>&lt;bean parent="Uif-Label" ... &gt;</programlisting>
+    <programlisting linenumbering = "numbered">&lt;bean parent="Uif-Label" ... &gt;</programlisting>
     <para>The label component is one of the simplest to use, since there are few properties which it
       accepts. However, there is one required property – the label text! This is the actual text
       that will appear on the screen as the label. To specify this, we can use the labelText
       property:</para>
-    <programlisting>&lt;bean parent="Uif-Label" p:labelText="Book Title"/&gt;</programlisting>
+    <programlisting linenumbering = "numbered">&lt;bean parent="Uif-Label" p:labelText="Book Title"/&gt;</programlisting>
     <para>In most cases, this is all we need to do! The resulting HTML will look like the
             following:</para>
-    <programlisting>&lt;label id=&quot;66_label"&gt;Field Label&lt;/label&gt;</programlisting>
+    <programlisting linenumbering = "numbered">&lt;label id=&quot;66_label"&gt;Field Label&lt;/label&gt;</programlisting>
     <para>Wait, where did the id come from? Recall that all components extend ComponentBase which
       provides several properties for us, including the id property. If not specified, the framework
       will generate an id for us automatically and use it for the element id attribute. We can
       specify a different id in either of the following two ways:</para>
-    <programlisting>&lt;bean id="mylabel" parent="Uif-Label" p:labelText="Book Title"/&gt;</programlisting>
-    <programlisting>&lt;bean parent="Uif-Label" p:id="mylabel" p:labelText="Book Title"/&gt;</programlisting>
+    <programlisting linenumbering = "numbered">&lt;bean id="mylabel" parent="Uif-Label" p:labelText="Book Title"/&gt;</programlisting>
+    <programlisting linenumbering = "numbered">&lt;bean parent="Uif-Label" p:id="mylabel" p:labelText="Book Title"/&gt;</programlisting>
     <para>In addition to the id property provided by ComponentBase, there are many others we
             might want to use. Some that might be useful for the label component include title,
             style, and styleClasses.</para>
@@ -62,26 +62,26 @@
             specify the for attribute. The value for this attribute is the id of the element for
             which the label applies. On the label component, we can configure this value using the
             labelForComponentId property:</para>
-    <programlisting>&lt;bean parent="Uif-Label" p:labelText="Book Title" p:labelForComponentId="bookTitle"/&gt;</programlisting>
+    <programlisting linenumbering = "numbered">&lt;bean parent="Uif-Label" p:labelText="Book Title" p:labelForComponentId="bookTitle"/&gt;</programlisting>
     <para>However, this is usually not necessary. Instead of creating the label component directly,
       we can let the field component create one for us. The field component provides some assistance
       to us for configuring the label and associating it with a component. To understand this, first
       let's look at the generic FieldBase class from which all fields extend:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 public class FieldBase extends ComponentBase implements Field {
     private Label fieldLabel;
 } </programlisting>
     <para>We see the field base encapsulates a label component. Thus when creating a field
             component we can set the label component properties using the spring nested syntax (dot
             notation)</para>
-    <programlisting>&lt;bean parent="Uif-DataField" p:fieldLabel.labelText="My Data Field" ... &gt;</programlisting>
+    <programlisting linenumbering = "numbered">&lt;bean parent="Uif-DataField" p:fieldLabel.labelText="My Data Field" ... &gt;</programlisting>
     <para>Since the label is bundled within the field which is a wrapper for another component,
             the labelForComponentId property will be automatically set (to the id of that wrapped
             component).</para>
     <para>The Field component also provides a more convenient way of setting the label text. Instead
       of using the nested notation of 'fieldLabel.labelText', we can simply set the 'label'
       property:</para>
-    <programlisting>&lt;bean parent="Uif-DataField" p:label="My Data Field" ... &gt;</programlisting>
+    <programlisting linenumbering = "numbered">&lt;bean parent="Uif-DataField" p:label="My Data Field" ... &gt;</programlisting>
     <para>The given value will then be set on the label property of the nested label
             component.</para>
     <section>
@@ -95,10 +95,10 @@ public class FieldBase extends ComponentBase implements Field {
         be rendered with the label to indicate that the element associated with the label (generally
         a control) is required. By default, the message text is configured to be '*' but can be
         changed on a global or case by case basis:</para>
-      <programlisting>&lt;bean parent="Uif-DataField" p:label="My Data Field" p:label.requiredMessage="required"/&gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-DataField" p:label="My Data Field" p:label.requiredMessage="required"/&gt;</programlisting>
       <para>Like all components, the required message will be displayed if its render property
                 is true. Therefore we can set the required message to not display as follows:</para>
-      <programlisting>&lt;bean parent="Uif-DataField" p:label="My Data Field" p:label.requiredMessage.render="false"/&gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-DataField" p:label="My Data Field" p:label.requiredMessage.render="false"/&gt;</programlisting>
       <para>However, we typically want to display the required message when the component the label
         is associated with is required. This is again where our Field component provides value. The
         field will look at the required property (on all components) of the wrapped component, and,
@@ -129,9 +129,9 @@ public class FieldBase extends ComponentBase implements Field {
         requiredMessagePlacement of the label component, this property is of type Position. It
         indicates where the label should be placed in relation to the other field content (the
         wrapped component(s)). The LEFT, TOP, or RIGHT position may be specified:</para>
-      <programlisting>&lt;bean parent="Uif-DataField" p:label="My Data Field" p:labelPlacement="LEFT"/&gt;</programlisting>
-      <programlisting>&lt;bean parent="Uif-DataField" p:label="My Data Field" p:labelPlacement="TOP"/&gt;</programlisting>
-      <programlisting>&lt;bean parent="Uif-DataField" p:label="My Data Field" p:labelPlacement="RIGHT"/&gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-DataField" p:label="My Data Field" p:labelPlacement="LEFT"/&gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-DataField" p:label="My Data Field" p:labelPlacement="TOP"/&gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-DataField" p:label="My Data Field" p:labelPlacement="RIGHT"/&gt;</programlisting>
       <para>These three configurations are shown in <xref linkend="figplacement"/>. </para>
        <figure xml:id="figplacement">
           <title>labelPlacement Options</title>
@@ -145,7 +145,7 @@ public class FieldBase extends ComponentBase implements Field {
         configure an alternate 'short' label. When necessary, the short label can be pulled instead
         of the standard 'long' label. For example, the table layout manager in KRAD will use the
         short label for the table headers.</para>
-      <programlisting>&lt;bean parent="Uif-DataField" p:label="My Data Field" p:shortLabel="My Fld"/&gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-DataField" p:label="My Data Field" p:shortLabel="My Fld"/&gt;</programlisting>
     </section>
     <section>
       <title>Base Beans</title>
@@ -162,7 +162,7 @@ public class FieldBase extends ComponentBase implements Field {
                 and required message placement to left</para>
       <para>Similar beans exist for the Uif-InputField. To use one of the label
                 configurations, we simply change our parent bean:</para>
-      <programlisting>&lt;bean parent="Uif-DataField-LabelTop" p:labelText="My Data Field" /&gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-DataField-LabelTop" p:labelText="My Data Field" /&gt;</programlisting>
     </section>
     <section role="NotInToc">
       <title>Recap</title>
@@ -228,11 +228,11 @@ public class FieldBase extends ComponentBase implements Field {
         say read-only, this means the value is displayed as static text on the page and the user
         cannot change its value. To create a data field we specify a new bean with
         parent="Uif-DataField":</para>
-      <programlisting>&lt;bean parent="Uif-DataField" ... &gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-DataField" ... &gt;</programlisting>
       <para>When configuring a data field for our view, we must associate it with a property
                 on the model object. This is accomplished using the propertyName property. For
                 example, suppose we had the following model object:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 public class BookForm {
   private String bookId;
   private String bookTitle;
@@ -255,7 +255,7 @@ public class BookForm {
       </figure>
       <para>The given property name can be a nested path. For an example of this, suppose now
                 our model is the following:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 public class BookForm {
   private Book book;
   
@@ -279,15 +279,15 @@ public class Book {
         content element. We will learn all about the various types of controls later on in this
         chapter. </para>
       <para>To create a new input field, we specify a new bean with parent="Uif-InputField":</para>
-      <programlisting>&lt;bean parent="Uif-InputField" ... &gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-InputField" ... &gt;</programlisting>
       <para>Now since input field is also a data field, we must specify the property it is
                 associated with using the propertyName property:</para>
-      <programlisting>&lt;bean parent="Uif-InputField" p:propertyName="bookId"/&gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-InputField" p:propertyName="bookId"/&gt;</programlisting>
       <para>Furthermore, since we have an input field and want to allow the user to change the
                 value, we need to configure a control component to use. We set the control component
                 for the input field using the <emphasis role="keyword">control</emphasis>
                 property:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-InputField" p:propertyName="bookId" p:label="Book"&gt;
     &lt;property name="control"&gt;
     &lt;bean parent="Uif-TextControl"/&gt;
@@ -309,7 +309,7 @@ public class Book {
           </mediaobject></figure>
       </para>
       <para>The rendered HTML for our input field will be the following:</para>
-      <programlisting>&lt;input id=&quot;u66&quot; name=&quot;bookId&quot; class=&quot;uif-control uif-textControl valid&quot; tabindex=&quot;0&quot; type=&quot;text&quot; value=&quot;&quot; size=&quot;30&quot; aria-invalid=&quot;false&quot;&gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;input id=&quot;u66&quot; name=&quot;bookId&quot; class=&quot;uif-control uif-textControl valid&quot; tabindex=&quot;0&quot; type=&quot;text&quot; value=&quot;&quot; size=&quot;30&quot; aria-invalid=&quot;false&quot;&gt;</programlisting>
       <para>Where did all these attributes come from? Since we didn't assign an id, the framework
         generated one for us and outputted as the element id. Next, the propertyName given for the
         input field was used as the name attribute on the tag. This is important for binding the
@@ -342,7 +342,7 @@ public class Book {
         default value. The first is the property 'defaultValue', which takes the actual value to
         use. For example, suppose we want to set a default value of '2012' for the bookYear
         property. This would be done as follows:</para>
-      <programlisting>&lt;bean parent="Uif-DataField" p:propertyName="bookYear" p:defaultValue="2012"/&gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-DataField" p:propertyName="bookYear" p:defaultValue="2012"/&gt;</programlisting>
       <para>This is equivalent to code:</para>
       <programlisting>bookForm.setBookYear("2012");</programlisting>
       <para>The default value given must be convertible to the property type without a custom
@@ -360,14 +360,14 @@ public class Book {
                 the Spring Expression Language (EL). KRAD allows you to use expressions for most
                 component properties, including the defaultValue. There are many things you can do
                 with EL, but to give you a taste here are a couple:</para>
-      <programlisting>&lt;bean parent="Uif-DataField" p:propertyName="bookYear" p:defaultValue="@{2010 + 2}"/&gt;</programlisting>
-      <programlisting>&lt;bean parent="Uif-DataField" p:propertyName="bookYear" p:defaultValue="@{bookId &lt; 1000 ? 2011 : 2012}"/&gt;</programlisting>
-      <programlisting>&lt;bean parent="Uif-DataField" p:propertyName="bookTitle" p:defaultValue="New Book for @{bookYear}"/&gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-DataField" p:propertyName="bookYear" p:defaultValue="@{2010 + 2}"/&gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-DataField" p:propertyName="bookYear" p:defaultValue="@{bookId &lt; 1000 ? 2011 : 2012}"/&gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-DataField" p:propertyName="bookTitle" p:defaultValue="New Book for @{bookYear}"/&gt;</programlisting>
       <para>The second way to configure default values is by setting the 'defaultValues' property
         (notice the &apos;s&apos; on the end). This property provides the ability to set multiple
         default values. For example, if you wanted to default items with values of either 2 or 3 you
         could add the following.</para>
-      <programlisting>&lt;property name="defaultValues" &gt;
+      <programlisting linenumbering = "numbered">&lt;property name="defaultValues" &gt;
         &lt;list&gt;
         &lt;value&gt;2&lt;/value&gt;
         &lt;value&gt;3&lt;/value&gt;
@@ -385,7 +385,7 @@ public class Book {
                 function.</para>
       <para>Let's create a default value finder class that calls a service to retrieve the value.
         Our finder class would be setup like:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 package edu.myedu.sample;
 public class BookCopyrightYearValueFinder implements ValueFinder {
   public String getValue() {
@@ -399,7 +399,7 @@ public class BookCopyrightYearValueFinder implements ValueFinder {
             </programlisting>
       <para>We would then configure the data field to use our value finder class like
                 this:</para>
-      <programlisting>&lt;bean parent="Uif-DataField" p:propertyName="bookYear" 
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-DataField" p:propertyName="bookYear" 
      p:defaultValueFinderClass="edu.myedu.sample.BookCopyrightYearValueFinder"/&gt;</programlisting>
       <para>One additional note that should be made regarding default values is for collection
                 group fields. Data or Input fields declared in these groups behave differently from
@@ -421,12 +421,12 @@ public class BookCopyrightYearValueFinder implements ValueFinder {
         that should be displayed. This is done using the readOnlyDisplayReplacement and
         readOnlyDisplaySuffix properties respectively. For example, instead of displaying the value
         for the bookId property, we want to display the string 'Id Val':</para>
-      <programlisting>&lt;bean parent="Uif-InputField" p:propertyName="bookId" p:readOnlyDisplayReplacement="Id Val"/&gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-InputField" p:propertyName="bookId" p:readOnlyDisplayReplacement="Id Val"/&gt;</programlisting>
       <para>This would result in the text 'Id Val' being displayed (along with the field
         label).</para>
       <para>Now, if we decide we just want to append the 'Id Val' string the actual value of the
         bookId property, our configuration would then be:</para>
-      <programlisting>&lt;bean parent="Uif-InputField" p:propertyName="bookId" p:readOnlyDisplaySuffix="Id Val"/&gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-InputField" p:propertyName="bookId" p:readOnlyDisplaySuffix="Id Val"/&gt;</programlisting>
       <para>Assuming the bookId is '3', this would result in the text '3 *-* Id Val' being displayed
         as shown below.</para>
       <figure>
@@ -446,7 +446,7 @@ public class BookCopyrightYearValueFinder implements ValueFinder {
       <para>This has limited benefits by itself, but as mentioned earlier, KRAD allows us to
                 use expressions to set a value. With EL we can display one or more other property
                 values, perform operations and functions, and mix in static text! </para>
-      <programlisting>&lt;bean parent="Uif-InputField" p:propertyName="bookId" p:readOnlyDisplaySuffix="with title @{bookTitle}"/&gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-InputField" p:propertyName="bookId" p:readOnlyDisplaySuffix="with title @{bookTitle}"/&gt;</programlisting>
       <para>Again assuming the bookId is '3' and bookTitle is 'Dogs and Cats', this would result in
         the text '3 *-* with title Dogs and Cats' being displayed.</para>
       <para>Often, there is a need to display another property value as the alternate or additional
@@ -455,10 +455,10 @@ public class BookCopyrightYearValueFinder implements ValueFinder {
         addition to it). For these cases, you can simply configure the
         readOnlyDisplayReplacementPropertyName or readOnlyDisplaySuffixPropertyName properties with
         the name of the property whose value should be used:</para>
-      <programlisting>&lt;bean parent="Uif-InputField" p:propertyName="bookId"&#160;p:readOnlyDisplayReplacementPropertyName="bookTitle"/&gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-InputField" p:propertyName="bookId"&#160;p:readOnlyDisplayReplacementPropertyName="bookTitle"/&gt;</programlisting>
       <para>Assuming bookTitle is 'Dogs and Cats', this would result in the text 'Dogs and
         Cats'.</para>
-      <programlisting>&lt;bean parent="Uif-InputField" p:propertyName="bookId"&#160;p:readOnlyDisplaySuffixPropertyName ="bookTitle"/&gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-InputField" p:propertyName="bookId"&#160;p:readOnlyDisplaySuffixPropertyName ="bookTitle"/&gt;</programlisting>
       <para>Assuming bookId is '3' and bookTitle is 'Dogs and Cats', this would result in the text
         '3 *-* Dogs and Cats'.</para>
       <tip>
@@ -494,7 +494,7 @@ public class BookCopyrightYearValueFinder implements ValueFinder {
           </listitem>
         </itemizedlist></para>
       <para>The following would put a dash with spaces between each item of the
-        list:<programlisting>&lt;bean parent="Uif-InputField-LabelTop" p:propertyName="field120" p:label="Alternate Delimiter"
+        list:<programlisting linenumbering = "numbered">&lt;bean parent="Uif-InputField-LabelTop" p:propertyName="field120" p:label="Alternate Delimiter"
               p:instructionalText="CheckboxGroupControl using an optionsFinder" p:width="auto"
               p:readOnlyListDisplayType="DELIMITED" p:readOnlyListDelimiter=" - ">
 ...</programlisting>The
@@ -524,7 +524,7 @@ public class BookCopyrightYearValueFinder implements ValueFinder {
         This will cause the value of the widget to become read only while the widget controls are
         fully functional.</para>
       <para>The following would put a dash with spaces between each item of the
-        list:<programlisting>&lt;bean parent="Uif-InputField" p:propertyName="author" p:widgetInputOnly="true">
+        list:<programlisting linenumbering = "numbered">&lt;bean parent="Uif-InputField" p:propertyName="author" p:widgetInputOnly="true">
 ...</programlisting></para>
     </section>
     <section role="NotInToc">
@@ -619,7 +619,7 @@ public class BookCopyrightYearValueFinder implements ValueFinder {
       case of the input field, an input HTML element will be generated within the input field
       template. However, this is not generated directly but instead uses a helper tag provided by
       the Spring framework:</para>
-    <programlisting>&lt;@spring.input id=&quot;${control.id}&quot; path=&quot;${field.bindingInfo.bindingPath}&quot; ... &gt;</programlisting>
+    <programlisting linenumbering = "numbered">&lt;@spring.input id=&quot;${control.id}&quot; path=&quot;${field.bindingInfo.bindingPath}&quot; ... &gt;</programlisting>
     <para>Notice the path attribute (disregard the value for now). This is an attribute of the
       Spring input macro that specifies the path to the property that this input should be
       associated with. Spring will do two things with this information. First, it will retrieve the
@@ -628,14 +628,14 @@ public class BookCopyrightYearValueFinder implements ValueFinder {
       the id attribute just gets passed through to the id attribute for the HTML tag). Assuming we
       had a property path of 'bookId' with value '3', the resulting HTML input would be as
       follows:</para>
-    <programlisting>&lt;input id="u3" name="bookId" value="3" ... &gt;</programlisting>
+    <programlisting linenumbering = "numbered">&lt;input id="u3" name="bookId" value="3" ... &gt;</programlisting>
     <para>The value of '3' will then appear inside the rendered text box. All other controls types
       work in a similar manner.</para>
     <para>In the case of a data field, or when the input field is read only, the Spring bind macro
       is used. This tells Spring to pull the value for the given property and stick the value into a
       FreeMarker variable (page or request scope). We can then write out that value to a stream
       which results in the static text being displayed.</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;@spring.bind path=&quot;${field.bindingInfo.bindingPath}&quot;&gt;${status.value}&lt;/@spring.bind&gt;${status.value}    
         </programlisting>
     <para>Now let's look at the incoming direction. This is data contained in the HTML form (with
@@ -695,7 +695,7 @@ public class BookCopyrightYearValueFinder implements ValueFinder {
                 The easiest way to do this is to extend the Spring provided class 
                 java.beans.PropertyEditorSupport, and then override the getAsText() and setAsText(String 
                 text) methods.</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 package edu.sampleu.demo.kitchensink;
 public class UITestPropertyEditor extends PropertyEditorSupport implements Serializable {
     private static final long serialVersionUID = -4113846709722954737L;
@@ -742,9 +742,9 @@ public class UITestPropertyEditor extends PropertyEditorSupport implements Seria
       <para>Once we have the property editor class created, we can configure it to be used
                 with our data field by specifying the full class name in the propertyEditor
                 property:</para>
-      <programlisting>&lt;bean parent="Uif-DataField" p:propertyName="bookId"&#160;p:propertyEditor="edu.sampleu.demo.kitchensink.UITestPropertyEditor"/&gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-DataField" p:propertyName="bookId"&#160;p:propertyEditor="edu.sampleu.demo.kitchensink.UITestPropertyEditor"/&gt;</programlisting>
       <para>Likewise the property editor can be specified for an input field:</para>
-      <programlisting>&lt;bean parent="Uif-InputField" p:propertyName="bookId"&#160;p:propertyEditor="edu.sampleu.demo.kitchensink.UITestPropertyEditor"/&gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-InputField" p:propertyName="bookId"&#160;p:propertyEditor="edu.sampleu.demo.kitchensink.UITestPropertyEditor"/&gt;</programlisting>
     </section>
     <section>
       <title>Complex Paths</title>
@@ -752,7 +752,7 @@ public class UITestPropertyEditor extends PropertyEditorSupport implements Seria
         object, or one level down. Now let's look at more complex paths for binding that include
         many levels of nesting and collection properties. </para>
       <para>Let's assume we have the following objects:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 public class TestForm {
   private String field1;
   private Test1Object test1Object;
@@ -786,13 +786,13 @@ public class Test2Object {
       <para>We can continue forming paths for objects that are nested at deeper levels by adding
         additional dots to the path. In this way, we can form the path and set the propertyName
         value for any model property:</para>
-      <programlisting>&lt;bean parent="Uif-DataField"
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-DataField"
         p:propertyName="test1Object.test2Object.t2Field"&gt;</programlisting>
       <para>Now suppose Test2Object had a large set of fields we wanted to display. We could
         configure all of them just as in the previous example:</para>
-      <programlisting>&lt;bean parent="Uif-DataField" p:propertyName="test1Object.test2Object.t2Field1"&gt;</programlisting>
-      <programlisting>&lt;bean parent="Uif-DataField" p:propertyName="test1Object.test2Object.t2Field2"&gt;</programlisting>
-      <programlisting>&lt;bean parent="Uif-DataField" p:propertyName="test1Object.test2Object.t2Field3"&gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-DataField" p:propertyName="test1Object.test2Object.t2Field1"&gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-DataField" p:propertyName="test1Object.test2Object.t2Field2"&gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-DataField" p:propertyName="test1Object.test2Object.t2Field3"&gt;</programlisting>
       <para>This is, however, very tedious and repetitive. Luckily, the UIF provides a class
                 named <emphasis role="keyword">BindingInfo</emphasis> for which a property exists on a data field.
         This class separates the path into three parts. The first is called the binding object path.
@@ -822,7 +822,7 @@ public class Test2Object {
                 or both of these properties are configured on the group, the value will be taken and
                 set on corresponding binding info property for each group field.</para>
       <para>For example:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-VerticalBoxGroup" p:fieldBindingObjectPath="test1Object.test2Object"&gt;
     &lt;property name="items"&gt;
         &lt;list&gt;
@@ -847,12 +847,12 @@ public class Test2Object {
         us by setting "document.newMaintainableObject.dataObject" as the defaultBindingObjectPath.
         Therefore, when specifying the view fields, we just need to specify the property name
         relative to the data object: </para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;number&quot;/&gt;
 &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;name&quot;/&gt;
 ...</programlisting>
       <para>Which would result in binding paths:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 'document.newMaintainableObject.dataObect.number' 
 'document.newMaintainableObject.dataObect.name'
             </programlisting>
@@ -871,7 +871,7 @@ public class Test2Object {
         each line. Therefore, when configuring a collection group, we must point it to the property
         that holds the collection. This is done exactly the same as for data fields, using the
         propertyName property and the bindingInfo property. For example:</para>
-      <programlisting>&lt;bean parent="Uif-TableCollectionGroup" p:propertyName="mycollection" ... &gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-TableCollectionGroup" p:propertyName="mycollection" ... &gt;</programlisting>
       <para>One thing to note is how the binding path for the fields within the collection group is
         formed. These fields will automatically receive a binding prefix that is the path for the
         collection line. This path includes the collection path plus the line index:
@@ -884,7 +884,7 @@ public class Test2Object {
         use the special bracket notation. When this property is true, the binding path will be
         formed using the object path, binding prefix, then the brackets with the binding name in
         quotes.</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-DataField" p:bindingInfo.bindingObjectPath="test1Object.test2Object" p:bindingInfo.bindByNamePrefix="t2Map" p:bindingInfo.bindToMap="true" p:propertyName="key1"&gt;</programlisting>
       <para>This would result in the following binding path:</para>
       <para>"test1Object.test2Object.t2Map['key1']"</para>
@@ -892,7 +892,7 @@ public class Test2Object {
         binding object path (either from the view or a group). The binding prefix is still added, if
         specified.</para>
       <para>For example:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-VerticalBoxGroup" p:fieldBindingObjectPath="test1Object.test2Object"&gt;
     &lt;property name="items"&gt;
         &lt;list&gt;
@@ -1031,7 +1031,7 @@ public class Test2Object {
             attribute definition.</para>
     <para>For example, suppose we have the following data object entry and attribute
             definition:</para>
-    <programlisting>            
+    <programlisting linenumbering = "numbered">            
 &lt;bean id=&quot;TravelAccount&quot; parent=&quot;DataObjectEntry&quot;&gt;
     &lt;property name=&quot;dataObjectClass&quot; value=&quot;org.kuali.rice.krad.demo.travel.account.TravelAccount&quot;/&gt;
         &lt;property name=&quot;attributes&quot;&gt;
@@ -1058,7 +1058,7 @@ public class Test2Object {
 </programlisting>
     <para>And we have the following input field which the previous attribute definition is
             backing:</para>
-    <programlisting>&lt;bean parent="Uif-InputField" p:propertyName="number" p:label="New Travel Account Number" 
+    <programlisting linenumbering = "numbered">&lt;bean parent="Uif-InputField" p:propertyName="number" p:label="New Travel Account Number" 
  p:forceUppercase="true"/&gt;</programlisting>
     <para>During the view lifecycle initialize phase, the properties from the attribute definition
       are picked up and set onto the input field (if not set). Note that the names do not always
@@ -1095,11 +1095,11 @@ public class Test2Object {
       the full class name of a data object. The dictionary attribute name is then the value for the
       name attribute of the definition we want to pick up. For our previous example this
       configuration would be as follows:</para>
-    <programlisting>&lt;bean parent="Uif-InputField" p:propertyName="number" 
+    <programlisting linenumbering = "numbered">&lt;bean parent="Uif-InputField" p:propertyName="number" 
  p:dictionaryObjectEntry="edu.sampleu.travel.bo.TravelAccount" p:dictionaryAttributeName="number"/&gt; </programlisting>
     <para>We can also leave off the dictionaryAttributeName, in which case the framework will
             default it to the given propertyName:</para>
-    <programlisting>&lt;bean parent="Uif-InputField" p:propertyName="number" 
+    <programlisting linenumbering = "numbered">&lt;bean parent="Uif-InputField" p:propertyName="number" 
  p:dictionaryObjectEntry="edu.sampleu.travel.bo.TravelAccount"/&gt;</programlisting>
     <para>If the dictionary properties are not set, the UIF will attempt to find an attribute
             definition with the binding path. This works as follows:</para>
@@ -1116,7 +1116,7 @@ public class Test2Object {
       </listitem>
     </orderedlist>
     <para>As an example let's take the following model:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 package edu.myedu.sample;
 public class TravelForm {
   private TravelAccount travelAccount;
@@ -1128,7 +1128,7 @@ public class TravelAccount {
 }
         </programlisting>
     <para>Now suppose we have the following input field:</para>
-    <programlisting>&lt;bean parent="Uif-InputField" p:propertyName="travelAccount.number"/&gt;</programlisting>
+    <programlisting linenumbering = "numbered">&lt;bean parent="Uif-InputField" p:propertyName="travelAccount.number"/&gt;</programlisting>
     <para>The UIF will first ask the data dictionary if it has an entry for
       'edu.myedu.sample.TravelForm' and attribute 'travelAccount.number', if so that attribute
       definition will be used to populate the input field. If not, it will then get the property
@@ -1141,7 +1141,7 @@ public class TravelAccount {
             assumption is these are properties on the data object for the collection lines, the
             framework begins by asking for entries for that data object class and the property name
             of the field.</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-TableCollectionGroup" p:propertyName="testObject1.mycollection" p:collectionObjectClass="edu.myedu.sample.Test3Object"&gt;
     &lt;property name="items"&gt;
         &lt;list&gt;
@@ -1235,7 +1235,7 @@ public class TravelAccount {
       <para>To create a new checkbox control, we create a new bean with parent of
         'Uif-CheckboxControl'. Controls cannot be set on their own; they must be defined within an
         input field using the control property:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-InputField" p:propertyName="acceptIndicator" p:label="Accept?"&gt;
     &lt;property name="control"&gt;
         &lt;bean parent="Uif-CheckboxControl"/&gt;
@@ -1265,7 +1265,7 @@ public class TravelAccount {
         or simply store the file on the server (for example a note attachment).</para>
       <para>To specify that a file control should be used, a bean with parent of 'Uif-FileControl'
         should be given:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-InputField" p:propertyName="fileUpload" p:label="File Upload"&gt;
     &lt;property name="control"&gt;
         &lt;bean parent="Uif-FileControl"/&gt;
@@ -1307,7 +1307,7 @@ public class TravelAccount {
         data for scripting purposes.</para>
       <para>To specify a hidden control should be used, a bean with parent of 'Uif-HiddenControl'
         should be given:</para>
-      <programlisting>    
+      <programlisting linenumbering = "numbered">    
 &lt;bean parent="Uif-InputField" p:propertyName="hiddenField"&gt;
     &lt;property name="control"&gt;
         &lt;bean parent="Uif-HiddenControl"/&gt;
@@ -1344,7 +1344,7 @@ public class TravelAccount {
         single-line box that allows the user to type a masked value.</para>
       <para>To specify that a password control should be used, a bean with parent of 'Uif-PasswordControl'
         should be given:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-InputField" p:propertyName="password" p:label="Password"&gt;
     &lt;property name="control"&gt;
         &lt;bean parent="Uif-PasswordControl"/&gt;
@@ -1368,7 +1368,7 @@ public class TravelAccount {
         single-line box that allows the user to type the value.</para>
       <para>To specify that a text control should be used, a bean with parent of 'Uif-TextControl'
         should be given:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-InputField" p:propertyName="title" p:label="Title"&gt;
     &lt;property name="control"&gt;
         &lt;bean parent="Uif-TextControl"/&gt;
@@ -1416,7 +1416,7 @@ public class TravelAccount {
         data picker added and an additional style class of 'uif-dateControl'.</para>
       <para>Below are various examples of using these beans and setting other
                 properties:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-InputField" p:propertyName="field" p:label="Field Label"&gt;
     &lt;property name="control"&gt;
         &lt;bean parent="Uif-MediumControl" p:watermarkText="It's watermarked"/&gt;
@@ -1431,7 +1431,7 @@ public class TravelAccount {
           </imageobject>
         </mediaobject>
       </figure>
-      <programlisting>            
+      <programlisting linenumbering = "numbered">            
 &lt;bean parent="Uif-InputField" p:propertyName="field" p:label="Date 1"&gt;
     &lt;property name="control"&gt;
         &lt;bean parent="Uif-DateControl"/&gt;
@@ -1446,7 +1446,7 @@ public class TravelAccount {
           </imageobject>
         </mediaobject>
       </figure>
-      <programlisting>            
+      <programlisting linenumbering = "numbered">            
 &lt;bean parent="Uif-InputField" p:propertyName="field" p:label="Field Label"&gt;
     &lt;property name="control"&gt;
         &lt;bean parent="Uif-TextControl" p:textExpand="true"/&gt;
@@ -1469,7 +1469,7 @@ public class TravelAccount {
                 of data such as a description.</para>
       <para>To specify a text area control should be used, a bean with parent of
         'Uif-TextAreaControl' should be given:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-InputField" p:propertyName="title" p:label="Title"&gt;
     &lt;property name="control"&gt;
         &lt;bean parent="Uif-TextAreaControl"/&gt;
@@ -1523,7 +1523,7 @@ public class TravelAccount {
                 covered in more detail in Chapter 8.</para>
       <para>To specify a spinner control should be used, a bean with parent of 'Uif-SpinnerControl'
         should be given:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-InputField" p:propertyName="count" p:label="Spinner Control"&gt;
     &lt;property name="control"&gt;
         &lt;bean parent="Uif-SpinnerControl"/&gt;
@@ -1600,7 +1600,7 @@ public class TravelAccount {
           value objects within XML, the bean with name 'Uif-KeyLabelPair' is provided (whose class
           is ConcreateKeyValue). The following demonstrates creating the above list in Spring
           XML:</para>
-        <programlisting>
+        <programlisting linenumbering = "numbered">
 &lt;property name="options"&gt;
     &lt;list&gt;
         &lt;bean parent="Uif-KeyLabelPair" p:key="AL" p:value="Alabama"/&gt;
@@ -1630,7 +1630,7 @@ public class TravelAccount {
                     primary key property and a description property) as the key and value. Here is
                     an example from the Rice project that is building up the options for
                     state:</para>
-        <programlisting>
+        <programlisting linenumbering = "numbered">
 public List&lt;KeyValue&gt; getKeyValues() {
     List&lt;KeyValue&gt; labels = new ArrayList&lt;KeyValue&gt;();
     List&lt;State&gt; codes = 
@@ -1654,10 +1654,10 @@ for (State state : codes) {
           created that contains properties which can be configured. For example, suppose our state
           finder had an option indicating whether inactive state codes should be included. First, we
           could setup a base bean as follows:</para>
-        <programlisting>&lt;bean id="StateOptionsFinder" class="org.kuali.rice.location.framework.state.StateValuesFinder"/&gt;</programlisting>
+        <programlisting linenumbering = "numbered">&lt;bean id="StateOptionsFinder" class="org.kuali.rice.location.framework.state.StateValuesFinder"/&gt;</programlisting>
         <para>Next, we can specify that the state finder should be used for an input field
                     and configure the include inactive option:</para>
-        <programlisting>
+        <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-InputField" p:propertyName="stateCode"&gt;
     &lt;property name="optionsFinder"&gt;
         &lt;bean parent="StateOptionsFinder" p:includeInactive="true"/&gt;
@@ -1666,7 +1666,7 @@ for (State state : codes) {
                 </programlisting>
         <para>If our finder class does not have any options, or we just want to use the
                     default, we can specify the class using the optionsFinderClass property:</para>
-        <programlisting>&lt;bean parent="Uif-InputField" p:propertyName="stateCode" 
+        <programlisting linenumbering = "numbered">&lt;bean parent="Uif-InputField" p:propertyName="stateCode" 
       p:optionsFinderClass="org.kuali.rice.location.framework.state.StateValuesFinder"/&gt; </programlisting>
 <!-- TODO: Add Content Here
                 <note>
@@ -1701,7 +1701,7 @@ for (State state : codes) {
           org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase is provided for creating new UIF
           key value finders. The following demonstrates implementing conditional logic for building
           the options:</para>
-        <programlisting>
+        <programlisting linenumbering = "numbered">
 public class FoodKeyValuesFinder extends UifKeyValuesFinderBase { 
 
 @Override
@@ -1734,7 +1734,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
         <para>In this example, foodGroup, which is on our test form, holds the value for the
           selected food group. This key value finder is then associated with the field that will
           display the available foods for that group:</para>
-        <programlisting>
+        <programlisting linenumbering = "numbered">
 &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;food&quot; p:label=&quot;Foods" 
      p:optionsFinderClass=&quot;edu.sampleu.travel.options.FoodKeyValuesFinder&quot; p:refreshWhenChanged=&quot;field88&quot;&gt;
     &lt;property name="control"&gt;
@@ -1781,7 +1781,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
         <para>To specify a checkbox control should be used, a bean with parent of
           'Uif-HorizontalCheckboxesControl' or 'Uif-VerticalCheckboxesControl' should be
           given:</para>
-        <programlisting>
+        <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-InputField" p:propertyName="selectedOpts" p:label="Checkboxes 1"&gt;
     &lt;property name="control"&gt;
         &lt;bean parent="Uif-VerticalCheckboxesControl"&gt;
@@ -1823,7 +1823,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
           delimiters.</para>
         <para>To specify a radio control should be used, a bean with parent of
           'Uif-HorizontalRadioControl' or 'Uif-VerticalRadioControl' should be given:</para>
-        <programlisting>
+        <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-InputField" p:propertyName="selectedOpt" p:label="Radio 1"&gt;
     &lt;property name="control"&gt;
         &lt;bean parent="Uif-VerticalRadioControl"&gt;
@@ -1849,7 +1849,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
                     configured to only allow one selection, or multiple.</para>
         <para>To specify a select control should be used that allows only one value to be selected,
           a bean with parent of 'Uif-DropdownControl' should be used:</para>
-        <programlisting>
+        <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-InputField" p:propertyName="selectedOpt" p:label="Select Control"&gt;
     &lt;property name="control"&gt;
         &lt;bean parent="Uif-DropdownControl"&gt;
@@ -1876,7 +1876,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
         </figure>
         <para>To specify a select control should be used that allows one or more values to be
           selected, a bean with parent of 'Uif-MultiSelectControl' should be used: </para>
-        <programlisting>
+        <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-InputField" p:propertyName="selectedOpts" p:label="Multi Select Control"&gt;
     &lt;property name="control"&gt;
         &lt;bean parent="Uif-MultiSelectControl"&gt;
@@ -1918,7 +1918,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
             configuration (minimal set-up of navigation information for Views and controller
             mappings).  </para>
           <para>The following configuration demonstrates this
-            usage:<programlisting>        &lt;bean parent="Uif-InputField" p:label='Dropdown Navigation' p:instructionalText="Navigate on dropdown selection"
+            usage:<programlisting linenumbering = "numbered">        &lt;bean parent="Uif-InputField" p:label='Dropdown Navigation' p:instructionalText="Navigate on dropdown selection"
               p:width="auto">
           &lt;property name="control">
             &lt;bean parent="Uif-DropdownControl">
@@ -1952,7 +1952,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
           display in a read-only View for example).</para>
         <para>The following code displays an OptionsList that only shows the values which match in
           the property defined by
-          propertyName:<programlisting>      &lt;bean parent="Uif-InputField" p:label='Option List'
+          propertyName:<programlisting linenumbering = "numbered">      &lt;bean parent="Uif-InputField" p:label='Option List'
               p:propertyName="optionListSelection">
           &lt;property name="control">
             &lt;bean parent="Uif-OptionListControl">
@@ -1991,7 +1991,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
             siblingBreadcrumbComponent property of a BreadcrumbItem.</para>
           <para>The following configuration will output a list of links (note that no propertyName
             is being used here nor the showOnlySelected
-            property):<programlisting>&lt;bean parent="Uif-InputField" p:label='Nav Option List'>
+            property):<programlisting linenumbering = "numbered">&lt;bean parent="Uif-InputField" p:label='Nav Option List'>
           &lt;property name="control">
             &lt;bean parent="Uif-OptionListControl">
               &lt;property name="options">
@@ -2034,7 +2034,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
         assumed to hold the group name. As usual this is configured using the propertyName property
         on input field. In order for the control to work properly, we must then specify the
         properties that hold the group id and namespace:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;groupNamespaceCode&quot; p:label=&quot;Namespace Code&quot;/&gt;
 &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;groupName&quot; p:label=&quot;Name&quot;&gt;
     &lt;property name=&quot;control&quot;&gt;
@@ -2060,7 +2060,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
         assumed to hold the principal name. As usual this is configured using the propertyName
         property on input field. In order for the control to work properly, we must then specify the
         properties that hold the principal id and the person name:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;principalName&quot; p:label=&quot;Person Name&quot; p:required=&quot;true&quot;&gt;
     &lt;property name=&quot;control&quot;&gt;
         &lt;bean parent=&quot;Uif-KimPersonControl&quot; p:principalIdPropertyName=&quot;principalId&quot; p:personNamePropertyName=&quot;personName&quot;/&gt;
@@ -2073,7 +2073,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
         For these cases, the user control provides a simpler way to configure it by setting the
         personObjectPropertyName. This is the name of the property that holds the nested person
         object. </para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;principalName&quot; p:label=&quot;Person Name&quot; p:required=&quot;true&quot;&gt;
     &lt;property name=&quot;control&quot;&gt;
         &lt;bean parent=&quot;Uif-KimPersonControl&quot; p:personObjectPropertyName=&quot;person"/&gt;
@@ -2283,7 +2283,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
       control.</para>
     <para>Similar to other properties, we can statically set the value to 'true' or 'false' in the
       XML, or use an expression to conditionally disable the control:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-InputField" p:propertyName="fruitName"&gt;
     &lt;property name="control"&gt;
         &lt;bean parent="Uif-TextControl" p:disabled="@{foodGroup ne 'Fruit'}"/&gt;
@@ -2372,7 +2372,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
             key) to the calling view field (map value).</para>
     <para>To configure a quickfinder on an input field, we have two options. First, we can create an
       inner bean with parent of 'Uif-QuickFinder' for the input field's fieldLookup property:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-InputField" p:propertyName="document.number"&gt;
     &lt;property name="fieldLookup"&gt;
         &lt;bean parent="Uif-QuickFinder" p:dataObjectClassName="edu.sampleu.travel.bo.TravelAccount" 
@@ -2390,7 +2390,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
       properties directly using nested notation. Note this only works if the bean we are inheriting
       from (or one of its parents has configured) the parent property, else a NullPointerException
       will be thrown:</para>
-    <programlisting>&lt;bean parent="Uif-InputField" p:propertyName="document.number" 
+    <programlisting linenumbering = "numbered">&lt;bean parent="Uif-InputField" p:propertyName="document.number" 
       p:fieldLookup.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount" 
       p:fieldLookup.fieldConversions="number:document.number"/&gt;</programlisting>
     <note>
@@ -2399,7 +2399,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
         This allows child beans to simply configure the needed properties on the nested component
         without having to initialize the component itself. For example, the 'Uif-InputField' has the
         following property tag:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;property name=&quot;fieldLookup&quot;&gt;
     &lt;bean parent=&quot;Uif-QuickFinder&quot;/&gt;
 &lt;/property&gt;</programlisting>
@@ -2448,7 +2448,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
       Again we can think of this as a from-to mapping.</para>
     <para>To configure the standard inquiry we use a bean with parent of 'Uif-Inquiry'. For the
       direct inquiry, we use a bean with parent of 'Uif-DirectInquiry'. </para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-InputField" p:propertyName="document.number"&gt;
     &lt;property name="fieldInquiry"&gt;
         &lt;bean parent="Uif-Inquiry" p:dataObjectClassName="edu.sampleu.travel.bo.TravelAccount" 
@@ -2625,7 +2625,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
       information about filling out a field or how to complete a task using the UI elements. An
       example of this is "Complete this field only if applying for a one year loan". Instructional
       text is specified for an input field using the instructionalText property:</para>
-    <programlisting>&lt;bean parent="Uif-InputField" p:propertyName="oneYearTerm" 
+    <programlisting linenumbering = "numbered">&lt;bean parent="Uif-InputField" p:propertyName="oneYearTerm" 
       p:instructionalText="Complete this field only if applying for a one year loan"/&gt;</programlisting>
     <para>The instructional text appears by default above the control and has a style class named
       'uif-instructionalMessage' applied. If the label placement is top, the instructional text will
@@ -2635,7 +2635,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
             that must be entered, or other information necessary for entering the data correctly. A
             constraint message can be configured using the constraintText property as shown
             here:</para>
-    <programlisting>&lt;bean parent="Uif-InputField" p:propertyName="oneYearTerm" p:constraintText="Must be formatted as 3 digits"/&gt;</programlisting>
+    <programlisting linenumbering = "numbered">&lt;bean parent="Uif-InputField" p:propertyName="oneYearTerm" p:constraintText="Must be formatted as 3 digits"/&gt;</programlisting>
     <para>The constraint text appears by default under the control and has a style class named
       'uif-constraintMessage' applied.</para>
     <para>Below shows an input field with instructional and constraint text.</para>
@@ -2702,7 +2702,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
       information properties, we configure the informationalDisplayPropertyNames property on
       DataField. This property is a List type, with each entry giving the name for a property to
       display.</para>
-    <programlisting>&lt;bean parent="Uif-InputField" p:propertyName="bookId" p:label="Book Id" 
+    <programlisting linenumbering = "numbered">&lt;bean parent="Uif-InputField" p:propertyName="bookId" p:label="Book Id" 
       p:informationalDisplayPropertyNames="bookTitle,bookCopyright"/&gt;</programlisting>
     <para>In this example we have an input field for the book id property, and we want to
             display the values for the bookTitle and bookCopyright property with the field. </para>
@@ -2777,7 +2777,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
       <para>To hook up an attribute query with an input field we use the
                     <emphasis role="keyword">fieldAttributeQuery</emphasis> property. We can then create an instance of the attribute
         query class by creating a bean with parent of 'Uif-AttributeQueryConfig':</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-InputField" p:propertyName="rentedBookId" p:label="Book Id" 
       p:informationalDisplayPropertyNames="rentedBookTitle,rentedBookCopyright"&gt;
     &lt;property name="fieldAttribueQuery"&gt;
@@ -2817,7 +2817,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
         carries out this processing. The framework allows us to extend this service and declare that
         one or more views should use the custom view helper. This is our gateway for code-based
         customizations. So let's do it! The following sets up a custom view helper service:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 package edu.myedu.sample;
 public class CustomViewHelperServiceImpl extends ViewHelperServiceImpl {
 }</programlisting>
@@ -2826,7 +2826,7 @@ public class CustomViewHelperServiceImpl extends ViewHelperServiceImpl {
                 the viewHelperServiceClass property on the view component (the View component is
                 covered in complete detail in Chapter
                 9):</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean id=&quot;MyView&quot; parent=&quot;Uif-FormView&quot;&gt;
     ...
     &lt;property name=&quot;viewHelperServiceClass&quot; value=&quot;edu.myedu.sample.CustomViewHelperServiceImpl&quot;/&gt;
@@ -2853,7 +2853,7 @@ public class CustomViewHelperServiceImpl extends ViewHelperServiceImpl {
       <para>To understand this better, let's take an example. We will create a method that will
         perform the same search as our automatic book query example. The query will go against the
         Book data object and take in the book id as a parameter:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 public Book retrieveBookById(String bookId) {
     Book foundBook;
     // do query to find the book
@@ -2874,7 +2874,7 @@ public Book retrieveBookById(String bookId) {
                 the automatic query. It maps properties on the returned object (returned from the
                 method) to properties on the
                 view.</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-InputField" p:propertyName="rentedBookId" p:label="Book Id" 
      p:informationalDisplayPropertyNames="rentedBookTitle,rentedBookCopyright"&gt;
     &lt;property name="fieldAttribueQuery"&gt;
@@ -2920,7 +2920,7 @@ public Book retrieveBookById(String bookId) {
                 more information (such as generics and so on) can be configured using the <emphasis role="keyword">methodObject</emphasis> property.</para>
       <para>Wow! That's a lot of options. Let's look at a couple of examples.</para>
       <para>First let's assume we have the following static method:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 package edu.myedu.sample;
 public class QueryUtils {
     public static Book retrieveBookById(String bookId) {
@@ -2932,7 +2932,7 @@ public class QueryUtils {
             </programlisting>
       <para>Our
                 query configuration would then be as follows:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;property name="fieldAttribueQuery"&gt;
     &lt;bean parent=&quot;Uif-AttributeQueryConfig" 
         p:queryMethodInvokerConfig.staticMethod=
@@ -2943,10 +2943,10 @@ public class QueryUtils {
             </programlisting>
       <para>Next assume we have a service that has our retrieveBookById method, and we have
                 the following Spring bean:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean id="BookService" class="edu.myedu.sample.BookServiceImpl"/&gt;</programlisting>
       <para>Our query configuration would then be as follows:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;property name="fieldAttribueQuery"&gt;
     &lt;bean parent=&quot;Uif-AttributeQueryConfig"
         p:queryMethodToCall="retrieveBookById"
@@ -2959,7 +2959,7 @@ public class QueryUtils {
 &lt;/property&gt;
             </programlisting>
       <para>Finally the case of a non-static class method:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 package edu.myedu.sample;
 public class QueryUtils {
     public Book retrieveBookById(String bookId) {
@@ -2970,7 +2970,7 @@ public class QueryUtils {
 } 
             </programlisting>
       <para>Our query configuration would be as follows:</para>
-      <programlisting>&#160; 
+      <programlisting linenumbering = "numbered">&#160; 
 &lt;property name="fieldAttribueQuery"&gt;
     &lt;bean parent=&quot;Uif-AttributeQueryConfig"
         p:queryMethodToCall="retrieveBookById"
@@ -3008,7 +3008,7 @@ public class QueryUtils {
         dataObjectClassName, or build our own query and specify queryMethodToCall). After we have
         configured the data object or the query method, we can then specify the property name for
         the data object class that provides values using the <emphasis role="keyword">suggest.valuePropertyName</emphasis>:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-InputField" p:propertyName="rentedBookTitle"&gt;
     &lt;property name="suggest"&gt;
         &lt;bean parent=&quot;Uif-Suggest&quot; p:valuePropertyName =&quot;bookTitle&quot;
@@ -3019,7 +3019,7 @@ public class QueryUtils {
       <para>Since our query can now return multiple records, we should sort them so the field
                 values appear in ascending order to the user. This can be accomplished by specifying
                 the property names to sort by with the attribute query <emphasis role="keyword">sortPropertyNames</emphasis> property:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;property name="suggest"&gt;
     &lt;bean parent=&quot;Uif-Suggest&quot; p:valuePropertyName =&quot;bookTitle&quot;
         p:suggestQuery.dataObjectClassName=&quot;edu.myedu.sample.Book&quot;
@@ -3046,7 +3046,7 @@ public class QueryUtils {
           object for the field the various properties are associated with, and assuming they have
           the same binding object path and prefix (if given). </para>
         <para>For example, let&apos;s assume we have the following input field:</para>
-        <programlisting>
+        <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-InputField" p:propertyName="bookId"
     p:readOnlyDisplaySuffixPropertyName="bookTitle"
     p:informationalDisplayPropertyNames="bookTitle,bookCopyright"&gt;
@@ -3318,7 +3318,7 @@ public class QueryUtils {
     <para>Let's look at some examples of creating buttons. Besides configuring the action, we
       generally want to display a label for the button (text that is display on the button). To do
       this we set the actionLabel property:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-PrimaryActionButton" p:actionLabel="Save" p:methodToCall="performSave"/&gt;
         </programlisting>
     <para>In this example we have created an action button with the primary styling that will have a
@@ -3330,7 +3330,7 @@ public class QueryUtils {
       source property on Image. The image component is nested on the action component with the
       actionImage property and we can create a new image component using the 'Uif-Image'
       bean:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-PrimaryActionButton" p:actionLabel="Save"
     p:methodToCall="performSave"&gt;
     &lt;property name="actionImage"&gt;
@@ -3347,7 +3347,7 @@ public class QueryUtils {
       property. The Rice application comes with a set of configuration properties, one of which is
       the 'krad.externalizable.images.url' which points to the directory in the web app which
       contains the KRAD images. The definition of this configuration is:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;param name=&quot;krad.externalizable.images.url&quot;override=&quot;false&quot;&gt;${application.url}/krad/images/&lt;/param&gt;
         </programlisting>
     <para>This is referring to another configuration property named 'application.url' (which could
@@ -3364,7 +3364,7 @@ public class QueryUtils {
     </tip>
     <para>By default, the image will display to the left of the label text in the button. We can
       change this to one of the other positions (top, right, bottom) by setting the <emphasis role="keyword">actionImagePlacement</emphasis> property:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-PrimaryActionButton" p:actionLabel="Save" 
     p:methodToCall="performSave"&gt;
     &lt;property name="actionImage"&gt;
@@ -3386,7 +3386,7 @@ public class QueryUtils {
     </figure>
     <para>To change our button to an image submit or a link, we just need to change the base
             bean:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-ActionImage" p:methodToCall="performSave"&gt;
     &lt;property name="actionImage"&gt;
         &lt;bean parent="Uif-Image"
@@ -3406,7 +3406,7 @@ public class QueryUtils {
       </mediaobject>
     </figure>
     <para>Finally, an action link is configured like:</para>
-    <programlisting>&lt;bean parent="Uif-ActionLink" p:actionLabel="Do Script" p:actionScript="doYourAjax();"/&gt;</programlisting>
+    <programlisting linenumbering = "numbered">&lt;bean parent="Uif-ActionLink" p:actionLabel="Do Script" p:actionScript="doYourAjax();"/&gt;</programlisting>
     <para> Which is shown below. </para>
     <figure>
       <title>Action Link</title>
@@ -3425,7 +3425,7 @@ public class QueryUtils {
         they don't have to be. For example the designer might choose to label the action 'Save
         Document', or 'Save Course'. Using the actionEvent property available on the Action
         component, we can configure all these buttons as invoking a 'save' event:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-PrimaryActionButton" p:actionLabel="Save Document" p:methodToCall="saveDocument" p:actionEvent="save"/&gt; &#160;
 
 &lt;bean parent="Uif-PrimaryActionButton" p:actionLabel="Save Course" p:methodToCall="saveCourse" p:actionEvent="save"/&gt;
@@ -3453,7 +3453,7 @@ public class QueryUtils {
         specifies the name for the request parameter, and the map value the request parameter value.
         Let's assume we are configuring a button with a collection group (covered in next
         chapter):</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-PrimaryActionButton" p:actionLabel="delete" p:methodToCall="deleteAccount" 
       p:actionParameters="chart:@{#line.chartCode},account:@{#line.accountNumber}"/&gt;
             </programlisting>
@@ -3469,12 +3469,12 @@ public class QueryUtils {
         class our model can extend which does many things for us. Among these is providing a map
         property populated with the action parameter sent in the request, and a convenience method
         for getting the value of a parameter by name:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 public Map&lt;String, String&gt; getActionParameters();
 public String getActionParamaterValue(String actionParameterName);
             </programlisting>
       <para>Thus in our controller method we can do the following:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 public ModelAndView deleteAccount(@ModelAttribute(&quot;KualiForm&quot;) UifFormBase
 uifForm, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
     AccountForm accountForm = (AccountForm) uifForm;
@@ -3505,7 +3505,7 @@ uifForm, BindingResult result, HttpServletRequest request, HttpServletResponse r
                 button itself, a group (with a div element) or any other field. For example, on the
                 following button we are specifying the page should scroll back to the button
                 location on refresh:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean id="delete_button" parent="Uif-PrimaryActionButton" p:actionLabel="delete"
 p:methodToCall="deleteAccount"
 p:jumpToIdAfterSubmit="delete_button"/&gt;
@@ -3513,14 +3513,14 @@ p:jumpToIdAfterSubmit="delete_button"/&gt;
       <para>If we want to scroll back to
                 the location of a data or input field, we can specify the property name for the
                 field using the jumpToNameAfterSubmit property:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-PrimaryActionButton" p:actionLabel="delete"
 p:methodToCall="deleteAccount"
 p:jumpToIdAfterSubmit="newAccount.accountNumber"/&gt;
             </programlisting>
       <para>To scroll back to the top or bottom of the page, the keywords "TOP" or "BOTTOM" can be
         given for the jump to id:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-PrimaryActionButton" p:actionLabel="Save" p:methodToCall="save" p:jumpToIdAfterSubmit="TOP"/&gt;
             </programlisting>
       <tip>
@@ -3538,7 +3538,7 @@ p:jumpToIdAfterSubmit="newAccount.accountNumber"/&gt;
         the id of the field that should receive focus when the page (or component) refreshes. The
         keyword "FIRST" exists to set focus to the first visible input field control on the
         view:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-PrimaryActionButton" p:actionLabel="Save" 
 p:methodToCall="save" p:focusOnIdAfterSubmit="FIRST"/&gt;
             </programlisting>
@@ -3707,13 +3707,13 @@ p:methodToCall="save" p:focusOnIdAfterSubmit="FIRST"/&gt;
       simply renders the '&amp;nbsp;' element. When putting together multiple content elements in a
       group, the space component can be used to adjust the padding between each. To create a space
       component, we specify a bean with parent of 'Uif-Space':</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-Space"/&gt;
         </programlisting>
     <para>Likewise the space field exists which wraps the space entity in a span. This can be used
       for rendering empty 'blocks' in the layout. To create a space field, we specify a bean with
       parent of 'Uif-SpaceField':</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-SpaceField"/&gt;
         </programlisting>
     <section role="NotInToc">
@@ -3790,7 +3790,7 @@ p:methodToCall="save" p:focusOnIdAfterSubmit="FIRST"/&gt;
     <para>To add a message to the message map, we can use one of the following methods based on
             the type of message we want to add and how we want it associated (property or
             component):</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 public AutoPopulatingList&lt;ErrorMessage&gt; putError(String propertyName, String errorKey, String... errorParameters);
 
 public AutoPopulatingList&lt;ErrorMessage&gt; putWarning(String propertyName, String messageKey, String... messageParameters);
@@ -3806,7 +3806,7 @@ public AutoPopulatingList&lt;ErrorMessage&gt; putInfoForSectionId(String section
     <para>Note even though the last three methods named include 'Section', they can be used for any
       UIF container.</para>
     <para>Let's take some examples. Suppose we have the following Group definition:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean id="BookDocumentOverview" parent="Uif-GridSection" p:title="Book Overview"&gt;
     &lt;property name="items"&gt;
         &lt;list&gt;
@@ -3823,7 +3823,7 @@ public AutoPopulatingList&lt;ErrorMessage&gt; putInfoForSectionId(String section
     <para>Next we write application code to check the rule (see 'Writing Business Rules' in Chapter
       13), and if the rule fails we add an error message associated with the author name
       property:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 if (isAnonymous) {
     GlobalVariables.getMessageMap().putError("author.name","error.book.authorName.anonymous");
 }
@@ -3836,7 +3836,7 @@ if (isAnonymous) {
       addToErrorPath(String parentName) to specify a string that should prefix any message keys
       added from that point on. We can then call removeFromErrorPath(String parentName) to stop the
       prefixing. For example: </para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 GlobalVariables.getMessageMap().addToErrorPath("document.newBook");
 
 //results in the full key of 'document.newBook.author.name'
@@ -3852,7 +3852,7 @@ GlobalVariables.getMessageMap().removeFromErrorPath("document.newBook");
     <para>For one last example, let's assume we need to validate all three fields of the book
       overview group. Since this doesn't really tie to one property in particular, we will just
       associate the error with the section. This can be done as follows:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 if (missingFieldValue) {
     GlobalVariables.getMessageMap().putError("BookDocumentOverview","error.book.overview.misingFieldValue");
 }
@@ -3864,7 +3864,7 @@ if (missingFieldValue) {
       gives an additional property path or id to match on. Each one of these can be defined with a
       wildcard, as well. So if we wanted to also include any messages associated with the 'author'
       property path, we can do so as follows:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean id="BookDocumentOverview" parent="Uif-GridSection" p:title="Book Overview" 
 p:errorsField.additionalKeysToMatch="author*"&gt;
     ...
@@ -4021,7 +4021,7 @@ This is a global display on/off switch for all messages.</para>
       generic field. Unlike other component templates, there are really no rules to follow here;
       this can contain any content we like. Let's assume we have created a FreeMarker file named
       'bookQuestionnaire' in one of our application web folders named '/myapp/ftl':</para>
-    <programlisting>&lt;#macro bookQuestionaire field&gt;
+    <programlisting linenumbering = "numbered">&lt;#macro bookQuestionaire field&gt;
   &lt;ul&gt;
       &lt;li&gt;What is your favorite book? &lt;form:input path="questionnaire.favoriteBook"/&gt;&lt;/li&gt;
       &lt;li&gt;What many books do you read a month? &lt;form:input path="questionnaire.booksPerMonth"/&gt;&lt;/li&gt;
@@ -4030,11 +4030,11 @@ This is a global display on/off switch for all messages.</para>
 &lt;/#macro&gt;        </programlisting>
     <para>To create a generic field with this FreeMarker file, we create a new bean with parent of
       'Uif-CustomTemplateField' and set the template and template name properties:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-CustomTemplateField" p:template="/myapp/ftl/bookQuestionnaire.ftl" p:templateName=&quot;bookQuestionaire&quot;/&gt;
         </programlisting>
     <para>If needed in multiple places, we can create a top level bean with an id:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean id="BookQuestionnaire" parent="Uif-CustomTemplateField" p:template="/myapp/ftl/bookQuestionnaire.ftl" 
       p:templateName=&quot;bookQuestionaire&quot;/&gt;</programlisting>
     <para>In this way, we can add as many custom templates as needed.</para>
@@ -4042,7 +4042,7 @@ This is a global display on/off switch for all messages.</para>
             property (recall this is provided by ComponentBase). For example, if we wanted a
             parameter to determine whether or not we ask the third question, we could do so as
             follows:</para>
-    <programlisting>&lt;#macro bookQuestionaire field&gt;
+    <programlisting linenumbering = "numbered">&lt;#macro bookQuestionaire field&gt;
   &lt;#local askReadMore=field.templateOptions[&apos;askReadMore&apos;]/&gt;
   &lt;ul&gt;
       &lt;li&gt;What is your favorite book? &lt;form:input path="questionnaire.favoriteBook"/&gt;&lt;/li&gt;
@@ -4103,7 +4103,7 @@ This is a global display on/off switch for all messages.</para>
       The only required property is the source property, which is the URL (relative or full) for the
       document that should be embedded.</para>
     <para>For example, we can include the kuali.org webpage in our view as follows:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean parent=&quot;Uif-Iframe&quot; p:width=&quot;800px&quot; p:height=&quot;550px&quot; p:source=&quot;http://www.kuali.org&quot;/&gt;
         </programlisting>
     <para>Notice here we are also setting the width and height properties which are available on
@@ -4151,7 +4151,7 @@ This is a global display on/off switch for all messages.</para>
       relative or full URL to the image. If we wish to wrap our image in a span and potentially also
       have a label, we can use the Image Field component which has base bean name 'Uif-ImageField'.
       For example:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean parent=&quot;Uif-ImageField&quot; p:label=&quot;Image field with alt text&quot; p:altText=&quot;pdf 
 image&quot; p:source=&quot;@{#ConfigProperties[&apos;krad.externalizable.images.url&apos;]}pdf.png&quot;/&gt;
         </programlisting>
@@ -4176,7 +4176,7 @@ image&quot; p:source=&quot;@{#ConfigProperties[&apos;krad.externalizable.images.
             Boolean (defaults to true in base bean). Cutline text gives a summary of the image
             contents and is specified using the cutlineText property. Here is an example of using
             these properties:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean parent=&quot;Uif-Image&quot; p:altText=&quot;computer programming&quot;&#160;&#160; 
     p:captionHeaderText=&quot;Image Caption Text&quot; p:cutlineText=&quot;Image cutline text 
     here&quot; p:styleClasses=&quot;kr-photo&quot; p:source=&quot;computer_programming.jpg&quot;/&gt;
@@ -4239,7 +4239,7 @@ image&quot; p:source=&quot;@{#ConfigProperties[&apos;krad.externalizable.images.
       the linkLabel property.</para>
     <para>For an example let's build a link to the kuali.org website that displays the text 'Kuali
       Website' to the user. In the XML this will be:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-Link" p:hrefText="www.kuali.org" p:linkText="Kuali Website"/&gt;
         </programlisting>
     <para>Below shows the resulting link.</para>
@@ -4262,7 +4262,7 @@ image&quot; p:source=&quot;@{#ConfigProperties[&apos;krad.externalizable.images.
     </para>
     <para>By setting the <emphasis role="keyword">lightBox</emphasis> property to &quot;Uif-LightBox&quot;, the link will be opened
       in a lightbox.</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
       &lt;bean parent="Uif-Link" p:hrefText="www.kuali.org"&#160; p:linkText="Kuali Website"/&gt;
         &lt;property name="lightBox"&gt;
           &lt;bean parent="Uif-LightBox"/&gt;
@@ -4317,7 +4317,7 @@ image&quot; p:source=&quot;@{#ConfigProperties[&apos;krad.externalizable.images.
       user. To create a message field component, we create a bean with parent of 'Uif-MessageField'.
       The message field only has one custom property, the messageText. This is the text that will
       make up the message:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean parent=&quot;Uif-MessageField&quot; p:messageText=&quot;Message Field 1 Text&quot;/&gt;
 &lt;bean parent=&quot;Uif-MessageField&quot; p:messageText=&quot;Message Field with expression text: &apos;@{field88}&apos;&quot;/&gt;
         </programlisting>
@@ -4420,7 +4420,7 @@ The following areas allow rich message content described by this section:
       <title>Component Rich Message Tags</title>
       <note><para>These component options cannot be used for validation messages.</para></note>
     <para>Component by id – this example gets the component named Demo-SampleMessageInput, defined elsewhere, by id:</para>
-    <para><programlisting>&lt;bean parent=&quot;Uif-Message&quot;&gt;
+    <para><programlisting linenumbering = "numbered">&lt;bean parent=&quot;Uif-Message&quot;&gt;
           &lt;property name=&quot;messageText&quot;
                     value=&quot;Message getting component by id <emphasis role="keyword">[id=Demo-SampleMessageInput]</emphasis> inside its content&quot;/&gt;
         &lt;/bean&gt;</programlisting></para>
@@ -4428,7 +4428,7 @@ The following areas allow rich message content described by this section:
         have an inlineComponents property. These are Message, RadioControl, CheckboxesControl, and
         Label. In this example component 0 is the first item in the inlineComponents list
         (Uif-InputField) and component 1 is the second item (Uif-Link)</para>
-    <programlisting>&lt;bean parent=&quot;Uif-Message&quot;&gt;
+    <programlisting linenumbering = "numbered">&lt;bean parent=&quot;Uif-Message&quot;&gt;
           &lt;property name=&quot;messageText&quot;
                     value=&quot;Message with input <emphasis role="keyword">[0]</emphasis> and link <emphasis role="keyword">[1]</emphasis> inline&quot;/&gt;
           <emphasis role="keyword">&lt;property name=&quot;inlineComponents&quot;&gt; &lt;list&gt; &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field1&quot;/&gt; &lt;bean parent=&quot;Uif-Link&quot; p:href=&quot;http://www.kuali.org&quot; p:linkText=&quot;Kuali&quot;/&gt; &lt;/list&gt; &lt;/property&gt;</emphasis>
@@ -4438,7 +4438,7 @@ The following areas allow rich message content described by this section:
       <title>Html, Color, and css Rich Message Tags</title>
       <para>Example that uses all 3 in one message (bold html tag, color for #F78C00 web color, and
           css to add the class 'fl-text-underline' around that content)</para>
-      <programlisting>&lt;bean parent=&quot;Uif-Message&quot;&gt;
+      <programlisting linenumbering = "numbered">&lt;bean parent=&quot;Uif-Message&quot;&gt;
           &lt;property name=&quot;messageText&quot;
                     value=&quot;<emphasis role="keyword">[b]</emphasis>Message<emphasis role="keyword">[/b]</emphasis> using a <emphasis role="keyword">[color=#F78C00]</emphasis> <emphasis role="keyword">[css=&apos;fl-text-underline&apos;]</emphasis>combination<emphasis role="keyword">[/css]</emphasis> of different options<emphasis role="keyword">[/color]</emphasis>" /&gt;
 </programlisting>
@@ -4446,21 +4446,21 @@ The following areas allow rich message content described by this section:
     <section>
       <title>Link and Action Rich Message Tags</title>
       <para>Example of a link inline with message content</para>
-      <programlisting>&lt;bean parent=&quot;Uif-Message&quot;&gt;
+      <programlisting linenumbering = "numbered">&lt;bean parent=&quot;Uif-Message&quot;&gt;
           &lt;property name=&quot;messageText&quot;
                     value=&quot;Testing link tag <emphasis role="keyword">[link=&apos;http://www.kuali.org&apos;]</emphasis>Link<emphasis role="keyword">[/link]</emphasis>&quot;/&gt;
         &lt;/bean&gt;</programlisting>
       <para>The main difference between link and action is that action calls a method on the
           controller – this mimics the KRAD Action component's functionality. Example of an action
           that calls the "addErrors" method on the controller:</para>
-      <programlisting>&lt;bean parent=&quot;Uif-Message&quot;&gt;
+      <programlisting linenumbering = "numbered">&lt;bean parent=&quot;Uif-Message&quot;&gt;
           &lt;property name=&quot;messageText&quot;
                     value=&quot;Testing methodToCall action <emphasis role="keyword">[action=addErrors]</emphasis>Link Text<emphasis role="keyword">[/action]</emphasis>&quot;/&gt;
         &lt;/bean&gt;</programlisting>
       <para>Action that calls the "addErrors" method on the controller, turns off client-side
           validation, and passes an some extra data to the controller (extraInfo with value 'some
           data'):</para>
-      <para><programlisting>&lt;bean parent=&quot;Uif-Message&quot;&gt;
+      <para><programlisting linenumbering = "numbered">&lt;bean parent=&quot;Uif-Message&quot;&gt;
           &lt;property name=&quot;messageText&quot;
                     value=&quot;Testing passing data [<emphasis role="keyword">action=addErrors,false data={extraInfo: &apos;some data&apos;}</emphasis>]
            addErrors[/action]&quot;/&gt;
@@ -4468,7 +4468,7 @@ The following areas allow rich message content described by this section:
       <para>Action using all available options – calling method "addErrors", turning off client side
           validation, ajaxSubmit on, and on success calling the function specified (which shows an
           alert with "Successful Callback" in it):
-          <programlisting>&lt;bean parent=&quot;Uif-Message&quot;&gt;
+          <programlisting linenumbering = "numbered">&lt;bean parent=&quot;Uif-Message&quot;&gt;
           &lt;property name=&quot;messageText&quot;
                     value=&quot;Testing custom success callback <emphasis role="keyword">[action=addErrors,false,true,function(){alert(&apos;Successful Callback&apos;)}]</emphasis>addErrors<emphasis role="keyword">[/action]</emphasis>&quot;/&gt;
         &lt;/bean&gt;
@@ -4478,7 +4478,7 @@ The following areas allow rich message content described by this section:
       <title>Checkboxes and Radio Control Rich Message Usage</title>
     
     <para>Example showing usage in CheckboxesControl (RadioControl usage would be very similar):</para>
-    <programlisting>…          
+    <programlisting linenumbering = "numbered">…          
 &lt;property name=&quot;control&quot;&gt;
             &lt;bean parent=&quot;Uif-VerticalCheckboxesControl&quot;&gt;
 <emphasis role="keyword"> &lt;property name=&quot;inlineComponents&quot;&gt; &lt;list&gt; &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field19&quot;/&gt; &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field20&quot;/&gt; &lt;/list&gt; &lt;/property&gt;</emphasis>
@@ -4496,15 +4496,15 @@ The following areas allow rich message content described by this section:
     <section>
       <title>Other Rich Message Usages</title>
       <para>Usage in InputField labels:</para>
-      <programlisting>&lt;bean parent=&quot;Uif-InputField-LabelTop&quot; p:propertyName=&quot;field100&quot; <emphasis role="keyword">p:label=&quot;Label With [color=green]Color[/color]"</emphasis>/&gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;bean parent=&quot;Uif-InputField-LabelTop&quot; p:propertyName=&quot;field100&quot; <emphasis role="keyword">p:label=&quot;Label With [color=green]Color[/color]"</emphasis>/&gt;</programlisting>
       <para>Usage in instructionalText (similar in other areas which are backed by the Message
             component in their Java object):</para>
-      <programlisting>…
+      <programlisting linenumbering = "numbered">…
 <emphasis role="keyword">p:instructionalText=&quot;Testing [css=&apos;fl-text-underline&apos;]checkbox and radio groups[/css] below&quot;</emphasis>
 …
 </programlisting>
       <para>Usage in CheckboxControl - also demonstrating the ability to override a property of the component referenced by id (overriding propertyName with value &apos;field103&apos;):</para>
-      <programlisting>...
+      <programlisting linenumbering = "numbered">...
 &lt;bean parent=&quot;Uif-InputField-LabelTop&quot; p:propertyName=&quot;bField1&quot; p:label=&quot;CheckboxControl&quot;&gt;
        &lt;property name=&quot;control&quot;&gt;
                     &lt;bean parent=&quot;Uif-CheckboxControl&quot; <emphasis role="keyword">p:checkboxLabel=&quot;I, [id=Demo-SampleMessageInput4 propertyName=&apos;field103&apos;], agree to the terms and conditions of this form&quot;</emphasis>&gt;

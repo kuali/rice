@@ -64,7 +64,7 @@
             This map will then be converted to a string literal, which will be used to call the
             jQuery function. The framework widgets have some default options configured, and can be
             seen in the UifWidgetDefinitions.xml data dictionary file in the source code. </para>
-        <programlisting>&lt;property name="templateOptions">
+        <programlisting linenumbering = "numbered">&lt;property name="templateOptions">
     &lt;map>
         &lt;entry key="showOn" value="button"/>
         &lt;entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
@@ -77,7 +77,7 @@
 &lt;/property>    </programlisting>
         <para>These options can be overridden by extending the widget bean in spring
             configuration:</para>
-        <programlisting>&lt;bean id="Uif-CustomDatePicker" parent="Uif-DatePicker"/>
+        <programlisting linenumbering = "numbered">&lt;bean id="Uif-CustomDatePicker" parent="Uif-DatePicker"/>
     &lt;property name="templateOptions">
         &lt;map merge="true">
             &lt;entry key="showButtonPanel" value="false"/>
@@ -357,7 +357,7 @@
                 page, section or sub-section, or over the label of a field. Plain text and HTML
                 formatted text are supported. Tooltip help content is defined in the data
                 dictionary. This is an example of how to add a tooltip on a TextControl:</para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-TextControl"&gt;
     &lt;property name="help"&gt;
         &lt;bean parent="Uif-Help" p:tooltipHelpContent="This is my help text"/&gt;
@@ -367,14 +367,14 @@
                 for the help URL. The URL of the help can either be specified via the data
                 dictionary, or through a system parameter. This is an example of how to add a
                 external help with the URL from the data dictionary to a View:</para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-View"&gt;
     &lt;property name="help"&gt;
         &lt;bean parent="Uif-Help" p:externalHelpUrl="http://www.kuali.org/"/&gt;
     &lt;/property&gt;
 &lt;/bean&gt;</programlisting>
             <para>This is an example of how to add a external help with the URL from the systems parameter to a View:</para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-View"&gt;
     &lt;property name="help"&gt;
         &lt;bean parent="Uif-Help"&gt;
@@ -866,7 +866,7 @@
                     expected back in the objects returned use the same controller.  Also note the
                     usage of additionalRequestParameters, all urls also require "methodToCall=start"
                     in this
-                    scenario:<programlisting>            &lt;bean parent="Uif-LocationSuggest" p:render="true" p:retrieveAllSuggestions="true"
+                    scenario:<programlisting linenumbering = "numbered">            &lt;bean parent="Uif-LocationSuggest" p:render="true" p:retrieveAllSuggestions="true"
                     p:baseUrl="@{#ConfigProperties['krad.url']}/kradsampleapp">
               &lt;property name="valuePropertyName" value="value"/>
               &lt;property name="additionalRequestParameters">
@@ -923,7 +923,7 @@
                     revealed by expanding Item 2, and SubItem B. </para>
                 <para>The view configuration for a simple tree with nothing but a text label on each
                     node is quite elementary:  </para>
-                <programlisting>&lt;bean parent="Uif-TreeSection" p:instructionalText="Data Tree">
+                <programlisting linenumbering = "numbered">&lt;bean parent="Uif-TreeSection" p:instructionalText="Data Tree">
     &lt;property name="title" value="Basic String Data tree"/>
     &lt;property name="propertyName" value="tree"/>
 &lt;/bean>    </programlisting>
@@ -932,7 +932,7 @@
                     the form which returns an object of type
                     org.kuali.rice.core.api.util.tree.Tree.  For the above configuration snippet,
                     the body of this method might look like this:</para>
-                <programlisting>/* somewhere in your form or data object */
+                <programlisting linenumbering = "numbered">/* somewhere in your form or data object */
 public Tree&lt;Foo, String> getTree() {
     return this.tree;  // return the Tree member of this data object or form
 }</programlisting>
@@ -978,7 +978,7 @@ public class Node&lt;T, K> implements Serializable {
                     a Tree of Nodes:</para>
                 <warning><para>If you are not comfortable with recursion, you may want to do some homework on it to follow
                         along.</para></warning>
-                <programlisting>/* somewhere in your form or data object */
+                <programlisting linenumbering = "numbered">/* somewhere in your form or data object */
 
 /** Getter method referenced from Uif-TreeSection component via the propertyName */
 public Tree&lt;Foo, String> getTree() {
@@ -1027,7 +1027,7 @@ private void buildFooTree(Node sprout, Foo foo) {
                     node prototype has just an empty container for its data group, which results in
                     a tree that renders similar to the screenshot shown previously; but we can
                     change that by configuring a custom defaultNodePrototype.</para>
-                <programlisting>&lt;bean parent="Uif-TreeSection" p:instructionalText="Data Tree">
+                <programlisting linenumbering = "numbered">&lt;bean parent="Uif-TreeSection" p:instructionalText="Data Tree">
     &lt;property name="title" value="Tree with Data Group"/>
     &lt;property name="propertyName" value="tree"/>
     &lt;property name="defaultNodePrototype">
@@ -1111,7 +1111,7 @@ private void buildFooTree(Node sprout, Foo foo) {
                     placeholder for the current node being rendered.  It allows you to (for example)
                     progressively render a component within a node based on the value of another
                     field in that same node.  Here's a simple example: </para>
-                <programlisting>&lt;bean parent="Uif-TreeSection" p:instructionalText="Data Tree">
+                <programlisting linenumbering = "numbered">&lt;bean parent="Uif-TreeSection" p:instructionalText="Data Tree">
   &lt;property name="title" value="Tree with Data Group"/>      
   &lt;property name="propertyName" value="tree"/>          
   &lt;property name="defaultNodePrototype">             
@@ -1191,7 +1191,7 @@ private void buildFooTree(Node sprout, Foo foo) {
                     containing data objects of differing classes to be rendered in different ways. 
                     This property is called nodePrototypeMap, and it is a Map from Class to
                     NodePrototype.  Here is an example:</para>
-                <programlisting>&lt;bean parent="Uif-TreeSection" p:instructionalText="Data Tree">      
+                <programlisting linenumbering = "numbered">&lt;bean parent="Uif-TreeSection" p:instructionalText="Data Tree">      
   &lt;property name="title" value="Tree with Data Group"/>      
   &lt;property name="propertyName" value="tree"/>          
   &lt;property name="nodePrototypeMap">         
@@ -1259,7 +1259,7 @@ public class Orange extends Fruit { /*...*/ }    </programlisting>
                 can display plain text or HTML, and can be added to any component by setting the
                 tooltipContent in the Data Dictionary. This is a example of how to add a tooltip on
                 a TextControl : </para>
-            <programlisting>&lt;bean parent="Uif-TextControl">
+            <programlisting linenumbering = "numbered">&lt;bean parent="Uif-TextControl">
     &lt;property name="toolTip">
         &lt;bean parent="Uif-Tooltip" p:tooltipContent="This is my tooltip"/>
     &lt;/property>
@@ -1631,7 +1631,7 @@ public class Orange extends Fruit { /*...*/ }    </programlisting>
                 we use the script macro to call the createSpinner function that will add the spinner
                 plugin on that text field. We pass the specific SpinnerControl id and the component
                 options as parameters.</para>
-            <programlisting>&lt;#macro spinner control field> 
+            <programlisting linenumbering = "numbered">&lt;#macro spinner control field> 
 
   &lt;#-- Create Standard HTML Text Input then decorates with Spinner plugin -->
   &lt;uif_text control=control field=field/>       
@@ -1643,7 +1643,7 @@ public class Orange extends Fruit { /*...*/ }    </programlisting>
             <title>JavaScript Function</title>
             <para>For this example we created a custom JavaScript function that will be called from
                 the template.</para>
-            <programlisting>/**
+            <programlisting linenumbering = "numbered">/**
   * Creates the spinner widget for an input
   * 
   * @param id - id for the control to apply the spinner to
@@ -1658,7 +1658,7 @@ function createSpinner(id, options) {      
             <title>Spring Beans Definitions</title>
             <para>Lastly we add the spring bean definitions. Here we can specify default property
                 values and component options.</para>
-            <programlisting>&lt;bean id="Uif-Spinner" parent="Uif-Spinner-parentBean"/>
+            <programlisting linenumbering = "numbered">&lt;bean id="Uif-Spinner" parent="Uif-Spinner-parentBean"/>
 &lt;bean id="Uif-Spinner-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Spinner" 
   scope="prototype" parent="Uif-WidgetBase">
   &lt;property name="componentOptions">

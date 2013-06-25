@@ -36,7 +36,7 @@
                 EDL style. On first use of that named style by an EDL, the file will be parsed and
                 the named style will be imported into the database. The following example contains
                 just an eDocLite XSL stylesheet:</para>
-            <programlisting>&lt;data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+            <programlisting linenumbering = "numbered">&lt;data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
     &lt;edoclite xmlns="ns:workflow/EDocLite" xsi:schemaLocation="ns:workflow/EDocLite resource:EDocLite">
         &lt;style name="xyzAppStyle">
             &lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wf="http://xml.apache.org/xalan/java/org.kuali.rice.kew.edoclite.WorkflowFunctions">
@@ -51,7 +51,7 @@
                 "widgets" style is lazily imported using this mechanism. In
                 common-config-defaults.xml (which is located in the rice-impl jar), the following
                 parameter is defined:</para>
-            <programlisting>&lt;param name="edl.style.widgets" override="false">classpath:org/kuali/rice/kew/edl/default-widgets.xml&lt;/param></programlisting>
+            <programlisting linenumbering = "numbered">&lt;param name="edl.style.widgets" override="false">classpath:org/kuali/rice/kew/edl/default-widgets.xml&lt;/param></programlisting>
             <para>If you wanted to override that file, you could define your own parameter in your
                 Rice XML configuration file using the above example as a template, but removing the
                 <emphasis role="keyword">override="false"</emphasis> attribute.</para>
@@ -63,7 +63,7 @@
                     routing information. The document type definition for our first example follows.
                     It contains routing information that describes the route paths possible for a
                     document.</para>
-                <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+                <programlisting linenumbering = "numbered">&lt;?xml version="1.0" encoding="UTF-8"?>
 &lt;data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
     &lt;documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
         &lt;documentType>
@@ -106,7 +106,7 @@
                     Then, under that, you create more specific document types. In our example, there
                     are only two levels.</para>
                 <para>The Root document type definition for our first example:</para>
-                <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+                <programlisting linenumbering = "numbered">&lt;?xml version="1.0" encoding="UTF-8"?>
 &lt;data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
     &lt;documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
         &lt;documentType>
@@ -242,11 +242,11 @@
                     and paste in the values section. Then in the edl definition, the new field must
                     carry the extra syntax 'attributeName='. For example the eld definition for
                     campus looks like this: </para>
-                <programlisting>&lt;fieldDef name="campus" title="Campus" workflowType="ALL"></programlisting>
+                <programlisting linenumbering = "numbered">&lt;fieldDef name="campus" title="Campus" workflowType="ALL"></programlisting>
             </section>
             <section>
                 <title>Rule Routing</title>
-                <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+                <programlisting linenumbering = "numbered">&lt;?xml version="1.0" encoding="UTF-8"?>
 &lt;data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
     &lt;ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
         &lt;ruleAttribute>

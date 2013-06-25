@@ -142,7 +142,7 @@
         </figure>
         <para>To use this dialog in a view, simply declare it in the dialogList property of the
         view:</para>
-        <programlisting>
+        <programlisting linenumbering = "numbered">
 &lt;bean id="MyTestView" parent="Uif-FormView"&gt;
   &lt;property name="dialogs"&gt;
     &lt;list&gt;
@@ -150,7 +150,7 @@
     &lt;/list&gt;
   &lt;/property&gt;</programlisting>
         <para>And then invoke it in your controller code:</para>
-        <programlisting>
+        <programlisting linenumbering = "numbered">
         // first check if the dialog has already been answered by the user
         if (!hasDialogBeenAnswered("mySensitiveDialog", form)){
             // redirect back to client to display lightbox
@@ -189,7 +189,7 @@
           <listitem><para>availableResponses - the choices to be displayed in the lightbox (ok/cancel, yes/no/maybe)</para></listitem>
           <listitem><para>reverseButtonOrder - determines the order the responses are displayed</para></listitem></itemizedlist>
         <para>The css class "uif-dialogGroup" provides the styling for the lightbox.</para>
-        <programlisting>&lt;!-- Dialog Groups --&gt;
+        <programlisting linenumbering = "numbered">&lt;!-- Dialog Groups --&gt;
   &lt;bean id="Uif-DialogGroup" parent="Uif-DialogGroup-parentBean"/&gt;
   &lt;bean id="Uif-DialogGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.DialogGroup"
         parent="Uif-VerticalBoxSection"&gt;

@@ -367,7 +367,7 @@
    AND CMPNT_CD = 'Lookup' 
    AND PARM_NM = 'RESULTS_DEFAULT_MAX_COLUMN_LENGTH'</programlisting>
                         <para><emphasis role="bold">KRAD example:</emphasis></para>
-                        <programlisting>  &lt;bean id="Uif-TextControl" parent="Uif-TextControl-parentBean"/>
+                        <programlisting linenumbering = "numbered">  &lt;bean id="Uif-TextControl" parent="Uif-TextControl-parentBean"/>
   &lt;bean id="Uif-TextControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.TextControl"
         scope="prototype" parent="Uif-ControlBase">
     &lt;property name="template" value="/krad/WEB-INF/ftl/components/control/text.ftl"/>
@@ -391,7 +391,7 @@
                 <para>
                     <itemizedlist>
                         <listitem><para><emphasis role="keyword">set/getBusinessObjectClass</emphasis>have been renamed to set/getDataObjectClass.  Since now all data objects are supported the requirement that the object is a BusinessObject has been removed.  The rename of these methods reflect this change. However, don't use this method.  In KRAD the data object is be specified via the dataObjectClassName property of the extended Uif-LookupView bean.
-                            <programlisting>&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
+                            <programlisting linenumbering = "numbered">&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
   &lt;property name="dataObjectClassName" value="org.kuali.rice.SampleBo" />
   ...
 &lt;/bean></programlisting></para>
@@ -406,7 +406,7 @@
                             add content after the "Create New". In this example a Message is used
                             but any Uif component could be used. Append a custom button after the
                             "Create New":
-                            <programlisting>&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
+                            <programlisting linenumbering = "numbered">&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
   ...
   &lt;property name="page.header.lowerGroup.items">
     &lt;list>
@@ -419,7 +419,7 @@
 &lt;/bean></programlisting>
                         </para>
                             <para>Append a custom message to the right in the header
-                                <programlisting>&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
+                                <programlisting linenumbering = "numbered">&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
   ...
   &lt;property name="header.rightGroup">
     &lt;bean parent="Uif-HeaderRightGroup">
@@ -440,7 +440,7 @@
                         </listitem>
                         <listitem><para><emphasis role="keyword">getColumns</emphasis> has been removed. The result columns are now
                             specified via the Uif-LookupView (see resultFields property).
-                            <programlisting>&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
+                            <programlisting linenumbering = "numbered">&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
   ...
   &lt;property name="resultFields">
     &lt;list>
@@ -465,7 +465,7 @@
                         </para>
                         </listitem>
                         <listitem><para><emphasis role="keyword">getReturnUrl</emphasis> has been renamed to getReturnUrlForResults which accepts the LinkField that returns the result from the lookup and the model.  Configuration via the Uif-LookupView is also possible:
-                            <programlisting>&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
+                            <programlisting linenumbering = "numbered">&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
   ...
   &lt;property name="resultsReturnField">
     &lt;bean parent="Uif-linkField" p:href="http://www.kuali.org" p:linkText="Kuali"/>
@@ -474,7 +474,7 @@
 &lt;/bean></programlisting></para>
                         </listitem>
                         <listitem><para><emphasis role="keyword">getCreateNewUrl</emphasis> has been removed.  The create new url is now specified via the Uif-LookupView:
-                            <programlisting>&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
+                            <programlisting linenumbering = "numbered">&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
   ...
   &lt;property name="page.header.lowerGroup.items">
     &lt;list>
@@ -492,7 +492,7 @@
                         </listitem>
                         <listitem><para><emphasis role="keyword">getTitle</emphasis> has been removed. The title is now specified via
                             the Uif-LookupView (see headerText property).
-                            <programlisting>&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
+                            <programlisting linenumbering = "numbered">&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
   &lt;property name="headerText" value="Sample Lookup" />
   ...
 &lt;/bean></programlisting></para>
@@ -510,7 +510,7 @@
                         <listitem><para><emphasis role="keyword">checkForAdditionalFields</emphasis> has been removed.  Use <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/KRAD_Guide.html#disclosure">progressive disclosure</link> of the Uif.</para>
                         </listitem>
                         <listitem><para><emphasis role="keyword">getDefaultSortColumns</emphasis> has been removed.  Sort columns are configured via Uif-LookupView (see defaultSortAttributeNames property). </para>
-                            <programlisting>&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
+                            <programlisting linenumbering = "numbered">&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
   ...
   &lt;property name="defaultSortAttributeNames">
     &lt;list>
@@ -526,7 +526,7 @@
                         </listitem>
                         <listitem><para><emphasis role="keyword">setFieldConversions</emphasis> has been removed. The field conversion
                             is specified via Uif (see quickfinder.fieldConversions property).
-                            <programlisting>&lt;bean parent="Uif-InputField">
+                            <programlisting linenumbering = "numbered">&lt;bean parent="Uif-InputField">
   ...
   &lt;property name="quickfinder.fieldConversions">
     &lt;map>
@@ -538,7 +538,7 @@
 &lt;/bean></programlisting></para>
                         </listitem>
                         <listitem><para><emphasis role="keyword">setReadOnlyFieldsList</emphasis> has been removed.  Read only criteria fields are specified via Uif (see <emphasis role="keyword">readOnly</emphasis> property).
-                            <programlisting>&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
+                            <programlisting linenumbering = "numbered">&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
   ...
   &lt;property name="criteriaFields">
     &lt;list>
@@ -551,7 +551,7 @@
 &lt;/bean></programlisting></para>
                         </listitem>
                         <listitem><para><emphasis role="keyword">set/getLookupableHelperService</emphasis> has been removed.  Lookupable helper services are specified via <emphasis role="keyword">Uif-LookupView</emphasis>:
-                            <programlisting>&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
+                            <programlisting linenumbering = "numbered">&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
   &lt;property name="viewHelperServiceClass"
             value="org.kuali.rice.SampleLookupableHelperServiceImpl" />
   ...
@@ -570,7 +570,7 @@
                         <listitem><para><emphasis role="keyword">getExtraField</emphasis> has been removed (see getHtmlMenuBar/getSupplementalMenuBar above).</para>
                         </listitem>
                         <listitem><para><emphasis role="keyword">get/setExtraOnLoad</emphasis> has been removed. OnLoad scripts can be specified via the Uif-LookupView:
-                            <programlisting>&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
+                            <programlisting linenumbering = "numbered">&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
   &lt;property name="onLoadScript" value="alert('Hi!')" />
   ...
 &lt;/bean></programlisting></para>
@@ -580,7 +580,7 @@
                         <listitem><para><emphasis role="keyword">applyConditionalLogicForFieldDisplay</emphasis> has been removed.
                             Conditional displaying of criteria field is done through Uif
                             configuration.
-                            <programlisting>&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
+                            <programlisting linenumbering = "numbered">&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
   ...
   &lt;property name="criteriaFields">
     &lt;list>
@@ -643,7 +643,7 @@
                                 </imageobject>
                             </inlinemediaobject></para>
                         <para><emphasis role="bold">KNS code
-                            example:</emphasis><programlisting>&lt;bean parent="MaintainableFieldDefinition" p:name="entityTypeCode"/>
+                            example:</emphasis><programlisting linenumbering = "numbered">&lt;bean parent="MaintainableFieldDefinition" p:name="entityTypeCode"/>
   &lt;property name="overrideLookupClass" value="org.kuali.rice.kim.impl.identity.EntityTypeBo"/>
   &lt;property name="overrideFieldConversions">
     &lt;map>
@@ -651,7 +651,7 @@
     &lt;/map>
   &lt;/property>
 &lt;/bean></programlisting></para>
-                        <para><emphasis role="bold">KRAD code example:</emphasis><programlisting>&lt;bean parent="Uif-InputField" p:propertyName="entityTypeCode">
+                        <para><emphasis role="bold">KRAD code example:</emphasis><programlisting linenumbering = "numbered">&lt;bean parent="Uif-InputField" p:propertyName="entityTypeCode">
   &lt;property name="quickfinder.dataObjectClassName" value="org.kuali.rice.kim.impl.identity.EntityTypeBo"/>
   &lt;property name="quickfinder.fieldConversions">
     &lt;map>

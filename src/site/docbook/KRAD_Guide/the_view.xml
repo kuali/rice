@@ -35,7 +35,7 @@
                 subclass org.kuali.rice.krad.uif.view.FormView is used. The component beans we use
                 to configure the view are 'Uif-View' and 'Uif-FormView'. The following is an example
                 of configuring a form view:</para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 &lt;bean id="Travel-testView1" parent="Uif-FormView"&gt;
     &lt;property name="title" value="Test View 1"/&gt;
     &lt;property name="items"&gt;
@@ -302,7 +302,7 @@
     </section>
     <section><title>Navigation </title><para>The following view example shows a multi-page view with
             a navigation component:</para>
-        <programlisting>
+        <programlisting linenumbering = "numbered">
 &lt;bean id="Travel-testView2" parent="Travel-testView1"&gt;
    &lt;property name="title" value="Test View 2"/&gt;
    &lt;property name="navigation"&gt;
@@ -492,7 +492,7 @@
                             represent the trail back to home (often one item labeled "Home").  These
                             breadcrumbs will appear before any ParentLocations or path-based
                             breadcrumbs (described
-                            later).<programlisting>    &lt;property name="breadcrumbOptions.homewardPathBreadcrumbs">
+                            later).<programlisting linenumbering = "numbered">    &lt;property name="breadcrumbOptions.homewardPathBreadcrumbs">
       &lt;list>
         &lt;bean parent="Uif-BreadcrumbItem">
           &lt;property name="label" value="Home"/>
@@ -529,7 +529,7 @@
                             the View, PageGroup, or in the preViewBreadcrumbs and
                             prePageBreadcrumbs.  homewardPathBreadcrumbs and
                             ParentLocation/path-based breadcrumbs will still
-                            render.<programlisting>    &lt;property name="breadcrumbOptions.breadcrumbOverrides">
+                            render.<programlisting linenumbering = "numbered">    &lt;property name="breadcrumbOptions.breadcrumbOverrides">
       &lt;list>
         &lt;bean parent="Uif-BreadcrumbItem" p:label="Application"
               p:url.href="@{#ConfigProperties['application.url']}"/>
@@ -613,7 +613,7 @@
                 "UifBreadcrumbTest2" View and "/uicomponents" controller.  Instead of deriving the
                 title of this View from the ParentLocation's View, we are overriding it to display
                 "Parent
-                View".<programlisting>    &lt;property name="parentLocation.parentViewLabel" value="Parent View"/>
+                View".<programlisting linenumbering = "numbered">    &lt;property name="parentLocation.parentViewLabel" value="Parent View"/>
     &lt;property name="parentLocation.parentViewUrl.viewId" value="UifBreadcrumbTest2"/>
     &lt;property name="parentLocation.parentViewUrl.controllerMapping" value="/uicomponents"/></programlisting></para>
         </section>
@@ -648,7 +648,7 @@
                 flow (continue collecting BreadcrumbItems for the trail) when clicked.  If the view
                 we are navigating to is also using path-based breadcrumbs, then the collected items
                 will be displayed.</para>
-            <programlisting>&lt;property name="breadcrumbs.usePathBasedBreadcrumbs" value="true"/>
+            <programlisting linenumbering = "numbered">&lt;property name="breadcrumbs.usePathBasedBreadcrumbs" value="true"/>
 ...
 &lt;!-- query parameter "flow" on the href is what continues the history flow (continues the path-based breadcrumbs) -->
 &lt;bean parent="Uif-Link" p:linkText="Click me to continue chaining path-based breadcrumbs"
@@ -932,16 +932,16 @@
                     </listitem>
                 </itemizedlist></para>
             <para>To make the application header sticky, the following code on the View is
-                used:<programlisting>&lt;property name="stickyApplicationHeader" value="true"/></programlisting></para>
+                used:<programlisting linenumbering = "numbered">&lt;property name="stickyApplicationHeader" value="true"/></programlisting></para>
             <para>For sticky View's
-                topGroup:<programlisting>&lt;property name="stickyTopGroup" value="true"/></programlisting></para>
+                topGroup:<programlisting linenumbering = "numbered">&lt;property name="stickyTopGroup" value="true"/></programlisting></para>
             <para>For sticky breadcrumbs and View's
-                header:<programlisting>&lt;property name="stickyBreadcrumbs" value="true"/>
+                header:<programlisting linenumbering = "numbered">&lt;property name="stickyBreadcrumbs" value="true"/>
 &lt;property name="stickyHeader" value="true"/></programlisting></para>
             <para>The flags demonstrated can be used in any combination except the following
                 combination.  <emphasis role="bold">This code WILL NOT work appropriately and will
                     break user
-                interaction</emphasis>:<programlisting>&lt;!-- NEVER do this -->
+                interaction</emphasis>:<programlisting linenumbering = "numbered">&lt;!-- NEVER do this -->
 &lt;property name="stickyApplicationHeader" value="false"/>
 &lt;property name="stickyTopGroup" value="true"/>
 &lt;property name="stickyBreadcrumbs" value="false"/>
@@ -965,7 +965,7 @@
                 sticky.</para>
             <para>The following code makes all footers sticky.  Note the usage of stickyFooter on
                 each PageGroup item of the
-                View:<programlisting>  &lt;bean id="Demo-StickyHeaderFooter-View9" parent="Demo-StickyHeaderFooter-BaseView">
+                View:<programlisting linenumbering = "numbered">  &lt;bean id="Demo-StickyHeaderFooter-View9" parent="Demo-StickyHeaderFooter-BaseView">
     &lt;property name="items">
       &lt;list>
         &lt;bean parent="Demo-StickyHeaderFooter-Page1" p:stickyFooter="true"/>

@@ -120,7 +120,7 @@
                 being XML. Each XML file must adhere to the Spring bean doctype and is sometimes
                 referred to as 'Spring Bean XML'. The following is the shows the doctype definition
                 for the 3.1 release:</para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 &lt;beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:beans="http://www.springframework.org/schema/beans"
@@ -135,7 +135,7 @@
                 Each file may contain as many bean configurations as we like (we will see later on
                 certain best practices for Spring file organization). To start a new bean
                 configuration, we use the bean tag:</para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 &lt;bean id="address" class="edu.myedu.sample.Address"&gt;
 &lt;/bean&gt;
             </programlisting> 
@@ -170,7 +170,7 @@
                 must specify the name attribute which must match the property name of the class we
                 want to populate, and then the value attribute which is the value we wish to
                 inject.</para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 &lt;bean id="address" class="edu.myedu.sample.Address"&gt;
     &lt;property name="street" value="197 H St"/&gt;
     &lt;property name="city" value="Bloomington"/&gt;
@@ -178,7 +178,7 @@
 &lt;/bean&gt;
             </programlisting>    
             <para>The above configuration is equivalent to the following Java code:</para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 Address address = new Address();
 address.setStreet("197 H St");
 address.setCity("Bloomington");
@@ -189,7 +189,7 @@ address.setState("IN");  
                 default no-argument constructor. However, if our class requires a constructor
                 argument, that's no problem. We can use the constructor-arg tag to specify the
                 values for the arguments. Suppose our Address class looks like the following:</para>
-            <programlisting> 
+            <programlisting linenumbering = "numbered"> 
 public class Address {
     private String street;
     private String city;
@@ -204,7 +204,7 @@ public class Address {
             </programlisting>
             <para>We can then use the constructor-arg tag so Spring can pass the appropriate
                 arguments for instantiation:</para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 &lt;bean id="address" class="edu.myedu.sample.Address"&gt;
     &lt;constructor-arg  index="0" value="197 H St"/&gt;
     &lt;constructor-arg index="1" value="Bloomington"/&gt;
@@ -231,10 +231,10 @@ public class Address {
                 additional tags provided by Spring. These tags correspond to the type of Collection
                 we want to create: list, map, set, or properties.</para>
             <para>Suppose we have the following property of type List&lt;String&gt;:</para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 private List&lt;String&gt; phoneNumbers;</programlisting>
             <para>We can then configure this property in our bean configuration as follows:</para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 &lt;property name="phoneNumbers"&gt;
     &lt;list&gt;
         &lt;value&gt;812-333-9090&lt;/value&gt;
@@ -246,7 +246,7 @@ private List&lt;String&gt; phoneNumbers;</programlisting>
                 the list tag to specify we want to create a List collection type. Finally, we
                 configure entries for the List using the value tag. This is equivalent to the
                 following Java code:</para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 List&lt;String&gt; phoneNumbers = new ArrayList&lt;String&gt;();
 phoneNumbers.add("812-333-9090");
 phoneNumbers.add("812-444-9900");
@@ -254,12 +254,12 @@ phoneNumbers.add("812-444-9900");
             <para>Now let's take a look at a Map
                 example. Suppose we had the following property with type Map&lt;String,
                 String&gt;:</para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 private Map&lt;String, String&gt; stateCodeNames;
             </programlisting>
             <para>Our
                 corresponding property configuration would look as follows:</para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 &lt;property name="stateCodeNames"&gt;
     &lt;map&gt;
         &lt;entry key="IN" value="Indiana"/&gt;
@@ -293,7 +293,7 @@ private Map&lt;String, String&gt; stateCodeNames;
                 attribute.</para>
             <para>For example, in our Address objects, let's now change the state property (of type
                 String) to type State. The State class is as follows:</para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 private class State {
     private String stateCode;
     private String stateName;
@@ -301,7 +301,7 @@ private class State {
 }
             </programlisting>    
             <para>And our Address class now looks like:</para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 public class Address { 
     private String street;
     private String city;
@@ -311,7 +311,7 @@ public class Address {
             </programlisting>    
             <para>First we can create one or more new bean configurations for our State
                 object:</para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 &lt;bean id="state-IN" class="edu.myedu.sample.State"&gt;
     &lt;property name="stateCode" value="IN"/&gt;
     &lt;property name="stateName" value="Indiana"/&gt;
@@ -323,7 +323,7 @@ public class Address {
             </programlisting>
             <para>Now in our bean configuration for Address, we can
                 reference one of these state bean configurations using the ref tag:</para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 &lt;bean id="address" class="edu.myedu.sample.Address"&gt;
     &lt;property name="street" value="197 H St"/&gt;
     &lt;property name="city" value="Bloomington"/&gt;
@@ -333,7 +333,7 @@ public class Address {
 &lt;/bean&gt;
             </programlisting>    
             <para>In Java code, this would be:</para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 Address address = new Address();
 address.setStreet("197 H St");
 address.setCity("Bloomington");
@@ -344,7 +344,7 @@ address.setState(state);
             </programlisting>    
             <para>If we wanted to change our address to use the OH state code instead, we simply
                 change the bean attribute on the ref tag:</para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 &lt;bean id="address" class="edu.myedu.sample.Address"&gt;
     &lt;property name="street" value="197 H St"/&gt;
     &lt;property name="city" value="Bloomington"/&gt;
@@ -362,7 +362,7 @@ address.setState(state);
                 property tag.</para>
             <para>To see this in action, let's suppose we did not any bean configurations for State
                 in our XML. Using inner beans, we can accomplish the same result:</para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 &lt;bean id="address" class="edu.myedu.sample.Address"&gt;
     &lt;property name="street" value="197 H St"/&gt;
     &lt;property name="city" value="Bloomington"/&gt;
@@ -394,7 +394,7 @@ address.setState(state);
                 populate the State object for the Address property. Using component property names,
                 we can sets property values on the State object using the property tag without a
                 nested bean tag:</para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 &lt;bean id="address" class="edu.myedu.sample.Address"&gt;
     &lt;property name="street" value="197 H St"/&gt;
     &lt;property name="city" value="Bloomington"/&gt;
@@ -416,12 +416,12 @@ address.setState(state);
                 given with the p namespace should match the name of the property to populate.</para>
             <para>For example, our previous bean configuration for address can be rewritten
                 as:</para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 &lt;bean id="address" class="edu.myedu.sample.Address" p:street="197 H St" p:city="Bloomington" p:state="IN"/&gt;
             </programlisting>
             <para>Using the p namespace we can also configure references to other beans. The syntax
                 for doing this is to add '-ref' after the property name.</para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 &lt;bean id="address" class="edu.myedu.sample.Address" p:street="197 H St" p:city="Bloomington" p:state-ref="state-IN"/&gt;
             </programlisting>    
             <para>Here Spring will look for a bean configuration with id equal to "state-IN", and
@@ -438,7 +438,7 @@ address.setState(state);
                 class, property and constructor arguments, initialization methods, and so on, will
                 be inherited for the child definition. The child bean definition can override the
                 inherited configuration, and add to it.</para><para>As an example let's assume we have a Car class defined as
-                follows:</para><programlisting>
+                follows:</para><programlisting linenumbering = "numbered">
 public class Car {
     private String make;
     private String company;
@@ -446,7 +446,7 @@ public class Car {
 }
             </programlisting><para>We
                 can then define bean definitions as
-                follows:</para><programlisting>
+                follows:</para><programlisting linenumbering = "numbered">
 &lt;bean id="fordCar" class="edu.myedu.sample.Car" p:company="Ford"/&gt;
 &lt;bean id="blueFusion" parent="fordCar" p:make="Fusion" p:color="Blue"/&gt;
 &lt;bean id="redFusion" parent="fordCar" p:make="Fusion" p:color="Red"/&gt;
@@ -464,7 +464,7 @@ public class Car {
             <para>When a bean configuration is inherited that includes property configuration for a
                 collection class, we must explicitly indicate to merge the entries. This is done by
                 adding merge="true" to the collection tag. </para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 &lt;bean id="address" class="edu.myedu.sample.Address"&gt;
     &lt;property name="phoneNumbers"&gt;
         &lt;list&gt;
@@ -544,7 +544,7 @@ public class Car {
             <para>For the objects Spring creates for us, we can define a Scope. The scope specifies
                 how long the created object should live. To specify the scope for a bean, we use the
                 scope attribute on the bean tag.</para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 &lt;bean id="MyBean" class="..." scope="singleton"&gt;
             </programlisting>
             <para>The default scope for a bean is 'singleton'. An object with scope singleton is
@@ -765,11 +765,11 @@ public class Car {
             it is not, you will want to include JAVA_HOME/bin in your PATH environment
             variable.</para><para> In order to verify that your JDK has been installed successfully,
             open a command prompt and type the following:
-            </para><programlisting>
+            </para><programlisting linenumbering = "numbered">
 java -version
         </programlisting><para>You should see
             output similar to the
-            following:</para><programlisting>
+            following:</para><programlisting linenumbering = "numbered">
 java version "1.6.0_37"
     Java(TM) SE Runtime Environment (build 1.6.0_37-b06)
     Java HotSpot(TM) 64-Bit Server VM (build 20.12-b01, mixed mode)
@@ -797,15 +797,15 @@ java version "1.6.0_37"
             path.</para><para> Finally, to prevent potential out of memory errors when compiling
             Rice with Maven, you should set your MAVEN_OPTS environment to a value like the
             following:
-            </para><programlisting>
+            </para><programlisting linenumbering = "numbered">
 MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=768m"
         </programlisting><para>In
             order to verify that Maven has been installed successfully and is available on the path,
             open a command prompt and type the following:
-            </para><programlisting>
+            </para><programlisting linenumbering = "numbered">
 mvn -version
         </programlisting><para>You should see
-            output like the following: </para><programlisting>
+            output like the following: </para><programlisting linenumbering = "numbered">
 Apache Maven 3.0.4 (r1232337; 2012-01-17 03:44:56-0500)
     Maven home: /usr/local/maven
         </programlisting>
@@ -855,7 +855,7 @@ Apache Maven 3.0.4 (r1232337; 2012-01-17 03:44:56-0500)
             scripts folder. This folder should contain a file named 'createproject.groovy'.</para><para>There are a few options supported by the
             create project script, but let's start with the most basic way of running. The command
             we will give
-            is:</para><programlisting>
+            is:</para><programlisting linenumbering = "numbered">
 groovy createproject.groovy -name PROJECT_NAME
         </programlisting><para>First
             we are invoking the groovy executable (this assumes groovy is on your path, if not the
@@ -864,11 +864,11 @@ groovy createproject.groovy -name PROJECT_NAME
             required argument for the create project script which is the name for the project we
             want to create. Assuming we want to create a new project named 'MyRiceApp', the command
             would be the
-            following:</para><programlisting>
+            following:</para><programlisting linenumbering = "numbered">
 groovy createproject.groovy -name MyRiceApp
         </programlisting><para>After
             typing the command hit enter to start the script. You should then see a prompt as
-            follows:</para><programlisting>
+            follows:</para><programlisting linenumbering = "numbered">
 ==================================================================
                             WARNING
 ==================================================================
@@ -897,7 +897,7 @@ Do you want to continue (yes/no)?
             create another folder within this with the same name as the given project name.</para>
         <para>Similarly, if our source Rice project is in another directory, we can specify that
             using the '-rdir' argument:</para>
-        <programlisting>
+        <programlisting linenumbering = "numbered">
 groovy createproject.groovy -name MyRiceApp –rdir /home/myapps/rice
         </programlisting>
             <para>Unlike this project directory argument, this does specify the full path to the
@@ -905,14 +905,14 @@ groovy createproject.groovy -name MyRiceApp –rdir /home/myapps/rice
         <para>Finally, the create project script gives us a couple more options for the project
             generation. We can include the Rice sampleapp in our project by passing the –sampleapp
             flag:</para>
-        <programlisting>
+        <programlisting linenumbering = "numbered">
 groovy createproject.groovy -name MyRiceApp –sampleapp
         </programlisting>
         <para>Having the various examples of the sampleapp can be very useful in particular if doing
             development with the KRAD framework.</para>
         <para>Lastly, we can have a project generated that is setup to go against a standalone Rice
             instance. To do this we pass the –standalone flag:</para>
-        <programlisting>
+        <programlisting linenumbering = "numbered">
 groovy createproject.groovy -name MyRiceApp –standalone
         </programlisting>
         <section>
@@ -1185,7 +1185,7 @@ groovy createproject.groovy -name MyRiceApp –standalone
                 </listitem>
             </itemizedlist>
             <para>The following is an example module configuration bean:</para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 &lt;bean id="sampleAppModuleConfiguration" class="org.kuali.rice.kns.bo.ModuleConfiguration"&gt;
     &lt;property name="namespaceCode" value="KR-SAP"/&gt;
     &lt;property name="initializeDataDictionary" value="true"/&gt;
@@ -1223,7 +1223,7 @@ groovy createproject.groovy -name MyRiceApp –standalone
                 we don't need to customize a module service (which is the case if the module has
                 external data objects), then we can simply use the provide service base and set the
                 nested module configuration property to our module bean:</para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 &lt;bean id="sampleAppModuleService" class="org.kuali.rice.krad.service.impl.ModuleServiceBase"&gt;
     &lt;property name="moduleConfiguration" ref="sampleAppModuleConfiguration"/&gt;
 &lt;/bean&gt;

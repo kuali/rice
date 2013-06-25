@@ -329,11 +329,11 @@
       the header levels 1-6. These are named: 'Uif-HeaderOne', 'Uif-HeaderTwo', 'Uif-HeaderThree',
       'Uif-HeaderFour', 'Uif-HeaderFive', and 'Uif-HeaderSix'. To create a header component, we add
       a new bean using one of these as our parent. For example:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-HeaderOne" p:headerText="Big Header"/&gt;
         </programlisting>
     <para>This would result in the following HTML markup:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;h1 class="uif-header"&gt;Big Header&lt;/h1&gt;
         </programlisting>
     <para>The use of one of the other beans would change the h tag to the corresponding h tag
@@ -355,13 +355,13 @@
     <para>By default the header components are already initialized in the corresponding group
             definition. Therefore we can use the nested syntax to set properties like in the
             following example:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean id="MySection" parent="Uif-VerticalBoxSection" p:header.headerText="Section 1 Title"&gt;
         </programlisting>
     <para>For specifying the header text, containers give us a special property named title. When
       this is set, the value will be pushed to the headerText property on the nested header
       element:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean id="MySection" parent="Uif-VerticalBoxSection" p:title="Section 1 Title"&gt;
         </programlisting>
     <para>The resulting header is shown below. </para>
@@ -376,7 +376,7 @@
     <para>Now suppose we want to add other content to the header group. For example, we might want
       to display links or buttons to the right of the header text. We do this configuring the rightGroup
       header property with a Uif-HeaderRightGroup bean:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean id="MySection" parent="Uif-VerticalBoxSection" p:title="Section 1 Title"&gt;
     &lt;property name="header.rightGroup"&gt;
       &lt;bean parent="Uif-HeaderRightGroup"&gt;
@@ -457,7 +457,7 @@
       display this content, not another header and footer (since the footer is a group, it also has
       a nested header and footer, and the nesting can continue). The UIF provides the following base
       bean for footer groups:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean id=&quot;Uif-FooterBase&quot; parent=&quot;Uif-HorizontalBoxGroup&quot; scope=&quot;prototype&quot;&gt;
     &lt;property name=&quot;styleClasses&quot; value=&quot;uif-footer&quot;/&gt;
 &lt;/bean&gt;
@@ -467,7 +467,7 @@
       set to render false) and using a box layout with horizontal orientation. This means the items
       configured in the group will be rendered in a horizontal row. When setting the header
       property, we can create an inner bean that extends the footer base:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean id="MyGroup" parent="Uif-VerticalBoxSection" p:title="My Group"&gt;
    &lt;property name="footer"&gt;
      &lt;bean parent="Uif-FooterBase"&gt;
@@ -495,7 +495,7 @@
     </figure>
     <para>It is common for the View and Page footers to have buttons. For these containers, the
       footer is already initialized, and we can use the nested notation:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean id="MyPage" parent="Uif-Page" p:title="My Page"&gt;
     &lt;property name="footer.items&gt;
     &lt;list&gt;
@@ -511,7 +511,7 @@
         id) for those so they can be reused. For example, the UIF provides the footer bean
         'Uif-FormFooter' which includes actions or save, close, and cancel. If these are the buttons
         you need, you can simply do the following:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean id="MyPage" parent="Uif-Page" p:title="My Page"&gt;
     &lt;property name="footer"&gt;
         &lt;bean parent="Uif-FormFooter"/&gt;
@@ -600,12 +600,12 @@
             managers that work with Collection Groups. We will see these later on in the chapter. A
             layout manager can declare the type of group supported by implementing (or overriding)
             the following method:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 public Class&lt;? extends Container&gt; getSupportedContainer();
         </programlisting>
     <para>For example, a layout manager may be setup to work only with TreeGroups as
             follows:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 public Class&lt;? extends Container&gt; getSupportedContainer() {
     return TreeGroup.class;
 }
@@ -754,19 +754,19 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
         should extend. This bean configures the grid template, adds a style class of
         'uif-gridLayout', and sets defaults for some of the grid properties we will learn about in a
         bit. We can create a new grid layout manger instance using this as our bean parent: </para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-GridLayoutBase" p:numberOfColumns="2"/&gt;
             </programlisting>
       <para>The UIF also provides beans preconfigured with the number of columns for typical cases.
         These include 'Uif-TwoColumnGridLayout' (2 columns), 'Uif-FourColumnGridLayout' (4 columns),
         'Uif-SixColumnGridLayout' (6 columns). Therefore if we wanted a four column grid we can just
         do the following:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-FourColumnGridLayout"/&gt;
             </programlisting>
       <para>To associate a layout manager with a group, we use the group property named
                     <emphasis role="keyword">layoutManager</emphasis>:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean id="MyGroup" parent="Uif-GroupBase" p:title="Group with Grid Layout"&gt;
     &lt;property name="layoutManager"&gt;
      &lt;bean parent="Uif-FourColumnGridLayout"/&gt;
@@ -782,7 +782,7 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
       <para>Uif-GridSubSection - Sub-Section level group configured with a grid layout. Also adds a
         style class of 'uif-gridSubSection' to the group component.</para>
       <para>Using these beans we can rewrite our previous example as follows:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean id="MyGroup" parent="Uif-GridGroup" p:title="Group with Grid Layout" p:layoutManger.numberOfColumns="4"/&gt;
             </programlisting>
       <para>Since the layoutManager property is initialized by the base bean, we can use
@@ -798,7 +798,7 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
           slots. The row span is similar, but the slots are counted vertically instead of
           horizontally. Thus a row span of two means an items will take up the vertical space of two
           items. Let's take the following example:</para>
-        <programlisting>
+        <programlisting linenumbering = "numbered">
 &lt;bean id="MyGroup" parent="Uif-GridGroup" p:title="Group with Grid Layout" p:layoutManager.numberOfColumns="3"&gt;
     &lt;property name="items"&gt;
      &lt;list&gt;
@@ -812,7 +812,7 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
 &lt;/bean&gt;
                 </programlisting>
         <para>This configuration would result in the following table structure:</para>
-        <programlisting>
+        <programlisting linenumbering = "numbered">
 &lt;table&gt;
     &lt;tr&gt;&lt;td colSpan="2"&gt;field1&lt;/td&gt;&lt;td&gt;field2&lt;/td&gt;&lt;/tr&gt;
     &lt;tr&gt;&lt;td rowSpan="2"&gt;field3&lt;/td&gt;&lt;td colSpan="2"&gt;field4&lt;/td&gt;&lt;/tr&gt;
@@ -847,7 +847,7 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
           columns to set a percentage width for each column). We can adjust the widths of each
           column by setting the width property on the group items. For example let's take the
           previous three column grid layout and set varying widths for the columns:</para>
-        <programlisting>
+        <programlisting linenumbering = "numbered">
 &lt;bean id="MyGroup" parent="Uif-GridGroup" p:title="Group with Grid Layout" p:layoutManager.numberOfColumns="3"&gt;
     &lt;property name="items"&gt;
      &lt;list&gt;
@@ -904,7 +904,7 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
           configured the label as a separate group item, and the layout manager will then in turn
           render the label in its own cell. The Uif-GridGroup bean we have been working with has
           this modifier configured by default:</para>
-        <programlisting>
+        <programlisting linenumbering = "numbered">
 &lt;bean id=&quot;Uif-GridGroup&quot; parent=&quot;Uif-GroupBase&quot; scope=&quot;prototype&quot;&gt;
     ...
  &lt;property name=&quot;layoutManager&quot;&gt;
@@ -923,7 +923,7 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
           executed. The available phases are INITIALIZE, APPLY_MODEL, and FINALIZE.</para>
         <para>If we inherit from a bean with one or more modifiers configured, we can choose not to
           use the modifiers by setting the property to null (using the Spring null tag):</para>
-        <programlisting>
+        <programlisting linenumbering = "numbered">
 &lt;property name=&quot;componentModifiers&quot;&gt;
     &lt;null/&gt;
 &lt;/property&gt;
@@ -1010,7 +1010,7 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
         sets the orientation to VERTICAL, and adds a style class of 'uif-verticalBoxLayout'. We can
         apply one of these to a group as we did for the grid layout, using the group's layoutManager
         property:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean id="MyGroup" parent="Uif-GroupBase" p:title="Group with Box Layout"&gt;
    &lt;property name="layoutManager"&gt;
      &lt;bean parent="Uif-VerticalBoxLayout"/&gt;
@@ -1032,7 +1032,7 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
       <para>Uif-HorizontalBoxSubSection - Sub-Section level group configured with a horizontal box
         layout. Adds a style class of 'Uif-VerticalBoxSubSection' to the group.</para>
       <para>Using these beans we can rewrite our previous example as:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean id="MyGroup" parent="Uif-VerticalBoxGroup" p:title="Group with Box Layout"/&gt;
             </programlisting>
       <para>When looking at the grid layout, the examples shown were all fields. Recall, though,
@@ -1041,7 +1041,7 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
         case. In particular, because groups such as section and sub-section typically span the full
         width available, the vertical box layout is used to 'stack' the groups.</para>
       <para>As an example let's build a page group with sections:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean id="BookInfoPage" parent="Uif-Page" p:title="Book Info"&gt;
    &lt;property name="items"&gt;
      &lt;list&gt;
@@ -1091,7 +1091,7 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
           each item.</para>
         <para>As an example here is a group bean with the style classes set on each
                     item:</para>
-        <programlisting>
+        <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-HorizontalBoxSection"&gt;
     &lt;property name="items"&gt;
     &lt;list&gt;
@@ -1123,7 +1123,7 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
         <para>Since we want to keep the inherited style classes for Uif-DataField, we must use the
           Spring list tags with merge="true". Now we can accomplish the same thing using the box
           layout manager's itemStyleClasses property:</para>
-        <programlisting>
+        <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-HorizontalBoxSection"&gt;
   &lt;property name="layoutManager.itemStyleClasses" value="fssLayoutItem"/&gt;
    &lt;property name="items"&gt;
@@ -1270,7 +1270,7 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
       This is merely a field that contains a group! Why do we need that? We need this because fields
       have something groups don't, a label! Let's consider the following group using a grid
       layout:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean id="MyGroup" parent="Uif-GridGroup" p:title="Group with Grid Layout" p:layoutManager.numberOfColumns="4"&gt;
     &lt;property name="items"&gt;
      &lt;list&gt;
@@ -1320,7 +1320,7 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
             beans).</para>
     <para>Now let's create a field group for our checkboxes. We'll use the vertical field group so
       they appear on top of each other within the cell:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean id="MyGroup" parent="Uif-GridGroup" p:title="Group with Field Groups" p:layoutManager.numberOfColumns="4"&gt;
    &lt;property name="items"&gt;
      &lt;list&gt;
@@ -1392,23 +1392,23 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
             link tool bar or a group of links (such as a menu group). As implied by its name, only
             link components may be placed into a link group.</para>
     <para>To create a link group, a bean with parent of Uif-LinkGroup is used.</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-LinkGroup" p:headerText="Link Group"&gt;
         </programlisting>
     <para>To position the contained links, the link group does not use a layout manager, but instead
       a specified delimiter. This delimiter is rendered between each link pair. To configure the
       delimiter string, the property <emphasis role="keyword">linkSeparator</emphasis> is given.</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-LinkGroup" p:headerText="Link Group" p:linkSeparator="|"&gt;
         </programlisting>
     <para>In addition we can specify a string that will render before the group of links, and a
             string that will render after the group. The begin string is given using the <emphasis role="keyword">groupBeginDelimiter</emphasis>. Likewise the end string is given using
             the <emphasis role="keyword">groupEndDelimiter</emphasis>.</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-LinkGroup" p:headerText="Link Group" p:linkSeparator="|" p:groupBeginDelimiter="[" p:groupEndDelimiter="]"&gt;
         </programlisting>
     <para>Now, to complete the link group, we add links through the group items property:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-LinkGroup" p:headerText="Link Group" p:linkSeparator="|" p:groupBeginDelimiter="[" p:groupEndDelimiter="]"&gt;
    &lt;property name="items"&gt;
      &lt;list&gt;
@@ -1437,7 +1437,7 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
       work with data field this means our component is going to point to a property somewhere in the
       model. The purpose of doing so is to provide IO (Input/Output) with the application model.
       Consider our model we used in Chapter 6:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 public class TestForm {
    private String field1;
    private Test1Object test1Object;
@@ -1467,14 +1467,14 @@ public class Test2Object {
             needed).</para>
     <para>We will learn about the collection group beans later on, but for now let's create a bean
       that uses the collection group base bean with name 'Uif-CollectionGroupBase':</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-CollectionGroupBase" p:title="My First Collection" p:propertyName="test1Object.test2List"/&gt;
         </programlisting>
     <para>Collection group is a type of group (which is a container), therefore, we can specify the
       title property which will be used for the group header text. Then we are pointing our
       collection to the test1Object.testList List property. Now let's add some input fields to our
       collection group:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-CollectionGroupBase" p:title="My First Collection" p:propertyName="test1Object.test2List"&gt;
    &lt;property name="items"&gt;
      &lt;list&gt;
@@ -1518,7 +1518,7 @@ public class Test2Object {
       <para>The collection item class is critical for much of the functionality collection groups
         provide. Therefore, when creating a collection group, we must specify the item class type
         using the <emphasis role="keyword">collectionObjectClass</emphasis> property:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-CollectionGroupBase" p:title="My First Collection"
     p:propertyName="test1Object.test2List"
     p:collectionObjectClass="edu.myedu.sample.Test2Object"/&gt;
@@ -1551,7 +1551,7 @@ public class Test2Object {
           >addLinePropertyName</emphasis> and, if needed, the <emphasis role="keyword"
           >addLineBindingInfo</emphasis> properties. As an example, let's assume we want to use our
         test2Object property to hold the add line:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 public class Test1Object {
    private String t1Field;
    private Test2Object test2Object;
@@ -1559,7 +1559,7 @@ public class Test1Object {
 }
             </programlisting>
       <para>We can configure this as follows:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-CollectionGroupBase" p:title="My First Collection"
     p:propertyName="test1Object.test2List"
     p:collectionObjectClass="edu.myedu.sample.Test2Object"&gt;
@@ -1600,7 +1600,7 @@ public class Test1Object {
               is saved in order to differentiate it from the original items.</para>
       <para>Example configuration (NOTE : the addLinePlacement does not need to specified if the
         value is &apos;TOP&apos;)...</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
         &lt;bean id=&quot;Collections-AddBlankLine-TableLayout&quot; parent=&quot;Uif-Disclosure-TableCollectionSection&quot; p:layoutManager.numberOfColumns=&quot;4&quot;&gt;
             ...
             &lt;property name=&quot;renderAddBlankLineButton&quot; value=&quot;true&quot; /&gt;
@@ -1634,7 +1634,7 @@ public class Test1Object {
         is saved in order to differentiate it from the original items.</para>
       <para>Example configuration (NOTE : the addLinePlacement does not need to specified if the
         value is &apos;TOP&apos;) : </para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean id=&quot;Collections-AddViaLightBox-TableLayout&quot; parent=&quot;Uif-Disclosure-TableCollectionSection&quot; p:layoutManager.numberOfColumns=&quot;4&quot;&gt;
             ...
     &lt;property name=&quot;addViaLightBox&quot; value=&quot;true&quot; /&gt;
@@ -1671,7 +1671,7 @@ public class Test1Object {
       <para>Let's configure two buttons for our collection lines. The first button will call a
         server side controller method named 'copyLine', and the second will call a server side
         controller method named 'deleteLine':</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-CollectionGroupBase" p:title="My First Collection"
     p:propertyName="test1Object.test2List"
     p:collectionObjectClass="edu.myedu.sample.Test2Object"&gt;
@@ -1703,7 +1703,7 @@ public class Test1Object {
           role="keyword">addLineActions</emphasis>. The usual action we find here is, of course, the
         'add' action. This is used to make the server call for adding the line to the collection.
         Let's see how we add this:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-CollectionGroupBase" p:title="My First Collection"
     p:propertyName="test1Object.test2List"
     p:collectionObjectClass="edu.myedu.sample.Test2Object"&gt;
@@ -1754,7 +1754,7 @@ public class Test1Object {
         list of Action components that are rendered when the collection group <emphasis role="keyword"
           >renderLineActions</emphasis> property is true (this property gives us a way to turn off
         all actions conditionally). Example : </para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-CollectionGroupBase" p:title="My First Collection" p:propertyName="test1Object.test2List"
  p:collectionObjectClass="edu.myedu.sample.Test2Object"&gt;
   &lt;property name="validatedLineActions"&gt;
@@ -1773,7 +1773,7 @@ public class Test1Object {
           for processing single collections items.</para>
         <para>The save actions can be rendered by setting the <emphasis role="keyword">renderSaveLineActions</emphasis>
           property to true. Example : </para>
-        <programlisting>
+        <programlisting linenumbering = "numbered">
 &lt;bean id=&quot;Collections-SaveLines-TableLayout&quot; parent=&quot;Uif-Disclosure-TableCollectionSection&quot; p:layoutManager.numberOfColumns=&quot;4&quot;&gt;
           ...
  &lt;property name=&quot;renderSaveLineActions&quot; value=&quot;true&quot; /&gt;
@@ -1790,7 +1790,7 @@ public class Test1Object {
           placement values are &apos;LEFT&apos; or any valid column number. Values higher than the number of columns or a
           value of -1 will default to &apos;RIGHT&apos;. </para>
       <para>Example configuration (NOTE : the addLinePlacement does not need to specified if &apos;TOP&apos;)...</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean id=&quot;Collections-ActionColumnPlacement-TableLayout&quot; parent=&quot;Uif-Disclosure-TableCollectionSection&quot; p:layoutManager.numberOfColumns=&quot;4&quot;&gt;
             ...
  &lt;property name=&quot;layoutManager.actionColumnPlacement&quot; value=&quot;3&quot; /&gt;
@@ -1821,7 +1821,7 @@ public class Test1Object {
           >subCollections</emphasis> is provided for configuring nested collection groups.</para>
       <para>For an example let's first create a Test3Object, and add a list of these objects to our
         Test2Object:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 public class Test3Object {
    private String t3Field;
    private String t3Field2;
@@ -1837,7 +1837,7 @@ public class Test2Object {
             </programlisting>
       <para>We can then configure the collection group for the sub-collection as
                 follows:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent="Uif-CollectionGroupBase" p:title="My First Collection"
     p:propertyName="test1Object.test2List"
     p:collectionObjectClass="edu.myedu.sample.Test2Object"&gt;
@@ -1979,7 +1979,7 @@ public class Test2Object {
         </itemizedlist></para>
       <para>Example of using a LightTable group to display a very simple table that is highly
         performant with large sets of
-        data:<programlisting>  &lt;bean id="Demo-LightTableGroup1" parent="Uif-LightTableGroup">
+        data:<programlisting linenumbering = "numbered">  &lt;bean id="Demo-LightTableGroup1" parent="Uif-LightTableGroup">
     &lt;property name="propertyName" value="list6"/>
     &lt;property name="items">
       &lt;list>
@@ -2180,7 +2180,7 @@ public class Test2Object {
                 actions into a Field Group. We use the prototype pattern to specify how the action
                 field groups should be created. The property for doing so is <emphasis role="keyword">actionFieldPrototype</emphasis>.</para>
       <para>By default these prototype is set as follows:</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;property name=&quot;actionFieldPrototype&quot;&gt;
     &lt;bean parent=&quot;Uif-HorizontalFieldGroup&quot; p:align=&quot;center&quot; p:label=&quot;Actions&quot;
         p:shortLabel=&quot;Actions&quot;/&gt;
@@ -2217,7 +2217,7 @@ public class Test2Object {
           in this group will automatically inherit the necessary collection binding path just like
           items of the collection itself</para>
         <para><emphasis role="bold">A note on column width: </emphasis> If you would like the details column to take up less space than it does by default, you must manually alter the column width as follows (20px is the width we are manually setting here and 0 is the index of the details column):</para>
-        <programlisting>&lt;property name=&quot;layoutManager.applyDefaultCellWidths&quot; value=&quot;false&quot;/&gt;
+        <programlisting linenumbering = "numbered">&lt;property name=&quot;layoutManager.applyDefaultCellWidths&quot; value=&quot;false&quot;/&gt;
     &lt;property name=&quot;layoutManager.richTable.templateOptions&quot;&gt;
       &lt;map merge=&quot;true&quot;&gt;
         &lt;entry key=&quot;aoColumnDefs&quot; value=&quot;[{&amp;quot;sWidth&amp;quot; : &amp;quot;20px&amp;quot;, &amp;quot;aTargets&amp;quot; : [0]}]&quot;/&gt;
@@ -2261,7 +2261,7 @@ public class Test2Object {
             >groupingPropertyNames</emphasis>. In this example, lines will be grouped by the values
           that exist for field1 of the collectionObject. The field1 InputField is also displayed as
           a field of the collection line (but could be omitted if desired).</para>
-        <programlisting>
+        <programlisting linenumbering = "numbered">
 &lt;bean id=&quot;Demo-CollectionGrouping-Section1&quot; parent=&quot;Uif-TableCollectionSection&quot;&gt;
     &lt;property name=&quot;headerText&quot; value=&quot;Basic Grouping&quot;/&gt;
     &lt;property name=&quot;collectionObjectClass&quot;
@@ -2288,7 +2288,7 @@ public class Test2Object {
           </mediaobject></para>
         <para>Alternatively, if we supply multiple property names, we can group lines based on
           multiple properties of the collectionObject instead of one. </para>
-        <programlisting>…
+        <programlisting linenumbering = "numbered">…
     <emphasis role="bold">&lt;property name=&quot;layoutManager.groupingPropertyNames&quot;&gt; &lt;list&gt; &lt;value&gt;field2&lt;/value&gt; &lt;value&gt;field1&lt;/value&gt; &lt;/list&gt; &lt;/property&gt;</emphasis>
     &lt;property name=&quot;items&quot;&gt;
       &lt;list&gt;
@@ -2307,7 +2307,7 @@ public class Test2Object {
           </mediaobject></para>
         <para>Supplying a groupingPrefix to use for the grouping row title (set on the <emphasis
             role="keyword">layoutManager</emphasis> of the
-          Uif-TableCollectionSection)<programlisting>…
+          Uif-TableCollectionSection)<programlisting linenumbering = "numbered">…
 &lt;property name=&quot;layoutManager.groupingPrefix&quot; value=&quot;Lines with value &quot;/&gt;
 …
 
@@ -2319,7 +2319,7 @@ public class Test2Object {
           </mediaobject></para>
         <para>And supplying a <emphasis role="keyword">groupingTitle</emphasis> (note that SpringEL is
           REQUIRED to be used in the groupingTitle property, if used) </para>
-        <programlisting>…
+        <programlisting linenumbering = "numbered">…
 &lt;property name=&quot;layoutManager.groupingTitle&quot; value=&quot;Letter @{#lp.field1} in item&quot;/&gt;
 …
 </programlisting>
@@ -2362,7 +2362,7 @@ public class Test2Object {
           ColumnCalculationInfo bean. Javascript functions referenced by ColumnCalculationInfo must
           follow this format ("values" must be the first parameter, "yourExtraData" is optional and
           can be named anything): </para>
-        <programlisting>
+        <programlisting linenumbering = "numbered">
  function yourCalculationFunctionName(values, yourExtraData){
   //do a calculation with the array of values passed
   //return calculation result
@@ -2384,11 +2384,11 @@ public class Test2Object {
           <listitem><para><emphasis role="keyword">showTotal</emphasis> (Boolean) – default true. Whether or not to show the calculation total for the column (this is the total of all values of the collection across all pages)(default is true on KRAD base beans). </para></listitem>
           <listitem><para><emphasis role="keyword">showPageTotal </emphasis>(Boolean) – if true, this shows the calculation total for the values of the currently shown page for the column(default is true on KRAD base beans). </para></listitem>
           <listitem><para><emphasis role="keyword">showGroupTotal </emphasis>(Boolean) – if true, shows the group calculation total for the values of each group. The TableCollection must be using row grouping functionality for this to work (see TableCollection Row Grouping) (default is false on KRAD base beans). </para></listitem>
-          <listitem><para><emphasis role="keyword">totalField, pageTotalField, and groupTotalFieldPrototype</emphasis> – the MessageField component used to display the column calculation results. Normally not configured, but can be used to force messageText in the skip client-side scenario (described below) and to modify the label of the calculation field at will. These fields should not be overridden, only their properties set. Example of setting the label on pageTotalField: <programlisting>&lt;property name=&quot;pageTotalField.fieldLabel.labelText&quot; value=&quot;Page Average&quot;/&gt;
+          <listitem><para><emphasis role="keyword">totalField, pageTotalField, and groupTotalFieldPrototype</emphasis> – the MessageField component used to display the column calculation results. Normally not configured, but can be used to force messageText in the skip client-side scenario (described below) and to modify the label of the calculation field at will. These fields should not be overridden, only their properties set. Example of setting the label on pageTotalField: <programlisting linenumbering = "numbered">&lt;property name=&quot;pageTotalField.fieldLabel.labelText&quot; value=&quot;Page Average&quot;/&gt;
 </programlisting></para></listitem>
           <listitem><para><emphasis role="keyword">calculationFunctionName</emphasis> – described above, the js calculation function to use by name. </para></listitem>
           <listitem><para><emphasis role="keyword">calculationFunctionExtraData </emphasis>– optional. The additional js data to pass to the js calculation function. </para></listitem>
-          <listitem><para><emphasis role="keyword">recalculateTotalClientside</emphasis> – if false, the calculation for total (not page or group totals – these are ALWAYS client-side calculations if shown) is not done client side. What this means is the total must come from the server by providing the total to the totalField in this way through SpringEL: <programlisting>&lt;property name=&quot;totalField.messageText&quot; value=&quot;@{#form.serverCalculatedTotal}&quot;/&gt;
+          <listitem><para><emphasis role="keyword">recalculateTotalClientside</emphasis> – if false, the calculation for total (not page or group totals – these are ALWAYS client-side calculations if shown) is not done client side. What this means is the total must come from the server by providing the total to the totalField in this way through SpringEL: <programlisting linenumbering = "numbered">&lt;property name=&quot;totalField.messageText&quot; value=&quot;@{#form.serverCalculatedTotal}&quot;/&gt;
 </programlisting></para></listitem>
           <listitem><para><emphasis role="keyword">calculateOnKeyUp</emphasis> – if true, fields of this column will perform their calculations on key up (there is a small delay to prevent it from calculating before you are done typing). </para></listitem>
         </itemizedlist>
@@ -2396,7 +2396,7 @@ public class Test2Object {
           Since we do not specify the show properties, our beans, by default, show total and page
           total. Note that the columnCalculationInfo propertyNames match the propertyNames of the
           fields in the collection's items list. </para>
-        <programlisting>&lt;bean id=&quot;Demo-CollectionTotaling-Section1&quot; parent=&quot;Uif-TableCollectionSection&quot; p:layoutManager.numberOfColumns=&quot;4&quot;&gt;
+        <programlisting linenumbering = "numbered">&lt;bean id=&quot;Demo-CollectionTotaling-Section1&quot; parent=&quot;Uif-TableCollectionSection&quot; p:layoutManager.numberOfColumns=&quot;4&quot;&gt;
     &lt;property name=&quot;headerText&quot; value=&quot;Different Calculations per Column&quot;/&gt;
     &lt;property name=&quot;instructionalText&quot; value=&quot;Demonstrating sum, average, min, max&quot;/&gt;
     &lt;property name=&quot;collectionObjectClass&quot; value=&quot;edu.sampleu.demo.kitchensink.UITestObject&quot;/&gt;
@@ -2427,7 +2427,7 @@ public class Test2Object {
         <para>To enable calculations for a collection that also has row grouping, we would do the
           following (note in this example we are turning off total and page total, and only doing
           sums for each
-          column):<programlisting>&lt;bean id=&quot;Demo-CollectionTotaling-Section7&quot; parent=&quot;Uif-TableCollectionSection&quot;&gt;
+          column):<programlisting linenumbering = "numbered">&lt;bean id=&quot;Demo-CollectionTotaling-Section7&quot; parent=&quot;Uif-TableCollectionSection&quot;&gt;
     &lt;property name=&quot;headerText&quot; value=&quot;Group Totaling&quot;/&gt;
     &lt;property name=&quot;instructionalText&quot; value=&quot;Group Totaling on for last 3 columns, no totaling for
       total or page total&quot;/&gt;
@@ -2464,7 +2464,7 @@ public class Test2Object {
 </para>
         <para>The following settings will render a table with left labels and each column with a sum calculation:
 </para>
-        <programlisting>…
+        <programlisting linenumbering = "numbered">…
 ...
 <emphasis role="bold">&lt;property name=&quot;layoutManager.renderOnlyLeftTotalLabels&quot; value=&quot;true&quot;/&gt;</emphasis>
     &lt;property name=&quot;layoutManager.columnCalculations&quot;&gt;
@@ -2769,7 +2769,7 @@ public class Test2Object {
           </imageobject>
         </mediaobject>
       </figure>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean id="MyScrollableGroup" parent="Uif-Disclosure-VerticalBoxSection" p:headerText="Scrollable Groupt" p:width=&quot;30%&quot;&gt;
     &lt;property name=&quot;scrollpane&quot;&gt;
         &lt;bean parent=&quot;Uif-Scrollpane&quot;&gt;

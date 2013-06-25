@@ -65,7 +65,7 @@
     <para>Attribute definitions are used to provide metadata about the attributes (i.e. fields)
             of a business object. The following is a sampling of attribute definitions from the
             CampusImpl business object data dictionary file:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean id=&quot;Campus-campusCode-parentBean&quot; abstract=&quot;true&quot; parent=&quot;AttributeDefinition&quot;&gt;
     &lt;property name=&quot;forceUppercase&quot; value=&quot;true&quot;/&gt;
     &lt;property name=&quot;shortLabel&quot; value=&quot;Campus Code&quot;/&gt;
@@ -93,12 +93,12 @@
             the postalCountryCode fields in StateImpl and CountryImpl are identical, a simple
             attribute definition bean in the Business Object data dictionary file (State.xml) can be
             used:</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean id=&quot;State-postalCountryCode&quot; parent=&quot;Country-postalCountryCode-parentBean&quot;/&gt;</programlisting>
     <para>The definition of the
             Country-postalCountryCode-parentBean bean is seen inside the Country.xml file (for the
             CountryImpl business object):</para>
-    <programlisting>
+    <programlisting linenumbering = "numbered">
 &lt;bean id=&quot;Country-postalCountryCode-parentBean&quot; abstract=&quot;true&quot; parent=&quot;AttributeDefinition&quot;&gt;
     &lt;property name=&quot;name&quot; value=&quot;postalCountryCode&quot;/&gt;
     &lt;property name=&quot;forceUppercase&quot; value=&quot;true&quot;/&gt;
@@ -189,7 +189,7 @@
         </listitem>
       </itemizedlist></para>
     <para>The following is an example of a data object entry:</para>
-    <programlisting>&#160; 
+    <programlisting linenumbering = "numbered">&#160; 
 &lt;bean id=&quot;Book&quot; parent=&quot;Book-parentBean&quot;/&gt;
 &lt;bean id=&quot;Book-parentBean&quot; abstract=&quot;true&quot; parent=&quot;DataObjectEntry&quot;&gt;
     &lt;property name=&quot;dataObjectClass&quot; value=&quot;edu.sampleu.bookstore.bo.Book&quot;/&gt;
@@ -300,7 +300,7 @@
       <para>Values: true if required otherwise false</para>
       <para>When a field is required, the field must have some input value for it to be considered
         valid</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent=&quot;Uif-InputField&quot; p:required=&quot;true&quot; p:propertyName=&quot;field1&quot;&gt;...&lt;/bean&gt;</programlisting>
       <para><emphasis role="keyword">MinLength</emphasis></para>
       <para>Property: minLength</para>
@@ -312,7 +312,7 @@
       <para>Values: integer - 0 or greater</para>
       <para>When a maxLength is set, the input value's character length cannot be greater than
         maxLength. MaxLength should be set to a greater value than minLength (if set).</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent=&quot;Uif-InputField&quot; p:minLength=&quot;1&quot; p:maxLength=&quot;8&quot;&#160;p:propertyName=&quot;field1&quot;&gt;...&lt;/bean&gt;</programlisting>
       <para><emphasis role="keyword">ExclusiveMin</emphasis></para>
       <para>Property: exclusiveMin</para>
@@ -333,7 +333,7 @@
         dates, inclusiveMax validation is <emphasis role="italic">not enforced
           client-side</emphasis>, but the DatePicker widget will limit date selection based on this
         value.</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent=&quot;Uif-InputField&quot; p:exclusiveMin=&quot;0&quot; p:inclusiveMax=&quot;500&quot;&#160;p:propertyName=&quot;field1&gt;...&lt;/bean&gt;</programlisting>
       <para><emphasis role="keyword">dataType</emphasis></para>
       <para>Property: dataType</para>
@@ -342,7 +342,7 @@
       <para>When dataType is set to one of the above types, it checks to see if the input's value
         can be converted into that type. This is <emphasis role="italic">not enforced
           client-side</emphasis> and can only be enforced during server-side validation.</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent=&quot;Uif-InputField&quot; p:dataType=&quot;INTEGER&quot; p:propertyName=&quot;field1&quot;&gt;...&lt;/bean&gt;</programlisting>
       <para><emphasis role="keyword"> minOccurs/maxOccurs </emphasis></para>
       <para>This constraint is not yet fully supported. The name and location may change in the
@@ -401,7 +401,7 @@
         AttributeDefinition. This constraint mimics, but enhances, constraints available in the
         original KNS called ValidationPatterns. <emphasis role="italic">However, do not use
           ValidationPatterns in KRAD as they are deprecated and no longer used.</emphasis></para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field62&quot;&gt;
     &lt;property name=&quot;validCharactersConstraint&quot;&gt;
         &lt;bean parent=&quot;AlphaNumericPatternConstraint&quot; /&gt;
@@ -516,7 +516,7 @@
         defined at the bean level and in a ConfigurationBasedRegexPatternConstraint it is defined in
         an imported properties file. Both custom configurations must have a messageKey
         defined.</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent=&quot;Uif-InputField&quot; p:instructionalText=&quot;custom valid characters
     constraint - this one accepts only 1 alpha character followed by a period&#160; and
     then followed by a number (a.8, b.0, etc)&quot; p:propertyName=&quot;field1&quot;&gt;
@@ -543,7 +543,7 @@
         the overall page flow.</para>
       <para>A field can have any number of PrerequisiteConstraints in their
                     "dependencyConstraints" property. </para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field1&quot; &gt;
     &lt;property name=&quot;dependencyConstraints&quot;&gt;
         &lt;list&gt;
@@ -577,7 +577,7 @@
         PrerequisiteConstraint and one MustOccursConstraint at the top level). Alternatively,
         setting a max="1" at the top level would make this constraint only allow one of the two
         conditions to be satisfied (otherwise, it would be invalid).</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field1&quot;&gt;
     &lt;property name=&quot;mustOccurConstraints&quot;&gt;
         &lt;list&gt;
@@ -641,7 +641,7 @@
         WhenConstraints with the same value defined.</para>
       <para>The following code makes field1 required when field2 is equal to "valueA" or "valueB".
         It also makes field1 only allow alphanumeric input when field2 is equal to "valueA".</para>
-      <programlisting>
+      <programlisting linenumbering = "numbered">
 &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field1&quot;&gt;
     &lt;property name=&quot;caseConstraint&quot;&gt;
         &lt;bean parent=&quot;CaseConstraint&quot;&gt;
@@ -691,7 +691,7 @@
       <para>The <emphasis role="keyword">customClientSideValidationStates</emphasis> property is used strictly to define what state the client-side validation (see corresponding section) should use to validate during user interaction.  By default, client-side validation will always validate against the "n+1" state.  What that means is that client-side validation will always validate against the NEXT state (if one exists, otherwise the current state) of the object because that is what the user is trying to get to. </para>
       <para>To change this behavior the customClientSideValidationStates map can be used to define what client-side validation will be used at each state.  Its entries take the state of the object as the key and the state you want the client-side validation to validate against at that state as the value.  States which don't have a custom client-side validation state default to the "n+1" case, as normal.</para>
       <para>Example of stateMapping with some of these properties set (note that state names themselves are for example purposes only):</para>
-      <para><programlisting>   &lt;property name=&quot;stateMapping&quot;&gt;
+      <para><programlisting linenumbering = "numbered">   &lt;property name=&quot;stateMapping&quot;&gt;
       &lt;bean parent=&quot;StateMapping&quot;&gt;
         &lt;property name=&quot;states&quot;&gt;
           &lt;list&gt;
@@ -779,7 +779,7 @@ BaseConstraints now have a property called states.  This represents the list of 
 </para>
       <para>Example of validating and checking errors (this simple example only changes the state on successful validation):
 </para>
-      <programlisting>//inside a controller method
+      <programlisting linenumbering = "numbered">//inside a controller method
 KRADServiceLocatorWeb.getViewValidationService().validateView(form.getPostedView(), form, &quot;state2&quot;);
 if(!GlobalVariables.getMessageMap().hasErrors()){
    //do whatever you need to do on after a successful

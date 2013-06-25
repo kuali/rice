@@ -227,7 +227,7 @@
                 so they must be marked as prototype within Spring. Finally, it is recommended the
                 base definition be setup with an abstract parent bean. This setup looks like the
                 following:
-                <programlisting>&lt;bean id="componentName" parent="componentName-parentBean"/>
+                <programlisting linenumbering = "numbered">&lt;bean id="componentName" parent="componentName-parentBean"/>
 &lt;bean id="componentName-parentBean" abstract="true" class="edu.myedu.Sample.Component" scope="prototype">
 ...
 &lt;/bean>    </programlisting></para>
@@ -236,7 +236,7 @@
                 by specifying a bean with the same id. Therefore, if an institution wanted to change
                 the default property for a component, they would simply include the following in the
                 institutional spring files:
-                <programlisting>&lt;bean id="componentName" parent="componentName-parentBean">
+                <programlisting linenumbering = "numbered">&lt;bean id="componentName" parent="componentName-parentBean">
     &lt;property name="propertyName" value="overrideValue"/>
 &lt;/bean>    </programlisting></para>
             <para>Without the abstract parent bean, all of the initial property configuration would
@@ -248,19 +248,19 @@
                 The text control renders a HTML input of type text and has a size property, which
                 configures the display size for the input. First, we might setup a bean definition
                 that looks like the following:
-                <programlisting>&lt;bean id="Uif-TextControl" parent="Uif-TextControl-parentBean"/>
+                <programlisting linenumbering = "numbered">&lt;bean id="Uif-TextControl" parent="Uif-TextControl-parentBean"/>
 &lt;bean id="Uif-TextControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.TextControl" scope="prototype">
     &lt;property name="template" value="/krad/WEB-INF/ftl/components/control/text.ftl"/>
     &lt;property name="size" value="30"/>
 &lt;/bean>     </programlisting></para>
             <para>The control can then be used by bean references or inner beans:
-                <programlisting>&lt;property name="control">
+                <programlisting linenumbering = "numbered">&lt;property name="control">
     &lt;bean parent="Uif-TextControl" p:size="10"/>
 &lt;/property>    </programlisting></para>
             <para>Notice here we are overriding the size property because we need a small input.
                 Seeing this, we might decide we want to have a standard size for small, medium, and
                 large inputs. Therefore we set the following bean configurations:
-                <programlisting>&lt;bean id="Uif-TextControl" parent="Uif-TextControl-parentBean"/>
+                <programlisting linenumbering = "numbered">&lt;bean id="Uif-TextControl" parent="Uif-TextControl-parentBean"/>
 &lt;beanid="Uif-TextControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.TextControl" scope="prototype">
     &lt;property name="template" value="/krad/WEB-INF/ftl/components/control/text.ftl"/>
     &lt;property name="size" value="30"/>
@@ -279,7 +279,7 @@
 &lt;/bean>     </programlisting></para>
             <para>Now when we need a small text control, we can reference the 'Uif-SmallTextControl'
                 bean and not specify the size:
-                <programlisting>&lt;property name="control">
+                <programlisting linenumbering = "numbered">&lt;property name="control">
     &lt;bean parent="Uif-SmallTextControl"/>  
 &lt;/property>      </programlisting></para>
             <para>Many of the components provided by the UIF have multiple base bean
@@ -328,7 +328,7 @@
                 of the original configuration and then change or add configuration as needed. </para>
             <para>For an example of this, let's use the UIF 'required' message field which has the
                 following definition:
-                <programlisting>&lt;bean id="Uif-RequiredMessage" parent="Uif-RequiredMessage-parentBean"/>
+                <programlisting linenumbering = "numbered">&lt;bean id="Uif-RequiredMessage" parent="Uif-RequiredMessage-parentBean"/>
 &lt;bean id="Uif-RequiredMessage-parentBean" abstract="true" parent="Uif-MessageField" 
     scope="prototype" p:messageText="*" p:messageType="REQUIRED">
 ...
@@ -336,7 +336,7 @@
             <para>We decide for our application we want the required message to actually display the
                 text 'required' instead of the configured asterisk. To do this we include a bean
                 with the same id in our application (or institutional spring) file:
-                <programlisting>&lt;bean id="Uif-RequiredMessage" parent="Uif-RequiredMessage-parentBean" p:messageText="required" />    </programlisting></para>
+                <programlisting linenumbering = "numbered">&lt;bean id="Uif-RequiredMessage" parent="Uif-RequiredMessage-parentBean" p:messageText="required" />    </programlisting></para>
             <para>Now everywhere the required message field is used the text 'required' will display
                 instead of '*'. </para>
             <tip><para>
@@ -355,7 +355,7 @@
                 host language (the name by which the template is invoked). This must be unique, so
                 that when overridding a template, we must also give a unique name for the template
                 (unless we are overriding the base bean definition
-                itself):<programlisting>&lt;bean id="Uif-TextControl" parent="Uif-TextControl-parentBean"/>
+                itself):<programlisting linenumbering = "numbered">&lt;bean id="Uif-TextControl" parent="Uif-TextControl-parentBean"/>
 &lt;bean id="Uif-TextControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.TextControl" scope="prototype">
     &lt;property name="template" value="/krad/WEB-INF/ftl/components/control/text.ftl"/>
     &lt;property name="templateName" value="uif_text"/>
@@ -373,7 +373,7 @@
                 Customization of behavior can be modified by overriding the various lifecycle
                 methods. These methods will be covered in Chapter 9. Once we have the new class, we
                 associate it with the component by again overriding the bean definition:
-                <programlisting>&lt;bean id="Uif-TextControl" parent="Uif-TextControl-parentBean"/>
+                <programlisting linenumbering = "numbered">&lt;bean id="Uif-TextControl" parent="Uif-TextControl-parentBean"/>
 &lt;bean id="Uif-TextControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.TextControl" scope="prototype">
     &lt;property name="template" value="/krad/WEB-INF/ftl/components/control/text.ftl"/>
     &lt;property name="size" value="30"/>
@@ -478,7 +478,7 @@
             anywhere in the application web directory or classpath.</para>
         <para>Now we can add static HTML content (just like creating an HTML page) along with
             dynamic content using the FreeMarker
-            language:<programlisting>&lt;html>
+            language:<programlisting linenumbering = "numbered">&lt;html>
   &lt;head>&lt;title>${KualiForm.title}&lt;/title>&lt;/head>
   &lt;body>
     &lt;table>
@@ -529,13 +529,13 @@
             so that it can be reused between different templates. First we create another file with
             .ftl extension. Let's call this file body.ftl. Now we add the FreeMarker content to our
             template
-            file:<programlisting>&lt;h2> This is the page body &lt;/h2>
+            file:<programlisting linenumbering = "numbered">&lt;h2> This is the page body &lt;/h2>
 ${KualiForm.body}</programlisting></para>
         <para>Next, we can bring in the contents of body.ftl into our main template by using the
             FreeMarker directive named <code>include</code>. To use the include directive we specify
             the absolute or relative path to the template file that should be included using the
             path
-            attribute:<programlisting>&lt;html>
+            attribute:<programlisting linenumbering = "numbered">&lt;html>
   &lt;head>&lt;title>${KualiForm.title}&lt;/title>&lt;/head>
   &lt;body>
     &lt;table>
@@ -557,23 +557,23 @@ ${KualiForm.body}</programlisting></para>
         <para>Interpolations may also contain expressions (see below). For example, we can add two
                 numeric properties together and render the result as follows:</para>
         <para>
-            <programlisting>${KualiForm.numProp1 + KualiForm.numProp2}</programlisting>
+            <programlisting linenumbering = "numbered">${KualiForm.numProp1 + KualiForm.numProp2}</programlisting>
         </para>
         <para>With FreeMarker we are not limited to just reading properties from the model, but also
             may invoke methods! This is done using the method name within the expression, followed
             by list of values to send as parameters. The parameter values may reference another
             model property or variable:</para>
         <para>
-            <programlisting>${KualiForm.retrieveTaxAmount(taxNumber, 'T')} </programlisting>
+            <programlisting linenumbering = "numbered">${KualiForm.retrieveTaxAmount(taxNumber, 'T')} </programlisting>
         </para>
         <para>In addition to accessing dynamic data within the model, we can create new dynamic
             variables within the template. To create a new variable the <code>assign</code>
             directive is used. Following the assign keyword, the name and value for the variable are
             given separated by an
-            equal:<programlisting>&lt;#assign myVar="Hello!"/></programlisting></para>
+            equal:<programlisting linenumbering = "numbered">&lt;#assign myVar="Hello!"/></programlisting></para>
         <para>Similar to model properties, the value for a variable can be written to the output
             stream using the ${}
-            notation:<programlisting>&lt;td>${myVar}&lt;/td> &lt;#-- prints &lt;td>Hello!&lt;/td> --></programlisting></para>
+            notation:<programlisting linenumbering = "numbered">&lt;td>${myVar}&lt;/td> &lt;#-- prints &lt;td>Hello!&lt;/td> --></programlisting></para>
       
         <para>When assigning a variable value, we may also use an expression. Freemarker supports
                 all of the standard expression operators. The only notable difference is Freemarker
@@ -585,7 +585,7 @@ ${KualiForm.body}</programlisting></para>
                     >here</link>. </para>
         <para>Let's take a simple case of addition as an example:</para>
         <para>
-            <programlisting>&lt;#assign groupOneTotal=50/>
+            <programlisting linenumbering = "numbered">&lt;#assign groupOneTotal=50/>
 &lt;#assign groupTwoTotal=100/>
 &lt;#assign totalBothGroups=groupOneTotal + groupTwoTotal/></programlisting>
         </para>
@@ -622,7 +622,7 @@ ${KualiForm.body}</programlisting></para>
                 is not quoted, the datatype will be determined based on the format. The keywords
                 true and false are used to indicate a boolean type.</para>
         <para>
-            <programlisting>&lt;#assign var="Hello"/> &lt;#-- string datatype -->
+            <programlisting linenumbering = "numbered">&lt;#assign var="Hello"/> &lt;#-- string datatype -->
 &lt;#assign var=3/> &lt;#-- numeric datatype -->
 &lt;#assign var=true/> &lt;#-- boolean datatype -->
 &lt;#assign comp=model.comp/> &lt;#-- assuming model.comp is object, hash datatype --></programlisting>
@@ -636,7 +636,7 @@ ${KualiForm.body}</programlisting></para>
             expects a number or boolean will cause an error. In the following example, the macro
             with name 'grid' expects a parameter named 'rowCount' of type number:</para>
         <para>
-            <programlisting>&lt;#macro grid rowCount>
+            <programlisting linenumbering = "numbered">&lt;#macro grid rowCount>
   ...
 &lt;/#macro>
 
@@ -660,7 +660,7 @@ Correct Invocation:
                 directive (or the next expression) is evaluated if an elseif directive follows. The
                 general syntax is as follows:</para>
         <para>
-            <programlisting>&lt;#if expression1>
+            <programlisting linenumbering = "numbered">&lt;#if expression1>
   // block
 &lt;#elseif expression 2>
   // block
@@ -671,7 +671,7 @@ Correct Invocation:
         <para>In the following example we have a variable named colCount which holds an
             integer:</para>
         <para>
-            <programlisting>&lt;#if colCount == 1>
+            <programlisting linenumbering = "numbered">&lt;#if colCount == 1>
   // block 1
 &lt;#elseif colCount == 2>
   // block 2
@@ -689,7 +689,7 @@ Correct Invocation:
                 directive is used by specifying the variable/model name followed by a variable to
                 expose each item under. The general syntax is as follows:</para>
         <para>
-            <programlisting>&lt;#list sequenceName as item>
+            <programlisting linenumbering = "numbered">&lt;#list sequenceName as item>
    // block
 &lt;/#list></programlisting>
         </para>
@@ -697,14 +697,14 @@ Correct Invocation:
             List. Within the list body, the item being iterated over will be exposed with the
             variable 'food':</para>
         <para>
-            <programlisting>&lt;#list foods as food>
+            <programlisting linenumbering = "numbered">&lt;#list foods as food>
   Name: ${food.name}, Type: ${food.type}
 &lt;/#list></programlisting>
         </para>
         <para>If the datatype to iterate over is a Map, we can iterate using the list directive to
             iterate over the keys of the map like the following example:</para>
         <para>
-            <programlisting>&lt;#list map?keys as parm>
+            <programlisting linenumbering = "numbered">&lt;#list map?keys as parm>
   ${map[parm]}
 &lt;/#list></programlisting>
         </para>
@@ -716,7 +716,7 @@ Correct Invocation:
         <para>Finally, the <code>break</code> directive exists to exit the list directive early, as
                 the following example demonistrates:</para>
         <para>
-            <programlisting>&lt;#list seq as x>
+            <programlisting linenumbering = "numbered">&lt;#list seq as x>
   ${x}
   &lt;#if x = "spring">&lt;#break>&lt;/#if>
 &lt;/#list>    </programlisting>
@@ -734,7 +734,7 @@ Correct Invocation:
                     <code>Macros</code>. Macros are created using the macro directive and are given
                 a name that can be used for invocation. For example, we can change our previous
                 body.ftl to become a macro as
-                follows:<programlisting>&lt;#macro body>
+                follows:<programlisting linenumbering = "numbered">&lt;#macro body>
   &lt;h2> This is the page body &lt;/h2>
   ${KualiForm.body}
 &lt;/#macro></programlisting></para>
@@ -749,7 +749,7 @@ Correct Invocation:
                 scoped to it as well. This is done using the <code>local</code> directive. The
                 syntax for using the local directive is the same as the assign directive.</para>
             <para>
-                <programlisting>&lt;#macro body>
+                <programlisting linenumbering = "numbered">&lt;#macro body>
   &lt;#local locVar="is only visible within macro"/>
 &lt;#macro></programlisting>
             </para>
@@ -761,14 +761,14 @@ Correct Invocation:
                 declare macro parameters, we simply list their identifying names on the macro
                 directive after the macro name. Each parameter name is separated by a space:</para>
             <para>
-                <programlisting>&lt;#macro macroName parm1 parm2 parm3 parm4 ...></programlisting>
+                <programlisting linenumbering = "numbered">&lt;#macro macroName parm1 parm2 parm3 parm4 ...></programlisting>
             </para>
             <para>Within the macro the parameters become local variables. We can print the parameter
                 value to the output stream, use in a conditional statement, or use in any other way
                 supported by variables. For example, let's add a header, bodyContent, and footer
                 parameter to our body macro:</para>
             <para>
-                <programlisting>&lt;#macro body header bodyContent footer>
+                <programlisting linenumbering = "numbered">&lt;#macro body header bodyContent footer>
   &lt;body>
     &lt;table>
       &lt;tr>
@@ -797,7 +797,7 @@ Correct Invocation:
                 assumed to be required. All required parameters must be given before parameters that
                 have defaults. Let's take a look at an example:</para>
             <para>
-                <programlisting>&lt;#macro body bodyContent header="Header One" footer="">
+                <programlisting linenumbering = "numbered">&lt;#macro body bodyContent header="Header One" footer="">
 ...</programlisting>
             </para>
             <para>Here we have changed the body macro to make the bodyContent a required parameter,
@@ -822,13 +822,13 @@ Correct Invocation:
             <para>As an example, let's invoke our body macro created in the previous section,
                 passing a value for the 'bodyContent' parameter:</para>
             <para>
-                <programlisting>&lt;@body bodyContent="Hello KRAD World!"/></programlisting>
+                <programlisting linenumbering = "numbered">&lt;@body bodyContent="Hello KRAD World!"/></programlisting>
                 
                 
             </para>
             <para>or </para>
             <para>
-                <programlisting>&lt;#assign content="Hello KRAD World!"/>
+                <programlisting linenumbering = "numbered">&lt;#assign content="Hello KRAD World!"/>
 &lt;@body bodyContent=content/></programlisting>
             </para>
             <para>When the macro is associated with a namespace, we must specify the namespace
@@ -836,7 +836,7 @@ Correct Invocation:
                 associated with the namespace 'myapp'. We would then invoke the macro as
                 follows:</para>
             <para>
-                <programlisting>&lt;@myapp.body bodyContent=content/></programlisting>
+                <programlisting linenumbering = "numbered">&lt;@myapp.body bodyContent=content/></programlisting>
             </para>
         </section>   
         
@@ -849,7 +849,7 @@ Correct Invocation:
             rendered, we use the <code>nested</code> directive. The nested directive may be used
             more than once within the macro definition:</para>
         <para>
-            <programlisting>&lt;#macro wrapTd>
+            <programlisting linenumbering = "numbered">&lt;#macro wrapTd>
   &lt;td>
   &lt;#nested/>
   &lt;/td>
@@ -867,7 +867,7 @@ Invocation:
         <para>Assuming renderHeader is true, and the header variable is 'Header One', the following
                 would be output:</para>
         <para>
-            <programlisting>&lt;td>
+            <programlisting linenumbering = "numbered">&lt;td>
 Header One
 &lt;/td></programlisting>
         </para>
@@ -875,7 +875,7 @@ Header One
             indicate a macro accepts a variable number of arguments, the last parameter declaration
             must end with '...':</para>
         <para>
-            <programlisting>&lt;#macro loop parms...>
+            <programlisting linenumbering = "numbered">&lt;#macro loop parms...>
   &lt;#list param.keys as key>
     ${parm[key]}
   &lt;/#list>
@@ -898,7 +898,7 @@ Invocation:
             will be evaluated as the function return value). </para>
         <para>Let's build an example function that returns the max of two numbers:</para>
         <para>
-            <programlisting>&lt;#function max number1 number2>
+            <programlisting linenumbering = "numbered">&lt;#function max number1 number2>
   &lt;#if number1 > number2>
     &lt;#return number1/>
   &lt;#else>
@@ -912,7 +912,7 @@ Invocation:
             values is done using function syntax '(parm1, parm2, ...)' rather than key/value pairs.
             The following shows examples of invoking the max function above:</para>
         <para>
-            <programlisting>${max(number1, number2)}
+            <programlisting linenumbering = "numbered">${max(number1, number2)}
 &lt;#assign maxNum=max(number1, number2)/>
 &lt;#if number3 > max(number1, number2)>
    // block
@@ -932,12 +932,12 @@ Invocation:
             character ('?') after the variable (or expression), followed by the built-in name and
             any parameters. The following shows the general form:</para>
         <para>
-            <programlisting>${someVariable?builtIn(parms)}</programlisting>
+            <programlisting linenumbering = "numbered">${someVariable?builtIn(parms)}</programlisting>
         </para>
         <para>The return value of the built-in invocation becomes the value for the
             expression:</para>
         <para>
-            <programlisting>&lt;#assign name='Joe Smith'/>
+            <programlisting linenumbering = "numbered">&lt;#assign name='Joe Smith'/>
 ${name} &lt;#-- prints 'Joe Smith' -->
 ${name?upper_case} &lt;#-- prints 'JOE SMITH' --></programlisting>
         </para>
@@ -979,7 +979,7 @@ ${name?upper_case} &lt;#-- prints 'JOE SMITH' --></programlisting>
                 <code>include</code> directive. The include directive takes the path to the file as
             an argument, which may be expressed as a relative or absolute path:</para>
         <para>
-            <programlisting>&lt;#include '../footer.ftl'/>
+            <programlisting linenumbering = "numbered">&lt;#include '../footer.ftl'/>
 &lt;#include '/krad/templates/footer.ftl'/></programlisting>
         </para>
         <para>FreeMarker also supports a second way of including template files for the purpose of
@@ -990,7 +990,7 @@ ${name?upper_case} &lt;#-- prints 'JOE SMITH' --></programlisting>
                 contains several macro definitions, and associate them with the namespace
                 'myapp':</para>
         <para>
-            <programlisting>&lt;#import 'myapp.ftl' as 'myapp'/></programlisting>
+            <programlisting linenumbering = "numbered">&lt;#import 'myapp.ftl' as 'myapp'/></programlisting>
         </para>
         <para>All the macros contained in myapp.ftl will be associated with the myapp namespace and
             must be invoked through that namespace. Note when using import, any output generated by
@@ -1018,7 +1018,7 @@ ${name?upper_case} &lt;#-- prints 'JOE SMITH' --></programlisting>
             <title>Coarse-Grained Parameters</title>
             <para>An important consideration when setting up a macro is how to setup the parameters.
             To help explain this, let's take a look at a sample text
-            control:<programlisting>&lt;@spring.input id="${id}" path="${path}" disabled="${disabled}" size="${size}" maxlength="${maxLength}"/>    </programlisting></para>
+            control:<programlisting linenumbering = "numbered">&lt;@spring.input id="${id}" path="${path}" disabled="${disabled}" size="${size}" maxlength="${maxLength}"/>    </programlisting></para>
             <para>This snippet is invoking a spring input macro, which will then output the HTML
                 input tag. We see some of the attributes this macro provides are id, path, disabled,
                 size, and maxlength. Since this template is generic (in the sense that it should
@@ -1026,17 +1026,17 @@ ${name?upper_case} &lt;#-- prints 'JOE SMITH' --></programlisting>
                 variable. Now based on our knowledge of macros, we can create an input macro which
                 will allow values for these variables (or attributes) to be specified by the calling
                 template. This would look like the following:
-                <programlisting>&lt;#macro uif_input id path disabled size maxLength>
+                <programlisting linenumbering = "numbered">&lt;#macro uif_input id path disabled size maxLength>
   &lt;@spring:input id="${id}" path="${path}" disabled="${disabled}" size="${size}" maxlength="${maxLength}"/>  
 &lt;/#macro>  </programlisting></para>
             <para>The calling template would then be:
-            <programlisting>&lt;@uif_input id="${component.id}" path="${component.path}" disabled="${component.disabled}" 
+            <programlisting linenumbering = "numbered">&lt;@uif_input id="${component.id}" path="${component.path}" disabled="${component.disabled}" 
 size="${component.size}" maxLength="${component.maxLength}"/>    </programlisting></para>
             <para>Here the component variable is the component instance that has been exported to
                 the page. </para>
             <para>Now let's suppose that a developer wishes to override the component class and
             template to provide a 'readonly' property. The template now looks like this:
-            <programlisting>&lt;#macro uif_input id path disabled size maxLength readOnly>
+            <programlisting linenumbering = "numbered">&lt;#macro uif_input id path disabled size maxLength readOnly>
   &lt;@spring.input id="${id}" path="${path}" disabled="${disabled}" size="${size}" maxlength="${maxLength}"
     readOnly="${readOnly}"/>  
 &lt;/#macro>    </programlisting></para>
@@ -1047,12 +1047,12 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
             <para>To solve this problem, KRAD passes the full component to the templates and not the
             individual properties of the component. Passing the full component makes changes our
             original macro to:
-            <programlisting>&lt;#macro uif_input component>
+            <programlisting linenumbering = "numbered">&lt;#macro uif_input component>
   &lt;@spring.input id="${component.id}" path="${component.path}" disabled="${component.disabled}" size="${component.size}"/>
 &lt;/#macro>    </programlisting></para>
             <para>Now for the custom template, we simply make use of the new property without any
             changes to the calling template:
-            <programlisting>&lt;#macro uif_input component>
+            <programlisting linenumbering = "numbered">&lt;#macro uif_input component>
   &lt;@spring.input id="${component.id}" path="${component.path}" disabled="${component.disabled}" size="${component.size}"
                  readOnly="${component.readOnly}"/>
 &lt;/#macro>    </programlisting></para>
@@ -1154,7 +1154,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                 namespace, and are available by default to all component templates. The following
                 shows an example of using the script wrapper tag:</para>
         <para>
-            <programlisting>&lt;@krad.script value="alert('hello');"/></programlisting>
+            <programlisting linenumbering = "numbered">&lt;@krad.script value="alert('hello');"/></programlisting>
         </para>
         </section>
         
@@ -1170,7 +1170,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                 this, KRAD provides the template macro.</para>
             <para>The template macro requires the component parameter to be specified. This is the
             child component that should be rendered:</para>
-            <programlisting>
+            <programlisting linenumbering = "numbered">
 &lt;@krad.template component=childComponent/&gt;
             </programlisting>
           
@@ -1325,17 +1325,17 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                 can be assigned by the developer, or it can by generated by the framework. Manual
                 assignment can furthermore be done in one of two ways. The first is to set the id by
                 using the bean property tag. For example:
-                <programlisting>&lt;bean parent="Component">
+                <programlisting linenumbering = "numbered">&lt;bean parent="Component">
     &lt;property name="id" value="ks34"/>  </programlisting></para>
             <para>The second way to manual assign the component id is by using the bean id
                 attribute:
-                <programlisting>&lt;bean id="ks34" parent="Component"&gt;  </programlisting></para>
+                <programlisting linenumbering = "numbered">&lt;bean id="ks34" parent="Component"&gt;  </programlisting></para>
             <para>Since the id bean attribute is already required in most beans (top level beans),
                 it is often most convenient to take this approach. If both the bean id attribute and
                 the id property are specified, the id property value will be used. </para>
             <para>Note that when a bean inherits a bean definition, an id specified with the
                 property tag will be inherited, while the id attribute of the bean tag will not. </para>
-            <programlisting>&lt;bean id="ks34" parent="Component">
+            <programlisting linenumbering = "numbered">&lt;bean id="ks34" parent="Component">
 ...
 &lt;/bean>
 
@@ -1381,7 +1381,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                 components include <emphasis role="keyword">Fields</emphasis> and <emphasis role="keyword"
                     >Controls</emphasis>. The component types use the title property as the title
                 attribute on the corresponding element they produce:
-                <programlisting>&lt;element title="component title property value"/&gt;  </programlisting></para>
+                <programlisting linenumbering = "numbered">&lt;element title="component title property value"/&gt;  </programlisting></para>
             <para>The title attribute value is most often shown as a tooltip when the user hovers
                 over the element. </para>
             <para><emphasis role="keyword">Title Property:</emphasis> The reason we say title property
@@ -1394,7 +1394,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                 our view much more dynamic. Essentially the render property allows us to display or
                 not display a component based on runtime conditions. </para>
             <para> For example in the following configuration only field1 will be rendered:
-                <programlisting>&lt;bean parent="Uif-InputField"
+                <programlisting linenumbering = "numbered">&lt;bean parent="Uif-InputField"
     p:propertyName="field1"/> &lt;bean parent="Uif-InputField"
     p:propertyName="field2" p:render="false"/>  </programlisting></para>
             <para>The default value for render is true, so if the render property is not specified
@@ -1480,7 +1480,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
             <tip><para><emphasis role="keyword">Read Only</emphasis>: As stated above, the feature of read only
                     inheritance is done by setting an expression on the readOnly property which is
                     inherited. This configuration is as follows:
-                    <programlisting>&lt;property name="readOnly" value="@{#parent.readOnly}"/&gt;     </programlisting></para>
+                    <programlisting linenumbering = "numbered">&lt;property name="readOnly" value="@{#parent.readOnly}"/&gt;     </programlisting></para>
             <para>However, the readOnly property can be overridden to specify another condition, or
                     to explicitly make the component editable. This can be useful for cases when a
                     few of the child components need to be editable, but the majority should be read
@@ -2205,7 +2205,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                 CSS and Script links. Thus, it provides the base theme (or 'Look and Feel') for our
                 page. </para>
             <para> In XML, view themes can be created using the 'Uif-ViewTheme' bean:
-                <programlisting>&lt;bean id="Uif-MyTheme" parent="Uif-ViewTheme">
+                <programlisting linenumbering = "numbered">&lt;bean id="Uif-MyTheme" parent="Uif-ViewTheme">
     &lt;property name="stylesheets">
         &lt;list>
             &lt;value>/css/my.css&lt;/value> 
@@ -2241,7 +2241,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                 anywhere within the application web directory, or they can be accessed through a
                 different web server. To add the additional files, we use the additionalCssFiles and
                 additionalScriptFiles properties on the view component:
-                <programlisting>&lt;bean id="MyView" parent="Uif-FormView"> 
+                <programlisting linenumbering = "numbered">&lt;bean id="MyView" parent="Uif-FormView"> 
     ...
     &lt;property name="additionalCssFiles">
         &lt;list>
@@ -2266,7 +2266,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
             <para>The styleClasses property is provided for all components, and holds a list of
                 class names that should be applied for that component. We can configure this
                 property using the Spring list tag:
-                <programlisting>&lt;bean id="MyActionButton" parent="Uif-PrimaryActionButton">
+                <programlisting linenumbering = "numbered">&lt;bean id="MyActionButton" parent="Uif-PrimaryActionButton">
     ...
     &lt;property name="styleClasses">
         &lt;list merge="true">
@@ -2279,14 +2279,14 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                 style classes always be inherited. </para>
             <para>The configured styleClasses are then specified as the class attribute on the
                 rendered HTML element:
-                <programlisting>&lt;button id="MyActionButton" class="uif-primaryActionButton customStyleClass"  ... /&gt;  </programlisting></para>
+                <programlisting linenumbering = "numbered">&lt;button id="MyActionButton" class="uif-primaryActionButton customStyleClass"  ... /&gt;  </programlisting></para>
             <para>Notice the uif-primaryActionButton class. This was inherited from the
                 Uif-PrimaryActionButton bean. </para>
             <para>The second way to modify themes is by providing inline styling information. This
                 is accomplished by using the style property that is available on all components.
                 This property is then used to set the corresponding style attribute on the rendered
                 HTML element (known as inline styling). </para>
-            <programlisting>&lt;bean parent="Uif-BoxGroupSection" p:style="border: 1px;"&gt; 
+            <programlisting linenumbering = "numbered">&lt;bean parent="Uif-BoxGroupSection" p:style="border: 1px;"&gt; 
 ...    </programlisting>
         </section>
         <section>
@@ -2297,7 +2297,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                 the class names all begin with 'uif-'. After the prefix, the class names closely
                 match the bean name (with the exception of casing). As an example let's look at a
                 few of the provided action definitions:
-                <programlisting>&lt;bean id="Uif-ActionImage" ...
+                <programlisting linenumbering = "numbered">&lt;bean id="Uif-ActionImage" ...
     &lt;property name="styleClasses">
         &lt;list merge="true">
             &lt;value>uif-actionImage&lt;/value>
@@ -2328,7 +2328,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
             <para>In addition to providing the style class per component, the base beans are also
                 setup to inherit classes from the parent (with the merge="true"). A good example of
                 this is the stacked collection group section:
-                <programlisting>&lt;bean id="Uif-StackedCollectionSection" parent="Uif-StackedCollectionGroup">
+                <programlisting linenumbering = "numbered">&lt;bean id="Uif-StackedCollectionSection" parent="Uif-StackedCollectionGroup">
     &lt;property name="styleClasses">
         &lt;list merge="true">
             &lt;value>uif-stackedCollectionSection&lt;/value>
@@ -2337,7 +2337,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
             <para>As in the previous examples, we are applying a style class for the component named
                 'uif- stackedCollectionSection'. Now, let's walk up the bean hierarchy and look at
                 the style classes we are adding:
-                <programlisting>&lt;bean id="Uif-StackedCollectionGroup" parent="Uif-CollectionGroupBase">
+                <programlisting linenumbering = "numbered">&lt;bean id="Uif-StackedCollectionGroup" parent="Uif-CollectionGroupBase">
     &lt;property name="styleClasses">
         &lt;list merge="true">
             &lt;value>uif-stackedCollectionGroup&lt;/value>
@@ -2456,9 +2456,9 @@ uif-stackedCollectionGroup {
         <para>For populating a list with a single string value the individual entries are delimited
             using a comma. For example:
             <programlisting>p:listProperty="item1,item2,item3"    </programlisting> or
-            <programlisting>&lt;property name="listProperty" value="item1,item2,item3"/&gt;</programlisting>
+            <programlisting linenumbering = "numbered">&lt;property name="listProperty" value="item1,item2,item3"/&gt;</programlisting>
             is equivalent to:
-            <programlisting>&lt;property name="listProperty">
+            <programlisting linenumbering = "numbered">&lt;property name="listProperty">
     &lt;list>
         &lt;value>item1&lt;/value>
         &lt;value>item2&lt;/value>
@@ -2472,9 +2472,9 @@ uif-stackedCollectionGroup {
             separated using a colon. For example:
             <programlisting>p:mapProperty="key1:value1,key2:value2,key3:value3"    </programlisting>
             or
-            <programlisting>&lt;property name="mapProperty" value="key1:value1,key2:value2,key3:value3" /&gt;     </programlisting>
+            <programlisting linenumbering = "numbered">&lt;property name="mapProperty" value="key1:value1,key2:value2,key3:value3" /&gt;     </programlisting>
             is equivalent to:
-            <programlisting>&lt;property name="mapProperty">
+            <programlisting linenumbering = "numbered">&lt;property name="mapProperty">
     &lt;map>
         &lt;entry key="key1" value="value1"/>
         &lt;entry key="key2" value="value2"/>
@@ -2523,7 +2523,7 @@ uif-stackedCollectionGroup {
                 when merging. </para>
             <para>To make use of this functionality, we must first setup the collection items in the
                 base bean to have an order value:
-                <programlisting>&lt;bean id="MyPage" parent="Uif-Page">
+                <programlisting linenumbering = "numbered">&lt;bean id="MyPage" parent="Uif-Page">
     ...
     &lt;property name="items">
         &lt;list>
@@ -2540,7 +2540,7 @@ uif-stackedCollectionGroup {
                 page, we need to add two sections. However, when these sections are rendered, the
                 first section should be between 'Section1' and 'Section2', and our second section
                 should be after 'Section3'. This can be done as follows:
-                <programlisting>&lt;bean id="AnotherPage" parent="MyPage">
+                <programlisting linenumbering = "numbered">&lt;bean id="AnotherPage" parent="MyPage">
     ...
     &lt;property name="items">
         &lt;list merge="true">

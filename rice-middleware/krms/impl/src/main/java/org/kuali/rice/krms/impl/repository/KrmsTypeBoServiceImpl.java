@@ -15,15 +15,14 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeBoService;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
-import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
 
 import javax.jws.WebParam;
 import java.util.ArrayList;
@@ -32,7 +31,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.kuali.rice.krms.api.repository.type.KrmsTypeBoService;
 
 public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
 
@@ -49,10 +47,12 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
 		if (krmsType == null){
 	        throw new RiceIllegalArgumentException("krmsType is null");
 		}
+
 		final String nameKey = krmsType.getName();
 		final String namespaceKey = krmsType.getNamespace();
 		final KrmsTypeDefinition existing = getTypeByName(namespaceKey, nameKey);
-		if (existing != null && existing.getName().equals(nameKey) && existing.getNamespace().equals(namespaceKey)){
+
+        if (existing != null && existing.getName().equals(nameKey) && existing.getNamespace().equals(namespaceKey)){
             throw new RiceIllegalStateException("the KRMS Type to create already exists: " + krmsType);
 		}
 		
@@ -71,12 +71,16 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
         if (krmsType == null) {
             throw new RiceIllegalArgumentException("krmsType is null");
         }
+
 		final String idKey = krmsType.getId();
 		final KrmsTypeBo existing = businessObjectService.findBySinglePrimaryKey(KrmsTypeBo.class, idKey);
+
         if (existing == null) {
             throw new RiceIllegalStateException("the KRMS type does not exist: " + krmsType);
         }
+
         final KrmsTypeDefinition toUpdate;
+
         if (!existing.getId().equals(krmsType.getId())){
         	final KrmsTypeDefinition.Builder builder = KrmsTypeDefinition.Builder.create(krmsType);
         	builder.setId(existing.getId());
@@ -104,9 +108,11 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
         if (StringUtils.isBlank(namespaceCode)) {
             throw new RiceIllegalArgumentException("namespaceCode was a null or blank value");
         }
+
         if (StringUtils.isBlank(name)) {
             throw new RiceIllegalArgumentException("name was a null or blank value");
         }
+
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("namespace", namespaceCode);
         map.put("name", name);
@@ -120,6 +126,7 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
         if (StringUtils.isBlank(namespaceCode)) {
             throw new RiceIllegalArgumentException("namespaceCode was a null or blank value");
         }
+
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("namespace", namespaceCode);
         map.put("active", Boolean.TRUE);
@@ -134,6 +141,7 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
         if (StringUtils.isBlank(serviceName)) {
             throw new RiceIllegalArgumentException("serviceName was a null or blank value");
         }
+
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("serviceName", serviceName);
         map.put("active", Boolean.TRUE);
@@ -157,13 +165,16 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
         if (StringUtils.isBlank(contextId)) {
             throw new RiceIllegalArgumentException("contextId was a null or blank value");
         }
+
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("contextId", contextId);
         Collection<ContextValidAgendaBo> contextValidAgendaBos = businessObjectService.findMatchingOrderBy(ContextValidAgendaBo.class, Collections.unmodifiableMap(map), "agendaType.name", true);
         List<KrmsTypeDefinition>  agendaTypes = new ArrayList<KrmsTypeDefinition>();
+
         for (ContextValidAgendaBo contextValidAgendaBo : contextValidAgendaBos) {
             agendaTypes.add(KrmsTypeBo.to(contextValidAgendaBo.getAgendaType()));
         }
+
         return agendaTypes;
     }
 
@@ -172,13 +183,16 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
         if (StringUtils.isBlank(agendaTypeId)) {
             throw new RiceIllegalArgumentException("agendaTypeId was a null or blank value");
         }
+
         if (StringUtils.isBlank(contextId)) {
             throw new RiceIllegalArgumentException("contextId was a null or blank value");
         }
+
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("agendaTypeId", agendaTypeId);
         map.put("contextId", contextId);
         ContextValidAgendaBo contextValidAgendaBo = businessObjectService.findByPrimaryKey(ContextValidAgendaBo.class, Collections.unmodifiableMap(map));
+
         return KrmsTypeBo.to(contextValidAgendaBo.getAgendaType());
     }
 
@@ -187,13 +201,16 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
         if (StringUtils.isBlank(contextId)) {
             throw new RiceIllegalArgumentException("contextId was a null or blank value");
         }
+
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("contextId", contextId);
         Collection<ContextValidRuleBo> contextValidRuleBos = businessObjectService.findMatchingOrderBy(ContextValidRuleBo.class, Collections.unmodifiableMap(map), "ruleType.name", true);
         List<KrmsTypeDefinition>  ruleTypes = new ArrayList<KrmsTypeDefinition>();
+
         for (ContextValidRuleBo contextValidRuleBo : contextValidRuleBos) {
             ruleTypes.add(KrmsTypeBo.to(contextValidRuleBo.getRuleType()));
         }
+
         return ruleTypes;
     }
 
@@ -202,13 +219,16 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
         if (StringUtils.isBlank(ruleTypeId)) {
             throw new RiceIllegalArgumentException("ruleTypeId was a null or blank value");
         }
+
         if (StringUtils.isBlank(contextId)) {
             throw new RiceIllegalArgumentException("contextId was a null or blank value");
         }
+
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("ruleTypeId", ruleTypeId);
         map.put("contextId", contextId);
         ContextValidRuleBo contextValidRuleBo = businessObjectService.findByPrimaryKey(ContextValidRuleBo.class, Collections.unmodifiableMap(map));
+
         return KrmsTypeBo.to(contextValidRuleBo.getRuleType());
     }
 
@@ -217,13 +237,16 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
         if (StringUtils.isBlank(contextId)) {
             throw new RiceIllegalArgumentException("contextId was a null or blank value");
         }
+
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("contextId", contextId);
         Collection<ContextValidActionBo> contextValidActionBos = businessObjectService.findMatchingOrderBy(ContextValidActionBo.class, Collections.unmodifiableMap(map), "actionType.name", true);
         List<KrmsTypeDefinition>  actionTypes = new ArrayList<KrmsTypeDefinition>();
+
         for (ContextValidActionBo contextValidActionBo : contextValidActionBos) {
             actionTypes.add(KrmsTypeBo.to(contextValidActionBo.getActionType()));
         }
+
         return actionTypes;
     }
 
@@ -232,13 +255,16 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
         if (StringUtils.isBlank(actionTypeId)) {
             throw new RiceIllegalArgumentException("actionTypeId was a null or blank value");
         }
+
         if (StringUtils.isBlank(contextId)) {
             throw new RiceIllegalArgumentException("contextId was a null or blank value");
         }
+
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("actionTypeId", actionTypeId);
         map.put("contextId", contextId);
         ContextValidActionBo contextValidActionBo = businessObjectService.findByPrimaryKey(ContextValidActionBo.class, Collections.unmodifiableMap(map));
+
         return KrmsTypeBo.to(contextValidActionBo.getActionType());
     }
 
@@ -257,17 +283,21 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
         if (StringUtils.isBlank(namespaceCode)) {
             throw new RiceIllegalArgumentException("namespaceCode was a null or blank value");
         }
+
         if (StringUtils.isBlank(name)) {
             throw new RiceIllegalArgumentException("name was a null or blank value");
         }
+
         final Map<String, Object> criteria = new HashMap<String, Object>();
         criteria.put("name", name);
         criteria.put("namespace", namespaceCode);
 
         Collection<KrmsAttributeDefinitionBo> attributeDefinitionBos = businessObjectService.findMatching(KrmsAttributeDefinitionBo.class, criteria);
+
         if (CollectionUtils.isEmpty(attributeDefinitionBos)) {
             return null;
         }
+
         return KrmsAttributeDefinitionBo.to(attributeDefinitionBos.iterator().next());
     }
 
@@ -279,6 +309,7 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
      */
     public KrmsTypeBo from(KrmsTypeDefinition krmsType) {
         if (krmsType == null) return null;
+
         KrmsTypeBo krmsTypeBo = new KrmsTypeBo();
         krmsTypeBo.setName(krmsType.getName());
         krmsTypeBo.setNamespace(krmsType.getNamespace());
@@ -287,6 +318,7 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
         krmsTypeBo.setActive(krmsType.isActive());
         krmsTypeBo.setVersionNumber(krmsType.getVersionNumber());
         // TODO collections, etc.
+
         return krmsTypeBo;
     }
 
@@ -307,10 +339,12 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
      */
     protected List<KrmsTypeDefinition> convertListOfBosToImmutables(final Collection<KrmsTypeBo> krmsTypeBos) {
         ArrayList<KrmsTypeDefinition> krmsTypes = new ArrayList<KrmsTypeDefinition>();
+
         for (KrmsTypeBo bo : krmsTypeBos) {
             KrmsTypeDefinition krmsType = KrmsTypeBo.to(bo);
             krmsTypes.add(krmsType);
         }
+
         return Collections.unmodifiableList(krmsTypes);
     }
 

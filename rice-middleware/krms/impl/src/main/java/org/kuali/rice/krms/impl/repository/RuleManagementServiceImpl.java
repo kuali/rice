@@ -71,87 +71,170 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
     private TermRepositoryService termRepositoryService = new TermBoServiceImpl ();
     private SequenceAccessorService sequenceAccessorService = null;
 
-    
+    /**
+     * get the {@link ReferenceObjectBindingBoService}
+     * @return the {@link ReferenceObjectBindingBoService}
+     */
     public ReferenceObjectBindingBoService getReferenceObjectBindingBoService() {
         return referenceObjectBindingBoService;
     }
 
+    /**
+     * set the {@link ReferenceObjectBindingBoService}
+     * @param referenceObjectBindingBoService the {@link ReferenceObjectBindingBoService} to set
+     */
     public void setReferenceObjectBindingBoService(ReferenceObjectBindingBoService referenceObjectBindingBoService) {
         this.referenceObjectBindingBoService = referenceObjectBindingBoService;
     }
 
+    /**
+     * get the {@link AgendaBoService}
+     * @return the {@link AgendaBoService}
+     */
     public AgendaBoService getAgendaBoService() {
         return agendaBoService;
     }
 
+    /**
+     * set the {@link AgendaBoService}
+     * @param agendaBoService the {@link AgendaBoService} to set
+     */
     public void setAgendaBoService(AgendaBoService agendaBoService) {
         this.agendaBoService = agendaBoService;
     }
 
+    /**
+     * get the {@link RuleBoService}
+     * @return the {@link RuleBoService}
+     */
     public RuleBoService getRuleBoService() {
         return ruleBoService;
     }
 
+    /**
+     * set the {@link RuleBoService}
+     * @param ruleBoService the {@link RuleBoService} to set
+     */
     public void setRuleBoService(RuleBoService ruleBoService) {
         this.ruleBoService = ruleBoService;
     }
 
+    /**
+     * get the {@link PropositionBoService}
+     * @return the {@link PropositionBoService}
+     */
     public PropositionBoService getPropositionBoService() {
         return propositionBoService;
     }
 
+    /**
+     * set the {@link PropositionBoService}
+     * @param propositionBoService the {@link PropositionBoService} to set
+     */
     public void setPropositionBoService(PropositionBoService propositionBoService) {
         this.propositionBoService = propositionBoService;
     }
 
+    /**
+     * set the {@link NaturalLanguageUsageBoService}
+     * @return the {@link NaturalLanguageUsageBoService}
+     */
     public NaturalLanguageUsageBoService getNaturalLanguageUsageBoService() {
         return naturalLanguageUsageBoService;
     }
 
+    /**
+     * set the {@link NaturalLanguageUsageBoService}
+     * @param naturalLanguageUsageBoService the {@link NaturalLanguageUsageBoService} to set
+     */
     public void setNaturalLanguageUsageBoService(NaturalLanguageUsageBoService naturalLanguageUsageBoService) {
         this.naturalLanguageUsageBoService = naturalLanguageUsageBoService;
     }
 
+    /**
+     * get the {@link NaturalLanguageTemplateBoService}
+     * @return the {@link NaturalLanguageTemplateBoService}
+     */
     public NaturalLanguageTemplateBoService getNaturalLanguageTemplateBoService() {
         return naturalLanguageTemplateBoService;
     }
 
+    /**
+     * set the {@link NaturalLanguageTemplateBoService}
+     * @param naturalLanguageTemplateBoService the {@link NaturalLanguageTemplateBoService} to set
+     */
     public void setNaturalLanguageTemplateBoService(NaturalLanguageTemplateBoService naturalLanguageTemplateBoService) {
         this.naturalLanguageTemplateBoService = naturalLanguageTemplateBoService;
     }
 
+    /**
+     * get the {@link ContextBoService}
+     * @return the {@link ContextBoService}
+     */
     public ContextBoService getContextBoService() {
         return contextBoService;
     }
 
+    /**
+     * set the {@link ContextBoService}
+     * @param contextBoService the {@link ContextBoService} to set
+     */
     public void setContextBoService(ContextBoService contextBoService) {
         this.contextBoService = contextBoService;
     }
 
+    /**
+     * get the {@link ActionBoService}
+     * @return the {@link ActionBoService}
+     */
     public ActionBoService getActionBoService() {
         return actionBoService;
     }
 
+    /**
+     * Set the {@link ActionBoService}
+     * @param actionBoService the {@link ActionBoService} to set
+     */
     public void setActionBoService(ActionBoService actionBoService) {
         this.actionBoService = actionBoService;
     }
-      
+
+    /**
+     * get the {@link NaturalLanguageTemplaterContract}
+     * @return the {@link NaturalLanguageTemplaterContract}
+     */
     public NaturalLanguageTemplaterContract getTemplater() {
         return templater;
     }
 
+    /**
+     * set the {@link NaturalLanguageTemplaterContract}
+     * @param templater the {@link NaturalLanguageTemplaterContract} to set
+     */
     public void setTemplater(NaturalLanguageTemplaterContract templater) {
         this.templater = templater;
     }
 
+    /**
+     * get the {@link TermRepositoryService}
+     * @return the {@link TermRepositoryService}
+     */
     public TermRepositoryService getTermRepositoryService() {
         return termRepositoryService;
     }
 
+    /**
+     * Set the {@link TermRepositoryService}
+     * @param termRepositoryService the {@link TermRepositoryService} to set
+     */
     public void setTermRepositoryService(TermRepositoryService termRepositoryService) {
         this.termRepositoryService = termRepositoryService;
     }
-    
+
+    /**
+     * get the {@link SequenceAccessorService}
+     * @return the {@link SequenceAccessorService}
+     */
     public SequenceAccessorService getSequenceAccessorService() {
         if (this.sequenceAccessorService == null) {
             this.sequenceAccessorService = KRADServiceLocator.getSequenceAccessorService();
@@ -159,6 +242,10 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
         return sequenceAccessorService;
     }
 
+    /**
+     * set the {@link SequenceAccessorService}
+     * @param sequenceAccessorService the {@link SequenceAccessorService} to set
+     */
     public void setSequenceAccessorService(SequenceAccessorService sequenceAccessorService) {
         this.sequenceAccessorService = sequenceAccessorService;
     }
@@ -167,6 +254,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
     ////
     //// reference object binding methods
     ////
+
     @Override
     public ReferenceObjectBinding createReferenceObjectBinding(ReferenceObjectBinding referenceObjectDefinition)
             throws RiceIllegalArgumentException {
@@ -177,6 +265,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
             refBldr.setId(referenceObjectBindingId);
             referenceObjectDefinition = refBldr.build();
         }
+
         return referenceObjectBindingBoService.createReferenceObjectBinding(referenceObjectDefinition);
     }
 
@@ -193,6 +282,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
 
         // Fetch BOs
         List<ReferenceObjectBindingBo> bos = null;
+
         if (ids.size() == 0) {
             bos = Collections.emptyList();
         } else {
@@ -210,6 +300,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
             ReferenceObjectBinding binding = ReferenceObjectBindingBo.to(bo);
             bindings.add(binding);
         }
+
         return Collections.unmodifiableList(bindings);
     }
 
@@ -220,15 +311,18 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
         if (referenceObjectReferenceDiscriminatorType == null) {
             throw new RiceIllegalArgumentException("reference binding object discriminator type must not be null");
         }
+
         if (referenceObjectId == null) {
             throw new RiceIllegalArgumentException("reference object id must not be null");
         }
+
         List<ReferenceObjectBinding> list = new ArrayList<ReferenceObjectBinding>();
         for (ReferenceObjectBinding binding : this.referenceObjectBindingBoService.findReferenceObjectBindingsByReferenceObject(referenceObjectId)) {
             if (binding.getReferenceDiscriminatorType().equals(referenceObjectReferenceDiscriminatorType)) {
                 list.add(binding);
             }
         }
+
         return list;
     }
     
@@ -276,6 +370,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
         agendaBldr.setFirstItemId(item.getId());    
         this.updateAgenda(agendaBldr.build());        
         agenda = this.getAgenda(agenda.getId());
+
         return agenda;
         
     }
@@ -288,10 +383,12 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
     @Override
     public AgendaDefinition findCreateAgenda(AgendaDefinition agendaDefinition) throws RiceIllegalArgumentException {
         AgendaDefinition existing = this.getAgendaByNameAndContextId(agendaDefinition.getName(), agendaDefinition.getContextId());
+
         if (existing != null) {
             existing = this.updateAgendaIfNeeded (agendaDefinition, existing);            
             return existing;
         }
+
         return this.createAgenda(agendaDefinition);
     }   
     
@@ -299,15 +396,19 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
         if (this.isSame(agenda, existing)) {
             return existing;
         }
+
         AgendaDefinition.Builder bldr = AgendaDefinition.Builder.create(existing);
         bldr.setActive(agenda.isActive());
         bldr.setAttributes(agenda.getAttributes());
         bldr.setContextId(agenda.getContextId());
+
         if (agenda.getFirstItemId() != null) {
             bldr.setFirstItemId(agenda.getFirstItemId());
         }
+
         bldr.setTypeId(agenda.getTypeId());
         this.updateAgenda(bldr.build());
+
         return this.getAgenda(existing.getId());
     }
 
@@ -315,21 +416,27 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
         if (!this.isSame(agenda.isActive(), existing.isActive())) {
             return false;
         }
+
         if (!this.isSame(agenda.getAttributes(), existing.getAttributes())) {
             return false;
         }
+
         if (!this.isSame(agenda.getContextId(), existing.getContextId())) {
             return false;
         }
+
         if (!this.isSame(agenda.getFirstItemId(), existing.getFirstItemId())) {
             return false;
         }
+
         if (!this.isSame(agenda.getName(), existing.getName())) {
             return false;
         }
+
         if (!this.isSame(agenda.getTypeId(), existing.getTypeId())) {
             return false;
         }
+
         return true;
     }
 
@@ -337,9 +444,11 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
         if (o1 && !o2) {
             return false;
         }
+
         if (!o1 && o2) {
             return false;
         }
+
         return true;
     } 
     
@@ -347,9 +456,11 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
         if (o1 == null && o2 != null) {
             return false;
         }
+
         if (o1 != null && o2 == null) {
             return false;
         }
+
         return o1.equals(o2);
     }
     
@@ -357,9 +468,11 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
         if (o1 == null && o2 != null) {
             return false;
         }
+
         if (o1 != null && o2 == null) {
             return false;
         }
+
         return o1.equals(o2);
     }
     
@@ -409,6 +522,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
         agendaItemDefinition = createWhenFalseAgendaItemIfNeeded(agendaItemDefinition);
         agendaItemDefinition = createAlwaysAgendaItemIfNeeded(agendaItemDefinition);
         agendaItemDefinition = createSubAgendaIfNeeded(agendaItemDefinition);
+
         return agendaBoService.createAgendaItem(agendaItemDefinition);
     }
     
@@ -469,6 +583,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
         if (agendaItemDefinition.getRule() == null) {
             return agendaItemDefinition;
         }
+
         // update
         if (agendaItemDefinition.getRule().getId() != null) {
             this.updateRule(agendaItemDefinition.getRule());
@@ -478,11 +593,13 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
             agendaItemBuilder.setRuleId(rule.getId());
             return agendaItemBuilder.build();
         }
+
         AgendaItemDefinition.Builder agendaItemBuilder = AgendaItemDefinition.Builder.create(agendaItemDefinition);
         RuleDefinition ruleDefinition = this.createRule(agendaItemDefinition.getRule());
         RuleDefinition.Builder ruleBuilder = RuleDefinition.Builder.create(ruleDefinition);
         agendaItemBuilder.setRule(ruleBuilder);
         agendaItemBuilder.setRuleId(ruleBuilder.getId());
+
         return agendaItemBuilder.build();
     }
     
@@ -490,15 +607,18 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
         // nothing to create
         if (agendaItemDefinition.getWhenTrue() == null) {
             return agendaItemDefinition;
-        } 
+        }
+
         // ojb will take care of it if it has already been created
         if (agendaItemDefinition.getWhenTrue().getId() != null) {
             return agendaItemDefinition;
-        }        
+        }
+
         AgendaItemDefinition.Builder agendaItemBuilder = AgendaItemDefinition.Builder.create(agendaItemDefinition);
         AgendaItemDefinition subAgendaITem = this.createAgendaItem(agendaItemDefinition.getWhenTrue());
         agendaItemBuilder.setWhenTrue(AgendaItemDefinition.Builder.create(subAgendaITem));
         agendaItemBuilder.setWhenTrueId(subAgendaITem.getId());
+
         return agendaItemBuilder.build();
     }
 
@@ -507,15 +627,18 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
         // nothing to create
         if (agendaItemDefinition.getWhenFalse() == null) {
             return agendaItemDefinition;
-        } 
+        }
+
         // ojb will take care of it if it has already been created
         if (agendaItemDefinition.getWhenFalse().getId() != null) {
             return agendaItemDefinition;
-        }        
+        }
+
         AgendaItemDefinition.Builder agendaItemBuilder = AgendaItemDefinition.Builder.create(agendaItemDefinition);
         AgendaItemDefinition subAgendaITem = this.createAgendaItem(agendaItemDefinition.getWhenFalse());
         agendaItemBuilder.setWhenFalse(AgendaItemDefinition.Builder.create(subAgendaITem));
         agendaItemBuilder.setWhenFalseId(subAgendaITem.getId());
+
         return agendaItemBuilder.build();
     }
     
@@ -524,15 +647,18 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
         // nothing to create
         if (agendaItemDefinition.getAlways()== null) {
             return agendaItemDefinition;
-        } 
+        }
+
         // ojb will take care of it if it has already been created
         if (agendaItemDefinition.getAlways().getId() != null) {
             return agendaItemDefinition;
-        }        
+        }
+
         AgendaItemDefinition.Builder agendaItemBuilder = AgendaItemDefinition.Builder.create(agendaItemDefinition);
         AgendaItemDefinition subAgendaITem = this.createAgendaItem(agendaItemDefinition.getAlways());
         agendaItemBuilder.setAlways(AgendaItemDefinition.Builder.create(subAgendaITem));
         agendaItemBuilder.setAlwaysId(subAgendaITem.getId());
+
         return agendaItemBuilder.build();
     }
     
@@ -541,15 +667,18 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
         // nothing to create
         if (agendaItemDefinition.getSubAgenda()== null) {
             return agendaItemDefinition;
-        } 
+        }
+
         // ojb will take care of it if it has already been created
         if (agendaItemDefinition.getSubAgenda().getId() != null) {
             return agendaItemDefinition;
-        }        
+        }
+
         AgendaItemDefinition.Builder agendaItemBuilder = AgendaItemDefinition.Builder.create(agendaItemDefinition);
         AgendaDefinition subAgenda = this.createAgenda(agendaItemDefinition.getSubAgenda());
         agendaItemBuilder.setSubAgenda(AgendaDefinition.Builder.create(subAgenda));
         agendaItemBuilder.setSubAgendaId(subAgenda.getId());
+
         return agendaItemBuilder.build();
     }
     
@@ -570,6 +699,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
                 agendaItem = itemBuiler.build();
             }
         }
+
         return agendaItem;
     }
 
@@ -607,6 +737,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
         agendaItemDefinition = createWhenFalseAgendaItemIfNeeded(agendaItemDefinition);
         agendaItemDefinition = createAlwaysAgendaItemIfNeeded(agendaItemDefinition);
         agendaItemDefinition = createSubAgendaIfNeeded(agendaItemDefinition);
+
         agendaBoService.updateAgendaItem(agendaItemDefinition);
     }
 
@@ -634,6 +765,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
     public RuleDefinition createRule(RuleDefinition ruleDefinition) throws RiceIllegalArgumentException {
         if (ruleDefinition.getId() != null) {
             RuleDefinition orig = this.getRule(ruleDefinition.getId());
+
             if (orig != null) {
                 throw new RiceIllegalArgumentException(ruleDefinition.getId());
             }
@@ -649,6 +781,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
         crossCheckPropId (ruleDefinition);
         ruleDefinition = this.createUpdatePropositionIfNeeded(ruleDefinition);
         ruleDefinition = ruleBoService.createRule(ruleDefinition);
+
         return ruleDefinition;
     }
 
@@ -657,6 +790,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
         if (rule.getProposition() == null) {
             return rule;
         }
+
         // update 
         if (rule.getProposition().getId() != null) {
             this.updateProposition(rule.getProposition());
@@ -666,11 +800,13 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
             ruleBldr.setPropId(prop.getId());
             return ruleBldr.build();
         }
+
         // create the proposition
         RuleDefinition.Builder ruleBldr = RuleDefinition.Builder.create(rule);
         PropositionDefinition propositionDefinition = null;
         // ojb will take care of props that have already been created, but we still need to take care of the terms.
         PropositionDefinition.Builder propBldr = ruleBldr.getProposition();
+
         if (rule.getProposition().getId() != null) {
             this.crossCheckPropositionParameters(rule.getProposition());
             propBldr = setSequenceOnCompoundPropositionsIfNeeded(propBldr);
@@ -681,8 +817,10 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
             propositionDefinition = this.createProposition(propBldr.build());
             propBldr = PropositionDefinition.Builder.create(propositionDefinition);
         }
+
         // now update the rule so it holds the proposition id
         ruleBldr.setProposition(propBldr);
+
         return ruleBldr.build();
     }
     
@@ -690,6 +828,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
     public void updateRule(RuleDefinition ruleDefinition) throws RiceIllegalArgumentException {
         crossCheckPropId (ruleDefinition);
         ruleDefinition = this.createUpdatePropositionIfNeeded(ruleDefinition);
+
         ruleBoService.updateRule(ruleDefinition);
     }
 
@@ -727,9 +866,11 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
     public List<ActionDefinition> getActions(List<String> actionIds) {
         // TODO: implement this more efficiently by adding the builk op to the bo service and calling it
         List<ActionDefinition> list = new ArrayList<ActionDefinition>();
+
         for (String id : actionIds) {
             list.add(this.getAction(id));
         }
+
         return list;
     }
     
@@ -758,11 +899,13 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
                 throw new RiceIllegalArgumentException(propositionDefinition.getId());
             }
         }
+
         crossCheckPropositionParameters(propositionDefinition);
         PropositionDefinition.Builder propBldr = PropositionDefinition.Builder.create(propositionDefinition);
         propBldr = setSequenceOnCompoundPropositionsIfNeeded(propBldr);
         propBldr = maintainTermValuesAndChildPropositions(propBldr);
         PropositionDefinition prop = propositionBoService.createProposition(propBldr.build());
+
         return prop;
     }
 
@@ -778,22 +921,28 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
         if (propBldr.getParameters() == null) {
             return propBldr;
         }
+
         if (propBldr.getParameters().isEmpty ()) {
             return propBldr;
         }
+
         boolean updated = false;
         List<PropositionParameter.Builder> paramBldrs = new ArrayList<PropositionParameter.Builder> ();
+
         for (PropositionParameter.Builder paramBldr : propBldr.getParameters()) {
             paramBldrs.add(paramBldr);
+
             // link the param the proposition's id
             // not sure we need to do this but...
             if (paramBldr.getPropId() == null) {
                 paramBldr.setPropId(propBldr.getId());
                 updated = true;
             }
+
             // create the termvalue if it was specified
             if (paramBldr.getTermValue() != null) {
                 TermDefinition termValue = paramBldr.getTermValue();
+
                 // no id means it does not exist yet
                 if (termValue.getId() == null) {
                     termValue = this.termRepositoryService.createTerm(termValue);
@@ -802,15 +951,18 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
                 } else {
                     this.termRepositoryService.updateTerm(termValue);
                 }
+
                 if ((paramBldr.getValue()==null)||(!paramBldr.getValue().equals(termValue.getId()))) {
                     paramBldr.setValue(termValue.getId());
                     updated = true;
                 }
             }
         }
+
         if (!updated) {
             return propBldr;
         }
+
         propBldr.setParameters(paramBldrs);
         return propBldr;
     }
@@ -819,32 +971,36 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
         if (propBldr.getCompoundComponents() == null) {
             return propBldr;
         }
+
         if (propBldr.getCompoundComponents().isEmpty ()) {
             return propBldr;
         }
 
         List<PropositionDefinition.Builder> childPropBldrs = new ArrayList<PropositionDefinition.Builder>();
-//        int seq = 0;
+
         for (PropositionDefinition.Builder compPropBldr : propBldr.getCompoundComponents()) {
-//            seq++;
-//            compPropBldr.setDescription(CompoundPropositionComparator.DESCRIPTION_SORT_BY_PREFIX + seq);
             compPropBldr.setRuleId(propBldr.getRuleId());
             propBldr = setSequenceOnCompoundPropositionsIfNeeded(propBldr);
             compPropBldr = maintainTermValuesAndChildPropositions(compPropBldr);
             childPropBldrs.add(compPropBldr);
         }
+
         propBldr.setCompoundComponents(childPropBldrs);
+
         return propBldr;
     }
 
     @Override
     public PropositionDefinition getProposition(String id) throws RiceIllegalArgumentException {
         PropositionDefinition proposition = propositionBoService.getPropositionById(id);
+
         if (proposition == null) {
             throw new RiceIllegalArgumentException (id);
         }
+
         proposition = this.replaceTermValues (proposition).build();
         proposition = this.orderCompoundPropositionsIfNeeded (proposition);
+
         return proposition;
     }
     
@@ -852,21 +1008,27 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
         if (!prop.getPropositionTypeCode().equals(PropositionType.COMPOUND.getCode())) {
             return prop;
         }
+
         if (prop.getCompoundComponents() == null) {
             return prop;
         }
+
         if (prop.getCompoundComponents().size() <= 1) {
             return prop;
         }
+
         PropositionDefinition.Builder propBldr = PropositionDefinition.Builder.create(prop);        
         List<PropositionDefinition> childProps = new ArrayList<PropositionDefinition> (prop.getCompoundComponents());
         Collections.sort(childProps, new CompoundPropositionComparator());
         List<PropositionDefinition.Builder> childPropBldrs = new ArrayList<PropositionDefinition.Builder> (childProps.size());
+
         for (PropositionDefinition chidProp : childProps) {
             PropositionDefinition.Builder childPropBlder = PropositionDefinition.Builder.create(chidProp);
             childPropBldrs.add(childPropBlder);
         }
+
         propBldr.setCompoundComponents(childPropBldrs);
+
         return propBldr.build();
     }
     
@@ -883,20 +1045,25 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
             bldr.setCompoundComponents(cmpdProps);
             return bldr;
         }
+
         // that have parameters
         if (proposition.getParameters() == null) {
             return bldr;
         }
+
         if (proposition.getParameters().isEmpty()) {
             return bldr;
         }
+
         boolean found = false;
         List<PropositionParameter.Builder> params = new ArrayList<PropositionParameter.Builder> (proposition.getParameters().size());
+
         for (PropositionParameter param : proposition.getParameters()) {
             if (!PropositionParameterType.TERM.getCode().equalsIgnoreCase (param.getParameterType())) {
                 params.add(PropositionParameter.Builder.create(param));
                 continue;
             }
+
             // inflate the termValue
             found = true;
             TermDefinition termValue = this.termRepositoryService.getTerm(param.getValue());
@@ -904,11 +1071,13 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
             parmbldr.setTermValue(termValue);
             params.add(parmbldr);
         }
+
         if (!found) {
             return bldr;
         }
 
         bldr.setParameters(params);
+
         return bldr;
     }
 
@@ -917,14 +1086,17 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
         if (propositions == null) {
             return null;
         }
+
         if (propositions.isEmpty()) {
             return propositions;
         }
+
         Set<PropositionDefinition> set = new LinkedHashSet<PropositionDefinition>(propositions.size());
         for (PropositionDefinition proposition : propositions) {
             proposition = this.replaceTermValues(proposition).build();
             set.add(proposition);
         }
+
         return set;
     }
     
@@ -944,6 +1116,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
         PropositionDefinition.Builder propBldr = PropositionDefinition.Builder.create(propositionDefinition);
         propBldr = setSequenceOnCompoundPropositionsIfNeeded (propBldr);
         propBldr = maintainTermValuesAndChildPropositions(propBldr);
+
         propositionBoService.updateProposition(propBldr.build());
     }
     
@@ -951,11 +1124,14 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
         if (propBldr.getCompoundComponents() == null) {
             return propBldr;
         }
+
         if (propBldr.getCompoundComponents().size() <= 1) {
             return propBldr;
         }
+
         List<PropositionDefinition.Builder> childList = new ArrayList<PropositionDefinition.Builder>(propBldr.getCompoundComponents().size());
         int i = 1; // start at 1 because rice does that
+
         for (PropositionDefinition.Builder childPropBldr : propBldr.getCompoundComponents()) {
             childPropBldr.setCompoundSequenceNumber(i);
             i++;
@@ -1016,6 +1192,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
             String languageCode)
             throws RiceIllegalArgumentException {
         TranslationUtility util = new TranslationUtility (this, this.templater);
+
         return util.translateNaturalLanguageForObject(naturalLanguageUsageId, typeId, krmsObjectId, languageCode);
     }
 
@@ -1024,6 +1201,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
             PropositionDefinition proposition, String languageCode)
             throws RiceIllegalArgumentException {
         TranslationUtility util = new TranslationUtility (this, this.templater);
+
         return util.translateNaturalLanguageForProposition(naturalLanguageUsageId, proposition, languageCode);
     }
 
@@ -1032,6 +1210,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
     PropositionDefinition propositionDefinintion, 
     String languageCode) throws RiceIllegalArgumentException {
         TranslationUtility util = new TranslationUtility (this, this.templater);
+
         return util.translateNaturalLanguageTreeForProposition(naturalLanguageUsageId, propositionDefinintion, languageCode);
     }
     
@@ -1049,9 +1228,11 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
     @Override
     public ContextDefinition findCreateContext(ContextDefinition contextDefinition) throws RiceIllegalArgumentException {         
         ContextDefinition orig = this.contextBoService.getContextByNameAndNamespace(contextDefinition.getName(), contextDefinition.getNamespace());
+
         if (orig != null) {
             return orig;
         }
+
         return this.contextBoService.createContext(contextDefinition);
     }
 
@@ -1126,10 +1307,12 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
     @Override
     public List<String> findContextIds(QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
         GenericQueryResults<ContextBo> results = getCriteriaLookupService().lookup(ContextBo.class, queryByCriteria);
+
         List<String> list = new ArrayList<String> ();
         for (ContextBo bo : results.getResults()) {
             list.add (bo.getId());
         }
+
         return list;
     }
 
@@ -1137,9 +1320,11 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
     public List<String> findAgendaIds(QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
         GenericQueryResults<AgendaBo> results = getCriteriaLookupService().lookup(AgendaBo.class, queryByCriteria);
         List<String> list = new ArrayList<String> ();
+
         for (AgendaBo bo : results.getResults()) {
             list.add (bo.getId());
         }
+
         return list;
     }
 
@@ -1147,29 +1332,35 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
     public List<String> findRuleIds(QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
         GenericQueryResults<RuleBo> results = getCriteriaLookupService().lookup(RuleBo.class, queryByCriteria);
         List<String> list = new ArrayList<String> ();
+
         for (RuleBo bo : results.getResults()) {
             list.add (bo.getId());
         }
+
         return list;
     }
 
     @Override
     public List<String> findPropositionIds(QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
         GenericQueryResults<PropositionBo> results = getCriteriaLookupService().lookup(PropositionBo.class, queryByCriteria);
+
         List<String> list = new ArrayList<String> ();
         for (PropositionBo bo : results.getResults()) {
             list.add (bo.getId());
         }
+
         return list;
     }
 
     @Override
     public List<String> findActionIds(QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
         GenericQueryResults<ActionBo> results = getCriteriaLookupService().lookup(ActionBo.class, queryByCriteria);
+
         List<String> list = new ArrayList<String> ();
         for (ActionBo bo : results.getResults()) {
             list.add (bo.getId());
         }
+
         return list;
     }
     
@@ -1185,27 +1376,35 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
         if (referenceObjectBindingBoService instanceof ReferenceObjectBindingBoServiceImpl) {
             ((ReferenceObjectBindingBoServiceImpl) referenceObjectBindingBoService).setBusinessObjectService(businessObjectService);
         }
+
         if (agendaBoService instanceof AgendaBoServiceImpl) {
             ((AgendaBoServiceImpl) agendaBoService).setBusinessObjectService(businessObjectService);
         }
+
         if (ruleBoService instanceof RuleBoServiceImpl) {
             ((RuleBoServiceImpl) ruleBoService).setBusinessObjectService(businessObjectService);
         }
+
         if (actionBoService instanceof ActionBoServiceImpl) {
             ((ActionBoServiceImpl) actionBoService).setBusinessObjectService(businessObjectService);
         }
+
         if (propositionBoService instanceof PropositionBoServiceImpl) {
             ((PropositionBoServiceImpl) propositionBoService).setBusinessObjectService(businessObjectService);
         }
+
         if (naturalLanguageUsageBoService instanceof NaturalLanguageUsageBoServiceImpl) {
             ((NaturalLanguageUsageBoServiceImpl) naturalLanguageUsageBoService).setBusinessObjectService(businessObjectService);
         }
+
         if (naturalLanguageTemplateBoService instanceof NaturalLanguageTemplateBoServiceImpl) {
             ((NaturalLanguageTemplateBoServiceImpl) naturalLanguageTemplateBoService).setBusinessObjectService(businessObjectService);
         }
+
         if (contextBoService instanceof ContextBoServiceImpl) {
             ((ContextBoServiceImpl) contextBoService).setBusinessObjectService(businessObjectService);
         }
+
         if (termRepositoryService instanceof TermBoServiceImpl) {
             ((TermBoServiceImpl) termRepositoryService).setBusinessObjectService(businessObjectService);
         }

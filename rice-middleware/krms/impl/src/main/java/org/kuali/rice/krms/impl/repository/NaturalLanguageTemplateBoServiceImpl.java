@@ -158,17 +158,21 @@ public final class NaturalLanguageTemplateBoServiceImpl
         if (org.apache.commons.lang.StringUtils.isBlank(languageCode)) {
             throw new IllegalArgumentException("languageCode is null or blank");
         }
+
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("languageCode", languageCode);
         map.put("naturalLanguageUsageId", naturalLanguageUsageId);
         map.put("typeId", typeId);
         List<NaturalLanguageTemplateBo> bos = (List<NaturalLanguageTemplateBo>) businessObjectService.findMatching(NaturalLanguageTemplateBo.class, map);
+
         if (bos.isEmpty()) {
             return null;
         }
+
         if (bos.size() > 1) {
             throw new RiceIllegalArgumentException (languageCode + typeId +  naturalLanguageUsageId + " is supposed to be unique");
         }
+
         return convertBosToImmutables(bos).get(0);
     }
 

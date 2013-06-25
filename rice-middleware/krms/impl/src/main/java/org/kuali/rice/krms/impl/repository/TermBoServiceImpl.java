@@ -55,6 +55,7 @@ public class TermBoServiceImpl implements TermBoService {
 	public TermSpecificationDefinition getTermSpecificationById(String id) {
 		TermSpecificationBo termSpecificationBo = 
 			businessObjectService.findBySinglePrimaryKey(TermSpecificationBo.class, id);
+
 		return TermSpecificationDefinition.Builder.create(termSpecificationBo).build();
 	}
 	
@@ -91,10 +92,13 @@ public class TermBoServiceImpl implements TermBoService {
         // must already exist to be able to update
         final String termSpecificationId = termSpec.getId();
         final TermSpecificationBo existing = businessObjectService.findBySinglePrimaryKey(TermSpecificationBo.class, termSpecificationId);
+
         if (existing == null) {
             throw new IllegalStateException("the term specification does not exist: " + termSpec);
         }
+
         final TermSpecificationDefinition toUpdate;
+
         if (!existing.getId().equals(termSpec.getId())) {
             // if passed in id does not match existing id, correct it
             final TermSpecificationDefinition.Builder builder = TermSpecificationDefinition.Builder.create(termSpec);
@@ -122,10 +126,13 @@ public class TermBoServiceImpl implements TermBoService {
         if (id == null) {
             throw new RiceIllegalArgumentException("agendaId is null");
         }
+
         final TermSpecificationBo existing = businessObjectService.findBySinglePrimaryKey(TermSpecificationBo.class, id);
+
         if (existing == null) {
             throw new IllegalStateException("the TermSpecification to delete does not exists: " + id);
         }
+
         businessObjectService.delete(existing);
     }
 	  
@@ -155,10 +162,13 @@ public class TermBoServiceImpl implements TermBoService {
         // must already exist to be able to update
         final String termId = term.getId();
         final TermBo existing = businessObjectService.findBySinglePrimaryKey(TermBo.class, termId);
+
         if (existing == null) {
             throw new IllegalStateException("the term resolver does not exist: " + term);
         }
+
         final TermDefinition toUpdate;
+
         if (!existing.getId().equals(term.getId())) {
             // if passed in id does not match existing id, correct it
             final TermDefinition.Builder builder = TermDefinition.Builder.create(term);
@@ -185,11 +195,14 @@ public class TermBoServiceImpl implements TermBoService {
         if (id == null) {
             throw new RiceIllegalArgumentException("termId is null");
         }
+
         TermBo existing =
                 businessObjectService.findBySinglePrimaryKey(TermBo.class, id);
+
         if (existing == null) {
             throw new IllegalStateException("the term to delete does not exists: " + id);
         }
+
         businessObjectService.delete(existing);
     }   
     
@@ -222,10 +235,13 @@ public class TermBoServiceImpl implements TermBoService {
         // must already exist to be able to update
         final String termResolverId = termResolver.getId();
         final TermResolverBo existing = businessObjectService.findBySinglePrimaryKey(TermResolverBo.class, termResolverId);
+
         if (existing == null) {
             throw new IllegalStateException("the term resolver does not exist: " + termResolver);
         }
+
         final TermResolverDefinition toUpdate;
+
         if (!existing.getId().equals(termResolver.getId())) {
             // if passed in id does not match existing id, correct it
             final TermResolverDefinition.Builder builder = TermResolverDefinition.Builder.create(termResolver);
@@ -252,11 +268,14 @@ public class TermBoServiceImpl implements TermBoService {
         if (id == null) {
             throw new RiceIllegalArgumentException("agendaId is null");
         }
+
         TermSpecificationBo existing =
                 businessObjectService.findBySinglePrimaryKey(TermSpecificationBo.class, id);
+
         if (existing == null) {
             throw new IllegalStateException("the TermResolver to delete does not exists: " + id);
         }
+
         businessObjectService.delete(existing);
     }   
     
@@ -270,6 +289,7 @@ public class TermBoServiceImpl implements TermBoService {
 		if (StringUtils.isBlank(id)) {
 			throw new RiceIllegalArgumentException("id must not be blank or null");
 		}
+
 		TermBo termBo = businessObjectService.findBySinglePrimaryKey(TermBo.class, id);
 		
 		if (termBo != null) {
@@ -289,6 +309,7 @@ public class TermBoServiceImpl implements TermBoService {
 		if (StringUtils.isBlank(id)) {
 			throw new RiceIllegalArgumentException("id must not be blank or null");
 		}
+
 		TermResolverBo termResolverBo = businessObjectService.findBySinglePrimaryKey(TermResolverBo.class, id);
 		
 		if (termResolverBo != null) {
@@ -305,9 +326,11 @@ public class TermBoServiceImpl implements TermBoService {
 		if (StringUtils.isBlank(id)) {
 			throw new RiceIllegalArgumentException("id must not be blank or null");
 		}
+
         if (StringUtils.isBlank(namespace)) {
 			throw new RiceIllegalArgumentException("namespace must not be blank or null");
 		}
+
         Map<String, String> criteria = new HashMap<String, String>(2);
 
         criteria.put("outputId", id);
@@ -360,13 +383,16 @@ public class TermBoServiceImpl implements TermBoService {
         if (StringUtils.isBlank(name)) {
             throw new IllegalArgumentException("name is null or blank");
         }
+
         if (StringUtils.isBlank(namespace)) {
             throw new IllegalArgumentException("namespace is null or blank");
         }
+
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("name", name);
         map.put("namespace", namespace);
         TermResolverBo bo = businessObjectService.findByPrimaryKey(TermResolverBo.class, map);
+
         return TermResolverBo.to(bo);
     }
 
@@ -376,16 +402,16 @@ public class TermBoServiceImpl implements TermBoService {
         if (StringUtils.isBlank(name)) {
             throw new IllegalArgumentException("name is null or blank");
         }
+
         if (StringUtils.isBlank(namespace)) {
             throw new IllegalArgumentException("namespace is null or blank");
         }
+
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("name", name);
         map.put("namespace", namespace);
         TermSpecificationBo bo = businessObjectService.findByPrimaryKey(TermSpecificationBo.class, map);
+
         return TermSpecificationBo.to(bo);
     }
-    
-    
-    
 }

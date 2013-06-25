@@ -191,9 +191,11 @@ public final class PropositionParameter extends AbstractDataTransferObject imple
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }
+
             Builder builder =  new Builder(contract.getId(), contract.getPropId(), contract.getValue(), contract.getParameterType(), contract.getSequenceNumber());
             builder.setVersionNumber(contract.getVersionNumber());
             builder.setTermValue(contract.getTermValue());
+
             return builder;
         }
 
@@ -207,9 +209,11 @@ public final class PropositionParameter extends AbstractDataTransferObject imple
         	if (propositionParameter == null) {
                 throw new IllegalArgumentException("parameter is null");
             }
+
             Builder builder =  new Builder(propositionParameter.getId(), propositionParameter.getPropId(), propositionParameter.getValue(), propositionParameter.getParameterType(), propositionParameter.getSequenceNumber());
             builder.setVersionNumber(propositionParameter.getVersionNumber());
             builder.setTermValue(propositionParameter.getTermValue());
+
             return builder;
         }
 

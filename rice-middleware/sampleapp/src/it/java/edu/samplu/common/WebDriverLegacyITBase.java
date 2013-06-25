@@ -679,7 +679,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     /**
      * Assert that clicking an element causes a popup window with a specific URL
-     *
+     * Uses Selenium's findElements method which does not throw a test exception if not found.
      * @param by The locating mechanism of the element to be clicked
      * @param windowName The name of the popup window
      * @param url The URL of the popup window
@@ -800,6 +800,9 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         }
     }
 
+    /**
+     * Uses Selenium's findElements method which does not throw a test exception if not found.
+     */
     public void checkForDocError() {
         if (hasDocError()) {
             String errorText = driver.findElement(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).getText();
@@ -815,6 +818,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         }
     }
 
+    /**
+     * Uses Selenium's findElements method which does not throw a test exception if not found.
+     * @return
+     */
     public boolean hasDocError() {
         if (driver.findElements(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).size() > 0) {
             String errorText = driver.findElement(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).getText();
@@ -825,6 +832,11 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         return false;
     }
 
+    /**
+     * Uses Selenium's findElements method which does not throw a test exception if not found.
+     * @param errorTextToMatch
+     * @return
+     */
     public boolean hasDocError(String errorTextToMatch) {
         if (driver.findElements(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).size() > 0) {
             String errorText = driver.findElement(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).getText();
@@ -978,6 +990,11 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         return getCssCount(By.cssSelector(selector));
     }
 
+    /**
+     * Uses Selenium's findElements method which does not throw a test exception if not found.
+     * @param by
+     * @return
+     */
     protected int getCssCount(By by) {
         return (driver.findElements(by)).size();
     }
@@ -986,6 +1003,12 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         return driver.findElement(By.xpath(DOC_STATUS_XPATH_2)).getText();
     }
 
+    /**
+     * Uses Selenium's findElements method which does not throw a test exception if not found.
+     * @param by
+     * @return
+     * @throws InterruptedException
+     */
     protected String[] getSelectOptions(By by) throws InterruptedException {
         WebElement select1 = driver.findElement(by);
         List<WebElement> options = select1.findElements(By.tagName("option"));
@@ -1055,6 +1078,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     /**
      * Handles simple nested frame content; validates that a frame and nested frame exists before
      * switching to it
+     * Uses Selenium's findElements method which does not throw a test exception if not found.
      */
     protected void gotoNestedFrame() {
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
@@ -1118,10 +1142,20 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         hover.perform();
     }
 
+    /**
+     * Uses Selenium's findElements method which does not throw a test exception if not found.
+     * @param by
+     * @return
+     */
     protected boolean isElementPresent(By by) {
         return (driver.findElements(by)).size() > 0;
     }
 
+    /**
+     * Uses Selenium's findElements method which does not throw a test exception if not found.
+     * @param locator
+     * @return
+     */
     protected boolean isElementPresent(String locator) {
         return (driver.findElements(By.cssSelector(locator))).size() > 0;
     }
@@ -1252,6 +1286,12 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         select(By.name(name), selectText);
     }
 
+    /**
+     * Uses Selenium's findElements method which does not throw a test exception if not found.
+     * @param by
+     * @param selectText
+     * @throws InterruptedException
+     */
     protected void select(By by, String selectText) throws InterruptedException {
         WebElement select1 = driver.findElement(by);
         List<WebElement> options = select1.findElements(By.tagName("option"));
@@ -1272,6 +1312,12 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         selectOption(By.name(locator), optionValue);
     }
 
+    /**
+     * Uses Selenium's findElements method which does not throw a test exception if not found.
+     * @param by
+     * @param optionValue
+     * @throws InterruptedException
+     */
     protected void selectOption(By by, String optionValue) throws InterruptedException {
         WebElement select1 = driver.findElement(by);
         List<WebElement> options = select1.findElements(By.tagName("option"));
@@ -4366,6 +4412,12 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         return false;
     }
 
+    /**
+     * Uses Selenium's findElements method which does not throw a test exception if not found.
+     * @param elementLocator
+     * @param message
+     * @throws InterruptedException
+     */
     protected void waitForElementVisible(String elementLocator, String message) throws InterruptedException {
         boolean failed = false;
 

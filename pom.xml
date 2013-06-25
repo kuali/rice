@@ -1074,6 +1074,9 @@
               <targetDirectory>${rice.docbook.dest}/html</targetDirectory>
               <tableBordersWithCss>true</tableBordersWithCss>
               <calloutGraphicsPath>../images/callouts/</calloutGraphicsPath>
+              <useExtensions>1</useExtensions>
+              <linenumberingExtension>1</linenumberingExtension>
+              <linenumberingEveryNth>1</linenumberingEveryNth>
             </configuration>
           </execution>
           <execution>
@@ -1085,6 +1088,9 @@
             <configuration>
               <foCustomization>${rice.docbook.filtered}/stylesheets/fo-stylesheet.xsl</foCustomization>
               <targetDirectory>${rice.docbook.dest}/pdf</targetDirectory>
+              <useExtensions>1</useExtensions>
+              <linenumberingExtension>1</linenumberingExtension>
+              <linenumberingEveryNth>1</linenumberingEveryNth>
             </configuration>
           </execution>
           <execution>
@@ -1100,6 +1106,9 @@
               <calloutGraphicsPath>../../images/callouts/</calloutGraphicsPath>
               <imgSrcPath>../</imgSrcPath>
               <tableBordersWithCss>true</tableBordersWithCss>
+              <useExtensions>1</useExtensions>
+              <linenumberingExtension>1</linenumberingExtension>
+              <linenumberingEveryNth>1</linenumberingEveryNth>
             </configuration>
           </execution>
         </executions>

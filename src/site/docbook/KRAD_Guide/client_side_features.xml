@@ -174,7 +174,7 @@
       <listitem><para><emphasis role="keyword">enabledWhenChangedPropertyNames</emphasis> (list) – changing any of the inputs with the property names specified will enable THIS control. Useful for when the control starts out with disable="true" and any user interaction with another control causes this one to be enabled.</para></listitem>
     </itemizedlist>
     <para>In this example, field2's TextControl input will be disabled when field118's value is "disable".  This is achieved through this property - p:disabled=&quot;@{#form.field118 eq &apos;disable&apos;}&quot;.  When field118's value is not "disable" the control will be enabled.  The action button specified here follows the same rules.</para>
-    <programlisting>&lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field118&quot; p:label=&quot;Choose&quot; p:width=&quot;auto&quot;
+    <programlisting linenumbering="numbered">&lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field118&quot; p:label=&quot;Choose&quot; p:width=&quot;auto&quot;
               p:instructionalText=&quot;Click option to disable and enable&quot;&gt;
           &lt;property name=&quot;control&quot;&gt;
             &lt;bean parent=&quot;Uif-VerticalRadioControl&quot;&gt;
@@ -199,7 +199,7 @@
     <para>Example of both the <emphasis role="keyword">enabledWhenChangedPropertyNames </emphasis>and
       <emphasis role="keyword">evaluateDisabledOnKeyUp</emphasis> in action; when field52 has
       anything typed in, then enable this control for field54 immediately.</para>
-    <programlisting> &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field54&quot;&gt;
+    <programlisting linenumbering="numbered"> &lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field54&quot;&gt;
                 &lt;property name=&quot;control&quot;&gt;
                   &lt;bean parent=&quot;Uif-TextControl&quot; p:disabled=&quot;true&quot; p:enabledWhenChangedPropertyNames=&quot;field52&quot;
                         p:evaluateDisabledOnKeyUp=&quot;true&quot;/&gt;
@@ -325,7 +325,7 @@
       be seen in lines 5 - 12 of the program listing below.</para>
     <para/>
     <para>A sample configuration is shown below.</para>
-    <programlisting>
+    <programlisting linenumbering="numbered">
 1.    &lt;bean id=&quot;textAreaInputField_attrs&quot; parent=&quot;Uif-InputField&quot; &gt;
 2.      ...
 3       &lt;bean parent=&quot;Uif-TextAreaControl&quot; &gt;
@@ -438,7 +438,7 @@
                 set on the InputFields/AttributeDefinitions for your view. If there are any errors,
                 this method will add them to the MessageMap. The validation mechanism used is
                 functionally equivalent to client-side validation. </para>
-      <para><programlisting> KRADServiceLocatorWeb.getViewValidationService().validateView(form); </programlisting></para>
+      <para><programlisting linenumbering="numbered"> KRADServiceLocatorWeb.getViewValidationService().validateView(form); </programlisting></para>
     </section>
     <section>
       <title>Validation Messages </title>
@@ -537,7 +537,7 @@
       determine how the response should be handled. The content is wrapped in a handler that
       indicates how the ajax call should handle the content. Here is an example of how it is
       done:</para>
-    <programlisting>
+    <programlisting linenumbering="numbered">
       &lt;div data-handler=&quot;update-title&quot;&gt;
           &lt;div ..&gt; title contents &lt;/div&gt;
       &lt;/div&gt;

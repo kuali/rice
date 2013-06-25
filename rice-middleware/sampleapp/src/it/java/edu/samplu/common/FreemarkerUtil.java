@@ -66,6 +66,7 @@ public class FreemarkerUtil {
     public static File ftlWrite(String key, File output, Template template, InputStream inputStream) throws IOException, TemplateException {
         Properties props = loadProperties(inputStream);
         props.put("baseName", output.getName().substring(0, output.getName().indexOf("ST")));
+        props.put("className", output.getName().substring(0, output.getName().indexOf("ST"))); // backwards compatibility
         if (output.getName().contains("TmplMthd")) { // Template method pattern
             props.put("className", output.getName().substring(0, output.getName().indexOf("TmplMthd")));
         }
@@ -103,6 +104,10 @@ public class FreemarkerUtil {
             props.remove(key);
         }
 
+        if (keyLists.values().size() == 0) { // backwards compatibility
+            keyLists.put("test1", (String)props.get("className"));
+        }
+        
         props.put("tests", keyLists.values());
     }
 

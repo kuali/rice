@@ -290,12 +290,12 @@ OS name: "mac os x", version: "10.7.2", arch: "x86_64", family: "mac"</programli
               <itemizedlist>
                 <listitem>
                   <para>Interactive mode:</para>
-                  <programlisting>
+                  <programlisting linenumbering = "numbered">
 C:\project> mvn archetype:generate -DarchetypeGroupId=org.kuali.rice -DarchetypeArtifactId=rice-archetype-quickstart -DarchetypeVersion=${project.version}</programlisting>
                 </listitem>
                 <listitem>
                   <para>Automated mode:</para>
-                  <programlisting>
+                  <programlisting linenumbering = "numbered">
 C:\project> mvn archetype:generate -DarchetypeGroupId=org.kuali.rice -DarchetypeArtifactId=rice-archetype-quickstart -DarchetypeVersion=${project.version}
 -DgroupId=org.foo
 -DartifactId=bar
@@ -312,7 +312,7 @@ C:\project> mvn archetype:generate -DarchetypeGroupId=org.kuali.rice -Darchetype
           <step>
             <para>Enter the project path and build the project.</para>
             <para>
-              <programlisting>
+              <programlisting linenumbering = "numbered">
 C:\project> cd bar
 C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</programlisting>
               This will clean, compile, run unit and integration tests and startup the project in jetty.
@@ -646,7 +646,7 @@ C:\project\bar> mvn clean install -Dmaven.failsafe.skip=false jetty:run</program
                   <para>
                     Select the <guilabel>Arguments</guilabel> tab and add more more memory by adding the following
                     <guilabel>VM Arguments:</guilabel>
-                    <programlisting>-Xms512m -Xmx2g -XX:MaxPermSize=512m</programlisting>
+                    <programlisting linenumbering = "numbered">-Xms512m -Xmx2g -XX:MaxPermSize=512m</programlisting>
                     Click the <guibutton>OK</guibutton> button.
                   </para>
                   <figure>
@@ -1335,7 +1335,7 @@ Connected to server</programlisting>navigate
             recommended to allocate additional JVM memory for the Eclipse runtime. This can be done
             by opening up the file named 'eclipse.ini' that exists in the root installation
             directory. At the end of the file you specify VM arguments as follows:</para>
-        <programlisting>-vmargs
+        <programlisting linenumbering = "numbered">-vmargs
 -Xms128m
 -Xmx1024m
 -XX:MaxPermSize=512m</programlisting>

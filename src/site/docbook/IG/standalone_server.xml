@@ -192,7 +192,7 @@
                     >http://dev.mysql.com/doc/refman/5.1/en/option-files.html</link></para>
                 <para>Once you have located this file, please add the following options, paying
                     special attention to the line that needs to be commented out:</para>
-                <programlisting>[mysqld]
+                <programlisting linenumbering = "numbered">[mysqld]
 transaction-isolation=READ-COMMITTED
 max_connections=1000 <co xml:id="max_connections-co" linkends="max_connections"/>
 ...
@@ -301,7 +301,7 @@ mysql> </programlisting>
                     When this Installation Guide refers to the Oracle database host server, it will
                     be referred to in the examples as koracle.</para>
                 <para>Now edit the hosts file and add this:</para>
-                <programlisting>&lt;ip address of mysql server&gt; koracle</programlisting>
+                <programlisting linenumbering = "numbered">&lt;ip address of mysql server&gt; koracle</programlisting>
             </section>
             <section>
                 <title>Verification</title>
@@ -335,7 +335,7 @@ mysql> </programlisting>
                         <listitem>
                             <para>You should see output similar to this if the jar gets installed
                                 correctly. </para>
-                            <programlisting>[INFO] Installing ojdbc14.jar to /.m2/repository/com/oracle/ojdbc14/10.2.0.3.0/ojdbc14-10.2.0.3.0.jar</programlisting>
+                            <programlisting linenumbering = "numbered">[INFO] Installing ojdbc14.jar to /.m2/repository/com/oracle/ojdbc14/10.2.0.3.0/ojdbc14-10.2.0.3.0.jar</programlisting>
                         </listitem>
                     </orderedlist></para>
             </section>
@@ -679,7 +679,7 @@ OS name: "mac os x", version: "10.7.2", arch: "x86_64", family: "mac"</programli
                 </listitem>
                 <listitem>
                     <para>You should get the following message at the end of the process.</para>
-                    <programlisting>[INFO] ------------------------------------------------------------------------
+                    <programlisting linenumbering = "numbered">[INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------ </programlisting>
                 </listitem>
@@ -1169,7 +1169,7 @@ tail -n 500 -f catalina.out</programlisting>
             <title>Configure KSB to use the keystore</title>
             <para>You must have these params in the xml config to allow KSB to use the keystore:</para>
             <para>
-                <programlisting>&lt;param name="keystore.file">/usr/local/rice/rice.keystore&lt;/param>
+                <programlisting linenumbering = "numbered">&lt;param name="keystore.file">/usr/local/rice/rice.keystore&lt;/param>
 &lt;param name="keystore.alias">rice&lt;/param>
 &lt;param name="keystore.password">r1c3pw&lt;/param>            </programlisting>
             </para>    

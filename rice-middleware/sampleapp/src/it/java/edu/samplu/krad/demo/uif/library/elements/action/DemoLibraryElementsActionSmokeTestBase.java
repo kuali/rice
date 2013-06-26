@@ -1,3 +1,18 @@
+/**
+ * Copyright 2005-2013 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package edu.samplu.krad.demo.uif.library.elements.action;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
@@ -100,35 +115,6 @@ public class DemoLibraryElementsActionSmokeTestBase extends WebDriverLegacyITBas
         assertTextPresent("Buttons");
         assertTextPresent("Action Field buttons");
 
-//        assertElementPresentByXpath("//button[text()=('button')]");
-        driver.findElement(By.xpath("//button[contains(text(),'button')]"));
-        driver.findElement(By.xpath("//button[contains(text(),'Image BOTTOM')]")).findElement(By.className(
-                "bottomActionImage"));
-
-        // Image TOP tricks up selenium, because the text is in a span after the button.
-        waitAndClick(By.className("topActionImage"));
-        assertTrue(driver.switchTo().alert().getText().contains("You clicked a button"));
-        driver.switchTo().alert().accept();
-
-        // TODO: why doesn't this work?
-//        driver.findElement(By.xpath("//button[contains(text(),'Image LEFT')]")).findElement(By.className("leftActionImage"));
-        driver.findElement(By.xpath("//span[contains(text(),'Image LEFT')]"));
-        driver.findElement(By.className("leftActionImage")).click();
-        assertTrue(driver.switchTo().alert().getText().contains("You clicked a button"));
-        driver.switchTo().alert().accept();
-
-        driver.findElement(By.xpath("//button[contains(text(),'Image RIGHT')]")).findElement(By.className(
-                "rightActionImage")).click();
-        assertTrue(driver.switchTo().alert().getText().contains("You clicked a button"));
-        driver.switchTo().alert().accept();
-
-        // it's tricky to select the button with no text.  This doesn't work: driver.findElement(By.xpath("//button[not(text())]"))
-        // find image in the button before the disabled one
-        driver.findElement(By.xpath("//button[contains(text(),'Disabled Button') and @disabled]/preceding-sibling::button/img"));
-        driver.findElement(By.xpath("//button/img[contains(@alt,'Image Only button')]"));
-
-        driver.findElement(By.xpath("//button[contains(text(),'Disabled Button') and @disabled]"));
-
         waitAndClickButtonByText("button");
         assertTrue(driver.switchTo().alert().getText().contains("You clicked a button"));
         driver.switchTo().alert().accept();
@@ -137,19 +123,27 @@ public class DemoLibraryElementsActionSmokeTestBase extends WebDriverLegacyITBas
         assertTrue(driver.switchTo().alert().getText().contains("You clicked a button"));
         driver.switchTo().alert().accept();
 
-        // TODO: why doesn't this work?
-//        waitAndClickButtonByText("Image TOP");
-//        assertTrue(driver.switchTo().alert().getText().contains("You clicked a button"));
-//        driver.switchTo().alert().accept();
-
-        // TODO: why doesn't this work?
-//        waitAndClickButtonByText("Image LEFT");
-//        assertTrue(driver.switchTo().alert().getText().contains("You clicked a button"));
-//        driver.switchTo().alert().accept();
-
-        waitAndClickButtonByText("Image RIGHT");
+        waitAndClickById("imageTop");
         assertTrue(driver.switchTo().alert().getText().contains("You clicked a button"));
         driver.switchTo().alert().accept();
+
+        driver.findElement(By.xpath("//span[contains(text(),'Image LEFT')]"));
+        driver.findElement(By.id("imageLeft")).click();
+        assertTrue(driver.switchTo().alert().getText().contains("You clicked a button"));
+        driver.switchTo().alert().accept();
+
+        driver.findElement(By.id("imageRight")).click();
+        assertTrue(driver.switchTo().alert().getText().contains("You clicked a button"));
+        driver.switchTo().alert().accept();
+
+        driver.findElement(By.id("imageOnlyButton")).click();
+        assertTrue(driver.switchTo().alert().getText().contains("You clicked a button"));
+        driver.switchTo().alert().accept();
+
+        driver.findElement(By.xpath("//button[contains(text(),'Disabled Button') and @disabled]/preceding-sibling::button/img"));
+        driver.findElement(By.xpath("//button/img[contains(@alt,'Image Only button')]"));
+
+        driver.findElement(By.xpath("//button[contains(text(),'Disabled Button') and @disabled]"));
     }
 
     private void testAllActionTabs() throws Exception {

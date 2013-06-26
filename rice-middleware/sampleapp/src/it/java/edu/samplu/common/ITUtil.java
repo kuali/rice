@@ -44,6 +44,11 @@ public class ITUtil {
     public static final String DEFAULT_BASE_URL = "http://localhost:8080/kr-dev";
 
     /**
+     * http://localhost:8080/krad-dev
+     */
+    public static final String DEFAULT_BASE_URL_KRAD = "http://localhost:8080/krad-dev";
+
+    /**
      * //div[@class='error']"
      */
     public static final String DIV_ERROR_LOCATOR = "//div[@class='error']";

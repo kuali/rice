@@ -136,10 +136,11 @@ public abstract class ComponentModifierBase extends UifDictionaryBeanBase implem
     }
 
     protected ComponentModifierBase copyProperties(Cloneable componentModifier) {
-        ((ComponentModifierBase)componentModifier).setOrder(this.order);
-        ((ComponentModifierBase)componentModifier).setRunCondition(this.runCondition);
-        ((ComponentModifierBase)componentModifier).setRunPhase(this.runPhase);
+        ComponentModifierBase componentModifierCopy = (ComponentModifierBase)componentModifier;
+        componentModifierCopy.setOrder(this.order);
+        componentModifierCopy.setRunCondition(this.runCondition);
+        componentModifierCopy.setRunPhase(this.runPhase);
 
-        return (ComponentModifierBase)componentModifier;
+        return componentModifierCopy;
     }
 }

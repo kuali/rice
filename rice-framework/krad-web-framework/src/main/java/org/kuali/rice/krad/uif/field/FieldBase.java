@@ -350,9 +350,7 @@ public class FieldBase extends ComponentBase implements Field {
     }
 
     /**
-     * Returns a clone of the field.
-     *
-     * @return FieldBase clone of the field
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#clone()
      */
     @Override
     public <T extends Component> T clone() {
@@ -369,10 +367,10 @@ public class FieldBase extends ComponentBase implements Field {
 
     @Override
     protected FieldBase copyProperties(Cloneable fieldBase) {
-        fieldBase = super.copyProperties(fieldBase);
-        ((FieldBase)fieldBase).setShortLabel(this.shortLabel);
-        ((FieldBase)fieldBase).setLabelRendered(this.labelRendered);
+        FieldBase fieldBaseCopy = (FieldBase)super.copyProperties(fieldBase);
+        fieldBaseCopy.setShortLabel(this.shortLabel);
+        fieldBaseCopy.setLabelRendered(this.labelRendered);
 
-        return (FieldBase)fieldBase;
+        return fieldBaseCopy;
     }
 }

@@ -254,14 +254,15 @@ public class ComparableInfo extends UifDictionaryBeanBase implements Serializabl
     }
 
     protected ComparableInfo copyProperties(Cloneable comparableInfo) {
-        ((ComparableInfo) comparableInfo).setBindingObjectPath(this.bindingObjectPath);
-        ((ComparableInfo) comparableInfo).setCompareToForValueChange(this.compareToForValueChange);
-        ((ComparableInfo) comparableInfo).setHeaderText(this.headerText);
-        ((ComparableInfo) comparableInfo).setHighlightValueChange(this.highlightValueChange);
-        ((ComparableInfo) comparableInfo).setIdSuffix(this.idSuffix);
-        ((ComparableInfo) comparableInfo).setOrder(this.order);
-        ((ComparableInfo) comparableInfo).setReadOnly(this.readOnly);
+        ComparableInfo comparableInfoCopy = (ComparableInfo) comparableInfo;
+        comparableInfoCopy.setBindingObjectPath(this.bindingObjectPath);
+        comparableInfoCopy.setCompareToForValueChange(this.compareToForValueChange);
+        comparableInfoCopy.setHeaderText(this.headerText);
+        comparableInfoCopy.setHighlightValueChange(this.highlightValueChange);
+        comparableInfoCopy.setIdSuffix(this.idSuffix);
+        comparableInfoCopy.setOrder(this.order);
+        comparableInfoCopy.setReadOnly(this.readOnly);
 
-        return (ComparableInfo) comparableInfo;
+        return comparableInfoCopy;
     }
 }

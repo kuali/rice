@@ -184,9 +184,7 @@ public class ComponentConvertModifier extends ComponentModifierBase {
     }
 
     /**
-     * Returns a clone of the component convert modifier.
-     *
-     * @return ComponentModifier clone of the component
+     * @see ComponentModifierBase#clone()
      */
     @Override
     public <T extends ComponentModifier> T clone() {
@@ -202,9 +200,10 @@ public class ComponentConvertModifier extends ComponentModifierBase {
     }
 
     protected ComponentConvertModifier copyProperties(Cloneable componentConvertModifier) {
-        ((ComponentConvertModifier)componentConvertModifier).setComponentReplacementPrototype(this.getComponentReplacementPrototype().clone());
-        ((ComponentConvertModifier)componentConvertModifier).setComponentTypeToReplace(this.componentTypeToReplace);
+        ComponentConvertModifier componentConvertModifierCopy = (ComponentConvertModifier)super.copyProperties(componentConvertModifier);
+        componentConvertModifierCopy.setComponentReplacementPrototype(this.getComponentReplacementPrototype().clone());
+        componentConvertModifierCopy.setComponentTypeToReplace(this.componentTypeToReplace);
 
-        return (ComponentConvertModifier)componentConvertModifier;
+        return componentConvertModifierCopy;
     }
 }

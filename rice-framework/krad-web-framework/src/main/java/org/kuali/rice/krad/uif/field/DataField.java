@@ -1139,9 +1139,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     }
 
     /**
-     * Returns a clone of the data field.
-     *
-     * @return DataField clone of the data field
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#clone()
      */
     @Override
     public <T extends Component> T clone() {
@@ -1158,26 +1156,26 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
 
     @Override
     protected DataField copyProperties(Cloneable dataField) {
-        dataField = super.copyProperties(dataField);
-        ((DataField)dataField).setAddHiddenWhenReadOnly(this.addHiddenWhenReadOnly);
-        ((DataField)dataField).setAdditionalHiddenPropertyNames(new ArrayList<String>(this.additionalHiddenPropertyNames));
-        ((DataField)dataField).setApplyMask(this.applyMask);
-        ((DataField)dataField).setBindingInfo(this.bindingInfo);
-        ((DataField)dataField).setDefaultValue(this.defaultValue);
-        ((DataField)dataField).setDictionaryAttributeName(this.dictionaryAttributeName);
-        ((DataField)dataField).setDictionaryObjectEntry(this.dictionaryObjectEntry);
-        ((DataField)dataField).setEscapeHtmlInPropertyValue(this.escapeHtmlInPropertyValue);
-        ((DataField)dataField).setForcedValue(this.forcedValue);
-        ((DataField)dataField).setMultiLineReadOnlyDisplay(this.multiLineReadOnlyDisplay);
-        ((DataField)dataField).setPropertyName(this.propertyName);
-        ((DataField)dataField).setPropertyNamesForAdditionalDisplay(new ArrayList<String>(this.propertyNamesForAdditionalDisplay));
-        ((DataField)dataField).setReadOnlyDisplayReplacement(this.readOnlyDisplayReplacement);
-        ((DataField)dataField).setReadOnlyDisplayReplacementPropertyName(this.readOnlyDisplayReplacementPropertyName);
-        ((DataField)dataField).setReadOnlyDisplaySuffix(this.readOnlyDisplaySuffix);
-        ((DataField)dataField).setReadOnlyDisplaySuffixPropertyName(this.readOnlyDisplaySuffixPropertyName);
-        ((DataField)dataField).setReadOnlyListDelimiter(this.readOnlyListDelimiter);
-        ((DataField)dataField).setReadOnlyListDisplayType(this.readOnlyListDisplayType);
+        DataField dataFieldCopy = (DataField)super.copyProperties(dataField);
+        dataFieldCopy.setAddHiddenWhenReadOnly(this.addHiddenWhenReadOnly);
+        dataFieldCopy.setAdditionalHiddenPropertyNames(new ArrayList<String>(this.additionalHiddenPropertyNames));
+        dataFieldCopy.setApplyMask(this.applyMask);
+        dataFieldCopy.setBindingInfo(this.bindingInfo);
+        dataFieldCopy.setDefaultValue(this.defaultValue);
+        dataFieldCopy.setDictionaryAttributeName(this.dictionaryAttributeName);
+        dataFieldCopy.setDictionaryObjectEntry(this.dictionaryObjectEntry);
+        dataFieldCopy.setEscapeHtmlInPropertyValue(this.escapeHtmlInPropertyValue);
+        dataFieldCopy.setForcedValue(this.forcedValue);
+        dataFieldCopy.setMultiLineReadOnlyDisplay(this.multiLineReadOnlyDisplay);
+        dataFieldCopy.setPropertyName(this.propertyName);
+        dataFieldCopy.setPropertyNamesForAdditionalDisplay(new ArrayList<String>(this.propertyNamesForAdditionalDisplay));
+        dataFieldCopy.setReadOnlyDisplayReplacement(this.readOnlyDisplayReplacement);
+        dataFieldCopy.setReadOnlyDisplayReplacementPropertyName(this.readOnlyDisplayReplacementPropertyName);
+        dataFieldCopy.setReadOnlyDisplaySuffix(this.readOnlyDisplaySuffix);
+        dataFieldCopy.setReadOnlyDisplaySuffixPropertyName(this.readOnlyDisplaySuffixPropertyName);
+        dataFieldCopy.setReadOnlyListDelimiter(this.readOnlyListDelimiter);
+        dataFieldCopy.setReadOnlyListDisplayType(this.readOnlyListDisplayType);
 
-        return (DataField)dataField;
+        return dataFieldCopy;
     }
 }

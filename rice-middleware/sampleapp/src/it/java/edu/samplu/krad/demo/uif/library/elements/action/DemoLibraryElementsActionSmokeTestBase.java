@@ -105,16 +105,22 @@ public class DemoLibraryElementsActionSmokeTestBase extends WebDriverLegacyITBas
         driver.findElement(By.xpath("//button[contains(text(),'Image BOTTOM')]")).findElement(By.className(
                 "bottomActionImage"));
 
-        // TODO: why doesn't this work?
-//        driver.findElement(By.xpath("//button[contains(text(),'Image TOP')]")).findElement(By.className("topActionImage"));
-        driver.findElement(By.xpath("//span[contains(text(),'Image TOP')]"));
+        // Image TOP tricks up selenium, because the text is in a span after the button.
+        waitAndClick(By.className("topActionImage"));
+        assertTrue(driver.switchTo().alert().getText().contains("You clicked a button"));
+        driver.switchTo().alert().accept();
 
         // TODO: why doesn't this work?
 //        driver.findElement(By.xpath("//button[contains(text(),'Image LEFT')]")).findElement(By.className("leftActionImage"));
         driver.findElement(By.xpath("//span[contains(text(),'Image LEFT')]"));
+        driver.findElement(By.className("leftActionImage")).click();
+        assertTrue(driver.switchTo().alert().getText().contains("You clicked a button"));
+        driver.switchTo().alert().accept();
 
         driver.findElement(By.xpath("//button[contains(text(),'Image RIGHT')]")).findElement(By.className(
-                "rightActionImage"));
+                "rightActionImage")).click();
+        assertTrue(driver.switchTo().alert().getText().contains("You clicked a button"));
+        driver.switchTo().alert().accept();
 
         // it's tricky to select the button with no text.  This doesn't work: driver.findElement(By.xpath("//button[not(text())]"))
         // find image in the button before the disabled one
@@ -153,6 +159,11 @@ public class DemoLibraryElementsActionSmokeTestBase extends WebDriverLegacyITBas
         testActionValidation();
         testActionImages();
         testActionButton();
+    }
+
+    public void testActionButtonBookmark(Failable failable) throws Exception {
+        testActionButton();
+        passed();
     }
 
     public void testActionBookmark(Failable failable) throws Exception {

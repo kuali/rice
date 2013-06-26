@@ -16,4 +16,9 @@ public class DemoLibraryElementsActionSTJUnitBkMrkGen extends DemoLibraryElement
     public void testActionBookmark() throws Exception {
         testActionBookmark(this);
     }
+
+    @Test
+    public void testActionButtonBookmark() throws Exception {
+        testActionButtonBookmark(this);
+    }
 }

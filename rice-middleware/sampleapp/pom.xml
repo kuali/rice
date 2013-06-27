@@ -148,14 +148,10 @@
       <id>stests</id>
       <properties>
         <maven.failsafe.skip>false</maven.failsafe.skip>
-        <maven.failsafe.includes>**/*IT.java</maven.failsafe.includes>
-        <maven.failsafe.includes>**/*Gen.java</maven.failsafe.includes>
-        <maven.failsafe.excludes>**/*STNGBkMrkGen.java</maven.failsafe.excludes>
-        <maven.failsafe.excludes>**/XMLIngesterSTNGBkMrkGen.java</maven.failsafe.excludes>
-        <maven.failsafe.excludes>**/XMLIngesterNavIT.java</maven.failsafe.excludes>
-        <maven.failsafe.excludes>**/IdentityPersonRoleWDIT.java</maven.failsafe.excludes>
+        <maven.failsafe.includes>**/*IT.java, **/*Gen.java</maven.failsafe.includes>
+        <!-- exclude krad.demo and krad.labs they are enabled on evn11 only -->
         <!-- TravelAccountMaintenanceDocumentTest.java is an Integration test, not a Smoke test -->
-        <maven.failsafe.excludes>**/TravelAccountMaintenanceDocumentTest.java</maven.failsafe.excludes>
+        <maven.failsafe.excludes>**/TravelAccountMaintenanceDocumentTest.java, **/XMLIngesterSTNGBkMrkGen.java, **/XMLIngesterNavIT.java, **/IdentityPersonRoleWDIT.java, **/krad/labs/*.java, **/krad/demo/*.java</maven.failsafe.excludes>
       </properties>
       <build>
         <plugins>

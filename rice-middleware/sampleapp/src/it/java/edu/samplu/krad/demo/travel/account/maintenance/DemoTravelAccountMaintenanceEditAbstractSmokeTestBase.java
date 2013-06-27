@@ -50,7 +50,6 @@ public class DemoTravelAccountMaintenanceEditAbstractSmokeTestBase extends WebDr
         }
         else
         {
-            Assert.fail();
             fail("Development Exception (Error) on page. Test cannot be executed.");
         }
     }

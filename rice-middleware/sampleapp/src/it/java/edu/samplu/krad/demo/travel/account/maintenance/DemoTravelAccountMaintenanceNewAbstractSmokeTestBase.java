@@ -15,6 +15,9 @@
  */
 package edu.samplu.krad.demo.travel.account.maintenance;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.internal.selenesedriver.SwitchToFrame;
+
 import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
@@ -28,6 +31,11 @@ public abstract class DemoTravelAccountMaintenanceNewAbstractSmokeTestBase exten
      * //div[@class='fancybox-item fancybox-close']
      */
     public static final String FANCY_BOX_CLOSE_XPATH = "//div[@class='fancybox-item fancybox-close']";
+    
+    /**
+     * //div[@class='fancybox-item fancybox-close']
+     */
+    public static final String FANCY_BOX_IFRAME_XPATH = "//iframe[@class='fancybox-iframe']";
 
     /**
      * /kr-krad/maintenance?methodToCall=start&dataObjectClassName=org.kuali.rice.krad.demo.travel.account.TravelAccount&hideReturnLink=true
@@ -48,9 +56,9 @@ public abstract class DemoTravelAccountMaintenanceNewAbstractSmokeTestBase exten
         waitAndTypeByName("document.documentHeader.documentDescription","Travel Account Maintenance New Test Document");
         waitAndTypeByName("document.newMaintainableObject.dataObject.number","a1");
         waitAndClickByXpath("//input[@alt='Direct Inquiry']");
-        gotoNestedFrame();
-        assertTextPresent("a1");
+        waitForElementPresentByXpath("//a[@title='Travel Account ']");
         waitAndClickByXpath(FANCY_BOX_CLOSE_XPATH);
+        assertTextPresent("Travel Account Maintenance");
     }
 
     public void testDemoTravelAccountMaintenanceNewBookmark(Failable failable) throws Exception {

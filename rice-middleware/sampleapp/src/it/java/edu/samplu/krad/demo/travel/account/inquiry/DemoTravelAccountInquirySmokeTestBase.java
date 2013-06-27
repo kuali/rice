@@ -22,7 +22,7 @@ import edu.samplu.common.WebDriverLegacyITBase;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoTravelAccountInquirySmokeTestBase extends WebDriverLegacyITBase {
+public abstract class DemoTravelAccountInquirySmokeTestBase extends WebDriverLegacyITBase {
 
     /**
      * //a[@title='Travel Account ']

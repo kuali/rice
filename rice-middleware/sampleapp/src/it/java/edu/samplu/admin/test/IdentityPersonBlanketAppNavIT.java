@@ -15,6 +15,7 @@
  */
 package edu.samplu.admin.test;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -24,7 +25,12 @@ import org.junit.Test;
  */
 public class IdentityPersonBlanketAppNavIT extends AdminTmplMthdBlanketAppSTNavBase {
 
-     @Override
+    @Override
+    public void fail(String message) {
+        Assert.fail(message);
+    }
+
+    @Override
      protected String getLinkLocator() {
          return "Person";
      }  

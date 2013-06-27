@@ -15,6 +15,7 @@
  */
 package edu.samplu.admin.test;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -23,8 +24,13 @@ import org.junit.Test;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class IdentityRoleBlanketAppNavIT extends AdminTmplMthdBlanketAppSTNavBase {
-    
-     @Override
+
+    @Override
+    public void fail(String message) {
+        Assert.fail(message);
+    }
+
+    @Override
      protected String getLinkLocator() {
          return "Role";
      }

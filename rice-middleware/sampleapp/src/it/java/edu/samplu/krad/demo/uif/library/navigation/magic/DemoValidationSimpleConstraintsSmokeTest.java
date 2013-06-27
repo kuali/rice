@@ -16,6 +16,7 @@
 
 package edu.samplu.krad.demo.uif.library.navigation.magic;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 public class DemoValidationSimpleConstraintsSmokeTest extends MagicWebDriverLegacyITBase {
@@ -23,6 +24,11 @@ public class DemoValidationSimpleConstraintsSmokeTest extends MagicWebDriverLega
     public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-SimpleConstraint-View&methodToCall=start";
 
     public static final String SIMPLE_CONSTRAINT_REQUIRED_TAB = "//div[@id='Demo-SimpleConstraint-Example1_tab']";
+
+    @Override
+    public void fail(String message) {
+        Assert.fail(message);
+    }
 
     @Override
     protected String getBookmarkUrl() {

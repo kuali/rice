@@ -18,6 +18,7 @@ package edu.samplu.travel.test;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -29,11 +30,17 @@ import static org.junit.Assert.assertEquals;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class FiscalOfficerInfoMaintenanceNewWDIT extends WebDriverLegacyITBase {
+
     public static final String TEST_URL = ITUtil.PORTAL
             + "?channelTitle=FiscalOfficerInfo%20Maintenance%20(New)&channelUrl="
             + ITUtil.getBaseUrlString()
             + "/kr-krad/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo&returnLocation="
             + ITUtil.PORTAL_URL + "&hideReturnLink=true";
+
+    @Override
+    public void fail(String message) {
+        Assert.fail(message);
+    }
 
     @Override
     public String getTestUrl() {

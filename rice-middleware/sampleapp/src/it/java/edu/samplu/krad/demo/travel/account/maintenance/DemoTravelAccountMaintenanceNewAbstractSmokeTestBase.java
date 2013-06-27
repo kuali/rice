@@ -22,7 +22,7 @@ import edu.samplu.common.WebDriverLegacyITBase;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoTravelAccountMaintenanceNewAbstractSmokeTestBase extends WebDriverLegacyITBase {
+public abstract class DemoTravelAccountMaintenanceNewAbstractSmokeTestBase extends WebDriverLegacyITBase {
 
     /**
      * //div[@class='fancybox-item fancybox-close']

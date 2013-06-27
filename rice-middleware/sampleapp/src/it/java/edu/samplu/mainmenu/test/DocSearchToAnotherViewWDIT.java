@@ -20,6 +20,12 @@ import static org.junit.Assert.assertTrue;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocSearchToAnotherViewWDIT extends WebDriverLegacyITBase {
+
+    @Override
+    public void fail(String message) {
+        org.junit.Assert.fail(message);
+    }
+
     @Override
     public String getTestUrl() {
         return ITUtil.PORTAL;

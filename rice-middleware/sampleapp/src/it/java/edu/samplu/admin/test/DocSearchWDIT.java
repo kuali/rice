@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -35,6 +36,12 @@ public class DocSearchWDIT extends WebDriverLegacyITBase {
 
     String docId;
     String parentName;
+
+    @Override
+    public void fail(String message) {
+        Assert.fail(message);
+    }
+
     @Override
     public String getTestUrl(){
         return ITUtil.PORTAL;

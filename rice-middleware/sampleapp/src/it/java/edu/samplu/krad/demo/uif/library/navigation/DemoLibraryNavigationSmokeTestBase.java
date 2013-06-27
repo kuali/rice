@@ -24,7 +24,7 @@ import edu.samplu.krad.demo.uif.library.DemoLibraryITBase;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoLibraryNavigationSmokeTestBase extends DemoLibraryITBase {
+public abstract class DemoLibraryNavigationSmokeTestBase extends DemoLibraryITBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=ComponentLibraryHome

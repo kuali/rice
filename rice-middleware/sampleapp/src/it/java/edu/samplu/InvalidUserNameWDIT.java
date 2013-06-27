@@ -18,6 +18,7 @@ package edu.samplu;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
 import edu.samplu.common.WebDriverUtil;
+import org.junit.Assert;
 import org.junit.Test;
 
 import static com.thoughtworks.selenium.SeleneseTestCase.assertEquals;
@@ -26,6 +27,12 @@ import static com.thoughtworks.selenium.SeleneseTestCase.assertEquals;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class InvalidUserNameWDIT extends WebDriverLegacyITBase {
+
+    @Override
+    public void fail(String message) {
+        Assert.fail(message);
+    }
+
     @Override
     public String getTestUrl() {
         return ITUtil.PORTAL;

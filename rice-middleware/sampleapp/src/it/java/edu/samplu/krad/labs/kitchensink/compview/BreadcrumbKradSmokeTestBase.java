@@ -22,7 +22,7 @@ import edu.samplu.krad.compview.BreadcrumbSmokeTestBase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public class BreadcrumbKradSmokeTestBase extends BreadcrumbSmokeTestBase {
+public abstract class BreadcrumbKradSmokeTestBase extends BreadcrumbSmokeTestBase {
 
     public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView";
 

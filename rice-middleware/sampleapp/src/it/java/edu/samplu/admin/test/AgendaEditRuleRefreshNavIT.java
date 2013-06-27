@@ -16,6 +16,7 @@
 
 package edu.samplu.admin.test;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import edu.samplu.common.ITUtil;
@@ -26,6 +27,11 @@ import edu.samplu.common.WebDriverLegacyITBase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AgendaEditRuleRefreshNavIT extends WebDriverLegacyITBase {
+
+    @Override
+    public void fail(String message) {
+        Assert.fail(message);
+    }
 
     @Override
     public String getTestUrl() {

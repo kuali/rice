@@ -17,6 +17,7 @@ package edu.samplu.mainmenu.test;
 
 import static org.junit.Assert.*;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import edu.samplu.common.ITUtil;
@@ -30,13 +31,20 @@ public class MultipleLoginLogoutNavIT extends WebDriverLegacyITBase {
     public static final String LOGIN_INFO_STRONG_2_XPATH = "//div[@id='login-info']/strong[2]";
 
     @Override
+    public void fail(String message) {
+        Assert.fail(message);
+    }
+
+    @Override
     public String getTestUrl() {
         return ITUtil.PORTAL;
     }
+
     @Override
     public String getUserName() {
         return "admin";
     }
+
     @Test
     public void testMultipleLoginLogout() throws Exception {
         waitAndClickMainMenu(this);

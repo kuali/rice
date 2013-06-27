@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoGroupSmokeTestBase extends WebDriverLegacyITBase {
+public abstract class DemoGroupSmokeTestBase extends WebDriverLegacyITBase {
 
     public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=ComponentLibraryHome";
 

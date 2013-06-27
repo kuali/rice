@@ -17,6 +17,7 @@ package edu.samplu.admin.test;
 
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
+import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
@@ -38,12 +39,16 @@ public class IdentityPersonRoleWDIT extends WebDriverLegacyITBase{
     public static final String KRMS_ADMIN_ROLE_ID = "98";
 
     @Override
+    public void fail(String message) {
+        Assert.fail(message);
+    }
+
+    @Override
     public String getTestUrl() {
         return TEST_URL;
     }
+
     @Test
-    /**
-     */
     public void testPersonRole() throws InterruptedException {
         String id = "";
         String format = "%0" + (userCnt + "").length() + "d";

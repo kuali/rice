@@ -26,7 +26,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoLibraryElementsActionSmokeTestBase extends WebDriverLegacyITBase {
+public abstract class DemoLibraryElementsActionSmokeTestBase extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-Action-View&methodToCall=start

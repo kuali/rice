@@ -18,6 +18,7 @@ package edu.samplu.krad.compview;
 
 import edu.samplu.common.WebDriverLegacyITBase;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -28,6 +29,12 @@ import org.junit.Test;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ParentLineWDIT extends WebDriverLegacyITBase {
+
+    @Override
+    public void fail(String message) {
+        Assert.fail(message);
+    }
+
     @Override
     public String getTestUrl() {
         return "/kr-krad/uicomponents?methodToCall=start&readOnlyFields=field91&viewId=UifCompView_KNS#UifCompView-Page7";

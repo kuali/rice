@@ -17,14 +17,20 @@ package edu.samplu.krad.compview;
 
 import edu.samplu.common.WebDriverLegacyITBase;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RichMessagesValidationWDIT extends WebDriverLegacyITBase {
-	
-	@Override
+
+    @Override
+    public void fail(String message) {
+        Assert.fail(message);
+    }
+
+    @Override
     public String getTestUrl() {
         return "/kr-krad/uicomponents?viewId=RichMessagesView&methodToCall=start";
     }

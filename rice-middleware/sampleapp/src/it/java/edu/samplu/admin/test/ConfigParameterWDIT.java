@@ -15,6 +15,7 @@
  */
 package edu.samplu.admin.test;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import edu.samplu.common.ITUtil;
@@ -28,7 +29,12 @@ import edu.samplu.common.WebDriverLegacyITBase;
 public class ConfigParameterWDIT extends WebDriverLegacyITBase {
     
     public static final String TEST_URL=ITUtil.PORTAL+"?channelTitle=Parameter&channelUrl="+ITUtil.getBaseUrlString()+"/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.parameter.ParameterBo&docFormKey=88888888&returnLocation="+ITUtil.PORTAL_URL+"&hideReturnLink=true";
-    
+
+    @Override
+    public void fail(String message) {
+        Assert.fail(message);
+    }
+
     /**
      * This overridden method ...
      * 

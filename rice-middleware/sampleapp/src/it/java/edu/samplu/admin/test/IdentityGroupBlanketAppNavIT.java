@@ -15,6 +15,7 @@
  */
 package edu.samplu.admin.test;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -23,7 +24,12 @@ import org.junit.Test;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class IdentityGroupBlanketAppNavIT extends AdminTmplMthdBlanketAppSTNavBase {
-  
+
+    @Override
+    public void fail(String message) {
+        Assert.fail(message);
+    }
+
     @Override
     protected String getLinkLocator() {
         return "Group";

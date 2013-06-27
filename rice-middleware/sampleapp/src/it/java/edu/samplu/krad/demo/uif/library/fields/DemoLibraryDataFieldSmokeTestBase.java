@@ -18,7 +18,6 @@ package edu.samplu.krad.demo.uif.library.fields;
 
 import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
 import edu.samplu.krad.demo.uif.library.DemoLibraryITBase;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.openqa.selenium.By;
@@ -27,7 +26,7 @@ import org.openqa.selenium.WebElement;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoLibraryDataFieldSmokeTestBase extends DemoLibraryITBase {
+public abstract class DemoLibraryDataFieldSmokeTestBase extends DemoLibraryITBase {
     /**
      * /kr-krad/kradsampleapp?viewId=ComponentLibraryHome
      */

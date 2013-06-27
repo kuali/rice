@@ -18,6 +18,7 @@ package edu.samplu.mainmenu.test;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -31,7 +32,12 @@ public class WorkFlowRouteRulesWDIT extends WebDriverLegacyITBase {
     public static final String TEST_URL = ITUtil.PORTAL + "?channelTitle=Routing%20Rules&channelUrl=" + ITUtil.getBaseUrlString() +
             "/kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.rule.RuleBaseValues&docFormKey=88888888&returnLocation=" +
             ITUtil.PORTAL_URL + "&hideReturnLink=true&showMaintenanceLinks=true";
-    
+
+    @Override
+    public void fail(String message) {
+        Assert.fail(message);
+    }
+
     /**
      * This overridden method ...
      * 

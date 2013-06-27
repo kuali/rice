@@ -15,6 +15,7 @@
  */
 package edu.samplu.admin.test;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import edu.samplu.common.ITUtil;
@@ -30,11 +31,17 @@ public class LocationPostCodeBlanketAppWDIT extends WebDriverLegacyITBase {
     public static final String TEST_URL = ITUtil.PORTAL + "?channelTitle=Postal%20Code&channelUrl=" + ITUtil.getBaseUrlString() +
             "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.location.impl.postalcode.PostalCodeBo&docFormKey=88888888&returnLocation=" +
             ITUtil.PORTAL_URL + "&hideReturnLink=true";
-    
+
+    @Override
+    public void fail(String message) {
+        Assert.fail(message);
+    }
+
     @Override
     public String getTestUrl() {
         return TEST_URL;
     }
+
    @Test
    public void testLocationPostBlanketApprove() throws Exception {
        super.testLocationPostBlanketApprove(); 

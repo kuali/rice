@@ -20,6 +20,7 @@ import edu.samplu.common.WebDriverLegacyITBase;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.Assert;
 import org.junit.Test;
 import org.kuali.rice.krad.uif.UifConstants;
 
@@ -34,6 +35,11 @@ import static org.junit.Assert.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifDataAttributesNavIT extends WebDriverLegacyITBase {
+
+    @Override
+    public void fail(String message) {
+        Assert.fail(message);
+    }
 
     @Override
     public String getTestUrl() {

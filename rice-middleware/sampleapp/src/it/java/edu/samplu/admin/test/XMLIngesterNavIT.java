@@ -23,6 +23,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -72,6 +73,10 @@ public class XMLIngesterNavIT extends AdminTmplMthdSTNavBase {
     @Override
     public void testEditCancel() throws Exception {}
 
+    @Override
+    public void fail(String message) {
+        Assert.fail(message);
+    }
 
     @Override
     protected String getLinkLocator() {

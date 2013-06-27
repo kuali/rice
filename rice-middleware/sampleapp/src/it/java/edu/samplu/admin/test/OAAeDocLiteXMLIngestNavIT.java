@@ -32,6 +32,11 @@ public class OAAeDocLiteXMLIngestNavIT extends AdminTmplMthdSTNavBase {
     // values set by default for repeatable testing; left as configurable for load tests
     private List<File> fileUploadList;
 
+    @Override
+    public void fail(String message) {
+        Assert.fail(message);
+    }
+
     private void setUpFiles() throws Exception {
         fileUploadList = new ArrayList<File>();
         // Load the directory as a resource

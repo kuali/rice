@@ -17,6 +17,7 @@ package edu.samplu.krad.travelview;
 
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -26,6 +27,12 @@ public class MaintenanceAddDeleteFiscalOfficerWDIT extends WebDriverLegacyITBase
     public static final String TEST_URL = ITUtil.PORTAL + "?channelTitle=Travel%20Account%20Maintenance%20(New)&channelUrl=" + ITUtil.getBaseUrlString() +
             "/kr-krad/maintenance?methodToCall=start&dataObjectClassName=org.kuali.rice.krad.demo.travel.account.TravelAccount&viewName=ks_maintenance&returnLocation=" +
             ITUtil.PORTAL_URL + "&hideReturnLink=true";
+
+    @Override
+    public void fail(String message) {
+        Assert.fail(message);
+    }
+
     @Override
     public String getTestUrl() {
         return TEST_URL;

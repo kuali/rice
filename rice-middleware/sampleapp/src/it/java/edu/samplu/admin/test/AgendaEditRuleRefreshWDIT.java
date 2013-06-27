@@ -16,6 +16,7 @@
 
 package edu.samplu.admin.test;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import edu.samplu.common.ITUtil;
@@ -33,7 +34,12 @@ public class AgendaEditRuleRefreshWDIT extends WebDriverLegacyITBase {
             + "org.kuali.rice.krms.impl.repository.AgendaBo"
             + ITUtil.SHOW_MAINTENANCE_LINKS
             + "&returnLocation=" + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
-    
+
+    @Override
+    public void fail(String message) {
+        Assert.fail(message);
+    }
+
     @Override
     public String getTestUrl(){
         return TEST_URL;

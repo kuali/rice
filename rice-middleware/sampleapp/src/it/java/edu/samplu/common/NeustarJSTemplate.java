@@ -18,16 +18,19 @@ package edu.samplu.common;
 import java.io.File;
 import java.util.Properties;
 
+import org.junit.Assert;
 import org.junit.Test;
-
-import freemarker.cache.ClassTemplateLoader;
-import freemarker.template.Configuration;
 
 /**
  * TODO Setup as command line tool or implement gold standard/acceptance testing for the templated result.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NeustarJSTemplate extends FreemarkerSTBase {
+
+    @Override
+    public void fail(String message) {
+        Assert.fail(message);
+    }
 
     /**
      * This is ugly, I'm doing it to remove the loading property duplication, we should probably turn this class into a

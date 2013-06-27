@@ -598,7 +598,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         try {
             driver.findElement(By.name(name));
         } catch (Exception e) {
-            SeleneseTestBase.fail(name + " not present " + message);
+            failableFail(name + " not present " + message);
         }
     }
 
@@ -655,25 +655,25 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void assertIsVisibleByXpath(String xpath, String message) {
         if (!isVisibleByXpath(xpath)) {
-            fail(xpath + " not visible " + message);
+            failableFail(xpath + " not visible " + message);
         }
     }
 
     protected void assertIsNotVisibleByXpath(String xpath, String message) {
         if (isVisibleByXpath(xpath)) {
-            fail(xpath + " visible " + message);
+            failableFail(xpath + " visible " + message);
         }
     }
 
     protected void assertIsVisible(String locator) {
         if (!isVisible(locator)) {
-            fail(locator + " is not visible and should be");
+            failableFail(locator + " is not visible and should be");
         }
     }
 
     protected void assertIsNotVisible(String locator) {
         if (isVisible(locator)) {
-            fail(locator + " is visible and should not be");
+            failableFail(locator + " is visible and should not be");
         }
     }
 
@@ -709,14 +709,14 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void assertTextPresent(String text, String message) {
         if (!driver.getPageSource().contains(text)) {
-            SeleneseTestBase.fail(text + " not present " + message);
+            failableFail(text + " not present " + message);
         }
     }
 
     protected void assertTextPresent(String text, String cssSelector, String message){
         WebElement element = driver.findElement(By.cssSelector(cssSelector));
         if (!element.getText().contains(text)){
-            SeleneseTestBase.fail(text + " for " + cssSelector + " not present " + message);
+            failableFail(text + " for " + cssSelector + " not present " + message);
         }
     }
 
@@ -735,7 +735,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      */
     protected void assertTextNotPresent(String text, String message) {
         if (driver.getPageSource().contains(text)) {
-            SeleneseTestBase.fail(text + " not present " + message);
+            failableFail(text + " not present " + message);
         }
     }
 
@@ -796,7 +796,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         }
 
         if (errorText != null && errorText.contains("errors")) {
-            SeleneseTestBase.fail(errorText + message);
+            failableFail(errorText + message);
         }
     }
 
@@ -814,7 +814,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
             if (driver.findElements(By.xpath(DIV_LEFT_ERRMSG)).size() > 0) {
                 errorText = errorText + ITUtil.blanketApprovalCleanUpErrorText(driver.findElement(By.xpath(DIV_LEFT_ERRMSG)).getText());
             }
-            SeleneseTestBase.fail(errorText);
+            failableFail(errorText);
         }
     }
 
@@ -928,7 +928,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 //        // confirm that the input box containing the modified value is not present
 //        for (int second = 0;; second++) {
 //            if (second >= waitSeconds)
-//                fail(TIMEOUT_MESSAGE);
+//                failableFail(TIMEOUT_MESSAGE);
 //            try {
 //                if (!"selenium".equals(getAttributeByName("list4[0].subList[0].field1", "value")))
 //                    break;
@@ -1097,10 +1097,13 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
     }
 
-    @Override
-    public void fail(String message) {
-        SeleneseTestBase.fail(message);
+    /**
+     * Fail using the Failable fail method.  Calls jGrowlSticky then fail.
+     * @param message to display with failure
+     */
+    public void failableFail(String message) {
         jGrowlSticky(message);
+        fail(message); // Failable.fail
     }
 
     protected void fireEvent(String name, String event) {
@@ -1216,7 +1219,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         JiraAwareFailureUtil.failOnMatchedJira(by.toString(), message, this);
         // if there isn't a matched jira to fail on, then fail
         checkForIncidentReport(by.toString(), message);
-        fail(t.getMessage() + " " + by.toString() + " " + message + " " + driver.getCurrentUrl());
+        failableFail(t.getMessage() + " " + by.toString() + " " + message + " " + driver.getCurrentUrl());
     }
 
     protected void jiraAwareWaitAndClick(By by, String message) throws InterruptedException {
@@ -1323,7 +1326,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         List<WebElement> options = select1.findElements(By.tagName("option"));
 
         if (options == null || options.size() == 0) {
-            fail("No options for select " + select1.toString() + " was looking for value " + optionValue + " using " + by.toString());
+            failableFail("No options for select " + select1.toString() + " was looking for value " + optionValue + " using " + by.toString());
         }
 
         for (WebElement option : options) {
@@ -1445,7 +1448,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         for (int i = 0; i < 6; i++) {
             for (int second = 0;; second++) {
                 if (second >= waitSeconds)
-                    SeleneseTestBase.fail(TIMEOUT_MESSAGE);
+                    failableFail(TIMEOUT_MESSAGE);
                 try {
                     if (isElementPresent(".kr-refresh-button"))
                         break;
@@ -2500,7 +2503,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         // wait for collections page to load by checking the presence of a sub collection line item
         for (int second = 0;; second++) {                   
             if (second >= waitSeconds)
-                fail(TIMEOUT_MESSAGE);
+                failableFail(TIMEOUT_MESSAGE);
             try {                
                 if (getText(SUB_COLLECTION_UIF_DISCLOSURE_SPAN_UIF_HEADER_TEXT_SPAN_XPATH).equals("SubCollection - (3 lines)"))
                 {
@@ -2526,7 +2529,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
         for (int second = 0;; second++) {            
             if (second >= waitSeconds)
-                SeleneseTestBase.fail(TIMEOUT_MESSAGE);
+                failableFail(TIMEOUT_MESSAGE);
             try {               
                 if (getAttributeByName("newCollectionLines['list1'].field1", "value").equals(""))
                     break;
@@ -2584,7 +2587,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         //SeleneseTestBase.assertTrue(isElementPresent("//div[@id='ConfigurationTestView-collection1']//tr[2]/td[6]//button[contains(.,\"delete\")]"));
         for (int second = 0;; second++) {            
             if (second >= waitSeconds)
-                SeleneseTestBase.fail(TIMEOUT_MESSAGE);
+                failableFail(TIMEOUT_MESSAGE);
             try {                
                 if (isElementPresentByXpath("//tr[2]/td[6]/div/fieldset/div/div[2]/button"))
                     break;
@@ -2597,7 +2600,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         //SeleneseTestBase.assertTrue(isElementPresent("//div[@id='ConfigurationTestView-collection2']//tr[2]/td[1]//button[contains(.,\"delete\")]"));
         for (int second = 0;; second++) {           
             if (second >= waitSeconds)
-                SeleneseTestBase.fail(TIMEOUT_MESSAGE);
+                failableFail(TIMEOUT_MESSAGE);
             try {                
                 if (isElementPresentByXpath("//div[2]/div[2]/div[2]/table/tbody/tr[2]/td/div/fieldset/div/div[2]/button"))
                     break;
@@ -2610,7 +2613,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         //SeleneseTestBase.assertTrue(isElementPresent("//div[@id='ConfigurationTestView-subCollection2_line0']//tr[2]/td[3]//button[contains(.,\"delete\")]"));
         for (int second = 0;; second++) {            
             if (second >= waitSeconds)
-                SeleneseTestBase.fail(TIMEOUT_MESSAGE);
+                failableFail(TIMEOUT_MESSAGE);
             try {                
                 if (isElementPresentByXpath("//tr[2]/td[3]/div/fieldset/div/div[2]/button"))
                     break;
@@ -3483,7 +3486,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
         for (int second = 0;; second++) {
             if (second >= waitSeconds) {
-                SeleneseTestBase.fail(TIMEOUT_MESSAGE);
+                failableFail(TIMEOUT_MESSAGE);
             }
             try {
                 if (!isElementPresent(".jquerybubblepopup-innerHtml > .uif-clientMessageItems")) {
@@ -3511,7 +3514,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
         for (int second = 0;; second++) {
             if (second >= waitSeconds)
-                SeleneseTestBase.fail(TIMEOUT_MESSAGE);
+                failableFail(TIMEOUT_MESSAGE);
             try {
                 if (isVisible(".jquerybubblepopup-innerHtml"))
                     break;
@@ -3527,7 +3530,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
         for (int second = 0;; second++) {
             if (second >= waitSeconds)
-                SeleneseTestBase.fail(TIMEOUT_MESSAGE);
+                failableFail(TIMEOUT_MESSAGE);
             try {
                 if (isVisible(".jquerybubblepopup-innerHtml"))
                     break;
@@ -3538,7 +3541,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         SeleneseTestBase.assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
         for (int second = 0;; second++) {
             if (second >= waitSeconds)
-                SeleneseTestBase.fail(TIMEOUT_MESSAGE);
+                failableFail(TIMEOUT_MESSAGE);
             try {
                 if (isVisible(".jquerybubblepopup-innerHtml > .uif-clientMessageItems"))
                     break;
@@ -3553,7 +3556,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
         for (int second = 0;; second++) {
             if (second >= waitSeconds)
-                SeleneseTestBase.fail(TIMEOUT_MESSAGE);
+                failableFail(TIMEOUT_MESSAGE);
             try {
                 if (!isElementPresent(".jquerybubblepopup-innerHtml > .uif-clientMessageItems"))
                     break;
@@ -4257,7 +4260,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
             (driver.findElement(by)).sendKeys(text);
         } catch (Exception e) {
             JiraAwareFailureUtil.failOnMatchedJira(by.toString(), this);
-            fail(e.getMessage() + " " + by.toString() + "  unable to type text '" + text + "'  " + message
+            failableFail(e.getMessage() + " " + by.toString() + "  unable to type text '" + text + "'  " + message
                     + " current url " + driver.getCurrentUrl()
                     + "\n" + ITUtil.deLinespace(driver.getPageSource()));
         }
@@ -4355,7 +4358,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     protected void waitIsVisible(By by) throws InterruptedException {
         for (int second = 0;; second++) {
             if (second >= waitSeconds) {
-                SeleneseTestBase.fail(TIMEOUT_MESSAGE + " " + by.toString());
+                failableFail(TIMEOUT_MESSAGE + " " + by.toString());
             }
             if (isVisible(by)) {
                 break;
@@ -4367,7 +4370,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     protected void waitIsVisible(By by, String message) throws InterruptedException {
         for (int second = 0;; second++) {
             if (second >= waitSeconds) {
-                SeleneseTestBase.fail(TIMEOUT_MESSAGE + " " + by.toString() + " " + message);
+                failableFail(TIMEOUT_MESSAGE + " " + by.toString() + " " + message);
             }
             if (isVisible(by)) {
                 break;
@@ -4437,7 +4440,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         checkForIncidentReport(elementLocator); // after timeout to be sure page is loaded
 
         if (failed)
-            fail("timeout of " + waitSeconds + " seconds waiting for " + elementLocator + " " + message + " " + driver.getCurrentUrl());
+            failableFail("timeout of " + waitSeconds + " seconds waiting for " + elementLocator + " " + message + " " + driver.getCurrentUrl());
     }
 
     protected void waitIsVisible(String locator) throws InterruptedException {
@@ -4464,7 +4467,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         // }
 
         // WebDriverUtil.checkForIncidentReport(driver, message); // after timeout to be sure page is loaded
-        // if (failed) fail("timeout of " + waitSeconds + " seconds " + message);
+        // if (failed) failableFail("timeout of " + waitSeconds + " seconds " + message);
     }
 
     protected void waitAndClick(String locator) throws InterruptedException {
@@ -4503,7 +4506,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     protected void waitNotVisible(By by) throws InterruptedException {
         for (int second = 0;; second++) {
             if (second >= waitSeconds) {
-                SeleneseTestBase.fail(TIMEOUT_MESSAGE);
+                failableFail(TIMEOUT_MESSAGE);
             }
             if (!isVisible(by)) {
                 break;

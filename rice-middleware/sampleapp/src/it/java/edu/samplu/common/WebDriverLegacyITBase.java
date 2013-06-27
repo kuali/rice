@@ -1106,6 +1106,11 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         fail(message); // Failable.fail
     }
 
+    @Override
+    public void fail(String message) {
+        SeleneseTestBase.fail(message);
+    }
+
     protected void fireEvent(String name, String event) {
         ((JavascriptExecutor) driver).executeScript("var elements=document.getElementsByName(\"" + name + "\");" +
                 "for (var i = 0; i < elements.length; i++){" +

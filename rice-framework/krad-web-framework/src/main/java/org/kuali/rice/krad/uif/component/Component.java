@@ -1264,9 +1264,9 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
     public void setPostRenderContent(String postRenderContent);
 
     /**
-     * Clone the object
+     * Copy the object
      *
-     * @return the cloned object
+     * @return the copied object
      */
-    public <T extends Component> T clone();
+    public <T extends Component> T copy();
 }

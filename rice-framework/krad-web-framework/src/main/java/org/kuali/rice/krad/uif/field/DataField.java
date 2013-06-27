@@ -1139,24 +1139,12 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#clone()
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
      */
     @Override
-    public <T extends Component> T clone() {
-        try {
-            T clonedClass = (T)this.getClass().newInstance();
-            clonedClass = (T)copyProperties(clonedClass);
-
-            return clonedClass;
-        }
-        catch(Exception exception) {
-            throw new RuntimeException();
-        }
-    }
-
-    @Override
-    protected DataField copyProperties(Cloneable dataField) {
-        DataField dataFieldCopy = (DataField)super.copyProperties(dataField);
+    protected void copyProperties(Component component) {
+        super.copyProperties(component);
+        DataField dataFieldCopy = (DataField) component;
         dataFieldCopy.setAddHiddenWhenReadOnly(this.addHiddenWhenReadOnly);
         dataFieldCopy.setAdditionalHiddenPropertyNames(new ArrayList<String>(this.additionalHiddenPropertyNames));
         dataFieldCopy.setApplyMask(this.applyMask);
@@ -1175,7 +1163,5 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
         dataFieldCopy.setReadOnlyDisplaySuffixPropertyName(this.readOnlyDisplaySuffixPropertyName);
         dataFieldCopy.setReadOnlyListDelimiter(this.readOnlyListDelimiter);
         dataFieldCopy.setReadOnlyListDisplayType(this.readOnlyListDisplayType);
-
-        return dataFieldCopy;
     }
 }

@@ -350,27 +350,13 @@ public class FieldBase extends ComponentBase implements Field {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#clone()
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
      */
     @Override
-    public <T extends Component> T clone() {
-        try {
-            T clonedClass = (T)this.getClass().newInstance();
-            clonedClass = (T)copyProperties(clonedClass);
-
-            return clonedClass;
-        }
-        catch(Exception exception) {
-            throw new RuntimeException();
-        }
-    }
-
-    @Override
-    protected FieldBase copyProperties(Cloneable fieldBase) {
-        FieldBase fieldBaseCopy = (FieldBase)super.copyProperties(fieldBase);
+    protected void copyProperties(Component component) {
+        super.copyProperties(component);
+        FieldBase fieldBaseCopy = (FieldBase) component;
         fieldBaseCopy.setShortLabel(this.shortLabel);
         fieldBaseCopy.setLabelRendered(this.labelRendered);
-
-        return fieldBaseCopy;
     }
 }

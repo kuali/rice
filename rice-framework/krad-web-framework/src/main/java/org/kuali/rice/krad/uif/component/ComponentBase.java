@@ -1869,24 +1869,30 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Returns a clone of the component.
+     * Returns a copy of the component.
      *
-     * @return ComponentBase clone of the component
+     * @return ComponentBase copy of the component
      */
     @Override
-    public <T extends Component> T clone() {
+    public <T extends Component> T copy() {
+        T copiedClass = null;
         try {
-            T clonedClass = (T)this.getClass().newInstance();
-            clonedClass = (T)copyProperties(clonedClass);
-
-            return clonedClass;
+            copiedClass = (T)this.getClass().newInstance();
         }
         catch(Exception exception) {
             throw new RuntimeException();
         }
+
+        copyProperties(copiedClass);
+
+        return copiedClass;
     }
 
-    protected ComponentBase copyProperties(Cloneable component) {
+    /**
+     * Copies the properties over for the copy method
+     *
+     */
+    protected void copyProperties(Component component) {
         ComponentBase componentCopy = ((ComponentBase)component);
         componentCopy.setAdditionalComponentsToRefresh(new ArrayList<String>(this.getAdditionalComponentsToRefresh()));
         componentCopy.setAdditionalCssClasses(new ArrayList<String>(this.getAdditionalCssClasses()));
@@ -1954,7 +1960,5 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
         componentCopy.setComponentModifiers(componentModifiers);
         componentCopy.setComponentSecurity(this.componentSecurity.clone());
-
-        return componentCopy;
     }
 }

@@ -302,4 +302,55 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
 		this.propertyReplacers = propertyReplacers;
 	}
 
+
+    @Override
+    public <T extends LayoutManager> T copy() {
+        try {
+            T copiedClass = (T)this.getClass().newInstance();
+            copyProperties(copiedClass);
+
+            return copiedClass;
+        }
+        catch(Exception exception) {
+            throw new RuntimeException();
+        }
+    }
+
+
+    protected void copyProperties(LayoutManager layoutManager) {
+        LayoutManagerBase componentBase = (LayoutManagerBase) layoutManager;
+
+        //componentBase.setFoo(this.foo);
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+    //    public LayoutManagerBase copy(LayoutManagerBase layoutManagerBaseOrig)
+//    {
+//        LayoutManagerBase layoutManagerBaseCopy = ((LayoutManagerBase)layoutManagerBaseOrig);
+//        layoutManagerBaseCopy.setContext(layoutManagerBaseOrig.getContext());
+//        layoutManagerBaseCopy.setCssClasses(layoutManagerBaseOrig.getCssClasses());
+//        layoutManagerBaseCopy.setId(layoutManagerBaseOrig.getId());
+//        layoutManagerBaseCopy.setPropertyReplacers(layoutManagerBaseOrig.getPropertyReplacers());
+//        layoutManagerBaseCopy.setStyle(layoutManagerBaseOrig.getStyle());
+//        layoutManagerBaseCopy.setStyleClasses(layoutManagerBaseOrig.getStyleClassesAsString());
+//        layoutManagerBaseCopy.setTemplate(layoutManagerBaseOrig.getTemplate());
+//        layoutManagerBaseCopy.setTemplateName(layoutManagerBaseOrig.getTemplateName());
+//        layoutManagerBaseCopy.setComponentCode(layoutManagerBaseOrig.getComponentCode());
+//        layoutManagerBaseCopy.setExpressionGraph(layoutManagerBaseOrig.getExpressionGraph());
+//        layoutManagerBaseCopy.setNamespaceCode(layoutManagerBaseOrig.getNamespaceCode());
+//        layoutManagerBaseCopy.setPropertyExpressions(layoutManagerBaseOrig.getPropertyExpressions());
+//        layoutManagerBaseCopy.setRefreshExpressionGraph(layoutManagerBaseOrig.getRefreshExpressionGraph());
+//        return layoutManagerBaseCopy;
+//    }
+
 }

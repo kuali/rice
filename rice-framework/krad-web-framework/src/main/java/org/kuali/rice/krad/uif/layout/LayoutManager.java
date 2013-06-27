@@ -307,4 +307,11 @@ public interface LayoutManager extends UifDictionaryBean, Serializable {
 	 */
 	public void setPropertyReplacers(List<PropertyReplacer> propertyReplacers);
 
+    /**
+     * Copy the object
+     *
+     * @return the copied object
+     */
+    public <T extends LayoutManager> T copy();
+
 }

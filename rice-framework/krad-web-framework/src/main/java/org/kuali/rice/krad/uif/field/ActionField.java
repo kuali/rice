@@ -480,27 +480,11 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * Returns a clone of the action field.
-     *
-     * @return ActionField clone of the action field
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copyProperties()
      */
     @Override
-    public <T extends Component> T clone() {
-        try {
-            T clonedClass = (T)this.getClass().newInstance();
-            clonedClass = (T)copyProperties(clonedClass);
-
-            return clonedClass;
-        }
-        catch(Exception exception) {
-            throw new RuntimeException();
-        }
-    }
-
-    @Override
-    protected ActionField copyProperties(Cloneable actionField) {
-        actionField = super.copyProperties(actionField);
-
-        return (ActionField)actionField;
+    protected void copyProperties(Component component) {
+        super.copyProperties(component);
+        ActionField actionFieldCopy = (ActionField) component;
     }
 }

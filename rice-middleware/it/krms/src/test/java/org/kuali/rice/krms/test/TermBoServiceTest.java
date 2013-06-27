@@ -67,7 +67,7 @@ public class TermBoServiceTest extends AbstractBoTest {
         TermSpecificationDefinition fetchedTermSpec = termBoService.getTermSpecificationById(termSpecificationDefinition.getId());
 
         for (String contextId : Arrays.asList(context1.getId(), context2.getId())) {
-            assertTrue(fetchedTermSpec.getContextIds().contains(contextId));
+            assertTrue("https://jira.kuali.org/browse/KULRICE-9850 ", fetchedTermSpec.getContextIds().contains(contextId));
         }
 	}
 	

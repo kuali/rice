@@ -16,6 +16,7 @@
 package org.kuali.rice.krms.impl.repository;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.kuali.rice.krms.api.repository.RuleRepositoryService;
 import org.kuali.rice.krms.api.repository.term.TermRepositoryService;
@@ -28,10 +29,14 @@ public class TermRepositoryServiceRemoteTest extends TermRepositoryServiceTest {
     @Before
     @Override
     public void setupServiceUnderTest() {
-        super.setupServiceUnderTest();
-        TermRepositoryService remoteProxy =
-                harness.publishEndpointAndReturnProxy(TermRepositoryService.class, this.getTermRepositoryServiceImpl());
-        super.setTermRepositoryService(remoteProxy);
+        try {
+            super.setupServiceUnderTest();
+            TermRepositoryService remoteProxy =
+                    harness.publishEndpointAndReturnProxy(TermRepositoryService.class, this.getTermRepositoryServiceImpl());
+            super.setTermRepositoryService(remoteProxy);
+        } catch (Throwable t) {
+            Assert.fail("https://jira.kuali.org/browse/KULRICE-9848 " + t.getMessage());
+        }
     }
 
     @After

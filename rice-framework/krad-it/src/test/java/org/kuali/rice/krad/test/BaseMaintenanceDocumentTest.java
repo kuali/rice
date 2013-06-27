@@ -51,7 +51,7 @@ public abstract class BaseMaintenanceDocumentTest extends KRADTestCase {
             setDocument(maintenanceDocument);
         } catch (org.kuali.rice.krad.datadictionary.exception.UnknownDocumentTypeException udte) {
             if (udte.getMessage().contains("AccountManagerMaintenanceDocument")) {
-                fail("CI failure - https://jira.kuali.org/browse/KULRICE-9285" + udte.getMessage() + " "  +ExceptionUtils.getStackTrace(udte));
+                fail("CI failure - https://jira.kuali.org/browse/KULRICE-9285 " + udte.getMessage() + " "  +ExceptionUtils.getStackTrace(udte));
             }
         }
     }

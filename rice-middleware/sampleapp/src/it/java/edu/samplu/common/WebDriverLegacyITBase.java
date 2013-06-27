@@ -4396,6 +4396,21 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         return false;
     }
 
+    protected int howManyAreVisible(By by) throws InterruptedException {
+        int count = 0;
+        if (by == null) {
+            return count;
+        }
+
+        List<WebElement> webElementsFound = driver.findElements(by);
+        for (WebElement webElement: webElementsFound) {
+            if (webElement.isDisplayed()) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     protected boolean isVisible(By[] bys) {
         if (bys == null || bys.length == 0 ) {
             return false;

@@ -43,7 +43,11 @@ public abstract class AnnotationTestParent extends CORETestCase {
     protected static final String TEST_TABLE_NAME = "EN_UNITTEST_T";
     
     protected void verifyCount(String valueToVerify, int count) throws SQLException {
-        assertEquals(count + " value(s) should be found for id " + valueToVerify, count, countTableResults(valueToVerify));
+        verifyCount(valueToVerify, count, "");
+    }
+
+    protected void verifyCount(String valueToVerify, int count, String message) throws SQLException {
+        assertEquals(count + " value(s) should be found for id " + valueToVerify + " " + message, count, countTableResults(valueToVerify));
     }
 
     protected void verifyExistence(String valueToVerify) throws SQLException {

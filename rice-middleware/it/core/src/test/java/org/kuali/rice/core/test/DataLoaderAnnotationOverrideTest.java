@@ -53,7 +53,7 @@ public class DataLoaderAnnotationOverrideTest extends AnnotationTestParent {
         // verify that the sql only ran once...
 
         // check sql statement from this class
-        verifyCount("3", 1);
+        verifyCount("3", 1, "https://jira.kuali.org/browse/KULRICE-9283");
         
         // check sql file from this class
         verifyCount("4", 1);

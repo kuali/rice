@@ -26,7 +26,7 @@ import edu.samplu.common.WebDriverLegacyITBase;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoTravelAccountMaintenanceEditAbstractSmokeTestBase extends WebDriverLegacyITBase {
+public abstract class DemoTravelAccountMaintenanceEditAbstractSmokeTestBase extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/maintenance?methodToCall=start&dataObjectClassName=org.kuali.rice.krad.demo.travel.account.TravelAccount&hideReturnLink=true

@@ -118,6 +118,15 @@ public class ComponentUtils {
         return copy;
     }
 
+    /**
+     * Equivalent to {@link #copyFieldList(java.util.List, String, String)} but does not copy the given list of fields
+     * first.
+     */
+    public static <T extends Field> void bindAndIdFieldList(List<T> fields, String addBindingPrefix, String idSuffix) {
+        updateIdsWithSuffixNested(fields, idSuffix);
+        prefixBindingPath(fields, addBindingPrefix);
+    }
+
     public static <T extends Field> List<T> copyFieldList(List<T> fields, String addBindingPrefix, String idSuffix) {
         List<T> copiedFieldList = copyFieldList(fields, idSuffix);
 

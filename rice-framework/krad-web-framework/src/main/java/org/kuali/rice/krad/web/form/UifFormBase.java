@@ -127,6 +127,8 @@ public class UifFormBase implements ViewModel {
     @SessionTransient
     protected String ajaxReturnType;
 
+    private String requestJsonTemplate;
+
     // dialog fields
     @SessionTransient
     protected String dialogExplanation;
@@ -706,18 +708,14 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * Id for the component that should be updated for a component refresh process
-     *
-     * @return String component id
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getUpdateComponentId()
      */
     public String getUpdateComponentId() {
         return updateComponentId;
     }
 
     /**
-     * Setter for the component id that should be refreshed
-     *
-     * @param updateComponentId
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setUpdateComponentId(java.lang.String)
      */
     public void setUpdateComponentId(String updateComponentId) {
         this.updateComponentId = updateComponentId;
@@ -1016,6 +1014,27 @@ public class UifFormBase implements ViewModel {
     @Override
     public void setAjaxReturnType(String ajaxReturnType) {
         this.ajaxReturnType = ajaxReturnType;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#isJsonRequest()
+     */
+    public boolean isJsonRequest() {
+        return StringUtils.isNotBlank(getRequestJsonTemplate());
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getRequestJsonTemplate()
+     */
+    public String getRequestJsonTemplate() {
+        return requestJsonTemplate;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setRequestJsonTemplate
+     */
+    public void setRequestJsonTemplate(String requestJsonTemplate) {
+        this.requestJsonTemplate = requestJsonTemplate;
     }
 
     /**

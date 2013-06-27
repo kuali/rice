@@ -16,10 +16,15 @@
 package org.kuali.rice.krad.labs;
 
 import org.kuali.rice.krad.web.controller.UifControllerBase;
+import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Basic controller for the lab views
@@ -33,6 +38,15 @@ public class KradLabsController extends UifControllerBase {
     @Override
     protected KradLabsForm createInitialForm(HttpServletRequest request) {
         return new KradLabsForm();
+    }
+
+    @RequestMapping(params = "methodToCall=jsonExample")
+    public ModelAndView jsonExample(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        form.setRequestJsonTemplate("/templates/jsonSample.ftl");
+
+        return getUIFModelAndView(form);
     }
 
 }

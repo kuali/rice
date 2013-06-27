@@ -328,6 +328,20 @@ public interface ViewModel extends Serializable {
     public void setState(String state);
 
     /**
+     * Id for the component that should be updated for a component refresh process
+     *
+     * @return String component id
+     */
+    public String getUpdateComponentId();
+
+    /**
+     * Setter for the component id that should be refreshed
+     *
+     * @param updateComponentId
+     */
+    public void setUpdateComponentId(String updateComponentId);
+
+    /**
      * Indicates whether the request was made by an ajax call
      *
      * <p>
@@ -407,6 +421,42 @@ public interface ViewModel extends Serializable {
      * @param ajaxReturnType
      */
     public void setAjaxReturnType(String ajaxReturnType);
+
+    /**
+     * Indicates whether the request should return a JSON string
+     *
+     * <p>
+     * When this indicator is true, the rendering process will invoke the template
+     * given by {@link #getRequestJsonTemplate()} which should return a JSON string
+     * </p>
+     *
+     * <p>
+     * For JSON requests the view is not built, however a component can be retrieved and
+     * exported in the request by setting {@link #getUpdateComponentId()}
+     * </p>
+     *
+     * @return boolean true if request is for JSON, false if not
+     */
+    public boolean isJsonRequest();
+
+    /**
+     * Template the will be invoked to return a JSON string
+     *
+     * <p>
+     * Certain templates can be rendered to build JSON for a JSON request. The template
+     * set here (by a controller) will be rendered
+     * </p>
+     *
+     * @return path to template
+     */
+    public String getRequestJsonTemplate();
+
+    /**
+     * Setter for the template to render for the request
+     *
+     * @param requestJsonTemplate
+     */
+    public void setRequestJsonTemplate(String requestJsonTemplate);
 
     /**
      * A generic map for framework pieces (such as component modifiers) that need to dynamically store

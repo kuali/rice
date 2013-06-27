@@ -34,8 +34,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -132,12 +130,13 @@ public class UifControllerHelper {
 
         // handle view building if not a redirect
         if (!form.isRequestRedirected()) {
-            // prepare view instance
-            prepareViewForRendering(request, form);
+            if (!form.isJsonRequest()) {
+                prepareViewForRendering(request, form);
+            }
 
-            // for component, page refresh and dialog update need to export the component as a model
+            // export the component to the request model if an update id has been set
             Component component = null;
-            if (form.isUpdateComponentRequest() || form.isUpdateDialogRequest()) {
+            if (StringUtils.isNotBlank(form.getUpdateComponentId())) {
                 component = form.getPostedView().getViewIndex().getComponentById(form.getUpdateComponentId());
             } else if (form.isUpdatePageRequest()) {
                 component = form.getView().getCurrentPage();
@@ -155,6 +154,8 @@ public class UifControllerHelper {
 
         Map<String, String> properties = CoreApiServiceLocator.getKualiConfigurationService().getAllProperties();
         modelAndView.addObject(UifParameters.CONFIG_PROPERTIES, properties);
+
+        //modelAndView.addObject(UifParameters.STRING_RENDER_CONTEXT, new StringRenderContext());
     }
 
     /**

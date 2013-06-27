@@ -60,7 +60,7 @@ public class QuickLinksServiceTest extends KEWTestCase {
         List<ActionListStats> actionListStats = service.getActionListStats(principalId);
         assertNotNull("No collection returned", actionListStats);
         assertTrue("No test data", actionListStats.size() > 0);
-        assertEquals("Wrong number of Action List Stats", 3, actionListStats.size());
+        assertEquals("https://jira.kuali.org/browse/KULRICE-9284 Wrong number of Action List Stats", 3, actionListStats.size());
         ActionListStats als = actionListStats.get(0);
         assertEquals("Wrong count", 1, als.getCount());
         assertEquals("Wrong Type Label", "Add/modify EDEN workgroup", als.getDocumentTypeLabelText());
@@ -144,7 +144,7 @@ public class QuickLinksServiceTest extends KEWTestCase {
         List<InitiatedDocumentType> initiatedDocumentTypesList = service.getInitiatedDocumentTypesList(principalId);
         assertNotNull("No collection returned", initiatedDocumentTypesList);
         assertTrue("No test data", initiatedDocumentTypesList.size() > 0);
-        assertEquals("Wrong number of Document Types List", 8, initiatedDocumentTypesList.size());
+        assertEquals("https://jira.kuali.org/browse/KULRICE-9284 Wrong number of Document Types List", 8, initiatedDocumentTypesList.size());
 
         InitiatedDocumentType idt = initiatedDocumentTypesList.get(0);
         assertEquals("Wrong Type Label Text", "Add/modify EDEN workgroup", idt.getDocumentTypeLabelText());

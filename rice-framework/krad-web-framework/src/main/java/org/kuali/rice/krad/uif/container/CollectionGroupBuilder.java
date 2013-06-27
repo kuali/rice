@@ -253,8 +253,8 @@ public class CollectionGroupBuilder implements Serializable {
         // check for remote fields holder
         List<Field> lineFields = processAnyRemoteFieldsHolder(view, model, collectionGroup, lineItems);
 
-        // copy fields for line and adjust binding to match collection line path
-        lineFields = (List<Field>) ComponentUtils.copyFieldList(lineFields, bindingPath, lineSuffix);
+        // adjust binding path and id to match collection line path
+        ComponentUtils.bindAndIdFieldList(lineFields, bindingPath, lineSuffix);
 
         // If the fields contain any collections themselves (details case) adjust their binding path
         // TODO: does the copyFieldList method above not take care of this?

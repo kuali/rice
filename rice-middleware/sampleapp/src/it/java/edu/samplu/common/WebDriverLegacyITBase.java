@@ -41,6 +41,7 @@ import org.testng.annotations.BeforeMethod;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -1106,6 +1107,18 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         fail(message); // Failable.fail
     }
 
+    protected List<WebElement> findVisibleElements(By by) {
+        List<WebElement> webElements = driver.findElements(by);
+        List<WebElement> visibleWebElements = new LinkedList<WebElement>();
+        for (WebElement webElement: webElements) {
+            if (webElement.isDisplayed()) {
+                visibleWebElements.add(webElement);
+            }
+        }
+
+        return visibleWebElements;
+    }
+
     protected void fireEvent(String name, String event) {
         ((JavascriptExecutor) driver).executeScript("var elements=document.getElementsByName(\"" + name + "\");" +
                 "for (var i = 0; i < elements.length; i++){" +
@@ -1143,6 +1156,22 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         Actions builder = new Actions(driver);
         Actions hover = builder.moveToElement(driver.findElement(by));
         hover.perform();
+    }
+
+    protected int howManyAreVisible(By by) throws InterruptedException {
+        int count = 0;
+        if (by == null) {
+            return count;
+        }
+
+        List<WebElement> webElementsFound = driver.findElements(by);
+        for (WebElement webElement: webElementsFound) {
+            if (webElement.isDisplayed()) {
+                count++;
+            }
+        }
+
+        return count;
     }
 
     /**
@@ -4394,21 +4423,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         }
 
         return false;
-    }
-
-    protected int howManyAreVisible(By by) throws InterruptedException {
-        int count = 0;
-        if (by == null) {
-            return count;
-        }
-
-        List<WebElement> webElementsFound = driver.findElements(by);
-        for (WebElement webElement: webElementsFound) {
-            if (webElement.isDisplayed()) {
-                count++;
-            }
-        }
-        return count;
     }
 
     protected boolean isVisible(By[] bys) {

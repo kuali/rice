@@ -52,9 +52,12 @@ public abstract class DemoTravelAccountLookUpAbstractSmokeTestBase extends WebDr
     protected void testTravelAccountLookUp() throws Exception {
         waitAndTypeByName("lookupCriteria[number]","a1");
         waitAndClickButtonByText(SEARCH);
+        Thread.sleep(3000);
         assertElementPresentByXpath("//a[contains(text(), 'a1')]");
         waitAndClickButtonByText(CLEAR_VALUES);
+        Thread.sleep(3000);
         waitAndClickButtonByText(SEARCH);
+        Thread.sleep(3000);
         assertElementPresentByXpath("//a[contains(text(), 'a1')]");
         assertElementPresentByXpath("//a[contains(text(), 'a2')]");
     }

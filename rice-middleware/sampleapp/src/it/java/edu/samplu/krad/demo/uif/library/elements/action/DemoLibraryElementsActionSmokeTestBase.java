@@ -123,20 +123,20 @@ public abstract class DemoLibraryElementsActionSmokeTestBase extends WebDriverLe
         assertTrue(driver.switchTo().alert().getText().contains("You clicked a button"));
         driver.switchTo().alert().accept();
 
-        waitAndClickById("imageTop");
+        waitAndClickById("ST-DemoButtonImageTop");
         assertTrue(driver.switchTo().alert().getText().contains("You clicked a button"));
         driver.switchTo().alert().accept();
 
         driver.findElement(By.xpath("//span[contains(text(),'Image LEFT')]"));
-        driver.findElement(By.id("imageLeft")).click();
+        driver.findElement(By.id("ST-DemoButtonImageLeft")).click();
         assertTrue(driver.switchTo().alert().getText().contains("You clicked a button"));
         driver.switchTo().alert().accept();
 
-        driver.findElement(By.id("imageRight")).click();
+        driver.findElement(By.id("ST-DemoButtonImageRight")).click();
         assertTrue(driver.switchTo().alert().getText().contains("You clicked a button"));
         driver.switchTo().alert().accept();
 
-        driver.findElement(By.id("imageOnlyButton")).click();
+        driver.findElement(By.id("ST-DemoButtonImageOnly")).click();
         assertTrue(driver.switchTo().alert().getText().contains("You clicked a button"));
         driver.switchTo().alert().accept();
 
@@ -156,6 +156,12 @@ public abstract class DemoLibraryElementsActionSmokeTestBase extends WebDriverLe
     }
 
     public void testActionButtonBookmark(Failable failable) throws Exception {
+        testActionButton();
+        passed();
+    }
+
+    public void testActionButtonNav(Failable failable) throws Exception {
+        navigation();
         testActionButton();
         passed();
     }

@@ -28,7 +28,7 @@ public class DemoLibraryElementsActionSTJUnitNavGen extends DemoLibraryElementsA
     }
 
     @Test
-    public void testActionButtonBookmark() throws Exception {
-        testActionButtonBookmark(this);
+    public void testActionButtonNav() throws Exception {
+        testActionButtonNav(this);
     }
 }

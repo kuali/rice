@@ -126,11 +126,11 @@
       <list>
         <!-- ex:Demo-Action-Example6 start-->
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="button"
-              p:id="button" p:actionScript="alert('You clicked a button');"/>
+              p:id="ST-DemoButton" p:actionScript="alert('You clicked a button');"/>
 
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Image BOTTOM"
               p:actionImagePlacement="BOTTOM"
-              p:id="imageBottom" p:actionScript="alert('You clicked a button');">
+              p:id="ST-DemoButtonImageBottom" p:actionScript="alert('You clicked a button');">
           <property name="actionImage">
             <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
           </property>
@@ -138,7 +138,7 @@
 
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Image TOP"
               p:actionImagePlacement="TOP"
-              p:id="imageTop" p:actionScript="alert('You clicked a button');">
+              p:id="ST-DemoButtonImageTop" p:actionScript="alert('You clicked a button');">
           <property name="actionImage">
             <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
           </property>
@@ -146,7 +146,7 @@
 
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Image LEFT"
               p:actionImagePlacement="LEFT"
-              p:id="imageLeft" p:actionScript="alert('You clicked a button');">
+              p:id="ST-DemoButtonImageLeft" p:actionScript="alert('You clicked a button');">
           <property name="actionImage">
             <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
           </property>
@@ -154,14 +154,14 @@
 
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Image RIGHT"
               p:actionImagePlacement="RIGHT"
-              p:id="imageRight" p:actionScript="alert('You clicked a button');">
+              p:id="ST-DemoButtonImageRight" p:actionScript="alert('You clicked a button');">
           <property name="actionImage">
             <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
           </property>
         </bean>
 
         <bean parent="Uif-PrimaryActionButton"
-              p:id="imageOnlyButton" p:actionScript="alert('You clicked a button');">
+              p:id="ST-DemoButtonImageOnly" p:actionScript="alert('You clicked a button');">
           <property name="actionImage">
             <bean parent="Uif-Image" p:altText="Image Only button"
                   p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
@@ -169,7 +169,7 @@
         </bean>
 
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Disabled Button"
-              p:id="disabledButton" p:methodToCall="foo" p:disabled="true"/>
+              p:id="ST-DemoButtonDisabled" p:methodToCall="foo" p:disabled="true"/>
 
         <!-- ex:Demo-Action-Example6 end-->
       </list>

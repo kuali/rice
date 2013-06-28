@@ -51,6 +51,7 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -887,6 +888,19 @@ public class RichTable extends WidgetBase {
     }
 
     /**
+     * Set the translated aaData array
+     *
+     * <p>This data is in JSON format and expected to be consumed by datatables when utilizing the forceLocalJsonData
+     * option or forceAjaxJsonData options.
+     * This setter is required for copyProperties()</p>
+     *
+     * @return the generated aaData
+     */
+    public void setAaData(String aaData) {
+        this.aaData = aaData;
+    }
+
+    /**
      * Get the simple value as a string that represents the field's sortable value, to be used as val in the custom
      * uif json data object (accessed by mDataProp option on datatables - automated by framework) when using the
      * forceAjaxJsonData or forceLocalJsonData option
@@ -956,5 +970,45 @@ public class RichTable extends WidgetBase {
 
     protected ConfigurationService getConfigurationService() {
         return CoreApiServiceLocator.getKualiConfigurationService();
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected void copyProperties(Component component) {
+        super.copyProperties(component);
+        RichTable richTableCopy = (RichTable) component;
+        richTableCopy.setEmptyTableMessage(this.getEmptyTableMessage());
+        richTableCopy.setDisableTableSort(this.isDisableTableSort());
+        richTableCopy.setForceAoColumnDefsOverride(this.isForceAoColumnDefsOverride());
+        richTableCopy.setForceAjaxJsonData(this.isForceAjaxJsonData());
+        richTableCopy.setForceLocalJsonData(this.isForceLocalJsonData());
+        richTableCopy.setNestedLevel(this.getNestedLevel());
+        richTableCopy.setAaData(this.getAaData());
+
+        Set<String> hiddenColumnsCopy = new HashSet<String>();
+        for(String hiddenColumn : hiddenColumns)   {
+            hiddenColumnsCopy.add(hiddenColumn);
+        }
+        richTableCopy.setHiddenColumns(hiddenColumnsCopy);
+
+        Set<String> sortableColumnsCopy = new HashSet<String>();
+        for(String sortableColumn : sortableColumns)   {
+            sortableColumnsCopy.add(sortableColumn);
+        }
+        richTableCopy.setSortableColumns(sortableColumnsCopy);
+
+        List<String> cellCssClassesCopy = new ArrayList<String>();
+        for(String cellCssClass : cellCssClasses)   {
+            cellCssClassesCopy.add(cellCssClass);
+        }
+        richTableCopy.setCssClasses(cellCssClassesCopy);
+
+        richTableCopy.setAjaxSource(this.getAjaxSource());
+        richTableCopy.setShowSearchAndExportOptions(this.isShowSearchAndExportOptions());
+        richTableCopy.setShowSearchOption(this.isShowSearchOption());
+        richTableCopy.setShowExportOption(this.isShowExportOption());
+        richTableCopy.setGroupingOptionsJSString(this.getGroupingOptionsJSString());
     }
 }

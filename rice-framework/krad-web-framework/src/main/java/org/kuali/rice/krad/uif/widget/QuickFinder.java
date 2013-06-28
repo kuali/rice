@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
+import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -837,5 +838,44 @@ public class QuickFinder extends WidgetBase {
      */
     public void setLookupCollectionName(String lookupCollectionName) {
         this.lookupCollectionName = lookupCollectionName;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected void copyProperties(Component component) {
+        super.copyProperties(component);
+        QuickFinder quickFinderCopy = (QuickFinder) component;
+        quickFinderCopy.setBaseLookupUrl(this.getBaseLookupUrl());
+        quickFinderCopy.setDataObjectClassName(this.getDataObjectClassName());
+        quickFinderCopy.setViewName(this.getViewName());
+        quickFinderCopy.setReferencesToRefresh(this.getReferencesToRefresh());
+
+        Map<String, String> fieldConversionsCopy = Maps.newHashMapWithExpectedSize(fieldConversions.size());
+        for(Map.Entry fieldConversion : fieldConversions.entrySet()) {
+            fieldConversionsCopy.put(fieldConversion.getKey().toString(),fieldConversion.getValue().toString());
+        }
+        quickFinderCopy.setFieldConversions(fieldConversionsCopy);
+
+        Map<String, String> lookupParametersCopy = Maps.newHashMapWithExpectedSize(lookupParameters.size());
+        for(Map.Entry lookupParameter : lookupParameters.entrySet()) {
+            lookupParametersCopy.put(lookupParameter.getKey().toString(),lookupParameter.getValue().toString());
+        }
+        quickFinderCopy.setLookupParameters(lookupParametersCopy);
+
+        quickFinderCopy.setReadOnlySearchFields(this.getReadOnlySearchFields());
+        quickFinderCopy.setHideReturnLink(this.getHideReturnLink());
+        quickFinderCopy.setSuppressActions(this.getSuppressActions());
+        quickFinderCopy.setAutoSearch(this.getAutoSearch());
+        quickFinderCopy.setRenderLookupCriteria(this.getRenderLookupCriteria());
+        quickFinderCopy.setSupplementalActionsEnabled(this.getSupplementalActionsEnabled());
+        quickFinderCopy.setRenderSearchButtons(this.getRenderSearchButtons());
+        quickFinderCopy.setRenderHeader(this.getRenderHeader());
+        quickFinderCopy.setShowMaintenanceLinks(this.getShowMaintenanceLinks());
+        quickFinderCopy.setMultipleValuesSelect(this.getMultipleValuesSelect());
+        quickFinderCopy.setLookupCollectionName(this.getLookupCollectionName());
+        quickFinderCopy.setQuickfinderAction(this.getQuickfinderAction());
+        quickFinderCopy.setLightBoxLookup((LightBox)this.getLightBoxLookup().copy());
     }
 }

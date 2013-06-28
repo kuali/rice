@@ -144,4 +144,18 @@ public class SyntaxHighlighter extends WidgetBase {
     public void setShowCopyConfirmation(boolean showCopyConfirmation) {
         this.showCopyConfirmation = showCopyConfirmation;
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected void copyProperties(Component component) {
+        super.copyProperties(component);
+        SyntaxHighlighter syntaxHighlighterCopy = (SyntaxHighlighter) component;
+        syntaxHighlighterCopy.setHeader(this.getHeader());
+        syntaxHighlighterCopy.setSourceCode(this.getSourceCode());
+        syntaxHighlighterCopy.setPluginCssClass(this.getPluginCssClass());
+        syntaxHighlighterCopy.setAllowCopy(this.isAllowCopy());
+        syntaxHighlighterCopy.setShowCopyConfirmation(this.isShowCopyConfirmation());
+    }
 }

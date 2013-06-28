@@ -26,6 +26,7 @@ import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.View;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -378,5 +379,25 @@ public class Suggest extends WidgetBase {
         }
 
         return "null";
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected void copyProperties(Component component) {
+        super.copyProperties(component);
+        Suggest suggestCopy = (Suggest) component;
+        suggestCopy.setSuggestQuery(this.getSuggestQuery());
+        suggestCopy.setValuePropertyName(this.getValuePropertyName());
+        suggestCopy.setLabelPropertyName(this.getLabelPropertyName());
+        List<String> additionalProperties = new ArrayList<String>();
+        for (String additionalProperty : this.additionalPropertiesToReturn) {
+            additionalProperties.add(additionalProperty);
+        }
+        suggestCopy.setAdditionalPropertiesToReturn(additionalProperties);
+        suggestCopy.setReturnFullQueryObject(this.isReturnFullQueryObject());
+        suggestCopy.setRetrieveAllSuggestions(this.isRetrieveAllSuggestions());
+        //TODO   private List<Object> suggestOptions;
     }
 }

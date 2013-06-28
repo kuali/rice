@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.widget;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.uif.component.Component;
 
 /**
  * Widget component for rendering a Tree
@@ -28,5 +29,14 @@ public class Tree extends WidgetBase {
 
     public Tree() {
         super();
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected void copyProperties(Component component) {
+        super.copyProperties(component);
+        Tree treeCopy = (Tree) component;
     }
 }

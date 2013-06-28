@@ -120,4 +120,15 @@ public class Tabs extends WidgetBase {
     public void setPosition(UifConstants.Position position) {
         this.position = position;
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected void copyProperties(Component component) {
+        super.copyProperties(component);
+        Tabs tabsCopy = (Tabs) component;
+        tabsCopy.setDefaultActiveTabId(this.getDefaultActiveTabId());
+        tabsCopy.setPosition(this.getPosition());
+    }
 }

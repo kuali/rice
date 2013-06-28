@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.widget;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
 
 /**
@@ -36,6 +37,10 @@ public abstract class WidgetBase extends ComponentBase implements Widget {
         super();
     }
 
+    public WidgetBase(WidgetBase another)   {
+        another.setAdditionalComponentsToRefresh(this.getAdditionalComponentsToRefresh());
+    }
+
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getComponentTypeName()
      */
@@ -44,4 +49,12 @@ public abstract class WidgetBase extends ComponentBase implements Widget {
         return "widget";
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected void copyProperties(Component component) {
+        super.copyProperties(component);
+        WidgetBase WidgetBaseCopy = (WidgetBase) component;
+    }
 }

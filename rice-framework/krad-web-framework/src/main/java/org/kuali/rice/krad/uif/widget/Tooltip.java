@@ -110,4 +110,16 @@ public class Tooltip extends WidgetBase {
     public void setOnMouseHover(boolean onMouseHover) {
         this.onMouseHover = onMouseHover;
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected void copyProperties(Component component) {
+        super.copyProperties(component);
+        Tooltip tooltipCopy = (Tooltip) component;
+        tooltipCopy.setTooltipContent(this.getTooltipContent());
+        tooltipCopy.setOnFocus(this.isOnFocus());
+        tooltipCopy.setOnMouseHover(this.isOnMouseHover());
+    }
 }

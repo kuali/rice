@@ -92,4 +92,14 @@ public class Reorderer extends WidgetBase {
     public void setMovableStyleClass(String movableStyleClass) {
         this.movableStyleClass = movableStyleClass;
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected void copyProperties(Component component) {
+        super.copyProperties(component);
+        Reorderer reordererCopy = (Reorderer) component;
+        reordererCopy.setMovableStyleClass(this.getMovableStyleClass());
+    }
 }

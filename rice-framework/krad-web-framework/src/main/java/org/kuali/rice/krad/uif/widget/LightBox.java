@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
+import org.kuali.rice.krad.uif.component.Component;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -139,5 +140,18 @@ public class LightBox extends WidgetBase {
      */
     public void setLookupReturnByScript(boolean lookupReturnByScript) {
         this.lookupReturnByScript = lookupReturnByScript;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected void copyProperties(Component component) {
+        super.copyProperties(component);
+        LightBox lightBoxCopy = (LightBox) component;
+        lightBoxCopy.setHeight(this.getHeight());
+        lightBoxCopy.setWidth(this.getWidth());
+        lightBoxCopy.setAddAppParms(this.isAddAppParms());
+        lightBoxCopy.setLookupReturnByScript(this.isLookupReturnByScript());
     }
 }

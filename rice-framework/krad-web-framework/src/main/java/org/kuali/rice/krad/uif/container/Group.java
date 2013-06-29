@@ -389,5 +389,6 @@ public class Group extends ContainerBase {
         }
 
         groupCopy.setItems(items);
+        groupCopy.setDisclosure((Disclosure) this.disclosure.copy());
     }
 }

@@ -142,4 +142,18 @@ public class Disclosure extends WidgetBase {
     public void setRenderImage(boolean renderImage) {
         this.renderImage = renderImage;
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        Disclosure disclosureCopy = (Disclosure) component;
+        disclosureCopy.setAnimationSpeed(this.animationSpeed);
+        disclosureCopy.setCollapseImageSrc(this.collapseImageSrc);
+        disclosureCopy.setDefaultOpen(this.defaultOpen);
+        disclosureCopy.setExpandImageSrc(this.expandImageSrc);
+        disclosureCopy.setRenderImage(this.renderImage);
+    }
 }

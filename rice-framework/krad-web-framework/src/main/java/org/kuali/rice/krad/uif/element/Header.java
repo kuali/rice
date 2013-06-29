@@ -455,4 +455,24 @@ public class Header extends ContentElementBase {
 
         super.completeValidation(tracer.getCopy());
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        Header headerCopy = (Header) component;
+        headerCopy.setHeaderLevel(this.headerLevel);
+        headerCopy.setHeaderTagCssClasses(new ArrayList<String>(this.headerTagCssClasses));
+        headerCopy.setHeaderTagStyle(this.headerTagStyle);
+        headerCopy.setHeaderText(this.headerText);
+
+        List<Component> inlineComponents = new ArrayList<Component>();
+        for (Component inlineComponent : this.inlineComponents) {
+            inlineComponents.add((Component)inlineComponent.copy());
+        }
+
+        headerCopy.setInlineComponents(inlineComponents);
+    }
 }

@@ -421,35 +421,23 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
         this.comparables = comparables;
     }
 
+
     /**
-     * @see ComponentModifierBase#clone()
+     * @see org.kuali.rice.krad.uif.modifier.ComponentModifierBase#copy()
      */
     @Override
-    public <T extends ComponentModifier> T clone() {
-        try {
-            T clonedClass = (T)this.getClass().newInstance();
-            clonedClass = (T)copyProperties(clonedClass);
-
-            return clonedClass;
-        }
-        catch(Exception exception) {
-            throw new RuntimeException();
-        }
-    }
-
-    @Override
-    protected CompareFieldCreateModifier copyProperties(Cloneable componentModifier) {
-        CompareFieldCreateModifier componentModifierCopy = (CompareFieldCreateModifier)super.copyProperties(componentModifier);
-        componentModifierCopy.setDefaultOrderSequence(this.defaultOrderSequence);
-        componentModifierCopy.setGenerateCompareHeaders(this.generateCompareHeaders);
+    protected <T> void copyProperties(T componentModifier) {
+        super.copyProperties(componentModifier);
+        CompareFieldCreateModifier compareFieldCreateModifierCopy = (CompareFieldCreateModifier) componentModifier;
+        compareFieldCreateModifierCopy.setDefaultOrderSequence(this.defaultOrderSequence);
+        compareFieldCreateModifierCopy.setGenerateCompareHeaders(this.generateCompareHeaders);
 
         List<ComparableInfo> comparables = new ArrayList<ComparableInfo>();
         for (ComparableInfo comparable : this.comparables) {
             comparables.add(comparable.clone());
         }
 
-        componentModifierCopy.setComparables(comparables);
-
-        return componentModifierCopy;
+        compareFieldCreateModifierCopy.setComparables(comparables);
+        compareFieldCreateModifierCopy.setHeaderFieldPrototype((Header)this.headerFieldPrototype.copy());
     }
 }

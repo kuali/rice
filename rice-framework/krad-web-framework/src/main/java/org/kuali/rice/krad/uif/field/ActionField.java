@@ -483,7 +483,7 @@ public class ActionField extends FieldBase {
      * @see org.kuali.rice.krad.uif.component.ComponentBase#copyProperties()
      */
     @Override
-    protected void copyProperties(Component component) {
+    protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         ActionField actionFieldCopy = (ActionField) component;
     }

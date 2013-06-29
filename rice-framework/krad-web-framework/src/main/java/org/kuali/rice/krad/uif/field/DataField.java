@@ -1142,7 +1142,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
      */
     @Override
-    protected void copyProperties(Component component) {
+    protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         DataField dataFieldCopy = (DataField) component;
         dataFieldCopy.setAddHiddenWhenReadOnly(this.addHiddenWhenReadOnly);

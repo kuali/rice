@@ -353,7 +353,7 @@ public class FieldBase extends ComponentBase implements Field {
      * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
      */
     @Override
-    protected void copyProperties(Component component) {
+    protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         FieldBase fieldBaseCopy = (FieldBase) component;
         fieldBaseCopy.setShortLabel(this.shortLabel);

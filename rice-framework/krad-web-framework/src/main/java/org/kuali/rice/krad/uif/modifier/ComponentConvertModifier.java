@@ -184,13 +184,13 @@ public class ComponentConvertModifier extends ComponentModifierBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     * @see org.kuali.rice.krad.uif.modifier.ComponentModifierBase#copy()
      */
-//    @Override
-//    protected void copyProperties(Component component) {
-//        super.copyProperties(component);
-//        ComponentConvertModifier componentConvertModifierCopy = (ComponentConvertModifier) component;
-//        componentConvertModifierCopy.setComponentReplacementPrototype(this.getComponentReplacementPrototype());
-//        componentConvertModifierCopy.setComponentTypeToReplace(this.componentTypeToReplace);
-//    }
+    @Override
+    protected <T> void copyProperties(T componentModifier) {
+        super.copyProperties(componentModifier);
+        ComponentConvertModifier componentConvertModifierCopy = (ComponentConvertModifier) componentModifier;
+        componentConvertModifierCopy.setComponentReplacementPrototype(this.getComponentReplacementPrototype());
+        componentConvertModifierCopy.setComponentTypeToReplace(this.componentTypeToReplace);
+    }
 }

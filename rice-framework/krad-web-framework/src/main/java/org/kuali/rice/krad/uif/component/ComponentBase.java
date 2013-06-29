@@ -1874,7 +1874,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @return ComponentBase copy of the component
      */
     @Override
-    public <T extends Component> T copy() {
+    public <T> T copy() {
         T copiedClass = null;
         try {
             copiedClass = (T)this.getClass().newInstance();
@@ -1892,7 +1892,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * Copies the properties over for the copy method
      *
      */
-    protected void copyProperties(Component component) {
+    protected <T> void copyProperties(T component) {
         ComponentBase componentCopy = ((ComponentBase)component);
         componentCopy.setAdditionalComponentsToRefresh(new ArrayList<String>(this.getAdditionalComponentsToRefresh()));
         componentCopy.setAdditionalCssClasses(new ArrayList<String>(this.getAdditionalCssClasses()));
@@ -1955,7 +1955,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
         List<ComponentModifier> componentModifiers = new ArrayList<ComponentModifier>();
         for (ComponentModifier componentModifer : this.componentModifiers) {
-            componentModifiers.add(componentModifer.clone());
+            componentModifiers.add((ComponentModifier)componentModifer.copy());
         }
 
         componentCopy.setComponentModifiers(componentModifiers);

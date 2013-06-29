@@ -1268,5 +1268,5 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
      *
      * @return the copied object
      */
-    public <T extends Component> T copy();
+    public <T> T copy();
 }

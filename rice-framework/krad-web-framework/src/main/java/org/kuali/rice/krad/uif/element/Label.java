@@ -307,5 +307,6 @@ public class Label extends ContentElementBase {
         labelCopy.setRenderColon(this.renderColon);
         labelCopy.setRequiredMessage((Message)this.requiredMessage.copy());
         labelCopy.setRichLabelMessage((Message)this.richLabelMessage.copy());
+        labelCopy.setRequiredMessagePlacement(this.requiredMessagePlacement);
     }
 }

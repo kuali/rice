@@ -222,4 +222,33 @@ public class PropertyReplacer extends UifDictionaryBeanBase implements Serializa
             tracer.createError("Invalid Spring Expression Language", currentValues);
         }
     }
+
+    /**
+     * Returns a copy of the property replacer.
+     *
+     * @return PropertyReplacer copy of the property replacer
+     */
+    public <T> T copy() {
+        T copiedClass = null;
+        try {
+            copiedClass = (T)this.getClass().newInstance();
+        }
+        catch(Exception exception) {
+            throw new RuntimeException();
+        }
+
+        copyProperties(copiedClass);
+
+        return copiedClass;
+    }
+
+    /**
+     * Copies the properties over for the copy method
+     *
+     */
+    protected <T> void copyProperties(T propertyReplacer) {
+        PropertyReplacer propertyReplacerCopy = ((PropertyReplacer)propertyReplacer);
+        propertyReplacerCopy.setCondition(this.condition);
+        propertyReplacerCopy.setPropertyName(this.propertyName);
+    }
 }

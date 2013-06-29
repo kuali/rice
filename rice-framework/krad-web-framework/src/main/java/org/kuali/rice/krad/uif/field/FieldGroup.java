@@ -147,4 +147,13 @@ public class FieldGroup extends FieldBase {
         }
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        FieldGroup fieldGroupCopy = (FieldGroup) component;
+        fieldGroupCopy.setGroup((Group)this.group.copy());
+    }
 }

@@ -85,7 +85,7 @@ public class Scrollpane  extends WidgetBase {
      * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
      */
     @Override
-    protected void copyProperties(Component component) {
+    protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         Scrollpane scrollpaneCopy = (Scrollpane) component;
         scrollpaneCopy.setHeight(this.getHeight());

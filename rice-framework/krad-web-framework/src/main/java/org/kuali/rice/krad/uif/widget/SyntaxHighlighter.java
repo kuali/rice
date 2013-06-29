@@ -149,7 +149,7 @@ public class SyntaxHighlighter extends WidgetBase {
      * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
      */
     @Override
-    protected void copyProperties(Component component) {
+    protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         SyntaxHighlighter syntaxHighlighterCopy = (SyntaxHighlighter) component;
         syntaxHighlighterCopy.setHeader(this.getHeader());

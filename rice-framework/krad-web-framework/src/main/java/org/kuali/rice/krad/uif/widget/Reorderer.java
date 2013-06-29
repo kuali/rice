@@ -97,7 +97,7 @@ public class Reorderer extends WidgetBase {
      * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
      */
     @Override
-    protected void copyProperties(Component component) {
+    protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         Reorderer reordererCopy = (Reorderer) component;
         reordererCopy.setMovableStyleClass(this.getMovableStyleClass());

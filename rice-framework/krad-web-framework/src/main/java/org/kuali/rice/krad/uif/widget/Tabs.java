@@ -125,7 +125,7 @@ public class Tabs extends WidgetBase {
      * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
      */
     @Override
-    protected void copyProperties(Component component) {
+    protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         Tabs tabsCopy = (Tabs) component;
         tabsCopy.setDefaultActiveTabId(this.getDefaultActiveTabId());

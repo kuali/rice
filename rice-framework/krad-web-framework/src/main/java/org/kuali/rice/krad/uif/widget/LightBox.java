@@ -146,7 +146,7 @@ public class LightBox extends WidgetBase {
      * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
      */
     @Override
-    protected void copyProperties(Component component) {
+    protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         LightBox lightBoxCopy = (LightBox) component;
         lightBoxCopy.setHeight(this.getHeight());

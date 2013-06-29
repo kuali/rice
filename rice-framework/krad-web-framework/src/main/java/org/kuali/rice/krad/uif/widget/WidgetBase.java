@@ -53,7 +53,7 @@ public abstract class WidgetBase extends ComponentBase implements Widget {
      * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
      */
     @Override
-    protected void copyProperties(Component component) {
+    protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         WidgetBase WidgetBaseCopy = (WidgetBase) component;
     }

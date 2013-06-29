@@ -844,7 +844,7 @@ public class QuickFinder extends WidgetBase {
      * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
      */
     @Override
-    protected void copyProperties(Component component) {
+    protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         QuickFinder quickFinderCopy = (QuickFinder) component;
         quickFinderCopy.setBaseLookupUrl(this.getBaseLookupUrl());

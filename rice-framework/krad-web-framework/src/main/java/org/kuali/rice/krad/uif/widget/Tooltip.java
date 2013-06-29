@@ -115,7 +115,7 @@ public class Tooltip extends WidgetBase {
      * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
      */
     @Override
-    protected void copyProperties(Component component) {
+    protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         Tooltip tooltipCopy = (Tooltip) component;
         tooltipCopy.setTooltipContent(this.getTooltipContent());

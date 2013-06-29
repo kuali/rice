@@ -477,5 +477,6 @@ public class Header extends ContentElementBase {
         headerCopy.setLowerGroup((Group)this.lowerGroup.copy());
         headerCopy.setRightGroup((Group)this.rightGroup.copy());
         headerCopy.setUpperGroup((Group)this.upperGroup.copy());
+        headerCopy.setRichHeaderMessage((Message)this.richHeaderMessage.copy());
     }
 }

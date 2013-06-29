@@ -27,6 +27,7 @@ import org.kuali.rice.krad.uif.util.MessageStructureUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -276,5 +277,31 @@ public class Message extends ContentElementBase {
      */
     public void setParseComponents(boolean parseComponents) {
         this.parseComponents = parseComponents;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        Message messageCopy = (Message) component;
+        messageCopy.setGenerateSpan(this.generateSpan);
+
+        List<Component> inlineComponents = new ArrayList<Component>();
+        for (Component inlineComponent : this.inlineComponents) {
+            inlineComponents.add((Component)inlineComponent.copy());
+        }
+
+        messageCopy.setInlineComponents(inlineComponents);
+
+        List<Component> messageComponentStructure = new ArrayList<Component>();
+        for (Component messageComponentStructureItem : this.messageComponentStructure) {
+            messageComponentStructure.add((Component)messageComponentStructureItem.copy());
+        }
+
+        messageCopy.setMessageComponentStructure(messageComponentStructure);
+        messageCopy.setMessageText(this.messageText);
+        messageCopy.setParseComponents(this.parseComponents);
     }
 }

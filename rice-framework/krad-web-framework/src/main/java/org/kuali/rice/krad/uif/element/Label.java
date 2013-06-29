@@ -287,4 +287,25 @@ public class Label extends ContentElementBase {
 
         super.completeValidation(tracer.getCopy());
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        Label labelCopy = (Label) component;
+
+        List<Component> inlineComponents = new ArrayList<Component>();
+        for (Component inlineComponent : this.inlineComponents) {
+            inlineComponents.add((Component) inlineComponent.copy());
+        }
+
+        labelCopy.setInlineComponents(inlineComponents);
+        labelCopy.setLabelForComponentId(this.labelForComponentId);
+        labelCopy.setLabelText(this.labelText);
+        labelCopy.setRenderColon(this.renderColon);
+        labelCopy.setRequiredMessage((Message)this.requiredMessage.copy());
+        labelCopy.setRichLabelMessage((Message)this.richLabelMessage.copy());
+    }
 }

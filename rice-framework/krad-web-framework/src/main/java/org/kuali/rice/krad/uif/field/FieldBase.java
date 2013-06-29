@@ -176,7 +176,7 @@ public class FieldBase extends ComponentBase implements Field {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.field.Field#setFieldLabel(java.lang.String)
+     * @see org.kuali.rice.krad.uif.field.Field#setLabel(java.lang.String)
      */
     public void setLabel(String labelText) {
         if (StringUtils.isNotBlank(labelText) && this.fieldLabel == null) {
@@ -358,5 +358,6 @@ public class FieldBase extends ComponentBase implements Field {
         FieldBase fieldBaseCopy = (FieldBase) component;
         fieldBaseCopy.setShortLabel(this.shortLabel);
         fieldBaseCopy.setLabelRendered(this.labelRendered);
+        fieldBaseCopy.setFieldLabel((Label)this.fieldLabel.copy());
     }
 }

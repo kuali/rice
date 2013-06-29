@@ -372,4 +372,22 @@ public class Group extends ContainerBase {
 
         super.completeValidation(tracer.getCopy());
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        Group groupCopy = (Group)component;
+        groupCopy.setFieldBindByNamePrefix(this.fieldBindByNamePrefix);
+        groupCopy.setFieldBindingObjectPath(this.fieldBindingObjectPath);
+
+        List<Component> items = new ArrayList<Component>();
+        for (Component item : this.items) {
+            items.add((Component)item.copy());
+        }
+
+        groupCopy.setItems(items);
+    }
 }

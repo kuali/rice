@@ -474,5 +474,8 @@ public class Header extends ContentElementBase {
         }
 
         headerCopy.setInlineComponents(inlineComponents);
+        headerCopy.setLowerGroup((Group)this.lowerGroup.copy());
+        headerCopy.setRightGroup((Group)this.rightGroup.copy());
+        headerCopy.setUpperGroup((Group)this.upperGroup.copy());
     }
 }

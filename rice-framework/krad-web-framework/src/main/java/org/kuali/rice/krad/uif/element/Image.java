@@ -362,4 +362,22 @@ public class Image extends ContentElementBase {
 
         super.completeValidation(tracer.getCopy());
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        Image imageCopy = (Image) component;
+        imageCopy.setAltText(this.altText);
+        imageCopy.setCaptionHeader((Header)this.captionHeader.copy());
+        imageCopy.setCaptionHeaderPlacementAboveImage(this.captionHeaderPlacementAboveImage);
+        imageCopy.setCaptionHeaderText(this.captionHeaderText);
+        imageCopy.setCutlineMessage((Message)this.cutlineMessage.copy());
+        imageCopy.setCutlineText(this.cutlineText);
+        imageCopy.setHeight(this.height);
+        imageCopy.setSource(this.source);
+        imageCopy.setWidth(this.width);
+    }
 }

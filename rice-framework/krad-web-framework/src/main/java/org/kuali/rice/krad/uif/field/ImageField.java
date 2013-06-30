@@ -272,4 +272,14 @@ public class ImageField extends FieldBase {
     public void setCaptionHeaderAboveImage(boolean captionHeaderAboveImage) {
         image.setCaptionHeaderPlacementAboveImage(captionHeaderAboveImage);
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        ImageField imageFieldCopy = (ImageField) component;
+        imageFieldCopy.setImage((Image)this.image.copy());
+    }
 }

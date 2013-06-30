@@ -95,4 +95,14 @@ public class AccordionGroup extends Group {
     public void setAccordionWidget(Accordion accordionWidget) {
         this.accordionWidget = accordionWidget;
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        AccordionGroup accordionGroupCopy = (AccordionGroup) component;
+        accordionGroupCopy.setAccordionWidget((Accordion) this.accordionWidget.copy());
+    }
 }

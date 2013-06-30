@@ -46,4 +46,14 @@ public class Accordion extends WidgetBase {
     public void setActive(String active) {
         this.active = active;
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        Accordion accordionCopy = (Accordion) component;
+        accordionCopy.setActive(this.active);
+    }
 }

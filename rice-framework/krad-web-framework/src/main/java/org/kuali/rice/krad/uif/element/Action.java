@@ -1243,4 +1243,67 @@ public class Action extends ContentElementBase {
     public void setEnabledWhenChangedPropertyNames(List<String> enabledWhenChangedPropertyNames) {
         this.enabledWhenChangedPropertyNames = enabledWhenChangedPropertyNames;
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        Action actionCopy = (Action) component;
+        actionCopy.setActionEvent(this.actionEvent);
+        actionCopy.setActionImage((Image)this.actionImage.copy());
+        actionCopy.setActionImagePlacement(this.actionImagePlacement);
+        actionCopy.setActionLabel(this.actionLabel);
+
+        Map<String, String> actionParameters = new HashMap<String, String>();
+        for (Map.Entry<String, String> actionParameter : this.actionParameters.entrySet()) {
+            actionParameters.put(actionParameter.getKey(), actionParameter.getValue());
+        }
+
+        actionCopy.setActionParameters(actionParameters);
+
+        Map<String, String> additionalSubmitData = new HashMap<String, String>();
+        for (Map.Entry<String, String> additionalSubmitDataItem : this.additionalSubmitData.entrySet()) {
+            additionalSubmitData.put(additionalSubmitDataItem.getKey(), additionalSubmitDataItem.getValue());
+        }
+
+        actionCopy.setAdditionalSubmitData(additionalSubmitData);
+        actionCopy.setActionScript(this.actionScript);
+        actionCopy.setAjaxReturnType(this.ajaxReturnType);
+        actionCopy.setAjaxSubmit(this.ajaxSubmit);
+        actionCopy.setClearDirtyOnAction(this.clearDirtyOnAction);
+        actionCopy.setDirtyOnAction(this.dirtyOnAction);
+        actionCopy.setDisableBlocking(this.disableBlocking);
+        actionCopy.setDisabled(this.disabled);
+        actionCopy.setDisabledReason(this.disabledReason);
+
+        List<String> disabledWhenChangedPropertyNames = new ArrayList<String>();
+        for (String disabledWhenChangedPropertyName : this.disabledWhenChangedPropertyNames) {
+            disabledWhenChangedPropertyNames.add(disabledWhenChangedPropertyName);
+        }
+
+        actionCopy.setDisabledWhenChangedPropertyNames(disabledWhenChangedPropertyNames);
+
+        List<String> enabledWhenChangedPropertyNames = new ArrayList<String>();
+        for (String enabledWhenChangedPropertyName : this.enabledWhenChangedPropertyNames) {
+            enabledWhenChangedPropertyNames.add(enabledWhenChangedPropertyName);
+        }
+
+        actionCopy.setEnabledWhenChangedPropertyNames(enabledWhenChangedPropertyNames);
+        actionCopy.setErrorCallback(this.errorCallback);
+        actionCopy.setEvaluateDisabledOnKeyUp(this.evaluateDisabledOnKeyUp);
+        actionCopy.setFocusOnIdAfterSubmit(this.focusOnIdAfterSubmit);
+        actionCopy.setJumpToIdAfterSubmit(this.jumpToIdAfterSubmit);
+        actionCopy.setJumpToNameAfterSubmit(this.jumpToNameAfterSubmit);
+        actionCopy.setLoadingMessageText(this.loadingMessageText);
+        actionCopy.setMethodToCall(this.methodToCall);
+        actionCopy.setNavigateToPageId(this.navigateToPageId);
+        actionCopy.setPerformClientSideValidation(this.performClientSideValidation);
+        actionCopy.setPerformDirtyValidation(this.performDirtyValidation);
+        actionCopy.setPreSubmitCall(this.preSubmitCall);
+        actionCopy.setRefreshId(this.refreshId);
+        actionCopy.setRefreshPropertyName(this.refreshPropertyName);
+        actionCopy.setSuccessCallback(this.successCallback);
+    }
 }

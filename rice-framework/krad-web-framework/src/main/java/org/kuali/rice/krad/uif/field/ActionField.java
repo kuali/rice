@@ -486,5 +486,6 @@ public class ActionField extends FieldBase {
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         ActionField actionFieldCopy = (ActionField) component;
+        actionFieldCopy.setAction((Action)this.action.copy());
     }
 }

@@ -378,4 +378,38 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
         this.bindToMap = bindToMap;
     }
 
+    /**
+     * Returns a clone of the binding info.
+     *
+     * @return BindingInfo clone of the component
+     */
+    public <T> T copy() {
+        T copiedClass = null;
+        try {
+            copiedClass = (T)this.getClass().newInstance();
+        }
+        catch(Exception exception) {
+            throw new RuntimeException();
+        }
+
+        copyProperties(copiedClass);
+
+        return copiedClass;
+    }
+
+    /**
+     * Copies the properties over for the copy method.
+     *
+     * @param bindingInfo The BindingInfo to copy
+     */
+    protected <T> void copyProperties(T bindingInfo) {
+        BindingInfo bindingInfoCopy = (BindingInfo) bindingInfo;
+        bindingInfoCopy.setBindByNamePrefix(this.bindByNamePrefix);
+        bindingInfoCopy.setBindingName(this.bindingName);
+        bindingInfoCopy.setBindingObjectPath(this.bindingObjectPath);
+        bindingInfoCopy.setBindingPath(this.bindingPath);
+        bindingInfoCopy.setBindToForm(this.bindToForm);
+        bindingInfoCopy.setBindToMap(this.bindToMap);
+        bindingInfoCopy.setCollectionPath(this.collectionPath);
+    }
 }

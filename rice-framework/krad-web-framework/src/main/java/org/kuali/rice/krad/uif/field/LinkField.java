@@ -220,4 +220,13 @@ public class LinkField extends FieldBase {
         super.completeValidation(tracer.getCopy());
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        LinkField linkFieldCopy = (LinkField) component;
+        linkFieldCopy.setLink((Link)this.link.copy());
+    }
 }

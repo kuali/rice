@@ -224,4 +224,18 @@ public class Link extends ContentElementBase {
 
         super.completeValidation(tracer.getCopy());
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        Link linkCopy = (Link) component;
+        linkCopy.setHref(this.href);
+        linkCopy.setLightBox((LightBox)this.lightBox.copy());
+        linkCopy.setLinkText(this.linkText);
+        linkCopy.setOpenInLightbox(this.openInLightbox);
+        linkCopy.setTarget(this.target);
+    }
 }

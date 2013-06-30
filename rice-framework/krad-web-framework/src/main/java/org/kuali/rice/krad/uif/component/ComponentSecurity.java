@@ -38,7 +38,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTag(name = "componentSecurity-bean")
-public class ComponentSecurity extends UifDictionaryBeanBase implements Serializable, Cloneable {
+public class ComponentSecurity extends UifDictionaryBeanBase implements Serializable {
     private static final long serialVersionUID = 726347449984853891L;
 
     private boolean editAuthz;
@@ -235,19 +235,21 @@ public class ComponentSecurity extends UifDictionaryBeanBase implements Serializ
      *
      * @return ComponentSecurity clone of the component
      */
-    public <T extends ComponentSecurity> T clone() {
+    public <T> T copy() {
+        T copiedClass = null;
         try {
-            T clonedClass = (T)this.getClass().newInstance();
-            clonedClass = (T)copyProperties(clonedClass);
-
-            return clonedClass;
+            copiedClass = (T)this.getClass().newInstance();
         }
         catch(Exception exception) {
             throw new RuntimeException();
         }
+
+        copyProperties(copiedClass);
+
+        return copiedClass;
     }
 
-    protected ComponentSecurity copyProperties(Cloneable componentSecurity) {
+    protected <T> void copyProperties(T componentSecurity) {
         ComponentSecurity componentSecurityCopy = (ComponentSecurity) componentSecurity;
         componentSecurityCopy.setAdditionalPermissionDetails(new HashMap<String, String>(this.additionalPermissionDetails));
         componentSecurityCopy.setAdditionalRoleQualifiers(new HashMap<String, String>(this.additionalRoleQualifiers));
@@ -256,7 +258,5 @@ public class ComponentSecurity extends UifDictionaryBeanBase implements Serializ
         componentSecurityCopy.setIdAttribute(this.idAttribute);
         componentSecurityCopy.setNamespaceAttribute(this.namespaceAttribute);
         componentSecurityCopy.setViewAuthz(this.viewAuthz);
-
-        return componentSecurityCopy;
     }
 }

@@ -75,4 +75,15 @@ public class ActionSecurity extends FieldSecurity {
     public void setPerformLineActionAuthz(boolean performLineActionAuthz) {
         this.performLineActionAuthz = performLineActionAuthz;
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        ActionSecurity actionSecurityCopy = (ActionSecurity) component;
+        actionSecurityCopy.setPerformActionAuthz(this.performActionAuthz);
+        actionSecurityCopy.setPerformLineActionAuthz(this.performLineActionAuthz);
+    }
 }

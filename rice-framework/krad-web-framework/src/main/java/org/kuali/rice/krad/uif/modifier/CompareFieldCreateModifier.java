@@ -438,6 +438,9 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
         }
 
         compareFieldCreateModifierCopy.setComparables(comparables);
-        compareFieldCreateModifierCopy.setHeaderFieldPrototype((Header)this.headerFieldPrototype.copy());
+
+        if (this.headerFieldPrototype != null) {
+            compareFieldCreateModifierCopy.setHeaderFieldPrototype((Header)this.headerFieldPrototype.copy());
+        }
     }
 }

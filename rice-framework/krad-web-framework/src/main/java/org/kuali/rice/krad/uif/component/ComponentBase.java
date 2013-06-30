@@ -1959,8 +1959,14 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         }
 
         componentCopy.setComponentModifiers(componentModifiers);
-        componentCopy.setComponentSecurity((ComponentSecurity)this.componentSecurity.copy());
-        componentCopy.setToolTip((Tooltip)this.toolTip.copy());
+
+        if (this.componentSecurity != null) {
+            componentCopy.setComponentSecurity((ComponentSecurity)this.componentSecurity.copy());
+        }
+
+        if (this.toolTip != null) {
+            componentCopy.setToolTip((Tooltip)this.toolTip.copy());
+        }
 
         List<PropertyReplacer> propertyReplacers = new ArrayList<PropertyReplacer>();
         for (PropertyReplacer propertyReplacer : this.propertyReplacers) {

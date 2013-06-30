@@ -103,6 +103,9 @@ public class AccordionGroup extends Group {
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         AccordionGroup accordionGroupCopy = (AccordionGroup) component;
-        accordionGroupCopy.setAccordionWidget((Accordion) this.accordionWidget.copy());
+
+        if (this.accordionWidget != null) {
+            accordionGroupCopy.setAccordionWidget((Accordion) this.accordionWidget.copy());
+        }
     }
 }

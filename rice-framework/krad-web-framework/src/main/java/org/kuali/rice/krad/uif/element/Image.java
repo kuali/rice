@@ -371,10 +371,18 @@ public class Image extends ContentElementBase {
         super.copyProperties(component);
         Image imageCopy = (Image) component;
         imageCopy.setAltText(this.altText);
-        imageCopy.setCaptionHeader((Header)this.captionHeader.copy());
+
+        if (this.captionHeader != null) {
+            imageCopy.setCaptionHeader((Header)this.captionHeader.copy());
+        }
+
         imageCopy.setCaptionHeaderPlacementAboveImage(this.captionHeaderPlacementAboveImage);
         imageCopy.setCaptionHeaderText(this.captionHeaderText);
-        imageCopy.setCutlineMessage((Message)this.cutlineMessage.copy());
+
+        if (this.cutlineMessage != null) {
+            imageCopy.setCutlineMessage((Message)this.cutlineMessage.copy());
+        }
+
         imageCopy.setCutlineText(this.cutlineText);
         imageCopy.setHeight(this.height);
         imageCopy.setSource(this.source);

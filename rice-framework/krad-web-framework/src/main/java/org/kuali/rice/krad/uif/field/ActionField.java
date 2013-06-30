@@ -480,12 +480,15 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#copyProperties()
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
      */
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         ActionField actionFieldCopy = (ActionField) component;
-        actionFieldCopy.setAction((Action)this.action.copy());
+
+        if (this.action != null) {
+            actionFieldCopy.setAction((Action)this.action.copy());
+        }
     }
 }

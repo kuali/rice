@@ -1252,23 +1252,15 @@ public class Action extends ContentElementBase {
         super.copyProperties(component);
         Action actionCopy = (Action) component;
         actionCopy.setActionEvent(this.actionEvent);
-        actionCopy.setActionImage((Image)this.actionImage.copy());
+
+        if (this.actionImage != null) {
+            actionCopy.setActionImage((Image)this.actionImage.copy());
+        }
+
         actionCopy.setActionImagePlacement(this.actionImagePlacement);
         actionCopy.setActionLabel(this.actionLabel);
-
-        Map<String, String> actionParameters = new HashMap<String, String>();
-        for (Map.Entry<String, String> actionParameter : this.actionParameters.entrySet()) {
-            actionParameters.put(actionParameter.getKey(), actionParameter.getValue());
-        }
-
-        actionCopy.setActionParameters(actionParameters);
-
-        Map<String, String> additionalSubmitData = new HashMap<String, String>();
-        for (Map.Entry<String, String> additionalSubmitDataItem : this.additionalSubmitData.entrySet()) {
-            additionalSubmitData.put(additionalSubmitDataItem.getKey(), additionalSubmitDataItem.getValue());
-        }
-
-        actionCopy.setAdditionalSubmitData(additionalSubmitData);
+        actionCopy.setActionParameters(new HashMap<String, String>(this.actionParameters));
+        actionCopy.setAdditionalSubmitData(new HashMap<String, String>(this.additionalSubmitData));
         actionCopy.setActionScript(this.actionScript);
         actionCopy.setAjaxReturnType(this.ajaxReturnType);
         actionCopy.setAjaxSubmit(this.ajaxSubmit);
@@ -1277,20 +1269,8 @@ public class Action extends ContentElementBase {
         actionCopy.setDisableBlocking(this.disableBlocking);
         actionCopy.setDisabled(this.disabled);
         actionCopy.setDisabledReason(this.disabledReason);
-
-        List<String> disabledWhenChangedPropertyNames = new ArrayList<String>();
-        for (String disabledWhenChangedPropertyName : this.disabledWhenChangedPropertyNames) {
-            disabledWhenChangedPropertyNames.add(disabledWhenChangedPropertyName);
-        }
-
-        actionCopy.setDisabledWhenChangedPropertyNames(disabledWhenChangedPropertyNames);
-
-        List<String> enabledWhenChangedPropertyNames = new ArrayList<String>();
-        for (String enabledWhenChangedPropertyName : this.enabledWhenChangedPropertyNames) {
-            enabledWhenChangedPropertyNames.add(enabledWhenChangedPropertyName);
-        }
-
-        actionCopy.setEnabledWhenChangedPropertyNames(enabledWhenChangedPropertyNames);
+        actionCopy.setDisabledWhenChangedPropertyNames(new ArrayList<String>(this.disabledWhenChangedPropertyNames));
+        actionCopy.setEnabledWhenChangedPropertyNames(new ArrayList<String>(this.enabledWhenChangedPropertyNames));
         actionCopy.setErrorCallback(this.errorCallback);
         actionCopy.setEvaluateDisabledOnKeyUp(this.evaluateDisabledOnKeyUp);
         actionCopy.setFocusOnIdAfterSubmit(this.focusOnIdAfterSubmit);

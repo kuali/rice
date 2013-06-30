@@ -389,7 +389,13 @@ public class Group extends ContainerBase {
         }
 
         groupCopy.setItems(items);
-        groupCopy.setDisclosure((Disclosure) this.disclosure.copy());
-        groupCopy.setScrollpane((Scrollpane)this.scrollpane.copy());
+
+        if (this.disclosure != null) {
+            groupCopy.setDisclosure((Disclosure) this.disclosure.copy());
+        }
+
+        if (this.scrollpane != null) {
+            groupCopy.setScrollpane((Scrollpane)this.scrollpane.copy());
+        }
     }
 }

@@ -154,6 +154,9 @@ public class FieldGroup extends FieldBase {
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         FieldGroup fieldGroupCopy = (FieldGroup) component;
-        fieldGroupCopy.setGroup((Group)this.group.copy());
+
+        if (this.group != null) {
+            fieldGroupCopy.setGroup((Group)this.group.copy());
+        }
     }
 }

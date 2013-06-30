@@ -233,7 +233,11 @@ public class Link extends ContentElementBase {
         super.copyProperties(component);
         Link linkCopy = (Link) component;
         linkCopy.setHref(this.href);
-        linkCopy.setLightBox((LightBox)this.lightBox.copy());
+
+        if (this.lightBox != null) {
+            linkCopy.setLightBox((LightBox)this.lightBox.copy());
+        }
+
         linkCopy.setLinkText(this.linkText);
         linkCopy.setOpenInLightbox(this.openInLightbox);
         linkCopy.setTarget(this.target);

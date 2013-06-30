@@ -474,9 +474,21 @@ public class Header extends ContentElementBase {
         }
 
         headerCopy.setInlineComponents(inlineComponents);
-        headerCopy.setLowerGroup((Group)this.lowerGroup.copy());
-        headerCopy.setRightGroup((Group)this.rightGroup.copy());
-        headerCopy.setUpperGroup((Group)this.upperGroup.copy());
-        headerCopy.setRichHeaderMessage((Message)this.richHeaderMessage.copy());
+
+        if (this.lowerGroup != null) {
+            headerCopy.setLowerGroup((Group)this.lowerGroup.copy());
+        }
+
+        if (this.rightGroup != null) {
+            headerCopy.setRightGroup((Group)this.rightGroup.copy());
+        }
+
+        if (this.upperGroup != null) {
+            headerCopy.setUpperGroup((Group)this.upperGroup.copy());
+        }
+
+        if (this.richHeaderMessage != null) {
+            headerCopy.setRichHeaderMessage((Message)this.richHeaderMessage.copy());
+        }
     }
 }

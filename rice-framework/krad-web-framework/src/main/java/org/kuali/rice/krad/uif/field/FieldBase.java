@@ -358,7 +358,11 @@ public class FieldBase extends ComponentBase implements Field {
         FieldBase fieldBaseCopy = (FieldBase) component;
         fieldBaseCopy.setShortLabel(this.shortLabel);
         fieldBaseCopy.setLabelRendered(this.labelRendered);
-        fieldBaseCopy.setFieldLabel((Label)this.fieldLabel.copy());
+
+        if (this.fieldLabel != null) {
+            fieldBaseCopy.setFieldLabel((Label)this.fieldLabel.copy());
+        }
+
         fieldBaseCopy.setLabelPlacement(this.labelPlacement);
     }
 }

@@ -305,8 +305,15 @@ public class Label extends ContentElementBase {
         labelCopy.setLabelForComponentId(this.labelForComponentId);
         labelCopy.setLabelText(this.labelText);
         labelCopy.setRenderColon(this.renderColon);
-        labelCopy.setRequiredMessage((Message)this.requiredMessage.copy());
-        labelCopy.setRichLabelMessage((Message)this.richLabelMessage.copy());
+
+        if (this.requiredMessage != null) {
+            labelCopy.setRequiredMessage((Message)this.requiredMessage.copy());
+        }
+
+        if (this.richLabelMessage != null) {
+            labelCopy.setRichLabelMessage((Message)this.richLabelMessage.copy());
+        }
+
         labelCopy.setRequiredMessagePlacement(this.requiredMessagePlacement);
     }
 }

@@ -179,6 +179,9 @@ public class MessageField extends FieldBase {
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         MessageField messageFieldCopy = (MessageField) component;
-        messageFieldCopy.setMessage((Message)this.message.copy());
+
+        if (this.message != null) {
+            messageFieldCopy.setMessage((Message)this.message.copy());
+        }
     }
 }

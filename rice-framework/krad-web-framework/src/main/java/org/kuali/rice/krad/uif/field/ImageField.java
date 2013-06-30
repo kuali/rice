@@ -280,6 +280,9 @@ public class ImageField extends FieldBase {
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         ImageField imageFieldCopy = (ImageField) component;
-        imageFieldCopy.setImage((Image)this.image.copy());
+
+        if (this.image != null) {
+            imageFieldCopy.setImage((Image)this.image.copy());
+        }
     }
 }

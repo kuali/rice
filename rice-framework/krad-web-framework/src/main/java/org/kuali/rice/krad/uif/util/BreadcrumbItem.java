@@ -153,4 +153,21 @@ public class BreadcrumbItem extends ContentElementBase {
     public void setRenderAsLink(boolean renderAsLink) {
         this.renderAsLink = renderAsLink;
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        BreadcrumbItem breadcrumbItemCopy = (BreadcrumbItem) component;
+        breadcrumbItemCopy.setLabel(this.label);
+        breadcrumbItemCopy.setRenderAsLink(this.renderAsLink);
+
+        if (this.siblingBreadcrumbComponent != null) {
+            breadcrumbItemCopy.setSiblingBreadcrumbComponent((Component)this.siblingBreadcrumbComponent.copy());
+        }
+
+        breadcrumbItemCopy.setRenderAsLink(this.renderAsLink);
+    }
 }

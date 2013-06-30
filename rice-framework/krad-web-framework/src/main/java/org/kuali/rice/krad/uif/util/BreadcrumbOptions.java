@@ -19,6 +19,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -131,5 +132,61 @@ public class BreadcrumbOptions implements Serializable {
      */
     public void setBreadcrumbOverrides(List<BreadcrumbItem> breadcrumbOverrides) {
         this.breadcrumbOverrides = breadcrumbOverrides;
+    }
+
+    /**
+     * Returns a copy of the attribute query.
+     *
+     * @return BreadcrumbOptions copy of the component
+     */
+    public <T> T copy() {
+        T copiedClass = null;
+        try {
+            copiedClass = (T)this.getClass().newInstance();
+        }
+        catch(Exception exception) {
+            throw new RuntimeException();
+        }
+
+        copyProperties(copiedClass);
+
+        return copiedClass;
+    }
+
+    /**
+     * Copies the properties over for the copy method.
+     *
+     * @param breadcrumbOptions The BreadcrumbOptions to copy
+     */
+    protected <T> void copyProperties(T breadcrumbOptions) {
+        BreadcrumbOptions breadcrumbOptionsCopy = (BreadcrumbOptions) breadcrumbOptions;
+
+        List<BreadcrumbItem> breadcrumbOverrides = new ArrayList<BreadcrumbItem>();
+        for (BreadcrumbItem breadcrumbOverride : this.breadcrumbOverrides) {
+            breadcrumbOverrides.add((BreadcrumbItem)breadcrumbOverride.copy());
+        }
+
+        breadcrumbOptionsCopy.setBreadcrumbOverrides(breadcrumbOverrides);
+
+        List<BreadcrumbItem> homewardPathBreadcrumbs = new ArrayList<BreadcrumbItem>();
+        for (BreadcrumbItem homewardPathBreadcrumb : this.homewardPathBreadcrumbs) {
+            homewardPathBreadcrumbs.add((BreadcrumbItem)homewardPathBreadcrumb.copy());
+        }
+
+        breadcrumbOptionsCopy.setHomewardPathBreadcrumbs(homewardPathBreadcrumbs);
+
+        List<BreadcrumbItem> prePageBreadcrumbs = new ArrayList<BreadcrumbItem>();
+        for (BreadcrumbItem prePageBreadcrumb : this.prePageBreadcrumbs) {
+            prePageBreadcrumbs.add((BreadcrumbItem)prePageBreadcrumb.copy());
+        }
+
+        breadcrumbOptionsCopy.setPrePageBreadcrumbs(prePageBreadcrumbs);
+
+        List<BreadcrumbItem> preViewBreadcrumbs = new ArrayList<BreadcrumbItem>();
+        for (BreadcrumbItem preViewBreadcrumb : this.preViewBreadcrumbs) {
+            preViewBreadcrumbs.add((BreadcrumbItem)preViewBreadcrumb.copy());
+        }
+
+        breadcrumbOptionsCopy.setPreViewBreadcrumbs(preViewBreadcrumbs);
     }
 }

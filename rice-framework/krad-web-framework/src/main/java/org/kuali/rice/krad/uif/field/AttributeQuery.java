@@ -484,9 +484,9 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
     }
 
     /**
-     * Returns a clone of the attribute query.
+     * Returns a copy of the attribute query.
      *
-     * @return AttributeQuery clone of the component
+     * @return AttributeQuery copy of the component
      */
     public <T> T copy() {
         T copiedClass = null;

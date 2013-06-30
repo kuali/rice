@@ -114,4 +114,35 @@ public class AttributeQueryResult implements Serializable {
     public void setResultData(List<Object> resultData) {
         this.resultData = resultData;
     }
+
+    /**
+     * Returns a copy of the attribute query result.
+     *
+     * @return AttributeQueryResult copy of the component
+     */
+    public <T> T copy() {
+        T copiedClass = null;
+        try {
+            copiedClass = (T)this.getClass().newInstance();
+        }
+        catch(Exception exception) {
+            throw new RuntimeException();
+        }
+
+        copyProperties(copiedClass);
+
+        return copiedClass;
+    }
+
+    /**
+     * Copies the properties over for the copy method.
+     *
+     * @param attributeQuery The AttributeQuery to copy
+     */
+    protected <T> void copyProperties(T attributeQueryResult) {
+        AttributeQueryResult attributeQueryResultCopy = (AttributeQueryResult) attributeQueryResult;
+        attributeQueryResultCopy.setResultFieldData(new HashMap<String, String>(this.resultFieldData));
+        attributeQueryResultCopy.setResultMessage(this.resultMessage);
+        attributeQueryResultCopy.setResultMessageStyleClasses(this.resultMessageStyleClasses);
+    }
 }

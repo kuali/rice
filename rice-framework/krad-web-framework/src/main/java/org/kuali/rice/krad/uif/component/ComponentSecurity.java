@@ -231,9 +231,9 @@ public class ComponentSecurity extends UifDictionaryBeanBase implements Serializ
     }
 
     /**
-     * Returns a clone of the component security.
+     * Returns a copy of the component security.
      *
-     * @return ComponentSecurity clone of the component
+     * @return ComponentSecurity copy of the component
      */
     public <T> T copy() {
         T copiedClass = null;

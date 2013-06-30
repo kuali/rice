@@ -388,7 +388,6 @@ public class Suggest extends WidgetBase {
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         Suggest suggestCopy = (Suggest) component;
-        suggestCopy.setSuggestQuery(this.getSuggestQuery());
         suggestCopy.setValuePropertyName(this.getValuePropertyName());
         suggestCopy.setLabelPropertyName(this.getLabelPropertyName());
         List<String> additionalProperties = new ArrayList<String>();
@@ -398,6 +397,11 @@ public class Suggest extends WidgetBase {
         suggestCopy.setAdditionalPropertiesToReturn(additionalProperties);
         suggestCopy.setReturnFullQueryObject(this.isReturnFullQueryObject());
         suggestCopy.setRetrieveAllSuggestions(this.isRetrieveAllSuggestions());
+
+        if (this.suggestQuery != null) {
+            suggestCopy.setSuggestQuery((AttributeQuery)this.suggestQuery.copy());
+        }
+
         //TODO   private List<Object> suggestOptions;
     }
 }

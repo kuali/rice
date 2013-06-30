@@ -482,4 +482,42 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
             tracer.createWarning("At least 1 should be set: dataObjectClass, queryMethodToCall or queryMethodInvokerConfig",currentValues);
         }
     }
+
+    /**
+     * Returns a clone of the attribute query.
+     *
+     * @return AttributeQuery clone of the component
+     */
+    public <T> T copy() {
+        T copiedClass = null;
+        try {
+            copiedClass = (T)this.getClass().newInstance();
+        }
+        catch(Exception exception) {
+            throw new RuntimeException();
+        }
+
+        copyProperties(copiedClass);
+
+        return copiedClass;
+    }
+
+    /**
+     * Copies the properties over for the copy method.
+     *
+     * @param attributeQuery The AttributeQuery to copy
+     */
+    protected <T> void copyProperties(T attributeQuery) {
+        AttributeQuery attributeQueryCopy = (AttributeQuery) attributeQuery;
+        attributeQueryCopy.setAdditionalCriteria(new HashMap<String, String>(this.additionalCriteria));
+        attributeQueryCopy.setDataObjectClassName(this.dataObjectClassName);
+        attributeQueryCopy.setQueryFieldMapping(new HashMap<String, String>(this.queryFieldMapping));
+        attributeQueryCopy.setQueryMethodArgumentFieldList(new ArrayList<String>(this.queryMethodArgumentFieldList));
+        attributeQueryCopy.setQueryMethodToCall(this.queryMethodToCall);
+        attributeQueryCopy.setRenderNotFoundMessage(this.renderNotFoundMessage);
+        attributeQueryCopy.setReturnFieldMapping(new HashMap<String, String>(this.returnFieldMapping));
+        attributeQueryCopy.setReturnMessageStyleClasses(this.returnMessageStyleClasses);
+        attributeQueryCopy.setReturnMessageText(this.returnMessageText);
+        attributeQueryCopy.setSortPropertyNames(new ArrayList<String>(this.sortPropertyNames));
+    }
 }

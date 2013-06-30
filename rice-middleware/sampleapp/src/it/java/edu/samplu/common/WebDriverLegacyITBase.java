@@ -1161,6 +1161,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     protected int howManyAreVisible(By by) throws InterruptedException {
         int count = 0;
         if (by == null) {
+
             return count;
         }
 

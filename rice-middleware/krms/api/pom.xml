@@ -105,6 +105,30 @@
               <goal>java2ws</goal>
             </goals>
           </execution>
+          <execution>
+            <id>ruleManagementService-wsdl</id>
+            <phase>${rice.java2ws.phase}</phase>
+            <configuration>
+              <className>org.kuali.rice.krms.api.repository.RuleManagementService</className>
+              <outputFile>${svc.fr.wsdl}</outputFile>
+              <serviceName>RuleManagementService</serviceName>
+            </configuration>
+            <goals>
+              <goal>java2ws</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>termRepositoryService-wsdl</id>
+            <phase>${rice.java2ws.phase}</phase>
+            <configuration>
+              <className>org.kuali.rice.krms.api.repository.term.TermRepositoryService</className>
+              <outputFile>${svc.fr.wsdl}</outputFile>
+              <serviceName>RuleManagementService</serviceName>
+            </configuration>
+            <goals>
+              <goal>java2ws</goal>
+            </goals>
+          </execution>
         </executions>
       </plugin>
       <plugin>

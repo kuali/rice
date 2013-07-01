@@ -238,6 +238,9 @@ public class TermRepositoryServiceMockImpl implements TermRepositoryService {
       }
       return null;
     }
-    
-    
+
+    @Override
+    public List<TermSpecificationDefinition> findAllTermSpecificationsByContextId(String contextId) {
+	throw new UnsupportedOperationException(getClass().getName() + " does not support this operation");
+    }
 }

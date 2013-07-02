@@ -58,7 +58,7 @@
               <cssTargetDir>${minify.fragment}/css</cssTargetDir>
               <cssFinalFile>krad_${project.version}.css</cssFinalFile>
               <cssSourceFiles>
-                <value>themes/kboot/stylesheets/kboot.css</value>
+                <cssSourceFile>../themes/kboot/stylesheets/kboot.css</cssSourceFile>
                 <cssSourceFile>plugins/jqueryUI/jquery-ui-1.9.2.css</cssSourceFile>
                 <cssSourceFile>plugins/jgrowl/jquery.jgrowl.css</cssSourceFile>
                 <cssSourceFile>plugins/rice/datatables/jquery.dataTables.css</cssSourceFile>
@@ -68,7 +68,7 @@
                 <cssSourceFile>plugins/rice/menu/tabs.css</cssSourceFile>
                 <cssSourceFile>plugins/tooltip/jquery.bubblepopup.v2.3.1.css</cssSourceFile>
                 <cssSourceFile>plugins/prettify/prettify.css</cssSourceFile>
-                <value>themes/kboot/stylesheets/uif-base.css</value>
+                <cssSourceFile>../themes/kboot/stylesheets/uif-base.css</cssSourceFile>
               </cssSourceFiles>
               <jsSourceDir>krad</jsSourceDir>
               <jsTargetDir>${minify.fragment}/scripts</jsTargetDir>

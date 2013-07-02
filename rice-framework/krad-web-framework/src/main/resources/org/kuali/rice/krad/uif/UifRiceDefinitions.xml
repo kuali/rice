@@ -39,7 +39,7 @@
         scope="prototype"
         parent="Uif-SmallTextControl">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-kimPersonControl</value>
       </list>
     </property>
@@ -50,7 +50,7 @@
         scope="prototype"
         parent="Uif-SmallTextControl">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-kimGroupControl</value>
       </list>
     </property>

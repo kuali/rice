@@ -39,7 +39,7 @@
   <bean id="Uif-HorizontalBoxLayout" parent="Uif-HorizontalBoxLayout-parentBean"/>
   <bean id="Uif-HorizontalBoxLayout-parentBean" abstract="true" parent="Uif-BoxLayoutBase">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-horizontalBoxLayout</value>
       </list>
     </property>
@@ -49,11 +49,55 @@
   <bean id="Uif-VerticalBoxLayout" parent="Uif-VerticalBoxLayout-parentBean"/>
   <bean id="Uif-VerticalBoxLayout-parentBean" abstract="true" parent="Uif-BoxLayoutBase">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-verticalBoxLayout</value>
       </list>
     </property>
     <property name="orientation" value="VERTICAL"/>
+  </bean>
+
+  <!--Css Grid Layout Managers (div based)-->
+
+  <bean id="Uif-CssGridLayoutBase" abstract="true" parent="Uif-CssGridLayoutBase-parentBean"/>
+  <bean id="Uif-CssGridLayoutBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.CssGridLayoutManager"
+        scope="prototype">
+    <property name="template" value="/krad/WEB-INF/ftl/layout/cssGrid.ftl"/>
+    <property name="templateName" value="uif_cssGrid"/>
+    <property name="cssClasses">
+      <list>
+        <value>uif-cssGridLayout</value>
+      </list>
+    </property>
+    <!-- this means items which don't define their colSpan will take up a whole "row" -->
+    <property name="defaultItemColSpan" value="12"/>
+    <property name="rowCssClasses">
+      <map>
+        <entry key="all" value="row"/>
+      </map>
+    </property>
+  </bean>
+
+  <bean id="Uif-FixedCssGridLayout"  parent="Uif-FixedCssGridLayout-parentBean"/>
+  <bean id="Uif-FixedCssGridLayout-parentBean" abstract="true" parent="Uif-CssGridLayoutBase">
+    <property name="cssClasses">
+      <list>
+        <value>uif-fixedCssGridLayout</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-FluidCssGridLayout"  parent="Uif-FluidCssGridLayout-parentBean"/>
+  <bean id="Uif-FluidCssGridLayout-parentBean" abstract="true" parent="Uif-CssGridLayoutBase">
+    <property name="cssClasses">
+      <list>
+        <value>uif-fluidCssGridLayout</value>
+      </list>
+    </property>
+    <property name="rowCssClasses">
+      <map>
+        <entry key="all" value="row-fluid"/>
+      </map>
+    </property>
   </bean>
 
   <!--Grid Layout Managers-->
@@ -63,6 +107,13 @@
         scope="prototype">
     <property name="template" value="/krad/WEB-INF/ftl/layout/grid.ftl"/>
     <property name="templateName" value="uif_grid"/>
+    <property name="libraryCssClasses">
+      <list>
+        <value>table</value>
+        <value>table-condensed</value>
+        <value>table-bordered</value>
+      </list>
+    </property>
     <property name="cssClasses">
       <list>
         <value>uif-gridLayout</value>
@@ -107,7 +158,7 @@
   <bean id="Uif-OrderedListLayout-parentBean" abstract="true" parent="Uif-ListLayout">
     <property name="orderedList" value="true"/>
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-orderedListLayout</value>
       </list>
     </property>
@@ -122,6 +173,13 @@
         scope="prototype">
     <property name="template" value="/krad/WEB-INF/ftl/layout/table.ftl"/>
     <property name="templateName" value="uif_table"/>
+    <property name="libraryCssClasses">
+      <list>
+        <value>table</value>
+        <value>table-condensed</value>
+        <value>table-bordered</value>
+      </list>
+    </property>
     <property name="cssClasses">
       <list>
         <value>uif-tableCollectionLayout</value>
@@ -242,7 +300,7 @@
   <bean id="Uif-CollectionGridItem" parent="Uif-CollectionGridItem-parentBean"/>
   <bean id="Uif-CollectionGridItem-parentBean" abstract="true" parent="Uif-GridGroup">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-collectionItem</value>
         <value>uif-gridCollectionItem</value>
       </list>
@@ -256,7 +314,7 @@
   <bean id="Uif-CollectionVerticalBoxItem-parentBean" abstract="true" parent="Uif-VerticalBoxGroup"
           p:layoutManager.orientation="VERTICAL">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-collectionItem</value>
         <value>uif-boxCollectionItem</value>
       </list>
@@ -269,7 +327,7 @@
   <bean id="Uif-CollectionHorizontalBoxItem" parent="Uif-CollectionHorizontalBoxItem-parentBean"/>
   <bean id="Uif-CollectionHorizontalBoxItem-parentBean" abstract="true" parent="Uif-HorizontalBoxGroup">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-collectionItem</value>
         <value>uif-boxCollectionItem</value>
       </list>

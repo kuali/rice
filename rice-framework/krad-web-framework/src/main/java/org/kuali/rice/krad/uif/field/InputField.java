@@ -257,7 +257,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         super.performFinalize(view, model, parent);
 
         setupIds();
-        this.addDataAttribute(UifConstants.DataAttributes.ROLE, "InputField");
+        this.addDataAttribute(UifConstants.DataAttributes.ROLE, UifConstants.RoleTypes.INPUT_FIELD);
 
         // if read only or the control is null no input can be given so no need to setup validation
         if (isReadOnly() || getControl() == null) {

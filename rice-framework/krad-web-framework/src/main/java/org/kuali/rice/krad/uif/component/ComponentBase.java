@@ -103,6 +103,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     private String cellWidth;
 
     private String style;
+    private List<String> libraryCssClasses;
     private List<String> cssClasses;
     private List<String> additionalCssClasses;
 
@@ -337,6 +338,23 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
             setOnDocumentReadyScript(timerScript);
         }
+
+        // put together all css class names for this component, in order
+        List<String> finalCssClasses = new ArrayList<String>();
+
+        if(this.libraryCssClasses != null && view.isUseLibraryCssClasses()){
+            finalCssClasses.addAll(libraryCssClasses);
+        }
+
+        if(this.cssClasses != null){
+            finalCssClasses.addAll(cssClasses);
+        }
+
+        if(this.additionalCssClasses != null){
+            finalCssClasses.addAll(additionalCssClasses);
+        }
+
+        cssClasses = finalCssClasses;
     }
 
     /**
@@ -688,6 +706,27 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
+     * Additional css classes that come before css classes listed in the cssClasses property
+     *
+     * <p>These are used by the framework for styling with a library (for example, bootstrap), and should normally
+     * not be overridden.</p>
+     *
+     * @return the library cssClasses
+     */
+    public List<String> getLibraryCssClasses() {
+        return libraryCssClasses;
+    }
+
+    /**
+     * Set the libraryCssClasses
+     *
+     * @param libraryCssClasses
+     */
+    public void setLibraryCssClasses(List<String> libraryCssClasses) {
+        this.libraryCssClasses = libraryCssClasses;
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.component.Component#getCssClasses()
      */
     @BeanTagAttribute(name = "cssClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
@@ -715,13 +754,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     public void setAdditionalCssClasses(List<String> additionalCssClasses) {
         this.additionalCssClasses = additionalCssClasses;
-
-        if(cssClasses != null){
-            cssClasses.addAll(additionalCssClasses);
-        }
-        else{
-            cssClasses = additionalCssClasses;
-        }
     }
 
     /**

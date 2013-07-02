@@ -24,7 +24,7 @@
   <bean id="Uif-MaintenanceView-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.view.MaintenanceDocumentView" parent="Uif-DocumentView">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-maintenanceView</value>
       </list>
     </property>
@@ -47,7 +47,7 @@
   <bean id="Uif-MaintenancePage" abstract="true" parent="Uif-MaintenancePage-parentBean"/>
   <bean id="Uif-MaintenancePage-parentBean" parent="Uif-DocumentPage">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-maintenancePage</value>
       </list>
     </property>

@@ -53,8 +53,8 @@
     <property name="imageDirectory" value="@{#ConfigProperties['krad.externalizable.images.url']}ks/"/>
     <property name="cssFiles">
       <list merge="true">
-        <value>krad/css/ks/theme-krad.css</value>
-        <value>krad/css/ks/fss-theme-krad.css</value>
+<!--        <value>krad/css/ks/theme-krad.css</value>
+        <value>krad/css/ks/fss-theme-krad.css</value>-->
       </list>
     </property>
   </bean>
@@ -76,6 +76,7 @@
         <value>uif-view</value>
       </list>
     </property>
+    <property name="useLibraryCssClasses" value="true"/>
     <property name="viewTypeName" value="DEFAULT"/>
     <property name="viewName" value="default"/>
     <property name="viewHelperServiceClass"
@@ -133,7 +134,7 @@
   <bean id="Uif-FormView-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.view.FormView" parent="Uif-View">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-formView</value>
       </list>
     </property>
@@ -153,7 +154,7 @@
     <property name="message">
       <bean parent="Uif-Message">
         <property name="cssClasses">
-          <list merge="true">
+          <list>
             <value>uif-applicationMessage</value>
           </list>
         </property>
@@ -186,7 +187,7 @@
     <property name="template" value="/krad/WEB-INF/ftl/components/group/pageGroup.ftl"/>
     <property name="templateName" value="uif_pageGroup"/>
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-page</value>
       </list>
     </property>
@@ -227,7 +228,7 @@
   <bean id="Uif-Disclosure-Page" parent="Uif-Disclosure-Page-parentBean"/>
   <bean id="Uif-Disclosure-Page-parentBean" abstract="true" parent="Uif-Page">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-disclosure</value>
       </list>
     </property>

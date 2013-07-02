@@ -27,9 +27,7 @@
   <bean id="Uif-BaseTheme-parentBean" abstract="true" parent="Uif-ViewTheme">
     <property name="cssFiles">
       <list>
-        <value>krad/css/global/fss-reset.css</value>
-        <value>krad/css/global/fss-layout.css</value>
-        <value>krad/css/global/fss-text.css</value>
+        <value>themes/kboot/stylesheets/kboot.css</value>
         <value>krad/plugins/jqueryUI/jquery-ui-1.9.2.css</value>
         <value>krad/plugins/jgrowl/jquery.jgrowl.css</value>
         <value>krad/plugins/rice/datatables/jquery.dataTables.css</value>
@@ -39,7 +37,7 @@
         <value>krad/plugins/rice/menu/tabs.css</value>
         <value>krad/plugins/tooltip/jquery.bubblepopup.v2.3.1.css</value>
         <value>krad/plugins/prettify/prettify.css</value>
-        <value>krad/css/global/base.css</value>
+        <value>themes/kboot/stylesheets/uif-base.css</value>
       </list>
     </property>
     <property name="scriptFiles">

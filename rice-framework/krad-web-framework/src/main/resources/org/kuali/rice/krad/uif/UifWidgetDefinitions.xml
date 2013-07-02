@@ -165,7 +165,7 @@
         p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
         p:altText="Search Field" p:title="Search Field">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-quickFinderImage</value>
       </list>
     </property>
@@ -199,7 +199,7 @@
         p:source="@{#ConfigProperties['krad.externalizable.images.url']}book_open.png"
         p:altText="Direct Inquiry" p:title="Direct Inquiry">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-directInquiryImage</value>
       </list>
     </property>
@@ -370,7 +370,7 @@
       <bean parent="Uif-HelpImage"/>
     </property>
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-helpAction</value>
       </list>
     </property>
@@ -380,7 +380,7 @@
         p:source="@{#ThemeImages}icon_help.png"
         p:altText="Help" p:title="Help">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-helpImage</value>
       </list>
     </property>

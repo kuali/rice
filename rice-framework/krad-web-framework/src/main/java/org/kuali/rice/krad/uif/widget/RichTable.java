@@ -221,7 +221,7 @@ public class RichTable extends WidgetBase {
      * Add the css style to the cellCssClasses by column index, later used by the aoColumnDefs
      *
      * @param manager the tableLayoutManager that contains the original fields
-     */
+    */
     private void addCellStyling(TableLayoutManager manager) {
         if (manager.getAllRowFields() != null) {
             for (int index = 0; index < manager.getNumberOfColumns(); index++) {

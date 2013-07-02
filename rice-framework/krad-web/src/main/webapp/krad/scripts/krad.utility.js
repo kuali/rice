@@ -632,7 +632,7 @@ function performFocus(focusId) {
     }
 
     if (focusId == "FIRST" && gAutoFocus) {
-        var id = jQuery("div[data-role='InputField']:first .uif-control:input:first", "#kualiForm").attr("id");
+        var id = jQuery("div[data-role='InputField']:first [data-role='Control']:input:first", "#kualiForm").attr("id");
         focus(id);
         return;
     }

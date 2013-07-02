@@ -496,6 +496,10 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
      */
     void setStyle(String style);
 
+    public List<String> getLibraryCssClasses();
+
+    public void setLibraryCssClasses(List<String> libraryCssClasses);
+
     /**
      * CSS style class(s) to be applied to the component
      *

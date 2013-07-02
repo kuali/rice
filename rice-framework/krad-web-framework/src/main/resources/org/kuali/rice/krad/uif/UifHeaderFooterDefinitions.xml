@@ -124,7 +124,7 @@
       <bean parent="Uif-Message" p:cssClasses="uif-viewHeader-metadata"/>
     </property>
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-viewHeader</value>
       </list>
     </property>
@@ -133,7 +133,7 @@
   <bean id="Uif-PageHeader" parent="Uif-PageHeader-parentBean"/>
   <bean id="Uif-PageHeader-parentBean" abstract="true" parent="Uif-HeaderTwo">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-pageHeader</value>
         <value>clearfix</value>
       </list>
@@ -143,7 +143,7 @@
   <bean id="Uif-SectionHeader" parent="Uif-SectionHeader-parentBean"/>
   <bean id="Uif-SectionHeader-parentBean" abstract="true" parent="Uif-HeaderThree">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-sectionHeader</value>
       </list>
     </property>
@@ -152,7 +152,7 @@
   <bean id="Uif-SubSectionHeader" parent="Uif-SubSectionHeader-parentBean"/>
   <bean id="Uif-SubSectionHeader-parentBean" abstract="true" parent="Uif-HeaderFour">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-subSectionHeader</value>
       </list>
     </property>
@@ -161,7 +161,7 @@
   <bean id="Uif-SubCollectionHeader" parent="Uif-SubCollectionHeader-parentBean"/>
   <bean id="Uif-SubCollectionHeader-parentBean" abstract="true" parent="Uif-HeaderBase">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-subCollectionHeader</value>
       </list>
     </property>

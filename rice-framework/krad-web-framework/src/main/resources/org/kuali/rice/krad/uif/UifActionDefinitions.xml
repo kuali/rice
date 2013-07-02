@@ -49,7 +49,7 @@
         p:performClientSideValidation="true" p:id="@{#collectionGroup.id}_save@{#lineSuffix}"
         p:onClickScript="writeCurrentPageToSession(this);">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-saveLineAction</value>
       </list>
     </property>
@@ -65,7 +65,7 @@
 
   <bean id="Uif-ExpandDetailsAction" parent="Uif-ActionLink" p:actionLabel="Details">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-detailsAction</value>
       </list>
     </property>
@@ -78,7 +78,7 @@
 
   <bean id="Uif-ExpandDetailsImageAction" parent="Uif-ActionLink">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-detailsAction</value>
       </list>
     </property>
@@ -101,7 +101,7 @@
   <bean id="Uif-JumpToTopLink" parent="Uif-ActionLink" p:actionScript="jumpToTop();"
           p:actionLabel="Top">
       <property name="cssClasses">
-        <list merge="true">
+        <list>
           <value>uif-jumpToTopLink</value>
         </list>
       </property>
@@ -110,7 +110,7 @@
     <bean id="Uif-JumpToBottomLink" parent="Uif-ActionLink" p:actionScript="jumpToBottom();"
           p:actionLabel="Bottom">
       <property name="cssClasses">
-        <list merge="true">
+        <list>
           <value>uif-jumpToBottomLink</value>
         </list>
       </property>
@@ -119,7 +119,7 @@
     <bean id="Uif-ExpandDisclosuresButton" parent="Uif-SecondaryActionButton-Small" p:actionScript="expandDisclosures();"
           p:actionLabel="Expand All">
       <property name="cssClasses">
-        <list merge="true">
+        <list>
           <value>uif-expandDisclosuresButton</value>
         </list>
       </property>
@@ -129,7 +129,7 @@
           p:actionScript="collapseDisclosures();"
           p:actionLabel="Collapse All">
       <property name="cssClasses">
-        <list merge="true">
+        <list>
           <value>uif-collapseDisclosuresButton</value>
         </list>
       </property>
@@ -139,7 +139,7 @@
           p:methodToCall="refresh" p:actionLabel="show inactive" p:refreshId="@{#collectionGroup.id}"
           p:preSubmitCall="setComponentState('@{#collectionGroup.id}','inactive', true);return true;">
       <property name="cssClasses">
-        <list merge="true">
+        <list>
           <value>uif-showInactiveCollectionItemsButton</value>
         </list>
       </property>
@@ -149,7 +149,7 @@
           p:methodToCall="refresh" p:actionLabel="hide inactive" p:refreshId="@{#collectionGroup.id}"
           p:preSubmitCall="setComponentState('@{#collectionGroup.id}','inactive', false);return true;">
       <property name="cssClasses">
-        <list merge="true">
+        <list>
           <value>uif-hideInactiveCollectionItemsButton</value>
         </list>
       </property>

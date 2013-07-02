@@ -108,7 +108,7 @@
   <bean id="Uif-GroupValidationMessages-parentBean" parent="Uif-ValidationMessagesBase"
         class="org.kuali.rice.krad.uif.element.GroupValidationMessages">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-groupValidationMessages</value>
       </list>
     </property>
@@ -123,7 +123,7 @@
     <property name="displayHeaderMessageSummary" value="false"/>
     <property name="showPageSummaryHeader" value="true"/>
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-pageValidationMessages</value>
       </list>
     </property>
@@ -144,7 +144,7 @@
     <property name="template" value="/krad/WEB-INF/ftl/components/element/iframe.ftl"/>
     <property name="templateName" value="uif_iframe"/>
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-iFrame</value>
       </list>
     </property>
@@ -156,7 +156,7 @@
     <property name="template" value="/krad/WEB-INF/ftl/components/element/image.ftl"/>
     <property name="templateName" value="uif_image"/>
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-image</value>
       </list>
     </property>
@@ -192,7 +192,7 @@
     <property name="template" value="/krad/WEB-INF/ftl/components/element/link.ftl"/>
     <property name="templateName" value="uif_link"/>
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-link</value>
       </list>
     </property>
@@ -210,7 +210,7 @@
     <property name="template" value="/krad/WEB-INF/ftl/components/element/dataTable.ftl"/>
     <property name="templateName" value="uif_dataTable"/>
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-tableCollectionLayout</value>
         <value>uif-dataTable</value>
       </list>
@@ -237,8 +237,13 @@
     <property name="template" value="/krad/WEB-INF/ftl/components/element/action.ftl"/>
     <property name="templateName" value="uif_action"/>
     <property name="focusOnIdAfterSubmit" value="SELF"/>
-    <property name="cssClasses">
+    <property name="libraryCssClasses">
       <list merge="true">
+        <value>btn</value>
+      </list>
+    </property>
+    <property name="cssClasses">
+      <list>
         <value>uif-action</value>
       </list>
     </property>
@@ -248,7 +253,7 @@
   <bean id="Uif-ActionImage" parent="Uif-ActionImage-parentBean"/>
   <bean id="Uif-ActionImage-parentBean" abstract="true" parent="Uif-Action">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-actionImage</value>
       </list>
     </property>
@@ -257,8 +262,13 @@
 
   <bean id="Uif-PrimaryActionButton" parent="Uif-PrimaryActionButton-parentBean"/>
   <bean id="Uif-PrimaryActionButton-parentBean" abstract="true" parent="Uif-Action">
-    <property name="cssClasses">
+    <property name="libraryCssClasses">
       <list merge="true">
+        <value>btn-primary</value>
+      </list>
+    </property>
+    <property name="cssClasses">
+      <list>
         <value>uif-primaryActionButton</value>
       </list>
     </property>
@@ -267,7 +277,7 @@
   <bean id="Uif-SecondaryActionButton" parent="Uif-SecondaryActionButton-parentBean"/>
   <bean id="Uif-SecondaryActionButton-parentBean" abstract="true" parent="Uif-Action">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-secondaryActionButton</value>
       </list>
     </property>
@@ -275,8 +285,13 @@
 
   <bean id="Uif-PrimaryActionButton-Small" parent="Uif-PrimaryActionButton-Small-parentBean"/>
   <bean id="Uif-PrimaryActionButton-Small-parentBean" abstract="true" parent="Uif-PrimaryActionButton">
-    <property name="cssClasses">
+    <property name="libraryCssClasses">
       <list merge="true">
+        <value>btn-small</value>
+      </list>
+    </property>
+    <property name="cssClasses">
+      <list>
         <value>uif-smallActionButton</value>
       </list>
     </property>
@@ -284,9 +299,70 @@
 
   <bean id="Uif-SecondaryActionButton-Small" parent="Uif-SecondaryActionButton-Small-parentBean"/>
   <bean id="Uif-SecondaryActionButton-Small-parentBean" abstract="true" parent="Uif-SecondaryActionButton">
-    <property name="cssClasses">
+    <property name="libraryCssClasses">
       <list merge="true">
+        <value>btn-small</value>
+      </list>
+    </property>
+    <property name="cssClasses">
+      <list>
         <value>uif-smallActionButton</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-PrimaryActionButton-Mini" parent="Uif-PrimaryActionButton-Mini-parentBean"/>
+  <bean id="Uif-PrimaryActionButton-Mini-parentBean" abstract="true" parent="Uif-PrimaryActionButton">
+    <property name="libraryCssClasses">
+      <list merge="true">
+        <value>btn-mini</value>
+      </list>
+    </property>
+    <property name="cssClasses">
+      <list>
+        <value>uif-miniActionButton</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-SecondaryActionButton-Mini" parent="Uif-SecondaryActionButton-Mini-parentBean"/>
+  <bean id="Uif-SecondaryActionButton-Mini-parentBean" abstract="true" parent="Uif-SecondaryActionButton">
+    <property name="libraryCssClasses">
+      <list merge="true">
+        <value>btn-mini</value>
+      </list>
+    </property>
+    <property name="cssClasses">
+      <list>
+        <value>uif-miniActionButton</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-PrimaryActionButton-Large" parent="Uif-PrimaryActionButton-Large-parentBean"/>
+  <bean id="Uif-PrimaryActionButton-Large-parentBean" abstract="true" parent="Uif-PrimaryActionButton">
+    <property name="libraryCssClasses">
+      <list merge="true">
+        <value>btn-large</value>
+      </list>
+    </property>
+    <property name="cssClasses">
+      <list>
+        <value>uif-largeActionButton</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-SecondaryActionButton-Large" parent="Uif-SecondaryActionButton-Large-parentBean"/>
+  <bean id="Uif-SecondaryActionButton-Large-parentBean" abstract="true" parent="Uif-SecondaryActionButton">
+    <property name="libraryCssClasses">
+      <list merge="true">
+        <value>btn-large</value>
+      </list>
+    </property>
+    <property name="cssClasses">
+      <list>
+        <value>uif-largeActionButton</value>
       </list>
     </property>
   </bean>
@@ -295,8 +371,11 @@
   <bean id="Uif-ActionLink-parentBean" abstract="true" parent="Uif-Action" scope="prototype">
     <property name="template" value="/krad/WEB-INF/ftl/components/element/actionLink.ftl"/>
     <property name="templateName" value="uif_actionLink"/>
+    <property name="libraryCssClasses">
+      <list/>
+    </property>
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-actionLink</value>
       </list>
     </property>
@@ -307,8 +386,11 @@
   perform page navigation-->
   <bean id="Uif-NavigationActionLink" parent="Uif-NavigationActionLink-parentBean"/>
   <bean id="Uif-NavigationActionLink-parentBean" abstract="true" parent="Uif-ActionLink" scope="prototype">
+    <property name="libraryCssClasses">
+      <list/>
+    </property>
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-navigationActionLink</value>
       </list>
     </property>
@@ -320,7 +402,7 @@
   <bean id="Uif-NavigationActionButton" parent="Uif-NavigationActionButton-parentBean"/>
   <bean id="Uif-NavigationActionButton-parentBean" abstract="true" parent="Uif-PrimaryActionButton" scope="prototype">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-navigationActionButton</value>
       </list>
     </property>
@@ -333,7 +415,7 @@
   <bean id="Uif-SecondaryNavigationActionButton-parentBean" abstract="true" parent="Uif-SecondaryActionButton"
         scope="prototype">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-navigationActionButton</value>
       </list>
     </property>
@@ -348,7 +430,7 @@
     <property name="template" value="/krad/WEB-INF/ftl/components/element/message.ftl"/>
     <property name="templateName" value="uif_message"/>
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-message</value>
       </list>
     </property>
@@ -357,7 +439,7 @@
   <bean id="Uif-InstructionalMessage" parent="Uif-InstructionalMessage-parentBean"/>
   <bean id="Uif-InstructionalMessage-parentBean" abstract="true" parent="Uif-Message" scope="prototype">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-instructionalMessage</value>
       </list>
     </property>
@@ -366,7 +448,7 @@
   <bean id="Uif-ConstraintMessage" parent="Uif-ConstraintMessage-parentBean"/>
   <bean id="Uif-ConstraintMessage-parentBean" abstract="true" parent="Uif-Message" scope="prototype">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-constraintMessage</value>
       </list>
     </property>
@@ -376,7 +458,7 @@
   <bean id="Uif-RequiredMessage-parentBean" abstract="true" parent="Uif-Message" scope="prototype"
         p:messageText="*">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-requiredMessage</value>
       </list>
     </property>
@@ -384,7 +466,7 @@
 
   <bean id="Uif-RequiredInstructionsMessage" parent="Uif-Message" p:messageText="* indicates required field">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-requiredInstructionsMessage</value>
       </list>
     </property>
@@ -393,7 +475,7 @@
   <bean id="Uif-StateBased-RequiredInstructionsMessage" parent="Uif-Message"
         p:messageText="* indicates required field.&lt;br&gt;** indicates required for next state.">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-requiredInstructionsMessage</value>
       </list>
     </property>

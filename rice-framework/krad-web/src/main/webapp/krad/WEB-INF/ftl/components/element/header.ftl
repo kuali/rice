@@ -30,7 +30,7 @@
         <#local headerCloseTag="</${element.headerLevel}>"/>
     </#if>
 
-    <div class="uif-header-contentWrapper">
+    <div class="clearfix uif-header-contentWrapper">
 
         <#-- upper group -->
         <@krad.template component=element.upperGroup/>

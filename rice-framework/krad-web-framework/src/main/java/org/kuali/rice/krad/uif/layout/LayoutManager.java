@@ -218,6 +218,10 @@ public interface LayoutManager extends UifDictionaryBean, Serializable {
 	 */
 	public void setStyle(String style);
 
+    public List<String> getLibraryCssClasses();
+
+    public void setLibraryCssClasses(List<String> libraryClasses);
+
 	/**
 	 * CSS style class(s) to be applied to the area (div) the layout manager
 	 * generates for the items
@@ -252,6 +256,10 @@ public interface LayoutManager extends UifDictionaryBean, Serializable {
 	 * @param styleClasses
 	 */
 	public void setCssClasses(List<String> styleClasses);
+
+    public List<String> getAdditionalCssClasses();
+
+    public void setAdditionalCssClasses(List<String> libraryClasses);
 
 	/**
 	 * This method adds a single style class to the list of css style classes on this component

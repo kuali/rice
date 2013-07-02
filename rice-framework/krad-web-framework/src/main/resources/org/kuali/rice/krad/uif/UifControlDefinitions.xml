@@ -26,7 +26,7 @@
 
   <bean id="Uif-ControlBase" abstract="true" parent="Uif-ControlBase-parentBean"/>
   <bean id="Uif-ControlBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.ControlBase"
-          parent="Uif-ComponentBase">
+        parent="Uif-ComponentBase">
     <property name="cssClasses">
       <list>
         <value>uif-control</value>
@@ -43,7 +43,7 @@
     <property name="template" value="/krad/WEB-INF/ftl/components/control/text.ftl"/>
     <property name="templateName" value="uif_text"/>
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-textControl</value>
       </list>
     </property>
@@ -53,7 +53,7 @@
   <bean id="Uif-SmallTextControl" parent="Uif-SmallTextControl-parentBean"/>
   <bean id="Uif-SmallTextControl-parentBean" parent="Uif-TextControl">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-smallTextControl</value>
       </list>
     </property>
@@ -63,7 +63,7 @@
   <bean id="Uif-MediumTextControl" parent="Uif-MediumTextControl-parentBean"/>
   <bean id="Uif-MediumTextControl-parentBean" parent="Uif-TextControl">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-mediumTextControl</value>
       </list>
     </property>
@@ -73,7 +73,7 @@
   <bean id="Uif-LargeTextControl" parent="Uif-LargeTextControl-parentBean"/>
   <bean id="Uif-LargeTextControl-parentBean" parent="Uif-TextControl">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-largeTextControl</value>
       </list>
     </property>
@@ -83,7 +83,7 @@
   <bean id="Uif-CurrencyTextControl" parent="Uif-CurrencyTextControl-parentBean"/>
   <bean id="Uif-CurrencyTextControl-parentBean" abstract="true" parent="Uif-TextControl">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-currencyControl</value>
       </list>
     </property>
@@ -95,7 +95,7 @@
     <property name="template" value="/krad/WEB-INF/ftl/components/control/checkbox.ftl"/>
     <property name="templateName" value="uif_checkbox"/>
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-checkboxControl</value>
       </list>
     </property>
@@ -107,7 +107,7 @@
     <property name="template" value="/krad/WEB-INF/ftl/components/control/hidden.ftl"/>
     <property name="templateName" value="uif_hidden"/>
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-hiddenControl</value>
       </list>
     </property>
@@ -119,7 +119,7 @@
     <property name="template" value="/krad/WEB-INF/ftl/components/control/textArea.ftl"/>
     <property name="templateName" value="uif_textarea"/>
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-textAreaControl</value>
       </list>
     </property>
@@ -130,7 +130,7 @@
   <bean id="Uif-SmallTextAreaControl" parent="Uif-SmallTextAreaControl-parentBean"/>
   <bean id="Uif-SmallTextAreaControl-parentBean" parent="Uif-TextAreaControl">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
         <value>uif-smallTextAreaControl</value>
       </list>
     </property>
@@ -141,7 +141,8 @@
   <bean id="Uif-MediumTextAreaControl" parent="Uif-MediumTextAreaControl-parentBean"/>
   <bean id="Uif-MediumTextAreaControl-parentBean" parent="Uif-TextAreaControl">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
+
         <value>uif-mediumTextAreaControl</value>
       </list>
     </property>
@@ -152,7 +153,8 @@
   <bean id="Uif-LargeTextAreaControl" parent="Uif-LargeTextAreaControl-parentBean"/>
   <bean id="Uif-LargeTextAreaControl-parentBean" parent="Uif-TextAreaControl">
     <property name="cssClasses">
-      <list merge="true">
+      <list>
+
         <value>uif-largeTextControl</value>
       </list>
     </property>
@@ -166,7 +168,8 @@
     <property name="template" value="/krad/WEB-INF/ftl/components/control/select.ftl"/>
     <property name="templateName" value="uif_select"/>
     <property name="cssClasses">
-      <list merge="true">
+      <list>
+
         <value>uif-dropdownControl</value>
       </list>
     </property>
@@ -179,25 +182,27 @@
     <property name="templateName" value="uif_select"/>
     <property name="size" value="4"/>
     <property name="cssClasses">
-      <list merge="true">
+      <list>
+
         <value>uif-multiSelectControl</value>
       </list>
     </property>
   </bean>
 
   <bean id="Uif-VerticalRadioControl" parent="Uif-VerticalRadioControl-parentBean"/>
-  <bean id="Uif-VerticalRadioControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.RadioGroupControl"
+  <bean id="Uif-VerticalRadioControl-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.control.RadioGroupControl"
         scope="prototype" parent="Uif-ControlBase">
     <property name="template" value="/krad/WEB-INF/ftl/components/control/radioGroup.ftl"/>
     <property name="templateName" value="uif_radiobuttons"/>
     <property name="fieldsetClasses">
-      <list merge="true">
+      <list>
         <value>uif-verticalRadioFieldset</value>
       </list>
     </property>
     <property name="cssClasses">
-      <list merge="true">
-        <value>uif-radioControl</value>
+      <list>
+
         <value>uif-verticalRadioControl</value>
       </list>
     </property>
@@ -211,13 +216,13 @@
     <property name="templateName" value="uif_radiobuttons"/>
     <property name="delimiter" value="&amp;nbsp;"/>
     <property name="fieldsetClasses">
-      <list merge="true">
+      <list>
         <value>uif-horizontalRadioFieldset</value>
       </list>
     </property>
     <property name="cssClasses">
-      <list merge="true">
-        <value>uif-radioControl</value>
+      <list>
+
         <value>uif-horizontalRadioControl</value>
       </list>
     </property>
@@ -230,13 +235,13 @@
     <property name="template" value="/krad/WEB-INF/ftl/components/control/checkboxGroup.ftl"/>
     <property name="templateName" value="uif_checkboxes"/>
     <property name="fieldsetClasses">
-      <list merge="true">
+      <list>
         <value>uif-verticalCheckboxesFieldset</value>
       </list>
     </property>
     <property name="cssClasses">
-      <list merge="true">
-        <value>uif-checkboxesControl</value>
+      <list>
+
         <value>uif-verticalCheckboxesControl</value>
       </list>
     </property>
@@ -250,13 +255,13 @@
     <property name="templateName" value="uif_checkboxes"/>
     <property name="delimiter" value="&amp;nbsp;"/>
     <property name="fieldsetClasses">
-      <list merge="true">
+      <list>
         <value>uif-horizontalCheckboxesFieldset</value>
       </list>
     </property>
     <property name="cssClasses">
-      <list merge="true">
-        <value>uif-checkboxesControl</value>
+      <list>
+
         <value>uif-horizontalCheckboxesControl</value>
       </list>
     </property>
@@ -268,7 +273,8 @@
     <property name="template" value="/krad/WEB-INF/ftl/components/control/file.ftl"/>
     <property name="templateName" value="uif_file"/>
     <property name="cssClasses">
-      <list merge="true">
+      <list>
+
         <value>uif-fileControl</value>
       </list>
     </property>
@@ -286,7 +292,8 @@
       </bean>
     </property>
     <property name="cssClasses">
-      <list merge="true">
+      <list>
+
         <value>uif-dateControl</value>
       </list>
     </property>
@@ -302,7 +309,8 @@
       <bean parent="Uif-Spinner"/>
     </property>
     <property name="cssClasses">
-      <list merge="true">
+      <list>
+
         <value>uif-spinnerControl</value>
       </list>
     </property>
@@ -317,7 +325,8 @@
     <property name="itemCssClass" value="uif-optionList-item"/>
     <property name="selectedItemCssClass" value="uif-optionList-selectedItem"/>
     <property name="cssClasses">
-      <list merge="true">
+      <list>
+
         <value>uif-optionList</value>
       </list>
     </property>
@@ -329,7 +338,8 @@
     <property name="template" value="/krad/WEB-INF/ftl/components/control/password.ftl"/>
     <property name="templateName" value="uif_password"/>
     <property name="cssClasses">
-      <list merge="true">
+      <list>
+
         <value>uif-passwordControl</value>
       </list>
     </property>

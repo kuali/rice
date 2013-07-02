@@ -1067,7 +1067,7 @@ jQuery.fn.dataTableExt.afnSortData['dom-select'] = function (oSettings, iColumn,
         if (selected.length != 0) {
             aData.push(selected.text());
         } else {
-            var input1 = jQuery(td).find('.uif-inputField');
+            var input1 = jQuery(td).find("[data-role='InputField']");
             if (input1.length != 0) {
                 aData.push(jQuery.trim(input1.text()));
             } else {
@@ -1104,7 +1104,7 @@ jQuery.fn.dataTableExt.afnSortData['dom-checkbox'] = function (oSettings, iColum
             }
             aData.push(str);
         } else {
-            var input1 = jQuery(td).find('.uif-inputField');
+            var input1 = jQuery(td).find("[data-role='InputField']");
             if (input1.length != 0) {
                 aData.push(jQuery.trim(input1.text()));
             } else {
@@ -1142,7 +1142,7 @@ jQuery.fn.dataTableExt.afnSortData['dom-radio'] = function (oSettings, iColumn, 
             }
             aData.push(value);
         } else {
-            var input1 = jQuery(td).find('.uif-inputField');
+            var input1 = jQuery(td).find("[data-role='InputField']");
             if (input1.length != 0) {
                 aData.push(jQuery.trim(input1.text()));
             } else {

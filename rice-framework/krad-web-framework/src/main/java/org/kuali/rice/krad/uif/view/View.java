@@ -149,6 +149,7 @@ public class View extends ContainerBase {
 
     private List<String> additionalScriptFiles;
     private List<String> additionalCssFiles;
+    private boolean useLibraryCssClasses;
 
     private ViewType viewTypeName;
 
@@ -186,6 +187,8 @@ public class View extends ContainerBase {
     private String preLoadScript;
 
     private int preloadPoolSize;
+
+
 
     private List<String> viewTemplates;
 
@@ -1219,6 +1222,24 @@ public class View extends ContainerBase {
      */
     public void setAdditionalCssFiles(List<String> additionalCssFiles) {
         this.additionalCssFiles = additionalCssFiles;
+    }
+
+    /**
+     * True if the libraryCssClasses set on components will be output to their class attribute, false otherwise.
+     *
+     * @return true if using libraryCssClasses on components
+     */
+    public boolean isUseLibraryCssClasses() {
+        return useLibraryCssClasses;
+    }
+
+    /**
+     * Set useLibraryCssClasses
+     *
+     * @param useLibraryCssClasses
+     */
+    public void setUseLibraryCssClasses(boolean useLibraryCssClasses) {
+        this.useLibraryCssClasses = useLibraryCssClasses;
     }
 
     /**

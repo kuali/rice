@@ -58,8 +58,7 @@
               <cssTargetDir>${minify.fragment}/css</cssTargetDir>
               <cssFinalFile>krad_${project.version}.css</cssFinalFile>
               <cssSourceFiles>
-                <cssSourceFile>css/global/fss-reset-global.css</cssSourceFile>
-                <cssSourceFile>css/global/fss-text.css</cssSourceFile>
+                <value>themes/kboot/stylesheets/kboot.css</value>
                 <cssSourceFile>plugins/jqueryUI/jquery-ui-1.9.2.css</cssSourceFile>
                 <cssSourceFile>plugins/jgrowl/jquery.jgrowl.css</cssSourceFile>
                 <cssSourceFile>plugins/rice/datatables/jquery.dataTables.css</cssSourceFile>
@@ -69,8 +68,7 @@
                 <cssSourceFile>plugins/rice/menu/tabs.css</cssSourceFile>
                 <cssSourceFile>plugins/tooltip/jquery.bubblepopup.v2.3.1.css</cssSourceFile>
                 <cssSourceFile>plugins/prettify/prettify.css</cssSourceFile>
-                <cssSourceFile>css/global/base.css</cssSourceFile>
-                <cssSourceFile>css/global/fss-layout.css</cssSourceFile>
+                <value>themes/kboot/stylesheets/uif-base.css</value>
               </cssSourceFiles>
               <jsSourceDir>krad</jsSourceDir>
               <jsTargetDir>${minify.fragment}/scripts</jsTargetDir>

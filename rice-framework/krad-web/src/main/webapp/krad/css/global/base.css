@@ -1262,29 +1262,29 @@ li.uif-navigationItem-current a, li.uif-navigationItem-current a:hover {
     border: 1px solid gray !important;
 }
 
-.uif-tableCollectionLayout .uif-hasInfo > .uif-control,
-.uif-tableCollectionLayout .uif-hasInfo > fieldset[data-type="InputSet"] > .uif-control,
+.uif-tableCollectionLayout .uif-hasInfo > [data-role='Control'],
+.uif-tableCollectionLayout .uif-hasInfo > fieldset[data-type="InputSet"] > [data-role='Control'],
 .uif-tableCollectionLayout .uif-hasInfo > fieldset[data-type="RadioSet"],
 .uif-tableCollectionLayout .uif-hasInfo > fieldset[data-type="CheckboxSet"] {
     border: 2px solid #3366CC !important;
 }
 
-.uif-tableCollectionLayout .uif-hasWarning > .uif-control,
-.uif-tableCollectionLayout .uif-hasWarning > fieldset[data-type="InputSet"] > .uif-control,
+.uif-tableCollectionLayout .uif-hasWarning > [data-role='Control'],
+.uif-tableCollectionLayout .uif-hasWarning > fieldset[data-type="InputSet"] > [data-role='Control'],
 .uif-tableCollectionLayout .uif-hasWarning > fieldset[data-type="RadioSet"],
 .uif-tableCollectionLayout .uif-hasWarning > fieldset[data-type="CheckboxSet"] {
     border: 2px solid #FF9900 !important;
 }
 
-.uif-hasError > .uif-control,
-.uif-hasError > fieldset[data-type="InputSet"] > .uif-control,
+.uif-hasError > [data-role='Control'],
+.uif-hasError > fieldset[data-type="InputSet"] > [data-role='Control'],
 .uif-hasError > fieldset[data-type="RadioSet"],
 .uif-hasError > fieldset[data-type="CheckboxSet"] {
     border: 2px solid #ff2300 !important;
 }
 
-.uif-hasError-modified > .uif-control,
-.uif-hasError-modified > fieldset[data-type="InputSet"] > .uif-control,
+.uif-hasError-modified > [data-role='Control'],
+.uif-hasError-modified > fieldset[data-type="InputSet"] > [data-role='Control'],
 .uif-hasError-modified > fieldset[data-type="RadioSet"],
 .uif-hasError-modified > fieldset[data-type="CheckboxSet"] {
     border: 2px solid gray !important;
@@ -1350,17 +1350,17 @@ li.uif-infoMessageItem:before {
     font-size: 20px;
 }
 
-.uif-errorHighlight .uif-control, .uif-errorHighlight > fieldset[data-type="RadioSet"],
+.uif-errorHighlight [data-role='Control'], .uif-errorHighlight > fieldset[data-type="RadioSet"],
 .uif-errorHighlight > fieldset[data-type="CheckboxSet"], .uif-errorHighlight .uif-checkboxControl + label {
     background-color: #FFE1E9;
 }
 
-.uif-warningHighlight .uif-control, .uif-warningHighlight > fieldset[data-type="RadioSet"],
+.uif-warningHighlight [data-role='Control'], .uif-warningHighlight > fieldset[data-type="RadioSet"],
 .uif-warningHighlight > fieldset[data-type="CheckboxSet"], .uif-warningHighlight .uif-checkboxControl + label {
     background-color: #FFFEDA;
 }
 
-.uif-infoHighlight .uif-control, .uif-infoHighlight > fieldset[data-type="RadioSet"],
+.uif-infoHighlight [data-role='Control'], .uif-infoHighlight > fieldset[data-type="RadioSet"],
 .uif-infoHighlight > fieldset[data-type="CheckboxSet"], .uif-infoHighlight .uif-checkboxControl + label {
     background-color: #E7F3FE;
 }

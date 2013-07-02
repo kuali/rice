@@ -1371,8 +1371,8 @@ function createTooltip(id, text, options, onMouseHoverFlag, onFocusFlag) {
  */
 function isControlWithMessages(id) {
     // check if component is or contains a control
-    if (jQuery("#" + id).is(".uif-control")
-            || (jQuery("#" + id).is(".uif-inputField") && jQuery("#" + id + "_control").is(".uif-control"))) {
+    if (jQuery("#" + id).is("[data-role='Control']")
+            || (jQuery("#" + id).is("[data-role='InputField']") && jQuery("#" + id + "_control").is("[data-role='Control']"))) {
         return hasMessage(id)
     }
     return false;

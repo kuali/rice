@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.ContentElementBase;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
@@ -115,6 +116,9 @@ public abstract class ControlBase extends ContentElementBase implements Control 
                     propertyName));
         }
         enabledWhenChangedPropertyNames = adjustedEnablePropertyNames;
+
+        // add control role
+        this.addDataAttribute(UifConstants.DataAttributes.ROLE, UifConstants.RoleTypes.CONTROL);
     }
 
     /**

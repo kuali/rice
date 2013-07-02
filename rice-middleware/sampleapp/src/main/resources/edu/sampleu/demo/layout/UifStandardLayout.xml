@@ -64,6 +64,15 @@
             </list>
           </property>
         </bean>
+        <bean id="Demo-StandardLayout-CssGridPage" parent="Uif-Page" p:headerText="Css Grid Page">
+          <property name="items">
+            <list>
+              <ref bean="Demo-StandardLayout-FixedCssGridSection1"/>
+              <ref bean="Demo-StandardLayout-FixedCssGridSection2"/>
+              <ref bean="Demo-StandardLayout-FluidCssGridSection1"/>
+            </list>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>
@@ -82,6 +91,8 @@
               p:actionLabel="Standard Sections"/>
         <bean parent="Uif-NavigationActionLink" p:navigateToPageId="Demo-StandardLayout-CollectionSectionsPage"
               p:actionLabel="Collection Sections"/>
+        <bean parent="Uif-NavigationActionLink" p:navigateToPageId="Demo-StandardLayout-CssGridPage"
+              p:actionLabel="Css Grid"/>
       </list>
     </property>
   </bean>
@@ -292,7 +303,7 @@
     <property name="collectionObjectClass"
               value="edu.sampleu.demo.kitchensink.UITestObject"/>
     <property name="layoutManager.sequencePropertyName" value="field1"/>
-    <property name="layoutManager.generateAutoSequence" value ="false"/>
+    <property name="layoutManager.generateAutoSequence" value="false"/>
     <property name="layoutManager.sequenceFieldPrototype">
       <bean parent="Uif-InputField" p:propertyName="field1" p:readOnly="true"/>
     </property>
@@ -383,6 +394,122 @@
         <bean parent="Uif-InputField" p:propertyName="field3" p:label="SubField 3"
               p:required="true"/>
 
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-StandardLayout-FixedCssGridSection1" parent="Uif-FixedCssGridSection">
+    <property name="headerText" value="Fixed Css Grid"/>
+    <property name="layoutManager.defaultItemColSpan" value="3"/>
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field1" p:label="Field 1">
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field2" p:label="Field 2">
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field3" p:label="Field 3">
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field4" p:label="Field 4">
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field5" p:label="Field 5">
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field6" p:label="Field 6">
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-StandardLayout-FixedCssGridSection2" parent="Uif-FixedCssGridSection">
+    <property name="headerText" value="Fixed Css Grid"/>
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField-LabelTop" p:colSpan="6" p:propertyName="field13" p:label="Field 1">
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+        <bean parent="Uif-InputField-LabelTop" p:colSpan="6" p:propertyName="field14" p:label="Field 2">
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field15" p:label="Field 3">
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+        <bean parent="Uif-InputField-LabelTop" p:colSpan="4" p:propertyName="field16" p:label="Field 4">
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+        <bean parent="Uif-InputField-LabelTop" p:colSpan="4" p:propertyName="field17" p:label="Field 5">
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+        <bean parent="Uif-InputField-LabelTop" p:colSpan="4" p:propertyName="field18" p:label="Field 6">
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-StandardLayout-FluidCssGridSection1" parent="Uif-FluidCssGridSection">
+    <property name="headerText" value="Fluid Css Grid"/>
+    <property name="layoutManager.defaultItemColSpan" value="2"/>
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field7" p:label="Field 1">
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field8" p:label="Field 2">
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field9" p:label="Field 3">
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field10" p:label="Field 4">
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field11" p:label="Field 5">
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field12" p:label="Field 6">
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>

@@ -302,6 +302,11 @@ public class UifConstants {
         public static final String SEPARATOR = "@@";
     }
 
+    public static final class RoleTypes {
+        public static final String CONTROL = "Control";
+        public static final String INPUT_FIELD = "InputField";
+    }
+
     public static final class DataAttributes {
         public static final String TYPE = "type";
         public static final String ROLE = "role";

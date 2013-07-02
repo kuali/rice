@@ -120,7 +120,7 @@ public abstract class PersonPendingApprovalsAbstractSmokeTestBase extends AdminT
         selectFrameIframePortlet();
         waitAndTypeByName("documentId",docId);
         waitAndClickByXpath(SEARCH_XPATH);
-        waitAndClickByLinkText("3010");
+        waitAndClickByLinkText(docId);
         switchToWindow("Kuali :: Namespace");
         waitAndClickByName("selectedActionRequests");
         waitAndTypeByName("superUserAnnotation","test suaction");

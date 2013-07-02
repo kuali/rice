@@ -1139,4 +1139,82 @@ public class CollectionGroup extends Group implements DataBinding {
 
         super.completeValidation(tracer.getCopy());
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        CollectionGroup collectionGroupCopy = (CollectionGroup) component;
+        collectionGroupCopy.setDisplayCollectionSize(this.displayCollectionSize);
+        collectionGroupCopy.setActiveCollectionFilter(this.activeCollectionFilter);
+
+        if (this.addBlankLineAction != null) {
+            collectionGroupCopy.setAddBlankLineAction((Action)this.addBlankLineAction.copy());
+        }
+
+        collectionGroupCopy.setAddItemCssClass(this.addItemCssClass);
+
+        List<Action> addLineActions = new ArrayList<Action>();
+        for (Action addLineAction : this.addLineActions) {
+            addLineActions.add((Action)addLineAction.copy());
+        }
+
+        collectionGroupCopy.setAddLineActions(addLineActions);
+
+        if (this.addLineBindingInfo != null) {
+            collectionGroupCopy.setAddLineBindingInfo((BindingInfo)this.addLineBindingInfo.copy());
+        }
+
+        if (this.addLineLabel != null) {
+            collectionGroupCopy.setAddLineLabel((Message)this.addLineLabel.copy());
+        }
+
+        collectionGroupCopy.setAddLinePlacement(this.addLinePlacement);
+        collectionGroupCopy.setAddLinePropertyName(this.addLinePropertyName);
+        collectionGroupCopy.setAddViaLightBox(this.addViaLightBox);
+
+        if (this.addViaLightBoxAction != null) {
+            collectionGroupCopy.setAddViaLightBoxAction((Action)this.addViaLightBoxAction.copy());
+        }
+
+        if (this.bindingInfo != null) {
+            collectionGroupCopy.setBindingInfo((BindingInfo)this.bindingInfo.copy());
+        }
+
+        if (this.collectionLookup != null) {
+            collectionGroupCopy.setCollectionLookup((QuickFinder)this.collectionLookup.copy());
+        }
+
+        collectionGroupCopy.setCollectionObjectClass(this.collectionObjectClass);
+        collectionGroupCopy.setFilters(new ArrayList<CollectionFilter>(this.filters));
+        collectionGroupCopy.setHighlightAddItem(this.highlightAddItem);
+        collectionGroupCopy.setHighlightNewItems(this.highlightNewItems);
+        collectionGroupCopy.setIncludeLineSelectionField(this.includeLineSelectionField);
+
+        List<Action> lineActions = new ArrayList<Action>();
+        for (Action lineAction : this.lineActions) {
+            lineActions.add((Action)lineAction.copy());
+        }
+
+        collectionGroupCopy.setLineActions(lineActions);
+        collectionGroupCopy.setLineSelectPropertyName(this.lineSelectPropertyName);
+        collectionGroupCopy.setNewItemsCssClass(this.newItemsCssClass);
+        collectionGroupCopy.setPropertyName(this.propertyName);
+        collectionGroupCopy.setRenderAddBlankLineButton(this.renderAddBlankLineButton);
+        collectionGroupCopy.setRenderAddLine(this.renderAddLine);
+        collectionGroupCopy.setRenderInactiveToggleButton(this.renderInactiveToggleButton);
+        collectionGroupCopy.setRenderLineActions(this.renderLineActions);
+        collectionGroupCopy.setRenderSaveLineActions(this.renderSaveLineActions);
+        collectionGroupCopy.setShowInactiveLines(this.showInactiveLines);
+
+        List<CollectionGroup> subCollections = new ArrayList<CollectionGroup>();
+        for (CollectionGroup subCollection : this.subCollections) {
+            subCollections.add((CollectionGroup)subCollection.copy());
+        }
+
+        collectionGroupCopy.setSubCollections(subCollections);
+        collectionGroupCopy.setSubCollectionSuffix(this.subCollectionSuffix);
+    }
 }

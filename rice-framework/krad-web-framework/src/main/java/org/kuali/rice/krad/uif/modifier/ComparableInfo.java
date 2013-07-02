@@ -265,4 +265,34 @@ public class ComparableInfo extends UifDictionaryBeanBase implements Serializabl
 
         return comparableInfoCopy;
     }
+
+    /**
+     * Returns a copy of the comparable info.
+     *
+     * @return ComparableInfo copy of the component
+     */
+    public <T> T copy() {
+        T copiedClass = null;
+        try {
+            copiedClass = (T)this.getClass().newInstance();
+        }
+        catch(Exception exception) {
+            throw new RuntimeException();
+        }
+
+        copyProperties(copiedClass);
+
+        return copiedClass;
+    }
+
+    protected <T> void copyProperties(T comparableInfo) {
+        ComparableInfo comparableInfoCopy = (ComparableInfo) comparableInfo;
+        comparableInfoCopy.setBindingObjectPath(this.bindingObjectPath);
+        comparableInfoCopy.setCompareToForValueChange(this.compareToForValueChange);
+        comparableInfoCopy.setHeaderText(this.headerText);
+        comparableInfoCopy.setHighlightValueChange(this.highlightValueChange);
+        comparableInfoCopy.setIdSuffix(this.idSuffix);
+        comparableInfoCopy.setOrder(this.order);
+        comparableInfoCopy.setReadOnly(this.readOnly);
+    }
 }

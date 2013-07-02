@@ -312,9 +312,9 @@ public class ColumnCalculationInfo extends UifDictionaryBeanBase implements Seri
     }
 
     /**
-     * Returns a copy of the component security.
+     * Returns a copy of the column calculation info.
      *
-     * @return ComponentSecurity copy of the component
+     * @return ColumnCalculationInfo copy of the component
      */
     public <T> T copy() {
         T copiedClass = null;

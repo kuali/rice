@@ -80,4 +80,14 @@ public class FieldSecurity extends ComponentSecurity {
         this.viewInLineAuthz = viewInLineAuthz;
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentSecurity#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T componentSecurity) {
+        super.copyProperties(componentSecurity);
+        FieldSecurity fieldSecurityCopy = (FieldSecurity) componentSecurity;
+        fieldSecurityCopy.setEditInLineAuthz(this.editInLineAuthz);
+        fieldSecurityCopy.setViewInLineAuthz(this.viewInLineAuthz);
+    }
 }

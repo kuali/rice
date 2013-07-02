@@ -60,4 +60,12 @@ public class DataFieldSecurity extends FieldSecurity {
         this.attributeSecurity = attributeSecurity;
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentSecurity#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T componentSecurity) {
+        super.copyProperties(componentSecurity);
+        DataFieldSecurity dataFieldCopy = (DataFieldSecurity) componentSecurity;
+    }
 }

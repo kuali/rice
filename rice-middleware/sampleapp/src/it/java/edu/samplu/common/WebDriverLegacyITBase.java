@@ -678,6 +678,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         }
     }
 
+    protected void assertLabelFor(String forElementId, String labelText) {
+        SeleneseTestBase.assertEquals(labelText, getForLabelText(forElementId));
+    }
+
     /**
      * Assert that clicking an element causes a popup window with a specific URL
      * Uses Selenium's findElements method which does not throw a test exception if not found.
@@ -775,6 +779,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         if (!element.isSelected()) {
             element.click();
         }
+    }
+
+    protected void checkById(String id) throws InterruptedException {
+        check(By.id(id));
     }
 
     protected void checkByName(String name) throws InterruptedException {
@@ -1156,6 +1164,38 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         Actions builder = new Actions(driver);
         Actions hover = builder.moveToElement(driver.findElement(by));
         hover.perform();
+    }
+
+    protected boolean isChecked(By by) {
+        return driver.findElement(by).isSelected();
+    }
+
+    protected boolean isCheckedById(String id) {
+        return isChecked(By.id(id));
+    }
+
+    protected boolean isCheckedByName(String name) {
+        return isChecked(By.name(name));
+    }
+
+    protected boolean isCheckedByXpath(String locator) {
+        return isChecked(By.xpath(locator));
+    }
+
+    protected boolean isEnabled(By by) {
+        return driver.findElement(by).isEnabled();
+    }
+
+    protected boolean isEnabledById(String id) {
+        return isEnabled(By.id(id));
+    }
+
+    protected boolean isEnabledByName(String name) {
+        return isEnabled(By.name(name));
+    }
+
+    protected boolean isEnabledByXpath(String locator) {
+        return isEnabled(By.xpath(locator));
     }
 
     protected int howManyAreVisible(By by) throws InterruptedException {
@@ -4585,6 +4625,19 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected WebElement getElementByAttribute(String attributeName){
         return driver.findElement(By.cssSelector("[" + attributeName + "]"));
+    }
+
+    /**
+     * Returns the label text of a label-for element
+     * <p>
+     * For usage with elements like this: <label for="some-element-id">The text of the Label</label>
+     * </p>
+     *
+     * @param forElementId the id of the element for which to find the label text
+     * @return label text
+     */
+    protected String getForLabelText(String forElementId) {
+        return driver.findElement(By.cssSelector("label[for=" + forElementId + "]")).getText();
     }
 
     /**

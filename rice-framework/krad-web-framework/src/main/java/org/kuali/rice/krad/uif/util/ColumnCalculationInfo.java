@@ -310,4 +310,49 @@ public class ColumnCalculationInfo extends UifDictionaryBeanBase implements Seri
     public void setPropertyName(String propertyName) {
         this.propertyName = propertyName;
     }
+
+    /**
+     * Returns a copy of the component security.
+     *
+     * @return ComponentSecurity copy of the component
+     */
+    public <T> T copy() {
+        T copiedClass = null;
+        try {
+            copiedClass = (T)this.getClass().newInstance();
+        }
+        catch(Exception exception) {
+            throw new RuntimeException();
+        }
+
+        copyProperties(copiedClass);
+
+        return copiedClass;
+    }
+
+    protected <T> void copyProperties(T columnCalculationInfo) {
+        ColumnCalculationInfo columnCalculationInfoCopy = (ColumnCalculationInfo) columnCalculationInfo;
+        columnCalculationInfoCopy.setCalculateOnKeyUp(this.calculateOnKeyUp);
+        columnCalculationInfoCopy.setCalculationFunctionExtraData(this.calculationFunctionExtraData);
+        columnCalculationInfoCopy.setCalculationFunctionName(this.calculationFunctionName);
+        columnCalculationInfoCopy.setColumnNumber(this.columnNumber);
+
+        if (this.groupTotalFieldPrototype != null) {
+            columnCalculationInfoCopy.setGroupTotalFieldPrototype((MessageField)this.groupTotalFieldPrototype.copy());
+        }
+
+        if (this.pageTotalField != null) {
+            columnCalculationInfoCopy.setPageTotalField((MessageField) this.pageTotalField.copy());
+        }
+
+        columnCalculationInfoCopy.setPropertyName(this.propertyName);
+        columnCalculationInfoCopy.setRecalculateTotalClientside(this.recalculateTotalClientside);
+        columnCalculationInfoCopy.setShowGroupTotal(this.showGroupTotal);
+        columnCalculationInfoCopy.setShowPageTotal(this.showPageTotal);
+        columnCalculationInfoCopy.setShowTotal(this.showTotal);
+
+        if (this.totalField != null) {
+            columnCalculationInfoCopy.setTotalField((MessageField)this.totalField.copy());
+        }
+    }
 }

@@ -83,4 +83,14 @@ public class CollectionGroupSecurity extends ComponentSecurity {
         this.viewLineAuthz = viewLineAuthz;
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentSecurity#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T componentSecurity) {
+        super.copyProperties(componentSecurity);
+        CollectionGroupSecurity collectionGroupSecurityCopy = (CollectionGroupSecurity) componentSecurity;
+        collectionGroupSecurityCopy.setEditLineAuthz(this.editLineAuthz);
+        collectionGroupSecurityCopy.setViewLineAuthz(this.viewLineAuthz);
+    }
 }

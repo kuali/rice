@@ -286,4 +286,18 @@ public class Help extends WidgetBase {
         return CoreFrameworkServiceLocator.getParameterService();
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        Help helpCopy = (Help) component;
+        helpCopy.setExternalHelpUrl(this.getExternalHelpUrl());
+        helpCopy.setHelpAction((Action)this.helpAction.copy());
+
+        //referenced
+        helpCopy.setHelpDefinition(this.getHelpDefinition());
+    }
+
 }

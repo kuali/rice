@@ -33,4 +33,6 @@ public abstract class ContentElementBase extends ComponentBase implements Conten
     public String getComponentTypeName() {
         return "element";
     }
+
+
 }

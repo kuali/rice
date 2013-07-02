@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
+import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.web.format.Formatter;
@@ -548,5 +549,65 @@ public class Inquiry extends WidgetBase {
      */
     protected void setParentReadOnly(boolean parentReadOnly) {
         this.parentReadOnly = parentReadOnly;
+    }
+
+    /**
+     *  Determines whether inquiry parameters adjusted
+     *
+     * @return true if adjusted
+     */
+    public boolean isAdjustInquiryParameters() {
+        return adjustInquiryParameters;
+    }
+
+    /**
+     * Determines whether inquiry parameters adjusted
+     *
+     * <p>
+     * Used internally
+     * </p>
+     *
+     * @param adjustInquiryParameters
+     */
+    public void setAdjustInquiryParameters(boolean adjustInquiryParameters) {
+        this.adjustInquiryParameters = adjustInquiryParameters;
+    }
+
+    /**
+     * Sets the field binding information
+     *
+     * <p>
+     * Sets the field binding information
+     * </p>
+     *
+     * @param fieldBindingInfo
+     */
+    public void setFieldBindingInfo(BindingInfo fieldBindingInfo) {
+        this.fieldBindingInfo = fieldBindingInfo;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        Inquiry inquiryCopy = (Inquiry) component;
+        inquiryCopy.setBaseInquiryUrl(this.getBaseInquiryUrl());
+        inquiryCopy.setDataObjectClassName(this.getDataObjectClassName());
+        inquiryCopy.setViewName(this.getViewName());
+        inquiryCopy.setInquiryLink(this.getInquiryLink());
+        inquiryCopy.setDirectInquiryAction(this.getDirectInquiryAction());
+        inquiryCopy.setEnableDirectInquiry(this.isEnableDirectInquiry());
+        inquiryCopy.setAdjustInquiryParameters(this.isAdjustInquiryParameters());
+        inquiryCopy.setParentReadOnly(this.isParentReadOnly());
+
+        Map<String, String> inquiryParametersCopy = Maps.newHashMapWithExpectedSize(inquiryParameters.size());
+            for(Map.Entry inquiryParameter : inquiryParameters.entrySet()) {
+                inquiryParametersCopy.put(inquiryParameter.getKey().toString(),inquiryParameter.getValue().toString());
+            }
+        inquiryCopy.setInquiryParameters(inquiryParametersCopy);
+
+        inquiryCopy.setFieldBindingInfo((BindingInfo)fieldBindingInfo.copy());
     }
 }

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.component;
 
+import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -2004,7 +2005,29 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         for (PropertyReplacer propertyReplacer : this.propertyReplacers) {
             propertyReplacers.add((PropertyReplacer)propertyReplacer.copy());
         }
-
         componentCopy.setPropertyReplacers(propertyReplacers);
+
+        //DictionaryBeanBase properties
+        componentCopy.setComponentCode(this.getComponentCode());
+        componentCopy.setNamespaceCode(this.getNamespaceCode());
+
+        //UifDictionaryBeanBase properties
+        Map<String, String> expressionGraphCopy = Maps.newHashMapWithExpectedSize(this.getExpressionGraph().size());
+        for(Map.Entry expressionGraphEntry : getExpressionGraph().entrySet()) {
+            expressionGraphCopy.put(expressionGraphEntry.getKey().toString(),expressionGraphEntry.getValue().toString());
+        }
+        componentCopy.setExpressionGraph(expressionGraphCopy);
+
+        Map<String, String> refreshExpressionGraphCopy = Maps.newHashMapWithExpectedSize(this.getRefreshExpressionGraph().size());
+        for(Map.Entry refreshExpressionGraphEntry : getRefreshExpressionGraph().entrySet()) {
+            expressionGraphCopy.put(refreshExpressionGraphEntry.getKey().toString(),refreshExpressionGraphEntry.getValue().toString());
+        }
+        componentCopy.setRefreshExpressionGraph(refreshExpressionGraphCopy);
+
+        Map<String, String> propertyExpressionsCopy = Maps.newHashMapWithExpectedSize(this.getPropertyExpressions().size());
+        for(Map.Entry propertyExpressionsEntry : getPropertyExpressions().entrySet()) {
+            propertyExpressionsCopy.put(propertyExpressionsEntry.getKey().toString(),propertyExpressionsEntry.getValue().toString());
+        }
+        componentCopy.setRefreshExpressionGraph(propertyExpressionsCopy);
     }
 }

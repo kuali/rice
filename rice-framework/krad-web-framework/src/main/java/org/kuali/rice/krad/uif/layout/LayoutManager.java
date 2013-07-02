@@ -320,6 +320,6 @@ public interface LayoutManager extends UifDictionaryBean, Serializable {
      *
      * @return the copied object
      */
-    public <T extends LayoutManager> T copy();
+    public <T> T copy();
 
 }

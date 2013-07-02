@@ -214,4 +214,21 @@ public class BoxLayoutManager extends LayoutManagerBase {
         return "";
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.LayoutManagerBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T layout) {
+        super.copyProperties(layout);
+        BoxLayoutManager boxLayoutManagerCopy = (BoxLayoutManager) layout;
+        boxLayoutManagerCopy.setPadding(this.getPadding());
+        boxLayoutManagerCopy.setItemStyle(this.getItemStyle());
+        boxLayoutManagerCopy.setOrientation(this.getOrientation());
+
+        List<String> itemStyleClassesCopy = new ArrayList<String>();
+        for(String itemStyleClass : itemStyleClasses)   {
+            itemStyleClassesCopy.add(itemStyleClass);
+        }
+        boxLayoutManagerCopy.setItemStyleClasses(itemStyleClassesCopy);
+    }
 }

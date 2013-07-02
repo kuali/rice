@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.layout;
 
+import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
@@ -337,53 +338,79 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
 
 
     @Override
-    public <T extends LayoutManager> T copy() {
+    public <T> T copy() {
+        T copiedClass = null;
         try {
-            T copiedClass = (T)this.getClass().newInstance();
-            copyProperties(copiedClass);
-
-            return copiedClass;
+            copiedClass = (T)this.getClass().newInstance();
         }
         catch(Exception exception) {
             throw new RuntimeException();
         }
+
+        copyProperties(copiedClass);
+
+        return copiedClass;
     }
 
 
-    protected void copyProperties(LayoutManager layoutManager) {
-        LayoutManagerBase componentBase = (LayoutManagerBase) layoutManager;
+    protected <T> void copyProperties(T layoutManager) {
+        LayoutManagerBase layoutManagerBaseCopy = (LayoutManagerBase) layoutManager;
+        layoutManagerBaseCopy.setId(this.getId());
+        layoutManagerBaseCopy.setTemplate(this.getTemplate());
+        layoutManagerBaseCopy.setTemplateName(this.getTemplateName());
+        layoutManagerBaseCopy.setStyle(this.getStyle());
 
-        //componentBase.setFoo(this.foo);
+        //referenced :(
+        layoutManagerBaseCopy.setContext(this.getContext());
 
+        List<String> libraryCssClassesCopy = new ArrayList<String>();
+        for(String libraryCssClass : libraryCssClasses)   {
+            libraryCssClassesCopy.add(libraryCssClass);
+        }
+        layoutManagerBaseCopy.setLibraryCssClasses(libraryCssClassesCopy);
+
+        List<String> cssClassesCopy = new ArrayList<String>();
+        for(String cssClass : cssClasses)   {
+            libraryCssClassesCopy.add(cssClass);
+        }
+        layoutManagerBaseCopy.setCssClasses(cssClassesCopy);
+
+        List<String> additionalCssClassesCopy = new ArrayList<String>();
+        for(String additionalCssClass : additionalCssClasses)   {
+            additionalCssClassesCopy.add(additionalCssClass);
+        }
+        layoutManagerBaseCopy.setAdditionalCssClasses(additionalCssClassesCopy);
+
+        List<PropertyReplacer> propertyReplacersCopy = new ArrayList<PropertyReplacer>();
+        for(PropertyReplacer propertyReplacer : propertyReplacers)   {
+            propertyReplacersCopy.add((PropertyReplacer)propertyReplacer.copy());
+        }
+        layoutManagerBaseCopy.setPropertyReplacers(propertyReplacersCopy);
+
+        layoutManagerBaseCopy.setStyleClasses(this.getStyleClassesAsString());
+
+
+        //DictionaryBeanBase properties
+        layoutManagerBaseCopy.setComponentCode(this.getComponentCode());
+        layoutManagerBaseCopy.setNamespaceCode(this.getNamespaceCode());
+
+        //UifDictionaryBeanBase properties
+        Map<String, String> expressionGraphCopy = Maps.newHashMapWithExpectedSize(this.getExpressionGraph().size());
+        for(Map.Entry expressionGraphEntry : getExpressionGraph().entrySet()) {
+            expressionGraphCopy.put(expressionGraphEntry.getKey().toString(),expressionGraphEntry.getValue().toString());
+        }
+        layoutManagerBaseCopy.setExpressionGraph(expressionGraphCopy);
+
+        Map<String, String> refreshExpressionGraphCopy = Maps.newHashMapWithExpectedSize(this.getRefreshExpressionGraph().size());
+        for(Map.Entry refreshExpressionGraphEntry : getRefreshExpressionGraph().entrySet()) {
+            expressionGraphCopy.put(refreshExpressionGraphEntry.getKey().toString(),refreshExpressionGraphEntry.getValue().toString());
+        }
+        layoutManagerBaseCopy.setRefreshExpressionGraph(refreshExpressionGraphCopy);
+
+        Map<String, String> propertyExpressionsCopy = Maps.newHashMapWithExpectedSize(this.getPropertyExpressions().size());
+        for(Map.Entry propertyExpressionsEntry : getPropertyExpressions().entrySet()) {
+            propertyExpressionsCopy.put(propertyExpressionsEntry.getKey().toString(),propertyExpressionsEntry.getValue().toString());
+        }
+        layoutManagerBaseCopy.setRefreshExpressionGraph(propertyExpressionsCopy);
     }
-
-
-
-
-
-
-
-
-
-
-
-    //    public LayoutManagerBase copy(LayoutManagerBase layoutManagerBaseOrig)
-//    {
-//        LayoutManagerBase layoutManagerBaseCopy = ((LayoutManagerBase)layoutManagerBaseOrig);
-//        layoutManagerBaseCopy.setContext(layoutManagerBaseOrig.getContext());
-//        layoutManagerBaseCopy.setCssClasses(layoutManagerBaseOrig.getCssClasses());
-//        layoutManagerBaseCopy.setId(layoutManagerBaseOrig.getId());
-//        layoutManagerBaseCopy.setPropertyReplacers(layoutManagerBaseOrig.getPropertyReplacers());
-//        layoutManagerBaseCopy.setStyle(layoutManagerBaseOrig.getStyle());
-//        layoutManagerBaseCopy.setStyleClasses(layoutManagerBaseOrig.getStyleClassesAsString());
-//        layoutManagerBaseCopy.setTemplate(layoutManagerBaseOrig.getTemplate());
-//        layoutManagerBaseCopy.setTemplateName(layoutManagerBaseOrig.getTemplateName());
-//        layoutManagerBaseCopy.setComponentCode(layoutManagerBaseOrig.getComponentCode());
-//        layoutManagerBaseCopy.setExpressionGraph(layoutManagerBaseOrig.getExpressionGraph());
-//        layoutManagerBaseCopy.setNamespaceCode(layoutManagerBaseOrig.getNamespaceCode());
-//        layoutManagerBaseCopy.setPropertyExpressions(layoutManagerBaseOrig.getPropertyExpressions());
-//        layoutManagerBaseCopy.setRefreshExpressionGraph(layoutManagerBaseOrig.getRefreshExpressionGraph());
-//        return layoutManagerBaseCopy;
-//    }
-
 }

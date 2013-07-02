@@ -259,4 +259,53 @@ public abstract class ControlBase extends ContentElementBase implements Control 
     public void setEnabledWhenChangedPropertyNames(List<String> enabledWhenChangedPropertyNames) {
         this.enabledWhenChangedPropertyNames = enabledWhenChangedPropertyNames;
     }
+
+    public void setDisabledExpression(String disabledExpression) {
+        this.disabledExpression = disabledExpression;
+    }
+
+    public String getDisabledExpression() {
+        return disabledExpression;
+    }
+
+    public void setDisabledConditionJs(String disabledConditionJs) {
+        this.disabledConditionJs = disabledConditionJs;
+    }
+
+    public void setDisabledConditionControlNames(List<String> disabledConditionControlNames) {
+        this.disabledConditionControlNames = disabledConditionControlNames;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        ControlBase controlBaseCopy = (ControlBase) component;
+        controlBaseCopy.setTabIndex(this.getTabIndex());
+        controlBaseCopy.setDisabled(this.isDisabled());
+        controlBaseCopy.setDisabledExpression(this.getDisabledExpression());
+        controlBaseCopy.setDisabledReason(this.getDisabledReason());
+        controlBaseCopy.setEvaluateDisabledOnKeyUp(this.isEvaluateDisabledOnKeyUp());
+        controlBaseCopy.setDisabledConditionJs(this.getDisabledConditionJs());
+
+        List<String> disabledConditionControlNamesCopy = new ArrayList<String>();
+        for(String disabledConditionControlName : disabledConditionControlNames)   {
+            disabledConditionControlNamesCopy.add(disabledConditionControlName);
+        }
+        controlBaseCopy.setDisabledConditionControlNames(disabledConditionControlNamesCopy);
+
+        List<String> disabledWhenChangedPropertyNamesCopy = new ArrayList<String>();
+        for(String disabledWhenChangedPropertyName : disabledWhenChangedPropertyNames)   {
+            disabledWhenChangedPropertyNamesCopy.add(disabledWhenChangedPropertyName);
+        }
+        controlBaseCopy.setDisabledWhenChangedPropertyNames(disabledWhenChangedPropertyNamesCopy);
+
+        List<String> enabledWhenChangedPropertyNamesCopy = new ArrayList<String>();
+        for(String enabledWhenChangedPropertyName : enabledWhenChangedPropertyNames)   {
+            enabledWhenChangedPropertyNamesCopy.add(enabledWhenChangedPropertyName);
+        }
+        controlBaseCopy.setEnabledWhenChangedPropertyNames(enabledWhenChangedPropertyNamesCopy);
+    }
 }

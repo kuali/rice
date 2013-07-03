@@ -25,7 +25,7 @@ import org.junit.Test;
  */
 public class MaintenanceAddDeleteFiscalOfficerWDIT extends WebDriverLegacyITBase {
     public static final String TEST_URL = ITUtil.PORTAL + "?channelTitle=Travel%20Account%20Maintenance%20(New)&channelUrl=" + ITUtil.getBaseUrlString() +
-            "/kr-krad/maintenance?methodToCall=start&dataObjectClassName=org.kuali.rice.krad.demo.travel.account.TravelAccount&viewName=ks_maintenance&returnLocation=" +
+            "/kr-krad/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&viewName=ks_maintenance&returnLocation=" +
             ITUtil.PORTAL_URL + "&hideReturnLink=true";
 
     @Override

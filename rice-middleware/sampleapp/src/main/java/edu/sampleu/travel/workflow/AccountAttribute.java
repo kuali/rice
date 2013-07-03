@@ -57,7 +57,7 @@ public class AccountAttribute extends AbstractRoleAttribute {
         List<String> qualifiedRoleNames = new ArrayList<String>();
         XPath xpath = WorkflowUtils.getXPath(documentContent.getDocument());
         // This xpath stream needs updating when the TravelAccount is being updated
-        NodeList accountNums = (NodeList) xstreamSafeEval(xpath, "/documentContent/applicationContent/org.kuali.rice.krad.workflow.KualiDocumentXmlMaterializer/document/travelAccounts/vector/default/elementData/org.kuali.rice.krad.demo.travel.account.TravelAccount/number", documentContent.getDocument(), XPathConstants.NODESET);
+        NodeList accountNums = (NodeList) xstreamSafeEval(xpath, "/documentContent/applicationContent/org.kuali.rice.krad.workflow.KualiDocumentXmlMaterializer/document/travelAccounts/vector/default/elementData/edu.sampleu.travel.bo.TravelAccount/number", documentContent.getDocument(), XPathConstants.NODESET);
         for (int i = 0; i < accountNums.getLength(); i++) {
             Node accountNum = accountNums.item(i);
             String accuntNumVal = accountNum.getTextContent();

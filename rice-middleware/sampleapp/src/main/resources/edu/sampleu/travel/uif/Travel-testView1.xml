@@ -93,7 +93,7 @@
           <property name="control">
             <bean id="myField" parent="Uif-TextControl" p:size="15" p:watermarkText="####"/>
           </property>
-          <property name="quickfinder.dataObjectClassName" value="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
+          <property name="quickfinder.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
           <property name="quickfinder.fieldConversions">
             <map>
               <entry key="number" value="field1"/>
@@ -151,7 +151,7 @@
           <property name="control">
             <bean parent="Uif-TextControl" p:size="5"/>
           </property>
-          <property name="inquiry.dataObjectClassName" value="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
+          <property name="inquiry.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
           <property name="inquiry.inquiryParameters">
             <map>
               <entry key="field5" value="number"/>
@@ -172,7 +172,7 @@
           </property>
           <property name="suggest">
               <bean parent="Uif-Suggest" p:render="true" p:valuePropertyName="accountTypeCode"
-                    p:suggestQuery.dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccountType"/>
+                    p:suggestQuery.dataObjectClassName="edu.sampleu.travel.bo.TravelAccountType"/>
           </property>
         </bean>
         <bean parent="Uif-InputField" p:propertyName="field34" p:label="Field 34" p:width="auto">
@@ -209,7 +209,7 @@
 
   <bean id="testGroup4" parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="6" p:collectionLookup.render="false">
     <property name="headerText" value="Collection Group 1"/>
-    <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
+    <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
     <property name="propertyName" value="fiscalOfficer.accounts"/>
     <property name="layoutManager.sequencePropertyName" value="number"/>
     <property name="layoutManager.generateAutoSequence" value ="false"/>
@@ -252,7 +252,7 @@
 
   <bean id="testGroup5" parent="Uif-StackedCollectionSection">
     <property name="headerText" value="Collection Group 2"/>
-    <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
+    <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
     <property name="propertyName" value="fiscalOfficer.accounts"/>
     <property name="bindingInfo.bindingObjectPath" value="travelAccount2"/>
     <property name="items">
@@ -275,7 +275,7 @@
 
   <bean id="testGroup10" parent="Uif-StackedCollectionSection">
     <property name="headerText" value="Sub Collections Stacked"/>
-    <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
+    <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
     <property name="propertyName" value="fiscalOfficer.accounts"/>
     <property name="bindingInfo.bindingObjectPath" value="travelAccount4"/>
     <property name="items">
@@ -307,7 +307,7 @@
 
   <!--    <bean id="testGroup11" parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="6">
        <property name="headerText" value="Sub Collection Table"/>
-       <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
+       <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
        <property name="propertyName" value="fiscalOfficer.accounts"/>
        <property name="layoutManager.sequencePropertyName" value="number"/>
        <property name="items">
@@ -438,7 +438,7 @@
               p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false">
           <property name="propertyNamesForAdditionalDisplay" value="name,subAccountName"/>
           <property name="attributeQuery">
-            <bean parent="Uif-AttributeQueryConfig" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+            <bean parent="Uif-AttributeQueryConfig" p:dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
                   p:queryFieldMapping="number:number" p:returnFieldMapping="name:name,subAccountName:subAccountName"/>
           </property>
         </bean>

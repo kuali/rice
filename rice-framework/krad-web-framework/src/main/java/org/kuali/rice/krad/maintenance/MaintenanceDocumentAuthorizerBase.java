@@ -42,7 +42,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
      * @see org.kuali.rice.krad.maintenance.MaintenanceDocumentAuthorizer#canCreate(Class, org.kuali.rice.kim.api.identity.Person)
      */
     @Override
-    public final boolean canCreate(Class boClass, Person user) {
+    public boolean canCreate(Class boClass, Person user) {
         Map<String, String> permissionDetails = new HashMap<String, String>();
         permissionDetails.put(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME,
                 getDocumentDictionaryService().getMaintenanceDocumentTypeName(boClass));
@@ -59,7 +59,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
      * @see org.kuali.rice.krad.maintenance.MaintenanceDocumentAuthorizer#canMaintain(Object, org.kuali.rice.kim.api.identity.Person)
      */
     @Override
-    public final boolean canMaintain(Object dataObject, Person user) {
+    public boolean canMaintain(Object dataObject, Person user) {
         Map<String, String> permissionDetails = new HashMap<String, String>(2);
         permissionDetails.put(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME,
                 getDocumentDictionaryService().getMaintenanceDocumentTypeName(dataObject.getClass()));
@@ -76,7 +76,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
      * @see org.kuali.rice.krad.maintenance.MaintenanceDocumentAuthorizer#canCreateOrMaintain(MaintenanceDocument, org.kuali.rice.kim.api.identity.Person)
      */
     @Override
-    public final boolean canCreateOrMaintain(MaintenanceDocument maintenanceDocument, Person user) {
+    public boolean canCreateOrMaintain(MaintenanceDocument maintenanceDocument, Person user) {
         return !permissionExistsByTemplate(maintenanceDocument, KRADConstants.KNS_NAMESPACE,
                 KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS) || isAuthorizedByTemplate(
                 maintenanceDocument, KRADConstants.KNS_NAMESPACE,

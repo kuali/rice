@@ -93,7 +93,22 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      */
     @Override
     public void performFinalize(View view, Object model, Container container) {
+        // put together all css class names for this component, in order
+        List<String> finalCssClasses = new ArrayList<String>();
 
+        if(this.libraryCssClasses != null && view.isUseLibraryCssClasses()){
+            finalCssClasses.addAll(libraryCssClasses);
+        }
+
+        if(this.cssClasses != null){
+            finalCssClasses.addAll(cssClasses);
+        }
+
+        if(this.additionalCssClasses != null){
+            finalCssClasses.addAll(additionalCssClasses);
+        }
+
+        cssClasses = finalCssClasses;
     }
 
     /**

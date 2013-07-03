@@ -19,7 +19,7 @@
 
     <@krad.script value="${KualiForm.growlScript!}"/>
 
-    <div id="Uif-Application" style="display:none;" class="uif-application">
+    <div id="Uif-Application" style="display:none;" class="container uif-application">
 
         <!-- APPLICATION HEADER -->
         <#if view.applicationHeader?has_content>

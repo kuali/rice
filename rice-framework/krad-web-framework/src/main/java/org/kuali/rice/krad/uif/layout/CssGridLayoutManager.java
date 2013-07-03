@@ -27,10 +27,10 @@ import java.util.Map;
 
 /**
  * Css Grid Layout manager is a layout manager which creates div "rows" and "cells" to replicate a table look by
- * using div elements for its items.  Items are added into rows based on their colSpan set, while each row has a max
+ * using div elements for its items.  Items are added into rows based on their colSpan setting, while each row has a max
  * size of 12 columns.  By default, if colSpan is not set on an item, that item will take a full row.
  */
-public class CssGridLayoutManager extends LayoutManagerBase{
+public class CssGridLayoutManager extends LayoutManagerBase {
     private static final long serialVersionUID = 1830635073147703757L;
 
     private static final int NUMBER_OF_COLUMNS = 12;
@@ -43,7 +43,7 @@ public class CssGridLayoutManager extends LayoutManagerBase{
     private Map<String, String> rowCssClasses;
     private int defaultItemColSpan;
 
-    public CssGridLayoutManager(){
+    public CssGridLayoutManager() {
         rows = new ArrayList<List<Component>>();
         rowCssClasses = new HashMap<String, String>();
         cellCssClassAttributes = new ArrayList<String>();
@@ -58,13 +58,13 @@ public class CssGridLayoutManager extends LayoutManagerBase{
      */
     @Override
     public void performFinalize(View view, Object model, Container container) {
-        super.performFinalize(view, model,container);
+        super.performFinalize(view, model, container);
 
         int rowSpaceLeft = NUMBER_OF_COLUMNS;
         int rowIndex = 1;
         List<Component> currentRow = new ArrayList<Component>();
-        for (Component item: container.getItems()){
-            if(item == null){
+        for (Component item : container.getItems()) {
+            if (item == null) {
                 continue;
             }
 
@@ -72,7 +72,7 @@ public class CssGridLayoutManager extends LayoutManagerBase{
             int colSpan = this.defaultItemColSpan;
 
             // if the item's set colSpan is greater than 1 set it to that number; 1 is the default colSpan for Component
-            if(item.getColSpan() > 1 && item.getColSpan() <= NUMBER_OF_COLUMNS ){
+            if (item.getColSpan() > 1 && item.getColSpan() <= NUMBER_OF_COLUMNS) {
                 colSpan = item.getColSpan();
             }
 
@@ -84,11 +84,10 @@ public class CssGridLayoutManager extends LayoutManagerBase{
             // calculate space left in row
             rowSpaceLeft = rowSpaceLeft - colSpan;
 
-            if (rowSpaceLeft > 0){
+            if (rowSpaceLeft > 0) {
                 // space is left, just add item to row
                 currentRow.add(item);
-            }
-            else if (rowSpaceLeft < 0){
+            } else if (rowSpaceLeft < 0) {
                 // went over, add item to next new row
                 rows.add(new ArrayList<Component>(currentRow));
                 currentRow = new ArrayList<Component>();
@@ -98,8 +97,7 @@ public class CssGridLayoutManager extends LayoutManagerBase{
                 rowCssClassAttributes.add(generateRowClassProperty(rowIndex));
                 rowIndex++;
                 rowSpaceLeft = NUMBER_OF_COLUMNS - colSpan;
-            }
-            else if (rowSpaceLeft == 0){
+            } else if (rowSpaceLeft == 0) {
                 // last item in row, create new row
                 currentRow.add(item);
                 rows.add(new ArrayList<Component>(currentRow));
@@ -113,7 +111,7 @@ public class CssGridLayoutManager extends LayoutManagerBase{
         }
 
         // add the last row if it wasn't full (but has items)
-        if(!currentRow.isEmpty()){
+        if (!currentRow.isEmpty()) {
             // determine "row" div css
             rowCssClassAttributes.add(generateRowClassProperty(rowIndex));
             rows.add(currentRow);
@@ -126,7 +124,7 @@ public class CssGridLayoutManager extends LayoutManagerBase{
      * @param index the current row's index
      * @return String that are the class selector names seperated by spaces
      */
-    private String generateRowClassProperty(int index){
+    private String generateRowClassProperty(int index) {
         String stringIndex = String.valueOf(index);
         String structureClass = StringUtils.isNotBlank(rowCssClasses.get("all")) ? rowCssClasses.get("all") : "";
         String evenClass = StringUtils.isNotBlank(rowCssClasses.get("even")) ? " " + rowCssClasses.get("even") : "";

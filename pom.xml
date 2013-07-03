@@ -881,6 +881,9 @@
             <includes>
               <include>${maven.failsafe.includes}</include>
             </includes>
+            <excludes>
+              <exclude>${maven.failsafe.excludes}</exclude>
+            </excludes>
             <forkMode>${maven.failsafe.forkmode}</forkMode>
             <forkedProcessTimeoutInSeconds>${maven.failsafe.forkedProcessTimeoutInSeconds}</forkedProcessTimeoutInSeconds>
             <reportFormat>plain</reportFormat>

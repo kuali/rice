@@ -151,7 +151,10 @@
         <maven.failsafe.includes>**/*IT.java, **/*Gen.java</maven.failsafe.includes>
         <!-- exclude krad.demo and krad.labs they are enabled on evn11 only -->
         <!-- TravelAccountMaintenanceDocumentTest.java is an Integration test, not a Smoke test -->
-        <maven.failsafe.excludes>**/TravelAccountMaintenanceDocumentTest.java, **/XMLIngesterSTNGBkMrkGen.java, **/XMLIngesterNavIT.java, **/IdentityPersonRoleWDIT.java, **/krad/labs/*.java, **/krad/demo/*.java</maven.failsafe.excludes>
+        <!-- exclude krad/labs and krad/demo which only work against krad-sampleapp (env11) -->
+        <maven.failsafe.excludes>
+          **/TravelAccountMaintenanceDocumentTest.java, **/XMLIngesterSTNGBkMrkGen.java, **/XMLIngesterNavIT.java, **/IdentityPersonRoleWDIT.java, **/krad/labs/**/*.java, **/krad/demo/**/*.java
+        </maven.failsafe.excludes>
       </properties>
       <build>
         <plugins>

@@ -436,4 +436,24 @@ public class DialogGroup extends Group {
     public void setOnShowDialogScript(String onShowDialogScript) {
         this.onShowDialogScript = onShowDialogScript;
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        DialogGroup dialogGroupCopy = (DialogGroup) component;
+        dialogGroupCopy.setAvailableResponses(new ArrayList<KeyValue>(this.availableResponses));
+        dialogGroupCopy.setDisplayExplanation(this.displayExplanation);
+        dialogGroupCopy.setOnDialogResponseScript(this.onDialogResponseScript);
+        dialogGroupCopy.setOnShowDialogScript(this.onShowDialogScript);
+
+        if (this.prompt != null) {
+            dialogGroupCopy.setPrompt((MessageField)this.prompt.copy());
+        }
+
+        dialogGroupCopy.setPromptText(this.promptText);
+        dialogGroupCopy.setReverseButtonOrder(this.reverseButtonOrder);
+    }
 }

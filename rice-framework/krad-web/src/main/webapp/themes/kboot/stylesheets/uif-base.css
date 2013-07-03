@@ -46,10 +46,10 @@ ul.uif-readOnlyStringList li {
     so this value represents both the margin from the navigation
     menu when in use, AND the margin when no menu is
     in use!**/
-    
-	
-	
-	/*margin-left: 15px;*/
+
+
+
+    /*margin-left: 15px;*/
 }
 
 /** Field and group related *************************************************************************/
@@ -117,7 +117,7 @@ ul.uif-readOnlyStringList li {
 }
 
 .uif-viewHeader {
-	/* relative to position some icons/links on header line */
+    /* relative to position some icons/links on header line */
     /* [disabled]padding-left: 15px; */
 }
 
@@ -147,7 +147,7 @@ ul.uif-readOnlyStringList li {
 
 /** header disclosure image style **/
 img.uif-disclosure-image {
-   /* padding-right: 0.25em;*/
+    /* padding-right: 0.25em;*/
     margin-bottom: 5px;
     vertical-align: middle;
 }
@@ -311,7 +311,7 @@ div.clearfix:after {
 }
 
 .uif-gridLayout th {
-  /*  text-align: right;*/
+    /*  text-align: right;*/
 }
 
 .uif-gridLayout th[scope="col"] {
@@ -477,7 +477,7 @@ table.uif-gridLayout {
 }
 
 table.uif-gridLayout th .uif-label {
-  /*  text-align: right;*/
+    /*  text-align: right;*/
 }
 
 table.dataTable tr.even {
@@ -513,15 +513,15 @@ table.dataTable tr.uif-collectionDeleteHighlight td.sorting_1 {
 }
 
 .paging_full_numbers a.paginate_button_disabled {
-/*    cursor: auto;
-    color: #888888 !important;
-    background-color: #DDDDDD !important;*/
+    /*    cursor: auto;
+        color: #888888 !important;
+        background-color: #DDDDDD !important;*/
 }
 
 .paging_full_numbers a.paginate_button_disabled:hover, .paging_full_numbers a.paginate_button_disabled:focus {
- /*   cursor: auto;
-    color: #888888 !important;
-    background-color: #DDDDDD !important;*/
+    /*   cursor: auto;
+       color: #888888 !important;
+       background-color: #DDDDDD !important;*/
 }
 
 /** inline block cross browser support **/
@@ -804,22 +804,31 @@ fieldset[data-type="InputSet"] {
 
 /** Navigation Menu ************************************************************************************/
 
+
+
+
 .uif-navigation {
     position: absolute;
     width: 210px;
-    padding-top: 15px;
+    padding-top: 0px;
 }
 
 .uif-collapseLink {
-    float: right;
+
     font-size: .9em;
     margin-bottom: 2px;
+    float:right;
+    display:block;
+
+
+
+
 }
 
 ul.uif-navigationMenu {
     list-style: none outside none;
     padding: 0;
-    margin-top: 0px;
+    margin-top: 20px;
     margin-left: 15px;
 }
 
@@ -834,16 +843,15 @@ li.uif-navigationItem span.uif-actionLink, li.uif-navigationItem a.uif-actionLin
 /**Headers in navigation menu **/
 li.uif-navigationItem h3, li.uif-navigationItem h2 {
     color: #333333;
-    margin-bottom: 0;
-    padding: 0 20px 0 3px;
-    width: 170px;
+    padding-bottom: 6px; margin-top:4px;
     font-weight: bold;
-    font-family: arial, sans-serif;
-    text-transform: uppercase;
-    border-top: 2px solid #000;
-    border-bottom: 1px solid #bbb;
     border-left: none;
     border-right: none;
+    line-height: 12px;
+    padding-top: 0;
+    padding-right: 20px;
+    padding-bottom: 4;
+    padding-left: 3px;
 }
 
 li.uif-navigationItem h2 {
@@ -858,20 +866,19 @@ li.uif-navigationItem a {
     width: 170px;
     color: #3F7826;
     text-decoration: none;
-    border-bottom: 1px solid #bbb;
-    font-size: .92em;
+
 }
 
 .uif-navigationMenu h2.fl-font-serif {
-    font-family: arial, sans-serif;
+
 }
 
 li.uif-navigationItem a {
     background-color: #fff;
-    width: 170px;
+
     color: #3F7826;
     border: none;
-    border-bottom: 1px solid #bbb;
+
 }
 
 li.uif-navigationItem a:hover, li.uif-navigationItem a:focus {

@@ -70,7 +70,7 @@
                         + "alt='Close Navigation'>Collapse Navigation</a>");
                 $(".uif-navigationMenu-wrapper").before("<a id='uif-collapseSmall' "
                         + "style='position: absolute; left:" + menuWidth + "px; "
-                        + "margin-right: 5px; margin-left: 5px;'"
+                        + "margin-right: 5px; margin-left: 5px; margin-top:-2px;'"
                         + "class='uif-collapseLink' alt='Close Navigation'><<</a>");
             }
 

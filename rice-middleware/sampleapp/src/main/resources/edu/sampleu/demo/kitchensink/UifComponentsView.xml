@@ -54,8 +54,7 @@ background: linear-gradient(to right,  rgba(69,72,77,1) 0%,rgba(0,0,0,1) 100%);
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', endColorstr='#000000',GradientType=1 );
 width: 100%;
 color:#FFF;
-padding-top:4px;
-padding-left:8px;">
+padding-top:4px;">
         <property name="items">
           <list>
             <bean parent="Uif-Message" p:messageText="Top Group Content @{viewId}-@{pageId}" p:style="font-size: 24px;"

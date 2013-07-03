@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.control;
 
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -202,5 +203,41 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
      */
     public boolean isLocationSelect() {
         return locationSelect;
+    }
+
+    public void setLocationSelect(boolean locationSelect) {
+        this.locationSelect = locationSelect;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        MultiValueControlBase multiValueControlBaseCopy = (MultiValueControlBase) component;
+
+        List<KeyValue> optionsCopy = new ArrayList<KeyValue>();
+        for(KeyValue option : options)   {
+            KeyValue keyValue = null;
+            keyValue = new ConcreteKeyValue(option.getKey(), option.getValue());
+            optionsCopy.add(keyValue);
+        }
+        multiValueControlBaseCopy.setOptions(optionsCopy);
+
+        List<KeyMessage> richOptionsCopy = new ArrayList<KeyMessage>();
+        for(KeyMessage richOption : richOptions)   {
+            KeyMessage keyMessage = new KeyMessage(richOption.getKey(),richOption.getValue(),richOption.getMessage());
+            richOptionsCopy.add(keyMessage);
+        }
+        multiValueControlBaseCopy.setRichOptions(richOptionsCopy);
+
+        List<Component> inlineComponentsCopy = new ArrayList<Component>();
+        for(Component inlineComponent : inlineComponents)   {
+            inlineComponentsCopy.add((Component)inlineComponent.copy());
+        }
+        multiValueControlBaseCopy.setInlineComponents(inlineComponentsCopy);
+
+        multiValueControlBaseCopy.setLocationSelect(this.isLocationSelect());
     }
 }

@@ -21,7 +21,6 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.apache.log4j.Logger;
 import org.junit.Before;
-import org.testng.annotations.BeforeMethod;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,7 +42,6 @@ public abstract class FreemarkerSTBase extends WebDriverLegacyITBase {
 
     @Override
     @Before
-    @BeforeMethod
     public void testSetUp() {
         super.testSetUp();
         // generated load users and group resources

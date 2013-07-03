@@ -15,7 +15,7 @@
  */
 package edu.samplu.krad.demo.travel.account.inquiry;
 
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

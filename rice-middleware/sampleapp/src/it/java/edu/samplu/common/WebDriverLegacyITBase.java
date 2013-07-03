@@ -35,8 +35,6 @@ import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.Select;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -419,7 +417,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         // just a hook...for now...
     }
 
-    @BeforeMethod
     protected void startSession(Method method) throws Exception {
         testMethodName = method.getName(); // TestNG
     }
@@ -432,7 +429,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * @throws Exception
      */
     @Before
-    @BeforeMethod
     public void testSetUp() {
         try { // Don't throw any exception from this methods, exceptions in Before annotations really mess up maven, surefire, or failsafe
 
@@ -477,7 +473,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * @throws Exception
      */
     @After
-    @AfterMethod
     public void tearDown() {
         try {
             if (!passed) {

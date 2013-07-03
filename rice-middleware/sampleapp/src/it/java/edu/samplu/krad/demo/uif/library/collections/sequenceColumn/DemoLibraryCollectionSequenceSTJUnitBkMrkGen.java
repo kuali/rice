@@ -16,7 +16,7 @@
 
 package edu.samplu.krad.demo.uif.library.collections.sequenceColumn;
 
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

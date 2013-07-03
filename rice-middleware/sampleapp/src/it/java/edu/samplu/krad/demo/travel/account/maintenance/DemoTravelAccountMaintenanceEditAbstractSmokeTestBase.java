@@ -15,10 +15,6 @@
  */
 package edu.samplu.krad.demo.travel.account.maintenance;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.internal.selenesedriver.SwitchToFrame;
-import org.testng.Assert;
-
 import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
@@ -44,12 +40,9 @@ public abstract class DemoTravelAccountMaintenanceEditAbstractSmokeTestBase exte
     }
 
     protected void testTravelAccountMaintenanceEdit() throws Exception {
-        if(!isTextPresent("Stacktrace (only in dev mode)"))
-        {
+        if(!isTextPresent("Stacktrace (only in dev mode)")) {
             //code goes here
-        }
-        else
-        {
+        } else {
             fail("Development Exception (Error) on page. Test cannot be executed.");
         }
     }

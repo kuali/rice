@@ -74,6 +74,7 @@
     <maven.failsafe.useSystemClassLoader>true</maven.failsafe.useSystemClassLoader>
     <maven.failsafe.skip>true</maven.failsafe.skip>
     <maven.failsafe.includes>**/*Test.java</maven.failsafe.includes>
+    <maven.failsafe.excludes></maven.failsafe.excludes>
     <readme.date.format>MMMM d, yyyy</readme.date.format>
 
     <!-- must provide an explicit pattern - surefire default does not work

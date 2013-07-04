@@ -22,6 +22,34 @@ label {
 img {
     vertical-align: top;
 }
+
+a {
+    cursor: pointer;
+}
+
+ol, ul {
+    list-style: none;
+    margin: 0;
+
+}
+
+h1, h2, h3{
+    line-height: 20px;
+}
+
+label{
+    cursor: text;
+}
+
+input[type="radio"], input[type="checkbox"]{
+    margin: 0px;
+    cursor: pointer;
+}
+
+input[type="radio"]+label, input[type="checkbox"]+label{
+    font-weight: normal;
+}
+
 /* disabled inputs sibling labels are greyed out */
 input[disabled]+label {
     color: #888888;
@@ -33,6 +61,10 @@ ul.uif-readOnlyStringList li {
     list-style: disc inside none;
 }
 /** View structure related **************************************************************************/
+.uif-viewContentWrapper .uif-pageContentWrapper{
+    padding-top: 15px;
+    padding-left: 10px;
+}
 
 .uif-pageContentWrapper {
     /** Note when the navigation plugin is in use, this margin
@@ -91,6 +123,11 @@ ul.uif-readOnlyStringList li {
     width: 100%;
     background-color: white;
     z-index: 3;
+    padding: 0;
+    margin: 0;
+}
+.uif-viewHeader-contentWrapper > .uif-header-upperGroup, .uif-viewHeader-contentWrapper > .uif-header-lowerGroup{
+    padding-left: 20px;
 }
 .uif-header-contentWrapper {
     width: 100%;
@@ -98,16 +135,35 @@ ul.uif-readOnlyStringList li {
 .uif-header {
     position: relative;
 }
-.uif-viewHeader {
-    /* relative to position some icons/links on header line */
-    /* [disabled]padding-left: 15px;
-*/
+
+.uif-headerText-span{
+    display: inline !important;
 }
+
+.uif-viewHeader{
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 20px
+}
+
+.uif-viewHeader, .uif-pageHeader, .uif-sectionHeader{
+    position: relative;
+}
+
 .uif-header-rightGroup {
     position: absolute;
     right: 0;
     top: 0;
 }
+
+.uif-supportTitle-wrapper{
+    display: block;
+}
+
+#Uif-TopGroupWrapper > div{
+    padding-left: 20px;
+}
+
 #Uif-BreadcrumbWrapper, #Uif-ApplicationHeader-Wrapper, #Uif-ApplicationFooter-Wrapper, #Uif-TopGroupWrapper {
     width: 100%;
 }
@@ -187,7 +243,7 @@ ol.uif-breadcrumbs {
     text-decoration: none;
 }
 .uif-breadcrumbs > li {
-    background-image: url(../../images/divider-breadcrumb.png);
+    background-image: url(../images/divider-breadcrumb.png);
     background-position: right center;
     background-repeat: no-repeat;
 }
@@ -278,14 +334,14 @@ table.uif-gridLayout > tbody > tr > td.uif-inputField {
     float: left;
     display: block;
     margin-right: 10px;
-    margin-bottom: 10px;
+/*    margin-bottom: 10px;*/
 }
 .uif-inputField.uif-boxLayoutHorizontalItem {
     margin-right: 20px;
 }
 .uif-boxLayoutVerticalItem {
     display: block;
-    margin-bottom: 10px;
+/*    margin-bottom: 10px;*/
 }
 .uif-linkGroup .uif-boxLayoutHorizontalItem {
     display: inline;
@@ -661,13 +717,10 @@ fieldset[data-type="InputSet"] {
 }
 /** Navigation Menu ************************************************************************************/
 
-
-
-
 .uif-navigation {
     position: absolute;
     width: 210px;
-    padding-top: 0px;
+    padding-top: 10px;
 }
 .uif-collapseLink {
     font-size: .9em;
@@ -679,7 +732,6 @@ ul.uif-navigationMenu {
     list-style: none outside none;
     padding: 0;
     margin-top: 20px;
-    margin-left: 15px;
 }
 ul.uif-navigationMenu li {
     padding: 0;
@@ -710,32 +762,18 @@ li.uif-navigationItem a {
     height: 1%;
     padding: 5px 20px 5px 3px;
     width: 170px;
-    color: #3F7826;
     text-decoration: none;
 }
 .uif-navigationMenu h2.fl-font-serif {
 }
 li.uif-navigationItem a {
     background-color: #fff;
-    color: #3F7826;
     border: none;
 }
-li.uif-navigationItem a:hover, li.uif-navigationItem a:focus {
-    background: #07662a; /* Old browsers */
-    background: -moz-linear-gradient(top, #07662a 0%, #044d1f 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #07662a), color-stop(100%, #044d1f)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, #07662a 0%, #044d1f 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, #07662a 0%, #044d1f 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, #07662a 0%, #044d1f 100%); /* IE10+ */
-    background: linear-gradient(top, #07662a 0%, #044d1f 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#07662a', endColorstr = '#044d1f', GradientType = 0); /* IE6-9 */
-    background-color: #060;
-    color: white;
-}
+
 li.uif-navigationItem-current a, li.uif-navigationItem-current a:hover {
     background-color: #000;
     background-image: none;
-    padding-left: 3px !important;
     color: white;
 }
 /** Validation Messages Framework **********************************************************************/
@@ -753,6 +791,7 @@ li.uif-navigationItem-current a, li.uif-navigationItem-current a:hover {
 .uif-messageCount img {
     width: 12px;
     height: 12px;
+    vertical-align: baseline;
 }
 .uif-clientMessageItems {
     max-width: 250px;
@@ -929,6 +968,10 @@ ul.uif-pageValidationMessage-single {
     border: 2px solid red;
     padding: .2em;
 }
+/** Spinner control *********************************************************************************/
+.uif-spinnerControl{
+    padding-left: .5em;
+}
 /** Help  *******************************************************************************************/
 .uif-helpImage {
     margin-left: .2em;
@@ -945,6 +988,9 @@ ul.uif-pageValidationMessage-single {
     margin-bottom: 5px;
 }
 /* Toooltip styles for validation messages **************************************************************/
+.jquerybubblepopup{
+    text-align: left;
+}
 
 .jquerybubblepopup-kr-error-cs .jquerybubblepopup-innerHtml {
     background-color: #FFE1E9

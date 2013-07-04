@@ -62,7 +62,7 @@
 						content: "<div class='textarea_popout'>"+labelHtml+summaryHtml
 							+"<textarea id='textarea_popout_control'>"+value+"</textarea>"
 							+constraintHtml
-							+"<input id='done_btn' class='done' type='button' value='Done'/></div>",
+							+"<input id='done_btn' class='btn btn-primary done' type='button' value='Done'/></div>",
                         afterShow: function(){
 							context("textarea#textarea_popout_control").focus();
 			    			context("#done_btn").click(function(e){

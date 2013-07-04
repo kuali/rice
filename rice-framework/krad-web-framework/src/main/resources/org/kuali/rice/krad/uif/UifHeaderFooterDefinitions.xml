@@ -54,20 +54,10 @@
 
   <bean id="Uif-HeaderUpperGroup" parent="Uif-HeaderUpperGroup-parentBean"/>
   <bean id="Uif-HeaderUpperGroup-parentBean" abstract="true" parent="Uif-HorizontalBoxGroup">
-    <property name="cssClasses">
-      <list merge="true">
-        <value>uif-upperHeaderGroup</value>
-      </list>
-    </property>
   </bean>
 
   <bean id="Uif-HeaderRightGroup" parent="Uif-HeaderRightGroup-parentBean"/>
   <bean id="Uif-HeaderRightGroup-parentBean" abstract="true" parent="Uif-HorizontalBoxGroup">
-    <property name="cssClasses">
-      <list merge="true">
-        <value>uif-rightHeaderGroup</value>
-      </list>
-    </property>
   </bean>
 
   <bean id="Uif-HeaderLowerGroup" parent="Uif-HeaderLowerGroup-parentBean"/>

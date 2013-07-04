@@ -108,7 +108,7 @@
   <bean id="Uif-GroupValidationMessages-parentBean" parent="Uif-ValidationMessagesBase"
         class="org.kuali.rice.krad.uif.element.GroupValidationMessages">
     <property name="cssClasses">
-      <list>
+      <list merge="true">
         <value>uif-groupValidationMessages</value>
       </list>
     </property>
@@ -123,7 +123,7 @@
     <property name="displayHeaderMessageSummary" value="false"/>
     <property name="showPageSummaryHeader" value="true"/>
     <property name="cssClasses">
-      <list>
+      <list merge="true">
         <value>uif-pageValidationMessages</value>
       </list>
     </property>
@@ -252,6 +252,11 @@
 
   <bean id="Uif-ActionImage" parent="Uif-ActionImage-parentBean"/>
   <bean id="Uif-ActionImage-parentBean" abstract="true" parent="Uif-Action">
+    <property name="libraryCssClasses">
+      <list merge="true">
+        <value>btn-link</value>
+      </list>
+    </property>
     <property name="cssClasses">
       <list>
         <value>uif-actionImage</value>

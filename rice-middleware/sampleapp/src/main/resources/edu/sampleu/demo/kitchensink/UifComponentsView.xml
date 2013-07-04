@@ -72,7 +72,7 @@ padding-top:4px;">
     <property name="header.areaTitleText" value="[color='red']KRAD[/color] Kitchen Sink (areaText)"/>
     <property name="header.metadataText" value="Metadata Text"/>
     <property name="header.rightGroup">
-      <bean parent="Uif-HorizontalBoxGroup" p:style="background-color:#f2f2f2; padding:0px; padding-left:4px; border-left:solid; border-left-color:#CCC; border-left-width:1px">
+      <bean parent="Uif-HorizontalBoxGroup" p:style="background-color:#f2f2f2;">
         <property name="items">
           <list>
             <bean parent="Uif-Message" p:messageText="RightGroup Content" />
@@ -81,7 +81,7 @@ padding-top:4px;">
       </bean>
     </property>
     <property name="header.lowerGroup">
-      <bean parent="Uif-VerticalBoxGroup" p:style="background-color: #f2f2f2; padding: 4px;">
+      <bean parent="Uif-VerticalBoxGroup" p:style="background-color: #f2f2f2;">
         <property name="items">
           <list>
             <bean parent="Uif-Message" p:messageText="lowerGroup content"/>
@@ -90,7 +90,7 @@ padding-top:4px;">
       </bean>
     </property>
     <property name="header.upperGroup">
-      <bean parent="Uif-HorizontalBoxGroup" p:style="background-color:#f2f2f2; padding: 0px; margin-bottom:12px; padding-left:4px;">
+      <bean parent="Uif-HorizontalBoxGroup" p:style="background-color:#f2f2f2;">
         <property name="items">
           <list>
             <bean parent="Uif-Message" p:messageText="upperGroup content"/>

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package edu.samplu.krad.demo.uif.library;
 
 import org.junit.Test;
@@ -21,10 +20,21 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoGroupSTJUnitNavGen extends DemoGroupSTJUnitBase {
+
+public class DemoLibraryNavigationViewSmokeTest extends DemoLibraryNavigationSmokeTest {
+
+    /**
+     * /kr-krad/kradsampleapp?viewId=NavigationGroup-NavigationView&methodToCall=start
+     */
+    public static final String BOOKMARK_VIEW_URL = "/kr-krad/kradsampleapp?viewId=NavigationGroup-NavigationView&methodToCall=start&pageId=page1";
+
+    @Override
+    public String getBookmarkUrl() {
+        return BOOKMARK_VIEW_URL;
+    }
 
     @Test
-    public void testBasicGroupNav() throws Exception {
-        testBasicGroupNav(this);
+    public void testNavigationViewBookmark() throws Exception {
+        testNavigationViewBookmark(this);
     }
 }

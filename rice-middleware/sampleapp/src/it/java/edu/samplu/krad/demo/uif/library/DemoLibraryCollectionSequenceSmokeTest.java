@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2013 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package edu.samplu.krad.demo.uif.library.collections.sequenceColumn;
+package edu.samplu.krad.demo.uif.library;
 
 import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
-import edu.samplu.krad.demo.uif.library.DemoLibraryITBase;
+import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -28,13 +25,21 @@ import java.util.List;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class DemoLibraryCollectionSequenceSmokeTestBase extends DemoLibraryITBase {
+public class DemoLibraryCollectionSequenceSmokeTest extends DemoLibraryBase {
 
+    /**
+     * /kr-krad/kradsampleapp?viewId=Demo-CollectionSequence-View
+     */
     public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-CollectionSequence-View";
 
     @Override
-    public String getTestUrl() {
-        return ITUtil.KRAD_PORTAL;
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
+
+    @Override
+    protected void navigate() throws Exception {
+        navigateToLibraryDemo("Collection Features", "Sequence Column");
     }
 
     protected void changeSequenceView() throws Exception {
@@ -58,7 +63,6 @@ public abstract class DemoLibraryCollectionSequenceSmokeTestBase extends DemoLib
     }
 
     public void testCollectionSequenceNav(Failable failable) throws Exception {
-        navigateToLibraryDemo("Collection Features", "Sequence Column");
         testCollectionSequenceExamples();
         passed();
     }
@@ -77,5 +81,15 @@ public abstract class DemoLibraryCollectionSequenceSmokeTestBase extends DemoLib
             }
         }
         return false;
+    }
+
+    @Test
+    public void testCollectionSequenceBookmark() throws Exception {
+        testCollectionSequenceBookmark(this);
+    }
+
+    @Test
+    public void testCollectionSequenceNav() throws Exception {
+        testCollectionSequenceNav(this);
     }
 }

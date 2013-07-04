@@ -1228,6 +1228,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         return (driver.findElements(By.cssSelector(locator))).size() > 0;
     }
 
+    protected boolean isElementPresentById(String id) {
+        return isElementPresent(By.id(id));
+    }
+
     protected boolean isElementPresentByName(String name) {
         return isElementPresent(By.name(name));
     }

@@ -15,11 +15,9 @@
  */
 package edu.samplu.krad.demo.uif.library;
 
-import edu.samplu.common.SmokeTestBase;
-import org.junit.Assert;
 import org.junit.Test;
 
-public class DemoValidationSimpleConstraintsSmokeTest extends SmokeTestBase {
+public class DemoLibraryValidationSimpleConstraintsSmokeTest extends DemoLibraryBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-SimpleConstraint-View&methodToCall=start
@@ -32,18 +30,13 @@ public class DemoValidationSimpleConstraintsSmokeTest extends SmokeTestBase {
     public static final String SIMPLE_CONSTRAINT_REQUIRED_TAB = "//div[@id='Demo-SimpleConstraint-Example1_tab']";
 
     @Override
-    public void fail(String message) {
-        Assert.fail(message);
-    }
-
-    @Override
     protected String getBookmarkUrl() {
         return BOOKMARK_URL;
     }
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-LibraryLink", "");
+        waitAndClickById("Demo-LibraryLink");
         waitAndClickByLinkText("Validation");
         waitAndClickByLinkText("Simple Constraints");
     }

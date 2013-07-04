@@ -13,37 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.samplu.krad.demo.uif.library.navigation;
+package edu.samplu.krad.demo.uif.library;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
 import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
-import edu.samplu.krad.demo.uif.library.DemoLibraryITBase;
+import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class DemoLibraryNavigationSmokeTestBase extends DemoLibraryITBase {
+public class DemoLibraryNavigationSmokeTest extends DemoLibraryBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=ComponentLibraryHome
      */
     public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-NavigationGroup-View";
 
-    /**
-     * /kr-krad/kradsampleapp?viewId=NavigationGroup-NavigationView&methodToCall=start
-     */
-    public static final String BOOKMARK_VIEW_URL = "/kr-krad/kradsampleapp?viewId=NavigationGroup-NavigationView&methodToCall=start";
+    @Override
+    public String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
 
     @Override
-    public String getTestUrl() {
-        return ITUtil.KRAD_PORTAL;
+    protected void navigate() throws Exception {
+        navigateToExample("Demo-NavigationGroup-Example1");
     }
 
     protected void testNavigationTabs() throws Exception {
-        navigateToExample("Demo-NavigationGroup-Example1");
-
         waitAndClickByLinkText("Navigation Group Tab Example");
         selectWindow(driver.getWindowHandles().toArray()[1].toString());
         waitForElementPresentByClassName("uif-headerText-span");
@@ -79,5 +75,15 @@ public abstract class DemoLibraryNavigationSmokeTestBase extends DemoLibraryITBa
     public void testNavigationViewBookmark(Failable failable) throws Exception {
         testNavigationView();
         passed();
+    }
+
+    @Test
+    public void testNavigationMenuBookmark() throws Exception {
+        testNavigationMenuBookmark(this);
+    }
+
+    @Test
+    public void testNavigationMenuNav() throws Exception {
+        testNavigationMenuNav(this);
     }
 }

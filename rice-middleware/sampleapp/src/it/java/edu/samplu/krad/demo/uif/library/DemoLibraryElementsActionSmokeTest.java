@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.samplu.krad.demo.uif.library.elements.action;
+package edu.samplu.krad.demo.uif.library;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
 import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
+import org.junit.Test;
 import org.openqa.selenium.By;
 
 import static org.junit.Assert.assertTrue;
@@ -26,7 +25,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class DemoLibraryElementsActionSmokeTestBase extends WebDriverLegacyITBase {
+public class DemoLibraryElementsActionSmokeTest extends DemoLibraryBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-Action-View&methodToCall=start
@@ -34,11 +33,12 @@ public abstract class DemoLibraryElementsActionSmokeTestBase extends WebDriverLe
     public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-Action-View&methodToCall=start";
 
     @Override
-    public String getTestUrl() {
-        return ITUtil.KRAD_PORTAL;
+    public String getBookmarkUrl() {
+        return BOOKMARK_URL;
     }
 
-    protected void navigation() throws Exception {
+    @Override
+    protected void navigate() throws Exception {
         waitAndClickById("Demo-LibraryLink", "");
         waitAndClickByLinkText("Elements");
         waitAndClickByLinkText("Action");
@@ -161,7 +161,7 @@ public abstract class DemoLibraryElementsActionSmokeTestBase extends WebDriverLe
     }
 
     public void testActionButtonNav(Failable failable) throws Exception {
-        navigation();
+        navigate();
         testActionButton();
         passed();
     }
@@ -172,9 +172,28 @@ public abstract class DemoLibraryElementsActionSmokeTestBase extends WebDriverLe
     }
 
     public void testActionNav(Failable failable) throws Exception {
-        navigation();
+        navigate();
         testAllActionTabs();
         passed();
     }
 
+    @Test
+    public void testActionBookmark() throws Exception {
+        testActionBookmark(this);
+    }
+
+    @Test
+    public void testActionButtonBookmark() throws Exception {
+        testActionButtonBookmark(this);
+    }
+
+    @Test
+    public void testActionNav() throws Exception {
+        testActionNav(this);
+    }
+
+    @Test
+    public void testActionButtonNav() throws Exception {
+        testActionButtonNav(this);
+    }
 }

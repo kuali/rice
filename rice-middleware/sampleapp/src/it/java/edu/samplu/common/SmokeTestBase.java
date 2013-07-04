@@ -15,6 +15,7 @@
  */
 package edu.samplu.common;
 
+import org.junit.Assert;
 import org.junit.runner.RunWith;
 
 /**
@@ -47,6 +48,12 @@ public abstract class SmokeTestBase extends WebDriverLegacyITBase {
     protected void enableNavigationMode() {
         this.shouldNavigate = true;
         this.testUrl = ITUtil.KRAD_PORTAL;
+    }
+
+    @Override
+    public void fail(String message) {
+        passed = false;
+        Assert.fail(message);
     }
 
     @Override

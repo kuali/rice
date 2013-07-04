@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2013 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package edu.samplu.krad.demo.uif.library;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
-import edu.samplu.common.WebDriverLegacyITBase;
+import edu.samplu.common.ITUtil;
+import edu.samplu.common.SmokeTestBase;
+import org.junit.Assert;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -25,7 +26,7 @@ import org.openqa.selenium.WebElement;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class DemoLibraryITBase extends WebDriverLegacyITBase {
+public abstract class DemoLibraryBase extends SmokeTestBase {
 
     /**
      * Automatically selects the library link and then navigate to the appropriate demo in the category
@@ -35,7 +36,8 @@ public abstract class DemoLibraryITBase extends WebDriverLegacyITBase {
      * @param demoItemName the demo link by name (text)
      * @throws Exception
      */
-    public void navigateToLibraryDemo(String libraryMenuCategoryName, String demoItemName) throws Exception{
+    public void navigateToLibraryDemo(String libraryMenuCategoryName, String demoItemName) throws Exception {
+        selectTopFrame();
         waitAndClickById("Demo-LibraryLink", "");
         waitAndClickByLinkText(libraryMenuCategoryName);
         waitAndClickByLinkText(demoItemName);
@@ -50,25 +52,24 @@ public abstract class DemoLibraryITBase extends WebDriverLegacyITBase {
      * @return the WebElement representing the example group
      * @throws Exception
      */
-    public WebElement navigateToExample(String exampleId) throws Exception{
+    public WebElement navigateToExample(String exampleId) throws Exception {
+        waitForElementPresentByClassName("demo-contactInfo"); // wait for page to load
         WebElement exampleTab;
         String tabId = "#" + exampleId + UifConstants.IdSuffixes.TAB;
 
-        if(isVisibleById("ComponentLibrary-TabGroup_tabList")
+        if(isElementPresentById("ComponentLibrary-TabGroup_tabList")
                 && isElementPresentByDataAttributeValue(UifConstants.DataAttributes.TAB_FOR, exampleId)){
             WebElement menuItem = getElementByDataAttributeValue(UifConstants.DataAttributes.TAB_FOR, exampleId);
             menuItem.findElement(By.cssSelector("a")).click();
 
             waitForElementPresent(tabId);
             waitForElementVisible(tabId, "");
-        }
-        else if(isElementPresent(By.cssSelector("#Demo-LargeExampleDropdown_control"))){
+        } else if(isElementPresent(By.cssSelector("#Demo-LargeExampleDropdown_control"))){
             selectOption(By.cssSelector("#Demo-LargeExampleDropdown_control"), exampleId);
             waitForElementPresent(tabId);
             waitForElementVisible(tabId, "");
             driver.findElement(By.cssSelector(tabId));
-        }
-        else{
+        } else{
             SeleneseTestBase.fail(exampleId + " does not exist as an example for this demo");
         }
 

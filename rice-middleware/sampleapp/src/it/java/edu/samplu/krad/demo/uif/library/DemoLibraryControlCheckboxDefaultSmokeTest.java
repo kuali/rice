@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2013 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package edu.samplu.krad.demo.uif.library.controls.checkbox;
+package edu.samplu.krad.demo.uif.library;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
 import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
-import edu.samplu.krad.demo.uif.library.DemoLibraryITBase;
+import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
@@ -27,7 +25,7 @@ import org.openqa.selenium.WebElement;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class DemoLibraryControlCheckboxDefaultSmokeTestBase extends DemoLibraryITBase {
+public class DemoLibraryControlCheckboxDefaultSmokeTest extends DemoLibraryBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=ComponentLibraryHome
@@ -35,13 +33,16 @@ public abstract class DemoLibraryControlCheckboxDefaultSmokeTestBase extends Dem
     public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-CheckboxControl-View";
 
     @Override
-    public String getTestUrl() {
-        return ITUtil.KRAD_PORTAL;
+    public String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
+
+    @Override
+    protected void navigate() throws Exception {
+        navigateToExample("Demo-CheckboxControl-Example1");
     }
 
     protected void testCheckboxControlDefault() throws Exception {
-        navigateToExample("Demo-CheckboxControl-Example1");
-
         waitForElementPresentById("ST-DemoCheckboxControlExample1-Input1_control");
         assertTextPresent("Default Checkbox Control");
         assertLabelFor("ST-DemoCheckboxControlExample1-Input1_control", "Add me to your mailing list");
@@ -344,5 +345,85 @@ public abstract class DemoLibraryControlCheckboxDefaultSmokeTestBase extends Dem
         navigateToLibraryDemo("Controls", "Checkbox");
         testCheckboxControlDisableWhenChanged();
         passed();
+    }
+
+    @Test
+    public void testCheckboxControlDefaultBookmark() throws Exception {
+        testCheckboxControlDefaultBookmark(this);
+    }
+
+    @Test
+    public void testCheckboxControlOptionsFinderBookmark() throws Exception {
+        testCheckboxControlOptionsFinderBookmark(this);
+    }
+
+    @Test
+    public void testCheckboxControlKeyValuePairBookmark() throws Exception {
+        testCheckboxControlKeyValuePairBookmark(this);
+    }
+
+    @Test
+    public void testCheckboxControlDisabledBookmark() throws Exception {
+        testCheckboxControlDisabledBookmark(this);
+    }
+
+    @Test
+    public void testCheckboxControlDelimiterBookmark() throws Exception {
+        testCheckboxControlDelimiterBookmark(this);
+    }
+
+    @Test
+    public void testCheckboxControlDisabledOnKeyEventBookmark() throws Exception {
+        testCheckboxControlDisabledOnKeyEventBookmark(this);
+    }
+
+    @Test
+    public void testCheckboxControlEnableWhenChangedBookmark() throws Exception {
+        testCheckboxControlEnableWhenChangedBookmark(this);
+    }
+
+    @Test
+    public void testCheckboxControlDisableWhenChangedBookmark() throws Exception {
+        testCheckboxControlDisableWhenChangedBookmark(this);
+    }
+
+    @Test
+    public void testCheckboxControlDefaultNav() throws Exception {
+        testCheckboxControlDefaultNav(this);
+    }
+
+    @Test
+    public void testCheckboxControlOptionsFinderNav() throws Exception {
+        testCheckboxControlOptionsFinderNav(this);
+    }
+
+    @Test
+    public void testCheckboxControlKeyValuePairNav() throws Exception {
+        testCheckboxControlKeyValuePairNav(this);
+    }
+
+    @Test
+    public void testCheckboxControlDisabledNav() throws Exception {
+        testCheckboxControlDisabledNav(this);
+    }
+
+    @Test
+    public void testCheckboxControlDelimiterNav() throws Exception {
+        testCheckboxControlDelimiterNav(this);
+    }
+
+    @Test
+    public void testCheckboxControlDisabledOnKeyEventNav() throws Exception {
+        testCheckboxControlDisabledOnKeyEventNav(this);
+    }
+
+    @Test
+    public void testCheckboxControlEnableWhenChangedNav() throws Exception {
+        testCheckboxControlEnableWhenChangedNav(this);
+    }
+
+    @Test
+    public void testCheckboxControlDisableWhenChangedNav() throws Exception {
+        testCheckboxControlDisableWhenChangedNav(this);
     }
 }

@@ -19,7 +19,7 @@ import edu.samplu.common.SmokeTestBase;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class DemoValidationSimpleConstraintsST extends SmokeTestBase {
+public class DemoValidationSimpleConstraintsSmokeTest extends SmokeTestBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-SimpleConstraint-View&methodToCall=start

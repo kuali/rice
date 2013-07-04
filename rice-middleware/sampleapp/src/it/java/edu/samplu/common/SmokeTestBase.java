@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2013 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package edu.samplu.common;
 
-package edu.samplu.krad.demo.uif.library.navigation.magic;
-
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
 import org.junit.runner.RunWith;
 
-@RunWith(MagicSmokeTestRunner.class)
-public abstract class MagicWebDriverLegacyITBase extends WebDriverLegacyITBase {
+/**
+ * SmokeTests should extend this Base class or have it in their class hierarchy.
+ *
+ * The abstract method getBookmarkUrl should be implemented to return the Bookmark URL
+ * of the page under test.  The abstract method navigate should be implemented to Navigate
+ * through the UI to the page under test.
+ */
+@RunWith(SmokeTestRunner.class)
+public abstract class SmokeTestBase extends WebDriverLegacyITBase {
 
     private String testUrl = ITUtil.KRAD_PORTAL;
+
     private boolean shouldNavigate = false;
+
+    protected abstract String getBookmarkUrl();
+
+    protected abstract void navigate() throws Exception;
 
     @Override
     public String getTestUrl() {
@@ -46,9 +55,4 @@ public abstract class MagicWebDriverLegacyITBase extends WebDriverLegacyITBase {
             navigate();
         }
     }
-
-    protected abstract String getBookmarkUrl();
-
-    protected abstract void navigate() throws Exception;
-
 }

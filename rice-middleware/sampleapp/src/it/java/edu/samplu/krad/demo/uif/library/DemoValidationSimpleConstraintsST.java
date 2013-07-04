@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2013 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package edu.samplu.krad.demo.uif.library;
 
-package edu.samplu.krad.demo.uif.library.navigation.magic;
-
+import edu.samplu.common.SmokeTestBase;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class DemoValidationSimpleConstraintsSmokeTest extends MagicWebDriverLegacyITBase {
+public class DemoValidationSimpleConstraintsST extends SmokeTestBase {
 
+    /**
+     * /kr-krad/kradsampleapp?viewId=Demo-SimpleConstraint-View&methodToCall=start
+     */
     public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-SimpleConstraint-View&methodToCall=start";
 
+    /**
+     * //div[@id='Demo-SimpleConstraint-Example1_tab']
+     */
     public static final String SIMPLE_CONSTRAINT_REQUIRED_TAB = "//div[@id='Demo-SimpleConstraint-Example1_tab']";
 
     @Override
@@ -57,5 +63,4 @@ public class DemoValidationSimpleConstraintsSmokeTest extends MagicWebDriverLega
     public void testRequiredNav() throws Exception {
         testRequired();
     }
-
 }

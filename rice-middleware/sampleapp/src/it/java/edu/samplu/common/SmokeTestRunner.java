@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2013 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package edu.samplu.krad.demo.uif.library.navigation.magic;
+package edu.samplu.common;
 
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
@@ -23,9 +22,18 @@ import org.junit.runners.model.Statement;
 
 import java.lang.reflect.Method;
 
-public class MagicSmokeTestRunner extends BlockJUnit4ClassRunner {
+/**
+ * JUnit Test Runner to run test SmokeTests.  Enables bookmark mode for test methods
+ * ending in Bookmark and navigation mode for test methods ending in Nav.
+ */
+public class SmokeTestRunner extends BlockJUnit4ClassRunner {
 
-    public MagicSmokeTestRunner(Class<?> type) throws InitializationError {
+    /**
+     * SmokeTestRunner constructor
+     * @param type
+     * @throws InitializationError
+     */
+    public SmokeTestRunner(Class<?> type) throws InitializationError {
         super(type);
     }
 
@@ -33,12 +41,10 @@ public class MagicSmokeTestRunner extends BlockJUnit4ClassRunner {
     protected Statement methodInvoker(FrameworkMethod method, Object test) {
         Method testMethod = method.getMethod();
         if (testMethod.getName().endsWith("Bookmark")) {
-            ((MagicWebDriverLegacyITBase) test).enableBookmarkMode();
+            ((SmokeTestBase) test).enableBookmarkMode();
         } else if (testMethod.getName().endsWith("Nav")) {
-            ((MagicWebDriverLegacyITBase) test).enableNavigationMode();
+            ((SmokeTestBase) test).enableNavigationMode();
         }
         return super.methodInvoker(method, test);
     }
-
 }
-

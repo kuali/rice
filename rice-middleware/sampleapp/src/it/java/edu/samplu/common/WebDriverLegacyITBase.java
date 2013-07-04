@@ -413,6 +413,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      */
     public abstract String getTestUrl();
 
+    /**
+     * SeleniumBaseTest.fail from navigateInternal results in the test not being recorded as a failure in CI.
+     * @throws Exception
+     */
     protected void navigateInternal() throws Exception {
         // just a hook...for now...
     }
@@ -456,7 +460,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
             System.out.println(jGrowlHeader + " sessionId is " + sessionId);
             jGrowl("setUp");
 
-            navigateInternal();
+            navigateInternal(); // SeleniumBaseTest.fail from navigateInternal results in the test not being recorded as a failure in CI.
 
         } catch (Throwable t) {
             System.out.println("Throwable " + t.getMessage() + " in Before annotated method is very bad, ignoring and letting first method of test class to fail.");

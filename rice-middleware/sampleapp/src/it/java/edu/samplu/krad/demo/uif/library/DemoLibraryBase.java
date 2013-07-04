@@ -15,10 +15,7 @@
  */
 package edu.samplu.krad.demo.uif.library;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
-import edu.samplu.common.ITUtil;
 import edu.samplu.common.SmokeTestBase;
-import org.junit.Assert;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -69,8 +66,8 @@ public abstract class DemoLibraryBase extends SmokeTestBase {
             waitForElementPresent(tabId);
             waitForElementVisible(tabId, "");
             driver.findElement(By.cssSelector(tabId));
-        } else{
-            SeleneseTestBase.fail(exampleId + " does not exist as an example for this demo");
+        } else {
+            fail(exampleId + " does not exist as an example for this demo");
         }
 
         exampleTab = driver.findElement(By.cssSelector(tabId));

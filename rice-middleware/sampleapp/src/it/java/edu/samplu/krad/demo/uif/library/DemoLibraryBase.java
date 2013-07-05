@@ -67,9 +67,8 @@ public abstract class DemoLibraryBase extends SmokeTestBase {
             waitForElementVisible(tabId, "");
             driver.findElement(By.cssSelector(tabId));
         } else {
-            fail(exampleId + " does not exist as an example for this demo");
+            return null; // don't fail to avoid exception during setUp which results in failure not being recorded.
         }
-
         exampleTab = driver.findElement(By.cssSelector(tabId));
         return exampleTab;
     }

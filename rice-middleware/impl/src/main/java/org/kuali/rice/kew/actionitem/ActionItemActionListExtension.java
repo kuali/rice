@@ -85,6 +85,15 @@ public class ActionItemActionListExtension extends ActionItem implements RowStyl
     private Timestamp routeHeaderApprovedDate;
     private String routeHeaderCurrentRouteLevelName;
     private String routeHeaderInitiatorWorkflowId;
+    private String actionSelected;
+
+    public String getActionSelected() {
+        return "NONE";
+    }
+
+    public void setActionSelected(String actionSelected) {
+        this.actionSelected = actionSelected;
+    }
 
     public String getRouteHeaderRouteStatus() {
         return routeHeader.getDocRouteStatus();

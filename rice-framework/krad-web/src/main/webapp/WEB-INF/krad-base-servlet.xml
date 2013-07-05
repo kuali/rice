@@ -66,6 +66,7 @@
     <property name="freemarkerSettings">
       <props>
         <prop key="number_format">computer</prop>
+        <prop key="template_update_delay">2147483647</prop>
       </props>
     </property>
   </bean>

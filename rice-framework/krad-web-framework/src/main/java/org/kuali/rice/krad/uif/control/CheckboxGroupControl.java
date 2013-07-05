@@ -100,4 +100,19 @@ public class CheckboxGroupControl extends MultiValueControlBase {
         return "";
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        CheckboxGroupControl checkboxGroupControlCopy = (CheckboxGroupControl) component;
+        checkboxGroupControlCopy.setDelimiter(this.getDelimiter());
+
+        List<String> fieldsetClassesCopy = new ArrayList<String>();
+        for(String fieldsetClass : fieldsetClasses)   {
+            fieldsetClassesCopy.add(fieldsetClass);
+        }
+        checkboxGroupControlCopy.setFieldsetClasses(fieldsetClassesCopy);
+    }
 }

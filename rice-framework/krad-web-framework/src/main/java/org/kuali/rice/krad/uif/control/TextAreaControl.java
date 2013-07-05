@@ -193,4 +193,19 @@ public class TextAreaControl extends ControlBase {
     public void setTextExpand(boolean textExpand) {
         this.textExpand = textExpand;
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        TextAreaControl textAreaControlCopy = (TextAreaControl) component;
+        textAreaControlCopy.setRows(this.getRows());
+        textAreaControlCopy.setCols(this.getCols());
+        textAreaControlCopy.setMaxLength(this.getMaxLength());
+        textAreaControlCopy.setMinLength(this.getMinLength());
+        textAreaControlCopy.setTextExpand(this.isTextExpand());
+        textAreaControlCopy.setWatermarkText(this.getWatermarkText());
+    }
 }

@@ -1227,4 +1227,62 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
 
         super.completeValidation(tracer.getCopy());
     }
+
+    public void setCustomValidatorClass(String customValidatorClass) {
+        this.customValidatorClass = customValidatorClass;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        InputField inputFieldCopy = (InputField) component;
+        inputFieldCopy.setCustomValidatorClass(this.customValidatorClass);
+        inputFieldCopy.setValidCharactersConstraint(this.getValidCharactersConstraint());
+        inputFieldCopy.setCaseConstraint(this.getCaseConstraint());
+
+        List<PrerequisiteConstraint> dependencyConstraintsCopy = new ArrayList<PrerequisiteConstraint>();
+        for(PrerequisiteConstraint dependencyConstraint : dependencyConstraints)   {
+            //TODO referenced
+            dependencyConstraintsCopy.add(dependencyConstraint);
+        }
+        inputFieldCopy.setDependencyConstraints(dependencyConstraintsCopy);
+
+        List<MustOccurConstraint> mustOccurConstraintsCopy = new ArrayList<MustOccurConstraint>();
+        for(MustOccurConstraint mustOccurConstraint : mustOccurConstraints)   {
+            //TODO referenced
+            mustOccurConstraintsCopy.add(mustOccurConstraint);
+        }
+        inputFieldCopy.setMustOccurConstraints(mustOccurConstraintsCopy);
+
+        //TODO referenced
+        inputFieldCopy.setSimpleConstraint(this.getSimpleConstraint());
+        //TODO referenced
+        inputFieldCopy.setDataType(this.getDataType());
+
+        // display props
+        inputFieldCopy.setControl((Control)this.getControl().copy());
+        //TODO referenced
+        inputFieldCopy.setOptionsFinder(this.getOptionsFinder());
+
+        inputFieldCopy.setUppercaseValue(this.isUppercaseValue());
+        inputFieldCopy.setDisableNativeAutocomplete(this.isDisableNativeAutocomplete());
+
+        inputFieldCopy.setValidationMessages((ValidationMessages)this.getValidationMessages().copy());
+
+        // messages
+        inputFieldCopy.setConstraintText(this.getConstraintText());
+        inputFieldCopy.setInstructionalText(this.getInstructionalText());
+
+        inputFieldCopy.setConstraintMessage((Message)this.getConstraintMessage().copy());
+        inputFieldCopy.setInstructionalMessage((Message)this.getInstructionalMessage().copy());
+
+        inputFieldCopy.setAttributeQuery((AttributeQuery)this.getAttributeQuery().copy());
+
+        // widgets
+        inputFieldCopy.setQuickfinder((QuickFinder)this.getQuickfinder().copy());
+        inputFieldCopy.setSuggest((Suggest)this.getSuggest().copy());
+    }
 }

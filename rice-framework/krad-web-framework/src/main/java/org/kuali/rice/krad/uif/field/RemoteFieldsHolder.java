@@ -278,4 +278,25 @@ public class RemoteFieldsHolder extends ComponentBase implements DataBinding {
     public void setFetchingMethodInvoker(MethodInvokerConfig fetchingMethodInvoker) {
         this.fetchingMethodInvoker = fetchingMethodInvoker;
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        RemoteFieldsHolder remoteFieldsHolderCopy = (RemoteFieldsHolder) component;
+        remoteFieldsHolderCopy.setPropertyName(this.getPropertyName());
+
+        if(this.bindingInfo != null) {
+            remoteFieldsHolderCopy.setBindingInfo((BindingInfo)this.getBindingInfo().copy());
+        }
+
+        remoteFieldsHolderCopy.setFetchingMethodToCall(this.getFetchingMethodToCall());
+
+        if(this.fetchingMethodInvoker != null) {
+            this.setFetchingMethodInvoker((MethodInvokerConfig)this.getFetchingMethodInvoker().copy());
+        }
+    }
+
 }

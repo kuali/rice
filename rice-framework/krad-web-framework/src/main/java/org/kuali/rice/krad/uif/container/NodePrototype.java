@@ -15,12 +15,17 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import com.google.common.collect.Maps;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
+import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.element.Message;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @BeanTag(name = "nodePrototype-bean")
 public class NodePrototype extends UifDictionaryBeanBase implements Serializable {
@@ -61,5 +66,54 @@ public class NodePrototype extends UifDictionaryBeanBase implements Serializable
     @BeanTagAttribute(name="dataGroupPrototype",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getDataGroupPrototype() {
         return this.dataGroupPrototype;
+    }
+
+    public <T> T copy() {
+        T copiedClass = null;
+        try {
+            copiedClass = (T)this.getClass().newInstance();
+        }
+        catch(Exception exception) {
+            throw new RuntimeException();
+        }
+
+        copyProperties(copiedClass);
+
+        return copiedClass;
+    }
+
+    protected <T> void copyProperties(T nodePrototype) {
+        NodePrototype nodePrototypeCopy = (NodePrototype) nodePrototype;
+
+        if(this.labelPrototype != null)  {
+            nodePrototypeCopy.setLabelPrototype((Message)this.getLabelPrototype().copy());
+        }
+
+        if(this.dataGroupPrototype != null)  {
+            nodePrototypeCopy.setDataGroupPrototype((Group)this.getDataGroupPrototype().copy());
+        }
+
+        //DictionaryBeanBase properties
+        nodePrototypeCopy.setComponentCode(this.getComponentCode());
+        nodePrototypeCopy.setNamespaceCode(this.getNamespaceCode());
+
+        //UifDictionaryBeanBase properties
+        Map<String, String> expressionGraphCopy = Maps.newHashMapWithExpectedSize(this.getExpressionGraph().size());
+        for(Map.Entry expressionGraphEntry : getExpressionGraph().entrySet()) {
+            expressionGraphCopy.put(expressionGraphEntry.getKey().toString(),expressionGraphEntry.getValue().toString());
+        }
+        nodePrototypeCopy.setExpressionGraph(expressionGraphCopy);
+
+        Map<String, String> refreshExpressionGraphCopy = Maps.newHashMapWithExpectedSize(this.getRefreshExpressionGraph().size());
+        for(Map.Entry refreshExpressionGraphEntry : getRefreshExpressionGraph().entrySet()) {
+            expressionGraphCopy.put(refreshExpressionGraphEntry.getKey().toString(),refreshExpressionGraphEntry.getValue().toString());
+        }
+        nodePrototypeCopy.setRefreshExpressionGraph(refreshExpressionGraphCopy);
+
+        Map<String, String> propertyExpressionsCopy = Maps.newHashMapWithExpectedSize(this.getPropertyExpressions().size());
+        for(Map.Entry propertyExpressionsEntry : getPropertyExpressions().entrySet()) {
+            propertyExpressionsCopy.put(propertyExpressionsEntry.getKey().toString(),propertyExpressionsEntry.getValue().toString());
+        }
+        nodePrototypeCopy.setRefreshExpressionGraph(propertyExpressionsCopy);
     }
 }

@@ -68,4 +68,16 @@ public class SpinnerControl extends TextControl {
     public void setSpinner(Spinner spinner) {
         this.spinner = spinner;
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        SpinnerControl spinnerControlCopy = (SpinnerControl) component;
+        if(this.spinner != null) {
+            spinnerControlCopy.setSpinner((Spinner)this.getSpinner().copy());
+        }
+    }
 }

@@ -118,4 +118,28 @@ public class MethodInvokerConfig extends MethodInvoker implements Serializable {
         return null;
     }
 
+    public <T> T copy() {
+        T copiedClass = null;
+        try {
+            copiedClass = (T)this.getClass().newInstance();
+        }
+        catch(Exception exception) {
+            throw new RuntimeException();
+        }
+
+        copyProperties(copiedClass);
+
+        return copiedClass;
+    }
+
+    protected <T> void copyProperties(T methodInvokerConfig) {
+        MethodInvokerConfig methodInvokerConfigCopy = (MethodInvokerConfig) methodInvokerConfig;
+        methodInvokerConfigCopy.setStaticMethod(this.getStaticMethod());
+
+        if(this.argumentTypes != null) {
+            //TODO referenced
+            methodInvokerConfigCopy.setArgumentTypes(this.getArgumentTypes());
+        }
+    }
+
 }

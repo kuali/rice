@@ -49,4 +49,13 @@ public class FileControl extends ControlBase implements SizedControl {
         this.size = size;
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        FileControl fileControlCopy = (FileControl) component;
+        fileControlCopy.setSize(this.size);
+    }
 }

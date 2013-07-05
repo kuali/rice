@@ -324,4 +324,17 @@ public class LookupInputField extends InputField {
             return searchCriteria;
         }
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        LookupInputField lookupInputFieldCopy = (LookupInputField) component;
+        lookupInputFieldCopy.setDisableWildcardsAndOperators(this.isDisableWildcardsAndOperators());
+        lookupInputFieldCopy.setAddControlSelectAllOption(this.isAddControlSelectAllOption());
+        lookupInputFieldCopy.setTriggerOnChange(this.isTriggerOnChange());
+        lookupInputFieldCopy.setRanged(this.isRanged());
+    }
 }

@@ -227,4 +227,27 @@ public class ViewHeader extends Header {
     public void setSticky(boolean sticky) {
         this.sticky = sticky;
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        ViewHeader viewHeaderCopy = (ViewHeader) component;
+
+        if(this.areaTitleMessage != null) {
+            viewHeaderCopy.setAreaTitleMessage((Message)this.getAreaTitleMessage().copy());
+        }
+
+        if(this.supportTitleMessage != null) {
+            viewHeaderCopy.setSupportTitleMessage((Message)this.getSupportTitleMessage().copy());
+        }
+
+        if(this.metadataMessage != null)  {
+            viewHeaderCopy.setMetadataMessage((Message)this.getMetadataMessage().copy());
+        }
+
+        viewHeaderCopy.setSticky(this.isSticky());
+    }
 }

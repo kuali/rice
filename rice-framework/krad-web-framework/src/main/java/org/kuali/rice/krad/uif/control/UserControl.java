@@ -215,4 +215,16 @@ public class UserControl extends TextControl implements FilterableLookupCriteria
 
         return filteredSearchCriteria;
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        UserControl userControlCopy = (UserControl) component;
+        userControlCopy.setPrincipalIdPropertyName(this.getPrincipalIdPropertyName());
+        userControlCopy.setPersonNamePropertyName(this.getPersonNamePropertyName());
+        userControlCopy.setPersonObjectPropertyName(this.getPersonObjectPropertyName());
+    }
 }

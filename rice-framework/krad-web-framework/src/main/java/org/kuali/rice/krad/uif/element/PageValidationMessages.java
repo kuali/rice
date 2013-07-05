@@ -46,4 +46,14 @@ public class PageValidationMessages extends GroupValidationMessages {
     public void setShowPageSummaryHeader(boolean showPageSummaryHeader) {
         this.showPageSummaryHeader = showPageSummaryHeader;
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        PageValidationMessages pageValidationMessagesCopy = (PageValidationMessages) component;
+        pageValidationMessagesCopy.setShowPageSummaryHeader(this.isShowPageSummaryHeader());
+    }
 }

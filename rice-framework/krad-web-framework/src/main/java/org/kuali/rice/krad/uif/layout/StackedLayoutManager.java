@@ -499,4 +499,50 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
     public void setActionsInLineGroup(boolean actionsInLineGroup) {
         this.actionsInLineGroup = actionsInLineGroup;
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T layoutManager) {
+        super.copyProperties(layoutManager);
+        StackedLayoutManager stackedLayoutManagerCopy = (StackedLayoutManager) layoutManager;
+        stackedLayoutManagerCopy.setSummaryTitle(this.getSummaryTitle());
+
+        List<String> summaryFieldsCopy = new ArrayList<String>();
+        for(String summaryField : summaryFields)   {
+            summaryFieldsCopy.add(summaryField);
+        }
+        stackedLayoutManagerCopy.setSummaryFields(summaryFieldsCopy);
+
+        if(this.addLineGroup != null) {
+            stackedLayoutManagerCopy.setAddLineGroup((Group)this.getAddLineGroup().copy());
+        }
+
+        if(this.lineGroupPrototype != null) {
+            stackedLayoutManagerCopy.setLineGroupPrototype((Group)this.getLineGroupPrototype().copy());
+        }
+
+        if(this.wrapperGroup != null) {
+            stackedLayoutManagerCopy.setWrapperGroup((Group)this.getWrapperGroup().copy());
+        }
+
+        if(this.subCollectionFieldGroupPrototype != null) {
+            stackedLayoutManagerCopy.setSubCollectionFieldGroupPrototype((FieldGroup)this.getSubCollectionFieldGroupPrototype().copy());
+        }
+
+        if(this.selectFieldPrototype != null) {
+            stackedLayoutManagerCopy.setSelectFieldPrototype((Field)this.getSelectFieldPrototype().copy());
+        }
+
+        if(this.stackedGroups != null) {
+            List<Group> stackedGroupsCopy = new ArrayList<Group>();
+            for(Group stackedGroup : stackedGroups)   {
+                stackedGroupsCopy.add(stackedGroup);
+            }
+            stackedLayoutManagerCopy.setStackedGroups(stackedGroupsCopy);
+        }
+
+        stackedLayoutManagerCopy.setActionsInLineGroup(this.isActionsInLineGroup());
+    }
 }

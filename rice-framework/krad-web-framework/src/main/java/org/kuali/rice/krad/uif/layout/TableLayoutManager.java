@@ -1901,6 +1901,15 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     }
 
     /**
+     * Gets the grouping column index
+     *
+     * @return the grouping column index
+     */
+    public int getGroupingColumnIndex() {
+        return groupingColumnIndex;
+    }
+
+    /**
      * Set the expand details Action prototype link
      *
      * @param expandDetailsActionPrototype
@@ -1908,4 +1917,228 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     public void setExpandDetailsActionPrototype(Action expandDetailsActionPrototype) {
         this.expandDetailsActionPrototype = expandDetailsActionPrototype;
     }
+
+    /**
+     * Set the header labels
+     *
+     * @param headerLabels
+     */
+    public void setHeaderLabels(List<Label> headerLabels) {
+        this.headerLabels = headerLabels;
+    }
+
+    /**
+     * Set the row fields
+     *
+     * @param allRowFields
+     */
+    public void setAllRowFields(List<Field> allRowFields) {
+        this.allRowFields = allRowFields;
+    }
+
+    /**
+     * Set the first row fields
+     *
+     * @param firstRowFields
+     */
+    public void setFirstRowFields(List<Field> firstRowFields) {
+        this.firstRowFields = firstRowFields;
+    }
+
+    /**
+     * Set flag of whether a header is added
+     *
+     * @param headerAdded
+     */
+    public void setHeaderAdded(boolean headerAdded) {
+        this.headerAdded = headerAdded;
+    }
+
+    /**
+     * Sets action column index
+     *
+     * @param actionColumnIndex
+     */
+    public void setActionColumnIndex(int actionColumnIndex) {
+        this.actionColumnIndex = actionColumnIndex;
+    }
+
+    /**
+     * Set grouping column index
+     *
+     * @param groupingColumnIndex
+     */
+    public void setGroupingColumnIndex(int groupingColumnIndex) {
+        this.groupingColumnIndex = groupingColumnIndex;
+    }
+
+    /**
+     * Set flag generate group total rows
+     *
+     * @param generateGroupTotalRows
+     */
+    public void setGenerateGroupTotalRows(boolean generateGroupTotalRows) {
+        this.generateGroupTotalRows = generateGroupTotalRows;
+    }
+
+    /**
+     * Set columns to calculate
+     *
+     * @param columnsToCalculate
+     */
+    public void setColumnsToCalculate(List<String> columnsToCalculate) {
+        this.columnsToCalculate = columnsToCalculate;
+    }
+
+    /**
+     * Set footer calculation components
+     *
+     * @param footerCalculationComponents
+     */
+    public void setFooterCalculationComponents(List<Component> footerCalculationComponents) {
+        this.footerCalculationComponents = footerCalculationComponents;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T layoutManager) {
+        super.copyProperties(layoutManager);
+        TableLayoutManager tableLayoutManagerCopy = (TableLayoutManager) layoutManager;
+        tableLayoutManagerCopy.setUseShortLabels(this.isUseShortLabels());
+        tableLayoutManagerCopy.setRepeatHeader(this.isRepeatHeader());
+
+        if(this.headerLabelPrototype != null) {
+            tableLayoutManagerCopy.setHeaderLabelPrototype((Label)this.getHeaderLabelPrototype().copy());
+        }
+
+        tableLayoutManagerCopy.setRenderSequenceField(this.isRenderSequenceField());
+        tableLayoutManagerCopy.setGenerateAutoSequence(this.isGenerateAutoSequence());
+
+        if(this.sequenceFieldPrototype != null) {
+            tableLayoutManagerCopy.setSequenceFieldPrototype((Field)this.getSequenceFieldPrototype().copy());
+        }
+
+        if(this.actionFieldPrototype != null) {
+            tableLayoutManagerCopy.setActionFieldPrototype((FieldGroup)this.getActionFieldPrototype().copy());
+        }
+
+        if(this.subCollectionFieldGroupPrototype != null) {
+            tableLayoutManagerCopy.setSubCollectionFieldGroupPrototype((FieldGroup)this.getSubCollectionFieldGroupPrototype().copy());
+        }
+
+        if(this.selectFieldPrototype != null) {
+            tableLayoutManagerCopy.setSelectFieldPrototype((Field)this.getSelectFieldPrototype().copy());
+        }
+
+        tableLayoutManagerCopy.setSeparateAddLine(this.isSeparateAddLine());
+
+        if(this.addLineGroup != null) {
+            tableLayoutManagerCopy.setAddLineGroup((Group)this.getAddLineGroup().copy());
+        }
+
+        if(this.headerLabels != null) {
+            List<Label> headerLabelsCopy = new ArrayList<Label>();
+            for(Label headerLabel : headerLabels)   {
+                headerLabelsCopy.add(headerLabel);
+            }
+            tableLayoutManagerCopy.setHeaderLabels(headerLabelsCopy);
+        }
+
+        if(this.allRowFields != null) {
+            List<Field> allRowFieldsCopy = new ArrayList<Field>();
+            for(Field allRowField : allRowFields)   {
+                allRowFieldsCopy.add(allRowField);
+            }
+            tableLayoutManagerCopy.setAllRowFields(allRowFieldsCopy);
+        }
+
+        if(this.firstRowFields != null) {
+            List<Field> firstRowFieldsCopy = new ArrayList<Field>();
+            for(Field firstRowField : firstRowFields)   {
+                firstRowFieldsCopy.add(firstRowField);
+            }
+            tableLayoutManagerCopy.setFirstRowFields(firstRowFieldsCopy);
+        }
+
+        if(this.richTable != null)  {
+            tableLayoutManagerCopy.setRichTable((RichTable)this.getRichTable().copy());
+        }
+
+        tableLayoutManagerCopy.setHeaderAdded(this.headerAdded);
+        tableLayoutManagerCopy.setActionColumnIndex(this.getActionColumnIndex());
+
+        if(this.rowDetailsGroup != null)  {
+            tableLayoutManagerCopy.setRowDetailsGroup((Group)this.getRowDetailsGroup().copy());
+        }
+
+        tableLayoutManagerCopy.setRowDetailsOpen(this.isRowDetailsOpen());
+        tableLayoutManagerCopy.setShowToggleAllDetails(this.isShowToggleAllDetails());
+
+        if(this.toggleAllDetailsAction != null)  {
+            tableLayoutManagerCopy.setToggleAllDetailsAction((Action)this.getToggleAllDetailsAction().copy());
+        }
+
+        tableLayoutManagerCopy.setAjaxDetailsRetrieval(this.isAjaxDetailsRetrieval());
+
+        if(this.expandDetailsActionPrototype != null) {
+            tableLayoutManagerCopy.setExpandDetailsActionPrototype((Action)this.getExpandDetailsActionPrototype().copy());
+        }
+
+        tableLayoutManagerCopy.setGroupingTitle(this.getGroupingTitle());
+        tableLayoutManagerCopy.setGroupingPrefix(this.getGroupingPrefix());
+        tableLayoutManagerCopy.setGroupingColumnIndex(this.getGroupingColumnIndex());
+
+        if(this.groupingPropertyNames != null)  {
+            List<String> groupingPropertyNamesCopy = new ArrayList<String>();
+            for(String groupingPropertyName : groupingPropertyNames)   {
+                groupingPropertyNamesCopy.add(groupingPropertyName);
+            }
+            tableLayoutManagerCopy.setGroupingPropertyNames(groupingPropertyNamesCopy);
+        }
+
+        tableLayoutManagerCopy.setRenderOnlyLeftTotalLabels(this.isRenderOnlyLeftTotalLabels());
+        tableLayoutManagerCopy.setShowTotal(this.isShowTotal());
+        tableLayoutManagerCopy.setShowPageTotal(this.isShowPageTotal());
+        tableLayoutManagerCopy.setShowGroupTotal(this.isShowGroupTotal());
+        tableLayoutManagerCopy.setGenerateGroupTotalRows(this.generateGroupTotalRows);
+
+        if(this.totalLabel != null)  {
+            tableLayoutManagerCopy.setTotalLabel((Label)this.getTotalLabel().copy());
+        }
+
+        if(this.pageTotalLabel != null)  {
+            tableLayoutManagerCopy.setPageTotalLabel((Label)this.getPageTotalLabel().copy());
+        }
+
+        if(this.groupTotalLabelPrototype != null)  {
+            tableLayoutManagerCopy.setGroupTotalLabelPrototype((Label)this.getGroupTotalLabelPrototype().copy());
+        }
+
+        if(this.columnsToCalculate != null)  {
+            List<String> columnsToCalculateCopy = new ArrayList<String>();
+            for(String columnToCalculate : columnsToCalculate)   {
+                columnsToCalculateCopy.add(columnToCalculate);
+            }
+            tableLayoutManagerCopy.setColumnsToCalculate(columnsToCalculateCopy);
+        }
+
+        if(this.columnCalculations != null)  {
+            List<ColumnCalculationInfo> columnCalculationsCopy = new ArrayList<ColumnCalculationInfo>();
+            for(ColumnCalculationInfo columnCalculation : columnCalculations)   {
+                columnCalculationsCopy.add((ColumnCalculationInfo)columnCalculation.copy());
+            }
+            tableLayoutManagerCopy.setColumnCalculations(columnCalculationsCopy);
+        }
+
+        if(this.footerCalculationComponents != null)  {
+            List<Component> footerCalculationComponentsCopy = new ArrayList<Component>();
+            for(Component footerCalculationComponent : footerCalculationComponents)   {
+                footerCalculationComponentsCopy.add((Component)footerCalculationComponent.copy());
+            }
+            tableLayoutManagerCopy.setFooterCalculationComponents(footerCalculationComponentsCopy);
+        }
+    }
 }
+

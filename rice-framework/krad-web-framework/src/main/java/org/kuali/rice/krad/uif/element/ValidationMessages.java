@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.element;
 
+import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -349,4 +350,60 @@ public class ValidationMessages extends ContentElementBase {
             valueMap.put(key, value);
         }
     }
+
+    public void setErrors(List<String> errors) {
+        this.errors = errors;
+    }
+
+    public void setWarnings(List<String> warnings) {
+        this.warnings = warnings;
+    }
+
+    public void setInfos(List<String> infos) {
+        this.infos = infos;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        ValidationMessages validationMessagesCopy = (ValidationMessages) component;
+
+        List<String> additionalKeysToMatchCopy = new ArrayList<String>();
+        for(String additionalKeyToMatch : additionalKeysToMatch)   {
+            additionalKeysToMatchCopy.add(additionalKeyToMatch);
+        }
+        validationMessagesCopy.setAdditionalKeysToMatch(additionalKeysToMatchCopy);
+
+        validationMessagesCopy.setDisplayMessages(this.isDisplayMessages());
+
+        // Error messages
+        List<String> warningsCopy = new ArrayList<String>();
+        for(String warning : warnings)   {
+            warningsCopy.add(warning);
+        }
+        validationMessagesCopy.setWarnings(warningsCopy);
+
+        List<String> errorsCopy = new ArrayList<String>();
+        for(String error : errors)   {
+            errorsCopy.add(error);
+        }
+        validationMessagesCopy.setErrors(errorsCopy);
+
+        List<String> infosCopy = new ArrayList<String>();
+        for(String info : infos)   {
+            infosCopy.add(info);
+        }
+        validationMessagesCopy.setInfos(infosCopy);
+
+        Map<String, String> validationDataDefaultsCopy = Maps.newHashMapWithExpectedSize(
+                this.getValidationDataDefaults().size());
+        for(Map.Entry validationDataDefault : getValidationDataDefaults().entrySet()) {
+            validationDataDefaultsCopy.put(validationDataDefault.getKey().toString(),validationDataDefault.getValue().toString());
+        }
+        validationMessagesCopy.setValidationDataDefaults(validationDataDefaultsCopy);
+    }
+
 }

@@ -80,4 +80,13 @@ public class NavigationGroup extends Group {
         this.navigationType = navigationType;
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        NavigationGroup navigationGroupCopy = (NavigationGroup) component;
+        navigationGroupCopy.setNavigationType(this.getNavigationType());
+    }
 }

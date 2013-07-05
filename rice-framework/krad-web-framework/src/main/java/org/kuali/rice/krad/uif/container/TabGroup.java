@@ -95,4 +95,17 @@ public class TabGroup extends Group {
         this.tabsWidget = tabsWidget;
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        TabGroup tabGroupCopy = (TabGroup) component;
+
+        if(tabsWidget != null) {
+            tabGroupCopy.setTabsWidget((Tabs)this.getTabsWidget().copy());
+        }
+    }
+
 }

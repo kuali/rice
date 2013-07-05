@@ -107,4 +107,23 @@ public class MaintenanceActiveCollectionFilter implements CollectionFilter {
     public void setOldBindingObjectPath(String oldBindingObjectPath) {
         this.oldBindingObjectPath = oldBindingObjectPath;
     }
+
+    public <T> T copy() {
+        T copiedClass = null;
+        try {
+            copiedClass = (T)this.getClass().newInstance();
+        }
+        catch(Exception exception) {
+            throw new RuntimeException();
+        }
+
+        copyProperties(copiedClass);
+
+        return copiedClass;
+    }
+
+    protected <T> void copyProperties(T maintenanceActiveCollectionFilter) {
+        MaintenanceActiveCollectionFilter maintenanceActiveCollectionFilterCopy = (MaintenanceActiveCollectionFilter) maintenanceActiveCollectionFilter;
+        maintenanceActiveCollectionFilterCopy.setOldBindingObjectPath(this.getOldBindingObjectPath());
+    }
 }

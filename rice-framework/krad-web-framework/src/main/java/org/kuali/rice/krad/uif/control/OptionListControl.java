@@ -87,4 +87,16 @@ public class OptionListControl extends MultiValueControlBase {
     public void setSelectedItemCssClass(String selectedItemCssClass) {
         this.selectedItemCssClass = selectedItemCssClass;
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        OptionListControl optionListControlCopy = (OptionListControl) component;
+        optionListControlCopy.setItemCssClass(this.getItemCssClass());
+        optionListControlCopy.setSelectedItemCssClass(this.getSelectedItemCssClass());
+        optionListControlCopy.setShowOnlySelected(this.isShowOnlySelected());
+    }
 }

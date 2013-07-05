@@ -94,4 +94,21 @@ public class RadioGroupControl extends MultiValueControlBase {
 
         return "";
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        RadioGroupControl radioGroupControlCopy = (RadioGroupControl) component;
+
+        List<String> fieldsetClassesCopy = new ArrayList<String>();
+        for(String fieldsetClass : fieldsetClasses)   {
+            fieldsetClassesCopy.add(fieldsetClass);
+        }
+        radioGroupControlCopy.setFieldsetClasses(fieldsetClassesCopy);
+
+        radioGroupControlCopy.setDelimiter(this.getDelimiter());
+    }
 }

@@ -138,4 +138,18 @@ public class LinkGroup extends Group {
     public void setEmptyLinkGroupString(String emptyLinkGroupString) {
         this.emptyLinkGroupString = emptyLinkGroupString;
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        LinkGroup linkGroupCopy = (LinkGroup) component;
+        linkGroupCopy.setGroupBeginDelimiter(this.getGroupBeginDelimiter());
+        linkGroupCopy.setGroupEndDelimiter(this.getGroupEndDelimiter());
+        linkGroupCopy.setLinkSeparator(this.getLinkSeparator());
+        linkGroupCopy.setEmptyLinkGroupString(this.getEmptyLinkGroupString());
+    }
+
 }

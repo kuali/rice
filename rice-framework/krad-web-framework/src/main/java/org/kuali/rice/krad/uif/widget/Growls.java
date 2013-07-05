@@ -122,4 +122,16 @@ public class Growls extends WidgetBase {
     public void setPosition(String position) {
         this.position = position;
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        Growls growlsCopy = (Growls) component;
+        growlsCopy.setSticky(this.isSticky());
+        growlsCopy.setTimeShown(this.getTimeShown());
+        growlsCopy.setPosition(this.getPosition());
+    }
 }

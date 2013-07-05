@@ -73,4 +73,16 @@ public class ReorderingGroup extends Group {
     public void setReorderer(Reorderer reorderer) {
         this.reorderer = reorderer;
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        ReorderingGroup reorderingGroupCopy = (ReorderingGroup) component;
+        if(this.reorderer != null) {
+            reorderingGroupCopy.setReorderer((Reorderer)this.getReorderer().copy());
+        }
+    }
 }

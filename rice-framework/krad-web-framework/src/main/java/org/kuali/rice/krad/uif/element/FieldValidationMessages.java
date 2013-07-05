@@ -123,4 +123,15 @@ public class FieldValidationMessages extends ValidationMessages {
     public void setShowIcons(boolean showIcons) {
         this.showIcons = showIcons;
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        FieldValidationMessages fieldValidationMessagesCopy = (FieldValidationMessages) component;
+        fieldValidationMessagesCopy.setUseTooltip(this.isUseTooltip());
+        fieldValidationMessagesCopy.setShowIcons(this.isShowIcons());
+    }
 }

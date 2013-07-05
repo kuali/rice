@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -343,5 +344,72 @@ public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
     @Override
     public String toString(){
         return this.getHref();
+    }
+
+    /**
+     * toString returns the original href value of url
+     *
+     * @return original href value
+     */
+    public void setOriginalHref(String originalHref) {
+        this.originalHref = originalHref;
+    }
+
+    public <T> T copy() {
+        T copiedClass = null;
+        try {
+            copiedClass = (T)this.getClass().newInstance();
+        }
+        catch(Exception exception) {
+            throw new RuntimeException();
+        }
+
+        copyProperties(copiedClass);
+
+        return copiedClass;
+    }
+
+    protected <T> void copyProperties(T urlInfo) {
+        UrlInfo urlInfoCopy = (UrlInfo) urlInfo;
+        urlInfoCopy.setHref(this.getHref());
+        urlInfoCopy.setOriginalHref(this.getOriginalHref());
+        urlInfoCopy.setBaseUrl(this.getBaseUrl());
+        urlInfoCopy.setControllerMapping(this.getControllerMapping());
+        urlInfoCopy.setViewType(this.getViewType());
+        urlInfoCopy.setViewId(this.getViewId());
+        urlInfoCopy.setPageId(this.getPageId());
+        urlInfoCopy.setFormKey(this.getFormKey());
+        urlInfoCopy.setMethodToCall(this.getMethodToCall());
+
+        if(this.requestParameters != null) {
+            Map<String, String> requestParametersCopy = Maps.newHashMapWithExpectedSize(this.getRequestParameters().size());
+            for(Map.Entry requestParameter : getRequestParameters().entrySet()) {
+                requestParametersCopy.put(requestParameter.getKey().toString(),requestParameter.getValue().toString());
+            }
+            urlInfoCopy.setExpressionGraph(requestParametersCopy);
+        }
+
+        //DictionaryBeanBase properties
+        urlInfoCopy.setComponentCode(this.getComponentCode());
+        urlInfoCopy.setNamespaceCode(this.getNamespaceCode());
+
+        //UifDictionaryBeanBase properties
+        Map<String, String> expressionGraphCopy = Maps.newHashMapWithExpectedSize(this.getExpressionGraph().size());
+        for(Map.Entry expressionGraphEntry : getExpressionGraph().entrySet()) {
+            expressionGraphCopy.put(expressionGraphEntry.getKey().toString(),expressionGraphEntry.getValue().toString());
+        }
+        urlInfoCopy.setExpressionGraph(expressionGraphCopy);
+
+        Map<String, String> refreshExpressionGraphCopy = Maps.newHashMapWithExpectedSize(this.getRefreshExpressionGraph().size());
+        for(Map.Entry refreshExpressionGraphEntry : getRefreshExpressionGraph().entrySet()) {
+            expressionGraphCopy.put(refreshExpressionGraphEntry.getKey().toString(),refreshExpressionGraphEntry.getValue().toString());
+        }
+        urlInfoCopy.setRefreshExpressionGraph(refreshExpressionGraphCopy);
+
+        Map<String, String> propertyExpressionsCopy = Maps.newHashMapWithExpectedSize(this.getPropertyExpressions().size());
+        for(Map.Entry propertyExpressionsEntry : getPropertyExpressions().entrySet()) {
+            propertyExpressionsCopy.put(propertyExpressionsEntry.getKey().toString(),propertyExpressionsEntry.getValue().toString());
+        }
+        urlInfoCopy.setRefreshExpressionGraph(propertyExpressionsCopy);
     }
 }

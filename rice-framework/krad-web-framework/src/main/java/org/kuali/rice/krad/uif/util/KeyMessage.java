@@ -75,4 +75,6 @@ public class KeyMessage extends AbstractKeyValue {
     public void setMessage(Message message) {
         this.message = message;
     }
+
+
 }

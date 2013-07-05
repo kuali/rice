@@ -159,4 +159,17 @@ public class PasswordControl extends ControlBase implements SizedControl {
 
         this.watermarkText = watermarkText;
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        PasswordControl passwordControlCopy = (PasswordControl) component;
+        passwordControlCopy.setSize(this.getSize());
+        passwordControlCopy.setMaxLength(this.getMaxLength());
+        passwordControlCopy.setMinLength(this.getMinLength());
+        passwordControlCopy.setWatermarkText(this.getWatermarkText());
+    }
 }

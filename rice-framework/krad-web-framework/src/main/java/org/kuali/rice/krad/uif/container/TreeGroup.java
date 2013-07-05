@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
@@ -314,5 +315,44 @@ public class TreeGroup extends Group implements DataBinding {
 
     public void setTree(org.kuali.rice.krad.uif.widget.Tree tree) {
         this.tree = tree;
+    }
+
+
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        TreeGroup treeGroupCopy = (TreeGroup) component;
+        treeGroupCopy.setPropertyName(this.getPropertyName());
+
+        if(this.bindingInfo != null) {
+            treeGroupCopy.setBindingInfo((BindingInfo)this.getBindingInfo().copy());
+        }
+
+        if(this.defaultNodePrototype != null) {
+            treeGroupCopy.setDefaultNodePrototype((NodePrototype)this.getDefaultNodePrototype().copy());
+        }
+
+        if(this.treeGroups != null) {
+            //TODO referenced
+            treeGroupCopy.setTreeGroups(this.getTreeGroups());
+        }
+
+        if(this.tree != null) {
+           treeGroupCopy.setTree((org.kuali.rice.krad.uif.widget.Tree)this.getTree().copy());
+        }
+
+        if(this.nodePrototypeMap != null) {
+            Map<Class<?>, NodePrototype> nodePrototypeMapCopy = Maps.newHashMapWithExpectedSize(
+                    this.getNodePrototypeMap().size());
+            for(Map.Entry nodePrototypeMapEntry : getNodePrototypeMap().entrySet()) {
+               //TODO reference
+                nodePrototypeMapCopy.put((Class)nodePrototypeMapEntry.getKey(),(NodePrototype)nodePrototypeMapEntry.getValue());
+            }
+            treeGroupCopy.setNodePrototypeMap(nodePrototypeMapCopy);
+        }
     }
 }

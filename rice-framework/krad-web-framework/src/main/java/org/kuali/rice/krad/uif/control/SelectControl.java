@@ -79,4 +79,14 @@ public class SelectControl extends MultiValueControlBase implements SizedControl
         this.multiple = multiple;
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        SelectControl selectControlCopy = (SelectControl) component;
+        selectControlCopy.setSize(this.getSize());
+        selectControlCopy.setMultiple(this.isMultiple());
+    }
 }

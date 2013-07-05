@@ -348,4 +348,26 @@ public class GridLayoutManager extends LayoutManagerBase {
     public void setRowCssClasses(List<String> rowCssClasses) {
         this.rowCssClasses = rowCssClasses;
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T layoutManager) {
+        super.copyProperties(layoutManager);
+        GridLayoutManager gridLayoutManagerCopy = (GridLayoutManager) layoutManager;
+        gridLayoutManagerCopy.setNumberOfColumns(this.getNumberOfColumns());
+        gridLayoutManagerCopy.setSuppressLineWrapping(this.isSuppressLineWrapping());
+        gridLayoutManagerCopy.setApplyAlternatingRowStyles(this.isApplyAlternatingRowStyles());
+        gridLayoutManagerCopy.setApplyDefaultCellWidths(this.isApplyDefaultCellWidths());
+        gridLayoutManagerCopy.setRenderFirstRowHeader(this.isRenderFirstRowHeader());
+        gridLayoutManagerCopy.setRenderAlternatingHeaderColumns(this.isRenderAlternatingHeaderColumns());
+        gridLayoutManagerCopy.setRenderRowFirstCellHeader(this.isRenderRowFirstCellHeader());
+
+        List<String> rowCssClassesCopy = new ArrayList<String>();
+        for(String rowCssClass : rowCssClasses)   {
+            rowCssClassesCopy.add(rowCssClass);
+        }
+        gridLayoutManagerCopy.setRowCssClasses(rowCssClassesCopy);
+    }
 }

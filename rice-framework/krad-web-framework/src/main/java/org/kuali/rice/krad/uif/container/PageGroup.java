@@ -374,4 +374,23 @@ public class PageGroup extends Group {
 
         super.completeValidation(tracer.getCopy());
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        PageGroup pageGroupCopy = (PageGroup) component;
+        pageGroupCopy.setAutoFocus(this.isAutoFocus());
+        pageGroupCopy.setStickyFooter(this.isStickyFooter());
+
+        if(breadcrumbOptions != null) {
+            pageGroupCopy.setBreadcrumbOptions((PageBreadcrumbOptions)this.getBreadcrumbOptions().copy());
+        }
+
+        if(breadcrumbItem != null) {
+            pageGroupCopy.setBreadcrumbItem((BreadcrumbItem)this.getBreadcrumbOptions().copy());
+        }
+    }
 }

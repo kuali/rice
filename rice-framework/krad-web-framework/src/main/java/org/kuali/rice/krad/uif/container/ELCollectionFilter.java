@@ -98,4 +98,23 @@ public class ELCollectionFilter implements CollectionFilter {
         this.expression = expression;
     }
 
+    public <T> T copy() {
+        T copiedClass = null;
+        try {
+            copiedClass = (T)this.getClass().newInstance();
+        }
+        catch(Exception exception) {
+            throw new RuntimeException();
+        }
+
+        copyProperties(copiedClass);
+
+        return copiedClass;
+    }
+
+    protected <T> void copyProperties(T eLCollectionFilter) {
+        ELCollectionFilter eLCollectionFilterCopy = (ELCollectionFilter) eLCollectionFilter;
+        eLCollectionFilterCopy.setExpression(this.getExpression());
+    }
+
 }

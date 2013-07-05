@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -49,8 +50,10 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -652,5 +655,78 @@ public class LightTable extends Group implements DataBinding {
      */
     public boolean isEmptyTable() {
         return emptyTable;
+    }
+
+    public void setHeaderLabels(List<Label> headerLabels) {
+        this.headerLabels = headerLabels;
+    }
+
+    public void setExpressionConversionMap(Map<String, String> expressionConversionMap) {
+        this.expressionConversionMap = expressionConversionMap;
+    }
+
+    public Map<String, String> getExpressionConversionMap() {
+        return expressionConversionMap;
+    }
+
+    public List<String> getInitialComponentIds() {
+        return initialComponentIds;
+    }
+
+    public Map<String, String> getRenderIdExpressionMap() {
+        return renderIdExpressionMap;
+    }
+
+    public void setInitialComponentIds(List<String> initialComponentIds) {
+        this.initialComponentIds = initialComponentIds;
+    }
+
+    public void setRenderIdExpressionMap(Map<String, String> renderIdExpressionMap) {
+        this.renderIdExpressionMap = renderIdExpressionMap;
+    }
+
+    public void setEmptyTable(boolean emptyTable) {
+        this.emptyTable = emptyTable;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        LightTable lightTableCopy = (LightTable) component;
+        lightTableCopy.setPropertyName(this.getPropertyName());
+        lightTableCopy.setBindingInfo((BindingInfo)this.getBindingInfo().copy());
+
+        List<Label> headerLabelsCopy = new ArrayList<Label>();
+        for(Label headerLabel : headerLabels)   {
+            headerLabelsCopy.add((Label)headerLabel.copy());
+        }
+        lightTableCopy.setHeaderLabels(headerLabelsCopy);
+
+        if (this.getRichTable() != null) {
+            lightTableCopy.setRichTable((RichTable) this.getRichTable().copy());
+        }
+
+        Map<String, String> expressionConversionMapCopy = Maps.newHashMapWithExpectedSize(this.getExpressionConversionMap().size());
+        for(Map.Entry expressionConversionMapEntry : getExpressionConversionMap().entrySet()) {
+            expressionConversionMapCopy.put(expressionConversionMapEntry.getKey().toString(),expressionConversionMapEntry.getValue().toString());
+        }
+        lightTableCopy.setExpressionConversionMap(expressionConversionMapCopy);
+
+        Map<String, String> renderIdExpressionMapCopy = Maps.newHashMapWithExpectedSize(this.getRenderIdExpressionMap().size());
+        for(Map.Entry renderIdExpressionMapEntry : getRenderIdExpressionMap().entrySet()) {
+            renderIdExpressionMapCopy.put(renderIdExpressionMapEntry.getKey().toString(),renderIdExpressionMapEntry.getValue().toString());
+        }
+        lightTableCopy.setRenderIdExpressionMap(renderIdExpressionMapCopy);
+
+        List<String> initialComponentIdsCopy = new ArrayList<String>();
+        for(String initialComponentId : initialComponentIds)   {
+            initialComponentIdsCopy.add(initialComponentId);
+        }
+        lightTableCopy.setInitialComponentIds(initialComponentIdsCopy);
+
+        lightTableCopy.setEmptyTable(this.isEmptyTable());
     }
 }

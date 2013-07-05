@@ -75,7 +75,7 @@ public abstract class WebDriverITBase {
     @Before
     public void setUp() throws Exception {
         driver = WebDriverUtil.setUp(getUserName(), ITUtil.getBaseUrlString() + "/" + getTestUrl());
-        WebDriverUtil.login(driver, getUserName(), new Failable() {
+        WebDriverUtil.loginKradOrKns(driver, getUserName(), new Failable() {
             @Override
             public void fail(String message) {
                 SeleneseTestBase.fail(message);

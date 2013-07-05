@@ -273,11 +273,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     public static final String REMOTE_PUBLIC_USERPOOL_PROPERTY = "remote.public.userpool";
 
     /**
-     * Set -Dremote.login.uif=KNS to use old login screen.  Default value = KRAD
-     */
-    public static final String REMOTE_LOGIN_UIF = "remote.login.uif";
-
-    /**
      * Set -Dremote.public.wait.seconds to override DEFAULT_WAIT_SEC
      */
     public static final String REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY = "remote.public.wait.seconds";
@@ -456,12 +451,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
             driver = WebDriverUtil.setUp(getUserName(), testUrl , getClass().getSimpleName(), testMethodName);
             this.sessionId = ((RemoteWebDriver) driver).getSessionId().toString();
 
-            // login via either KRAD or KNS login page
-            if (isKradLogin()){
-                WebDriverUtil.kradLogin(driver, user, this);
-            } else {
-                WebDriverUtil.login(driver, user, this);
-            }
+            WebDriverUtil.loginKradOrKns(driver, user, this);
 
             jGrowlHeader = getClass().getSimpleName() + "." + testMethodName;
             System.out.println(jGrowlHeader + " sessionId is " + sessionId);
@@ -4619,19 +4609,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void waitNotVisibleByXpath(String locator) throws InterruptedException {
         waitNotVisible(By.xpath(locator));
-    }
-
-    /**
-     * Use the KRAD Login Screen or the old KNS Login Screen
-     */
-    protected boolean isKradLogin(){
-        // check system property, default to KRAD
-        String loginUif = System.getProperty(REMOTE_LOGIN_UIF);
-        if (loginUif == null) {
-            loginUif = ITUtil.REMOTE_UIF_KRAD;
-        }
-
-        return (ITUtil.REMOTE_UIF_KRAD.equalsIgnoreCase(loginUif));
     }
 
     /**

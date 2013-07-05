@@ -85,6 +85,11 @@ public class WebDriverUtil {
     public static final String REMOTE_JGROWL_ENABLED = "remote.jgrowl.enabled";
 
     /**
+     * Set -Dremote.login.uif=KNS to use old login screen.  Default value = KRAD
+     */
+    public static final String REMOTE_LOGIN_UIF = "remote.login.uif";
+
+    /**
      * Set -Dremote.public.chrome= or WEBDRIVER_CHROME_DRIVER
      */
     public static final String REMOTE_PUBLIC_CHROME = "remote.public.chrome";
@@ -337,6 +342,27 @@ public class WebDriverUtil {
             ITUtil.failOnInvalidUserName(userName, contents, failable);
             ITUtil.checkForIncidentReport(driver.getPageSource(), "KNS Login", failable, "KNS Login failure");
         }
+    }
+
+    public static void loginKradOrKns(WebDriver driver, String user, Failable failable) throws InterruptedException {// login via either KRAD or KNS login page
+        if (isKradLogin()){
+            WebDriverUtil.kradLogin(driver, user, failable);
+        } else {
+            WebDriverUtil.login(driver, user, failable);
+        }
+    }
+
+    /**
+     * Use the KRAD Login Screen or the old KNS Login Screen
+     */
+    public static boolean isKradLogin(){
+        // check system property, default to KRAD
+        String loginUif = System.getProperty(REMOTE_LOGIN_UIF);
+        if (loginUif == null) {
+            loginUif = ITUtil.REMOTE_UIF_KRAD;
+        }
+
+        return (ITUtil.REMOTE_UIF_KRAD.equalsIgnoreCase(loginUif));
     }
 
     protected static void selectFrameSafe(WebDriver driver, String locator) {

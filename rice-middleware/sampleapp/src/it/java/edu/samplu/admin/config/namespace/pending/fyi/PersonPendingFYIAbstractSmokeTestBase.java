@@ -102,9 +102,10 @@ public abstract class PersonPendingFYIAbstractSmokeTestBase extends AdminTmplMth
     protected void testPersonPendingFYI() throws Exception {
         selectFrameIframePortlet();
         waitAndCreateNew();
-        waitAndTypeByName(DOCUMENT_DESCRIPTION_NAME,"Test Namespace2");
-        waitAndTypeByName(DOCUMENT_CODE_NAME,"SUACTION2");
-        waitAndTypeByName(DOCUMENT_NAME,"SUACTION2"+RandomStringUtils.randomAlphabetic(4).toLowerCase());
+        waitAndTypeByName(DOCUMENT_DESCRIPTION_NAME,"Test Namespace2 " + ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits());
+        String randomFour = RandomStringUtils.randomAlphabetic(4).toLowerCase();
+        waitAndTypeByName(DOCUMENT_CODE_NAME,"SUACTION2" + randomFour);
+        waitAndTypeByName(DOCUMENT_NAME,"SUACTION2" + randomFour);
         waitAndTypeByName(DOCUMENT_APPLICATIONID_NAME,"KUALI");
         waitAndClickByName("methodToCall.toggleTab.tabAdHocRecipients");
         selectByName("newAdHocRoutePerson.actionRequested", "FYI");

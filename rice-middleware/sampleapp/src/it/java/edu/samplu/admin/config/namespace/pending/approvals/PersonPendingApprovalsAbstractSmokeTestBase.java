@@ -102,9 +102,10 @@ public abstract class PersonPendingApprovalsAbstractSmokeTestBase extends AdminT
     protected void testPersonPendingApprovals() throws Exception {
         selectFrameIframePortlet();
         waitAndCreateNew();
-        waitAndTypeByName(DOCUMENT_DESCRIPTION_NAME,"Test Namespace");
-        waitAndTypeByName(DOCUMENT_CODE_NAME,"SUACTION");
-        waitAndTypeByName(DOCUMENT_NAME,"SUACTION"+RandomStringUtils.randomAlphabetic(4).toLowerCase());
+        waitAndTypeByName(DOCUMENT_DESCRIPTION_NAME,"Test Namespace " + ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits());
+        String randomFour = RandomStringUtils.randomAlphabetic(4).toLowerCase();
+        waitAndTypeByName(DOCUMENT_CODE_NAME,"SUACTION" + randomFour);
+        waitAndTypeByName(DOCUMENT_NAME,"SUACTION" + randomFour);
         waitAndTypeByName(DOCUMENT_APPLICATIONID_NAME,"KUALI");
         waitAndClickByName("methodToCall.toggleTab.tabAdHocRecipients");
         waitAndTypeByName(ADD_PERSON_TEXT_ELEMENT_NAME,"frank");

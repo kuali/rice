@@ -102,9 +102,10 @@ public abstract class FYIPendingApprovalsAbstractSmokeTestBase extends AdminTmpl
     protected void testFYIPendingApprovals() throws Exception {
         selectFrameIframePortlet();
         waitAndCreateNew();
-        waitAndTypeByName(DOCUMENT_DESCRIPTION_NAME,"Test Namespace");
-        waitAndTypeByName(DOCUMENT_CODE_NAME,"SUACTION4");
-        waitAndTypeByName(DOCUMENT_NAME,"SUACTION4"+RandomStringUtils.randomAlphabetic(4).toLowerCase());
+        waitAndTypeByName(DOCUMENT_DESCRIPTION_NAME,"Test Namespace " +ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits());
+        String random4 = RandomStringUtils.randomAlphabetic(4).toLowerCase();
+        waitAndTypeByName(DOCUMENT_CODE_NAME,"SUACTION4" + random4);
+        waitAndTypeByName(DOCUMENT_NAME,"SUACTION4" + random4);
         waitAndTypeByName(DOCUMENT_APPLICATIONID_NAME,"KUALI");
         waitAndClickByName("methodToCall.toggleTab.tabAdHocRecipients");
         waitAndClickByName(NAME_LOOKUP_COMPONENT_NAME);

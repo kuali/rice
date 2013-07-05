@@ -13,19 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.samplu.krad.demo.travel.account.maintenance;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.internal.selenesedriver.SwitchToFrame;
+package edu.samplu.krad.demo.travel.account;
 
 import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
+import edu.samplu.common.SmokeTestBase;
+import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class DemoTravelAccountMaintenanceNewAbstractSmokeTestBase extends WebDriverLegacyITBase {
+public class DemoTravelAccountMaintenanceNewSmokeTest extends SmokeTestBase {
 
     /**
      * //div[@class='fancybox-item fancybox-close']
@@ -43,11 +40,11 @@ public abstract class DemoTravelAccountMaintenanceNewAbstractSmokeTestBase exten
     public static final String BOOKMARK_URL = "/kr-krad/maintenance?methodToCall=start&dataObjectClassName=org.kuali.rice.krad.demo.travel.account.TravelAccount&hideReturnLink=true";
 
     @Override
-    public String getTestUrl() {
-        return ITUtil.KRAD_PORTAL;
+    public String getBookmarkUrl() {
+        return BOOKMARK_URL;
     }
 
-    protected void navigation() throws Exception {
+    protected void navigate() throws Exception {
         waitAndClickById("Demo-DemoLink", "");
         waitAndClickByLinkText("Account Maintenance (New)");
     }
@@ -67,8 +64,18 @@ public abstract class DemoTravelAccountMaintenanceNewAbstractSmokeTestBase exten
     }
 
     public void testDemoTravelAccountMaintenanceNewNav(Failable failable) throws Exception {
-        navigation();
+        navigate();
         testTravelAccountMaintenanceNew();
         passed();
+    }
+
+    @Test
+    public void testDemoTravelAccountMaintenanceNewBookmark() throws Exception {
+        testDemoTravelAccountMaintenanceNewBookmark(this);
+    }
+
+    @Test
+    public void testDemoTravelAccountMaintenanceNewNav() throws Exception {
+        testDemoTravelAccountMaintenanceNewNav(this);
     }
 }

@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.samplu.krad.demo.travel.account.type.lookup;
+package edu.samplu.krad.demo.travel.account;
 
 import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
+import edu.samplu.common.SmokeTestBase;
+import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class DemoTravelAccountTypeLookUpAbstractSmokeTestBase extends WebDriverLegacyITBase {
+public class DemoTravelAccountTypeLookUpSmokeTest extends SmokeTestBase {
 
     /**
      * /kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.krad.demo.travel.account.TravelAccountType&hideReturnLink=true
@@ -40,11 +40,12 @@ public abstract class DemoTravelAccountTypeLookUpAbstractSmokeTestBase extends W
     public static final String CLEAR_VALUES = "Clear Values";
     
     @Override
-    public String getTestUrl() {
-        return ITUtil.KRAD_PORTAL;
+    public String getBookmarkUrl() {
+        return BOOKMARK_URL;
     }
 
-    protected void navigation() throws Exception {
+    @Override
+    protected void navigate() throws Exception {
         waitAndClickById("Demo-DemoLink", "");
         waitAndClickByLinkText("Account Type Lookup");
     }
@@ -66,8 +67,18 @@ public abstract class DemoTravelAccountTypeLookUpAbstractSmokeTestBase extends W
     }
 
     public void testTravelAccountTypeLookUpNav(Failable failable) throws Exception {
-        navigation();
+        navigate();
         testTravelAccountTypeLookUp();
         passed();
+    }
+
+    @Test
+    public void testTravelAccountTypeLookUpNav() throws Exception {
+        testTravelAccountTypeLookUpNav(this);
+    }
+
+    @Test
+    public void testTravelAccountTypeLookUpBookmark() throws Exception {
+        testTravelAccountTypeLookUpBookmark(this);
     }
 }

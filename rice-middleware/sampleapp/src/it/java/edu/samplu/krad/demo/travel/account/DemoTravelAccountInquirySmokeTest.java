@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.samplu.krad.demo.travel.account.inquiry;
+package edu.samplu.krad.demo.travel.account;
 
 import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
+import edu.samplu.common.SmokeTestBase;
+import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class DemoTravelAccountInquirySmokeTestBase extends WebDriverLegacyITBase {
+public class DemoTravelAccountInquirySmokeTest extends SmokeTestBase {
 
     /**
      * //a[@title='Travel Account ']
@@ -45,11 +45,12 @@ public abstract class DemoTravelAccountInquirySmokeTestBase extends WebDriverLeg
     public static final String EXPAND_ALL = "Expand All";
 
     @Override
-    public String getTestUrl() {
-        return ITUtil.KRAD_PORTAL;
+    public String getBookmarkUrl() {
+        return BOOKMARK_URL;
     }
 
-    protected void navigation() throws Exception {
+    @Override
+    protected void navigate() throws Exception {
         waitAndClickById("Demo-DemoLink", "");
         waitAndClickByLinkText("Account Inquiry");
     }
@@ -66,12 +67,13 @@ public abstract class DemoTravelAccountInquirySmokeTestBase extends WebDriverLeg
     }
 
     public void testInquiryBackButtonNav(Failable failable) throws Exception {
-        navigation();
+        navigate();
         testInquiryBackButton();
         passed();
     }
 
     protected void testCollapseExpand() throws InterruptedException {
+        waitForElementPresentByClassName("demo-contactInfo");
         assertTextPresent("Travel Account Number:");
         assertTextPresent(EXPAND_ALL);
         assertTextPresent(COLLAPSE_ALL);
@@ -90,7 +92,7 @@ public abstract class DemoTravelAccountInquirySmokeTestBase extends WebDriverLeg
     }
 
     public void testInquiryCollapseExpandNav(Failable failable) throws Exception {
-        navigation();
+        navigate();
         testCollapseExpand();
         passed();
     }
@@ -106,8 +108,37 @@ public abstract class DemoTravelAccountInquirySmokeTestBase extends WebDriverLeg
     }
 
     public void testInquiryLightBoxNav(Failable failable) throws Exception {
-        navigation();
+        navigate();
         testInquiryLightBox();
         passed();
+    }
+
+    @Test
+    public void testInquiryCollapseExpandBookmark() throws Exception {
+        testInquiryCollapseExpandBookmark(this);
+    }
+
+    @Test
+    public void testInquiryLightBoxBookmark() throws Exception {
+        testInquiryLightBoxBookmark(this);
+    }
+
+    @Test
+    public void testInquiryBackButtonBookmark() throws Exception {
+        testInquiryBackButtonBookmark(this);
+    }
+    @Test
+    public void testInquiryCollapseExpandNav() throws Exception {
+        testInquiryCollapseExpandNav(this);
+    }
+
+    @Test
+    public void testInquiryLightBoxNav() throws Exception {
+        testInquiryLightBoxNav(this);
+    }
+
+    @Test
+    public void testInquiryBackButtonNav() throws Exception {
+        testInquiryBackButtonNav(this);
     }
 }

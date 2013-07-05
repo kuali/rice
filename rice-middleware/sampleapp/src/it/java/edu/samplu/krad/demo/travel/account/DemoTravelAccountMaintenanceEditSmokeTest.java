@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.samplu.krad.demo.travel.account.maintenance;
+package edu.samplu.krad.demo.travel.account;
 
 import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
+import edu.samplu.common.SmokeTestBase;
+import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class DemoTravelAccountMaintenanceEditAbstractSmokeTestBase extends WebDriverLegacyITBase {
+public class DemoTravelAccountMaintenanceEditSmokeTest extends SmokeTestBase {
 
     /**
      * /kr-krad/maintenance?methodToCall=maintenanceEdit&number=a14&dataObjectClassName=org.kuali.rice.krad.demo.travel.account.TravelAccount&hideReturnLink=true
@@ -30,11 +30,11 @@ public abstract class DemoTravelAccountMaintenanceEditAbstractSmokeTestBase exte
     public static final String BOOKMARK_URL = "/kr-krad/maintenance?methodToCall=maintenanceEdit&number=a14&dataObjectClassName=org.kuali.rice.krad.demo.travel.account.TravelAccount&hideReturnLink=true";
   
     @Override
-    public String getTestUrl() {
-        return ITUtil.KRAD_PORTAL;
+    public String getBookmarkUrl() {
+        return BOOKMARK_URL;
     }
 
-    protected void navigation() throws Exception {
+    protected void navigate() throws Exception {
         waitAndClickById("Demo-DemoLink", "");
         waitAndClickByLinkText("Account Maintenance (Edit)");
     }
@@ -53,8 +53,18 @@ public abstract class DemoTravelAccountMaintenanceEditAbstractSmokeTestBase exte
     }
 
     public void testDemoTravelAccountMaintenanceEditNav(Failable failable) throws Exception {
-        navigation();
+        navigate();
         testTravelAccountMaintenanceEdit();
         passed();
+    }
+
+    @Test
+    public void testDemoTravelAccountMaintenanceEditBookmark() throws Exception {
+        testDemoTravelAccountMaintenanceEditBookmark(this);
+    }
+
+    @Test
+    public void testDemoTravelAccountMaintenanceEditNav() throws Exception {
+        testDemoTravelAccountMaintenanceEditNav(this);
     }
 }

@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.samplu.krad.demo.travel.account.lookup;
+package edu.samplu.krad.demo.travel.account;
 
 import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
+import edu.samplu.common.SmokeTestBase;
+import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class DemoTravelAccountLookUpAbstractSmokeTestBase extends WebDriverLegacyITBase {
+public class DemoTravelAccountLookUpSmokeTest extends SmokeTestBase {
 
     /**
      * /kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.krad.demo.travel.account.TravelAccount&hideReturnLink=true&showMaintenanceLinks=true
@@ -40,11 +40,12 @@ public abstract class DemoTravelAccountLookUpAbstractSmokeTestBase extends WebDr
     public static final String CLEAR_VALUES = "Clear Values";
     
     @Override
-    public String getTestUrl() {
-        return ITUtil.KRAD_PORTAL;
+    public String getBookmarkUrl() {
+        return BOOKMARK_URL;
     }
 
-    protected void navigation() throws Exception {
+    @Override
+    protected void navigate() throws Exception {
         waitAndClickById("Demo-DemoLink", "");
         waitAndClickByLinkText("Account Lookup");
     }
@@ -52,8 +53,7 @@ public abstract class DemoTravelAccountLookUpAbstractSmokeTestBase extends WebDr
     protected void testTravelAccountLookUp() throws Exception {
         waitAndTypeByName("lookupCriteria[number]","a1");
         waitAndClickButtonByText(SEARCH);
-        Thread.sleep(3000);
-        assertElementPresentByXpath("//a[contains(text(), 'a1')]");
+        waitForElementPresentByXpath("//a[contains(text(), 'a1')]");
         waitAndClickButtonByText(CLEAR_VALUES);
         Thread.sleep(3000);
         waitAndClickButtonByText(SEARCH);
@@ -68,8 +68,18 @@ public abstract class DemoTravelAccountLookUpAbstractSmokeTestBase extends WebDr
     }
 
     public void testTravelAccountLookUpNav(Failable failable) throws Exception {
-        navigation();
+        navigate();
         testTravelAccountLookUp();
         passed();
+    }
+
+    @Test
+    public void testTravelAccountLookUpBookmark() throws Exception {
+        testTravelAccountLookUpBookmark(this);
+    }
+
+    @Test
+    public void testTravelAccountLookUpNav() throws Exception {
+        testTravelAccountLookUpNav(this);
     }
 }

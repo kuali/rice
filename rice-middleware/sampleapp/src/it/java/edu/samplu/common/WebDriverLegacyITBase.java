@@ -431,14 +431,14 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     /**
+     * Failures in testSetup cause the test to not be recorded.  Future plans are to extract form @Before and call at the start of each test.
      * Setup the WebDriver properties, test, and login.  Named testSetUp so it runs after TestNG's startSession(Method)
-     *
      * {@link WebDriverUtil#determineUser(String)}
      * {@link WebDriverUtil#setUp(String, String, String, String)}
-     * @throws Exception
      */
     @Before
     public void testSetUp() {
+        // TODO it would be better if all opening of urls and logging in was not done in setUp, failures in setUp case the test to not be recorded. extract to setUp and call first for all tests.
         try { // Don't throw any exception from this methods, exceptions in Before annotations really mess up maven, surefire, or failsafe
 
             if (testName != null && testName.getMethodName() != null) { // JUnit
@@ -451,7 +451,9 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
                 user = givenUser;
             }
 
-            driver = WebDriverUtil.setUp(getUserName(), getTestUrl(), getClass().getSimpleName(), testMethodName);
+            String testUrl = kulrice9804(); // https://jira.kuali.org/browse/KULRICE-9804 KNS Create new link absent when Bookmark URL requires Login
+
+            driver = WebDriverUtil.setUp(getUserName(), testUrl , getClass().getSimpleName(), testMethodName);
             this.sessionId = ((RemoteWebDriver) driver).getSessionId().toString();
 
             // login via either KRAD or KNS login page
@@ -475,6 +477,18 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     /**
+     * // https://jira.kuali.org/browse/KULRICE-9804 KNS Create new link absent when Bookmark URL requires Login
+     * @return
+     */
+    private String kulrice9804() {
+        String testUrl = getTestUrl();
+        if (testUrl.contains(ITUtil.HIDE_RETURN_LINK)) {
+            testUrl += "&showMaintenanceLinks=true";
+        }
+        return testUrl;
+    }
+
+    /**
      * Tear down test as configured.  Do not allow exceptions to be thrown by tearDown, it kills the test run.
      * {@link WebDriverUtil#tearDown(boolean, String, String, String)}
      * {@link WebDriverLegacyITBase#REMOTE_PUBLIC_USERPOOL_PROPERTY}
@@ -484,14 +498,12 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     @After
     public void tearDown() {
         try {
-            if (!passed) {
+            if (!passed) { // TODO move to Failable.fail impl to included error message, when it is promoted to this class
                 jGrowlSticky("FAILURE!");
             }
 
             WebDriverUtil.tearDown(passed, sessionId, this.toString().trim(), user);
-        }
-
-        catch (Throwable t) {
+        } catch (Throwable t) {
             System.out.println("Exception in tearDown " + t.getMessage());
             t.printStackTrace();
         }
@@ -499,9 +511,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         finally {
             try {
                 closeAndQuitWebDriver();
-            }
-
-            catch (Throwable t) {
+            } catch (Throwable t) {
                 System.out.println(t.getMessage() + " occured during tearDown, ignoring to avoid killing test run.");
                 t.printStackTrace();
                 System.out.println(t.getMessage() + " occured during tearDown, ignoring to avoid killing test run.");

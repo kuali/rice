@@ -58,8 +58,9 @@ public abstract class ConfigParameterTypeLookUpAndEditAbstractSmokeTestBase exte
         selectFrameIframePortlet();
         waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]");
         waitAndClickByLinkText("edit");
-        waitAndTypeByName("document.documentHeader.documentDescription","Test description of parameter type");
+        waitAndTypeByName("document.documentHeader.documentDescription","Test description of parameter type " + ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits());
         waitAndClickByName("methodToCall.route");
+        checkForDocError();
         waitAndClickByName("methodToCall.close");
         waitAndClickByName("methodToCall.processAnswer.button1");        
     }

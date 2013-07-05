@@ -57,10 +57,11 @@ public abstract class ConfigParameterTypeCreateNewAbstractSmokeTestBase extends 
     {
         selectFrameIframePortlet();
         waitAndClickByXpath(CREATE_NEW_XPATH);        
-        waitAndTypeByName("document.documentHeader.documentDescription","Test description of parameter type creat");
-        waitAndTypeByName("document.newMaintainableObject.code","Test1");
-        waitAndTypeByName("document.newMaintainableObject.name","Test1ParmTypeCode");
+        waitAndTypeByName("document.documentHeader.documentDescription","Test description of parameter type create " + ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits());
+        waitAndTypeByName("document.newMaintainableObject.code","Test1" + ITUtil.createUniqueDtsPlusTwoRandomChars());
+        waitAndTypeByName("document.newMaintainableObject.name","Test1ParmTypeCode" + ITUtil.createUniqueDtsPlusTwoRandomChars());
         waitAndClickByName("methodToCall.route");
+        checkForDocError();
         waitAndClickByName("methodToCall.close");
         waitAndClickByName("methodToCall.processAnswer.button1");        
     }

@@ -62,6 +62,7 @@ public abstract class ConfigComponentCreateNewAbstractSmokeTestBase extends Admi
         waitAndTypeByName("document.newMaintainableObject.code","Test1");
         waitAndTypeByName("document.newMaintainableObject.name","Test1ComponentCode");
         waitAndClickByName("methodToCall.route");
+        checkForDocError();
         waitAndClickByName("methodToCall.close");
         waitAndClickByName("methodToCall.processAnswer.button1");        
     }

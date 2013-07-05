@@ -57,11 +57,12 @@ public abstract class ConfigNamespaceCreateNewAbstractSmokeTestBase extends Admi
     {
         selectFrameIframePortlet();
         waitAndClickByXpath(CREATE_NEW_XPATH);        
-        waitAndTypeByName("document.documentHeader.documentDescription","Test description of Namespace create new");
-        waitAndType("document.document.newMaintainableObject.code","KR-SYS3");
+        waitAndTypeByName("document.documentHeader.documentDescription","Test description of Namespace create new " + ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits());
+        waitAndTypeByName("document.newMaintainableObject.code","KR-SYS3" + ITUtil.createUniqueDtsPlusTwoRandomChars());
         waitAndTypeByName("document.newMaintainableObject.name","Enterprise Infrastructure 3");
         waitAndTypeByName("document.newMaintainableObject.applicationId","RICE");
         waitAndClickByName("methodToCall.route");
+        checkForDocError();
         waitAndClickByName("methodToCall.close");
         waitAndClickByName("methodToCall.processAnswer.button1");        
     }

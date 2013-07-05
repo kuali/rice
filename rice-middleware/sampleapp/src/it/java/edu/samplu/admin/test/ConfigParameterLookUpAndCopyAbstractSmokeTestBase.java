@@ -59,12 +59,13 @@ public abstract class ConfigParameterLookUpAndCopyAbstractSmokeTestBase extends 
         waitAndTypeByName("name","*email*");
         waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]");
         waitAndClickByXpath("//a[@title='copy Parameter withParameter Name=EMAIL_NOTIFICATION_TEST_ADDRESS Application ID=KUALI Namespace Code=KR-WKFLW Component=ActionList ']");
-        waitAndTypeByName("document.documentHeader.documentDescription","Test description of parameter copy");
+        waitAndTypeByName("document.documentHeader.documentDescription","Test description of parameter copy " + ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits());
         selectByName("document.newMaintainableObject.namespaceCode","KR-WKFLW - Workflow");
         waitAndTypeByName("document.newMaintainableObject.componentCode","ActionList");
         waitAndTypeByName("document.newMaintainableObject.applicationId","KUALI");
-        waitAndTypeByName("document.newMaintainableObject.name","EMAIL_NOTIFICATION_TEST_ADDRESS_COPY");
+        waitAndTypeByName("document.newMaintainableObject.name","EMAIL_NOTIFICATION_TEST_ADDRESS_COPY_" + ITUtil.createUniqueDtsPlusTwoRandomChars());
         waitAndClickByName("methodToCall.route");
+        checkForDocError();
         waitAndClickByName("methodToCall.close");
         waitAndClickByName("methodToCall.processAnswer.button1");        
     }

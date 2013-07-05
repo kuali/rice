@@ -58,13 +58,14 @@ public abstract class ConfigNamespaceLookUpAndCopyAbstractSmokeTestBase extends 
         selectFrameIframePortlet();
         waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]");
         waitAndClickByLinkText("copy");
-        waitAndTypeByName("document.documentHeader.documentDescription","Test description of Namespace copy");        
-        waitAndTypeByName("document.newMaintainableObject.code","KR-SYS2");
+        waitAndTypeByName("document.documentHeader.documentDescription","Test description of Namespace copy" + ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits());
+        waitAndTypeByName("document.newMaintainableObject.code","KR-SYS2" + ITUtil.createUniqueDtsPlusTwoRandomChars());
         waitAndTypeByName("document.newMaintainableObject.name","");
         waitAndTypeByName("document.newMaintainableObject.name","Enterprise Infrastructure 2");
         waitAndTypeByName("document.newMaintainableObject.applicationId","");
         waitAndTypeByName("document.newMaintainableObject.applicationId","RICE");
         waitAndClickByName("methodToCall.route");
+        checkForDocError();
         waitAndClickByName("methodToCall.close");
         waitAndClickByName("methodToCall.processAnswer.button1");        
     }

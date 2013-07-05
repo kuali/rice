@@ -923,7 +923,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     protected String configNameSpaceBlanketApprove() throws Exception {
         String docId = waitForDocId();
         String dtsPlusTwoChars = ITUtil.createUniqueDtsPlusTwoRandomChars();
-        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Namespace " + dtsPlusTwoChars);
+        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Namespace " + ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits());
         assertBlanketApproveButtonsPresent();
         waitAndTypeByXpath(DOC_CODE_XPATH, "VTN" + dtsPlusTwoChars);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']",
@@ -1132,6 +1132,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * @param message to display with failure
      */
     public void failableFail(String message) {
+        passed = false;
         jGrowlSticky(message);
         fail(message); // Failable.fail
     }
@@ -1529,7 +1530,8 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void testAgendaEditRuleRefreshIT() throws Exception {
         selectFrameIframePortlet();
-        waitAndClickByXpath("//div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button[1]"); //  jiraAwareWaitAndClick("id=32");
+        waitAndClickButtonByText("Search");
+        //        waitAndClickByXpath("//div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button[1]"); //  jiraAwareWaitAndClick("id=32");
         Thread.sleep(3000);
         waitAndClickByXpath("//a[@title='edit Agenda Definition with Agenda Id=T1000']",
                 "Does user have edit permissions?"); // jiraAwareWaitAndClick("id=194_line0");
@@ -4365,6 +4367,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndType(By.cssSelector(selector), text);
     }
 
+    protected void waitAndTypeById(String id, String text) throws InterruptedException {
+        waitAndType(By.id(id), text);
+    }
+
     protected void waitAndTypeByXpath(String locator, String text) throws InterruptedException {
         waitAndType(By.xpath(locator), text);
     }
@@ -4413,6 +4419,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected String waitForDocId() throws InterruptedException {
+        checkForDocError();
         waitForElementPresentByXpath(DOC_ID_XPATH);
 
         return driver.findElement(By.xpath(DOC_ID_XPATH)).getText();

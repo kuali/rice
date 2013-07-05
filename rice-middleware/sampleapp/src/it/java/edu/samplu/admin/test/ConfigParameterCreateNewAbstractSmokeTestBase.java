@@ -56,14 +56,15 @@ public abstract class ConfigParameterCreateNewAbstractSmokeTestBase extends Admi
     public void testConfigParameterCreateNew() throws Exception
     {
         waitAndClickByXpath(CREATE_NEW_XPATH);
-        waitAndTypeByName("document.documentHeader.documentDescription","Test description of parameter create new");
+        waitAndTypeByName("document.documentHeader.documentDescription","Test description of parameter create new " + ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits());
         selectByName("document.newMaintainableObject.namespaceCode","KR-WKFLW - Workflow");
         waitAndTypeByName("document.newMaintainableObject.componentCode","ActionList");
-        waitAndTypeByName("document.newMaintainableObject.name","Test Action List Parameter");
+        waitAndTypeByName("document.newMaintainableObject.name","Test_Action_List_Parameter_" + ITUtil.createUniqueDtsPlusTwoRandomChars());
         waitAndTypeByName("document.newMaintainableObject.description","Test Action List Parameter");
         selectByName("document.newMaintainableObject.parameterTypeCode","Config");
         waitAndClickByName("document.newMaintainableObject.evaluationOperatorCode");
         waitAndClickByName("methodToCall.route");
+        checkForDocError();
         waitAndClickByName("methodToCall.close");
         waitAndClickByName("methodToCall.processAnswer.button1");        
     }

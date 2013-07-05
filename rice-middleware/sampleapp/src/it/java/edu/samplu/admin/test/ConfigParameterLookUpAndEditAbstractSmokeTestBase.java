@@ -59,9 +59,10 @@ public abstract class ConfigParameterLookUpAndEditAbstractSmokeTestBase extends 
         waitAndTypeByName("name","email*");
         waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]");
         waitAndClickByLinkText("edit");
-        waitAndTypeByName("document.documentHeader.documentDescription","Test description of parameter");
+        waitAndTypeByName("document.documentHeader.documentDescription","Test description of parameter " + ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits());
         waitAndTypeByName("document.newMaintainableObject.value","email@provider.net");
         waitAndClickByName("methodToCall.route");
+        checkForDocError();
         waitAndClickByName("methodToCall.close");
         waitAndClickByName("methodToCall.processAnswer.button1");        
     }

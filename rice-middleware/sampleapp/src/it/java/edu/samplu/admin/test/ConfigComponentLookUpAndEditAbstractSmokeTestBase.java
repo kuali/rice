@@ -53,13 +53,13 @@ public abstract class ConfigComponentLookUpAndEditAbstractSmokeTestBase extends 
         passed();
     }    
     
-    public void testConfigComponentLookUpAndEdit() throws Exception
-    {
+    public void testConfigComponentLookUpAndEdit() throws Exception {
         selectFrameIframePortlet();
         waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]");
         waitAndClickByLinkText("edit");
         waitAndTypeByName("document.documentHeader.documentDescription","Test description of Component");
         waitAndClickByName("methodToCall.route");
+        checkForDocError();
         waitAndClickByName("methodToCall.close");
         waitAndClickByName("methodToCall.processAnswer.button1");        
     }

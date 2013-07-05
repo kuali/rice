@@ -149,7 +149,6 @@
       <properties>
         <maven.failsafe.skip>false</maven.failsafe.skip>
         <maven.failsafe.includes>**/*IT.java, **/*Gen.java</maven.failsafe.includes>
-        <!-- exclude krad.demo and krad.labs they are enabled on evn11 only -->
         <!-- exclude krad/labs and krad/demo which only work against krad-sampleapp (env11) -->
         <maven.failsafe.excludes>
           **/krad/labs/**/*.java, **/krad/demo/**/*.java

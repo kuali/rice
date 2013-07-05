@@ -43,12 +43,12 @@ import java.util.Properties;
 /**
  * tests uploads of new users and group
  *
- * <pre>mvn -f rice-middleware/sampleapp/pom.xml -Pstests failsafe:integration-test -Dremote.public.url=env7.rice.kuali.org -Dit.test=XMLIngesterNavIT -DXMLIngester.groupId=2008 -DXMLIngester.userIncludeDTSinPrefix=false -DXMLIngester.userCntBegin=0 -DXMLIngester.userCnt=600  -DXMLIngester.userPrefix=loadtester -Dremote.driver.dontTearDown=y</pre>
+ * <pre>mvn -f rice-middleware/sampleapp/pom.xml -Pstests failsafe:integration-test -Dremote.public.url=env7.rice.kuali.org -Dit.test=XMLIngester -DXMLIngester.groupId=2008 -DXMLIngester.userIncludeDTSinPrefix=false -DXMLIngester.userCntBegin=0 -DXMLIngester.userCnt=600  -DXMLIngester.userPrefix=loadtester -Dremote.driver.dontTearDown=y</pre>
  *
  * @deprecated XMLIngesterSTJUnitNavGen
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class XMLIngesterNavIT extends AdminTmplMthdSTNavBase {
+public class XMLIngester extends AdminTmplMthdSTNavBase {
 
     protected final Logger LOG = Logger.getLogger(getClass());
 

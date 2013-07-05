@@ -26,7 +26,7 @@ import org.openqa.selenium.By;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IdentityPersonRoleWDIT extends WebDriverLegacyITBase{
+public class IdentityPersonRole extends WebDriverLegacyITBase{
 
     public static final String EDIT_URL = ITUtil.getBaseUrlString() + "/kim/identityManagementPersonDocument.do?returnLocation=" + ITUtil.PORTAL_URL_ENCODED + "&principalId=LTID&docTypeName=IdentityManagementPersonDocument&methodToCall=docHandler&command=initiate";
     public static final String TEST_URL = ITUtil.PORTAL + "?channelTitle=Person&channelUrl=" + ITUtil.getBaseUrlString() +

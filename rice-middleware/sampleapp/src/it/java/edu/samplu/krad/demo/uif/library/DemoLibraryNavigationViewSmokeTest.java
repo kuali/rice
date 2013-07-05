@@ -20,8 +20,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
-public class DemoLibraryNavigationViewSmokeTest extends DemoLibraryNavigationSmokeTest {
+public class DemoLibraryNavigationViewSmokeTest extends DemoLibraryNavigationBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=NavigationGroup-NavigationView&methodToCall=start
@@ -31,6 +30,10 @@ public class DemoLibraryNavigationViewSmokeTest extends DemoLibraryNavigationSmo
     @Override
     public String getBookmarkUrl() {
         return BOOKMARK_VIEW_URL;
+    }
+
+    protected void navigate() throws Exception {
+        // no-op navigation test is done in DemoLibraryNavigationSmokeTest
     }
 
     @Test

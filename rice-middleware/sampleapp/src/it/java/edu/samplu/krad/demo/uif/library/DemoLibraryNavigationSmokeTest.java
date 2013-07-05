@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoLibraryNavigationSmokeTest extends DemoLibraryBase {
+public class DemoLibraryNavigationSmokeTest extends DemoLibraryNavigationBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=ComponentLibraryHome
@@ -47,18 +47,6 @@ public class DemoLibraryNavigationSmokeTest extends DemoLibraryBase {
         assertTextPresent("Navigation View");
     }
 
-    protected void testNavigationView() throws Exception {
-        assertNavigationView("Page 2", "Test Course 2");
-        assertNavigationView("Page 3", "Test Course 3");
-        assertNavigationView("Page 1", "Test Course 1");
-    }
-
-    protected void assertNavigationView(String linkText, String supportTitleText) throws Exception {
-        waitAndClickByLinkText(linkText);
-        waitForElementPresentByClassName("uif-viewHeader-supportTitle");
-        SeleneseTestBase.assertTrue(getTextByClassName("uif-viewHeader-supportTitle").contains(supportTitleText));
-    }
-
     public void testNavigationMenuBookmark(Failable failable) throws Exception {
         testNavigationTabs();
         testNavigationView();
@@ -68,11 +56,6 @@ public class DemoLibraryNavigationSmokeTest extends DemoLibraryBase {
     public void testNavigationMenuNav(Failable failable) throws Exception {
         navigateToLibraryDemo("Navigation", "Navigation Group");
         testNavigationTabs();
-        testNavigationView();
-        passed();
-    }
-
-    public void testNavigationViewBookmark(Failable failable) throws Exception {
         testNavigationView();
         passed();
     }

@@ -198,7 +198,7 @@ ul.uif-readOnlyStringList li {
     text-align: right;
 }
 #Uif-TopGroupWrapper > div {
-    padding-left: 20px;
+    padding-left: 0px;
 }
 #Uif-BreadcrumbWrapper, #Uif-ApplicationHeader-Wrapper, #Uif-ApplicationFooter-Wrapper, #Uif-TopGroupWrapper {
     width: 100%;
@@ -258,7 +258,7 @@ img.uif-disclosure-image {
 ol.uif-breadcrumbs {
     display: block;
     letter-spacing: 0.02em;
-    padding-left: 15px;
+    padding-left: 20px;
     height: 28px;
 }
 .uif-breadcrumbs > li > a {

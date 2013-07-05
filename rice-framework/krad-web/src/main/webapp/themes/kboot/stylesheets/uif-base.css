@@ -370,14 +370,14 @@ table.uif-gridLayout > tbody > tr > td.uif-inputField {
     float: left;
     display: block;
     margin-right: 10px;
-/*    margin-bottom: 10px;*/
+    /*    margin-bottom: 10px;*/
 }
 .uif-inputField.uif-boxLayoutHorizontalItem {
     margin-right: 20px;
 }
 .uif-boxLayoutVerticalItem {
     display: block;
-/*    margin-bottom: 10px;*/
+    /*    margin-bottom: 10px;*/
 }
 .uif-linkGroup .uif-boxLayoutHorizontalItem {
     display: inline;
@@ -406,9 +406,21 @@ table.dataTable tfoot th {
     padding: 3px 10px;
 }
 .uif-stackedCollectionLayout {
-    background-image: url(../../images/pattern_dotted.png);
+    background:#fff;
     padding: 10px;
 }
+
+.uif-stackedCollectionLayout .uif-stackedCollectionLayout {
+    background:#fff;
+    padding: 10px;
+}
+.uif-stackedCollectionLayout td {
+    background:#fff;
+
+}
+
+
+
 .uif-placeholder {
     display: none;
     margin: 0px !important;
@@ -600,7 +612,7 @@ div.blockPage {
     overflow-x: hidden;
 }
 .ui-autocomplete-input {
-    background: url(../../images/icon_autosuggest.png) right no-repeat;
+    background: url(../images/icon_autosuggest.png) right no-repeat;
     padding: 3px;
     outline: none;
 }

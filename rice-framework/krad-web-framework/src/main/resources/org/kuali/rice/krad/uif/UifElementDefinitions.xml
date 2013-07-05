@@ -253,9 +253,7 @@
   <bean id="Uif-ActionImage" parent="Uif-ActionImage-parentBean"/>
   <bean id="Uif-ActionImage-parentBean" abstract="true" parent="Uif-Action">
     <property name="libraryCssClasses">
-      <list merge="true">
-        <value>btn-link</value>
-      </list>
+      <list/>
     </property>
     <property name="cssClasses">
       <list>

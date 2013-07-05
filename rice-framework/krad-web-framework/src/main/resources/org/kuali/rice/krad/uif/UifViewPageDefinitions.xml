@@ -43,7 +43,7 @@
     <property name="imageDirectory" value="@{#ConfigProperties['krad.externalizable.images.url']}kns/"/>
     <property name="cssFiles">
       <list merge="true">
-        <value>krad/css/kns/theme-kns.css</value>
+<!--        <value>krad/css/kns/theme-kns.css</value>-->
       </list>
     </property>
   </bean>

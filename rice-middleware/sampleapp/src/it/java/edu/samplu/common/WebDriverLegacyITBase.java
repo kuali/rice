@@ -208,6 +208,11 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     public static final String DOC_SUBMIT_SUCCESS_MSG_XPATH ="//div[contains(div,'Document was successfully submitted.')]";
 
     /**
+     * Set -Dremote.driver.dontTearDownOnFailure=
+     */
+    public static final String DONT_TEAR_DOWN_ON_FAILURE_PROPERTY = "remote.driver.dontTearDownOnFailure";
+
+    /**
      * edit
      */
     public static final String EDIT_LINK_TEXT = "edit";
@@ -506,7 +511,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     private void closeAndQuitWebDriver() {
         if (driver != null) {
-            if (ITUtil.dontTearDownPropertyNotSet()) {
+            if (ITUtil.dontTearDownPropertyNotSet() && dontTearDownOnFailure()) {
                 driver.close();
                 driver.quit();
             }
@@ -516,6 +521,13 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
             System.out.println("WebDriver is null for " + this.getClass().toString() + ", if using saucelabs, has" +
                     " sauceleabs been uncommented in WebDriverUtil.java?  If using a remote hub did you include the port?");
         }
+    }
+
+    private boolean dontTearDownOnFailure() {
+        if (!"n".equalsIgnoreCase(System.getProperty(DONT_TEAR_DOWN_ON_FAILURE_PROPERTY, "n"))) {
+            return passed;
+        }
+        return true;
     }
 
     /**

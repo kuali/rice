@@ -139,4 +139,17 @@ public class HistoryEntry extends UifDictionaryBeanBase implements Serializable 
         this.formKey = formKey;
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        HistoryEntry historyEntryCopy = (HistoryEntry) component;
+        historyEntryCopy.setViewId(this.getViewId());
+        historyEntryCopy.setPageId(this.getPageId());
+        historyEntryCopy.setTitle(this.getTitle());
+        historyEntryCopy.setUrl(this.getUrl());
+        historyEntryCopy.setFormKey(this.getFormKey());
+    }
 }

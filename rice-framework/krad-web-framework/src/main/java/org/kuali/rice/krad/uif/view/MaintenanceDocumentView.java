@@ -174,4 +174,19 @@ public class MaintenanceDocumentView extends DocumentView {
         this.maintenanceAction = maintenanceAction;
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        MaintenanceDocumentView maintenanceDocumentViewCopy = (MaintenanceDocumentView) component;
+
+        //TODO reference
+        if(this.dataObjectClassName != null) {
+            maintenanceDocumentViewCopy.setDataObjectClassName(this.getDataObjectClassName());
+        }
+
+        maintenanceDocumentViewCopy.setOldObjectBindingPath(this.getOldObjectBindingPath());
+    }
 }

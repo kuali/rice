@@ -792,4 +792,52 @@ public class LookupView extends FormView {
     public void setRangedToMessage(Message rangedToMessage) {
         this.rangedToMessage = rangedToMessage;
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        LookupView lookupViewCopy = (LookupView) component;
+
+        //TODO reference
+        if(this.dataObjectClassName != null) {
+            lookupViewCopy.setDataObjectClassName(this.getDataObjectClassName());
+        }
+
+        if(this.criteriaGroup != null) {
+            lookupViewCopy.setCriteriaGroup((Group)this.getCriteriaGroup().copy());
+        }
+
+        if(this.resultsGroup != null) {
+            lookupViewCopy.setResultsGroup((CollectionGroup)this.getResultsGroup().copy());
+        }
+
+        if(this.criteriaFields != null) {
+            List<Component> criteriaFieldsCopy = new ArrayList<Component>();
+            for(Component criteriaField : criteriaFields)   {
+                criteriaFieldsCopy.add((Component)criteriaField.copy());
+            }
+            lookupViewCopy.setCriteriaFields(criteriaFieldsCopy);
+        }
+
+        if(this.resultFields != null) {
+            List<Component> resultFieldsCopy = new ArrayList<Component>();
+            for(Component resultField : resultFields)   {
+                resultFieldsCopy.add((Component)resultField.copy());
+            }
+            lookupViewCopy.setResultFields(resultFieldsCopy);
+        }
+
+        if(this.resultFields != null) {
+            List<String> defaultSortAttributeNamesCopy = new ArrayList<String>();
+            for(String defaultSortAttributeName : defaultSortAttributeNames)   {
+                defaultSortAttributeNamesCopy.add(defaultSortAttributeName);
+            }
+            lookupViewCopy.setDefaultSortAttributeNames(defaultSortAttributeNamesCopy);
+        }
+
+        lookupViewCopy.setDefaultSortAscending(this.isDefaultSortAscending());
+    }
 }

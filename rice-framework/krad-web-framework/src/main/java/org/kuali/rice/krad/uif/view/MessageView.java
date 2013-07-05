@@ -96,4 +96,17 @@ public class MessageView extends FormView {
 
         this.message.setMessageText(messageText);
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        MessageView messageViewCopy = (MessageView) component;
+
+        if(this.message != null) {
+            messageViewCopy.setMessage((Message)this.getMessage().copy());
+        }
+    }
 }

@@ -68,22 +68,10 @@ public class NodePrototype extends UifDictionaryBeanBase implements Serializable
         return this.dataGroupPrototype;
     }
 
-    public <T> T copy() {
-        T copiedClass = null;
-        try {
-            copiedClass = (T)this.getClass().newInstance();
-        }
-        catch(Exception exception) {
-            throw new RuntimeException();
-        }
-
-        copyProperties(copiedClass);
-
-        return copiedClass;
-    }
-
-    protected <T> void copyProperties(T nodePrototype) {
-        NodePrototype nodePrototypeCopy = (NodePrototype) nodePrototype;
+    @Override
+    protected <T> void copyProperties(T dictionaryBaseBean) {
+        super.copyProperties(dictionaryBaseBean);
+        NodePrototype nodePrototypeCopy = (NodePrototype) dictionaryBaseBean;
 
         if(this.labelPrototype != null)  {
             nodePrototypeCopy.setLabelPrototype((Message)this.getLabelPrototype().copy());
@@ -92,28 +80,5 @@ public class NodePrototype extends UifDictionaryBeanBase implements Serializable
         if(this.dataGroupPrototype != null)  {
             nodePrototypeCopy.setDataGroupPrototype((Group)this.getDataGroupPrototype().copy());
         }
-
-        //DictionaryBeanBase properties
-        nodePrototypeCopy.setComponentCode(this.getComponentCode());
-        nodePrototypeCopy.setNamespaceCode(this.getNamespaceCode());
-
-        //UifDictionaryBeanBase properties
-        Map<String, String> expressionGraphCopy = Maps.newHashMapWithExpectedSize(this.getExpressionGraph().size());
-        for(Map.Entry expressionGraphEntry : getExpressionGraph().entrySet()) {
-            expressionGraphCopy.put(expressionGraphEntry.getKey().toString(),expressionGraphEntry.getValue().toString());
-        }
-        nodePrototypeCopy.setExpressionGraph(expressionGraphCopy);
-
-        Map<String, String> refreshExpressionGraphCopy = Maps.newHashMapWithExpectedSize(this.getRefreshExpressionGraph().size());
-        for(Map.Entry refreshExpressionGraphEntry : getRefreshExpressionGraph().entrySet()) {
-            expressionGraphCopy.put(refreshExpressionGraphEntry.getKey().toString(),refreshExpressionGraphEntry.getValue().toString());
-        }
-        nodePrototypeCopy.setRefreshExpressionGraph(refreshExpressionGraphCopy);
-
-        Map<String, String> propertyExpressionsCopy = Maps.newHashMapWithExpectedSize(this.getPropertyExpressions().size());
-        for(Map.Entry propertyExpressionsEntry : getPropertyExpressions().entrySet()) {
-            propertyExpressionsCopy.put(propertyExpressionsEntry.getKey().toString(),propertyExpressionsEntry.getValue().toString());
-        }
-        nodePrototypeCopy.setRefreshExpressionGraph(propertyExpressionsCopy);
     }
 }

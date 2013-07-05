@@ -64,4 +64,34 @@ public abstract class DictionaryBeanBase implements DictionaryBean {
     public void setComponentCode(String componentCode) {
         this.componentCode = componentCode;
     }
+
+    /**
+     * Copies object by value
+     *
+     * @return copiedClass
+     */
+    public <T> T copy() {
+        T copiedClass = null;
+        try {
+            copiedClass = (T)this.getClass().newInstance();
+        }
+        catch(Exception exception) {
+            throw new RuntimeException();
+        }
+
+        copyProperties(copiedClass);
+
+        return copiedClass;
+    }
+
+    /**
+     * Copies properties for copy()
+     *
+     * @param dictionaryBeanBase base bean
+     */
+    protected <T> void copyProperties(T dictionaryBeanBase) {
+        DictionaryBeanBase dictionaryBeanBaseCopy = (DictionaryBeanBase) dictionaryBeanBase;
+        dictionaryBeanBaseCopy.setComponentCode(this.getComponentCode());
+        dictionaryBeanBaseCopy.setNamespaceCode(this.getNamespaceCode());
+    }
 }

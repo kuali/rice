@@ -95,4 +95,18 @@ public class InquiryView extends FormView {
         this.dataObjectClassName = dataObjectClassName;
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        InquiryView inquiryViewCopy = (InquiryView) component;
+
+        //TODO reference
+        if(this.dataObjectClassName != null) {
+            inquiryViewCopy.setDataObjectClassName(this.getDataObjectClassName());
+        }
+
+    }
 }

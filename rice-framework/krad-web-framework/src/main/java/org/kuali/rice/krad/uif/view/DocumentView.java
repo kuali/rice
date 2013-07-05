@@ -211,4 +211,26 @@ public class DocumentView extends FormView {
 		this.attachmentTypesValuesFinderClass = attachmentTypesValuesFinderClass;
 	}
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        DocumentView documentViewCopy = (DocumentView) component;
+
+        //TODO reference
+        if(this.documentClass != null) {
+            documentViewCopy.setDocumentClass(this.getDocumentClass());
+        }
+
+        //TODO reference
+        if(this.attachmentTypesValuesFinderClass != null) {
+            documentViewCopy.setAttachmentTypesValuesFinderClass(this.getAttachmentTypesValuesFinderClass());
+        }
+
+        documentViewCopy.setAllowsNoteAttachments(this.isAllowsNoteAttachments());
+        documentViewCopy.setAllowsNoteFYI(this.isAllowsNoteFYI());
+        documentViewCopy.setDisplayTopicFieldInNotes(this.isDisplayTopicFieldInNotes());
+    }
 }

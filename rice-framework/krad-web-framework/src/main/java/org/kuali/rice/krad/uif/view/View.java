@@ -2296,4 +2296,120 @@ public class View extends ContainerBase {
         super.completeValidation(tracer.getCopy());
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        View viewCopy = (View) component;
+        viewCopy.setActionFlags(this.actionFlags);
+        viewCopy.setAdditionalCssFiles(new ArrayList<String>(this.additionalCssFiles));
+        viewCopy.setAdditionalScriptFiles(new ArrayList<String>(this.additionalScriptFiles));
+
+        if (this.applicationFooter != null) {
+            viewCopy.setApplicationFooter((Group)this.applicationFooter.copy());
+        }
+
+        if (this.applicationHeader != null) {
+            viewCopy.setApplicationHeader((Header)this.applicationHeader.copy());
+        }
+
+        viewCopy.setApplyDirtyCheck(this.applyDirtyCheck);
+
+        if (this.breadcrumbItem != null) {
+            viewCopy.setBreadcrumbItem((BreadcrumbItem) this.breadcrumbItem.copy());
+        }
+
+        if (this.breadcrumbs != null) {
+            viewCopy.setBreadcrumbs((Breadcrumbs)this.breadcrumbs.copy());
+        }
+
+        if (this.breadcrumbOptions != null) {
+            viewCopy.setBreadcrumbOptions((BreadcrumbOptions)this.breadcrumbOptions.copy());
+        }
+
+        viewCopy.setCurrentPageId(this.currentPageId);
+        viewCopy.setDefaultBindingObjectPath(this.defaultBindingObjectPath);
+
+        List<Group> dialogs = new ArrayList<Group>();
+        for (Group dialog : this.dialogs) {
+            dialogs.add((Group)dialog.copy());
+        }
+
+        viewCopy.setDialogs(dialogs);
+        viewCopy.setDisableBrowserCache(this.disableBrowserCache);
+        viewCopy.setDisableNativeAutocomplete(this.disableNativeAutocomplete);
+        viewCopy.setEditModes(this.editModes);
+        viewCopy.setEntryPageId(this.entryPageId);
+        viewCopy.setExpressionVariables(new HashMap<String, String>(this.expressionVariables));
+        viewCopy.setFormClass(this.formClass);
+        viewCopy.setGrowlMessagingEnabled(this.growlMessagingEnabled);
+        viewCopy.setIdSequence(this.idSequence);
+
+        List<Group> items = new ArrayList<Group>();
+        for (Group item : this.items) {
+            items.add((Group)item.copy());
+        }
+
+        viewCopy.setItems(items);
+        viewCopy.setMergeWithPageItems(this.mergeWithPageItems);
+        viewCopy.setNamespaceCode(this.namespaceCode);
+
+        if (this.navigation != null) {
+            viewCopy.setNavigation((Group)this.navigation.copy());
+        }
+
+        if (this.navigationBlockUI != null) {
+            viewCopy.setNavigationBlockUI((BlockUI) this.navigationBlockUI.copy());
+        }
+
+        if (this.page != null) {
+            viewCopy.setPage((PageGroup)this.page.copy());
+        }
+
+        if (this.parentLocation != null) {
+            viewCopy.setParentLocation((ParentLocation)this.parentLocation.copy());
+        }
+
+        List<BreadcrumbItem> pathBasedBreadcrumbs = new ArrayList<BreadcrumbItem>();
+        for (BreadcrumbItem pathBasedBreadcrumb : this.pathBasedBreadcrumbs) {
+            pathBasedBreadcrumbs.add((BreadcrumbItem)pathBasedBreadcrumb.copy());
+        }
+
+        viewCopy.setPersistFormToSession(this.persistFormToSession);
+        viewCopy.setPreloadPoolSize(this.preloadPoolSize);
+        viewCopy.setPreLoadScript(this.preLoadScript);
+
+        if (this.refreshBlockUI != null) {
+            viewCopy.setRefreshBlockUI((BlockUI) this.refreshBlockUI.copy());
+        }
+
+        viewCopy.setSinglePageView(this.singlePageView);
+        viewCopy.setStateObjectBindingPath(this.stateObjectBindingPath);
+        viewCopy.setStickyApplicationFooter(this.stickyApplicationFooter);
+        viewCopy.setStickyApplicationHeader(this.stickyApplicationHeader);
+        viewCopy.setStickyBreadcrumbs(this.stickyBreadcrumbs);
+        viewCopy.setStickyFooter(this.stickyFooter);
+        viewCopy.setStickyHeader(this.stickyHeader);
+        viewCopy.setStickyTopGroup(this.stickyTopGroup);
+
+        if (this.topGroup != null) {
+            viewCopy.setTopGroup((Group)this.topGroup.copy());
+        }
+
+        viewCopy.setTranslateCodesOnReadOnlyDisplay(this.translateCodesOnReadOnlyDisplay);
+        viewCopy.setUnifiedHeader(this.unifiedHeader);
+        viewCopy.setUseLibraryCssClasses(this.useLibraryCssClasses);
+        viewCopy.setViewMenuGroupName(this.viewMenuGroupName);
+
+        if (this.viewMenuLink != null) {
+            viewCopy.setViewMenuLink((Link)this.viewMenuLink.copy());
+        }
+
+        viewCopy.setViewName(this.viewName);
+        viewCopy.setViewRequestParameters(new HashMap<String, String>(this.viewRequestParameters));
+        viewCopy.setViewStatus(this.viewStatus);
+        viewCopy.setViewTemplates(new ArrayList<String>(this.viewTemplates));
+    }
 }

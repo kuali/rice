@@ -519,5 +519,9 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
         attributeQueryCopy.setReturnMessageStyleClasses(this.returnMessageStyleClasses);
         attributeQueryCopy.setReturnMessageText(this.returnMessageText);
         attributeQueryCopy.setSortPropertyNames(new ArrayList<String>(this.sortPropertyNames));
+
+        if (this.queryMethodInvokerConfig != null) {
+            ((AttributeQuery) attributeQuery).setQueryMethodInvokerConfig((MethodInvokerConfig)this.queryMethodInvokerConfig.copy());
+        }
     }
 }

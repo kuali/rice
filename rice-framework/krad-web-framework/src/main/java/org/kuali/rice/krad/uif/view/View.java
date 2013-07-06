@@ -2345,6 +2345,11 @@ public class View extends ContainerBase {
         viewCopy.setExpressionVariables(new HashMap<String, String>(this.expressionVariables));
         viewCopy.setFormClass(this.formClass);
         viewCopy.setGrowlMessagingEnabled(this.growlMessagingEnabled);
+
+        if (this.growls != null) {
+            viewCopy.setGrowls((Growls)this.growls.copy());
+        }
+
         viewCopy.setIdSequence(this.idSequence);
 
         List<Group> items = new ArrayList<Group>();

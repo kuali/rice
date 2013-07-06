@@ -15,11 +15,8 @@
  */
 package edu.samplu.admin.test;
 
-import java.util.List;
-
 import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -76,6 +73,7 @@ public abstract class IdentityPersonLookUpEditAbstractSmokeTestBase extends Admi
         waitAndClickByName("methodToCall.addEmpInfo.line0.anchor");
         waitAndClickByName("methodToCall.showAllTabs");
         waitAndClickByName("methodToCall.route");
+        checkForDocError();
 //        assertTextPresent("Document was successfully submitted.");
         waitAndClickByName("methodToCall.close");
         waitAndClickByName("methodToCall.processAnswer.button1");        

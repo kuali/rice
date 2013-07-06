@@ -1973,7 +1973,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         selectFrameIframePortlet();
         waitAndCreateNew();                
         String docId = waitForDocId();
-        String dtsTwo = ITUtil.createUniqueDtsPlusTwoRandomChars();
+        String dtsTwo = ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits();
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Group " + dtsTwo);
         assertBlanketApproveButtonsPresent();
         selectByXpath("//select[@id='document.groupNamespace']", AdminTmplMthdSTNavBase.LABEL_KUALI_KUALI_SYSTEMS);
@@ -1992,7 +1992,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         selectFrameIframePortlet();
         waitAndCreateNew();        
         String docId = waitForDocId();
-        String dtsTwo = ITUtil.createUniqueDtsPlusTwoRandomChars();
+        String dtsTwo = ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits();
         waitAndTypeByXpath("//input[@name='document.documentHeader.documentDescription']",
                 "Validation Test Permission " + dtsTwo);
         assertBlanketApproveButtonsPresent();
@@ -2036,7 +2036,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         selectFrameIframePortlet();
         waitAndCreateNew();        
         String docId = waitForDocId();
-        String dtsTwo = ITUtil.createUniqueDtsPlusTwoRandomChars();
+        String dtsTwo = ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits();
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Responsibility " + dtsTwo);
         assertBlanketApproveButtonsPresent();
         selectByXpath("//select[@id='document.newMaintainableObject.namespaceCode']",
@@ -2057,7 +2057,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndClickByXpath(SEARCH_XPATH, "No search button to click.");
         waitAndClickByLinkText(RETURN_VALUE_LINK_TEXT, "No return value link");        
         String docId = waitForDocId();
-        String dtsTwo = ITUtil.createUniqueDtsPlusTwoRandomChars();
+        String dtsTwo = ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits();
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Role " + dtsTwo);
         assertBlanketApproveButtonsPresent();
         selectByXpath("//select[@id='document.roleNamespace']", AdminTmplMthdSTNavBase.LABEL_KUALI_KUALI_SYSTEMS);

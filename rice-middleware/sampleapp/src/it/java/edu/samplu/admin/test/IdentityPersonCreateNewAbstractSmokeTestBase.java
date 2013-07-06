@@ -15,11 +15,9 @@
  */
 package edu.samplu.admin.test;
 
-import java.util.List;
-
 import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
+import org.apache.commons.lang.RandomStringUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -93,9 +91,11 @@ public abstract class IdentityPersonCreateNewAbstractSmokeTestBase extends Admin
         selectByName("newEmail.emailTypeCode","Work");
         waitAndClickByName("newEmail.dflt");
         waitAndClickByName("methodToCall.addEmail.anchor");
+        waitAndTypeByName("document.principalName", RandomStringUtils.randomAlphabetic(12).toLowerCase());
                 
         //Expand All , Submit , Close and Don't Save.        
         waitAndClickByName("methodToCall.route");
+        checkForDocError();
 //        assertTextPresent("Document was successfully submitted.");
         waitAndClickByName("methodToCall.close");
         waitAndClickByName("methodToCall.processAnswer.button1");        

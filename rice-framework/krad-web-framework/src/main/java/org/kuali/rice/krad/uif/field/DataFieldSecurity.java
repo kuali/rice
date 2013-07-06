@@ -67,5 +67,9 @@ public class DataFieldSecurity extends FieldSecurity {
     protected <T> void copyProperties(T componentSecurity) {
         super.copyProperties(componentSecurity);
         DataFieldSecurity dataFieldCopy = (DataFieldSecurity) componentSecurity;
+
+        if (this.attributeSecurity != null) {
+            dataFieldCopy.setAttributeSecurity((AttributeSecurity)this.attributeSecurity.copy());
+        }
     }
 }

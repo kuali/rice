@@ -183,4 +183,35 @@ public class AttributeSecurity extends UifDictionaryBeanBase {
     public boolean hasRestrictionThatRemovesValueFromUI() {
         return mask || partialMask || hide;
     }
+
+    /**
+     * Returns a copy of the component.
+     *
+     * @return AttributeSecurity copy of the component
+     */
+    public <T> T copy() {
+        T copiedClass = null;
+        try {
+            copiedClass = (T)this.getClass().newInstance();
+        }
+        catch(Exception exception) {
+            throw new RuntimeException();
+        }
+
+        copyProperties(copiedClass);
+
+        return copiedClass;
+    }
+
+    /**
+     * Copies the properties over for the copy method
+     *
+     */
+    protected <T> void copyProperties(T component) {
+        AttributeSecurity attributeSecurityCopy = ((AttributeSecurity)component);
+        attributeSecurityCopy.setHide(this.hide);
+        attributeSecurityCopy.setMask(this.mask);
+        attributeSecurityCopy.setPartialMask(this.partialMask);
+        attributeSecurityCopy.setReadOnly(this.readOnly);
+    }
 }

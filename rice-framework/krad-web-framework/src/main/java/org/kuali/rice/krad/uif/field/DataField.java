@@ -1164,5 +1164,13 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
         dataFieldCopy.setReadOnlyListDelimiter(this.readOnlyListDelimiter);
         dataFieldCopy.setReadOnlyListDisplayType(this.readOnlyListDisplayType);
         dataFieldCopy.setDefaultValueFinderClass(this.defaultValueFinderClass);
+
+        if (this.help != null) {
+            dataFieldCopy.setHelp((Help)this.help.copy());
+        }
+
+        if (this.inquiry != null) {
+            dataFieldCopy.setInquiry((Inquiry) this.inquiry.copy());
+        }
     }
 }

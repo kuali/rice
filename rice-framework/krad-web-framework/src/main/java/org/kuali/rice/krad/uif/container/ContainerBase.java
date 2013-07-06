@@ -491,5 +491,9 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 
         containerBaseCopy.setInstructionalText(this.instructionalText);
         containerBaseCopy.setLayoutManager(this.layoutManager);
+
+        if (this.validationMessages != null) {
+            containerBaseCopy.setValidationMessages((ValidationMessages)this.validationMessages.copy());
+        }
     }
 }

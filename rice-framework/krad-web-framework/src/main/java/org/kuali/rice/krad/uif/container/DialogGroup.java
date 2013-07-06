@@ -455,5 +455,13 @@ public class DialogGroup extends Group {
 
         dialogGroupCopy.setPromptText(this.promptText);
         dialogGroupCopy.setReverseButtonOrder(this.reverseButtonOrder);
+
+        if (this.explanation != null) {
+            dialogGroupCopy.setExplanation((InputField) this.explanation.copy());
+        }
+
+        if (this.responseInputField != null) {
+            dialogGroupCopy.setResponseInputField((InputField) this.responseInputField.copy());
+        }
     }
 }

@@ -169,5 +169,9 @@ public class BreadcrumbItem extends ContentElementBase {
         }
 
         breadcrumbItemCopy.setRenderAsLink(this.renderAsLink);
+
+        if (this.url != null) {
+            breadcrumbItemCopy.setUrl((UrlInfo)this.url.copy());
+        }
     }
 }

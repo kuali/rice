@@ -15,7 +15,6 @@
  */
 package edu.samplu.krad.demo.uif.library;
 
-import edu.samplu.common.Failable;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -62,16 +61,6 @@ public class DemoLibraryCollectionSequenceSmokeTest extends DemoLibraryBase {
         changeSequenceView();
     }
 
-    public void testCollectionSequenceNav(Failable failable) throws Exception {
-        testCollectionSequenceExamples();
-        passed();
-    }
-
-    public void testCollectionSequenceBookmark(Failable failable) throws Exception {
-        testCollectionSequenceExamples();
-        passed();
-    }
-
     private boolean isOptionSelected(String dropDownName, String optionValue) {
         WebElement select = driver.findElement(By.name(dropDownName));
         List<WebElement> options = select.findElements(By.tagName("option"));
@@ -85,11 +74,13 @@ public class DemoLibraryCollectionSequenceSmokeTest extends DemoLibraryBase {
 
     @Test
     public void testCollectionSequenceBookmark() throws Exception {
-        testCollectionSequenceBookmark(this);
+        testCollectionSequenceExamples();
+        passed();
     }
 
     @Test
     public void testCollectionSequenceNav() throws Exception {
-        testCollectionSequenceNav(this);
+        testCollectionSequenceExamples();
+        passed();
     }
 }

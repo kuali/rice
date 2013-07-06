@@ -24,7 +24,7 @@ import org.junit.Test;
 public class PersonPendingApprovalsSTJUnitBkMrkGen extends PersonPendingApprovalsSTJUnitBase {
 
     @Override
-    public String getTestUrl() {
+    protected String getBookmarkUrl() {
         return BOOKMARK_URL;
     }
 

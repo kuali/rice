@@ -47,7 +47,6 @@ public abstract class MaintenanceDisclosuresAbstractSmokeTestBase extends KradTm
     }
     
     public void testMaintenanceDisclosuresNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testVerifyDisclosures();
         passed();
     }

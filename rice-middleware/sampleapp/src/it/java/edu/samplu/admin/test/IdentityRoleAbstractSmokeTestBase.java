@@ -45,13 +45,14 @@ public abstract class IdentityRoleAbstractSmokeTestBase extends AdminTmplMthdSTN
    
     public void testIdentityRoleBookmark(Failable failable) throws Exception {
         testCreateNewSearchReturnValueCancelConfirmation();
+        driver.navigate().to(ITUtil.getBaseUrlString() + BOOKMARK_URL);
         testSearchEditCancel();
         passed();
     }
 
     public void testIdentityRoleNav(Failable failable) throws Exception {
         testEditCancel();
-        gotoMenuLinkLocator();
+        navigate();
         testCreateNewSearchReturnValueCancelConfirmation();
         passed();
     }

@@ -24,7 +24,7 @@ import org.junit.Test;
 public class LocationStateBlanketAppSTJUnitBkMrkGen extends LocationStateBlanketAppSTJUnitBase {
 
     @Override
-    public String getTestUrl() {
+    public String getBookmarkUrl() {
         return BOOKMARK_URL;
     }
 

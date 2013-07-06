@@ -21,7 +21,7 @@ import edu.samplu.common.ITUtil;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class AttributeDefinitionLookUpAbstractSmokeTestBase extends MainTmplMthdSTNavBase{
+public class AttributeDefinitionLookUpAbstractSmokeTestBase extends MainTmplMthdSTNavBase{
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Attribute%20Definition%20Lookup&channelUrl="
@@ -50,7 +50,6 @@ public abstract class AttributeDefinitionLookUpAbstractSmokeTestBase extends Mai
         passed();
     }
     public void testAttributeDefinitionLookUpNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testAttributeDefinitionLookUp();
         passed();
     }

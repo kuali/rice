@@ -48,7 +48,6 @@ public abstract class ConfigParameterTypeCreateNewAbstractSmokeTestBase extends 
     }
 
     public void testConfigParameterTypeCreateNewNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();        
         testConfigParameterTypeCreateNew();
         passed();
     }    

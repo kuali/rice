@@ -49,7 +49,6 @@ public abstract class IdentityPersonCreateNewAbstractSmokeTestBase extends Admin
     }
 
     public void testIdentityPersonCreateNewNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testIdentityPersonCreateNew();
     }
     

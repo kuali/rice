@@ -40,9 +40,13 @@ public class SmokeTestRunner extends BlockJUnit4ClassRunner {
     @Override
     protected Statement methodInvoker(FrameworkMethod method, Object test) {
         Method testMethod = method.getMethod();
-        if (testMethod.getName().endsWith("Bookmark")) {
+        final String testClass = test.getClass().toString();
+        if (testMethod.getName().endsWith("Bookmark") ||
+           (testClass.endsWith("WDIT")) ||
+           (testClass.endsWith("BkMrkGen"))) {
             ((SmokeTestBase) test).enableBookmarkMode();
-        } else if (testMethod.getName().endsWith("Nav")) {
+        } else if (testMethod.getName().endsWith("Nav") ||
+                  (testClass.endsWith("NavIT"))) {
             ((SmokeTestBase) test).enableNavigationMode();
         }
         return super.methodInvoker(method, test);

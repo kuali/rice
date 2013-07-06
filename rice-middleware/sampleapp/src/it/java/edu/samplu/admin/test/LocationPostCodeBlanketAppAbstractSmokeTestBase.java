@@ -49,7 +49,6 @@ public abstract class LocationPostCodeBlanketAppAbstractSmokeTestBase extends Ad
     }
 
     public void testLocationPostCodeBlanketAppNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testLocationPostBlanketApprove();
         passed();
     }

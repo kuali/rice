@@ -49,7 +49,6 @@ public abstract class IdentityPermissionBlanketAppAbstractSmokeTestBase extends 
     }
 
     public void testIdentityPermissionBlanketAppNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testIdentityPermissionBlanketApprove();
         passed();
     }

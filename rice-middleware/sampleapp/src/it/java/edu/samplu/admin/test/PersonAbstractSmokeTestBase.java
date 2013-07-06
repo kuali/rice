@@ -74,7 +74,7 @@ public abstract class PersonAbstractSmokeTestBase extends AdminTmplMthdSTNavBase
         
         //LookUp Person
         selectTopFrame();
-        gotoMenuLinkLocator();
+        navigate();
         params=testLookUpPerson(params.get(0), params.get(1));
 
         //Verify Person

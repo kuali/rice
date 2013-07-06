@@ -46,7 +46,6 @@ public abstract class ClearAllCashesAbstractSmokeTestBase extends AdminTmplMthdS
     }
 
     public void testClearAllCashesNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();        
         testClearAllCashes();
         passed();
     }    

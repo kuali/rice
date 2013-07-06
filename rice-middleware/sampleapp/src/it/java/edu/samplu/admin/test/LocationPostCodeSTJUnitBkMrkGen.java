@@ -24,7 +24,7 @@ import org.junit.Test;
 public class LocationPostCodeSTJUnitBkMrkGen extends LocationPostCodeSTJUnitBase {
 
     @Override
-    public String getTestUrl() {
+    public String getBookmarkUrl() {
         return BOOKMARK_URL;
     }
 

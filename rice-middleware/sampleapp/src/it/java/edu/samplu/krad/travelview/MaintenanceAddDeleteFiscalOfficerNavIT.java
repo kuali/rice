@@ -38,7 +38,6 @@ public class MaintenanceAddDeleteFiscalOfficerNavIT extends KradTmplMthdSTNavBas
      * Verify a fiscal officer line can be added and deleted
      */
     public void testVerifyAddDeleteFiscalOfficerLegacy() throws Exception {
-        gotoMenuLinkLocator();
         super.testVerifyAddDeleteFiscalOfficerLegacy();
     }
 

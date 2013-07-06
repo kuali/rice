@@ -21,7 +21,7 @@ import edu.samplu.common.ITUtil;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class WorkFlowRouteRulesDelegationAbstractSmokeTestBase extends MainTmplMthdSTNavBase{
+public class WorkFlowRouteRulesDelegationAbstractSmokeTestBase extends MainTmplMthdSTNavBase{
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Routing%20Rules%20Delegation&channelUrl=" + ITUtil.getBaseUrlString() +
@@ -47,7 +47,6 @@ public abstract class WorkFlowRouteRulesDelegationAbstractSmokeTestBase extends 
     }
 
     public void testWorkFlowRouteRulesDelegationNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testCreateNewRRDTravelRequestDestRouting();
         passed();
     }

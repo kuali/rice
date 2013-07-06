@@ -47,7 +47,6 @@ public abstract class MaintenanceDocumentOverviewAbstractSmokeTestBase extends K
     }
     
     public void testMaintenanceDocumentOverviewNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testVerifyDocumentOverviewLegacy();
         passed();
     }

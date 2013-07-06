@@ -46,7 +46,6 @@ public abstract class ClearIndividualCashesAbstractSmokeTestBase extends AdminTm
     }
 
     public void testClearIndividualCashesNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();        
         testClearIndividualCashes();
         passed();
     }    

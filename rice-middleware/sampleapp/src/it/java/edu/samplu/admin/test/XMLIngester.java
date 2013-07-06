@@ -145,7 +145,7 @@ public class XMLIngester extends AdminTmplMthdSTNavBase {
     @Test
     public void testXMLIngesterSuccessfulFileUpload() throws Exception {
         List<File> fileUploadList = buildFileUploadList();
-        gotoMenuLinkLocator();
+        navigate();
         int cnt = 0;
         for(File file : fileUploadList) {
             String path = file.getAbsolutePath().toString();

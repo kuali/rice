@@ -49,7 +49,6 @@ public abstract class WorkFlowDocTypeBlanketAppAbstractSmokeTestBase extends Adm
     }
 
     public void testWorkFlowDocTypeBlanketAppNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testWorkFlowDocTypeBlanketApprove();
         passed();
     }

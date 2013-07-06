@@ -23,7 +23,7 @@ import org.junit.Test;
 public class ConfigNameSpaceBlanketAppSTJUnitBkMrkGen extends ConfigNameSpaceBlanketAppSTJUnitBase {
 
     @Override
-    public String getTestUrl() {
+    public String getBookmarkUrl() {
         return BOOKMARK_URL;
     }
 

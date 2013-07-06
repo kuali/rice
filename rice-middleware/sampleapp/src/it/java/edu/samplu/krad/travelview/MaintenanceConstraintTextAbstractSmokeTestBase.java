@@ -47,7 +47,6 @@ public abstract class MaintenanceConstraintTextAbstractSmokeTestBase extends Kra
     }
     
     public void testMaintenanceConstraintTextNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testVerifyConstraintText();
         passed();
     }

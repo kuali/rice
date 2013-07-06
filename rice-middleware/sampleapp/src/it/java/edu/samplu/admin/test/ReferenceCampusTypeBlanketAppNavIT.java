@@ -32,7 +32,6 @@ public class ReferenceCampusTypeBlanketAppNavIT extends AdminTmplMthdBlanketAppS
 
     @Test
     public void blanketApprove() throws Exception {
-        gotoMenuLinkLocator();
         super.testReferenceCampusTypeBlanketApprove();
     }
 

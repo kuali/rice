@@ -89,7 +89,6 @@ public class IUeDocLiteXMLIngestNavIT extends AdminTmplMthdSTNavBase {
      * 
      */
     public void testXMLIngesterSuccessfulFileUpload() throws Exception {
-        gotoMenuLinkLocator();
         if (fileUploadList != null && !fileUploadList.isEmpty()) {
 
             if (fileUploadList.size() > 10) {

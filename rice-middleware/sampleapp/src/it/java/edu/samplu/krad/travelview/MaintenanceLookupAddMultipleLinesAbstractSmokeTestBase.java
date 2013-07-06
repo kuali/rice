@@ -47,7 +47,6 @@ public abstract class MaintenanceLookupAddMultipleLinesAbstractSmokeTestBase ext
     }
     
     public void testMaintenanceLookupAddMultipleLinesNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testVerifyLookupAddMultipleLinesLegacy();
         passed();
     }

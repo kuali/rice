@@ -48,7 +48,6 @@ public abstract class ConfigComponentLookUpAndEditAbstractSmokeTestBase extends 
     }
 
     public void testConfigComponentLookUpAndEditNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();        
         testConfigComponentLookUpAndEdit();
         passed();
     }    

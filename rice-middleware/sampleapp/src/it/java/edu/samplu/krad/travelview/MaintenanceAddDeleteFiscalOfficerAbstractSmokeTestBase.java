@@ -47,7 +47,6 @@ public abstract class MaintenanceAddDeleteFiscalOfficerAbstractSmokeTestBase ext
     }
     
     public void testMaintenanceAddDeleteFiscalOfficerNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testVerifyAddDeleteFiscalOfficerLegacy();
         passed();
     }

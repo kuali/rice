@@ -45,15 +45,18 @@ public abstract class WorkFlowDocTypeAbstractSmokeTestBase extends AdminTmplMthd
    
     public void testWorkFlowDocTypeBookmark(Failable failable) throws Exception {
         testCreateNewCancel();
+        driver.navigate().to(ITUtil.getBaseUrlString() + BOOKMARK_URL);
         testSearchEditCancel();
+        driver.navigate().to(ITUtil.getBaseUrlString() + BOOKMARK_URL);
         testCreateDocType();
         passed();
     }
 
     public void testWorkFlowDocTypeNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testCreateNewCancel();
+        navigate();
         testSearchEditCancel();
+        navigate();
         testCreateDocType();
         passed();
     }

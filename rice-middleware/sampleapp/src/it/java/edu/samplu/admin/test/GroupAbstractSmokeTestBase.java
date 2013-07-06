@@ -49,7 +49,6 @@ public abstract class GroupAbstractSmokeTestBase extends AdminTmplMthdSTNavBase{
     }
 
     public void testGroupNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testAddingBrownGroup();
         passed();
     }

@@ -37,7 +37,6 @@ public class LocationCampusBlanketAppNavIT extends AdminTmplMthdBlanketAppSTNavB
 
    @Test
    public void blanketApprove() throws Exception {
-       gotoMenuLinkLocator();
        super.testLocationCampusBlanketApprove();
     }
 }

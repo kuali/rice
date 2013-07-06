@@ -45,12 +45,14 @@ public abstract class IdentityPermissionAbstractSmokeTestBase extends AdminTmplM
    
     public void testIdentityPermissionBookmark(Failable failable) throws Exception {
         testSearchEditCancel();
+        driver.navigate().to(ITUtil.getBaseUrlString() + BOOKMARK_URL);
         testCreateNewCancel();
         passed();
     }
 
     public void testIdentityPermissionNav(Failable failable) throws Exception {
         testEditCancel();
+        navigate();
         testCreateNewCancelNav();
         passed();
     }

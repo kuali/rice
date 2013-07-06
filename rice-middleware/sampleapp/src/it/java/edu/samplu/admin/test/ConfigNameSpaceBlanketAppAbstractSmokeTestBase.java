@@ -49,7 +49,6 @@ public abstract class ConfigNameSpaceBlanketAppAbstractSmokeTestBase extends Adm
     }
 
     public void testConfigNamespaceBlanketApproveNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testConfigNamespaceBlanketApprove();
         passed();
     }

@@ -48,7 +48,6 @@ public abstract class ConfigComponentCreateNewAbstractSmokeTestBase extends Admi
     }
 
     public void testConfigComponentCreateNewNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();        
         testConfigComponentCreateNew();
         passed();
     }    

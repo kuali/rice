@@ -44,13 +44,14 @@ public abstract class ConfigParameterAbstractSmokeTestBase extends AdminTmplMthd
 
     public void testConfigParameterBookmark(Failable failable) throws Exception {
         testSearchEditCancel();
+        driver.navigate().to(ITUtil.getBaseUrlString() + BOOKMARK_URL);
         testCreateNewCancel();
         passed();
     }
 
     public void testConfigParameterNav(Failable failable) throws Exception {
         testEditCancel(); 
-        gotoMenuLinkLocator();        
+        navigate();
         testCreateNewCancel();
         passed();
     }    

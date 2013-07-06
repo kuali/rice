@@ -16,6 +16,7 @@
 
 package edu.samplu.admin.test;
 
+import edu.samplu.common.SmokeTestBase;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -27,7 +28,7 @@ import edu.samplu.common.WebDriverLegacyITBase;
  * test that repeated ajax refreshes work
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AgendaEditRuleRefreshWDIT extends WebDriverLegacyITBase {
+public class AgendaEditRuleRefreshWDIT extends SmokeTestBase {
 
     public static final String TEST_URL =ITUtil.PORTAL+"?channelTitle=Agenda%20Lookup&channelUrl="
             + ITUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
@@ -41,15 +42,14 @@ public class AgendaEditRuleRefreshWDIT extends WebDriverLegacyITBase {
     }
 
     @Override
-    public String getTestUrl(){
+    protected String getBookmarkUrl() {
         return TEST_URL;
     }
-    /**
-     * This overridden method ...
-     * 
-     * @see edu.samplu.common.WebDriverLegacyITBase#getTestUrl()
-     */
-    
+
+    protected void navigate() throws Exception {
+        //  no-op this is a bookmark only test
+    }
+
     @Test
     /**
      * test that repeated ajax refreshes work

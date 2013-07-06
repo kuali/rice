@@ -24,7 +24,7 @@ import org.junit.Test;
 public class ConfigParameterTypeLookUpAndInquireSTJUnitBkMrkGen extends ConfigParameterTypeLookUpAndInquireSTJUnitBase {
 
     @Override
-    public String getTestUrl() {
+    public String getBookmarkUrl() {
         return BOOKMARK_URL;
     }
 

@@ -472,7 +472,8 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      */
     private String kulrice9804() {
         String testUrl = getTestUrl();
-        if (testUrl.contains(ITUtil.HIDE_RETURN_LINK)) {
+        if (testUrl.contains(ITUtil.HIDE_RETURN_LINK) &&
+            !testUrl.contains("&showMaintenanceLinks=true")) {
             testUrl += "&showMaintenanceLinks=true";
         }
         return testUrl;
@@ -824,6 +825,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * Uses Selenium's findElements method which does not throw a test exception if not found.
      */
     public void checkForDocError() {
+        checkForIncidentReport();
         if (hasDocError()) {
             String errorText = driver.findElement(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).getText();
             errorText = ITUtil.blanketApprovalCleanUpErrorText(errorText);

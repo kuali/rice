@@ -40,7 +40,7 @@ public class AddingNameSpaceSTJUnitBkMrkGen extends AddingNameSpaceSTJUnitBase {
      * @return
      */
     @Override
-    public String getTestUrl(){
+    protected String getBookmarkUrl() {
         return BOOKMARK_URL;
     }
 

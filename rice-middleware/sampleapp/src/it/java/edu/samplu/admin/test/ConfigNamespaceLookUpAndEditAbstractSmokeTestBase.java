@@ -48,7 +48,6 @@ public abstract class ConfigNamespaceLookUpAndEditAbstractSmokeTestBase extends 
     }
 
     public void testConfigNamespaceLookUpAndEditNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();        
         testConfigNamespaceLookUpAndEdit();
         passed();
     }    

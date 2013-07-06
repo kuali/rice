@@ -49,7 +49,6 @@ public abstract class LocationCountryBlanketAppAbstractSmokeTestBase extends Adm
     }
 
     public void testLocationCountryBlanketAppNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testLocationCountryBlanketApprove();
         passed();
     }

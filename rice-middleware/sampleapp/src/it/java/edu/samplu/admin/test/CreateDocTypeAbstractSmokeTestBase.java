@@ -49,7 +49,6 @@ public abstract class CreateDocTypeAbstractSmokeTestBase extends AdminTmplMthdST
     }
 
     public void testCreateDocTypeNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testCreateDocType();
         passed();
     }

@@ -49,7 +49,6 @@ public abstract class ReferenceCampusTypeBlanketAppAbstractSmokeTestBase extends
     }
 
     public void testReferenceCampusTypeBlanketAppNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testReferenceCampusTypeBlanketApprove();
         passed();
     }

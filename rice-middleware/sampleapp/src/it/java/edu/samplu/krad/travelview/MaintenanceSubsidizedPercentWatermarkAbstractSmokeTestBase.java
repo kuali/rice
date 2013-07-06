@@ -47,7 +47,6 @@ public abstract class MaintenanceSubsidizedPercentWatermarkAbstractSmokeTestBase
     }
     
     public void testMaintenanceSubsidizedPercentWatermarkNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testVerifySubsidizedPercentWatermarkLegacy();
         passed();
     }

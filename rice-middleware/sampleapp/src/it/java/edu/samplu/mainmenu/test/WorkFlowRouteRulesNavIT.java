@@ -40,7 +40,6 @@ public class WorkFlowRouteRulesNavIT extends MainTmplMthdSTNavBase {
      * tests that a new Routing Rule maintenance document can be cancelled
      */
     public void testWorkFlowRouteRulesCreateNew() throws Exception {
-       gotoMenuLinkLocator();
        super.testWorkFlowRouteRulesCreateNew();
     }
 
@@ -49,7 +48,6 @@ public class WorkFlowRouteRulesNavIT extends MainTmplMthdSTNavBase {
      * tests that a Routing Rule maintenance document is created for an edit operation originating from a lookup screen
      */
     public void testWorkFlowRouteRulesEditRouteRules() throws Exception {
-        gotoMenuLinkLocator();
         super.testWorkFlowRouteRulesEditRouteRules();
     }
 }

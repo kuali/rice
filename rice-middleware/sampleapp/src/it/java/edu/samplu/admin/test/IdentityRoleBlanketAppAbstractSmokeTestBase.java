@@ -49,7 +49,6 @@ public abstract class IdentityRoleBlanketAppAbstractSmokeTestBase extends AdminT
     }
 
     public void testIdentityRoleBlanketAppNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testIdentityRoleBlanketApprove();
         passed();
     }

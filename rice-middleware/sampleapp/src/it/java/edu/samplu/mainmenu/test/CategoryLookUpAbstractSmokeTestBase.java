@@ -21,7 +21,7 @@ import edu.samplu.common.ITUtil;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class CategoryLookUpAbstractSmokeTestBase extends MainTmplMthdSTNavBase{
+public class CategoryLookUpAbstractSmokeTestBase extends MainTmplMthdSTNavBase{
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Category%20Lookup&channelUrl="
@@ -50,7 +50,6 @@ public abstract class CategoryLookUpAbstractSmokeTestBase extends MainTmplMthdST
         passed();
     }
     public void testCategoryLookUpNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testCategoryLookUp();
         passed();
     }

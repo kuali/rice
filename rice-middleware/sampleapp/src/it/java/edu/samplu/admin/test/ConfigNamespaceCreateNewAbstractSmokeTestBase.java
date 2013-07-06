@@ -48,7 +48,6 @@ public abstract class ConfigNamespaceCreateNewAbstractSmokeTestBase extends Admi
     }
 
     public void testConfigNamespaceCreateNewNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();        
         testConfigNamespaceCreateNew();
         passed();
     }    
@@ -57,8 +56,8 @@ public abstract class ConfigNamespaceCreateNewAbstractSmokeTestBase extends Admi
     {
         selectFrameIframePortlet();
         waitAndClickByXpath(CREATE_NEW_XPATH);        
-        waitAndTypeByName("document.documentHeader.documentDescription","Test description of Namespace create new " + ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits());
-        waitAndTypeByName("document.newMaintainableObject.code","KR-SYS3" + ITUtil.createUniqueDtsPlusTwoRandomChars());
+        waitAndTypeByName("document.documentHeader.documentDescription", "Test description of Namespace create new " + ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits());
+        waitAndTypeByName("document.newMaintainableObject.code", "KR-SYS3" + ITUtil.createUniqueDtsPlusTwoRandomChars());
         waitAndTypeByName("document.newMaintainableObject.name","Enterprise Infrastructure 3");
         waitAndTypeByName("document.newMaintainableObject.applicationId","RICE");
         waitAndClickByName("methodToCall.route");

@@ -48,14 +48,12 @@ public class WorkFlowDocTypeNavIT extends AdminTmplMthdSTNavBase {
      * tests that a Document Type maintenance document is created for an edit operation originating from a lookup screen
      */
     public void testEditDocType() throws Exception {
-        gotoMenuLinkLocator();
         super.testSearchEditCancel();
     }
 
     //Test to validate the requirement of Document Type Label field while submitting a document.
     @Test
     public void testCreateDocType() throws Exception {
-        gotoMenuLinkLocator();
         super.testCreateDocType();
     }
 }

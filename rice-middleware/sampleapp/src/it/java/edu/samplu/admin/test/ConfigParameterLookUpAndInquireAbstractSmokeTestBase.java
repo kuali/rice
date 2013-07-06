@@ -48,7 +48,6 @@ public abstract class ConfigParameterLookUpAndInquireAbstractSmokeTestBase exten
     }
 
     public void testConfigParameterLookUpAndInquireNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();        
         testConfigParameterLookUpAndInquire();
         passed();
     }    

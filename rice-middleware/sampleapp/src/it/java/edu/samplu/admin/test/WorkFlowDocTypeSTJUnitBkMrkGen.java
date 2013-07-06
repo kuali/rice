@@ -24,7 +24,7 @@ import org.junit.Test;
 public class WorkFlowDocTypeSTJUnitBkMrkGen extends WorkFlowDocTypeSTJUnitBase {
 
     @Override
-    public String getTestUrl() {
+    public String getBookmarkUrl() {
         return BOOKMARK_URL;
     }
 

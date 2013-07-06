@@ -21,7 +21,7 @@ import edu.samplu.common.ITUtil;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ContextLookUpAbstractSmokeTestBase extends MainTmplMthdSTNavBase{
+public class ContextLookUpAbstractSmokeTestBase extends MainTmplMthdSTNavBase{
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Context%20Lookup&channelUrl="
@@ -50,7 +50,6 @@ public abstract class ContextLookUpAbstractSmokeTestBase extends MainTmplMthdSTN
         passed();
     }
     public void testContextLookUpNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         contextLookupAssertions();
         passed();
     }

@@ -47,7 +47,6 @@ public abstract class MaintenanceHeaderAbstractSmokeTestBase extends KradTmplMth
     }
     
     public void testMaintenanceHeaderNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testVerifyHeaderFieldsLegacy();
         passed();
     }

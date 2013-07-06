@@ -24,7 +24,7 @@ import org.junit.Test;
 public class ConfigNamespaceLookUpAndInquireSTJUnitBkMrkGen extends ConfigNamespaceLookUpAndInquireSTJUnitBase {
 
     @Override
-    public String getTestUrl() {
+    public String getBookmarkUrl() {
         return BOOKMARK_URL;
     }
 

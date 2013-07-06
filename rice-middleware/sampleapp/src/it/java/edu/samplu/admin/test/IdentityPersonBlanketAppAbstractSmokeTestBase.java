@@ -49,7 +49,6 @@ public abstract class IdentityPersonBlanketAppAbstractSmokeTestBase extends Admi
     }
 
     public void testIdentityPersonBlanketAppNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testIdentityPersonBlanketApprove();
         passed();
     }

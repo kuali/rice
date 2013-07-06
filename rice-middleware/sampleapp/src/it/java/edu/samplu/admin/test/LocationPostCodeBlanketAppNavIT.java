@@ -37,8 +37,7 @@ public class LocationPostCodeBlanketAppNavIT extends AdminTmplMthdBlanketAppSTNa
 
    @Test
    public void blanketApprove() throws Exception {
-        gotoMenuLinkLocator();
-        super.testLocationPostBlanketApprove(); 
+        super.testLocationPostBlanketApprove();
     }
 }
  

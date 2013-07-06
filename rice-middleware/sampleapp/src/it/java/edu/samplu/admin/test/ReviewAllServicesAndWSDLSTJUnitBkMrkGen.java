@@ -24,7 +24,7 @@ import org.junit.Test;
 public class ReviewAllServicesAndWSDLSTJUnitBkMrkGen extends ReviewAllServicesAndWSDLSTJUnitBase {
 
     @Override
-    public String getTestUrl() {
+    public String getBookmarkUrl() {
         return BOOKMARK_URL;
     }
 

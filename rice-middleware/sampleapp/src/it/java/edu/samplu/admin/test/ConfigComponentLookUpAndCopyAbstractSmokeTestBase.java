@@ -48,7 +48,6 @@ public abstract class ConfigComponentLookUpAndCopyAbstractSmokeTestBase extends 
     }
 
     public void testConfigComponentLookUpAndCopyNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();        
         testConfigComponentLookUpAndCopy();
         passed();
     }    

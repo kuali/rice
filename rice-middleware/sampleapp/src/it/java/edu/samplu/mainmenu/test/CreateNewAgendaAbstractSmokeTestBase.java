@@ -21,7 +21,7 @@ import edu.samplu.common.ITUtil;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class CreateNewAgendaAbstractSmokeTestBase extends MainTmplMthdSTNavBase{
+public class CreateNewAgendaAbstractSmokeTestBase extends MainTmplMthdSTNavBase{
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Create%20New%20Agenda&channelUrl=" + ITUtil.getBaseUrlString() +
@@ -46,7 +46,6 @@ public abstract class CreateNewAgendaAbstractSmokeTestBase extends MainTmplMthdS
         passed();
     }
     public void testCreateNewAgendaNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testCreateNewAgenda();
         passed();
     }

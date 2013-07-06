@@ -18,6 +18,7 @@ package edu.samplu.mainmenu.test;
 import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
+import org.junit.Assert;
 
 /**
  * Abstract base class for LoginLogout Smoke Tests.  Framework specific classes should not be depended upon in this
@@ -28,7 +29,12 @@ import edu.samplu.common.WebDriverLegacyITBase;
  * @see LoginLogoutSTJUnitBase
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class LoginLogoutAbstractSmokeTestBase extends WebDriverLegacyITBase {
+public class LoginLogoutAbstractSmokeTestBase extends WebDriverLegacyITBase {
+
+    @Override
+    public void fail(String message) {
+        Assert.fail(message);
+    }
 
     /**
      * LoginLogout can use {@link edu.samplu.common.ITUtil#PORTAL} for both navigation and bookmark tests so it will not be overridden by subclasses.

@@ -15,8 +15,6 @@
  */
 package edu.samplu.admin.config.namespace.pending.fyi;
 
-import java.util.Date;
-
 import org.apache.commons.lang.RandomStringUtils;
 
 import edu.samplu.admin.test.AdminTmplMthdSTNavBase;
@@ -94,7 +92,6 @@ public abstract class PersonPendingFYIAbstractSmokeTestBase extends AdminTmplMth
     }
 
     public void testPersonPendingFYINav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testPersonPendingFYI();
         passed();
     }

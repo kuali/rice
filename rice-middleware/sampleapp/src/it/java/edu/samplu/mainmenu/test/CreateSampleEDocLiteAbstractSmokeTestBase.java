@@ -21,7 +21,7 @@ import edu.samplu.common.ITUtil;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class CreateSampleEDocLiteAbstractSmokeTestBase extends MainTmplMthdSTNavBase{
+public class CreateSampleEDocLiteAbstractSmokeTestBase extends MainTmplMthdSTNavBase{
 
     /**
      * ITUtil.PORTAL + "?channelTitle=eDoc%20Lite&channelUrl=" + ITUtil.getBaseUrlString() +
@@ -46,7 +46,6 @@ public abstract class CreateSampleEDocLiteAbstractSmokeTestBase extends MainTmpl
         passed();
     }
     public void testCreateSampleEDocLiteNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testCreateSampleEDocLite();
         passed();
     }

@@ -49,7 +49,6 @@ public abstract class WorkFlowDocTypeLookUpAbstractSmokeTestBase extends AdminTm
     }
 
     public void testWorkFlowDocTypeLookUpNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testDocTypeLookup();
         passed();
     }

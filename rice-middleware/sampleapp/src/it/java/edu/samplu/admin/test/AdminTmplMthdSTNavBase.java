@@ -54,7 +54,6 @@ public abstract class AdminTmplMthdSTNavBase extends NavTemplateMethodSTBase {
      * tests that a getLinkLocator maintenance document is created for an edit operation originating from a lookup screen
      */
     public void testEditCancel() throws Exception {
-        gotoMenuLinkLocator();
         testSearchEditCancel();
     }
 

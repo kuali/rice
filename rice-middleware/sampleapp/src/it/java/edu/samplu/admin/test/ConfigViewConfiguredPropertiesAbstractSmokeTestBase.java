@@ -47,7 +47,6 @@ public abstract class ConfigViewConfiguredPropertiesAbstractSmokeTestBase extend
     }
 
     public void testConfigViewConfiguredPropertiesNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();        
         testConfigViewConfiguredProperties();
         passed();
     }    

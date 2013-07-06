@@ -45,12 +45,14 @@ public abstract class IdentityGroupAbstractSmokeTestBase extends AdminTmplMthdST
    
     public void testIdentityGroupBookmark(Failable failable) throws Exception {
         testSearchEditCancel();
+        driver.navigate().to(ITUtil.getBaseUrlString() + BOOKMARK_URL);
         testCreateNewCancel();
         passed();
     }
 
     public void testIdentityGroupNav(Failable failable) throws Exception {
         testEditCancel();
+        navigate();
         testCreateNewCancelNav();
         passed();
     }

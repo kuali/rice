@@ -49,7 +49,6 @@ public abstract class LocationStateBlanketAppAbstractSmokeTestBase extends Admin
     }
 
     public void testLocationStateBlanketAppNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testLocationStateBlanketApprove();
         passed();
     }

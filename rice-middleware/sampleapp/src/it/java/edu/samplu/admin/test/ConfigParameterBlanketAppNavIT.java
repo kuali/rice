@@ -38,7 +38,6 @@ public class ConfigParameterBlanketAppNavIT extends AdminTmplMthdBlanketAppSTNav
 
     @Test
     public void blanketApprove() throws Exception {
-        gotoMenuLinkLocator();
         super.testConfigParamaterBlanketApprove();
     }
 }

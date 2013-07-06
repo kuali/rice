@@ -24,7 +24,7 @@ import org.junit.Test;
 public class MaintenanceSaveSTJUnitBkMrkGen extends MaintenanceSaveSTJUnitBase {
 
     @Override
-    public String getTestUrl() {
+    public String getBookmarkUrl() {
         return BOOKMARK_URL;
     }
 

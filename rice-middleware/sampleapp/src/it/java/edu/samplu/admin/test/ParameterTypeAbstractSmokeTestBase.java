@@ -86,7 +86,7 @@ public abstract class ParameterTypeAbstractSmokeTestBase extends AdminTmplMthdST
         params=testCreateNewParameterType(docId, parameterType,parameterCode);
     
         //Lookup
-        gotoMenuLinkLocator();
+        navigate();
         selectFrame("iframeportlet");
         params=testLookUpParameterType(params.get(0), params.get(1),params.get(2));
 
@@ -94,14 +94,14 @@ public abstract class ParameterTypeAbstractSmokeTestBase extends AdminTmplMthdST
         params=testEditParameterType(params.get(0), params.get(1),params.get(2));
         
         //Verify if its edited
-        gotoMenuLinkLocator();
+        navigate();
         params=testLookUpParameterType(params.get(0), params.get(1),params.get(2));
 
         //copy
         params=testCopyParameterType(params.get(0), params.get(1),params.get(2));
         
         //Verify if its copied
-        gotoMenuLinkLocator();
+        navigate();
         testVerifyCopyParameterType(params.get(0), params.get(1),params.get(2));
         passed();
     }

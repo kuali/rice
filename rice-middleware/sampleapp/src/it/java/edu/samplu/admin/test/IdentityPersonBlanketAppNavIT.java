@@ -37,7 +37,6 @@ public class IdentityPersonBlanketAppNavIT extends AdminTmplMthdBlanketAppSTNavB
 
      @Test
     public void blanketApprove() throws Exception {
-       gotoMenuLinkLocator();
        super.testIdentityPersonBlanketApprove();
     }
 }

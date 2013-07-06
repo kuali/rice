@@ -47,7 +47,6 @@ public abstract class MaintenanceRouteLogAbstractSmokeTestBase extends KradTmplM
     }
     
     public void testMaintenanceRouteLogNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testVerifyRouteLog();
         passed();
     }

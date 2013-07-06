@@ -21,7 +21,7 @@ import edu.samplu.common.ITUtil;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class AgendaLookUpAbstractSmokeTestBase extends MainTmplMthdSTNavBase{
+public class AgendaLookUpAbstractSmokeTestBase extends MainTmplMthdSTNavBase{
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Agenda%20Lookup&channelUrl="
@@ -51,19 +51,16 @@ public abstract class AgendaLookUpAbstractSmokeTestBase extends MainTmplMthdSTNa
     }
 
     public void testAgendaLookUpNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         agendaLookupAssertions();
         passed();
     }
 
     public void testSearchEditBackNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testSearchEditBack(this);
         passed();
     }
 
     public void testSearchSearchBackNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testSearchSearchBack(this, "lookupCriteria[id]", "T1000");
         passed();
     }

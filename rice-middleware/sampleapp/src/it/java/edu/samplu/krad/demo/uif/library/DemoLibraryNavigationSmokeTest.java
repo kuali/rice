@@ -41,7 +41,11 @@ public class DemoLibraryNavigationSmokeTest extends DemoLibraryNavigationBase {
 
     protected void testNavigationTabs() throws Exception {
         waitAndClickByLinkText("Navigation Group Tab Example");
-        selectWindow(driver.getWindowHandles().toArray()[1].toString());
+        try {
+            selectWindow(driver.getWindowHandles().toArray()[1].toString());
+        } catch (Throwable t) {
+            fail("Expected another window to be opened " + t.getCause());
+        }
         waitForElementPresentByClassName("uif-headerText-span");
         SeleneseTestBase.assertTrue(driver.getTitle().contains("Kuali :: Navigation View"));
         assertTextPresent("Navigation View");

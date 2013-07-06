@@ -80,7 +80,7 @@ public abstract class PermissionAbstractSmokeTestBase extends AdminTmplMthdSTNav
 
         //LookUp Permission
         selectTopFrame();
-        gotoMenuLinkLocator();
+        navigate();
         params = testLookUpPermission(params.get(0), params.get(1));
 
         //Edit Permission
@@ -88,7 +88,7 @@ public abstract class PermissionAbstractSmokeTestBase extends AdminTmplMthdSTNav
 
         //Verify Permisstion
         selectTopFrame();
-        gotoMenuLinkLocator();
+        navigate();
         params = testVerifyPermission(params.get(0), params.get(1));
         passed();
     }

@@ -37,7 +37,6 @@ public class IdentityGroupBlanketAppNavIT extends AdminTmplMthdBlanketAppSTNavBa
 
     @Test
     public void blanketApprove() throws Exception {
-        gotoMenuLinkLocator();
         super.testIdentityGroupBlanketApprove();
     }
 }

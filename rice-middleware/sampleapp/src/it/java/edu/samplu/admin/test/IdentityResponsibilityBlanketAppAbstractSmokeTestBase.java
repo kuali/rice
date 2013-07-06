@@ -49,7 +49,6 @@ public abstract class IdentityResponsibilityBlanketAppAbstractSmokeTestBase exte
     }
 
     public void testIdentityResponsibilityBlanketAppNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testIdentityResponsibilityBlanketApprove();
         passed();
     }

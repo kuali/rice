@@ -21,7 +21,7 @@ import edu.samplu.common.ITUtil;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class TermLookUpAbstractSmokeTestBase extends MainTmplMthdSTNavBase{
+public class TermLookUpAbstractSmokeTestBase extends MainTmplMthdSTNavBase{
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Term%20Lookup&channelUrl="
@@ -35,6 +35,10 @@ public abstract class TermLookUpAbstractSmokeTestBase extends MainTmplMthdSTNavB
             + "org.kuali.rice.krms.impl.repository.TermBo"
             + ITUtil.SHOW_MAINTENANCE_LINKS
             + "&returnLocation=" + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
+
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
     /**
      * {@inheritDoc}
      * Term Lookup
@@ -50,7 +54,6 @@ public abstract class TermLookUpAbstractSmokeTestBase extends MainTmplMthdSTNavB
         passed();
     }
     public void testTermLookUpNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testTermLookUp();
         passed();
     }

@@ -44,13 +44,15 @@ public abstract class LocationCountryAbstractSmokeTestBase extends AdminTmplMthd
     }
    
     public void testLocationCountryBookmark(Failable failable) throws Exception {
-        testSearchEditCancel();     
+        testSearchEditCancel();
+        driver.navigate().to(ITUtil.getBaseUrlString() + BOOKMARK_URL);
         testCreateNewCancel();
         passed();
     }
 
     public void testLocationCountryNav(Failable failable) throws Exception {
         testEditCancel();
+        navigate();
         testCreateNewCancelNav();
         passed();
     }

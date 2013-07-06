@@ -28,9 +28,9 @@ import org.junit.runner.RunWith;
 @RunWith(SmokeTestRunner.class)
 public abstract class SmokeTestBase extends WebDriverLegacyITBase {
 
-    private String testUrl = ITUtil.KRAD_PORTAL;
+    protected String testUrl = ITUtil.KRAD_PORTAL;
 
-    private boolean shouldNavigate = false;
+    protected boolean shouldNavigate = false;
 
     protected abstract String getBookmarkUrl();
 
@@ -38,7 +38,12 @@ public abstract class SmokeTestBase extends WebDriverLegacyITBase {
 
     @Override
     public String getTestUrl() {
-        return testUrl;
+//        if (this.getClass().toString().contains("krad.demo") ||
+//            this.getClass().toString().contains("krad.labs")) {
+            return testUrl;
+//        } else {
+//            return ITUtil.PORTAL;
+//        }
     }
 
     protected void enableBookmarkMode() {
@@ -47,7 +52,12 @@ public abstract class SmokeTestBase extends WebDriverLegacyITBase {
 
     protected void enableNavigationMode() {
         this.shouldNavigate = true;
-        this.testUrl = ITUtil.KRAD_PORTAL;
+        if (this.getClass().toString().contains("krad.demo") ||
+                this.getClass().toString().contains("krad.labs")) {
+            this.testUrl = ITUtil.KRAD_PORTAL;
+        } else {
+            this.testUrl = ITUtil.PORTAL;
+        }
     }
 
     @Override

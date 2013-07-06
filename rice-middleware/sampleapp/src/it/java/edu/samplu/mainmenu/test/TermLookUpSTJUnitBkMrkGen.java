@@ -24,7 +24,7 @@ import org.junit.Test;
 public class TermLookUpSTJUnitBkMrkGen extends TermLookUpSTJUnitBase {
 
     @Override
-    public String getTestUrl() {
+    public String getBookmarkUrl() {
         return BOOKMARK_URL;
     }
 

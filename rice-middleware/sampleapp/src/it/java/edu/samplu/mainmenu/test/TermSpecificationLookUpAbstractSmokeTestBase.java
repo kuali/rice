@@ -21,7 +21,7 @@ import edu.samplu.common.ITUtil;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class TermSpecificationLookUpAbstractSmokeTestBase extends MainTmplMthdSTNavBase{
+public class TermSpecificationLookUpAbstractSmokeTestBase extends MainTmplMthdSTNavBase{
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Term%20Specification%20Lookup&channelUrl="
@@ -50,7 +50,6 @@ public abstract class TermSpecificationLookUpAbstractSmokeTestBase extends MainT
         passed();
     }
     public void testTermSpecificationLookUpNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testTermSpecificationLookupAssertions();
         passed();
     }

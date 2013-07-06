@@ -45,12 +45,14 @@ public abstract class LocationCampusAbstractSmokeTestBase extends AdminTmplMthdS
    
     public void testLocationCampusBookmark(Failable failable) throws Exception {
         testSearchEditCancel();
+        driver.navigate().to(ITUtil.getBaseUrlString() + BOOKMARK_URL);
         testCreateNewCancel();
         passed();
     }
 
     public void testLocationCampusNav(Failable failable) throws Exception {
         testEditCancel();
+        navigate();
         testCreateNewCancelNav();
         passed();
     }

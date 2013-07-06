@@ -45,11 +45,12 @@ public abstract class IdentityPersonLookUpEditAbstractSmokeTestBase extends Admi
    
     public void testIdentityPersonLookUpEditBookmark(Failable failable) throws Exception {
         testIdentityPersonLookUpEdit();
+        passed();
     }
 
     public void testIdentityPersonLookUpEditNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testIdentityPersonLookUpEdit();
+        passed();
     }
     
     public void testIdentityPersonLookUpEdit() throws Exception

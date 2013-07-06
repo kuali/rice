@@ -21,7 +21,7 @@ import edu.samplu.common.ITUtil;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class PeopleFlowCreateNewAbstractSmokeTestBase extends MainTmplMthdSTNavBase{
+public class PeopleFlowCreateNewAbstractSmokeTestBase extends MainTmplMthdSTNavBase{
 
     /**
      * ITUtil.PORTAL + "?channelTitle=People%20Flow&channelUrl="
@@ -48,7 +48,6 @@ public abstract class PeopleFlowCreateNewAbstractSmokeTestBase extends MainTmplM
         passed();
     }
     public void testPeopleFlowCreateNewNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testPeopleFlow();
         passed();
     }

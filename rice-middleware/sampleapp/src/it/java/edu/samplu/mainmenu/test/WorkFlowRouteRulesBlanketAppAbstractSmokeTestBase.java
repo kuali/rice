@@ -21,7 +21,7 @@ import edu.samplu.common.ITUtil;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class WorkFlowRouteRulesBlanketAppAbstractSmokeTestBase extends MainTmplMthdSTNavBase{
+public class WorkFlowRouteRulesBlanketAppAbstractSmokeTestBase extends MainTmplMthdSTNavBase{
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Routing%20Rules&channelUrl=" + ITUtil.getBaseUrlString() +
@@ -46,7 +46,6 @@ public abstract class WorkFlowRouteRulesBlanketAppAbstractSmokeTestBase extends 
         passed();
     }
     public void testWorkFlowRouteRulesBlanketAppNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testWorkFlowRouteRulesBlanketApp();
         passed();
     }

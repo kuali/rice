@@ -20,11 +20,16 @@ import org.openqa.selenium.By;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class NavTemplateMethodSTBase extends WebDriverLegacyITBase {
+public abstract class NavTemplateMethodSTBase extends SmokeTestBase {
+
+    @Override
+    protected String getBookmarkUrl() {
+        return testUrl;
+    }
 
     @Override
     public String getTestUrl() {
-        return ITUtil.PORTAL;
+        return testUrl;
     }
 
     /**
@@ -62,7 +67,8 @@ public abstract class NavTemplateMethodSTBase extends WebDriverLegacyITBase {
         checkForIncidentReport(getLinkLocator(), message);
     }
 
-    protected void gotoMenuLinkLocator() throws Exception {
+
+    protected void navigate() throws Exception {
         gotoMenuLinkLocator("");
     }
 
@@ -70,7 +76,7 @@ public abstract class NavTemplateMethodSTBase extends WebDriverLegacyITBase {
      * go to having clicked create new of the getLinkLocator()
      */
     protected void gotoCreateNew() throws Exception {
-        gotoMenuLinkLocator();
+        navigate();
         waitAndClick(By.xpath(getCreateNewLinkLocator()));
         //        selectFrame("relative=up");
         checkForIncidentReport(getCreateNewLinkLocator());

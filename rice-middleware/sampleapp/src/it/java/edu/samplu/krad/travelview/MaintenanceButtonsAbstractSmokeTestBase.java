@@ -47,7 +47,7 @@ public abstract class MaintenanceButtonsAbstractSmokeTestBase extends KradTmplMt
     }
     
     public void testMaintenanceButtonsNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
+        navigate();
         testVerifyButtonsLegacy();
         passed();
     }

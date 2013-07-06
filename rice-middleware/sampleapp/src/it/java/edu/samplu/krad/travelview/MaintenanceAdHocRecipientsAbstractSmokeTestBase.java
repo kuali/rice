@@ -47,7 +47,6 @@ public abstract class MaintenanceAdHocRecipientsAbstractSmokeTestBase extends Kr
     }
     
     public void testMaintenanceAdHocRecipientsNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testVerifyAdHocRecipientsLegacy();
         passed();
     }

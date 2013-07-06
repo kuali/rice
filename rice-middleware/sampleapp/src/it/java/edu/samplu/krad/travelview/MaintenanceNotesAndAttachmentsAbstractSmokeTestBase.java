@@ -47,7 +47,6 @@ public abstract class MaintenanceNotesAndAttachmentsAbstractSmokeTestBase extend
     }
     
     public void testMaintenanceNotesAndAttachmentsNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testVerifyNotesAndAttachments();
         passed();
     }

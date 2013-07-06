@@ -47,7 +47,6 @@ public abstract class MaintenanceExpandCollapseAbstractSmokeTestBase extends Kra
     }
     
     public void testMaintenanceExpandCollapseNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testVerifyExpandCollapse();
         passed();
     }

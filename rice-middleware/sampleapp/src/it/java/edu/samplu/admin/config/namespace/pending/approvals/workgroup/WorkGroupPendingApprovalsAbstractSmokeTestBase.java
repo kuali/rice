@@ -15,8 +15,6 @@
  */
 package edu.samplu.admin.config.namespace.pending.approvals.workgroup;
 
-import java.util.Date;
-
 import org.apache.commons.lang.RandomStringUtils;
 
 import edu.samplu.admin.test.AdminTmplMthdSTNavBase;
@@ -99,7 +97,7 @@ public abstract class WorkGroupPendingApprovalsAbstractSmokeTestBase extends Adm
     }
 
     public void testWorkGroupPendingApprovalsNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
+        navigate();
         testWorkGroupPendingApprovals();
         passed();
     }

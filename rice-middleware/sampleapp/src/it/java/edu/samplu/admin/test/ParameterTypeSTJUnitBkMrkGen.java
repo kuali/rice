@@ -24,7 +24,7 @@ import org.junit.Test;
 public class ParameterTypeSTJUnitBkMrkGen extends ParameterTypeSTJUnitBase {
 
     @Override
-    public String getTestUrl() {
+    public String getBookmarkUrl() {
         return BOOKMARK_URL;
     }
 

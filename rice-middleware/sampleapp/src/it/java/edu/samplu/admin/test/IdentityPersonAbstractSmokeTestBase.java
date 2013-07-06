@@ -50,6 +50,7 @@ public abstract class IdentityPersonAbstractSmokeTestBase extends AdminTmplMthdS
 
     public void testIdentityPersonNav(Failable failable) throws Exception {
         testEditCancel();
+        navigate();
         testCreateNewCancelNav();
         passed();
     }

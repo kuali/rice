@@ -49,7 +49,6 @@ public abstract class LocationCountyBlanketAppAbstractSmokeTestBase extends Admi
     }
 
     public void testLocationCountyBlanketAppNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();
         testLocationCountyBlanketApprove();
         passed();
     }

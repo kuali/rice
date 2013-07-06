@@ -46,7 +46,6 @@ public abstract class ReviewAllServicesAndWSDLAbstractSmokeTestBase extends Admi
     }
 
     public void testReviewAllServicesAndWSDLNav(Failable failable) throws Exception {
-        gotoMenuLinkLocator();        
         testReviewAllServicesAndWSDL();
         passed();
     }    

@@ -24,7 +24,7 @@ import org.junit.Test;
 public class IdentityPersonCreateNewSTJUnitBkMrkGen extends IdentityPersonCreateNewSTJUnitBase {
 
     @Override
-    public String getTestUrl() {
+    public String getBookmarkUrl() {
         return BOOKMARK_URL;
     }
 

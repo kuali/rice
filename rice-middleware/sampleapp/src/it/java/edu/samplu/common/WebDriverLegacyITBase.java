@@ -451,11 +451,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
             driver = WebDriverUtil.setUp(getUserName(), testUrl , getClass().getSimpleName(), testMethodName);
             this.sessionId = ((RemoteWebDriver) driver).getSessionId().toString();
 
-            WebDriverUtil.loginKradOrKns(driver, user, this);
-
             jGrowlHeader = getClass().getSimpleName() + "." + testMethodName;
             System.out.println(jGrowlHeader + " sessionId is " + sessionId);
             jGrowl("setUp");
+            WebDriverUtil.loginKradOrKns(driver, user, this);
 
             navigateInternal(); // SeleniumBaseTest.fail from navigateInternal results in the test not being recorded as a failure in CI.
 

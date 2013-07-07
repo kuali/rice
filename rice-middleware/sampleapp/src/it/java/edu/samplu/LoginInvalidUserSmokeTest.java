@@ -16,31 +16,30 @@
 package edu.samplu;
 
 import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
+import edu.samplu.common.SmokeTestBase;
 import edu.samplu.common.WebDriverUtil;
-import org.junit.Assert;
 import org.junit.Test;
 
-import static com.thoughtworks.selenium.SeleneseTestCase.assertEquals;
+import static com.thoughtworks.selenium.SeleneseTestBase.assertTrue;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class InvalidUserNameWDIT extends WebDriverLegacyITBase {
+public class LoginInvalidUserSmokeTest extends SmokeTestBase {
 
     @Override
-    public void fail(String message) {
-        Assert.fail(message);
-    }
-
-    @Override
-    public String getTestUrl() {
+    protected String getBookmarkUrl() {
         return ITUtil.PORTAL;
     }
 
     @Override
+    protected void navigate() throws Exception {
+        // no-op should not need to navigate for invalid login test
+    }
+
+    @Override
     public void testSetUp()  {
-        System.setProperty(ITUtil.REMOTE_AUTOLOGIN_PROPERTY, "notnull");
+        System.setProperty(ITUtil.REMOTE_AUTOLOGIN_PROPERTY, "false"); // turn off auto login so we can test invalid login
         super.testSetUp();
     }
 
@@ -51,9 +50,11 @@ public class InvalidUserNameWDIT extends WebDriverLegacyITBase {
     @Test
     public void testInvalidUserName() throws InterruptedException {
         try {
-            WebDriverUtil.login(driver, ITUtil.DTS_TWO, this);
-        } catch (Exception e) {
-            assertEquals(ITUtil.DTS_TWO, "Invalid username " + ITUtil.DTS_TWO, e.getMessage());
+            System.setProperty(ITUtil.REMOTE_AUTOLOGIN_PROPERTY, "true");
+            WebDriverUtil.loginKradOrKns(driver, ITUtil.DTS_TWO, this);
+            fail("Expected Invalid Login exception with user " + ITUtil.DTS_TWO);
+        } catch (AssertionError e) {
+            assertTrue(e.getMessage().contains("Invalid"));
             passed();
         }
     }

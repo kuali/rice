@@ -300,8 +300,8 @@ public class ITUtil {
     }
 
     public static void failOnInvalidUserName(String userName, String contents, Failable failable) {
-        if (contents.indexOf("Invalid username") > -1) {
-            failable.fail("Invalid username " + userName);
+        if (contents.indexOf("Invalid") > -1) {
+            failable.fail("Invalid Login " + userName);
         }
     }
 /*

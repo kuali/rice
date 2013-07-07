@@ -314,7 +314,6 @@ public class WebDriverUtil {
      * @throws InterruptedException
      */
     public static void kradLogin(WebDriver driver, String userName, Failable failable) throws InterruptedException {
-        if (System.getProperty(ITUtil.REMOTE_AUTOLOGIN_PROPERTY) == null) {
             driver.findElement(By.name("login_user")).clear();
             driver.findElement(By.name("login_user")).sendKeys(userName);
             driver.findElement(By.id("Rice-LoginButton")).click();
@@ -322,7 +321,6 @@ public class WebDriverUtil {
             String contents = driver.getPageSource();
             ITUtil.failOnInvalidUserName(userName, contents, failable);
             ITUtil.checkForIncidentReport(driver.getPageSource(), "Krad Login", failable, "Krad Login failure");
-        }
     }
 
     /**
@@ -333,7 +331,6 @@ public class WebDriverUtil {
      * @throws InterruptedException
      */
     public static void login(WebDriver driver, String userName, Failable failable) throws InterruptedException {
-        if (System.getProperty(ITUtil.REMOTE_AUTOLOGIN_PROPERTY) == null) {
             driver.findElement(By.name("__login_user")).clear();
             driver.findElement(By.name("__login_user")).sendKeys(userName);
             driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
@@ -341,14 +338,15 @@ public class WebDriverUtil {
             String contents = driver.getPageSource();
             ITUtil.failOnInvalidUserName(userName, contents, failable);
             ITUtil.checkForIncidentReport(driver.getPageSource(), "KNS Login", failable, "KNS Login failure");
-        }
     }
 
     public static void loginKradOrKns(WebDriver driver, String user, Failable failable) throws InterruptedException {// login via either KRAD or KNS login page
-        if (isKradLogin()){
-            WebDriverUtil.kradLogin(driver, user, failable);
-        } else {
-            WebDriverUtil.login(driver, user, failable);
+        if ("true".equalsIgnoreCase(System.getProperty(ITUtil.REMOTE_AUTOLOGIN_PROPERTY, "true"))) {
+            if (isKradLogin()){
+                WebDriverUtil.kradLogin(driver, user, failable);
+            } else {
+                WebDriverUtil.login(driver, user, failable);
+            }
         }
     }
 

@@ -51,8 +51,8 @@ public abstract class ConfigViewConfiguredPropertiesAbstractSmokeTestBase extend
         passed();
     }    
     
-    public void testConfigViewConfiguredProperties() throws Exception
-    {
+    public void testConfigViewConfiguredProperties() throws Exception {
+        selectFrameIframePortlet();
         waitAndClickByLinkText("Refresh Page");
     }
 }

@@ -17,6 +17,7 @@ package edu.samplu.admin.test;
 
 import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
+import org.apache.commons.lang.RandomStringUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -57,11 +58,12 @@ public abstract class ConfigComponentLookUpAndCopyAbstractSmokeTestBase extends 
         selectFrameIframePortlet();
         waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]");
         waitAndClickByLinkText("copy");
+        String fourLetters = RandomStringUtils.randomAlphabetic(4);
         waitAndTypeByName("document.documentHeader.documentDescription","Test description of Component copy " + ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits());
         selectByName("document.newMaintainableObject.namespaceCode","KR-WKFLW - Workflow");
-        waitAndTypeByName("document.newMaintainableObject.code","ActionList2");
-        waitAndTypeByName("document.newMaintainableObject.name","");
-        waitAndTypeByName("document.newMaintainableObject.name","Action List 2");
+        waitAndTypeByName("document.newMaintainableObject.code","ActionList2" + fourLetters);
+        waitAndTypeByName("document.newMaintainableObject.name",fourLetters);
+        waitAndTypeByName("document.newMaintainableObject.name","Action List 2 " + fourLetters);
         waitAndClickByName("methodToCall.route");
         checkForDocError();
         waitAndClickByName("methodToCall.close");

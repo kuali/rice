@@ -52,8 +52,8 @@ public abstract class ConfigParameterCreateNewAbstractSmokeTestBase extends Admi
         passed();
     }    
     
-    public void testConfigParameterCreateNew() throws Exception
-    {
+    public void testConfigParameterCreateNew() throws Exception {
+        selectFrameIframePortlet();
         waitAndClickByXpath(CREATE_NEW_XPATH);
         waitAndTypeByName("document.documentHeader.documentDescription","Test description of parameter create new " + ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits());
         selectByName("document.newMaintainableObject.namespaceCode","KR-WKFLW - Workflow");

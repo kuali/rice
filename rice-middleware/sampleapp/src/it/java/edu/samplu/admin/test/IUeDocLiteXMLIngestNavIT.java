@@ -73,7 +73,6 @@ public class IUeDocLiteXMLIngestNavIT extends AdminTmplMthdSTNavBase {
         waitAndClickByLinkText("Main Menu");
         waitAndClickByLinkText("eDoc Lite");
 
-        driver.switchTo().frame("iframeportlet");
         waitAndClick(By.cssSelector("td.infoline > input[name=\"methodToCall.search\"]"));
         Thread.sleep(2000);
        

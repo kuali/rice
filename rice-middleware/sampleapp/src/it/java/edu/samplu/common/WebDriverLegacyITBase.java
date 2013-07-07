@@ -1519,34 +1519,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         isElementPresentByLinkText(groupName);
     }
 
-    protected void testAgendaEditRuleRefreshIT() throws Exception {
-        selectFrameIframePortlet();
-        waitAndClickButtonByText("Search");
-        //        waitAndClickByXpath("//div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button[1]"); //  jiraAwareWaitAndClick("id=32");
-        Thread.sleep(3000);
-        waitAndClickByXpath("//a[@title='edit Agenda Definition with Agenda Id=T1000']",
-                "Does user have edit permissions?"); // jiraAwareWaitAndClick("id=194_line0");
-        checkForIncidentReport("");
-        Thread.sleep(3000);
-        waitAndClickByXpath("//li/a[@class='agendaNode ruleNode']"); // jiraAwareWaitAndClick("//li[@id='473_node_0_parent_root']/a");
-        waitAndClickByXpath("//li/a[@class='agendaNode logicNode whenTrueNode']");
-        waitAndClickByLinkText("[-] collapse all");
-
-        // click refresh  several times
-        for (int i = 0; i < 6; i++) {
-            for (int second = 0;; second++) {
-                if (second >= waitSeconds)
-                    failableFail(TIMEOUT_MESSAGE);
-                try {
-                    if (isElementPresent(".kr-refresh-button"))
-                        break;
-                } catch (Exception e) {}
-                Thread.sleep(1000);
-            }
-            waitAndClick("button.kr-refresh-button");
-        }
-    }
-
     protected void testAttributeDefinitionLookUp() throws Exception {
         waitForPageToLoad();
         selectFrameIframePortlet();

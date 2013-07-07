@@ -15,7 +15,7 @@
  */
 package edu.samplu.common;
 
-import edu.samplu.admin.test.ComponentAbstractSmokeTestBase;
+import edu.samplu.admin.test.ComponentSmokeTest;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -48,7 +48,8 @@ public class JiraAwareFailureUtil {
     static {
         jiraMatches = new HashMap<String, String>();
 
-        jiraMatches.put(ComponentAbstractSmokeTestBase.CREATE_NEW_DOCUMENT_NOT_SUBMITTED_SUCCESSFULLY_MESSAGE_TEXT + ComponentAbstractSmokeTestBase.FOR_TEST_MESSAGE,
+        jiraMatches.put(
+                ComponentSmokeTest.CREATE_NEW_DOCUMENT_NOT_SUBMITTED_SUCCESSFULLY_MESSAGE_TEXT + ComponentSmokeTest.FOR_TEST_MESSAGE,
                 KULRICE_8823_FIX_BROKEN_SMOKE_TESTS_IN_CI);
 
         jiraMatches.put("//*[@id='u229']", KULRICE_8823_FIX_BROKEN_SMOKE_TESTS_IN_CI);

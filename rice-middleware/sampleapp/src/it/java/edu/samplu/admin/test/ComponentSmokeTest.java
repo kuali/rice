@@ -15,16 +15,16 @@
  */
 package edu.samplu.admin.test;
 
-import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
+import edu.samplu.common.SmokeTestBase;
+import org.junit.Test;
 
 /**
  * Tests the Component section in Rice.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ComponentAbstractSmokeTestBase extends WebDriverLegacyITBase {
+public class ComponentSmokeTest extends SmokeTestBase {
 
     String docId;
 
@@ -42,17 +42,12 @@ public abstract class ComponentAbstractSmokeTestBase extends WebDriverLegacyITBa
             "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.component.ComponentBo&docFormKey=88888888&returnLocation=" +
             ITUtil.PORTAL_URL + "&hideReturnLink=true";
 
-    protected void bookmark() {
-        open(ITUtil.getBaseUrlString() + BOOKMARK_URL);
+    @Override
+    public String getBookmarkUrl() {
+        return BOOKMARK_URL;
     }
 
-    /**
-     * Bookmark tests should call bookmark(), navigation tests should call navigation()
-     * @throws Exception
-     */
-    protected abstract void gotoTest() throws Exception;
-
-    protected void navigtaion() throws InterruptedException {
+    protected void navigate() throws InterruptedException {
         waitAndClickAdministration(this);
         waitForTitleToEqualKualiPortalIndex();
         checkForIncidentReport("Component");
@@ -62,27 +57,9 @@ public abstract class ComponentAbstractSmokeTestBase extends WebDriverLegacyITBa
         checkForIncidentReport("Component");
     }
 
-    protected void testComponentCreateNewCancelBookmark(Failable failable) throws Exception {
+    protected void testComponentCreateNewCancel() throws Exception {
         waitAndCreateNew();
         testCancelConfirmation();
-        passed();
-    }
-
-    protected void testComponentCreateNewCancelNav(Failable failable) throws Exception {
-        navigtaion(); // setUp only takes us to the portal, need to navigate to the test
-        waitAndCreateNew();
-        testCancelConfirmation();
-        passed();
-    }
-
-    protected void testComponentParameterBookmark(Failable failable) throws Exception {
-        testComponentParameter();
-        passed();
-    }
-
-    protected void testComponentParameterNav(Failable failable) throws Exception {
-        navigtaion(); // setUp only takes us to the portal, need to navigate to the test
-        testComponentParameter();
         passed();
     }
 
@@ -94,21 +71,42 @@ public abstract class ComponentAbstractSmokeTestBase extends WebDriverLegacyITBa
         docId = testCreateNewComponent(componentName, componentCode, FOR_TEST_MESSAGE);
 
         //Lookup
-        gotoTest();
+        navigate();
         testLookUpComponent(docId, componentName, componentCode);
 
         //edit
         testEditComponent(docId, componentName, componentCode);
 
         //Verify if its edited
-        gotoTest();
+        navigate();
         testVerifyEditedComponent(docId, componentName, componentCode);
 
         //copy
         testCopyComponent(docId, componentName + "copy", componentCode + "copy");
 
         //Verify if its copied
-        gotoTest();
+        navigate();
         testVerifyCopyComponent(docId, componentName + "copy", componentCode + "copy");
+        passed();
+    }
+
+    @Test
+    public void testCreateNewCancelComponentBookmark() throws Exception {
+        testComponentCreateNewCancel();
+    }
+
+    @Test
+    public void testComponentCreateNewCancelComponentNav() throws Exception {
+        testComponentCreateNewCancel();
+    }
+
+    @Test
+    public void testComponentParameterBookmark() throws Exception {
+        testComponentParameter();
+    }
+
+    @Test
+    public void testComponentParameterNav() throws Exception {
+        testComponentParameter();
     }
 }

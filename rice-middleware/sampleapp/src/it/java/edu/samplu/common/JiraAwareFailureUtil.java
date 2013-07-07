@@ -54,12 +54,6 @@ public class JiraAwareFailureUtil {
 
         jiraMatches.put("//*[@id='u229']", KULRICE_8823_FIX_BROKEN_SMOKE_TESTS_IN_CI);
 
-        jiraMatches.put("//a[contains(text(),'Travel Account Lookup')])[3]", KULRICE_8823_FIX_BROKEN_SMOKE_TESTS_IN_CI);
-
-        jiraMatches.put("By.linkText: Travel Account Lookup", KULRICE_8823_FIX_BROKEN_SMOKE_TESTS_IN_CI);
-
-        jiraMatches.put("//a[contains(text(),'Validation - Regex')", KULRICE_8823_FIX_BROKEN_SMOKE_TESTS_IN_CI);
-
         //        jiraMatches.put("",
         //                "");
     }

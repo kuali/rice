@@ -387,7 +387,25 @@ public class WebDriverUtil {
         driver.findElement(by);  // NOTICE just the find, no action, so by is found, but might not be visible or enabled.
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
     }
-    
+
+    /**
+     * Wait for the given amount of seconds, for the given by, using the given driver.  The message is displayed if the
+     * by cannot be found.  No action is performed on the by, so it is possible that the by found is not visible or enabled.
+     *
+     * @param driver WebDriver
+     * @param waitSeconds int
+     * @param by By
+     * @param message String
+     * @throws InterruptedException
+     */
+    public static void waitFors(WebDriver driver, int waitSeconds, By by, String message) throws InterruptedException {
+        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
+        Thread.sleep(1000);
+        driver.findElements(by);  // NOTICE just the find, no action, so by is found, but might not be visible or enabled.
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+    }
+
+
     public static void failOnMatchedJira(String contents, Failable failable) {
         JiraAwareFailureUtil.failOnMatchedJira(contents, failable);
     }

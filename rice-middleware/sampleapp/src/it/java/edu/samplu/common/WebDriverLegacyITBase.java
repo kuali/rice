@@ -572,6 +572,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected void assertAttributeClassRegexMatches(String field, String regex) throws InterruptedException {
+        Thread.sleep(500);
         String attribute = getAttributeByName(field, "class");
         SeleneseTestBase.assertTrue("getAttributeByName(" + field + ", \"class\") should not be null", attribute != null);
         SeleneseTestBase.assertTrue("attribute " + attribute + " doesn't match regex " + regex, attribute.matches(
@@ -1309,6 +1310,13 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         failableFail(t.getMessage() + " " + by.toString() + " " + message + " " + driver.getCurrentUrl());
     }
 
+    private void jiraAwareFail(String message) {
+        JiraAwareFailureUtil.failOnMatchedJira(message, message, this);
+        // if there isn't a matched jira to fail on, then fail
+        checkForIncidentReport(message, message);
+        failableFail(message + " " + driver.getCurrentUrl());
+    }
+
     protected void jiraAwareWaitAndClick(By by, String message) throws InterruptedException {
         try {
             jiraAwareWaitFor(by, message);
@@ -1330,6 +1338,14 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     protected void jiraAwareWaitFor(By by, String message) throws InterruptedException {
         try {
             WebDriverUtil.waitFor(this.driver, this.waitSeconds, by, message);
+        } catch (Throwable t) {
+            jiraAwareFail(by, message, t);
+        }
+    }
+
+    protected void jiraAwareWaitFors(By by, String message) throws InterruptedException {
+        try {
+            WebDriverUtil.waitFors(this.driver, this.waitSeconds, by, message);
         } catch (Throwable t) {
             jiraAwareFail(by, message, t);
         }
@@ -2067,7 +2083,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         String docId = waitForDocId();
         assertBlanketApproveButtonsPresent();
         String twoUpperCaseLetters = RandomStringUtils.randomAlphabetic(2).toUpperCase();
-        String countryName = "Validation Test Country " + ITUtil.DTS + " " + twoUpperCaseLetters;
+        String countryName = "Validation Test Country " + ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits();
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, countryName);
         waitAndTypeByXpath(DOC_CODE_XPATH, twoUpperCaseLetters);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", countryName);
@@ -2563,7 +2579,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         // wait for collections page to load by checking the presence of a sub collection line item
         for (int second = 0;; second++) {                   
             if (second >= waitSeconds)
-                failableFail(TIMEOUT_MESSAGE);
+                failableFail(TIMEOUT_MESSAGE + " looking for " + SUB_COLLECTION_UIF_DISCLOSURE_SPAN_UIF_HEADER_TEXT_SPAN_XPATH);
             try {                
                 if (getText(SUB_COLLECTION_UIF_DISCLOSURE_SPAN_UIF_HEADER_TEXT_SPAN_XPATH).equals("SubCollection - (3 lines)"))
                 {
@@ -4402,6 +4418,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void waitForElementPresentByClassName(String name, String message) throws InterruptedException {
         jiraAwareWaitFor(By.className(name), message);
+    }
+
+    protected void waitForElementsPresentByClassName(String name, String message) throws InterruptedException {
+        jiraAwareWaitFors(By.className(name), message);
     }
 
     protected void waitForElementPresentById(String id) throws InterruptedException {

@@ -17,6 +17,7 @@
 package edu.samplu.admin.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -27,7 +28,6 @@ import org.openqa.selenium.WebElement;
 
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
-
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -134,7 +134,7 @@ public class DocSearchWDIT extends WebDriverLegacyITBase {
         selectByXpath("//select[@id='statusCode']", "- SAVED");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @alt='search']");
         waitForPageToLoad();
-        assertEquals("SAVED", driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[4]")).getText());
+        assertTrue(driver.findElement(By.id("row")).getText().contains("SAVED"));
         assertElementPresentByXpath("//table[@id='row']/tbody/tr[1]/td[contains(a,'admin')]");
         //Thread.sleep(2000);
         waitAndClickByXpath("//input[@name='methodToCall.clearValues' and @alt='clear']");
@@ -167,10 +167,8 @@ public class DocSearchWDIT extends WebDriverLegacyITBase {
         switchToWindow("Kuali :: Superuser Document Service");
         waitForPageToLoad();
         //Thread.sleep(4000);
-        
-        assertElementPresentByName("methodToCall.actionRequestApprove.(((U))).((`admin`)).(([])).((*2369*)).((%complete%))", "complete button does not exist on the page");
-        waitForElementPresentByName("methodToCall.actionRequestApprove.(((U))).((`admin`)).(([])).((*2369*)).((%complete%))");
-        waitAndClickByName("methodToCall.actionRequestApprove.(((U))).((`admin`)).(([])).((*2369*)).((%complete%))");
+
+        waitAndClickByXpath("//input[@src='images/buttonsmall_complete.gif']");
         waitForPageToLoad();
         assertElementPresentByName("methodToCall.approve","approve button does not exist on the page");
         assertElementPresentByName("methodToCall.disapprove","disapprove button does not exist on the page");

@@ -57,7 +57,7 @@ public abstract class MainTmplMthdSTNavBase extends NavTemplateMethodSTBase {
         waitAndClickSearch3();
         waitForElementPresentByClassName(DATA_TABLES_INFO, "Problem with second search");
         back();
-        waitForElementPresentByClassName(DATA_TABLES_INFO, "Going back from Search to Search results not available");
+        waitForElementsPresentByClassName(DATA_TABLES_INFO, "Going back from Search to Search results not available");
         assertTextPresent("Going back from Search to Search results not available", pageBannerText);
     }
 }

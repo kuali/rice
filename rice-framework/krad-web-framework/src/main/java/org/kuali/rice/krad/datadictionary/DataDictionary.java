@@ -21,6 +21,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
@@ -37,6 +38,7 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.beans.factory.support.KualiDefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.expression.StandardBeanExpressionResolver;
@@ -174,7 +176,10 @@ public class DataDictionary {
      * or the same thread
      */
     public void performDictionaryPostProcessing(boolean allowConcurrentValidation) {
-        // invoke post processing of the dictionary bean definitions
+        PropertyPlaceholderConfigurer propertyPlaceholderConfigurer = new PropertyPlaceholderConfigurer();
+        propertyPlaceholderConfigurer.setProperties(ConfigContext.getCurrentContextConfig().getProperties());
+        propertyPlaceholderConfigurer.postProcessBeanFactory(ddBeans);
+
         DictionaryBeanFactoryPostProcessor dictionaryBeanPostProcessor = new DictionaryBeanFactoryPostProcessor(this,
                 ddBeans);
         dictionaryBeanPostProcessor.postProcessBeanFactory();

@@ -771,6 +771,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         checkForDocError();
         ITUtil.checkForIncidentReport(driver.getPageSource(), DOC_SEARCH_XPATH, this, "Blanket Approve failure");
         waitAndClickDocSearch();
+        waitForElementsPresentByClassName("footer-copyright", "footer-copyright");
         SeleneseTestBase.assertEquals("Kuali Portal Index", driver.getTitle());
         selectFrameIframePortlet();
         waitAndClickSearch();

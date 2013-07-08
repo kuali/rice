@@ -32,4 +32,20 @@ public class WorkFlowRouteRulesSTJUnitBkMrkGen extends WorkFlowRouteRulesSTJUnit
     public void testWorkFlowRouteRulesBookmark() throws Exception {
         testWorkFlowRouteRulesBookmark(this);
     }
+
+    @Test
+    /**
+     * tests that a new Routing Rule maintenance document can be cancelled
+     */
+    public void testWorkFlowRouteRulesCreateNewBookmark() throws Exception {
+        testWorkFlowRouteRulesCreateNew();
+    }
+
+    @Test
+    /**
+     * tests that a Routing Rule maintenance document is created for an edit operation originating from a lookup screen
+     */
+    public void testWorkFlowRouteRulesEditRouteRulesBookmark() throws Exception {
+        testWorkFlowRouteRulesEditRouteRules();
+    }
 }

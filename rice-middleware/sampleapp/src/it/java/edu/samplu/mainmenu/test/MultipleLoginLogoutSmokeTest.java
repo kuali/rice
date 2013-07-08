@@ -17,13 +17,13 @@ package edu.samplu.mainmenu.test;
 
 import static org.junit.Assert.*;
 
+import edu.samplu.common.SmokeTestBase;
 import org.junit.Assert;
 import org.junit.Test;
 
 import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
 
-public class MultipleLoginLogoutNavIT extends WebDriverLegacyITBase {
+public class MultipleLoginLogoutSmokeTest extends SmokeTestBase {
 
     /**
      * "//div[@id='login-info']/strong[2]"
@@ -33,6 +33,17 @@ public class MultipleLoginLogoutNavIT extends WebDriverLegacyITBase {
     @Override
     public void fail(String message) {
         Assert.fail(message);
+    }
+
+    @Override
+    protected String getBookmarkUrl() {
+        return ITUtil.PORTAL;
+    }
+
+    @Override
+    protected void navigate() throws Exception {
+        waitAndClickMainMenu(this);
+        waitForPageToLoad();
     }
 
     @Override
@@ -46,9 +57,12 @@ public class MultipleLoginLogoutNavIT extends WebDriverLegacyITBase {
     }
 
     @Test
+    public void testMultipleLoginLogoutNav() throws Exception {
+        testMultipleLoginLogout();
+        passed();
+    }
+
     public void testMultipleLoginLogout() throws Exception {
-        waitAndClickMainMenu(this);
-        waitForPageToLoad();
         assertEquals("Logged in User: admin",getTextByXpath("//div[@id='login-info']/strong[1]"));
         assertEquals(Boolean.FALSE, isElementPresentByXpath(LOGIN_INFO_STRONG_2_XPATH));
         waitAndTypeByName("backdoorId", "employee");

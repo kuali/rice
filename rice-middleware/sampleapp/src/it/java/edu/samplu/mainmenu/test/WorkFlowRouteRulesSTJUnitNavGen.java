@@ -27,4 +27,20 @@ public class WorkFlowRouteRulesSTJUnitNavGen extends WorkFlowRouteRulesSTJUnitBa
     public void testWorkFlowRouteRulesNav() throws Exception {
         testWorkFlowRouteRulesNav(this);
     }
+
+    @Test
+    /**
+     * tests that a new Routing Rule maintenance document can be cancelled
+     */
+    public void testWorkFlowRouteRulesCreateNewNav() throws Exception {
+        testWorkFlowRouteRulesCreateNew();
+    }
+
+    @Test
+    /**
+     * tests that a Routing Rule maintenance document is created for an edit operation originating from a lookup screen
+     */
+    public void testWorkFlowRouteRulesEditRouteRulesNav() throws Exception {
+        testWorkFlowRouteRulesEditRouteRules();
+    }
 }

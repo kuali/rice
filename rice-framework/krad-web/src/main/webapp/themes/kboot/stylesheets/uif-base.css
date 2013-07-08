@@ -408,6 +408,56 @@ table.uif-gridLayout > tbody > tr > td.uif-inputField {
 table.uif-tableCollectionLayout thead th.sorting, table.uif-tableCollectionLayout thead th.sorting_asc, table.uif-tableCollectionLayout thead th.sorting_desc, table.uif-tableCollectionLayout thead th.sorting label, table.uif-tableCollectionLayout thead th.sorting_asc label, table.uif-tableCollectionLayout thead th.sorting_desc label {
     cursor: pointer;
 }
+
+
+table.dataTable th:active {
+    outline: inherit;
+}
+
+table.dataTable th {
+    border-bottom-color:#e5e5e5;
+    border-bottom-width:1px;
+    border-bottom-style:solid;
+}
+
+table.dataTable th.sorting {
+    background-image:url(../images/icon-sort.png);
+    background-color:#eee;
+    background-repeat:no-repeat;
+    background-position: right center;
+}
+
+table.dataTable th.sorting_desc {
+    outline: #666 solid 1px;
+    color: #FFF;
+    border-bottom-color: #666;
+    border-bottom-width: 3px;
+    border-bottom-style: solid;
+    border-left-style: none;
+    background-image: url(../images/icon-sort-down.png);
+    background-color: #666;
+    background-repeat: no-repeat;
+    background-position: right center;
+}
+
+table.dataTable th.sorting_asc {
+    background:#666;
+    outline:#666 solid 1px;
+    border-bottom-color:#666;
+    border-bottom-width:3px;
+    border-bottom-style:solid;
+    color:#FFF;
+    border-left-style:none;
+    background-image:url(../images/icon-sort-up.png);
+    background-repeat:no-repeat;
+    background-position: right center;
+}
+
+table.dataTable th.sorting_desc label,table.dataTable th.sorting_asc label {
+    font-weight:normal;
+}
+
+
 table.dataTable thead th {
     cursor: default;
 }
@@ -516,10 +566,10 @@ table.dataTable tr.odd {
     background-color: white;
 }
 table.dataTable tr.odd td.sorting_1 {
-    background-color: #FAFAFA;
+    background-color: #f6feff;
 }
 table.dataTable tr.even td.sorting_1 {
-    background-color: #FAFAFA;
+    background-color: #f6feff;
 }
 table.dataTable tr.uif-newCollectionItem {
     background-color: #FFFFCC;
@@ -548,6 +598,18 @@ table.dataTable tr.uif-collectionDeleteHighlight td.sorting_1 {
            color: #888888 !important;
            background-color: #DDDDDD !important;*/
 }
+
+
+.dataTables_paginate {
+    float: right;
+    text-align: right;
+}
+
+.dataTables_info {
+    width: 50%;
+    float: left;
+}
+
 /** inline block cross browser support **/
 .inlineBlock {
     display: -moz-inline-stack;

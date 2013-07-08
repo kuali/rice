@@ -30,7 +30,7 @@
         <value>themes/kboot/stylesheets/kboot.css</value>
         <value>krad/plugins/jqueryUI/jquery-ui-1.9.2.css</value>
         <value>krad/plugins/jgrowl/jquery.jgrowl.css</value>
-        <value>krad/plugins/rice/datatables/jquery.dataTables.css</value>
+        <!--<value>krad/plugins/rice/datatables/jquery.dataTables.css</value> -->
         <value>krad/plugins/rice/datatables/TableTools.css</value>
         <value>krad/plugins/fancybox/jquery.fancybox.css</value>
         <value>krad/plugins/rice/textpopout/popoutTextarea.css</value>

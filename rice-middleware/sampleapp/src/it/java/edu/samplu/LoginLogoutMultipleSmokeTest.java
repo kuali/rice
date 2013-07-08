@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.samplu.mainmenu.test;
+package edu.samplu;
 
 import static org.junit.Assert.*;
 
@@ -23,7 +23,7 @@ import org.junit.Test;
 
 import edu.samplu.common.ITUtil;
 
-public class MultipleLoginLogoutSmokeTest extends SmokeTestBase {
+public class LoginLogoutMultipleSmokeTest extends SmokeTestBase {
 
     /**
      * "//div[@id='login-info']/strong[2]"

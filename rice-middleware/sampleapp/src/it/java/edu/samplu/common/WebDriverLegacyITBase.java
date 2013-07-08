@@ -685,6 +685,12 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         }
     }
 
+    protected void assertIsVisibleById(String id) {
+        if (!isVisibleById(id)) {
+            failableFail(id + " is not visible and should be");
+        }
+    }
+
     protected void assertIsNotVisible(String locator) {
         if (isVisible(locator)) {
             failableFail(locator + " is visible and should not be");

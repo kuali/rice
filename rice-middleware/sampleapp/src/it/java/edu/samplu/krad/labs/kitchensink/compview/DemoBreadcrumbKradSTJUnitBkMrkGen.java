@@ -20,7 +20,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class BreadcrumbKradSTJUnitBkMrkGen extends BreadcrumbKradSTJUnitBase {
+public class DemoBreadcrumbKradSTJUnitBkMrkGen extends BreadcrumbKradSTJUnitBase {
 
     /**
      * {@inheritDoc}

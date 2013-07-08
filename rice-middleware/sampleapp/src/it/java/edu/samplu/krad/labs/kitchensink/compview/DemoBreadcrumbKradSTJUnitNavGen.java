@@ -20,7 +20,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class BreadcrumbKradSTJUnitNavGen extends BreadcrumbKradSTJUnitBase {
+public class DemoBreadcrumbKradSTJUnitNavGen extends BreadcrumbKradSTJUnitBase {
 
     @Test
     public void testBreadcrumbNav() throws Exception {

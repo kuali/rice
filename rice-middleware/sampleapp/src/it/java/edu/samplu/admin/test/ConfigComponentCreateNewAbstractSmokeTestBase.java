@@ -17,6 +17,7 @@ package edu.samplu.admin.test;
 
 import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
+import org.apache.commons.lang.RandomStringUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -55,11 +56,12 @@ public abstract class ConfigComponentCreateNewAbstractSmokeTestBase extends Admi
     public void testConfigComponentCreateNew() throws Exception
     {
         selectFrameIframePortlet();
-        waitAndClickByXpath(CREATE_NEW_XPATH);        
+        waitAndClickByXpath(CREATE_NEW_XPATH);
+        String fourLetters = RandomStringUtils.randomAlphabetic(4);
         waitAndTypeByName("document.documentHeader.documentDescription","Test description of Component create new");
         selectByName("document.newMaintainableObject.namespaceCode","KR-WKFLW - Workflow");
-        waitAndTypeByName("document.newMaintainableObject.code","Test1");
-        waitAndTypeByName("document.newMaintainableObject.name","Test1ComponentCode");
+        waitAndTypeByName("document.newMaintainableObject.code","Test1" + fourLetters);
+        waitAndTypeByName("document.newMaintainableObject.name","Test1ComponentCode" + fourLetters);
         waitAndClickByName("methodToCall.route");
         checkForDocError();
         waitAndClickByName("methodToCall.close");

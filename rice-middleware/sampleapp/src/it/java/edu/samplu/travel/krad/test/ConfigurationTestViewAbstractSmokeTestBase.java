@@ -63,11 +63,8 @@ public abstract class ConfigurationTestViewAbstractSmokeTestBase extends WebDriv
     protected void testConfigurationTestViewNav(Failable failable) throws Exception {     
         navigation();
         testConfigurationTestView(idPrefix);
-        navigation();
         testAddLineWithSpecificTime(idPrefix, addLineIdSuffix);
-        navigation();
         testAddLineWithAllDay(idPrefix, addLineIdSuffix);
-        navigation();
         testAddLineAllDay(idPrefix, addLineIdSuffix);
         passed();
     }

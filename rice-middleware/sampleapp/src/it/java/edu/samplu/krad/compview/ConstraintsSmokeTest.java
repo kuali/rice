@@ -17,67 +17,35 @@
 package edu.samplu.krad.compview;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
-import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
+import edu.samplu.common.SmokeTestBase;
+import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ConstraintsAbstractSmokeTestBase extends WebDriverLegacyITBase {
+public class ConstraintsSmokeTest extends SmokeTestBase {
 
     /**
      * /kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page3
      */
     public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page3";
 
-    /**
-     * Nav tests start at {@link edu.samplu.common.ITUtil#PORTAL}.  Bookmark Tests should override and return {@link ConstraintsAbstractSmokeTestBase#BOOKMARK_URL}
-     * {@inheritDoc}
-     * @return
-     */
     @Override
-    public String getTestUrl() {
-        return ITUtil.PORTAL;
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
     }
 
-    protected void navigation() throws Exception {
+    @Override
+    protected void navigate() throws Exception {
         waitAndClickKRAD();
         waitAndClickByXpath(KITCHEN_SINK_XPATH);
         switchToWindow(KUALI_UIF_COMPONENTS_WINDOW_XPATH);
         waitAndClickByLinkText("Validation");
     }
 
-    protected void testConstraintsNav(Failable failable) throws Exception {
-        navigation();
-        testConstraints();
-        passed();
-    }
-
-    protected void testConstraintsBookmark(Failable failable) throws Exception {
-        testConstraints();
-        passed();
-    }
-
-    protected void testConstraintsField9Nav(Failable failable) throws Exception {
-        navigation();
+    protected void testConstraintsField9() throws Exception {
         testField9FocusBlur();
-        passed();
-    }
-
-    protected void testConstraintsField9Bookmark(Failable failable) throws Exception {
-        testField9FocusBlur();
-        passed();
-    }
-
-    protected void testPreRequisiteConstraintNav(Failable failable) throws Exception {
-        navigation();
-        testPreRequisiteConstraint();
-        passed();
-    }
-
-    protected void testPreRequisiteConstraintBookmark(Failable failable) throws Exception {
-        testPreRequisiteConstraint();
         passed();
     }
 
@@ -215,7 +183,7 @@ public abstract class ConstraintsAbstractSmokeTestBase extends WebDriverLegacyIT
         fireEvent("field15", "blur");
         assertAttributeClassRegexMatches("field18", REGEX_ERROR);
 
-        clearTextByName("field6");
+        clearTextByName("field16");
         waitAndTypeByName("field16", "A");
         fireEvent("field16", "blur");
         assertAttributeClassRegexMatches("field18", REGEX_ERROR);
@@ -465,5 +433,41 @@ public abstract class ConstraintsAbstractSmokeTestBase extends WebDriverLegacyIT
         waitAndTypeByName("field33", "");
         fireEvent("field33", "blur");
         assertAttributeClassRegexMatches("field33", REGEX_VALID);
+    }
+
+    @Test
+    public void testConstraintsBookmark() throws Exception {
+        testConstraints();
+        passed();
+    }
+
+    @Test
+    public void testConstraintsField9Bookmark() throws Exception {
+        testConstraintsField9();
+        passed();
+    }
+
+    @Test
+    public void testPreRequisiteConstraintBookmark() throws Exception {
+        testPreRequisiteConstraint();
+        passed();
+    }
+
+    @Test
+    public void testConstraintsNav() throws Exception {
+        testConstraints();
+        passed();
+    }
+
+    @Test
+    public void testConstraintsField9Nav() throws Exception {
+        testConstraintsField9();
+        passed();
+    }
+
+    @Test
+    public void testPreRequisiteConstraintNav() throws Exception {
+        testPreRequisiteConstraint();
+        passed();
     }
 }

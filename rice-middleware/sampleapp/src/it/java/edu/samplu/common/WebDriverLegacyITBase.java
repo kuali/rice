@@ -565,6 +565,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected void assertAttributeClassRegexDoesntMatch(String field, String regex) throws InterruptedException {
+        Thread.sleep(1000);
         String attribute = getAttributeByName(field, "class");
         SeleneseTestBase.assertTrue("getAttributeByName(" + field + ", \"class\") should not be null", attribute != null);
         SeleneseTestBase.assertFalse("attribute " + attribute + " matches regex " + regex + " and it should not",
@@ -572,7 +573,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected void assertAttributeClassRegexMatches(String field, String regex) throws InterruptedException {
-        Thread.sleep(500);
+        Thread.sleep(1000);
         String attribute = getAttributeByName(field, "class");
         SeleneseTestBase.assertTrue("getAttributeByName(" + field + ", \"class\") should not be null", attribute != null);
         SeleneseTestBase.assertTrue("attribute " + attribute + " doesn't match regex " + regex, attribute.matches(

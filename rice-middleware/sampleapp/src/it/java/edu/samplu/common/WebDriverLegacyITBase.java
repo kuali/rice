@@ -3974,7 +3974,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndCreateNew();
         String docId = waitForDocId();
         assertBlanketApproveButtonsPresent();
-        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Document Type " + ITUtil.DTS);
+        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Document Type " + ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits());
         String parentDocType = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:document.newMaintainableObject.parentDocType.name,documentTypeId:document.newMaintainableObject.docTypeParentId,))).((`document.newMaintainableObject.parentDocType.name:name,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
                 + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
         waitAndClickByXpath(parentDocType);

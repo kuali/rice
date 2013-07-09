@@ -732,7 +732,8 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected void assertTextPresent(String text, String message) {
-        if (!driver.getPageSource().contains(text)) {
+        String pageSource = driver.getPageSource();
+        if (!pageSource.contains(text)) {
             failableFail(text + " not present " + message);
         }
     }
@@ -1285,11 +1286,17 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected boolean isVisible(String locator) {
-        return driver.findElement(By.cssSelector(locator)).isDisplayed();
+        return isVisible(By.cssSelector(locator));
     }
 
     protected boolean isVisible(By by) {
-        return driver.findElement(by).isDisplayed();
+        List<WebElement> elements = driver.findElements(by);
+        for (WebElement element: elements) {
+            if (element.isDisplayed()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected boolean isVisibleById(String id) {
@@ -4280,7 +4287,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * @throws InterruptedException
      */
     protected void waitAndClickLogout() throws InterruptedException {
-        waitAndClickByXpath(LOGOUT_XPATH, this);
+        waitAndClickLogout(this);
     }
 
     /**
@@ -4289,6 +4296,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * @throws InterruptedException
      */
     protected void waitAndClickLogout(Failable failable) throws InterruptedException {
+        selectTopFrame();
         waitAndClickByXpath(LOGOUT_XPATH, failable);
     }
 
@@ -4454,15 +4462,19 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected void waitIsVisible(By by) throws InterruptedException {
-        for (int second = 0;; second++) {
-            if (second >= waitSeconds) {
-                failableFail(TIMEOUT_MESSAGE + " " + by.toString());
-            }
-            if (isVisible(by)) {
-                break;
-            }
-            Thread.sleep(1000);
-        }
+        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
+        isVisible(by);
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+
+//        for (int second = 0;; second++) {
+//            if (second >= waitSeconds) {
+//                failableFail(TIMEOUT_MESSAGE + " " + by.toString());
+//            }
+//            if (isVisible(by)) {
+//                break;
+//            }
+//            Thread.sleep(1000);
+//        }
     }
 
     protected void waitIsVisible(By by, String message) throws InterruptedException {

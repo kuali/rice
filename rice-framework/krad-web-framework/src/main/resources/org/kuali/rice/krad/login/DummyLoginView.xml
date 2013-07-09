@@ -94,6 +94,7 @@
             <list>
               <bean parent="Uif-SpaceField-parentBean"/>
               <bean parent="Uif-GridGroup">
+                <property name="additionalCssClasses" value="uif-gridGroup-plain"/>
                 <property name="items">
                   <list>
                     <bean parent="Uif-SpaceField-parentBean"/>

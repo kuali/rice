@@ -2364,9 +2364,9 @@ function initStickyFooterContent(){
 
     var contentWindowDiff = jQuery(window).height()-jQuery("#Uif-Application").height();
     if (bottomOffset > contentWindowDiff){
-        jQuery("#" + kradVariables.APP_ID).css("marginBottom", bottomOffset + "px");
+        jQuery("#" + kradVariables.APP_ID).css("paddingBottom", bottomOffset + "px");
     }else{
-        jQuery("#" + kradVariables.APP_ID).css("marginBottom", contentWindowDiff + "px");
+        jQuery("#" + kradVariables.APP_ID).css("paddingBottom", contentWindowDiff + "px");
     }
 }
 

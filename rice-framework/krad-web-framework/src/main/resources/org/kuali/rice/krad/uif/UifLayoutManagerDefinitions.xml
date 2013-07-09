@@ -69,7 +69,7 @@
       </list>
     </property>
     <!-- this means items which don't define their colSpan will take up a whole "row" -->
-    <property name="defaultItemColSpan" value="12"/>
+    <property name="defaultItemColSpan" value="9"/>
     <property name="rowCssClasses">
       <map>
         <entry key="all" value="row"/>
@@ -79,6 +79,11 @@
 
   <bean id="Uif-FixedCssGridLayout"  parent="Uif-FixedCssGridLayout-parentBean"/>
   <bean id="Uif-FixedCssGridLayout-parentBean" abstract="true" parent="Uif-CssGridLayoutBase">
+    <property name="libraryCssClasses">
+      <list>
+        <value>span9</value>
+      </list>
+    </property>
     <property name="cssClasses">
       <list>
         <value>uif-fixedCssGridLayout</value>

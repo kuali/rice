@@ -254,9 +254,14 @@
     padding-top: 25px;
 }
 
-.demo-componentLibView .demo-sampleAppPage > .uif-pageHeader select {
+.demo-componentLibView  .demo-sampleAppPage .uif-pageHeader {
+    min-height: 60px;
+}
+
+.demo-componentLibView .demo-sampleAppPage .uif-pageHeader select {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
+    width: 120px;
 }
 
 .uif-page > .uif-header-contentWrapper{
@@ -984,3 +989,11 @@ div#Demo-BoxLayoutManager-View .demo-borderBottom{
     border: 1px dashed gray;
 }
 
+.demo-sampleAppView .uif-pageContentWrapper{
+    padding: 0;
+}
+
+.demo-sampleAppView .uif-viewHeader{
+    padding-top: 0;
+    padding-bottom: 0;
+}

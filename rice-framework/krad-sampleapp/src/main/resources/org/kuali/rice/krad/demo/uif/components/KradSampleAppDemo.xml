@@ -45,6 +45,7 @@
 
   <!-- SampleAppView defaults -->
   <bean id="KradSampleAppView" parent="Uif-FormView">
+    <property name="unifiedHeader" value="false"/>
     <property name="additionalCssFiles">
       <list>
         <value>css/jquery.tweet.css</value>

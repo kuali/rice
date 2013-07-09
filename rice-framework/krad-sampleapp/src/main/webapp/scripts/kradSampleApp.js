@@ -84,7 +84,7 @@ function showAdditionalSource(tabIndex) {
  * so they appear active
  */
 function linkSelection() {
-    var viewDiv = jQuery("div.uif-view");
+    var viewDiv = jQuery("div.uif-formView");
     if (jQuery(viewDiv).is(".demo-componentLibView") || jQuery(viewDiv).is(".demo-componentLibHome")) {
         var viewId = viewDiv.attr("id");
         var link = jQuery("#Uif-Navigation").find("a[href*='" + viewId + "']");

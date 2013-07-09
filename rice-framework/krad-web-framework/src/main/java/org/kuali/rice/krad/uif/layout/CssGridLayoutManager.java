@@ -28,12 +28,12 @@ import java.util.Map;
 /**
  * Css Grid Layout manager is a layout manager which creates div "rows" and "cells" to replicate a table look by
  * using div elements for its items.  Items are added into rows based on their colSpan setting, while each row has a max
- * size of 12 columns.  By default, if colSpan is not set on an item, that item will take a full row.
+ * size of 9 columns.  By default, if colSpan is not set on an item, that item will take a full row.
  */
 public class CssGridLayoutManager extends LayoutManagerBase {
     private static final long serialVersionUID = 1830635073147703757L;
 
-    private static final int NUMBER_OF_COLUMNS = 12;
+    private static final int NUMBER_OF_COLUMNS = 9;
     private static final String BOOTSTRAP_SPAN_PREFIX = "span";
 
     private List<List<Component>> rows;
@@ -68,7 +68,7 @@ public class CssGridLayoutManager extends LayoutManagerBase {
                 continue;
             }
 
-            // set colSpan to default setting (12 is the default)
+            // set colSpan to default setting (9 is the default)
             int colSpan = this.defaultItemColSpan;
 
             // if the item's set colSpan is greater than 1 set it to that number; 1 is the default colSpan for Component
@@ -181,7 +181,7 @@ public class CssGridLayoutManager extends LayoutManagerBase {
     }
 
     /**
-     * The default cell colSpan to use for this layout (max setting, and the bean default, is 12)
+     * The default cell colSpan to use for this layout (max setting, and the bean default, is 9)
      *
      * @return int representing the default colSpan for cells in this layout
      */

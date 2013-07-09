@@ -45,8 +45,7 @@
     <property name="topGroup">
       <bean parent="Uif-VerticalBoxGroup" p:style="background:#000;
 width: 100%;
-color:#FFF;
-padding-top:4px; padding-bottom:8px;">
+color:#FFF;">
         <property name="items">
           <list>
             <bean parent="Uif-Message" p:messageText="Top Group Content @{viewId}-@{pageId}" p:style="font-size: 18px; display:block; padding-left:20px;"

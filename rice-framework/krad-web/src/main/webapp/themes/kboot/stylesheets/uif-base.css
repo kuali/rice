@@ -63,19 +63,11 @@ ul.uif-readOnlyStringList li {
 /** View structure related **************************************************************************/
 .uif-viewContentWrapper .uif-pageContentWrapper{
     padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 0;
+    padding-top: 5px;
 }
 
-.uif-pageContentWrapper {
-    /** Note when the navigation plugin is in use, this margin
-        will added to the required margin automatically
-        so this value represents both the margin from the navigation
-        menu when in use, AND the margin when no menu is
-        in use!**/
-
-
-
-    /*margin-left: 15px;*/
-}
 /** Field and group related *************************************************************************/
 
 .uif-instructionalMessage {
@@ -551,6 +543,14 @@ div.uif-calculationField, div.uif-calculationField input {
     overflow: hidden;
 }
 /** Table layout styles *******************************************************************************/
+.uif-gridGroup-plain > table,
+.uif-gridGroup-plain > table > tbody > tr,
+.uif-gridGroup-plain > table > tbody > tr > th[scope="row"],
+.uif-gridGroup-plain > table > tbody > tr > td{
+    border: none;
+    background: none;
+    background-color: transparent;
+}
 
 table.uif-gridLayout {
     width: 100%;
@@ -771,6 +771,11 @@ fieldset[data-type="InputSet"] {
     font-family: inherit !important;
     font-size: inherit !important;
 }
+
+.ui-tabs.ui-widget-content{
+    border: none;
+}
+
 .ui-tabs li {
     clear: none;
 }

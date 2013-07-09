@@ -15,7 +15,6 @@
  */
 package edu.samplu.krad.demo.travel.account;
 
-import edu.samplu.common.Failable;
 import edu.samplu.common.SmokeTestBase;
 import org.junit.Test;
 
@@ -62,23 +61,15 @@ public class DemoTravelAccountLookUpSmokeTest extends SmokeTestBase {
         assertElementPresentByXpath("//a[contains(text(), 'a2')]");
     }
 
-    public void testTravelAccountLookUpBookmark(Failable failable) throws Exception {
-        testTravelAccountLookUp();
-        passed();
-    }
-
-    public void testTravelAccountLookUpNav(Failable failable) throws Exception {
-        testTravelAccountLookUp();
-        passed();
-    }
-
     @Test
     public void testTravelAccountLookUpBookmark() throws Exception {
-        testTravelAccountLookUpBookmark(this);
+        testTravelAccountLookUp();
+        passed();
     }
 
     @Test
     public void testTravelAccountLookUpNav() throws Exception {
-        testTravelAccountLookUpNav(this);
+        testTravelAccountLookUp();
+        passed();
     }
 }

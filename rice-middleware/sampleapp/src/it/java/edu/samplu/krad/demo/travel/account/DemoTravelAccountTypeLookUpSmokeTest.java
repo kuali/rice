@@ -15,7 +15,6 @@
  */
 package edu.samplu.krad.demo.travel.account;
 
-import edu.samplu.common.Failable;
 import edu.samplu.common.SmokeTestBase;
 import org.junit.Test;
 
@@ -61,23 +60,15 @@ public class DemoTravelAccountTypeLookUpSmokeTest extends SmokeTestBase {
         assertElementPresentByXpath("//input[@value='IAT' and @name='lookupResults[2].accountTypeCode']");
     }
 
-    public void testTravelAccountTypeLookUpBookmark(Failable failable) throws Exception {
-        testTravelAccountTypeLookUp();
-        passed();
-    }
-
-    public void testTravelAccountTypeLookUpNav(Failable failable) throws Exception {
-        testTravelAccountTypeLookUp();
-        passed();
-    }
-
     @Test
     public void testTravelAccountTypeLookUpNav() throws Exception {
-        testTravelAccountTypeLookUpNav(this);
+        testTravelAccountTypeLookUp();
+        passed();
     }
 
     @Test
     public void testTravelAccountTypeLookUpBookmark() throws Exception {
-        testTravelAccountTypeLookUpBookmark(this);
+        testTravelAccountTypeLookUp();
+        passed();
     }
 }

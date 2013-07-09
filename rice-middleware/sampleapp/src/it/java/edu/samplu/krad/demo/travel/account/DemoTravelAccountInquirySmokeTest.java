@@ -15,7 +15,6 @@
  */
 package edu.samplu.krad.demo.travel.account;
 
-import edu.samplu.common.Failable;
 import edu.samplu.common.SmokeTestBase;
 import org.junit.Test;
 
@@ -61,16 +60,6 @@ public class DemoTravelAccountInquirySmokeTest extends SmokeTestBase {
         assertTextPresent("Demo - Travel Application");
     }
 
-    public void testInquiryBackButtonBookmark(Failable failable) throws Exception {
-        testInquiryBackButton();
-        passed();
-    }
-
-    public void testInquiryBackButtonNav(Failable failable) throws Exception {
-        testInquiryBackButton();
-        passed();
-    }
-
     protected void testCollapseExpand() throws InterruptedException {
         waitForElementPresentByClassName("demo-contactInfo");
         assertTextPresent("Travel Account Number:");
@@ -85,57 +74,44 @@ public class DemoTravelAccountInquirySmokeTest extends SmokeTestBase {
         assertIsVisibleByXpath(ANCHOR_TITLE_TRAVEL_ACCOUNT, " after clicking " + EXPAND_ALL);
     }
 
-    public void testInquiryCollapseExpandBookmark(Failable failable) throws Exception {
-        testCollapseExpand();
-        passed();
-    }
-
-    public void testInquiryCollapseExpandNav(Failable failable) throws Exception {
-        testCollapseExpand();
-        passed();
-    }
-
     protected void testInquiryLightBox() throws Exception {
         waitAndClickByLinkText("a6");
         assertIsVisibleByXpath(ANCHOR_TITLE_TRAVEL_ACCOUNT, "");
     }
 
-    public void testInquiryLightBoxBookmark(Failable failable) throws Exception {
-        testInquiryLightBox();
-        passed();
-    }
-
-    public void testInquiryLightBoxNav(Failable failable) throws Exception {
-        testInquiryLightBox();
-        passed();
-    }
-
     @Test
     public void testInquiryCollapseExpandBookmark() throws Exception {
-        testInquiryCollapseExpandBookmark(this);
+        testCollapseExpand();
+        passed();
     }
 
     @Test
     public void testInquiryLightBoxBookmark() throws Exception {
-        testInquiryLightBoxBookmark(this);
+        testInquiryLightBox();
+        passed();
     }
 
     @Test
     public void testInquiryBackButtonBookmark() throws Exception {
-        testInquiryBackButtonBookmark(this);
+        testInquiryBackButton();
+        passed();
     }
+
     @Test
     public void testInquiryCollapseExpandNav() throws Exception {
-        testInquiryCollapseExpandNav(this);
+        testCollapseExpand();
+        passed();
     }
 
     @Test
     public void testInquiryLightBoxNav() throws Exception {
-        testInquiryLightBoxNav(this);
+        testInquiryLightBox();
+        passed();
     }
 
     @Test
     public void testInquiryBackButtonNav() throws Exception {
-        testInquiryBackButtonNav(this);
+        testInquiryBackButton();
+        passed();
     }
 }

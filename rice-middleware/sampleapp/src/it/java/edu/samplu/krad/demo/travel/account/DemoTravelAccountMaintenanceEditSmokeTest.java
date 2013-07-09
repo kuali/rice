@@ -15,7 +15,6 @@
  */
 package edu.samplu.krad.demo.travel.account;
 
-import edu.samplu.common.Failable;
 import edu.samplu.common.SmokeTestBase;
 import org.junit.Test;
 
@@ -47,23 +46,15 @@ public class DemoTravelAccountMaintenanceEditSmokeTest extends SmokeTestBase {
         }
     }
 
-    public void testDemoTravelAccountMaintenanceEditBookmark(Failable failable) throws Exception {
-        testTravelAccountMaintenanceEdit();
-        passed();
-    }
-
-    public void testDemoTravelAccountMaintenanceEditNav(Failable failable) throws Exception {
-        testTravelAccountMaintenanceEdit();
-        passed();
-    }
-
     @Test
     public void testDemoTravelAccountMaintenanceEditBookmark() throws Exception {
-        testDemoTravelAccountMaintenanceEditBookmark(this);
+        testTravelAccountMaintenanceEdit();
+        passed();
     }
 
     @Test
     public void testDemoTravelAccountMaintenanceEditNav() throws Exception {
-        testDemoTravelAccountMaintenanceEditNav(this);
+        testTravelAccountMaintenanceEdit();
+        passed();
     }
 }

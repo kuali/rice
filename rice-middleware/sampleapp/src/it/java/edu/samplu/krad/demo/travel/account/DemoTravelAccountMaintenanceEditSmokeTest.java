@@ -53,7 +53,6 @@ public class DemoTravelAccountMaintenanceEditSmokeTest extends SmokeTestBase {
     }
 
     public void testDemoTravelAccountMaintenanceEditNav(Failable failable) throws Exception {
-        navigate();
         testTravelAccountMaintenanceEdit();
         passed();
     }

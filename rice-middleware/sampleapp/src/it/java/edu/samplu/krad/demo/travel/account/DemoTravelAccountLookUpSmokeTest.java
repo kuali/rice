@@ -68,7 +68,6 @@ public class DemoTravelAccountLookUpSmokeTest extends SmokeTestBase {
     }
 
     public void testTravelAccountLookUpNav(Failable failable) throws Exception {
-        navigate();
         testTravelAccountLookUp();
         passed();
     }

@@ -161,7 +161,6 @@ public class DemoLibraryElementsActionSmokeTest extends DemoLibraryBase {
     }
 
     public void testActionButtonNav(Failable failable) throws Exception {
-        navigate();
         testActionButton();
         passed();
     }
@@ -172,7 +171,6 @@ public class DemoLibraryElementsActionSmokeTest extends DemoLibraryBase {
     }
 
     public void testActionNav(Failable failable) throws Exception {
-        navigate();
         testAllActionTabs();
         passed();
     }

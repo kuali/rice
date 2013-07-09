@@ -67,7 +67,6 @@ public class DemoTravelAccountInquirySmokeTest extends SmokeTestBase {
     }
 
     public void testInquiryBackButtonNav(Failable failable) throws Exception {
-        navigate();
         testInquiryBackButton();
         passed();
     }
@@ -92,7 +91,6 @@ public class DemoTravelAccountInquirySmokeTest extends SmokeTestBase {
     }
 
     public void testInquiryCollapseExpandNav(Failable failable) throws Exception {
-        navigate();
         testCollapseExpand();
         passed();
     }
@@ -108,7 +106,6 @@ public class DemoTravelAccountInquirySmokeTest extends SmokeTestBase {
     }
 
     public void testInquiryLightBoxNav(Failable failable) throws Exception {
-        navigate();
         testInquiryLightBox();
         passed();
     }

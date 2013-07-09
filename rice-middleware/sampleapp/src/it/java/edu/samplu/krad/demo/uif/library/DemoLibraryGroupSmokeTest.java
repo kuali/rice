@@ -47,8 +47,6 @@ public class DemoLibraryGroupSmokeTest extends DemoLibraryBase {
     }
 
     public void testBasicGroupNav(Failable failable) throws Exception {
-        navigate();
-
         testBasicGroupBookmark(this);
     }
 

@@ -145,7 +145,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      * @return the list of result objects, possibly bounded
      */
     protected List<?> getSearchResults(LookupForm form, Map<String, String> searchCriteria, boolean unbounded) {
-        List<?> searchResults;
+        Collection<?> searchResults;
 
         // removed blank search values and decrypt any encrypted search values
         Map<String, String> nonBlankSearchCriteria = processSearchCriteria(form, searchCriteria);
@@ -165,7 +165,6 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         // lookups first and apply to the local lookup
         try {
             Integer searchResultsLimit = null;
-            Boolean isUsingPrimaryKey = false;
 
             if (!unbounded) {
                 searchResultsLimit = LookupUtils.getSearchResultsLimit(getDataObjectClass(), form);
@@ -179,27 +178,14 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                 }
 
                 // add those results as criteria run the normal search (but with the EBO criteria added)
-                searchResults = (List<?>) getLookupService().findCollectionBySearchHelper(getDataObjectClass(),
-                        eboSearchCriteria, unbounded, searchResultsLimit);
-                isUsingPrimaryKey = getLookupService().allPrimaryKeyValuesPresentAndNotWildcard(getDataObjectClass(),
-                        eboSearchCriteria);
+                searchResults = getLookupService().findCollectionBySearchHelper(getDataObjectClass(), eboSearchCriteria,
+                        unbounded, searchResultsLimit);
+                generateLookupResultsMessages(form, eboSearchCriteria, searchResults, unbounded);
             } else {
-                searchResults = (List<?>) getLookupService().findCollectionBySearchHelper(getDataObjectClass(),
+                searchResults = getLookupService().findCollectionBySearchHelper(getDataObjectClass(),
                         nonBlankSearchCriteria, unbounded, searchResultsLimit);
-                isUsingPrimaryKey = getLookupService().allPrimaryKeyValuesPresentAndNotWildcard(getDataObjectClass(),
-                        nonBlankSearchCriteria);
+                generateLookupResultsMessages(form, nonBlankSearchCriteria, searchResults, unbounded);
             }
-
-            List<String> pkLabels = new ArrayList<String>();
-            if (isUsingPrimaryKey) {
-                List<String> pkNames = getDataObjectMetaDataService().listPrimaryKeyFieldNames(getDataObjectClass());
-                for (String pkName : pkNames) {
-                    pkLabels.add(getDataDictionaryService().getAttributeLabel(getDataObjectClass(), pkName));
-                }
-            }
-            Integer searchResultsSize = searchResults != null ? searchResults.size() : 0;
-            generateLookupResultsMessages(unbounded, isUsingPrimaryKey, searchResultsSize, searchResultsLimit,
-                    pkLabels);
 
         } catch (IllegalAccessException e) {
             throw new RuntimeException("Error trying to perform search", e);
@@ -210,34 +196,52 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         if (searchResults == null) {
             searchResults = new ArrayList<Object>();
         } else {
-            sortSearchResults(form, searchResults);
+            sortSearchResults(form, (List<?>) searchResults);
         }
 
-        return searchResults;
+        return (List<?>) searchResults;
     }
 
     /**
-     * helper function used to build primary key and other messages related to result count
+     * Helper function to render lookup results messages
      *
+     * @param form
+     * @param searchCriteria
+     * @param searchResult
      * @param unbounded
-     * @param usingPrimaryKey
-     * @param searchResultsSize
-     * @param searchResultsLimit
-     * @param pkLabels
      */
-    private void generateLookupResultsMessages(boolean unbounded, boolean usingPrimaryKey, Integer searchResultsSize,
-            Integer searchResultsLimit, List<String> pkLabels) {
+    protected void generateLookupResultsMessages(LookupForm form, Map<String, String> searchCriteria,
+            Collection<?> searchResult, boolean unbounded) {
+        String resultsPropertyName = "LookupResultMessages";
+        List<String> pkLabels = new ArrayList<String>();
+
+        Boolean usingPrimaryKey = getLookupService().allPrimaryKeyValuesPresentAndNotWildcard(getDataObjectClass(),
+                (Map<String, String>) searchCriteria);
+
+        Integer searchResultsLimit = LookupUtils.getSearchResultsLimit(getDataObjectClass(), form);
+        Long searchResultsSize = Long.valueOf(0);
+
+        if (searchResult instanceof CollectionIncomplete) {
+            searchResultsSize = ((CollectionIncomplete) searchResult).getActualSizeIfTruncated();
+        } else if (searchResult != null) {
+            searchResultsSize = Long.valueOf(searchResult.size());
+        }
 
         Boolean resultsExceedsLimit = !unbounded
                 && searchResultsLimit != null
                 && searchResultsSize > 0
                 && searchResultsSize > searchResultsLimit ? true : false;
-        String resultsPropertyName = "LookupResultMessages";
 
         if (usingPrimaryKey) {
+            List<String> pkNames = getDataObjectMetaDataService().listPrimaryKeyFieldNames(getDataObjectClass());
+            for (String pkName : pkNames) {
+                pkLabels.add(getDataDictionaryService().getAttributeLabel(getDataObjectClass(), pkName));
+            }
+
             GlobalVariables.getMessageMap().putInfoForSectionId(resultsPropertyName,
                     RiceKeyConstants.INFO_LOOKUP_RESULTS_USING_PRIMARY_KEY, StringUtils.join(pkLabels, ","));
         }
+
         if (searchResultsSize == 0) {
             GlobalVariables.getMessageMap().putInfoForSectionId(resultsPropertyName,
                     RiceKeyConstants.INFO_LOOKUP_RESULTS_NONE_FOUND);
@@ -245,7 +249,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             GlobalVariables.getMessageMap().putInfoForSectionId(resultsPropertyName,
                     RiceKeyConstants.INFO_LOOKUP_RESULTS_DISPLAY_ONE);
         } else if (searchResultsSize > 1) {
-            if (!unbounded && resultsExceedsLimit) {
+            if (resultsExceedsLimit) {
                 GlobalVariables.getMessageMap().putInfoForSectionId(resultsPropertyName,
                         RiceKeyConstants.INFO_LOOKUP_RESULTS_EXCEEDS_LIMIT, searchResultsSize.toString(),
                         searchResultsLimit.toString());

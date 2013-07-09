@@ -17,6 +17,7 @@ package edu.samplu.admin.test;
 
 import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
+import org.apache.commons.lang.RandomStringUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -57,7 +58,7 @@ public abstract class ConfigParameterTypeCreateNewAbstractSmokeTestBase extends 
         selectFrameIframePortlet();
         waitAndClickByXpath(CREATE_NEW_XPATH);        
         waitAndTypeByName("document.documentHeader.documentDescription","Test description of parameter type create " + ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits());
-        waitAndTypeByName("document.newMaintainableObject.code","Test1" + ITUtil.createUniqueDtsPlusTwoRandomChars());
+        waitAndTypeByName("document.newMaintainableObject.code", RandomStringUtils.randomAlphabetic(5));
         waitAndTypeByName("document.newMaintainableObject.name","Test1ParmTypeCode" + ITUtil.createUniqueDtsPlusTwoRandomChars());
         waitAndClickByName("methodToCall.route");
         checkForDocError();

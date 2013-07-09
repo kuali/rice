@@ -146,6 +146,8 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
         if (isGenerateCompareHeaders()) {
             // add space field for label column
             SpaceField spaceField = ComponentFactory.getSpaceField();
+            view.assignComponentIds(spaceField);
+
             comparisonItems.add(spaceField);
 
             for (ComparableInfo comparable : groupComparables) {

@@ -317,8 +317,6 @@ public class TreeGroup extends Group implements DataBinding {
         this.tree = tree;
     }
 
-
-
     /**
      * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
      */
@@ -337,7 +335,6 @@ public class TreeGroup extends Group implements DataBinding {
         }
 
         if(this.treeGroups != null) {
-            //TODO referenced
             treeGroupCopy.setTreeGroups(this.getTreeGroups());
         }
 
@@ -349,7 +346,6 @@ public class TreeGroup extends Group implements DataBinding {
             Map<Class<?>, NodePrototype> nodePrototypeMapCopy = Maps.newHashMapWithExpectedSize(
                     this.getNodePrototypeMap().size());
             for(Map.Entry nodePrototypeMapEntry : getNodePrototypeMap().entrySet()) {
-               //TODO reference
                 nodePrototypeMapCopy.put((Class)nodePrototypeMapEntry.getKey(),(NodePrototype)nodePrototypeMapEntry.getValue());
             }
             treeGroupCopy.setNodePrototypeMap(nodePrototypeMapCopy);

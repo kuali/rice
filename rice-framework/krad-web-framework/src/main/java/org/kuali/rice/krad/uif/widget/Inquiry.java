@@ -608,6 +608,8 @@ public class Inquiry extends WidgetBase {
             }
         inquiryCopy.setInquiryParameters(inquiryParametersCopy);
 
-        inquiryCopy.setFieldBindingInfo((BindingInfo)fieldBindingInfo.copy());
+        if(fieldBindingInfo != null) {
+            inquiryCopy.setFieldBindingInfo((BindingInfo)fieldBindingInfo.copy());
+        }
     }
 }

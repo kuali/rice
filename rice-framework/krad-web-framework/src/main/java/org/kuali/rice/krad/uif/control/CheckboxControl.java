@@ -166,16 +166,6 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
-     */
-    @Override
-    public void completeValidation(ValidationTrace tracer){
-        tracer.addBean(this);
-
-        super.completeValidation(tracer.getCopy());
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
      */
     @Override
@@ -184,12 +174,24 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
         CheckboxControl checkboxControlCopy = (CheckboxControl) component;
         checkboxControlCopy.setValue(this.getValue());
         checkboxControlCopy.setCheckboxLabel(this.getCheckboxLabel());
-        checkboxControlCopy.setRichLabelMessage((Message)this.getRichLabelMessage().copy());
+        if(this.getRichLabelMessage() != null)  {
+            checkboxControlCopy.setRichLabelMessage((Message)this.getRichLabelMessage().copy());
+        }
 
         List<Component> inlineComponentsCopy = new ArrayList<Component>();
         for(Component inlineComponent : inlineComponents)   {
             inlineComponentsCopy.add((Component)inlineComponent.copy());
         }
         checkboxControlCopy.setInlineComponents(inlineComponentsCopy);
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    @Override
+    public void completeValidation(ValidationTrace tracer){
+        tracer.addBean(this);
+
+        super.completeValidation(tracer.getCopy());
     }
 }

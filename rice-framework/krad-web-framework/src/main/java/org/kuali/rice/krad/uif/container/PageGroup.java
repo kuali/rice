@@ -357,25 +357,6 @@ public class PageGroup extends Group {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
-     */
-    @Override
-    public void completeValidation(ValidationTrace tracer) {
-        tracer.addBean(this);
-
-        // Checks that no invalid items are present
-        for (int i = 0; i < getItems().size(); i++) {
-            if (getItems().get(i).getClass() == PageGroup.class || getItems().get(i).getClass()
-                    == NavigationGroup.class) {
-                String currentValues[] = {"item(" + i + ").class =" + getItems().get(i).getClass()};
-                tracer.createError("Items in PageGroup cannot be PageGroup or NaviagtionGroup", currentValues);
-            }
-        }
-
-        super.completeValidation(tracer.getCopy());
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
      */
     @Override
@@ -392,5 +373,24 @@ public class PageGroup extends Group {
         if(breadcrumbItem != null) {
             pageGroupCopy.setBreadcrumbItem((BreadcrumbItem)this.getBreadcrumbOptions().copy());
         }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    @Override
+    public void completeValidation(ValidationTrace tracer) {
+        tracer.addBean(this);
+
+        // Checks that no invalid items are present
+        for (int i = 0; i < getItems().size(); i++) {
+            if (getItems().get(i).getClass() == PageGroup.class || getItems().get(i).getClass()
+                    == NavigationGroup.class) {
+                String currentValues[] = {"item(" + i + ").class =" + getItems().get(i).getClass()};
+                tracer.createError("Items in PageGroup cannot be PageGroup or NaviagtionGroup", currentValues);
+            }
+        }
+
+        super.completeValidation(tracer.getCopy());
     }
 }

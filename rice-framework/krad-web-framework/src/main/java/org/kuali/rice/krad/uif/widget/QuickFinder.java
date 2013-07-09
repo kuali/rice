@@ -875,7 +875,10 @@ public class QuickFinder extends WidgetBase {
         quickFinderCopy.setShowMaintenanceLinks(this.getShowMaintenanceLinks());
         quickFinderCopy.setMultipleValuesSelect(this.getMultipleValuesSelect());
         quickFinderCopy.setLookupCollectionName(this.getLookupCollectionName());
-        quickFinderCopy.setLightBoxLookup((LightBox)this.getLightBoxLookup().copy());
+
+        if(lightBoxLookup != null) {
+            quickFinderCopy.setLightBoxLookup((LightBox)this.getLightBoxLookup().copy());
+        }
 
         if (this.quickfinderAction != null) {
             quickFinderCopy.setQuickfinderAction((Action)this.quickfinderAction.copy());

@@ -81,6 +81,7 @@ public class ReorderingGroup extends Group {
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         ReorderingGroup reorderingGroupCopy = (ReorderingGroup) component;
+
         if(this.reorderer != null) {
             reorderingGroupCopy.setReorderer((Reorderer)this.getReorderer().copy());
         }

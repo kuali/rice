@@ -98,6 +98,18 @@ public class Iframe extends ContentElementBase {
 	}
 
     /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        Iframe iframeCopy = (Iframe) component;
+        iframeCopy.setSource(this.getSource());
+        iframeCopy.setHeight(this.getHeight());
+        iframeCopy.setFrameborder(this.getFrameborder());
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
@@ -113,17 +125,5 @@ public class Iframe extends ContentElementBase {
         }
 
         super.completeValidation(tracer.getCopy());
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-        Iframe iframeCopy = (Iframe) component;
-        iframeCopy.setSource(this.getSource());
-        iframeCopy.setHeight(this.getHeight());
-        iframeCopy.setFrameborder(this.getFrameborder());
     }
 }

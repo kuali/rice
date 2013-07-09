@@ -404,7 +404,6 @@ public class Suggest extends WidgetBase {
             suggestCopy.setSuggestQuery((AttributeQuery)this.suggestQuery.copy());
         }
 
-        //Referenced
         suggestCopy.setSuggestOptions(this.getSuggestOptions());
     }
 }

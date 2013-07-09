@@ -219,12 +219,10 @@ public class DocumentView extends FormView {
         super.copyProperties(component);
         DocumentView documentViewCopy = (DocumentView) component;
 
-        //TODO reference
         if(this.documentClass != null) {
             documentViewCopy.setDocumentClass(this.getDocumentClass());
         }
 
-        //TODO reference
         if(this.attachmentTypesValuesFinderClass != null) {
             documentViewCopy.setAttachmentTypesValuesFinderClass(this.getAttachmentTypesValuesFinderClass());
         }

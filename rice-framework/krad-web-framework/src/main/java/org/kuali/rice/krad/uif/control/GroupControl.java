@@ -146,4 +146,15 @@ public class GroupControl extends TextControl implements FilterableLookupCriteri
 
         return filteredSearchCriteria;
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        GroupControl groupControlCopy = (GroupControl) component;
+        groupControlCopy.setNamespaceCodePropertyName(this.getNamespaceCodePropertyName());
+        groupControlCopy.setGroupIdPropertyName(this.getGroupIdPropertyName());
+    }
 }

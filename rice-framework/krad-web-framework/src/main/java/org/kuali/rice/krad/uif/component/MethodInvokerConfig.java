@@ -137,7 +137,6 @@ public class MethodInvokerConfig extends MethodInvoker implements Serializable {
         methodInvokerConfigCopy.setStaticMethod(this.getStaticMethod());
 
         if(this.argumentTypes != null) {
-            //TODO referenced
             methodInvokerConfigCopy.setArgumentTypes(this.getArgumentTypes());
         }
     }

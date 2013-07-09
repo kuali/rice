@@ -295,8 +295,6 @@ public class Help extends WidgetBase {
         Help helpCopy = (Help) component;
         helpCopy.setExternalHelpUrl(this.getExternalHelpUrl());
         helpCopy.setHelpAction((Action)this.helpAction.copy());
-
-        //referenced
         helpCopy.setHelpDefinition(this.getHelpDefinition());
     }
 

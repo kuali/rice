@@ -103,7 +103,6 @@ public class InquiryView extends FormView {
         super.copyProperties(component);
         InquiryView inquiryViewCopy = (InquiryView) component;
 
-        //TODO reference
         if(this.dataObjectClassName != null) {
             inquiryViewCopy.setDataObjectClassName(this.getDataObjectClassName());
         }

@@ -182,7 +182,6 @@ public class MaintenanceDocumentView extends DocumentView {
         super.copyProperties(component);
         MaintenanceDocumentView maintenanceDocumentViewCopy = (MaintenanceDocumentView) component;
 
-        //TODO reference
         if(this.dataObjectClassName != null) {
             maintenanceDocumentViewCopy.setDataObjectClassName(this.getDataObjectClassName());
         }

@@ -801,7 +801,6 @@ public class LookupView extends FormView {
         super.copyProperties(component);
         LookupView lookupViewCopy = (LookupView) component;
 
-        //TODO reference
         if(this.dataObjectClassName != null) {
             lookupViewCopy.setDataObjectClassName(this.getDataObjectClassName());
         }

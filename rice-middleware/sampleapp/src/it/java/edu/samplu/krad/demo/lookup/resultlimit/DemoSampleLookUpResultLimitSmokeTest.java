@@ -15,14 +15,13 @@
  */
 package edu.samplu.krad.demo.lookup.resultlimit;
 
-import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
+import edu.samplu.common.SmokeTestBase;
+import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class DemoSampleLookUpResultLimitAbstractSmokeTestBase extends WebDriverLegacyITBase {
+public class DemoSampleLookUpResultLimitSmokeTest extends SmokeTestBase {
 
     /**
      * /kr-krad/lookup?methodToCall=start&viewId=LookupSampleViewResultsLimit&hideReturnLink=true
@@ -33,34 +32,35 @@ public abstract class DemoSampleLookUpResultLimitAbstractSmokeTestBase extends W
      * Search
      */
     public static final String SEARCH = "Search";
-    
+
     @Override
-    public String getTestUrl() {
-        return ITUtil.KRAD_PORTAL;
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
     }
 
-    protected void navigation() throws Exception {
+    @Override
+    protected void navigate() throws Exception {
         waitAndClickById("Demo-DemoLink", "");
         waitAndClickByLinkText("Lookup Results Limit");
     }
 
     protected void testDemoSampleLookUpResultLimit() throws Exception {
-        waitAndTypeByName("lookupCriteria[number]","a*");
+        waitAndTypeByName("lookupCriteria[number]", "a*");
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(3000);
-        if(isElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout dataTable']/tbody/tr[3]"))
-        {
+        if(isElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout dataTable']/tbody/tr[3]")) {
             fail("Search Results contains more than 2 rows.");
         }
     }
 
-    public void testDemoSampleLookUpResultLimitBookmark(Failable failable) throws Exception {
+    @Test
+    public void testDemoSampleLookUpResultLimitNav() throws Exception {
         testDemoSampleLookUpResultLimit();
         passed();
     }
 
-    public void testDemoSampleLookUpResultLimitNav(Failable failable) throws Exception {
-        navigation();
+    @Test
+    public void testDemoDemoSampleLookUpResultLimitBookmark() throws Exception {
         testDemoSampleLookUpResultLimit();
         passed();
     }

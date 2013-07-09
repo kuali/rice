@@ -77,6 +77,7 @@ public class DocSearchWDIT extends WebDriverLegacyITBase {
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.label']", "TestDocument Label");
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedHelpDefinitionUrl']", "default.htm?turl=WordDocuments%2Fdocumenttype.htm");
         waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
+        // TODO wait for save confirmation
         //checkForIncidentReport();
         selectTopFrame();
     }

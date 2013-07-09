@@ -869,6 +869,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      */
     public boolean hasDocError(String errorTextToMatch) {
         if (driver.findElements(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).size() > 0) {
+            // TODO need to get the next div downs test to get the actual error text like in checkForDocError()
             String errorText = driver.findElement(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).getText();
             if (errorText != null && errorText.contains("error(s) found on page.")) {
                 return errorText.contains(errorTextToMatch);

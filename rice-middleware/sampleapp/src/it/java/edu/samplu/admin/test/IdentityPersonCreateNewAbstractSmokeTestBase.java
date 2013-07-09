@@ -52,8 +52,8 @@ public abstract class IdentityPersonCreateNewAbstractSmokeTestBase extends Admin
         testIdentityPersonCreateNew();
     }
     
-    public void testIdentityPersonCreateNew() throws Exception
-    {
+    public void testIdentityPersonCreateNew() throws Exception {
+        selectFrameIframePortlet();
         waitAndClickByXpath(CREATE_NEW_XPATH);
         waitAndTypeByName("document.documentHeader.documentDescription", "Test description of person");
         selectByName("newAffln.affiliationTypeCode", "Staff");

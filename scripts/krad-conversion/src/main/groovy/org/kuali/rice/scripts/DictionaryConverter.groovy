@@ -18,6 +18,7 @@ package org.kuali.rice.scripts
 import groovy.util.logging.Log
 import groovy.xml.QName
 import groovy.xml.XmlUtil
+import org.apache.commons.io.FileUtils
 import org.apache.commons.io.FilenameUtils
 
 /**
@@ -126,24 +127,22 @@ class DictionaryConverter {
      * @param outputResourceDir
      * @param inputResourceDir
      */
-    private void processBusObjFiles(ArrayList listBusObjFiles, outputResourceDir, inputResourceDir) {
+    private void processBusObjFiles(ArrayList listBusObjFiles, String outputResourceDir, String inputResourceDir) {
         listBusObjFiles.each { busObjFile ->
-            def ddRootNode = null
-            def objName = null
-            def outputPath = null
-            def outputFilename = null
-            try {
-                def filepath = busObjFile.path
-                // generates objName, output path, and output file from existing path and input information
-                outputFilename = FilenameUtils.getName(busObjFile.path)
-                objName = ConversionUtils.getObjectName(busObjFile.path, "")
-                outputPath = outputResourceDir + ConversionUtils.getRelativePath(inputResourceDir, busObjFile.path)
 
-                ddRootNode = parseSpringXml(busObjFile.text)
+            try {
+                // generates objName, output path, and output file from existing path and input information
+                def ddRootNode = parseSpringXml(busObjFile.text)
+                def objName = ConversionUtils.getObjectName(busObjFile.path, "BO")
+                String path = outputResourceDir + ConversionUtils.getRelativePath(inputResourceDir, busObjFile.path)
+                String extension = FilenameUtils.getExtension(busObjFile.path);
+                String filename = objName + "KradBO." + extension;
+                File outputFile = new File(path, filename);
+
                 // process data dictionary beans for any business objects and related attributes
                 if (ddRootNode != null) {
                     transformBusinessObjectsAndDefinitions(ddRootNode, objName)
-                    generateSpringBeanFile(ddRootNode, outputPath, outputFilename)
+                    generateSpringBeanFile(ddRootNode, outputFile)
                 }
             } catch (FileNotFoundException ex) {
                 log.error("Error - Missing Business Class File")
@@ -159,22 +158,23 @@ class DictionaryConverter {
      * @param outputResourceDir - location the fi
      * @param inputResourceDir - used to extract the relative directory of the xml files
      */
-    private void processMaintDocFiles(ArrayList listMaintDocFiles, outputResourceDir, inputResourceDir) {
+    private void processMaintDocFiles(ArrayList listMaintDocFiles, String outputResourceDir, String inputResourceDir) {
         listMaintDocFiles.each { maintDocFile ->
             log.info "\n---\nprocessing maintenance document file " + maintDocFile.path
-            def mdocRootNode = null
-            def objName = null
-            def outputPath = null
-            def outputFile = null
             try {
-                outputFile = FilenameUtils.getName(maintDocFile.path)
-                objName = ConversionUtils.getObjectName(maintDocFile.path, "MaintenanceDocument")
-                outputPath = outputResourceDir + ConversionUtils.getRelativePath(inputResourceDir, maintDocFile.path)
-                mdocRootNode = parseSpringXml(maintDocFile.text)
+                def objName = ConversionUtils.getObjectName(maintDocFile.path, "MaintenanceDocument")
+                def path = outputResourceDir + ConversionUtils.getRelativePath(inputResourceDir, maintDocFile.path)
+                def basename = FilenameUtils.getBaseName(maintDocFile.path);
+                def extension = FilenameUtils.getExtension(maintDocFile.path);
+                String filename = objName + "KradMaintenanceDocument." + extension;
+                File outputFile = new File(path, filename);
+                def mdocRootNode = parseSpringXml(maintDocFile.text)
+
                 if (mdocRootNode != null) {
                     transformMaintenanceDocument(mdocRootNode, objName)
-                    generateSpringBeanFile(mdocRootNode, outputPath, outputFile)
+                    generateSpringBeanFile(mdocRootNode, outputFile)
                 }
+
             } catch (FileNotFoundException ex) {
                 log.error("Error - Missing Maintenance Document File")
                 errorText()
@@ -393,19 +393,18 @@ class DictionaryConverter {
      * formats spring root node into xml and saves to file
      *
      * @param rootBean
-     * @param outputDirPath
-     * @param outputFileName
+     * @param outputFile
      */
-    private void generateSpringBeanFile(rootBean, outputDirPath, outputFileName) {
+    private void generateSpringBeanFile(rootBean, File outputFile) {
         try {
             def writer = new StringWriter()
             XmlUtil.serialize(rootBean, writer)
             def result = writer.toString()
-            log.finer "Result for " + outputFileName + ": " + result + "\n\n\n\n\n"
+            log.finer "Result for " + outputFile.name + ": " + result + "\n\n"
             //result = modifyBeanSchema(result)
-            ConversionUtils.buildFile(outputDirPath, outputFileName, result)
+            ConversionUtils.buildFile(outputFile.absolutePath, outputFile.name, result)
         } catch (FileNotFoundException ex) {
-            log.finer "unable to generate output for " + outputFileName
+            log.finer "unable to generate output for " + outputFile.name
             errorText()
         }
     }

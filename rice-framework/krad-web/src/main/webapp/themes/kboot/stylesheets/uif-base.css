@@ -129,6 +129,7 @@ ul.uif-readOnlyStringList li {
 
 .uif-headerText-span{
     display: inline !important;
+    float: inherit;  /* bootstrap override */
 }
 
 .uif-viewHeader{

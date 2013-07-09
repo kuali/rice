@@ -479,7 +479,7 @@
   </class-descriptor>
 
   <!-- For testing Uif-KimPersonControl -->
-  <class-descriptor class="org.kuali.rice.krad.demo.travel.UserControlSample" table="KRIM_PRNCPL_T">
+  <class-descriptor class="org.kuali.rice.krad.labs.LabsUserControl" table="KRIM_PRNCPL_T">
     <field-descriptor name="principalId" column="PRNCPL_ID" jdbc-type="VARCHAR"  />
     <field-descriptor name="principalName" column="PRNCPL_NM" jdbc-type="VARCHAR"  />
     <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR"  />
@@ -490,7 +490,7 @@
   </class-descriptor>
 
   <!-- For testing Uif-KimGroupControl -->
-  <class-descriptor class="org.kuali.rice.krad.demo.travel.GroupControlSample" table="KRIM_GRP_MBR_T">
+  <class-descriptor class="org.kuali.rice.krad.labs.LabsGroupControl" table="KRIM_GRP_MBR_T">
     <field-descriptor name="id" column="GRP_MBR_ID" jdbc-type="VARCHAR" primarykey="true"  autoincrement="true" sequence-name="KRIM_GRP_MBR_ID_S" />
     <field-descriptor name="groupId" column="GRP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="memberId" column="MBR_ID" jdbc-type="VARCHAR" />

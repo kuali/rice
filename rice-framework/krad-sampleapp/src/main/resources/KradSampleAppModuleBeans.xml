@@ -261,6 +261,8 @@
         <value>org.kuali.rice.krad.labs.kitchensink.UifComponentsViewP9Resources</value>
         <value>org.kuali.rice.krad.labs.kitchensink.UifComponentsViewPx10Resources</value>
         <value>org.kuali.rice.krad.labs.kitchensink.UifComponentsViewPx11Resources</value>
+        <!-- Labs -->
+        <value>org.kuali.rice.krad.labs.resources.LabsLookupResources</value>
       </list>
     </property>
   </bean>

@@ -421,7 +421,7 @@ table.dataTable th.sorting {
 }
 
 table.dataTable th.sorting_desc {
-    outline: #666 solid 1px;
+
     color: #FFF;
     border-bottom-color: #666;
     border-bottom-width: 3px;
@@ -435,7 +435,7 @@ table.dataTable th.sorting_desc {
 
 table.dataTable th.sorting_asc {
     background:#666;
-    outline:#666 solid 1px;
+
     border-bottom-color:#666;
     border-bottom-width:3px;
     border-bottom-style:solid;
@@ -924,9 +924,9 @@ li.uif-navigationItem-current a, li.uif-navigationItem-current a:hover {
     display: inline;
 }
 .uif-messageCount img {
-    width: 12px;
-    height: 12px;
-    vertical-align: baseline;
+    width: 16px;
+    height: 16px;
+    vertical-align: bottom;
 }
 .uif-clientMessageItems {
     max-width: 250px;
@@ -956,7 +956,7 @@ li.uif-navigationItem-current a, li.uif-navigationItem-current a:hover {
 .uif-validationMessages ul {
     list-style: none outside none;
     margin: 0;
-    margin-left: 1.5em;
+    margin-left: 1em;
 }
 .uif-validationMessages li {
     list-style: none outside none;
@@ -1091,7 +1091,7 @@ li.uif-infoMessageItem:before {
 }
 .uif-pageValidationMessages .uif-validationImage {
     vertical-align: bottom;
-    width: 24px;
+    width: 16px;
 }
 ul.uif-pageValidationMessage-single {
     margin-left: 1em;

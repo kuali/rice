@@ -16,7 +16,6 @@
 package edu.samplu.krad.demo.uif.library;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
-import edu.samplu.common.Failable;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
@@ -155,43 +154,27 @@ public class DemoLibraryElementsActionSmokeTest extends DemoLibraryBase {
         testActionButton();
     }
 
-    public void testActionButtonBookmark(Failable failable) throws Exception {
+    @Test
+    public void testActionButtonBookmark() throws Exception {
         testActionButton();
         passed();
     }
 
-    public void testActionButtonNav(Failable failable) throws Exception {
+    @Test
+    public void testActionButtonNav() throws Exception {
         testActionButton();
-        passed();
-    }
-
-    public void testActionBookmark(Failable failable) throws Exception {
-        testAllActionTabs();
-        passed();
-    }
-
-    public void testActionNav(Failable failable) throws Exception {
-        testAllActionTabs();
         passed();
     }
 
     @Test
     public void testActionBookmark() throws Exception {
-        testActionBookmark(this);
-    }
-
-    @Test
-    public void testActionButtonBookmark() throws Exception {
-        testActionButtonBookmark(this);
+        testAllActionTabs();
+        passed();
     }
 
     @Test
     public void testActionNav() throws Exception {
-        testActionNav(this);
-    }
-
-    @Test
-    public void testActionButtonNav() throws Exception {
-        testActionButtonNav(this);
+        testAllActionTabs();
+        passed();
     }
 }

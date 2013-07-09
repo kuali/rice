@@ -16,7 +16,6 @@
 package edu.samplu.krad.demo.uif.library;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
-import edu.samplu.common.Failable;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -54,12 +53,14 @@ public class DemoLibraryControlCheckboxDefaultSmokeTest extends DemoLibraryBase 
     }
 
 
-    public void testCheckboxControlDefaultBookmark(Failable failable) throws Exception {
+    @Test
+    public void testCheckboxControlDefaultBookmark() throws Exception {
         testCheckboxControlDefault();
         passed();
     }
 
-    public void testCheckboxControlDefaultNav(Failable failable) throws Exception {
+    @Test
+    public void testCheckboxControlDefaultNav() throws Exception {
         navigateToLibraryDemo("Controls", "Checkbox");
         testCheckboxControlDefault();
         passed();
@@ -109,12 +110,14 @@ public class DemoLibraryControlCheckboxDefaultSmokeTest extends DemoLibraryBase 
     }
 
 
-    public void testCheckboxControlOptionsFinderBookmark(Failable failable) throws Exception {
+    @Test
+    public void testCheckboxControlOptionsFinderBookmark() throws Exception {
         testCheckboxControlOptionsFinder();
         passed();
     }
 
-    public void testCheckboxControlOptionsFinderNav(Failable failable) throws Exception {
+    @Test
+    public void testCheckboxControlOptionsFinderNav() throws Exception {
         navigateToLibraryDemo("Controls", "Checkbox");
         testCheckboxControlOptionsFinder();
         passed();
@@ -151,12 +154,14 @@ public class DemoLibraryControlCheckboxDefaultSmokeTest extends DemoLibraryBase 
     }
 
 
-    public void testCheckboxControlKeyValuePairBookmark(Failable failable) throws Exception {
+    @Test
+    public void testCheckboxControlKeyValuePairBookmark() throws Exception {
         testCheckboxControlOptionsFinder();
         passed();
     }
 
-    public void testCheckboxControlKeyValuePairNav(Failable failable) throws Exception {
+    @Test
+    public void testCheckboxControlKeyValuePairNav() throws Exception {
         navigateToLibraryDemo("Controls", "Checkbox");
         testCheckboxControlKeyValuePair();
         passed();
@@ -176,12 +181,14 @@ public class DemoLibraryControlCheckboxDefaultSmokeTest extends DemoLibraryBase 
     }
 
 
-    public void testCheckboxControlDisabledBookmark(Failable failable) throws Exception {
+    @Test
+    public void testCheckboxControlDisabledBookmark() throws Exception {
         testCheckboxControlDisabled();
         passed();
     }
 
-    public void testCheckboxControlDisabledNav(Failable failable) throws Exception {
+    @Test
+    public void testCheckboxControlDisabledNav() throws Exception {
         navigateToLibraryDemo("Controls", "Checkbox");
         testCheckboxControlDisabled();
         passed();
@@ -216,13 +223,14 @@ public class DemoLibraryControlCheckboxDefaultSmokeTest extends DemoLibraryBase 
         SeleneseTestBase.assertTrue(isCheckedById("ST-DemoCheckboxControlExample6-Input1_control_1"));
     }
 
-
-    public void testCheckboxControlDelimiterBookmark(Failable failable) throws Exception {
+    @Test
+    public void testCheckboxControlDelimiterBookmark() throws Exception {
         testCheckboxControlDelimiter();
         passed();
     }
 
-    public void testCheckboxControlDelimiterNav(Failable failable) throws Exception {
+    @Test
+    public void testCheckboxControlDelimiterNav() throws Exception {
         navigateToLibraryDemo("Controls", "Checkbox");
         testCheckboxControlDelimiter();
         passed();
@@ -250,12 +258,14 @@ public class DemoLibraryControlCheckboxDefaultSmokeTest extends DemoLibraryBase 
     }
 
 
-    public void testCheckboxControlDisabledOnKeyEventBookmark(Failable failable) throws Exception {
+    @Test
+    public void testCheckboxControlDisabledOnKeyEventBookmark() throws Exception {
         testCheckboxControlDisabledOnKeyEvent();
         passed();
     }
 
-    public void testCheckboxControlDisabledOnKeyEventNav(Failable failable) throws Exception {
+    @Test
+    public void testCheckboxControlDisabledOnKeyEventNav() throws Exception {
         navigateToLibraryDemo("Controls", "Checkbox");
         testCheckboxControlDisabledOnKeyEvent();
         passed();
@@ -292,13 +302,14 @@ public class DemoLibraryControlCheckboxDefaultSmokeTest extends DemoLibraryBase 
         SeleneseTestBase.assertTrue(isEnabledById("ST-DemoCheckboxControlExample8-Input2_control"));
     }
 
-
-    public void testCheckboxControlEnableWhenChangedBookmark(Failable failable) throws Exception {
+    @Test
+    public void testCheckboxControlEnableWhenChangedBookmark() throws Exception {
         testCheckboxControlEnableWhenChanged();
         passed();
     }
 
-    public void testCheckboxControlEnableWhenChangedNav(Failable failable) throws Exception {
+    @Test
+    public void testCheckboxControlEnableWhenChangedNav() throws Exception {
         navigateToLibraryDemo("Controls", "Checkbox");
         testCheckboxControlEnableWhenChanged();
         passed();
@@ -335,95 +346,16 @@ public class DemoLibraryControlCheckboxDefaultSmokeTest extends DemoLibraryBase 
         SeleneseTestBase.assertFalse(isEnabledById("ST-DemoCheckboxControlExample9-Input2_control"));
     }
 
-
-    public void testCheckboxControlDisableWhenChangedBookmark(Failable failable) throws Exception {
-        testCheckboxControlDisableWhenChanged();
-        passed();
-    }
-
-    public void testCheckboxControlDisableWhenChangedNav(Failable failable) throws Exception {
-        navigateToLibraryDemo("Controls", "Checkbox");
-        testCheckboxControlDisableWhenChanged();
-        passed();
-    }
-
-    @Test
-    public void testCheckboxControlDefaultBookmark() throws Exception {
-        testCheckboxControlDefaultBookmark(this);
-    }
-
-    @Test
-    public void testCheckboxControlOptionsFinderBookmark() throws Exception {
-        testCheckboxControlOptionsFinderBookmark(this);
-    }
-
-    @Test
-    public void testCheckboxControlKeyValuePairBookmark() throws Exception {
-        testCheckboxControlKeyValuePairBookmark(this);
-    }
-
-    @Test
-    public void testCheckboxControlDisabledBookmark() throws Exception {
-        testCheckboxControlDisabledBookmark(this);
-    }
-
-    @Test
-    public void testCheckboxControlDelimiterBookmark() throws Exception {
-        testCheckboxControlDelimiterBookmark(this);
-    }
-
-    @Test
-    public void testCheckboxControlDisabledOnKeyEventBookmark() throws Exception {
-        testCheckboxControlDisabledOnKeyEventBookmark(this);
-    }
-
-    @Test
-    public void testCheckboxControlEnableWhenChangedBookmark() throws Exception {
-        testCheckboxControlEnableWhenChangedBookmark(this);
-    }
-
     @Test
     public void testCheckboxControlDisableWhenChangedBookmark() throws Exception {
-        testCheckboxControlDisableWhenChangedBookmark(this);
-    }
-
-    @Test
-    public void testCheckboxControlDefaultNav() throws Exception {
-        testCheckboxControlDefaultNav(this);
-    }
-
-    @Test
-    public void testCheckboxControlOptionsFinderNav() throws Exception {
-        testCheckboxControlOptionsFinderNav(this);
-    }
-
-    @Test
-    public void testCheckboxControlKeyValuePairNav() throws Exception {
-        testCheckboxControlKeyValuePairNav(this);
-    }
-
-    @Test
-    public void testCheckboxControlDisabledNav() throws Exception {
-        testCheckboxControlDisabledNav(this);
-    }
-
-    @Test
-    public void testCheckboxControlDelimiterNav() throws Exception {
-        testCheckboxControlDelimiterNav(this);
-    }
-
-    @Test
-    public void testCheckboxControlDisabledOnKeyEventNav() throws Exception {
-        testCheckboxControlDisabledOnKeyEventNav(this);
-    }
-
-    @Test
-    public void testCheckboxControlEnableWhenChangedNav() throws Exception {
-        testCheckboxControlEnableWhenChangedNav(this);
+        testCheckboxControlDisableWhenChanged();
+        passed();
     }
 
     @Test
     public void testCheckboxControlDisableWhenChangedNav() throws Exception {
-        testCheckboxControlDisableWhenChangedNav(this);
+        navigateToLibraryDemo("Controls", "Checkbox");
+        testCheckboxControlDisableWhenChanged();
+        passed();
     }
 }

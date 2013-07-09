@@ -4444,6 +4444,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         jiraAwareWaitFor(By.xpath(locator), "");
     }
 
+    protected void waitForElementsPresentByXpath(String xpathLocator) throws InterruptedException {
+        jiraAwareWaitFors(By.xpath(xpathLocator), "");
+    }
+
     protected void waitForTitleToEqualKualiPortalIndex() throws InterruptedException {
         waitForTitleToEqualKualiPortalIndex("");
     }

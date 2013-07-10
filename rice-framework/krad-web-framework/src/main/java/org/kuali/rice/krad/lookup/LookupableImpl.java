@@ -221,7 +221,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         Integer searchResultsLimit = LookupUtils.getSearchResultsLimit(getDataObjectClass(), form);
         Long searchResultsSize = Long.valueOf(0);
 
-        if (searchResult instanceof CollectionIncomplete) {
+        if (searchResult instanceof CollectionIncomplete
+                && ((CollectionIncomplete) searchResult).getActualSizeIfTruncated() > 0) {
             searchResultsSize = ((CollectionIncomplete) searchResult).getActualSizeIfTruncated();
         } else if (searchResult != null) {
             searchResultsSize = Long.valueOf(searchResult.size());

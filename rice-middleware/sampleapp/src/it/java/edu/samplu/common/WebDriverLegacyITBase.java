@@ -373,7 +373,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * //a[@title='FiscalOfficerInfo Maintenance (New)']
      */
     public static final String FISCAL_OFFICER_INFO_MAINTENANCE_NEW_XPATH = "//a[@title='FiscalOfficerInfo Maintenance (New)']";
-    
+
     static ChromeDriverService chromeDriverService;
 
     protected WebDriver driver;
@@ -435,7 +435,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     public void testSetUp() {
         // TODO it would be better if all opening of urls and logging in was not done in setUp, failures in setUp case the test to not be recorded. extract to setUp and call first for all tests.
         try { // Don't throw any exception from this methods, exceptions in Before annotations really mess up maven, surefire, or failsafe
-
             if (testName != null && testName.getMethodName() != null) { // JUnit
                 testMethodName = testName.getMethodName();
             }
@@ -1334,18 +1333,15 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected void jiraAwareWaitAndClick(By by, String message) throws InterruptedException {
-        try {
-            jiraAwareWaitFor(by, message);
-            (driver.findElement(by)).click();
-        } catch (Exception e) {
-            jiraAwareFail(by, message, e);
-        }
+        jiraAwareWaitAndClick(by, message, this);
     }
 
     protected void jiraAwareWaitAndClick(By by, String message, Failable failable) throws InterruptedException {
         try {
             jiraAwareWaitFor(by, message, failable);
-            (driver.findElement(by)).click();
+            WebElement element = driver.findElement(by);
+            WebDriverUtil.highlightElement(driver, element);
+            element.click();
         } catch (Exception e) {
             jiraAwareFail(by, message, e);
         }
@@ -4134,6 +4130,8 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     protected void waitAndType(By by, String text, String message) throws InterruptedException {
         try {
             jiraAwareWaitFor(by, "");
+            WebElement element = driver.findElement(by);
+            WebDriverUtil.highlightElement(driver, driver.findElement(by));
             (driver.findElement(by)).sendKeys(text);
         } catch (Exception e) {
             JiraAwareFailureUtil.failOnMatchedJira(by.toString(), this);

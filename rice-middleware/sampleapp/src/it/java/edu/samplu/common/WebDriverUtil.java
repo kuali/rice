@@ -22,6 +22,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -48,6 +49,9 @@ import java.util.concurrent.TimeUnit;
 public class WebDriverUtil {
 
     public static boolean jGrowlEnabled = false;
+
+    public static boolean jsHighlightEnabled = false;
+
     /**
      * TODO apparent dup WebDriverITBase.DEFAULT_WAIT_SEC
      * TODO parametrize for JVM Arg
@@ -60,6 +64,26 @@ public class WebDriverUtil {
      * TODO upgrade to config via JVM param.
      */
     public static final boolean JGROWL_ERROR_FAILURE = false;
+
+    /**
+     * green
+     */
+    public static final String JS_HIGHLIGHT_BACKGROUND = "green";
+
+    /**
+     * green
+     */
+    public static final String JS_HIGHLIGHT_BOARDER = "green";
+
+    /**
+     * 400 milliseconds
+     */
+    public static final int JS_HIGHLIGHT_MS = 400;
+
+    /**
+     * -Dremote.driver.highlight=true to enable highlighting of elements as selenium runs
+     */
+    public static final String JS_HIGHLIGHT_PROPERTY = "remote.driver.highlight";
 
     /**
      * TODO introduce SHORT_IMPLICIT_WAIT_TIME with param in WebDriverITBase
@@ -132,6 +156,10 @@ public class WebDriverUtil {
     public static WebDriver setUp(String username, String url, String className, String testName) throws Exception {
         if ("true".equals(System.getProperty(REMOTE_JGROWL_ENABLED, "false"))) {
             jGrowlEnabled = true;
+        }
+
+        if ("true".equals(System.getProperty(JS_HIGHLIGHT_PROPERTY, "false"))) {
+            jsHighlightEnabled = true;
         }
 
         WebDriver driver = null;
@@ -259,6 +287,25 @@ public class WebDriverUtil {
             SeleneseTestBase.fail(failMessage);
         }
     }
+
+    public static void highlightElement(WebDriver webDriver, WebElement webElement) {
+        if (jsHighlightEnabled) {
+            try {
+                JavascriptExecutor js = (JavascriptExecutor) webDriver;
+                js.executeScript("element = arguments[0];\n"
+                        + "originalStyle = element.getAttribute('style');\n"
+                        + "element.setAttribute('style', originalStyle + \"; background: "
+                        + JS_HIGHLIGHT_BACKGROUND + "; border: 2px solid " + JS_HIGHLIGHT_BOARDER + ";\");\n"
+                        + "setTimeout(function(){\n"
+                        + "    element.setAttribute('style', originalStyle);\n"
+                        + "}, " + JS_HIGHLIGHT_MS + ");", webElement);
+            } catch (Throwable t) {
+                System.out.println("Throwable during javascript highlight element");
+                t.printStackTrace();
+            }
+        }
+    }
+
 
     /**
      * remote.public.driver set to chrome or firefox (null assumes firefox)

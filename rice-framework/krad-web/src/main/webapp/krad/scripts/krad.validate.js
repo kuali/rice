@@ -1498,11 +1498,14 @@ function generateFieldLinkSublist(parentSectionData, currentFields, messageMap, 
 
     var sectionTitle = jQuery("[data-header_for='" + sectionId + "']").find("> :header .uif-headerText-span, "
             + "> label .uif-headerText-span").text();
-    var sectionType = "section";
     if (sectionTitle == null || sectionTitle == "") {
         //field group case
         sectionTitle = jQuery("#" + sectionId).data("label");
-        sectionType = "field group";
+    }
+
+    // for empty section titles (should not happen in unless we force it to)
+    if (sectionTitle == null || sectionTitle == undefined) {
+        sectionTitle = "group";
     }
 
     var disclosureText = "";
@@ -1581,12 +1584,15 @@ function generateSummaryLink(sectionId) {
     //determine section title and section type
     var sectionTitle = jQuery("[data-header_for='" + sectionId + "']").find("> :header .uif-headerText-span, "
             + "> label .uif-headerText-span").text();
-    var sectionType = "section";
     if (sectionTitle == null || sectionTitle == "") {
         //field group case
         sectionTitle = jQuery("#" + sectionId).data("label");
-        sectionType = "field group";
         sectionId = jQuery("#" + sectionId).data("group");
+    }
+
+    // for empty section titles (should not happen in unless we force it to)
+    if (sectionTitle == null || sectionTitle == undefined) {
+        sectionTitle = "";
     }
 
     var sectionData = getValidationData(jQuery("#" + sectionId), true);
@@ -1602,7 +1608,12 @@ function generateSummaryLink(sectionId) {
         var countMessage = generateCountString(sectionData.errorTotal, sectionData.warningTotal, sectionData.infoTotal);
         //remove newline characters
         sectionTitle = sectionTitle.replace(/\r?\n/g, "");
-        summaryMessage = sectionTitle + ": " + countMessage;
+        if (sectionTitle){
+            summaryMessage = sectionTitle + ": " + countMessage;
+        }
+        else{
+            summaryMessage = countMessage;
+        }
     }
 
     if (summaryMessage != "") {

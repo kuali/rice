@@ -205,6 +205,7 @@ public class GroupValidationMessages extends ValidationMessages {
                         }
                     }
 
+                    id = component.getId().replace("@id@", "");
                     //If any kind of header text is showing consider this group a section
                     if (!skipSections
                             && ((Container) component).getHeader() != null

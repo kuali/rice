@@ -378,6 +378,10 @@ table.uif-gridLayout > tbody > tr > td.uif-inputField {
 .uif-inputField.uif-boxLayoutHorizontalItem {
     margin-right: 20px;
 }
+
+.uif-verticalBoxLayout .uif-boxLayoutVerticalItem input {
+    margin-bottom: 2px;
+}
 .uif-boxLayoutVerticalItem {
     display: block;
     /*    margin-bottom: 10px;*/

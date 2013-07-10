@@ -16,6 +16,7 @@
 package edu.samplu.krad.demo.lookup.resultlimit;
 
 import edu.samplu.common.SmokeTestBase;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -53,12 +54,14 @@ public class DemoSampleLookUpResultLimitSmokeTest extends SmokeTestBase {
         }
     }
 
+    @Ignore // this demo page has been removed
     @Test
     public void testDemoSampleLookUpResultLimitNav() throws Exception {
         testDemoSampleLookUpResultLimit();
         passed();
     }
 
+    @Ignore // this demo page has been removed
     @Test
     public void testDemoDemoSampleLookUpResultLimitBookmark() throws Exception {
         testDemoSampleLookUpResultLimit();

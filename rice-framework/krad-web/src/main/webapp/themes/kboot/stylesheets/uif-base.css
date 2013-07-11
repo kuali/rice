@@ -881,39 +881,49 @@ li.uif-navigationItem span.uif-actionLink, li.uif-navigationItem a.uif-actionLin
 /**Headers in navigation menu **/
 li.uif-navigationItem h3, li.uif-navigationItem h2 {
     color: #333333;
-    padding-bottom: 6px;
-    margin-top: 4px;
+    padding-left:15px;
+
     font-weight: bold;
     border-left: none;
     border-right: none;
-    line-height: 12px;
-    padding-top: 0;
-    padding-right: 20px;
-    padding-bottom: 4;
-    padding-left: 3px;
+    line-height: 4px;
+
+
+
 }
+
+.uif-navigationMenu-wrapper > ul > li.uif-navigationItem:first-child{background-color:#f2f2f2}
+
+.uif-navigationMenu-wrapper > ul > li:first-child:hover {
+    border-top-color:#ddd;
+}
+.uif-navigationMenu-wrapper > ul > li:first-child {
+    border-top-color:#ddd;
+    -webkit-border-top-right-radius: 4px;
+    -moz-border-radius-topright: 4px;
+    border-top-right-radius: 4px;
+}
+
 li.uif-navigationItem h2 {
     font-size: 0.92em !important;
 }
 li.uif-navigationItem a {
-    background-color: #fff;
+    background-color: ;
     display: inline-block;
     height: 1%;
     padding: 5px 20px 5px 3px;
-    width: 170px;
+    /* [disabled]width: 170px; */
     text-decoration: none;
 }
 .uif-navigationMenu h2.fl-font-serif {
 }
 li.uif-navigationItem a {
-    background-color: #fff;
+    background-color:;
     border: none;
 }
 
 li.uif-navigationItem-current a, li.uif-navigationItem-current a:hover {
-    background-color: #000;
-    background-image: none;
-    color: white;
+
 }
 /** Validation Messages Framework **********************************************************************/
 .uif-correctedError {

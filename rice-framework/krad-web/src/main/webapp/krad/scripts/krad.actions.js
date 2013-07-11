@@ -136,9 +136,34 @@ function validateForm() {
     pauseTooltipDisplay = true;
 
     if (validateClient) {
-        // turn on this flag to enable the page level summaries to now be shown for errors
-        messageSummariesShown = true;
+        // Turn on this flag to avoid prematurely writing out messages which will cause performance issues if MANY
+        // fields have validation errors simultaneously (first we are only checking for errors, not checking and
+        // writing simultaneously like normal)
+        clientErrorExistsCheck = true;
+
+        // Temporarily turn off this flag to avoid traversing unneeded logic (all messages will be shown at the end)
+        messageSummariesShown = false;
+
+        // Validate the whole form
         validForm = jq("#kualiForm").valid();
+
+        // Handle field message bubbling manually, but do not write messages out yet
+        jQuery("div[data-role='InputField']").each(function () {
+            var id = jQuery(this).attr('id');
+            var field = jQuery("#" + id);
+            var data = getValidationData(field);
+            var parent = field.data("parent");
+            handleMessagesAtGroup(parent, id, data, true);
+        });
+
+        // Toggle the flag back to default
+        clientErrorExistsCheck = false;
+
+        // Message summaries are going to be shown
+        messageSummariesShown = true;
+
+        // Finally, write the result of the validation messages
+        writeMessagesForPage();
     }
 
     if (!validForm) {

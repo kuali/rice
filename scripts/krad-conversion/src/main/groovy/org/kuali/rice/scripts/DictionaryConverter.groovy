@@ -18,7 +18,6 @@ package org.kuali.rice.scripts
 import groovy.util.logging.Log
 import groovy.xml.QName
 import groovy.xml.XmlUtil
-import org.apache.commons.io.FileUtils
 import org.apache.commons.io.FilenameUtils
 
 /**
@@ -276,7 +275,7 @@ class DictionaryConverter {
                 // Changes specific to Inquiry Definition
             } else if (beanNode.@parent in ["InquiryDefinition"]) {
                 log.finer "mapping inquiry definition"
-                mapInquiryDefinition(ddRootNode, beanNode, objName, objClassName)
+                transformInquiryDefinition(ddRootNode, beanNode, objName, objClassName)
                 // Changes specific to Lookup Definition
             } else if (beanNode.@parent in ["LookupDefinition"]) {
                 transformLookupDefinition(ddRootNode, beanNode, objName, objClassName)
@@ -429,7 +428,7 @@ class DictionaryConverter {
      * @param busObjName
      * @param busObjClassQualName
      */
-    private void mapInquiryDefinition(ddRootNode, beanNode, busObjName, busObjClassQualName) {
+    private void transformInquiryDefinition(ddRootNode, beanNode, busObjName, busObjClassQualName) {
         // TODO: run through a duplicate analysis
         def inquiryBeanNode = ddRootNode.bean.find { it.@parent == beanNode.@id }
         if (inquiryBeanNode != null) {
@@ -441,6 +440,7 @@ class DictionaryConverter {
         log.finer "transform bean node for inquiry"
         // TODO: Switch back to beanNode.replaceNode and find alt way to handle inq definition dependencies  (i.e. DataDictionaryOverrides)
         beanNode.plus {
+            addComment(delegate, "Inquiry View")
             bean(id: inquiryBeanNode.@id, parent: inquiryBeanNode.@parent)
             bean(id: "$busObjName-InquiryView", parent: "Uif-InquiryView") {
                 transformTitleProperty(delegate, titlePropNode)
@@ -664,6 +664,7 @@ class DictionaryConverter {
         def resultFieldsPropertyNode = lookupParentBeanNode.property.find { it.@name == "resultFields" }
         // TODO: switch back to beanNode.replaceNode and find way to handle extra lookupDefinition definitions (i.e. DataDictionaryOverrides)
         beanNode.plus {
+            addComment(delegate, "Lookup View")
             bean(id: lookupBeanNode.@id, parent: lookupBeanNode.@parent)
             bean(id: "$objName-LookupView", parent: "Uif-LookupView") {
                 transformTitleProperty(delegate, titlePropNode)
@@ -746,6 +747,7 @@ class DictionaryConverter {
             def docTypePropertyNode = maintDocParentBeanNode.property.find { it.@name == "documentTypeName" }
             def docClassPropertyNode = maintDocParentBeanNode.property.find { it.@name == "documentAuthorizerClass" }
             beanNode.replaceNode {
+                addComment(delegate, "Maintenance View")
                 bean(id: "$objName-MaintenanceView", parent: "Uif-MaintenanceView") {
                     transformTitleProperty(delegate, titlePropNode)
                     addViewNameProperty(delegate, titlePropNode?.@value)
@@ -898,7 +900,6 @@ class DictionaryConverter {
 
     def transformTitleProperty(builder, node) {
         if (node != null) {
-            builder.property(name: "title", value: node.@value)
             builder.property(name: "headerText", value: node.@value)
         }
     }
@@ -909,6 +910,19 @@ class DictionaryConverter {
         }
     }
 
+    /**
+     * used to add comments; current implementation uses meta tags in place of standard
+     * comments (node.plus and the xml serialize did not handle xml comments well)
+     *
+     * @param builder
+     * @param comment
+     * @return
+     */
+    def addComment(builder, comment) {
+        if (comment != null) {
+            builder.meta(key: "comment", value: comment)
+        }
+    }
 
     /**
      * @deprecated

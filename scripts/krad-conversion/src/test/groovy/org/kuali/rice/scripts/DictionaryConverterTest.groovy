@@ -82,7 +82,7 @@ class DictionaryConverterTest {
     }
 
     @Test
-    void testMapInquiryDefinitions() {
+    void testTransformInquiryDefinitions() {
         log.finer 'start map inquiry definition test'
         log.finer 'loading inquiry definition sample'
         def inq_def_file_path = dictTestDir + "InquiryDefinitionSample.xml"
@@ -92,7 +92,7 @@ class DictionaryConverterTest {
         def bean_node
         try {
             bean_node = dd_root_node.bean.find { it.@parent == "InquiryDefinition" }
-            dictionaryConverter.mapInquiryDefinition(dd_root_node, bean_node, "TravelerDetail", "org.kuali.rice.krad.demo.travel.authorization.dataobject.TravelerDetail")
+            dictionaryConverter.transformInquiryDefinition(dd_root_node, bean_node, "TravelerDetail", "org.kuali.rice.krad.demo.travel.authorization.dataobject.TravelerDetail")
         } catch (Exception e) {
             e.printStackTrace()
             Assert.fail("exception occurred in testing")

@@ -210,7 +210,12 @@ img.uif-disclosure-image {
     margin-bottom: 5px;
     vertical-align: middle;
 }
-.uif-footer .uif-horizontalBoxLayout > .uif-action {
+
+.uif-footer {
+    text-align: center;
+}
+
+.uif-footer .uif-horizontalBoxLayout button, .uif-footer .uif-horizontalBoxLayout a {
     float: none;
     display: inline;
 }

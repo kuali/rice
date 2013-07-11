@@ -348,6 +348,20 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     }
 
     /**
+     * Sends a AdHoc Request of the document instance contained on the form to the AdHoc Recipients
+     *
+     * @param form - document form base containing the document instance that will be sent
+     * @return ModelAndView
+     */
+    @RequestMapping(params = "methodToCall=sendAdHocRequests")
+    public ModelAndView sendAdHocRequests(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result,
+                              HttpServletRequest request, HttpServletResponse response) {
+        performWorkflowAction(form, WorkflowAction.SENDADHOCREQUESTS, true);
+
+        return getUIFModelAndView(form);
+    }
+
+    /**
      * Invokes the {@link DocumentService} to carry out a request workflow action and adds a success message, if
      * requested a check for sensitive data is also performed
      *
@@ -415,6 +429,10 @@ public abstract class DocumentControllerBase extends UifControllerBase {
                         getDocumentService().completeDocument(document, form.getAnnotation(), combineAdHocRecipients(form));
                         successMessageKey = RiceKeyConstants.MESSAGE_ROUTE_SUCCESSFUL;
                     }
+                    break;
+                case SENDADHOCREQUESTS:
+                    getDocumentService().sendAdHocRequests(document, form.getAnnotation(), combineAdHocRecipients(form));
+                    successMessageKey = RiceKeyConstants.MESSAGE_ROUTE_SUCCESSFUL;
                     break;
             }
 

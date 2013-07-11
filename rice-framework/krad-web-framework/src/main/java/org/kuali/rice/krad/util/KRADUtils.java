@@ -944,8 +944,8 @@ public final class KRADUtils {
                 value = ((Link) firstComponent).getLinkText();
             } else if (firstComponent instanceof Image) {
                 value = ((Image) firstComponent).getAltText();
-            } else if (firstComponent instanceof Message) {
-                value = ((Message) firstComponent).getText();
+            } else if (firstComponent instanceof org.kuali.rice.krad.uif.element.Message) {
+                value = ((org.kuali.rice.krad.uif.element.Message) firstComponent).getMessageText();
             } else {
                 value = null;
             }

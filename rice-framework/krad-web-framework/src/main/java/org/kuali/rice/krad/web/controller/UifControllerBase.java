@@ -980,14 +980,14 @@ public abstract class UifControllerBase {
         String tableId = request.getParameter(UifParameters.TABLE_ID);
         UifFormBase currentForm = uifFormManager.getSessionForm(formKey);
         View view;
-        if (form.getPostedView() != null) {
+        if (currentForm.getPostedView() != null) {
             view = currentForm.getPostedView();
         } else {
             view = currentForm.getView();
         }
 
         LOG.debug("identifying table from model and form");
-        tableData = view.getViewHelperService().buildExportTableData(view, form, tableId, formatType);
+        tableData = view.getViewHelperService().buildExportTableData(view, currentForm, tableId, formatType);
 
         // if table data to be returned, format response appropriately
         response.setHeader("content-type", contentType);

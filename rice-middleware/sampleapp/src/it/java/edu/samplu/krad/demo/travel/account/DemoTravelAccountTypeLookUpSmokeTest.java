@@ -55,6 +55,7 @@ public class DemoTravelAccountTypeLookUpSmokeTest extends SmokeTestBase {
         assertElementPresentByXpath("//input[@value='CAT' and @name='lookupResults[0].accountTypeCode']");
         waitAndClickButtonByText(CLEAR_VALUES);
         waitAndClickButtonByText(SEARCH);
+        waitForElementsPresentByXpath("//input[@value='IAT' and @name='lookupResults[2].accountTypeCode']");
         assertElementPresentByXpath("//input[@value='CAT' and @name='lookupResults[0].accountTypeCode']");
         assertElementPresentByXpath("//input[@value='EAT' and @name='lookupResults[1].accountTypeCode']");
         assertElementPresentByXpath("//input[@value='IAT' and @name='lookupResults[2].accountTypeCode']");

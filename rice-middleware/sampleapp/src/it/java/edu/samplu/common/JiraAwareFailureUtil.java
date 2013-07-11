@@ -54,6 +54,7 @@ public class JiraAwareFailureUtil {
 
         jiraMatches.put("//*[@id='u229']", KULRICE_8823_FIX_BROKEN_SMOKE_TESTS_IN_CI);
 
+        jiraMatches.put("after clicking Expand All", "KULRICE-3833 KRAD Sampleapp (Travel) Account Inquiry Collapse all toggles all and Expand all does nothing");
         //        jiraMatches.put("",
         //                "");
     }

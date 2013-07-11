@@ -452,7 +452,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
             jGrowlHeader = getClass().getSimpleName() + "." + testMethodName;
             System.out.println(jGrowlHeader + " sessionId is " + sessionId);
-            jGrowl("setUp");
             WebDriverUtil.loginKradOrKns(driver, user, this);
 
             navigateInternal(); // SeleniumBaseTest.fail from navigateInternal results in the test not being recorded as a failure in CI.
@@ -668,31 +667,31 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void assertIsVisibleByXpath(String xpath, String message) {
         if (!isVisibleByXpath(xpath)) {
-            failableFail(xpath + " not visible " + message);
+            jiraAwareFail(xpath + " not visiable " + message);
         }
     }
 
     protected void assertIsNotVisibleByXpath(String xpath, String message) {
         if (isVisibleByXpath(xpath)) {
-            failableFail(xpath + " visible " + message);
+            jiraAwareFail(xpath + " not visiable " + message);
         }
     }
 
     protected void assertIsVisible(String locator) {
         if (!isVisible(locator)) {
-            failableFail(locator + " is not visible and should be");
+            jiraAwareFail(locator + " is not visible and should be");
         }
     }
 
     protected void assertIsVisibleById(String id) {
         if (!isVisibleById(id)) {
-            failableFail(id + " is not visible and should be");
+            jiraAwareFail(id + " is not visible and should be");
         }
     }
 
     protected void assertIsNotVisible(String locator) {
         if (isVisible(locator)) {
-            failableFail(locator + " is visible and should not be");
+            jiraAwareFail(locator + " is visible and should not be");
         }
     }
 

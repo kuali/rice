@@ -56,8 +56,9 @@ public class DemoTravelAccountInquirySmokeTest extends SmokeTestBase {
 
     protected void testInquiryBackButton() throws Exception {
         waitAndClickButtonByText("Back");
-        waitForElementPresentByClassName("uif-headerText");
-        assertTextPresent("Demo - Travel Application");
+        Thread.sleep(2000); // seems to take a while to load
+        waitForElementPresentByXpath("//a[contains(text(), 'Account Inquiry')]");
+        assertTextPresent("Demo - Travel Application", "Expected Demo - Travel Application did back work?");
     }
 
     protected void testCollapseExpand() throws InterruptedException {

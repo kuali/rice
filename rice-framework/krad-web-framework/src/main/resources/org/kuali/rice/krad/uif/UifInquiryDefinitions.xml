@@ -22,7 +22,7 @@
 
   <bean id="Uif-InquiryView" abstract="true" parent="Uif-InquiryView-parentBean"/>
   <bean id="Uif-InquiryView-parentBean" abstract="true"
-        class="org.kuali.rice.krad.uif.view.InquiryView" parent="Uif-FormView-KnsTheme">
+        class="org.kuali.rice.krad.uif.view.InquiryView" parent="Uif-FormView">
     <property name="cssClasses">
       <list merge="true">
         <value>uif-inquiryView</value>

@@ -1057,7 +1057,7 @@ function createCopyToClipboard(componentId, copyTriggerId, contentElementId, sho
         if (jQuery("#" + componentId).is(':visible')) {
 
             // setup new client for this component
-            ZeroClipboard.setMoviePath('../krad/plugins/rice/datatables/copy_cvs_xls_pdf.swf');
+            ZeroClipboard.setMoviePath('/plugins/datatables/copy_cvs_xls_pdf.swf');
             var clip = new ZeroClipboard.Client();
 
             // copy text on mousedown

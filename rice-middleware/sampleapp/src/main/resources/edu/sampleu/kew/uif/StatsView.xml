@@ -22,7 +22,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-<bean id="KEW-StatView" parent="Uif-FormView-KnsTheme">
+<bean id="KEW-StatView" parent="Uif-FormView">
     <property name="id" value="KEW-StatView"/>
     <property name="headerText" value="Workflow Statistics"/>
     <property name="formClass" value="edu.sampleu.kew.krad.form.StatsForm"/>

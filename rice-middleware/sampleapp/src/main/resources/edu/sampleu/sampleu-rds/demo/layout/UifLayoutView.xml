@@ -72,11 +72,7 @@
       </pageGroup>
     </items>
   </formView>
-  <formView id="UifLayoutView_KNS" parent="UifLayoutView">
-    <theme>
-      <viewTheme parent="Uif-ClassicKnsTheme"/>
-    </theme>
-  </formView>
+
   <navigationGroup id="UifLayoutView-Menu" parent="Uif-TabNavigationGroup">
     <items>
       <action actionLabel="Basic Layouts - Box" navigateToPageId="UifLayoutView-Page1"

@@ -153,18 +153,7 @@
     </property>
   </bean>
 
-  <bean id="Demo-StateBasedValidation-Server-KNS" parent="Demo-StateBasedValidation-Server">
-    <property name="theme">
-      <bean parent="Uif-ClassicKnsTheme"/>
-    </property>
-  </bean>
-
   <bean id="Demo-StateBasedValidation-Client" parent="Demo-StateBasedValidation-Server">
-    <property name="headerText" value="State-based Validation client-side Test View"/>
-    <property name="validateClientSide" value="true"/>
-  </bean>
-
-  <bean id="Demo-StateBasedValidation-Client-KNS" parent="Demo-StateBasedValidation-Server-KNS">
     <property name="headerText" value="State-based Validation client-side Test View"/>
     <property name="validateClientSide" value="true"/>
   </bean>
@@ -175,20 +164,6 @@
     <property name="instructionalText" value="Demonstration of custom client side validation settings: when in
                           either state1 or in state2, the setting is to validate against state3 constraints ON THE CLIENT.  When in state3 and after
                           client validation is n+1 (default); ie state3 validates for state4, state4 validates for state5"/>
-    <property name="stateMapping.customClientSideValidationStates">
-      <map>
-        <entry key="state1" value="state3"/>
-        <entry key="state2" value="state3"/>
-      </map>
-    </property>
-  </bean>
-
-  <bean id="Demo-StateBasedValidation-ClientCustom-KNS" parent="Demo-StateBasedValidation-Server-KNS">
-    <property name="headerText" value="State-based Validation Custom client-side Test View"/>
-    <property name="validateClientSide" value="true"/>
-    <property name="instructionalText" value="Demonstration of custom client side validation settings: when in
-                    either state1 or in state2, the setting is to validate against state3 constraints ON THE CLIENT.  When in state3 and after
-                    client validation is n+1 (default); ie state3 validates for state4, state4 validates for state5"/>
     <property name="stateMapping.customClientSideValidationStates">
       <map>
         <entry key="state1" value="state3"/>

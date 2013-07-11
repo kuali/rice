@@ -32,11 +32,7 @@
         <ref bean="UifGuestUserView-Page"/>
       </list>
     </property>
-    <property name="theme">
-      <bean parent="Uif-ClassicKnsTheme"/>
-    </property>
   </bean>
-
 
   <bean id="UifGuestUserView-Page" parent="Uif-Page" p:headerText="Guest View">
     <property name="items">

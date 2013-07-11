@@ -43,17 +43,8 @@
         </bean>
       </list>
     </property>
-    <property name="theme">
-      <bean parent="Uif-KradTheme"/>
-    </property>
     <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
     <property name="growlMessagingEnabled" value="true"/>
-  </bean>
-
-  <bean id="CollectionsM2Test_KNS" parent="CollectionsM2Test">
-    <property name="theme">
-      <bean parent="Uif-ClassicKnsTheme"/>
-    </property>
   </bean>
 
   <bean id="CollectionsM2Test-collectionTest5" parent="Uif-Disclosure-TableCollectionSection"

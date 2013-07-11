@@ -15,7 +15,7 @@
 --%>
 <%@ include file="/rice-portal/jsp/sys/riceTldHeader.jsp"%>
 
-<channel:portalChannelTop channelTitle="KRAD Testing - KS L&F" />
+<channel:portalChannelTop channelTitle="KRAD Testing" />
 <div class="body">
 
   <!-- NOTE: Do not add new KRAD views here but in the KRAD sampleapp. All KRAD functionality will be removed from the Rice

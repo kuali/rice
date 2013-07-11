@@ -94,12 +94,6 @@
     <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
   </bean>
 
-  <bean id="UifLayoutView_KNS" parent="UifLayoutView">
-    <property name="theme">
-      <bean parent="Uif-ClassicKnsTheme"/>
-    </property>
-  </bean>
-
   <!--
   ********************************************************************************************************************
                                            UIF Layout View Menu

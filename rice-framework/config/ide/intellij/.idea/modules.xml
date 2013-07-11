@@ -10,6 +10,8 @@
       <module fileurl="file://$PROJECT_DIR$/rice-krad-service-impl.iml" filepath="$PROJECT_DIR$/rice-krad-service-impl.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-krad-web.iml" filepath="$PROJECT_DIR$/rice-krad-web.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-krad-web-framework.iml" filepath="$PROJECT_DIR$/rice-krad-web-framework.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rice-krad-theme-builder.iml" filepath="$PROJECT_DIR$/rice-krad-theme-builder.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rice-krad-theme-builder-test.iml" filepath="$PROJECT_DIR$/rice-krad-theme-builder-test.iml" />
     </modules>
   </component>
 </project>

@@ -283,7 +283,6 @@
       <bean parent="Uif-HorizontalBoxGroup">
         <property name="items">
           <list>
-            <ref bean="Demo-ThemeChanger"/>
             <ref bean="Demo-LargeExampleDropdown"/>
             <bean id="Demo-CurrentExampleIndex" parent="Uif-InputField" p:propertyName="currentExampleIndex">
               <property name="control">
@@ -310,20 +309,6 @@
     </property>
     <property name="navigation">
       <ref bean="ComponentLibrary-AccordionNav"/>
-    </property>
-  </bean>
-
-  <bean id="Demo-ThemeChanger" parent="Uif-InputField" p:propertyName="themeName">
-    <property name="control">
-      <bean parent="Uif-DropdownControl">
-        <property name="onChangeScript" value="nonAjaxSubmitForm('changeTheme')"/>
-        <property name="options">
-          <list>
-            <bean parent="Uif-KeyLabelPair" p:key="Uif-KradTheme"/>
-            <bean parent="Uif-KeyLabelPair" p:key="Uif-ClassicKnsTheme"/>
-          </list>
-        </property>
-      </bean>
     </property>
   </bean>
 

@@ -151,7 +151,13 @@
   <bean id="Uif-ConditionalCollectionFilter" class="org.kuali.rice.krad.uif.container.ELCollectionFilter"
         scope="prototype"/>
 
-  <bean id="Uif-ViewTheme" class="org.kuali.rice.krad.uif.view.ViewTheme" scope="prototype"/>
+  <bean id="Uif-ViewTheme" class="org.kuali.rice.krad.uif.view.ViewTheme" scope="prototype">
+    <property name="minVersionSuffix" value="${application.version}"/>
+  </bean>
+
+  <bean id="Uif-RiceViewTheme" abstract="true" parent="Uif-ViewTheme">
+    <property name="minVersionSuffix" value="${rice.version}"/>
+  </bean>
 
   <bean id="Uif-BreadcrumbItem" class="org.kuali.rice.krad.uif.util.BreadcrumbItem" scope="prototype">
     <property name="template" value="/krad/WEB-INF/ftl/components/widget/breadcrumb.ftl"/>

@@ -24,9 +24,6 @@
     <property name="parentLocation">
       <bean parent="Uif-RicePortalParentLocation"/>
     </property>
-    <property name="theme">
-      <bean parent="Uif-KradTheme"/>
-    </property>
     <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
     <property name="headerText" value="Collection Grouping"/>
     <property name="entryPageId" value="Demo-CollectionGrouping-Page"/>

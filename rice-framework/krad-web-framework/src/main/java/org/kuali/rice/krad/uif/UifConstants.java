@@ -27,6 +27,14 @@ public class UifConstants {
     public static final String DEFAULT_VIEW_NAME = "default";
     public static final String COMPONENT_ID_PREFIX = "u";
 
+    public static final String DEFAULT_THEMES_DIRECTORY = "/themes";
+    public static final String DEFAULT_IMAGES_DIRECTORY = "images";
+    public static final String DEFAULT_SCRIPTS_DIRECTORY = "scripts";
+    public static final String DEFAULT_STYLESHEETS_DIRECTORY = "stylesheets";
+    public static final String THEME_DERIVED_PROPERTY_FILE = "theme-derived.properties";
+    public static final String THEME_CSS_FILES = "themeCssFiles";
+    public static final String THEME_JS_FILES = "themeJsFiles";
+
     // uncomment for freemarker testing
     public static final String SPRING_VIEW_ID = "/krad/WEB-INF/ftl/uifRender";
     public static final String SPRING_REDIRECT_ID = "/krad/WEB-INF/ftl/redirect";
@@ -39,6 +47,7 @@ public class UifConstants {
     public static final String FIELD_PATH_BIND_ADJUST_PREFIX = "#fp.";
     public static final String LINE_PATH_BIND_ADJUST_PREFIX = "#lp.";
     public static final String NODE_PATH_BIND_ADJUST_PREFIX = "#np.";
+    public static final String STRING_TEMPLATE_PARAMETER_PLACEHOLDER = "@";
 
     public static final String SPACE = " ";
 
@@ -375,6 +384,12 @@ public class UifConstants {
     public static final class ConfigProperties {
         public static final String KRAD_IMAGES_URL = "krad.externalizable.images.url";
         public static final String KRAD_URL = "krad.url";
+    }
+
+    public static final class FileExtensions {
+        public static final String CSS = ".css";
+        public static final String JS = ".js";
+        public static final String MIN = ".min";
     }
 
 }

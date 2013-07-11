@@ -20,20 +20,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <bean id="Uif-View-KnsTheme" abstract="true" parent="Uif-View-KnsTheme-parentBean" />
-	<bean id="Uif-View-KnsTheme-parentBean" abstract="true" parent="Uif-View">
-    <property name="theme">
-      <bean parent="Uif-ClassicKnsTheme"/>
-    </property>
-  </bean>
-
-  <bean id="Uif-FormView-KnsTheme" abstract="true" parent="Uif-FormView-KnsTheme-parentBean" />
-	<bean id="Uif-FormView-KnsTheme-parentBean" abstract="true" parent="Uif-FormView">
-    <property name="theme">
-      <bean parent="Uif-ClassicKnsTheme"/>
-    </property>
-  </bean>
-
   <bean id="Uif-KimPersonControl" parent="Uif-KimPersonControl-parentBean"/>
   <bean id="Uif-KimPersonControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.UserControl"
         scope="prototype"

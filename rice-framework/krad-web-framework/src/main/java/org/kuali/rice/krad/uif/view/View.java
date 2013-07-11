@@ -296,6 +296,7 @@ public class View extends ContainerBase {
      *
      * <ul>
      * <li>Invoke expression evaluation on view theme</li>
+     * <li>Invoke theme to configure defaults</li>
      * </ul>
      */
     public void performApplyModel(View view, Object model, Component parent) {
@@ -304,6 +305,8 @@ public class View extends ContainerBase {
         if (theme != null) {
             view.getViewHelperService().getExpressionEvaluator().evaluateExpressionsOnConfigurable(view, theme,
                     getContext());
+
+            theme.configureThemeDefaults();
         }
 
         //handle parentLocation breadcrumb chain

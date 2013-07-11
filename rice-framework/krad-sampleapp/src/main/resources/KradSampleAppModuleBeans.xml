@@ -53,7 +53,6 @@
         <value>classpath:org/kuali/rice/krad/demo/travel/account/TravelAccountLookup.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/travel/account/TravelAccountTypeLookup.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/travel/account/TravelAccountMaintenance.xml</value>
-        <value>classpath:org/kuali/rice/krad/demo/travel/account/TravelAlternateViews.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/travel/authorization/TravelAuthorizationDocument.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/travel/authorization/TravelAuthorizationView.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/travel/authorization/TravelerDetailLookup.xml</value>

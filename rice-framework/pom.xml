@@ -34,6 +34,7 @@
     <module>krad-it</module>
     <module>krad-sampleapp</module>
     <module>krad-service-impl</module>
+    <module>krad-theme-builder</module>
     <module>krad-web</module>
     <module>krad-web-framework</module>
   </modules>

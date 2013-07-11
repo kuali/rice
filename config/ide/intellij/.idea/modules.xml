@@ -68,6 +68,8 @@
       <module fileurl="file://$PROJECT_DIR$/rice-krad-development-tools.iml" filepath="$PROJECT_DIR$/rice-krad-development-tools.iml" group="rice-framework and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-krad-sampleapp.iml" filepath="$PROJECT_DIR$/rice-krad-sampleapp.iml" group="rice-framework and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-krad-service-impl.iml" filepath="$PROJECT_DIR$/rice-krad-service-impl.iml" group="rice-framework and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-krad-theme-builder.iml" filepath="$PROJECT_DIR$/rice-krad-theme-builder.iml" group="rice-framework and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-krad-theme-builder-test.iml" filepath="$PROJECT_DIR$/rice-krad-theme-builder-test.iml" group="rice-framework and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-krad-web.iml" filepath="$PROJECT_DIR$/rice-krad-web.iml" group="rice-framework and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-krad-web-framework.iml" filepath="$PROJECT_DIR$/rice-krad-web-framework.iml" group="rice-framework and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-krms.iml" filepath="$PROJECT_DIR$/rice-krms.iml" group="rice-middleware and modules" />

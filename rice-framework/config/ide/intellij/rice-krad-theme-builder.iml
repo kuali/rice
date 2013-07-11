@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/../../../rice-framework/krad-theme-builder/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../rice-framework/krad-theme-builder/target/test-classes" />
+    <content url="file://$MODULE_DIR$/../../../rice-framework/krad-theme-builder">
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-framework/krad-theme-builder/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-framework/krad-theme-builder/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-framework/krad-theme-builder/src/test/java" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-framework/krad-theme-builder/target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: org.kuali.common:kuali-util:4.2.13" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.plexus:plexus-utils:3.0.10" level="project" />
+    <orderEntry type="library" name="Maven: com.jcraft:jsch:0.1.49" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.1" level="project" />
+    <orderEntry type="library" name="Maven: commons-io:commons-io:2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.kuali.commons:commons-beanutils:1.8.3-kuali-4" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context:3.1.0.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-aop:3.1.0.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.1.0.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-beans:3.1.0.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-core:3.1.0.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-expression:3.1.0.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.jasypt:jasypt:1.9.0" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.4" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:jcl-over-slf4j:1.6.4" level="project" />
+    <orderEntry type="library" name="Maven: log4j:log4j:1.2.16" level="project" />
+    <orderEntry type="library" name="Maven: org.lesscss:lesscss:1.3.3" level="project" />
+    <orderEntry type="library" name="Maven: org.mozilla:rhino:1.7R4" level="project" />
+    <orderEntry type="library" name="Maven: com.yahoo.platform.yui:yuicompressor:2.4.7" level="project" />
+    <orderEntry type="library" name="Maven: rhino:js:1.6R7" level="project" />
+    <orderEntry type="library" name="Maven: com.google.javascript:closure-compiler:v20130603" level="project" />
+    <orderEntry type="library" name="Maven: args4j:args4j:2.0.16" level="project" />
+    <orderEntry type="library" name="Maven: com.google.guava:guava:11.0" level="project" />
+    <orderEntry type="library" name="Maven: com.google.code.findbugs:jsr305:1.3.9" level="project" />
+    <orderEntry type="library" name="Maven: com.google.protobuf:protobuf-java:2.4.1" level="project" />
+    <orderEntry type="library" name="Maven: org.json:json:20090211" level="project" />
+    <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.6" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.11" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
+  </component>
+</module>
+

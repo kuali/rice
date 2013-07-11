@@ -40,9 +40,6 @@
         <ref bean="Collections-SaveRow"/>
       </list>
     </property>
-    <property name="theme">
-      <bean parent="Uif-KradTheme"/>
-    </property>
     <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
     <property name="growlMessagingEnabled" value="true"/>
   </bean>
@@ -61,12 +58,6 @@
         <bean parent="Uif-NavigationActionLink" p:navigateToPageId="Collections-SaveRow"
               p:actionLabel="Save Row"/>
       </list>
-    </property>
-  </bean>
-
-  <bean id="ConfigurationTestView-Collections_KNS" parent="ConfigurationTestView-Collections">
-    <property name="theme">
-      <bean parent="Uif-ClassicKnsTheme"/>
     </property>
   </bean>
 

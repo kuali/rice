@@ -59,9 +59,6 @@
         </bean>
       </list>
     </property>
-    <property name="theme">
-      <bean parent="Uif-KradTheme"/>
-    </property>
     <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
   </bean>
 

@@ -23,9 +23,6 @@
     <property name="parentLocation">
       <bean parent="Uif-RicePortalParentLocation"/>
     </property>
-    <property name="theme">
-      <bean parent="Uif-KradTheme"/>
-    </property>
     <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
     <property name="headerText" value="Row Details Demo"/>
     <property name="entryPageId" value="Demo-RowDetails-Page"/>
@@ -47,12 +44,6 @@
           </property>
         </bean>
       </list>
-    </property>
-  </bean>
-
-  <bean id="Demo-RowDetails-KNS" parent="Demo-RowDetails">
-    <property name="theme">
-      <bean parent="Uif-ClassicKnsTheme"/>
     </property>
   </bean>
 

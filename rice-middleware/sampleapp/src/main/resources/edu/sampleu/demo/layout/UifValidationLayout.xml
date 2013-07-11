@@ -24,9 +24,6 @@
     <property name="parentLocation">
       <bean parent="Uif-RicePortalParentLocation"/>
     </property>
-    <property name="theme">
-      <bean parent="Uif-KradTheme"/>
-    </property>
     <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
     <property name="headerText" value="View Title"/>
     <property name="entryPageId" value="Demo-ValidationLayout-SectionsPage"/>
@@ -251,12 +248,6 @@
         <bean parent="Uif-NavigationActionLink" p:navigateToPageId="Demo-ValidationLayout-LightTablePage"
                       p:actionLabel="LightTable"/>
       </list>
-    </property>
-  </bean>
-
-  <bean id="Demo-ValidationLayout-KNS" parent="Demo-ValidationLayout">
-    <property name="theme">
-      <bean parent="Uif-ClassicKnsTheme"/>
     </property>
   </bean>
 

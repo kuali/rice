@@ -447,22 +447,6 @@
           </property>
         </bean>
 
-        <bean id="UifCompView-OtherField8" parent="Uif-ReorderSection">
-          <property name="items">
-            <list>
-              <bean id="UifCompView-OtherField9" parent="Uif-Message" p:cssClasses="fl-font-size-150,fl-input-outline"/>
-              <bean id="UifCompView-OtherField10" parent="Uif-Message"
-                    p:cssClasses="fl-font-size-150,fl-input-outline"/>
-              <bean id="UifCompView-OtherField11" parent="Uif-Message"
-                    p:cssClasses="fl-font-size-150,fl-input-outline"/>
-              <bean id="UifCompView-OtherField12" parent="Uif-Message"
-                    p:cssClasses="fl-font-size-150,fl-input-outline"/>
-              <bean id="UifCompView-OtherField13" parent="Uif-Message"
-                    p:cssClasses="fl-font-size-150,fl-input-outline"/>
-            </list>
-          </property>
-        </bean>
-
         <bean parent="Uif-Iframe" p:width="800px" p:height="550px" p:source="http://www.kuali.org"/>
 
       </list>

@@ -16,10 +16,6 @@
 <%@ include file="/rice-portal/jsp/sys/riceTldHeader.jsp"%>
 
 <td class="content" valign="top">
-  <kradChannel:kradTestLinks/>
-</td>
-
-<td class="content" valign="top">
   <kradChannel:kradTestLinks2/>
 </td>
 

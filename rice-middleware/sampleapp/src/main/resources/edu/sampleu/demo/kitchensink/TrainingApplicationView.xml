@@ -38,16 +38,6 @@
         <ref bean="Training-CollegeApplicationPage"/>
       </list>
     </property>
-    <property name="theme">
-      <bean parent="Uif-KradTheme"/>
-    </property>
-  </bean>
-
-  <!-- Alternate version of this view, only changing the theme -->
-  <bean id="Training-CollegeApplicationView_KNS" parent="Training-CollegeApplicationView">
-    <property name="theme">
-      <bean parent="Uif-ClassicKnsTheme"/>
-    </property>
   </bean>
 
   <!-- College Application page -->

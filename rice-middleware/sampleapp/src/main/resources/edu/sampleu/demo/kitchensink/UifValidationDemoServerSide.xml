@@ -57,10 +57,4 @@
     </property>
   </bean>
 
-  <bean id="Demo-ValidationServerSide-KNS" parent="Demo-ValidationServerSide">
-    <property name="theme">
-      <bean parent="Uif-ClassicKnsTheme"/>
-    </property>
-  </bean>
-
 </beans>

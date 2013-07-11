@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>rice-framework</artifactId>
+    <groupId>org.kuali.rice</groupId>
+    <version>2.3.0-RC1-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>rice-krad-theme-builder</artifactId>
+  <name>Rice KRAD Theme Builder</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.kuali.common</groupId>
+      <artifactId>kuali-util</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.lesscss</groupId>
+      <artifactId>lesscss</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.yahoo.platform.yui</groupId>
+      <artifactId>yuicompressor</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.javascript</groupId>
+      <artifactId>closure-compiler</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+</project>

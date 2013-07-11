@@ -22,7 +22,7 @@
 
   <bean id="Uif-LookupView" abstract="true" parent="Uif-LookupView-parentBean"/>
   <bean id="Uif-LookupView-parentBean" abstract="true"
-        class="org.kuali.rice.krad.uif.view.LookupView" parent="Uif-FormView-KnsTheme">
+        class="org.kuali.rice.krad.uif.view.LookupView" parent="Uif-FormView">
     <property name="cssClasses">
       <list merge="true">
         <value>uif-lookupView</value>

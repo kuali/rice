@@ -330,7 +330,7 @@
         <entry key="align" value="left"/>
         <entry key="alwaysVisible" value="false"/>
         <entry key="tail" value="{ align:'left', hidden: false }"/>
-        <entry key="themePath" value="../krad/plugins/tooltip/jquerybubblepopup-theme/"/>
+        <entry key="themePath" value="/plugins/tooltip/jquerybubblepopup-theme/"/>
         <entry key="themeName" value="black"/>
         <entry key="selectable" value="true"/>
       </map>

@@ -44,16 +44,7 @@
     <property name="footer">
       <bean parent="Uif-FormFooter"/>
     </property>
-    <property name="theme">
-      <bean parent="Uif-KradTheme"/>
-    </property>
     <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
-  </bean>
-
-  <bean id="RichMessagesView_KNS" parent="ClientDisableView">
-    <property name="theme">
-      <bean parent="Uif-ClassicKnsTheme"/>
-    </property>
   </bean>
 
   <bean id="Demo-DisableSection1" p:headerText="Basic Functionality" parent="Uif-HorizontalBoxSection">

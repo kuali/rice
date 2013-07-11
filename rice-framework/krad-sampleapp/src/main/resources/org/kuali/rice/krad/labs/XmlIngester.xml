@@ -22,7 +22,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-   <bean id="XmlIngester" parent="Uif-FormView-KnsTheme">
+   <bean id="XmlIngester" parent="Uif-FormView">
       <property name="id" value="XmlIngester"/>
       <property name="headerText" value="XML Ingester"/>
       <property name="items">

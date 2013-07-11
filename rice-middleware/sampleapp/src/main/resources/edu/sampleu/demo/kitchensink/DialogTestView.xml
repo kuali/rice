@@ -98,16 +98,7 @@
         -->
       </list>
     </property>
-    <property name="theme">
-      <bean parent="Uif-KradTheme"/>
-    </property>
     <property name="formClass" value="edu.sampleu.demo.kitchensink.UifDialogTestForm"/>
-  </bean>
-
-  <bean id="DialogTestView_KNS" parent="DialogTestView">
-    <property name="theme">
-      <bean parent="Uif-ClassicKnsTheme"/>
-    </property>
   </bean>
 
   <bean id="DialogTestView-SampleDialogs" parent="Uif-Disclosure-HorizontalBoxSection" p:title="Sample Dialogs">

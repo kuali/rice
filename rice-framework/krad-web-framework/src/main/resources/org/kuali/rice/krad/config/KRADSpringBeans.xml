@@ -124,7 +124,6 @@
         <value>classpath:org/kuali/rice/krad/uif/UifRiceDefinitions.xml</value>
         <value>classpath:org/kuali/rice/krad/uif/UifElementDefinitions.xml</value>
         <value>classpath:org/kuali/rice/krad/uif/UifInitiateDocumentInfoDefinitions.xml</value>
-        <value>classpath:org/kuali/rice/krad/uif/UifDevelopmentDefinitions.xml</value>
 
         <!-- DummyLogin -->
         <value>classpath:org/kuali/rice/krad/login/DummyLoginView.xml</value>

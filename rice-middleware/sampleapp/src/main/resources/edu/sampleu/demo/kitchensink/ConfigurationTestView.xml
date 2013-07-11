@@ -44,9 +44,6 @@
         <ref bean="ConfigurationTestView-Quickfinder-Page"/>
       </list>
     </property>
-    <property name="theme">
-      <bean parent="Uif-KradTheme"/>
-    </property>
     <property name="additionalCssFiles">
       <list merge="true">
         <value>css/sampleapp.css</value>
@@ -62,12 +59,6 @@
       </bean>
     </property>
     <property name="growlMessagingEnabled" value="true"/>
-  </bean>
-
-  <bean id="ConfigurationTestView_KNS" parent="ConfigurationTestView">
-    <property name="theme">
-      <bean parent="Uif-ClassicKnsTheme"/>
-    </property>
   </bean>
 
   <!--

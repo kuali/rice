@@ -40,16 +40,7 @@
         </bean>
       </list>
     </property>
-    <property name="theme">
-      <bean parent="Uif-KradTheme"/>
-    </property>
     <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
-  </bean>
-
-  <bean id="RichMessagesView_KNS" parent="RichMessagesView">
-    <property name="theme">
-      <bean parent="Uif-ClassicKnsTheme"/>
-    </property>
   </bean>
 
   <bean id="Demo-BasicMessagesSection" p:headerText="Basic [css='fl-text-underline']Functionality[/css]"

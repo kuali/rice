@@ -40,11 +40,6 @@
       </page-bean>
     </items>
   </formView-bean>
-  <formView-bean id="Demo-RowDetails-KNS" parent="Demo-RowDetails">
-    <theme>
-      <classicKnsTheme-bean/>
-    </theme>
-  </formView-bean>
   <tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
                                headertext="Row Details with image option on, showing two fields in details"
                                id="Demo-RowDetails-Section2"

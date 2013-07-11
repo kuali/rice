@@ -218,15 +218,15 @@ function showMessageTooltip(fieldId, showAndClose, change) {
         }
 
         var options = {
-            position:"top",
-            align:"left",
-            divStyle:{margin:getTooltipMargin(tooltipElement)},
-            distance:0,
-            manageMouseEvents:false,
-            themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/",
-            alwaysVisible:false,
-            tail:{align:"left"},
-            themeMargins:{total:"13px", difference:"2px"}
+            position: "top",
+            align: "left",
+            divStyle: {margin: getTooltipMargin(tooltipElement)},
+            distance: 0,
+            manageMouseEvents: false,
+            themePath: kradVariables.BUBBLEPOPUP_THEME_PATH,
+            alwaysVisible: false,
+            tail: {align: "left"},
+            themeMargins: {total: "13px", difference: "2px"}
         };
 
         if (elementInfo.themeMargins) {

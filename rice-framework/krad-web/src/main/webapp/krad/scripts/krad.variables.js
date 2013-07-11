@@ -138,12 +138,13 @@ JavascriptKradVariables.prototype = {
      ADD_CONTROLS : "add_controls",
      SUBMIT_DATA : "submit_data",
      DETAILS_DEFAULT_OPEN : "details_default_open",
+     BUBBLEPOPUP_THEME_PATH : "/plugins/tooltip/jquerybubblepopup-theme/",
      FORM_BUBBLEPOPUP_DEFAULT_OPTIONS : {
         position: 'bottom',
         align: 'left',
         tail: { align: 'left', hidden: false },
         manageMouseEvents: false,
-        themePath: '../krad/plugins/tooltip/jquerybubblepopup-theme/',
+        themePath: this.BUBBLEPOPUP_THEME_PATH,
         themeName: 'popup-form'
     }
 }

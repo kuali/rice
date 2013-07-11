@@ -24,39 +24,12 @@
 
   <!-- View Themes -->
 
-  <bean id="Uif-BaseTheme" abstract="true" parent="Uif-BaseTheme-parentBean"/>
-  <bean id="Uif-BaseTheme-parentBean" abstract="true" parent="Uif-ViewTheme">
-    <property name="cssFiles">
-      <list>
-        <value>krad/min/css/krad_@{#ConfigProperties['rice.version']}.min.css</value>
-      </list>
-    </property>
-    <property name="scriptFiles">
-      <list>
-        <value>krad/min/scripts/krad_@{#ConfigProperties['rice.version']}.min.js</value>
-      </list>
-    </property>
-  </bean>
+  <!-- Bean for setting the default theme for views -->
+  <bean id="GlobalTheme" parent="Uif-KbootTheme"/>
 
-  <bean id="Uif-ClassicKnsTheme" parent="Uif-ClassicKnsTheme-parentBean"/>
-  <bean id="Uif-ClassicKnsTheme-parentBean" parent="Uif-BaseTheme">
-    <property name="imageDirectory" value="@{#ConfigProperties['krad.externalizable.images.url']}kns/"/>
-    <property name="cssFiles">
-      <list merge="true">
-<!--        <value>krad/css/kns/theme-kns.css</value>-->
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Uif-KradTheme" parent="Uif-KradTheme-parentBean"/>
-  <bean id="Uif-KradTheme-parentBean" parent="Uif-BaseTheme">
-    <property name="imageDirectory" value="@{#ConfigProperties['krad.externalizable.images.url']}ks/"/>
-    <property name="cssFiles">
-      <list merge="true">
-<!--        <value>krad/css/ks/theme-krad.css</value>
-        <value>krad/css/ks/fss-theme-krad.css</value>-->
-      </list>
-    </property>
+  <bean id="Uif-KbootTheme" parent="Uif-KbootTheme-parentBean"/>
+  <bean id="Uif-KbootTheme-parentBean" abstract="true" parent="Uif-RiceViewTheme">
+    <property name="name" value="kboot"/>
   </bean>
 
   <!-- Base Views -->
@@ -69,7 +42,7 @@
     <property name="template" value="/krad/WEB-INF/ftl/components/view/view.ftl"/>
     <property name="templateName" value="uif_view"/>
     <property name="theme">
-      <bean parent="Uif-KradTheme"/>
+      <bean parent="GlobalTheme"/>
     </property>
     <property name="cssClasses">
       <list>

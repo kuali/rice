@@ -32,9 +32,6 @@
         <ref bean="ConfigurationTestView-Help-Page"/>
       </list>
     </property>
-    <property name="theme">
-      <bean parent="Uif-KradTheme"/>
-    </property>
     <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
     <property name="help">
       <bean parent="Uif-Help">
@@ -43,12 +40,6 @@
       </bean>
     </property>
     <property name="growlMessagingEnabled" value="true"/>
-  </bean>
-
-  <bean id="ConfigurationTestView-Help_KNS" parent="ConfigurationTestView-Help">
-    <property name="theme">
-      <bean parent="Uif-ClassicKnsTheme"/>
-    </property>
   </bean>
 
   <bean id="ConfigurationTestView-Help-Page" parent="Uif-Page" p:headerText="Help Page">

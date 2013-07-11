@@ -276,12 +276,9 @@
         </bean>
       </list>
     </property>
-    <property name="theme">
-      <bean parent="Uif-KradTheme"/>
-    </property>
     <property name="additionalScriptFiles">
       <list merge="true">
-        <value>scripts/sampleapp.js</value>
+        <value>scripts/componentsView.js</value>
       </list>
     </property>
     <property name="viewHelperServiceClass"
@@ -334,12 +331,6 @@
   <bean id="UifCompView-KeyValueLocation" parent="Uif-KeyValueLocation">
     <property name="location.viewId" value="UifCompView"/>
     <property name="location.controllerMapping" value="/uicomponents"/>
-  </bean>
-
-  <bean id="UifCompView_KNS" parent="UifCompView">
-    <property name="theme">
-      <bean parent="Uif-ClassicKnsTheme"/>
-    </property>
   </bean>
 
   <!--

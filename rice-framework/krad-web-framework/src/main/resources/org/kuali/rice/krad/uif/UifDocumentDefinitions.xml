@@ -22,7 +22,7 @@
 
   <bean id="Uif-DocumentView" abstract="true" parent="Uif-DocumentView-parentBean"/>
   <bean id="Uif-DocumentView-parentBean" abstract="true"
-        class="org.kuali.rice.krad.uif.view.DocumentView" parent="Uif-FormView-KnsTheme">
+        class="org.kuali.rice.krad.uif.view.DocumentView" parent="Uif-FormView">
     <property name="cssClasses">
       <list merge="true">
         <value>uif-documentView</value>

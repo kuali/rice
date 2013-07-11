@@ -685,4 +685,10 @@ public final class KRADConstants {
 
     public static final String REQUEST_MAPPING_SESSION_TIMEOUT = "sessionTimout";
     public static final String SESSION_TIMEOUT_VIEW_ID = "Uif-SessionTimeoutView";
+
+    public static final class ConfigParameters {
+        public static final String APPLICATION_VERSION = "application.version";
+        public static final String APPLICATION_URL = "application.url";
+        public static final String KRAD_DEV_MODE = "krad.dev.mode";
+    }
 }

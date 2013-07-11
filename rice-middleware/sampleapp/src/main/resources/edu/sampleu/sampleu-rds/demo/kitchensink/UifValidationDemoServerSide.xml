@@ -39,9 +39,4 @@
       </page-bean>
     </items>
   </formView-bean>
-  <formView-bean id="Demo-ValidationServerSide-KNS" parent="Demo-ValidationServerSide">
-    <theme>
-      <classicKnsTheme-bean/>
-    </theme>
-  </formView-bean>
 </spring:beans>

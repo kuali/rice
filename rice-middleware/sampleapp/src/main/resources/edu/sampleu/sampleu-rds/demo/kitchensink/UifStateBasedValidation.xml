@@ -120,35 +120,4 @@
       </verticalBoxSection-bean>
     </items>
   </page-bean>
-  <formView-bean id="Demo-StateBasedValidation-Server-KNS" parent="Demo-StateBasedValidation-Server">
-    <theme>
-      <classicKnsTheme-bean/>
-    </theme>
-  </formView-bean>
-  <formView-bean headertext="State-based Validation client-side Test View" id="Demo-StateBasedValidation-Client"
-                 parent="Demo-StateBasedValidation-Server" validateClientSide="true"/>
-  <formView-bean headertext="State-based Validation client-side Test View" id="Demo-StateBasedValidation-Client-KNS"
-                 parent="Demo-StateBasedValidation-Server-KNS" validateClientSide="true"/>
-  <formView-bean headertext="State-based Validation Custom client-side Test View"
-                 id="Demo-StateBasedValidation-ClientCustom"
-                 instructionalText="Demonstration of custom client side validation settings: when in                           either state1 or in state2, the setting is to validate against state3 constraints ON THE CLIENT.  When in state3 and after                           client validation is n+1 (default); ie state3 validates for state4, state4 validates for state5"
-                 parent="Demo-StateBasedValidation-Server" validateClientSide="true">
-    <spring:property name="stateMapping.customClientSideValidationStates">
-      <spring:map>
-        <spring:entry key="state1" value="state3"/>
-        <spring:entry key="state2" value="state3"/>
-      </spring:map>
-    </spring:property>
-  </formView-bean>
-  <formView-bean headertext="State-based Validation Custom client-side Test View"
-                 id="Demo-StateBasedValidation-ClientCustom-KNS"
-                 instructionalText="Demonstration of custom client side validation settings: when in                     either state1 or in state2, the setting is to validate against state3 constraints ON THE CLIENT.  When in state3 and after                     client validation is n+1 (default); ie state3 validates for state4, state4 validates for state5"
-                 parent="Demo-StateBasedValidation-Server-KNS" validateClientSide="true">
-    <spring:property name="stateMapping.customClientSideValidationStates">
-      <spring:map>
-        <spring:entry key="state1" value="state3"/>
-        <spring:entry key="state2" value="state3"/>
-      </spring:map>
-    </spring:property>
-  </formView-bean>
 </spring:beans>

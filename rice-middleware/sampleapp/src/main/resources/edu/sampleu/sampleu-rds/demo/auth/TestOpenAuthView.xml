@@ -55,8 +55,5 @@
         </items>
       </group>
     </items>
-    <theme>
-      <viewTheme parent="Uif-KradTheme"/>
-    </theme>
   </formView>
 </spring:beans>

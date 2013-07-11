@@ -195,7 +195,7 @@ function initFieldHandlers() {
         align: "left",
         distance: 0,
         manageMouseEvents: false,
-        themePath: "../krad/plugins/tooltip/jquerybubblepopup-theme/",
+        themePath: kradVariables.BUBBLEPOPUP_THEME_PATH,
         alwaysVisible: false,
         tail: {align: "left"},
         themeMargins: {total: "13px", difference: "2px"}
@@ -590,7 +590,7 @@ function initBubblePopups() {
     //CreateBubblePopup was modified to be additive on call, and now uses one handler per event type- kuali customization
     jQuery(document).CreateBubblePopup("input:not([type='hidden']):not([type='image']), input[data-role='help'], "
             + "select, textarea, .uif-tooltip", {   manageMouseEvents: false,
-        themePath: "../krad/plugins/tooltip/jquerybubblepopup-theme/"});
+        themePath: kradVariables.BUBBLEPOPUP_THEME_PATH});
 }
 
 function hideBubblePopups(element) {

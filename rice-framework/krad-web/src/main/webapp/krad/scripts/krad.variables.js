@@ -36,6 +36,7 @@ JavascriptKradVariables.prototype = {
      COUNTDOWN_CLASS : "hasCountdown",
      DIRTY_CLASS : "dirty",
      DISABLE_BROWSER_CACHE : "disableBrowserCache",
+     DIALOG_PLACEHOLDER : "_dialogPlaceholder",
      ERROR_HIGHLIGHT_SECTION_CLASS : "uif-errorHighlight-section",
      ERROR_MESSAGE_ITEM_CLASS : "uif-errorMessageItem-field",
      FIELD_CLASS : "uif-field",

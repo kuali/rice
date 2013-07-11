@@ -1034,19 +1034,19 @@ function showLightboxComponent(componentId, overrideOptions) {
  * This internal function continues the showLightboxComponent processing after the ajax content has been rendered.
  */
 function _showLightboxComponentHelper(componentId, overrideOptions) {
-    var component = jQuery('#' + componentId);
-    var cssDisplay = component.css('display');
+    var component = jQuery("#" + componentId);
+    var cssDisplay = component.css("display");
 
     // suppress scrollbar when not needed, undo the div.clearfix hack (KULRICE-7467)
-    if (component.attr('class')) {
-        component.attr('class', component.attr('class').replace('clearfix', ''));
+    if (component.attr("class")) {
+        component.attr("class", component.attr("class").replace("clearfix", ""));
     }
 
-    component.find('div').each(function () {
-        var classAttribute = jQuery(this).attr('class');
+    component.find("div").each(function () {
+        var classAttribute = jQuery(this).attr("class");
 
         if (classAttribute) {
-            jQuery(this).attr('class', classAttribute.replace('clearfix', ''));
+            jQuery(this).attr("class", classAttribute.replace("clearfix", ""));
         }
     });
 
@@ -1054,11 +1054,13 @@ function _showLightboxComponentHelper(componentId, overrideOptions) {
         // ensure that component of KualiForm gets updated after fancybox closes
         _appendCallbackFunctions(overrideOptions, {beforeClose: function () {
             // hack fancybox to prevent it from moving the original lightbox content into the body
-            jQuery('#' + componentId).parents('.fancybox-wrap').unbind('onReset');
+            jQuery("#" + componentId).parents(".fancybox-wrap").unbind("onReset");
 
-            jQuery('#tmpForm_' + componentId).replaceWith(jQuery('#' + componentId).detach());
-            jQuery('#' + componentId).css('display', cssDisplay);
-            jQuery('#renderedInLightBox').val(false);
+            // restore original display state and replace placeholder
+            jQuery("#" + componentId).css("display", cssDisplay);
+            jQuery("#" + componentId + kradVariables.DIALOG_PLACEHOLDER).replaceWith(parent.jQuery("#" + componentId).detach());
+
+            jQuery("#renderedInLightBox").val(false);
 
             activeDialogId = null;
         }});
@@ -1066,26 +1068,33 @@ function _showLightboxComponentHelper(componentId, overrideOptions) {
         // reattach component to KualiForm after fancybox closes
         _appendCallbackFunctions(overrideOptions, {beforeClose: function () {
             // hack fancybox to prevent it from moving the original lightbox content into the body
-            parent.jQuery('#' + componentId).parents('.fancybox-wrap').unbind('onReset');
+            parent.jQuery("#" + componentId).parents(".fancybox-wrap").unbind("onReset");
 
-            jQuery('#tmpForm_' + componentId).replaceWith(parent.jQuery('#' + componentId).detach());
-            jQuery('#' + componentId).css('display', cssDisplay);
-            jQuery('#renderedInLightBox').val(false);
+            // restore original display state and replace placeholder
+            jQuery("#" + componentId).css("display", cssDisplay);
+            jQuery("#" + componentId + kradVariables.DIALOG_PLACEHOLDER).replaceWith(parent.jQuery("#" + componentId).detach());
+
+            jQuery("#renderedInLightBox").val(false);
 
             activeDialogId = null;
         }});
     }
 
-    // clone the content for the lightbox and make the element id unique
-    showLightboxContent(component.clone(true, true).css('display', ''), overrideOptions);
-    addIdPrefix(component, 'tmpForm_');
+    // add a dialog placeholder
+    component.before("<div id='" + componentId + kradVariables.DIALOG_PLACEHOLDER + "' "
+            + "style='display: none; height: 0; width: 0;'/>");
+
+    // detach and show content
+    component = component.detach();
+    component.show();
+    showLightboxContent(component, overrideOptions);
 
     // indicate active dialog, note this is done after showing the lightbox since it could close an existing
     // lightbox which will set activeDialogId to null (through the beforeClose handler above)
     activeDialogId = componentId;
 
     // trigger the show dialog event
-    jQuery('#tmpForm_' + componentId).trigger(kradVariables.SHOW_DIALOG_EVENT);
+    jQuery(component).trigger(kradVariables.SHOW_DIALOG_EVENT);
 }
 
 /**

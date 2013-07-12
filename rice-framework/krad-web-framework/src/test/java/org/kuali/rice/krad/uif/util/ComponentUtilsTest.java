@@ -302,7 +302,7 @@ public class ComponentUtilsTest {
         return result;
     }
 
-    @Test
+    //@Test
     /**
      * test {@link ComponentUtils#copyUsingCloning} using a DataField object
      */
@@ -317,7 +317,7 @@ public class ComponentUtilsTest {
         assertTrue(propertiesMatch(dataTableOriginal, dataTableCopy));
     }*/
 
-    private void initializeClass(Object originalObject) {
+    /*private void initializeClass(Object originalObject) {
         Class originalClass = originalObject.getClass();
         long index = 0L;
 
@@ -365,9 +365,9 @@ public class ComponentUtilsTest {
 
             ++index;
         }
-    }
+    }*/
 
-    private boolean propertiesMatch(Object originalObject, Object copiedObject) {
+    /*private boolean propertiesMatch(Object originalObject, Object copiedObject) {
         Class originalClass = originalObject.getClass();
         Class copiedClass = copiedObject.getClass();
 
@@ -398,5 +398,5 @@ public class ComponentUtilsTest {
         }
 
         return true;
-    }
+    }*/
 }

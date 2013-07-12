@@ -22,34 +22,26 @@ label {
 img {
     vertical-align: top;
 }
-
 a {
     cursor: pointer;
 }
-
 ol, ul {
     list-style: none;
     margin: 0;
-
 }
-
-h1, h2, h3{
+h1, h2, h3 {
     line-height: 20px;
 }
-
-label{
+label {
     cursor: text;
 }
-
-input[type="radio"], input[type="checkbox"]{
+input[type="radio"], input[type="checkbox"] {
     margin: 0px;
     cursor: pointer;
 }
-
-input[type="radio"]+label, input[type="checkbox"]+label{
+input[type="radio"]+label, input[type="checkbox"]+label {
     font-weight: normal;
 }
-
 /* disabled inputs sibling labels are greyed out */
 input[disabled]+label {
     color: #888888;
@@ -61,13 +53,12 @@ ul.uif-readOnlyStringList li {
     list-style: disc inside none;
 }
 /** View structure related **************************************************************************/
-.uif-viewContentWrapper .uif-pageContentWrapper{
+.uif-viewContentWrapper .uif-pageContentWrapper {
     padding-left: 20px;
     padding-right: 20px;
     padding-bottom: 0;
     padding-top: 5px;
 }
-
 /** Field and group related *************************************************************************/
 
 .uif-instructionalMessage {
@@ -117,7 +108,7 @@ ul.uif-readOnlyStringList li {
     padding: 0;
     margin: 0;
 }
-.uif-viewHeader-contentWrapper > .uif-header-upperGroup, .uif-viewHeader-contentWrapper > .uif-header-lowerGroup{
+.uif-viewHeader-contentWrapper > .uif-header-upperGroup, .uif-viewHeader-contentWrapper > .uif-header-lowerGroup {
     padding-left: 20px;
 }
 .uif-header-contentWrapper {
@@ -126,13 +117,11 @@ ul.uif-readOnlyStringList li {
 .uif-header {
     position: relative;
 }
-
-.uif-headerText-span{
+.uif-headerText-span {
     display: inline !important;
     float: inherit;  /* bootstrap override */
 }
-
-.uif-viewHeader{
+.uif-viewHeader {
     padding-top: 8px;
     padding-bottom: 8px;
     padding-left: 20px
@@ -210,11 +199,9 @@ img.uif-disclosure-image {
     margin-bottom: 5px;
     vertical-align: middle;
 }
-
 .uif-footer {
     text-align: center;
 }
-
 .uif-footer .uif-horizontalBoxLayout button, .uif-footer .uif-horizontalBoxLayout a {
     float: none;
     display: inline;
@@ -329,17 +316,14 @@ button img.leftActionImage, a img.leftActionImage {
 button img.rightActionImage, a img.rightActionImage {
     margin-left: 5px;
 }
-
 .uif-actionImage {
     padding-top: 6px;
 }
-
 .uif-actionLink.disabled {
     color: #888888;
     cursor: text;
 }
-
-.uif-actionLink.disabled:hover{
+.uif-actionLink.disabled:hover {
     text-decoration: none;
 }
 /* Layout related ****************************************************************************************/
@@ -383,13 +367,11 @@ table.uif-gridLayout > tbody > tr > td.uif-inputField {
 .uif-inputField.uif-boxLayoutHorizontalItem {
     margin-right: 20px;
 }
-
 .uif-verticalBoxLayout .uif-boxLayoutVerticalItem input {
     margin-bottom: 2px;
 }
 .uif-boxLayoutVerticalItem {
-    display: block;
-    /*    margin-bottom: 10px;*/
+    display: block;/*    margin-bottom: 10px;*/
 }
 .uif-linkGroup .uif-boxLayoutHorizontalItem {
     display: inline;
@@ -410,54 +392,36 @@ table.uif-gridLayout > tbody > tr > td.uif-inputField {
 table.uif-tableCollectionLayout thead th.sorting, table.uif-tableCollectionLayout thead th.sorting_asc, table.uif-tableCollectionLayout thead th.sorting_desc, table.uif-tableCollectionLayout thead th.sorting label, table.uif-tableCollectionLayout thead th.sorting_asc label, table.uif-tableCollectionLayout thead th.sorting_desc label {
     cursor: pointer;
 }
-
-
 table.dataTable th:active {
     outline: inherit;
 }
-
 table.dataTable th {
-    border-bottom-color:#e5e5e5;
-    border-bottom-width:1px;
-    border-bottom-style:solid;
+    border-bottom-color: #e5e5e5;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
 }
-
 table.dataTable th.sorting {
-    background-image:url(../images/icon-sort.png);
-    background-color:#eee;
-    background-repeat:no-repeat;
+    background-image: url(../images/icon-sort.png);
+    background-color: #eee;
+    background-repeat: no-repeat;
     background-position: right center;
 }
-
 table.dataTable th.sorting_desc {
-
     color: #FFF;
-    border-bottom-color: #666;
-    border-bottom-width: 3px;
-    border-bottom-style: solid;
     border-left-style: none;
     background-image: url(../images/icon-sort-down.png);
     background-color: #666;
     background-repeat: no-repeat;
     background-position: right center;
 }
-
 table.dataTable th.sorting_asc {
-    background:#666;
-
-    border-bottom-color:#666;
-    border-bottom-width:3px;
-    border-bottom-style:solid;
-    color:#FFF;
-    border-left-style:none;
-    background-image:url(../images/icon-sort-up.png);
-    background-repeat:no-repeat;
+    color: #FFF;
+    border-left-style: none;
+    background-image: url(../images/icon-sort-up.png);
+    background-color: #666;
+    background-repeat: no-repeat;
     background-position: right center;
 }
-
-
-
-
 table.dataTable thead th {
     cursor: default;
 }
@@ -466,21 +430,16 @@ table.dataTable tfoot th {
     padding: 3px 10px;
 }
 .uif-stackedCollectionLayout {
-    background:#fff;
+    background: #fff;
     padding: 10px;
 }
-
 .uif-stackedCollectionLayout .uif-stackedCollectionLayout {
-    background:#fff;
+    background: #fff;
     padding: 10px;
 }
 .uif-stackedCollectionLayout td {
-    background:#fff;
-
+    background: #fff;
 }
-
-
-
 .uif-placeholder {
     display: none;
     margin: 0px !important;
@@ -529,11 +488,9 @@ div.uif-calculationField, div.uif-calculationField input {
 .uif-viewHeader div.uif-docheader td {
     background-color: #FFFFFF;
 }
-
 .uif-maintenanceView .uif-viewHeader-contentWrapper {
     min-height: 70px;
 }
-
 /* Date-picker customizations *************************************************************************/
 
 .ui-datepicker.ui-helper-clearfix {
@@ -551,15 +508,11 @@ div.uif-calculationField, div.uif-calculationField input {
     overflow: hidden;
 }
 /** Table layout styles *******************************************************************************/
-.uif-gridGroup-plain > table,
-.uif-gridGroup-plain > table > tbody > tr,
-.uif-gridGroup-plain > table > tbody > tr > th[scope="row"],
-.uif-gridGroup-plain > table > tbody > tr > td{
+.uif-gridGroup-plain > table, .uif-gridGroup-plain > table > tbody > tr, .uif-gridGroup-plain > table > tbody > tr > th[scope="row"], .uif-gridGroup-plain > table > tbody > tr > td {
     border: none;
     background: none;
     background-color: transparent;
 }
-
 table.uif-gridLayout {
     width: 100%;
     margin-bottom: 10px;
@@ -591,33 +544,27 @@ table.dataTable tr.uif-collectionDeleteHighlight {
 table.dataTable tr.uif-collectionDeleteHighlight td.sorting_1 {
     background-color: #FFE1E9;
 }
-
-.dataTables_length select{
+.dataTables_length select {
     width: 80px;
 }
-
 .paging_full_numbers a.paginate_button_disabled {
     /*    cursor: auto;
-            color: #888888 !important;
-            background-color: #DDDDDD !important;*/
+                color: #888888 !important;
+                background-color: #DDDDDD !important;*/
 }
 .paging_full_numbers a.paginate_button_disabled:hover, .paging_full_numbers a.paginate_button_disabled:focus {
     /*   cursor: auto;
-           color: #888888 !important;
-           background-color: #DDDDDD !important;*/
+               color: #888888 !important;
+               background-color: #DDDDDD !important;*/
 }
-
-
 .dataTables_paginate {
     float: right;
     text-align: right;
 }
-
 .dataTables_info {
     width: 50%;
     float: left;
 }
-
 /** inline block cross browser support **/
 .inlineBlock {
     display: -moz-inline-stack;
@@ -779,11 +726,9 @@ fieldset[data-type="InputSet"] {
     font-family: inherit !important;
     font-size: inherit !important;
 }
-
-.ui-tabs.ui-widget-content{
+.ui-tabs.ui-widget-content {
     border: none;
 }
-
 .ui-tabs li {
     clear: none;
 }
@@ -884,38 +829,34 @@ li.uif-navigationItem span.uif-actionLink, li.uif-navigationItem a.uif-actionLin
 /**Headers in navigation menu **/
 li.uif-navigationItem h3, li.uif-navigationItem h2 {
     color: #333333;
-    padding-left:15px;
-
+    padding-left: 15px;
     font-weight: bold;
     border-left: none;
     border-right: none;
     line-height: 4px;
-
-
-
 }
-
-.uif-navigationMenu-wrapper > ul > li.uif-navigationItem:first-child{background-color:#f2f2f2}
-
+.uif-navigationMenu-wrapper > ul > li.uif-navigationItem:first-child {
+    background-color: #f2f2f2
+}
 .uif-navigationMenu-wrapper > ul > li:first-child:hover {
-    border-top-color:#ddd;
+    border-top-color: #ddd;
 }
 .uif-navigationMenu-wrapper > ul > li:first-child {
-    border-top-color:#ddd;
+    border-top-color: #ddd;
     -webkit-border-top-right-radius: 4px;
     -moz-border-radius-topright: 4px;
     border-top-right-radius: 4px;
 }
-
 li.uif-navigationItem h2 {
     font-size: 0.92em !important;
 }
 li.uif-navigationItem a {
-    background-color: ;
+    background-color:;
     display: inline-block;
     height: 1%;
     padding: 5px 20px 5px 3px;
-    /* [disabled]width: 170px; */
+    /* [disabled]width: 170px;
+*/
     text-decoration: none;
 }
 .uif-navigationMenu h2.fl-font-serif {
@@ -924,9 +865,7 @@ li.uif-navigationItem a {
     background-color:;
     border: none;
 }
-
 li.uif-navigationItem-current a, li.uif-navigationItem-current a:hover {
-
 }
 /** Validation Messages Framework **********************************************************************/
 .uif-correctedError {
@@ -1121,7 +1060,7 @@ ul.uif-pageValidationMessage-single {
     padding: .2em;
 }
 /** Spinner control *********************************************************************************/
-.uif-spinnerControl{
+.uif-spinnerControl {
     padding-left: .5em;
 }
 /** Help  *******************************************************************************************/
@@ -1140,10 +1079,9 @@ ul.uif-pageValidationMessage-single {
     margin-bottom: 5px;
 }
 /* Toooltip styles for validation messages **************************************************************/
-.jquerybubblepopup{
+.jquerybubblepopup {
     text-align: left;
 }
-
 .jquerybubblepopup-kr-error-cs .jquerybubblepopup-innerHtml {
     background-color: #FFE1E9
 }
@@ -1246,11 +1184,6 @@ div.hasCountdown {
     color: #222222/*{fcHeader}*/;
     font-weight: bold;
 }
-
-
-
-
-
 .ui-tabs-bottom .ui-widget-header {
     background: #fff/*{bgColorHeader}*/;
     color: #222222/*{fcHeader}*/;
@@ -1268,7 +1201,7 @@ div.hasCountdown {
     border-bottom-color: #CCC;
     border-left-color: #CCC;
 }
-
 .ui-state-active a, .ui-state-active a:hover {
-    color: #000; font-weight:bold;
+    color: #000;
+    font-weight: bold;
 }

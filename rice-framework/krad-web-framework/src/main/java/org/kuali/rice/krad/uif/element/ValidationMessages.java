@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.element;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -371,39 +372,54 @@ public class ValidationMessages extends ContentElementBase {
         super.copyProperties(component);
         ValidationMessages validationMessagesCopy = (ValidationMessages) component;
 
-        List<String> additionalKeysToMatchCopy = new ArrayList<String>();
-        for(String additionalKeyToMatch : additionalKeysToMatch)   {
-            additionalKeysToMatchCopy.add(additionalKeyToMatch);
+        if (additionalKeysToMatch != null) {
+            List<String> additionalKeysToMatchCopy = Lists.newArrayListWithExpectedSize(additionalKeysToMatch.size());
+            for(String additionalKeyToMatch : additionalKeysToMatch)   {
+                additionalKeysToMatchCopy.add(additionalKeyToMatch);
+            }
+
+            validationMessagesCopy.setAdditionalKeysToMatch(additionalKeysToMatchCopy);
         }
-        validationMessagesCopy.setAdditionalKeysToMatch(additionalKeysToMatchCopy);
 
         validationMessagesCopy.setDisplayMessages(this.isDisplayMessages());
 
-        // Error messages
-        List<String> warningsCopy = new ArrayList<String>();
-        for(String warning : warnings)   {
-            warningsCopy.add(warning);
-        }
-        validationMessagesCopy.setWarnings(warningsCopy);
+        if (warnings != null) {
+            // Error messages
+            List<String> warningsCopy = Lists.newArrayListWithExpectedSize(warnings.size());
+            for(String warning : warnings)   {
+                warningsCopy.add(warning);
+            }
 
-        List<String> errorsCopy = new ArrayList<String>();
-        for(String error : errors)   {
-            errorsCopy.add(error);
+            validationMessagesCopy.setWarnings(warningsCopy);
         }
-        validationMessagesCopy.setErrors(errorsCopy);
 
-        List<String> infosCopy = new ArrayList<String>();
-        for(String info : infos)   {
-            infosCopy.add(info);
-        }
-        validationMessagesCopy.setInfos(infosCopy);
+        if (errors != null) {
+            List<String> errorsCopy = Lists.newArrayListWithExpectedSize(errors.size());
+            for(String error : errors)   {
+                errorsCopy.add(error);
+            }
 
-        Map<String, String> validationDataDefaultsCopy = Maps.newHashMapWithExpectedSize(
-                this.getValidationDataDefaults().size());
-        for(Map.Entry validationDataDefault : getValidationDataDefaults().entrySet()) {
-            validationDataDefaultsCopy.put(validationDataDefault.getKey().toString(),validationDataDefault.getValue().toString());
+            validationMessagesCopy.setErrors(errorsCopy);
         }
-        validationMessagesCopy.setValidationDataDefaults(validationDataDefaultsCopy);
+
+        if (infos != null) {
+            List<String> infosCopy = Lists.newArrayListWithExpectedSize(infos.size());
+            for(String info : infos)   {
+                infosCopy.add(info);
+            }
+
+            validationMessagesCopy.setInfos(infosCopy);
+        }
+
+        if (this.getValidationDataDefaults() != null) {
+            Map<String, String> validationDataDefaultsCopy = Maps.newHashMapWithExpectedSize(
+                    this.getValidationDataDefaults().size());
+            for(Map.Entry validationDataDefault : getValidationDataDefaults().entrySet()) {
+                validationDataDefaultsCopy.put(validationDataDefault.getKey().toString(),validationDataDefault.getValue().toString());
+            }
+
+            validationMessagesCopy.setValidationDataDefaults(validationDataDefaultsCopy);
+        }
     }
 
 }

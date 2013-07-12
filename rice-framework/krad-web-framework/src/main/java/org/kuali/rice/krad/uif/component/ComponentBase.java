@@ -2035,22 +2035,35 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         componentCopy.setNamespaceCode(this.getNamespaceCode());
 
         //UifDictionaryBeanBase properties
-        Map<String, String> expressionGraphCopy = Maps.newHashMapWithExpectedSize(this.getExpressionGraph().size());
-        for(Map.Entry expressionGraphEntry : getExpressionGraph().entrySet()) {
-            expressionGraphCopy.put(expressionGraphEntry.getKey().toString(),expressionGraphEntry.getValue().toString());
-        }
-        componentCopy.setExpressionGraph(expressionGraphCopy);
 
-        Map<String, String> refreshExpressionGraphCopy = Maps.newHashMapWithExpectedSize(this.getRefreshExpressionGraph().size());
-        for(Map.Entry refreshExpressionGraphEntry : getRefreshExpressionGraph().entrySet()) {
-            expressionGraphCopy.put(refreshExpressionGraphEntry.getKey().toString(),refreshExpressionGraphEntry.getValue().toString());
-        }
-        componentCopy.setRefreshExpressionGraph(refreshExpressionGraphCopy);
+        if (this.getExpressionGraph() != null) {
+            Map<String, String> expressionGraphCopy = Maps.newHashMapWithExpectedSize(this.getExpressionGraph().size());
 
-        Map<String, String> propertyExpressionsCopy = Maps.newHashMapWithExpectedSize(this.getPropertyExpressions().size());
-        for(Map.Entry propertyExpressionsEntry : getPropertyExpressions().entrySet()) {
-            propertyExpressionsCopy.put(propertyExpressionsEntry.getKey().toString(),propertyExpressionsEntry.getValue().toString());
+            for(Map.Entry expressionGraphEntry : getExpressionGraph().entrySet()) {
+                expressionGraphCopy.put(expressionGraphEntry.getKey().toString(),expressionGraphEntry.getValue().toString());
+            }
+
+            componentCopy.setExpressionGraph(expressionGraphCopy);
         }
-        componentCopy.setRefreshExpressionGraph(propertyExpressionsCopy);
+
+        if (this.getRefreshExpressionGraph() != null) {
+            Map<String, String> refreshExpressionGraphCopy = Maps.newHashMapWithExpectedSize(this.getRefreshExpressionGraph().size());
+
+            for(Map.Entry refreshExpressionGraphEntry : getRefreshExpressionGraph().entrySet()) {
+                refreshExpressionGraphCopy.put(refreshExpressionGraphEntry.getKey().toString(),refreshExpressionGraphEntry.getValue().toString());
+            }
+
+            componentCopy.setRefreshExpressionGraph(refreshExpressionGraphCopy);
+        }
+
+        if (this.getPropertyExpressions() != null) {
+            Map<String, String> propertyExpressionsCopy = Maps.newHashMapWithExpectedSize(this.getPropertyExpressions().size());
+
+            for(Map.Entry propertyExpressionsEntry : getPropertyExpressions().entrySet()) {
+                propertyExpressionsCopy.put(propertyExpressionsEntry.getKey().toString(),propertyExpressionsEntry.getValue().toString());
+            }
+
+            componentCopy.setPropertyExpressions(propertyExpressionsCopy);
+        }
     }
 }

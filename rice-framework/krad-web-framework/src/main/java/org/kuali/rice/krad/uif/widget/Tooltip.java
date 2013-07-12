@@ -70,7 +70,11 @@ public class Tooltip extends WidgetBase {
      * @param tooltipContent
      */
     public void setTooltipContent(String tooltipContent) {
-        this.tooltipContent = tooltipContent.replace("\"", "&quot;").replace("'", "&apos;");
+        if (tooltipContent != null) {
+            this.tooltipContent = tooltipContent.replace("\"", "&quot;").replace("'", "&apos;");
+        } else {
+            this.tooltipContent = null;
+        }
     }
 
     /**

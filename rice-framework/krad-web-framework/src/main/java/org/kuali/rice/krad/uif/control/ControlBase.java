@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.control;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -290,22 +291,35 @@ public abstract class ControlBase extends ContentElementBase implements Control 
         controlBaseCopy.setEvaluateDisabledOnKeyUp(this.isEvaluateDisabledOnKeyUp());
         controlBaseCopy.setDisabledConditionJs(this.getDisabledConditionJs());
 
-        List<String> disabledConditionControlNamesCopy = new ArrayList<String>();
-        for(String disabledConditionControlName : disabledConditionControlNames)   {
-            disabledConditionControlNamesCopy.add(disabledConditionControlName);
-        }
-        controlBaseCopy.setDisabledConditionControlNames(disabledConditionControlNamesCopy);
+        if (disabledConditionControlNames != null) {
+            List<String> disabledConditionControlNamesCopy = Lists.newArrayListWithExpectedSize(
+                    disabledConditionControlNames.size());
 
-        List<String> disabledWhenChangedPropertyNamesCopy = new ArrayList<String>();
-        for(String disabledWhenChangedPropertyName : disabledWhenChangedPropertyNames)   {
-            disabledWhenChangedPropertyNamesCopy.add(disabledWhenChangedPropertyName);
-        }
-        controlBaseCopy.setDisabledWhenChangedPropertyNames(disabledWhenChangedPropertyNamesCopy);
+            for(String disabledConditionControlName : disabledConditionControlNames)   {
+                disabledConditionControlNamesCopy.add(disabledConditionControlName);
+            }
 
-        List<String> enabledWhenChangedPropertyNamesCopy = new ArrayList<String>();
-        for(String enabledWhenChangedPropertyName : enabledWhenChangedPropertyNames)   {
-            enabledWhenChangedPropertyNamesCopy.add(enabledWhenChangedPropertyName);
+            controlBaseCopy.setDisabledConditionControlNames(disabledConditionControlNamesCopy);
         }
-        controlBaseCopy.setEnabledWhenChangedPropertyNames(enabledWhenChangedPropertyNamesCopy);
+
+        if (disabledWhenChangedPropertyNames != null) {
+            List<String> disabledWhenChangedPropertyNamesCopy = Lists.newArrayListWithExpectedSize(disabledWhenChangedPropertyNames.size());
+
+            for(String disabledWhenChangedPropertyName : disabledWhenChangedPropertyNames)   {
+                disabledWhenChangedPropertyNamesCopy.add(disabledWhenChangedPropertyName);
+            }
+
+            controlBaseCopy.setDisabledWhenChangedPropertyNames(disabledWhenChangedPropertyNamesCopy);
+        }
+
+        if (enabledWhenChangedPropertyNames != null) {
+            List<String> enabledWhenChangedPropertyNamesCopy = Lists.newArrayListWithExpectedSize(enabledWhenChangedPropertyNames.size());
+
+            for(String enabledWhenChangedPropertyName : enabledWhenChangedPropertyNames)   {
+                enabledWhenChangedPropertyNamesCopy.add(enabledWhenChangedPropertyName);
+            }
+
+            controlBaseCopy.setEnabledWhenChangedPropertyNames(enabledWhenChangedPropertyNamesCopy);
+        }
     }
 }

@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krad.uif.element;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.UifConstants.Position;
@@ -27,7 +27,6 @@ import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -296,12 +295,16 @@ public class Label extends ContentElementBase {
         super.copyProperties(component);
         Label labelCopy = (Label) component;
 
-        List<Component> inlineComponents = new ArrayList<Component>();
-        for (Component inlineComponent : this.inlineComponents) {
-            inlineComponents.add((Component) inlineComponent.copy());
+        if (this.inlineComponents != null) {
+            List<Component> inlineComponents = Lists.newArrayListWithExpectedSize(this.inlineComponents.size());
+
+            for (Component inlineComponent : this.inlineComponents) {
+                inlineComponents.add((Component) inlineComponent.copy());
+            }
+
+            labelCopy.setInlineComponents(inlineComponents);
         }
 
-        labelCopy.setInlineComponents(inlineComponents);
         labelCopy.setLabelForComponentId(this.labelForComponentId);
         labelCopy.setLabelText(this.labelText);
         labelCopy.setRenderColon(this.renderColon);

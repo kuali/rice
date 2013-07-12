@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.element;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -27,7 +28,6 @@ import org.kuali.rice.krad.uif.util.MessageStructureUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -288,19 +288,27 @@ public class Message extends ContentElementBase {
         Message messageCopy = (Message) component;
         messageCopy.setGenerateSpan(this.generateSpan);
 
-        List<Component> inlineComponents = new ArrayList<Component>();
-        for (Component inlineComponent : this.inlineComponents) {
-            inlineComponents.add((Component)inlineComponent.copy());
+        if (this.inlineComponents != null) {
+            List<Component> inlineComponents = Lists.newArrayListWithExpectedSize(this.inlineComponents.size());
+
+            for (Component inlineComponent : this.inlineComponents) {
+                inlineComponents.add((Component)inlineComponent.copy());
+            }
+
+            messageCopy.setInlineComponents(inlineComponents);
         }
 
-        messageCopy.setInlineComponents(inlineComponents);
+        if (this.messageComponentStructure != null) {
+            List<Component> messageComponentStructure = Lists.newArrayListWithExpectedSize(
+                    this.messageComponentStructure.size());
 
-        List<Component> messageComponentStructure = new ArrayList<Component>();
-        for (Component messageComponentStructureItem : this.messageComponentStructure) {
-            messageComponentStructure.add((Component)messageComponentStructureItem.copy());
+            for (Component messageComponentStructureItem : this.messageComponentStructure) {
+                messageComponentStructure.add((Component)messageComponentStructureItem.copy());
+            }
+
+            messageCopy.setMessageComponentStructure(messageComponentStructure);
         }
 
-        messageCopy.setMessageComponentStructure(messageComponentStructure);
         messageCopy.setMessageText(this.messageText);
         messageCopy.setParseComponents(this.parseComponents);
     }

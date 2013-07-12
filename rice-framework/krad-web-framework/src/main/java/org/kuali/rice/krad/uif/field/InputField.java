@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.field;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
@@ -1216,22 +1217,31 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         InputField inputFieldCopy = (InputField) component;
         inputFieldCopy.setCustomValidatorClass(this.customValidatorClass);
         inputFieldCopy.setValidCharactersConstraint(this.getValidCharactersConstraint());
         inputFieldCopy.setCaseConstraint(this.getCaseConstraint());
 
-        List<PrerequisiteConstraint> dependencyConstraintsCopy = new ArrayList<PrerequisiteConstraint>();
-        for(PrerequisiteConstraint dependencyConstraint : dependencyConstraints)   {
-            dependencyConstraintsCopy.add(dependencyConstraint);
-        }
-        inputFieldCopy.setDependencyConstraints(dependencyConstraintsCopy);
+        if (dependencyConstraints != null) {
+            List<PrerequisiteConstraint> dependencyConstraintsCopy = Lists.newArrayListWithExpectedSize(dependencyConstraints.size());
 
-        List<MustOccurConstraint> mustOccurConstraintsCopy = new ArrayList<MustOccurConstraint>();
-        for(MustOccurConstraint mustOccurConstraint : mustOccurConstraints)   {
-            mustOccurConstraintsCopy.add(mustOccurConstraint);
+            for(PrerequisiteConstraint dependencyConstraint : dependencyConstraints)   {
+                dependencyConstraintsCopy.add(dependencyConstraint);
+            }
+
+            inputFieldCopy.setDependencyConstraints(dependencyConstraintsCopy);
         }
-        inputFieldCopy.setMustOccurConstraints(mustOccurConstraintsCopy);
+
+        if (mustOccurConstraints != null) {
+            List<MustOccurConstraint> mustOccurConstraintsCopy = Lists.newArrayListWithExpectedSize(mustOccurConstraints.size());
+
+            for(MustOccurConstraint mustOccurConstraint : mustOccurConstraints)   {
+                mustOccurConstraintsCopy.add(mustOccurConstraint);
+            }
+
+            inputFieldCopy.setMustOccurConstraints(mustOccurConstraintsCopy);
+        }
 
         inputFieldCopy.setSimpleConstraint(this.getSimpleConstraint());
         inputFieldCopy.setDataType(this.getDataType());

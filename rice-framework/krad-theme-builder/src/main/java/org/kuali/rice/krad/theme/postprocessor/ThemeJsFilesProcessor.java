@@ -38,6 +38,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * Theme files processor for JavaScript files
@@ -262,6 +264,7 @@ public class ThemeJsFilesProcessor extends ThemeFilesProcessor {
             CompilerOptions options = new CompilerOptions();
             CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
             options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+            options.setExtraAnnotationNames(ignoredAnnotations());
 
             SourceFile input = SourceFile.fromInputStream(mergedFile.getName(), in);
             List<SourceFile> externs = Collections.emptyList();
@@ -280,6 +283,21 @@ public class ThemeJsFilesProcessor extends ThemeFilesProcessor {
                 out.close();
             }
         }
+    }
+
+    /**
+     * Build a Set of annotations for the compiler to ignore in jsdoc blocks
+     *
+     * @return Iterable<String>
+     */
+    protected Set<String> ignoredAnnotations() {
+        Set<String> annotations = new HashSet<String>();
+        annotations.add("dtopt");
+        annotations.add("result");
+        annotations.add("cat");
+        annotations.add("parm");
+
+        return annotations;
     }
 
 }

@@ -444,7 +444,11 @@ public class DialogGroup extends Group {
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         DialogGroup dialogGroupCopy = (DialogGroup) component;
-        dialogGroupCopy.setAvailableResponses(new ArrayList<KeyValue>(this.availableResponses));
+
+        if (this.availableResponses != null) {
+            dialogGroupCopy.setAvailableResponses(new ArrayList<KeyValue>(this.availableResponses));
+        }
+
         dialogGroupCopy.setDisplayExplanation(this.displayExplanation);
         dialogGroupCopy.setOnDialogResponseScript(this.onDialogResponseScript);
         dialogGroupCopy.setOnShowDialogScript(this.onShowDialogScript);

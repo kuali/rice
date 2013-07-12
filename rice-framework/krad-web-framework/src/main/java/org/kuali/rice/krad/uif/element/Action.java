@@ -1259,8 +1259,15 @@ public class Action extends ContentElementBase {
 
         actionCopy.setActionImagePlacement(this.actionImagePlacement);
         actionCopy.setActionLabel(this.actionLabel);
-        actionCopy.setActionParameters(new HashMap<String, String>(this.actionParameters));
-        actionCopy.setAdditionalSubmitData(new HashMap<String, String>(this.additionalSubmitData));
+
+        if (this.actionParameters != null) {
+            actionCopy.setActionParameters(new HashMap<String, String>(this.actionParameters));
+        }
+
+        if (this.additionalSubmitData != null) {
+            actionCopy.setAdditionalSubmitData(new HashMap<String, String>(this.additionalSubmitData));
+        }
+
         actionCopy.setActionScript(this.actionScript);
         actionCopy.setAjaxReturnType(this.ajaxReturnType);
         actionCopy.setAjaxSubmit(this.ajaxSubmit);
@@ -1269,8 +1276,15 @@ public class Action extends ContentElementBase {
         actionCopy.setDisableBlocking(this.disableBlocking);
         actionCopy.setDisabled(this.disabled);
         actionCopy.setDisabledReason(this.disabledReason);
-        actionCopy.setDisabledWhenChangedPropertyNames(new ArrayList<String>(this.disabledWhenChangedPropertyNames));
-        actionCopy.setEnabledWhenChangedPropertyNames(new ArrayList<String>(this.enabledWhenChangedPropertyNames));
+
+        if (this.disabledWhenChangedPropertyNames != null) {
+            actionCopy.setDisabledWhenChangedPropertyNames(new ArrayList<String>(this.disabledWhenChangedPropertyNames));
+        }
+
+        if (this.enabledWhenChangedPropertyNames != null) {
+            actionCopy.setEnabledWhenChangedPropertyNames(new ArrayList<String>(this.enabledWhenChangedPropertyNames));
+        }
+
         actionCopy.setErrorCallback(this.errorCallback);
         actionCopy.setEvaluateDisabledOnKeyUp(this.evaluateDisabledOnKeyUp);
         actionCopy.setFocusOnIdAfterSubmit(this.focusOnIdAfterSubmit);

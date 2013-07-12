@@ -1928,15 +1928,30 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     protected <T> void copyProperties(T component) {
         ComponentBase componentCopy = ((ComponentBase)component);
         componentCopy.setAdditionalComponentsToRefresh(new ArrayList<String>(this.getAdditionalComponentsToRefresh()));
-        componentCopy.setAdditionalCssClasses(new ArrayList<String>(this.getAdditionalCssClasses()));
+
+        if (this.additionalCssClasses != null) {
+            componentCopy.setAdditionalCssClasses(new ArrayList<String>(this.additionalCssClasses));
+        }
+
         componentCopy.setAlign(this.align);
-        componentCopy.setCellCssClasses(new ArrayList<String>(this.getCellCssClasses()));
+
+        if (this.cellCssClasses != null) {
+            componentCopy.setCellCssClasses(new ArrayList<String>(this.cellCssClasses));
+        }
+
         componentCopy.setCellStyle(this.cellStyle);
         componentCopy.setCellWidth(this.cellWidth);
         componentCopy.setColSpan(this.colSpan);
         componentCopy.setConditionalRefresh(this.conditionalRefresh);
-        componentCopy.setCssClasses(new ArrayList<String>(this.getCssClasses()));
-        componentCopy.setDataAttributes(new HashMap<String, String>(this.getDataAttributes()));
+
+        if (this.cssClasses != null) {
+            componentCopy.setCssClasses(new ArrayList<String>(this.cssClasses));
+        }
+
+        if (this.dataAttributes != null) {
+            componentCopy.setDataAttributes(new HashMap<String, String>(this.dataAttributes));
+        }
+
         componentCopy.setDisableSessionPersistence(this.disableSessionPersistence);
         componentCopy.setDisclosedByAction(this.disclosedByAction);
         componentCopy.setFinalizeMethodToCall(this.finalizeMethodToCall);
@@ -1969,7 +1984,11 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         componentCopy.setReadOnly(this.readOnly);
         componentCopy.setRefreshedByAction(this.refreshedByAction);
         componentCopy.setRefreshTimer(this.refreshTimer);
-        componentCopy.setRefreshWhenChangedPropertyNames(new ArrayList<String>(this.refreshWhenChangedPropertyNames));
+
+        if (this.refreshWhenChangedPropertyNames != null) {
+            componentCopy.setRefreshWhenChangedPropertyNames(new ArrayList<String>(this.refreshWhenChangedPropertyNames));
+        }
+
         componentCopy.setRender(this.render);
         componentCopy.setRenderedHtmlOutput(this.renderedHtmlOutput);
         componentCopy.setRequired(this.required);
@@ -1980,7 +1999,11 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         componentCopy.setStyle(this.style);
         componentCopy.setTemplate(this.template);
         componentCopy.setTemplateName(this.templateName);
-        componentCopy.setTemplateOptions(new HashMap<String, String>(this.templateOptions));
+
+        if (this.templateOptions != null) {
+            componentCopy.setTemplateOptions(new HashMap<String, String>(this.templateOptions));
+        }
+
         componentCopy.setTemplateOptionsJSString(this.templateOptionsJSString);
         componentCopy.setTitle(this.title);
         componentCopy.setValign(this.valign);

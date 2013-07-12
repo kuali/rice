@@ -464,7 +464,11 @@ public class Header extends ContentElementBase {
         super.copyProperties(component);
         Header headerCopy = (Header) component;
         headerCopy.setHeaderLevel(this.headerLevel);
-        headerCopy.setHeaderTagCssClasses(new ArrayList<String>(this.headerTagCssClasses));
+
+        if (this.headerTagCssClasses != null) {
+            headerCopy.setHeaderTagCssClasses(new ArrayList<String>(this.headerTagCssClasses));
+        }
+
         headerCopy.setHeaderTagStyle(this.headerTagStyle);
         headerCopy.setHeaderText(this.headerText);
 

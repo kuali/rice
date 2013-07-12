@@ -19,16 +19,21 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
+import org.kuali.rice.krad.uif.component.ReferenceCopy;
+import org.kuali.rice.krad.uif.element.DataTable;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.FieldBase;
 import org.kuali.rice.krad.uif.field.InputField;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import java.lang.reflect.Method;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
@@ -295,5 +300,103 @@ public class ComponentUtilsTest {
         if (!originalComponent.getWidth().equals(copiedComponent.getWidth())) result = false;
 
         return result;
+    }
+
+    @Test
+    /**
+     * test {@link ComponentUtils#copyUsingCloning} using a DataField object
+     */
+    // Commenting out for now, but this is a proof of concept for using reflection to test copying
+    /*public void testCopyUsingCloningWithDataTableSucceeds() {
+        FieldBase dataTableOriginal = new FieldBase();
+
+        initializeClass(dataTableOriginal);
+
+        FieldBase dataTableCopy = copy(dataTableOriginal);
+
+        assertTrue(propertiesMatch(dataTableOriginal, dataTableCopy));
+    }*/
+
+    private void initializeClass(Object originalObject) {
+        Class originalClass = originalObject.getClass();
+        long index = 0L;
+
+        for (Field field : originalClass.getDeclaredFields()) {
+            if (field.isAnnotationPresent(ReferenceCopy.class)) continue;
+
+            if (field.getType().equals(String.class)) {
+                try {
+                    field.setAccessible(true);
+                    field.set(originalObject, "Test" + index);
+                } catch (IllegalAccessException e) {
+                    // do nothing
+                }
+            }
+
+            if (field.getType().equals(long.class)) {
+                try {
+                    field.setAccessible(true);
+                    field.setLong(originalObject, index);
+                }
+                catch (IllegalAccessException e) {
+                    // do nothing
+                }
+            }
+
+            if (field.getType().equals(int.class)) {
+                try {
+                    field.setAccessible(true);
+                    field.setInt(originalObject, (int) index);
+                }
+                catch (IllegalAccessException e) {
+                    // do nothing
+                }
+            }
+
+            if (field.getType().equals(boolean.class)) {
+                try {
+                    field.setAccessible(true);
+                    field.setBoolean(originalObject, true);
+                }
+                catch (IllegalAccessException e) {
+                    // do nothing
+                }
+            }
+
+            ++index;
+        }
+    }
+
+    private boolean propertiesMatch(Object originalObject, Object copiedObject) {
+        Class originalClass = originalObject.getClass();
+        Class copiedClass = copiedObject.getClass();
+
+        for (Field field : originalClass.getDeclaredFields()) {
+            if (field.isAnnotationPresent(ReferenceCopy.class)) continue;
+
+            if (field.getType().equals(String.class)) {
+                try {
+                    field.setAccessible(true);
+                    String originalString = (String) field.get(originalObject);
+                    String copiedString = new String();
+
+                    try {
+                        Field copiedClassField = copiedClass.getDeclaredField(field.getName());
+                        copiedClassField.setAccessible(true);
+                        copiedString = (String) copiedClassField.get(copiedObject);
+                    } catch (NoSuchFieldException e) {
+                        // do nothing
+                    }
+
+                    if (!originalString.equals(copiedString)) {
+                        return false;
+                    }
+                } catch (IllegalAccessException e) {
+                    // do nothing
+                }
+            }
+        }
+
+        return true;
     }
 }

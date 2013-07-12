@@ -174,8 +174,9 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
         CheckboxControl checkboxControlCopy = (CheckboxControl) component;
         checkboxControlCopy.setValue(this.getValue());
         checkboxControlCopy.setCheckboxLabel(this.getCheckboxLabel());
-        if(this.getRichLabelMessage() != null)  {
-            checkboxControlCopy.setRichLabelMessage((Message)this.getRichLabelMessage().copy());
+
+        if (this.richLabelMessage != null) {
+            checkboxControlCopy.setRichLabelMessage((Message)this.richLabelMessage.copy());
         }
 
         List<Component> inlineComponentsCopy = new ArrayList<Component>();

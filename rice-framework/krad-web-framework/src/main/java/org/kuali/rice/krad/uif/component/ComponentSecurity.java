@@ -251,8 +251,15 @@ public class ComponentSecurity extends UifDictionaryBeanBase implements Serializ
 
     protected <T> void copyProperties(T componentSecurity) {
         ComponentSecurity componentSecurityCopy = (ComponentSecurity) componentSecurity;
-        componentSecurityCopy.setAdditionalPermissionDetails(new HashMap<String, String>(this.additionalPermissionDetails));
-        componentSecurityCopy.setAdditionalRoleQualifiers(new HashMap<String, String>(this.additionalRoleQualifiers));
+
+        if (this.additionalPermissionDetails != null) {
+            componentSecurityCopy.setAdditionalPermissionDetails(new HashMap<String, String>(this.additionalPermissionDetails));
+        }
+
+        if (this.additionalRoleQualifiers != null) {
+            componentSecurityCopy.setAdditionalRoleQualifiers(new HashMap<String, String>(this.additionalRoleQualifiers));
+        }
+
         componentSecurityCopy.setComponentAttribute(this.componentAttribute);
         componentSecurityCopy.setEditAuthz(this.editAuthz);
         componentSecurityCopy.setIdAttribute(this.idAttribute);

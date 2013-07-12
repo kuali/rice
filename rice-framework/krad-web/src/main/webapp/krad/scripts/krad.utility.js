@@ -1745,6 +1745,13 @@ function coerceTableCellValue(element) {
         }
     }
 
+    // boolean matching
+    if (inputFieldValue && inputFieldValue.toUpperCase() == "TRUE") {
+        inputFieldValue = true;
+    } else if (inputFieldValue && inputFieldValue.toUpperCase() == "FALSE") {
+        inputFieldValue = false;
+    }
+
     if (inputFieldValue === "" || inputField.prop("disabled") || tdObject.hasClass("uif-groupRow")) {
         //skip these situations - blank, disabled, grouping td
         return "";

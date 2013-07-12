@@ -455,9 +455,7 @@ table.dataTable th.sorting_asc {
     background-position: right center;
 }
 
-table.dataTable th.sorting_desc label,table.dataTable th.sorting_asc label {
-    font-weight:normal;
-}
+
 
 
 table.dataTable thead th {

@@ -524,7 +524,12 @@ public class RichTable extends WidgetBase {
         Class dataTypeClass = ObjectPropertyUtils.getPropertyType(collectionGroup.getCollectionObjectClass(),
                 field.getPropertyName());
 
-        return constructTableColumnOptions(target, true, dataTypeClass, sortType);
+        boolean isSortable = true;
+        if (field.isApplyMask()){
+            isSortable = false;
+        }
+
+        return constructTableColumnOptions(target, isSortable, dataTypeClass, sortType);
     }
 
     /**

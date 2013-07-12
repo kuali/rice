@@ -900,14 +900,21 @@ public final class KRADUtils {
             String propertyPath = ((DataField) field).getBindingInfo().getBindingPath();
             Object valueObject = null;
 
+            if (field.isHidden()){
+                return "";
+            }
+
             // check if readable
             if (ObjectPropertyUtils.isReadableProperty(model, propertyPath)){
                 valueObject = ObjectPropertyUtils.getPropertyValue(model, propertyPath);
             }
 
             // use object's string value
-            if (valueObject != null) {
+            if (valueObject != null && !((DataField) field).isApplyMask()) {
                 value = valueObject.toString();
+            }
+            else if(valueObject != null && ((DataField) field).isApplyMask()){
+                value = ((DataField) field).getMaskFormatter().maskValue(valueObject);
             }
         } else if (field instanceof ActionField) {
             value = ((ActionField) field).getActionLabel();

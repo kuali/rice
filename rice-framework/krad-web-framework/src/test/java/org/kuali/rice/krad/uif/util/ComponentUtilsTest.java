@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.util;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
@@ -302,12 +303,12 @@ public class ComponentUtilsTest {
         return result;
     }
 
-    //@Test
+    @Ignore // Ignored for now, but this is a proof of concept for using reflection to test copying
+    @Test
     /**
      * test {@link ComponentUtils#copyUsingCloning} using a DataField object
      */
-    // Commenting out for now, but this is a proof of concept for using reflection to test copying
-    /*public void testCopyUsingCloningWithDataTableSucceeds() {
+    public void testCopyUsingCloningWithDataTableSucceeds() {
         FieldBase dataTableOriginal = new FieldBase();
 
         initializeClass(dataTableOriginal);
@@ -315,9 +316,9 @@ public class ComponentUtilsTest {
         FieldBase dataTableCopy = copy(dataTableOriginal);
 
         assertTrue(propertiesMatch(dataTableOriginal, dataTableCopy));
-    }*/
+    }
 
-    /*private void initializeClass(Object originalObject) {
+    private void initializeClass(Object originalObject) {
         Class originalClass = originalObject.getClass();
         long index = 0L;
 
@@ -365,9 +366,9 @@ public class ComponentUtilsTest {
 
             ++index;
         }
-    }*/
+    }
 
-    /*private boolean propertiesMatch(Object originalObject, Object copiedObject) {
+    private boolean propertiesMatch(Object originalObject, Object copiedObject) {
         Class originalClass = originalObject.getClass();
         Class copiedClass = copiedObject.getClass();
 
@@ -398,5 +399,5 @@ public class ComponentUtilsTest {
         }
 
         return true;
-    }*/
+    }
 }

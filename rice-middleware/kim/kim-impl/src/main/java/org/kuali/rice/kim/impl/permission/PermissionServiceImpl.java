@@ -472,6 +472,7 @@ public class PermissionServiceImpl implements PermissionService {
         HashMap<String,Object> criteria = new HashMap<String,Object>(3);
         criteria.put("template.namespaceCode", namespaceCode);
         criteria.put("template.name", permissionTemplateName);
+        criteria.put("template.active", "Y");
         criteria.put(KRADPropertyConstants.ACTIVE, "Y");
         List<Permission> permissions =
                 toPermissions(businessObjectService.findMatching(PermissionBo.class, criteria));

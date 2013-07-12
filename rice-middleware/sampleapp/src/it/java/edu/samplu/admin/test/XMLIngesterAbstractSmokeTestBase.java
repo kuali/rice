@@ -18,6 +18,7 @@ package edu.samplu.admin.test;
 import edu.samplu.common.Failable;
 import edu.samplu.common.FreemarkerSTBase;
 import edu.samplu.common.ITUtil;
+import edu.samplu.common.PropertiesUtils;
 import org.openqa.selenium.By;
 
 import java.io.File;
@@ -161,7 +162,7 @@ public abstract class XMLIngesterAbstractSmokeTestBase extends FreemarkerSTBase 
                     && "true".equalsIgnoreCase((String) props.get("userIncludeDTSinPrefix"))) {
                 props.setProperty("userPrefix", "" + props.get("userPrefix") + ITUtil.DTS);
             }
-            systemPropertiesOverride(props, "XMLIngester");
+            PropertiesUtils.systemPropertiesOverride(props, "XMLIngester");
 
             // build files and add to array
             fileUploadList.add(

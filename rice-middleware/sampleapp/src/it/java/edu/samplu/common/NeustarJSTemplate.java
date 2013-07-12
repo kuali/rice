@@ -88,7 +88,7 @@ public class NeustarJSTemplate extends FreemarkerSTBase {
     public void testNeustarTemplating() throws Exception {
         // update properties with timestamp value if includeDTSinPrefix is true
         Properties props = loadProperties(PROPS_LOCATION, DEFAULT_PROPS_LOCATION);
-        systemPropertiesOverride(props, "NeustarJS");
+        PropertiesUtils.systemPropertiesOverride(props, "NeustarJS");
         //Generate Files
         buildFileList(props);
         // TODO gold standard or acceptance testing on generated file.

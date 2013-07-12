@@ -80,20 +80,11 @@ public abstract class FreemarkerSTBase extends WebDriverLegacyITBase {
             in = getClass().getClassLoader().getResourceAsStream(resourceLocation);
         }
         if(in != null) {
-            props = FreemarkerUtil.loadProperties(in);
+            props = PropertiesUtils.loadProperties(in);
             in.close();
         }
 
         return props;
-    }
-
-    /**
-     * {@link FreemarkerUtil#systemPropertiesOverride(java.util.Properties, String)}
-     * @param props
-     * @param key
-     */
-    protected void systemPropertiesOverride(Properties props, String key) {
-        FreemarkerUtil.systemPropertiesOverride(props, key);
     }
 
     /**

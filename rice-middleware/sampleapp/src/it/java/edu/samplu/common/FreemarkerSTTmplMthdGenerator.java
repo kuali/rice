@@ -17,12 +17,10 @@ package edu.samplu.common;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.Properties;
 
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.TemplateLoader;
 import freemarker.template.Configuration;
-import sun.applet.Main;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

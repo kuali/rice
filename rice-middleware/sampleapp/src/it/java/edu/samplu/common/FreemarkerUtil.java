@@ -24,10 +24,6 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -64,15 +60,20 @@ public class FreemarkerUtil {
      * @throws TemplateException
      */
     public static File ftlWrite(String key, File output, Template template, InputStream inputStream) throws IOException, TemplateException {
-        Properties props = loadProperties(inputStream);
+        Properties props = PropertiesUtils.loadProperties(inputStream);
         props.put("baseName", output.getName().substring(0, output.getName().indexOf("ST")));
         props.put("className", output.getName().substring(0, output.getName().indexOf("ST"))); // backwards compatibility
         if (output.getName().contains("TmplMthd")) { // Template method pattern
             props.put("className", output.getName().substring(0, output.getName().indexOf("TmplMthd")));
         }
 
-        systemPropertiesOverride(props, key);
-        transformNumberedTestPropertiesToList(props);
+        if (props.get("test1") == null ) { // backwards compatibility for Smoke Test Freemarker Generation
+            props.put("test1", "test" + props.get("className") + "Bookmark");
+            props.put("test2", "test" + props.get("className") + "Nav");
+        }
+
+        PropertiesUtils.systemPropertiesOverride(props, key);
+        PropertiesUtils.transformNumberedPropertiesToList(props);
         File outputFile = writeTemplateToFile(output, template, props);
 
         return outputFile;
@@ -86,29 +87,6 @@ public class FreemarkerUtil {
         }
 
         return props;
-    }
-
-    protected static void transformNumberedTestPropertiesToList(Properties props) {
-        Iterator keys = props.keySet().iterator();
-        Map<String, String> keyLists = new HashMap<String, String>();
-        while (keys.hasNext()) {
-            String key = (String)keys.next();
-            if (Character.isDigit(key.charAt(key.length()-1))) {
-                keyLists.put(key, props.getProperty(key));
-            }
-        }
-
-        Iterator listKeys = keyLists.keySet().iterator();
-        while (listKeys.hasNext()) {
-            String key = (String)listKeys.next();
-            props.remove(key);
-        }
-
-        if (keyLists.values().size() == 0) { // backwards compatibility
-            keyLists.put("test1", (String)props.get("className"));
-        }
-
-        props.put("tests", keyLists.values());
     }
 
     /**
@@ -126,22 +104,4 @@ public class FreemarkerUtil {
 
         return file;
     }
-
-    /**
-     * -Dkey.propertyname= to override the property value for propertyname.
-     * @param props
-     */
-    public static void systemPropertiesOverride(Properties props, String key) {
-        Enumeration<?> names = props.propertyNames();
-        Object nameObject;
-        String name;
-        while (names.hasMoreElements()) {
-            nameObject = names.nextElement();
-            if (nameObject instanceof String) {
-                name = (String)nameObject;
-                props.setProperty(name, System.getProperty(key + "." + name, props.getProperty(name)));
-            }
-        }
-    }
-
 }

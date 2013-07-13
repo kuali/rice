@@ -1156,7 +1156,11 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
         dataFieldCopy.setForcedValue(this.forcedValue);
         dataFieldCopy.setMultiLineReadOnlyDisplay(this.multiLineReadOnlyDisplay);
         dataFieldCopy.setPropertyName(this.propertyName);
-        dataFieldCopy.setPropertyNamesForAdditionalDisplay(new ArrayList<String>(this.propertyNamesForAdditionalDisplay));
+
+        if (this.propertyNamesForAdditionalDisplay != null) {
+            dataFieldCopy.setPropertyNamesForAdditionalDisplay(new ArrayList<String>(this.propertyNamesForAdditionalDisplay));
+        }
+
         dataFieldCopy.setReadOnlyDisplayReplacement(this.readOnlyDisplayReplacement);
         dataFieldCopy.setReadOnlyDisplayReplacementPropertyName(this.readOnlyDisplayReplacementPropertyName);
         dataFieldCopy.setReadOnlyDisplaySuffix(this.readOnlyDisplaySuffix);

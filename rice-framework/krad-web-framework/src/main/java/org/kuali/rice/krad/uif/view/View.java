@@ -2307,8 +2307,14 @@ public class View extends ContainerBase {
         super.copyProperties(component);
         View viewCopy = (View) component;
         viewCopy.setActionFlags(this.actionFlags);
-        viewCopy.setAdditionalCssFiles(new ArrayList<String>(this.additionalCssFiles));
-        viewCopy.setAdditionalScriptFiles(new ArrayList<String>(this.additionalScriptFiles));
+
+        if (this.additionalCssFiles != null) {
+            viewCopy.setAdditionalCssFiles(new ArrayList<String>(this.additionalCssFiles));
+        }
+
+        if (this.additionalScriptFiles != null) {
+            viewCopy.setAdditionalScriptFiles(new ArrayList<String>(this.additionalScriptFiles));
+        }
 
         if (this.applicationFooter != null) {
             viewCopy.setApplicationFooter((Group)this.applicationFooter.copy());
@@ -2345,7 +2351,11 @@ public class View extends ContainerBase {
         viewCopy.setDisableNativeAutocomplete(this.disableNativeAutocomplete);
         viewCopy.setEditModes(this.editModes);
         viewCopy.setEntryPageId(this.entryPageId);
-        viewCopy.setExpressionVariables(new HashMap<String, String>(this.expressionVariables));
+
+        if (this.expressionVariables != null) {
+            viewCopy.setExpressionVariables(new HashMap<String, String>(this.expressionVariables));
+        }
+
         viewCopy.setFormClass(this.formClass);
         viewCopy.setGrowlMessagingEnabled(this.growlMessagingEnabled);
 
@@ -2416,8 +2426,15 @@ public class View extends ContainerBase {
         }
 
         viewCopy.setViewName(this.viewName);
-        viewCopy.setViewRequestParameters(new HashMap<String, String>(this.viewRequestParameters));
+
+        if (this.viewRequestParameters != null) {
+            viewCopy.setViewRequestParameters(new HashMap<String, String>(this.viewRequestParameters));
+        }
+
         viewCopy.setViewStatus(this.viewStatus);
-        viewCopy.setViewTemplates(new ArrayList<String>(this.viewTemplates));
+
+        if (this.viewTemplates != null) {
+            viewCopy.setViewTemplates(new ArrayList<String>(this.viewTemplates));
+        }
     }
 }

@@ -141,7 +141,11 @@ public class AttributeQueryResult implements Serializable {
      */
     protected <T> void copyProperties(T attributeQueryResult) {
         AttributeQueryResult attributeQueryResultCopy = (AttributeQueryResult) attributeQueryResult;
-        attributeQueryResultCopy.setResultFieldData(new HashMap<String, String>(this.resultFieldData));
+
+        if (this.resultFieldData != null) {
+            attributeQueryResultCopy.setResultFieldData(new HashMap<String, String>(this.resultFieldData));
+        }
+
         attributeQueryResultCopy.setResultMessage(this.resultMessage);
         attributeQueryResultCopy.setResultMessageStyleClasses(this.resultMessageStyleClasses);
     }

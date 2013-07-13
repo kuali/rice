@@ -526,10 +526,17 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
 
         attributeQueryCopy.setQueryMethodToCall(this.queryMethodToCall);
         attributeQueryCopy.setRenderNotFoundMessage(this.renderNotFoundMessage);
-        attributeQueryCopy.setReturnFieldMapping(new HashMap<String, String>(this.returnFieldMapping));
+
+        if (this.returnFieldMapping != null) {
+            attributeQueryCopy.setReturnFieldMapping(new HashMap<String, String>(this.returnFieldMapping));
+        }
+
         attributeQueryCopy.setReturnMessageStyleClasses(this.returnMessageStyleClasses);
         attributeQueryCopy.setReturnMessageText(this.returnMessageText);
-        attributeQueryCopy.setSortPropertyNames(new ArrayList<String>(this.sortPropertyNames));
+
+        if (this.sortPropertyNames != null) {
+            attributeQueryCopy.setSortPropertyNames(new ArrayList<String>(this.sortPropertyNames));
+        }
 
         if (this.queryMethodInvokerConfig != null) {
             ((AttributeQuery) attributeQuery).setQueryMethodInvokerConfig((MethodInvokerConfig)this.queryMethodInvokerConfig.copy());

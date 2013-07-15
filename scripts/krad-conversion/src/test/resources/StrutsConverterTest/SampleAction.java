@@ -38,7 +38,8 @@ public class SampleAction extends KualiTransactionalDocumentActionBase {
 
     private int id = 1;
 
-    public ActionForward addBookOrder(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ActionForward addBookOrder(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
         BookOrderForm form = (BookOrderForm) actionForm;
         BookOrderDocument document = form.getBookOrderDocument();
 
@@ -47,16 +48,18 @@ public class SampleAction extends KualiTransactionalDocumentActionBase {
 
         for (BookOrder entry : document.getBookOrders()) {
             if (entry.getBookId() != null) {
-                Book book = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Book.class, entry.getBookId());
+                Book book = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Book.class,
+                        entry.getBookId());
 
                 entry.setUnitPrice(book.getPrice());
                 Double totalPrice = 0.0d;
                 if (book.getPrice() != null && entry.getQuantity() != null) {
                     totalPrice = book.getPrice().doubleValue() * entry.getQuantity().intValue();
-                    if (entry.getDiscount() != null	&& entry.getDiscount().doubleValue() > 0) {
+                    if (entry.getDiscount() != null && entry.getDiscount().doubleValue() > 0) {
                         totalPrice = totalPrice - (totalPrice * entry.getDiscount().doubleValue() / 100);
                     }
                 }
+
                 entry.setTotalPrice(new KualiDecimal(totalPrice));
             }
         }
@@ -67,7 +70,8 @@ public class SampleAction extends KualiTransactionalDocumentActionBase {
         return mapping.findForward("basic");
     }
 
-    public ActionForward deleteBookOrder(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ActionForward deleteBookOrder(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
         BookOrderForm form = (BookOrderForm) actionForm;
         BookOrderDocument document = form.getBookOrderDocument();
 
@@ -83,24 +87,22 @@ public class SampleAction extends KualiTransactionalDocumentActionBase {
         BookOrderForm form = (BookOrderForm) actionForm;
         BookOrderDocument document = form.getBookOrderDocument();
         for (BookOrder entry : document.getBookOrders()) {
-            if(entry.getBookId() != null){
-                Book book = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Book.class, entry.getBookId());
+            if (entry.getBookId() != null) {
+                Book book = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Book.class,
+                        entry.getBookId());
                 entry.setUnitPrice(book.getPrice());
                 Double totalPrice = 0.0d;
                 if (book.getPrice() != null && entry.getQuantity() != null) {
                     totalPrice = book.getPrice().doubleValue() * entry.getQuantity().intValue();
                     if (entry.getDiscount() != null && entry.getDiscount().doubleValue() > 0) {
-                        totalPrice = totalPrice	- (totalPrice * entry.getDiscount().doubleValue() / 100);
+                        totalPrice = totalPrice - (totalPrice * entry.getDiscount().doubleValue() / 100);
                     }
                 }
+
                 entry.setTotalPrice(new KualiDecimal(totalPrice));
                 entry.setBook(book);
             }
         }
     }
-
-
-
-
 
 }

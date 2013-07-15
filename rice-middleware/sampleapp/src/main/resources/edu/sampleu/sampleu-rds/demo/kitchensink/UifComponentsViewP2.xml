@@ -272,15 +272,6 @@
           </nodePrototype-bean>
         </defaultNodePrototype>
       </treeSection-bean>
-      <reorderSection-bean id="UifCompView-OtherField8">
-        <items>
-          <message-bean cssClasses="fl-font-size-150,fl-input-outline" id="UifCompView-OtherField9"/>
-          <message-bean cssClasses="fl-font-size-150,fl-input-outline" id="UifCompView-OtherField10"/>
-          <message-bean cssClasses="fl-font-size-150,fl-input-outline" id="UifCompView-OtherField11"/>
-          <message-bean cssClasses="fl-font-size-150,fl-input-outline" id="UifCompView-OtherField12"/>
-          <message-bean cssClasses="fl-font-size-150,fl-input-outline" id="UifCompView-OtherField13"/>
-        </items>
-      </reorderSection-bean>
       <iFrame-bean height="550px" source="http://www.kuali.org" width="800px"/>
     </items>
   </disclosure-verticalBoxSection-bean>

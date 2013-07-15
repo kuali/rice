@@ -624,38 +624,6 @@
     </property>
   </bean>
 
-  <!--Reorder group and section-->
-
-  <bean id="Uif-ReorderGroup" parent="Uif-ReorderGroup-parentBean"/>
-  <bean id="Uif-ReorderGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.ReorderingGroup"
-        scope="prototype" parent="Uif-VerticalBoxGroup">
-    <property name="template" value="/krad/WEB-INF/ftl/components/group/reorderingGroup.ftl"/>
-    <property name="templateName" value="uif_reorderingGroup"/>
-    <property name="cssClasses">
-      <list>
-        <value>uif-reorderGroup</value>
-      </list>
-    </property>
-    <property name="reorderer">
-      <bean parent="Uif-Reorderer"/>
-    </property>
-  </bean>
-
-  <bean id="Uif-ReorderSection" parent="Uif-ReorderSection-parentBean"/>
-  <bean id="Uif-ReorderSection-parentBean" abstract="true" scope="prototype" parent="Uif-ReorderGroup">
-    <property name="cssClasses">
-      <list>
-        <value>uif-reorderSection</value>
-      </list>
-    </property>
-    <property name="header">
-      <bean parent="Uif-SectionHeader"/>
-    </property>
-    <property name="help">
-      <bean parent="Uif-Help"/>
-    </property>
-  </bean>
-
   <!-- Link groups -->
 
   <bean id="Uif-LinkGroup" parent="Uif-LinkGroup-parentBean"/>

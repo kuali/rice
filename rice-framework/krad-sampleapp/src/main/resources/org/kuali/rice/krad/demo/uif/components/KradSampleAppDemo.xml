@@ -461,8 +461,6 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DialogGroup-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Navigation Group"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-NavigationGroup-View&amp;methodToCall=start"/>
-        <bean parent="Uif-Link" p:linkText="Reordering Group"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ReorderingGroup-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Tree Group"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TreeGroup-View&amp;methodToCall=start"/>
       </list>

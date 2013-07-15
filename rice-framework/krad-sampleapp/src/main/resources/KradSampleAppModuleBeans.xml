@@ -106,7 +106,6 @@
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoSyntaxHighlighter.xml</value>
         <!--<value>classpath:org/kuali/rice/krad/demo/uif/library/DemoBlockUI.xml</value>-->
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoGrowls.xml</value>
-        <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoReorderingGroup.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoCollectionSequence.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoTableLayoutDetails.xml</value>
         <value>classpath:org/kuali/rice/krad/demo/uif/library/DemoTableLayoutTotaling.xml</value>
@@ -209,7 +208,6 @@
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoSyntaxHighlighterResources</value>
         <!--<value>org.kuali.rice.krad.demo.uif.library.resources.DemoBlockUIResources</value>-->
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoGrowlsResources</value>
-        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoReorderingGroupResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCollectionSequenceResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTableLayoutDetailsResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTableLayoutTotalingResources</value>

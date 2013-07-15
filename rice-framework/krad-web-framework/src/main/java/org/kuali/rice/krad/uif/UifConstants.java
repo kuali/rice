@@ -247,11 +247,6 @@ public class UifConstants {
         public static final int ACTIONS_COLUMN_RIGHT_INDEX = -1;
     }
 
-    public static class ReordererOptionKeys {
-        public static final String SELECTORS = "selectors";
-        public static final String MOVABLES = "movables";
-    }
-
     public static class TabOptionKeys {
         public static final String ACTIVE = "active";
     }

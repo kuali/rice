@@ -1294,18 +1294,6 @@ function createLocationSuggest(baseUrl, hrefProperty, addUrlProperty, requestPar
 }
 
 /**
- * Uses the Fluid Reorderer plug-in to allow the items of the given div to be reordered by the user.
- * See <link>http://wiki.fluidproject.org/display/fluid/Grid+Reorderer+API</link> for documentation on the
- * options available for the plug-in
- *
- * @param divId - id for the div containing the items to be reordered
- * @param options - options for reorderer plug-in
- */
-function createReorderer(divId, options) {
-    fluid.reorderGrid(jQuery("#" + divId), options);
-}
-
-/**
  * Creates the spinner widget for an input
  *
  * @param id - id for the control to apply the spinner to

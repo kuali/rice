@@ -290,14 +290,6 @@
     <property name="hrefPropertyName" value="href"/>
   </bean>
 
-  <bean id="Uif-Reorderer" parent="Uif-Reorderer-parentBean"/>
-  <bean id="Uif-Reorderer-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Reorderer"
-        scope="prototype" parent="Uif-WidgetBase">
-    <property name="template" value="/krad/WEB-INF/ftl/components/widget/reorderer.ftl"/>
-    <property name="templateName" value="uif_reorderer"/>
-    <property name="movableStyleClass" value="flc-reorderer-movable"/>
-  </bean>
-
   <bean id="Uif-Spinner" parent="Uif-Spinner-parentBean"/>
   <bean id="Uif-Spinner-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Spinner" scope="prototype"
         parent="Uif-WidgetBase">

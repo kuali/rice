@@ -348,7 +348,6 @@
                 <exclude>**/plugins/easydrag/**</exclude>
                 <exclude>**/plugins/fancybox/**</exclude>
                 <exclude>**/plugins/globalize/**</exclude>
-                <exclude>**/plugins/infusion/**</exclude>
                 <exclude>**/plugins/jgrowl/**</exclude>
                 <exclude>**/plugins/jqform/**</exclude>
                 <exclude>**/plugins/jquery/**</exclude>

@@ -25,7 +25,6 @@ NavigationGroup,Uif-NavigationGroupBase
 NavigationGroupMenu,Uif-MenuNavigationGroup
 NavigationGroupTabMenu,Uif-TabNavigationGroup
 TreeGroup,Uif-TreeSection
-ReorderingGroup,Uif-ReorderSection
 LinkGroup,Uif-LinkGroup
 LinkGroupNested,Uif-LinkSubGroup
 GroupSection,Uif-Disclosure-BoxSection
@@ -151,7 +150,6 @@ HistoryEntry,Uif-HistoryEntry
 Growls,Uif-Growls
 Tree,Uif-Tree
 Suggest,Uif-Suggest
-Reorderer,Uif-Reorderer
 Spinner,Uif-Spinner
 CompareFieldCreateModifier,Uif-CompareFieldCreate-Modifier
 LabelFieldSeparateModifier,Uif-LabelFieldSeparator-Modifier

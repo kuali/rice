@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/*
+/**
  * Collection of functions related to updating the request URL and refreshing for page
  * changes and back button support
  *

@@ -21,13 +21,16 @@ import org.junit.Test;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
+import org.kuali.rice.krad.uif.control.CheckboxControl;
 import org.kuali.rice.krad.uif.element.DataTable;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.FieldBase;
 import org.kuali.rice.krad.uif.field.InputField;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -309,11 +312,11 @@ public class ComponentUtilsTest {
      * test {@link ComponentUtils#copyUsingCloning} using a DataField object
      */
     public void testCopyUsingCloningWithDataTableSucceeds() {
-        FieldBase dataTableOriginal = new FieldBase();
+        CheckboxControl dataTableOriginal = new CheckboxControl();
 
         initializeClass(dataTableOriginal);
 
-        FieldBase dataTableCopy = copy(dataTableOriginal);
+        CheckboxControl dataTableCopy = copy(dataTableOriginal);
 
         assertTrue(propertiesMatch(dataTableOriginal, dataTableCopy));
     }
@@ -325,43 +328,40 @@ public class ComponentUtilsTest {
         for (Field field : originalClass.getDeclaredFields()) {
             if (field.isAnnotationPresent(ReferenceCopy.class)) continue;
 
-            if (field.getType().equals(String.class)) {
-                try {
+            try {
+                if (field.getType().equals(String.class)) {
                     field.setAccessible(true);
                     field.set(originalObject, "Test" + index);
-                } catch (IllegalAccessException e) {
-                    // do nothing
                 }
-            }
 
-            if (field.getType().equals(long.class)) {
-                try {
+                if (field.getType().equals(long.class)) {
                     field.setAccessible(true);
                     field.setLong(originalObject, index);
                 }
-                catch (IllegalAccessException e) {
-                    // do nothing
-                }
-            }
 
-            if (field.getType().equals(int.class)) {
-                try {
+                if (field.getType().equals(int.class)) {
                     field.setAccessible(true);
                     field.setInt(originalObject, (int) index);
                 }
-                catch (IllegalAccessException e) {
-                    // do nothing
-                }
-            }
 
-            if (field.getType().equals(boolean.class)) {
-                try {
+                if (field.getType().equals(List.class)) {
                     field.setAccessible(true);
-                    field.setBoolean(originalObject, true);
+                    ParameterizedType myListType = ((ParameterizedType) field.getGenericType());
+                    //myListType.getActualTypeArguments()[0].name;    // string value that looks like this: interface org.kuali.rice.krad.uif.component.Component
+                    int something = 2;
+                    //Class listClass = Class.forName(myListType.getActualTypeArguments()[0]);
+                    Object[] objects = new Object[1];
+                    objects[0] = new FieldBase();
+                    List<?> fieldList = Arrays.asList((Object[]) objects);
+                    field.set(originalObject, fieldList);
+                    List<?> retrievedList = (List<?>)field.get(originalObject);
+                    int somethingElse = 3;
+
+                    //ArrayList<?> arrayList = new ArrayList<?>();
+
                 }
-                catch (IllegalAccessException e) {
-                    // do nothing
-                }
+            } catch (IllegalAccessException e) {
+                // do nothing
             }
 
             ++index;
@@ -376,28 +376,73 @@ public class ComponentUtilsTest {
             if (field.isAnnotationPresent(ReferenceCopy.class)) continue;
 
             if (field.getType().equals(String.class)) {
-                try {
-                    field.setAccessible(true);
-                    String originalString = (String) field.get(originalObject);
-                    String copiedString = new String();
+                boolean propertiesMatch = stringPropertiesMatch(originalObject, copiedObject, copiedClass, field);
+                if (!propertiesMatch) return false;
+            }
 
-                    try {
-                        Field copiedClassField = copiedClass.getDeclaredField(field.getName());
-                        copiedClassField.setAccessible(true);
-                        copiedString = (String) copiedClassField.get(copiedObject);
-                    } catch (NoSuchFieldException e) {
-                        // do nothing
-                    }
+            if (field.getType().equals(long.class)) {
+                boolean propertiesMatch = longPropertiesMatch(originalObject, copiedObject, copiedClass, field);
+                if (!propertiesMatch) return false;
+            }
 
-                    if (!originalString.equals(copiedString)) {
-                        return false;
-                    }
-                } catch (IllegalAccessException e) {
-                    // do nothing
-                }
+            if (field.getType().equals(int.class)) {
+                boolean propertiesMatch = intPropertiesMatch(originalObject, copiedObject, copiedClass, field);
+                if (!propertiesMatch) return false;
             }
         }
 
         return true;
+    }
+
+    private boolean intPropertiesMatch(Object originalObject, Object copiedObject, Class copiedClass, Field field) {
+        try {
+            field.setAccessible(true);
+            int oritinalInt = field.getInt(originalObject);
+            Field copiedClassField = copiedClass.getDeclaredField(field.getName());
+            copiedClassField.setAccessible(true);
+            int copiedInt = copiedClassField.getInt(copiedObject);
+
+            return oritinalInt == copiedInt;
+        }
+        catch (IllegalAccessException e) {
+            return false;
+        } catch (NoSuchFieldException e) {
+            return false;
+        }
+    }
+
+    private boolean longPropertiesMatch(Object originalObject, Object copiedObject, Class copiedClass, Field field) {
+        try {
+            field.setAccessible(true);
+            Long originalLong = field.getLong(originalObject);
+            Field copiedClassField = copiedClass.getDeclaredField(field.getName());
+            copiedClassField.setAccessible(true);
+            Long copiedLong = copiedClassField.getLong(copiedObject);
+
+            return originalLong.equals(copiedLong);
+        }
+        catch (IllegalAccessException e) {
+            return false;
+        } catch (NoSuchFieldException e) {
+            return false;
+        }
+    }
+
+    private boolean stringPropertiesMatch(Object originalObject, Object copiedObject, Class copiedClass, Field field) {
+        try {
+            field.setAccessible(true);
+            String originalString = (String) field.get(originalObject);
+            String copiedString = new String();
+            Field copiedClassField = copiedClass.getDeclaredField(field.getName());
+            copiedClassField.setAccessible(true);
+            copiedString = (String) copiedClassField.get(copiedObject);
+
+            return originalString.equals(copiedString);
+        } catch (IllegalAccessException e) {
+            return false;
+        }
+        catch (NoSuchFieldException e) {
+            return false;
+        }
     }
 }

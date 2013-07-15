@@ -1,6 +1,5 @@
 package org.kuali.rdv;
 
-
 import static org.junit.Assert.*;
 
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
@@ -11,6 +10,7 @@ import java.io.InputStream;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Properties;
+
 import org.junit.*;
 
 /**
@@ -35,8 +35,6 @@ public class RiceSpringBeansValidationTest {
     public static final int NOT_RAN = 0;
     public static final int PASSED = 1;
     public static final int FAILED = -1;
-
-
 
     /**
      * Constructor initializing defaults into the global variables
@@ -65,16 +63,18 @@ public class RiceSpringBeansValidationTest {
      */
     private String[] loadCoreXmls() {
 
-        String files[] = ((String) properties.get("ricedictionaryvalidator.corefiles")).split(properties.getProperty("delimiter"));
+        String files[] = ((String) properties.get("ricedictionaryvalidator.corefiles")).split(properties.getProperty(
+                "delimiter"));
 
         return files;
     }
 
     private void loadBaseValidationXmls() {
 
-        String files[] = ((String) properties.get("ricedictionaryvalidator.xmlfiles")).split(properties.getProperty("delimiter"));
-        for(int i = 0; i < files.length; i++) {
-            if(files[i] != null && files[i].length() > 0) {
+        String files[] = ((String) properties.get("ricedictionaryvalidator.xmlfiles")).split(properties.getProperty(
+                "delimiter"));
+        for (int i = 0; i < files.length; i++) {
+            if (files[i] != null && files[i].length() > 0) {
                 System.out.println("loading - " + files[i]);
                 addFile(files[i]);
             }
@@ -93,6 +93,7 @@ public class RiceSpringBeansValidationTest {
         for (int i = 0; i < coreList.length; i++) {
             fileList.add(coreList[i]);
         }
+
         loadBaseValidationXmls();
         fileList.addAll(xmlFiles);
 
@@ -103,14 +104,12 @@ public class RiceSpringBeansValidationTest {
 
         validator = new Validator();
         boolean passed = validator.validate(files, getFailOnWarning());
-        if(!passed) {
+        if (!passed) {
             writeValidationResults(validator, passed);
         }
+
         assertTrue("validation did not pass", passed);
-
-
     }
-
 
     /**
      * Sets the failOnWarning
@@ -140,8 +139,6 @@ public class RiceSpringBeansValidationTest {
         return xmlFiles.get(index);
     }
 
-
-
     /**
      * Gets the number of files in list of xml files
      *
@@ -159,8 +156,6 @@ public class RiceSpringBeansValidationTest {
     public int getFileErrorStatus() {
         return fileErrorStatus;
     }
-
-
 
     /**
      * Gets the failOnWarning setting
@@ -197,7 +192,6 @@ public class RiceSpringBeansValidationTest {
     public int getNumberOfWarnings() {
         return validator.getNumberOfWarnings();
     }
-
 
     /**
      * Adds a file path to the list of files to be validated
@@ -240,8 +234,8 @@ public class RiceSpringBeansValidationTest {
             } else {
                 System.out.println("WARNING: " + validator.getErrorReport(i).errorMessage());
             }
-
         }
+
         System.out.println("---");
     }
 }

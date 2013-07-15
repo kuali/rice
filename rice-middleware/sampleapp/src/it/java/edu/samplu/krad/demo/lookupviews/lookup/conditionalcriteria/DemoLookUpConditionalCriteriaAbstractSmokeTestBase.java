@@ -28,6 +28,36 @@ public class DemoLookUpConditionalCriteriaAbstractSmokeTestBase extends SmokeTes
      */
     public static final String BOOKMARK_URL = "/kr-krad/lookup?methodToCall=start&viewId=LookupSampleViewConditionalCriteria&hideReturnLink=true";
     
+    /**
+     *  lookupCriteria[number]
+     */
+    private static final String LOOKUP_CRITERIA_NUMBER_NAME="lookupCriteria[number]";
+    
+    /**
+     *  Search
+     */
+    private static final String SEARCH="Search";
+    
+    /**
+     *  lookupCriteria[rangeLowerBoundKeyPrefix_createDate]
+     */
+    private static final String LOOKUP_CRITERIA_DATE_NAME="lookupCriteria[rangeLowerBoundKeyPrefix_createDate]";
+    
+    /**
+     *  Not read only. Date input field present.
+     */
+    private static final String FAILURE_MESSAGE="Not read only. Date input field present.";
+    
+    /**
+     *  Date Created:
+     */
+    private static final String DATE_CREATED_MESSAGE="Date Created:";
+    
+    /**
+     *  Date Created is a required field.
+     */
+    private static final String DATE_REQUIRED_MESSAGE="Date Created is a required field.";
+    
     @Override
     public String getBookmarkUrl() {
         return BOOKMARK_URL;
@@ -42,28 +72,28 @@ public class DemoLookUpConditionalCriteriaAbstractSmokeTestBase extends SmokeTes
     protected void testLookUpConditionalCriteria() throws InterruptedException {
         //Case 1 - Date field required by number a1
         //It requires "Search" to be clicked twice, for showing message.
-        waitAndTypeByName("lookupCriteria[number]","a1");
-        waitAndClickButtonByText("Search");
-        waitAndClickButtonByText("Search");
+        waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME,"a1");
+        waitAndClickButtonByText(SEARCH);
+        waitAndClickButtonByText(SEARCH);
         Thread.sleep(3000);
-        assertTextPresent("Date Created is a required field.");
+        assertTextPresent(DATE_REQUIRED_MESSAGE);
         
         //Case 2 - Date field read only by number a2
-        clearTextByName("lookupCriteria[number]");
-        waitAndTypeByName("lookupCriteria[number]","a2");
-        waitAndClickButtonByText("Search");
+        clearTextByName(LOOKUP_CRITERIA_NUMBER_NAME);
+        waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME,"a2");
+        waitAndClickButtonByText(SEARCH);
         Thread.sleep(3000);
-        if(isElementPresentByName("lookupCriteria[rangeLowerBoundKeyPrefix_createDate]"))
+        if(isElementPresentByName(LOOKUP_CRITERIA_DATE_NAME))
         {
-            fail("Not read only. Date input field present.");
+            fail(FAILURE_MESSAGE);
         }
         
         //Case 3 - Date field hide by number a3
-        clearTextByName("lookupCriteria[number]");
-        waitAndTypeByName("lookupCriteria[number]","a3");
-        waitAndClickButtonByText("Search");
+        clearTextByName(LOOKUP_CRITERIA_NUMBER_NAME);
+        waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME,"a3");
+        waitAndClickButtonByText(SEARCH);
         Thread.sleep(3000);
-        assertTextNotPresent("Date Created:");
+        assertTextNotPresent(DATE_CREATED_MESSAGE);
     }
 
     public void testLookUpConditionalCriteriaBookmark(Failable failable) throws Exception {

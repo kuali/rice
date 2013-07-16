@@ -125,11 +125,9 @@
         <!-- ex:Demo-InputField-Example7 start-->
         <bean parent="Uif-InputField-LabelTop" p:label="Quickfinder Field" p:propertyName="inputField7"
               p:instructionalText="Click the quickfinder to select a value, TravelAccount number will be returned">
-          <property name="quickfinder.dataObjectClassName" value="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
-          <property name="quickfinder.fieldConversions">
-            <map>
-              <entry key="number" value="inputField7"/>
-            </map>
+          <property name="quickfinder">
+            <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+                  p:fieldConversions="number:inputField7"/>
           </property>
         </bean>
         <!-- ex:Demo-InputField-Example7 end-->
@@ -145,11 +143,9 @@
         <bean parent="Uif-InputField-LabelTop" p:label="Inquiry Field" p:propertyName="inputField8"
               p:instructionalText="Click the inquiry image to see details of TravelAccount with number corresponding
                   to the input" p:constraintText="Input a1-a9" p:defaultValue="a2">
-          <property name="inquiry.dataObjectClassName" value="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
-          <property name="inquiry.inquiryParameters">
-            <map>
-              <entry key="inputField8" value="number"/>
-            </map>
+          <property name="inquiry">
+            <bean parent="Uif-Inquiry" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+                  p:inquiryParameters="inputField8:number"/>
           </property>
         </bean>
         <!-- ex:Demo-InputField-Example8 end-->

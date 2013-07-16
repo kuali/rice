@@ -33,6 +33,7 @@ import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.component.DataBinding;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
@@ -93,17 +94,20 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     private List<String> additionalHiddenPropertyNames;
     private List<String> propertyNamesForAdditionalDisplay;
 
-    private boolean escapeHtmlInPropertyValue = true;
+    private boolean escapeHtmlInPropertyValue;
     private boolean multiLineReadOnlyDisplay;
+
     // widgets
     private Inquiry inquiry;
+    private boolean enableAutoInquiry;
+
     private Help help;
 
     public DataField() {
         super();
 
-        addHiddenWhenReadOnly = false;
-        applyMask = false;
+        enableAutoInquiry = true;
+        escapeHtmlInPropertyValue = true;
 
         additionalHiddenPropertyNames = new ArrayList<String>();
         propertyNamesForAdditionalDisplay = new ArrayList<String>();
@@ -138,6 +142,10 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      */
     public void performApplyModel(View view, Object model, Component parent) {
         super.performApplyModel(view, model, parent);
+
+        if (this.enableAutoInquiry && (this.inquiry == null) && isReadOnly()) {
+            buildAutomaticInquiry(view, model, false);
+        }
 
         if (isAddHiddenWhenReadOnly()) {
             setReadOnly(true);
@@ -206,6 +214,25 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     }
 
     /**
+     * Creates a new {@link org.kuali.rice.krad.uif.widget.Inquiry} and then invokes the lifecycle process for
+     * the inquiry to determine if a relationship was found, if so the inquiry is assigned to the field
+     *
+     * @param view view instance being processed
+     * @param model object containing the view data
+     * @param enableDirectInquiry whether direct inquiry should be enabled if an inquiry is found
+     */
+    protected void buildAutomaticInquiry(View view, Object model, boolean enableDirectInquiry) {
+        Inquiry autoInquiry = ComponentFactory.getInquiry();
+
+        view.getViewHelperService().spawnSubLifecyle(view, model, autoInquiry, this, null, null);
+
+        // if render flag is true, that means the inquiry was able to find a relationship
+        if (autoInquiry.isRender()) {
+            this.inquiry = autoInquiry;
+        }
+    }
+
+    /**
      * This method is called when the list is readOnly as determined in DataField's performFinalize method.  This
      * method
      * should be overridden to perform any additional processing to the values before calling
@@ -255,6 +282,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
             if (isApplyMask()) {
                 value = getMaskFormatter().maskValue(value);
             }
+
             //TODO the value should use the formatted text property value we would expect to see instead of toString
             //two types - delimited and html list
             if (getReadOnlyListDisplayType().equalsIgnoreCase(UifConstants.ReadOnlyListTypes.UL.name())
@@ -274,7 +302,6 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
         } else {
             generatedHtml = StringUtils.removeEnd(generatedHtml, this.getReadOnlyListDelimiter());
         }
-
 
         if (StringUtils.isNotBlank(generatedHtml)) {
             return generatedHtml;
@@ -317,11 +344,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
         if (isApplyMask()) {
             Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, getBindingInfo().getBindingPath());
             readOnlyDisplayReplacement = getMaskFormatter().maskValue(fieldValue);
-            if ((this instanceof InputField) && StringUtils.isNotBlank(((InputField) this).getQuickfinder().getDataObjectClassName())) {
-                ((InputField) this).setWidgetInputOnly(true);
-            } else {
-                setReadOnly(true);
-            }
+
             return;
         }
 
@@ -506,6 +529,16 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      */
     public void setBindingInfo(BindingInfo bindingInfo) {
         this.bindingInfo = bindingInfo;
+    }
+
+    /**
+     * Returns the full binding path (the path used in the name attribute of the input).
+     * This differs from propertyName in that it uses BindingInfo to determine the path.
+     *
+     * @return full binding path name
+     */
+    public String getName() {
+        return this.getBindingInfo().getBindingPath();
     }
 
     /**
@@ -753,6 +786,30 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      */
     public void setInquiry(Inquiry inquiry) {
         this.inquiry = inquiry;
+    }
+
+    /**
+     * Indicates whether inquiries should be automatically set when a relationship for the field's property
+     * is found
+     *
+     * <p>
+     * Note this only applies when the {@link #getInquiry()} widget has not been configured (is null)
+     * and is set to true by default
+     * </p>
+     *
+     * @return true if auto inquiries are enabled, false if not
+     */
+    public boolean isEnableAutoInquiry() {
+        return enableAutoInquiry;
+    }
+
+    /**
+     * Setter for enabling automatic inquiries
+     *
+     * @param enableAutoInquiry
+     */
+    public void setEnableAutoInquiry(boolean enableAutoInquiry) {
+        this.enableAutoInquiry = enableAutoInquiry;
     }
 
     /**

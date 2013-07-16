@@ -85,10 +85,6 @@
         <items>
           <inputField cssClasses="kr-field-attribute kr-field-tight" label="" parent="GenericTextFieldMedium"
                       propertyName="lookupCriteria['courseNameNumber']">
-            <quickfinder>
-              <quickFinder dataOjbectClassName="org.kuali.rice.kim.bo.impl.PersonImpl"
-                           parent="AdvancedSearchQuickFinder"/>
-            </quickfinder>
           </inputField>
           <action actionLabel="Go" methodToCall="go" parent="Uif-PrimaryActionButton-Small"/>
         </items>

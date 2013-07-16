@@ -656,8 +656,7 @@
 
   <bean id="Uif-CollectionGroupBase" abstract="true" parent="Uif-CollectionGroupBase-parentBean"/>
   <bean id="Uif-CollectionGroupBase-parentBean" abstract="true"
-        class="org.kuali.rice.krad.uif.container.CollectionGroup"
-        parent="Uif-GroupBase">
+        class="org.kuali.rice.krad.uif.container.CollectionGroup" parent="Uif-GroupBase">
     <property name="template" value="/krad/WEB-INF/ftl/components/group/collectionGroup.ftl"/>
     <property name="templateName" value="uif_collectionGroup"/>
     <property name="cssClasses">
@@ -665,11 +664,8 @@
         <value>uif-collectionGroup</value>
       </list>
     </property>
-    <property name="highlightNewItems" value="true"/>
     <property name="newItemsCssClass" value="uif-newCollectionItem"/>
-    <property name="highlightAddItem" value="true"/>
     <property name="addItemCssClass" value="uif-collectionAddItem"/>
-    <property name="renderAddBlankLineButton" value="false"/>
     <property name="bindingInfo">
       <ref bean="Uif-BindingInfo"/>
     </property>
@@ -689,15 +685,6 @@
         <bean parent="Uif-DeleteLineAction"/>
         <bean parent="Uif-SaveLineAction"/>
       </list>
-    </property>
-    <property name="addBlankLineAction">
-      <bean parent="Uif-AddBlankLineAction"/>
-    </property>
-    <property name="addViaLightBoxAction">
-      <bean parent="Uif-AddViaLightBoxAction"/>
-    </property>
-    <property name="collectionLookup">
-      <bean parent="Uif-CollectionQuickFinder"/>
     </property>
   </bean>
 

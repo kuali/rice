@@ -102,7 +102,7 @@
     &lt;property name="criteriaFields">
       &lt;list>
         &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="code" p:triggerOnChange="true"/>
-        &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" p:quickfinder.render="false"
+        &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" p:enableAutoQuickfinder="false"
                                                     p:disableWildcardsAndOperators="true"/>
         &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="active" p:defaultValue="Y"/>
       &lt;/list>
@@ -188,7 +188,7 @@
                     </listitem>
                     <listitem>
                         <para>Not rendering a quickfinder on a lookup criteria field is specified
-                            via the<emphasis role="keyword">quickfinder.render</emphasis> property
+                            via the<emphasis role="keyword">enableAutoQuickfinder</emphasis> property
                             instead of the <emphasis role="keyword">noLookup</emphasis> property.
                             [KNS line: 12, KRAD line 25] <inlinemediaobject>
                                 <imageobject>

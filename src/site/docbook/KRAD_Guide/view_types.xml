@@ -181,8 +181,8 @@
         disposal, which will be displayed in their read-only state. </para>
       <para>If your view contains a field that creates an inquiry link to the same data object, you
         most likely want to suppress this to avoid unnecessary recursive inquiries that might
-        confuse the user.  To do so, set the fieldInquiry.render property to false. </para>
-      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-InputField" p:propertyName="title" p:fieldInquiry.render="false" /&gt;
+        confuse the user.  To do so, set the enableAutoInquiry property to false. </para>
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-InputField" p:propertyName="title" p:enableAutoInquiry="false" /&gt;
       </programlisting>
     </section>
   </section>

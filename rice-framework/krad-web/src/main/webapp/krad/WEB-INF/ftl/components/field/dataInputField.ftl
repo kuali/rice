@@ -84,7 +84,7 @@
             </#if>
 
             <#-- render field direct inquiry if field is editable and inquiry is enabled-->
-            <#if !readOnly && field.inquiry.render>
+            <#if !readOnly && (field.inquiry.render)!false>
                 <@krad.template component=field.inquiry componentId="${field.id}" readOnly=field.readOnly/>
             </#if>
 

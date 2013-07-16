@@ -74,7 +74,9 @@ import org.kuali.rice.krad.uif.field.GenericField;
 import org.kuali.rice.krad.uif.field.ImageField;
 import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.LightBox;
+import org.kuali.rice.krad.uif.widget.QuickFinder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -91,66 +93,71 @@ public class ComponentFactory {
 
     private static Log LOG = LogFactory.getLog(ComponentFactory.class);
 
-    protected static final String TEXT_CONTROL = "Uif-TextControl";
-    protected static final String CHECKBOX_CONTROL = "Uif-CheckboxControl";
-    protected static final String HIDDEN_CONTROL = "Uif-HiddenControl";
-    protected static final String TEXTAREA_CONTROL = "Uif-TextAreaControl";
-    protected static final String SELECT_CONTROL = "Uif-DropdownControl";
-    protected static final String CHECKBOX_GROUP_CONTROL = "Uif-VerticalCheckboxesControl";
-    protected static final String CHECKBOX_GROUP_CONTROL_HORIZONTAL = "Uif-HorizontalCheckboxesControl";
-    protected static final String RADIO_GROUP_CONTROL = "Uif-VerticalRadioControl";
-    protected static final String RADIO_GROUP_CONTROL_HORIZONTAL = "Uif-HorizontalRadioControl";
-    protected static final String FILE_CONTROL = "Uif-FileControl";
-    protected static final String DATE_CONTROL = "Uif-DateControl";
-    protected static final String USER_CONTROL = "Uif-KimPersonControl";
-    protected static final String GROUP_CONTROL = "Uif-KimGroupControl";
+    public static final String TEXT_CONTROL = "Uif-TextControl";
+    public static final String CHECKBOX_CONTROL = "Uif-CheckboxControl";
+    public static final String HIDDEN_CONTROL = "Uif-HiddenControl";
+    public static final String TEXTAREA_CONTROL = "Uif-TextAreaControl";
+    public static final String SELECT_CONTROL = "Uif-DropdownControl";
+    public static final String CHECKBOX_GROUP_CONTROL = "Uif-VerticalCheckboxesControl";
+    public static final String CHECKBOX_GROUP_CONTROL_HORIZONTAL = "Uif-HorizontalCheckboxesControl";
+    public static final String RADIO_GROUP_CONTROL = "Uif-VerticalRadioControl";
+    public static final String RADIO_GROUP_CONTROL_HORIZONTAL = "Uif-HorizontalRadioControl";
+    public static final String FILE_CONTROL = "Uif-FileControl";
+    public static final String DATE_CONTROL = "Uif-DateControl";
+    public static final String USER_CONTROL = "Uif-KimPersonControl";
+    public static final String GROUP_CONTROL = "Uif-KimGroupControl";
 
-    protected static final String DATA_FIELD = "Uif-DataField";
-    protected static final String INPUT_FIELD = "Uif-InputField";
-    protected static final String ERRORS_FIELD = "Uif-FieldValidationMessages";
-    protected static final String ACTION = "Uif-PrimaryActionButton";
-    protected static final String ACTION_LINK = "Uif-ActionLink";
-    protected static final String LINK_FIELD = "Uif-LinkField";
-    protected static final String IFRAME = "Uif-Iframe";
-    protected static final String IMAGE_FIELD = "Uif-ImageField";
-    protected static final String SPACE_FIELD = "Uif-SpaceField";
-    protected static final String GENERIC_FIELD = "Uif-CustomTemplateField";
-    protected static final String IMAGE = "Uif-Image";
-    protected static final String LABEL = "Uif-Label";
-    protected static final String MESSAGE = "Uif-Message";
-    protected static final String MESSAGE_FIELD = "Uif-MessageField";
-    protected static final String COLLECTION_GROUPING_FIELD = "Uif-ColGroupingField";
-    protected static final String FIELD_GROUP = "Uif-VerticalFieldGroup";
-    protected static final String HORIZONTAL_FIELD_GROUP = "Uif-HorizontalFieldGroup";
+    public static final String DATA_FIELD = "Uif-DataField";
+    public static final String INPUT_FIELD = "Uif-InputField";
+    public static final String ERRORS_FIELD = "Uif-FieldValidationMessages";
+    public static final String ACTION = "Uif-PrimaryActionButton";
+    public static final String ACTION_LINK = "Uif-ActionLink";
+    public static final String LINK_FIELD = "Uif-LinkField";
+    public static final String IFRAME = "Uif-Iframe";
+    public static final String IMAGE_FIELD = "Uif-ImageField";
+    public static final String SPACE_FIELD = "Uif-SpaceField";
+    public static final String GENERIC_FIELD = "Uif-CustomTemplateField";
+    public static final String IMAGE = "Uif-Image";
+    public static final String LABEL = "Uif-Label";
+    public static final String MESSAGE = "Uif-Message";
+    public static final String MESSAGE_FIELD = "Uif-MessageField";
+    public static final String COLLECTION_GROUPING_FIELD = "Uif-ColGroupingField";
+    public static final String FIELD_GROUP = "Uif-VerticalFieldGroup";
+    public static final String HORIZONTAL_FIELD_GROUP = "Uif-HorizontalFieldGroup";
 
-    protected static final String GROUP = "Uif-GroupBase";
-    protected static final String VERTICAL_BOX_GROUP = "Uif-VerticalBoxGroup";
-    protected static final String HORIZONTAL_BOX_GROUP = "Uif-HorizontalBoxGroup";
-    protected static final String VERTICAL_BOX_SECTION = "Uif-VerticalBoxSection";
-    protected static final String HORIZONTAL_BOX_SECTION = "Uif-HorizontalBoxSection";
-    protected static final String PAGE_GROUP = "Uif-Page";
-    protected static final String GROUP_GRID_LAYOUT = "Uif-GridSection";
-    protected static final String GROUP_BODY_ONLY = "Uif-BoxGroupBase";
-    protected static final String GROUP_GRID_BODY_ONLY = "Uif-GridGroup";
-    protected static final String TAB_GROUP = "Uif-TabSection";
-    protected static final String NAVIGATION_GROUP = "Uif-NavigationGroupBase";
-    protected static final String TREE_GROUP = "Uif-TreeSection";
-    protected static final String LINK_GROUP = "Uif-LinkGroup";
-    protected static final String COLLECTION_GROUP = "Uif-StackedCollectionSection";
-    protected static final String COLLECTION_GROUP_TABLE_LAYOUT = "Uif-TableCollectionSection";
-    protected static final String LIST_GROUP = "Uif-ListCollectionSection";
+    public static final String GROUP = "Uif-GroupBase";
+    public static final String VERTICAL_BOX_GROUP = "Uif-VerticalBoxGroup";
+    public static final String HORIZONTAL_BOX_GROUP = "Uif-HorizontalBoxGroup";
+    public static final String VERTICAL_BOX_SECTION = "Uif-VerticalBoxSection";
+    public static final String HORIZONTAL_BOX_SECTION = "Uif-HorizontalBoxSection";
+    public static final String PAGE_GROUP = "Uif-Page";
+    public static final String GROUP_GRID_LAYOUT = "Uif-GridSection";
+    public static final String GROUP_BODY_ONLY = "Uif-BoxGroupBase";
+    public static final String GROUP_GRID_BODY_ONLY = "Uif-GridGroup";
+    public static final String TAB_GROUP = "Uif-TabSection";
+    public static final String NAVIGATION_GROUP = "Uif-NavigationGroupBase";
+    public static final String TREE_GROUP = "Uif-TreeSection";
+    public static final String LINK_GROUP = "Uif-LinkGroup";
+    public static final String COLLECTION_GROUP = "Uif-StackedCollectionSection";
+    public static final String COLLECTION_GROUP_TABLE_LAYOUT = "Uif-TableCollectionSection";
+    public static final String LIST_GROUP = "Uif-ListCollectionSection";
 
-    protected static final String HEADER = "Uif-HeaderFieldBase";
-    protected static final String FOOTER = "Uif-FooterBase";
-    protected static final String FOOTER_SAVECLOSECANCEL = "Uif-FormPageFooter";
+    public static final String HEADER = "Uif-HeaderFieldBase";
+    public static final String FOOTER = "Uif-FooterBase";
+    public static final String FOOTER_SAVECLOSECANCEL = "Uif-FormPageFooter";
 
-    protected static final String CONSTRAINT_MESSAGE = "Uif-ConstraintMessage";
-    protected static final String INSTRUCTIONAL_MESSAGE = "Uif-InstructionalMessage";
-    protected static final String HELP_ACTION = "Uif-HelpAction";
-    protected static final String IMAGE_CAPTION_HEADER = "Uif-ImageCaptionHeader";
-    protected static final String IMAGE_CUTLINE_MESSAGE = "Uif-ImageCutineMessage";
+    public static final String CONSTRAINT_MESSAGE = "Uif-ConstraintMessage";
+    public static final String INSTRUCTIONAL_MESSAGE = "Uif-InstructionalMessage";
+    public static final String HELP_ACTION = "Uif-HelpAction";
+    public static final String IMAGE_CAPTION_HEADER = "Uif-ImageCaptionHeader";
+    public static final String IMAGE_CUTLINE_MESSAGE = "Uif-ImageCutineMessage";
 
-    protected static final String LIGHTBOX = "Uif-LightBox";
+    public static final String LIGHTBOX = "Uif-LightBox";
+    public static final String QUICKFINDER = "Uif-QuickFinder";
+    public static final String INQUIRY = "Uif-Inquiry";
+
+    public static final String ADD_BLANK_LINE_ACTION = "Uif-AddBlankLineAction";
+    public static final String ADD_VIA_LIGHTBOX_ACTION = "Uif-AddViaLightBoxAction";
 
     public static final String SESSION_TIMEOUT_WARNING_DIALOG = "Uif-SessionTimeoutWarning-DialogGroup";
     public static final String SESSION_TIMEOUT_DIALOG = "Uif-SessionTimeout-DialogGroup";
@@ -199,6 +206,7 @@ public class ComponentFactory {
      */
     public static Component getNewComponentInstance(String beanId) {
         Component component = null;
+
         if (cache.containsKey(beanId)) {
             component = ComponentUtils.copy(cache.get(beanId));
         } else {
@@ -212,7 +220,6 @@ public class ComponentFactory {
             ExpressionUtils.populatePropertyExpressionsFromGraph(component, true);
 
             // add to cache
-            // TODO: is this copy needed here? A copy is done when a request is made
             cache.put(beanId, ComponentUtils.copy(component));
         }
 
@@ -599,6 +606,10 @@ public class ComponentFactory {
         }
 
         if (remotableQuickFinder != null) {
+            if (inputField.getQuickfinder() == null) {
+                inputField.setQuickfinder(ComponentFactory.getQuickFinder());
+            }
+
             inputField.getQuickfinder().setBaseLookupUrl(remotableQuickFinder.getBaseLookupUrl());
             inputField.getQuickfinder().setDataObjectClassName(remotableQuickFinder.getDataObjectClass());
             inputField.getQuickfinder().setLookupParameters(remotableQuickFinder.getLookupParameters());
@@ -1109,6 +1120,24 @@ public class ComponentFactory {
      */
     public static LightBox getLightBox() {
         return (LightBox) getNewComponentInstance(LIGHTBOX);
+    }
+
+    /**
+     * Gets the default quickfinder configuration
+     *
+     * @return QuickFinder component
+     */
+    public static QuickFinder getQuickFinder() {
+        return (QuickFinder) getNewComponentInstance(QUICKFINDER);
+    }
+
+    /**
+     * Gets the default inquiry configuration
+     *
+     * @return Inquiry component
+     */
+    public static Inquiry getInquiry() {
+        return (Inquiry) getNewComponentInstance(INQUIRY);
     }
 
     /**

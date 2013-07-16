@@ -127,14 +127,22 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     private AttributeQuery attributeQuery;
 
     // widgets
+    private boolean enableAutoDirectInquiry;
+
     private QuickFinder quickfinder;
+    private boolean enableAutoQuickfinder;
+
     private Suggest suggest;
+
     private boolean widgetInputOnly;
 
     public InputField() {
         super();
 
         simpleConstraint = new SimpleConstraint();
+
+        enableAutoDirectInquiry = true;
+        enableAutoQuickfinder = true;
     }
 
     /**
@@ -200,6 +208,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         if (control instanceof TextAreaControl) {
             setMultiLineReadOnlyDisplay(true);
         }
+
         // if options not configured on the control, invoke configured options finder
         if (fieldOptions.isEmpty() && (optionsFinder != null)) {
             if (optionsFinder instanceof UifKeyValuesFinder) {
@@ -216,6 +225,14 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
             if ((control != null) && control instanceof MultiValueControlBase) {
                 ((MultiValueControlBase) control).setOptions(fieldOptions);
             }
+        }
+
+        if (this.enableAutoDirectInquiry && (getInquiry() == null) && !isReadOnly()) {
+            buildAutomaticInquiry(view, model, true);
+        }
+
+        if (this.enableAutoQuickfinder && (getQuickfinder() == null)) {
+            buildAutomaticQuickfinder(view, model);
         }
 
         // if read only do key/value translation if necessary (if alternative and additional properties not set)
@@ -324,6 +341,24 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     }
 
     /**
+     * Creates a new {@link org.kuali.rice.krad.uif.widget.QuickFinder} and then invokes the lifecycle process for
+     * the quickfinder to determine if a relationship was found, if so the quickfinder is assigned to the field
+     *
+     * @param view view instance being processed
+     * @param model object containing the view data
+     */
+    protected void buildAutomaticQuickfinder(View view, Object model) {
+        QuickFinder autoQuickfinder = ComponentFactory.getQuickFinder();
+
+        view.getViewHelperService().spawnSubLifecyle(view, model, autoQuickfinder, this, null, null);
+
+        // if render flag is true, that means the quickfinder was able to find a relationship
+        if (autoQuickfinder.isRender()) {
+            this.quickfinder = autoQuickfinder;
+        }
+    }
+
+    /**
      * Overrides processReadOnlyListDisplay to handle MultiValueControls by creating the list of values from values
      * instead of the keys of the options selected (makes the list "human-readable").  Otherwise it just passes the
      * list ahead as normal if this InputField does not use a MultiValueControl.
@@ -354,6 +389,31 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         } else {
             this.setReadOnlyDisplayReplacement(super.generateReadOnlyListDisplayReplacement(originalList));
         }
+    }
+
+    /**
+     * Overridding to check quickfinder when masked is being applied. If quickfinder is configured set the component
+     * to widgetInputOnly, else set to readOnlh
+     *
+     * @see DataField#setAlternateAndAdditionalDisplayValue(org.kuali.rice.krad.uif.view.View, java.lang.Object)
+     */
+    @Override
+    protected void setAlternateAndAdditionalDisplayValue(View view, Object model) {
+        // if alternate or additional display values set don't override
+        if (StringUtils.isNotBlank(getReadOnlyDisplayReplacement()) || StringUtils.isNotBlank(
+                getReadOnlyDisplaySuffix())) {
+            return;
+        }
+
+        if (isApplyMask()) {
+            if ((this.quickfinder != null) && StringUtils.isNotBlank(this.quickfinder.getDataObjectClassName())) {
+                setWidgetInputOnly(true);
+            } else {
+                setReadOnly(true);
+            }
+        }
+
+        super.setAlternateAndAdditionalDisplayValue(view, model);
     }
 
     /**
@@ -663,6 +723,30 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     }
 
     /**
+     * Indicates whether direct inquiries should be automatically set when a relationship for
+     * the field's property is found
+     *
+     * <p>
+     * Note this only applies when the {@link #getInquiry()} widget has not been configured (is null)
+     * and is set to true by default
+     * </p>
+     *
+     * @return true if auto direct inquiries are enabled, false if not
+     */
+    public boolean isEnableAutoDirectInquiry() {
+        return enableAutoDirectInquiry;
+    }
+
+    /**
+     * Setter for enabling automatic direct inquiries
+     *
+     * @param enableAutoDirectInquiry
+     */
+    public void setEnableAutoDirectInquiry(boolean enableAutoDirectInquiry) {
+        this.enableAutoDirectInquiry = enableAutoDirectInquiry;
+    }
+
+    /**
      * Lookup finder widget for the field
      *
      * <p>
@@ -688,6 +772,30 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      */
     public void setQuickfinder(QuickFinder quickfinder) {
         this.quickfinder = quickfinder;
+    }
+
+    /**
+     * Indicates whether quickfinders should be automatically set when a relationship for the field's
+     * property is found
+     *
+     * <p>
+     * Note this only applies when the {@link #getQuickfinder()} widget has not been configured (is null)
+     * and is set to true by default
+     * </p>
+     *
+     * @return true if auto quickfinders are enabled, false if not
+     */
+    public boolean isEnableAutoQuickfinder() {
+        return enableAutoQuickfinder;
+    }
+
+    /**
+     * Setter for enabling automatic quickfinders
+     *
+     * @param enableAutoQuickfinder
+     */
+    public void setEnableAutoQuickfinder(boolean enableAutoQuickfinder) {
+        this.enableAutoQuickfinder = enableAutoQuickfinder;
     }
 
     /**
@@ -717,6 +825,28 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      */
     public void setSuggest(Suggest suggest) {
         this.suggest = suggest;
+    }
+
+    /**
+     * Indicates indicates whether the field can only be updated through a widget
+     *
+     * widgetInputOnly behaves similar to ReadOnly with the exception that the value of the input field
+     * can be changed via the associated widget (e.g. spinner, date picker, quickfinder, etc).
+     *
+     * @return true if only widget input is allowed, false otherwise
+     */
+    @BeanTagAttribute(name = "widgetInputOnly")
+    public boolean isWidgetInputOnly() {
+        return this.widgetInputOnly;
+    }
+
+    /**
+     * Setter for the widget input only indicator
+     *
+     * @param widgetInputOnly
+     */
+    public void setWidgetInputOnly(boolean widgetInputOnly) {
+        this.widgetInputOnly = widgetInputOnly;
     }
 
     /**
@@ -885,6 +1015,11 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         this.dependencyConstraints = dependencyConstraints;
     }
 
+    @Override
+    public List<PrerequisiteConstraint> getPrerequisiteConstraints() {
+        return dependencyConstraints;
+    }
+
     /**
      * List of {@code MustOccurConstraint} that apply to this {@code InputField}
      *
@@ -934,6 +1069,32 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      */
     public void setSimpleConstraint(SimpleConstraint simpleConstraint) {
         this.simpleConstraint = simpleConstraint;
+    }
+
+    /**
+     * This does not have to be set, represents the DataType constraint of this field.
+     * This is only checked during server side validation.
+     *
+     * @param dataType the dataType to set
+     */
+    public void setDataType(DataType dataType) {
+        this.simpleConstraint.setDataType(dataType);
+    }
+
+    public void setDataType(String dataType) {
+        this.simpleConstraint.setDataType(DataType.valueOf(dataType));
+    }
+
+    /**
+     * Gets the DataType of this InputField, note that DataType set to be date
+     * when this field is using a date picker with a TextControl and has not otherwise been
+     * explicitly set.
+     *
+     * @return DataType
+     */
+    @BeanTagAttribute(name = "dataType", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public DataType getDataType() {
+        return this.simpleConstraint.getDataType();
     }
 
     /**
@@ -1138,77 +1299,12 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         this.disableNativeAutocomplete = disableNativeAutocomplete;
     }
 
-    /**
-     * Returns the full binding path (the path used in the name attribute of the input).
-     * This differs from propertyName in that it uses BindingInfo to determine the path.
-     *
-     * @return full binding path name
-     */
-    @Override
-    public String getName() {
-        return this.getBindingInfo().getBindingPath();
-    }
-
-    @Override
-    public List<PrerequisiteConstraint> getPrerequisiteConstraints() {
-        return dependencyConstraints;
-    }
-
-    /**
-     * This does not have to be set, represents the DataType constraint of this field.
-     * This is only checked during server side validation.
-     *
-     * @param dataType the dataType to set
-     */
-    public void setDataType(DataType dataType) {
-        this.simpleConstraint.setDataType(dataType);
-    }
-
-    public void setDataType(String dataType) {
-        this.simpleConstraint.setDataType(DataType.valueOf(dataType));
-    }
-
-    /**
-     * Gets the DataType of this InputField, note that DataType set to be date
-     * when this field is using a date picker with a TextControl and has not otherwise been
-     * explicitly set.
-     *
-     * @return DataType
-     */
-    @BeanTagAttribute(name = "dataType", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public DataType getDataType() {
-        return this.simpleConstraint.getDataType();
-    }
-
     @Override
     public boolean isRenderFieldset() {
-        return super.isRenderFieldset() || (this.isInputAllowed()
-                && quickfinder != null
+        return super.isRenderFieldset() || (quickfinder != null
                 && quickfinder.isRender()
                 && quickfinder.getQuickfinderAction() != null
                 && quickfinder.getQuickfinderAction().isRender());
-    }
-
-    /**
-     * Indicates indicates whether the field can only be updated through a widget
-     *
-     * widgetInputOnly behaves similar to ReadOnly with the exception that the value of the input field
-     * can be changed via the associated widget (e.g. spinner, date picker, quickfinder, etc).
-     *
-     * @return true if only widget input is allowed, false otherwise
-     */
-    @BeanTagAttribute(name = "widgetInputOnly")
-    public boolean isWidgetInputOnly() {
-        return this.widgetInputOnly;
-    }
-
-    /**
-     * Setter for the widget input only indicator
-     *
-     * @param widgetInputOnly
-     */
-    public void setWidgetInputOnly(boolean widgetInputOnly) {
-        this.widgetInputOnly = widgetInputOnly;
     }
 
     /**

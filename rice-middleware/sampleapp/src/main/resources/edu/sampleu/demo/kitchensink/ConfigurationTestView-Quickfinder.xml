@@ -39,22 +39,17 @@
         <bean parent="GenericTextField" p:label="Lookup"
               p:instructionalText="TravelAccounts lookup (account number should be read only)"
               p:propertyName="field60">
-          <property name="quickfinder.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
-          <property name="quickfinder.readOnlySearchFields" value="number"/>
-          <property name="quickfinder.fieldConversions">
-            <map>
-              <entry key="number" value="field60"/>
-            </map>
+          <property name="quickfinder">
+            <bean parent="Uif-QuickFinder" p:dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
+                  p:fieldConversions="number:field60" p:readOnlySearchFields="number"/>
           </property>
         </bean>
         <bean parent="GenericTextField" p:label="Lookup"
               p:instructionalText="TravelAccounts lookup (account number should NOT be read only)"
               p:propertyName="field90">
-          <property name="quickfinder.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
-          <property name="quickfinder.fieldConversions">
-            <map>
-              <entry key="number" value="field90"/>
-            </map>
+          <property name="quickfinder">
+            <bean parent="Uif-QuickFinder" p:dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
+                  p:fieldConversions="number:field90"/>
           </property>
         </bean>
       </list>

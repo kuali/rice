@@ -162,10 +162,11 @@
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="field14">
-          <property name="quickfinder.id" value="UifCompView-SecureWidget"/>
-          <property name="quickfinder.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
-          <property name="quickfinder.fieldConversions" value="number:field60"/>
-          <property name="quickfinder.componentSecurity.viewAuthz" value="true"/>
+          <property name="quickfinder">
+            <bean parent="Uif-QuickFinder" p:id="UifCompView-SecureWidget"
+                  p:dataObjectClassName="edu.sampleu.travel.bo.TravelAccount" p:fieldConversions="number:field60"
+                  p:componentSecurity.viewAuthz="true"/>
+          </property>
         </bean>
       </list>
     </property>

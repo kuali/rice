@@ -114,19 +114,22 @@
               <bean parent="Uif-InputField" p:id="copyRuleName" p:propertyName="copyRuleName"
                     p:style="font-size: smaller;" p:showLabel="false">
                 <property name="label" value="Copy from Existing Rule"/>
-                <property name="quickfinder.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.RuleBo"/>
-                <property name="quickfinder.fieldConversions">
-                  <map>
-                    <entry key="id" value="agendaItemLine.rule.id"/>
-                    <entry key="name" value="copyRuleName"/>
-                    <entry key="namespace" value="agendaItemLine.rule.namespace"/>
-                  </map>
-                </property>
-                <property name="quickfinder.lookupParameters">
-                  <map>
-                    <entry key="copyRuleName" value="name"/>
-                    <entry key="agendaItemLine.rule.namespace" value="namespace"/>
-                  </map>
+                <property name="quickfinder">
+                  <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krms.impl.repository.RuleBo">
+                    <property name="fieldConversions">
+                      <map>
+                        <entry key="id" value="agendaItemLine.rule.id"/>
+                        <entry key="name" value="copyRuleName"/>
+                        <entry key="namespace" value="agendaItemLine.rule.namespace"/>
+                      </map>
+                    </property>
+                    <property name="lookupParameters">
+                      <map>
+                        <entry key="copyRuleName" value="name"/>
+                        <entry key="agendaItemLine.rule.namespace" value="namespace"/>
+                      </map>
+                    </property>
+                  </bean>
                 </property>
                 <property name="control">
                   <bean parent="Uif-TextControl" p:size="40" p:maxLength="100"
@@ -895,7 +898,6 @@
     </property>
     <!--<property name="layoutManager.renderSequenceField" value="false"/> // if you want to hide the sequence number in the table-->
     <property name="layoutManager.richTable.render" value="true"/>
-    <property name="collectionLookup.render" value="false"/>
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="name" p:label="Name" p:required="true" p:constraintText="size 40">

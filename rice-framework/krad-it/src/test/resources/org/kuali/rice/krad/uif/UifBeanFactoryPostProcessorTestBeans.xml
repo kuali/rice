@@ -22,21 +22,16 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <bean id="testNestedExpressionOverride" parent="Uif-InputField" p:label="Direct Inquiry" p:propertyName="field1">
-    <property name="inquiry.render" value="false"/>
   </bean>
 
   <bean id="testNestedExpressionOverride2" parent="Uif-InputField" p:label="Direct Inquiry" p:propertyName="field1">
-    <property name="inquiry.dataObjectClassName" value="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
-    <property name="inquiry.render" value="@{1 == 1}"/>
-    <property name="inquiry.inquiryParameters">
-      <map>
-        <entry key="field71" value="number"/>
-      </map>
+    <property name="inquiry">
+      <bean parent="Uif-Inquiry" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+            p:inquiryParameters="field71:number" p:render="@{1 == 1}"/>
     </property>
   </bean>
 
   <bean id="testNestedExpressionOverride3" parent="testNestedExpressionOverride2">
-    <property name="inquiry.render" value="true"/>
   </bean>
 
   <bean id="testNestedExpressionOverride4" class="org.kuali.rice.krad.test.TestDictionaryBean">
@@ -188,7 +183,7 @@
         <bean parent="Uif-Disclosure-GridSection">
           <property name="items">
             <list>
-              <bean parent="Uif-DataField" p:propertyName="name" p:inquiry.render="false"/>
+              <bean parent="Uif-DataField" p:propertyName="name" />
             </list>
           </property>
         </bean>

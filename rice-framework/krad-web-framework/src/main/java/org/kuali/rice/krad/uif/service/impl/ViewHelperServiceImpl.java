@@ -359,6 +359,66 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
+     * @see org.kuali.rice.krad.uif.service.ViewHelperService#spawnSubLifecyle(org.kuali.rice.krad.uif.view.View,
+     * java.lang.Object, org.kuali.rice.krad.uif.component.Component, org.kuali.rice.krad.uif.component.Component,
+     * java.lang.String, java.lang.String)
+     */
+    @Override
+    public void spawnSubLifecyle(View view, Object model, Component component, Component parent, String startPhase,
+            String endPhase) {
+        if (component == null) {
+            return;
+        }
+
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Spawning sub-lifecycle for component: " + component.getId());
+        }
+
+        if (StringUtils.isBlank(component.getId())) {
+            view.assignComponentIds(component);
+        }
+
+        if (StringUtils.isBlank(startPhase)) {
+            startPhase = UifConstants.ViewPhases.INITIALIZE;
+        } else if (!UifConstants.ViewPhases.INITIALIZE.equals(startPhase) && !UifConstants.ViewPhases.APPLY_MODEL
+                .equals(startPhase) && !UifConstants.ViewPhases.FINALIZE.equals(startPhase)) {
+            throw new RuntimeException("Invalid start phase given: " + startPhase);
+        }
+
+        if (StringUtils.isBlank(endPhase)) {
+            endPhase = UifConstants.ViewPhases.FINALIZE;
+        } else if (!UifConstants.ViewPhases.INITIALIZE.equals(endPhase) && !UifConstants.ViewPhases.APPLY_MODEL
+                .equals(endPhase) && !UifConstants.ViewPhases.FINALIZE.equals(endPhase)) {
+            throw new RuntimeException("Invalid end phase given: " + endPhase);
+        }
+
+        if (UifConstants.ViewPhases.INITIALIZE.equals(startPhase)) {
+            performComponentInitialization(view, model, component);
+            view.getViewIndex().indexComponent(component);
+
+            startPhase = UifConstants.ViewPhases.APPLY_MODEL;
+        }
+
+        if (UifConstants.ViewPhases.INITIALIZE.equals(endPhase)) {
+            return;
+        }
+
+        component.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, parent);
+
+        if (UifConstants.ViewPhases.APPLY_MODEL.equals(startPhase)) {
+            performComponentApplyModel(view, component, model, new HashMap<String, Integer>());
+            view.getViewIndex().indexComponent(component);
+        }
+
+        if (UifConstants.ViewPhases.APPLY_MODEL.equals(endPhase)) {
+            return;
+        }
+
+        performComponentFinalize(view, component, model, parent);
+        view.getViewIndex().indexComponent(component);
+    }
+
+    /**
      * Performs initialization of a component by these steps:
      *
      * <ul>
@@ -1110,6 +1170,11 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 UifConstants.ConfigProperties.KRAD_URL);
         clientStateScript += ScriptUtils.buildFunctionCall(UifConstants.JsFunctions.SET_CONFIG_PARM,
                 UifConstants.ClientSideVariables.KRAD_URL, kradURL);
+
+        String applicationURL = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                KRADConstants.ConfigParameters.APPLICATION_URL);
+        clientStateScript += ScriptUtils.buildFunctionCall(UifConstants.JsFunctions.SET_CONFIG_PARM,
+                UifConstants.ClientSideVariables.APPLICATION_URL, applicationURL);
 
         return clientStateScript;
     }

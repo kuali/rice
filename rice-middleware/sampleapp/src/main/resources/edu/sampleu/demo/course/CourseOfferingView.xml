@@ -353,8 +353,7 @@
       <list>
         <bean parent="GenericSelection" p:propertyName="affiliation"
               p:label="Affiliation" p:control.options-ref="affiliation-options"/>
-        <bean parent="GenericTextField" p:propertyName="name" p:label="Name"
-              p:quickfinder.dataObjectClassName="org.kuali.rice.kim.impl.identity.PersonImpl"/>
+        <bean parent="GenericTextField" p:propertyName="name" p:label="Name"/>
       </list>
     </property>
   </bean>

@@ -50,9 +50,6 @@
     <property name="bindingInfo">
       <ref bean="Uif-BindingInfo"/>
     </property>
-    <property name="inquiry">
-      <bean parent="Uif-Inquiry"/>
-    </property>
     <property name="help">
       <bean parent="Uif-Help"/>
     </property>
@@ -99,9 +96,6 @@
     <property name="readOnly" value="@{#parent.readOnly}"/>
     <property name="validationMessages">
       <bean parent="Uif-FieldValidationMessages"/>
-    </property>
-    <property name="quickfinder">
-      <bean parent="Uif-QuickFinder"/>
     </property>
   </bean>
 

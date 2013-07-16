@@ -136,22 +136,26 @@
                   <bean parent="Uif-TextControl" p:size="30"/>
                 </property>
 
-                <property name="quickfinder.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.TermSpecificationBo"/>
-                <property name="quickfinder.fieldConversions">
-                  <map>
-                    <entry key="id" value="specificationId"/>
-                    <entry key="name" value="specification.name"/>
-                    <entry key="namespace" value="specification.namespace"/>
-                    <entry key="type" value="specification.type"/>
-                    <entry key="description" value="specification.description"/>
-                  </map>
-                </property>
-                <property name="quickfinder.lookupParameters">
-                  <map>
-                    <entry key="specification.namespace" value="namespace"/>
-                    <entry key="specification.name" value="name"/>
-                    <entry key="specification.id" value="id"/>
-                  </map>
+                <property name="quickfinder">
+                  <bean parent="Uif-QuickFinder"
+                        p:dataObjectClassName="org.kuali.rice.krms.impl.repository.TermSpecificationBo">
+                    <property name="fieldConversions">
+                      <map>
+                        <entry key="id" value="specificationId"/>
+                        <entry key="name" value="specification.name"/>
+                        <entry key="namespace" value="specification.namespace"/>
+                        <entry key="type" value="specification.type"/>
+                        <entry key="description" value="specification.description"/>
+                      </map>
+                    </property>
+                    <property name="lookupParameters">
+                      <map>
+                        <entry key="specification.namespace" value="namespace"/>
+                        <entry key="specification.name" value="name"/>
+                        <entry key="specification.id" value="id"/>
+                      </map>
+                    </property>
+                  </bean>
                 </property>
               </bean>
 

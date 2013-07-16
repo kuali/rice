@@ -84,32 +84,15 @@
           </attributeQueryConfig-bean>
         </attributeQuery>
       </inputField-bean>
-      <inputField-bean parent="GenericTextField" propertyName="field60"
-                       quickfinder.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount">
-        <spring:property name="quickfinder.fieldConversions">
-          <spring:map>
-            <spring:entry key="number" value="field60"/>
-          </spring:map>
-        </spring:property>
+      <inputField-bean parent="GenericTextField" propertyName="field60">
+        <quickFinder-bean dataObjectClassName="edu.sampleu.travel.bo.TravelAccount" fieldConversions="number:field60"/>
       </inputField-bean>
-      <inputField-bean parent="GenericTextField" propertyName="field90"
-                       quickfinder.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount">
-        <quickfinder>
-          <quickFinderByScript-bean/>
-        </quickfinder>
-        <spring:property name="quickfinder.fieldConversions">
-          <spring:map>
-            <spring:entry key="number" value="field90"/>
-          </spring:map>
-        </spring:property>
+      <inputField-bean parent="GenericTextField" propertyName="field90">
+        <quickFinderByScript-bean dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
+                                  fieldConversions="number:field90"/>
       </inputField-bean>
-      <inputField-bean parent="GenericTextField" propertyName="field87"
-                       quickfinder.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount">
-        <spring:property name="quickfinder.fieldConversions">
-          <spring:map>
-            <spring:entry key="number" value="field87"/>
-          </spring:map>
-        </spring:property>
+      <inputField-bean parent="GenericTextField" propertyName="field87">
+        <quickFinder-bean dataObjectClassName="edu.sampleu.travel.bo.TravelAccount" fieldConversions="number:field87"/>
       </inputField-bean>
       <inputField-bean parent="GenericTextField" propertyName="field61">
         <suggest>

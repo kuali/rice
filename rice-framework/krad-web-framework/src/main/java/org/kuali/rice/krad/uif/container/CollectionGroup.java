@@ -35,6 +35,7 @@ import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
@@ -152,11 +153,9 @@ public class CollectionGroup extends Group implements DataBinding {
     public CollectionGroup() {
         renderAddLine = true;
         renderLineActions = true;
-        renderSaveLineActions = false;
-        showInactiveLines = false;
         renderInactiveToggleButton = true;
-        includeLineSelectionField = false;
         highlightNewItems = true;
+        highlightAddItem = true;
         addLinePlacement = "TOP";
 
         filters = new ArrayList<CollectionFilter>();
@@ -260,21 +259,6 @@ public class CollectionGroup extends Group implements DataBinding {
         if (!view.getObjectPathToConcreteClassMapping().containsKey(collectionPath)) {
             view.getObjectPathToConcreteClassMapping().put(collectionPath, getCollectionObjectClass());
         }
-
-        // Adds the script to the add line buttons to keep collection on the same page
-        if (renderAddBlankLineButton) {
-            if (addLinePlacement.equals("BOTTOM")) {
-                addBlankLineAction.setOnClickScript("writeCurrentPageToSession(this, 'last');");
-            } else {
-                addBlankLineAction.setOnClickScript("writeCurrentPageToSession(this, 'first');");
-            }
-        } else if (addViaLightBox) {
-            if (addLinePlacement.equals("BOTTOM")) {
-                addViaLightBoxAction.setOnClickScript("writeCurrentPageToSession(this, 'last');");
-            } else {
-                addViaLightBoxAction.setOnClickScript("writeCurrentPageToSession(this, 'first');");
-            }
-        }
     }
 
     /**
@@ -287,6 +271,33 @@ public class CollectionGroup extends Group implements DataBinding {
     @Override
     public void performApplyModel(View view, Object model, Component parent) {
         super.performApplyModel(view, model, parent);
+
+        // adds the script to the add line buttons to keep collection on the same page
+        if (this.renderAddBlankLineButton) {
+            if (this.addBlankLineAction == null) {
+                this.addBlankLineAction = (Action) ComponentFactory.getNewComponentInstance(
+                        ComponentFactory.ADD_BLANK_LINE_ACTION);
+                view.assignComponentIds(this.addBlankLineAction);
+            }
+
+            if (addLinePlacement.equals(UifConstants.Position.BOTTOM.name())) {
+                this.addBlankLineAction.setOnClickScript("writeCurrentPageToSession(this, 'last');");
+            } else {
+                this.addBlankLineAction.setOnClickScript("writeCurrentPageToSession(this, 'first');");
+            }
+        } else if (this.addViaLightBox) {
+            if (this.addViaLightBoxAction == null) {
+                this.addViaLightBoxAction = (Action) ComponentFactory.getNewComponentInstance(
+                        ComponentFactory.ADD_VIA_LIGHTBOX_ACTION);
+                view.assignComponentIds(this.addViaLightBoxAction);
+            }
+
+            if (this.addLinePlacement.equals(UifConstants.Position.BOTTOM.name())) {
+                this.addViaLightBoxAction.setOnClickScript("writeCurrentPageToSession(this, 'last');");
+            } else {
+                this.addViaLightBoxAction.setOnClickScript("writeCurrentPageToSession(this, 'first');");
+            }
+        }
 
         pushCollectionGroupToReference();
 

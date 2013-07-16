@@ -198,7 +198,21 @@
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subAccount"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" p:ranged="true"/>
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="foId" p:quickfinder.render="false"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="foId" p:enableAutoQuickfinder="false"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="LabsLookup-DirectInquiryDisabledView" parent="LabsLookup-DefaultView">
+    <property name="viewName" value="LabsLookup-DirectInquiryDisabledView"/>
+    <property name="headerText" value="Lookup Sample with direct inquiry disabled"/>
+    <property name="criteriaFields">
+      <list>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number" p:enableAutoDirectInquiry="false"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subAccount"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" p:ranged="true"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="foId" />
       </list>
     </property>
   </bean>
@@ -208,7 +222,7 @@
     <property name="headerText" value="Lookup Sample with inquiry disabled"/>
     <property name="resultFields">
       <list>
-        <bean parent="Uif-DataField" p:propertyName="number" p:inquiry.render="false"/>
+        <bean parent="Uif-DataField" p:propertyName="number" p:enableAutoInquiry="false"/>
         <bean parent="Uif-DataField" p:propertyName="name"/>
         <bean parent="Uif-DataField" p:propertyName="subAccount"/>
         <bean parent="Uif-DataField" p:propertyName="createDate"/>

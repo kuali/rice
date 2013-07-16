@@ -40,10 +40,8 @@
                       readOnlyDisplayReplacement="@{#emptyList(#lp.stringList)?'None Available':''}"/>
     </items>
   </disclosure-tableCollectionSection-bean>
-  <disclosure-tableCollectionSection-bean collectionLookup.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
-                                          collectionLookup.fieldConversions="number:field1,name:field2,subAccount:field3,subAccountName:field4"
-                                          collectionLookup.render="true"
-                                          collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
+  <disclosure-tableCollectionSection-bean
+                                           collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
                                           id="collection2" layoutManager.actionColumnPlacement="LEFT"
                                           layoutManager.actionFieldPrototype.width="10%"
                                           layoutManager.numberOfColumns="4"

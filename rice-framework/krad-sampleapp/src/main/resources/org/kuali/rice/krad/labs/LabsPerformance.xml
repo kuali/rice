@@ -149,11 +149,9 @@
               <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"
                     p:constraintText="@{#line.field2}(x)"/>
               <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3">
-                <property name="quickfinder.dataObjectClassName" value="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
-                <property name="quickfinder.fieldConversions">
-                  <map>
-                    <entry key="number" value="field3"/>
-                  </map>
+                <property name="quickfinder">
+                  <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+                        p:fieldConversions="number:field3"/>
                 </property>
               </bean>
               <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4"

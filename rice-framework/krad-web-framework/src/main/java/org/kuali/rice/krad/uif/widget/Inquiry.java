@@ -51,9 +51,8 @@ import java.util.Properties;
  * The inquiry widget will render a button for the field value when
  * that field is editable. When read only the widget will create a link on the display value.
  * It points to the associated inquiry view for the field. The inquiry can be configured to point to a certain
- * {@code InquiryView}, or the framework will attempt to associate the
- * field with a inquiry based on its metadata (in particular its
- * relationships in the model).
+ * {@code InquiryView}, or the framework will attempt to associate the field with a inquiry based on
+ * its metadata (in particular its relationships in the model).
  * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -221,6 +220,7 @@ public class Inquiry extends WidgetBase {
         if(StringUtils.isNotBlank(this.viewName)){
           urlParameters.setProperty(UifParameters.VIEW_NAME, this.viewName);
         }
+
         // add inquiry specific parms to url
         if (getInquiryLink().getLightBox() != null) {
             getInquiryLink().getLightBox().setAddAppParms(true);

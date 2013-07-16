@@ -373,8 +373,10 @@
         <bean parent="Uif-DataField" p:propertyName="kimRoleType.name"/>
         <bean parent="Uif-DataField" p:propertyName="namespaceCode"/>
         <bean parent="Uif-DataField" p:propertyName="name">
-           <property name="inquiry.dataObjectClassName" value="org.kuali.rice.kim.impl.role.RoleBo"/>
-           <property name="inquiry.inquiryParameters" value="id:id"/>
+          <property name="inquiry">
+            <bean parent="Uif-Inquiry" p:dataObjectClassName="org.kuali.rice.kim.impl.role.RoleBo"
+                  p:inquiryParameters="id:id"/>
+           </property>
         </bean>
         <bean parent="Uif-DataField" p:propertyName="description"/>
       </list>

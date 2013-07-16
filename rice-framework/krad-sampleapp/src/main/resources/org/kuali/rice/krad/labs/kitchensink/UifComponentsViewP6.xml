@@ -27,31 +27,21 @@
       <property name="items">
         <list>
           <bean parent="GenericTextField" p:readOnly="true" p:propertyName="field59" p:defaultValue="a2">
-            <property name="inquiry.dataObjectClassName" value="org.kuali.rice.krad.demo.travel.account.TravelAccount" />
-            <property name="inquiry.inquiryParameters">
-              <map>
-                <entry key="field59" value="number" />
-              </map>
+            <property name="inquiry">
+              <bean parent="Uif-Inquiry" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+                    p:inquiryParameters="field49:number"/>
             </property>
           </bean>
           <bean parent="GenericTextField" p:propertyName="field70">
-            <property name="inquiry.dataObjectClassName"
-              value="org.kuali.rice.krad.demo.travel.account.TravelAccount" />
-            <property name="inquiry.inquiryParameters">
-              <map>
-                <entry key="field70" value="number" />
-              </map>
+            <property name="inquiry">
+              <bean parent="Uif-Inquiry" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+                    p:inquiryParameters="field70:number"/>
             </property>
           </bean>
           <bean parent="GenericTextField" p:propertyName="field71">
-            <property name="inquiry.dataObjectClassName"
-                      value="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
-            <property name="inquiry.viewName"
-                      value="ks_inquiry"/>
-            <property name="inquiry.inquiryParameters">
-              <map>
-                <entry key="field71" value="number" />
-              </map>
+            <property name="inquiry">
+              <bean parent="Uif-Inquiry" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+                    p:inquiryParameters="field71:number" p:viewName="ks_inquiry"/>
             </property>
           </bean>
           <bean parent="GenericTextField" p:propertyName="field72">
@@ -88,30 +78,21 @@
 
 
           <bean parent="GenericTextField" p:propertyName="field60">
-            <property name="quickfinder.dataObjectClassName" value="org.kuali.rice.krad.demo.travel.account.TravelAccount" />
-            <property name="quickfinder.fieldConversions">
-              <map>
-                <entry key="number" value="field60" />
-              </map>
+            <property name="quickfinder">
+              <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+                    p:fieldConversions="number:field60"/>
             </property>
           </bean>
           <bean parent="GenericTextField" p:propertyName="field90">
             <property name="quickfinder">
-              <bean parent="Uif-QuickFinderByScript"/>
-            </property>
-            <property name="quickfinder.dataObjectClassName" value="org.kuali.rice.krad.demo.travel.account.TravelAccount" />
-            <property name="quickfinder.fieldConversions">
-              <map>
-                <entry key="number" value="field90" />
-              </map>
+              <bean parent="Uif-QuickFinderByScript" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+                      p:fieldConversions="number:field60"/>
             </property>
           </bean>
           <bean parent="GenericTextField" p:propertyName="field87">
-            <property name="quickfinder.dataObjectClassName" value="org.kuali.rice.krad.demo.travel.account.TravelAccount" />
-            <property name="quickfinder.fieldConversions">
-              <map>
-                <entry key="number" value="field87" />
-              </map>
+            <property name="quickfinder">
+              <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+                    p:fieldConversions="number:field87"/>
             </property>
           </bean>
           <bean parent="GenericTextField" p:propertyName="field61">

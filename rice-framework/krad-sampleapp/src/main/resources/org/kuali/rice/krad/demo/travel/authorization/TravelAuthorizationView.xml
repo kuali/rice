@@ -67,24 +67,28 @@
       <list>
         <bean parent="Uif-InputField" p:label="Traveler Lookup" p:colSpan="3" p:propertyName="travelerDetailId">
           <property name="id" value="quickfinder"/>
-          <property name="quickfinder.dataObjectClassName" value="org.kuali.rice.krad.demo.travel.authorization.dataobject.TravelerDetail"/>
-          <property name="quickfinder.fieldConversions">
-            <map>
-              <entry key="id" value="travelerDetailId"/>
-              <entry key="principalId" value="travelerDetail.principalId"/>
-              <entry key="firstName" value="travelerDetail.firstName"/>
-              <entry key="lastName" value="travelerDetail.lastName"/>
-              <entry key="streetAddressLine1" value="travelerDetail.streetAddressLine1"/>
-              <entry key="streetAddressLine2" value="travelerDetail.streetAddressLine2"/>
-              <entry key="cityName" value="travelerDetail.cityName"/>
-              <entry key="stateCode" value="travelerDetail.stateCode"/>
-              <entry key="countryCode" value="travelerDetail.countryCode"/>
-              <entry key="zipCode" value="travelerDetail.zipCode"/>
-              <entry key="emailAddress" value="travelerDetail.emailAddress"/>
-              <entry key="phoneNumber" value="travelerDetail.phoneNumber"/>
-              <entry key="liabilityInsurance" value="travelerDetail.liabilityInsurance"/>
-              <entry key="citizenship" value="travelerDetail.citizenship"/>
-            </map>
+          <property name="quickfinder">
+            <bean parent="Uif-QuickFinder"
+                  p:dataObjectClassName="org.kuali.rice.krad.demo.travel.authorization.dataobject.TravelerDetail">
+              <property name="fieldConversions">
+                <map>
+                  <entry key="id" value="travelerDetailId"/>
+                  <entry key="principalId" value="travelerDetail.principalId"/>
+                  <entry key="firstName" value="travelerDetail.firstName"/>
+                  <entry key="lastName" value="travelerDetail.lastName"/>
+                  <entry key="streetAddressLine1" value="travelerDetail.streetAddressLine1"/>
+                  <entry key="streetAddressLine2" value="travelerDetail.streetAddressLine2"/>
+                  <entry key="cityName" value="travelerDetail.cityName"/>
+                  <entry key="stateCode" value="travelerDetail.stateCode"/>
+                  <entry key="countryCode" value="travelerDetail.countryCode"/>
+                  <entry key="zipCode" value="travelerDetail.zipCode"/>
+                  <entry key="emailAddress" value="travelerDetail.emailAddress"/>
+                  <entry key="phoneNumber" value="travelerDetail.phoneNumber"/>
+                  <entry key="liabilityInsurance" value="travelerDetail.liabilityInsurance"/>
+                  <entry key="citizenship" value="travelerDetail.citizenship"/>
+                </map>
+              </property>
+            </bean>
           </property>
           <property name="control">
             <bean parent="Uif-TextControl" p:readOnly="true" p:size="21"/>
@@ -120,15 +124,19 @@
 
         <bean parent="Uif-InputField" p:label="Primary Destination Lookup" p:required="true" p:propertyName="primaryDestinationId" p:colSpan="3">
           <property name="id" value="quickfinder"/>
-          <property name="quickfinder.dataObjectClassName" value="org.kuali.rice.krad.demo.travel.authorization.dataobject.PrimaryDestination"/>
-          <property name="quickfinder.fieldConversions">
-            <map>
-              <entry key="id" value="primaryDestinationId"/>
-              <entry key="primaryDestinationName" value="primaryDestination.primaryDestinationName"/>
-              <entry key="county" value="primaryDestination.county"/>
-              <entry key="countryStateName" value="primaryDestination.countryStateName"/>
-              <entry key="tripTypeCode" value="primaryDestination.tripTypeCode"/>
-            </map>
+          <property name="quickfinder">
+            <bean parent="Uif-QuickFinder"
+                  p:dataObjectClassName="org.kuali.rice.krad.demo.travel.authorization.dataobject.PrimaryDestination">
+              <property name="fieldConversions">
+                <map>
+                  <entry key="id" value="primaryDestinationId"/>
+                  <entry key="primaryDestinationName" value="primaryDestination.primaryDestinationName"/>
+                  <entry key="county" value="primaryDestination.county"/>
+                  <entry key="countryStateName" value="primaryDestination.countryStateName"/>
+                  <entry key="tripTypeCode" value="primaryDestination.tripTypeCode"/>
+                </map>
+              </property>
+            </bean>
           </property>
           <property name="control">
             <bean parent="Uif-TextControl" p:readOnly="true" p:size="21"/>

@@ -117,6 +117,8 @@ public class KradSampleAppForm extends UifFormBase {
     private List<UITestObject> groupedCollection3 = new ArrayList<UITestObject>();
     private List<UITestObject> doubleGroupedCollection = new ArrayList<UITestObject>();
 
+    private List<UITestObject> emptyCollection = new ArrayList<UITestObject>();
+
     private Tree<String, String> tree1 = new Tree<String, String>();
     private Tree<UITestObject, String> tree2 = new Tree<UITestObject, String>();
 
@@ -857,6 +859,14 @@ public class KradSampleAppForm extends UifFormBase {
 
     public void setDoubleGroupedCollection(List<UITestObject> doubleGroupedCollection) {
         this.doubleGroupedCollection = doubleGroupedCollection;
+    }
+
+    public List<UITestObject> getEmptyCollection() {
+        return emptyCollection;
+    }
+
+    public void setEmptyCollection(List<UITestObject> emptyCollection) {
+        this.emptyCollection = emptyCollection;
     }
 
     public String getFakeTotal() {

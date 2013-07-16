@@ -23,6 +23,7 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
@@ -111,24 +112,72 @@ public class UserControl extends TextControl implements FilterableLookupCriteria
         }
         field.setAttributeQuery(attributeQuery);
 
-        // setup field lookup
+//        // TODO: revisit this, need to hook new quickfinder into lifecycle
+//        buildUserQuickfinder(view, field);
+    }
+
+    /**
+     * @see FilterableLookupCriteriaControl#filterSearchCriteria(String, java.util.Map)
+     */
+    @Override
+    public Map<String, String>  filterSearchCriteria(String propertyName, Map<String, String> searchCriteria) {
+        Map<String, String> filteredSearchCriteria = new HashMap<String, String>(searchCriteria);
+
+        // check valid principalName
+        // ToDo: move the principalId check and setting to the validation stage.  At that point the personName should
+        //       be set as well or an error be displayed to the user that the principalName is invalid.
+        String principalName = searchCriteria.get(propertyName);
+        if (StringUtils.isNotBlank(principalName)) {
+            Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalName);
+            if (principal == null) {
+                return null;
+            } else {
+                filteredSearchCriteria.put(principalIdPropertyName, principal.getPrincipalId());
+            }
+        }
+
+        // filter
+        filteredSearchCriteria.remove(propertyName);
+        filteredSearchCriteria.remove(personNamePropertyName);
+
+        return filteredSearchCriteria;
+    }
+
+    /**
+     * Configures the field's quickfinder for a user lookup
+     *
+     * @param view view instance that contains the field
+     * @param field field instance the quickfinder should be associated with
+     */
+    protected void buildUserQuickfinder(View view, InputField field) {
         QuickFinder quickFinder = field.getQuickfinder();
-        if (quickFinder.isRender()) {
-            if (StringUtils.isBlank(quickFinder.getDataObjectClassName())) {
-                quickFinder.setDataObjectClassName(Person.class.getName());
+
+        // if they explicity turned off the quickfinder we will not build it
+        if ((quickFinder != null) && !quickFinder.isRender()) {
+            return;
+        }
+
+        if (quickFinder == null) {
+            quickFinder = ComponentFactory.getQuickFinder();
+            view.assignComponentIds(quickFinder);
+
+            field.setQuickfinder(quickFinder);
+        }
+
+        if (StringUtils.isBlank(quickFinder.getDataObjectClassName())) {
+            quickFinder.setDataObjectClassName(Person.class.getName());
+        }
+
+        if (quickFinder.getFieldConversions().isEmpty()) {
+            quickFinder.getFieldConversions().put("principalId", principalIdPropertyName);
+
+            if (StringUtils.isNotBlank(personNamePropertyName)) {
+                quickFinder.getFieldConversions().put("name", personNamePropertyName);
+            } else {
+                quickFinder.getFieldConversions().put("name", personObjectPropertyName + ".name");
             }
 
-            if (quickFinder.getFieldConversions().isEmpty()) {
-                quickFinder.getFieldConversions().put("principalId", principalIdPropertyName);
-
-                if (StringUtils.isNotBlank(personNamePropertyName)) {
-                    quickFinder.getFieldConversions().put("name", personNamePropertyName);
-                } else {
-                    quickFinder.getFieldConversions().put("name", personObjectPropertyName + ".name");
-                }
-
-                quickFinder.getFieldConversions().put("principalName", field.getPropertyName());
-            }
+            quickFinder.getFieldConversions().put("principalName", field.getPropertyName());
         }
     }
 
@@ -189,32 +238,6 @@ public class UserControl extends TextControl implements FilterableLookupCriteria
         this.personObjectPropertyName = personObjectPropertyName;
     }
 
-    /**
-     * @see FilterableLookupCriteriaControl#filterSearchCriteria(String, java.util.Map)
-     */
-    @Override
-    public Map<String, String>  filterSearchCriteria(String propertyName, Map<String, String> searchCriteria) {
-        Map<String, String> filteredSearchCriteria = new HashMap<String, String>(searchCriteria);
-
-        // check valid principalName
-        // ToDo: move the principalId check and setting to the validation stage.  At that point the personName should
-        //       be set as well or an error be displayed to the user that the principalName is invalid.
-        String principalName = searchCriteria.get(propertyName);
-        if (StringUtils.isNotBlank(principalName)) {
-            Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalName);
-            if (principal == null) {
-                return null;
-            } else {
-                filteredSearchCriteria.put(principalIdPropertyName, principal.getPrincipalId());
-            }
-        }
-
-        // filter
-        filteredSearchCriteria.remove(propertyName);
-        filteredSearchCriteria.remove(personNamePropertyName);
-
-        return filteredSearchCriteria;
-    }
 
     /**
      * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()

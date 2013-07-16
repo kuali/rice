@@ -51,7 +51,7 @@ public interface ViewHelperService {
      *
      * @see org.kuali.rice.krad.uif.component.RequestParameter
      */
-    void populateViewFromRequestParameters(View view, Map<String, String> parameters);
+    public void populateViewFromRequestParameters(View view, Map<String, String> parameters);
 
     /**
      * Performs the Initialization phase for the <code>View</code>. During this
@@ -70,7 +70,7 @@ public interface ViewHelperService {
      * @param view View instance that should be initialized
      * @param model object instance containing the view data
      */
-    void performInitialization(View view, Object model);
+    public void performInitialization(View view, Object model);
 
     /**
      * Performs the Initialization phase for the given <code>Component</code>
@@ -84,7 +84,7 @@ public interface ViewHelperService {
      * @param model object instance containing the view data
      * @param component component instance that should be initialized
      */
-    void performComponentInitialization(View view, Object model, Component component);
+    public void performComponentInitialization(View view, Object model, Component component);
 
     /**
      * Executes the ApplyModel phase. During this phase each component of the
@@ -110,7 +110,7 @@ public interface ViewHelperService {
      * @param model Top level object containing the data (could be the form or a
      * top level business object, dto)
      */
-    void performApplyModel(View view, Object model);
+    public void performApplyModel(View view, Object model);
 
     /**
      * Gets global objects for the context map and pushes them to the context
@@ -119,7 +119,7 @@ public interface ViewHelperService {
      * @param view view instance for component
      * @param component component instance to push context to
      */
-    Map<String, Object> getCommonContext(View view, Component component);
+    public Map<String, Object> getCommonContext(View view, Component component);
 
     /**
      * The last phase before the view is rendered. Here final preparations can
@@ -134,7 +134,7 @@ public interface ViewHelperService {
      * @param view view instance that should be finalized for rendering
      * @param model top level object containing the data
      */
-    void performFinalize(View view, Object model);
+    public void performFinalize(View view, Object model);
 
     /**
      * Invoked after the view has been rendered to clear out objects that are not necessary to keep around for
@@ -142,7 +142,7 @@ public interface ViewHelperService {
      *
      * @param view view instance to be cleaned
      */
-    void cleanViewAfterRender(View view);
+    public void cleanViewAfterRender(View view);
 
     /**
      * Performs the complete component lifecycle on the component passed in for use during a refresh process
@@ -159,10 +159,29 @@ public interface ViewHelperService {
      * @param component component instance to perform lifecycle for
      * @param origId id of the component within the view, used to pull the current component from the view
      */
-    void performComponentLifecycle(View view, Object model, Component component, String origId);
+    public void performComponentLifecycle(View view, Object model, Component component, String origId);
+
+    /**
+     * Runs the lifecycle process for the given component starting at the given start phase and ending with
+     * the given end phase
+     *
+     * <p>
+     * Start or end phase can be null to indicate the first phase or last phase respectively
+     * </p>
+     *
+     * @param view view instance the component belongs to
+     * @param model object providing the view data
+     * @param component component to run the lifecycle phases for
+     * @param parent parent component for the component being processed
+     * @param startPhase lifecycle phase to start with, or null to indicate the first phase
+     * @param endPhase lifecycle phase to end with, or null to indicate the last phase
+     */
+    public void spawnSubLifecyle(View view, Object model, Component component, Component parent, String startPhase,
+            String endPhase);
 
     /**
      * Update the reference objects listed in referencesToRefresh of the model
+     *
      * <p>
      * The the individual references in the referencesToRefresh string are separated by
      * KRADConstants.REFERENCES_TO_REFRESH_SEPARATOR).
@@ -171,7 +190,7 @@ public interface ViewHelperService {
      * @param model top level object containing the data
      * @param referencesToRefresh list of references to refresh (
      */
-    void refreshReferences(Object model, String referencesToRefresh);
+    public void refreshReferences(Object model, String referencesToRefresh);
 
     /**
      * Invoked when the add line action is chosen for a collection. The
@@ -186,7 +205,7 @@ public interface ViewHelperService {
      * collection and new line
      * @param collectionPath full path to the collection on the model
      */
-    void processCollectionAddLine(View view, Object model, String collectionPath);
+    public void processCollectionAddLine(View view, Object model, String collectionPath);
 
     /**
      * Adds a blank line to the collection
@@ -199,7 +218,7 @@ public interface ViewHelperService {
      * @param model Top level object containing the view data including the collection and new line
      * @param collectionPath full path to the collection on the model
      */
-    void processCollectionAddBlankLine(View view, Object model, String collectionPath);
+    public void processCollectionAddBlankLine(View view, Object model, String collectionPath);
 
     /**
      * Invoked when the save line action is chosen for a collection. This method only does server side validation by
@@ -209,7 +228,7 @@ public interface ViewHelperService {
      * @param model Top level object containing the view data including the collection and new line
      * @param collectionPath full path to the collection on the model
      */
-    void processCollectionSaveLine(View view, Object model, String collectionPath, int selectedLineIndex);
+    public void processCollectionSaveLine(View view, Object model, String collectionPath, int selectedLineIndex);
 
     /**
      * Invoked when the delete line action is chosen for a collection. The
@@ -224,7 +243,7 @@ public interface ViewHelperService {
      * @param collectionPath full path to the collection on the model
      * @param lineIndex index of the collection line that was selected for removal
      */
-    void processCollectionDeleteLine(View view, Object model, String collectionPath, int lineIndex);
+    public void processCollectionDeleteLine(View view, Object model, String collectionPath, int lineIndex);
 
     /**
      * Process the results returned from a multi-value lookup populating the lines for the collection given
@@ -235,7 +254,7 @@ public interface ViewHelperService {
      * @param collectionPath binding path to the collection to populated
      * @param lookupResultValues String containing the selected line values
      */
-    void processMultipleValueLookupResults(View view, Object model, String collectionPath, String lookupResultValues);
+    public void processMultipleValueLookupResults(View view, Object model, String collectionPath, String lookupResultValues);
 
     /**
      * Invoked by the <code>Inquiry</code> widget to build the inquiry link
@@ -254,7 +273,7 @@ public interface ViewHelperService {
      * @param propertyName name of the property the inquiry is being built for
      * @param inquiry instance of the inquiry widget being built for the property
      */
-    void buildInquiryLink(Object dataObject, String propertyName, Inquiry inquiry);
+    public void buildInquiryLink(Object dataObject, String propertyName, Inquiry inquiry);
 
     /**
      * Applies configured default values for the line fields to the line
@@ -265,7 +284,7 @@ public interface ViewHelperService {
      * @param collectionGroup collection group component the line belongs to
      * @param line line instance to apply default values to
      */
-    void applyDefaultValuesForCollectionLine(View view, Object model, CollectionGroup collectionGroup, Object line);
+    public void applyDefaultValuesForCollectionLine(View view, Object model, CollectionGroup collectionGroup, Object line);
 
     /**
      * Return an instance of {@link org.kuali.rice.krad.uif.view.ExpressionEvaluator} that can be used for evaluating
@@ -290,6 +309,6 @@ public interface ViewHelperService {
      * @param formatType format which the table should be generated in
      * @return
      */
-    String buildExportTableData(View view, Object model, String tableId, String formatType);
+    public String buildExportTableData(View view, Object model, String tableId, String formatType);
 
 }

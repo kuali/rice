@@ -104,7 +104,6 @@
               value="setMultivalueLookupReturnButton(this)"/>
     <property name="renderAddLine" value="false"/>
     <property name="readOnly" value="false"/>
-    <property name="collectionLookup.render" value="false"/>
     <property name="includeLineSelectionField" value="@{#view.multipleValuesSelect}"/>
     <property name="header.lowerGroup">
       <bean parent="Uif-VerticalBoxGroup"/>

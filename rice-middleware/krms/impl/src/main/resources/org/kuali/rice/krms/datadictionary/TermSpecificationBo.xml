@@ -155,8 +155,11 @@
     <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.CategoryBo" />
     <property name="propertyName" value="categories" />
     <property name="layoutManager.renderSequenceField" value="false" />
-    <property name="collectionLookup.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.CategoryBo"/>
-    <property name="collectionLookup.fieldConversions" value="id:id,name:name,namespace:namespace"/>
+    <property name="collectionLookup">
+      <bean parent="Uif-CollectionQuickFinder"
+            p:dataObjectClassName="org.kuali.rice.krms.impl.repository.CategoryBo"
+            p:fieldConversions="id:id,name:name,namespace:namespace"/>
+    </property>
     <property name="items">
       <list>
 
@@ -166,20 +169,23 @@
             <bean parent="Uif-TextControl" p:size="40"/>
           </property>
 
-          <property name="quickfinder.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.CategoryBo"/>
-          <property name="quickfinder.fieldConversions">
-            <map>
-              <entry key="id" value="id"/>
-              <entry key="name" value="name"/>
-              <entry key="namespace" value="namespace"/>
-            </map>
-          </property>
-          <property name="quickfinder.lookupParameters">
-            <map>
-              <entry key="namespace" value="namespace"/>
-              <entry key="name" value="name"/>
-              <entry key="id" value="id"/>
-            </map>
+          <property name="quickfinder">
+            <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krms.impl.repository.CategoryBo">
+              <property name="fieldConversions">
+                <map>
+                  <entry key="id" value="id"/>
+                  <entry key="name" value="name"/>
+                  <entry key="namespace" value="namespace"/>
+                </map>
+              </property>
+              <property name="lookupParameters">
+                <map>
+                  <entry key="namespace" value="namespace"/>
+                  <entry key="name" value="name"/>
+                  <entry key="id" value="id"/>
+                </map>
+              </property>
+            </bean>
           </property>
         </bean>
 
@@ -203,8 +209,11 @@
     <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.ContextBo" />
     <property name="propertyName" value="contexts" />
     <property name="layoutManager.renderSequenceField" value="false" />
-    <property name="collectionLookup.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ContextBo"/>
-    <property name="collectionLookup.fieldConversions" value="id:id,name:name,namespace:namespace,description:description"/>
+    <property name="collectionLookup">
+      <bean parent="Uif-CollectionQuickFinder"
+            p:dataObjectClassName="org.kuali.rice.krms.impl.repository.ContextBo"
+            p:fieldConversions="id:id,name:name,namespace:namespace,description:description"/>
+    </property>
     <property name="items">
       <list>
 
@@ -214,21 +223,24 @@
             <bean parent="Uif-TextControl" p:size="40"/>
           </property>
 
-          <property name="quickfinder.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ContextBo"/>
-          <property name="quickfinder.fieldConversions">
-            <map>
-              <entry key="id" value="id"/>
-              <entry key="name" value="name"/>
-              <entry key="namespace" value="namespace"/>
-              <entry key="description" value="description" />
-            </map>
-          </property>
-          <property name="quickfinder.lookupParameters">
-            <map>
-              <entry key="namespace" value="namespace"/>
-              <entry key="name" value="name"/>
-              <entry key="id" value="id"/>
-            </map>
+          <property name="quickfinder">
+            <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krms.impl.repository.ContextBo">
+              <property name="fieldConversions">
+                <map>
+                  <entry key="id" value="id"/>
+                  <entry key="name" value="name"/>
+                  <entry key="namespace" value="namespace"/>
+                  <entry key="description" value="description" />
+                </map>
+              </property>
+              <property name="lookupParameters">
+                <map>
+                  <entry key="namespace" value="namespace"/>
+                  <entry key="name" value="name"/>
+                  <entry key="id" value="id"/>
+                </map>
+              </property>
+            </bean>
           </property>
         </bean>
 

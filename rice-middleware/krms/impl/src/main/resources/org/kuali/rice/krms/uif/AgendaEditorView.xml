@@ -196,20 +196,23 @@
                 <!-- property name="quickfinder">
                   <bean parent="Uif-QuickFinderByScript"/>
                 </property -->
-                <property name="quickfinder.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ContextBo"/>
-                <property name="quickfinder.fieldConversions">
-                  <map>
-                    <entry key="id" value="agenda.contextId"/>
-                    <entry key="name" value="contextName"/>
-                    <entry key="namespace" value="namespace"/>
-                  </map>
-                </property>
-                <property name="quickfinder.lookupParameters">
-                  <map>
-                    <entry key="agenda.contextId" value="id"/>
-                    <entry key="contextName" value="name"/>
-                    <entry key="namespace" value="namespace"/>
-                  </map>
+                <property name="quickfinder">
+                  <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krms.impl.repository.ContextBo">
+                    <property name="fieldConversions">
+                      <map>
+                        <entry key="id" value="agenda.contextId"/>
+                        <entry key="name" value="contextName"/>
+                        <entry key="namespace" value="namespace"/>
+                      </map>
+                    </property>
+                    <property name="lookupParameters">
+                      <map>
+                        <entry key="agenda.contextId" value="id"/>
+                        <entry key="contextName" value="name"/>
+                        <entry key="namespace" value="namespace"/>
+                      </map>
+                    </property>
+                  </bean>
                 </property>
 
                 <!-- suggest context names -->

@@ -121,9 +121,10 @@
   </verticalBoxSection-bean>
   <verticalBoxSection-bean id="UifCompView-SecureWidgets">
     <items>
-      <inputField-bean propertyName="field14" quickfinder.componentSecurity.viewAuthz="true"
-                       quickfinder.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
-                       quickfinder.fieldConversions="number:field60" quickfinder.id="UifCompView-SecureWidget"/>
+      <inputField-bean propertyName="field14">
+          <quickFinder-bean id="UifCompView-SecureWidget" dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
+                        fieldConversions="number:field60" componentSecurity.viewAuthz="true"/>
+      </inputField-bean>
     </items>
   </verticalBoxSection-bean>
   <tableCollectionSection-bean collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"

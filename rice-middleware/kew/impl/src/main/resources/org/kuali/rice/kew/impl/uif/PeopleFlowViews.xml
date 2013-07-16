@@ -34,7 +34,7 @@
       <list>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="id"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="namespaceCode"/>
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" p:inquiry.render="false" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" p:enableAutoInquiry="false" />
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="typeId"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="active"/>
       </list>
@@ -66,7 +66,7 @@
             <list>
               <bean parent="Uif-DataField" p:propertyName="id"/>
               <bean parent="Uif-DataField" p:propertyName="namespaceCode"/>
-              <bean parent="Uif-DataField" p:propertyName="name" p:inquiry.render="false"/>
+              <bean parent="Uif-DataField" p:propertyName="name" p:enableAutoInquiry="false"/>
               <bean parent="Uif-DataField" p:propertyName="typeId"/>
               <bean parent="Uif-DataField" p:propertyName="description"/>
               <bean parent="Uif-DataField" p:propertyName="active"/>
@@ -113,7 +113,7 @@
       <list>
         <bean parent="Uif-InputField" p:propertyName="namespaceCode" p:required="true"/>
         <bean parent="Uif-InputField" p:propertyName="description" p:rowSpan="2" p:fieldLabel.rowSpan="2"/>
-        <bean parent="Uif-InputField" p:propertyName="name" p:required="true" p:inquiry.render="false"/>
+        <bean parent="Uif-InputField" p:propertyName="name" p:required="true" p:enableAutoInquiry="false"/>
         <bean parent="Uif-InputField" p:propertyName="typeId"/>
         <bean parent="Uif-InputField" p:propertyName="active" p:defaultValue="true"/>
       </list>
@@ -198,7 +198,7 @@
   -->
   <bean id="PeopleFlow-Member" parent="Uif-InputField" p:propertyName="memberName" p:label="Member"
         p:refreshWhenChangedPropertyNames="#lp.memberTypeCode" p:readOnly="@{#view.readOnly}"
-        p:quickfinder.render="@{!#view.readOnly}" p:resetDataOnRefresh="true">
+        p:resetDataOnRefresh="true">
     <property name="control">
       <bean parent="Uif-KimPersonControl" p:principalIdPropertyName="memberId" p:personNamePropertyName="person.name" p:watermarkText="Name"/>
     </property>

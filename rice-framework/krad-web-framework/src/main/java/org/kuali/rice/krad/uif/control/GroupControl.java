@@ -58,25 +58,27 @@ public class GroupControl extends TextControl implements FilterableLookupCriteri
             field.getAdditionalHiddenPropertyNames().add(groupIdPropertyName);
         }
 
-        if (StringUtils.isBlank(field.getQuickfinder().getDataObjectClassName())) {
-            field.getQuickfinder().setDataObjectClassName("org.kuali.rice.kim.impl.group.GroupBo");
-        }
-
-        if (field.getQuickfinder().getFieldConversions().isEmpty()) {
-            if (StringUtils.isNotBlank(groupIdPropertyName)) {
-                field.getQuickfinder().getFieldConversions().put("id", groupIdPropertyName);
+        if (field.getQuickfinder() != null) {
+            if (StringUtils.isBlank(field.getQuickfinder().getDataObjectClassName())) {
+                field.getQuickfinder().setDataObjectClassName("org.kuali.rice.kim.impl.group.GroupBo");
             }
 
-            field.getQuickfinder().getFieldConversions().put("name", field.getPropertyName());
+            if (field.getQuickfinder().getFieldConversions().isEmpty()) {
+                if (StringUtils.isNotBlank(groupIdPropertyName)) {
+                    field.getQuickfinder().getFieldConversions().put("id", groupIdPropertyName);
+                }
 
-            if (StringUtils.isNotBlank(namespaceCodePropertyName)) {
-                field.getQuickfinder().getFieldConversions().put("namespaceCode", namespaceCodePropertyName);
+                field.getQuickfinder().getFieldConversions().put("name", field.getPropertyName());
+
+                if (StringUtils.isNotBlank(namespaceCodePropertyName)) {
+                    field.getQuickfinder().getFieldConversions().put("namespaceCode", namespaceCodePropertyName);
+                }
             }
-        }
 
-        if (field.getQuickfinder().getLookupParameters().isEmpty()) {
-            if (StringUtils.isNotBlank(namespaceCodePropertyName)) {
-                field.getQuickfinder().getLookupParameters().put(namespaceCodePropertyName, "namespaceCode");
+            if (field.getQuickfinder().getLookupParameters().isEmpty()) {
+                if (StringUtils.isNotBlank(namespaceCodePropertyName)) {
+                    field.getQuickfinder().getLookupParameters().put(namespaceCodePropertyName, "namespaceCode");
+                }
             }
         }
     }

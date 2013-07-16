@@ -109,10 +109,6 @@
             <list>
               <bean parent="GenericTextFieldMedium" p:propertyName="lookupCriteria['courseNameNumber']" p:label=""
                     p:cssClasses="kr-field-attribute kr-field-tight">
-                <property name="quickfinder">
-                  <bean parent="AdvancedSearchQuickFinder"
-                        p:dataObjectClassName="org.kuali.rice.kim.bo.impl.PersonImpl"/>
-                </property>
               </bean>
               <bean parent="Uif-PrimaryActionButton-Small" p:actionLabel="Go" p:methodToCall="go"/>
             </list>

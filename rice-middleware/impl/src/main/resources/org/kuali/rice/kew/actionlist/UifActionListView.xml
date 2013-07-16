@@ -143,11 +143,9 @@
               <property name="items">
                 <list>
                   <bean parent="Uif-InputField" p:propertyName="filter.documentType">
-                    <property name="quickfinder.dataObjectClassName" value="org.kuali.rice.kew.doctype.bo.DocumentType" />
-                    <property name="quickfinder.fieldConversions">
-                      <map>
-                        <entry key="name" value="filter.documentType" />
-                      </map>
+                    <property name="quickfinder">
+                      <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.kew.doctype.bo.DocumentType"
+                            p:fieldConversions="filter.documentType"/>
                     </property>
                   </bean>
 
@@ -381,12 +379,9 @@
                           p:propertyName="routeHeaderInitiatorName"
                           p:label="Initiator"
                           p:cellStyle="display:'';@{'background-color:' + #lp.rowStyleClass + ';'}">
-                      <property name="inquiry.dataObjectClassName"
-                                value="org.kuali.rice.kim.impl.identity.PersonImpl" />
-                      <property name="inquiry.inquiryParameters">
-                        <map>
-                          <entry key="routeHeaderInitiatorWorkflowId" value="principalId1" />
-                        </map>
+                      <property name="inquiry">
+                        <bean parent="Uif-Inquiry" p:dataObjectClassName="org.kuali.rice.kim.impl.identity.PersonImpl"
+                              p:inquiryParameters="routeHeaderInitiatorWorkflowId:principalId1"/>
                       </property>
                     </bean>
                     <bean parent="Uif-DataField"
@@ -394,12 +389,9 @@
                           p:propertyName="delegatorName"
                           p:label="Delegator"
                           p:cellStyle="display:'';@{'background-color:' + #lp.rowStyleClass + ';'}">
-                      <property name="inquiry.dataObjectClassName"
-                                value="org.kuali.rice.kim.impl.identity.PersonImpl" />
-                      <property name="inquiry.inquiryParameters">
-                        <map>
-                          <entry key="delegatorName" value="principalId" />
-                        </map>
+                      <property name="inquiry">
+                        <bean parent="Uif-Inquiry" p:dataObjectClassName="org.kuali.rice.kim.impl.identity.PersonImpl"
+                              p:inquiryParameters="delegatorName:principalId1"/>
                       </property>
                     </bean>
                     <bean parent="Uif-DataField" p:propertyName="routeHeaderCreateDate"
@@ -411,12 +403,9 @@
                           p:render="@{#dp.preferences.showWorkgroupRequest=='yes'}"
                           p:propertyName="groupName" p:label="Group Request"
                           p:cellStyle="display:'';@{'background-color:' + #lp.rowStyleClass + ';'}">
-                      <property name="inquiry.dataObjectClassName"
-                                value="org.kuali.rice.kim.impl.group.GroupBo" />
-                      <property name="inquiry.inquiryParameters">
-                        <map>
-                          <entry key="groupId" value="id" />
-                        </map>
+                      <property name="inquiry">
+                        <bean parent="Uif-Inquiry" p:dataObjectClassName="org.kuali.rice.kim.impl.group.GroupBo"
+                              p:inquiryParameters="groupId:id"/>
                       </property>
                     </bean>
                     <bean parent="Uif-DataField" p:propertyName="routeHeaderCurrentRouteLevelName"

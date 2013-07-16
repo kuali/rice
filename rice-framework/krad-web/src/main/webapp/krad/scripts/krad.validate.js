@@ -223,7 +223,7 @@ function showMessageTooltip(fieldId, showAndClose, change) {
             divStyle: {margin: getTooltipMargin(tooltipElement)},
             distance: 0,
             manageMouseEvents: false,
-            themePath: kradVariables.BUBBLEPOPUP_THEME_PATH,
+            themePath: getBubblePopupThemePath(),
             alwaysVisible: false,
             tail: {align: "left"},
             themeMargins: {total: "13px", difference: "2px"}

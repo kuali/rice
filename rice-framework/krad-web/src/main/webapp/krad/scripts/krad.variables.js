@@ -23,6 +23,7 @@ function JavascriptKradVariables () {
 JavascriptKradVariables.prototype = {
      APPLICATION_FOOTER_WRAPPER : "Uif-ApplicationFooter-Wrapper",
      APP_ID  : "Uif-Application",
+     APPLICATION_URL  : "applicationUrl",
      CACHE_KEY : "cacheKey",
      CHANGED_HEADER_ICON_CLASS : "uif-changedHeaderIcon",
      CLEAR_FORM_METHOD_TO_CALL : "retrieveMessage",
@@ -144,7 +145,6 @@ JavascriptKradVariables.prototype = {
         align: 'left',
         tail: { align: 'left', hidden: false },
         manageMouseEvents: false,
-        themePath: this.BUBBLEPOPUP_THEME_PATH,
         themeName: 'popup-form'
     }
 }

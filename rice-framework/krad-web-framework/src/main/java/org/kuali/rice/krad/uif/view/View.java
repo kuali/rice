@@ -189,8 +189,6 @@ public class View extends ContainerBase {
 
     private int preloadPoolSize;
 
-
-
     private List<String> viewTemplates;
 
     private Class<? extends ViewHelperService> viewHelperServiceClass;

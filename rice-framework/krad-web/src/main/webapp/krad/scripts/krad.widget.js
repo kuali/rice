@@ -1050,14 +1050,15 @@ function createTree(divId, options) {
  */
 function createCopyToClipboard(componentId, copyTriggerId, contentElementId, showCopyConfirmation) {
 
-    // the ZeroClipboard flash movie can only be added to visible elements so must be added on dosument ready
+    // the ZeroClipboard flash movie can only be added to visible elements so must be added on document ready
     jQuery(document).ready(function () {
 
         // Do not add flash to hidden syntax highlighters as this causes exception
         if (jQuery("#" + componentId).is(':visible')) {
 
             // setup new client for this component
-            ZeroClipboard.setMoviePath('/plugins/datatables/copy_cvs_xls_pdf.swf');
+            ZeroClipboard.setMoviePath(getConfigParam(kradVariables.APPLICATION_URL)
+                    + '/plugins/datatables/copy_cvs_xls_pdf.swf');
             var clip = new ZeroClipboard.Client();
 
             // copy text on mousedown

@@ -296,6 +296,7 @@ public class UifConstants {
     public static class ClientSideVariables {
         public static final String KRAD_IMAGE_LOCATION = "kradImageLocation";
         public static final String KRAD_URL = "kradUrl";
+        public static final String APPLICATION_URL = "applicationUrl";
     }
 
     public static class RefreshCallerTypes {

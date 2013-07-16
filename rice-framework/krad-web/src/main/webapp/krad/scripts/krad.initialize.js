@@ -195,7 +195,7 @@ function initFieldHandlers() {
         align: "left",
         distance: 0,
         manageMouseEvents: false,
-        themePath: kradVariables.BUBBLEPOPUP_THEME_PATH,
+        themePath: getBubblePopupThemePath(),
         alwaysVisible: false,
         tail: {align: "left"},
         themeMargins: {total: "13px", difference: "2px"}
@@ -590,7 +590,7 @@ function initBubblePopups() {
     //CreateBubblePopup was modified to be additive on call, and now uses one handler per event type- kuali customization
     jQuery(document).CreateBubblePopup("input:not([type='hidden']):not([type='image']), input[data-role='help'], "
             + "select, textarea, .uif-tooltip", {   manageMouseEvents: false,
-        themePath: kradVariables.BUBBLEPOPUP_THEME_PATH});
+        themePath: getBubblePopupThemePath()});
 }
 
 function hideBubblePopups(element) {
@@ -602,6 +602,13 @@ function hideBubblePopups(element) {
         jQuery("input:not(input[type='image']), input[data-role='help'], select, textarea,"
                 + ".uif-tooltip").not("input[type='hidden']").HideAllBubblePopups();
     }
+}
+
+/**
+ * Returns the URL to the bubblepopup theme directory
+ */
+function getBubblePopupThemePath() {
+    return getConfigParam(kradVariables.APPLICATION_URL) + kradVariables.BUBBLEPOPUP_THEME_PATH;
 }
 
 /**

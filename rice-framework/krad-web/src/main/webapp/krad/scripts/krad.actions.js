@@ -602,7 +602,10 @@ function openPopupContent(e, contentId, popupOptions, closeButton) {
     }
 
     var clonedDefaultOptions = jQuery.extend({}, kradVariables.FORM_BUBBLEPOPUP_DEFAULT_OPTIONS);
+    clonedDefaultOptions.themePath = getConfigParam(kradVariables.APPLICATION_URL) + this.BUBBLEPOPUP_THEME_PATH;
+
     jQuery.extend(clonedDefaultOptions, popupOptions);
+
     popupTarget.ShowBubblePopup(clonedDefaultOptions, true);
     popupTarget.FreezeBubblePopup();
 

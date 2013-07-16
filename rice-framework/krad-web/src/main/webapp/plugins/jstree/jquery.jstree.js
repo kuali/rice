@@ -1468,21 +1468,14 @@
 		}
 	});
 	// autodetect themes path
-	$(function () {
-		if($.jstree._themes === false) {
-			$("script").each(function () { 
-				if(this.src.toString().match(/jquery\.jstree[^\/]*?\.js(\?.*)?$/)) { 
-					$.jstree._themes = this.src.toString().replace(/jquery\.jstree[^\/]*?\.js(\?.*)?$/, "") + 'themes/'; 
-					return false; 
-				}
-                else if(this.src.toString().match(/krad_.*\.min\.js(\?.*)?$/)) {
-                    $.jstree._themes = this.src.toString().replace(/krad_.*\.min\.js(\?.*)?$/, "") + 'themes/';
-                    return false;
-                }
-			});
-		}
-		if($.jstree._themes === false) { $.jstree._themes = "themes/"; }
-	});
+    // Kuali Begin Mod
+    $(function () {
+   		if($.jstree._themes === false) {
+   			$.jstree._themes = getConfigParam(kradVariables.APPLICATION_URL) + "/plugins/jstree/themes/";
+   		}
+   		if($.jstree._themes === false) { $.jstree._themes = "themes/"; }
+   	});
+    // Kuali End Mod
 	// include the themes plugin by default
 	$.jstree.defaults.plugins.push("themes");
 })(jQuery);

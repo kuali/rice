@@ -104,7 +104,7 @@
         <entry key="bRetrieve" value="true"/>
         <entry key="sPaginationType" value="full_numbers"/>
         <entry key="oTableTools"
-               value="{&quot;aButtons&quot; : [ &quot;csv&quot;, &quot;xls&quot; ] , &quot;sSwfPath&quot; : &quot;@{#ConfigProperties['application.url']}/krad/scripts/jquery/copy_cvs_xls_pdf.swf&quot; }"/>
+               value="{&quot;aButtons&quot; : [ &quot;csv&quot;, &quot;xls&quot; ]}"/>
       </map>
     </property>
     <property name="emptyTableMessage" value="No records found"/>
@@ -322,7 +322,8 @@
         <entry key="align" value="left"/>
         <entry key="alwaysVisible" value="false"/>
         <entry key="tail" value="{ align:'left', hidden: false }"/>
-        <entry key="themePath" value="/plugins/tooltip/jquerybubblepopup-theme/"/>
+        <entry key="themePath"
+               value="@{#ConfigProperties['application.url']}/plugins/tooltip/jquerybubblepopup-theme/"/>
         <entry key="themeName" value="black"/>
         <entry key="selectable" value="true"/>
       </map>

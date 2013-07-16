@@ -20,6 +20,7 @@ import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ViewCleaner;
 
@@ -148,15 +149,22 @@ public class ViewIndex implements Serializable {
                 // if component has a refresh condition we need to keep it
                 if ((StringUtils.isNotBlank(component.getProgressiveRender()) || StringUtils.isNotBlank(
                         component.getConditionalRefresh()) || component.getRefreshTimer() > 0 ||
-                        (component.getRefreshWhenChangedPropertyNames() != null &&
-                                !component.getRefreshWhenChangedPropertyNames().isEmpty()) ||
-                        component.isRefreshedByAction() || component.isDisclosedByAction()) &&
-                        !component.isDisableSessionPersistence()) {
+                        (component.getRefreshWhenChangedPropertyNames() != null && !component
+                                .getRefreshWhenChangedPropertyNames().isEmpty()) ||
+                        component.isRefreshedByAction() || component.isDisclosedByAction()) && !component
+                        .isDisableSessionPersistence()) {
                     holdFactoryIds.add(component.getBaseId());
                     holdIds.add(component.getId());
                 }
                 // if component is marked as persist in session we need to keep it
                 else if (component.isForceSessionPersistence()) {
+                    holdFactoryIds.add(component.getBaseId());
+                    holdIds.add(component.getId());
+                }
+                // hold collection if being used for table data export
+                else if (component instanceof CollectionGroup && ((CollectionGroup) component)
+                        .getLayoutManager() instanceof TableLayoutManager && usesTableExportOption(
+                        (TableLayoutManager) ((CollectionGroup) component).getLayoutManager())) {
                     holdFactoryIds.add(component.getBaseId());
                     holdIds.add(component.getId());
                 }
@@ -202,6 +210,17 @@ public class ViewIndex implements Serializable {
         index = holdComponentStates;
 
         dataFieldIndex = new HashMap<String, DataField>();
+    }
+
+    /**
+     * checks the export feature is being used
+     *
+     * @param layoutManager
+     * @return
+     */
+    private boolean usesTableExportOption(TableLayoutManager layoutManager) {
+        return layoutManager.getRichTable() != null && (layoutManager.getRichTable().isShowExportOption()
+                || layoutManager.getRichTable().isShowSearchAndExportOptions());
     }
 
     /**

@@ -1115,7 +1115,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Generates table formatted data based on data collected from the table model
+     * Generates formatted table data based on the posted view results and format type
      *
      * @param view view instance where the table is located
      * @param model top level object containing the data
@@ -1124,16 +1124,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * @return
      */
     public String buildExportTableData(View view, Object model, String tableId, String formatType) {
-
         // load table format elements used for generated particular style
-        Map<String, String> tableDataFormatMap = getTableDataFormatMap(formatType);
-        String startTable = tableDataFormatMap.get("startTable");
-        String endTable = tableDataFormatMap.get("endTable");
-        String startRow = tableDataFormatMap.get("startRow");
-        String endRow = tableDataFormatMap.get("endRow");
-        String startColumn = tableDataFormatMap.get("startColumn");
-        String endColumn = tableDataFormatMap.get("endColumn");
-        boolean appendLastColumn = Boolean.valueOf(tableDataFormatMap.get("appendLastColumn"));
+        Map<String, String> exportTableFormatOptions = getExportTableFormatOptions(formatType);
+        String startTable = exportTableFormatOptions.get("startTable");
+        String endTable = exportTableFormatOptions.get("endTable");
 
         Component component = view.getViewIndex().getComponentById(tableId);
         StringBuilder tableRows = new StringBuilder("");
@@ -1146,101 +1140,102 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             TableLayoutManager layoutManager = (TableLayoutManager) collectionGroup.getLayoutManager();
             List<Label> headerLabels = layoutManager.getHeaderLabels();
             List<Field> rowFields = layoutManager.getAllRowFields();
-            int actionColumnIndex = layoutManager.getActionColumnIndex();
             int numberOfColumns = layoutManager.getNumberOfColumns();
-            boolean renderActions = collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly();
-            boolean renderSelectField = collectionGroup.isIncludeLineSelectionField();
-            boolean renderSequenceField = layoutManager.isRenderSequenceField();
+            List<Integer> ignoredColumns = findIgnoredColumns(layoutManager, collectionGroup);
 
             // append table header data as first row
             if (headerLabels.size() > 0) {
-                String row = "";
-                int columnIndex = 0;
+                List<String> labels = new ArrayList<String>();
                 for (Label label : headerLabels) {
-                    if (shouldRenderColumn(columnIndex, numberOfColumns, actionColumnIndex, renderActions,
-                            renderSelectField, renderSequenceField)) {
-                        row += startColumn + label.getLabelText() + endColumn;
-                    }
-                    columnIndex++;
+                    labels.add(label.getLabelText());
                 }
-                if (!appendLastColumn) {
-                    row = StringUtils.removeEnd(row, endColumn);
-                }
-                tableRows.append(startRow + row + endRow);
+
+                tableRows.append(buildExportTableRow(labels, exportTableFormatOptions, ignoredColumns));
             }
 
             // load all subsequent rows to the table
             if (rowFields.size() > 0) {
-                String row = "";
-                int columnIndex = 0;
-                // add header labels
+                List<String> columnData = new ArrayList<String>();
                 for (Field field : rowFields) {
-                    if (shouldRenderColumn(columnIndex, numberOfColumns, actionColumnIndex, renderActions,
-                            renderSelectField, renderSequenceField)) {
-                        row += startColumn + KRADUtils.getSimpleFieldValue(model, field) + endColumn;
-                    }
-                    columnIndex++;
-                    if (columnIndex >= numberOfColumns) {
-                        if (!appendLastColumn) {
-                            row = StringUtils.removeEnd(row, endColumn);
-                        }
-                        tableRows.append(startRow + row + endRow);
-                        columnIndex = 0;
-                        row = "";
+                    columnData.add(KRADUtils.getSimpleFieldValue(model, field));
+                    if (columnData.size() >= numberOfColumns) {
+                        tableRows.append(buildExportTableRow(columnData, exportTableFormatOptions, ignoredColumns));
+                        columnData.clear();
                     }
                 }
             }
         }
 
-        String tableData = startTable + tableRows.toString() + endTable;
-        return tableData;
+        return startTable + tableRows.toString() + endTable;
+    }
+
+    /**
+     * Helper method used to build formatted table row data for export
+     *
+     * @return
+     */
+    protected String buildExportTableRow(List<String> columnData, Map<String, String> tableFormatOptions,
+            List<Integer> ignoredColumns) {
+        String startRow = tableFormatOptions.get("startRow");
+        String endRow = tableFormatOptions.get("endRow");
+        String startColumn = tableFormatOptions.get("startColumn");
+        String endColumn = tableFormatOptions.get("endColumn");
+        boolean appendLastColumn = Boolean.valueOf(tableFormatOptions.get("appendLastColumn"));
+        int columnIndex = 0;
+
+        StringBuilder builder = new StringBuilder();
+        for (String columnItem : columnData) {
+            boolean displayColumn = !ignoredColumns.contains(columnIndex);
+            if (displayColumn) {
+                builder.append(startColumn + columnItem + endColumn);
+            }
+            if (columnIndex >= columnData.size() - 1 && !appendLastColumn) {
+                builder.delete(builder.length() - endColumn.length(), builder.length());
+            }
+            columnIndex++;
+        }
+
+        return startRow + builder.toString() + endRow;
     }
 
     /**
      * Helper function to determine whether if column should be displayed.  Used to help
      * extract columns used in screen format such as action or select that is not needed for export.
      *
-     * @param columnIndex
-     * @param numberOfColumns
-     * @param actionColumnIndex
-     * @param renderActions
-     * @param renderSelectField
-     * @param renderSequenceField
+     * @param layoutManager
+     * @param collectionGroup
      * @return
      */
-    private boolean shouldRenderColumn(int columnIndex, int numberOfColumns, int actionColumnIndex,
-            boolean renderActions, boolean renderSelectField, boolean renderSequenceField) {
+    private List<Integer> findIgnoredColumns(TableLayoutManager layoutManager, CollectionGroup collectionGroup) {
+        List<Integer> ignoreColumns = new ArrayList<Integer>();
+        int actionColumnIndex = layoutManager.getActionColumnIndex();
+        int numberOfColumns = layoutManager.getNumberOfColumns();
+        boolean renderActions = collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly();
+        boolean renderSelectField = collectionGroup.isIncludeLineSelectionField();
+        boolean renderSequenceField = layoutManager.isRenderSequenceField();
+
         if (renderActions || renderSelectField || renderSequenceField) {
             int shiftColumn = 0;
+
             if (renderSelectField) {
-                if (columnIndex == shiftColumn) {
-                    return false;
-                }
+                ignoreColumns.add(shiftColumn);
                 shiftColumn++;
             }
             if (renderSequenceField) {
-                if (columnIndex == shiftColumn) {
-                    return false;
-                }
+                ignoreColumns.add(shiftColumn);
                 shiftColumn++;
             }
             if (renderActions) {
-                // handle left sided index
-                if (actionColumnIndex == 1 && columnIndex == shiftColumn) {
-                    return false;
-
-                }
-                // handle right sided elements
-                else if (actionColumnIndex == -1 && columnIndex == numberOfColumns - 1) {
-                    return false;
-                }
-                // handle numeric action column index
-                else if (actionColumnIndex > 1 && columnIndex == actionColumnIndex) {
-                    return false;
+                if (actionColumnIndex == 1) {
+                    ignoreColumns.add(shiftColumn);
+                } else if (actionColumnIndex == -1) {
+                    ignoreColumns.add(numberOfColumns - 1);
+                } else if (actionColumnIndex > 1) {
+                    ignoreColumns.add(actionColumnIndex);
                 }
             }
         }
-        return true;
+        return ignoreColumns;
     }
 
     /**
@@ -1249,7 +1244,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * @param formatType
      * @return
      */
-    private Map<String, String> getTableDataFormatMap(String formatType) {
+    protected Map<String, String> getExportTableFormatOptions(String formatType) {
         HashMap<String, String> map = new HashMap<String, String>();
 
         map.put("contentType", "text/plain");

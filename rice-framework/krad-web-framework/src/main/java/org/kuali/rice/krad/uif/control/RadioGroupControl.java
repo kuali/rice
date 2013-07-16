@@ -103,11 +103,9 @@ public class RadioGroupControl extends MultiValueControlBase {
         super.copyProperties(component);
         RadioGroupControl radioGroupControlCopy = (RadioGroupControl) component;
 
-        List<String> fieldsetClassesCopy = new ArrayList<String>();
-        for(String fieldsetClass : fieldsetClasses)   {
-            fieldsetClassesCopy.add(fieldsetClass);
+        if(fieldsetClasses != null) {
+            radioGroupControlCopy.setFieldsetClasses(new ArrayList<String>(fieldsetClasses));
         }
-        radioGroupControlCopy.setFieldsetClasses(fieldsetClassesCopy);
 
         radioGroupControlCopy.setDelimiter(this.getDelimiter());
     }

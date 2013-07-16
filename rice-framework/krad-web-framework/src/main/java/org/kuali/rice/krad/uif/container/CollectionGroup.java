@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -1156,9 +1157,11 @@ public class CollectionGroup extends Group implements DataBinding {
 
         collectionGroupCopy.setAddItemCssClass(this.addItemCssClass);
 
-        List<Action> addLineActions = new ArrayList<Action>();
-        for (Action addLineAction : this.addLineActions) {
-            addLineActions.add((Action)addLineAction.copy());
+        if(addLineActions != null) {
+            List<Action> addLineActions = Lists.newArrayListWithExpectedSize(getAddLineActions().size());
+            for (Action addLineAction : this.addLineActions) {
+                addLineActions.add((Action)addLineAction.copy());
+            }
         }
 
         collectionGroupCopy.setAddLineActions(addLineActions);
@@ -1193,12 +1196,14 @@ public class CollectionGroup extends Group implements DataBinding {
         collectionGroupCopy.setHighlightNewItems(this.highlightNewItems);
         collectionGroupCopy.setIncludeLineSelectionField(this.includeLineSelectionField);
 
-        List<Action> lineActions = new ArrayList<Action>();
-        for (Action lineAction : this.lineActions) {
-            lineActions.add((Action)lineAction.copy());
-        }
+        if(lineActions != null) {
+            List<Action> lineActions = Lists.newArrayListWithExpectedSize(getLineActions().size());
+            for (Action lineAction : this.lineActions) {
+                lineActions.add((Action)lineAction.copy());
+            }
 
-        collectionGroupCopy.setLineActions(lineActions);
+            collectionGroupCopy.setLineActions(lineActions);
+        }
         collectionGroupCopy.setLineSelectPropertyName(this.lineSelectPropertyName);
         collectionGroupCopy.setNewItemsCssClass(this.newItemsCssClass);
         collectionGroupCopy.setPropertyName(this.propertyName);
@@ -1209,12 +1214,14 @@ public class CollectionGroup extends Group implements DataBinding {
         collectionGroupCopy.setRenderSaveLineActions(this.renderSaveLineActions);
         collectionGroupCopy.setShowInactiveLines(this.showInactiveLines);
 
-        List<CollectionGroup> subCollections = new ArrayList<CollectionGroup>();
-        for (CollectionGroup subCollection : this.subCollections) {
-            subCollections.add((CollectionGroup)subCollection.copy());
-        }
+        if(subCollections != null) {
+            List<CollectionGroup> subCollections = Lists.newArrayListWithExpectedSize(getSubCollections().size());
+            for (CollectionGroup subCollection : this.subCollections) {
+                subCollections.add((CollectionGroup)subCollection.copy());
+            }
 
-        collectionGroupCopy.setSubCollections(subCollections);
+            collectionGroupCopy.setSubCollections(subCollections);
+        }
         collectionGroupCopy.setSubCollectionSuffix(this.subCollectionSuffix);
     }
 }

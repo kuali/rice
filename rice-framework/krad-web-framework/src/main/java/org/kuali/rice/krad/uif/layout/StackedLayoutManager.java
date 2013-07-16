@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.layout;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -509,11 +510,9 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
         StackedLayoutManager stackedLayoutManagerCopy = (StackedLayoutManager) layoutManager;
         stackedLayoutManagerCopy.setSummaryTitle(this.getSummaryTitle());
 
-        List<String> summaryFieldsCopy = new ArrayList<String>();
-        for(String summaryField : summaryFields)   {
-            summaryFieldsCopy.add(summaryField);
+        if(summaryFields != null) {
+            stackedLayoutManagerCopy.setSummaryFields(new ArrayList<String>(summaryFields));
         }
-        stackedLayoutManagerCopy.setSummaryFields(summaryFieldsCopy);
 
         if(this.addLineGroup != null) {
             stackedLayoutManagerCopy.setAddLineGroup((Group)this.getAddLineGroup().copy());
@@ -536,7 +535,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
         }
 
         if(this.stackedGroups != null) {
-            List<Group> stackedGroupsCopy = new ArrayList<Group>();
+            List<Group> stackedGroupsCopy = Lists.newArrayListWithExpectedSize(stackedGroups.size());
             for(Group stackedGroup : stackedGroups)   {
                 stackedGroupsCopy.add(stackedGroup);
             }

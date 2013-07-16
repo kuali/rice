@@ -364,10 +364,8 @@ public class GridLayoutManager extends LayoutManagerBase {
         gridLayoutManagerCopy.setRenderAlternatingHeaderColumns(this.isRenderAlternatingHeaderColumns());
         gridLayoutManagerCopy.setRenderRowFirstCellHeader(this.isRenderRowFirstCellHeader());
 
-        List<String> rowCssClassesCopy = new ArrayList<String>();
-        for(String rowCssClass : rowCssClasses)   {
-            rowCssClassesCopy.add(rowCssClass);
+        if(rowCssClasses != null) {
+            gridLayoutManagerCopy.setRowCssClasses(new ArrayList<String>(rowCssClasses));
         }
-        gridLayoutManagerCopy.setRowCssClasses(rowCssClassesCopy);
     }
 }

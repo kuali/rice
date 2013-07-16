@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -391,11 +392,9 @@ public class Suggest extends WidgetBase {
         suggestCopy.setValuePropertyName(this.getValuePropertyName());
         suggestCopy.setLabelPropertyName(this.getLabelPropertyName());
 
-        List<String> additionalProperties = new ArrayList<String>();
-        for (String additionalProperty : this.additionalPropertiesToReturn) {
-            additionalProperties.add(additionalProperty);
+        if(additionalPropertiesToReturn != null) {
+            suggestCopy.setAdditionalPropertiesToReturn(new ArrayList<String> (additionalPropertiesToReturn));
         }
-        suggestCopy.setAdditionalPropertiesToReturn(additionalProperties);
 
         suggestCopy.setReturnFullQueryObject(this.isReturnFullQueryObject());
         suggestCopy.setRetrieveAllSuggestions(this.isRetrieveAllSuggestions());

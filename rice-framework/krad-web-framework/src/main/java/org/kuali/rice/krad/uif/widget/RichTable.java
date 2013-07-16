@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -992,23 +994,17 @@ public class RichTable extends WidgetBase {
         richTableCopy.setNestedLevel(this.getNestedLevel());
         richTableCopy.setAaData(this.getAaData());
 
-        Set<String> hiddenColumnsCopy = new HashSet<String>();
-        for(String hiddenColumn : hiddenColumns)   {
-            hiddenColumnsCopy.add(hiddenColumn);
+        if(hiddenColumns != null) {
+            richTableCopy.setHiddenColumns(new HashSet<String>(hiddenColumns));
         }
-        richTableCopy.setHiddenColumns(hiddenColumnsCopy);
 
-        Set<String> sortableColumnsCopy = new HashSet<String>();
-        for(String sortableColumn : sortableColumns)   {
-            sortableColumnsCopy.add(sortableColumn);
+        if(sortableColumns != null) {
+            richTableCopy.setSortableColumns(new HashSet<String>(sortableColumns));
         }
-        richTableCopy.setSortableColumns(sortableColumnsCopy);
 
-        List<String> cellCssClassesCopy = new ArrayList<String>();
-        for(String cellCssClass : cellCssClasses)   {
-            cellCssClassesCopy.add(cellCssClass);
+        if(cellCssClasses != null) {
+            richTableCopy.setCssClasses(new ArrayList<String>(this.cellCssClasses));
         }
-        richTableCopy.setCssClasses(cellCssClassesCopy);
 
         richTableCopy.setAjaxSource(this.getAjaxSource());
         richTableCopy.setShowSearchAndExportOptions(this.isShowSearchAndExportOptions());

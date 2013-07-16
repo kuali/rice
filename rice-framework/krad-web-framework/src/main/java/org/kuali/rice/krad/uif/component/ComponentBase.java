@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.component;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -2009,12 +2010,13 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         componentCopy.setValign(this.valign);
         componentCopy.setWidth(this.width);
 
-        List<ComponentModifier> componentModifiers = new ArrayList<ComponentModifier>();
-        for (ComponentModifier componentModifer : this.componentModifiers) {
-            componentModifiers.add((ComponentModifier)componentModifer.copy());
+        if(componentModifiers != null) {
+            List<ComponentModifier> componentModifiers = Lists.newArrayListWithExpectedSize(getComponentModifiers().size());
+            for (ComponentModifier componentModifer : this.componentModifiers) {
+                componentModifiers.add((ComponentModifier)componentModifer.copy());
+            }
+            componentCopy.setComponentModifiers(componentModifiers);
         }
-
-        componentCopy.setComponentModifiers(componentModifiers);
 
         if (this.componentSecurity != null) {
             componentCopy.setComponentSecurity((ComponentSecurity)this.componentSecurity.copy());
@@ -2024,11 +2026,13 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
             componentCopy.setToolTip((Tooltip)this.toolTip.copy());
         }
 
-        List<PropertyReplacer> propertyReplacers = new ArrayList<PropertyReplacer>();
-        for (PropertyReplacer propertyReplacer : this.propertyReplacers) {
-            propertyReplacers.add((PropertyReplacer)propertyReplacer.copy());
+        if(propertyReplacers != null) {
+            List<PropertyReplacer> propertyReplacers = Lists.newArrayListWithExpectedSize(getPropertyReplacers().size());
+            for (PropertyReplacer propertyReplacer : this.propertyReplacers) {
+                propertyReplacers.add((PropertyReplacer)propertyReplacer.copy());
+            }
+            componentCopy.setPropertyReplacers(propertyReplacers);
         }
-        componentCopy.setPropertyReplacers(propertyReplacers);
 
         //DictionaryBeanBase properties
         componentCopy.setComponentCode(this.getComponentCode());

@@ -225,10 +225,8 @@ public class BoxLayoutManager extends LayoutManagerBase {
         boxLayoutManagerCopy.setItemStyle(this.getItemStyle());
         boxLayoutManagerCopy.setOrientation(this.getOrientation());
 
-        List<String> itemStyleClassesCopy = new ArrayList<String>();
-        for(String itemStyleClass : itemStyleClasses)   {
-            itemStyleClassesCopy.add(itemStyleClass);
+        if(itemStyleClasses != null) {
+            boxLayoutManagerCopy.setItemStyleClasses(new ArrayList<String>(itemStyleClasses));
         }
-        boxLayoutManagerCopy.setItemStyleClasses(itemStyleClassesCopy);
     }
 }

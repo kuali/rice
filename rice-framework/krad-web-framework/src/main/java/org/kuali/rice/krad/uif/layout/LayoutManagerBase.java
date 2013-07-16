@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.layout;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -378,29 +379,25 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
         //referenced :(
         layoutManagerBaseCopy.setContext(this.getContext());
 
-        List<String> libraryCssClassesCopy = new ArrayList<String>();
-        for(String libraryCssClass : libraryCssClasses)   {
-            libraryCssClassesCopy.add(libraryCssClass);
+        if(libraryCssClasses != null) {
+            layoutManagerBaseCopy.setLibraryCssClasses(new ArrayList<String>(libraryCssClasses));
         }
-        layoutManagerBaseCopy.setLibraryCssClasses(libraryCssClassesCopy);
 
-        List<String> cssClassesCopy = new ArrayList<String>();
-        for(String cssClass : cssClasses)   {
-            libraryCssClassesCopy.add(cssClass);
+        if(getCssClasses() != null) {
+            layoutManagerBaseCopy.setCssClasses(new ArrayList<String>(getCssClasses()));
         }
-        layoutManagerBaseCopy.setCssClasses(cssClassesCopy);
 
-        List<String> additionalCssClassesCopy = new ArrayList<String>();
-        for(String additionalCssClass : additionalCssClasses)   {
-            additionalCssClassesCopy.add(additionalCssClass);
+        if(getAdditionalCssClasses() != null) {
+            layoutManagerBaseCopy.setAdditionalCssClasses(new ArrayList<String>(getAdditionalCssClasses()));
         }
-        layoutManagerBaseCopy.setAdditionalCssClasses(additionalCssClassesCopy);
 
-        List<PropertyReplacer> propertyReplacersCopy = new ArrayList<PropertyReplacer>();
-        for(PropertyReplacer propertyReplacer : propertyReplacers)   {
-            propertyReplacersCopy.add((PropertyReplacer)propertyReplacer.copy());
+        if(getPropertyReplacers() != null) {
+            List<PropertyReplacer> propertyReplacersCopy = Lists.newArrayListWithExpectedSize(getPropertyReplacers().size());
+            for(PropertyReplacer propertyReplacer : propertyReplacers)   {
+                propertyReplacersCopy.add((PropertyReplacer)propertyReplacer.copy());
+            }
+            layoutManagerBaseCopy.setPropertyReplacers(propertyReplacersCopy);
         }
-        layoutManagerBaseCopy.setPropertyReplacers(propertyReplacersCopy);
 
         layoutManagerBaseCopy.setStyleClasses(this.getStyleClassesAsString());
 
@@ -410,22 +407,28 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
         layoutManagerBaseCopy.setNamespaceCode(this.getNamespaceCode());
 
         //UifDictionaryBeanBase properties
-        Map<String, String> expressionGraphCopy = Maps.newHashMapWithExpectedSize(this.getExpressionGraph().size());
-        for(Map.Entry expressionGraphEntry : getExpressionGraph().entrySet()) {
-            expressionGraphCopy.put(expressionGraphEntry.getKey().toString(),expressionGraphEntry.getValue().toString());
+        if(getExpressionGraph() != null) {
+            Map<String, String> expressionGraphCopy = Maps.newHashMapWithExpectedSize(this.getExpressionGraph().size());
+            for(Map.Entry expressionGraphEntry : getExpressionGraph().entrySet()) {
+                expressionGraphCopy.put(expressionGraphEntry.getKey().toString(),expressionGraphEntry.getValue().toString());
+            }
+            layoutManagerBaseCopy.setExpressionGraph(expressionGraphCopy);
         }
-        layoutManagerBaseCopy.setExpressionGraph(expressionGraphCopy);
 
-        Map<String, String> refreshExpressionGraphCopy = Maps.newHashMapWithExpectedSize(this.getRefreshExpressionGraph().size());
-        for(Map.Entry refreshExpressionGraphEntry : getRefreshExpressionGraph().entrySet()) {
-            expressionGraphCopy.put(refreshExpressionGraphEntry.getKey().toString(),refreshExpressionGraphEntry.getValue().toString());
+        if(getRefreshExpressionGraph() != null) {
+            Map<String, String> refreshExpressionGraphCopy = Maps.newHashMapWithExpectedSize(this.getRefreshExpressionGraph().size());
+            for(Map.Entry refreshExpressionGraphEntry : getRefreshExpressionGraph().entrySet()) {
+                refreshExpressionGraphCopy.put(refreshExpressionGraphEntry.getKey().toString(),refreshExpressionGraphEntry.getValue().toString());
+            }
+            layoutManagerBaseCopy.setRefreshExpressionGraph(refreshExpressionGraphCopy);
         }
-        layoutManagerBaseCopy.setRefreshExpressionGraph(refreshExpressionGraphCopy);
 
-        Map<String, String> propertyExpressionsCopy = Maps.newHashMapWithExpectedSize(this.getPropertyExpressions().size());
-        for(Map.Entry propertyExpressionsEntry : getPropertyExpressions().entrySet()) {
-            propertyExpressionsCopy.put(propertyExpressionsEntry.getKey().toString(),propertyExpressionsEntry.getValue().toString());
+        if(getPropertyExpressions() != null) {
+            Map<String, String> propertyExpressionsCopy = Maps.newHashMapWithExpectedSize(this.getPropertyExpressions().size());
+            for(Map.Entry propertyExpressionsEntry : getPropertyExpressions().entrySet()) {
+                propertyExpressionsCopy.put(propertyExpressionsEntry.getKey().toString(),propertyExpressionsEntry.getValue().toString());
+            }
+            layoutManagerBaseCopy.setRefreshExpressionGraph(propertyExpressionsCopy);
         }
-        layoutManagerBaseCopy.setRefreshExpressionGraph(propertyExpressionsCopy);
     }
 }

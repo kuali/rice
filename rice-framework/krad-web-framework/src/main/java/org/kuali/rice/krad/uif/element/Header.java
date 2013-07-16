@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.element;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -472,12 +473,13 @@ public class Header extends ContentElementBase {
         headerCopy.setHeaderTagStyle(this.headerTagStyle);
         headerCopy.setHeaderText(this.headerText);
 
-        List<Component> inlineComponents = new ArrayList<Component>();
-        for (Component inlineComponent : this.inlineComponents) {
-            inlineComponents.add((Component)inlineComponent.copy());
+        if(inlineComponents != null) {
+            List<Component> inlineComponents = Lists.newArrayListWithExpectedSize(getInlineComponents().size());
+            for (Component inlineComponent : this.inlineComponents) {
+                inlineComponents.add((Component)inlineComponent.copy());
+            }
+            headerCopy.setInlineComponents(inlineComponents);
         }
-
-        headerCopy.setInlineComponents(inlineComponents);
 
         if (this.lowerGroup != null) {
             headerCopy.setLowerGroup((Group)this.lowerGroup.copy());

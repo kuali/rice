@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.modifier;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -434,12 +435,13 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
         compareFieldCreateModifierCopy.setDefaultOrderSequence(this.defaultOrderSequence);
         compareFieldCreateModifierCopy.setGenerateCompareHeaders(this.generateCompareHeaders);
 
-        List<ComparableInfo> comparables = new ArrayList<ComparableInfo>();
-        for (ComparableInfo comparable : this.comparables) {
-            comparables.add(comparable.clone());
+        if(comparables != null) {
+            List<ComparableInfo> comparables = Lists.newArrayListWithExpectedSize(getComparables().size());
+            for (ComparableInfo comparable : this.comparables) {
+                comparables.add(comparable.clone());
+            }
+            compareFieldCreateModifierCopy.setComparables(comparables);
         }
-
-        compareFieldCreateModifierCopy.setComparables(comparables);
 
         if (this.headerFieldPrototype != null) {
             compareFieldCreateModifierCopy.setHeaderFieldPrototype((Header)this.headerFieldPrototype.copy());

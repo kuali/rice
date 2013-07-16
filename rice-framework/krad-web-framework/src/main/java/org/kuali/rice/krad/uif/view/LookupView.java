@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.view;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
@@ -814,7 +815,7 @@ public class LookupView extends FormView {
         }
 
         if(this.criteriaFields != null) {
-            List<Component> criteriaFieldsCopy = new ArrayList<Component>();
+            List<Component> criteriaFieldsCopy = Lists.newArrayListWithExpectedSize(criteriaFields.size());
             for(Component criteriaField : criteriaFields)   {
                 criteriaFieldsCopy.add((Component)criteriaField.copy());
             }
@@ -822,19 +823,15 @@ public class LookupView extends FormView {
         }
 
         if(this.resultFields != null) {
-            List<Component> resultFieldsCopy = new ArrayList<Component>();
+            List<Component> resultFieldsCopy = Lists.newArrayListWithExpectedSize(resultFields.size());
             for(Component resultField : resultFields)   {
                 resultFieldsCopy.add((Component)resultField.copy());
             }
             lookupViewCopy.setResultFields(resultFieldsCopy);
         }
 
-        if(this.resultFields != null) {
-            List<String> defaultSortAttributeNamesCopy = new ArrayList<String>();
-            for(String defaultSortAttributeName : defaultSortAttributeNames)   {
-                defaultSortAttributeNamesCopy.add(defaultSortAttributeName);
-            }
-            lookupViewCopy.setDefaultSortAttributeNames(defaultSortAttributeNamesCopy);
+        if(this.defaultSortAttributeNames != null) {
+            lookupViewCopy.setDefaultSortAttributeNames(new ArrayList<String>(defaultSortAttributeNames));
         }
 
         lookupViewCopy.setDefaultSortAscending(this.isDefaultSortAscending());

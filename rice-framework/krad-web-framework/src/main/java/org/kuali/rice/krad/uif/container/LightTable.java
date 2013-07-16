@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -699,33 +700,37 @@ public class LightTable extends Group implements DataBinding {
         lightTableCopy.setPropertyName(this.getPropertyName());
         lightTableCopy.setBindingInfo((BindingInfo)this.getBindingInfo().copy());
 
-        List<Label> headerLabelsCopy = new ArrayList<Label>();
-        for(Label headerLabel : headerLabels)   {
-            headerLabelsCopy.add((Label)headerLabel.copy());
+        if(headerLabels != null) {
+            List<Label> headerLabelsCopy = Lists.newArrayListWithExpectedSize(headerLabels.size());
+            for(Label headerLabel : headerLabels)   {
+                headerLabelsCopy.add((Label)headerLabel.copy());
+            }
+            lightTableCopy.setHeaderLabels(headerLabelsCopy);
         }
-        lightTableCopy.setHeaderLabels(headerLabelsCopy);
 
         if (this.getRichTable() != null) {
             lightTableCopy.setRichTable((RichTable) this.getRichTable().copy());
         }
 
-        Map<String, String> expressionConversionMapCopy = Maps.newHashMapWithExpectedSize(this.getExpressionConversionMap().size());
-        for(Map.Entry expressionConversionMapEntry : getExpressionConversionMap().entrySet()) {
-            expressionConversionMapCopy.put(expressionConversionMapEntry.getKey().toString(),expressionConversionMapEntry.getValue().toString());
+        if(expressionConversionMap != null) {
+            Map<String, String> expressionConversionMapCopy = Maps.newHashMapWithExpectedSize(this.getExpressionConversionMap().size());
+            for(Map.Entry expressionConversionMapEntry : getExpressionConversionMap().entrySet()) {
+                expressionConversionMapCopy.put(expressionConversionMapEntry.getKey().toString(),expressionConversionMapEntry.getValue().toString());
+            }
+            lightTableCopy.setExpressionConversionMap(expressionConversionMapCopy);
         }
-        lightTableCopy.setExpressionConversionMap(expressionConversionMapCopy);
 
-        Map<String, String> renderIdExpressionMapCopy = Maps.newHashMapWithExpectedSize(this.getRenderIdExpressionMap().size());
-        for(Map.Entry renderIdExpressionMapEntry : getRenderIdExpressionMap().entrySet()) {
-            renderIdExpressionMapCopy.put(renderIdExpressionMapEntry.getKey().toString(),renderIdExpressionMapEntry.getValue().toString());
+        if(renderIdExpressionMap != null) {
+            Map<String, String> renderIdExpressionMapCopy = Maps.newHashMapWithExpectedSize(this.getRenderIdExpressionMap().size());
+            for(Map.Entry renderIdExpressionMapEntry : getRenderIdExpressionMap().entrySet()) {
+                renderIdExpressionMapCopy.put(renderIdExpressionMapEntry.getKey().toString(),renderIdExpressionMapEntry.getValue().toString());
+            }
+            lightTableCopy.setRenderIdExpressionMap(renderIdExpressionMapCopy);
         }
-        lightTableCopy.setRenderIdExpressionMap(renderIdExpressionMapCopy);
 
-        List<String> initialComponentIdsCopy = new ArrayList<String>();
-        for(String initialComponentId : initialComponentIds)   {
-            initialComponentIdsCopy.add(initialComponentId);
+        if(initialComponentIds != null) {
+            lightTableCopy.setInitialComponentIds(new ArrayList<String>(initialComponentIds));
         }
-        lightTableCopy.setInitialComponentIds(initialComponentIdsCopy);
 
         lightTableCopy.setEmptyTable(this.isEmptyTable());
     }

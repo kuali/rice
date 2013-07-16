@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import com.google.common.collect.Lists;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 
@@ -161,32 +162,43 @@ public class BreadcrumbOptions implements Serializable {
     protected <T> void copyProperties(T breadcrumbOptions) {
         BreadcrumbOptions breadcrumbOptionsCopy = (BreadcrumbOptions) breadcrumbOptions;
 
-        List<BreadcrumbItem> breadcrumbOverrides = new ArrayList<BreadcrumbItem>();
-        for (BreadcrumbItem breadcrumbOverride : this.breadcrumbOverrides) {
-            breadcrumbOverrides.add((BreadcrumbItem)breadcrumbOverride.copy());
+        if(breadcrumbOverrides != null) {
+            List<BreadcrumbItem> breadcrumbOverrides = Lists.newArrayListWithExpectedSize(getBreadcrumbOverrides().size());
+            for (BreadcrumbItem breadcrumbOverride : this.breadcrumbOverrides) {
+                breadcrumbOverrides.add((BreadcrumbItem)breadcrumbOverride.copy());
+            }
+
+            breadcrumbOptionsCopy.setBreadcrumbOverrides(breadcrumbOverrides);
         }
 
-        breadcrumbOptionsCopy.setBreadcrumbOverrides(breadcrumbOverrides);
+        if(homewardPathBreadcrumbs != null) {
+            List<BreadcrumbItem> homewardPathBreadcrumbs = Lists.newArrayListWithExpectedSize(
+                    getHomewardPathBreadcrumbs().size());
+            for (BreadcrumbItem homewardPathBreadcrumb : this.homewardPathBreadcrumbs) {
+                homewardPathBreadcrumbs.add((BreadcrumbItem)homewardPathBreadcrumb.copy());
+            }
 
-        List<BreadcrumbItem> homewardPathBreadcrumbs = new ArrayList<BreadcrumbItem>();
-        for (BreadcrumbItem homewardPathBreadcrumb : this.homewardPathBreadcrumbs) {
-            homewardPathBreadcrumbs.add((BreadcrumbItem)homewardPathBreadcrumb.copy());
+            breadcrumbOptionsCopy.setHomewardPathBreadcrumbs(homewardPathBreadcrumbs);
         }
 
-        breadcrumbOptionsCopy.setHomewardPathBreadcrumbs(homewardPathBreadcrumbs);
+        if(prePageBreadcrumbs != null) {
+            List<BreadcrumbItem> prePageBreadcrumbs = Lists.newArrayListWithExpectedSize(
+                    getPrePageBreadcrumbs().size());
+            for (BreadcrumbItem prePageBreadcrumb : this.prePageBreadcrumbs) {
+                prePageBreadcrumbs.add((BreadcrumbItem)prePageBreadcrumb.copy());
+            }
 
-        List<BreadcrumbItem> prePageBreadcrumbs = new ArrayList<BreadcrumbItem>();
-        for (BreadcrumbItem prePageBreadcrumb : this.prePageBreadcrumbs) {
-            prePageBreadcrumbs.add((BreadcrumbItem)prePageBreadcrumb.copy());
+            breadcrumbOptionsCopy.setPrePageBreadcrumbs(prePageBreadcrumbs);
         }
 
-        breadcrumbOptionsCopy.setPrePageBreadcrumbs(prePageBreadcrumbs);
+        if(preViewBreadcrumbs != null) {
+            List<BreadcrumbItem> preViewBreadcrumbs = Lists.newArrayListWithExpectedSize(
+                    getPreViewBreadcrumbs().size());
+            for (BreadcrumbItem preViewBreadcrumb : this.preViewBreadcrumbs) {
+                preViewBreadcrumbs.add((BreadcrumbItem)preViewBreadcrumb.copy());
+            }
 
-        List<BreadcrumbItem> preViewBreadcrumbs = new ArrayList<BreadcrumbItem>();
-        for (BreadcrumbItem preViewBreadcrumb : this.preViewBreadcrumbs) {
-            preViewBreadcrumbs.add((BreadcrumbItem)preViewBreadcrumb.copy());
+            breadcrumbOptionsCopy.setPreViewBreadcrumbs(preViewBreadcrumbs);
         }
-
-        breadcrumbOptionsCopy.setPreViewBreadcrumbs(preViewBreadcrumbs);
     }
 }

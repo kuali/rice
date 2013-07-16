@@ -852,17 +852,21 @@ public class QuickFinder extends WidgetBase {
         quickFinderCopy.setViewName(this.getViewName());
         quickFinderCopy.setReferencesToRefresh(this.getReferencesToRefresh());
 
-        Map<String, String> fieldConversionsCopy = Maps.newHashMapWithExpectedSize(fieldConversions.size());
-        for(Map.Entry fieldConversion : fieldConversions.entrySet()) {
-            fieldConversionsCopy.put(fieldConversion.getKey().toString(),fieldConversion.getValue().toString());
+        if(fieldConversions != null) {
+            Map<String, String> fieldConversionsCopy = Maps.newHashMapWithExpectedSize(fieldConversions.size());
+            for(Map.Entry fieldConversion : fieldConversions.entrySet()) {
+                fieldConversionsCopy.put(fieldConversion.getKey().toString(),fieldConversion.getValue().toString());
+            }
+            quickFinderCopy.setFieldConversions(fieldConversionsCopy);
         }
-        quickFinderCopy.setFieldConversions(fieldConversionsCopy);
 
-        Map<String, String> lookupParametersCopy = Maps.newHashMapWithExpectedSize(lookupParameters.size());
-        for(Map.Entry lookupParameter : lookupParameters.entrySet()) {
-            lookupParametersCopy.put(lookupParameter.getKey().toString(),lookupParameter.getValue().toString());
+        if(lookupParameters != null) {
+            Map<String, String> lookupParametersCopy = Maps.newHashMapWithExpectedSize(lookupParameters.size());
+            for(Map.Entry lookupParameter : lookupParameters.entrySet()) {
+                lookupParametersCopy.put(lookupParameter.getKey().toString(),lookupParameter.getValue().toString());
+            }
+            quickFinderCopy.setLookupParameters(lookupParametersCopy);
         }
-        quickFinderCopy.setLookupParameters(lookupParametersCopy);
 
         quickFinderCopy.setReadOnlySearchFields(this.getReadOnlySearchFields());
         quickFinderCopy.setHideReturnLink(this.getHideReturnLink());

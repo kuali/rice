@@ -602,11 +602,13 @@ public class Inquiry extends WidgetBase {
         inquiryCopy.setAdjustInquiryParameters(this.isAdjustInquiryParameters());
         inquiryCopy.setParentReadOnly(this.isParentReadOnly());
 
-        Map<String, String> inquiryParametersCopy = Maps.newHashMapWithExpectedSize(inquiryParameters.size());
-            for(Map.Entry inquiryParameter : inquiryParameters.entrySet()) {
-                inquiryParametersCopy.put(inquiryParameter.getKey().toString(),inquiryParameter.getValue().toString());
-            }
-        inquiryCopy.setInquiryParameters(inquiryParametersCopy);
+        if(inquiryParameters != null) {
+            Map<String, String> inquiryParametersCopy = Maps.newHashMapWithExpectedSize(inquiryParameters.size());
+                for(Map.Entry inquiryParameter : inquiryParameters.entrySet()) {
+                    inquiryParametersCopy.put(inquiryParameter.getKey().toString(),inquiryParameter.getValue().toString());
+                }
+            inquiryCopy.setInquiryParameters(inquiryParametersCopy);
+        }
 
         if(fieldBindingInfo != null) {
             inquiryCopy.setFieldBindingInfo((BindingInfo)fieldBindingInfo.copy());

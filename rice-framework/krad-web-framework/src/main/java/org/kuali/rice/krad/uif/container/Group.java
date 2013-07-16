@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -388,9 +389,11 @@ public class Group extends ContainerBase {
         groupCopy.setFieldBindByNamePrefix(this.fieldBindByNamePrefix);
         groupCopy.setFieldBindingObjectPath(this.fieldBindingObjectPath);
 
-        List<Component> items = new ArrayList<Component>();
-        for (Component item : this.items) {
-            items.add((Component)item.copy());
+        if(items != null) {
+            List<Component> items = Lists.newArrayListWithExpectedSize(getItems().size());
+            for (Component item : this.items) {
+                items.add((Component)item.copy());
+            }
         }
 
         groupCopy.setItems(items);

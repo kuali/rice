@@ -217,8 +217,10 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
             throw new IllegalArgumentException("invalid (blank) dataObjectClass");
         }
 
-        MaintenanceDocumentEntry entry = (MaintenanceDocumentEntry) getDataDictionary().getMaintenanceDocumentEntryForBusinessObjectClass(businessObjectClass);
-        return entry;
+        // Treat KRAD documents as non existing (KULRICE-9909)
+        org.kuali.rice.krad.datadictionary.MaintenanceDocumentEntry
+                entry = getDataDictionary().getMaintenanceDocumentEntryForBusinessObjectClass(businessObjectClass);
+        return (entry instanceof MaintenanceDocumentEntry) ? (MaintenanceDocumentEntry) entry : null;
     }
 
     /**

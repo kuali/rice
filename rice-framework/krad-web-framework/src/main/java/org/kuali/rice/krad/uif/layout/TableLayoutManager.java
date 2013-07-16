@@ -1497,7 +1497,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         detailsFieldGroup.setId(collectionGroup.getId() + "_detGroup");
         view.assignComponentIds(detailsFieldGroup);
 
-
         List<Component> theItems = new ArrayList<Component>();
         theItems.add(detailsFieldGroup);
         theItems.addAll(collectionGroup.getItems());

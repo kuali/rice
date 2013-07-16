@@ -997,3 +997,22 @@ div#Demo-BoxLayoutManager-View .demo-borderBottom{
     padding-top: 0;
     padding-bottom: 0;
 }
+
+.demo-even {
+    background-color: #00CC66;
+}
+
+.demo-odd {
+    background-color: #00CCFF;
+}
+
+.demo-border {
+    border: 1px solid black;
+    margin: -1px;
+    margin-left: -21px;
+}
+
+.demo-border > div[class*="span"] {
+    border-right: 1px solid black;
+    margin-right: -1px;
+}

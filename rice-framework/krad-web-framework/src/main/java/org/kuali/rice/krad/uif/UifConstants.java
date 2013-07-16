@@ -148,6 +148,12 @@ public class UifConstants {
         public static final String ROW_SPAN = "rowSpan";
     }
 
+    public static class RowSelection {
+        public static final String ALL = "all";
+        public static final String ODD = "odd";
+        public static final String EVEN = "even";
+    }
+
     public static class IdSuffixes {
         public static final String ADD_LINE = "_add";
         public static final String CONTROL = "_control";

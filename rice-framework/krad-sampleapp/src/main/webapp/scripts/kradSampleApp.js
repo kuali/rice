@@ -112,9 +112,11 @@ function linkSelection() {
  * @param control the large example dropdown control
  */
 function handleTabSwap(control) {
-    var tab = jQuery(control).val();
-    if (tab != undefined && tab != "") {
-        var tabNum = parseInt(tab);
+    var tab = jQuery(control);
+    var tabValue = tab.val();
+    if (tabValue != undefined && tabValue != "") {
+        var tabDom = tab[0];
+        var tabNum = tabDom.selectedIndex;
         jQuery("#ComponentLibrary-TabGroup_tabs").tabs("option", "active", tabNum);
     }
     else{

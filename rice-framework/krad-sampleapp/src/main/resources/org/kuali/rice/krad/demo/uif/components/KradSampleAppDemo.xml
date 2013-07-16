@@ -474,6 +474,8 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-GridLayoutManager-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Box Layout"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-BoxLayoutManager-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Css Grid Layout"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CssGridLayoutManager-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="List Layout"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ListLayoutManager-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Stacked Layout"

@@ -65,6 +65,11 @@ public class KradSampleAppForm extends UifFormBase {
     private String inputField23;
     private String inputField24;
     private String inputField25;
+    private String inputField26;
+    private String inputField27;
+    private String inputField28;
+    private String inputField29;
+    private String inputField30;
 
     private boolean booleanField1 = false;
     private boolean booleanField2 = false;
@@ -624,6 +629,46 @@ public class KradSampleAppForm extends UifFormBase {
 
     public void setInputField25(String inputField25) {
         this.inputField25 = inputField25;
+    }
+
+    public String getInputField26() {
+        return inputField26;
+    }
+
+    public void setInputField26(String inputField26) {
+        this.inputField26 = inputField26;
+    }
+
+    public String getInputField27() {
+        return inputField27;
+    }
+
+    public void setInputField27(String inputField27) {
+        this.inputField27 = inputField27;
+    }
+
+    public String getInputField28() {
+        return inputField28;
+    }
+
+    public void setInputField28(String inputField28) {
+        this.inputField28 = inputField28;
+    }
+
+    public String getInputField29() {
+        return inputField29;
+    }
+
+    public void setInputField29(String inputField29) {
+        this.inputField29 = inputField29;
+    }
+
+    public String getInputField30() {
+        return inputField30;
+    }
+
+    public void setInputField30(String inputField30) {
+        this.inputField30 = inputField30;
     }
 
     public String getMessageField1() {

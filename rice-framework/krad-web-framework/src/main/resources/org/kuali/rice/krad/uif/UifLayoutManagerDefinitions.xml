@@ -70,11 +70,7 @@
     </property>
     <!-- this means items which don't define their colSpan will take up a whole "row" -->
     <property name="defaultItemColSpan" value="9"/>
-    <property name="rowCssClasses">
-      <map>
-        <entry key="all" value="row"/>
-      </map>
-    </property>
+    <property name="rowLayoutCssClass" value="row"/>
   </bean>
 
   <bean id="Uif-FixedCssGridLayout"  parent="Uif-FixedCssGridLayout-parentBean"/>
@@ -98,11 +94,7 @@
         <value>uif-fluidCssGridLayout</value>
       </list>
     </property>
-    <property name="rowCssClasses">
-      <map>
-        <entry key="all" value="row-fluid"/>
-      </map>
-    </property>
+    <property name="rowLayoutCssClass" value="row-fluid"/>
   </bean>
 
   <!--Grid Layout Managers-->

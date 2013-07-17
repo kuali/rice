@@ -28,7 +28,7 @@
                     <legend style="display: none">${field.label!}</legend>
             </#if>
 
-            <#local quickfinderInputOnly=(field.widgetInputOnly!false) && (field.quickfinder.dataObjectClassName?has_content) />
+            <#local quickfinderInputOnly=(field.widgetInputOnly!false) && ((field.quickfinder.dataObjectClassName)!""?has_content) />
 
             <#-- render field value (if read-only/quickfinder-input-only) or control (if edit) -->
             <#if readOnly || quickfinderInputOnly>

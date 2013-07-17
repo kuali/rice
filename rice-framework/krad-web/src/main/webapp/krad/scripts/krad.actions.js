@@ -292,12 +292,31 @@ function validateLine(collectionName, lineIndex) {
 function validateLineFields(controlsToValidate) {
     var valid = true;
 
+    // skip completely if client validation is off
+    if (!validateClient) {
+        return valid;
+    }
+
     jQuery.watermark.hideAll();
+
+    // Turn on this flag to avoid prematurely writing out messages which will cause performance issues if MANY
+    // fields have validation errors simultaneously (first we are only checking for errors, not checking and
+    // writing simultaneously like normal)
+    clientErrorExistsCheck = true;
+
+    // Temporarily turn off this flag to avoid traversing unneeded logic (all messages will be shown at the end)
+    var tempMessagesSummariesShown = messageSummariesShown;
+    messageSummariesShown = false;
 
     controlsToValidate.each(function () {
         var control = jQuery(this);
-        control.removeClass("ignoreValid");
+        var fieldId = jQuery(this).closest("div[data-role='InputField']").attr("id");
+        var field = jQuery("#" + fieldId);
+        var parent = field.data("parent");
         var validValue = true;
+
+        // remove ignoreValid because there are issues with the plugin if it stays on
+        control.removeClass("ignoreValid");
 
         haltValidationMessaging = true;
 
@@ -307,6 +326,9 @@ function validateLineFields(controlsToValidate) {
                 validValue = false;
             }
         }
+
+        var data = getValidationData(field);
+        handleMessagesAtGroup(parent, fieldId, data, true);
 
         haltValidationMessaging = false;
 
@@ -321,6 +343,17 @@ function validateLineFields(controlsToValidate) {
 
         control.addClass("ignoreValid");
     });
+
+    // Toggle the flag back to default
+    clientErrorExistsCheck = false;
+
+    // Message summaries are going to be shown
+    messageSummariesShown = tempMessagesSummariesShown;
+
+    if (messageSummariesShown){
+        // Finally, write the result of the validation messages
+        writeMessagesForPage();
+    }
 
     jQuery.watermark.showAll();
 

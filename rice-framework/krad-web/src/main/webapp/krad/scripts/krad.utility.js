@@ -346,8 +346,15 @@ function runHiddenScripts(id, isSelector, skipValidationBubbling) {
             initBubblePopups();
 
             jQuery(selector).find("div[data-role='InputField']").andSelf().filter("div[data-role='InputField']").each(function () {
-                handleMessagesAtField(jQuery(this).attr('id'));
+                var id = jQuery(this).attr('id');
+                var field = jQuery("#" + id);
+                var data = getValidationData(field);
+                var parent = field.data("parent");
+                writeMessagesAtField(id);
+                handleMessagesAtGroup(parent, id, data, true);
             });
+
+            writeMessagesForPage();
         }
     }
     else {

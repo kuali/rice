@@ -524,11 +524,9 @@ function handleMessagesAtGroup(id, fieldId, fieldData, pageSetupPhase) {
 
         //write messages for this group
         if (!pageSetupPhase) {
-            //Display counts in the header even if messages aren't displayed at that level
-            data = calculateMessageTotals(id, data);
-            displayHeaderMessageCount(id, data);
             var forceWrite = jQuery("div[data-messages_for='" + id + "']").find("li[data-messageitemfor='" + fieldId + "']").length;
             writeMessagesForGroup(id, data, forceWrite);
+            displayHeaderMessageCount(id, data);
         }
     }
 
@@ -576,24 +574,22 @@ function writeMessagesForGroup(id, data, forceWrite) {
             }
         }
 
+        //init empty params
+        if (!data.errors) {
+            data.errors = [];
+        }
+        if (!data.warnings) {
+            data.warnings = [];
+        }
+        if (!data.info) {
+            data.info = [];
+        }
+
+        data = calculateMessageTotals(id, data);
+
         if (showMessages) {
 
             var newList = jQuery("<ul class='" + kradVariables.VALIDATION_MESSAGES_CLASS + "'></ul>");
-
-            //init data for group
-            if (data.messageTotal == undefined) {
-                //init empty params
-                if (!data.errors) {
-                    data.errors = [];
-                }
-                if (!data.warnings) {
-                    data.warnings = [];
-                }
-                if (!data.info) {
-                    data.info = [];
-                }
-                calculateMessageTotals(id, data);
-            }
 
             if (data.messageTotal || jQuery("span.uif-correctedError").length || forceWrite) {
 

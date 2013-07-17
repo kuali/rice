@@ -88,7 +88,15 @@
         </property>
 
         <property name="layoutManager.rowDetailsGroup">
-            <ref bean="rollupTransactionList"/>
+          <bean parent="Uif-VerticalBoxGroup">
+            <property name="items">
+              <list>
+                <bean parent="Uif-InputField" p:propertyName="chargeAmount" p:label="Charges" p:style="text-align: right; width: 10%;"/>
+                <ref bean="rollupTransactionList"/>
+              </list>
+            </property>
+          </bean>
+
         </property>
 
     </bean>
@@ -100,6 +108,7 @@
         <property name="layoutManager.sequencePropertyName" value="id" />
         <property name="layoutManager.richTable.render" value="true" />
         <property name="layoutManager.renderSequenceField" value="false"/>
+        <property name="refreshWhenChangedPropertyNames" value="#lp.chargeAmount"/>
         <property name="renderAddLine" value="false" />
         <property name="style" value="width: 100%;"/>
         <property name="layoutManager.richTable.templateOptions">
@@ -265,7 +274,11 @@
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="transactionDisplayType" p:label="Transaction Type">
-                <property name="suggest">
+                <property name="control">
+                <bean parent="Uif-TextAreaControl" p:rows="5" p:cols="40"
+                p:style="resize:none;"/>
+                </property>
+<!--                <property name="suggest">
                   <bean parent="Uif-Suggest" p:render="true" p:retrieveAllSuggestions="true">
                     <property name="suggestOptions">
                       <list>
@@ -280,7 +293,7 @@
                       </map>
                     </property>
                   </bean>
-                </property>
+                </property>-->
               </bean>
             </list>
           </property>

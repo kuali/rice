@@ -392,7 +392,9 @@ public class ViewIndex implements Serializable {
      * @param sequenceVal current sequence value to insert into the snapshot
      */
     public void addSequenceValueToSnapshot(String componentId, int sequenceVal) {
-        idSequenceSnapshot.put(componentId, sequenceVal);
+        if (!idSequenceSnapshot.containsKey(componentId)){
+            idSequenceSnapshot.put(componentId, sequenceVal);
+        }
     }
 
     /**

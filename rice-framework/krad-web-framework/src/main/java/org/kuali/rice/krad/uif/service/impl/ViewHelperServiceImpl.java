@@ -305,6 +305,28 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         view.getViewIndex().indexComponent(component);
 
         Map<String, Integer> visitedIds = new HashMap<String, Integer>();
+
+        // force binding update to occur
+        if (component instanceof Group || component instanceof FieldGroup) {
+            List<CollectionGroup> origCollectionGroups = ComponentUtils.getComponentsOfTypeDeep(origComponent, CollectionGroup.class);
+            List<CollectionGroup> collectionGroups = ComponentUtils.getComponentsOfTypeDeep(component, CollectionGroup.class);
+            for (int i = 0; i < collectionGroups.size(); i++) {
+                CollectionGroup origCollectionGroup = origCollectionGroups.get(i);
+                CollectionGroup collectionGroup = collectionGroups.get(i);
+
+                String prefix = origCollectionGroup.getBindingInfo().getBindByNamePrefix();
+                if (StringUtils.isNotBlank(prefix)
+                        && StringUtils.isBlank(collectionGroup.getBindingInfo().getBindByNamePrefix())){
+                    ComponentUtils.prefixBindingPath(collectionGroup, prefix);
+                }
+
+                //if (collectionGroup.getBindingInfo().get)
+
+                String lineSuffix = origCollectionGroup.getSubCollectionSuffix();
+                collectionGroup.setSubCollectionSuffix(lineSuffix);
+            }
+        }
+
         performComponentApplyModel(view, component, model, visitedIds);
         view.getViewIndex().indexComponent(component);
 

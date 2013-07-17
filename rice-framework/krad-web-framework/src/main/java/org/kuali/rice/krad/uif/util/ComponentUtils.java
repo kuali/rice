@@ -21,6 +21,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.component.Ordered;
+import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.field.Field;
@@ -328,15 +329,17 @@ public class ComponentUtils {
             layoutManager.setId(layoutManager.getId() + idSuffix);
         }
 
-        for (Component nested : component.getComponentsForLifecycle()) {
-            if (nested != null) {
-                updateIdsWithSuffixNested(nested, idSuffix);
+        if (!(component instanceof CollectionGroup)){
+            for (Component nested : component.getComponentsForLifecycle()) {
+                if (nested != null) {
+                    updateIdsWithSuffixNested(nested, idSuffix);
+                }
             }
-        }
 
-        for (Component nested : component.getPropertyReplacerComponents()) {
-            if (nested != null) {
-                updateIdsWithSuffixNested(nested, idSuffix);
+            for (Component nested : component.getPropertyReplacerComponents()) {
+                if (nested != null) {
+                    updateIdsWithSuffixNested(nested, idSuffix);
+                }
             }
         }
     }

@@ -136,12 +136,11 @@ class DictionaryConverter {
                 String path = outputResourceDir + ConversionUtils.getRelativePath(inputResourceDir, busObjFile.path)
                 String extension = FilenameUtils.getExtension(busObjFile.path);
                 String filename = objName + "KradBO." + extension;
-                File outputFile = new File(path, filename);
 
                 // process data dictionary beans for any business objects and related attributes
                 if (ddRootNode != null) {
                     transformBusinessObjectsAndDefinitions(ddRootNode, objName)
-                    generateSpringBeanFile(ddRootNode, outputFile)
+                    generateSpringBeanFile(ddRootNode, path, filename)
                 }
             } catch (FileNotFoundException ex) {
                 log.error("Error - Missing Business Class File")
@@ -166,12 +165,11 @@ class DictionaryConverter {
                 def basename = FilenameUtils.getBaseName(maintDocFile.path);
                 def extension = FilenameUtils.getExtension(maintDocFile.path);
                 String filename = objName + "KradMaintenanceDocument." + extension;
-                File outputFile = new File(path, filename);
                 def mdocRootNode = parseSpringXml(maintDocFile.text)
 
                 if (mdocRootNode != null) {
                     transformMaintenanceDocument(mdocRootNode, objName)
-                    generateSpringBeanFile(mdocRootNode, outputFile)
+                    generateSpringBeanFile(mdocRootNode, path, filename)
                 }
 
             } catch (FileNotFoundException ex) {
@@ -394,14 +392,14 @@ class DictionaryConverter {
      * @param rootBean
      * @param outputFile
      */
-    private void generateSpringBeanFile(rootBean, File outputFile) {
+    private void generateSpringBeanFile(rootBean, path, filename) {
         try {
             def writer = new StringWriter()
             XmlUtil.serialize(rootBean, writer)
             def result = writer.toString()
-            log.finer "Result for " + outputFile.name + ": " + result + "\n\n"
+            log.finer "Result for " + filename + ": " + result + "\n\n"
             //result = modifyBeanSchema(result)
-            ConversionUtils.buildFile(outputFile.absolutePath, outputFile.name, result)
+            ConversionUtils.buildFile(path, filename, result)
         } catch (FileNotFoundException ex) {
             log.finer "unable to generate output for " + outputFile.name
             errorText()
@@ -660,6 +658,7 @@ class DictionaryConverter {
         }
         def lookupParentBeanNode = beanNode
         def titlePropNode = lookupParentBeanNode.property.find { it.@name == "title" }
+        def menubarPropNode = lookupParentBeanNode.property.find { it.@name == "menubar"}
         def lookupFieldsPropertyNode = lookupParentBeanNode.property.find { it.@name == "lookupFields" }
         def resultFieldsPropertyNode = lookupParentBeanNode.property.find { it.@name == "resultFields" }
         // TODO: switch back to beanNode.replaceNode and find way to handle extra lookupDefinition definitions (i.e. DataDictionaryOverrides)
@@ -674,6 +673,7 @@ class DictionaryConverter {
                 //property(name: "headerText", value: titlePropNode.@value)
                 //}
                 property(name: "dataObjectClassName", value: objClassName)
+                transformMenubarProperty(delegate, menubarPropNode)
                 if (lookupFieldsPropertyNode != null) {
                     property(name: "criteriaFields") {
                         list {
@@ -907,6 +907,18 @@ class DictionaryConverter {
     def addViewNameProperty(builder, viewName) {
         if (viewName != null) {
             builder.property(name: "viewName", value: viewName?.replaceAll(~/\s/, '-'))
+        }
+    }
+
+    def transformMenubarProperty(builder, node) {
+        if (node != null) {
+            builder.property(name: "page.header.lowerGroup.items") {
+                list(merge: "true") {
+                    bean(parent: "Uif-Message") {
+                        property(name: "messageText", value: "[" + node.@value + "]")
+                    }
+                }
+            }
         }
     }
 

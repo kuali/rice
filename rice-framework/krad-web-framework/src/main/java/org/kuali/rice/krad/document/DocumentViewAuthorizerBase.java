@@ -15,19 +15,27 @@
  */
 package org.kuali.rice.krad.document;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.krad.UserSessionUtils;
+import org.kuali.rice.krad.datadictionary.AttributeSecurity;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewAuthorizerBase;
 import org.kuali.rice.krad.uif.view.ViewModel;
+import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -175,6 +183,40 @@ public class DocumentViewAuthorizerBase extends ViewAuthorizerBase implements Do
 
         return super.canEditView(view, model, user) && canEdit(documentForm.getDocument(), user);
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewAuthorizer#canUnmaskField(org.kuali.rice.krad.uif.view.View, org.kuali.rice.krad.uif.view.ViewModel,
+     * org.kuali.rice.krad.uif.field.DataField, java.lang.String, org.kuali.rice.kim.api.identity.Person)
+     */
+    public boolean canUnmaskField(View view, ViewModel model, DataField field, String propertyName, Person user) {
+        // check mask authz flag is set
+        AttributeSecurity attributeSecurity = field.getDataFieldSecurity().getAttributeSecurity();
+        if (attributeSecurity == null || !attributeSecurity.isMask()) {
+            return true;
+        }
+
+        // don't mask empty fields when user is the initiator (allows document creation when masked field exists)
+        String fieldValue = ObjectPropertyUtils.getPropertyValue(model, field.getBindingInfo().getBindingPath());
+        if (StringUtils.isBlank(fieldValue) && isInitiator(model, user)) {
+            return true;
+        }
+
+        return super.canUnmaskField(view, model, field, propertyName, user);
+    }
+
+    /**
+     * Checks if the user is the initiator for the current document
+     *
+     * @param model object containing the view data
+     * @param user user we are authorizing
+     * @return true if user is the initiator, false otherwise
+     */
+    protected boolean isInitiator(ViewModel model, Person user) {
+            WorkflowDocument workflowDocument = UserSessionUtils.getWorkflowDocument(GlobalVariables.getUserSession(),
+                    ((DocumentFormBase) model).getDocument().getDocumentNumber());
+            return StringUtils.equals(user.getPrincipalId(), workflowDocument.getInitiatorPrincipalId());
+    }
+
 
     public boolean canAnnotate(Document document, Person user) {
         return getDocumentAuthorizer().canAnnotate(document, user);

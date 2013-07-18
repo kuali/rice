@@ -548,15 +548,13 @@ function hiddenInputValidationToggle(id) {
         if (element.css("display") == "none") {
             jQuery(":input:hidden", element).each(function () {
                 jQuery(this).addClass("ignoreValid");
-                //KULRICE-9585 Disabled components are editable if displayed via progressive rendering
-                //jQuery(this).prop("disabled", true);
+                jQuery(this).prop("disabled", true);
             });
         }
         else {
             jQuery(":input:visible", element).each(function () {
                 jQuery(this).removeClass("ignoreValid");
-                //KULRICE-9585 Disabled components are editable if displayed via progressive rendering
-                //jQuery(this).prop("disabled", false);
+                jQuery(this).prop("disabled", false);
             });
         }
     }

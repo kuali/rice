@@ -174,7 +174,6 @@ public final class RiceKeyConstants {
     public static final String INFO_LOOKUP_RESULTS_NONE_FOUND = "lookup.results.none.found";
     public static final String INFO_LOOKUP_RESULTS_USING_PRIMARY_KEY = "lookup.using.primary.keys";
     public static final String INFO_LOOKUP_RESULTS_EXCEEDS_LIMIT = "lookup.results.exceeds.limit";
-    public static final String INFO_LOOKUP_RESULTS_MV_RETURN_EXCEEDS_LIMIT = "lookup.results.exceeds.mv.return.limit";
 
     public static final String MESSAGE_DELETE = "message.delete";
     public static final String MESSAGE_DELETED = "mesage.deleted";

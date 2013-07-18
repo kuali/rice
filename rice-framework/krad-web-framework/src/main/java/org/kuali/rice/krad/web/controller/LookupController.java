@@ -15,10 +15,7 @@
  */
 package org.kuali.rice.krad.web.controller;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -28,8 +25,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.core.api.util.RiceConstants;
-import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.krad.lookup.CollectionIncomplete;
 import org.kuali.rice.krad.lookup.LookupUtils;
 import org.kuali.rice.krad.lookup.Lookupable;
@@ -41,7 +36,6 @@ import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
-import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.krad.web.form.LookupForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
@@ -50,7 +44,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * Controller that handles requests coming from a <code>LookupView</code>
@@ -90,10 +83,6 @@ public class LookupController extends UifControllerBase {
             throw new RuntimeException("Lookupable is null.");
         }
         lookupable.initSuppressAction(lookupForm);
-
-        if (request.getParameter("messageToDisplay") != null) {
-            lookupable.generateErrorMessageForResults(lookupForm, request.getParameter("messageToDisplay"));
-        }
 
         // if request is not a redirect, determine if we need to redirect for an externalizable object lookup
         if (!lookupForm.isRedirectedLookup()) {
@@ -214,10 +203,30 @@ public class LookupController extends UifControllerBase {
      * @param lookupForm - lookup form instance containing the selected results and lookup configuration
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=returnSelected")
-    public String returnSelected(@ModelAttribute("KualiForm") LookupForm lookupForm, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response, final RedirectAttributes redirectAttributes) {
-
+    public ModelAndView returnSelected(@ModelAttribute("KualiForm") LookupForm lookupForm, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
         Properties parameters = new Properties();
+        parameters.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, KRADConstants.RETURN_METHOD_TO_CALL);
+
+        if (StringUtils.isNotBlank(lookupForm.getReturnFormKey())) {
+            parameters.put(UifParameters.FORM_KEY, lookupForm.getReturnFormKey());
+        }
+
+        parameters.put(KRADConstants.REFRESH_CALLER, lookupForm.getView().getId());
+        parameters.put(KRADConstants.REFRESH_CALLER_TYPE, UifConstants.RefreshCallerTypes.MULTI_VALUE_LOOKUP);
+        parameters.put(KRADConstants.REFRESH_DATA_OBJECT_CLASS, lookupForm.getDataObjectClassName());
+
+        if (StringUtils.isNotBlank(lookupForm.getDocNum())) {
+            parameters.put(UifParameters.DOC_NUM, lookupForm.getDocNum());
+        }
+
+        if (StringUtils.isNotBlank(lookupForm.getLookupCollectionName())) {
+            parameters.put(UifParameters.LOOKUP_COLLECTION_NAME, lookupForm.getLookupCollectionName());
+        }
+
+        if (StringUtils.isNotBlank(lookupForm.getReferencesToRefresh())) {
+            parameters.put(KRADConstants.REFERENCES_TO_REFRESH, lookupForm.getReferencesToRefresh());
+        }
 
         // build string of select line identifiers
         String selectedLineValues = "";
@@ -229,85 +238,11 @@ public class LookupController extends UifControllerBase {
             selectedLineValues = StringUtils.removeEnd(selectedLineValues, ",");
         }
 
-        //check to see what the redirect URL length would be
         parameters.put(UifParameters.SELECTED_LINE_VALUES, selectedLineValues);
-        parameters.putAll(lookupForm.getInitialRequestParameters());
-        String redirectUrl = UrlFactory.parameterizeUrl(lookupForm.getReturnLocation(), parameters);
-
-        boolean lookupCameFromDifferentServer = areDifferentDomains(lookupForm.getReturnLocation(),
-                lookupForm.getRequestUrl());
-
-        if (redirectUrl.length() > RiceConstants.MAXIMUM_URL_LENGTH && !lookupCameFromDifferentServer) {
-            redirectAttributes.addFlashAttribute(UifParameters.SELECTED_LINE_VALUES, selectedLineValues);
-        }
-        if (redirectUrl.length() > RiceConstants.MAXIMUM_URL_LENGTH && lookupCameFromDifferentServer) {
-            HashMap<String, String> parms =(HashMap<String,String>) lookupForm.getInitialRequestParameters();
-            parms.remove("returnFormKey");
-
-            //add an error message to display to the user
-            redirectAttributes.mergeAttributes(parms);
-            redirectAttributes.addAttribute("messageToDisplay", RiceKeyConstants.INFO_LOOKUP_RESULTS_MV_RETURN_EXCEEDS_LIMIT);
-
-            String formKeyParam = request.getParameter(UifParameters.FORM_KEY);
-            redirectAttributes.addAttribute(UifParameters.FORM_KEY, formKeyParam);
-
-            return "redirect:" + lookupForm.getRequestUrl();
-
-        }
-        if (redirectUrl.length() < RiceConstants.MAXIMUM_URL_LENGTH) {
-            redirectAttributes.addAttribute(UifParameters.SELECTED_LINE_VALUES, selectedLineValues);
-        }
-
-        redirectAttributes.addAttribute(KRADConstants.DISPATCH_REQUEST_PARAMETER, KRADConstants.RETURN_METHOD_TO_CALL);
-
-        if (StringUtils.isNotBlank(lookupForm.getReturnFormKey())) {
-            redirectAttributes.addAttribute(UifParameters.FORM_KEY, lookupForm.getReturnFormKey());
-        }
-
-        redirectAttributes.addAttribute(KRADConstants.REFRESH_CALLER, lookupForm.getView().getId());
-        redirectAttributes.addAttribute(KRADConstants.REFRESH_CALLER_TYPE, UifConstants.RefreshCallerTypes.MULTI_VALUE_LOOKUP);
-        redirectAttributes.addAttribute(KRADConstants.REFRESH_DATA_OBJECT_CLASS, lookupForm.getDataObjectClassName());
-
-        if (StringUtils.isNotBlank(lookupForm.getDocNum())) {
-            redirectAttributes.addAttribute(UifParameters.DOC_NUM, lookupForm.getDocNum());
-        }
-
-        if (StringUtils.isNotBlank(lookupForm.getLookupCollectionName())) {
-            redirectAttributes.addAttribute(UifParameters.LOOKUP_COLLECTION_NAME, lookupForm.getLookupCollectionName());
-        }
-
-        if (StringUtils.isNotBlank(lookupForm.getReferencesToRefresh())) {
-            redirectAttributes.addAttribute(KRADConstants.REFERENCES_TO_REFRESH, lookupForm.getReferencesToRefresh());
-        }
 
         // clear current form from session
         GlobalVariables.getUifFormManager().removeSessionForm(lookupForm);
 
-        return "redirect:" + lookupForm.getReturnLocation();
-    }
-
-    /**
-     * Convenience method for determining whether two URLs point at the same domain
-     * @param firstDomain
-     * @param secondDomain
-     * @return
-     */
-    private boolean areDifferentDomains(String firstDomain, String secondDomain) {
-        try {
-            URL urlOne = new URL(firstDomain.toLowerCase());
-            URL urlTwo = new URL(secondDomain.toLowerCase());
-            if(urlOne.getHost().equals(urlTwo.getHost())){
-                LOG.debug("Hosts " + urlOne.getHost() + " of domains " + firstDomain + " and " + secondDomain + " were determined to be equal");
-                return false;
-            }
-            else {
-                LOG.debug("Hosts " + urlOne.getHost() + " of domains " + firstDomain + " and " + secondDomain + " are not equal");
-                return true;
-            }
-
-        } catch (MalformedURLException mue) {
-            LOG.error("Unable to successfully compare domains " + firstDomain + " and " + secondDomain);
-        }
-        return true;
+        return performRedirect(lookupForm, lookupForm.getReturnLocation(), parameters);
     }
 }

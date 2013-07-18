@@ -49,11 +49,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import javax.servlet.http.HttpServletRequest;
@@ -81,7 +77,6 @@ import java.util.Properties;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@SessionAttributes("listOfStuff")
 public abstract class UifControllerBase {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(UifControllerBase.class);
 
@@ -485,11 +480,6 @@ public abstract class UifControllerBase {
     public ModelAndView refresh(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
         // TODO: this code still needs to handle reference refreshes
-
-        String flashMapSelectedLineValues = "";
-        if (RequestContextUtils.getInputFlashMap(request)!=null) {
-            flashMapSelectedLineValues = (String) RequestContextUtils.getInputFlashMap(request).get(UifParameters.SELECTED_LINE_VALUES);
-        }
         String refreshCallerType = "";
         if (request.getParameterMap().containsKey(KRADConstants.REFRESH_CALLER_TYPE)) {
             refreshCallerType = request.getParameter(KRADConstants.REFRESH_CALLER_TYPE);
@@ -510,9 +500,6 @@ public abstract class UifControllerBase {
             String selectedLineValues = "";
             if (request.getParameterMap().containsKey(UifParameters.SELECTED_LINE_VALUES)) {
                 selectedLineValues = request.getParameter(UifParameters.SELECTED_LINE_VALUES);
-            }
-            if (!StringUtils.isBlank(flashMapSelectedLineValues)) {
-                selectedLineValues = flashMapSelectedLineValues;
             }
 
             // invoked view helper to populate the collection from lookup results

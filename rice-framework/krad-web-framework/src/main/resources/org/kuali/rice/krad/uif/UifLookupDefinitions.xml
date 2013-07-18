@@ -222,8 +222,7 @@
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="deselectAllPage"
               p:actionLabel="deselect all from this page"
               p:actionScript="deselectAllLines('@{#collectionGroup.id}');"/>
-        <bean parent="Uif-PrimaryActionButton"
-              p:ajaxSubmit="true" p:render="@{#form.renderedInLightBox}"
+        <bean parent="Uif-PrimaryActionButton" p:ajaxSubmit="true"
               p:preSubmitCall="setMultiValueReturnTarget();return true;"
               p:successCallback="closeLightboxReloadPage();" p:errorCallback="closeLightbox()"
               p:methodToCall="returnSelected" p:actionLabel="return selected" p:disabled="true">
@@ -233,16 +232,6 @@
             </list>
           </property>
         </bean>
-        <bean parent="Uif-PrimaryActionButton"
-              p:ajaxSubmit="false" p:render="@{!#form.renderedInLightBox}"
-              p:methodToCall="returnSelected" p:actionLabel="return selected" p:disabled="true">
-          <property name="cssClasses">
-            <list merge="true">
-              <value>uif-returnSelectedAction</value>
-            </list>
-          </property>
-       </bean>
-
       </list>
     </property>
   </bean>

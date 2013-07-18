@@ -83,10 +83,6 @@ public final class RiceConstants {
         return new SimpleDateFormat(DEFAULT_DATE_FORMAT_PATTERN);
     }
 
-    //the maximum URL length supported (browsers, apache, tomcat, etc)
-    //currently constrained by internet explorer
-    public static final int MAXIMUM_URL_LENGTH = 2048;
-
 	public static final long NO_WAIT = 0;
 
 	public static final String RICE_JAXWS_TARGET_NAMESPACE_BASE = "http://rice.kuali.org/wsdl";

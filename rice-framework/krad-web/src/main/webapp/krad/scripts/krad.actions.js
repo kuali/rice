@@ -545,18 +545,35 @@ function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alw
 function hiddenInputValidationToggle(id) {
     var element = jQuery("#" + id);
     if (element.length) {
-        if (element.css("display") == "none") {
+        if (element.css("display") === "none") {
             jQuery(":input:hidden", element).each(function () {
+                storeOriginalDisabledProperty(jQuery(this));
                 jQuery(this).addClass("ignoreValid");
+                //disable hidden inputs to prevent from being submitted
                 jQuery(this).prop("disabled", true);
             });
         }
         else {
             jQuery(":input:visible", element).each(function () {
+                storeOriginalDisabledProperty(jQuery(this));
                 jQuery(this).removeClass("ignoreValid");
-                jQuery(this).prop("disabled", false);
+                //return to original disabled property value
+                jQuery(this).prop("disabled", jQuery(this).data('original-disabled'));
             });
         }
+    }
+}
+
+/**
+ * Stores the original value of the disabled property of the element into jquery data.
+ * This ensures that the correct value is set after toggling in hiddenInputValidation().
+ *
+ * @param element - jQuery element to examine and set the original-disabled data.
+ */
+function storeOriginalDisabledProperty(element) {
+    //capture original disabled property value
+    if(element.data('original-disabled') === undefined) {
+        element.data("original-disabled",element.prop("disabled"));
     }
 }
 

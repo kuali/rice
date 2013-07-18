@@ -131,4 +131,13 @@ public interface Lookupable extends ViewHelperService, java.io.Serializable {
      * @param model - lookup form containing the data
      */
     public void setMultiValueLookupSelect(InputField selectField, Object model);
+
+    /**
+     * Set an error message to be displayed in the lookup results field
+     *
+     * @param form
+     * @param messageToDisplay
+     */
+    public void generateErrorMessageForResults(LookupForm form, String messageToDisplay);
+
 }

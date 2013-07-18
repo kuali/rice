@@ -79,7 +79,7 @@
         </property>
         <property name="items">
             <list>
-                <bean parent="Uif-InputField" p:propertyName="chargeAmount" p:label="Charges" p:labelPlacement="TOP" p:style="text-align: right; width: 10%;"/>
+                <bean parent="Uif-InputField" p:propertyName="chargeAmount" p:label="Charges" p:labelPlacement="TOP" p:style=""/>
             </list>
         </property>
 
@@ -91,7 +91,7 @@
           <bean parent="Uif-VerticalBoxGroup">
             <property name="items">
               <list>
-                <bean parent="Uif-InputField" p:propertyName="chargeAmount" p:label="Charges" p:style="text-align: right; width: 10%;"/>
+                <bean parent="Uif-InputField" p:propertyName="chargeAmount" p:label="Charges" p:style=""/>
                 <ref bean="rollupTransactionList"/>
               </list>
             </property>

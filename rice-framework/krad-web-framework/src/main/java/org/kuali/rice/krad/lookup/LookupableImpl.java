@@ -203,6 +203,16 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     }
 
     /**
+     * Convenience method for setting an error message on the lookup results section
+     *
+     * @param form
+     * @param messageToDisplay
+     */
+    public void generateErrorMessageForResults(LookupForm form, String messageToDisplay) {
+        GlobalVariables.getMessageMap().putErrorForSectionId("LookupResultMessages", messageToDisplay);
+    }
+
+    /**
      * Helper function to render lookup results messages
      *
      * @param form

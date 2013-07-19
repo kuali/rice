@@ -302,13 +302,16 @@
     border: 1px solid #CCCCCC;
     border-radius: 4px 4px 4px 4px;
     padding: 12px;
+    float: left;
 }
 
 #ComponentLibrary-TabGroup_tabList {
-    width: 23%;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
     margin-top: 20px;
+    position: absolute;
+    right: 0px;
+    width: 170px;
 }
 
 #ComponentLibrary-TabGroup_tabList .uif-validationImage {
@@ -321,7 +324,6 @@
     padding-left: 16px;
     padding-top: 2px;
     margin-top: 0;
-    background-color: transparent !important;
     background-image: url("../images/widgetNavDivider.png");
     background-position: 12px 0;
     background-repeat: no-repeat;
@@ -377,6 +379,21 @@
     width: 675px;
     float: left;
 }
+
+
+#ComponentLibrary-TabGroup_tabList .ui-widget-header { background: none}
+
+
+
+
+.ui-widget-header {
+   
+    background: #ffffff /*{bgColorHeader}*/ url("");
+   
+}
+
+
+
 
 .demo-xLargeLibraryView > .uif-viewContentWrapper > .uif-pageContentWrapper{
     width: 940px;

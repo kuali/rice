@@ -48,6 +48,21 @@
             <stringProp name="Argument.value">${__P(userprefix,testuser)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="COUNTERCONFIGSTART" elementType="Argument">
+            <stringProp name="Argument.name">COUNTERCONFIGSTART</stringProp>
+            <stringProp name="Argument.value">${__P(counterconfigstart,1)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="COUNTERCONFIGEND" elementType="Argument">
+            <stringProp name="Argument.name">COUNTERCONFIGEND</stringProp>
+            <stringProp name="Argument.value">${__P(counterconfigend,6)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="COUNTERCONFIGINCR" elementType="Argument">
+            <stringProp name="Argument.name">COUNTERCONFIGINCR</stringProp>
+            <stringProp name="Argument.value">${__P(counterconfigincr,1)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
         </collectionProp>
       </Arguments>
       <hashTree/>
@@ -89,9 +104,9 @@
         <RecordingController guiclass="RecordController" testclass="RecordingController" testname="Recording Controller" enabled="true"/>
         <hashTree>
           <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="USER Counter" enabled="true">
-            <stringProp name="CounterConfig.start">1</stringProp>
-            <stringProp name="CounterConfig.end">500</stringProp>
-            <stringProp name="CounterConfig.incr">1</stringProp>
+            <stringProp name="CounterConfig.start">${COUNTERCONFIGSTART}</stringProp>
+            <stringProp name="CounterConfig.end">${COUNTERCONFIGEND}</stringProp>
+            <stringProp name="CounterConfig.incr">${COUNTERCONFIGINCR}</stringProp>
             <stringProp name="CounterConfig.name">USER</stringProp>
             <stringProp name="CounterConfig.format">${USERPREFIX}</stringProp>
             <boolProp name="CounterConfig.per_user">false</boolProp>

@@ -240,6 +240,7 @@ public class LookupController extends UifControllerBase {
         if (redirectUrl.length() > RiceConstants.MAXIMUM_URL_LENGTH && !lookupCameFromDifferentServer) {
             redirectAttributes.addFlashAttribute(UifParameters.SELECTED_LINE_VALUES, selectedLineValues);
         }
+
         if (redirectUrl.length() > RiceConstants.MAXIMUM_URL_LENGTH && lookupCameFromDifferentServer) {
             HashMap<String, String> parms =(HashMap<String,String>) lookupForm.getInitialRequestParameters();
             parms.remove("returnFormKey");
@@ -254,6 +255,7 @@ public class LookupController extends UifControllerBase {
             return "redirect:" + lookupForm.getRequestUrl();
 
         }
+
         if (redirectUrl.length() < RiceConstants.MAXIMUM_URL_LENGTH) {
             redirectAttributes.addAttribute(UifParameters.SELECTED_LINE_VALUES, selectedLineValues);
         }

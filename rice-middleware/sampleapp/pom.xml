@@ -100,7 +100,6 @@
         </configuration>
       </plugin>
     </plugins>
-
     <pluginManagement>
       <plugins>
         <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. -->
@@ -206,12 +205,35 @@
         </plugins>
       </build>
     </profile>
+
     <profile>
       <id>standalone</id>
       <properties>
         <web.launch.context.path>/sample-app-standalone</web.launch.context.path>
         <bootstrap.spring.file>classpath:SampleAppStandaloneBeans.xml</bootstrap.spring.file>
       </properties>
+    </profile>
+
+    <profile>
+      <id>jmeter</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.lazerycode.jmeter</groupId>
+            <artifactId>jmeter-maven-plugin</artifactId>
+            <version>${jmeter.version}</version>
+            <executions>
+              <execution>
+                <id>jmeter-tests</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>jmeter</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   </profiles>
 

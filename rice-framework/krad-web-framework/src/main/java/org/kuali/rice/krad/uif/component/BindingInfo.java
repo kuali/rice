@@ -96,7 +96,7 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
      *
      * @return binding path
      */
-    @BeanTagAttribute(name="bindingPath")
+    @BeanTagAttribute(name = "bindingPath")
     public String getBindingPath() {
         if (StringUtils.isNotBlank(bindingPath)) {
             return bindingPath;
@@ -241,7 +241,7 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
      * @return true if component binds directly to form, false if it
      *         binds to a nested object
      */
-    @BeanTagAttribute(name="bindToForm")
+    @BeanTagAttribute(name = "bindToForm")
     public boolean isBindToForm() {
         return this.bindToForm;
     }
@@ -266,7 +266,7 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
      *
      * @return name of the bind property
      */
-    @BeanTagAttribute(name="bindingName")
+    @BeanTagAttribute(name = "bindingName")
     public String getBindingName() {
         return this.bindingName;
     }
@@ -286,7 +286,7 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
      *
      * @return binding prefix
      */
-    @BeanTagAttribute(name="bindByNamePrefix")
+    @BeanTagAttribute(name = "bindByNamePrefix")
     public String getBindByNamePrefix() {
         return this.bindByNamePrefix;
     }
@@ -343,7 +343,7 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
      *
      * @return path to object from form
      */
-    @BeanTagAttribute(name="bindingObjectPath")
+    @BeanTagAttribute(name = "bindingObjectPath")
     public String getBindingObjectPath() {
         return this.bindingObjectPath;
     }
@@ -364,7 +364,7 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
      *
      * @return true if the property binds to a map, false if it does not
      */
-    @BeanTagAttribute(name="bindToMap")
+    @BeanTagAttribute(name = "bindToMap")
     public boolean isBindToMap() {
         return this.bindToMap;
     }
@@ -386,9 +386,8 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
     public <T> T copy() {
         T copiedClass = null;
         try {
-            copiedClass = (T)this.getClass().newInstance();
-        }
-        catch(Exception exception) {
+            copiedClass = (T) this.getClass().newInstance();
+        } catch (Exception exception) {
             throw new RuntimeException();
         }
 

@@ -1942,7 +1942,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             // apply default values to new line
             applyDefaultValuesForCollectionLine(view, model, collectionGroup, lineDataObject);
 
-            String[] fieldValues = StringUtils.split(lineValue, ":");
+            String[] fieldValues = StringUtils.splitByWholeSeparatorPreserveAllTokens(lineValue, ":");
             if (fieldValues.length != toFieldNames.length) {
                 throw new RuntimeException(
                         "Value count passed back from multi-value lookup does not match field conversion count");

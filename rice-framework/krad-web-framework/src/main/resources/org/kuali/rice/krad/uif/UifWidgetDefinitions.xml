@@ -162,7 +162,7 @@
         p:lightBoxLookup.lookupReturnByScript="true"/>
 
   <bean id="Uif-QuickLookupImage" parent="Uif-Image"
-        p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
+        p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.png"
         p:altText="Search Field" p:title="Search Field">
     <property name="cssClasses">
       <list>

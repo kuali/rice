@@ -92,9 +92,9 @@
         </inlineComponents>
       </message-bean>
       <message-bean
-              messageText="Multiple ways to get an image inline within a message:                     [ul]                     [li]By inlineComponents[0][/li]                     [li]By id[id=Demo-RichMessagesImage][/li]                     [li]By html image tag[image src=&quot;@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif&quot;][/li]                     [/ul]">
+              messageText="Multiple ways to get an image inline within a message:                     [ul]                     [li]By inlineComponents[0][/li]                     [li]By id[id=Demo-RichMessagesImage][/li]                     [li]By html image tag[image src=&quot;@{#ConfigProperties['krad.externalizable.images.url']}searchicon.png&quot;][/li]                     [/ul]">
         <inlineComponents>
-          <image-bean altText="Image" source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+          <image-bean altText="Image" source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.png"/>
         </inlineComponents>
       </message-bean>
       <message-bean
@@ -179,5 +179,5 @@
   </inputField-labelTop-bean>
   <inputField-labelTop-bean id="Demo-SampleMessageInput4" propertyName="field22" required="true"/>
   <image-bean altText="Image" id="Demo-RichMessagesImage"
-              source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+              source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.png"/>
 </spring:beans>

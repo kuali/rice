@@ -122,13 +122,13 @@
                        id="UifCompView-ActionField9">
         <actionImage>
           <image-bean id="UifCompView-ActionField10"
-                      source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+                      source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.png"/>
         </actionImage>
       </actionLink-bean>
       <actionLink-bean actionScript="alert('You clicked a button');" id="UifCompView-ActionField11">
         <actionImage>
           <image-bean id="UifCompView-ActionField12"
-                      source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+                      source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.png"/>
         </actionImage>
       </actionLink-bean>
       <actionImage-bean actionScript="alert('You clicked a button');" id="UifCompView-ActionField13">
@@ -140,38 +140,38 @@
       <primaryActionButton-bean actionImagePlacement="BOTTOM" actionScript="alert('You clicked a button');"
                                 id="UifCompView-ActionField15">
         <actionImage>
-          <image-bean source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+          <image-bean source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.png"/>
         </actionImage>
       </primaryActionButton-bean>
       <primaryActionButton-bean actionImagePlacement="TOP" actionScript="alert('You clicked a button');"
                                 id="UifCompView-ActionField16">
         <actionImage>
-          <image-bean source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+          <image-bean source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.png"/>
         </actionImage>
       </primaryActionButton-bean>
       <primaryActionButton-bean actionImagePlacement="LEFT" actionScript="alert('You clicked a button');"
                                 id="UifCompView-ActionField17">
         <actionImage>
-          <image-bean source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+          <image-bean source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.png"/>
         </actionImage>
       </primaryActionButton-bean>
       <primaryActionButton-bean actionImagePlacement="RIGHT" actionScript="alert('You clicked a button');"
                                 id="UifCompView-ActionField18">
         <actionImage>
-          <image-bean source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+          <image-bean source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.png"/>
         </actionImage>
       </primaryActionButton-bean>
       <primaryActionButton-bean actionScript="alert('You clicked a button');">
         <actionImage>
           <image-bean id="UifCompView-ActionField19"
-                      source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+                      source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.png"/>
         </actionImage>
       </primaryActionButton-bean>
       <primaryActionButton-bean disabled="true" id="UifCompView-ActionField20" methodToCall="foo"/>
       <actionField-bean id="UifCompView-ActionField21" methodToCall="foo">
         <actionImage>
           <image-bean id="UifCompView-ActionField22"
-                      source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+                      source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.png"/>
         </actionImage>
       </actionField-bean>
     </items>

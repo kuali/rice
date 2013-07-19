@@ -148,11 +148,11 @@
                     [ul]
                     [li]By inlineComponents[0][/li]
                     [li]By id[id=Demo-RichMessagesImage][/li]
-                    [li]By html image tag[image src=&quot;@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif&quot;][/li]
+                    [li]By html image tag[image src=&quot;@{#ConfigProperties['krad.externalizable.images.url']}searchicon.png&quot;][/li]
                     [/ul]"/>
           <property name="inlineComponents">
             <list>
-              <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
+              <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.png"
                     p:altText="Image"/>
             </list>
           </property>
@@ -289,6 +289,6 @@
   </bean>
 
   <bean id="Demo-RichMessagesImage" parent="Uif-Image"
-        p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
+        p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.png"
         p:altText="Image"/>
 </beans>

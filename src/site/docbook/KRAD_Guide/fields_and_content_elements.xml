@@ -3335,7 +3335,7 @@ public class QueryUtils {
     p:methodToCall="performSave"&gt;
     &lt;property name="actionImage"&gt;
         &lt;bean parent="Uif-Image" 
-            p:source="@{#ConfigProperties[&apos;krad.externalizable.images.url&apos;]}searchicon.gif"/&gt;
+            p:source="@{#ConfigProperties[&apos;krad.externalizable.images.url&apos;]}searchicon.png"/&gt;
     &lt;/property&gt;
 &lt;/bean&gt;
         </programlisting>
@@ -3353,7 +3353,7 @@ public class QueryUtils {
     <para>This is referring to another configuration property named 'application.url' (which could
       refer to others). Ultimately this resolves to something like
       'https://test.kuali.org/kr-krad/krad/images'. This makes the source for our image
-      'https://test.kuali.org/kr-krad/krad/images/searchicon.gif' which will be used by the browser
+      'https://test.kuali.org/kr-krad/krad/images/searchicon.png' which will be used by the browser
       to fetch the image contents. </para>
     <tip>
       <title>Configuration Properties:</title>
@@ -3369,7 +3369,7 @@ public class QueryUtils {
     p:methodToCall="performSave"&gt;
     &lt;property name="actionImage"&gt;
         &lt;bean parent="Uif-Image" 
-            p:source="@{#ConfigProperties[&apos;krad.externalizable.images.url&apos;]}searchicon.gif"
+            p:source="@{#ConfigProperties[&apos;krad.externalizable.images.url&apos;]}searchicon.png"
             p:actionImagePlacement="RIGHT"/&gt;
     &lt;/property&gt;
 &lt;/bean&gt;
@@ -3390,7 +3390,7 @@ public class QueryUtils {
 &lt;bean parent="Uif-ActionImage" p:methodToCall="performSave"&gt;
     &lt;property name="actionImage"&gt;
         &lt;bean parent="Uif-Image"
-            p:source="@{#ConfigProperties[&apos;krad.externalizable.images.url&apos;]}searchicon.gif"/&gt;
+            p:source="@{#ConfigProperties[&apos;krad.externalizable.images.url&apos;]}searchicon.png"/&gt;
     &lt;/property&gt;
 &lt;/bean&gt;
         </programlisting>

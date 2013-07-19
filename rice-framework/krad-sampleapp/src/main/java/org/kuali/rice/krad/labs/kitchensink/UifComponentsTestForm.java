@@ -247,7 +247,7 @@ public class UifComponentsTestForm extends UifFormBase {
         sourceCodeField = "&lt;bean parent=\"Uif-PrimaryActionButton\" p:actionLabel=\"Save\" p:methodToCall=\"performSave\"&gt;\n"
                 + "&#32;&#32;&lt;property name=\"actionImage\"&gt;\n"
                 + "&#32;&#32;&#32;&#32;&lt;bean parent=\"Uif-Image\"\n"
-                + "&#32;&#32;&#32;&#32;&#32;&#32;p:source=\"@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif\"\n"
+                + "&#32;&#32;&#32;&#32;&#32;&#32;p:source=\"@{#ConfigProperties['krad.externalizable.images.url']}searchicon.png\"\n"
                 + "&#32;&#32;&#32;&#32;&#32;&#32;p:actionImageLocation=\"RIGHT\"/&gt;\n"
                 + "&#32;&#32;&lt;/property&gt;\n"
                 + "&lt;/bean&gt;";

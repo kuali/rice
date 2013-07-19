@@ -327,14 +327,14 @@
           parent="Uif-ActionLink-with-data-attributes">
     <actionImage>
       <image altText="Search" parent="Uif-Image"
-             source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+             source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.png"/>
     </actionImage>
   </action>
   <action actionLabel="ActionLinkField image left (default)" actionScript="alert('You clicked a button');"
           id="actionLink-imageLeft_attrs" parent="Uif-ActionLink-with-data-attributes">
     <actionImage>
       <image altText="Search" parent="Uif-Image"
-             source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+             source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.png"/>
     </actionImage>
   </action>
   <action id="Uif-PrimaryActionButton-with-data-attributes" parent="Uif-PrimaryActionButton">
@@ -360,25 +360,25 @@
   <action actionImagePlacement="BOTTOM" actionLabel="Image BOTTOM" actionScript="alert('You clicked a button');"
           id="buttonImageBottom_attrs" parent="Uif-PrimaryActionButton-with-data-attributes">
     <actionImage>
-      <image parent="Uif-Image" source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+      <image parent="Uif-Image" source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.png"/>
     </actionImage>
   </action>
   <action actionImagePlacement="TOP" actionLabel="Image TOP" actionScript="alert('You clicked a button');"
           id="buttonImageTop_attrs" parent="Uif-PrimaryActionButton-with-data-attributes">
     <actionImage>
-      <image parent="Uif-Image" source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+      <image parent="Uif-Image" source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.png"/>
     </actionImage>
   </action>
   <action actionImagePlacement="LEFT" actionLabel="Image LEFT" actionScript="alert('You clicked a button');"
           id="buttonImageLeft_attrs" parent="Uif-PrimaryActionButton-with-data-attributes">
     <actionImage>
-      <image parent="Uif-Image" source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+      <image parent="Uif-Image" source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.png"/>
     </actionImage>
   </action>
   <action actionImagePlacement="RIGHT" actionLabel="Image RIGHT" actionScript="alert('You clicked a button');"
           id="buttonImageRight_attrs" parent="Uif-PrimaryActionButton-with-data-attributes">
     <actionImage>
-      <image parent="Uif-Image" source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+      <image parent="Uif-Image" source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.png"/>
     </actionImage>
   </action>
   <linkField href="http://www.kuali.org" id="linkField_attrs" label="LinkField is used for href links"

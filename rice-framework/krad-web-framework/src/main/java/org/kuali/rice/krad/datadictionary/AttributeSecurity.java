@@ -208,10 +208,13 @@ public class AttributeSecurity extends UifDictionaryBeanBase {
      *
      */
     protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
         AttributeSecurity attributeSecurityCopy = ((AttributeSecurity)component);
         attributeSecurityCopy.setHide(this.hide);
         attributeSecurityCopy.setMask(this.mask);
         attributeSecurityCopy.setPartialMask(this.partialMask);
         attributeSecurityCopy.setReadOnly(this.readOnly);
+        attributeSecurityCopy.setMaskFormatter(this.maskFormatter);
+        attributeSecurityCopy.setPartialMaskFormatter(this.partialMaskFormatter);
     }
 }

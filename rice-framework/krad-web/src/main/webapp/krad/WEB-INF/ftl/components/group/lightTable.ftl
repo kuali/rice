@@ -21,14 +21,18 @@
         <#if !group.emptyTable>
             <#local row>
                 <#compress>
-                <#list group.items as item>
-                @quot@<@krad.template component=item/>@quot@,
-                </#list>
+                    @quot@DT_RowClass@quot@:@quot@@rowClass@@quot@,
+                    <#list group.items as item>
+                        @quot@c${item_index}@quot@:{
+                            @quot@val@quot@:@quot@@sortVal${item_index}@@quot@,
+                            @quot@render@quot@:@quot@<@krad.template component=item/>@quot@
+                        },
+                    </#list>
                 </#compress>
             </#local>
         </#if>
 
-        <table id="${group.id}_lightTable">
+        <table class="uif-lightTable" id="${group.id}_lightTable">
             <thead>
                 <tr>
                     <#list group.headerLabels as label>

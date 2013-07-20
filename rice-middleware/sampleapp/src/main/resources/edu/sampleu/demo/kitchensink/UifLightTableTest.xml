@@ -45,6 +45,14 @@
 
   <bean id="Demo-LightTableGroup" parent="Uif-LightTableGroup">
     <property name="propertyName" value="list6"/>
+    <property name="conditionalRowCssClasses">
+      <map>
+        <entry key="all" value="uif-all"/>
+        <entry key="odd" value="uif-odd"/>
+        <entry key="even" value="uif-even"/>
+        <entry key="@{#line.field4 eq '3'}" value="special"/>
+      </map>
+    </property>
     <property name="items">
       <list>
         <bean parent="Uif-DataField" p:label="Inquiry" p:propertyName="field3">

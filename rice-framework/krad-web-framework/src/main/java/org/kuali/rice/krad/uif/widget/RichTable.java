@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -223,7 +221,7 @@ public class RichTable extends WidgetBase {
      * Add the css style to the cellCssClasses by column index, later used by the aoColumnDefs
      *
      * @param manager the tableLayoutManager that contains the original fields
-    */
+     */
     private void addCellStyling(TableLayoutManager manager) {
         if (manager.getAllRowFields() != null) {
             for (int index = 0; index < manager.getNumberOfColumns(); index++) {
@@ -527,7 +525,7 @@ public class RichTable extends WidgetBase {
                 field.getPropertyName());
 
         boolean isSortable = true;
-        if (field.isApplyMask()){
+        if (field.isApplyMask()) {
             isSortable = false;
         }
 
@@ -545,7 +543,7 @@ public class RichTable extends WidgetBase {
      * from the table
      * @return a formatted string with data table options for one column
      */
-    protected String constructTableColumnOptions(int target, boolean isSortable, Class dataTypeClass,
+    public String constructTableColumnOptions(int target, boolean isSortable, Class dataTypeClass,
             String sortDataType) {
         String colOptions = "null";
 
@@ -994,15 +992,15 @@ public class RichTable extends WidgetBase {
         richTableCopy.setNestedLevel(this.getNestedLevel());
         richTableCopy.setAaData(this.getAaData());
 
-        if(hiddenColumns != null) {
+        if (hiddenColumns != null) {
             richTableCopy.setHiddenColumns(new HashSet<String>(hiddenColumns));
         }
 
-        if(sortableColumns != null) {
+        if (sortableColumns != null) {
             richTableCopy.setSortableColumns(new HashSet<String>(sortableColumns));
         }
 
-        if(cellCssClasses != null) {
+        if (cellCssClasses != null) {
             richTableCopy.setCssClasses(new ArrayList<String>(this.cellCssClasses));
         }
 

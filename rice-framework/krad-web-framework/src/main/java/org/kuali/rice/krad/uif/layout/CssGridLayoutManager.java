@@ -44,7 +44,7 @@ public class CssGridLayoutManager extends LayoutManagerBase {
     private static final int NUMBER_OF_COLUMNS = 9;
     private static final String BOOTSTRAP_SPAN_PREFIX = "span";
 
-    private Map<String, String> rowCssClasses;
+    private Map<String, String> conditionalRowCssClasses;
     private String rowLayoutCssClass;
     private int defaultItemColSpan;
 
@@ -55,7 +55,7 @@ public class CssGridLayoutManager extends LayoutManagerBase {
 
     public CssGridLayoutManager() {
         rows = new ArrayList<List<Component>>();
-        rowCssClasses = new HashMap<String, String>();
+        conditionalRowCssClasses = new HashMap<String, String>();
         cellCssClassAttributes = new ArrayList<String>();
         rowCssClassAttributes = new ArrayList<String>();
     }
@@ -129,21 +129,21 @@ public class CssGridLayoutManager extends LayoutManagerBase {
     }
 
     /**
-     * Generate the row's class attribute based on settings passed into the rowCssClasses map
+     * Generate the row's class attribute based on settings passed into the conditionalRowCssClasses map
      *
      * @param index the current row's index
      * @return String that are the class selector names seperated by spaces
      */
     private String generateRowClassProperty(int index) {
         String stringIndex = String.valueOf(index);
-        String allClass = StringUtils.isNotBlank(rowCssClasses.get(UifConstants.RowSelection.ALL)) ?
-                " " + rowCssClasses.get(UifConstants.RowSelection.ALL) : "";
-        String evenClass = StringUtils.isNotBlank(rowCssClasses.get(UifConstants.RowSelection.EVEN)) ?
-                " " + rowCssClasses.get(UifConstants.RowSelection.EVEN) : "";
-        String oddClass = StringUtils.isNotBlank(rowCssClasses.get(UifConstants.RowSelection.ODD)) ?
-                " " + rowCssClasses.get(UifConstants.RowSelection.ODD) : "";
-        String customClass = StringUtils.isNotBlank(rowCssClasses.get(stringIndex)) ? " " + rowCssClasses.get(
-                stringIndex) : "";
+        String allClass = StringUtils.isNotBlank(conditionalRowCssClasses.get(UifConstants.RowSelection.ALL)) ?
+                " " + conditionalRowCssClasses.get(UifConstants.RowSelection.ALL) : "";
+        String evenClass = StringUtils.isNotBlank(conditionalRowCssClasses.get(UifConstants.RowSelection.EVEN)) ?
+                " " + conditionalRowCssClasses.get(UifConstants.RowSelection.EVEN) : "";
+        String oddClass = StringUtils.isNotBlank(conditionalRowCssClasses.get(UifConstants.RowSelection.ODD)) ?
+                " " + conditionalRowCssClasses.get(UifConstants.RowSelection.ODD) : "";
+        String customClass = StringUtils.isNotBlank(conditionalRowCssClasses.get(stringIndex)) ?
+                " " + conditionalRowCssClasses.get(stringIndex) : "";
 
         if (index % 2 == 0) {
             return rowLayoutCssClass + allClass + evenClass + customClass;
@@ -221,18 +221,18 @@ public class CssGridLayoutManager extends LayoutManagerBase {
      *
      * @return a map which represents the css classes of the rows of this layout
      */
-    @BeanTagAttribute(name = "rowCssClasses", type = BeanTagAttribute.AttributeType.MAPVALUE)
-    public Map<String, String> getRowCssClasses() {
-        return rowCssClasses;
+    @BeanTagAttribute(name = "conditionalRowCssClasses", type = BeanTagAttribute.AttributeType.MAPVALUE)
+    public Map<String, String> getConditionalRowCssClasses() {
+        return conditionalRowCssClasses;
     }
 
     /**
-     * Set rowCssClasses
+     * Set conditionalRowCssClasses
      *
-     * @param rowCssClasses
+     * @param conditionalRowCssClasses
      */
-    public void setRowCssClasses(Map<String, String> rowCssClasses) {
-        this.rowCssClasses = rowCssClasses;
+    public void setConditionalRowCssClasses(Map<String, String> conditionalRowCssClasses) {
+        this.conditionalRowCssClasses = conditionalRowCssClasses;
     }
 
     /**
@@ -253,5 +253,25 @@ public class CssGridLayoutManager extends LayoutManagerBase {
      */
     public void setRowLayoutCssClass(String rowLayoutCssClass) {
         this.rowLayoutCssClass = rowLayoutCssClass;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        CssGridLayoutManager cssGridLayoutManagerCopy = (CssGridLayoutManager) component;
+
+        if (this.rowLayoutCssClass != null){
+            cssGridLayoutManagerCopy.setRowLayoutCssClass(this.rowLayoutCssClass);
+        }
+
+        cssGridLayoutManagerCopy.setDefaultItemColSpan(this.defaultItemColSpan);
+
+        if (this.conditionalRowCssClasses != null) {
+            cssGridLayoutManagerCopy.setConditionalRowCssClasses(new HashMap<String, String>(
+                    this.conditionalRowCssClasses));
+        }
     }
 }

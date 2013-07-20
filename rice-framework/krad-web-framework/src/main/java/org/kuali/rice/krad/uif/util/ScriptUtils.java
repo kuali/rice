@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.util;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.springframework.util.Assert;
 
@@ -209,15 +210,7 @@ public class ScriptUtils {
 
         // remove whitespace for correct string matching
         value = StringUtils.strip(value);
-        if (StringUtils.isNotBlank(value) && (StringUtils.isNumeric(value.substring(0, 1)) || value.substring(0, 1)
-                .equals("-"))) {
-            try {
-                Double.parseDouble(value);
-                isNumber = true;
-            } catch (NumberFormatException e) {
-                isNumber = false;
-            }
-        }
+        isNumber = NumberUtils.isNumber(value);
 
         // If an option value starts with { or [, it would be a nested value
         // and it should not use quotes around it

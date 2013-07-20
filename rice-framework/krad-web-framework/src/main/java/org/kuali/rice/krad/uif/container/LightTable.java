@@ -38,9 +38,9 @@ import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.RichTable;
@@ -51,10 +51,8 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -92,16 +90,21 @@ public class LightTable extends Group implements DataBinding {
     private static final String RENDER = "render";
     private static final String ID_TOKEN = "@id@";
     private static final String A_TOKEN = "@";
+    private static final String ROW_CLASS = "@rowClass@";
+    private static final String SORT_VALUE = "@sortVal";
     private static final String SEPARATOR = "@@@";
 
     private String propertyName;
     private BindingInfo bindingInfo;
     private List<Label> headerLabels;
     private RichTable richTable;
+    private Map<String, String> conditionalRowCssClasses;
+
     private Map<String, String> expressionConversionMap;
     private List<String> initialComponentIds;
     private Map<String, String> renderIdExpressionMap;
     private boolean emptyTable;
+    private String currentColumnValue;
 
     /**
      * LightTable constructor
@@ -119,6 +122,7 @@ public class LightTable extends Group implements DataBinding {
     @Override
     public void performInitialization(View view, Object model) {
         super.performInitialization(view, model);
+        richTable.setForceLocalJsonData(true);
 
         //init binding info
         if (bindingInfo != null) {
@@ -189,6 +193,10 @@ public class LightTable extends Group implements DataBinding {
     public void processExpression(String name, Component item, Map<String, String> expressionMap,
             List<String> toRemove) {
         Class<?> clazz = ObjectPropertyUtils.getPropertyType(item, name);
+        if (clazz == null) {
+            return;
+        }
+
         if (clazz.isAssignableFrom(String.class)) {
             //add expressions for string properties only
             expressionMap.put(name + SEPARATOR + item.getId(), item.getExpressionGraph().get(name));
@@ -327,18 +335,20 @@ public class LightTable extends Group implements DataBinding {
         Pattern idPattern = Pattern.compile(ID_TOKEN + "(.*?)" + ID_TOKEN);
         Pattern expressionPattern = Pattern.compile(EXPRESSION_TOKEN + "(.*?)" + EXPRESSION_TOKEN);
 
-        ExpressionEvaluator expressionEvaluator =
-                view.getViewHelperService().getExpressionEvaluator();
+        ExpressionEvaluator expressionEvaluator = view.getViewHelperService().getExpressionEvaluator();
 
-        int i = 0;
+        int lineIndex = 0;
         for (Object obj : collectionObjects) {
             //add line index to all ids
-            String row = idPattern.matcher(rowTemplate).replaceAll("$1" + UifConstants.IdSuffixes.LINE + i);
+            String row = idPattern.matcher(rowTemplate).replaceAll("$1" + UifConstants.IdSuffixes.LINE + lineIndex);
 
             //create the expanded context
             Map<String, Object> expandedContext = new HashMap<String, Object>();
             expandedContext.put(UifConstants.ContextVariableNames.LINE, obj);
-            expandedContext.put(UifConstants.ContextVariableNames.INDEX, i);
+            expandedContext.put(UifConstants.ContextVariableNames.INDEX, lineIndex);
+            expandedContext.put(UifConstants.ContextVariableNames.VIEW, view);
+
+            currentColumnValue = "";
 
             int itemIndex = 0;
             for (Component item : this.getItems()) {
@@ -346,10 +356,10 @@ public class LightTable extends Group implements DataBinding {
                 String originalId = initialComponentIds.get(itemIndex);
 
                 //special DataField handling
-                row = handleDataFieldInRow(item, obj, row, i, originalId);
+                row = handleDataFieldInRow(item, obj, row, lineIndex, originalId);
 
                 //special InputField handling
-                row = handleInputFieldInRow(item, obj, row, i, originalId);
+                row = handleInputFieldInRow(item, obj, row, lineIndex, originalId);
 
                 //add item context
                 if (item.getContext() != null) {
@@ -357,27 +367,45 @@ public class LightTable extends Group implements DataBinding {
                 }
 
                 //evaluate expressions found by the pattern
-                row = evaluateAndReplaceExpressionValues(row, i, model, expandedContext, expressionPattern,
+                row = evaluateAndReplaceExpressionValues(row, lineIndex, model, expandedContext, expressionPattern,
                         expressionEvaluator);
+
+                if (currentColumnValue == null) {
+                    currentColumnValue = "";
+                }
+
+                row = row.replace(SORT_VALUE + itemIndex + A_TOKEN, currentColumnValue);
 
                 itemIndex++;
             }
 
+            // get rowCss class
+            String rowCss = getRowCss(expandedContext, lineIndex, expressionEvaluator);
 
             row = row.replace("\"", "\\\"");
-            row = "[" + row + "],";
+            row = row.replace(ROW_CLASS, rowCss);
+            row = "{" + row + "},";
 
             //special render property expression handling
-            row = evaluateRenderExpressions(row, i, model, expandedContext, expressionEvaluator);
+            row = evaluateRenderExpressions(row, lineIndex, model, expandedContext, expressionEvaluator);
 
             //append row
             rows.append(row);
-            i++;
+            lineIndex++;
         }
+
+        StringBuffer tableToolsColumnOptions = new StringBuffer("[");
+        for (int index = 0; index < this.getItems().size(); index++) {
+            String colOptions = richTable.constructTableColumnOptions(index, true, String.class, null);
+            tableToolsColumnOptions.append(colOptions + " , ");
+        }
+
+        String aoColumnDefs = StringUtils.removeEnd(tableToolsColumnOptions.toString(), " , ") + "]";
+        richTable.getTemplateOptions().put(UifConstants.TableToolsKeys.AO_COLUMN_DEFS, aoColumnDefs);
 
         // construct aaData option to set data in dataTable options (speed enhancement)
         String aaData = StringUtils.removeEnd(rows.toString(), ",");
-        aaData = "[" + aaData  + "]";
+        aaData = "[" + aaData + "]";
         aaData = aaData.replace(KRADConstants.QUOTE_PLACEHOLDER, "\"");
 
         //set the aaData option on datatable for faster rendering
@@ -386,6 +414,38 @@ public class LightTable extends Group implements DataBinding {
         //make sure deferred rendering is forced whether set or not
         richTable.getTemplateOptions().put(UifConstants.TableToolsKeys.DEFER_RENDER,
                 UifConstants.TableToolsValues.TRUE);
+    }
+
+    /**
+     * Get the rowCss for the line specified, by evaluating the conditionalRowCssClasses map for this row
+     *
+     * @param context the expression context for the line
+     * @param lineIndex the line index
+     * @param expressionEvaluator the expression evaluator
+     * @return the row css classes
+     */
+    private String getRowCss(Map<String, Object> context, int lineIndex, ExpressionEvaluator expressionEvaluator) {
+        String rowCss = "";
+        for (String cssRule : conditionalRowCssClasses.keySet()) {
+            if (cssRule.startsWith(UifConstants.EL_PLACEHOLDER_PREFIX)) {
+
+                String outcome = expressionEvaluator.evaluateExpressionTemplate(context, cssRule);
+                if (outcome != null && Boolean.parseBoolean(outcome)) {
+                    rowCss = rowCss + " " + conditionalRowCssClasses.get(cssRule);
+                }
+            } else if (cssRule.equals(UifConstants.RowSelection.ALL)) {
+                rowCss = rowCss + " " + conditionalRowCssClasses.get(cssRule);
+            } else if (cssRule.equals(UifConstants.RowSelection.EVEN) && lineIndex % 2 == 1) {
+                rowCss = rowCss + " " + conditionalRowCssClasses.get(cssRule);
+            } else if (cssRule.equals(UifConstants.RowSelection.ODD) && lineIndex % 2 == 0) {
+                rowCss = rowCss + " " + conditionalRowCssClasses.get(cssRule);
+            } else if (StringUtils.isNumeric(cssRule) && (lineIndex + 1) == Integer.parseInt(cssRule)) {
+                rowCss = rowCss + " " + conditionalRowCssClasses.get(cssRule);
+            }
+        }
+        rowCss = StringUtils.removeStart(rowCss, " ");
+
+        return rowCss;
     }
 
     /**
@@ -400,8 +460,7 @@ public class LightTable extends Group implements DataBinding {
      * @return the modified row
      */
     protected String evaluateAndReplaceExpressionValues(String row, int index, Object model,
-            Map<String, Object> expandedContext, Pattern expressionPattern,
-            ExpressionEvaluator expressionEvaluator) {
+            Map<String, Object> expandedContext, Pattern expressionPattern, ExpressionEvaluator expressionEvaluator) {
 
         Matcher matcher = expressionPattern.matcher(row);
 
@@ -416,10 +475,9 @@ public class LightTable extends Group implements DataBinding {
             //get expression result
             Object value = expressionEvaluator.evaluateExpressionTemplate(expandedContext, expression);
 
-            if (value != null){
+            if (value != null) {
                 row = row.replace(matcher.group(), value.toString());
-            }
-            else {
+            } else {
                 row = row.replace(matcher.group(), "");
             }
         }
@@ -486,6 +544,7 @@ public class LightTable extends Group implements DataBinding {
 
         //for readOnly DataFields replace the value marked with the value on the current object
         row = row.replaceAll(VALUE_TOKEN + originalId + VALUE_TOKEN, currentValue.toString());
+        currentColumnValue = currentValue.toString();
 
         if (((DataField) item).getInquiry() != null
                 && ((DataField) item).getInquiry().getInquiryParameters() != null
@@ -580,6 +639,8 @@ public class LightTable extends Group implements DataBinding {
             }
         }
 
+        currentColumnValue = stringValue;
+
         return row;
     }
 
@@ -650,6 +711,31 @@ public class LightTable extends Group implements DataBinding {
     }
 
     /**
+     * The row css classes for the rows of this layout
+     *
+     * <p>To set a css class on all rows, use "all" as a key.  To set a
+     * class for even rows, use "even" as a key, for odd rows, use "odd".
+     * Use a one-based index to target a specific row by index.  SpringEL can be
+     * used as a key and the expression will be evaluated; if evaluated to true, the
+     * class(es) specified will be applied.</p>
+     *
+     * @return a map which represents the css classes of the rows of this layout
+     */
+    @BeanTagAttribute(name = "conditionalRowCssClasses", type = BeanTagAttribute.AttributeType.MAPVALUE)
+    public Map<String, String> getConditionalRowCssClasses() {
+        return conditionalRowCssClasses;
+    }
+
+    /**
+     * Set the conditionalRowCssClasses
+     *
+     * @param conditionalRowCssClasses
+     */
+    public void setConditionalRowCssClasses(Map<String, String> conditionalRowCssClasses) {
+        this.conditionalRowCssClasses = conditionalRowCssClasses;
+    }
+
+    /**
      * True if this table is empty, false otherwise
      *
      * @return true if the collection backing this table is empty
@@ -698,12 +784,12 @@ public class LightTable extends Group implements DataBinding {
         super.copyProperties(component);
         LightTable lightTableCopy = (LightTable) component;
         lightTableCopy.setPropertyName(this.getPropertyName());
-        lightTableCopy.setBindingInfo((BindingInfo)this.getBindingInfo().copy());
+        lightTableCopy.setBindingInfo((BindingInfo) this.getBindingInfo().copy());
 
-        if(headerLabels != null) {
+        if (headerLabels != null) {
             List<Label> headerLabelsCopy = Lists.newArrayListWithExpectedSize(headerLabels.size());
-            for(Label headerLabel : headerLabels)   {
-                headerLabelsCopy.add((Label)headerLabel.copy());
+            for (Label headerLabel : headerLabels) {
+                headerLabelsCopy.add((Label) headerLabel.copy());
             }
             lightTableCopy.setHeaderLabels(headerLabelsCopy);
         }
@@ -712,24 +798,33 @@ public class LightTable extends Group implements DataBinding {
             lightTableCopy.setRichTable((RichTable) this.getRichTable().copy());
         }
 
-        if(expressionConversionMap != null) {
-            Map<String, String> expressionConversionMapCopy = Maps.newHashMapWithExpectedSize(this.getExpressionConversionMap().size());
-            for(Map.Entry expressionConversionMapEntry : getExpressionConversionMap().entrySet()) {
-                expressionConversionMapCopy.put(expressionConversionMapEntry.getKey().toString(),expressionConversionMapEntry.getValue().toString());
+        if (expressionConversionMap != null) {
+            Map<String, String> expressionConversionMapCopy = Maps.newHashMapWithExpectedSize(
+                    this.getExpressionConversionMap().size());
+            for (Map.Entry expressionConversionMapEntry : getExpressionConversionMap().entrySet()) {
+                expressionConversionMapCopy.put(expressionConversionMapEntry.getKey().toString(),
+                        expressionConversionMapEntry.getValue().toString());
             }
             lightTableCopy.setExpressionConversionMap(expressionConversionMapCopy);
         }
 
-        if(renderIdExpressionMap != null) {
-            Map<String, String> renderIdExpressionMapCopy = Maps.newHashMapWithExpectedSize(this.getRenderIdExpressionMap().size());
-            for(Map.Entry renderIdExpressionMapEntry : getRenderIdExpressionMap().entrySet()) {
-                renderIdExpressionMapCopy.put(renderIdExpressionMapEntry.getKey().toString(),renderIdExpressionMapEntry.getValue().toString());
+        if (renderIdExpressionMap != null) {
+            Map<String, String> renderIdExpressionMapCopy = Maps.newHashMapWithExpectedSize(
+                    this.getRenderIdExpressionMap().size());
+            for (Map.Entry renderIdExpressionMapEntry : getRenderIdExpressionMap().entrySet()) {
+                renderIdExpressionMapCopy.put(renderIdExpressionMapEntry.getKey().toString(),
+                        renderIdExpressionMapEntry.getValue().toString());
             }
             lightTableCopy.setRenderIdExpressionMap(renderIdExpressionMapCopy);
         }
 
-        if(initialComponentIds != null) {
+        if (initialComponentIds != null) {
             lightTableCopy.setInitialComponentIds(new ArrayList<String>(initialComponentIds));
+        }
+
+        if (this.conditionalRowCssClasses != null) {
+            lightTableCopy.setConditionalRowCssClasses(new HashMap<String, String>(
+                    this.conditionalRowCssClasses));
         }
 
         lightTableCopy.setEmptyTable(this.isEmptyTable());

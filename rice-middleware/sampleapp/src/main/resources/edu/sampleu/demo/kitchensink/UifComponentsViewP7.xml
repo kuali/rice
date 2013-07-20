@@ -65,6 +65,14 @@
      <property name="layoutManager.sequenceFieldPrototype.width" value="10%" />
      <property name="layoutManager.actionFieldPrototype.width" value="10%" />
      <property name="layoutManager.actionColumnPlacement" value="LEFT" />
+     <property name="layoutManager.conditionalRowCssClasses">
+       <map>
+         <entry key="all" value="uif-all"/>
+         <entry key="odd" value="uif-odd"/>
+         <entry key="even" value="uif-even"/>
+         <entry key="@{#line.field1 eq 'a'}" value="special"/>
+       </map>
+     </property>
      <property name="collectionLookup">
        <bean parent="Uif-CollectionQuickFinder"
              p:dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"

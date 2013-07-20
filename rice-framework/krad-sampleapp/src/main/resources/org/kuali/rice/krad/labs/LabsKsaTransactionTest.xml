@@ -79,7 +79,7 @@
         </property>
         <property name="items">
             <list>
-                <bean parent="Uif-InputField" p:propertyName="chargeAmount" p:label="Charges" p:labelPlacement="TOP" p:style=""/>
+                <bean parent="Uif-InputField" p:propertyName="chargeAmount" p:label="Charges" p:labelPlacement="TOP"/>
             </list>
         </property>
 
@@ -91,7 +91,7 @@
           <bean parent="Uif-VerticalBoxGroup">
             <property name="items">
               <list>
-                <bean parent="Uif-InputField" p:propertyName="chargeAmount" p:label="Charges" p:style=""/>
+                <bean parent="Uif-InputField" p:propertyName="chargeAmount" p:label="Charges"/>
                 <ref bean="rollupTransactionList"/>
               </list>
             </property>
@@ -173,7 +173,7 @@
                     </list>
                     </property>
                 </bean>
-                <bean parent="Uif-InputField" p:propertyName="chargeAmount" p:label="Charges" p:style="text-align: right; width: 10%;">
+                <bean parent="Uif-InputField" p:propertyName="chargeAmount" p:label="Charges">
                   <property name="suggest">
                                     <bean parent="Uif-Suggest" p:render="true" p:retrieveAllSuggestions="true">
                                       <property name="suggestOptions">

@@ -320,8 +320,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                     ComponentUtils.prefixBindingPath(collectionGroup, prefix);
                 }
 
-                //if (collectionGroup.getBindingInfo().get)
-
                 String lineSuffix = origCollectionGroup.getSubCollectionSuffix();
                 collectionGroup.setSubCollectionSuffix(lineSuffix);
             }

@@ -124,7 +124,7 @@
         <!-- ex:Demo-CssGridLayoutManager-Example5 start-->
         <!-- Grid group is backed by a CssGridLayoutManager -->
         <bean parent="Uif-FixedCssGridGroup">
-          <property name="layoutManager.rowCssClasses">
+          <property name="layoutManager.conditionalRowCssClasses">
             <map>
               <entry key="all" value="demo-border"/>
               <entry key="odd" value="demo-odd"/>

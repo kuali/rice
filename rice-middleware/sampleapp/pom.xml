@@ -231,6 +231,9 @@
                 </goals>
               </execution>
             </executions>
+            <configuration>
+              <testResultsTimestamp>false</testResultsTimestamp>
+            </configuration>
           </plugin>
         </plugins>
       </build>
@@ -332,6 +335,13 @@
     <dependency>
       <groupId>com.sun.xml.bind</groupId>
       <artifactId>jaxb-impl</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.saucelabs</groupId>
+      <artifactId>sauce_junit</artifactId>
+      <version>[1.0.0,)</version>
+      <scope>test</scope>
     </dependency>
 
   </dependencies>

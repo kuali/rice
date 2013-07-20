@@ -54,52 +54,16 @@ public class ComponentUtils {
     }
 
     public static <T extends Component> T copy(T component, String idSuffix) {
-        T copy = copyObject(component);
+        // use for component copy method
+        //T copy = component.copy();
+
+        T copy = CloneUtils.deepClone(component);
 
         if (StringUtils.isNotBlank(idSuffix)) {
             updateIdsWithSuffixNested(copy, idSuffix);
         }
 
         return copy;
-    }
-
-    public static <T extends Object> T copyObject(T object) {
-        if (object == null) {
-            return null;
-        }
-
-        T copy = null;
-        try {
-            copy = CloneUtils.deepClone(object);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        return copy;
-    }
-
-    protected static Object getCopyPropertyValue(Set<String> propertiesForReferenceCopy, String propertyName,
-            Object propertyValue) {
-        if (propertyValue == null) {
-            return null;
-        }
-
-        Object copyValue = propertyValue;
-
-        Class<?> valuePropertyType = propertyValue.getClass();
-        if (propertiesForReferenceCopy.contains(propertyName) || TypeUtils.isSimpleType(valuePropertyType) || TypeUtils
-                .isClassClass(valuePropertyType)) {
-            return copyValue;
-        }
-
-        if (Component.class.isAssignableFrom(valuePropertyType) || LayoutManager.class.isAssignableFrom(
-                valuePropertyType)) {
-            copyValue = copyObject(propertyValue);
-        } else {
-            copyValue = ObjectUtils.deepCopy((Serializable) propertyValue);
-        }
-
-        return copyValue;
     }
 
     @SuppressWarnings("unchecked")

@@ -353,6 +353,25 @@ public class Group extends ContainerBase {
     }
 
     /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        Group groupCopy = (Group) component;
+        groupCopy.setFieldBindByNamePrefix(this.fieldBindByNamePrefix);
+        groupCopy.setFieldBindingObjectPath(this.fieldBindingObjectPath);
+
+        if (this.disclosure != null) {
+            groupCopy.setDisclosure((Disclosure) this.disclosure.copy());
+        }
+
+        if (this.scrollpane != null) {
+            groupCopy.setScrollpane((Scrollpane) this.scrollpane.copy());
+        }
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
@@ -379,31 +398,4 @@ public class Group extends ContainerBase {
         super.completeValidation(tracer.getCopy());
     }
 
-    /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-        Group groupCopy = (Group)component;
-        groupCopy.setFieldBindByNamePrefix(this.fieldBindByNamePrefix);
-        groupCopy.setFieldBindingObjectPath(this.fieldBindingObjectPath);
-
-        if(items != null) {
-            List<Component> items = Lists.newArrayListWithExpectedSize(getItems().size());
-            for (Component item : this.items) {
-                items.add((Component)item.copy());
-            }
-        }
-
-        groupCopy.setItems(items);
-
-        if (this.disclosure != null) {
-            groupCopy.setDisclosure((Disclosure) this.disclosure.copy());
-        }
-
-        if (this.scrollpane != null) {
-            groupCopy.setScrollpane((Scrollpane)this.scrollpane.copy());
-        }
-    }
 }

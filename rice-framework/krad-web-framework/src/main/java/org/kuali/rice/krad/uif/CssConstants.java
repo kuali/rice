@@ -83,4 +83,10 @@ public class CssConstants {
 
 		return cssStyle.format(parameters);
 	}
+
+    public static class Classes {
+        public static final String SUPPORT_TITLE_STYLE_CLASS = "uif-viewHeader-supportTitle";
+        public static final String HIDE_HEADER_TEXT_STYLE_CLASS = "uif-hideHeaderText";
+        public static final String HAS_ADD_LINE = "uif-hasAddLine";
+    }
 }

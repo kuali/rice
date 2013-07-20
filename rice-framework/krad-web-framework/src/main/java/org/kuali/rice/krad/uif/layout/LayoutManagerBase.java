@@ -368,67 +368,41 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
         return copiedClass;
     }
 
-
     protected <T> void copyProperties(T layoutManager) {
+        super.copyProperties(layoutManager);
+
         LayoutManagerBase layoutManagerBaseCopy = (LayoutManagerBase) layoutManager;
+
         layoutManagerBaseCopy.setId(this.getId());
         layoutManagerBaseCopy.setTemplate(this.getTemplate());
         layoutManagerBaseCopy.setTemplateName(this.getTemplateName());
         layoutManagerBaseCopy.setStyle(this.getStyle());
 
-        //referenced :(
         layoutManagerBaseCopy.setContext(this.getContext());
 
-        if(libraryCssClasses != null) {
+        if (libraryCssClasses != null) {
             layoutManagerBaseCopy.setLibraryCssClasses(new ArrayList<String>(libraryCssClasses));
         }
 
-        if(getCssClasses() != null) {
+        if (getCssClasses() != null) {
             layoutManagerBaseCopy.setCssClasses(new ArrayList<String>(getCssClasses()));
         }
 
-        if(getAdditionalCssClasses() != null) {
+        if (getAdditionalCssClasses() != null) {
             layoutManagerBaseCopy.setAdditionalCssClasses(new ArrayList<String>(getAdditionalCssClasses()));
         }
 
-        if(getPropertyReplacers() != null) {
-            List<PropertyReplacer> propertyReplacersCopy = Lists.newArrayListWithExpectedSize(getPropertyReplacers().size());
-            for(PropertyReplacer propertyReplacer : propertyReplacers)   {
-                propertyReplacersCopy.add((PropertyReplacer)propertyReplacer.copy());
+        if (getPropertyReplacers() != null) {
+            List<PropertyReplacer> propertyReplacersCopy = Lists.newArrayListWithExpectedSize(
+                    getPropertyReplacers().size());
+            for (PropertyReplacer propertyReplacer : propertyReplacers) {
+                propertyReplacersCopy.add((PropertyReplacer) propertyReplacer.copy());
             }
+
             layoutManagerBaseCopy.setPropertyReplacers(propertyReplacersCopy);
         }
 
-        layoutManagerBaseCopy.setStyleClasses(this.getStyleClassesAsString());
-
-
-        //DictionaryBeanBase properties
         layoutManagerBaseCopy.setComponentCode(this.getComponentCode());
         layoutManagerBaseCopy.setNamespaceCode(this.getNamespaceCode());
-
-        //UifDictionaryBeanBase properties
-        if(getExpressionGraph() != null) {
-            Map<String, String> expressionGraphCopy = Maps.newHashMapWithExpectedSize(this.getExpressionGraph().size());
-            for(Map.Entry expressionGraphEntry : getExpressionGraph().entrySet()) {
-                expressionGraphCopy.put(expressionGraphEntry.getKey().toString(),expressionGraphEntry.getValue().toString());
-            }
-            layoutManagerBaseCopy.setExpressionGraph(expressionGraphCopy);
-        }
-
-        if(getRefreshExpressionGraph() != null) {
-            Map<String, String> refreshExpressionGraphCopy = Maps.newHashMapWithExpectedSize(this.getRefreshExpressionGraph().size());
-            for(Map.Entry refreshExpressionGraphEntry : getRefreshExpressionGraph().entrySet()) {
-                refreshExpressionGraphCopy.put(refreshExpressionGraphEntry.getKey().toString(),refreshExpressionGraphEntry.getValue().toString());
-            }
-            layoutManagerBaseCopy.setRefreshExpressionGraph(refreshExpressionGraphCopy);
-        }
-
-        if(getPropertyExpressions() != null) {
-            Map<String, String> propertyExpressionsCopy = Maps.newHashMapWithExpectedSize(this.getPropertyExpressions().size());
-            for(Map.Entry propertyExpressionsEntry : getPropertyExpressions().entrySet()) {
-                propertyExpressionsCopy.put(propertyExpressionsEntry.getKey().toString(),propertyExpressionsEntry.getValue().toString());
-            }
-            layoutManagerBaseCopy.setRefreshExpressionGraph(propertyExpressionsCopy);
-        }
     }
 }

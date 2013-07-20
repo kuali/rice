@@ -191,7 +191,7 @@ public class ComponentFactory {
         }
 
         if (component != null) {
-            component = ComponentUtils.copyObject(component);
+            component = ComponentUtils.copy(component);
             component.setId(origComponent.getBaseId());
         }
 

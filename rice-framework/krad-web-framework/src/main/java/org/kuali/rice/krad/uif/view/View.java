@@ -2290,14 +2290,6 @@ public class View extends ContainerBase {
 
         viewCopy.setIdSequence(this.idSequence);
 
-        if(this.items != null) {
-            List<Group> itemsCopy = Lists.newArrayListWithExpectedSize(this.items.size());
-            for (Group item : this.items) {
-                itemsCopy.add((Group)item.copy());
-            }
-            viewCopy.setItems(itemsCopy);
-        }
-
         viewCopy.setMergeWithPageItems(this.mergeWithPageItems);
         viewCopy.setNamespaceCode(this.namespaceCode);
 

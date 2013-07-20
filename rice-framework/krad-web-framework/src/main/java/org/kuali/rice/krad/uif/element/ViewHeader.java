@@ -18,8 +18,7 @@ package org.kuali.rice.krad.uif.element;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.datadictionary.parse.BeanTags;
-import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.view.View;
 
@@ -58,12 +57,12 @@ public class ViewHeader extends Header {
             Header pageHeader = view.getCurrentPage().getHeader();
 
             // hide page header text
-            pageHeader.addStyleClass(UifConstants.CssClasses.HIDE_HEADER_TEXT_STYLE_CLASS);
+            pageHeader.addStyleClass(CssConstants.Classes.HIDE_HEADER_TEXT_STYLE_CLASS);
 
             Message pageHeaderMessage = pageHeader.getRichHeaderMessage();
 
             if (pageHeaderMessage != null && StringUtils.isBlank(supportTitleMessage.getMessageText())) {
-                pageHeaderMessage.addStyleClass(UifConstants.CssClasses.SUPPORT_TITLE_STYLE_CLASS);
+                pageHeaderMessage.addStyleClass(CssConstants.Classes.SUPPORT_TITLE_STYLE_CLASS);
 
                 // use page header rich content
                 supportTitleMessage = pageHeaderMessage;

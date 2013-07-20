@@ -20,6 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Component;
@@ -553,7 +554,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             rowCss = collectionGroup.getNewItemsCssClass();
         } else if (isAddLine && addLineInTable) {
             rowCss = collectionGroup.getAddItemCssClass();
-            this.addStyleClass("uif-hasAddLine");
+            this.addStyleClass(CssConstants.Classes.HAS_ADD_LINE);
         }
 
         if (rowCss == null) {

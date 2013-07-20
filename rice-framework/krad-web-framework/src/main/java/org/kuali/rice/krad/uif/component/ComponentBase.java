@@ -1911,9 +1911,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     public <T> T copy() {
         T copiedClass = null;
         try {
-            copiedClass = (T)this.getClass().newInstance();
-        }
-        catch(Exception exception) {
+            copiedClass = (T) this.getClass().newInstance();
+        } catch (Exception exception) {
             throw new RuntimeException();
         }
 
@@ -1924,10 +1923,15 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * Copies the properties over for the copy method
-     *
      */
     protected <T> void copyProperties(T component) {
-        ComponentBase componentCopy = ((ComponentBase)component);
+        super.copyProperties(component);
+
+        ComponentBase componentCopy = ((ComponentBase) component);
+
+        componentCopy.setId(this.id);
+        componentCopy.setBaseId(this.baseId);
+
         componentCopy.setAdditionalComponentsToRefresh(new ArrayList<String>(this.getAdditionalComponentsToRefresh()));
 
         if (this.additionalCssClasses != null) {
@@ -1956,6 +1960,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         componentCopy.setDisableSessionPersistence(this.disableSessionPersistence);
         componentCopy.setDisclosedByAction(this.disclosedByAction);
         componentCopy.setFinalizeMethodToCall(this.finalizeMethodToCall);
+        componentCopy.setFinalizeMethodAdditionalArguments(this.finalizeMethodAdditionalArguments);
+        componentCopy.setFinalizeMethodInvoker(this.finalizeMethodInvoker);
         componentCopy.setForceSessionPersistence(this.forceSessionPersistence);
         componentCopy.setHidden(this.hidden);
         componentCopy.setMethodToCallOnRefresh(this.methodToCallOnRefresh);
@@ -1987,7 +1993,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         componentCopy.setRefreshTimer(this.refreshTimer);
 
         if (this.refreshWhenChangedPropertyNames != null) {
-            componentCopy.setRefreshWhenChangedPropertyNames(new ArrayList<String>(this.refreshWhenChangedPropertyNames));
+            componentCopy.setRefreshWhenChangedPropertyNames(new ArrayList<String>(
+                    this.refreshWhenChangedPropertyNames));
         }
 
         componentCopy.setRender(this.render);
@@ -2005,69 +2012,38 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
             componentCopy.setTemplateOptions(new HashMap<String, String>(this.templateOptions));
         }
 
-        componentCopy.setTemplateOptionsJSString(this.templateOptionsJSString);
         componentCopy.setTitle(this.title);
         componentCopy.setValign(this.valign);
         componentCopy.setWidth(this.width);
 
-        if(componentModifiers != null) {
-            List<ComponentModifier> componentModifiers = Lists.newArrayListWithExpectedSize(getComponentModifiers().size());
+        if (componentModifiers != null) {
+            List<ComponentModifier> componentModifiersCopy = Lists.newArrayListWithExpectedSize(
+                    getComponentModifiers().size());
             for (ComponentModifier componentModifer : this.componentModifiers) {
-                componentModifiers.add((ComponentModifier)componentModifer.copy());
+                componentModifiersCopy.add((ComponentModifier) componentModifer.copy());
             }
-            componentCopy.setComponentModifiers(componentModifiers);
+
+            componentCopy.setComponentModifiers(componentModifiersCopy);
         }
 
         if (this.componentSecurity != null) {
-            componentCopy.setComponentSecurity((ComponentSecurity)this.componentSecurity.copy());
+            componentCopy.setComponentSecurity((ComponentSecurity) this.componentSecurity.copy());
         }
 
         if (this.toolTip != null) {
-            componentCopy.setToolTip((Tooltip)this.toolTip.copy());
+            componentCopy.setToolTip((Tooltip) this.toolTip.copy());
         }
 
-        if(propertyReplacers != null) {
-            List<PropertyReplacer> propertyReplacers = Lists.newArrayListWithExpectedSize(getPropertyReplacers().size());
+        if (propertyReplacers != null) {
+            List<PropertyReplacer> propertyReplacersCopy = Lists.newArrayListWithExpectedSize(
+                    getPropertyReplacers().size());
             for (PropertyReplacer propertyReplacer : this.propertyReplacers) {
-                propertyReplacers.add((PropertyReplacer)propertyReplacer.copy());
-            }
-            componentCopy.setPropertyReplacers(propertyReplacers);
-        }
-
-        //DictionaryBeanBase properties
-        componentCopy.setComponentCode(this.getComponentCode());
-        componentCopy.setNamespaceCode(this.getNamespaceCode());
-
-        //UifDictionaryBeanBase properties
-
-        if (this.getExpressionGraph() != null) {
-            Map<String, String> expressionGraphCopy = Maps.newHashMapWithExpectedSize(this.getExpressionGraph().size());
-
-            for(Map.Entry expressionGraphEntry : getExpressionGraph().entrySet()) {
-                expressionGraphCopy.put(expressionGraphEntry.getKey().toString(),expressionGraphEntry.getValue().toString());
+                propertyReplacersCopy.add((PropertyReplacer) propertyReplacer.copy());
             }
 
-            componentCopy.setExpressionGraph(expressionGraphCopy);
+            componentCopy.setPropertyReplacers(propertyReplacersCopy);
         }
 
-        if (this.getRefreshExpressionGraph() != null) {
-            Map<String, String> refreshExpressionGraphCopy = Maps.newHashMapWithExpectedSize(this.getRefreshExpressionGraph().size());
-
-            for(Map.Entry refreshExpressionGraphEntry : getRefreshExpressionGraph().entrySet()) {
-                refreshExpressionGraphCopy.put(refreshExpressionGraphEntry.getKey().toString(),refreshExpressionGraphEntry.getValue().toString());
-            }
-
-            componentCopy.setRefreshExpressionGraph(refreshExpressionGraphCopy);
-        }
-
-        if (this.getPropertyExpressions() != null) {
-            Map<String, String> propertyExpressionsCopy = Maps.newHashMapWithExpectedSize(this.getPropertyExpressions().size());
-
-            for(Map.Entry propertyExpressionsEntry : getPropertyExpressions().entrySet()) {
-                propertyExpressionsCopy.put(propertyExpressionsEntry.getKey().toString(),propertyExpressionsEntry.getValue().toString());
-            }
-
-            componentCopy.setPropertyExpressions(propertyExpressionsCopy);
-        }
+        componentCopy.setComponentSecurity(getComponentSecurity());
     }
 }

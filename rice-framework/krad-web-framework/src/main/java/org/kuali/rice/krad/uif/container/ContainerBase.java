@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
@@ -449,6 +450,52 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	}
 
     /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+        ContainerBase containerBaseCopy = (ContainerBase) component;
+        containerBaseCopy.setDefaultItemPosition(this.defaultItemPosition);
+
+        if (this.footer != null) {
+            containerBaseCopy.setFooter((Group) this.footer.copy());
+        }
+
+        if (this.header != null) {
+            containerBaseCopy.setHeader((Header) this.header.copy());
+        }
+
+        if (this.help != null) {
+            containerBaseCopy.setHelp((Help) this.help.copy());
+        }
+
+        if (this.instructionalMessage != null) {
+            containerBaseCopy.setInstructionalMessage((Message) this.instructionalMessage.copy());
+        }
+
+        containerBaseCopy.setInstructionalText(this.instructionalText);
+
+        if (this.layoutManager != null) {
+            containerBaseCopy.setLayoutManager((LayoutManager) this.layoutManager.copy());
+        }
+
+        if (getItems() != null) {
+            List<Component> itemsCopy = Lists.newArrayListWithExpectedSize(getItems().size());
+
+            for (Component item : getItems()) {
+                itemsCopy.add((Component) item.copy());
+            }
+
+            containerBaseCopy.setItems(itemsCopy);
+        }
+
+        if (this.validationMessages != null) {
+            containerBaseCopy.setValidationMessages((ValidationMessages) this.validationMessages.copy());
+        }
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
@@ -464,36 +511,4 @@ public abstract class ContainerBase extends ComponentBase implements Container {
         super.completeValidation(tracer.getCopy());
     }
 
-    /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-        ContainerBase containerBaseCopy = (ContainerBase) component;
-        containerBaseCopy.setDefaultItemPosition(this.defaultItemPosition);
-
-        if (this.footer != null) {
-            containerBaseCopy.setFooter((Group)this.footer.copy());
-        }
-
-        if (this.header != null) {
-            containerBaseCopy.setHeader((Header)this.header.copy());
-        }
-
-        if (this.help != null) {
-            containerBaseCopy.setHelp((Help)this.help.copy());
-        }
-
-        if (this.instructionalMessage != null) {
-            containerBaseCopy.setInstructionalMessage((Message)this.instructionalMessage.copy());
-        }
-
-        containerBaseCopy.setInstructionalText(this.instructionalText);
-        containerBaseCopy.setLayoutManager(this.layoutManager);
-
-        if (this.validationMessages != null) {
-            containerBaseCopy.setValidationMessages((ValidationMessages)this.validationMessages.copy());
-        }
-    }
 }

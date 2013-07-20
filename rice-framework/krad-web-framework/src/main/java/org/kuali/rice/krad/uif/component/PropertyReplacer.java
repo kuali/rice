@@ -244,11 +244,14 @@ public class PropertyReplacer extends UifDictionaryBeanBase implements Serializa
 
     /**
      * Copies the properties over for the copy method
-     *
      */
     protected <T> void copyProperties(T propertyReplacer) {
-        PropertyReplacer propertyReplacerCopy = ((PropertyReplacer)propertyReplacer);
+        super.copyProperties(propertyReplacer);
+
+        PropertyReplacer propertyReplacerCopy = ((PropertyReplacer) propertyReplacer);
+
         propertyReplacerCopy.setCondition(this.condition);
         propertyReplacerCopy.setPropertyName(this.propertyName);
+        propertyReplacerCopy.setReplacement(this.replacement);
     }
 }

@@ -402,7 +402,10 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
      * @param bindingInfo The BindingInfo to copy
      */
     protected <T> void copyProperties(T bindingInfo) {
+        super.copyProperties(bindingInfo);
+
         BindingInfo bindingInfoCopy = (BindingInfo) bindingInfo;
+
         bindingInfoCopy.setBindByNamePrefix(this.bindByNamePrefix);
         bindingInfoCopy.setBindingName(this.bindingName);
         bindingInfoCopy.setBindingObjectPath(this.bindingObjectPath);

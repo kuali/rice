@@ -77,7 +77,7 @@ public class Disclosure extends WidgetBase {
     /**
      * Setter for the expand image path
      *
-     * @param collapseImageSrc
+     * @param expandImageSrc
      */
     public void setExpandImageSrc(String expandImageSrc) {
         this.expandImageSrc = expandImageSrc;

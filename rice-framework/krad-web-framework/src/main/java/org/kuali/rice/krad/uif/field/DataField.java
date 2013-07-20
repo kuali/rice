@@ -1205,7 +1205,15 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
         dataFieldCopy.setAddHiddenWhenReadOnly(this.addHiddenWhenReadOnly);
         dataFieldCopy.setAdditionalHiddenPropertyNames(new ArrayList<String>(this.additionalHiddenPropertyNames));
         dataFieldCopy.setApplyMask(this.applyMask);
-        dataFieldCopy.setBindingInfo(this.bindingInfo);
+
+        if (this.maskFormatter != null) {
+            dataFieldCopy.setMaskFormatter(this.maskFormatter);
+        }
+
+        if (this.bindingInfo != null) {
+            dataFieldCopy.setBindingInfo((BindingInfo) this.bindingInfo.copy());
+        }
+
         dataFieldCopy.setDefaultValue(this.defaultValue);
         dataFieldCopy.setDictionaryAttributeName(this.dictionaryAttributeName);
         dataFieldCopy.setDictionaryObjectEntry(this.dictionaryObjectEntry);
@@ -1215,7 +1223,8 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
         dataFieldCopy.setPropertyName(this.propertyName);
 
         if (this.propertyNamesForAdditionalDisplay != null) {
-            dataFieldCopy.setPropertyNamesForAdditionalDisplay(new ArrayList<String>(this.propertyNamesForAdditionalDisplay));
+            dataFieldCopy.setPropertyNamesForAdditionalDisplay(new ArrayList<String>(
+                    this.propertyNamesForAdditionalDisplay));
         }
 
         dataFieldCopy.setReadOnlyDisplayReplacement(this.readOnlyDisplayReplacement);
@@ -1227,7 +1236,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
         dataFieldCopy.setDefaultValueFinderClass(this.defaultValueFinderClass);
 
         if (this.help != null) {
-            dataFieldCopy.setHelp((Help)this.help.copy());
+            dataFieldCopy.setHelp((Help) this.help.copy());
         }
 
         if (this.inquiry != null) {

@@ -362,16 +362,18 @@ public class PageGroup extends Group {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         PageGroup pageGroupCopy = (PageGroup) component;
+
         pageGroupCopy.setAutoFocus(this.isAutoFocus());
         pageGroupCopy.setStickyFooter(this.isStickyFooter());
 
-        if(breadcrumbOptions != null) {
-            pageGroupCopy.setBreadcrumbOptions((PageBreadcrumbOptions)this.getBreadcrumbOptions().copy());
+        if (breadcrumbOptions != null) {
+            pageGroupCopy.setBreadcrumbOptions((PageBreadcrumbOptions) this.getBreadcrumbOptions().copy());
         }
 
-        if(breadcrumbItem != null) {
-            pageGroupCopy.setBreadcrumbItem((BreadcrumbItem)this.getBreadcrumbOptions().copy());
+        if (breadcrumbItem != null) {
+            pageGroupCopy.setBreadcrumbItem((BreadcrumbItem) this.getBreadcrumbItem().copy());
         }
     }
 

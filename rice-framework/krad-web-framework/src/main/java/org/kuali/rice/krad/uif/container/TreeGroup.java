@@ -326,29 +326,63 @@ public class TreeGroup extends Group implements DataBinding {
         TreeGroup treeGroupCopy = (TreeGroup) component;
         treeGroupCopy.setPropertyName(this.getPropertyName());
 
-        if(this.bindingInfo != null) {
-            treeGroupCopy.setBindingInfo((BindingInfo)this.getBindingInfo().copy());
+        if (this.bindingInfo != null) {
+            treeGroupCopy.setBindingInfo((BindingInfo) this.getBindingInfo().copy());
         }
 
-        if(this.defaultNodePrototype != null) {
-            treeGroupCopy.setDefaultNodePrototype((NodePrototype)this.getDefaultNodePrototype().copy());
+        if (this.defaultNodePrototype != null) {
+            treeGroupCopy.setDefaultNodePrototype((NodePrototype) this.getDefaultNodePrototype().copy());
         }
 
-        if(this.treeGroups != null) {
-            treeGroupCopy.setTreeGroups(this.getTreeGroups());
+        if (this.treeGroups != null) {
+            Tree<Group, Message> treeGroupsCopy = new Tree<Group, Message>();
+            treeGroupsCopy.setRootElement(copyNode(this.treeGroups.getRootElement()));
+
+            treeGroupCopy.setTreeGroups(treeGroupsCopy);
         }
 
-        if(this.tree != null) {
-           treeGroupCopy.setTree((org.kuali.rice.krad.uif.widget.Tree)this.getTree().copy());
+        if (this.tree != null) {
+            treeGroupCopy.setTree((org.kuali.rice.krad.uif.widget.Tree) this.getTree().copy());
         }
 
-        if(this.nodePrototypeMap != null) {
+        if (this.nodePrototypeMap != null) {
             Map<Class<?>, NodePrototype> nodePrototypeMapCopy = Maps.newHashMapWithExpectedSize(
                     this.getNodePrototypeMap().size());
-            for(Map.Entry nodePrototypeMapEntry : getNodePrototypeMap().entrySet()) {
-                nodePrototypeMapCopy.put((Class)nodePrototypeMapEntry.getKey(),(NodePrototype)nodePrototypeMapEntry.getValue());
+            for (Map.Entry<Class<?>, NodePrototype> nodePrototypeMapEntry : getNodePrototypeMap().entrySet()) {
+                NodePrototype prototypeCopy = nodePrototypeMapEntry.getValue().copy();
+                nodePrototypeMapCopy.put(nodePrototypeMapEntry.getKey(), prototypeCopy);
             }
+
             treeGroupCopy.setNodePrototypeMap(nodePrototypeMapCopy);
         }
+    }
+
+    /**
+     * Copies a {@link Node} instance and then recursively copies each of its child nodes
+     *
+     * @param node node instance to copy
+     * @return new node instance copied from given node
+     */
+    protected Node<Group, Message> copyNode(Node<Group, Message> node) {
+        Node<Group, Message> nodeCopy = new Node<Group, Message>();
+
+        if (node.getData() != null) {
+            nodeCopy.setData((Group) node.getData().copy());
+        }
+
+        if (node.getNodeLabel() != null) {
+            nodeCopy.setNodeLabel((Message) node.getNodeLabel().copy());
+        }
+
+        if (node.getChildren() != null) {
+            List<Node<Group, Message>> childrenCopy = new ArrayList<Node<Group, Message>>();
+            for (Node<Group, Message> childNode : node.getChildren()) {
+                childrenCopy.add(copyNode(childNode));
+            }
+
+            nodeCopy.setChildren(childrenCopy);
+        }
+
+        return nodeCopy;
     }
 }

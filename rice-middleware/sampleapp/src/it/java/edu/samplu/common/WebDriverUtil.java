@@ -170,7 +170,9 @@ public class WebDriverUtil {
             saucelabs.setUp(className, testName);
             driver = saucelabs.getDriver();
         }
+
         driver.manage().timeouts().implicitlyWait(SETUP_URL_LOAD_WAIT_SECONDS, TimeUnit.SECONDS);
+        driver.manage().window().maximize();
 
         // TODO Got into the situation where the first url doesn't expect server, but all others do.  Readdress once
         // the NavIT WDIT conversion has been completed.

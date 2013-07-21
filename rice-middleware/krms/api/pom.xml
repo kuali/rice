@@ -48,6 +48,10 @@
     <svc.rr.wsdl>${wsdl.dir}/${svc.rr.name}.wsdl</svc.rr.wsdl>
     <svc.fr.name>FunctionRepositoryService</svc.fr.name>
     <svc.fr.wsdl>${wsdl.dir}/${svc.fr.name}.wsdl</svc.fr.wsdl>
+    <svc.rm.name>RuleManagementService</svc.rm.name>
+    <svc.rm.wsdl>${wsdl.dir}/${svc.rm.name}.wsdl</svc.rm.wsdl>
+    <svc.tr.name>TermRepositoryService</svc.tr.name>
+    <svc.tr.wsdl>${wsdl.dir}/${svc.tr.name}.wsdl</svc.tr.wsdl>
     <svc.ktr.name>KrmsTypeRepositoryService</svc.ktr.name>
     <svc.ktr.wsdl>${wsdl.dir}/${svc.ktr.name}.wsdl</svc.ktr.wsdl>
   </properties>
@@ -110,7 +114,7 @@
             <phase>${rice.java2ws.phase}</phase>
             <configuration>
               <className>org.kuali.rice.krms.api.repository.RuleManagementService</className>
-              <outputFile>${svc.fr.wsdl}</outputFile>
+              <outputFile>${svc.rm.wsdl}</outputFile>
               <serviceName>RuleManagementService</serviceName>
             </configuration>
             <goals>
@@ -122,8 +126,8 @@
             <phase>${rice.java2ws.phase}</phase>
             <configuration>
               <className>org.kuali.rice.krms.api.repository.term.TermRepositoryService</className>
-              <outputFile>${svc.fr.wsdl}</outputFile>
-              <serviceName>RuleManagementService</serviceName>
+              <outputFile>${svc.tr.wsdl}</outputFile>
+              <serviceName>TermRepositoryService</serviceName>
             </configuration>
             <goals>
               <goal>java2ws</goal>
@@ -155,6 +159,16 @@
                 <artifact>
                   <file>${svc.ktr.wsdl}</file>
                   <classifier>${svc.ktr.name}</classifier>
+                  <type>wsdl</type>
+                </artifact>
+                <artifact>
+                  <file>${svc.rm.wsdl}</file>
+                  <classifier>${svc.rm.name}</classifier>
+                  <type>wsdl</type>
+                </artifact>
+                <artifact>
+                  <file>${svc.tr.wsdl}</file>
+                  <classifier>${svc.tr.name}</classifier>
                   <type>wsdl</type>
                 </artifact>
               </artifacts>

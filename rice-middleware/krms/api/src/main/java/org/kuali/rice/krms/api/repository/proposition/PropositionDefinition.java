@@ -68,9 +68,9 @@ import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 		PropositionDefinition.Elements.PROP_TYPE_CODE,
 		PropositionDefinition.Elements.PARAMETERS,									// xml element name differs from class property name
 		PropositionDefinition.Elements.CMPND_OP_CODE,
-		PropositionDefinition.Elements.CMPND_SEQ_NO,
 		PropositionDefinition.Elements.CMPND_COMPONENTS,
         CoreConstants.CommonElements.VERSION_NUMBER,
+        PropositionDefinition.Elements.CMPND_SEQ_NO,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class PropositionDefinition extends AbstractDataTransferObject implements PropositionDefinitionContract {
@@ -99,9 +99,6 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
 	@XmlElement(name = Elements.CMPND_OP_CODE, required=false)
 	private String compoundOpCode;
         
-	@XmlElement(name = Elements.CMPND_SEQ_NO, required=false)
-	private Integer compoundSequenceNumber;
-        
 	@XmlElementWrapper(name = Elements.CMPND_COMPONENTS, required=false)
 	@XmlElement(name = Elements.CMPND_COMPONENT, required=false)
 	private List<PropositionDefinition> compoundComponents;
@@ -109,7 +106,10 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
 
-	@SuppressWarnings("unused")
+    @XmlElement(name = Elements.CMPND_SEQ_NO, required=false)
+    private Integer compoundSequenceNumber;
+
+    @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<org.w3c.dom.Element> _futureElements = null;
 
@@ -202,11 +202,6 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
 	}
         
 	@Override
-	public Integer getCompoundSequenceNumber() {
-            return this.compoundSequenceNumber;
-	}
-
-	@Override
 	public List<PropositionDefinition> getCompoundComponents() {
 		return this.compoundComponents;
 	}
@@ -216,7 +211,12 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
         return versionNumber;
     }
 
-	/**
+    @Override
+    public Integer getCompoundSequenceNumber() {
+        return this.compoundSequenceNumber;
+    }
+
+    /**
      * This builder is used to construct instances of KRMS Proposition.  It enforces the constraints of the {@link PropositionDefinitionContract}.
      */
     public static class Builder implements PropositionDefinitionContract, ModelBuilder, Serializable {

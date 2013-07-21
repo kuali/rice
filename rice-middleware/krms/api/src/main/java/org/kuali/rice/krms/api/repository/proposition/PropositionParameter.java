@@ -44,10 +44,10 @@ import org.kuali.rice.krms.api.repository.term.TermDefinition;
 		PropositionParameter.Elements.ID,
 		PropositionParameter.Elements.PROP_ID,
 		PropositionParameter.Elements.VALUE,
-		PropositionParameter.Elements.TERM_VALUE,
 		PropositionParameter.Elements.PARM_TYPE,
 		PropositionParameter.Elements.SEQUENCE,
         CoreConstants.CommonElements.VERSION_NUMBER,
+        PropositionParameter.Elements.TERM_VALUE,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class PropositionParameter extends AbstractDataTransferObject implements PropositionParameterContract {
@@ -59,15 +59,15 @@ public final class PropositionParameter extends AbstractDataTransferObject imple
 	private String propId;
 	@XmlElement(name = Elements.VALUE, required=true)
 	private String value;
-	@XmlElement(name = Elements.TERM_VALUE, required=true)
-	private TermDefinition termValue;
 	@XmlElement(name = Elements.PARM_TYPE, required=true)
 	private String parameterType;
 	@XmlElement(name = Elements.SEQUENCE, required=true)
 	private Integer sequenceNumber;
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
-	
+    @XmlElement(name = Elements.TERM_VALUE, required=false)
+    private TermDefinition termValue;
+
 	@SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<org.w3c.dom.Element> _futureElements = null;
@@ -117,11 +117,6 @@ public final class PropositionParameter extends AbstractDataTransferObject imple
 		return this.value;
 	}
         
-        @Override
-	public TermDefinition getTermValue() {
-		return this.termValue;
-	}
-
 	@Override
 	public String getParameterType() {
 		return this.parameterType;
@@ -135,8 +130,13 @@ public final class PropositionParameter extends AbstractDataTransferObject imple
     public Long getVersionNumber() {
         return versionNumber;
     }
-        
-	/**
+
+    @Override
+    public TermDefinition getTermValue() {
+        return this.termValue;
+    }
+
+    /**
      * This builder is used to construct instances of PropositionParameter.  
      * It enforces the constraints of the {@link PropositionParameterContract}.
      */

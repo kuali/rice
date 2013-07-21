@@ -54,10 +54,7 @@ public class ComponentUtils {
     }
 
     public static <T extends Component> T copy(T component, String idSuffix) {
-        // use for component copy method
-        //T copy = component.copy();
-
-        T copy = CloneUtils.deepClone(component);
+        T copy = component.copy();
 
         if (StringUtils.isNotBlank(idSuffix)) {
             updateIdsWithSuffixNested(copy, idSuffix);

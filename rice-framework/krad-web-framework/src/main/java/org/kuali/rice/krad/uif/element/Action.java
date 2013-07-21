@@ -218,8 +218,7 @@ public class Action extends ContentElementBase {
         if (StringUtils.isNotBlank(navigateToPageId)) {
             actionParameters.put(UifParameters.NAVIGATE_TO_PAGE_ID, navigateToPageId);
             if (StringUtils.isBlank(methodToCall)) {
-                actionParameters.put(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME,
-                        UifConstants.MethodToCallNames.NAVIGATE);
+                this.methodToCall = UifConstants.MethodToCallNames.NAVIGATE;
             }
         }
 
@@ -493,8 +492,6 @@ public class Action extends ContentElementBase {
      */
     public void setNavigateToPageId(String navigateToPageId) {
         this.navigateToPageId = navigateToPageId;
-        actionParameters.put(UifParameters.NAVIGATE_TO_PAGE_ID, navigateToPageId);
-        this.methodToCall = UifConstants.MethodToCallNames.NAVIGATE;
     }
 
     /**
@@ -750,9 +747,10 @@ public class Action extends ContentElementBase {
      * @param actionScript the actionScript to set
      */
     public void setActionScript(String actionScript) {
-        if (!StringUtils.endsWith(actionScript, ";")) {
+        if (StringUtils.isNotBlank(actionScript) && !StringUtils.endsWith(actionScript, ";")) {
             actionScript = actionScript + ";";
         }
+
         this.actionScript = actionScript;
     }
 

@@ -50,6 +50,7 @@ import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.element.ValidationMessages;
 import org.kuali.rice.krad.uif.util.ClientValidationUtils;
+import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ConstraintStateUtils;
@@ -1315,69 +1316,72 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         super.copyProperties(component);
 
         InputField inputFieldCopy = (InputField) component;
+
         inputFieldCopy.setCustomValidatorClass(this.customValidatorClass);
-        inputFieldCopy.setValidCharactersConstraint(this.getValidCharactersConstraint());
-        inputFieldCopy.setCaseConstraint(this.getCaseConstraint());
+        inputFieldCopy.setValidCharactersConstraint(CloneUtils.deepClone(this.getValidCharactersConstraint()));
+        inputFieldCopy.setCaseConstraint(CloneUtils.deepClone(this.getCaseConstraint()));
 
         if (dependencyConstraints != null) {
-            List<PrerequisiteConstraint> dependencyConstraintsCopy = Lists.newArrayListWithExpectedSize(dependencyConstraints.size());
+            List<PrerequisiteConstraint> dependencyConstraintsCopy = Lists.newArrayListWithExpectedSize(
+                    dependencyConstraints.size());
 
-            for(PrerequisiteConstraint dependencyConstraint : dependencyConstraints)   {
-                dependencyConstraintsCopy.add(dependencyConstraint);
+            for (PrerequisiteConstraint dependencyConstraint : dependencyConstraints) {
+                dependencyConstraintsCopy.add(CloneUtils.deepClone(dependencyConstraint));
             }
 
             inputFieldCopy.setDependencyConstraints(dependencyConstraintsCopy);
         }
 
         if (mustOccurConstraints != null) {
-            List<MustOccurConstraint> mustOccurConstraintsCopy = Lists.newArrayListWithExpectedSize(mustOccurConstraints.size());
+            List<MustOccurConstraint> mustOccurConstraintsCopy = Lists.newArrayListWithExpectedSize(
+                    mustOccurConstraints.size());
 
-            for(MustOccurConstraint mustOccurConstraint : mustOccurConstraints)   {
-                mustOccurConstraintsCopy.add(mustOccurConstraint);
+            for (MustOccurConstraint mustOccurConstraint : mustOccurConstraints) {
+                mustOccurConstraintsCopy.add(CloneUtils.deepClone(mustOccurConstraint));
             }
 
             inputFieldCopy.setMustOccurConstraints(mustOccurConstraintsCopy);
         }
 
-        inputFieldCopy.setSimpleConstraint(this.getSimpleConstraint());
+        inputFieldCopy.setSimpleConstraint(CloneUtils.deepClone(this.getSimpleConstraint()));
         inputFieldCopy.setDataType(this.getDataType());
 
         // display props
-        if(this.getControl() != null) {
-            inputFieldCopy.setControl((Control)this.getControl().copy());
+        if (this.getControl() != null) {
+            inputFieldCopy.setControl((Control) this.getControl().copy());
         }
 
         inputFieldCopy.setOptionsFinder(this.getOptionsFinder());
         inputFieldCopy.setUppercaseValue(this.isUppercaseValue());
         inputFieldCopy.setDisableNativeAutocomplete(this.isDisableNativeAutocomplete());
 
-        if(this.getValidationMessages() != null) {
-            inputFieldCopy.setValidationMessages((ValidationMessages)this.getValidationMessages().copy());
+        if (this.getValidationMessages() != null) {
+            inputFieldCopy.setValidationMessages((ValidationMessages) this.getValidationMessages().copy());
         }
 
         // messages
         inputFieldCopy.setConstraintText(this.getConstraintText());
         inputFieldCopy.setInstructionalText(this.getInstructionalText());
 
-        if(this.getConstraintMessage() != null) {
-            inputFieldCopy.setConstraintMessage((Message)this.getConstraintMessage().copy());
+        if (this.getConstraintMessage() != null) {
+            inputFieldCopy.setConstraintMessage((Message) this.getConstraintMessage().copy());
         }
 
-        if(this.getInstructionalMessage() != null) {
-            inputFieldCopy.setInstructionalMessage((Message)this.getInstructionalMessage().copy());
+        if (this.getInstructionalMessage() != null) {
+            inputFieldCopy.setInstructionalMessage((Message) this.getInstructionalMessage().copy());
         }
 
-        if(this.getAttributeQuery() != null) {
-            inputFieldCopy.setAttributeQuery((AttributeQuery)this.getAttributeQuery().copy());
+        if (this.getAttributeQuery() != null) {
+            inputFieldCopy.setAttributeQuery((AttributeQuery) this.getAttributeQuery().copy());
         }
 
         // widgets
-        if(this.getQuickfinder() != null) {
-            inputFieldCopy.setQuickfinder((QuickFinder)this.getQuickfinder().copy());
+        if (this.getQuickfinder() != null) {
+            inputFieldCopy.setQuickfinder((QuickFinder) this.getQuickfinder().copy());
         }
 
-        if(this.getSuggest() != null) {
-            inputFieldCopy.setSuggest((Suggest)this.getSuggest().copy());
+        if (this.getSuggest() != null) {
+            inputFieldCopy.setSuggest((Suggest) this.getSuggest().copy());
         }
     }
 

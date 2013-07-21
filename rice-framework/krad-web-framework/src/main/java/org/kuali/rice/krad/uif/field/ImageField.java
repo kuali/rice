@@ -165,7 +165,9 @@ public class ImageField extends FieldBase {
      * @param width
      */
     public void setWidth(String width) {
-        image.setWidth(width);
+        if (image != null) {
+            image.setWidth(width);
+        }
     }
 
     /**
@@ -279,10 +281,11 @@ public class ImageField extends FieldBase {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         ImageField imageFieldCopy = (ImageField) component;
 
         if (this.image != null) {
-            imageFieldCopy.setImage((Image)this.image.copy());
+            imageFieldCopy.setImage((Image) this.image.copy());
         }
     }
 }

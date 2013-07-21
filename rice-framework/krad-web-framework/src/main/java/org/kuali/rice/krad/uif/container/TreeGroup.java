@@ -366,6 +366,10 @@ public class TreeGroup extends Group implements DataBinding {
     protected Node<Group, Message> copyNode(Node<Group, Message> node) {
         Node<Group, Message> nodeCopy = new Node<Group, Message>();
 
+        if (node == null) {
+            return null;
+        }
+
         if (node.getData() != null) {
             nodeCopy.setData((Group) node.getData().copy());
         }

@@ -2034,6 +2034,12 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
             componentCopy.setToolTip((Tooltip) this.toolTip.copy());
         }
 
+        if (this.context != null) {
+            Map<String, Object> contextCopy = new HashMap<String, Object>(this.context);
+
+            componentCopy.setContext(contextCopy);
+        }
+
         if (propertyReplacers != null) {
             List<PropertyReplacer> propertyReplacersCopy = Lists.newArrayListWithExpectedSize(
                     getPropertyReplacers().size());

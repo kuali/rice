@@ -38,12 +38,6 @@
                     p:inquiryParameters="field70:number"/>
             </property>
           </bean>
-          <bean parent="GenericTextField" p:propertyName="field71">
-            <property name="inquiry">
-              <bean parent="Uif-Inquiry" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
-                    p:inquiryParameters="field71:number" p:viewName="ks_inquiry"/>
-            </property>
-          </bean>
           <bean parent="GenericTextField" p:propertyName="field72">
             <property name="propertyNamesForAdditionalDisplay" value="field73,field74" />
             <property name="attributeQuery">

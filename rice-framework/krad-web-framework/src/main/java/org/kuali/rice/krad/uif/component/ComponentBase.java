@@ -2012,6 +2012,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
             componentCopy.setTemplateOptions(new HashMap<String, String>(this.templateOptions));
         }
 
+        componentCopy.setTemplateOptionsJSString(this.templateOptionsJSString);
+
         componentCopy.setTitle(this.title);
         componentCopy.setValign(this.valign);
         componentCopy.setWidth(this.width);

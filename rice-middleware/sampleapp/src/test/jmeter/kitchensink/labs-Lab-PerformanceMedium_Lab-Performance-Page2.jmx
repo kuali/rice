@@ -1926,7 +1926,7 @@
               <stringProp name="LoopController.loops">${LOOPS}</stringProp>
             </LoopController>
             <hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${TESTPATH}" enabled="true">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${TESTPATH}?viewId=${VIEWID}&amp;pageId=${PAGEID}" enabled="true">
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="viewId" elementType="HTTPArgument">

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jmeterTestPlan version="1.2" properties="2.4" jmeter="2.9 r1437961">
   <hashTree>
-    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="KitchenSink Test 1" enabled="true">
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="KitchenSink Test 7" enabled="true">
       <stringProp name="TestPlan.comments">Run smoke test thru jmeter</stringProp>
       <boolProp name="TestPlan.functional_mode">false</boolProp>
       <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
@@ -1926,7 +1926,7 @@
               <stringProp name="LoopController.loops">${LOOPS}</stringProp>
             </LoopController>
             <hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${TESTPATH}" enabled="true">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${TESTPATH}?viewId=${VIEWID}&amp;pageId=${PAGEID}" enabled="true">
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="viewId" elementType="HTTPArgument">

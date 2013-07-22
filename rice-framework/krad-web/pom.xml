@@ -16,14 +16,13 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <name>Rice KRAD Web</name>
   <parent>
     <groupId>org.kuali.rice</groupId>
     <artifactId>rice-framework</artifactId>
-    <version>2.3.0-RC1-SNAPSHOT</version>
+    <version>2.3.0-RC1</version>
   </parent>
 
   <artifactId>rice-krad-web</artifactId>
@@ -33,9 +32,9 @@
     <webapp.source.dir>${basedir}/src/main/webapp</webapp.source.dir>
     <theme.builder.output.dir>${project.build.directory}/${project.artifactId}-${project.version}
     </theme.builder.output.dir>
-    <theme.builder.excludes></theme.builder.excludes>
-    <theme.builder.theme.adddirs></theme.builder.theme.adddirs>
-    <theme.builder.plugin.adddirs></theme.builder.plugin.adddirs>
+    <theme.builder.excludes />
+    <theme.builder.theme.adddirs />
+    <theme.builder.plugin.adddirs />
     <theme.skip.theme.processing>false</theme.skip.theme.processing>
   </properties>
 

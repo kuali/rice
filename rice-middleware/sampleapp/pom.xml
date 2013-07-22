@@ -63,6 +63,14 @@
           <include>NeustarJSTemplate/*.*</include>
         </includes>
       </resource>
+      <resource>
+        <directory>src/test/resources/jmeter</directory>
+        <filtering>true</filtering>
+        <includes>
+          <include>KRAD-JMeter.ftl</include>
+          <include>KRAD.csv</include>
+        </includes>
+      </resource>
     </resources>
 
     <plugins>

@@ -65,27 +65,27 @@
         </elementProp>
         <elementProp name="PAGEUNDERTESTTIMEOUTMS" elementType="Argument">
             <stringProp name="Argument.name">PAGEUNDERTESTTIMEOUTMS</stringProp>
-            <stringProp name="Argument.value">${__P(pageundertesttimeoutms,11000)}</stringProp>
+            <stringProp name="Argument.value">${__P(pageundertesttimeoutms,3000)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
         </elementProp>
         <elementProp name="TESTPLANNAME" elementType="Argument">
             <stringProp name="Argument.name">TESTPLANNAME</stringProp>
-            <stringProp name="Argument.value">${__P(testplanname,"KitchenSink PerfomanceMedium page 1")}</stringProp>
+            <stringProp name="Argument.value">${__P(testplanname,"UICompView page 7")}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
         </elementProp>
         <elementProp name="TESTPATH" elementType="Argument">
             <stringProp name="Argument.name">TESTPATH</stringProp>
-            <stringProp name="Argument.value">${__P(testpath,/kr-krad/labs)}</stringProp>
+            <stringProp name="Argument.value">${__P(testpath,/kr-krad/uicomponents)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
         </elementProp>
         <elementProp name="VIEWID" elementType="Argument">
             <stringProp name="Argument.name">VIEWID</stringProp>
-            <stringProp name="Argument.value">${__P(viewid,Lab-PerformanceMedium)}</stringProp>
+            <stringProp name="Argument.value">${__P(viewid,UifCompView)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
         </elementProp>
         <elementProp name="PAGEID" elementType="Argument">
             <stringProp name="Argument.name">PAGEID</stringProp>
-            <stringProp name="Argument.value">${__P(pageid,Lab-Performance-Page1)}</stringProp>
+            <stringProp name="Argument.value">${__P(pageid,UifCompView-Page7)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
         </elementProp>
     </collectionProp>

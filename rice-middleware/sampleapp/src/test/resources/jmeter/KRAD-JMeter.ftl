@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jmeterTestPlan version="1.2" properties="2.4" jmeter="2.9 r1437961">
 <hashTree>
-<TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="${TESTPLANNAME}" enabled="true">
-    <stringProp name="TestPlan.comments">JMeter test for ${TESTPLANNAME}</stringProp>
+<TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="@{TESTPLANNAME}" enabled="true">
+    <stringProp name="TestPlan.comments">JMeter test for @{TESTPLANNAME}</stringProp>
     <boolProp name="TestPlan.functional_mode">false</boolProp>
     <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
     <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
@@ -15,77 +15,77 @@
     <collectionProp name="Arguments.arguments">
         <elementProp name="SERVER" elementType="Argument">
             <stringProp name="Argument.name">SERVER</stringProp>
-            <stringProp name="Argument.value">${__P(server,env11.rice.kuali.org)}</stringProp>
+            <stringProp name="Argument.value">@{__P(server,env11.rice.kuali.org)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
         </elementProp>
         <elementProp name="PORT" elementType="Argument">
             <stringProp name="Argument.name">PORT</stringProp>
-            <stringProp name="Argument.value">${__P(port,80)}</stringProp>
+            <stringProp name="Argument.value">@{__P(port,80)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
         </elementProp>
         <elementProp name="PATH" elementType="Argument">
             <stringProp name="Argument.name">PATH</stringProp>
-            <stringProp name="Argument.value">${__P(path,)}</stringProp>
+            <stringProp name="Argument.value">@{__P(path,)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
         </elementProp>
         <elementProp name="LOOPS" elementType="Argument">
             <stringProp name="Argument.name">LOOPS</stringProp>
-            <stringProp name="Argument.value">${__P(loops,1)}</stringProp>
+            <stringProp name="Argument.value">@{__P(loops,1)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
         </elementProp>
         <elementProp name="THREADS" elementType="Argument">
             <stringProp name="Argument.name">THREADS</stringProp>
-            <stringProp name="Argument.value">${__P(threads,1)}</stringProp>
+            <stringProp name="Argument.value">@{__P(threads,1)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
         </elementProp>
         <elementProp name="RAMPSECONDS" elementType="Argument">
             <stringProp name="Argument.name">RAMPSECONDS</stringProp>
-            <stringProp name="Argument.value">${__P(rampseconds,1)}</stringProp>
+            <stringProp name="Argument.value">@{__P(rampseconds,1)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
         </elementProp>
         <elementProp name="USERPREFIX" elementType="Argument">
             <stringProp name="Argument.name">USERPREFIX</stringProp>
-            <stringProp name="Argument.value">${__P(userprefix,testuser)}</stringProp>
+            <stringProp name="Argument.value">@{__P(userprefix,testuser)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
         </elementProp>
         <elementProp name="COUNTERCONFIGSTART" elementType="Argument">
             <stringProp name="Argument.name">COUNTERCONFIGSTART</stringProp>
-            <stringProp name="Argument.value">${__P(counterconfigstart,1)}</stringProp>
+            <stringProp name="Argument.value">@{__P(counterconfigstart,1)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
         </elementProp>
         <elementProp name="COUNTERCONFIGEND" elementType="Argument">
             <stringProp name="Argument.name">COUNTERCONFIGEND</stringProp>
-            <stringProp name="Argument.value">${__P(counterconfigend,6)}</stringProp>
+            <stringProp name="Argument.value">@{__P(counterconfigend,6)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
         </elementProp>
         <elementProp name="COUNTERCONFIGINCR" elementType="Argument">
             <stringProp name="Argument.name">COUNTERCONFIGINCR</stringProp>
-            <stringProp name="Argument.value">${__P(counterconfigincr,1)}</stringProp>
+            <stringProp name="Argument.value">@{__P(counterconfigincr,1)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
         </elementProp>
         <elementProp name="PAGEUNDERTESTTIMEOUTMS" elementType="Argument">
             <stringProp name="Argument.name">PAGEUNDERTESTTIMEOUTMS</stringProp>
-            <stringProp name="Argument.value">${__P(pageundertesttimeoutms,11000)}</stringProp>
+            <stringProp name="Argument.value">@{__P(pageundertesttimeoutms,${pageundertesttimeoutms})}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
         </elementProp>
         <elementProp name="TESTPLANNAME" elementType="Argument">
             <stringProp name="Argument.name">TESTPLANNAME</stringProp>
-            <stringProp name="Argument.value">${__P(testplanname,"KitchenSink PerfomanceMedium page 1")}</stringProp>
+            <stringProp name="Argument.value">@{__P(testplanname,${testplanname})}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
         </elementProp>
         <elementProp name="TESTPATH" elementType="Argument">
             <stringProp name="Argument.name">TESTPATH</stringProp>
-            <stringProp name="Argument.value">${__P(testpath,/kr-krad/labs)}</stringProp>
+            <stringProp name="Argument.value">@{__P(testpath,${testpath})}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
         </elementProp>
         <elementProp name="VIEWID" elementType="Argument">
             <stringProp name="Argument.name">VIEWID</stringProp>
-            <stringProp name="Argument.value">${__P(viewid,Lab-PerformanceMedium)}</stringProp>
+            <stringProp name="Argument.value">@{__P(viewid,${viewid})}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
         </elementProp>
         <elementProp name="PAGEID" elementType="Argument">
             <stringProp name="Argument.name">PAGEID</stringProp>
-            <stringProp name="Argument.value">${__P(pageid,Lab-Performance-Page1)}</stringProp>
+            <stringProp name="Argument.value">@{__P(pageid,${pageid})}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
         </elementProp>
     </collectionProp>
@@ -95,13 +95,13 @@
     <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
         <collectionProp name="Arguments.arguments"/>
     </elementProp>
-    <stringProp name="HTTPSampler.domain">${SERVER}</stringProp>
-    <stringProp name="HTTPSampler.port">${PORT}</stringProp>
+    <stringProp name="HTTPSampler.domain">@{SERVER}</stringProp>
+    <stringProp name="HTTPSampler.port">@{PORT}</stringProp>
     <stringProp name="HTTPSampler.connect_timeout"></stringProp>
     <stringProp name="HTTPSampler.response_timeout"></stringProp>
     <stringProp name="HTTPSampler.protocol"></stringProp>
     <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-    <stringProp name="HTTPSampler.path">${PATH}</stringProp>
+    <stringProp name="HTTPSampler.path">@{PATH}</stringProp>
     <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
 </ConfigTestElement>
 <hashTree/>
@@ -111,8 +111,8 @@
         <boolProp name="LoopController.continue_forever">false</boolProp>
         <stringProp name="LoopController.loops">1</stringProp>
     </elementProp>
-    <stringProp name="ThreadGroup.num_threads">${THREADS}</stringProp>
-    <stringProp name="ThreadGroup.ramp_time">${RAMPSECONDS}</stringProp>
+    <stringProp name="ThreadGroup.num_threads">@{THREADS}</stringProp>
+    <stringProp name="ThreadGroup.ramp_time">@{RAMPSECONDS}</stringProp>
     <longProp name="ThreadGroup.start_time">1366316314000</longProp>
     <longProp name="ThreadGroup.end_time">1366316314000</longProp>
     <boolProp name="ThreadGroup.scheduler">false</boolProp>
@@ -129,11 +129,11 @@
 <RecordingController guiclass="RecordController" testclass="RecordingController" testname="Recording Controller" enabled="true"/>
 <hashTree>
 <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="USER Counter" enabled="true">
-    <stringProp name="CounterConfig.start">${COUNTERCONFIGSTART}</stringProp>
-    <stringProp name="CounterConfig.end">${COUNTERCONFIGEND}</stringProp>
-    <stringProp name="CounterConfig.incr">${COUNTERCONFIGINCR}</stringProp>
+    <stringProp name="CounterConfig.start">@{COUNTERCONFIGSTART}</stringProp>
+    <stringProp name="CounterConfig.end">@{COUNTERCONFIGEND}</stringProp>
+    <stringProp name="CounterConfig.incr">@{COUNTERCONFIGINCR}</stringProp>
     <stringProp name="CounterConfig.name">USER</stringProp>
-    <stringProp name="CounterConfig.format">${USERPREFIX}</stringProp>
+    <stringProp name="CounterConfig.format">@{USERPREFIX}</stringProp>
     <boolProp name="CounterConfig.per_user">false</boolProp>
 </CounterConfig>
 <hashTree/>
@@ -143,7 +143,7 @@
     </collectionProp>
     <collectionProp name="UserParameters.thread_values">
         <collectionProp name="960218966">
-            <stringProp name="1330894003">${SERVER}:${PORT}${PATH}</stringProp>
+            <stringProp name="1330894003">@{SERVER}:@{PORT}@{PATH}</stringProp>
         </collectionProp>
     </collectionProp>
     <boolProp name="UserParameters.per_iteration">false</boolProp>
@@ -177,7 +177,7 @@
     <stringProp name="HTTPSampler.response_timeout"></stringProp>
     <stringProp name="HTTPSampler.protocol">http</stringProp>
     <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-    <stringProp name="HTTPSampler.path">${PATH}/</stringProp>
+    <stringProp name="HTTPSampler.path">@{PATH}/</stringProp>
     <stringProp name="HTTPSampler.method">GET</stringProp>
     <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
     <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -234,7 +234,7 @@
     <stringProp name="HTTPSampler.response_timeout"></stringProp>
     <stringProp name="HTTPSampler.protocol">http</stringProp>
     <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-    <stringProp name="HTTPSampler.path">${PATH}/kr-krad/kradsampleapp</stringProp>
+    <stringProp name="HTTPSampler.path">@{PATH}/kr-krad/kradsampleapp</stringProp>
     <stringProp name="HTTPSampler.method">GET</stringProp>
     <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
     <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -305,7 +305,7 @@
     <stringProp name="HTTPSampler.response_timeout"></stringProp>
     <stringProp name="HTTPSampler.protocol">http</stringProp>
     <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-    <stringProp name="HTTPSampler.path">${PATH}/kr-login/login</stringProp>
+    <stringProp name="HTTPSampler.path">@{PATH}/kr-login/login</stringProp>
     <stringProp name="HTTPSampler.method">GET</stringProp>
     <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
     <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -376,7 +376,7 @@
     <stringProp name="HTTPSampler.response_timeout"></stringProp>
     <stringProp name="HTTPSampler.protocol">http</stringProp>
     <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-    <stringProp name="HTTPSampler.path">${PATH}/listener</stringProp>
+    <stringProp name="HTTPSampler.path">@{PATH}/listener</stringProp>
     <stringProp name="HTTPSampler.method">GET</stringProp>
     <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
     <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -402,7 +402,7 @@
             </elementProp>
             <elementProp name="Referer" elementType="Header">
                 <stringProp name="Header.name">Referer</stringProp>
-                <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
+                <stringProp name="Header.value">http://@{URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
             </elementProp>
             <elementProp name="X-Requested-With" elementType="Header">
                 <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -455,7 +455,7 @@
     <stringProp name="HTTPSampler.response_timeout"></stringProp>
     <stringProp name="HTTPSampler.protocol">http</stringProp>
     <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-    <stringProp name="HTTPSampler.path">${PATH}/kr-krad/listener</stringProp>
+    <stringProp name="HTTPSampler.path">@{PATH}/kr-krad/listener</stringProp>
     <stringProp name="HTTPSampler.method">GET</stringProp>
     <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
     <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -481,7 +481,7 @@
             </elementProp>
             <elementProp name="Referer" elementType="Header">
                 <stringProp name="Header.name">Referer</stringProp>
-                <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
+                <stringProp name="Header.value">http://@{URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
             </elementProp>
             <elementProp name="X-Requested-With" elementType="Header">
                 <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -534,7 +534,7 @@
     <stringProp name="HTTPSampler.response_timeout"></stringProp>
     <stringProp name="HTTPSampler.protocol">http</stringProp>
     <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-    <stringProp name="HTTPSampler.path">${PATH}/kr-krad/listener</stringProp>
+    <stringProp name="HTTPSampler.path">@{PATH}/kr-krad/listener</stringProp>
     <stringProp name="HTTPSampler.method">GET</stringProp>
     <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
     <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -560,7 +560,7 @@
             </elementProp>
             <elementProp name="Referer" elementType="Header">
                 <stringProp name="Header.name">Referer</stringProp>
-                <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
+                <stringProp name="Header.value">http://@{URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
             </elementProp>
             <elementProp name="X-Requested-With" elementType="Header">
                 <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -613,7 +613,7 @@
     <stringProp name="HTTPSampler.response_timeout"></stringProp>
     <stringProp name="HTTPSampler.protocol">http</stringProp>
     <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-    <stringProp name="HTTPSampler.path">${PATH}/kr-krad/listener</stringProp>
+    <stringProp name="HTTPSampler.path">@{PATH}/kr-krad/listener</stringProp>
     <stringProp name="HTTPSampler.method">GET</stringProp>
     <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
     <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -639,7 +639,7 @@
             </elementProp>
             <elementProp name="Referer" elementType="Header">
                 <stringProp name="Header.name">Referer</stringProp>
-                <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
+                <stringProp name="Header.value">http://@{URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
             </elementProp>
             <elementProp name="X-Requested-With" elementType="Header">
                 <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -692,7 +692,7 @@
     <stringProp name="HTTPSampler.response_timeout"></stringProp>
     <stringProp name="HTTPSampler.protocol">http</stringProp>
     <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-    <stringProp name="HTTPSampler.path">${PATH}/kr-krad/listener</stringProp>
+    <stringProp name="HTTPSampler.path">@{PATH}/kr-krad/listener</stringProp>
     <stringProp name="HTTPSampler.method">GET</stringProp>
     <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
     <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -718,7 +718,7 @@
             </elementProp>
             <elementProp name="Referer" elementType="Header">
                 <stringProp name="Header.name">Referer</stringProp>
-                <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
+                <stringProp name="Header.value">http://@{URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
             </elementProp>
             <elementProp name="X-Requested-With" elementType="Header">
                 <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -771,7 +771,7 @@
     <stringProp name="HTTPSampler.response_timeout"></stringProp>
     <stringProp name="HTTPSampler.protocol">http</stringProp>
     <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-    <stringProp name="HTTPSampler.path">${PATH}/kr-krad/listener</stringProp>
+    <stringProp name="HTTPSampler.path">@{PATH}/kr-krad/listener</stringProp>
     <stringProp name="HTTPSampler.method">GET</stringProp>
     <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
     <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -797,7 +797,7 @@
             </elementProp>
             <elementProp name="Referer" elementType="Header">
                 <stringProp name="Header.name">Referer</stringProp>
-                <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
+                <stringProp name="Header.value">http://@{URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
             </elementProp>
             <elementProp name="X-Requested-With" elementType="Header">
                 <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -850,7 +850,7 @@
     <stringProp name="HTTPSampler.response_timeout"></stringProp>
     <stringProp name="HTTPSampler.protocol">http</stringProp>
     <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-    <stringProp name="HTTPSampler.path">${PATH}/kr-krad/listener</stringProp>
+    <stringProp name="HTTPSampler.path">@{PATH}/kr-krad/listener</stringProp>
     <stringProp name="HTTPSampler.method">GET</stringProp>
     <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
     <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -876,7 +876,7 @@
             </elementProp>
             <elementProp name="Referer" elementType="Header">
                 <stringProp name="Header.name">Referer</stringProp>
-                <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
+                <stringProp name="Header.value">http://@{URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
             </elementProp>
             <elementProp name="X-Requested-With" elementType="Header">
                 <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -943,7 +943,7 @@
     <stringProp name="HTTPSampler.response_timeout"></stringProp>
     <stringProp name="HTTPSampler.protocol">http</stringProp>
     <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-    <stringProp name="HTTPSampler.path">${PATH}/1/statuses/user_timeline.json</stringProp>
+    <stringProp name="HTTPSampler.path">@{PATH}/1/statuses/user_timeline.json</stringProp>
     <stringProp name="HTTPSampler.method">GET</stringProp>
     <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
     <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -969,7 +969,7 @@
             </elementProp>
             <elementProp name="Referer" elementType="Header">
                 <stringProp name="Header.name">Referer</stringProp>
-                <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
+                <stringProp name="Header.value">http://@{URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
             </elementProp>
             <elementProp name="Accept-Encoding" elementType="Header">
                 <stringProp name="Header.name">Accept-Encoding</stringProp>
@@ -1041,7 +1041,7 @@
             <elementProp name="login_user" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.name">login_user</stringProp>
-                <stringProp name="Argument.value">${USER}</stringProp>
+                <stringProp name="Argument.value">@{USER}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
             </elementProp>
@@ -1075,14 +1075,14 @@
             </elementProp>
             <elementProp name="formKey" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">${FORM_KEY}</stringProp>
+                <stringProp name="Argument.value">@{FORM_KEY}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 <stringProp name="Argument.name">formKey</stringProp>
             </elementProp>
             <elementProp name="sessionId" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">${SESSION_ID}</stringProp>
+                <stringProp name="Argument.value">@{SESSION_ID}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 <stringProp name="Argument.name">sessionId</stringProp>
@@ -1095,7 +1095,7 @@
     <stringProp name="HTTPSampler.response_timeout"></stringProp>
     <stringProp name="HTTPSampler.protocol">http</stringProp>
     <stringProp name="HTTPSampler.contentEncoding">ISO-8859-1</stringProp>
-    <stringProp name="HTTPSampler.path">${PATH}/kr-login/login</stringProp>
+    <stringProp name="HTTPSampler.path">@{PATH}/kr-login/login</stringProp>
     <stringProp name="HTTPSampler.method">POST</stringProp>
     <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
     <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1125,7 +1125,7 @@
             </elementProp>
             <elementProp name="Referer" elementType="Header">
                 <stringProp name="Header.name">Referer</stringProp>
-                <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
+                <stringProp name="Header.value">http://@{URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
             </elementProp>
             <elementProp name="Accept-Encoding" elementType="Header">
                 <stringProp name="Header.name">Accept-Encoding</stringProp>
@@ -1146,7 +1146,7 @@
 </hashTree>
 <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If Invalid Login Controller" enabled="true">
     <stringProp name="TestPlan.comments">If Invalid Login, Skip rest of test</stringProp>
-    <stringProp name="IfController.condition">${JMeterThread.last_sample_ok}</stringProp>
+    <stringProp name="IfController.condition">@{JMeterThread.last_sample_ok}</stringProp>
     <boolProp name="IfController.evaluateAll">false</boolProp>
 </IfController>
 <hashTree>
@@ -1170,7 +1170,7 @@
             <elementProp name="__login_user" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.name">__login_user</stringProp>
-                <stringProp name="Argument.value">${USER}</stringProp>
+                <stringProp name="Argument.value">@{USER}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
             </elementProp>
@@ -1182,7 +1182,7 @@
     <stringProp name="HTTPSampler.response_timeout"></stringProp>
     <stringProp name="HTTPSampler.protocol">http</stringProp>
     <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-    <stringProp name="HTTPSampler.path">${PATH}/kr-krad/kradsampleapp</stringProp>
+    <stringProp name="HTTPSampler.path">@{PATH}/kr-krad/kradsampleapp</stringProp>
     <stringProp name="HTTPSampler.method">GET</stringProp>
     <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
     <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1208,7 +1208,7 @@
             </elementProp>
             <elementProp name="Referer" elementType="Header">
                 <stringProp name="Header.name">Referer</stringProp>
-                <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
+                <stringProp name="Header.value">http://@{URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
             </elementProp>
             <elementProp name="Accept-Encoding" elementType="Header">
                 <stringProp name="Header.name">Accept-Encoding</stringProp>
@@ -1243,7 +1243,7 @@
     <stringProp name="HTTPSampler.response_timeout"></stringProp>
     <stringProp name="HTTPSampler.protocol">http</stringProp>
     <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-    <stringProp name="HTTPSampler.path">${PATH}/kr-krad/kradsampleapp</stringProp>
+    <stringProp name="HTTPSampler.path">@{PATH}/kr-krad/kradsampleapp</stringProp>
     <stringProp name="HTTPSampler.method">GET</stringProp>
     <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
     <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1269,7 +1269,7 @@
             </elementProp>
             <elementProp name="Referer" elementType="Header">
                 <stringProp name="Header.name">Referer</stringProp>
-                <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
+                <stringProp name="Header.value">http://@{URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart</stringProp>
             </elementProp>
             <elementProp name="Accept-Encoding" elementType="Header">
                 <stringProp name="Header.name">Accept-Encoding</stringProp>
@@ -1318,7 +1318,7 @@
     <stringProp name="HTTPSampler.response_timeout"></stringProp>
     <stringProp name="HTTPSampler.protocol">http</stringProp>
     <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
-    <stringProp name="HTTPSampler.path">${PATH}/listener</stringProp>
+    <stringProp name="HTTPSampler.path">@{PATH}/listener</stringProp>
     <stringProp name="HTTPSampler.method">GET</stringProp>
     <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
     <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1344,7 +1344,7 @@
             </elementProp>
             <elementProp name="Referer" elementType="Header">
                 <stringProp name="Header.name">Referer</stringProp>
-                <stringProp name="Header.value">http://${URL}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
+                <stringProp name="Header.value">http://@{URL}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
             </elementProp>
             <elementProp name="X-Requested-With" elementType="Header">
                 <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -1397,7 +1397,7 @@
     <stringProp name="HTTPSampler.response_timeout"></stringProp>
     <stringProp name="HTTPSampler.protocol">http</stringProp>
     <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-    <stringProp name="HTTPSampler.path">${PATH}/kr-krad/listener</stringProp>
+    <stringProp name="HTTPSampler.path">@{PATH}/kr-krad/listener</stringProp>
     <stringProp name="HTTPSampler.method">GET</stringProp>
     <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
     <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1423,7 +1423,7 @@
             </elementProp>
             <elementProp name="Referer" elementType="Header">
                 <stringProp name="Header.name">Referer</stringProp>
-                <stringProp name="Header.value">http://${URL}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
+                <stringProp name="Header.value">http://@{URL}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
             </elementProp>
             <elementProp name="X-Requested-With" elementType="Header">
                 <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -1476,7 +1476,7 @@
     <stringProp name="HTTPSampler.response_timeout"></stringProp>
     <stringProp name="HTTPSampler.protocol">http</stringProp>
     <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-    <stringProp name="HTTPSampler.path">${PATH}/kr-krad/listener</stringProp>
+    <stringProp name="HTTPSampler.path">@{PATH}/kr-krad/listener</stringProp>
     <stringProp name="HTTPSampler.method">GET</stringProp>
     <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
     <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1502,7 +1502,7 @@
             </elementProp>
             <elementProp name="Referer" elementType="Header">
                 <stringProp name="Header.name">Referer</stringProp>
-                <stringProp name="Header.value">http://${URL}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
+                <stringProp name="Header.value">http://@{URL}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
             </elementProp>
             <elementProp name="X-Requested-With" elementType="Header">
                 <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -1555,7 +1555,7 @@
     <stringProp name="HTTPSampler.response_timeout"></stringProp>
     <stringProp name="HTTPSampler.protocol">http</stringProp>
     <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-    <stringProp name="HTTPSampler.path">${PATH}/kr-krad/listener</stringProp>
+    <stringProp name="HTTPSampler.path">@{PATH}/kr-krad/listener</stringProp>
     <stringProp name="HTTPSampler.method">GET</stringProp>
     <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
     <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1581,7 +1581,7 @@
             </elementProp>
             <elementProp name="Referer" elementType="Header">
                 <stringProp name="Header.name">Referer</stringProp>
-                <stringProp name="Header.value">http://${URL}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
+                <stringProp name="Header.value">http://@{URL}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
             </elementProp>
             <elementProp name="X-Requested-With" elementType="Header">
                 <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -1634,7 +1634,7 @@
     <stringProp name="HTTPSampler.response_timeout"></stringProp>
     <stringProp name="HTTPSampler.protocol">http</stringProp>
     <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-    <stringProp name="HTTPSampler.path">${PATH}/kr-krad/listener</stringProp>
+    <stringProp name="HTTPSampler.path">@{PATH}/kr-krad/listener</stringProp>
     <stringProp name="HTTPSampler.method">GET</stringProp>
     <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
     <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1660,7 +1660,7 @@
             </elementProp>
             <elementProp name="Referer" elementType="Header">
                 <stringProp name="Header.name">Referer</stringProp>
-                <stringProp name="Header.value">http://${URL}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
+                <stringProp name="Header.value">http://@{URL}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
             </elementProp>
             <elementProp name="X-Requested-With" elementType="Header">
                 <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -1713,7 +1713,7 @@
     <stringProp name="HTTPSampler.response_timeout"></stringProp>
     <stringProp name="HTTPSampler.protocol">http</stringProp>
     <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-    <stringProp name="HTTPSampler.path">${PATH}/kr-krad/listener</stringProp>
+    <stringProp name="HTTPSampler.path">@{PATH}/kr-krad/listener</stringProp>
     <stringProp name="HTTPSampler.method">GET</stringProp>
     <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
     <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1739,7 +1739,7 @@
             </elementProp>
             <elementProp name="Referer" elementType="Header">
                 <stringProp name="Header.name">Referer</stringProp>
-                <stringProp name="Header.value">http://${URL}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
+                <stringProp name="Header.value">http://@{URL}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
             </elementProp>
             <elementProp name="X-Requested-With" elementType="Header">
                 <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -1806,7 +1806,7 @@
     <stringProp name="HTTPSampler.response_timeout"></stringProp>
     <stringProp name="HTTPSampler.protocol">http</stringProp>
     <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
-    <stringProp name="HTTPSampler.path">${PATH}/1/statuses/user_timeline.json</stringProp>
+    <stringProp name="HTTPSampler.path">@{PATH}/1/statuses/user_timeline.json</stringProp>
     <stringProp name="HTTPSampler.method">GET</stringProp>
     <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
     <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1832,7 +1832,7 @@
             </elementProp>
             <elementProp name="Referer" elementType="Header">
                 <stringProp name="Header.name">Referer</stringProp>
-                <stringProp name="Header.value">http://${URL}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
+                <stringProp name="Header.value">http://@{URL}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
             </elementProp>
             <elementProp name="Accept-Encoding" elementType="Header">
                 <stringProp name="Header.name">Accept-Encoding</stringProp>
@@ -1881,7 +1881,7 @@
     <stringProp name="HTTPSampler.response_timeout"></stringProp>
     <stringProp name="HTTPSampler.protocol">http</stringProp>
     <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-    <stringProp name="HTTPSampler.path">${PATH}/kr-krad/listener</stringProp>
+    <stringProp name="HTTPSampler.path">@{PATH}/kr-krad/listener</stringProp>
     <stringProp name="HTTPSampler.method">GET</stringProp>
     <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
     <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1907,7 +1907,7 @@
             </elementProp>
             <elementProp name="Referer" elementType="Header">
                 <stringProp name="Header.name">Referer</stringProp>
-                <stringProp name="Header.value">http://${URL}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
+                <stringProp name="Header.value">http://@{URL}/kr-krad/kradsampleapp?viewId=KradSampleAppHome&amp;methodToCall=start</stringProp>
             </elementProp>
             <elementProp name="X-Requested-With" elementType="Header">
                 <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -1923,23 +1923,23 @@
 </hashTree>
 <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
     <boolProp name="LoopController.continue_forever">true</boolProp>
-    <stringProp name="LoopController.loops">${LOOPS}</stringProp>
+    <stringProp name="LoopController.loops">@{LOOPS}</stringProp>
 </LoopController>
 <hashTree>
-<HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${TESTPATH}?viewId=${VIEWID}&amp;pageId=${PAGEID}" enabled="true">
+<HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="@{TESTPATH}?viewId=@{VIEWID}&amp;pageId=@{PAGEID}" enabled="true">
     <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
         <collectionProp name="Arguments.arguments">
             <elementProp name="viewId" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.name">viewId</stringProp>
-                <stringProp name="Argument.value">${VIEWID}</stringProp>
+                <stringProp name="Argument.value">@{VIEWID}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
             </elementProp>
             <elementProp name="pageId" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.name">pageId</stringProp>
-                <stringProp name="Argument.value">${PAGEID}</stringProp>
+                <stringProp name="Argument.value">@{PAGEID}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
             </elementProp>
@@ -1951,7 +1951,7 @@
     <stringProp name="HTTPSampler.response_timeout"></stringProp>
     <stringProp name="HTTPSampler.protocol">http</stringProp>
     <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-    <stringProp name="HTTPSampler.path">${PATH}${TESTPATH}</stringProp>
+    <stringProp name="HTTPSampler.path">@{PATH}@{TESTPATH}</stringProp>
     <stringProp name="HTTPSampler.method">GET</stringProp>
     <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
     <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1983,7 +1983,7 @@
     </HeaderManager>
     <hashTree/>
     <DurationAssertion guiclass="DurationAssertionGui" testclass="DurationAssertion" testname="Duration Assertion" enabled="true">
-        <stringProp name="DurationAssertion.duration">${PAGEUNDERTESTTIMEOUTMS}</stringProp>
+        <stringProp name="DurationAssertion.duration">@{PAGEUNDERTESTTIMEOUTMS}</stringProp>
     </DurationAssertion>
     <hashTree/>
 </hashTree>
@@ -2026,7 +2026,7 @@
     <stringProp name="HTTPSampler.response_timeout"></stringProp>
     <stringProp name="HTTPSampler.protocol">http</stringProp>
     <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
-    <stringProp name="HTTPSampler.path">${PATH}/listener</stringProp>
+    <stringProp name="HTTPSampler.path">@{PATH}/listener</stringProp>
     <stringProp name="HTTPSampler.method">GET</stringProp>
     <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
     <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -2052,7 +2052,7 @@
             </elementProp>
             <elementProp name="Referer" elementType="Header">
                 <stringProp name="Header.name">Referer</stringProp>
-                <stringProp name="Header.value">http://${URL}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page2</stringProp>
+                <stringProp name="Header.value">http://@{URL}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page2</stringProp>
             </elementProp>
             <elementProp name="X-Requested-With" elementType="Header">
                 <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -2105,7 +2105,7 @@
     <stringProp name="HTTPSampler.response_timeout"></stringProp>
     <stringProp name="HTTPSampler.protocol">http</stringProp>
     <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-    <stringProp name="HTTPSampler.path">${PATH}/kr-krad/listener</stringProp>
+    <stringProp name="HTTPSampler.path">@{PATH}/kr-krad/listener</stringProp>
     <stringProp name="HTTPSampler.method">GET</stringProp>
     <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
     <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -2131,7 +2131,7 @@
             </elementProp>
             <elementProp name="Referer" elementType="Header">
                 <stringProp name="Header.name">Referer</stringProp>
-                <stringProp name="Header.value">http://${URL}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page2</stringProp>
+                <stringProp name="Header.value">http://@{URL}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page2</stringProp>
             </elementProp>
             <elementProp name="X-Requested-With" elementType="Header">
                 <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -2184,7 +2184,7 @@
     <stringProp name="HTTPSampler.response_timeout"></stringProp>
     <stringProp name="HTTPSampler.protocol">http</stringProp>
     <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-    <stringProp name="HTTPSampler.path">${PATH}/kr-krad/listener</stringProp>
+    <stringProp name="HTTPSampler.path">@{PATH}/kr-krad/listener</stringProp>
     <stringProp name="HTTPSampler.method">GET</stringProp>
     <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
     <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -2210,7 +2210,7 @@
             </elementProp>
             <elementProp name="Referer" elementType="Header">
                 <stringProp name="Header.name">Referer</stringProp>
-                <stringProp name="Header.value">http://${URL}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page2</stringProp>
+                <stringProp name="Header.value">http://@{URL}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page2</stringProp>
             </elementProp>
             <elementProp name="X-Requested-With" elementType="Header">
                 <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -2303,7 +2303,7 @@
             </elementProp>
             <elementProp name="Referer" elementType="Header">
                 <stringProp name="Header.name">Referer</stringProp>
-                <stringProp name="Header.value">http://${URL}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page2</stringProp>
+                <stringProp name="Header.value">http://@{URL}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page2</stringProp>
             </elementProp>
             <elementProp name="Accept-Encoding" elementType="Header">
                 <stringProp name="Header.name">Accept-Encoding</stringProp>

@@ -51,6 +51,8 @@ import java.util.Map;
 public class LookupInputField extends InputField {
     private static final long serialVersionUID = -8294275596836322699L;
 
+    public static final String CHECKBOX_CONVERTED_RADIO_CONTROL = "Uif-CheckboxConvertedRadioControl";
+
     private boolean disableWildcardsAndOperators;
     private boolean addControlSelectAllOption;
     private boolean triggerOnChange;
@@ -64,21 +66,6 @@ public class LookupInputField extends InputField {
         disableWildcardsAndOperators = false;
         addControlSelectAllOption = false;
         setTriggerOnChange(false);
-    }
-
-    /**
-     * Replace checkbox control with radio group control
-     *
-     * @see Component#performApplyModel(org.kuali.rice.krad.uif.view.View, Object,
-     * org.kuali.rice.krad.uif.component.Component)
-     */
-    @Override
-    public void performApplyModel(View view, Object model, Component parent) {
-        super.performApplyModel(view, model, parent);
-
-        if (getControl() != null && getControl() instanceof CheckboxControl) {
-            setControl(getRadioGroupControl());
-        }
     }
 
     /**
@@ -204,13 +191,7 @@ public class LookupInputField extends InputField {
 
         // convert checkbox to radio with yes/no/both options
         if (CheckboxControl.class.isAssignableFrom(attributeDefinition.getControlField().getClass())) {
-            newControl = ComponentFactory.getRadioGroupControlHorizontal();
-            List<KeyValue> options = new ArrayList<KeyValue>();
-            options.add(new ConcreteKeyValue("Y", "Yes"));
-            options.add(new ConcreteKeyValue("N", "No"));
-            options.add(new ConcreteKeyValue("", "Both"));
-
-            ((RadioGroupControl) newControl).setOptions(options);
+            newControl = getCheckboxConvertedRadioControl();
         }
         // text areas get converted to simple text inputs
         else if (TextAreaControl.class.isAssignableFrom(attributeDefinition.getControlField().getClass())) {
@@ -276,24 +257,6 @@ public class LookupInputField extends InputField {
     }
 
     /**
-     * The radio group control prototype that will replace the checkbox control
-     *
-     * @return RadioGroupControl
-     */
-    public RadioGroupControl getRadioGroupControl() {
-        return radioGroupControl;
-    }
-
-    /**
-     * Setter for the radio group control
-     *
-     * @param radioGroupControl
-     */
-    public void setRadioGroupControl(RadioGroupControl radioGroupControl) {
-        this.radioGroupControl = radioGroupControl;
-    }
-
-    /**
      * Indicates that a field must be rendered as a from and to value
      *
      * @return
@@ -336,5 +299,15 @@ public class LookupInputField extends InputField {
         lookupInputFieldCopy.setAddControlSelectAllOption(this.isAddControlSelectAllOption());
         lookupInputFieldCopy.setTriggerOnChange(this.isTriggerOnChange());
         lookupInputFieldCopy.setRanged(this.isRanged());
+    }
+
+    /**
+     * Retrieves a new radio group control instance for converted lookup criteria checkboxes from Spring
+     * (initialized by the bean definition with the given id)
+     *
+     * @return RadioGroupControl
+     */
+    private static RadioGroupControl getCheckboxConvertedRadioControl() {
+        return (RadioGroupControl) ComponentFactory.getNewComponentInstance(CHECKBOX_CONVERTED_RADIO_CONTROL);
     }
 }

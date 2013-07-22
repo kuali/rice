@@ -28,7 +28,8 @@
           <#local disableAutocompleteAttr='autocomplete="off"'/>
       </#if>
 
-      <form id="kualiForm" action="${postUrl}" method="post" onsubmit="${onSubmitScript}" ${disableAutocompleteAttr!}>
+      <form id="kualiForm" action="${postUrl}" method="post" accept-charset="UTF-8"
+            onsubmit="${onSubmitScript}" ${disableAutocompleteAttr!}>
           <a id="topOfForm"></a>
 
           <#nested/>

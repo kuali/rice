@@ -233,6 +233,9 @@
             </executions>
             <configuration>
               <testResultsTimestamp>false</testResultsTimestamp>
+              <testFilesExcluded>
+                <excludeJmeterTestFile>KRAD.jmx</excludeJmeterTestFile>
+              </testFilesExcluded>
             </configuration>
           </plugin>
         </plugins>

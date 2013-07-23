@@ -777,6 +777,25 @@ public class LightTable extends Group implements DataBinding {
     }
 
     /**
+     * The current column value
+     *
+     * @return the current column value
+     */
+    @BeanTagAttribute(name = "currentColumnValue")
+    protected String getCurrentColumnValue() {
+        return currentColumnValue;
+    }
+
+    /**
+     * Set the current column value
+     *
+     * @param currentColumnValue
+     */
+    protected void setCurrentColumnValue(String currentColumnValue) {
+        this.currentColumnValue = currentColumnValue;
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
      */
     @Override
@@ -784,7 +803,10 @@ public class LightTable extends Group implements DataBinding {
         super.copyProperties(component);
         LightTable lightTableCopy = (LightTable) component;
         lightTableCopy.setPropertyName(this.getPropertyName());
-        lightTableCopy.setBindingInfo((BindingInfo) this.getBindingInfo().copy());
+
+        if (this.bindingInfo != null) {
+            lightTableCopy.setBindingInfo((BindingInfo) this.bindingInfo.copy());
+        }
 
         if (headerLabels != null) {
             List<Label> headerLabelsCopy = Lists.newArrayListWithExpectedSize(headerLabels.size());
@@ -828,5 +850,6 @@ public class LightTable extends Group implements DataBinding {
         }
 
         lightTableCopy.setEmptyTable(this.isEmptyTable());
+        lightTableCopy.setCurrentColumnValue(this.currentColumnValue);
     }
 }

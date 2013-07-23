@@ -369,6 +369,15 @@ public class Group extends ContainerBase {
         if (this.scrollpane != null) {
             groupCopy.setScrollpane((Scrollpane) this.scrollpane.copy());
         }
+
+        if (this.items != null) {
+            List<Component> items = new ArrayList<Component>();
+            for (Component itemComponent : this.items) {
+                items.add((Component) itemComponent.copy());
+            }
+
+            groupCopy.setItems(items);
+        }
     }
 
     /**

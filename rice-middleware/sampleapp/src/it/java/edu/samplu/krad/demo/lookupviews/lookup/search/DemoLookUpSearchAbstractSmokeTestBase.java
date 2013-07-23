@@ -43,7 +43,7 @@ public class DemoLookUpSearchAbstractSmokeTestBase extends SmokeTestBase {
         assertTextPresent("a1*");
         assertTextPresent("a1");
         assertTextPresent("a14");
-        assertTextNotPresent("a2"," Test Success ! Only records with a1* appears.");
+        assertTextNotPresent("a2"," Only records with a1* should be displayed, but a2 is.");
     }
 
     public void testLookUpSearchBookmark(Failable failable) throws Exception {

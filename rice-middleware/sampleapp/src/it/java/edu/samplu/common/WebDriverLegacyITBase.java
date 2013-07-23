@@ -758,7 +758,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      */
     protected void assertTextNotPresent(String text, String message) {
         if (driver.getPageSource().contains(text)) {
-            failableFail(text + " not present " + message);
+            failableFail(text + " is present and shouldn't be " + message);
         }
     }
 

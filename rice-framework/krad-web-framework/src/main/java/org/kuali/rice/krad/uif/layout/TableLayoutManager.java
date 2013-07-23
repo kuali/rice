@@ -441,14 +441,10 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             footerCalculationComponents.set(leftLabelColumnIndex, labelGroup);
         }
 
-        //perform the lifecycle for all the newly generated components as a result of processing the
-        //column calculations
+        // perform the lifecycle for all the newly generated components as a result of processing the
+        // column calculations
         for (Component component : footerCalculationComponents) {
-            if (component != null) {
-                component.performInitialization(view, model);
-                component.performApplyModel(view, model, container);
-                component.performFinalize(view, model, container);
-            }
+            view.getViewHelperService().spawnSubLifecyle(view, model, component, container, null, null);
         }
     }
 

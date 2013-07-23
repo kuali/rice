@@ -65,6 +65,7 @@
             <#local row=""/>
             <#local colIndex=0/>
             <#local rowIndex=0/>
+
             <#compress>
                 <#list manager.allRowFields as item>
                     <#-- build custom json data structure using quote placeholders (to be parsed later) -->
@@ -75,6 +76,7 @@
                             @quot@render@quot@:@quot@<@krad.template component=item/>@quot@
                         },
                     </#local>
+
                     <#local colIndex=colIndex+1/>
                     <#if colIndex == manager.numberOfColumns>
                         <#-- append row class to data -->
@@ -82,8 +84,10 @@
                             @quot@DT_RowClass@quot@:@quot@${manager.rowCssClasses[rowIndex]}@quot@,
                             ${row}
                         </#local>
+
                         <#-- add the row of table data to the internal aaData storage in richTable -->
                         ${manager.richTable.addRowToTableData(row)}
+
                         <#local row=""/>
                         <#local colIndex=0/>
                         <#local rowIndex=rowIndex+1/>

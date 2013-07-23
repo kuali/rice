@@ -15,14 +15,13 @@
  */
 package edu.samplu.krad.demo.travelapplication.accountmultivalue.lookup;
 
-import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
+import edu.samplu.common.SmokeTestBase;
+import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class DemoTravelAccountMultivalueLookUpAbstractSmokeTestBase extends WebDriverLegacyITBase {
+public class DemoTravelAccountMultivalueLookUpSmokeTest extends SmokeTestBase {
 
     /**
      * /kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.krad.demo.travel.account.TravelAccount&hideReturnLink=true&multipleValuesSelect=true&suppressActions=true&conversionFields=number:foo,name:foo
@@ -35,11 +34,11 @@ public abstract class DemoTravelAccountMultivalueLookUpAbstractSmokeTestBase ext
     public static final String SEARCH = "Search";
     
     @Override
-    public String getTestUrl() {
-        return ITUtil.KRAD_PORTAL;
+    public String getBookmarkUrl() {
+        return BOOKMARK_URL;
     }
 
-    protected void navigation() throws Exception {
+    protected void navigate() throws Exception {
         waitAndClickById("Demo-DemoLink", "");
         waitAndClickByLinkText("Account Multi-Value Lookup");
     }
@@ -64,13 +63,14 @@ public abstract class DemoTravelAccountMultivalueLookUpAbstractSmokeTestBase ext
        assertTextPresent("a3");
     }
 
-    public void testTravelAccountMultivalueLookUpBookmark(Failable failable) throws Exception {
+    @Test
+    public void testTravelAccountMultivalueLookUpBookmark() throws Exception {
         testTravelAccountMultivalueLookUp();
         passed();
     }
 
-    public void testTravelAccountMultivalueLookUpNav(Failable failable) throws Exception {
-        navigation();
+    @Test
+    public void testTravelAccountMultivalueLookUpNav() throws Exception {
         testTravelAccountMultivalueLookUp();
         passed();
     }

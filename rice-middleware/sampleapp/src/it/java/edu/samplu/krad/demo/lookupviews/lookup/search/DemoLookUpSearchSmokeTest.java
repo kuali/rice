@@ -15,13 +15,13 @@
  */
 package edu.samplu.krad.demo.lookupviews.lookup.search;
 
-import edu.samplu.common.Failable;
 import edu.samplu.common.SmokeTestBase;
+import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoLookUpSearchAbstractSmokeTestBase extends SmokeTestBase {
+public class DemoLookUpSearchSmokeTest extends SmokeTestBase {
 
     /**
      * /kr-krad/lookup?methodToCall=search&viewId=LookupSampleViewURLSearch&lookupCriteria['number']=a1*&hideReturnLink=true
@@ -46,12 +46,14 @@ public class DemoLookUpSearchAbstractSmokeTestBase extends SmokeTestBase {
         assertTextNotPresent("a2"," Only records with a1* should be displayed, but a2 is.");
     }
 
-    public void testLookUpSearchBookmark(Failable failable) throws Exception {
+    @Test
+    public void testLookUpSearchBookmark() throws Exception {
         testLookUpSearch();
         passed();
     }
 
-    public void testLookUpSearchNav(Failable failable) throws Exception {
+    @Test
+    public void testLookUpSearchNav() throws Exception {
         testLookUpSearch();
         passed();
     }

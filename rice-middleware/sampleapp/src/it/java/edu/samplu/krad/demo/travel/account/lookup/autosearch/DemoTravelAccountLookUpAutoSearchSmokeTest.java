@@ -15,14 +15,15 @@
  */
 package edu.samplu.krad.demo.travel.account.lookup.autosearch;
 
-import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
+import edu.samplu.common.SmokeTestBase;
 import edu.samplu.common.WebDriverLegacyITBase;
+import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class DemoTravelAccountLookUpAutoSearchAbstractSmokeTestBase extends WebDriverLegacyITBase {
+public abstract class DemoTravelAccountLookUpAutoSearchSmokeTest extends SmokeTestBase {
 
     /**
      * /kr-krad/lookup?methodToCall=search&dataObjectClassName=org.kuali.rice.krad.demo.travel.account.TravelAccount&lookupCriteria['number']=a*&readOnlyFields=number&hideReturnLink=true&showMaintenanceLinks=true
@@ -40,8 +41,8 @@ public abstract class DemoTravelAccountLookUpAutoSearchAbstractSmokeTestBase ext
     public static final String CLEAR_VALUES = "Clear Values";
     
     @Override
-    public String getTestUrl() {
-        return ITUtil.KRAD_PORTAL;
+    public String getBookmarkUrl() {
+        return BOOKMARK_URL;
     }
 
     protected void navigation() throws Exception {
@@ -57,19 +58,19 @@ public abstract class DemoTravelAccountLookUpAutoSearchAbstractSmokeTestBase ext
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(3000);
         assertElementPresentByXpath("//a[contains(text(), 'a1')]");
-        if(isElementPresentByLinkText("a2") || isElementPresentByLinkText("a3"))
-        {
+        if(isElementPresentByLinkText("a2") || isElementPresentByLinkText("a3")) {
             fail("Search Functionality not working properly.");
         }
     }
 
-    public void testDemoTravelAccountLookUpAutoSearchBookmark(Failable failable) throws Exception {
+    @Test
+    public void testDemoTravelAccountLookUpAutoSearchNav() throws Exception {
         testDemoTravelAccountLookUpAutoSearch();
         passed();
     }
 
-    public void testDemoTravelAccountLookUpAutoSearchNav(Failable failable) throws Exception {
-        navigation();
+    @Test
+    public void testDemoTravelAccountLookUpAutoSearchBookmark() throws Exception {
         testDemoTravelAccountLookUpAutoSearch();
         passed();
     }

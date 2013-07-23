@@ -250,6 +250,7 @@ public class ComponentSecurity extends UifDictionaryBeanBase implements Serializ
     }
 
     protected <T> void copyProperties(T componentSecurity) {
+        super.copyProperties(componentSecurity);
         ComponentSecurity componentSecurityCopy = (ComponentSecurity) componentSecurity;
 
         if (this.additionalPermissionDetails != null) {

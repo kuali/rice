@@ -1136,6 +1136,25 @@ public class CollectionGroup extends Group implements DataBinding {
     }
 
     /**
+     * The list of total columns
+     *
+     * @return list of total columns
+     */
+    @BeanTagAttribute(name = "addTotalColumns")
+    protected List<String> getTotalColumns() {
+        return totalColumns;
+    }
+
+    /**
+     * Setter for the total columns
+     *
+     * @param totalColumns
+     */
+    protected void setTotalColumns(List<String> totalColumns) {
+        this.totalColumns = totalColumns;
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
@@ -1252,5 +1271,9 @@ public class CollectionGroup extends Group implements DataBinding {
             collectionGroupCopy.setSubCollections(subCollectionsCopy);
         }
         collectionGroupCopy.setSubCollectionSuffix(this.subCollectionSuffix);
+
+        if (this.totalColumns != null) {
+            collectionGroupCopy.setTotalColumns(new ArrayList<String>(this.totalColumns));
+        }
     }
 }

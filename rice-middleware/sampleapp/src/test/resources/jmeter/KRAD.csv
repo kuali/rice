@@ -1,7 +1,7 @@
 "KitchenSink PerfomanceMedium page 1",/kr-krad/labs,Lab-PerformanceMedium,Lab-Performance-Page1,11000
 "KitchenSink PerfomanceMedium page 2",/kr-krad/labs,Lab-PerformanceMedium,Lab-Performance-Page2,23000
 "UICompView page 1",/kr-krad/uicomponents,UifCompView,UifCompView-Page1,1000
-"UICompView page 2",/kr-krad/uicomponents,UifCompView,UifCompView-Page2#UifCompView-Page2,1000
+"UICompView page 2",/kr-krad/uicomponents,UifCompView,UifCompView-Page2#UifCompView-Page2,4000
 "UICompView page 3",/kr-krad/uicomponents,UifCompView,UifCompView-Page2#UifCompView-Page3,5000
 "UICompView page 4",/kr-krad/uicomponents,UifCompView,UifCompView-Page2#UifCompView-Page4,5000
 "UICompView page 5",/kr-krad/uicomponents,UifCompView,UifCompView-Page2#UifCompView-Page5,5000

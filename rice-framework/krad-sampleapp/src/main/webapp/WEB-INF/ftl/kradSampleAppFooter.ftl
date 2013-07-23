@@ -58,11 +58,9 @@
                     </ul>
                 </div>
             </div>
-            <div class="demo-tweets">
-                <h2>Tweets</h2>
+            <a class="twitter-timeline" width="240" data-tweet-limit="2" data-chrome="nofooter noscrollbar transparent noheader" data-theme="dark" href="https://twitter.com/kuali" data-widget-id="359754571758837761">Tweets by @kuali</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 
-                <div><#--Tweet placeholder--></div>
-            </div>
         </div>
     </div>
 </div>

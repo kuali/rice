@@ -15,19 +15,11 @@
  */
 
 /**
- * Shows the appHeader and footer, initializes the tweet area, selects appropriate links in nav menus, removes
+ * Shows the appHeader and footer, selects appropriate links in nav menus, removes
  * padding from views rendered in lightboxes, and handles tab swap action fire if using large example
  */
 jQuery(function () {
     jQuery(".demo-appHeader, .demo-appFooter, .demo-thirdTier").show();
-    jQuery(".demo-tweets > div").tweet({
-        avatar_size:16,
-        count:3,
-        username:"kuali",
-        loading_text:"Loading tweets..."
-    }).bind("loaded", function () {
-                jQuery(this).find("a").attr("target", "_blank");
-            });
     linkSelection();
     if (jQuery("#renderedInLightBox").length && jQuery("#renderedInLightBox").val() == "true") {
         jQuery(".uif-view").css("padding-top", "0");

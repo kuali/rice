@@ -85,7 +85,7 @@
         </elementProp>
         <elementProp name="PAGEID" elementType="Argument">
             <stringProp name="Argument.name">PAGEID</stringProp>
-            <stringProp name="Argument.value">${__P(pageid,UifCompView-Page2#UifCompView-Page3)}</stringProp>
+            <stringProp name="Argument.value">${__P(pageid,UifCompView-Page3)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
         </elementProp>
     </collectionProp>

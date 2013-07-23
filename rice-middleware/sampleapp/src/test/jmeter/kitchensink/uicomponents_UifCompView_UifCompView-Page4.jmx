@@ -65,12 +65,12 @@
         </elementProp>
         <elementProp name="PAGEUNDERTESTTIMEOUTMS" elementType="Argument">
             <stringProp name="Argument.name">PAGEUNDERTESTTIMEOUTMS</stringProp>
-            <stringProp name="Argument.value">${__P(pageundertesttimeoutms,5000)}</stringProp>
+            <stringProp name="Argument.value">${__P(pageundertesttimeoutms,3000)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
         </elementProp>
         <elementProp name="TESTPLANNAME" elementType="Argument">
             <stringProp name="Argument.name">TESTPLANNAME</stringProp>
-            <stringProp name="Argument.value">${__P(testplanname,"UICompView page 10")}</stringProp>
+            <stringProp name="Argument.value">${__P(testplanname,"UICompView page 4")}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
         </elementProp>
         <elementProp name="TESTPATH" elementType="Argument">
@@ -85,7 +85,7 @@
         </elementProp>
         <elementProp name="PAGEID" elementType="Argument">
             <stringProp name="Argument.name">PAGEID</stringProp>
-            <stringProp name="Argument.value">${__P(pageid,UifCompView-Page2#UifCompView-Page10)}</stringProp>
+            <stringProp name="Argument.value">${__P(pageid,UifCompView-Page4)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
         </elementProp>
     </collectionProp>

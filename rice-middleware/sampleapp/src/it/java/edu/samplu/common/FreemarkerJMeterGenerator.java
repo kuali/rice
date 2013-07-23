@@ -68,7 +68,7 @@ public class FreemarkerJMeterGenerator {
             File jmeterTest = null;
             String pathPart = null;
 
-            while ((csvLine = csvReader.readLine()) != null) {
+            while ((csvLine = csvReader.readLine()) != null && (!csvLine.isEmpty())) {
                 i = 0;
                 csvProperties = new Properties();
                 tokenizer = new StringTokenizer(csvLine, ",");

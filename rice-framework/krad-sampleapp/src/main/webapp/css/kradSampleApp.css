@@ -1033,3 +1033,28 @@ div#Demo-BoxLayoutManager-View .demo-borderBottom{
     border-right: 1px solid black;
     margin-right: -1px;
 }
+
+table.dataTable tr.demo-all {
+    color: white;
+    font-weight: bold;
+}
+
+table.dataTable tr.demo-all td {
+    background-color: transparent !important;
+}
+
+table.dataTable tr.demo-even {
+    background-color: #00CC66;
+}
+
+table.dataTable tr.demo-odd {
+    background-color: #00CCFF;
+}
+
+table.dataTable tr.demo-index2 {
+    background-color: #F4E271;
+}
+
+table.dataTable tr.demo-rowCondition {
+    font-style: italic;
+}

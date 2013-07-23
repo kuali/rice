@@ -518,6 +518,8 @@
         <bean parent="Uif-Link" p:linkText="Sequence Column"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionSequence-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Row Details"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutRowCss-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Row Css"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutDetails-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Column Calculations"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutTotaling-View&amp;methodToCall=start"/>

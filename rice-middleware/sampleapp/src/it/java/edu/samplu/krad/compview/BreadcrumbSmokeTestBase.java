@@ -23,7 +23,6 @@ import org.openqa.selenium.By;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -56,11 +55,7 @@ public abstract class BreadcrumbSmokeTestBase extends WebDriverLegacyITBase {
      * @return
      */
 
-    String[][] selectAsserts = {{"UifCompView", "Uif Components"},
-            {"ConfigurationTestView", "Configuration Test View"},
-            {"RichMessagesView", "Rich Messages"},
-            {"Demo-ReadOnlyTestView", "ReadOnly Test"},
-            {"ClientDisableView", "Client-side Disable"}};
+    String[][] selectAsserts = {{"UifCompView", "Uif Components"}};
 
     int[] breadcrumbOrderIndexes = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 1};
 
@@ -169,12 +164,7 @@ public abstract class BreadcrumbSmokeTestBase extends WebDriverLegacyITBase {
     protected void testBreadcrumbNavigateTo() throws Exception {
         testBreadcrumbNavigateToSetup();
 
-        // Not in a loop here so failures are easier to track
         selectAndAssertNavigationTo(selectAsserts[1][0], selectAsserts[1][1]);
-        selectAndAssertNavigationTo(selectAsserts[2][0], selectAsserts[2][1]);
-        selectAndAssertNavigationTo(selectAsserts[3][0], selectAsserts[3][1]);
-        selectAndAssertNavigationTo(selectAsserts[4][0], selectAsserts[4][1]);
-        selectAndAssertNavigationTo(selectAsserts[0][0], selectAsserts[0][1]);
     }
 
     protected void testBreadcrumbNavigateToSetup() throws InterruptedException {

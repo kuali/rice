@@ -13,21 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.samplu.krad.demo.lookupviews.lookup;
+package edu.samplu.krad.demo.lookupviews.lookup.multivalue;
 
-import edu.samplu.common.Failable;
 import edu.samplu.common.SmokeTestBase;
+import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoLookUpAbstractSmokeTestBase extends SmokeTestBase {
+public class DemoLookUpMultiValueSmokeTest extends SmokeTestBase {
 
     /**
-     * /kr-krad/lookup?methodToCall=start&viewId=LookupSampleView&hideReturnLink=true
+     * /kr-krad/lookup?methodToCall=start&viewId=LookupSampleViewMultipleValuesSelectLimit&hideReturnLink=true
      */
-    public static final String BOOKMARK_URL = "/kr-krad/lookup?methodToCall=start&viewId=LookupSampleView&hideReturnLink=true";
-
+    public static final String BOOKMARK_URL = "/kr-krad/lookup?methodToCall=start&viewId=LookupSampleViewMultipleValuesSelectLimit&hideReturnLink=true";
+    
     /**
      *  lookupCriteria[number]
      */
@@ -43,6 +43,16 @@ public class DemoLookUpAbstractSmokeTestBase extends SmokeTestBase {
      */
     private static final String CLEAR_VALUES="Clear Values";
     
+    /**
+     * table table-condensed table-bordered uif-tableCollectionLayout dataTable
+     */
+    private static final String TABLE_ROW_SIX_XPATH="//table[@class='table table-condensed table-bordered uif-tableCollectionLayout dataTable']/tbody/tr[6]";
+    
+    /**
+     * Clear Values
+     */
+    private static final String FAILURE_MESSAGE="Results are not restricted to 5 rows.";
+    
     @Override
     public String getBookmarkUrl() {
         return BOOKMARK_URL;
@@ -51,10 +61,10 @@ public class DemoLookUpAbstractSmokeTestBase extends SmokeTestBase {
     @Override
     protected void navigate() throws Exception {
         waitAndClickById("Demo-DemoLink", "");
-        waitAndClickByLinkText("Lookup");
+        waitAndClickByLinkText("Lookup Multi Value");
     }
 
-    protected void testLookUp() throws InterruptedException {
+    protected void testLookUpMultiValue() throws InterruptedException {
         waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME,"a1");
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(3000);
@@ -62,17 +72,20 @@ public class DemoLookUpAbstractSmokeTestBase extends SmokeTestBase {
         waitAndClickButtonByText(CLEAR_VALUES);
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(3000);
-        assertElementPresentByXpath("//a[contains(text(), 'a1')]");
-        assertElementPresentByXpath("//a[contains(text(), 'a2')]");
+        if(isElementPresentByXpath(TABLE_ROW_SIX_XPATH)){
+            fail(FAILURE_MESSAGE);
+        }
     }
 
-    public void testLookUpBookmark(Failable failable) throws Exception {
-        testLookUp();
+    @Test
+    public void testLookUpMultiValueBookmark() throws Exception {
+        testLookUpMultiValue();
         passed();
     }
 
-    public void testLookUpNav(Failable failable) throws Exception {
-        testLookUp();
+    @Test
+    public void testLookUpMultiValueNav() throws Exception {
+        testLookUpMultiValue();
         passed();
     }
 }

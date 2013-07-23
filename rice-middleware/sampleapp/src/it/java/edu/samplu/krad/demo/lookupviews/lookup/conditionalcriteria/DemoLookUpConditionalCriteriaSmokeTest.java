@@ -15,13 +15,13 @@
  */
 package edu.samplu.krad.demo.lookupviews.lookup.conditionalcriteria;
 
-import edu.samplu.common.Failable;
 import edu.samplu.common.SmokeTestBase;
+import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoLookUpConditionalCriteriaAbstractSmokeTestBase extends SmokeTestBase {
+public class DemoLookUpConditionalCriteriaSmokeTest extends SmokeTestBase {
 
     /**
      * /kr-krad/lookup?methodToCall=start&viewId=LookupSampleViewConditionalCriteria&hideReturnLink=true
@@ -96,12 +96,14 @@ public class DemoLookUpConditionalCriteriaAbstractSmokeTestBase extends SmokeTes
         assertTextNotPresent(DATE_CREATED_MESSAGE);
     }
 
-    public void testLookUpConditionalCriteriaBookmark(Failable failable) throws Exception {
+    @Test
+    public void testLookUpConditionalCriteriaBookmark() throws Exception {
         testLookUpConditionalCriteria();
         passed();
     }
 
-    public void testLookUpConditionalCriteriaNav(Failable failable) throws Exception {
+    @Test
+    public void testLookUpConditionalCriteriaNav() throws Exception {
         testLookUpConditionalCriteria();
         passed();
     }

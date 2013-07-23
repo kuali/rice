@@ -55,6 +55,14 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("//*[@id='u229']", KULRICE_8823_FIX_BROKEN_SMOKE_TESTS_IN_CI);
 
         jiraMatches.put("after clicking Expand All", "KULRICE-3833 KRAD Sampleapp (Travel) Account Inquiry Collapse all toggles all and Expand all does nothing");
+
+        jiraMatches.put("ConfigurationTestView", "KULRICE-9965 KRAD Kitchen Sink Navigation select Configuration Test View incident report Unable to find View with id: ConfigurationTestView");
+
+        jiraMatches.put("RichMessageView", "KULRICE-9966 KRAD Kitchen Sink Navigation select Rich Meassage View incident report Unable to find View with id: RichMessageView");
+
+        jiraMatches.put("Demo-ReadOnlyTestView", "KULRICE-9967 KRAD Kitchen Sink Navigation select ReadOnly Test View incident report Unable to find View with id: Demo-ReadOnlyTestView");
+
+        jiraMatches.put("ClientDisableView", "KULRICE-9968 KRAD Kitchen Sink Navigation select Client Disable View incident report Unable to find View with id: ClientDisableView");
         //        jiraMatches.put("",
         //                "");
     }

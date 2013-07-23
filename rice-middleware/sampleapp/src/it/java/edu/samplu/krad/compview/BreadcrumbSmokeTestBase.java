@@ -210,7 +210,7 @@ public abstract class BreadcrumbSmokeTestBase extends WebDriverLegacyITBase {
         }
         waitAndClickByLinkText("▼");
         selectOption(By.xpath("//select[@name='viewId']"), selectText);
-        checkForIncidentReport();
+        checkForIncidentReport("//select[@name='viewId']", selectText);
         waitForElementPresentByXpath("//span[@class='uif-headerText-span']");
         checkForIncidentReport();
         SeleneseTestBase.assertEquals(assertText, getText(By.xpath("//span[@class='uif-headerText-span']")));

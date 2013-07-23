@@ -43,7 +43,7 @@ public abstract class BreadcrumbSmokeTestBase extends WebDriverLegacyITBase {
     /**
      * //*[@class='uif-optionList']
      */
-    public static final String SECOND_BREADCRUMB_NAV_XPATH = "//*[@class='uif-optionList']";
+    public static final String SECOND_BREADCRUMB_NAV_XPATH = "//div[@class='uif-breadcrumbSiblingContent']//div[@class='uif-inputField']//ul[@class='uif-optionList']";
 
     /**
      * //*[@id='Uif-BreadcrumbWrapper']/ol/li[2]/a

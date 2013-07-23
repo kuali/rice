@@ -82,33 +82,6 @@
         </property>
       </bean>
     </property>
-    <property name="breadcrumbItem.siblingBreadcrumbComponent">
-      <bean parent="Uif-InputField" p:label="Navigate to" p:propertyName="viewId">
-        <property name="control">
-          <bean parent="Uif-DropdownControl">
-            <property name="options">
-              <list>
-                <bean parent="Uif-KeyValueLocation" p:key="UifCompView" p:value="Uif Components View"
-                      p:location.viewId="UifCompView"
-                      p:location.controllerMapping="/uicomponents"/>
-                <bean parent="Uif-KeyValueLocation" p:key="ConfigurationTestView" p:value="Configuration Test View"
-                      p:location.viewId="ConfigurationTestView"
-                      p:location.controllerMapping="/uicomponents"/>
-                <bean parent="Uif-KeyValueLocation" p:key="RichMessagesView" p:value="Rich Messages View"
-                      p:location.viewId="RichMessagesView"
-                      p:location.controllerMapping="/uicomponents"/>
-                <bean parent="Uif-KeyValueLocation" p:key="Demo-ReadOnlyTestView" p:value="ReadOnly Test View"
-                      p:location.viewId="Demo-ReadOnlyTestView"
-                      p:location.controllerMapping="/uicomponents"/>
-                <bean parent="Uif-KeyValueLocation" p:key="ClientDisableView" p:value="Client Disable View"
-                      p:location.viewId="ClientDisableView"
-                      p:location.controllerMapping="/uicomponents"/>
-              </list>
-            </property>
-          </bean>
-        </property>
-      </bean>
-    </property>
     <property name="help">
       <bean parent="Uif-Help" p:externalHelpUrl="http://www.kuali.org/"/>
     </property>

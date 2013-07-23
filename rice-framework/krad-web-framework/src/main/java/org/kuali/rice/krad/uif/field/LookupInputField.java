@@ -17,7 +17,6 @@ package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
-import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -38,8 +37,6 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -57,8 +54,6 @@ public class LookupInputField extends InputField {
     private boolean addControlSelectAllOption;
     private boolean triggerOnChange;
     private boolean ranged;
-
-    private RadioGroupControl radioGroupControl;
 
     public LookupInputField() {
         super();
@@ -102,20 +97,6 @@ public class LookupInputField extends InputField {
                 multiValueControl.getRichOptions().add(0, new KeyMessage("", allOptionText, message));
             }
         }
-    }
-
-    /**
-     * Add radioGroupControl if the control is a checkbox control
-     *
-     * @see org.kuali.rice.krad.uif.component.Component#getPropertyReplacers()
-     */
-    @Override
-    public List<Component> getComponentPrototypes() {
-        List<Component> components = super.getComponentPrototypes();
-        if (getControl() != null && getControl() instanceof CheckboxControl) {
-            components.add(radioGroupControl);
-        }
-        return components;
     }
 
     /**

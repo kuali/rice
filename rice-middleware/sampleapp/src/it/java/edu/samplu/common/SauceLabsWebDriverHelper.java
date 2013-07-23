@@ -231,7 +231,7 @@ public class SauceLabsWebDriverHelper implements SauceOnDemandSessionIdProvider 
     private String wgetnSaveResourceString(String className, String testName) {
         String dir = determineSaveDir(className, testName);
         // http://www.jwz.org/hacks/wgetn
-        return "wgetn https://saucelabs.com/" + sessionId + "/results/%04dscreenshot.png 0 50";
+        return "wgetn https://saucelabs.com/" + sessionId + "/%04dscreenshot.png 0 50";
     }
 
     private String determineSaveDir(String className, String testName) {

@@ -23,6 +23,8 @@ import java.util.List;
 
 /**
  * Test transaction model.  For testing only; does not represent any real object.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class TransactionModel implements Serializable {
     private static final long serialVersionUID = -437696877653987556L;

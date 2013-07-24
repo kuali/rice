@@ -304,19 +304,27 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         performComponentInitialization(view, model, component);
         view.getViewIndex().indexComponent(component);
 
-        Map<String, Integer> visitedIds = new HashMap<String, Integer>();
+        // adjust IDs for suffixes that might have been added by a parent component during the full view lifecycle
+        if (StringUtils.isNotBlank(suffix)) {
+            ComponentUtils.updateChildIdsWithSuffixNested(component, suffix);
+        }
 
-        // force binding update to occur
+        // for collections that are nested in the refreshed group, we need to adjust the binding prefix and
+        // set the sub collection id prefix from the original component (this is needed when the group being
+        // refreshed is part of another collection)
         if (component instanceof Group || component instanceof FieldGroup) {
-            List<CollectionGroup> origCollectionGroups = ComponentUtils.getComponentsOfTypeDeep(origComponent, CollectionGroup.class);
-            List<CollectionGroup> collectionGroups = ComponentUtils.getComponentsOfTypeDeep(component, CollectionGroup.class);
+            List<CollectionGroup> origCollectionGroups = ComponentUtils.getComponentsOfTypeShallow(origComponent,
+                    CollectionGroup.class);
+            List<CollectionGroup> collectionGroups = ComponentUtils.getComponentsOfTypeShallow(component,
+                    CollectionGroup.class);
+
             for (int i = 0; i < collectionGroups.size(); i++) {
                 CollectionGroup origCollectionGroup = origCollectionGroups.get(i);
                 CollectionGroup collectionGroup = collectionGroups.get(i);
 
                 String prefix = origCollectionGroup.getBindingInfo().getBindByNamePrefix();
-                if (StringUtils.isNotBlank(prefix)
-                        && StringUtils.isBlank(collectionGroup.getBindingInfo().getBindByNamePrefix())){
+                if (StringUtils.isNotBlank(prefix) && StringUtils.isBlank(
+                        collectionGroup.getBindingInfo().getBindByNamePrefix())) {
                     ComponentUtils.prefixBindingPath(collectionGroup, prefix);
                 }
 
@@ -325,13 +333,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             }
         }
 
-        performComponentApplyModel(view, component, model, visitedIds);
+        performComponentApplyModel(view, component, model, new HashMap<String, Integer>());
         view.getViewIndex().indexComponent(component);
-
-        // adjust IDs for suffixes that might have been added by a parent component during the full view lifecycle
-        if (StringUtils.isNotBlank(suffix)) {
-            ComponentUtils.updateChildIdsWithSuffixNested(component, suffix);
-        }
 
         // if disclosed by action and request was made, make sure the component will display
         if (component.isDisclosedByAction()) {

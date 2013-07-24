@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.labs.transaction;
 
-import org.kuali.rice.krad.labs.KradLabsForm;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,11 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Brian
- * Date: 6/20/13
- * Time: 4:02 PM
- * To change this template use File | Settings | File Templates.
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Controller
 @RequestMapping(value = "/transaction")

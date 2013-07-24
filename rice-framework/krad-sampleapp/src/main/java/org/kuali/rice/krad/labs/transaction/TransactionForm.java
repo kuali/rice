@@ -22,6 +22,8 @@ import java.util.List;
 
 /**
  * KSA Transaction test form for lab
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class TransactionForm extends UifFormBase {
     private static final long serialVersionUID = 7158452291069882385L;

@@ -58,6 +58,8 @@
                               p:href="@{#ConfigProperties['krad.url']}/labs?methodToCall=jsonExample"/>
                         <bean parent="Uif-Link" p:linkText="Lookups" p:target="_self"
                               p:href="@{#ConfigProperties['krad.url']}/labs?viewId=LabsMenuLookupView"/>
+                        <bean parent="Uif-Link" p:linkText="KSA Transaction" p:target="_self"
+                              p:href="@{#ConfigProperties['krad.url']}/transaction?viewId=TransactionView"/>
                       </list>
                   </property>
               </bean>

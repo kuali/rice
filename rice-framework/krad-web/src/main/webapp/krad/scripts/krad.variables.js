@@ -24,6 +24,11 @@ JavascriptKradVariables.prototype = {
      APPLICATION_FOOTER_WRAPPER : "Uif-ApplicationFooter-Wrapper",
      APP_ID  : "Uif-Application",
      APPLICATION_URL  : "applicationUrl",
+
+     ATTRIBUTES : {
+         DATA_OPEN : "data-open"
+     },
+
      CACHE_KEY : "cacheKey",
      CHANGED_HEADER_ICON_CLASS : "uif-changedHeaderIcon",
      CLEAR_FORM_METHOD_TO_CALL : "retrieveMessage",
@@ -35,6 +40,12 @@ JavascriptKradVariables.prototype = {
      COLLECTION_ITEM_CLASS : "uif-collectionItem",
      CONTROL_CLASS : "Uif-Application",
      COUNTDOWN_CLASS : "hasCountdown",
+
+     // constants for data role attribute values
+     DATA_ROLES : {
+         DISCLOSURE_LINK : "disclosureLink"
+     },
+
      DIRTY_CLASS : "dirty",
      DISABLE_BROWSER_CACHE : "disableBrowserCache",
      DIALOG_PLACEHOLDER : "_dialogPlaceholder",
@@ -49,6 +60,13 @@ JavascriptKradVariables.prototype = {
      HAS_WARNING_CLASS : "uif-hasWarning",
      HEADER_TEXT_CLASS : "uif-headerText",
      IMAGE_LOCATION : "kradImageLocation",
+
+     // constants for id suffixes
+     ID_SUFFIX : {
+         DISCLOSURE_CONTENT : "_disclosureContent",
+         DISCLOSURE_TOGGLE : "_toggle"
+     },
+
      PAGE_ID : "pageId",
      PORTAL_IFRAME_ID : "iframeportlet",
      INCIDENT_REPORT_VIEW_CLASS : "Uif-IncidentReportView",

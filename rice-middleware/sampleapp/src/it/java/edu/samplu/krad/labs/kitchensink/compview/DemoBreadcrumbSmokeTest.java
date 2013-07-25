@@ -15,16 +15,20 @@
  */
 package edu.samplu.krad.labs.kitchensink.compview;
 
-import org.junit.Assert;
+import edu.samplu.krad.compview.BreadcrumbSmokeTest;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class BreadcrumbKradSTJUnitBase extends BreadcrumbKradSmokeTestBase {
+
+public class DemoBreadcrumbSmokeTest extends BreadcrumbSmokeTest {
+
+    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView";
+
+    public static String SECOND_DOWN_TRIANGLE_XPATH = "(//a[@class='uif-breadcrumbSiblingLink'])[2]";
 
     @Override
-    public void fail(String message){
-        passed = false;
-        Assert.fail(message);
+    protected void navigate() throws Exception {
+        waitAndClickByLinkText("Kitchen Sink");
     }
 }

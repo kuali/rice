@@ -225,7 +225,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     /**
      * (//a[contains(text(),'Uif Components (Kitchen Sink)')])[2]
      */
-    public static final String KITCHEN_SINK_XPATH = "(//a[contains(text(),'Uif Components (Kitchen Sink)')])[2]";
+    public static final String KITCHEN_SINK_XPATH = "(//a[contains(text(),'Uif Components (Kitchen Sink)')])";
 
     /**
      * KRAD

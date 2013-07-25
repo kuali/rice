@@ -32,8 +32,8 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="accountTypeCode" />
-        <bean parent="Uif-InputField" p:propertyName="name" />
+        <bean parent="Uif-DataField" p:propertyName="accountTypeCode" />
+        <bean parent="Uif-DataField" p:propertyName="name" />
       </list>
     </property>
   </bean>

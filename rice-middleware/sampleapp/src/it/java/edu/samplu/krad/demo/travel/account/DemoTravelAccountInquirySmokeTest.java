@@ -57,7 +57,14 @@ public class DemoTravelAccountInquirySmokeTest extends SmokeTestBase {
     protected void testInquiryBackButton() throws Exception {
         waitAndClickButtonByText("Back");
         Thread.sleep(2000); // seems to take a while to load
-        waitForElementPresentByXpath("//a[contains(text(), 'Account Inquiry')]");
+        waitForElementPresentByXpath("//a[contains(text(), 'Account Inquiry')]", "Expected Demo - Travel Application did back work?");
+        assertTextPresent("Demo - Travel Application", "Expected Demo - Travel Application did back work?");
+    }
+
+    protected void testInquiryBackToLoginButton() throws Exception {
+        waitAndClickButtonByText("Back");
+        Thread.sleep(2000); // seems to take a while to load
+        waitForElementPresentById("Rice-LoginButton", "Expected Demo - Travel Application did back work?");
         assertTextPresent("Demo - Travel Application", "Expected Demo - Travel Application did back work?");
     }
 
@@ -94,7 +101,7 @@ public class DemoTravelAccountInquirySmokeTest extends SmokeTestBase {
 
     @Test
     public void testInquiryBackButtonBookmark() throws Exception {
-        testInquiryBackButton();
+        testInquiryBackToLoginButton();
         passed();
     }
 

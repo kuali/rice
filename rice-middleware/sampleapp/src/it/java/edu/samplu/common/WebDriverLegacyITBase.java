@@ -4226,12 +4226,20 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         jiraAwareWaitFor(By.id(id), "");
     }
 
+    protected void waitForElementPresentById(String id, String message) throws InterruptedException {
+        jiraAwareWaitFor(By.id(id), message);
+    }
+
     protected void waitForElementPresentByName(String name) throws InterruptedException {
         jiraAwareWaitFor(By.name(name), "");
     }
 
-    protected void waitForElementPresentByXpath(String locator) throws InterruptedException {
-        jiraAwareWaitFor(By.xpath(locator), "");
+    protected void waitForElementPresentByXpath(String xpath) throws InterruptedException {
+        jiraAwareWaitFor(By.xpath(xpath), "");
+    }
+
+    protected void waitForElementPresentByXpath(String xpath, String message) throws InterruptedException {
+        jiraAwareWaitFor(By.xpath(xpath), message);
     }
 
     protected void waitForElementsPresentByXpath(String xpathLocator) throws InterruptedException {

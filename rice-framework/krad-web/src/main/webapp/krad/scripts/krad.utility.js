@@ -553,7 +553,16 @@ function coerceValue(name) {
  */
 function setValue(name, value) {
     var nameSelect = "[name='" + escapeName(name) + "']";
-    jQuery(nameSelect).val(value);
+    var control = jQuery(nameSelect);
+
+    if (value != undefined && !jQuery.isArray(value)
+            && (control.is(":radio") || control.is("select") || control.is(":checkbox"))) {
+        var valueArray = [value];
+        control.val(valueArray);
+    }
+    else {
+        control.val(value);
+    }
 }
 
 //returns true if the field with name of name1 occurs before field with name2

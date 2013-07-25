@@ -1571,10 +1571,10 @@ function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethod
                 }
 
                 // check for regular fields
-                var infoFieldSpan = jQuery("[name='" + escapeName(returnField) + "']");
-                if (infoFieldSpan.length > 0) {
-                    infoFieldSpan.val(fieldValue);
-                    infoFieldSpan.change();
+                var control = jQuery("[name='" + escapeName(returnField) + "']");
+                if (control.length > 0) {
+                    setValue(returnField, fieldValue);
+                    control.change();
                 }
 
                 // check for info spans
@@ -1582,7 +1582,7 @@ function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethod
                         .replace(/\[/g, "-lbrak-")
                         .replace(/\]/g, "-rbrak-")
                         .replace(/\'/g, "-quot-");
-                infoFieldSpan = jQuery("#" + queryFieldId + "_info_" + returnFieldId);
+                var infoFieldSpan = jQuery("#" + queryFieldId + "_info_" + returnFieldId);
                 if (infoFieldSpan.length > 0) {
                     infoFieldSpan.html(fieldValue);
                 }

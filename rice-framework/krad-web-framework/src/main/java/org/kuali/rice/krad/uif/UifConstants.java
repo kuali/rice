@@ -372,6 +372,7 @@ public class UifConstants {
         public static final String INITIALIZE_VIEW_STATE = "initializeViewState";
         public static final String INITIALIZE_SESSION_TIMERS = "initializeSessionTimers";
         public static final String SET_CONFIG_PARM = "setConfigParam";
+        public static final String SET_VALUE = "setValue";
     }
 
     public static final String EVENT_NAMESPACE = "uif";

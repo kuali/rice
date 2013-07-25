@@ -111,7 +111,8 @@
   <bean id="testModuleConfiguration" parent="testModuleConfiguration-parentBean">
     <property name="dataDictionaryPackages">
       <list merge="true">
-        <value>org/kuali/rice/kns/datadictionary</value>
+        <value>classpath:org/kuali/rice/kns/datadictionary/AccountType2MaintenanceDocument.xml</value>
+        <value>classpath:org/kuali/rice/kns/datadictionary/LookupResultsDDBo.xml</value>
       </list>
     </property>
   </bean>

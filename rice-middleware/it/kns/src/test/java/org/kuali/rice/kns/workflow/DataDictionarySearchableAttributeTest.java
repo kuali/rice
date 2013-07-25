@@ -133,9 +133,9 @@ public class DataDictionarySearchableAttributeTest extends KRADTestCase {
 		// Ensure that DD searchable attribute integer fields function correctly when searched on.
 		// Note that negative numbers are disallowed by the NumericValidationPattern that validates this field.
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountNumber",
-				new String[] {"!1234567890", "*567*", "9???9", ">1", "987654321|1234567889", "<100", ">=99999", "<=-42", ">9000|<=1", "<1|>=1234567890",
+				new String[] {"!1234567890", "9???9", ">1", "987654321|1234567889", "<100", ">=99999", "<=-42", ">9000|<=1", "<1|>=1234567890",
 						">1234567889&&<1234567890", ">=88&&<=99999", "0|>10&&<10000", "9000..1000000", "0..100|>1234567889", "1..10000&&>50", "250..50"},
-				new int[]    {7            , -1     , -1     , 6   , 2                     , 3     , 4        , -1     , 6          , 2,
+				new int[]    {7            , -1     , 6   , 2                     , 3     , 4        , -1     , 6          , 2,
 						0                         , 3              , 3              , 2              , 4                   , 2              , 0});
 		
 		// Ensure that DD searchable attribute string fields function correctly when searched on.
@@ -191,12 +191,12 @@ public class DataDictionarySearchableAttributeTest extends KRADTestCase {
 		// Ensure that DD searchable attribute timestamp fields function correctly when searched on.
 		// Note that timestamps with non-two-digit years outside the range of 1000 to 9999 will now fail validation.
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountUpdateDateTime",
-				new String[] {"!11/01/2009 00:00:00", "11/05/07*", "11/02/2015 00:00:00|11/06/2009 12:59:59", "11/??/2009 ??:??:??", ">110609 12:59:59",
+				new String[] {"!11/01/2009 00:00:00",  "11/02/2015 00:00:00|11/06/2009 12:59:59", "11/??/2009 ??:??:??", ">110609 12:59:59",
 						"<=2009 1:2:3", ">=11/06/09 12:59:59", "<11/8/2008 12:00 PM", "Blank",
 						"11/3/1900 00:00:00|>11-7-09 00:00:01", "02/29/2008 07:00:00..11/04/2009 00:00:00",
 						"11/1/09 00:00:00..11/06/09 12:59:59|11/03/1900 00:00:00", "2009..2008", "2000..2009&&>=110507 12:4:38",
 						"<=11/08/2008 12:00 AM", ">=01-01-1000 00:00:00", ">12/31/999 23:59:59", "<01-01-10000 00:00:00", "<=12/31/9999 23:59:59"},
-				new int[]    {-1                    , -1         , 2                                        , -1                   , 2,
+				new int[]    {-1                    , 2                                        , -1                   , 2,
 						3             , 3                    , 2                    , -1,
 						2                                     , 3,
 						4                                                        , -1          , 2,

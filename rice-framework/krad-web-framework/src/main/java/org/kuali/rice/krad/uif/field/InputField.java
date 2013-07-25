@@ -213,7 +213,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         // if options not configured on the control, invoke configured options finder
         if (fieldOptions.isEmpty() && (optionsFinder != null)) {
             if (optionsFinder instanceof UifKeyValuesFinder) {
-                fieldOptions = ((UifKeyValuesFinder) optionsFinder).getKeyValues((ViewModel) model);
+                fieldOptions = ((UifKeyValuesFinder) optionsFinder).getKeyValues((ViewModel) model, this);
 
                 // check if blank option should be added
                 if (((UifKeyValuesFinder) optionsFinder).isAddBlankOption()) {

@@ -19,6 +19,8 @@ import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;
+import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.view.ViewModel;
 
 import java.util.List;
 
@@ -35,10 +37,26 @@ public abstract class UifKeyValuesFinderBase extends KeyValuesBase implements Ui
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.control.UifKeyValuesFinder#getKeyValues()
+     * @see UifKeyValuesFinder#getKeyValues()
      */
     public List<KeyValue> getKeyValues() {
         return null;
+    }
+
+    /**
+     * @see UifKeyValuesFinder#getKeyValues(org.kuali.rice.krad.uif.view.ViewModel)
+     */
+    @Override
+    public List<KeyValue> getKeyValues(ViewModel model) {
+        return getKeyValues();
+    }
+
+    /**
+     * @see UifKeyValuesFinder#getKeyValues(org.kuali.rice.krad.uif.view.ViewModel, org.kuali.rice.krad.uif.field.InputField)
+     */
+    @Override
+    public List<KeyValue> getKeyValues(ViewModel model, InputField field){
+        return getKeyValues(model);
     }
 
     /**

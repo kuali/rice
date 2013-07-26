@@ -16,7 +16,7 @@
 /**
  * The interfaces in this package form the data model for the metadata repository extracted via the {@link org.kuali.rice.krad.data.provider.MetadataProvider} classes.
  * 
- * @author jonathan
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 package org.kuali.rice.krad.data.metadata;

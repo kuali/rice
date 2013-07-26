@@ -128,13 +128,15 @@ public class SauceLabsWebDriverHelper implements SauceOnDemandSessionIdProvider 
         }
 
         String version = System.getProperty(SAUCE_VERSION_PROPERTY);
-        if (version != null && "0".equals(version)) { // Blank or 0 leaves version blank for use with chrome
+        if (version == null || "0".equals(version)) { // Blank or 0 leaves version blank for use with chrome
 
             if (!"chrome".equalsIgnoreCase(System.getProperty(SAUCE_BROWSER_PROPERTY))) {
                 throw new RuntimeException("Blank or 0 version for a browser not chrome " + System.getProperty(SAUCE_BROWSER_PROPERTY));
             }
 
-            capabilities.setCapability("version", version);
+            capabilities.setCapability("version", ""); // saucelabs requires blank for chrome (latest version)
+        } else {
+            capabilities.setCapability("version", version); // saucelabs requires blank for chrome (latest version)
         }
 
         capabilities.setCapability("platform", System.getProperty(SAUCE_PLATFORM_PROPERTY, Platform.UNIX.toString()).replaceAll("_", " "));

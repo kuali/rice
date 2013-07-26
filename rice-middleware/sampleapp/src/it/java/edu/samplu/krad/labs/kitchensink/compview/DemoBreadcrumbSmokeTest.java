@@ -25,10 +25,15 @@ public class DemoBreadcrumbSmokeTest extends BreadcrumbSmokeTest {
 
     public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView";
 
-    public static String SECOND_DOWN_TRIANGLE_XPATH = "(//a[@class='uif-breadcrumbSiblingLink'])[2]";
+    public static final String DOWN_TRIANGLE_XPATH = "(//a[@class='uif-breadcrumbSiblingLink'])";
 
     @Override
     protected void navigate() throws Exception {
         waitAndClickByLinkText("Kitchen Sink");
+    }
+
+    @Override
+    protected String getTriangleXpath() {
+        return this.DOWN_TRIANGLE_XPATH;
     }
 }

@@ -41,7 +41,7 @@ public class BreadcrumbSmokeTest extends SmokeTestBase {
      * (//a[@class='uif-breadcrumbSiblingLink'])[2]
      * Not final as it needs to be overwritten for the Demo Breadcrumbs smoke test
      */
-    public static String SECOND_DOWN_TRIANGLE_XPATH = "(//a[@class='uif-breadcrumbSiblingLink'])[2]";
+    public static final String SECOND_DOWN_TRIANGLE_XPATH = "(//a[@class='uif-breadcrumbSiblingLink'])[2]";
 
     String[][] selectAsserts = {{"UifCompView", "Uif Components"}};
 
@@ -50,6 +50,10 @@ public class BreadcrumbSmokeTest extends SmokeTestBase {
     @Override
     protected String getBookmarkUrl() {
         return BOOKMARK_URL;
+    }
+
+    protected String getTriangleXpath() {
+        return SECOND_DOWN_TRIANGLE_XPATH;
     }
 
     protected void navigate() throws Exception {
@@ -68,12 +72,12 @@ public class BreadcrumbSmokeTest extends SmokeTestBase {
         // etc.
         SeleneseTestBase.assertFalse(isVisibleByXpath(SECOND_BREADCRUMB_NAV_XPATH));
         // The second ▼
-        waitAndClickByXpath(SECOND_DOWN_TRIANGLE_XPATH);
+        waitAndClickByXpath(getTriangleXpath());
         Thread.sleep(100);
         SeleneseTestBase.assertTrue(isVisibleByXpath(SECOND_BREADCRUMB_NAV_XPATH));
-        waitAndClickByXpath(SECOND_DOWN_TRIANGLE_XPATH);
+        waitAndClickByXpath(getTriangleXpath());
         SeleneseTestBase.assertFalse(isVisibleByXpath(SECOND_BREADCRUMB_NAV_XPATH));
-        waitAndClickByXpath(SECOND_DOWN_TRIANGLE_XPATH);
+        waitAndClickByXpath(getTriangleXpath());
 
         // The Second selection of the second ▼
         // you can't just click by link text as the same clickable text is on the left navigation.

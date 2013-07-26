@@ -173,13 +173,12 @@ public class CollectionGroupBuilder implements Serializable {
 
         // if we are doing server side paging, don't build the lines unless DataTables set the displayLength
         if (isForceAjaxJsonData && collectionGroup.getDisplayLength() == null) {
-            collectionGroup.setDisplayLength(0);
+            collectionGroup.setDisplayLength(1);
         }
 
         final int displayStart = (collectionGroup.getDisplayStart() != null) ? collectionGroup.getDisplayStart() : 0;
 
-        final int displayLength =
-                (collectionGroup.getDisplayLength() != null) ?
+        final int displayLength = (collectionGroup.getDisplayLength() != null) ?
                         collectionGroup.getDisplayLength() : filteredIndexedElements.size() - displayStart;
 
         // make sure we don't exceed the size of our collection

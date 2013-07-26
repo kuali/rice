@@ -1068,15 +1068,19 @@ public abstract class UifControllerBase {
         String tableId = request.getParameter(UifParameters.TABLE_ID);
         View postedView = form.getPostedView();
 
+        @SuppressWarnings("unchecked")
+        List<ColumnSort> oldColumnSorts = (List<ColumnSort>) form.getExtensionData().get(tableId + "_columnSorts");
+
         // Create references that we'll need beyond the synchronized block here.
         CollectionGroup newCollectionGroup = null;
         List<Object> modelCollection = null;
+        List<ColumnSort> newColumnSorts = null;
 
         synchronized (postedView) { // only one concurrent request per view please
 
             CollectionGroup oldCollectionGroup = (CollectionGroup)postedView.getViewIndex().getComponentById(tableId);
             DataTablesInputs dataTablesInputs = new DataTablesInputs(request);
-            List<ColumnSort> columnSorts = buildColumnSorts(dataTablesInputs, oldCollectionGroup);
+            newColumnSorts = buildColumnSorts(dataTablesInputs, oldCollectionGroup);
 
             // get a new instance of the collection group component that we'll run the lifecycle on
             newCollectionGroup =
@@ -1086,7 +1090,7 @@ public abstract class UifControllerBase {
             modelCollection = ObjectPropertyUtils.getPropertyValue(form, newCollectionGroup.getBindingInfo()
                     .getPropertyAdjustedBindingPath(newCollectionGroup.getPropertyName()));
 
-            applyTableJsonSort(modelCollection, columnSorts, oldCollectionGroup, postedView);
+            applyTableJsonSort(modelCollection, oldColumnSorts, newColumnSorts, oldCollectionGroup, postedView);
 
             // set up the collection group properties related to paging in the collection group to set the bounds for
             // what needs to be rendered
@@ -1107,6 +1111,7 @@ public abstract class UifControllerBase {
         form.getExtensionData().put(tableId + "_tableLayoutManager", newCollectionGroup.getLayoutManager());
         form.getExtensionData().put(tableId + "_filteredCollectionSize", newCollectionGroup.getFilteredCollectionSize());
         form.getExtensionData().put(tableId + "_totalCollectionSize", modelCollection.size());
+        form.getExtensionData().put(tableId + "_columnSorts", newColumnSorts);
 
         return getUIFModelAndView(form);
     }
@@ -1178,15 +1183,20 @@ public abstract class UifControllerBase {
      * mapped to the elements of the modelCollection, subclasses should be able to easily override this method to
      * provide custom sorting logic.</p>
      *
-     * @param modelCollection
-     * @param columnSorts
-     * @param collectionGroup
-     * @param view
+     * @param modelCollection the collection to sort
+     * @param oldColumnSorts the sorting that reflects the current state of the collection
+     * @param newColumnSorts the sorting to apply to the collection
+     * @param collectionGroup the CollectionGroup that is being rendered
+     * @param view the view
      */
-    protected void applyTableJsonSort(List<Object> modelCollection, List<ColumnSort> columnSorts,
-            CollectionGroup collectionGroup, View view) {
+    protected void applyTableJsonSort(List<Object> modelCollection, List<ColumnSort> oldColumnSorts,
+            List<ColumnSort> newColumnSorts, CollectionGroup collectionGroup, View view) {
 
-        if (!CollectionUtils.isEmpty(modelCollection) && !CollectionUtils.isEmpty(columnSorts)) {
+        boolean isCollectionEmpty = CollectionUtils.isEmpty(modelCollection);
+        boolean isSortingSpecified = !CollectionUtils.isEmpty(newColumnSorts);
+        boolean isSortOrderChanged = newColumnSorts != oldColumnSorts && !newColumnSorts.equals(oldColumnSorts);
+
+        if (!isCollectionEmpty && isSortingSpecified && isSortOrderChanged) {
 
             //
             // create an index array and sort that. The array slots represents the slots in the modelCollection, and
@@ -1216,7 +1226,7 @@ public abstract class UifControllerBase {
             Integer [] sortIndices = new Integer [modelCollection.size()];
             for (int i=0; i<sortIndices.length; i++) { sortIndices[i] = i; }
 
-            Arrays.sort(sortIndices, new MultiColumnComparator(modelCollection, collectionGroup, columnSorts, view));
+            Arrays.sort(sortIndices, new MultiColumnComparator(modelCollection, collectionGroup, newColumnSorts, view));
 
             // apply the sort to the modelCollection
             Object [] sorted = new Object [sortIndices.length];

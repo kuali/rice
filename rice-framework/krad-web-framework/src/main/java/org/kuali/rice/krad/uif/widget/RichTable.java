@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -150,7 +151,7 @@ public class RichTable extends WidgetBase {
 
             //if forceAjaxJsonData is true, add the css cell styling to the template options so it can still be used
             //since this will not go through the grid ftl
-            if (layoutManager instanceof TableLayoutManager && (this.forceAjaxJsonData || this.forceLocalJsonData)) {
+            if (layoutManager instanceof TableLayoutManager && (this.forceLocalJsonData)) {
                 addCellStyling((TableLayoutManager) layoutManager);
             }
 
@@ -227,7 +228,7 @@ public class RichTable extends WidgetBase {
      * @param manager the tableLayoutManager that contains the original fields
      */
     private void addCellStyling(TableLayoutManager manager) {
-        if (manager.getAllRowFields() != null) {
+        if (!CollectionUtils.isEmpty(manager.getAllRowFields())) {
             for (int index = 0; index < manager.getNumberOfColumns(); index++) {
                 String cellStyleClasses = ((ComponentBase) manager.getAllRowFields().get(index))
                         .getCellStyleClassesAsString();

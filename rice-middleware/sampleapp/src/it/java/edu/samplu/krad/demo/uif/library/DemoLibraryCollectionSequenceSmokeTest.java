@@ -47,17 +47,7 @@ public class DemoLibraryCollectionSequenceSmokeTest extends DemoLibraryBase {
         assert(isOptionSelected("exampleShown", "Demo-CollectionSequence-Example2"));
     }
 
-    protected void changeViewTheme() throws Exception {
-        selectOptionByName("themeName", "Uif-ClassicKnsTheme");
-        waitForPageToLoad();
-        assert(isOptionSelected("themeName","Uif-ClassicKnsTheme"));
-        selectOptionByName("themeName", "Uif-KradTheme");
-        waitForPageToLoad();
-        assert(isOptionSelected("themeName","Uif-KradTheme"));
-    }
-
     protected void testCollectionSequenceExamples() throws Exception {
-        changeViewTheme();
         changeSequenceView();
     }
 

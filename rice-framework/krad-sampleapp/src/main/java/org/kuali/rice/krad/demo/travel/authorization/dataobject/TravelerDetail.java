@@ -15,67 +15,117 @@
  */
 package org.kuali.rice.krad.demo.travel.authorization.dataobject;
 
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.OneToMany;
-import java.sql.Date;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.Date;
 import java.util.List;
+
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
 import org.apache.commons.lang.StringUtils;
-//import org.kuali.kfs.integration.ar.AccountsReceivableCustomer;
+import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.krad.bo.VersionedAndGloballyUniqueBase;
+import org.kuali.rice.krad.data.provider.annotation.InheritProperties;
+import org.kuali.rice.krad.data.provider.annotation.InheritProperty;
+import org.kuali.rice.krad.data.provider.annotation.Label;
+import org.kuali.rice.krad.data.provider.annotation.Relationship;
 
 
 @Entity
 @Table(name="TRVL_TRAVELER_DTL_T")
-public class TravelerDetail extends PersistableBusinessObjectBase {
+public class TravelerDetail extends VersionedAndGloballyUniqueBase {
+	private static final long serialVersionUID = -7169083136626617130L;
 
-    protected Integer id;
+    @Id
+    @GeneratedValue(generator = "TEM_TRAVELER_DTL_ID_SEQ")
+    @SequenceGenerator(name = "TEM_TRAVELER_DTL_ID_SEQ", sequenceName = "TEM_TRAVELER_DTL_ID_SEQ", allocationSize = 5)
+    @Column(name = "id", nullable = false)
+	protected Integer id;
+    @Column(name = "doc_nbr", length=14)
     protected String documentNumber;
+    @Column(name = "EMP_PRINCIPAL_ID")
     protected String principalId;
-    protected String principalName;
+    @Relationship(foreignKeyFields="principalId")
+    @Transient
+    @InheritProperties({
+    		@InheritProperty(name="principalName",label=@Label("Traveler User ID")),
+    		@InheritProperty(name="name",label=@Label("Traveler Name"))
+    })
+	private Person person;
+    @Column(name = "first_nm", length = 40, nullable = false)
     protected String firstName;
+    @Column(length = 40, nullable = true)
     protected String middleName;
+    @Column(name = "last_nm", length = 40, nullable = false)
     protected String lastName;
+    @Column(name = "addr_line_1", length = 50, nullable = false)
     protected String streetAddressLine1;
+    @Column(name = "addr_line_2", length = 50, nullable = true)
     protected String streetAddressLine2;
+    @Column(name = "city_nm", length = 50, nullable = true)
     protected String cityName;
+    @Column(name = "postal_state_cd", length = 2, nullable = false)
     protected String stateCode;
+    @Column(name = "postal_cd", length = 11, nullable = false)
     protected String zipCode;
+    @Column(name = "country_cd", length = 2, nullable = true)
     protected String countryCode;
+    @Column(name = "citizenship", length = 40, nullable = true)
     protected String citizenship;
+    @Column(name = "email_addr", length = 50, nullable = true)
     protected String emailAddress;
+    @Transient
     protected Date dateOfBirth;
+    @Column(name = "gender", length = 1, nullable = false)
     protected String gender;
+    @Column(name = "phone_nbr", length = 20, nullable = true)
     protected String phoneNumber;
+    @Column(name = "traveler_typ_cd", length = 3, nullable = false)
     protected String travelerTypeCode;
+//    @ManyToOne
+//    @JoinColumn(name = "traveler_typ_cd", insertable=false, updatable=false)
+    @Transient
     protected TravelerType travelerType;
+    @Column(name = "customer_num", length = 40, nullable = true)
     protected String customerNumber;
     //protected AccountsReceivableCustomer customer;
+    @Transient
     protected boolean liabilityInsurance;
 
+    @Column(name = "drive_lic_num", length = 20, nullable = true)
     protected String driversLicenseNumber;
+    @Transient
     protected String driversLicenseState;
+    @Column(name = "drive_lic_exp_dt")
+    @Temporal(TemporalType.DATE)
     protected Date driversLicenseExpDate;
 
     // Notification
-    protected boolean notifyTAFinal = Boolean.FALSE;
-    protected boolean notifyTAStatusChange = Boolean.FALSE;
-    protected boolean notifyTERFinal = Boolean.FALSE;
-    protected boolean notifyTERStatusChange = Boolean.FALSE;
+    @Transient
+    protected Boolean notifyTAFinal = Boolean.FALSE;
+    @Transient
+    protected Boolean notifyTAStatusChange = Boolean.FALSE;
+    @Transient
+    protected Boolean notifyTERFinal = Boolean.FALSE;
+    @Transient
+    protected Boolean notifyTERStatusChange = Boolean.FALSE;
 
-    protected boolean active = Boolean.TRUE;
-    protected boolean nonResidentAlien = Boolean.FALSE;
-    protected boolean motorVehicleRecordCheck = Boolean.FALSE;
+    @Column(name = "ACTV_IND", nullable = false, length = 1)
+    protected Boolean active = Boolean.TRUE;
+    @Column(name = "non_res_alien", length = 1, nullable = true)
+    protected Boolean nonResidentAlien = Boolean.FALSE;
+    @Transient
+    protected Boolean motorVehicleRecordCheck = Boolean.FALSE;
 
-    @OneToMany(mappedBy = "id")
+//    @OneToMany(mappedBy = "id")
+    @Transient
     private List<TravelerDetailEmergencyContact> emergencyContacts = new ArrayList<TravelerDetailEmergencyContact>();
 
     /**
@@ -98,7 +148,6 @@ public class TravelerDetail extends PersistableBusinessObjectBase {
      *
      * @return document number
      */
-    @Column(name = "doc_nbr")
     public String getDocumentNumber() {
         return documentNumber;
     }
@@ -112,10 +161,6 @@ public class TravelerDetail extends PersistableBusinessObjectBase {
         this.documentNumber = documentNumber;
     }
 
-    @Id
-    @GeneratedValue(generator = "TEM_TRAVELER_DTL_ID_SEQ")
-    @SequenceGenerator(name = "TEM_TRAVELER_DTL_ID_SEQ", sequenceName = "TEM_TRAVELER_DTL_ID_SEQ", allocationSize = 5)
-    @Column(name = "id", nullable = false)
     public Integer getId() {
         return id;
     }
@@ -125,7 +170,6 @@ public class TravelerDetail extends PersistableBusinessObjectBase {
         this.id = id;
     }
 
-    @Column(name = "first_nm", length = 40, nullable = false)
     public String getFirstName() {
         return firstName;
     }
@@ -135,7 +179,6 @@ public class TravelerDetail extends PersistableBusinessObjectBase {
         this.firstName = firstName;
     }
 
-    @Column(name = "last_nm", length = 40, nullable = false)
     public String getLastName() {
         return lastName;
     }
@@ -145,21 +188,10 @@ public class TravelerDetail extends PersistableBusinessObjectBase {
         this.lastName = lastName;
     }
 
-    /**
-     * Gets the middleName attribute.
-     *
-     * @return Returns the middleName.
-     */
-    @Column(length = 40, nullable = true)
     public String getMiddleName() {
         return middleName;
     }
 
-    /**
-     * Sets the middleName attribute value.
-     *
-     * @param middleName The middleName to set.
-     */
     public void setMiddleName(String middleName) {
         this.middleName = middleName;
     }
@@ -175,7 +207,6 @@ public class TravelerDetail extends PersistableBusinessObjectBase {
         return name;
     }
 
-    @Column(name = "addr_line_1", length = 50, nullable = false)
     public String getStreetAddressLine1() {
         return streetAddressLine1;
     }
@@ -185,7 +216,6 @@ public class TravelerDetail extends PersistableBusinessObjectBase {
         this.streetAddressLine1 = streetAddressLine1;
     }
 
-    @Column(name = "addr_line_2", length = 50, nullable = true)
     public String getStreetAddressLine2() {
         return streetAddressLine2;
     }
@@ -195,7 +225,6 @@ public class TravelerDetail extends PersistableBusinessObjectBase {
         this.streetAddressLine2 = streetAddressLine2;
     }
 
-    @Column(name = "city_nm", length = 50, nullable = true)
     public String getCityName() {
         return cityName;
     }
@@ -205,7 +234,6 @@ public class TravelerDetail extends PersistableBusinessObjectBase {
         this.cityName = cityName;
     }
 
-    @Column(name = "postal_state_cd", length = 50, nullable = false)
     public String getStateCode() {
         return stateCode;
     }
@@ -215,7 +243,6 @@ public class TravelerDetail extends PersistableBusinessObjectBase {
         this.stateCode = stateCode;
     }
 
-    @Column(name = "postal_cd", length = 50, nullable = false)
     public String getZipCode() {
         return zipCode;
     }
@@ -225,7 +252,6 @@ public class TravelerDetail extends PersistableBusinessObjectBase {
         this.zipCode = zipCode;
     }
 
-    @Column(name = "country_cd", length = 50, nullable = true)
     public String getCountryCode() {
         return countryCode;
     }
@@ -235,7 +261,6 @@ public class TravelerDetail extends PersistableBusinessObjectBase {
         this.countryCode = countryCode;
     }
 
-    @Column(name = "email_addr", length = 50, nullable = true)
     public String getEmailAddress() {
         return emailAddress;
     }
@@ -245,7 +270,6 @@ public class TravelerDetail extends PersistableBusinessObjectBase {
         this.emailAddress = emailAddress;
     }
 
-    @Column(name = "phone_nbr", length = 20, nullable = true)
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -255,7 +279,6 @@ public class TravelerDetail extends PersistableBusinessObjectBase {
         this.phoneNumber = phoneNumber;
     }
 
-    @Column(name = "traveler_typ_cd", length = 3, nullable = false)
     public String getTravelerTypeCode() {
         return travelerTypeCode;
     }
@@ -265,8 +288,6 @@ public class TravelerDetail extends PersistableBusinessObjectBase {
         this.travelerTypeCode = travelerTypeCode;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "traveler_typ_cd")
     public TravelerType getTravelerType() {
         return travelerType;
     }
@@ -275,82 +296,20 @@ public class TravelerDetail extends PersistableBusinessObjectBase {
         this.travelerType = travelerType;
     }
 
-    /**
-     * Gets the principalId attribute.
-     *
-     * @return Returns the principalId.
-     */
-    @Column(name = "EMP_PRINCIPAL_ID")
     public String getPrincipalId() {
         return principalId;
     }
 
-    /**
-     * Sets the principalId attribute value.
-     *
-     * @param principalId The principalId to set.
-     */
     public void setPrincipalId(String principalId) {
         this.principalId = principalId;
     }
 
-    /**
-     * Gets the principalName attribute.
-     *
-     * @return Returns the principalName.
-     */
-    @Column(name = "EMP_PRINCIPAL_ID")
-    public String getPrincipalName() {
-        return principalName;
-    }
-
-    /**
-     * Sets the principalName attribute value.
-     *
-     * @param principalName The principalName to set.
-     */
-    public void setPrincipalName(String principalName) {
-        this.principalName = principalName;
-    }
-
-    /**
-     * Gets the customerNumber attribute.
-     *
-     * @return Returns the customerNumber.
-     */
-    @Column(name = "customer_num", length = 40, nullable = true)
     public String getCustomerNumber() {
         return customerNumber;
     }
 
-    /**
-     * Sets the customerNumber attribute value.
-     *
-     * @param customerNumber The customerNumber to set.
-     */
     public void setCustomerNumber(String customerNumber) {
         this.customerNumber = customerNumber;
-    }
-
-    /*
-    public void setCustomer(final AccountsReceivableCustomer customer) {
-
-        this.customer = customer;
-    }
-
-    public AccountsReceivableCustomer getCustomer() {
-        return this.customer;
-    }
-      */
-
-    protected LinkedHashMap toStringMapper() {
-        LinkedHashMap map = new LinkedHashMap();
-        map.put("id", id);
-        map.put("firstName", firstName);
-        map.put("lastName", lastName);
-        map.put("streetAddressLine1", streetAddressLine1);
-        map.put("cityName", cityName);
-        return map;
     }
 
     public boolean isLiabilityInsurance() {
@@ -361,59 +320,26 @@ public class TravelerDetail extends PersistableBusinessObjectBase {
         this.liabilityInsurance = liabilityInsurance;
     }
 
-    /**
-     * Gets the driversLicenseNumber attribute.
-     *
-     * @return Returns the driversLicenseNumber.
-     */
-    @Column(name = "drive_lic_num", length = 20, nullable = true)
     public String getDriversLicenseNumber() {
         return driversLicenseNumber;
     }
 
-    /**
-     * Sets the driversLicenseNumber attribute value.
-     *
-     * @param driversLicenseNumber The driversLicenseNumber to set.
-     */
     public void setDriversLicenseNumber(String driversLicenseNumber) {
         this.driversLicenseNumber = driversLicenseNumber;
     }
 
-    /**
-     * Gets the driversLicenseState attribute.
-     *
-     * @return Returns the driversLicenseState.
-     */
     public String getDriversLicenseState() {
         return driversLicenseState;
     }
 
-    /**
-     * Sets the driversLicenseState attribute value.
-     *
-     * @param driversLicenseState The driversLicenseState to set.
-     */
     public void setDriversLicenseState(String driversLicenseState) {
         this.driversLicenseState = driversLicenseState;
     }
 
-    /**
-     * Gets the driversLicenseExpDate attribute.
-     *
-     * @return Returns the driversLicenseExpDate.
-     */
-    @Column(name = "drive_lic_exp_dt", length = 10)
     public Date getDriversLicenseExpDate() {
         return driversLicenseExpDate;
     }
 
-
-    /**
-     * Sets the driversLicenseExpDate attribute value.
-     *
-     * @param driversLicenseExpDate The driversLicenseExpDate to set.
-     */
     public void setDriversLicenseExpDate(Date driversLicenseExpDate) {
         this.driversLicenseExpDate = driversLicenseExpDate;
     }
@@ -434,112 +360,50 @@ public class TravelerDetail extends PersistableBusinessObjectBase {
         return notifyTERStatusChange;
     }
 
-    /**
-     * Gets the citizenship attribute.
-     *
-     * @return Returns the citizenship.
-     */
-    @Column(name = "citizenship", length = 40, nullable = true)
     public String getCitizenship() {
         return citizenship;
     }
 
-    /**
-     * Sets the citizenship attribute value.
-     *
-     * @param citizenship The citizenship to set.
-     */
     public void setCitizenship(String citizenship) {
         this.citizenship = citizenship;
     }
 
-    /**
-     * Gets the active attribute.
-     *
-     * @return Returns the active.
-     */
-    @Column(name = "ACTV_IND", nullable = false, length = 1)
     public boolean isActive() {
         return active;
     }
 
-    /**
-     * Sets the active attribute value.
-     *
-     * @param active The active to set.
-     */
     public void setActive(boolean active) {
         this.active = active;
     }
 
-    /**
-     * Gets the notifyTAFinal attribute.
-     *
-     * @return Returns the notifyTAFinal.
-     */
     public boolean isNotifyTAFinal() {
         return notifyTAFinal;
     }
 
-    /**
-     * Sets the notifyTAFinal attribute value.
-     *
-     * @param notifyTAFinal The notifyTAFinal to set.
-     */
     public void setNotifyTAFinal(boolean notifyTAFinal) {
         this.notifyTAFinal = notifyTAFinal;
     }
 
-    /**
-     * Gets the notifyTAStatusChange attribute.
-     *
-     * @return Returns the notifyTAStatusChange.
-     */
     public boolean isNotifyTAStatusChange() {
         return notifyTAStatusChange;
     }
 
-    /**
-     * Sets the notifyTAStatusChange attribute value.
-     *
-     * @param notifyTAStatusChange The notifyTAStatusChange to set.
-     */
     public void setNotifyTAStatusChange(boolean notifyTAStatusChange) {
         this.notifyTAStatusChange = notifyTAStatusChange;
     }
 
-    /**
-     * Gets the notifyTERFinal attribute.
-     *
-     * @return Returns the notifyTERFinal.
-     */
     public boolean isNotifyTERFinal() {
         return notifyTERFinal;
     }
 
-    /**
-     * Sets the notifyTERFinal attribute value.
-     *
-     * @param notifyTERFinal The notifyTERFinal to set.
-     */
     public void setNotifyTERFinal(boolean notifyTERFinal) {
         this.notifyTERFinal = notifyTERFinal;
     }
 
-    /**
-     * Gets the notifyTERStatusChange attribute.
-     *
-     * @return Returns the notifyTERStatusChange.
-     */
     public boolean isNotifyTERStatusChange() {
         return notifyTERStatusChange;
     }
 
-    /**
-     * Sets the notifyTERStatusChange attribute value.
-     *
-     * @param notifyTERStatusChange The notifyTERStatusChange to set.
-     */
     public void setNotifyTERStatusChange(boolean notifyTERStatusChange) {
         this.notifyTERStatusChange = notifyTERStatusChange;
     }
@@ -552,60 +416,35 @@ public class TravelerDetail extends PersistableBusinessObjectBase {
         this.motorVehicleRecordCheck = motorVehicleRecordCheck;
     }
 
-    /**
-     * Gets the nonResIdentAlien attribute.
-     *
-     * @return Returns the nonResIdentAlien.
-     */
-    @Column(name = "non_res_alien", length = 1, nullable = true)
     public boolean isNonResidentAlien() {
         return nonResidentAlien;
     }
 
-    /**
-     * Sets the nonResIdentAlien attribute value.
-     *
-     * @param nonResIdentAlien The nonResIdentAlien to set.
-     */
     public void setNonResidentAlien(boolean nonResidentAlien) {
         this.nonResidentAlien = nonResidentAlien;
     }
 
-    /**
-     * Gets the dateOfBirth attribute.
-     *
-     * @return Returns the dateOfBirth.
-     */
-    @Column(name = "date_of_birth", length = 10, nullable = false)
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    /**
-     * Sets the dateOfBirth attribute value.
-     *
-     * @param dateOfBirth The dateOfBirth to set.
-     */
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
-    /**
-     * Gets the gender attribute.
-     *
-     * @return Returns the gender.
-     */
-    @Column(name = "gender", length = 1, nullable = false)
     public String getGender() {
         return gender;
     }
 
-    /**
-     * Sets the gender attribute value.
-     *
-     * @param gender The gender to set.
-     */
     public void setGender(String gender) {
         this.gender = gender;
     }
+
+	public Person getPerson() {
+		return person;
+	}
+
+	public void setPerson(Person person) {
+		this.person = person;
+	}
 }

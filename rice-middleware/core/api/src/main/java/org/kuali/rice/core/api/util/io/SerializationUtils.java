@@ -18,6 +18,7 @@ package org.kuali.rice.core.api.util.io;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.SerializationException;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.util.cache.CopiedObject;
 
 import java.io.Serializable;
 
@@ -28,7 +29,7 @@ import java.io.Serializable;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public final class SerializationUtils {
+public class SerializationUtils extends org.apache.commons.lang.SerializationUtils{
 
 	/**
 	 * Serializes the given {@link Serializable} object and then executes a
@@ -65,9 +66,46 @@ public final class SerializationUtils {
         byte[] decoded = new Base64().decode(base64Value);
 		return (Serializable)org.apache.commons.lang.SerializationUtils.deserialize(decoded);
 	}
+
+    /**
+     * Uses Serialization mechanism to create a deep copy of the given Object. As a special case, deepCopy of null
+     * returns null,
+     * just to make using this method simpler. For a detailed discussion see:
+     * http://www.javaworld.com/javaworld/javatips/jw-javatip76.html
+     *
+     * @param src
+     * @return deep copy of the given Serializable
+     *
+     * //Replace with SerializationUtils.. wrap null?
+     */
+    public static Serializable deepCopy(Serializable src) {
+
+        CopiedObject co = deepCopyForCaching(src);
+        return co.getContent();
+    }
+
+    /**
+     * Uses Serialization mechanism to create a deep copy of the given Object, and returns a CacheableObject instance
+     * containing the
+     * deepCopy and its size in bytes. As a special case, deepCopy of null returns a cacheableObject containing null and
+     * a size of
+     * 0, to make using this method simpler. For a detailed discussion see:
+     * http://www.javaworld.com/javaworld/javatips/jw-javatip76.html
+     *
+     * @param src
+     * @return CopiedObject containing a deep copy of the given Serializable and its size in bytes
+     */
+    public static CopiedObject deepCopyForCaching(Serializable src) {
+        CopiedObject co = new CopiedObject();
+
+        co.setContent(src);
+
+        return co;
+    }
 	
 	private SerializationUtils() {
 		throw new UnsupportedOperationException("Should never be invoked.");
 	}
+
 	
 }

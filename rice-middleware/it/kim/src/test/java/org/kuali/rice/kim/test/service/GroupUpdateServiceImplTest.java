@@ -24,10 +24,9 @@ import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.impl.KIMPropertyConstants;
 import org.kuali.rice.kim.impl.group.GroupMemberBo;
-import org.kuali.rice.kim.impl.group.GroupServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.springframework.util.CollectionUtils;
 
 import javax.xml.namespace.QName;
@@ -54,7 +53,7 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
 		super.setUp();
 		groupService = (GroupService)GlobalResourceLoader.getService(
                 new QName(KimApiConstants.Namespaces.KIM_NAMESPACE_2_0, KimApiConstants.ServiceNames.GROUP_SERVICE_SOAP));
-		businessObjectService = KRADServiceLocator.getBusinessObjectService();
+		businessObjectService = KNSServiceLocator.getBusinessObjectService();
 	}
 
 	@Test

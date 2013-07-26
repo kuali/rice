@@ -38,12 +38,12 @@ import org.kuali.rice.krad.exception.UnknownDocumentIdException;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.rules.rule.event.AddNoteEvent;
 import org.kuali.rice.krad.service.AttachmentService;
-import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DocumentDictionaryService;
 import org.kuali.rice.krad.service.DocumentService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.NoteService;
 import org.kuali.rice.krad.uif.UifConstants.WorkflowAction;
 import org.kuali.rice.krad.uif.UifParameters;
@@ -93,7 +93,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
             {KewApiConstants.ACTIONLIST_COMMAND, KewApiConstants.DOCSEARCH_COMMAND, KewApiConstants.SUPERUSER_COMMAND,
                     KewApiConstants.HELPDESK_ACTIONLIST_COMMAND};
 
-    private BusinessObjectService businessObjectService;
+    private LegacyDataAdapter legacyDataAdapter;
     private DataDictionaryService dataDictionaryService;
     private DocumentService documentService;
     private DocumentDictionaryService documentDictionaryService;
@@ -764,15 +764,15 @@ public abstract class DocumentControllerBase extends UifControllerBase {
                 action, document.getDocumentNumber());
     }
 
-    public BusinessObjectService getBusinessObjectService() {
-        if (this.businessObjectService == null) {
-            this.businessObjectService = KRADServiceLocator.getBusinessObjectService();
+    public LegacyDataAdapter getLegacyDataAdapter() {
+        if (this.legacyDataAdapter == null) {
+            this.legacyDataAdapter = KRADServiceLocatorWeb.getLegacyDataAdapter();
         }
-        return this.businessObjectService;
+        return this.legacyDataAdapter;
     }
 
-    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
+    public void setLegacyDataAdapter(LegacyDataAdapter legacyDataAdapter) {
+        this.legacyDataAdapter = legacyDataAdapter;
     }
 
     public DataDictionaryService getDataDictionaryService() {

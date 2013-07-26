@@ -24,6 +24,7 @@ import org.apache.ojb.broker.metadata.FieldDescriptor;
 import org.apache.ojb.broker.util.sequence.AbstractSequenceManager;
 import org.apache.ojb.broker.util.sequence.SequenceManagerException;
 
+@Deprecated
 public class KualiMySQLSequenceManagerImpl extends AbstractSequenceManager {
 
 	public KualiMySQLSequenceManagerImpl(PersistenceBroker broker) {

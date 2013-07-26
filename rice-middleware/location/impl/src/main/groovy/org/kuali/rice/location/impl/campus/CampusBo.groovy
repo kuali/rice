@@ -23,7 +23,7 @@ import javax.persistence.JoinColumn
 import javax.persistence.OneToOne
 import javax.persistence.Table
 
-import org.hibernate.annotations.Type
+
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.location.framework.campus.CampusEbo
 
@@ -44,7 +44,7 @@ public class CampusBo extends PersistableBusinessObjectBase implements CampusEbo
 	@Column(name="CAMPUS_TYP_CD")
 	def String campusTypeCode;
 	
-	@Type(type="yes_no")
+	//@Type(type="yes_no")(type="yes_no")
 	@Column(name="ACTV_IND")
 	def boolean active; 
 

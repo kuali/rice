@@ -15,6 +15,11 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.api.KimConstants;
+import org.kuali.rice.kim.api.permission.Permission;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,14 +27,6 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kim.api.KimConstants;
-import org.kuali.rice.kim.api.permission.Permission;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-
 import java.util.Iterator;
 
 /**
@@ -43,10 +40,6 @@ public class KimDocumentRolePermission extends KimDocumentBoActivatableBase {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(generator="KRIM_ROLE_PERM_ID_S")
-	@GenericGenerator(name="KRIM_ROLE_PERM_ID_S",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KRIM_ROLE_PERM_ID_S"),
-			@Parameter(name="value_column",value="id")
-		})
 	@Column(name="ROLE_PERM_ID")
 	protected String rolePermissionId;
 	@Column(name="ROLE_ID")

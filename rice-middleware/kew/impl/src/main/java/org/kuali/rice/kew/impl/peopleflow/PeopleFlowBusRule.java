@@ -21,8 +21,7 @@ import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kew.impl.KewImplConstants;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase;
-import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 
 import java.util.Collection;
@@ -30,7 +29,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PeopleFlowBusRule extends MaintenanceDocumentRuleBase {
-    private BusinessObjectService businessObjectService;
 
     @Override
     protected boolean processCustomSaveDocumentBusinessRules(MaintenanceDocument document) {
@@ -49,7 +47,7 @@ public class PeopleFlowBusRule extends MaintenanceDocumentRuleBase {
                 Map<String,String> criteria = new HashMap<String,String>();
                 criteria.put(KewImplConstants.PropertyConstants.NAMESPACE_CODE, peopleFlowBo.getNamespaceCode());
                 criteria.put(KewImplConstants.PropertyConstants.NAME, peopleFlowBo.getName());
-                Collection<PeopleFlowBo> peopleFlows = getBusinessObjectService().findMatching(PeopleFlowBo.class,criteria);
+                Collection<PeopleFlowBo> peopleFlows = KRADServiceLocatorWeb.getLegacyDataAdapter().findMatching(PeopleFlowBo.class, criteria);
                 if (CollectionUtils.isEmpty(peopleFlows)) {
                     rulePassed = true;
                 } else {
@@ -59,16 +57,5 @@ public class PeopleFlowBusRule extends MaintenanceDocumentRuleBase {
                 }
         }
         return rulePassed;
-    }
-
-    public BusinessObjectService getBusinessObjectService() {
-        if(businessObjectService == null){
-            businessObjectService = KRADServiceLocator.getBusinessObjectService();
-        }
-        return businessObjectService;
-    }
-
-    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
     }
 }

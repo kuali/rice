@@ -15,10 +15,14 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.processor;
 
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.util.Date;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.core.api.uif.DataType;
+import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.core.impl.datetime.DateTimeServiceImpl;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.validation.AttributeValueReader;
@@ -27,10 +31,6 @@ import org.kuali.rice.krad.datadictionary.validation.SingleAttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.constraint.DataTypeConstraint;
 import org.kuali.rice.krad.datadictionary.validation.result.ConstraintValidationResult;
 import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult;
-
-import java.math.BigDecimal;
-import java.text.ParseException;
-import java.util.Date;
 
 
 /**

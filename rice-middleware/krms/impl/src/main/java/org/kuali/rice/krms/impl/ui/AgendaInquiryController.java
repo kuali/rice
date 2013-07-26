@@ -16,10 +16,10 @@
 package org.kuali.rice.krms.impl.ui;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krad.uif.UifParameters;
-import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.controller.InquiryController;
 import org.kuali.rice.krad.web.form.InquiryForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -135,7 +135,7 @@ public class AgendaInquiryController  extends InquiryController {
             agendaEditor.setAgendaItemLine(agendaItem);
         } else {
             // TODO: Add a copy not the reference
-            agendaEditor.setAgendaItemLine((AgendaItemBo) ObjectUtils.deepCopy(agendaItem));
+            agendaEditor.setAgendaItemLine((AgendaItemBo) SerializationUtils.deepCopy(agendaItem));
         }
 
 

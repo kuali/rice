@@ -40,4 +40,7 @@
   <param name="version">${project.name} :: ${project.version} :: ${kuali.build.timestamp}</param>
 
   <param name="resourceBundleNames">org.kuali.rice.krad.KRADApplicationResources,org.kuali.rice.krad.ApplicationResources,KradSampleAppResources,org.kuali.rice.core.web.cache.CacheApplicationResources</param>
+
+	<param name="rice.krad.enableLegacyDataFramework">true</param>
+
 </config>

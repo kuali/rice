@@ -22,7 +22,7 @@ import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
 
-import org.hibernate.annotations.Type
+
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.location.api.country.Country
 import org.kuali.rice.location.framework.country.CountryEbo
@@ -41,11 +41,11 @@ class CountryBo extends PersistableBusinessObjectBase implements CountryEbo {
   @Column(name = "POSTAL_CNTRY_NM")
   def String name;
 
-  @Type(type = "yes_no")
+  //@Type(type="yes_no")(type = "yes_no")
   @Column(name = "PSTL_CNTRY_RSTRC_IND")
   def boolean restricted;
 
-  @Type(type = "yes_no")
+  //@Type(type="yes_no")(type = "yes_no")
   @Column(name = "ACTV_IND")
   def boolean active;
 

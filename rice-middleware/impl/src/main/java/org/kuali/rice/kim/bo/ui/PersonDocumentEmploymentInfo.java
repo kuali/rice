@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo;
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo;
@@ -47,10 +42,6 @@ import javax.persistence.Transient;
 public class PersonDocumentEmploymentInfo extends KimDocumentBoActivatableEditableBase {
 	@Id
 	@GeneratedValue(generator="KRIM_ENTITY_EMP_ID_S")
-	@GenericGenerator(name="KRIM_ENTITY_EMP_ID_S",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KRIM_ENTITY_EMP_ID_S"),
-			@Parameter(name="value_column",value="id")
-		})
 	@Column(name = "ENTITY_EMP_ID")
 	protected String entityEmploymentId;
 
@@ -74,7 +65,7 @@ public class PersonDocumentEmploymentInfo extends KimDocumentBoActivatableEditab
 	@Column(name = "EMP_REC_ID")
 	protected String employmentRecordId;
 
-	@Type(type="yes_no")
+	//@Type(type="yes_no")
 	@Column(name="PRMRY_IND")
 	protected boolean primary;
 
@@ -83,7 +74,6 @@ public class PersonDocumentEmploymentInfo extends KimDocumentBoActivatableEditab
 	protected EntityEmploymentTypeBo employmentType;
 
 	@ManyToOne(targetEntity=EntityEmploymentStatusBo.class, fetch = FetchType.EAGER, cascade = {})
-	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name = "EMP_STAT_CD", insertable = false, updatable = false)
 	protected EntityEmploymentStatusBo employmentStatus;
 	@Transient

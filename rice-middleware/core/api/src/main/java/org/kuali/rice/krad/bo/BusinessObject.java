@@ -36,7 +36,9 @@ import org.kuali.rice.core.api.mo.ModelObjectBasic;
  * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @deprecated use new KRAD Data framework {@link org.kuali.rice.krad.data.DataObjectService}
  */
+@Deprecated
 public interface BusinessObject extends ModelObjectBasic {
 
     /**

@@ -28,7 +28,10 @@ import java.util.Map;
  * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated use {@link org.kuali.rice.krad.data.metadata.DataObjectRelationship} instead
  */
+@Deprecated
 public class DataObjectRelationship implements Serializable {
     private Class<?> relatedClass;
     private Class<?> parentClass;

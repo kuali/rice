@@ -15,14 +15,19 @@
  */
 package org.kuali.rice.ken.bo;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.ken.api.notification.NotificationRecipient;
 import org.kuali.rice.ken.api.notification.NotificationSender;
 import org.kuali.rice.ken.api.notification.NotificationSenderContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * This class represents the data structure that will house information about the non-system 
@@ -34,10 +39,6 @@ import javax.persistence.*;
 public class NotificationSenderBo extends PersistableBusinessObjectBase implements NotificationSenderContract {
     @Id
     @GeneratedValue(generator="KREN_SNDR_S")
-	@GenericGenerator(name="KREN_SNDR_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREN_SNDR_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="SNDR_ID")
 	private Long id;
     @Column(name="NTFCTN_ID", nullable=false)

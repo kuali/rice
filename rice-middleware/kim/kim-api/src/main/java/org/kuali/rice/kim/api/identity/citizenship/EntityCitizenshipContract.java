@@ -56,4 +56,17 @@ public interface EntityCitizenshipContract extends Versioned, GloballyUnique, In
      * @return the end date for this {@link EntityCitizenshipContract}, or null if none has been assigned.
      */
 	DateTime getEndDate();
+
+    /**
+     * Gets this {@link EntityCitizenshipContract}'s change date.
+     * @return the end date for this {@link EntityCitizenshipContract}, or null if none has been assigned.
+     */
+    DateTime getChangeDate();
+
+
+    /**
+     * Gets this {@link EntityCitizenshipContract}'s citizenship change type object.
+     * @return the Type object of citizenship status for this {@link EntityCitizenshipContract}, or null if none has been assigned.
+     */
+    CodedAttributeContract getChangeType();
 }

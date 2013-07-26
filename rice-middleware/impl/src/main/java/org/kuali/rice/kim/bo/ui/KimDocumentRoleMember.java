@@ -16,8 +16,6 @@
 package org.kuali.rice.kim.bo.ui;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
@@ -57,10 +55,6 @@ public class KimDocumentRoleMember  extends KimDocumentBoActivatableToFromEditab
 
 	@Id
 	@GeneratedValue(generator="KRIM_ROLE_MBR_ID_S")
-	@GenericGenerator(name="KRIM_ROLE_MBR_ID_S",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KRIM_ROLE_MBR_ID_S"),
-			@Parameter(name="value_column",value="id")
-		})
 	@Column(name="ROLE_MBR_ID")
 	protected String roleMemberId;
 	

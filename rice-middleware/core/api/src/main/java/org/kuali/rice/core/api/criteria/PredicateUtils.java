@@ -93,13 +93,13 @@ public final class PredicateUtils {
         } else if (value.contains(SearchOperator.BETWEEN_EXCLUSIVE_UPPER.op())) {
             String[] betweenVals = StringUtils.split(value, SearchOperator.BETWEEN_EXCLUSIVE_UPPER.op());
             if (betweenVals.length == 2) {
-                return and(greaterThanOrEqual(key, betweenVals[0]), lessThan(key, betweenVals[1]));
+                return between(key, betweenVals[0], betweenVals[1], SearchOperator.BETWEEN_EXCLUSIVE_UPPER);
             } // else ?
             return null;
         } else if (value.contains(SearchOperator.BETWEEN.op())) {
             String[] betweenVals = StringUtils.split(value, SearchOperator.BETWEEN.op());
             if (betweenVals.length == 2) {
-                return and(greaterThanOrEqual(key, betweenVals[0]), lessThanOrEqual(key, betweenVals[1]));
+                return between(key, betweenVals[0], betweenVals[1]);
             } // else ?
             return null;
         } else if (value.contains(SearchOperator.GREATER_THAN_EQUAL.op())) {

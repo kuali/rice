@@ -15,14 +15,20 @@
  */
 package org.kuali.rice.ken.bo;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.ken.api.notification.NotificationChannelReviewer;
 import org.kuali.rice.ken.api.notification.NotificationChannelReviewerContract;
-import org.kuali.rice.ken.api.notification.UserChannelSubscription;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Parameter;
+import javax.persistence.Table;
 
 /**
  * A reviewer for a notification publications to a NotificationChannel
@@ -33,10 +39,6 @@ import javax.persistence.*;
 public class NotificationChannelReviewerBo extends PersistableBusinessObjectBase implements NotificationChannelReviewerContract {
     @Id
     @GeneratedValue(generator="KREN_RVWER_S")
-	@GenericGenerator(name="KREN_RVWER_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREN_RVWER_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="RVWER_ID")
 	private Long id;
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.REFRESH, CascadeType.DETACH })

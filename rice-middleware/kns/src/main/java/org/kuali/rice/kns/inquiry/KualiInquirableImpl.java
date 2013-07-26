@@ -301,7 +301,7 @@ public class KualiInquirableImpl extends InquirableImpl implements Inquirable {
 
 		// listPrimaryKeyFieldNames returns an unmodifiable list. So a copy is
 		// necessary.
-		List<String> keys = new ArrayList<String>(getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(
+		List<String> keys = new ArrayList<String>(KRADServiceLocatorWeb.getLegacyDataAdapter().listPrimaryKeyFieldNames(
 				inquiryBusinessObjectClass));
 
 		if (keys == null) {

@@ -15,12 +15,14 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import java.io.Serializable;
+
 /**
  * Common interface for all objects that can be configured in the dictionary
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface DictionaryBean {
+public interface DictionaryBean extends Serializable {
 
     /**
      * Namespace code (often an application or module code) that dictionary bean is associated with

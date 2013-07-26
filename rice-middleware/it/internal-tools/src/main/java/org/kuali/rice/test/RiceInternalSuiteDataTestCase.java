@@ -16,7 +16,7 @@
 package org.kuali.rice.test;
 
 import org.apache.commons.lang.StringUtils;
-import org.springframework.core.io.DefaultResourceLoader;
+import org.kuali.rice.core.api.util.ClasspathOrFileResourceLoader;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -39,7 +39,7 @@ public abstract class RiceInternalSuiteDataTestCase extends RiceTestCase {
 		new SQLDataLoader(getKRADDefaultSuiteTestData(), "/").runSql();
 		
 		//ClassPathResource cpr = new ClassPathResource(getKIMDataLoadOrderFile());
-		DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
+        ClasspathOrFileResourceLoader resourceLoader = new ClasspathOrFileResourceLoader();
 		//BufferedReader reader = new BufferedReader(new FileReader(cpr.getFile()));
 		//BufferedReader reader = new BufferedReader(new FileReader(cpr.getFile()));
 		BufferedReader reader = new BufferedReader(new InputStreamReader(resourceLoader.getResource(getKIMDataLoadOrderFile()).getInputStream()));
@@ -56,7 +56,6 @@ public abstract class RiceInternalSuiteDataTestCase extends RiceTestCase {
 	}
 	
 	protected String getKRADDefaultSuiteTestData() {
-	    //return "file:" + getBaseDir() + "/../src/test/config/data/DefaultSuiteTestDataKRAD.sql";
 		return "classpath:/config/data/DefaultSuiteTestDataKRAD.sql";
 	}
 

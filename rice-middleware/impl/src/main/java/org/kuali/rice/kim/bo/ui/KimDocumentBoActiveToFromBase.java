@@ -15,12 +15,10 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
+import java.sql.Timestamp;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 

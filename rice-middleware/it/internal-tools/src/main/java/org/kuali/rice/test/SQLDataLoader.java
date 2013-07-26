@@ -17,7 +17,7 @@ package org.kuali.rice.test;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.core.io.DefaultResourceLoader;
+import org.kuali.rice.core.api.util.ClasspathOrFileResourceLoader;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.TransactionStatus;
@@ -88,7 +88,7 @@ public class SQLDataLoader {
     }
 
     private String getContentsAsString(String fileLoc) throws Exception {
-        DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
+        ClasspathOrFileResourceLoader resourceLoader = new ClasspathOrFileResourceLoader();
         String data = "";
         BufferedReader reader = null;
         try {

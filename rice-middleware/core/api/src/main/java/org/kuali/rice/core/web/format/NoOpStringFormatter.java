@@ -21,14 +21,16 @@ import java.util.Collection;
 /**
  * This class is used to prevent reformatting of String values.
  */
+@Deprecated
 public class NoOpStringFormatter extends Formatter {
-	
+
     private static final long serialVersionUID = 7724214487192363066L;
 
 	/**
      * Does absolutely nothing to the given String. Yes, this is actually a valuable way to prevent the POJO stuff from converting a
      * simple String into a 1-element String array.
      */
+    @Override
     protected Object convertToObject(String target) {
         return target;
     }
@@ -37,6 +39,7 @@ public class NoOpStringFormatter extends Formatter {
      * Does absolutely nothing to the given String. Yes, this is actually a valuable way to prevent the POJO stuff from converting a
      * simple String into a 1-element String array.
      */
+    @Override
     public Object format(Object value) {
         if (value != null) {
             if (!(value instanceof String)) {
@@ -47,22 +50,27 @@ public class NoOpStringFormatter extends Formatter {
         return value;
     }
 
+    @Override
     public Object convertFromPresentationFormat(Object value) {
         return super.convertFromPresentationFormat(value);
     }
 
+    @Override
     public Object formatArray(Object value) {
         return super.formatArray(value);
     }
 
+    @Override
     public Object formatCollection(Collection value) {
         return super.formatCollection(value);
     }
 
+    @Override
     public Object formatForPresentation(Object value) {
         return super.formatForPresentation(value);
     }
 
+    @Override
     public Object formatObject(Object value) {
         return super.formatObject(value);
     }

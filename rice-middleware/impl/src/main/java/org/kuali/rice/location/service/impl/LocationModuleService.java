@@ -29,7 +29,9 @@ import java.util.Set;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
+import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.impl.ModuleServiceBase;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.UrlFactory;
@@ -63,6 +65,7 @@ public class LocationModuleService extends ModuleServiceBase {
     private CountryService countryService;
     private CountyService countyService;
     private PostalCodeService postalCodeService;
+    private BusinessObjectService businessObjectService;
 
 
     public <T extends ExternalizableBusinessObject> T getExternalizableBusinessObject(Class<T> businessObjectClass, Map<String, Object> fieldValues) {
@@ -321,4 +324,17 @@ public class LocationModuleService extends ModuleServiceBase {
         predicates = preds.toArray(predicates);
         return QueryByCriteria.Builder.fromPredicates(predicates);
     }
+
+
+    public BusinessObjectService getBusinessObjectService() {
+        if(businessObjectService == null){
+            return KNSServiceLocator.getBusinessObjectService();
+        }
+        return businessObjectService;
+    }
+
+    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
+        this.businessObjectService = businessObjectService;
+    }
+
 }

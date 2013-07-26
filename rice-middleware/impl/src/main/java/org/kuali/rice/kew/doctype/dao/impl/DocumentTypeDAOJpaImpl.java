@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -63,9 +64,7 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 	}
 
 	public DocumentType findById(String docTypeId) {
-		Criteria crit = new Criteria(DocumentType.class.getName());
-		crit.eq("documentTypeId", docTypeId);
-			return (DocumentType) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
+        return entityManager.find(DocumentType.class, docTypeId);
 	}
 
 	public DocumentType findByName(String name){
@@ -256,15 +255,15 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
     	crit.eq("name", documentTypeName);
         crit.eq("currentInd", Boolean.TRUE);
 
-    	final DocumentType documentType = (DocumentType)new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
-    	return (documentType != null) ? documentType.getDocumentTypeId() : null;
+        try {
+    	    return ((DocumentType)new QueryByCriteria(entityManager, crit).toQuery().getSingleResult()).getDocumentTypeId();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
     
     public String findDocumentTypeNameById(String documentTypeId) {
-        Criteria crit = new Criteria(DocumentType.class.getName());
-        crit.eq("documentTypeId", documentTypeId);
-
-        final DocumentType documentType = (DocumentType)new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
+        DocumentType documentType = findById(documentTypeId);
         return (documentType != null) ? documentType.getName() : null;
     }
 

@@ -31,11 +31,11 @@ import java.lang.reflect.Proxy;
 /**
  * Loads a lazy proxy to a service from the {@link GlobalResourceLoader}.  This proxy is created based on either the
  * proxy interfaces that are injected into this bean, or derived from the objectType which is injected into this bean.
- * If neither of these are injected, then an exception will be through during bean initialization.
+ * If neither of these are injected, then an exception will be thrown during bean initialization.
  *
- * The attempt to fetch the resource from the GlobalResourceLoader won't be attempted until a method on the resulting
- * proxy is invoked.  If it fails to locate the resource, it will throw a ResourceLoaderException indicating the service
- * could not be loaded.
+ * <p>The attempt to fetch the resource from the GlobalResourceLoader won't be attempted until a method on the resulting
+ * proxy is invoked.  If it fails to locate the resource, it will throw a {@code ResourceLoaderException}
+ * indicating the service could not be loaded.</p>
  *
  * <p>This allows for referencing of a potentially remote service in the spring context during startup which won't get
  * used until after startup.  If the remote service gets used *during* startup, then it must be available from the GRL

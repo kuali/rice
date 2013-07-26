@@ -15,19 +15,24 @@
  */
 package org.kuali.rice.krad.bo;
 
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.EntityManager;
+
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
+import org.kuali.rice.krad.data.config.BasicModuleConfiguration;
+import org.kuali.rice.krad.data.provider.Provider;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.PersistenceService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-
-import javax.persistence.EntityManager;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 /**
  * This class contains various configuration properties for a Rice module.
@@ -55,8 +60,8 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class ModuleConfiguration implements InitializingBean, ApplicationContextAware {
-
+public class ModuleConfiguration extends BasicModuleConfiguration implements InitializingBean, ApplicationContextAware {
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ModuleConfiguration.class);
     /**
      * the module's namespace.
      */
@@ -83,10 +88,6 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 	protected List<String> dataDictionaryPackages;
 
 	protected List<String> scriptConfigurationFilePaths;
-
-	protected List<String> jobNames;
-
-	protected List<String> triggerNames;
 
     protected List<String> resourceBundleNames;
 
@@ -118,8 +119,6 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 		databaseRepositoryFilePaths = new ArrayList<String>();
 		dataDictionaryPackages = new ArrayList<String>();
 		scriptConfigurationFilePaths = new ArrayList<String>();
-		jobNames = new ArrayList<String>();
-		triggerNames = new ArrayList<String>();
         resourceBundleNames = new ArrayList<String>();
 	}
 
@@ -162,7 +161,18 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
                     setPersistenceService((PersistenceService) applicationContext.getBean(
                             KRADServiceLocatorWeb.PERSISTENCE_SERVICE_OJB));
                 }
+                LOG.warn( "Loading OJB Configuration in " + getNamespaceCode() + " module.  OJB is deprecated as of Rice 2.4: " + repositoryLocation);
                 getPersistenceService().loadRepositoryDescriptor(repositoryLocation);
+            }
+        }
+        if ( getProviders() != null ) {
+            if ( KradDataServiceLocator.getProviderRegistry() != null ) {
+                for ( Provider provider : getProviders() ) {
+                    LOG.info( "Registering data module provider for module with " + getNamespaceCode() + ": " + provider);
+                    KradDataServiceLocator.getProviderRegistry().registerProvider(provider);
+                }
+            } else {
+                LOG.error( "Provider registry not initialized.  Data module provider configuration will be incomplete. (" + getNamespaceCode() + ")" );
             }
         }
     }
@@ -231,8 +241,9 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 	 * @return the externalizableBusinessObjectImplementations
 	 */
 	public Map<Class, Class> getExternalizableBusinessObjectImplementations() {
-		if (this.externalizableBusinessObjectImplementations == null)
-			return null;
+		if (this.externalizableBusinessObjectImplementations == null) {
+            return null;
+        }
 		return Collections.unmodifiableMap(this.externalizableBusinessObjectImplementations);
 	}
 
@@ -268,34 +279,6 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 
 	public List<String> getScriptConfigurationFilePaths(){
 		return this.scriptConfigurationFilePaths;
-	}
-
-	/**
-	 * @return the jobNames
-	 */
-	public List<String> getJobNames() {
-		return this.jobNames;
-	}
-
-	/**
-	 * @param jobNames the jobNames to set
-	 */
-	public void setJobNames(List<String> jobNames) {
-		this.jobNames = jobNames;
-	}
-
-	/**
-	 * @return the triggerNames
-	 */
-	public List<String> getTriggerNames() {
-		return this.triggerNames;
-	}
-
-	/**
-	 * @param triggerNames the triggerNames to set
-	 */
-	public void setTriggerNames(List<String> triggerNames) {
-		this.triggerNames = triggerNames;
 	}
 
     /**
@@ -418,5 +401,15 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 			}
 		}
 	}
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                    .append("namespaceCode", namespaceCode)
+                    .append("applicationContext", applicationContext.getDisplayName())
+                    .append("dataSourceName", dataSourceName)
+                    .append("entityManager", entityManager) //.getEntityManagerFactory().getPersistenceUnitUtil())
+                    .toString();
+    }
 
 }

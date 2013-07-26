@@ -15,6 +15,13 @@
  */
 package org.kuali.rice.krad.bo;
 
+/**
+ * @deprecated use a plain old Object property on your class and use
+ * {@link org.kuali.rice.krad.data.provider.annotation.ExtensionFor} annotation on the actual extension class.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+@Deprecated
 public interface PersistableBusinessObjectExtension extends
 		PersistableBusinessObject {
 

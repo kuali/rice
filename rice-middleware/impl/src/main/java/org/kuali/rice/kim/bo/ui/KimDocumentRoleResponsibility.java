@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
@@ -42,10 +40,6 @@ public class KimDocumentRoleResponsibility extends KimDocumentBoActivatableBase 
 	private static final long serialVersionUID = -4465768714850961538L;
 	@Id
 	@GeneratedValue(generator="KRIM_ROLE_RSP_ACTN_ID_S")
-	@GenericGenerator(name="KRIM_ROLE_RSP_ACTN_ID_S",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KRIM_ROLE_RSP_ACTN_ID_S"),
-			@Parameter(name="value_column",value="id")
-		})
 	@Column(name="ROLE_RSP_ID")
 	protected String roleResponsibilityId;
 	@Column(name="ROLE_ID")

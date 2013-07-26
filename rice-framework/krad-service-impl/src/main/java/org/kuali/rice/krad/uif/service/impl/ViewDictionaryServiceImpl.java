@@ -15,27 +15,28 @@
  */
 package org.kuali.rice.krad.uif.service.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.inquiry.Inquirable;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
+import org.kuali.rice.krad.uif.service.ViewDictionaryService;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.LookupView;
-import org.kuali.rice.krad.uif.service.ViewDictionaryService;
-import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewSessionPolicy;
-import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.LookupForm;
 import org.springframework.beans.PropertyValues;
 import org.springframework.util.Assert;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Implementation of <code>ViewDictionaryService</code>
@@ -75,7 +76,7 @@ public class ViewDictionaryServiceImpl implements ViewDictionaryService {
                 UifPropertyPaths.VIEW_HELPER_SERVICE_CLASS);
         if (StringUtils.isNotBlank(viewHelperServiceClassName)) {
             try {
-                inquirable = (Inquirable) ObjectUtils.newInstance(Class.forName(viewHelperServiceClassName));
+                inquirable = (Inquirable) DataObjectUtils.newInstance(Class.forName(viewHelperServiceClassName));
             } catch (ClassNotFoundException e) {
                 throw new RiceRuntimeException(
                         "Unable to find class for inquirable classname: " + viewHelperServiceClassName, e);
@@ -136,7 +137,7 @@ public class ViewDictionaryServiceImpl implements ViewDictionaryService {
         LookupView lookupView = null;
         boolean multipleValueSelectSpecifiedOnURL = false;
 
-        if (ObjectUtils.isNotNull(lookupForm)) {
+        if (KRADUtils.isNotNull(lookupForm)) {
             if (lookupForm.isMultipleValuesSelect()) {
                 multipleValueSelectSpecifiedOnURL = true;
             }

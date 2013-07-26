@@ -143,120 +143,125 @@ public class AttributesMapBuilder {
         ControlDefinition control = attribute.getControl();
         ExportMap controlMap = new ExportMap("control");
 
-        if (control.isCheckbox()) {
-            controlMap.set("checkbox", "true");
-        }
-        else if (control.isHidden()) {
-            controlMap.set("hidden", "true");
-        }
-        else if (control.isKualiUser()) {
-            controlMap.set("kualiUser", "true");
-        }
-        else if (control.isRadio()) {
-            controlMap.set("radio", "true");
-            if (control.getValuesFinderClass() != null) {
-                controlMap.set("valuesFinder", control.getValuesFinderClass());
+        if ( control != null ) {
+            if (control.isCheckbox()) {
+                controlMap.set("checkbox", "true");
             }
-            if (control.getBusinessObjectClass() != null) {
-                controlMap.set("businessObject", control.getBusinessObjectClass());
+            else if (control.isHidden()) {
+                controlMap.set("hidden", "true");
             }
-            if (StringUtils.isNotEmpty(control.getKeyAttribute())) {
-                controlMap.set("keyAttribute", control.getKeyAttribute());
+            else if (control.isKualiUser()) {
+                controlMap.set("kualiUser", "true");
             }
-            if (StringUtils.isNotEmpty(control.getLabelAttribute())) {
-                controlMap.set("labelAttribute", control.getLabelAttribute());
+            else if (control.isRadio()) {
+                controlMap.set("radio", "true");
+                if (control.getValuesFinderClass() != null) {
+                    controlMap.set("valuesFinder", control.getValuesFinderClass());
+                }
+                if (control.getBusinessObjectClass() != null) {
+                    controlMap.set("businessObject", control.getBusinessObjectClass());
+                }
+                if (StringUtils.isNotEmpty(control.getKeyAttribute())) {
+                    controlMap.set("keyAttribute", control.getKeyAttribute());
+                }
+                if (StringUtils.isNotEmpty(control.getLabelAttribute())) {
+                    controlMap.set("labelAttribute", control.getLabelAttribute());
+                }
+                if (control.getIncludeKeyInLabel() != null) {
+                    controlMap.set("includeKeyInLabel", control.getIncludeKeyInLabel().toString());
+                }
             }
-            if (control.getIncludeKeyInLabel() != null) {
-                controlMap.set("includeKeyInLabel", control.getIncludeKeyInLabel().toString());
+            else if (control.isSelect()) {
+                controlMap.set("select", "true");
+                if (control.getValuesFinderClass() != null) {
+                    controlMap.set("valuesFinder", control.getValuesFinderClass());
+                }
+                if (control.getBusinessObjectClass() != null) {
+                    controlMap.set("businessObject", control.getBusinessObjectClass());
+                }
+                if (StringUtils.isNotEmpty(control.getKeyAttribute())) {
+                    controlMap.set("keyAttribute", control.getKeyAttribute());
+                }
+                if (StringUtils.isNotEmpty(control.getLabelAttribute())) {
+                    controlMap.set("labelAttribute", control.getLabelAttribute());
+                }
+                if (control.getIncludeBlankRow() != null) {
+                    controlMap.set("includeBlankRow", control.getIncludeBlankRow().toString());
+                }
+                if (control.getIncludeKeyInLabel() != null) {
+                    controlMap.set("includeKeyInLabel", control.getIncludeKeyInLabel().toString());
+                }
             }
-        }
-        else if (control.isSelect()) {
-            controlMap.set("select", "true");
-            if (control.getValuesFinderClass() != null) {
-                controlMap.set("valuesFinder", control.getValuesFinderClass());
+            else if (control.isMultiselect()) {
+                controlMap.set("multiselect", "true");
+                if (control.getValuesFinderClass() != null) {
+                    controlMap.set("valuesFinder", control.getValuesFinderClass());
+                }
+                if (control.getBusinessObjectClass() != null) {
+                    controlMap.set("businessObject", control.getBusinessObjectClass());
+                }
+                if (StringUtils.isNotEmpty(control.getKeyAttribute())) {
+                    controlMap.set("keyAttribute", control.getKeyAttribute());
+                }
+                if (StringUtils.isNotEmpty(control.getLabelAttribute())) {
+                    controlMap.set("labelAttribute", control.getLabelAttribute());
+                }
+                if (control.getIncludeKeyInLabel() != null) {
+                    controlMap.set("includeKeyInLabel", control.getIncludeKeyInLabel().toString());
+                }
+                if (control.getSize() != null) {
+                	controlMap.set("size", control.getSize().toString());
+                }
             }
-            if (control.getBusinessObjectClass() != null) {
-                controlMap.set("businessObject", control.getBusinessObjectClass());
+            else if (control.isText()) {
+                controlMap.set("text", "true");
+                if (control.getSize() != null) {
+                    controlMap.set("size", control.getSize().toString());
+                }
+                controlMap.set("datePicker", Boolean.valueOf(control.isDatePicker()).toString());
+                controlMap.set("ranged", Boolean.valueOf(control.isRanged()).toString());
             }
-            if (StringUtils.isNotEmpty(control.getKeyAttribute())) {
-                controlMap.set("keyAttribute", control.getKeyAttribute());
+            else if (control.isTextarea()) {
+                controlMap.set("textarea", "true");
+                controlMap.set("rows", control.getRows().toString());
+                controlMap.set("cols", control.getCols().toString());
+                controlMap.set("expandedTextArea", Boolean.valueOf(control.isExpandedTextArea()).toString());
             }
-            if (StringUtils.isNotEmpty(control.getLabelAttribute())) {
-                controlMap.set("labelAttribute", control.getLabelAttribute());
+            else if (control.isCurrency()) {
+                controlMap.set("currency", "true");
+                if (control.getSize() != null) {
+                    controlMap.set("size", control.getSize().toString());
+                }
+                controlMap.set("formattedMaxLength", ((CurrencyControlDefinition) control).getFormattedMaxLength().toString());
             }
-            if (control.getIncludeBlankRow() != null) {
-                controlMap.set("includeBlankRow", control.getIncludeBlankRow().toString());
+            else if (control.isLookupHidden()) {
+                controlMap.set("lookupHidden", "true");
             }
-            if (control.getIncludeKeyInLabel() != null) {
-                controlMap.set("includeKeyInLabel", control.getIncludeKeyInLabel().toString());
+            else if (control.isLookupReadonly()) {
+                controlMap.set("lookupReadonly", "true");
+            }else if (control.isButton()) {
+                controlMap.set("button", "true");
+                if (StringUtils.isNotEmpty(((ButtonControlDefinition) control).getImageSrc())) {
+                	controlMap.set("imageSrc", ((ButtonControlDefinition) control).getImageSrc());
+                }
+                if (StringUtils.isNotEmpty(((ButtonControlDefinition) control).getStyleClass())) {
+                	controlMap.set("styleClass", ((ButtonControlDefinition) control).getStyleClass() );
+                }
+            }else if (control.isLink()) {
+                controlMap.set("link", "true");
+                if (StringUtils.isNotEmpty(((LinkControlDefinition) control).getTarget())) {
+                	controlMap.set("target", ((LinkControlDefinition) control).getTarget());
+                }
+                if (StringUtils.isNotEmpty(((LinkControlDefinition) control).getStyleClass())) {
+                	controlMap.set("styleClass", ((LinkControlDefinition) control).getStyleClass() );
+                }
+                if (StringUtils.isNotEmpty(((LinkControlDefinition) control).getHrefText())) {
+                	controlMap.set("hrefText", ((LinkControlDefinition) control).getHrefText());
+                }
             }
-        }
-        else if (control.isMultiselect()) {
-            controlMap.set("multiselect", "true");
-            if (control.getValuesFinderClass() != null) {
-                controlMap.set("valuesFinder", control.getValuesFinderClass());
-            }
-            if (control.getBusinessObjectClass() != null) {
-                controlMap.set("businessObject", control.getBusinessObjectClass());
-            }
-            if (StringUtils.isNotEmpty(control.getKeyAttribute())) {
-                controlMap.set("keyAttribute", control.getKeyAttribute());
-            }
-            if (StringUtils.isNotEmpty(control.getLabelAttribute())) {
-                controlMap.set("labelAttribute", control.getLabelAttribute());
-            }
-            if (control.getIncludeKeyInLabel() != null) {
-                controlMap.set("includeKeyInLabel", control.getIncludeKeyInLabel().toString());
-            }
-            if (control.getSize() != null) {
-            	controlMap.set("size", control.getSize().toString());
-            }
-        }
-        else if (control.isText()) {
+        } else {
             controlMap.set("text", "true");
-            if (control.getSize() != null) {
-                controlMap.set("size", control.getSize().toString());
-            }
-            controlMap.set("datePicker", Boolean.valueOf(control.isDatePicker()).toString());
-            controlMap.set("ranged", Boolean.valueOf(control.isRanged()).toString());
-        }
-        else if (control.isTextarea()) {
-            controlMap.set("textarea", "true");
-            controlMap.set("rows", control.getRows().toString());
-            controlMap.set("cols", control.getCols().toString());
-            controlMap.set("expandedTextArea", Boolean.valueOf(control.isExpandedTextArea()).toString());
-        }
-        else if (control.isCurrency()) {
-            controlMap.set("currency", "true");
-            if (control.getSize() != null) {
-                controlMap.set("size", control.getSize().toString());
-            }
-            controlMap.set("formattedMaxLength", ((CurrencyControlDefinition) control).getFormattedMaxLength().toString());
-        }
-        else if (control.isLookupHidden()) {
-            controlMap.set("lookupHidden", "true");
-        }
-        else if (control.isLookupReadonly()) {
-            controlMap.set("lookupReadonly", "true");
-        }else if (control.isButton()) {
-            controlMap.set("button", "true");
-            if (StringUtils.isNotEmpty(((ButtonControlDefinition) control).getImageSrc())) {
-            	controlMap.set("imageSrc", ((ButtonControlDefinition) control).getImageSrc());
-            }
-            if (StringUtils.isNotEmpty(((ButtonControlDefinition) control).getStyleClass())) {
-            	controlMap.set("styleClass", ((ButtonControlDefinition) control).getStyleClass() );
-            }
-        }else if (control.isLink()) {
-            controlMap.set("link", "true");
-            if (StringUtils.isNotEmpty(((LinkControlDefinition) control).getTarget())) {
-            	controlMap.set("target", ((LinkControlDefinition) control).getTarget());
-            }
-            if (StringUtils.isNotEmpty(((LinkControlDefinition) control).getStyleClass())) {
-            	controlMap.set("styleClass", ((LinkControlDefinition) control).getStyleClass() );
-            }
-            if (StringUtils.isNotEmpty(((LinkControlDefinition) control).getHrefText())) {
-            	controlMap.set("hrefText", ((LinkControlDefinition) control).getHrefText());
-            }
+            controlMap.set("size", "40");
         }
 
         return controlMap;

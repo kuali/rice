@@ -15,10 +15,19 @@
  */
 package org.kuali.rice.krms.impl.peopleflow;
 
+import java.text.MessageFormat;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.jws.WebParam;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.uif.RemotableAbstractWidget;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
@@ -39,14 +48,6 @@ import org.kuali.rice.krms.framework.engine.Action;
 import org.kuali.rice.krms.framework.type.ActionTypeService;
 import org.kuali.rice.krms.impl.type.KrmsTypeServiceBase;
 import org.springframework.orm.ObjectRetrievalFailureException;
-
-import javax.jws.WebParam;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.text.MessageFormat;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * <p>{@link ActionTypeService} implementation for PeopleFlow actions.  The loaded {@link Action}s will place or extend

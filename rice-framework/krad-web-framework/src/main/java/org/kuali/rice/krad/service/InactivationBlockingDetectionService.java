@@ -26,14 +26,30 @@ import java.util.Collection;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface InactivationBlockingDetectionService {
+
     /**
      * Determines whether there is ANY record in the relationship defined by the inactivationBlockingMetadata that prevents inactivation of blockedBo
      *
      * @param blockedBo a BO that is potentially inactivation blocked
      * @param inactivationBlockingMetadata
      * @return true iff there was a record that blocks the blockedBo using the metadata in inactivationBlockingMetadata
+     *
+     * @deprecated use {@link #detectBlockingRecord(Object, org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata)}
      */
-    public boolean hasABlockingRecord(BusinessObject blockedBo, InactivationBlockingMetadata inactivationBlockingMetadata);
+    @Deprecated
+    boolean hasABlockingRecord(BusinessObject blockedBo, InactivationBlockingMetadata inactivationBlockingMetadata);
+
+    /**
+     * Detects if there is ANY record in the relationship defined in the given metadata that prevents inactivation of
+     * the given data object.
+     *
+     * @param dataObject data object to check for inactivation blocking
+     * @param inactivationBlockingMetadata metadata to use for the inactivation blocking check
+     * @return true if there is any record which would block inactivation of the given data object, false otherwise
+     *
+     * @throws IllegalArgumentException if either dataObject or inactivationBlockingMetadata is null
+     */
+    boolean detectBlockingRecord(Object dataObject, InactivationBlockingMetadata inactivationBlockingMetadata);
 
     /**
      * Lists all records in the relationship defined by the inactivationBlockingMetadata that prevents inactivation of blockedBo
@@ -41,6 +57,21 @@ public interface InactivationBlockingDetectionService {
      * @param blockedBo a BO that is potentially inactivation blocked
      * @param inactivationBlockingMetadata
      * @return true iff there was a record that blocks the blockedBo using the metadata in inactivationBlockingMetadata
+     *
+     * @deprecated use {@link #detectAllBlockingRecords(Object, org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata)}
      */
-    public Collection<BusinessObject> listAllBlockerRecords(BusinessObject blockedBo, InactivationBlockingMetadata inactivationBlockingMetadata);
+    @Deprecated
+    Collection<BusinessObject> listAllBlockerRecords(BusinessObject blockedBo, InactivationBlockingMetadata inactivationBlockingMetadata);
+
+    /**
+     * Detects all records in the relationship defined in the given metadata that prevents inactivation of the given
+     * data object.
+     *
+     * @param dataObject data object to check for inactivation blocking
+     * @param inactivationBlockingMetadata metadata to use for the inactivation blocking check
+     * @return an immutable list of records which are blocking inactivation of the given data object
+     *
+     * @throws IllegalArgumentException if either dataObject or inactivationBlockingMetadata is null
+     */
+    Collection<?> detectAllBlockingRecords(Object dataObject, InactivationBlockingMetadata inactivationBlockingMetadata);
 }

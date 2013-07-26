@@ -15,10 +15,16 @@
  */
 package org.kuali.rice.krad.datadictionary.uif;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.krad.datadictionary.DataDictionaryException;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -27,18 +33,10 @@ import org.kuali.rice.krad.uif.service.ViewTypeService;
 import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.util.KRADConstants;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.support.KualiDefaultListableBeanFactory;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.util.StopWatch;
 
 /**
  * Indexes {@code View} bean entries for retrieval
@@ -54,52 +52,35 @@ import java.util.concurrent.Executors;
 public class UifDictionaryIndex implements Runnable {
     private static final Log LOG = LogFactory.getLog(UifDictionaryIndex.class);
 
-    private KualiDefaultListableBeanFactory ddBeans;
+    private static final int VIEW_CACHE_SIZE = 1000;
+
+    private DefaultListableBeanFactory ddBeans;
 
     // view entries keyed by view id with value the spring bean name
-    private Map<String, String> viewBeanEntriesById;
+    private Map<String, String> viewBeanEntriesById = new HashMap<String, String>();
 
     // view entries indexed by type
-    private Map<String, ViewTypeDictionaryIndex> viewEntriesByType;
+    private Map<String, ViewTypeDictionaryIndex> viewEntriesByType = new HashMap<String, ViewTypeDictionaryIndex>();
 
-    // views that are loaded eagerly
-    private Map<String, UifViewPool> viewPools;
+    // Cache to hold previously-built view definitions
+    protected Map<String,View> viewCache = new HashMap<String, View>(VIEW_CACHE_SIZE);
 
-    // threadpool size
-    private static final int THREADS = 4;
-    private boolean poolSizeSet;
-    private Integer threadPoolSize;
-
-    public UifDictionaryIndex(KualiDefaultListableBeanFactory ddBeans) {
+    public UifDictionaryIndex(DefaultListableBeanFactory ddBeans) {
         this.ddBeans = ddBeans;
     }
 
     @Override
     public void run() {
-        LOG.info("Starting View Index Building");
-
-        try {
-            Integer size = new Integer(ConfigContext.getCurrentContextConfig().getProperty(
-                    KRADConstants.KRAD_DICTIONARY_INDEX_POOL_SIZE));
-            threadPoolSize = size;
-
-            poolSizeSet = true;
-        } catch (NumberFormatException nfe) {
-            // ignore this, instead the pool will be set to DEFAULT_SIZE
-        }
-
         buildViewIndicies();
-
-        LOG.info("Completed View Index Building");
     }
 
     /**
      * Retrieves the View instance with the given id
      *
      * <p>
-     * First an attempt is made to get a preloaded view (if one exists). If found it is pulled from
-     * the pool and a replacement is built on another thread. If a preloaded view does not exist, one is built
-     * by Spring from the bean factory
+     * First an attempt is made to get a cached view (if one exists). If found it is pulled from
+     * the cache and cloned to preserve the integrity of the cache.  If not already cached, one is built
+     * by Spring from the bean factory and then cloned.
      * </p>
      *
      * @param viewId the unique id for the view
@@ -107,34 +88,28 @@ public class UifDictionaryIndex implements Runnable {
      * @throws org.kuali.rice.krad.datadictionary.DataDictionaryException if view doesn't exist for id
      */
     public View getViewById(final String viewId) {
-        // check for preloaded view
-        if (viewPools.containsKey(viewId)) {
-            final UifViewPool viewPool = viewPools.get(viewId);
-            synchronized (viewPool) {
-                if (!viewPool.isEmpty()) {
-                    View view = viewPool.getViewInstance();
-
-                    // replace view in the pool
-                    Runnable createView = new Runnable() {
-                        public void run() {
-                            View newViewInstance = getViewInstanceFromFactory(viewId);
-                            viewPool.addViewInstance(newViewInstance);
-                        }
-                    };
-
-                    Thread t = new Thread(createView);
-                    t.start();
-
-                    return view;
-                } else {
-                    LOG.info("Pool size for view with id: " + viewId
-                            + " is empty. Considering increasing max pool size.");
-                }
+        View cachedView = viewCache.get(viewId);
+        if ( cachedView == null ) {
+            if ( LOG.isDebugEnabled() ) {
+                LOG.debug( "View " + viewId + " not in cache - creating and storing to cache");
+            }
+            String beanName = viewBeanEntriesById.get(viewId);
+            if (StringUtils.isBlank(beanName)) {
+                throw new DataDictionaryException("Unable to find View with id: " + viewId);
+            }
+            View newView = ddBeans.getBean(beanName, View.class);
+            synchronized ( viewCache ) {
+                viewCache.put(viewId, newView);
+            }
+            cachedView = newView;
+        } else {
+            if ( LOG.isDebugEnabled() ) {
+                LOG.debug("Pulled view " + viewId + " from Cache.  Cloning..." );
             }
         }
+        View clonedView = CloneUtils.deepClone(cachedView);
 
-        // no pooling, get new instance from factory
-        return getViewInstanceFromFactory(viewId);
+        return clonedView;
     }
 
     /**
@@ -146,33 +121,14 @@ public class UifDictionaryIndex implements Runnable {
      */
     public View getImmutableViewById(String viewId) {
         // check for preloaded view
-        if (viewPools.containsKey(viewId)) {
-            UifViewPool viewPool = viewPools.get(viewId);
-            if (!viewPool.isEmpty()) {
-                View view = viewPool.getViewSharedInstance();
-
-                return view;
-            }
+        View cachedView = viewCache.get(viewId);
+        // If not already cached, pull and cache as normal
+        // This makes the first call to this method more expensive, as it
+        // will get a cloned copy instead of the original from the cache
+        if ( cachedView == null ) {
+            return getViewById(viewId);
         }
-
-        // no pooling, get new instance from factory
-        return getViewInstanceFromFactory(viewId);
-    }
-
-    /**
-     * Retrieves a view object from the bean factory based on view id
-     *
-     * @param viewId - id of the view to retrieve
-     * @return View instance for view with specified id
-     * @throws org.kuali.rice.krad.datadictionary.DataDictionaryException if view doesn't exist for id
-     */
-    protected View getViewInstanceFromFactory(String viewId) {
-        String beanName = viewBeanEntriesById.get(viewId);
-        if (StringUtils.isBlank(beanName)) {
-            throw new DataDictionaryException("Unable to find View with id: " + viewId);
-        }
-
-        return ddBeans.getBean(beanName, View.class);
+        return cachedView;
     }
 
     /**
@@ -246,7 +202,7 @@ public class UifDictionaryIndex implements Runnable {
      */
     public PropertyValues getViewPropertiesById(String viewId) {
         String beanName = viewBeanEntriesById.get(viewId);
-        if (StringUtils.isBlank(beanName)) {
+        if (StringUtils.isNotBlank(beanName)) {
             BeanDefinition beanDefinition = ddBeans.getMergedBeanDefinition(beanName);
 
             return beanDefinition.getPropertyValues();
@@ -315,20 +271,17 @@ public class UifDictionaryIndex implements Runnable {
      * index
      */
     protected void buildViewIndicies() {
+        StopWatch timer = new StopWatch();
+        timer.start();
+        LOG.info("Starting View Index Building");
         viewBeanEntriesById = new HashMap<String, String>();
         viewEntriesByType = new HashMap<String, ViewTypeDictionaryIndex>();
-        viewPools = new HashMap<String, UifViewPool>();
 
-        int threads = THREADS;
-
-        if (poolSizeSet) {
-            threads = threadPoolSize;
-        }
-
-        ExecutorService executor = Executors.newFixedThreadPool(threads);
+        boolean preloadUifViews = CoreApiServiceLocator.getKualiConfigurationService()
+                .getPropertyValueAsBoolean("rice.krad.preload.uif.view.definitions");
 
         String[] beanNames = ddBeans.getBeanNamesForType(View.class);
-        for (final String beanName : beanNames) {
+        for (String beanName : beanNames) {
             BeanDefinition beanDefinition = ddBeans.getMergedBeanDefinition(beanName);
             PropertyValues propertyValues = beanDefinition.getPropertyValues();
 
@@ -345,30 +298,22 @@ public class UifDictionaryIndex implements Runnable {
             indexViewForType(propertyValues, id);
 
             // pre-load views if necessary
-            String poolSizeStr = ViewModelUtils.getStringValFromPVs(propertyValues, "preloadPoolSize");
-            if (StringUtils.isNotBlank(poolSizeStr)) {
-                int poolSize = Integer.parseInt(poolSizeStr);
-                if (poolSize < 1) {
-                    continue;
-                }
-
-                final UifViewPool viewPool = new UifViewPool();
-                viewPool.setMaxSize(poolSize);
-                for (int j = 0; j < poolSize; j++) {
-                    Runnable createView = new Runnable() {
-                        @Override
-                        public void run() {
-                            View view = (View) ddBeans.getBean(beanName);
-                            viewPool.addViewInstance(view);
+            if ( preloadUifViews ) {
+                String poolSizeStr = ViewModelUtils.getStringValFromPVs(propertyValues, "preloadPoolSize");
+                if (StringUtils.isNotBlank(poolSizeStr)) {
+                    try {
+                        int poolSize = Integer.parseInt(poolSizeStr);
+                        if (poolSize >= 1) {
+                            getViewById(id);
                         }
-                    };
-
-                    executor.execute(createView);
+                    } catch ( NumberFormatException ex ) {
+                        LOG.warn( "preloadPoolSize on View " + id + " could not be parsed as an integer: " + poolSizeStr);
+                    }
                 }
-                viewPools.put(id, viewPool);
             }
         }
-        executor.shutdown();
+        timer.stop();
+        LOG.info("Completed View Index Building. Time: " + timer.toString() );
     }
 
     /**

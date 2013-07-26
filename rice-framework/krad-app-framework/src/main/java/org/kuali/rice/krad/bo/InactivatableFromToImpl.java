@@ -45,7 +45,9 @@ public abstract class InactivatableFromToImpl extends PersistableBusinessObjectB
 	 * the from and to dates. Null dates are considered to indicate an open range.
 	 */
 	public boolean isActive() {
-        return InactivatableFromToUtils.isActive(new DateTime(activeFromDate), new DateTime(activeToDate), new DateTime(activeAsOfDate));
+        return InactivatableFromToUtils.isActive(activeFromDate == null ? null : new DateTime(activeFromDate),
+                                                 activeToDate == null ? null : new DateTime(activeToDate),
+                                                 new DateTime(activeAsOfDate));
 	}
 	
 	public void setActive(boolean active) {

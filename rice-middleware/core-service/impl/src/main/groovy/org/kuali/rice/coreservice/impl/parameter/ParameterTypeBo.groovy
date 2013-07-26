@@ -21,7 +21,6 @@ import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
 
-import org.hibernate.annotations.Type
 import org.kuali.rice.coreservice.api.parameter.ParameterType
 import org.kuali.rice.coreservice.framework.parameter.ParameterTypeEbo
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
@@ -39,7 +38,7 @@ public class ParameterTypeBo extends PersistableBusinessObjectBase implements Pa
 	@Column(name="NM")
 	def String name;
 
-	@Type(type="yes_no")
+	//@Type(type="yes_no")
 	@Column(name="ACTV_IND")
 	def boolean active = true;
 

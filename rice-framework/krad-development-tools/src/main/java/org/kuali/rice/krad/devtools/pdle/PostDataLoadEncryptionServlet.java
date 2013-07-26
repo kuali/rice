@@ -20,8 +20,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.springframework.core.io.FileSystemResource;
 
 import javax.servlet.ServletException;
@@ -122,10 +122,10 @@ public class PostDataLoadEncryptionServlet extends HttpServlet {
             }
             postDataLoadEncryptionService.checkArguments(businessObjectClass, attributeNames, checkOjbEncryptConfig);
             postDataLoadEncryptionService.createBackupTable(businessObjectClass);
-            BusinessObjectService businessObjectService = KRADServiceLocator.getBusinessObjectService();
+            LegacyDataAdapter legacyDataAdapter = KRADServiceLocatorWeb.getLegacyDataAdapter();
             try {
                 postDataLoadEncryptionService.prepClassDescriptor(businessObjectClass, attributeNames);
-                Collection<? extends PersistableBusinessObject> objectsToEncrypt = businessObjectService.findAll(businessObjectClass);
+                Collection<? extends PersistableBusinessObject> objectsToEncrypt = legacyDataAdapter.findAll(businessObjectClass);
                 for (Object businessObject : objectsToEncrypt) {
                     postDataLoadEncryptionService.encrypt((PersistableBusinessObject) businessObject, attributeNames);
                 }

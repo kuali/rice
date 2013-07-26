@@ -17,15 +17,11 @@ package org.kuali.rice.ken.bo;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.joda.time.DateTime;
 import org.kuali.rice.ken.api.notification.Notification;
 import org.kuali.rice.ken.api.notification.NotificationContract;
 import org.kuali.rice.ken.api.notification.NotificationRecipient;
-import org.kuali.rice.ken.api.notification.NotificationRecipientContract;
 import org.kuali.rice.ken.api.notification.NotificationSender;
-import org.kuali.rice.ken.api.notification.NotificationSenderContract;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
@@ -57,10 +53,6 @@ public class NotificationBo extends PersistableBusinessObjectBase implements Not
    
     @Id
     @GeneratedValue(generator="KREN_NTFCTN_S")
-	@GenericGenerator(name="KREN_NTFCTN_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREN_NTFCTN_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="NTFCTN_ID")
 	private Long id;
     @Column(name="DELIV_TYP", nullable=false)

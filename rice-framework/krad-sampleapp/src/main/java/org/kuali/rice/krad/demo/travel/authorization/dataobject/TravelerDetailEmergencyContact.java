@@ -22,8 +22,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity
-@Table(name="TRVL_EM_CONT_T")
+//@Entity
+//@Table(name="TRVL_EM_CONT_T")
 public class TravelerDetailEmergencyContact extends PersistableBusinessObjectBase {
 
     private Integer id;

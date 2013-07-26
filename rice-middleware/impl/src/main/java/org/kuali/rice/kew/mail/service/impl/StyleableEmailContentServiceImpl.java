@@ -15,29 +15,15 @@
  */
 package org.kuali.rice.kew.mail.service.impl;
 
-import java.io.StringWriter;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Map;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Templates;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.mail.EmailContent;
-import org.kuali.rice.coreservice.api.style.StyleService;
+import org.kuali.rice.core.api.util.ClasspathOrFileResourceLoader;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
+import org.kuali.rice.coreservice.api.style.StyleService;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionItem;
 import org.kuali.rice.kew.api.util.CodeTranslator;
@@ -49,15 +35,28 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserUtils;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
-import org.springframework.core.io.DefaultResourceLoader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Templates;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import java.io.StringWriter;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Map;
 
 
 
@@ -276,7 +275,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
             LOG.warn("Could not find specified style, " + styleName + ", using default");
             try {
 
-                style = TransformerFactory.newInstance().newTemplates(new StreamSource(new DefaultResourceLoader().getResource("classpath:org/kuali/rice/kew/mail/" + DEFAULT_EMAIL_STYLESHEET_RESOURCE_LOC).getInputStream()));
+                style = TransformerFactory.newInstance().newTemplates(new StreamSource(new ClasspathOrFileResourceLoader().getResource("classpath:org/kuali/rice/kew/mail/" + DEFAULT_EMAIL_STYLESHEET_RESOURCE_LOC).getInputStream()));
             } catch (Exception tce) {
                 String message = "Error obtaining default style from resource: " + DEFAULT_EMAIL_STYLESHEET_RESOURCE_LOC;
                 LOG.error(message, tce);

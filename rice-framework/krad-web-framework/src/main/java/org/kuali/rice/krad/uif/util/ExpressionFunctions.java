@@ -19,7 +19,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.service.DataObjectMetaDataService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
@@ -65,7 +64,7 @@ public class ExpressionFunctions {
     /**
      * Checks to see if the list is empty.  Throws a RuntimeException if list is not a List.
      *
-     * @param value the list
+     * @param list the list
      * @return true if the list is null or empty, false otherwise
      */
     public static boolean emptyList(List<?> list) {
@@ -239,10 +238,8 @@ public class ExpressionFunctions {
                     "getDataObjectKey SpringEL function failed when trying to find class " + dataObjectClassName, e);
         }
 
-        DataObjectMetaDataService dataObjectMetaDataService = KRADServiceLocatorWeb.getDataObjectMetaDataService();
-
         // build list of key values from the map parameters
-        List<String> pkPropertyNames = dataObjectMetaDataService.listPrimaryKeyFieldNames(dataObjectClass);
+        List<String> pkPropertyNames = KRADServiceLocatorWeb.getLegacyDataAdapter().listPrimaryKeyFieldNames(dataObjectClass);
 
         //return first primary key found
         if (pkPropertyNames != null && !pkPropertyNames.isEmpty()) {

@@ -58,13 +58,9 @@
     </dependency>
 
     <dependency>
-      <groupId>org.hibernate.javax.persistence</groupId>
-      <artifactId>hibernate-jpa-2.0-api</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-core</artifactId>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-krad-data</artifactId>
+      <version>${project.version}</version>
     </dependency>
 
     <dependency>
@@ -75,6 +71,12 @@
     <dependency>
       <groupId>org.kuali.db.ojb</groupId>
       <artifactId>db-ojb</artifactId>
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.persistence</groupId>
+      <artifactId>org.eclipse.persistence.jpa</artifactId>
     </dependency>
 
     <dependency>

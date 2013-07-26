@@ -23,8 +23,10 @@ import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.impl.permission.PermissionTemplateBo;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 
@@ -41,6 +43,7 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 	private static final Logger LOG = Logger.getLogger( GenericPermissionMaintainable.class );	
 	private static final long serialVersionUID = -8102504656976243468L;
     protected transient SequenceAccessorService sequenceAccessorService;
+    private BusinessObjectService businessObjectService;
 
     /**
      * Saves the responsibility via the responsibility update service
@@ -144,5 +147,17 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
         }
         return this.sequenceAccessorService;
     }
+
+    public BusinessObjectService getBusinessObjectService() {
+        if(businessObjectService == null){
+            return KNSServiceLocator.getBusinessObjectService();
+        }
+        return businessObjectService;
+    }
+
+    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
+        this.businessObjectService = businessObjectService;
+    }
+
 
 }

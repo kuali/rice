@@ -19,6 +19,7 @@ import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.krad.util.ForeignKeyFieldsPopulationState;
+import org.kuali.rice.krad.util.LegacyDataFramework;
 
 import java.util.List;
 import java.util.Map;
@@ -26,9 +27,11 @@ import java.util.Map;
 /**
  * Defines methods that a Persistence Service must provide. PersistenceMetadataService provides access to
  * persistence-layer information about persistable classes
- *
+ * @deprecated use new KRAD Data framework {@link org.kuali.rice.krad.data.DataObjectService}
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Deprecated
+@LegacyDataFramework
 public interface PersistenceStructureService {
     /**
      * @param clazz

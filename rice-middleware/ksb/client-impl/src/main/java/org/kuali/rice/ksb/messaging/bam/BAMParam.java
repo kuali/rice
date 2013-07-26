@@ -16,8 +16,6 @@
 package org.kuali.rice.ksb.messaging.bam;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -42,10 +40,6 @@ public class BAMParam {
 
 	@Id
 	@GeneratedValue(generator="KRSB_BAM_PARM_S")
-	@GenericGenerator(name="KRSB_BAM_PARM_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KRSB_BAM_PARM_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="BAM_PARM_ID")
 	private Long bamParamId;
 	@ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})

@@ -22,7 +22,6 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.api.util.VersionHelper;
-import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -66,6 +65,7 @@ import org.kuali.rice.kim.rules.ui.KimDocumentPermissionRule;
 import org.kuali.rice.kim.rules.ui.RoleDocumentDelegationMemberRule;
 import org.kuali.rice.kim.rules.ui.RoleDocumentDelegationRule;
 import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceHelper;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
 import org.kuali.rice.krad.service.BusinessObjectService;
@@ -444,7 +444,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
                                 KimAttributeBo attr = qualifier.getKimAttribute();
                                 String attrName = "<unknown>";
                                 if (attr == null && qualifier.getKimAttrDefnId() != null) {
-                                    attr = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(KimAttributeBo.class, qualifier.getKimAttrDefnId());
+                                    attr = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(KimAttributeBo.class, qualifier.getKimAttrDefnId());
                                 }
                                 if (attr != null) {
                                     attrName = attr.getAttributeName();
@@ -832,7 +832,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 	 */
 	public BusinessObjectService getBusinessObjectService() {
 		if(businessObjectService == null){
-			businessObjectService = KRADServiceLocator.getBusinessObjectService();
+			businessObjectService = KNSServiceLocator.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}

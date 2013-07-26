@@ -21,10 +21,12 @@ import org.kuali.rice.coreservice.impl.component.ComponentBo;
 import org.kuali.rice.coreservice.impl.component.DerivedComponentBo;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 import java.util.Collection;
 import java.util.List;
@@ -58,7 +60,7 @@ public class ComponentLookupableHelperServiceImpl extends KualiLookupableHelperS
             Collection<DerivedComponentBo> derivedComponentBos = null;
             if (StringUtils.isBlank(fieldValues.get(CODE)) && StringUtils.isBlank(fieldValues.get(NAMESPACE_CODE))
                     && StringUtils.isBlank(fieldValues.get(NAME))) {
-                derivedComponentBos = KRADServiceLocator.getBusinessObjectService().findAll(DerivedComponentBo.class);
+                derivedComponentBos = KNSServiceLocator.getBusinessObjectService().findAll(DerivedComponentBo.class);
             } else {
                 derivedComponentBos = getLookupService().findCollectionBySearchHelper(DerivedComponentBo.class, fieldValues, false);
             }

@@ -15,12 +15,19 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import java.beans.PropertyEditor;
+import java.util.List;
+
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.uif.DataType;
+import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.web.format.Formatter;
+import org.kuali.rice.krad.data.DataObjectUtils;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
+import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
+import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
 import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.exception.ClassValidationException;
@@ -40,11 +47,12 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteCons
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.control.Control;
-import org.kuali.rice.krad.util.ObjectUtils;
-
-import java.beans.PropertyEditor;
-import java.util.List;
+import org.kuali.rice.krad.uif.control.TextAreaControl;
+import org.kuali.rice.krad.uif.control.TextControl;
+import org.kuali.rice.krad.uif.control.UserControl;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
 
 /**
  * A single attribute definition in the DataDictionary, which contains
@@ -56,10 +64,9 @@ import java.util.List;
 @BeanTag(name = "attributeDefinition-bean")
 public class AttributeDefinition extends AttributeDefinitionBase implements CaseConstrainable, PrerequisiteConstrainable, Formatable, HierarchicallyConstrainable, MustOccurConstrainable, ValidCharactersConstrainable {
     private static final long serialVersionUID = -2490613377818442742L;
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(AttributeDefinition.class);
 
     protected Boolean forceUppercase = Boolean.FALSE;
-
-    protected DataType dataType;
 
     protected Boolean unique;
 
@@ -71,7 +78,9 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
 
     // TODO: rename to control once ControlDefinition is removed
     protected Control controlField;
+    protected Control cachedDerivedControl = null;
 
+    @Deprecated
     protected String formatterClass;
     protected PropertyEditor propertyEditor;
 
@@ -130,7 +139,15 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      */
     @BeanTagAttribute(name = "maxLength")
     public Integer getMaxLength() {
-        return this.getSimpleConstraint().getMaxLength();
+        if ( getSimpleConstraint().getMaxLength() != null ) {
+            return getSimpleConstraint().getMaxLength();
+        }
+        if ( getDataObjectAttribute() != null ) {
+            if ( getDataObjectAttribute().getMaxLength() != null ) {
+                return new Integer( getDataObjectAttribute().getMaxLength().intValue() );
+            }
+        }
+        return null;
     }
 
     /**
@@ -213,6 +230,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * Note: See ApplicationResources.properties for exact regex patterns. e.g.
      * validationPatternRegex.date for regex used in date validation.
      */
+    @Deprecated
     public void setValidationPattern(ValidationPattern validationPattern) {
         this.validationPattern = validationPattern;
     }
@@ -221,6 +239,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * Indicates whether a validation pattern has been set
      * @return boolean
      */
+    @Deprecated
     public boolean hasValidationPattern() {
         return (validationPattern != null);
     }
@@ -265,6 +284,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      *
      * @return ValidationPattern
      */
+    @Deprecated
     public ValidationPattern getValidationPattern() {
         return this.validationPattern;
     }
@@ -316,6 +336,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * @param control
      * @throws IllegalArgumentException if the given control is null
      */
+    @Deprecated
     public void setControl(ControlDefinition control) {
         if (control == null) {
             throw new IllegalArgumentException("invalid (null) control");
@@ -323,12 +344,14 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
         this.control = control;
     }
 
+    @Deprecated
     public boolean hasFormatterClass() {
         return (formatterClass != null);
     }
 
     @Override
     @BeanTagAttribute(name = "formatterClass")
+    @Deprecated
     public String getFormatterClass() {
         return formatterClass;
     }
@@ -340,6 +363,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * available including BooleanFormatter, CurrencyFormatter, DateFormatter,
      * etc.
      */
+    @Deprecated
     public void setFormatterClass(String formatterClass) {
         if (formatterClass == null) {
             throw new IllegalArgumentException("invalid (null) formatterClass");
@@ -361,7 +385,13 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      */
     @BeanTagAttribute(name = "propertyEditor", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public PropertyEditor getPropertyEditor() {
-        return propertyEditor;
+        if ( propertyEditor != null ) {
+            return propertyEditor;
+        }
+        if ( getDataObjectAttribute() != null ) {
+            return getDataObjectAttribute().getPropertyEditor();
+        }
+        return null;
     }
 
     /**
@@ -379,7 +409,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * @param propertyEditorClass
      */
     public void setPropertyEditorClass(Class<? extends PropertyEditor> propertyEditorClass) {
-        this.propertyEditor = ObjectUtils.newInstance(propertyEditorClass);
+        this.propertyEditor = DataObjectUtils.newInstance(propertyEditorClass);
     }
 
     /**
@@ -497,14 +527,6 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     }
 
     /**
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        return "AttributeDefinition for attribute " + getName();
-    }
-
-    /**
      * @return the attributeSecurity
      */
     @BeanTagAttribute(name = "attributeSecurity", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -524,8 +546,6 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     }
 
     /**
-     * This overridden method ...
-     *
      * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
      */
     @Override
@@ -558,8 +578,102 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      */
     @BeanTagAttribute(name = "control", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Control getControlField() {
-        return this.controlField;
+        if ( controlField != null ) {
+            return this.controlField;
+        }
+        if ( cachedDerivedControl == null ) {
+            cachedDerivedControl = deriveControlAttribute();
+        }
+        return cachedDerivedControl;
     }
+
+    protected Control deriveControlAttribute() {
+        Control c = null;
+        // First, check if a values finder has been established
+        // If so, use a drop-down list
+        if ( getOptionsFinder() != null ) {
+            c = ComponentFactory.getSelectControl();
+        // FIXME: JHK: Yes, I know this is a *HORRIBLE* hack - but the alternative
+        // would look even more "hacky" and error-prone
+        } else if ( getName().endsWith( ".principalName" ) && getDataObjectAttribute() != null ) {
+            c = ComponentFactory.getUserControl();
+            // Need to find the relationship information
+            // get the relationship ID by removing .principalName from the attribute name
+            String relationshipName = StringUtils.removeEnd(getName(), ".principalName");
+            DataObjectMetadata metadata = KradDataServiceLocator.getMetadataRepository().getMetadata(getDataObjectAttribute().getOwningType());
+            if ( metadata != null ) {
+                DataObjectRelationship relationship = metadata.getRelationship(relationshipName);
+                if ( relationship != null ) {
+                    ((UserControl)c).setPrincipalIdPropertyName(relationship.getAttributeRelationships().get(0).getParentAttributeName());
+                    ((UserControl)c).setPersonObjectPropertyName(relationshipName);
+                }
+            } else {
+                LOG.warn( "Attempt to pull relationship name: " + relationshipName + " resulted in missing metadata when looking for: " + getDataObjectAttribute().getOwningType() );
+            }
+//
+        } else {
+            switch ( getDataType() ) {
+                case STRING :
+                    // TODO: Determine better way to store the "200" metric below
+                    if ( getMaxLength() != null && getMaxLength().intValue() > 200 ) {
+                        c = ComponentFactory.getTextAreaControl();
+                    } else {
+                        c = ComponentFactory.getTextControl();
+                    }
+                    break;
+                case BOOLEAN:
+                    c = ComponentFactory.getCheckboxControl();
+                    break;
+                case DATE:
+                case DATETIME:
+                case TRUNCATED_DATE:
+                    c = ComponentFactory.getDateControl();
+                    break;
+                case CURRENCY:
+                case DOUBLE:
+                case FLOAT:
+                case INTEGER:
+                case LARGE_INTEGER:
+                case LONG:
+                case PRECISE_DECIMAL:
+                    c = ComponentFactory.getTextControl();
+                    break;
+                case MARKUP:
+                    c = ComponentFactory.getTextAreaControl();
+                    break;
+                default:
+                    c = ComponentFactory.getTextControl();
+                    break;
+            }
+        }
+        if ( c != null ) {
+            if ( c instanceof TextControl ) {
+                if ( getMaxLength() != null ) {
+                    ((TextControl) c).setMaxLength( getMaxLength() );
+                    ((TextControl) c).setSize( getMaxLength() );
+                    // If it's a larger field, add the expand icon by default
+                    if ( getMaxLength() > 80 ) { // JHK : yes, this was a mostly arbitrary choice
+                        ((TextControl) c).setTextExpand(true);
+                    }
+                }
+                if ( getMinLength() != null ) {
+                    ((TextControl) c).setMinLength( getMinLength() );
+                }
+            }
+            if ( c instanceof TextAreaControl ) {
+                if ( getMaxLength() != null ) {
+                    ((TextAreaControl) c).setMaxLength( getMaxLength() );
+                    ((TextAreaControl) c).setRows(getMaxLength()/((TextAreaControl) c).getCols());
+                }
+                if ( getMinLength() != null ) {
+                    ((TextControl) c).setMinLength( getMinLength() );
+                }
+            }
+            c.setRequired(isRequired());
+        }
+        return c;
+    }
+
 
     /**
      * Setter for the default control
@@ -575,7 +689,15 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      */
     @BeanTagAttribute(name = "minLength")
     public Integer getMinLength() {
-        return this.getSimpleConstraint().getMinLength();
+        if ( getSimpleConstraint().getMinLength() != null ) {
+            return getSimpleConstraint().getMinLength();
+        }
+        if ( getDataObjectAttribute() != null ) {
+            if ( getDataObjectAttribute().getMinLength() != null ) {
+                return new Integer( getDataObjectAttribute().getMinLength().intValue() );
+            }
+        }
+        return null;
     }
 
     /**
@@ -592,7 +714,13 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      */
     @BeanTagAttribute(name = "dataType", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public DataType getDataType() {
-        return simpleConstraint.getDataType();
+        if ( simpleConstraint.getDataType() != null ) {
+            return simpleConstraint.getDataType();
+        }
+        if ( getDataObjectAttribute() != null ) {
+            return getDataObjectAttribute().getDataType();
+        }
+        return DataType.STRING;
     }
 
     /**
@@ -627,7 +755,33 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     @Override
     @BeanTagAttribute(name = "validChractersConstraint", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public ValidCharactersConstraint getValidCharactersConstraint() {
-        return this.validCharactersConstraint;
+        if ( validCharactersConstraint == null ) {
+            // If there is no constraint set, attempt to derive one
+            // First - see if one was defined in the metadata
+            if ( getDataObjectAttribute() != null ) {
+                if ( StringUtils.isNotBlank( getDataObjectAttribute().getValidCharactersConstraintBeanName() ) ) {
+                    Object consObj = KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(getDataObjectAttribute().getValidCharactersConstraintBeanName());
+                    if ( consObj != null && consObj instanceof ValidCharactersConstraint ) {
+                        validCharactersConstraint = (ValidCharactersConstraint) consObj;
+                    }
+                }
+            }
+            // if not, make an intelligent guess from the data type
+            if ( validCharactersConstraint == null ) {
+                if ( getDataType() != null ) {
+                    if ( getDataType().isNumeric() ) {
+                        validCharactersConstraint = (ValidCharactersConstraint) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject("FloatingPointPatternConstraintTemplate");
+                    } else if ( getDataType().isTemporal() ) {
+                        validCharactersConstraint = (ValidCharactersConstraint) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject("BasicDatePatternConstraint");
+                    }
+                }
+            }
+            // default to UTF8
+            if ( validCharactersConstraint == null ) {
+                validCharactersConstraint = (ValidCharactersConstraint) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject("UTF8AnyCharacterPatternConstraint" );
+            }
+        }
+        return validCharactersConstraint;
     }
 
     /**
@@ -716,6 +870,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     /**
      * @return the childEntryName
      */
+    @Override
     @BeanTagAttribute(name = "childEntryName")
     public String getChildEntryName() {
         return this.childEntryName;
@@ -738,7 +893,12 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      */
     @BeanTagAttribute(name = "optionFinder", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public KeyValuesFinder getOptionsFinder() {
-        return this.optionsFinder;
+        if ( optionsFinder == null ) {
+            if ( getDataObjectAttribute() != null && getDataObjectAttribute().getOptionsFinder() != null ) {
+                return getDataObjectAttribute().getOptionsFinder();
+            }
+        }
+        return optionsFinder;
     }
 
     /**
@@ -757,7 +917,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * @param optionsFinderClass
      */
     public void setOptionsFinderClass(Class<? extends KeyValuesFinder> optionsFinderClass) {
-        this.optionsFinder = ObjectUtils.newInstance(optionsFinderClass);
+        this.optionsFinder = DataObjectUtils.newInstance(optionsFinderClass);
     }
 
     public void setAdditionalDisplayAttributeName(String additionalDisplayAttributeName) {

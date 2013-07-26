@@ -29,6 +29,7 @@ import org.apache.ojb.broker.metadata.JdbcConnectionDescriptor;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 
+@Deprecated
 public class RiceDataSourceConnectionFactory extends ConnectionFactoryNotPooledImpl {
 
 	/**

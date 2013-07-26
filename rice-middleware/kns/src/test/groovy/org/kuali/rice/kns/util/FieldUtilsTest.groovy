@@ -18,7 +18,7 @@ package org.kuali.rice.kns.util
 import org.junit.Test
 import org.kuali.rice.kns.web.ui.Row
 import org.kuali.rice.core.api.uif.RemotableAttributeField
-import org.kuali.rice.core.api.uif.DataType
+import org.kuali.rice.core.api.data.DataType
 import org.kuali.rice.core.api.uif.RemotableCheckboxGroup
 import org.kuali.rice.core.api.uif.RemotableSelect
 import org.kuali.rice.core.api.uif.RemotableDatepicker

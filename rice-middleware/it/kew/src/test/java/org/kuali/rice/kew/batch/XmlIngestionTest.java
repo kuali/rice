@@ -22,6 +22,7 @@ import org.junit.Test;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.impex.xml.FileXmlDocCollection;
 import org.kuali.rice.core.api.impex.xml.XmlDocCollection;
+import org.kuali.rice.core.api.util.ClasspathOrFileResourceLoader;
 import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
 import org.kuali.rice.edl.impl.service.EdlServiceLocator;
 import org.kuali.rice.edl.impl.xml.export.EdlExportDataSet;
@@ -117,9 +118,8 @@ public class XmlIngestionTest extends KEWTestCase {
     public void testXmlReIngestion() throws Exception {
 
         // Define the path for the test environment
-        String relativeFolder = "/src/test/resources/org/kuali/rice/kew/batch/data/";
-        String filePath = getBaseDir() + relativeFolder + "widgetsTest.xml";
-        File ingestedFile = new File(filePath);
+        String filePath = "org/kuali/rice/kew/batch/data/widgetsTest.xml";
+        File ingestedFile = new ClasspathOrFileResourceLoader().getResource(filePath).getFile();
         List<XmlDocCollection> collections = new ArrayList<XmlDocCollection>();
         XmlDocCollection fileDoc = new FileXmlDocCollection(ingestedFile);
         collections.add(fileDoc);
@@ -182,8 +182,7 @@ public class XmlIngestionTest extends KEWTestCase {
         while (entries.hasNext()) {
             Map.Entry<?, ?> entry = entries.next();
             String filePath = entry.getKey().toString();
-            filePath = filePath.replace("${basedir}", getBaseDir());
-            File testFile = new File(filePath);
+            File testFile = new ClasspathOrFileResourceLoader().getResource(filePath).getFile();
             File pendingDir = new File(PENDING_DIR + "/TestDoc-" + i);
             Assert.assertTrue(pendingDir.mkdirs());
             assertTrue(pendingDir.isDirectory());

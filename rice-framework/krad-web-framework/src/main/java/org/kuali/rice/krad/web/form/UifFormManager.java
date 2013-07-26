@@ -18,9 +18,9 @@ package org.kuali.rice.krad.web.form;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.SessionTransient;
-import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
@@ -181,7 +181,7 @@ public class UifFormManager implements Serializable {
         }
 
         List<Field> fields = new ArrayList<Field>();
-        fields = ObjectUtils.getAllFields(fields, sessionForm.getClass(), UifFormBase.class);
+        fields = DataObjectUtils.getAllFields(fields, sessionForm.getClass(), UifFormBase.class);
         for (Field field : fields) {
             boolean copyValue = true;
             for (Annotation an : field.getAnnotations()) {
@@ -205,7 +205,7 @@ public class UifFormManager implements Serializable {
      */
     public void purgeForm(UifFormBase form) {
         List<Field> fields = new ArrayList<Field>();
-        fields = ObjectUtils.getAllFields(fields, form.getClass(), UifFormBase.class);
+        fields = DataObjectUtils.getAllFields(fields, form.getClass(), UifFormBase.class);
         for (Field field : fields) {
             boolean purgeValue = false;
 

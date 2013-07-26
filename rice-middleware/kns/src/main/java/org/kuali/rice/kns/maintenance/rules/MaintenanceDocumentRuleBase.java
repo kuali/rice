@@ -78,8 +78,11 @@ import java.util.Set;
 /**
  * Contains all of the business rules that are common to all maintenance documents
  *
+ * @deprecated use KRAD
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Deprecated
 public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements MaintenanceDocumentRule, AddCollectionLineRule {
     protected static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintenanceDocumentRuleBase.class);
 
@@ -127,7 +130,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
             this.setPersistenceStructureService(KRADServiceLocator.getPersistenceStructureService());
             this.setDdService(KRADServiceLocatorWeb.getDataDictionaryService());
             this.setBusinessObjectMetaDataService(KNSServiceLocator.getBusinessObjectMetaDataService());
-            this.setBoService(KRADServiceLocator.getBusinessObjectService());
+            this.setBoService(KNSServiceLocator.getBusinessObjectService());
             this.setBoDictionaryService(KNSServiceLocator.getBusinessObjectDictionaryService());
             this.setDictionaryValidationService(super.getDictionaryValidationService());
             this.setConfigService(CoreApiServiceLocator.getKualiConfigurationService());
@@ -759,7 +762,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         // fail and complain if the person has changed the primary keys on
         // an EDIT maintenance document.
         if (document.isEdit()) {
-            if (!getDataObjectMetaDataService().equalsByPrimaryKeys(oldBo, newBo)) {
+            if (!KRADServiceLocatorWeb.getLegacyDataAdapter().equalsByPrimaryKeys(oldBo, newBo)) {
                 // add a complaint to the errors
                 putDocumentError(KRADConstants.DOCUMENT_ERRORS,
                         RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_PRIMARY_KEYS_CHANGED_ON_EDIT,
@@ -814,7 +817,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         StringBuffer pkFieldNames = new StringBuffer();
 
         // get a list of all the primary key field names, walk through them
-        List<String> pkFields = getDataObjectMetaDataService().listPrimaryKeyFieldNames(boClass);
+        List<String> pkFields = KRADServiceLocatorWeb.getLegacyDataAdapter().listPrimaryKeyFieldNames(boClass);
         for (Iterator<String> iter = pkFields.iterator(); iter.hasNext(); ) {
             String pkFieldName = (String) iter.next();
 
@@ -1568,7 +1571,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 
     protected DataObjectMetaDataService getDataObjectMetaDataService() {
         if (dataObjectMetaDataService == null) {
-            this.dataObjectMetaDataService = KRADServiceLocatorWeb.getDataObjectMetaDataService();
+            this.dataObjectMetaDataService = KNSServiceLocator.getDataObjectMetaDataService();
         }
         return dataObjectMetaDataService;
     }

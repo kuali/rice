@@ -15,6 +15,11 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -38,6 +43,7 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersC
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.DialogGroup;
 import org.kuali.rice.krad.uif.container.Group;
@@ -50,6 +56,7 @@ import org.kuali.rice.krad.uif.control.CheckboxControl;
 import org.kuali.rice.krad.uif.control.CheckboxGroupControl;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.FileControl;
+import org.kuali.rice.krad.uif.control.GroupControl;
 import org.kuali.rice.krad.uif.control.HiddenControl;
 import org.kuali.rice.krad.uif.control.MultiValueControl;
 import org.kuali.rice.krad.uif.control.RadioGroupControl;
@@ -57,7 +64,7 @@ import org.kuali.rice.krad.uif.control.SelectControl;
 import org.kuali.rice.krad.uif.control.SizedControl;
 import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.control.TextControl;
-import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.control.UserControl;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Iframe;
@@ -66,22 +73,17 @@ import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.element.ValidationMessages;
 import org.kuali.rice.krad.uif.field.DataField;
-import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.field.MessageField;
-import org.kuali.rice.krad.uif.field.SpaceField;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.GenericField;
 import org.kuali.rice.krad.uif.field.ImageField;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.LinkField;
+import org.kuali.rice.krad.uif.field.MessageField;
+import org.kuali.rice.krad.uif.field.SpaceField;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.LightBox;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Factory class for creating new UIF components from their base definitions
@@ -358,8 +360,8 @@ public class ComponentFactory {
      *
      * @return TextControl
      */
-    public static TextControl getUserControl() {
-        return (TextControl) getNewComponentInstance(USER_CONTROL);
+    public static UserControl getUserControl() {
+        return (UserControl) getNewComponentInstance(USER_CONTROL);
     }
 
     /**
@@ -368,8 +370,8 @@ public class ComponentFactory {
      *
      * @return TextControl
      */
-    public static TextControl getGroupControl() {
-        return (TextControl) getNewComponentInstance(GROUP_CONTROL);
+    public static GroupControl getGroupControl() {
+        return (GroupControl) getNewComponentInstance(GROUP_CONTROL);
     }
 
     /**

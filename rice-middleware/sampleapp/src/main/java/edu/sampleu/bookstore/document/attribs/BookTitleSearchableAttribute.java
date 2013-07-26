@@ -15,30 +15,7 @@
  */
 package edu.sampleu.bookstore.document.attribs;
 
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.uif.DataType;
-import org.kuali.rice.core.api.uif.RemotableAttributeError;
-import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.kew.api.KewApiConstants;
-import org.kuali.rice.kew.api.document.DocumentWithContent;
-import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
-import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
-import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
-import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
-import org.kuali.rice.kew.api.extension.ExtensionDefinition;
-import org.kuali.rice.kew.docsearch.DocumentSearchInternalUtils;
-import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
-import org.kuali.rice.kew.framework.document.attribute.SearchableAttribute;
-import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
-import org.kuali.rice.kns.util.FieldUtils;
-
-import javax.jws.WebParam;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Searchable attribute for book title

@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kew.doctype;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.doctype.DocumentTypeAttribute;
@@ -53,10 +51,6 @@ public class DocumentTypeAttributeBo implements DocumentTypeAttributeContract, C
 
 	@Id
 	@GeneratedValue(generator="KREW_DOC_TYP_ATTR_S")
-	@GenericGenerator(name="KREW_DOC_TYP_ATTR_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_DOC_TYP_ATTR_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="DOC_TYP_ATTRIB_ID")
 	private String id;
     @Column(name="RULE_ATTR_ID",insertable=false, updatable=false)

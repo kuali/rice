@@ -16,6 +16,7 @@
 package org.kuali.rice.krms.impl.ui;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
 import org.kuali.rice.krad.service.BusinessObjectService;
@@ -48,7 +49,7 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
 	 * @return the boService
 	 */
 	public BusinessObjectService getBoService() {
-		return KRADServiceLocator.getBusinessObjectService();
+		return KNSServiceLocator.getBusinessObjectService();
 	}
 
     @Override

@@ -26,7 +26,7 @@ import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.util.Truth;
-import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ import java.util.Map;
 public final class ParameterRepositoryServiceImpl implements ParameterRepositoryService {
     private static final String SUB_PARAM_SEPARATOR = "=";
 
-    private BusinessObjectService businessObjectService;
+    private LegacyDataAdapter legacyDataAdapter;
     private CriteriaLookupService criteriaLookupService;
 
     @Override 
@@ -54,7 +54,7 @@ public final class ParameterRepositoryServiceImpl implements ParameterRepository
             throw new RiceIllegalStateException("the parameter to create already exists: " + parameter);
         }
 
-        return ParameterBo.to(businessObjectService.save(ParameterBo.from(parameter)));
+        return ParameterBo.to(getLegacyDataAdapter().save(ParameterBo.from(parameter)));
     } 
 
     @Override
@@ -78,7 +78,7 @@ public final class ParameterRepositoryServiceImpl implements ParameterRepository
             toUpdate = parameter;
         }
 
-        return ParameterBo.to(businessObjectService.save(ParameterBo.from(toUpdate)));
+        return ParameterBo.to(getLegacyDataAdapter().save(ParameterBo.from(toUpdate)));
     }
 
     @Override
@@ -99,11 +99,11 @@ public final class ParameterRepositoryServiceImpl implements ParameterRepository
         map.put("applicationId", key.getApplicationId());
         map.put("namespaceCode", key.getNamespaceCode());
         map.put("componentCode", key.getComponentCode());
-        ParameterBo bo =  businessObjectService.findByPrimaryKey(ParameterBo.class, Collections.unmodifiableMap(map));
+        ParameterBo bo =  getLegacyDataAdapter().findByPrimaryKey(ParameterBo.class, Collections.unmodifiableMap(map));
 
         if (bo == null & !KRADConstants.DEFAULT_PARAMETER_APPLICATION_ID.equals(key.getApplicationId())) {
             map.put("applicationId", KRADConstants.DEFAULT_PARAMETER_APPLICATION_ID);
-            bo = businessObjectService.findByPrimaryKey(ParameterBo.class, Collections.unmodifiableMap(map));
+            bo = getLegacyDataAdapter().findByPrimaryKey(ParameterBo.class, Collections.unmodifiableMap(map));
         }
         return bo;
     }
@@ -188,11 +188,16 @@ public final class ParameterRepositoryServiceImpl implements ParameterRepository
         return builder.build();
 	}
 
-    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
+    public void setLegacyDataAdapter(LegacyDataAdapter legacyDataAdapter) {
+        this.legacyDataAdapter = legacyDataAdapter;
+    }
+
+    protected LegacyDataAdapter getLegacyDataAdapter() {
+        return legacyDataAdapter;
     }
 
     public void setCriteriaLookupService(final CriteriaLookupService criteriaLookupService) {
         this.criteriaLookupService = criteriaLookupService;
     }
+
 }

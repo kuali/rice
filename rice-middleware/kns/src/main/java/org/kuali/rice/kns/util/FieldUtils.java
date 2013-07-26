@@ -15,14 +15,25 @@
  */
 package org.kuali.rice.kns.util;
 
+import java.lang.reflect.InvocationTargetException;
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.beanutils.NestedNullException;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
 import org.kuali.rice.core.api.uif.AttributeLookupSettings;
-import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.uif.RemotableAbstractControl;
 import org.kuali.rice.core.api.uif.RemotableAbstractWidget;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
@@ -42,6 +53,7 @@ import org.kuali.rice.core.api.uif.RemotableTextarea;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kew.api.KewApiConstants;
@@ -89,17 +101,6 @@ import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
-
-import java.lang.reflect.InvocationTargetException;
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -1421,7 +1422,7 @@ public final class FieldUtils {
 	 * @return a new date field
 	 */
 	public static Field createRangeDateField(Field field) {
-		Field newDate = (Field)ObjectUtils.deepCopy(field);
+		Field newDate = (Field) SerializationUtils.deepCopy(field);
 		newDate.setFieldLabel(newDate.getFieldLabel()+" "+KRADConstants.LOOKUP_DEFAULT_RANGE_SEARCH_LOWER_BOUND_LABEL);
 		field.setFieldLabel(field.getFieldLabel()+" "+KRADConstants.LOOKUP_DEFAULT_RANGE_SEARCH_UPPER_BOUND_LABEL);
 		newDate.setPropertyName(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX+newDate.getPropertyName());

@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.junit.Test;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.util.ClasspathOrFileResourceLoader;
 import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegationBo;
@@ -32,7 +33,6 @@ import org.kuali.rice.test.ClearDatabaseLifecycle;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
@@ -56,11 +56,12 @@ import static org.junit.Assert.*;
 public class RuleXmlExporterTest extends XmlExporterTestCase {
 
 	@Test public void testExport() throws Exception {
+        ClasspathOrFileResourceLoader rl = new ClasspathOrFileResourceLoader();
         loadXmlFile("org/kuali/rice/kew/actions/ActionsConfig.xml");
-        loadXmlStream(new FileInputStream(getBaseDir() + "/src/test/resources/org/kuali/rice/kew/batch/data/RuleAttributeContent.xml"));
-        loadXmlStream(new FileInputStream(getBaseDir() + "/src/test/resources/org/kuali/rice/kew/batch/data/RuleTemplateContent.xml"));
-        loadXmlStream(new FileInputStream(getBaseDir() + "/src/test/resources/org/kuali/rice/kew/batch/data/DocumentTypeContent.xml"));
-        loadXmlStream(new FileInputStream(getBaseDir() + "/src/test/resources/org/kuali/rice/kew/batch/data/RuleContent.xml"));
+        loadXmlStream(rl.getResource("classpath:org/kuali/rice/kew/batch/data/RuleAttributeContent.xml").getInputStream());
+        loadXmlStream(rl.getResource("classpath:org/kuali/rice/kew/batch/data/RuleTemplateContent.xml").getInputStream());
+        loadXmlStream(rl.getResource("classpath:org/kuali/rice/kew/batch/data/DocumentTypeContent.xml").getInputStream());
+        loadXmlStream(rl.getResource("classpath:org/kuali/rice/kew/batch/data/RuleContent.xml").getInputStream());
         assertRuleBaseValuesStateIndependence();
         assertExport();
     }

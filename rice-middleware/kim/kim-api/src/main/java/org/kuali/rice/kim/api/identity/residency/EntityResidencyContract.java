@@ -15,9 +15,11 @@
  */
 package org.kuali.rice.kim.api.identity.residency;
 
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.kim.api.identity.CodedAttributeContract;
 
 /**
  * residency info for a KIM identity
@@ -35,14 +37,41 @@ public interface EntityResidencyContract extends Versioned, GloballyUnique, Iden
 	String getEntityId();
 	
 	/**
+     * @ Deprecated as of 2.3.  I'm not even sure what this was used for.
      * Gets this {@link EntityResidencyContract}'s determination method.
      * @return the determination method for this {@link EntityResidencyContract}, or null if none has been assigned.
      */
+    @Deprecated
 	String getDeterminationMethod();
 	
 	/**
+     * @Deprecated as of 2.3.  Use getStateProvinceCode
      * Gets the state this {@link EntityResidencyContract} is in.
      * @return the state this {@link EntityResidencyContract} is in, or null if none has been assigned.
      */
+    @Deprecated
 	String getInState();
+
+    DateTime getEstablishedDate();
+
+    DateTime getChangeDate();
+
+    String getCountryCode();
+
+    String getCountyCode();
+
+    String getStateProvinceCode();
+
+    /*
+     * Residency Classification within a state used to assess tuition and other changes
+     *  examples:  Resident, NonResident, NotReported
+     */
+    CodedAttributeContract getResidencyStatus();
+
+    /*
+     * Residency Classification
+     *  examples:  In-state, out-of-state, out-of-country
+     */
+    CodedAttributeContract getResidencyType();
+
 }

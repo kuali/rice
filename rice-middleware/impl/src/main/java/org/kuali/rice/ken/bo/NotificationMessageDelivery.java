@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.ken.bo;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.*;
@@ -33,10 +31,6 @@ import java.sql.Timestamp;
 public class NotificationMessageDelivery extends PersistableBusinessObjectBase implements Lockable {
     @Id
     @GeneratedValue(generator="KREN_NTFCTN_MSG_DELIV_S")
-	@GenericGenerator(name="KREN_NTFCTN_MSG_DELIV_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREN_NTFCTN_MSG_DELIV_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="NTFCTN_MSG_DELIV_ID")
 	private Long id;
     @Column(name="STAT_CD", nullable=false)

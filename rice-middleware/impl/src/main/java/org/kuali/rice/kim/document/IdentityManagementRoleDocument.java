@@ -36,7 +36,6 @@ import org.kuali.rice.kim.impl.type.IdentityManagementTypeAttributeTransactional
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
 import org.kuali.rice.krad.service.SequenceAccessorService;
-import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.util.AutoPopulatingList;
 
 import javax.persistence.Transient;
@@ -559,7 +558,7 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
                             }
                         }
                     }
-                    if (ObjectUtils.isNull(roleRespAction.getVersionNumber())) {
+                    if (roleRespAction.getVersionNumber() == null) {
                         roleRespAction.setVersionNumber(new Long(1));
                     }
                 }

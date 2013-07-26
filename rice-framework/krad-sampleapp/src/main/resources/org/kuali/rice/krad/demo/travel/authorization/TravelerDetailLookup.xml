@@ -24,16 +24,14 @@
   <property name="dataObjectClassName" value="org.kuali.rice.krad.demo.travel.authorization.dataobject.TravelerDetail" />
   <property name="criteriaFields">
     <list>
-      <bean parent="Uif-LookupCriteriaInputField" p:propertyName="principalName" />
-      <bean parent="Uif-LookupCriteriaInputField" p:propertyName="principalId" />
+      <bean parent="Uif-LookupCriteriaInputField" p:propertyName="person.principalName" />
       <bean parent="Uif-LookupCriteriaInputField" p:propertyName="firstName" />
       <bean parent="Uif-LookupCriteriaInputField" p:propertyName="lastName" />
     </list>
   </property>
   <property name="resultFields">
     <list>
-      <bean parent="Uif-DataField" p:propertyName="principalName" />
-      <bean parent="Uif-DataField" p:propertyName="principalId" />
+      <bean parent="Uif-DataField" p:propertyName="person.principalName" />
       <bean parent="Uif-DataField" p:propertyName="firstName" />
       <bean parent="Uif-DataField" p:propertyName="lastName" />
       <bean parent="Uif-DataField" p:propertyName="streetAddressLine1" />

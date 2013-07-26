@@ -17,15 +17,16 @@ package org.kuali.rice.kns.workflow.service.impl;
 
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeDateTime;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeDecimal;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeInteger;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeString;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.WorkflowAttributePropertyResolutionService;
 import org.kuali.rice.kns.workflow.attribute.DataDictionarySearchableAttribute;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
@@ -39,7 +40,6 @@ import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.util.DataTypeUtil;
 import org.kuali.rice.krad.util.ObjectUtils;
-import org.kuali.rice.kns.service.WorkflowAttributePropertyResolutionService;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

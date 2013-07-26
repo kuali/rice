@@ -20,29 +20,30 @@ import java.util.Iterator;
 
 /**
  * Formats a collection into a string that looks like an array.  To print out each element,
- * the toString method of each element is called. 
- * 
+ * the toString method of each element is called.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@Deprecated
 public class CollectionFormatter extends Formatter {
 
     private static final long serialVersionUID = 1074862354812893254L;
 
 	/**
      * Formats a collection into a string that looks like an array.
-     * 
+     *
      * @see org.kuali.rice.core.web.format.Formatter#format(java.lang.Object)
      */
     @Override
     public Object format(Object value) {
 	StringBuilder buf = new StringBuilder();
 	buf.append("[");
-	
+
 	if (!(value instanceof Collection)) {
 		throw new IllegalArgumentException("value was not an instance of Collection, instead was: " + (value == null ? null : value.getClass()));
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	Collection<Object> collection = (Collection<Object>)value;
 	Iterator<Object> i = collection.iterator();
@@ -50,7 +51,7 @@ public class CollectionFormatter extends Formatter {
 	while (hasNext) {
 	    Object elem = i.next();
 	    buf.append(elem);
-	    
+
 	    hasNext = i.hasNext();
 	    if (hasNext) {
 		buf.append(", ");

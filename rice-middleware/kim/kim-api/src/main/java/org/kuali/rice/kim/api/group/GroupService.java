@@ -15,8 +15,10 @@
  */
 package org.kuali.rice.kim.api.group;
 
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.KimConstants;
 import org.springframework.cache.annotation.CacheEvict;
@@ -308,6 +310,7 @@ public interface GroupService {
     boolean isGroupMemberOfGroup(@WebParam(name="groupMemberId") String groupMemberId, @WebParam(name="groupId") String groupId) throws RiceIllegalArgumentException;
 
 
+
     /**
      * Returns all principal ids that are members of the given group id.  Recurses into contained groups for
      * comprehensive list.
@@ -440,6 +443,27 @@ public interface GroupService {
     @WebResult(name = "members")
     @Cacheable(value= GroupMember.Cache.NAME, key="'groupId=' + #p0")
 	List<GroupMember> getMembersOfGroup( @WebParam(name="groupId") String groupId ) throws RiceIllegalArgumentException;
+
+    /**
+     * Get all GroupMembers all the groups with a given group id and asOfDate.
+     *
+     * <p>
+     * The collection of GroupMembers will contain members for a the group in no defined order. That were members at the specified time.
+     * </p>
+     *
+     * @param groupId     Id of group
+     * @param asOfDate    Date for historical record
+     * @return Collection of GroupMembers.
+     * @throws RiceIllegalArgumentException if the groupId is null or blank
+     */
+    @WebMethod(operationName = "getMembersOfGroupWithDate")
+    @XmlElementWrapper(name = "members", required = true)
+    @XmlElement(name = "member", required = false)
+    @WebResult(name = "members")
+    @Cacheable(value= GroupMember.Cache.NAME, key="'groupId=' + #p0 + '|' + 'asOfDate=' + #p1")
+    List<GroupMember> getMembersOfGroupWithDate( @WebParam(name="groupId") String groupId,
+            @XmlJavaTypeAdapter(value = DateTimeAdapter.class) @WebParam(name="asOfDate")DateTime asOfDate )
+            throws RiceIllegalArgumentException;
 
 
     /**
@@ -607,4 +631,103 @@ public interface GroupService {
     @WebMethod(operationName = "removeAllMembers")
     @CacheEvict(value={GroupMember.Cache.NAME}, allEntries = true)
     void removeAllMembers( @WebParam(name="groupId") String groupId ) throws RiceIllegalArgumentException;
+
+    /**
+     * Query for group historys based on the given search criteria which is a Map of group history field names to values.
+     *
+     * <p>
+     * This method returns it's results as a List of GroupHistorys that match the given search criteria.
+     * </p>
+     *
+     * @since 2.3
+     * @param queryByCriteria the criteria.  Cannot be null.
+     * @return a list of GroupHistory objects in which the given criteria match Group properties.  An empty list is returned if an invalid or
+     *         non-existent criteria is supplied.
+     * @throws RiceIllegalArgumentException if the queryByCriteria is null
+     */
+    @WebMethod(operationName = "findGroupHistories")
+    @WebResult(name = "results")
+    GroupHistoryQueryResults findGroupHistories(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
+
+    /**
+     * Lookup a GroupHistory based on the passed in id and effective date.
+     *
+     *
+     * @param id String that matches the desired Groups id
+     * @param asOfDate effective date of the group history record
+     * @return a GroupHistory with the given id value, and active effective date.  A null reference is returned if an invalid or
+     *         non-existant id is supplied.
+     * @throws RiceIllegalArgumentException if the groupId is null or blank
+     */
+    @WebMethod(operationName = "getGroupHistory")
+    @WebResult(name = "groupHistory")
+    @Cacheable(value= GroupHistory.Cache.NAME, key="'id=' + #p0 + '|' + 'asOfDate=' + #p1")
+    GroupHistory getGroupHistory(@WebParam(name="id") String id,
+            @XmlJavaTypeAdapter(value = DateTimeAdapter.class) @WebParam(name="asOfDate")DateTime asOfDate)
+            throws RiceIllegalArgumentException;
+
+    /**
+     * Creates a new group history using the given GroupHistory.
+     *
+     * <p>
+     * This will attempt to create a new GroupHistory.
+     *
+     * Note:  this method will overwrite any historyId value that has been set in GroupHistory.
+     * </p>
+     *
+     * @param groupHistory The new groupHistory to be created
+     * @return a the GroupHistory that has been created.
+     * @throws RiceIllegalArgumentException if the group is null
+     */
+    @WebMethod(operationName = "createGroupHistory")
+    @WebResult(name = "groupHistory")
+    @CacheEvict(value={GroupHistory.Cache.NAME, Group.Cache.NAME, GroupMember.Cache.NAME}, allEntries = true)
+    GroupHistory createGroupHistory(GroupHistory groupHistory) throws RiceIllegalArgumentException;
+
+    /**
+     * Inactivates a group for a certain date
+     *
+     * <p>
+     * This will set the end date on a group history record
+     * </p>
+     *
+     * @param id The group id of the group history record
+     * @param inactiveDate The date to set activeTo to
+     * @return a the updated GroupHistory that has been created.
+     * @throws RiceIllegalArgumentException if the id or inactiveDate is null
+     */
+    @WebMethod(operationName = "inactivateGroupHistory")
+    @WebResult(name = "groupHistory")
+    @CacheEvict(value={GroupHistory.Cache.NAME, Group.Cache.NAME, GroupMember.Cache.NAME}, allEntries = true)
+    GroupHistory inactivateGroupHistory(String id, DateTime inactiveDate) throws RiceIllegalArgumentException;
+
+    @WebMethod(operationName = "isGroupMemberOfGroupWithDate")
+    @WebResult(name = "isMember")
+    boolean isGroupMemberOfGroupWithDate(String groupMemberId, String groupId,
+            @XmlJavaTypeAdapter(value = DateTimeAdapter.class) @WebParam(name="asOfDate") DateTime asOfDate) throws RiceIllegalArgumentException;
+
+    @WebMethod(operationName = "isMemberOfGroupWithDate")
+    @WebResult(name = "isMember")
+    boolean isMemberOfGroupWithDate(String principalId, String groupId,
+            @XmlJavaTypeAdapter(value = DateTimeAdapter.class) @WebParam(name="asOfDate") DateTime asOfDate) throws RiceIllegalArgumentException;
+
+    @WebMethod(operationName = "getDirectMemberGroupIdsWithDate")
+    @XmlElementWrapper(name = "directMembers", required = true)
+    @XmlElement(name = "directMember", required = false)
+    @WebResult(name = "directMembers")
+    List<String> getDirectMemberGroupIdsWithDate(String groupId) throws RiceIllegalArgumentException;
+
+    @WebMethod(operationName = "getDirectParentGroupIdsWithDate")
+    @XmlElementWrapper(name = "directParents", required = true)
+    @XmlElement(name = "directParent", required = false)
+    @WebResult(name = "directParents")
+    List<String> getDirectParentGroupIdsWithDate(String groupId,
+            @XmlJavaTypeAdapter(value = DateTimeAdapter.class) @WebParam(name="asOfDate") DateTime asOfDate) throws RiceIllegalArgumentException;
+
+    @WebMethod(operationName = "getMembersWithDate")
+    @XmlElementWrapper(name = "members", required = true)
+    @XmlElement(name = "member", required = false)
+    @WebResult(name = "members")
+    List<GroupMember> getMembersWithDate(List<String> groupIds,
+            @XmlJavaTypeAdapter(value = DateTimeAdapter.class) @WebParam(name="asOfDate") DateTime asOfDate) throws RiceIllegalArgumentException;
 }

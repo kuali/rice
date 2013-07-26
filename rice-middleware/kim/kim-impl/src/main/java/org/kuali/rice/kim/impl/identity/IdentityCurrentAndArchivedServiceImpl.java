@@ -18,8 +18,8 @@ package org.kuali.rice.kim.impl.identity;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.CodedAttribute;
+import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.address.EntityAddress;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
@@ -43,12 +43,10 @@ import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.identity.residency.EntityResidency;
 import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
 import org.kuali.rice.kim.api.identity.visa.EntityVisa;
-import org.kuali.rice.krad.util.ObjectUtils;
 
 import javax.jws.WebParam;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This IdentityService implementation is largely just a knee-jerk delegator, except for
@@ -110,7 +108,7 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
     @Override
 	public EntityNamePrincipalName getDefaultNamesForPrincipalId(String principalId) {
     	EntityNamePrincipalName name = getInnerIdentityService().getDefaultNamesForPrincipalId(principalId);
-    	if(name == null || ObjectUtils.isNull(name.getDefaultName()) || StringUtils.isBlank(name.getPrincipalName()) || StringUtils.isBlank(name.getDefaultName().getCompositeName())) {
+    	if(name == null || name.getDefaultName() == null || StringUtils.isBlank(name.getPrincipalName()) || StringUtils.isBlank(name.getDefaultName().getCompositeName())) {
     		EntityDefault defaultEntity = this.getEntityDefaultByPrincipalId(principalId);
             if (defaultEntity != null) {
                 EntityNamePrincipalName.Builder nameBuilder = EntityNamePrincipalName.Builder.create();

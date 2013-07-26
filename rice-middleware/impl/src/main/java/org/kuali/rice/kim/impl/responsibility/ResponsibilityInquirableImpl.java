@@ -27,10 +27,11 @@ import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.kim.inquiry.RoleMemberInquirableImpl;
 import org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl;
 import org.kuali.rice.kns.lookup.HtmlData;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.widget.Inquiry;
-import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -81,7 +82,7 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
 			List<String> primaryKeys = new ArrayList<String>();
 			primaryKeys.add("code");
 			NamespaceBo parameterNamespace = new NamespaceBo();
-			parameterNamespace.setCode((String)ObjectUtils.getPropertyValue(businessObject, attributeName));
+			parameterNamespace.setCode((String)DataObjectUtils.getPropertyValue(businessObject, attributeName));
 			return getInquiryUrlForPrimaryKeys(NamespaceBo.class, parameterNamespace, primaryKeys, null);
         } else if(DETAIL_OBJECTS.equals(attributeName)){
         	//return getAttributesInquiryUrl(businessObject, DETAIL_OBJECTS);
@@ -95,7 +96,7 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
     @SuppressWarnings("unchecked")
 	protected HtmlData getAttributesInquiryUrl(BusinessObject businessObject, String attributeName){
     	List<ResponsibilityAttributeBo> responsibilityAttributeData =
-    		(List<ResponsibilityAttributeBo>)ObjectUtils.getPropertyValue(businessObject, attributeName);
+    		(List<ResponsibilityAttributeBo>) DataObjectUtils.getPropertyValue(businessObject, attributeName);
     	List<HtmlData.AnchorHtmlData> htmlData = new ArrayList<HtmlData.AnchorHtmlData>();
 		List<String> primaryKeys = new ArrayList<String>();
 		primaryKeys.add(ATTRIBUTE_DATA_ID);
@@ -136,7 +137,7 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
 	@Override
 	public BusinessObject getBusinessObject(Map fieldValues) {
 		ResponsibilityBo responsibilityImpl
-                = KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(ResponsibilityBo.class, Collections.singletonMap(
+                = KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ResponsibilityBo.class, Collections.singletonMap(
                 "id", fieldValues.get("id").toString()));
 		return getResponsibilitiesSearchResultsCopy(responsibilityImpl);
 	}
@@ -159,7 +160,7 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
 		Map<String, String> criteria = new HashMap<String, String>();
 		criteria.put("responsibilityId", responsibilitySearchResultCopy.getId());
 		List<RoleResponsibilityBo> roleResponsibilitys =
-			(List<RoleResponsibilityBo>) KRADServiceLocator.getBusinessObjectService().findMatching(RoleResponsibilityBo.class, criteria);
+			(List<RoleResponsibilityBo>) KNSServiceLocator.getBusinessObjectService().findMatching(RoleResponsibilityBo.class, criteria);
 		List<RoleBo> assignedToRoles = new ArrayList<RoleBo>();
 		for(RoleResponsibilityBo roleResponsibilityImpl: roleResponsibilitys){
 			assignedToRoles.add(getRoleImpl(roleResponsibilityImpl.getRoleId()));

@@ -15,7 +15,10 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.processor;
 
-import org.kuali.rice.core.api.uif.DataType;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.validation.AttributeValueReader;
@@ -30,9 +33,6 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.WhenConstraint;
 import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult;
 import org.kuali.rice.krad.datadictionary.validation.result.ProcessorResult;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * CaseConstraintProcessor processes 'case constraints', which are constraints that are imposed only in specific cases

@@ -49,7 +49,6 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.NoteType;
-import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.util.documentserializer.AlwaysFalsePropertySerializabilityEvaluator;
 import org.kuali.rice.krad.util.documentserializer.AlwaysTruePropertySerializibilityEvaluator;
 import org.kuali.rice.krad.util.documentserializer.BusinessObjectPropertySerializibilityEvaluator;
@@ -67,7 +66,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -79,24 +78,27 @@ import java.util.Map;
  */
 @MappedSuperclass
 public abstract class DocumentBase extends PersistableBusinessObjectBase implements Document {
+    private static final long serialVersionUID = 8530945307802647664L;
     private static final Logger LOG = Logger.getLogger(DocumentBase.class);
 
-    @Id @Column(name = "DOC_HDR_ID")
+    @Id
+    @Column(name = "DOC_HDR_ID",length=14)
     protected String documentNumber;
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}) @JoinColumn(
-            name = "DOC_HDR_ID", insertable = false, updatable = false)
+
+    @Transient
     protected DocumentHeader documentHeader;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}) @JoinColumn(
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(
             name = "DOC_HDR_ID", insertable = false, updatable = false)
-    private List<PessimisticLock> pessimisticLocks;
+    protected List<PessimisticLock> pessimisticLocks;
 
     @Transient
-    private List<AdHocRoutePerson> adHocRoutePersons;
+    protected List<AdHocRoutePerson> adHocRoutePersons;
     @Transient
-    private List<AdHocRouteWorkgroup> adHocRouteWorkgroups;
+    protected List<AdHocRouteWorkgroup> adHocRouteWorkgroups;
     @Transient
-    private List<Note> notes;
+    protected List<Note> notes;
 
     private transient NoteService noteService;
     private transient AttachmentService attachmentService;
@@ -105,27 +107,18 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * Constructs a DocumentBase.java.
      */
     public DocumentBase() {
-        try {
-            // create a new document header object
-            Class<? extends DocumentHeader> documentHeaderClass =
-                    KRADServiceLocatorWeb.getDocumentHeaderService().getDocumentHeaderBaseClass();
-            setDocumentHeader(documentHeaderClass.newInstance());
-            pessimisticLocks = new ArrayList<PessimisticLock>();
-            adHocRoutePersons = new ArrayList<AdHocRoutePerson>();
-            adHocRouteWorkgroups = new ArrayList<AdHocRouteWorkgroup>();
-            notes = new ArrayList<Note>();
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("Error instantiating DocumentHeader", e);
-        } catch (InstantiationException e) {
-            throw new RuntimeException("Error instantiating DocumentHeader", e);
-        }
+        documentHeader = new DocumentHeader();
+        pessimisticLocks = new ArrayList<PessimisticLock>();
+        adHocRoutePersons = new ArrayList<AdHocRoutePerson>();
+        adHocRouteWorkgroups = new ArrayList<AdHocRouteWorkgroup>();
+        notes = new ArrayList<Note>();
     }
 
     /**
      * @see org.kuali.rice.krad.document.Document#getAllowsCopy()
      */
+    @Override
     public boolean getAllowsCopy() {
-        // TODO Auto-generated method stub
         return false;
     }
 
@@ -144,6 +137,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      *
      * @see org.kuali.rice.krad.document.Document#getDocumentTitle()
      */
+    @Override
     public String getDocumentTitle() {
         String documentTypeLabel = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(
                 this.getDocumentHeader().getWorkflowDocument().getDocumentTypeName()).getLabel();
@@ -160,41 +154,9 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     }
 
     /**
-     * Uses the persistence service's implementation of OJB's retrieveNonKey() fields method.
-     *
-     * @see org.kuali.rice.krad.bo.BusinessObject#refresh()
-     */
-    @Override
-    public void refresh() {
-        KRADServiceLocator.getPersistenceService().retrieveNonKeyFields(this);
-    }
-
-    /**
-     * Checks to see if the objectId value is empty. If so, it will try to refresh the object from the DB.
-     *
-     * @see org.kuali.rice.krad.document.Document#refreshIfEmpty()
-     */
-    public void refreshIfEmpty() {
-        if (null == this.getDocumentHeader()) {
-            this.refresh();
-        } else if (StringUtils.isEmpty(this.getDocumentHeader().getObjectId())) {
-            this.refresh();
-        }
-    }
-
-    /**
-     * Uses the persistence service to retrieve a reference object of a parent.
-     *
-     * @see org.kuali.rice.krad.document.Document#refreshReferenceObject(java.lang.String)
-     */
-    @Override
-    public void refreshReferenceObject(String referenceObjectName) {
-        KRADServiceLocator.getPersistenceService().retrieveReferenceObject(this, referenceObjectName);
-    }
-
-    /**
      * @see org.kuali.rice.krad.document.Document#prepareForSave()
      */
+    @Override
     public void prepareForSave() {
         // do nothing
     }
@@ -202,6 +164,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     /**
      * @see org.kuali.rice.krad.document.Document#processAfterRetrieve()
      */
+    @Override
     public void processAfterRetrieve() {
         // do nothing
     }
@@ -213,6 +176,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      *
      * @see org.kuali.rice.krad.document.Document#doRouteLevelChange(org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange)
      */
+    @Override
     public void doRouteLevelChange(DocumentRouteLevelChange levelChangeEvent) {
         // do nothing
     }
@@ -220,6 +184,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     /**
      * @see org.kuali.rice.krad.document.Document#doActionTaken(org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent)
      */
+    @Override
     public void doActionTaken(ActionTakenEvent event) {
         if ((KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(
                 this.getClass().getName()).getUseWorkflowPessimisticLocking()) && (!getNonLockingActionTakenCodes()
@@ -231,6 +196,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     /**
      * @see org.kuali.rice.krad.document.Document#afterActionTaken(ActionType, org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent)
      */
+    @Override
     public void afterActionTaken(ActionType performed, ActionTakenEvent event) {
         // do nothing
     }
@@ -252,6 +218,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      *
      * @see org.kuali.rice.krad.document.Document#afterWorkflowEngineProcess(boolean)
      */
+    @Override
     public void afterWorkflowEngineProcess(boolean successfullyProcessed) {
         if (KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(
                 this.getClass().getName()).getUseWorkflowPessimisticLocking()) {
@@ -267,6 +234,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      *
      * @see org.kuali.rice.krad.document.Document#beforeWorkflowEngineProcess()
      */
+    @Override
     public void beforeWorkflowEngineProcess() {
         // do nothing
     }
@@ -276,6 +244,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      *
      * @see org.kuali.rice.krad.document.Document#getWorkflowEngineDocumentIdsToLock()
      */
+    @Override
     public List<String> getWorkflowEngineDocumentIdsToLock() {
         return null;
     }
@@ -310,11 +279,11 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         newDoc.getDocumentHeader().setOrganizationDocumentNumber(getDocumentHeader().getOrganizationDocumentNumber());
 
         try {
-            ObjectUtils.setObjectPropertyDeep(this, KRADPropertyConstants.DOCUMENT_NUMBER, documentNumber.getClass(),
+            KRADServiceLocatorWeb.getLegacyDataAdapter().setObjectPropertyDeep(this, KRADPropertyConstants.DOCUMENT_NUMBER, documentNumber.getClass(),
                     newDoc.getDocumentNumber());
         } catch (Exception e) {
-            LOG.error("Unable to set document number property in copied document " + e.getMessage(), e);
-            throw new RuntimeException("Unable to set document number property in copied document " + e.getMessage(),
+            LOG.error("Unable to set document number property in copied document " + this, e);
+            throw new RuntimeException("Unable to set document number property in copied document " + this,
                     e);
         }
 
@@ -341,6 +310,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     /**
      * @see org.kuali.rice.krad.document.Document#getXmlForRouteReport()
      */
+    @Override
     public String getXmlForRouteReport() {
         prepareForSave();
         populateDocumentForRouting();
@@ -350,6 +320,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     /**
      * @see org.kuali.rice.krad.document.Document#populateDocumentForRouting()
      */
+    @Override
     public void populateDocumentForRouting() {
         getDocumentHeader().getWorkflowDocument().setApplicationContent(serializeDocumentToXml());
     }
@@ -357,6 +328,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     /**
      * @see org.kuali.rice.krad.document.Document#serializeDocumentToXml()
      */
+    @Override
     public String serializeDocumentToXml() {
         DocumentSerializerService documentSerializerService = KRADServiceLocatorWeb.getDocumentSerializerService();
         String xml = documentSerializerService.serializeDocumentToXmlForRouting(this);
@@ -369,6 +341,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      *
      * @see org.kuali.rice.krad.document.Document#wrapDocumentWithMetadataForXmlSerialization()
      */
+    @Override
     public KualiDocumentXmlMaterializer wrapDocumentWithMetadataForXmlSerialization() {
         KualiTransactionalDocumentInformation transInfo = new KualiTransactionalDocumentInformation();
         DocumentInitiator initiator = new DocumentInitiator();
@@ -391,6 +364,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      *
      * @see org.kuali.rice.krad.document.Document#getDocumentPropertySerizabilityEvaluator()
      */
+    @Override
     public PropertySerializabilityEvaluator getDocumentPropertySerizabilityEvaluator() {
         String docTypeName = getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
         DocumentEntry documentEntry =
@@ -419,6 +393,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      *
      * @see org.kuali.rice.krad.document.Document#getBasePathToDocumentDuringSerialization()
      */
+    @Override
     public String getBasePathToDocumentDuringSerialization() {
         return "document";
     }
@@ -426,6 +401,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     /**
      * @see org.kuali.rice.krad.document.Document#getDocumentHeader()
      */
+    @Override
     public DocumentHeader getDocumentHeader() {
         return this.documentHeader;
     }
@@ -433,6 +409,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     /**
      * @see org.kuali.rice.krad.document.Document#setDocumentHeader(org.kuali.rice.krad.document.DocumentHeader)
      */
+    @Override
     public void setDocumentHeader(DocumentHeader documentHeader) {
         this.documentHeader = documentHeader;
     }
@@ -440,6 +417,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     /**
      * @see org.kuali.rice.krad.document.Document#getDocumentNumber()
      */
+    @Override
     public String getDocumentNumber() {
         return documentNumber;
     }
@@ -447,6 +425,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     /**
      * @see org.kuali.rice.krad.document.Document#setDocumentNumber(java.lang.String)
      */
+    @Override
     public void setDocumentNumber(String documentNumber) {
         this.documentNumber = documentNumber;
     }
@@ -454,6 +433,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     /**
      * @see org.kuali.rice.krad.document.Document#getAdHocRoutePersons()
      */
+    @Override
     public List<AdHocRoutePerson> getAdHocRoutePersons() {
         return adHocRoutePersons;
     }
@@ -461,6 +441,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     /**
      * @see org.kuali.rice.krad.document.Document#setAdHocRoutePersons(java.util.List)
      */
+    @Override
     public void setAdHocRoutePersons(List<AdHocRoutePerson> adHocRoutePersons) {
         this.adHocRoutePersons = adHocRoutePersons;
     }
@@ -468,6 +449,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     /**
      * @see org.kuali.rice.krad.document.Document#getAdHocRouteWorkgroups()
      */
+    @Override
     public List<AdHocRouteWorkgroup> getAdHocRouteWorkgroups() {
         return adHocRouteWorkgroups;
     }
@@ -475,10 +457,12 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     /**
      * @see org.kuali.rice.krad.document.Document#setAdHocRouteWorkgroups(java.util.List)
      */
+    @Override
     public void setAdHocRouteWorkgroups(List<AdHocRouteWorkgroup> adHocRouteWorkgroups) {
         this.adHocRouteWorkgroups = adHocRouteWorkgroups;
     }
 
+    @Override
     public void postProcessSave(KualiDocumentEvent event) {
         // TODO Auto-generated method stub
 
@@ -489,10 +473,12 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      *
      * @see org.kuali.rice.krad.document.Document#prepareForSave(org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent)
      */
+    @Override
     public void prepareForSave(KualiDocumentEvent event) {
         // do nothing by default
     }
 
+    @Override
     public void validateBusinessRules(KualiDocumentEvent event) {
         if (GlobalVariables.getMessageMap().hasErrors()) {
             logErrors();
@@ -557,6 +543,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      *
      * @see org.kuali.rice.krad.document.Document#generateSaveEvents()
      */
+    @Override
     public List<KualiDocumentEvent> generateSaveEvents() {
         return new ArrayList<KualiDocumentEvent>();
     }
@@ -564,6 +551,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     /**
      * @see org.kuali.rice.krad.document.Document#doRouteStatusChange(org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange)
      */
+    @Override
     public void doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) {
         // do nothing
     }
@@ -653,15 +641,32 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         this.notes = notes;
     }
 
+    /**
+     * Loads the KRAD document header via the document header service.
+     *
+     * @see org.kuali.rice.krad.bo.PersistableBusinessObjectBase#postLoad()
+     */
     @Override
     protected void postLoad() {
         super.postLoad();
+        documentHeader = KRADServiceLocatorWeb.getLegacyDataAdapter().getByDocumentHeaderId(documentNumber);
         refreshPessimisticLocks();
+    }
+
+    /**
+     * Save the KRAD document header via the document header service.
+     */
+    @Override
+    @PrePersist
+    protected void prePersist() {
+        super.prePersist();
+        documentHeader = KRADServiceLocatorWeb.getLegacyDataAdapter().save(documentHeader);
     }
 
     /**
      * @see org.kuali.rice.krad.document.Document#getPessimisticLocks()
      */
+    @Override
     public List<PessimisticLock> getPessimisticLocks() {
         return this.pessimisticLocks;
     }
@@ -670,6 +675,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * @see org.kuali.rice.krad.document.Document#refreshPessimisticLocks()
      * @deprecated This is not needed with the relationship set up with JPA annotations
      */
+    @Override
     @Deprecated
     public void refreshPessimisticLocks() {
         this.pessimisticLocks.clear();
@@ -687,13 +693,24 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     /**
      * @see org.kuali.rice.krad.document.Document#addPessimisticLock(org.kuali.rice.krad.document.authorization.PessimisticLock)
      */
+    @Override
     public void addPessimisticLock(PessimisticLock lock) {
         this.pessimisticLocks.add(lock);
     }
 
     /**
-     * @see org.kuali.rice.krad.document.Document#getLockClearningMethodNames()
+     * @see org.kuali.rice.krad.document.Document#getLockClearingMethodNames()
      */
+    @Override
+    public List<String> getLockClearingMethodNames() {
+        return getLockClearningMethodNames();
+    }
+
+    /**
+     * @see org.kuali.rice.krad.document.Document#getLockClearingMethodNames()
+     */
+    @Override
+    @Deprecated
     public List<String> getLockClearningMethodNames() {
         List<String> methodToCalls = new ArrayList<String>();
         methodToCalls.add(KRADConstants.CLOSE_METHOD);
@@ -713,6 +730,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      *
      * @see org.kuali.rice.krad.document.Document#useCustomLockDescriptors()
      */
+    @Override
     public boolean useCustomLockDescriptors() {
         return false;
     }
@@ -724,6 +742,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      *
      * @see org.kuali.rice.krad.document.Document#getCustomLockDescriptor(org.kuali.rice.kim.api.identity.Person)
      */
+    @Override
     public String getCustomLockDescriptor(Person user) {
         throw new PessimisticLockingException("Document " + getDocumentNumber() +
                 " is using pessimistic locking with custom lock descriptors, but the document class has not overriden the getCustomLockDescriptor method");
@@ -741,5 +760,22 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
             noteService = KRADServiceLocator.getNoteService();
         }
         return noteService;
+    }
+
+    /**
+     * Overrides this OJB method to accept the no-longer-bound documentHeader reference
+     * and perform the refresh via services instead of via OJB.
+     *
+     * For any other property, it works as before.
+     *
+     * @see org.kuali.rice.krad.bo.PersistableBusinessObjectBase#refreshReferenceObject(java.lang.String)
+     */
+    @Override
+    public void refreshReferenceObject(String referenceObjectName) {
+        if ( StringUtils.equals( referenceObjectName, "documentHeader" ) ) {
+            documentHeader = KRADServiceLocatorWeb.getLegacyDataAdapter().getByDocumentHeaderId(documentNumber);
+        } else {
+            super.refreshReferenceObject(referenceObjectName);
+        }
     }
 }

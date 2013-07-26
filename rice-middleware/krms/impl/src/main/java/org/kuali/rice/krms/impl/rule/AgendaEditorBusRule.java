@@ -19,10 +19,13 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.GlobalBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase;
+import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
@@ -51,6 +54,9 @@ import java.util.Map;
  */
 public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
 
+    @Deprecated
+    private BusinessObjectService boService;
+
     @Override
     protected boolean primaryKeyCheck(MaintenanceDocument document) {
         // default to success if no failures
@@ -73,7 +79,7 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
         // fail and complain if the person has changed the primary keys on
         // an EDIT maintenance document.
         if (document.isEdit()) {
-            if (!getDataObjectMetaDataService().equalsByPrimaryKeys(oldBo, newDataObject)) {
+            if (!KRADServiceLocatorWeb.getLegacyDataAdapter().equalsByPrimaryKeys(oldBo, newDataObject)) {
                 // add a complaint to the errors
                 putDocumentError(KRADConstants.DOCUMENT_ERRORS,
                         RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_PRIMARY_KEYS_CHANGED_ON_EDIT,
@@ -90,7 +96,7 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
             if (newDataObject instanceof PersistableBusinessObject) {
 
                 // get a map of the pk field names and values
-                Map<String, ?> newPkFields = getDataObjectMetaDataService().getPrimaryKeyFieldValues(newDataObject);
+                Map<String, ?> newPkFields = KRADServiceLocatorWeb.getLegacyDataAdapter().getPrimaryKeyFieldValues(newDataObject);
 
                 // TODO: Good suggestion from Aaron, dont bother checking the DB, if all of the
                 // objects PK fields dont have values. If any are null or empty, then
@@ -449,6 +455,19 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
     public AgendaAuthorizationService getAgendaAuthorizationService() {
         return KrmsRepositoryServiceLocator.getAgendaAuthorizationService();
     }
+
+
+    public BusinessObjectService getBoService() {
+        if(boService == null){
+            return KNSServiceLocator.getBusinessObjectService();
+        }
+        return boService;
+    }
+
+    public void setBoService(BusinessObjectService boService) {
+        this.boService = boService;
+    }
+
 
 }
 

@@ -15,15 +15,7 @@
  */
 package org.kuali.rice.krms.impl.ui;
 
-import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krms.api.repository.proposition.PropositionParameterType;
-import org.kuali.rice.krms.api.repository.proposition.PropositionType;
 import org.kuali.rice.krms.impl.repository.PropositionBo;
-import org.kuali.rice.krms.impl.repository.PropositionParameterBo;
-import org.kuali.rice.krms.impl.repository.TermBo;
-
-import java.util.List;
 
 /**
  * abstract data class for the rule tree {@link Node}s

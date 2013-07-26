@@ -31,8 +31,7 @@
   <!-- Default to the single test keystore. -->
   <param name="keystore.alias">rice</param>
   <param name="keystore.password">r1c3pw</param>
-  <param name="keystore.file">${basedir}/src/test/resources/keystore/ricekeystore</param>
-  <param name="keystore.location">${basedir}/src/test/resources/keystore/ricekeystore</param>
+  <param name="keystore.file">classpath:keystore/ricekeystore</param>
 
   <param name="useQuartzDatabase">false</param>
   <param name="notification.quartz.autostartup">false</param>
@@ -70,6 +69,9 @@
   <param name="kew.mode">LOCAL</param>
   <param name="ksb.mode">LOCAL</param>
   <param name="krms.mode">LOCAL</param>
+
+  <!-- enable kim history for testing -->
+  <param name="kim.enable.history">true</param>
 
   <param name="wsdl.test.previous.version">2.1.2</param>
   <param name="wsdl.test.previous.url">http://maven.kuali.org.s3.amazonaws.com/release/org/kuali/rice/</param>

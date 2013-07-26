@@ -15,16 +15,16 @@
  */
 package org.kuali.rice.krad.datadictionary.validation;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.datetime.DateTimeService;
-import org.kuali.rice.core.api.uif.DataType;
-import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.krad.uif.UifConstants;
-
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.Date;
+
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.data.DataType;
+import org.kuali.rice.core.api.datetime.DateTimeService;
+import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
+import org.kuali.rice.krad.uif.UifConstants;
 
 /**
  * ValidationUtils provides static utility methods for validation processing

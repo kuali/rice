@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.demo.uif.form;
 
-import org.kuali.rice.krad.demo.travel.account.TravelAccount;
+import org.kuali.rice.krad.demo.travel.dataobject.TravelAccount;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import javax.servlet.http.HttpServletRequest;

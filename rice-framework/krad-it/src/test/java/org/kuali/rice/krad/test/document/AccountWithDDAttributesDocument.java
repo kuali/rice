@@ -15,9 +15,7 @@
  */
 package org.kuali.rice.krad.test.document;
 
-import org.hibernate.annotations.Type;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
-import org.kuali.rice.core.framework.persistence.jpa.type.HibernateKualiDecimalFieldType;
 import org.kuali.rice.krad.document.SessionDocument;
 import org.kuali.rice.krad.document.TransactionalDocumentBase;
 
@@ -34,10 +32,10 @@ import java.sql.Timestamp;
  */
 @Entity
 @Table(name="ACCT_DD_ATTR_DOC")
-@org.hibernate.annotations.TypeDef(
-			name="rice_decimal",
-			typeClass=HibernateKualiDecimalFieldType.class
-	)
+//@org.hibernate.annotations.TypeDef(
+//			name="rice_decimal",
+//			typeClass=HibernateKualiDecimalFieldType.class
+//	)
 public class AccountWithDDAttributesDocument extends TransactionalDocumentBase implements SessionDocument {
 	private static final long serialVersionUID = 174220131121010870L;
 	
@@ -45,7 +43,7 @@ public class AccountWithDDAttributesDocument extends TransactionalDocumentBase i
 	private Integer accountNumber;
 	@Column(name="ACCT_OWNR")
 	private String accountOwner;
-	@Type(type="rice_decimal")
+	//@Type(type="rice_decimal")
 	@Column(name="ACCT_BAL")
 	private KualiDecimal accountBalance;
 	@Column(name="ACCT_OPN_DAT")
@@ -54,7 +52,7 @@ public class AccountWithDDAttributesDocument extends TransactionalDocumentBase i
 	private Timestamp accountUpdateDateTime;
 	@Column(name="ACCT_STAT")
 	private String accountState;
-	@Type(type="yes_no")
+	//@Type(type="yes_no")
 	@Column(name="ACCT_AWAKE")
 	private boolean accountAwake;
 	

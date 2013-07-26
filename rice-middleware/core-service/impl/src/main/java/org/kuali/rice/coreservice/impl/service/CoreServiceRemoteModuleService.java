@@ -17,7 +17,6 @@ package org.kuali.rice.coreservice.impl.service;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.ObjectUtils;
-import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.coreservice.api.component.Component;
@@ -28,7 +27,6 @@ import org.kuali.rice.coreservice.api.parameter.Parameter;
 import org.kuali.rice.coreservice.api.parameter.ParameterKey;
 import org.kuali.rice.coreservice.api.parameter.ParameterQueryResults;
 import org.kuali.rice.coreservice.api.parameter.ParameterRepositoryService;
-import org.kuali.rice.coreservice.api.parameter.ParameterType;
 import org.kuali.rice.coreservice.framework.component.ComponentEbo;
 import org.kuali.rice.coreservice.framework.namespace.NamespaceEbo;
 import org.kuali.rice.coreservice.framework.parameter.ParameterEbo;
@@ -37,6 +35,7 @@ import org.kuali.rice.coreservice.impl.component.ComponentBo;
 import org.kuali.rice.coreservice.impl.namespace.NamespaceBo;
 import org.kuali.rice.coreservice.impl.parameter.ParameterBo;
 import org.kuali.rice.coreservice.impl.parameter.ParameterTypeBo;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
@@ -48,7 +47,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.like;
 
 public class CoreServiceRemoteModuleService extends RemoteModuleServiceBase {
@@ -202,7 +200,7 @@ public class CoreServiceRemoteModuleService extends RemoteModuleServiceBase {
     }
 
     private static class BusinessObjectServiceHolder {
-        static final BusinessObjectService businessObjectService = KRADServiceLocator.getBusinessObjectService();
+        static final BusinessObjectService businessObjectService = KNSServiceLocator.getBusinessObjectService();
     }
 
     private BusinessObjectService getBusinessObjectService() {

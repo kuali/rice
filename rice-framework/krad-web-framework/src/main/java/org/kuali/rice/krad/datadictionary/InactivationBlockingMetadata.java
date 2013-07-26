@@ -15,42 +15,79 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import org.kuali.rice.krad.bo.BusinessObject;
+
 /**
  * This interface provides read-only metadata about inactivation blocking.  This metadata object is associated with a
- * business object.
- * The source of this information often comes from the data dictionary file.
+ * data object. The source of this information often comes from the data dictionary file.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface InactivationBlockingMetadata {
 
     /**
-     * The property name of the reference that is blocked
+     * The property name of the reference on the blocked object which points to the blocking object.
+     *
+     * @return the name of the blocking reference
+     * @deprecated use {@link #getBlockingAttributeName()} instead
      */
-    public String getBlockedReferencePropertyName();
+    @Deprecated
+    String getBlockedReferencePropertyName();
 
     /**
-     * The type of the object that is blocked
+     * The name of the attribute which is blocked by the blocking object.
      *
-     * @return
+     * @return the name of the blocked attribute
      */
-    public Class getBlockedBusinessObjectClass();
+    String getBlockedAttributeName();
+
+    /**
+     * The type of the object that is blocked.
+     *
+     * @return the type of the business object that is blocked
+     *
+     * @deprecated use {@link #getBlockedDataObjectClass()} instead, there is no requirement that the blocked class
+     *             must implement the deprecated {@link BusinessObject} interface.
+     */
+    @Deprecated
+    Class<? extends BusinessObject> getBlockedBusinessObjectClass();
+
+    /**
+     * Returns the type of the data object that is blocked.
+     *
+     * @return the type of the data object that is blocked, should never be null
+     */
+    Class<?> getBlockedDataObjectClass();
 
     /**
      * The bean name of the service that is responsible for determining whether there are any records that block
      * inactivation
      */
-    public String getInactivationBlockingDetectionServiceBeanName();
+    String getInactivationBlockingDetectionServiceBeanName();
 
     /**
-     * The type of the object that is blocking another record
+     * The type of the object that is blocking another record.
+     *
+     * @return the type of the object that is blocking
+     *
+     * @deprecated use {@link #getBlockingDataObjectClass()} instead, there is no requirement that the blocking class
+     *             must implement the deprecated {@link BusinessObject} interface.
      */
-    public Class getBlockingReferenceBusinessObjectClass();
+    @Deprecated
+    Class<? extends BusinessObject> getBlockingReferenceBusinessObjectClass();
+
+    /**
+     * The type of the object that is blocking another record.
+     *
+     * @return the type of the object that is blocking, should never be null
+     */
+    Class<?> getBlockingDataObjectClass();
+
 
     /**
      * Returns the human-meaningful name of the relationship
      *
      * @return
      */
-    public String getRelationshipLabel();
+    String getRelationshipLabel();
 }

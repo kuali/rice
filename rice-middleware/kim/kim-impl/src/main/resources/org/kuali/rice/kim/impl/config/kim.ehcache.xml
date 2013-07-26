@@ -28,6 +28,7 @@
   <cache name="http://rice.kuali.org/kim/v2_0/ResponsibilityType" maxEntriesLocalHeap="10000" timeToLiveSeconds="1800"/>
   <cache name="http://rice.kuali.org/kim/v2_0/TemplateType{Responsibility}" maxEntriesLocalHeap="1000" timeToLiveSeconds="1800"/>
   <cache name="http://rice.kuali.org/kim/v2_0/GroupType" maxEntriesLocalHeap="25000" timeToLiveSeconds="1800"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/GroupHistoryType" maxEntriesLocalHeap="100000" timeToLiveSeconds="1800"/>
   <cache name="http://rice.kuali.org/kim/v2_0/GroupMemberType" maxEntriesLocalHeap="100000" timeToLiveSeconds="1800"/>
   <cache name="http://rice.kuali.org/kim/v2_0/EntityDefaultType" maxEntriesLocalHeap="100000" timeToLiveSeconds="1800"/>
   <cache name="http://rice.kuali.org/kim/v2_0/EntityType" maxEntriesLocalHeap="100000" timeToLiveSeconds="1800"/>

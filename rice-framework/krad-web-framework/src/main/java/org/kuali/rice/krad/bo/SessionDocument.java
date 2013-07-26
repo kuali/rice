@@ -15,43 +15,52 @@
  */
 package org.kuali.rice.krad.bo;
 
-import org.hibernate.annotations.Type;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.Lob;
 import javax.persistence.Table;
-import java.sql.Timestamp;
+import javax.persistence.UniqueConstraint;
+
+import org.eclipse.persistence.annotations.Convert;
+import org.eclipse.persistence.annotations.Index;
 
 /*
  * Defines methods a business object should implement.
  */
-@IdClass(org.kuali.rice.krad.bo.SessionDocumentId.class)
+//@IdClass(org.kuali.rice.krad.bo.SessionDocumentId.class)
 @Entity
-@Table(name="KRNS_SESN_DOC_T")
+@Table(name="KRNS_SESN_DOC_T",uniqueConstraints= {
+        @UniqueConstraint(name="KRNS_SESN_DOC_TC0",columnNames="OBJ_ID")
+})
 public class SessionDocument extends PersistableBusinessObjectBase{
 
 	private static final long serialVersionUID = 2866566562262830639L;
 
-	@Id
-	protected String documentNumber;
-	@Id
-	protected String sessionId;
-	@Column(name="LAST_UPDT_DT")
+    @Id
+    @Column(name="SESN_DOC_ID",length=40)
+    protected String sessionId;
+    @Id
+    @Column(name="DOC_HDR_ID",length=14)
+    protected String documentNumber;
+    @Id
+    @Column(name="PRNCPL_ID",length=40)
+    protected String principalId;
+    @Id
+    @Column(name="IP_ADDR",length=60)
+    protected String ipAddress;
+
+    @Column(name="LAST_UPDT_DT")
+    @Index(name="KRNS_SESN_DOC_TI1")
 	protected Timestamp lastUpdatedDate;
 	@Lob
 	@Column(name="SERIALZD_DOC_FRM")
 	protected byte[] serializedDocumentForm;
-	@Type(type="yes_no")
-	@Column(name="CONTENT_ENCRYPTED_IND")
-	protected boolean encrypted = false;
-	@Id
-	protected String principalId;
-	@Id
-	protected String ipAddress;
 
+	@Column(name="CONTENT_ENCRYPTED_IND",length=1)
+	protected Boolean encrypted = false;
 
 	/**
 	 * @return the serializedDocumentForm

@@ -40,7 +40,9 @@ import java.util.Map;
  * (org.kuali.rice.krad.dao.impl.GenericDaoOjb).
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @deprecated use new KRAD Data framework {@link org.kuali.rice.krad.data.DataObjectService}
  */
+@Deprecated
 public class GenericDaoOjb extends PersistenceBrokerDaoSupport implements GenericDao {
     private static final Logger LOG = Logger.getLogger(GenericDaoOjb.class);
 

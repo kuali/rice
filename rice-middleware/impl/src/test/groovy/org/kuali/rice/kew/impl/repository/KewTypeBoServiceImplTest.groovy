@@ -19,7 +19,7 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
-import org.kuali.rice.kew.api.repository.type.KewAttributeDefinition
+
 import org.kuali.rice.kew.api.repository.type.KewTypeAttribute
 import org.kuali.rice.kew.api.repository.type.KewTypeDefinition
 import org.kuali.rice.kew.api.repository.type.KewTypeRepositoryService

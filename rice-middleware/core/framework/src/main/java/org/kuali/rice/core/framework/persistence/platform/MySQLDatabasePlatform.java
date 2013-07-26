@@ -15,19 +15,17 @@
  */
 package org.kuali.rice.core.framework.persistence.platform;
 
-import java.math.BigInteger;
+import org.apache.ojb.broker.PersistenceBroker;
+import org.apache.ojb.broker.accesslayer.LookupException;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.persistence.EntityManager;
-
-import org.apache.ojb.broker.PersistenceBroker;
-import org.apache.ojb.broker.accesslayer.LookupException;
-import org.apache.ojb.broker.query.Criteria;
 
 public class MySQLDatabasePlatform extends ANSISqlDatabasePlatform {
 
@@ -45,54 +43,79 @@ public class MySQLDatabasePlatform extends ANSISqlDatabasePlatform {
     public String getCurTimeFunction() {
         return "NOW()";
     }
-    
-    public void applyLimit(Integer limit, Criteria criteria) {
+
+    @Override
+    public String applyLimitSql(Integer limit) {
         if (limit != null) {
-            criteria.addSql(" 1 LIMIT 0," + limit.intValue()); // 1 has to be there because the criteria is ANDed
+            return " 1 LIMIT 0," + limit.intValue(); // 1 has to be there because the criteria is ANDed
+        }
+        return null;
+    }
+
+    /**
+     * Generate next id value for the logical sequence given the JDBC Connection
+     * @param sequenceName the logical sequence name
+     * @param connection JDBC Connection to use (without closing)
+     * @return next id in sequence or RuntimeException on error
+     */
+    @Override
+    protected Long getNextValSqlJdbc(String sequenceName, Connection connection) {
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            statement = connection.prepareStatement("INSERT INTO " + sequenceName + " VALUES (NULL);");
+            statement.executeUpdate();
+            statement = connection.prepareStatement("SELECT LAST_INSERT_ID()");
+            resultSet = statement.executeQuery();
+
+            if (!resultSet.next()) {
+                throw new RuntimeException("Error retrieving next option id for action list from sequence.");
+            }
+            return new Long(resultSet.getLong(1));
+        } catch (SQLException e) {
+            throw new RuntimeException("Error retrieving next option id for action list from sequence.", e);
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                }
+            }
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                }
+            }
         }
     }
-    
-    public Long getNextValSQL(String sequenceName,	PersistenceBroker persistenceBroker) {
-  		PreparedStatement statement = null;
-  		ResultSet resultSet = null;
+
+    @Override
+    protected Long getNextValSqlOjb(String sequenceName, PersistenceBroker persistenceBroker) {
   		try {
   			Connection connection = persistenceBroker.serviceConnectionManager().getConnection();
-  			statement = connection.prepareStatement("INSERT INTO " + sequenceName + " VALUES (NULL);");
-  			statement.executeUpdate();
-  			statement = connection.prepareStatement("SELECT LAST_INSERT_ID()");
-  			resultSet = statement.executeQuery();
-
-  			if (!resultSet.next()) {
-  				throw new RuntimeException("Error retrieving next option id for action list from sequence.");
-  			}
-  			return new Long(resultSet.getLong(1));
-  		} catch (SQLException e) {
-  			throw new RuntimeException("Error retrieving next option id for action list from sequence.", e);
+            return getNextValSqlJdbc(sequenceName, connection);
   		} catch (LookupException e) {
   			throw new RuntimeException("Error retrieving next option id for action list from sequence.", e);
-  		} finally {
-  			if (statement != null) {
-  				try {
-  					statement.close();
-  				} catch (SQLException e) {
-  				}
-  			}
-  			if (resultSet != null) {
-  				try {
-  					resultSet.close();
-  				} catch (SQLException e) {
-  				}
-  			}
   		}
   	}
-    
-    public Long getNextValSQL(String sequenceName, EntityManager entityManager) {
-		Long result = new Long(((BigInteger) entityManager.createNativeQuery("SELECT id FROM " + sequenceName + " for update").getSingleResult()).longValue());
-		entityManager.createNativeQuery("UPDATE " + sequenceName + " SET ID = ? WHERE ID = ? ")
-			.setParameter(1, result + 1)
-			.setParameter(2, result)
-			.executeUpdate();   	    
-	    return result;
+
+    @Override
+    protected Long getNextValSqlJpa(String sequenceName, EntityManager entityManager) {
+        int numResults = entityManager.createNativeQuery("INSERT INTO " + sequenceName + " VALUES (NULL)").executeUpdate();
+        if (numResults != 1) {
+            throw new RuntimeException("Failed to insert into sequence table to acquire next sequence value for sequence " + sequenceName);
+        }
+        try {
+            Object result = entityManager.createNativeQuery("SELECT LAST_INSERT_ID()").getSingleResult();
+            if (!(result instanceof Number)) {
+                throw new RuntimeException("Fetched last insert id for sequence " + sequenceName + " but could not cast to " + Number.class.getName() + "!");
+            }
+            Number number = (Number)result;
+            return new Long(number.longValue());
+        } catch (PersistenceException e) {
+            throw new RuntimeException("Failed to fetch last insert id to acquire next sequence value for sequence " + sequenceName, e);
+        }
     }
 
     public boolean isSITCacheSupported() {

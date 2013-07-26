@@ -22,9 +22,6 @@ import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
-import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.DataObjectMetaDataService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -42,10 +39,6 @@ import java.util.Properties;
 public class ModuleServiceBase extends RemoteModuleServiceBase implements ModuleService {
 
     protected static final Logger LOG = Logger.getLogger(ModuleServiceBase.class);
-
-    protected BusinessObjectService businessObjectService;
-    protected DataObjectMetaDataService dataObjectMetaDataService;
-
     /**
      * @see org.kuali.rice.krad.service.ModuleService#getExternalizableBusinessObject(java.lang.Class, java.util.Map)
      */
@@ -54,8 +47,7 @@ public class ModuleServiceBase extends RemoteModuleServiceBase implements Module
         Class<? extends ExternalizableBusinessObject> implementationClass =
                 getExternalizableBusinessObjectImplementation(businessObjectClass);
         ExternalizableBusinessObject businessObject =
-                (ExternalizableBusinessObject) getBusinessObjectService().findByPrimaryKey(implementationClass,
-                        fieldValues);
+                (ExternalizableBusinessObject) getLegacyDataAdapter().findByPrimaryKey(implementationClass, fieldValues);
         return (T) businessObject;
     }
 
@@ -66,7 +58,7 @@ public class ModuleServiceBase extends RemoteModuleServiceBase implements Module
             Class<T> externalizableBusinessObjectClass, Map<String, Object> fieldValues) {
         Class<? extends ExternalizableBusinessObject> implementationClass =
                 getExternalizableBusinessObjectImplementation(externalizableBusinessObjectClass);
-        return (List<T>) getBusinessObjectService().findMatching(implementationClass, fieldValues);
+        return (List<T>) getLegacyDataAdapter().findMatching(implementationClass, fieldValues);
     }
 
 
@@ -114,12 +106,12 @@ public class ModuleServiceBase extends RemoteModuleServiceBase implements Module
 
     @Override
     public boolean isExternalizableBusinessObjectLookupable(Class boClass) {
-        return getDataObjectMetaDataService().hasLocalLookup(boClass);
+        return KRADServiceLocatorWeb.getLegacyDataAdapter().hasLocalLookup(boClass);
     }
 
     @Override
     public boolean isExternalizableBusinessObjectInquirable(Class boClass) {
-        return getDataObjectMetaDataService().hasLocalInquiry(boClass);
+        return KRADServiceLocatorWeb.getLegacyDataAdapter().hasLocalInquiry(boClass);
     }
 
     /**
@@ -196,30 +188,6 @@ public class ModuleServiceBase extends RemoteModuleServiceBase implements Module
             throw new ConfigurationException("Failed to determine run mode for module '" + module + "'.  Please be sure to set configuration parameter '" + propertyName + "'");
         }
         return RunMode.valueOf(runMode.toUpperCase());
-    }
-
-    protected DataObjectMetaDataService getDataObjectMetaDataService() {
-        if (dataObjectMetaDataService == null) {
-            dataObjectMetaDataService = KRADServiceLocatorWeb.getDataObjectMetaDataService();
-        }
-
-        return dataObjectMetaDataService;
-    }
-
-    public void setDataObjectMetaDataService(DataObjectMetaDataService dataObjectMetaDataService) {
-        this.dataObjectMetaDataService = dataObjectMetaDataService;
-    }
-
-    protected BusinessObjectService getBusinessObjectService() {
-        if (businessObjectService == null) {
-            businessObjectService = KRADServiceLocator.getBusinessObjectService();
-        }
-
-        return businessObjectService;
-    }
-
-    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
     }
 }
 

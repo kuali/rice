@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.api.KimConstants;
 
 import javax.persistence.Column;
@@ -40,10 +38,6 @@ public class GroupDocumentMember extends KimDocumentBoActiveToFromBase {
 
 	@Id
 	@GeneratedValue(generator="KRIM_PND_GRP_MBR_T")
-	@GenericGenerator(name="KRIM_PND_GRP_MBR_T",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KRIM_PND_GRP_MBR_T"),
-			@Parameter(name="value_column",value="id")
-		})
 	@Column(name="GRP_MBR_ID")
 	protected String groupMemberId;
 

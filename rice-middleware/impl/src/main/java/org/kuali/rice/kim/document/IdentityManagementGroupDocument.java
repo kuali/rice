@@ -17,9 +17,6 @@ package org.kuali.rice.kim.document;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.Type;
 import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -77,7 +74,7 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	protected String groupName;
 	@Column(name="GRP_DESC")
 	protected String groupDescription;
-	@Type(type="yes_no")
+	//@Type(type="yes_no")
 	@Column(name="ACTV_IND")
 	protected boolean active = true;
 
@@ -85,11 +82,9 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	protected boolean editing;
 
 	@OneToMany(targetEntity = GroupDocumentMember.class, fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="FDOC_NBR", insertable = false, updatable = false)
 	private List<GroupDocumentMember> members = new AutoPopulatingList(GroupDocumentMember.class);
 	@OneToMany(targetEntity = GroupDocumentQualifier.class, fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="FDOC_NBR", insertable = false, updatable = false)
 	private List<GroupDocumentQualifier> qualifiers = new AutoPopulatingList(GroupDocumentQualifier.class);
 

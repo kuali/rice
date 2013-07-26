@@ -96,6 +96,20 @@ public interface WorkflowDocumentService {
             throws RiceIllegalArgumentException;
 
     /**
+     * Returns the name of the document type used by the document with the given id.
+     *
+     * @param documentId the id of the document for which to fetch the document type name, must not be null or blank
+     * @return the name of the document type for the document with the given id, will never return a null or blank value
+     * @throws RiceIllegalArgumentException if {@code documentId} is null or if the document id does not resolve to a
+     *         valid document from which a document type name can be fetched
+     *
+     * @since 2.4
+     */
+    @WebMethod(operationName = "getDocumentTypeName")
+    @WebResult(name = "documentTypeName")
+    String getDocumentTypeName(@WebParam(name = "documentId") String documentId) throws RiceIllegalArgumentException;
+
+    /**
      * Gets a list of root ActionRequests for a given documentId
      *
      * @param documentId the unique id of a document

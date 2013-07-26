@@ -16,8 +16,10 @@
 package org.kuali.rice.krms.impl.rule;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase;
+import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
 import org.kuali.rice.krms.impl.repository.CategoryBo;
 import org.kuali.rice.krms.impl.repository.ContextBo;
@@ -28,11 +30,11 @@ import org.kuali.rice.krms.impl.util.KRMSPropertyConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 public class TermSpecBusRule extends MaintenanceDocumentRuleBase {
+    private BusinessObjectService boService;
 
     @Override
     protected boolean processCustomSaveDocumentBusinessRules(MaintenanceDocument document) {
@@ -117,6 +119,17 @@ public class TermSpecBusRule extends MaintenanceDocumentRuleBase {
 
     public TermBoService getTermBoService() {
         return KrmsRepositoryServiceLocator.getTermBoService();
+    }
+
+    public BusinessObjectService getBoService() {
+        if(boService == null){
+            return KNSServiceLocator.getBusinessObjectService();
+        }
+        return boService;
+    }
+
+    public void setBoService(BusinessObjectService boService) {
+        this.boService = boService;
     }
 
 }

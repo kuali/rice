@@ -28,7 +28,9 @@ import java.util.Map;
  * It's not as generic as it could be as it relies on the OJB criteria object...
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @deprecated use new KRAD Data framework {@link org.kuali.rice.krad.data.DataObjectService}
  */
+@Deprecated
 public interface GenericDao {
     /**
      * Saves any object

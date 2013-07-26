@@ -22,11 +22,15 @@ import org.apache.ws.security.components.crypto.Crypto;
 import org.apache.ws.security.components.crypto.Merlin;
 import org.apache.ws.security.handler.RequestData;
 import org.apache.ws.security.handler.WSHandlerConstants;
+import org.kuali.rice.core.api.config.ConfigurationException;
+import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.ksb.config.wss4j.CryptoPasswordCallbackHandler;
+import org.springframework.core.io.DefaultResourceLoader;
 
+import java.io.IOException;
 import java.util.Properties;
 
 //import javax.xml.ws.handler.MessageContext;
@@ -68,13 +72,13 @@ public class CXFWSS4JInInterceptor extends WSS4JInInterceptor{
 		return loadSignatureCrypto(reqData);
 	}
 
-	protected Properties getMerlinProperties() {
+	protected Properties getMerlinProperties() throws IOException {
 		Properties props = new Properties();
 		props.put("org.apache.ws.security.crypto.merlin.keystore.type", "jks");
 		props.put("org.apache.ws.security.crypto.merlin.keystore.password", ConfigContext.getCurrentContextConfig().getKeystorePassword());
 		props.put("org.apache.ws.security.crypto.merlin.alias.password", ConfigContext.getCurrentContextConfig().getKeystorePassword());
 		props.put("org.apache.ws.security.crypto.merlin.keystore.alias", ConfigContext.getCurrentContextConfig().getKeystoreAlias());
-		props.put("org.apache.ws.security.crypto.merlin.file", ConfigContext.getCurrentContextConfig().getKeystoreFile());
+	    props.put("org.apache.ws.security.crypto.merlin.file", ConfigContext.getCurrentContextConfig().getKeystoreFile());
 
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Using keystore location " + ConfigContext.getCurrentContextConfig().getKeystoreFile());

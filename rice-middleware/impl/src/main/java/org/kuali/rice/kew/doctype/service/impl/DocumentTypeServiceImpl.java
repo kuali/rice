@@ -25,7 +25,7 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.xml.DocumentTypeXmlParser;
 import org.kuali.rice.kew.xml.export.DocumentTypeXmlExporter;
-import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.util.KRADUtils;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -129,7 +129,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
             LOG.info("Saved current document type Id " + documentType.getDocumentTypeId() + " name '" + documentType.getName() + "' (current = " + documentType.getCurrentInd() + ")");
         }
         //attach the children to this new parent.  cloning the children would probably be a better way to go here...
-        if (ObjectUtils.isNotNull(existingDocTypeId)) {
+        if (KRADUtils.isNotNull(existingDocTypeId)) {
             // documentType.getPreviousVersion() should not be null at this point
             for (Iterator iterator = getChildDocumentTypes(existingDocTypeId).iterator(); iterator.hasNext();) {
 //    			for (Iterator iterator = oldDocumentType.getChildrenDocTypes().iterator(); iterator.hasNext();) {

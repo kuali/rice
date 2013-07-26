@@ -16,6 +16,7 @@
 package org.kuali.rice.krms.test;
 
 import org.junit.Before;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
@@ -55,7 +56,7 @@ public abstract class AbstractBoTest extends KRMSTestCase {
     }
 
     protected BusinessObjectService getBoService() {
-		return KRADServiceLocator.getBusinessObjectService();
+		return KNSServiceLocator.getBusinessObjectService();
 	}
 
     protected ContextDefinition createContextDefinition(String nameSpace, String name,

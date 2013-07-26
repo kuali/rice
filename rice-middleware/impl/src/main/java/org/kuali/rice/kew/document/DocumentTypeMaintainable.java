@@ -15,12 +15,6 @@
  */
 package org.kuali.rice.kew.document;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
@@ -32,14 +26,20 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.xml.DocumentTypeXmlParser;
 import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
+import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
+import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kns.web.ui.Section;
 import org.kuali.rice.krad.bo.DocumentHeader;
-import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.kns.maintenance.Maintainable;
-import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.util.KRADUtils;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This class is the maintainable implementation for the Workflow {@link DocumentType} 
@@ -117,7 +117,7 @@ public class DocumentTypeMaintainable extends KualiMaintainableImpl {
         DocumentType newDocumentType = (DocumentType) getBusinessObject();
         String documentTypeName = newDocumentType.getName();
         DocumentType docTypeFromDatabase = docTypeService.findByName(documentTypeName);
-        if (ObjectUtils.isNull(docTypeFromDatabase)) {
+        if (docTypeFromDatabase == null) {
             docTypeService.versionAndSave(newDocumentType);
         }
         else {
@@ -132,7 +132,7 @@ public class DocumentTypeMaintainable extends KualiMaintainableImpl {
             }
             newDocumentTypeFromDatabase.populateDataDictionaryEditableFields(constructUserInterfaceEditablePropertyNamesList(), newDocumentType);
             docTypeService.versionAndSave(newDocumentTypeFromDatabase);
-            if (ObjectUtils.isNotNull(applyRetroactively) && applyRetroactively.booleanValue()) {
+            if (KRADUtils.isNotNull(applyRetroactively) && applyRetroactively.booleanValue()) {
                 // save all previous instances of document type with the same name
                 // fields: label, description, unresolvedHelpDefinitionUrl
                 List<DocumentType> previousDocTypeInstances = docTypeService.findPreviousInstances(documentTypeName);

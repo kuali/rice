@@ -34,6 +34,7 @@ import org.kuali.rice.krad.exception.ObjectNotABusinessObjectRuntimeException;
 import org.kuali.rice.krad.exception.ReferenceAttributeDoesntExistException;
 import org.kuali.rice.krad.exception.ReferenceAttributeNotAnOjbReferenceException;
 import org.kuali.rice.krad.service.PersistenceService;
+import org.kuali.rice.krad.util.LegacyDataFramework;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,20 +57,25 @@ import java.util.Vector;
  * OJB repository at runtime. This is the default implementation, that is
  * delivered with Kuali.
  */
+@Deprecated
 @Transactional
+@LegacyDataFramework
 public class PersistenceServiceOjbImpl extends PersistenceServiceImplBase implements PersistenceService {
     private static Logger LOG = Logger.getLogger(PersistenceServiceOjbImpl.class);
     private static final String CLASSPATH_RESOURCE_PREFIX = "classpath:";
     private PersistenceDao persistenceDao;
-    
-    public void clearCache() {
+
+    @Override
+	public void clearCache() {
         persistenceDao.clearCache();
     }
-    
-    public Object resolveProxy(Object o) {
+
+    @Override
+	public Object resolveProxy(Object o) {
         return persistenceDao.resolveProxy(o);
     }
 
+	@Override
 	public void loadRepositoryDescriptor(String ojbRepositoryFilePath) {
 		if ( LOG.isInfoEnabled() ) {
 			LOG.info("Begin loading OJB Metadata for: " + ojbRepositoryFilePath);
@@ -116,7 +122,8 @@ public class PersistenceServiceOjbImpl extends PersistenceServiceImplBase implem
     /**
 	 * @see org.kuali.rice.krad.service.PersistenceService#retrieveNonKeyFields(java.lang.Object)
 	 */
-    public void retrieveNonKeyFields(Object persistableObject) {
+    @Override
+	public void retrieveNonKeyFields(Object persistableObject) {
         if (persistableObject == null) {
             throw new IllegalArgumentException("invalid (null) persistableObject");
         }
@@ -131,7 +138,8 @@ public class PersistenceServiceOjbImpl extends PersistenceServiceImplBase implem
 	 * @see org.kuali.rice.krad.service.PersistenceService#retrieveReferenceObject(java.lang.Object,
 	 *      String referenceObjectName)
      */
-    public void retrieveReferenceObject(Object persistableObject, String referenceObjectName) {
+    @Override
+	public void retrieveReferenceObject(Object persistableObject, String referenceObjectName) {
         if (persistableObject == null) {
             throw new IllegalArgumentException("invalid (null) persistableObject");
         }
@@ -145,7 +153,8 @@ public class PersistenceServiceOjbImpl extends PersistenceServiceImplBase implem
 	 * @see org.kuali.rice.krad.service.PersistenceService#retrieveReferenceObject(java.lang.Object,
 	 *      String referenceObjectName)
      */
-    public void retrieveReferenceObjects(Object persistableObject, List referenceObjectNames) {
+    @Override
+	public void retrieveReferenceObjects(Object persistableObject, List referenceObjectNames) {
         if (persistableObject == null) {
             throw new IllegalArgumentException("invalid (null) persistableObject");
         }
@@ -171,7 +180,8 @@ public class PersistenceServiceOjbImpl extends PersistenceServiceImplBase implem
 	 * @see org.kuali.rice.krad.service.PersistenceService#retrieveReferenceObject(java.lang.Object,
 	 *      String referenceObjectName)
      */
-    public void retrieveReferenceObjects(List persistableObjects, List referenceObjectNames) {
+    @Override
+	public void retrieveReferenceObjects(List persistableObjects, List referenceObjectNames) {
         if (persistableObjects == null) {
             throw new IllegalArgumentException("invalid (null) persistableObjects");
         }
@@ -195,7 +205,8 @@ public class PersistenceServiceOjbImpl extends PersistenceServiceImplBase implem
     /**
      * @see org.kuali.rice.krad.service.PersistenceService#getFlattenedPrimaryKeyFieldValues(java.lang.Object)
      */
-    public String getFlattenedPrimaryKeyFieldValues(Object persistableObject) {
+    @Override
+	public String getFlattenedPrimaryKeyFieldValues(Object persistableObject) {
         if (persistableObject == null) {
             throw new IllegalArgumentException("invalid (null) persistableObject");
         }
@@ -314,20 +325,22 @@ public class PersistenceServiceOjbImpl extends PersistenceServiceImplBase implem
 	 * non-anonymous keys, the value is taken from the parent object. For
 	 * anonymous keys, all other persistableObjects are checked until a value
 	 * for the key is found.
-     * 
+     *
      * @see org.kuali.rice.krad.service.PersistenceService#getReferencedObject(java.lang.Object,
      *      org.apache.ojb.broker.metadata.ObjectReferenceDescriptor)
      */
-    public void linkObjects(Object persistableObject) {
+    @Override
+	public void linkObjects(Object persistableObject) {
         linkObjectsWithCircularReferenceCheck(persistableObject, new HashSet());
     }
 
     /**
-     * 
+     *
      * @see org.kuali.rice.krad.service.PersistenceService#allForeignKeyValuesPopulatedForReference(org.kuali.rice.krad.bo.BusinessObject,
      *      java.lang.String)
      */
-    public boolean allForeignKeyValuesPopulatedForReference(PersistableBusinessObject bo, String referenceName) {
+    @Override
+	public boolean allForeignKeyValuesPopulatedForReference(PersistableBusinessObject bo, String referenceName) {
 
         boolean allFkeysHaveValues = true;
 
@@ -409,15 +422,16 @@ public class PersistenceServiceOjbImpl extends PersistenceServiceImplBase implem
                 }
             }
         }
-        
+
         return allFkeysHaveValues;
     }
 
     /**
-     * 
+     *
      * @see org.kuali.rice.krad.service.PersistenceService#refreshAllNonUpdatingReferences(org.kuali.rice.krad.bo.BusinessObject)
      */
-    public void refreshAllNonUpdatingReferences(PersistableBusinessObject bo) {
+    @Override
+	public void refreshAllNonUpdatingReferences(PersistableBusinessObject bo) {
 
         // get the OJB class-descriptor for the bo class
         ClassDescriptor classDescriptor = getClassDescriptor(bo.getClass());
@@ -463,19 +477,20 @@ public class PersistenceServiceOjbImpl extends PersistenceServiceImplBase implem
 
         return fkValue;
     }
-    
+
     /**
 	 * Asks persistenceDao if this represents a proxy
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.service.PersistenceService#isProxied(java.lang.Object)
 	 */
+	@Override
 	public boolean isProxied(Object object) {
 		return persistenceDao.isProxied(object);
 	}
 
 	/**
      * Sets the persistenceDao attribute value.
-	 * 
+	 *
 	 * @param persistenceDao
 	 *            The persistenceDao to set.
      */

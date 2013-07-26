@@ -20,6 +20,7 @@ import org.kuali.rice.core.framework.persistence.dao.PlatformAwareDao;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
+@Deprecated
 public abstract class PlatformAwareDaoBaseOjb extends PersistenceBrokerDaoSupport implements PlatformAwareDao {
     private DatabasePlatform dbPlatform;
  

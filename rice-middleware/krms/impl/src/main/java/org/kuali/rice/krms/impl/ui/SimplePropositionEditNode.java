@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krms.impl.ui;
 
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameterType;
@@ -89,7 +90,7 @@ public class SimplePropositionEditNode extends RuleTreeNode {
     }
 
     public BusinessObjectService getBoService() {
-        return KRADServiceLocator.getBusinessObjectService();
+        return KNSServiceLocator.getBusinessObjectService();
     }
     
 }

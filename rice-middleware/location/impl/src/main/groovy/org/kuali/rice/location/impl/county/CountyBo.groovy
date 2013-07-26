@@ -24,7 +24,7 @@ import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.Table
 
-import org.hibernate.annotations.Type
+
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.location.api.county.County
 import org.kuali.rice.location.framework.county.CountyEbo
@@ -52,7 +52,7 @@ class CountyBo extends PersistableBusinessObjectBase implements CountyEbo {
     @Column(name = "COUNTY_NM")
     def String name
 
-    @Type(type = "yes_no")
+    //@Type(type="yes_no")(type = "yes_no")
     @Column(name = "ACTV_IND")
     def boolean active
 

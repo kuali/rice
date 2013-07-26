@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krad.service;
 
-import org.kuali.rice.krad.bo.Note;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
-
 import java.util.List;
+
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
+import org.kuali.rice.krad.bo.Note;
 
 /**
  * This service provides various operations related to {@link Note} objects.
@@ -26,7 +26,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface NoteService {
-	
+
     /**
      * Retrieves a list of notes that are associated with the given object id.
      * This object id will generally be the object id of the {@link org.kuali.rice.krad.bo.PersistableBusinessObject}
@@ -45,11 +45,11 @@ public interface NoteService {
      * @throws IllegalArgumentException if the specified id is null
      */
     public Note getNoteByNoteId(Long noteId);
-    
+
     /**
      * Saves the given lists of notes.  If the given list is null or empty,
      * this method will do nothing.
-     * 
+     *
      * @param notes the list of notes to save
      * @throws IllegalStateException if any of the notes in the list have an invalid remoteObjectId
      */
@@ -78,11 +78,11 @@ public interface NoteService {
     /**
      * Creates a new note which is a copy of the given note and is associated with
      * the specified PersistableBusinessObject and Person.
-     * 
+     *
      * @param noteToCopy the note to copy
      * @param bo the business object to associate the Note with
      * @return a copy of the given note which
      */
-    public Note createNote(Note noteToCopy, PersistableBusinessObject bo, String authorPrincipalId);
+    public Note createNote(Note noteToCopy, GloballyUnique bo, String authorPrincipalId);
 
 }

@@ -23,6 +23,7 @@ import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeErrorContract;
+import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -76,7 +77,6 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -1162,11 +1162,11 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
         // Deep-copy the action requests for the simulation.
         List<ActionRequestValue> copiedRequests = new ArrayList<ActionRequestValue>();
         for (ActionRequestValue request : requests) {
-        	ActionRequestValue actionRequest = (ActionRequestValue) ObjectUtils.deepCopy(
+        	ActionRequestValue actionRequest = (ActionRequestValue) SerializationUtils.deepCopy(
                     (ActionRequestValue) request);
         	// Deep-copy the action items as well, since they are indirectly retrieved from the action request via service calls.
         	for (ActionItem actionItem : actionRequest.getActionItems()) {
-        		actionRequest.getSimulatedActionItems().add((ActionItem) ObjectUtils.deepCopy(actionItem));
+        		actionRequest.getSimulatedActionItems().add((ActionItem) SerializationUtils.deepCopy(actionItem));
         	}
         	copiedRequests.add(actionRequest);
         }

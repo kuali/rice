@@ -26,13 +26,16 @@ import org.kuali.rice.krad.bo.DocumentHeader;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@Deprecated
 public interface DocumentHeaderService {
 
     /**
      * This method returns the class to use to instantiate document header objects
      *
      * @return the class to be used for new document header objects
+     * @deprecated Custom document header classes no longer supported as of Rice 2.4.
      */
+    @Deprecated
     public Class<? extends DocumentHeader> getDocumentHeaderBaseClass();
 
     /**

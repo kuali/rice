@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.component;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
@@ -26,13 +27,12 @@ import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.control.ControlBase;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
-import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Tooltip;
 import org.kuali.rice.krad.util.KRADUtils;
-import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -177,7 +177,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         disableSessionPersistence = false;
         forceSessionPersistence = false;
 
-        componentSecurity = ObjectUtils.newInstance(getComponentSecurityClass());
+        componentSecurity = DataObjectUtils.newInstance(getComponentSecurityClass());
 
         refreshWhenChangedPropertyNames = new ArrayList<String>();
         additionalComponentsToRefresh = new ArrayList<String>();

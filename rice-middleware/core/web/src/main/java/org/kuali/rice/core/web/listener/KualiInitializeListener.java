@@ -54,6 +54,9 @@ public class KualiInitializeListener implements ServletContextListener {
         long startInit = System.currentTimeMillis();
         LOG.info("Initializing Kuali Rice Application...");
 
+        // Stop Quartz from "phoning home" on every startup
+        System.setProperty("org.terracotta.quartz.skipUpdateCheck", "true");
+        
         List<String> configLocations = new ArrayList<String>();
         String additionalConfigLocations = System.getProperty(KewApiConstants.ADDITIONAL_CONFIG_LOCATIONS_PARAM);
         if (!StringUtils.isBlank(additionalConfigLocations)) {

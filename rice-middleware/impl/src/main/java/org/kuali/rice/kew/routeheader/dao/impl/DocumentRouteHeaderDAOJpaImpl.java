@@ -22,8 +22,6 @@ import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
-import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
@@ -31,7 +29,6 @@ import org.kuali.rice.kew.api.exception.LockingException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
 import org.kuali.rice.kew.routeheader.dao.DocumentRouteHeaderDAO;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;

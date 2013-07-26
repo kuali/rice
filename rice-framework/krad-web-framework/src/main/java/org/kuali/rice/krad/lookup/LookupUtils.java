@@ -16,12 +16,10 @@
 package org.kuali.rice.krad.lookup;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.ojb.broker.query.Criteria;
-import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.search.SearchOperator;
-import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.datadictionary.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -29,7 +27,7 @@ import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
-import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.LookupForm;
 
 import java.sql.Date;
@@ -37,6 +35,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -157,27 +156,6 @@ public class LookupUtils {
     }
 
     /**
-     * This method applies the search results limit to the search criteria for this BO
-     *
-     * @param businessObjectClass BO class to search on / get limit for
-     * @param criteria search criteria
-     * @param platform database platform
-     * @param limit limit to use.  If limit is null, getSearchResultsLimit will be called using the businessObjectClass
-     * to see if a limit can be found for this particular businessObjectClass.
-     */
-    public static void applySearchResultsLimit(Class businessObjectClass, Criteria criteria, DatabasePlatform platform,
-            Integer limit) {
-        if (limit != null) {
-            platform.applyLimit(limit, criteria);
-        } else {
-            limit = getSearchResultsLimit(businessObjectClass, null);
-            if (limit != null) {
-                platform.applyLimit(limit, criteria);
-            }
-        }
-    }
-
-    /**
      * Applies the search results limit to the search criteria for this BO (JPA)
      *
      * @param businessObjectClass BO class to search on / get limit for
@@ -213,14 +191,14 @@ public class LookupUtils {
             if (StringUtils.isNotBlank(activeAsOfDate)) {
                 try {
                     activeDate = CoreApiServiceLocator.getDateTimeService()
-                            .convertToSqlDate(ObjectUtils.clean(activeAsOfDate));
+                            .convertToSqlDate(KRADUtils.clean(activeAsOfDate));
                 } catch (ParseException e) {
                     // try to parse as timestamp
                     try {
                         activeTimestamp = CoreApiServiceLocator.getDateTimeService()
-                                .convertToSqlTimestamp(ObjectUtils.clean(activeAsOfDate));
+                                .convertToSqlTimestamp(KRADUtils.clean(activeAsOfDate));
                     } catch (ParseException e1) {
-                        throw new RuntimeException("Unable to convert date: " + ObjectUtils.clean(activeAsOfDate));
+                        throw new RuntimeException("Unable to convert date: " + KRADUtils.clean(activeAsOfDate));
                     }
                 }
             }
@@ -405,6 +383,21 @@ public class LookupUtils {
             String propertyName) throws IllegalAccessException, InstantiationException {
         return (Class<? extends ExternalizableBusinessObject>) ObjectPropertyUtils
                 .getPropertyType(boClass.newInstance(), StringUtils.substringBeforeLast(propertyName, "."));
+    }
+
+    // initialize and cache the search and replacment list for query characters statically to save some time
+
+    private static final String[] searchList = new String[SearchOperator.QUERY_CHARACTERS.size()];
+    static {
+        int index = 0;
+        for (SearchOperator operator : SearchOperator.QUERY_CHARACTERS) {
+            searchList[index++] = operator.op();
+        }
+    }
+    private static final String[] replacementList = Collections.nCopies(searchList.length, "").toArray(new String[0]);
+
+    public static String scrubQueryCharacters(String criteriaValue) {
+        return StringUtils.replaceEach(criteriaValue, searchList, replacementList);
     }
 
 }

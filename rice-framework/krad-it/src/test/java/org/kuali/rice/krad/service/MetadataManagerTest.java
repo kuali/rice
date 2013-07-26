@@ -21,7 +21,8 @@ import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.coreservice.impl.parameter.ParameterBo;
 import org.kuali.rice.coreservice.impl.parameter.ParameterId;
 import org.kuali.rice.coreservice.impl.parameter.ParameterTypeBo;
-import org.kuali.rice.core.framework.persistence.jpa.metadata.MetadataManager;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.krad.metadata.MetadataManager;
 import org.kuali.rice.krad.test.document.bo.Account;
 import org.kuali.rice.krad.test.document.bo.AccountExtension;
 import org.kuali.rice.location.impl.country.CountryBo;
@@ -115,7 +116,7 @@ public class MetadataManagerTest extends KRADTestCase {
 	 */
 	@Test
 	public void testPKObjectForEntity() {
-		ParameterTypeBo parameterType = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(ParameterTypeBo.class, "CONFG");
+		ParameterTypeBo parameterType = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(ParameterTypeBo.class, "CONFG");
 		assertNotNull("ParameterType should not be null", parameterType);
 		
 		Object pkValue = MetadataManager.getEntityPrimaryKeyObject(parameterType);
@@ -139,7 +140,7 @@ public class MetadataManagerTest extends KRADTestCase {
 	 */
 	@Test
 	public void testPKObjectForExtension() {
-		final Account account = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Account.class, "b101");
+		final Account account = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Account.class, "b101");
 		assertNotNull("Account should not be null", account);
 		final AccountExtension accountExtension = (AccountExtension)account.getExtension();
 		

@@ -17,10 +17,11 @@ package org.kuali.rice.krad.uif.field;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.uif.DataType;
+import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.api.util.type.TypeUtils;
+import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -59,7 +60,6 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
 import org.kuali.rice.krad.uif.widget.Suggest;
-import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -720,7 +720,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * @param optionsFinderClass the options finder class to set
      */
     public void setOptionsFinderClass(Class<? extends KeyValuesFinder> optionsFinderClass) {
-        this.optionsFinder = ObjectUtils.newInstance(optionsFinderClass);
+        this.optionsFinder = DataObjectUtils.newInstance(optionsFinderClass);
     }
 
     /**

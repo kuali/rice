@@ -15,17 +15,15 @@
  */
 package org.kuali.rice.ken.core;
 
-import javax.sql.DataSource;
-
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.lifecycle.LifecycleBean;
 import org.kuali.rice.core.api.lifecycle.LifecycleBean;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
+
+import javax.sql.DataSource;
 
 /**
  * Eager-initializing singleton bean that performs some notification startup operations

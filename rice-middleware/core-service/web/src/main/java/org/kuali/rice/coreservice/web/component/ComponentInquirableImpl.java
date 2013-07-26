@@ -18,8 +18,10 @@ package org.kuali.rice.coreservice.web.component;
 import org.kuali.rice.coreservice.impl.component.ComponentBo;
 import org.kuali.rice.coreservice.impl.component.DerivedComponentBo;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -67,8 +69,8 @@ public class ComponentInquirableImpl extends KualiInquirableImpl {
         primaryKeys.put(COMPONENT_CODE, componentCode);
         primaryKeys.put(NAMESPACE_CODE, namespaceCode);
 
-        DerivedComponentBo derivedComponentBo = KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(
-                DerivedComponentBo.class, primaryKeys);
+        DerivedComponentBo derivedComponentBo = KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(DerivedComponentBo.class,
+                primaryKeys);
         if (derivedComponentBo != null) {
             return DerivedComponentBo.toComponentBo(derivedComponentBo);
         }

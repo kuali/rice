@@ -17,6 +17,7 @@ package org.kuali.rice.ksb;
 
 import org.eclipse.jetty.server.Server;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
+import org.springframework.util.Log4jConfigurer;
 
 /**
  * Abstract class to provide convenience methods for starting and stopping a

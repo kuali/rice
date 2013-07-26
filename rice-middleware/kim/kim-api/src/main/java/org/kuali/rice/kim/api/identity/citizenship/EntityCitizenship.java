@@ -46,6 +46,8 @@ import java.util.Collection;
     CoreConstants.CommonElements.VERSION_NUMBER,
     CoreConstants.CommonElements.OBJECT_ID,
     EntityCitizenship.Elements.ACTIVE,
+    EntityCitizenship.Elements.CHANGE_DATE,
+    EntityCitizenship.Elements.CHANGE_TYPE,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class EntityCitizenship extends AbstractDataTransferObject
@@ -71,6 +73,11 @@ public final class EntityCitizenship extends AbstractDataTransferObject
     private final String objectId;
     @XmlElement(name = Elements.ACTIVE, required = false)
     private final boolean active;
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
+    @XmlElement(name = Elements.CHANGE_DATE, required = false)
+    private final DateTime changeDate;
+    @XmlElement(name = Elements.CHANGE_TYPE, required = false)
+    private final CodedAttribute changeType;
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -89,6 +96,8 @@ public final class EntityCitizenship extends AbstractDataTransferObject
         this.active = false;
         this.id = null;
         this.entityId = null;
+        this.changeDate = null;
+        this.changeType = null;
     }
 
     private EntityCitizenship(Builder builder) {
@@ -101,6 +110,8 @@ public final class EntityCitizenship extends AbstractDataTransferObject
         this.active = builder.isActive();
         this.id = builder.getId();
         this.entityId = builder.getEntityId();
+        this.changeDate = builder.getChangeDate();
+        this.changeType = builder.getChangeType() != null ? builder.getChangeType().build() : null;
     }
 
     @Override
@@ -148,6 +159,16 @@ public final class EntityCitizenship extends AbstractDataTransferObject
         return this.id;
     }
 
+    @Override
+    public DateTime getChangeDate() {
+        return this.changeDate;
+    }
+
+    @Override
+    public CodedAttribute getChangeType() {
+        return this.changeType;
+    }
+
     /**
      * A builder which can be used to construct {@link EntityCitizenship} instances.  Enforces the constraints of the {@link EntityCitizenshipContract}.
      * 
@@ -164,6 +185,8 @@ public final class EntityCitizenship extends AbstractDataTransferObject
         private String objectId;
         private boolean active;
         private String id;
+        private DateTime changeDate;
+        private CodedAttribute.Builder changeType;
 
         private Builder() {
         }
@@ -188,6 +211,8 @@ public final class EntityCitizenship extends AbstractDataTransferObject
             builder.setObjectId(contract.getObjectId());
             builder.setActive(contract.isActive());
             builder.setId(contract.getId());
+            builder.setChangeDate(contract.getChangeDate());
+            builder.setChangeType(contract.getChangeType() != null ? CodedAttribute.Builder.create(contract.getChangeType()) : null);
             return builder;
         }
 
@@ -240,6 +265,16 @@ public final class EntityCitizenship extends AbstractDataTransferObject
             return this.id;
         }
 
+        @Override
+        public DateTime getChangeDate() {
+            return this.changeDate;
+        }
+
+        @Override
+        public CodedAttribute.Builder getChangeType() {
+            return this.changeType;
+        }
+
         public void setEntityId(String entityId) {
             this.entityId = entityId;
         }
@@ -278,6 +313,14 @@ public final class EntityCitizenship extends AbstractDataTransferObject
             this.id = id;
         }
 
+        public void setChangeDate(DateTime changeDate) {
+            this.changeDate = changeDate;
+        }
+
+        public void setChangeType(CodedAttribute.Builder changeType) {
+            this.changeType = changeType;
+        }
+
     }
 
 
@@ -304,6 +347,8 @@ public final class EntityCitizenship extends AbstractDataTransferObject
         final static String END_DATE = "endDate";
         final static String ACTIVE = "active";
         final static String ID = "id";
+        final static String CHANGE_DATE = "changeDate";
+        final static String CHANGE_TYPE = "changeType";
 
     }
 

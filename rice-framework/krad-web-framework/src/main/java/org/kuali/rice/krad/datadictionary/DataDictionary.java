@@ -30,16 +30,17 @@ import org.kuali.rice.krad.datadictionary.parse.StringListConverter;
 import org.kuali.rice.krad.datadictionary.parse.StringMapConverter;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryIndex;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.util.ComponentBeanPostProcessor;
 import org.kuali.rice.krad.uif.util.UifBeanFactoryPostProcessor;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
-import org.springframework.beans.factory.support.KualiDefaultListableBeanFactory;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.expression.StandardBeanExpressionResolver;
 import org.springframework.core.convert.support.GenericConversionService;
@@ -69,7 +70,7 @@ public class DataDictionary {
 
     protected static boolean validateEBOs = true;
 
-    protected KualiDefaultListableBeanFactory ddBeans = new KualiDefaultListableBeanFactory();
+    protected DefaultListableBeanFactory ddBeans = new DefaultListableBeanFactory();
     protected XmlBeanDefinitionReader xmlReader = new XmlBeanDefinitionReader(ddBeans);
 
     protected DataDictionaryIndex ddIndex = new DataDictionaryIndex(ddBeans);
@@ -102,7 +103,7 @@ public class DataDictionary {
      *
      * @param beans - The bean factory for the the dictionary beans
      */
-    public static void setupProcessor(KualiDefaultListableBeanFactory beans) {
+    public static void setupProcessor(DefaultListableBeanFactory beans) {
         try {
             // UIF post processor that sets component ids
             BeanPostProcessor idPostProcessor = ComponentBeanPostProcessor.class.newInstance();
@@ -129,7 +130,7 @@ public class DataDictionary {
      * @param index - Index of the data dictionary beans
      * @param validationFiles - The List of bean xml files loaded into the bean file
      */
-    public void loadDictionaryBeans(KualiDefaultListableBeanFactory beans,
+    public void loadDictionaryBeans(DefaultListableBeanFactory beans,
             Map<String, List<String>> moduleDictionaryFiles, DataDictionaryIndex index,
             ArrayList<String> validationFiles) {
         // expand configuration locations into files
@@ -636,11 +637,14 @@ public class DataDictionary {
         if (StringUtils.isBlank(propertyName)) {
             throw new IllegalArgumentException("invalid (blank) propertyName");
         }
+        try {
+            PropertyDescriptor propertyDescriptor = buildReadDescriptor(targetClass, propertyName);
 
-        PropertyDescriptor propertyDescriptor = buildReadDescriptor(targetClass, propertyName);
-
-        boolean isPropertyOf = (propertyDescriptor != null);
-        return isPropertyOf;
+            return propertyDescriptor != null;
+        } catch ( Exception ex ) {
+            LOG.error( "Exception while obtaining property descriptor for " + targetClass.getName() + "." + propertyName, ex );
+            return false;
+        }
     }
 
     /**
@@ -676,6 +680,15 @@ public class DataDictionary {
         return persistenceStructureService;
     }
 
+    public static LegacyDataAdapter legacyDataAdapter;
+
+    public static LegacyDataAdapter getLegacyDataAdapter() {
+        if (legacyDataAdapter == null) {
+            legacyDataAdapter = KRADServiceLocatorWeb.getLegacyDataAdapter();
+        }
+        return legacyDataAdapter;
+    }
+
     /**
      * This method determines the Class of the attributeName passed in. Null will be returned if the member is not
      * available, or if
@@ -694,7 +707,7 @@ public class DataDictionary {
         }
 
         //Implementing Externalizable Business Object Services...
-        //The boClass can be an interface, hence handling this separately, 
+        //The boClass can be an interface, hence handling this separately,
         //since the original method was throwing exception if the class could not be instantiated.
         if (boClass.isInterface()) {
             return getAttributeClassWhenBOIsInterface(boClass, attributeName);
@@ -721,7 +734,7 @@ public class DataDictionary {
 
         // attempt to retrieve the class of the property
         try {
-            return ObjectUtils.getPropertyType(boInstance, attributeName, getPersistenceStructureService());
+            return getLegacyDataAdapter().getPropertyType(boInstance, attributeName);
         } catch (Exception e) {
             throw new RuntimeException(
                     "Unable to determine property type for: " + boClass.getName() + "." + attributeName, e);
@@ -807,26 +820,9 @@ public class DataDictionary {
 
                 Class type = propertyDescriptor.getPropertyType();
                 if (Collection.class.isAssignableFrom(type)) {
-
-                    if (getPersistenceStructureService().isPersistable(currentClass)) {
-
-                        Map<String, Class> collectionClasses = new HashMap<String, Class>();
-                        collectionClasses = getPersistenceStructureService().listCollectionObjectTypes(currentClass);
-                        currentClass = collectionClasses.get(currentPropertyName);
-
-                    } else {
-                        throw new RuntimeException(
-                                "Can't determine the Class of Collection elements because persistenceStructureService.isPersistable("
-                                        +
-                                        currentClass.getName()
-                                        +
-                                        ") returns false.");
-                    }
-
+                    currentClass = getLegacyDataAdapter().determineCollectionObjectType(currentClass, currentPropertyName);
                 } else {
-
                     currentClass = propertyDescriptor.getPropertyType();
-
                 }
             }
         }
@@ -871,29 +867,9 @@ public class DataDictionary {
                                 currentPropertyName);
                     }
                     if (Collection.class.isAssignableFrom(propertyType)) {
-
-                        if (getPersistenceStructureService().isPersistable(currentClass)) {
-
-                            Map<String, Class> collectionClasses = new HashMap<String, Class>();
-                            collectionClasses = getPersistenceStructureService().listCollectionObjectTypes(
-                                    currentClass);
-                            currentClass = collectionClasses.get(currentPropertyName);
-
-                        } else {
-
-                            throw new RuntimeException(
-                                    "Can't determine the Class of Collection elements because persistenceStructureService.isPersistable("
-                                            +
-                                            currentClass.getName()
-                                            +
-                                            ") returns false.");
-
-                        }
-
+                        currentClass = getLegacyDataAdapter().determineCollectionObjectType(currentClass, currentPropertyName);
                     } else {
-
                         currentClass = propertyType;
-
                     }
 
                 }

@@ -147,8 +147,7 @@ public abstract class ConcurrentJob<T> {
             }
             return result;
         } catch (UnexpectedRollbackException ure) {
-            // occurs against Mckoi... :(
-            LOG.error("UnexpectedRollbackException - possibly due to Mckoi");
+            LOG.error("UnexpectedRollbackException", ure);
             return result;
         } catch (TransactionException te) {
             LOG.error("Error occurred obtaining available work items", te);

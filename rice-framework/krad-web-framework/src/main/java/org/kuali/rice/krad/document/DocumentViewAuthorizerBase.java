@@ -22,6 +22,7 @@ import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.UserSessionUtils;
+import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.AttributeSecurity;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.field.DataField;
@@ -31,11 +32,8 @@ import org.kuali.rice.krad.uif.view.ViewAuthorizerBase;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.KRADUtils;
-import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -362,6 +360,6 @@ public class DocumentViewAuthorizerBase extends ViewAuthorizerBase implements Do
     }
 
     public void setDocumentAuthorizerClass(Class<? extends DocumentAuthorizer> documentAuthorizerClass) {
-        this.documentAuthorizer = ObjectUtils.newInstance(documentAuthorizerClass);
+        this.documentAuthorizer = DataObjectUtils.newInstance(documentAuthorizerClass);
     }
 }

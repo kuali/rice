@@ -16,9 +16,6 @@
 package org.kuali.rice.kim.bo.ui;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kim.api.identity.CodedAttributeContract;
 import org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo;
 
 import javax.persistence.Column;
@@ -43,10 +40,6 @@ import javax.persistence.Table;
 public class PersonDocumentPhone extends PersonDocumentBoDefaultBase {
 	@Id
 	@GeneratedValue(generator="KRIM_ENTITY_PHONE_ID_S")
-	@GenericGenerator(name="KRIM_ENTITY_PHONE_ID_S",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KRIM_ENTITY_PHONE_ID_S"),
-			@Parameter(name="value_column",value="id")
-		})
 	@Column(name = "ENTITY_PHONE_ID")
 	protected String entityPhoneId;
 		

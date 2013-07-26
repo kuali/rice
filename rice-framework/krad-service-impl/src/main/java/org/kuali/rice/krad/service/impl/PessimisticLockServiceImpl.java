@@ -24,19 +24,18 @@ import org.kuali.rice.kim.api.identity.PersonService;
 import org.kuali.rice.kim.api.permission.PermissionService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
-import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.authorization.PessimisticLock;
 import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.exception.PessimisticLockingException;
-import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.PessimisticLockService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
-import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -58,7 +57,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PessimisticLockServiceImpl.class);
 
     private PersonService personService;
-    private BusinessObjectService businessObjectService;
+    private LegacyDataAdapter legacyDataAdapter;
     private DataDictionaryService dataDictionaryService;
     private PermissionService permissionService;
 
@@ -71,8 +70,8 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
         }
         Map<String,Object> primaryKeys = new HashMap<String,Object>();
         primaryKeys.put(KRADPropertyConstants.ID, Long.valueOf(id));
-        PessimisticLock lock = (PessimisticLock) getBusinessObjectService().findByPrimaryKey(PessimisticLock.class, primaryKeys);
-        if (ObjectUtils.isNull(lock)) {
+        PessimisticLock lock = (PessimisticLock) getLegacyDataAdapter().findByPrimaryKey(PessimisticLock.class, primaryKeys);
+        if (KRADUtils.isNull(lock)) {
             throw new IllegalArgumentException("Pessimistic Lock with id " + id + " cannot be found in the database.");
         }
         Person user = GlobalVariables.getUserSession().getPerson();
@@ -86,7 +85,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     	if ( LOG.isDebugEnabled() ) {
     		LOG.debug("Deleting lock: " + lock);
     	}
-        getBusinessObjectService().delete(lock);
+        getLegacyDataAdapter().delete(lock);
     }
 
     /**
@@ -128,7 +127,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     public List<PessimisticLock> getPessimisticLocksForDocument(String documentNumber) {
         Map fieldValues = new HashMap();
         fieldValues.put(KRADPropertyConstants.DOCUMENT_NUMBER, documentNumber);
-        return (List<PessimisticLock>) getBusinessObjectService().findMatching(PessimisticLock.class, fieldValues);
+        return (List<PessimisticLock>) getLegacyDataAdapter().findMatching(PessimisticLock.class, fieldValues);
     }
 
     /**
@@ -137,7 +136,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     public List<PessimisticLock> getPessimisticLocksForSession(String sessionId) {
         Map fieldValues = new HashMap();
         fieldValues.put(KRADPropertyConstants.SESSION_ID, sessionId);
-        return (List<PessimisticLock>) getBusinessObjectService().findMatching(PessimisticLock.class, fieldValues);
+        return (List<PessimisticLock>) getLegacyDataAdapter().findMatching(PessimisticLock.class, fieldValues);
     }
 
     /**
@@ -195,15 +194,15 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     	if ( LOG.isDebugEnabled() ) {
     		LOG.debug("Saving lock: " + lock);
     	}
-        return (PessimisticLock)getBusinessObjectService().save(lock);
+        return (PessimisticLock)getLegacyDataAdapter().save(lock);
     }
 
-    public BusinessObjectService getBusinessObjectService() {
-        return this.businessObjectService;
+    public LegacyDataAdapter getLegacyDataAdapter() {
+        return this.legacyDataAdapter;
     }
 
-    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
+    public void setLegacyDataAdapter(LegacyDataAdapter legacyDataAdapter) {
+        this.legacyDataAdapter = legacyDataAdapter;
     }
 
     /**

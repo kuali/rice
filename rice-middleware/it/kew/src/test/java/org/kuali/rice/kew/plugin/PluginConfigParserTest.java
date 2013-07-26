@@ -15,17 +15,16 @@
  */
 package org.kuali.rice.kew.plugin;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.io.File;
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.util.ClasspathOrFileResourceLoader;
 import org.kuali.rice.core.framework.resourceloader.BaseResourceLoader;
 import org.kuali.rice.kew.test.KEWTestCase;
 
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Tests that the PluginConfigParser properly parses the plugin config xml file.
@@ -35,11 +34,11 @@ import org.kuali.rice.kew.test.KEWTestCase;
 public class PluginConfigParserTest extends KEWTestCase {
 
     private PluginConfigParser parser = new PluginConfigParser();
-    private static final String CONFIG_PATH_SUFFIX = "/src/test/resources/org/kuali/rice/kew/plugin/workflow.xml";
+    private static final String CONFIG_PATH = "classpath:org/kuali/rice/kew/plugin/workflow.xml";
     
     @Test public void testParse() throws Exception {
     	
-        PluginConfig plugin = parser.parse(new File(getBaseDir() + CONFIG_PATH_SUFFIX), ConfigContext.getCurrentContextConfig());
+        PluginConfig plugin = parser.parse(new ClasspathOrFileResourceLoader().getResource(CONFIG_PATH).getFile(), ConfigContext.getCurrentContextConfig());
         assertNotNull(plugin);
 
         List listeners = plugin.getListeners();

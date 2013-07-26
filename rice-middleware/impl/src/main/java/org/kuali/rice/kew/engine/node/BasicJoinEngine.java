@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.kew.engine.node;
 
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.krad.util.LegacyUtils;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -52,7 +52,11 @@ public class BasicJoinEngine implements JoinEngine {
             splitNodeNextNode.getBranch().setJoinNode(joinInstance);
             // The saveBranch() call below is necessary for parallel routing to work properly with OJB, but it breaks parallel routing with JPA,
             // so only perform it if KEW is not JPA-enabled.
-            if (!OrmUtils.isJpaEnabled("rice.kew")) {
+            // TODO: this isn't really the same test as isJpaEnabled
+            // i.e. JPA will be present even when the legacy data framework is enabled
+            // what do we do in this case?
+            //if (!OrmUtils.isJpaEnabled("rice.kew")) {
+            if (LegacyUtils.isLegacyDataFrameworkEnabled()) {
             	saveBranch(context, splitNodeNextNode.getBranch());
             }
             addExpectedJoiner(joinInstance, splitNodeNextNode.getBranch());

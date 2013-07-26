@@ -19,26 +19,27 @@ package org.kuali.rice.core.web.format;
 
 // begin Kuali Foundation modification
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.regex.Pattern;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.core.api.util.type.KualiInteger;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.regex.Pattern;
-
 /**
  * begin Kuali Foundation modification
  * This class is used to format Currency objects.
  * end Kuali Foundation modification
  */
+@Deprecated
 public class CurrencyFormatter extends Formatter {
-	
+
     private static final long serialVersionUID = -7986953503122821012L;
-    
+
 	// begin Kuali Foundation modification
     // original code
     /*
@@ -63,7 +64,7 @@ public class CurrencyFormatter extends Formatter {
     /**
      * begin Kuali Foundation modification
      * Unformats its argument and returns a KualiDecimal instance initialized with the resulting string value
-     * 
+     *
      * @see org.kuali.rice.core.web.format.Formatter#convertToObject(java.lang.String)
      * end Kuali Foundation modification
      */
@@ -147,7 +148,7 @@ public class CurrencyFormatter extends Formatter {
 
     /**
      * Returns a string representation of its argument formatted as a currency value.
-     * 
+     *
      * begin Kuali Foundation modification
      * @see org.kuali.rice.core.web.format.Formatter#format(java.lang.Object)
      * end Kuali Foundation modification
@@ -185,7 +186,7 @@ public class CurrencyFormatter extends Formatter {
                 && StringUtils.isEmpty((String)obj)) {
             return null;
         }
-        
+
 
         NumberFormat formatter = getCurrencyInstanceUsingParseBigDecimal();
         String string = null;
@@ -225,7 +226,7 @@ public class CurrencyFormatter extends Formatter {
     // begin Kuali Foundation modification
     /**
      * retrieves a currency formatter instance and sets ParseBigDecimal to true to fix [KULEDOCS-742]
-     * 
+     *
      * @return CurrencyInstance
      */
     static final NumberFormat getCurrencyInstanceUsingParseBigDecimal() {
@@ -236,11 +237,11 @@ public class CurrencyFormatter extends Formatter {
         return formatter;
     }
     // end Kuali Foundation modification
-    
+
     // begin Kuali Foundation modification
     /**
      * Validates a currency string by passing it into the convertToObject method and determining if conversion succeeded.
-     * 
+     *
      * @param currencyString The string to attempt to format.
      * @return True if no exceptions occurred when parsing and the conversion returned a non-null value; false otherwise.
      * @see org.kuali.rice.core.web.format.CurrencyFormatter#convertToObject(java.lang.String)

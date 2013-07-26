@@ -60,6 +60,7 @@ import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.impl.DataObjectAuthorizationServiceImpl;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
+import org.kuali.rice.krad.util.LegacyDataFramework;
 import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.util.Collection;
@@ -70,6 +71,7 @@ import java.util.List;
 import java.util.Map;
 
 @Deprecated
+@LegacyDataFramework
 public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizationServiceImpl implements BusinessObjectAuthorizationService {
 	private DataDictionaryService dataDictionaryService;
 	private PermissionService permissionService;
@@ -77,8 +79,9 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 	private DocumentHelperService documentHelperService;
 	private MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
 	private ConfigurationService kualiConfigurationService;
-	
-	public BusinessObjectRestrictions getLookupResultRestrictions(
+
+	@Override
+    public BusinessObjectRestrictions getLookupResultRestrictions(
 			Object dataObject, Person user) {
 		BusinessObjectRestrictions businessObjectRestrictions = new BusinessObjectRestrictionsBase();
 		considerBusinessObjectFieldUnmaskAuthorization(dataObject, user,
@@ -86,7 +89,8 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 		return businessObjectRestrictions;
 	}
 
-	public InquiryRestrictions getInquiryRestrictions(
+	@Override
+    public InquiryRestrictions getInquiryRestrictions(
 			BusinessObject businessObject, Person user) {
 		InquiryRestrictions inquiryRestrictions = new InquiryOrMaintenanceDocumentRestrictionsBase();
 		BusinessObjectEntry businessObjectEntry = (BusinessObjectEntry) getDataDictionaryService()
@@ -108,23 +112,24 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 				businessObject, user, inquiryRestrictions);
 		for (InquirySectionDefinition inquirySectionDefinition : businessObjectEntry.getInquiryDefinition().getInquirySections()) {
 			if (inquirySectionDefinition.getInquiryCollections() != null) {
-				addInquirableItemRestrictions(inquirySectionDefinition.getInquiryCollections().values(), inquiryAuthorizer, 
+				addInquirableItemRestrictions(inquirySectionDefinition.getInquiryCollections().values(), inquiryAuthorizer,
 						inquiryRestrictions, businessObject, businessObject, "", user);
 			}
 			// Collections may also be stored in the inquiry fields, so we need to parse through that
 			List<FieldDefinition> inquiryFields = inquirySectionDefinition.getInquiryFields();
 			if (inquiryFields != null) {
 				for (FieldDefinition fieldDefinition : inquiryFields) {
-					addInquirableItemRestrictions(inquiryFields, inquiryAuthorizer, 
+					addInquirableItemRestrictions(inquiryFields, inquiryAuthorizer,
 							inquiryRestrictions, businessObject, businessObject, "", user);
 				}
 			}
 		}
-		
+
 		return inquiryRestrictions;
 	}
 
-	public MaintenanceDocumentRestrictions getMaintenanceDocumentRestrictions(
+	@Override
+    public MaintenanceDocumentRestrictions getMaintenanceDocumentRestrictions(
 			MaintenanceDocument maintenanceDocument, Person user) {
 
 		MaintenanceDocumentRestrictions maintenanceDocumentRestrictions = new MaintenanceDocumentRestrictionsBase();
@@ -162,7 +167,7 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 				maintenanceDocumentRestrictions);
 		considerMaintenanceDocumentAuthorizer(maintenanceDocumentAuthorizer,
 				maintenanceDocument, user, maintenanceDocumentRestrictions);
-		
+
 		MaintenanceDocumentEntry maintenanceDocumentEntry = getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(maintenanceDocument
 				.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
 		for (MaintainableSectionDefinition maintainableSectionDefinition : maintenanceDocumentEntry.getMaintainableSections()) {
@@ -177,11 +182,11 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 		for (String attributeName : objectEntry.getAttributeNames()) {
 			AttributeDefinition attributeDefinition = objectEntry.getAttributeDefinition(attributeName);
 			if (attributeDefinition.getAttributeSecurity() != null) {
-				if (attributeDefinition.getAttributeSecurity().isMask() && 
+				if (attributeDefinition.getAttributeSecurity().isMask() &&
 						!canFullyUnmaskField(user, dataObject.getClass(), attributeName, document)) {
 					businessObjectRestrictions.addFullyMaskedField(propertyPrefix + attributeName, attributeDefinition.getAttributeSecurity().getMaskFormatter());
 				}
-				if (attributeDefinition.getAttributeSecurity().isPartialMask() && 
+				if (attributeDefinition.getAttributeSecurity().isPartialMask() &&
 						!canPartiallyUnmaskField(user, dataObject.getClass(), attributeName, document)) {
 					businessObjectRestrictions.addPartiallyMaskedField(propertyPrefix + attributeName, attributeDefinition.getAttributeSecurity().getPartialMaskFormatter());
 				}
@@ -289,7 +294,7 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 			}
 		}
 	}
-	
+
 	/**
 	 * @param dataObjectEntry if collectionItemBusinessObject is not null, then it is the DD entry for collectionItemBusinessObject.
 	 * Otherwise, it is the entry for primaryBusinessObject
@@ -326,7 +331,7 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 				else {
 					getButtonFieldPermissionDetails(primaryDataObject, attributeName);
 				}
-				
+
 				if (!businessObjectAuthorizer
 						.isAuthorizedByTemplate(
 								primaryDataObject,
@@ -468,7 +473,7 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 			if (maintainableItemDefinition instanceof MaintainableCollectionDefinition) {
 				try {
 					MaintainableCollectionDefinition maintainableCollectionDefinition = (MaintainableCollectionDefinition) maintainableItemDefinition;
-					
+
 					Collection<BusinessObject> collection = (Collection<BusinessObject>) ObjectUtils
 							.getNestedValue(businessObject,
 									maintainableItemDefinition.getName());
@@ -515,29 +520,30 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 			}
 		}
 	}
-	
-	public boolean canFullyUnmaskField(Person user,
+
+	@Override
+    public boolean canFullyUnmaskField(Person user,
 			Class<?> dataObjectClass, String fieldName, Document document) {
 		// KFSMI-5095
 		if(isNonProductionEnvAndUnmaskingTurnedOff())
 			return false;
 
-		if(user==null || StringUtils.isEmpty(user.getPrincipalId())) 
+		if(user==null || StringUtils.isEmpty(user.getPrincipalId()))
 			return false;
 		Boolean result = null;
 		if (document != null) { // if a document was passed, evaluate the permission in the context of a document
 			try { // try/catch and fallthrough is a fix for KULRICE-3365
 				result = getDocumentHelperService().getDocumentAuthorizer( document )
-				.isAuthorizedByTemplate( document, 
+				.isAuthorizedByTemplate( document,
 						KRADConstants.KNS_NAMESPACE,
-						KimConstants.PermissionTemplateNames.FULL_UNMASK_FIELD, 
+						KimConstants.PermissionTemplateNames.FULL_UNMASK_FIELD,
 						user.getPrincipalId(), getFieldPermissionDetails(dataObjectClass, fieldName), null  );
-			} catch (IllegalArgumentException e) { 
+			} catch (IllegalArgumentException e) {
 				// document didn't have needed metadata
-				// TODO: this requires intimate knowledge of DocumentHelperServiceImpl 
-			} 
+				// TODO: this requires intimate knowledge of DocumentHelperServiceImpl
+			}
 		}
-		if (result == null) { 
+		if (result == null) {
 			result = getPermissionService().isAuthorizedByTemplate(user.getPrincipalId(), KRADConstants.KNS_NAMESPACE,
                     KimConstants.PermissionTemplateNames.FULL_UNMASK_FIELD, new HashMap<String, String>(
                     getFieldPermissionDetails(dataObjectClass, fieldName)), Collections.<String, String>emptyMap());
@@ -546,13 +552,14 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 		               // will leave it null will result in an exception being thrown above.
 	}
 
-	public boolean canPartiallyUnmaskField(
+	@Override
+    public boolean canPartiallyUnmaskField(
 			Person user, Class<?> dataObjectClass, String fieldName, Document document) {
 		// KFSMI-5095
 		if(isNonProductionEnvAndUnmaskingTurnedOff())
 			return false;
-		
-		if(user==null || StringUtils.isEmpty(user.getPrincipalId())) 
+
+		if(user==null || StringUtils.isEmpty(user.getPrincipalId()))
 			return false;
 
 		if ( document == null ) {
@@ -561,9 +568,9 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
                     getFieldPermissionDetails(dataObjectClass, fieldName)), Collections.<String, String>emptyMap());
 		} else { // if a document was passed, evaluate the permission in the context of a document
 			return getDocumentHelperService().getDocumentAuthorizer( document )
-					.isAuthorizedByTemplate( document, 
+					.isAuthorizedByTemplate( document,
 											 KRADConstants.KNS_NAMESPACE,
-											 KimConstants.PermissionTemplateNames.PARTIAL_UNMASK_FIELD, 
+											 KimConstants.PermissionTemplateNames.PARTIAL_UNMASK_FIELD,
 											 user.getPrincipalId(), getFieldPermissionDetails(dataObjectClass, fieldName), Collections.<String, String>emptyMap()  );
 		}
 	}
@@ -587,7 +594,7 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 		String componentName = null;
 		String propertyName = null;
 		// JHK: commenting out for KFSMI-2398 - permission checks need to be done at the level specified
-		// that is, if the parent object specifies the security, that object should be used for the 
+		// that is, if the parent object specifies the security, that object should be used for the
 		// component
 //		if (attributeName.contains(".")) {
 //			try {
@@ -612,7 +619,7 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 //		}
 		return permissionDetails;
 	}
-	
+
 	protected Map<String, String> getButtonFieldPermissionDetails(
 			Object businessObject, String attributeName) {
 		Map<String, String> permissionDetails = new HashMap<String, String>();

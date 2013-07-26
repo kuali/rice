@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.ken.bo;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.ken.api.notification.NotificationListRecipient;
 import org.kuali.rice.ken.api.notification.NotificationRecipient;
 import org.kuali.rice.ken.api.notification.NotificationRecipientContract;
@@ -34,10 +32,6 @@ import javax.persistence.*;
 public class NotificationRecipientBo extends PersistableBusinessObjectBase implements NotificationRecipientContract {
     @Id
     @GeneratedValue(generator="KREN_RECIP_S")
-	@GenericGenerator(name="KREN_RECIP_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREN_RECIP_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="RECIP_ID")
 	private Long id;
     @Column(name="NTFCTN_ID", nullable=false)

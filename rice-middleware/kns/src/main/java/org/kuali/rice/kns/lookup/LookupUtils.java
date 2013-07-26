@@ -17,12 +17,12 @@ package org.kuali.rice.kns.lookup;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
-import org.kuali.rice.core.api.search.Range;
-import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.datetime.DateTimeService;
+import org.kuali.rice.core.api.search.Range;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -58,7 +58,10 @@ import java.util.StringTokenizer;
 
 /**
  * Utility class for Lookup related utilities and helper methods.
+ *
+ * @deprecated use KRAD
  */
+@Deprecated
 public class LookupUtils {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LookupUtils.class);
 
@@ -158,7 +161,10 @@ public class LookupUtils {
             DatabasePlatform platform) {
         Integer limit = getSearchResultsLimit(businessObjectClass);
         if (limit != null) {
-            platform.applyLimit(limit, criteria);
+            String limitSql = platform.applyLimitSql(limit);
+            if (StringUtils.isNotBlank(limitSql)) {
+                criteria.addSql(limitSql);
+            }
         }
     }
 
@@ -525,7 +531,7 @@ public class LookupUtils {
         for (Iterator iter = referenceClasses.keySet().iterator(); iter.hasNext();) {
             String attr = (String) iter.next();
             Class clazz = (Class) referenceClasses.get(attr);
-            List pkNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(clazz);
+            List pkNames = KRADServiceLocatorWeb.getLegacyDataAdapter().listPrimaryKeyFieldNames(clazz);
 
             // Compare based on key size.
             if (pkNames.size() < minKeys) {

@@ -25,9 +25,10 @@ import org.kuali.rice.core.api.util.RiceKeyConstants;
  * This class is used to format Exception messages.
  * end Kuali Foundation modification
  */
+@Deprecated
 public class FormatException extends RuntimeException {
     private static final long serialVersionUID = 6679793710457672426L;
-    
+
     // begin Kuali Foundation modification
     // removed member variables: cause, formatter
     // added the following
@@ -40,7 +41,7 @@ public class FormatException extends RuntimeException {
 	// begin Kuali Foundation modification
 	// removed public FormatException(Formatter formatter)
 	// end Kuali Foundation modification
-	
+
     public FormatException(String message) {
         // begin Kuali Foundation modification
         // orig code: this(message, null);
@@ -50,7 +51,7 @@ public class FormatException extends RuntimeException {
 
     public FormatException(String message, Throwable cause) {
         // begin Kuali Foundation modification
-        /* orig code: 
+        /* orig code:
 		super(message);
         this.cause = cause;
 		*/

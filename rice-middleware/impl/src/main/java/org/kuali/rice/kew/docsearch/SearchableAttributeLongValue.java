@@ -16,16 +16,14 @@
 package org.kuali.rice.kew.docsearch;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeInteger;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -75,10 +73,6 @@ public class SearchableAttributeLongValue implements SearchableAttributeValue, S
 
     @Id
     @GeneratedValue(generator="KREW_SRCH_ATTR_S")
-	@GenericGenerator(name="KREW_SRCH_ATTR_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_SRCH_ATTR_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="DOC_HDR_EXT_LONG_ID")
 	private String searchableAttributeValueId;
     @Column(name="KEY_CD")

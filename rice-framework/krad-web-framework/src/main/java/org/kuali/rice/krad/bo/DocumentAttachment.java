@@ -19,18 +19,21 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
-@Table(name="KRNS_MAINT_DOC_ATT_T")
+@Table(name="KRNS_MAINT_DOC_ATT_T",uniqueConstraints= {
+        @UniqueConstraint(name="KRNS_MAINT_DOC_ATT_TC0",columnNames="OBJ_ID")
+})
 public class DocumentAttachment extends PersistableAttachmentBase {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name="DOC_HDR_ID")
+    @Column(name="DOC_HDR_ID",length=14)
     private String documentNumber;
 
     public String getDocumentNumber() {

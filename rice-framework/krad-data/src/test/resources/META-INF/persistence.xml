@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2005-2011 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<persistence
+    version="1.0"
+    xmlns="http://java.sun.com/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+
+  <persistence-unit name="krad-data-unit-test">
+  	<!-- <provider>org.hibernate.ejb.HibernatePersistence</provider> -->
+	<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+  	
+<!--     <mapping-file>META-INF/krad-orm.xml</mapping-file> -->
+	<class>org.kuali.rice.krad.data.provider.jpa.eclipselink.ConverterHolder</class>
+    <class>org.kuali.rice.krad.data.provider.jpa.testbo.TestDataObject</class>
+    <class>org.kuali.rice.krad.data.provider.jpa.testbo.TestDataObjectExtension</class>
+    <class>org.kuali.rice.krad.data.provider.jpa.testbo.TestDataObjectTwoPkFields</class>
+    <class>org.kuali.rice.krad.data.provider.jpa.testbo.TestDataObjectTwoPkFieldsId</class>
+    <class>org.kuali.rice.krad.data.provider.jpa.testbo.IndirectlyLinkedCollectionDataObject</class>
+    <class>org.kuali.rice.krad.data.provider.jpa.testbo.CollectionDataObject</class>
+    <class>org.kuali.rice.krad.data.provider.jpa.testbo.CollectionDataObjectTwo</class>
+    <class>org.kuali.rice.krad.data.provider.jpa.testbo.ReferencedDataObject</class>
+    <class>org.kuali.rice.krad.data.provider.jpa.testbo.AnotherReferencedDataObject</class>
+    <class>org.kuali.rice.krad.data.provider.jpa.testbo.YetAnotherReferencedDataObject</class>
+    
+    <class>org.kuali.rice.krad.data.converters.EncryptionConverter</class>
+    <class>org.kuali.rice.krad.data.provider.jpa.testbo.NonStandardDataTypeConverter</class>
+    <class>org.kuali.rice.krad.data.converters.KualiDecimalConverter</class>
+    <class>org.kuali.rice.krad.data.converters.KualiIntegerConverter</class>
+    <class>org.kuali.rice.krad.data.converters.KualiPercentConverter</class>
+    <class>org.kuali.rice.krad.data.converters.BooleanYNConverter</class>
+    <class>org.kuali.rice.krad.data.converters.BooleanTFConverter</class>
+    <class>org.kuali.rice.krad.data.converters.Boolean01Converter</class>
+    <class>org.kuali.rice.krad.data.converters.HashConverter</class>
+    
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <properties>
+    	<!-- <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/> -->
+    	<property name="eclipselink.target-database" value="HSQL" />
+    	
+		<property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver"/>
+		<property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:mem:testdb"/>
+		<property name="javax.persistence.jdbc.user" value="sa"/>
+		<property name="javax.persistence.jdbc.password" value=""/>
+<!--        <property name="javax.persistence.jdbc.user" value="admin"/>
+       <property name="javax.persistence.jdbc.password" value="admin"/>
+ -->    	
+    </properties>
+  </persistence-unit>
+  
+</persistence>
+

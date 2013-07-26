@@ -20,7 +20,6 @@ import org.joda.time.DateTime;
 import org.kuali.rice.core.api.criteria.AndPredicate;
 import org.kuali.rice.core.api.criteria.CompositePredicate;
 import org.kuali.rice.core.api.criteria.CountFlag;
-import org.kuali.rice.core.api.criteria.CriteriaLookupService;
 import org.kuali.rice.core.api.criteria.CriteriaValue;
 import org.kuali.rice.core.api.criteria.EqualIgnoreCasePredicate;
 import org.kuali.rice.core.api.criteria.EqualPredicate;

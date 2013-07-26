@@ -28,7 +28,7 @@ import java.lang.reflect.Proxy;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ContextClassLoaderProxy extends BaseTargetedInvocationHandler {
+public class ContextClassLoaderProxy extends BaseTargetedInvocationHandler<Object> {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ContextClassLoaderProxy.class);
 

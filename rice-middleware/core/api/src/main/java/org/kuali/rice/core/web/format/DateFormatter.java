@@ -20,20 +20,21 @@ package org.kuali.rice.core.web.format;
 // begin Kuali Foundation modification
 // import order changed, and java.util.Calendar, org.kuali.KeyConstants and org.kuali.rice.kradServiceLocatorInternal added
 
+import java.sql.Date;
+import java.text.ParseException;
+import java.util.Calendar;
+
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
-
-import java.sql.Date;
-import java.text.ParseException;
-import java.util.Calendar;
 
 /**
  * begin Kuali Foundation modification
  * This class is used to format Date objects.
  * end Kuali Foundation modification
  */
+@Deprecated
 public class DateFormatter extends Formatter {
     private static final long serialVersionUID = 7612442662886603084L;
 
@@ -64,6 +65,7 @@ public class DateFormatter extends Formatter {
      *
      * @return a java.util.Date intialized with the provided string
      */
+    @Override
     protected Object convertToObject(String target) {
         // begin Kuali Foundation modification
         try {
@@ -85,6 +87,7 @@ public class DateFormatter extends Formatter {
      *
      * @return a formatted String
      */
+    @Override
     public Object format(Object value) {
         if (value == null) {
             return null;
@@ -118,7 +121,7 @@ public class DateFormatter extends Formatter {
         return isValid;
 
     }
-    
+
     protected DateTimeService getDateTimeService() {
     	if (this.dateTimeService == null) {
     		this.dateTimeService = GlobalResourceLoader.getService(CoreConstants.Services.DATETIME_SERVICE);

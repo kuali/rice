@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.krad.document;
 
+import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.view.ViewPresentationControllerBase;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
@@ -234,6 +234,6 @@ public class DocumentViewPresentationControllerBase extends ViewPresentationCont
 
     public void setDocumentPresentationControllerClass(
             Class<? extends DocumentPresentationController> documentPresentationControllerClass) {
-        this.documentPresentationController = ObjectUtils.newInstance(documentPresentationControllerClass);
+        this.documentPresentationController = DataObjectUtils.newInstance(documentPresentationControllerClass);
     }
 }

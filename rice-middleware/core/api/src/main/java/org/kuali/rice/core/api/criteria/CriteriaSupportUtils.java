@@ -148,6 +148,8 @@ final class CriteriaSupportUtils {
 			throw new IllegalArgumentException("Given criteria value cannot be null.");
 		} else if (object instanceof CharSequence) {
 			return new CriteriaStringValue((CharSequence)object);
+        } else if (object instanceof Boolean) {
+            return new CriteriaBooleanValue((Boolean)object);
 		} else if (object instanceof DateTime) {
             return new CriteriaDateTimeValue((DateTime)object);
 		} else if (object instanceof Calendar) {

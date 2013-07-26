@@ -22,11 +22,13 @@ import java.sql.Timestamp;
  * Formatter that handles Date format (without time) in presentation with a Timestamp in
  * the business object
  */
+@Deprecated
 public class DateDisplayTimestampObjectFormatter extends DateFormatter {
-	
+
 	private static final long serialVersionUID = 5213490843335374209L;
 
-	protected Object convertToObject(String target) {
+	@Override
+    protected Object convertToObject(String target) {
 		return new Timestamp(((Date) super.convertToObject(target)).getTime());
 	}
 

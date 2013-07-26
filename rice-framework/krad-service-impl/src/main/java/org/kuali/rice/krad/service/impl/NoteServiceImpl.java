@@ -15,37 +15,40 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.util.cache.CopiedObject;
+import org.kuali.rice.krad.bo.Attachment;
 import org.kuali.rice.krad.bo.Note;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.dao.NoteDao;
 import org.kuali.rice.krad.service.AttachmentService;
+import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.NoteService;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service implementation for the Note structure
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Transactional
 public class NoteServiceImpl implements NoteService {
 
-    private NoteDao noteDao;
-    
-    private AttachmentService attachmentService;
+    protected LegacyDataAdapter lda;
+    protected AttachmentService attachmentService;
+//    protected DataObjectService dataObjectService;
 
-    public NoteServiceImpl() {
-        super();
+    @Required
+    public void setLegacyDataAdapter(LegacyDataAdapter lda) {
+        this.lda = lda;
     }
 
-    /**
-     * @see org.kuali.rice.krad.service.NoteService#saveNoteValueList(java.util.List)
-     */
-    public void saveNoteList(List<Note> notes) {
+    @Override
+	public void saveNoteList(List<Note> notes) {
         if (notes != null) {
             for (Note note : notes) {
             	if (StringUtils.isBlank(note.getRemoteObjectIdentifier())) {
@@ -59,12 +62,25 @@ public class NoteServiceImpl implements NoteService {
     /**
      * @see org.kuali.rice.krad.service.NoteService#save(org.kuali.rice.krad.bo.Note)
      */
-    public Note save(Note note) {
+    @Override
+	public Note save(Note note) {
     	validateNoteNotNull(note);
     	if (StringUtils.isBlank(note.getRemoteObjectIdentifier())) {
     		throw new IllegalStateException("The remote object identifier must be established on a Note before it can be saved.  Given note had a null or empty remote object identifier.");
     	}
-        noteDao.save(note);
+        if (note.getAttachment() != null && note.getAttachment().getAttachmentFileName() == null) {
+            note.setAttachment(null);
+        }
+        if (note != null && note.getNoteIdentifier() == null && note.getAttachment() != null) {
+            Attachment attachment = note.getAttachment();
+            note.setAttachment(null);
+            // store without attachment
+            note = lda.save(note);
+            attachment.setNoteIdentifier(note.getNoteIdentifier());
+            // put attachment back
+            note.setAttachment(attachment);
+        }
+        note = lda.save(note);
         // move attachment from pending directory
         if (note.getAttachment() != null) {
         	attachmentService.moveAttachmentWherePending(note);
@@ -75,37 +91,44 @@ public class NoteServiceImpl implements NoteService {
     /**
      * @see org.kuali.rice.krad.service.NoteService#getByRemoteObjectId(java.lang.String)
      */
-    public List<Note> getByRemoteObjectId(String remoteObjectId) {
+    @SuppressWarnings("deprecation")
+	@Override
+	public List<Note> getByRemoteObjectId(String remoteObjectId) {
     	if (StringUtils.isBlank(remoteObjectId)) {
     		throw new IllegalArgumentException("The remoteObjectId must not be null or blank.");
     	}
-        return noteDao.findByremoteObjectId(remoteObjectId);
+    	return new ArrayList<Note>( lda.findMatchingOrderBy(Note.class, Collections.singletonMap("remoteObjectIdentifier", remoteObjectId), "notePostedTimestamp", true) );
     }
-    
+
     /**
      * @see org.kuali.rice.krad.service.NoteService#getNoteByNoteId(java.lang.Long)
      */
-    public Note getNoteByNoteId(Long noteId) {
+    @Override
+	public Note getNoteByNoteId(Long noteId) {
     	if (noteId == null) {
     		throw new IllegalArgumentException("The noteId must not be null.");
     	}
-		return noteDao.getNoteByNoteId(noteId);
+    	return lda.findBySinglePrimaryKey(Note.class, noteId);
 	}
 
     /**
      * @see org.kuali.rice.krad.service.NoteService#deleteNote(org.kuali.rice.krad.bo.Note)
      */
-    public void deleteNote(Note note) {
+    @Override
+	public void deleteNote(Note note) {
     	validateNoteNotNull(note);
-        noteDao.deleteNote(note);
+    	if ( note.getAttachment() != null ) { // Not sure about this - might blow up when no attachment
+    		lda.delete(note.getAttachment());
+    	}
+        lda.delete(note);
     }
-    
+
     /**
      * TODO this method seems awfully out of place in this service
-     * 
-     * @see org.kuali.rice.krad.service.NoteService#createNote(org.kuali.rice.krad.bo.Note, org.kuali.rice.krad.bo.PersistableBusinessObject)
+     *
      */
-    public Note createNote(Note noteToCopy, PersistableBusinessObject bo, String authorPrincipalId) {
+    @Override
+	public Note createNote(Note noteToCopy, GloballyUnique bo, String authorPrincipalId) {
     	validateNoteNotNull(noteToCopy);
     	if (bo == null) {
     		throw new IllegalArgumentException("The bo must not be null.");
@@ -114,41 +137,25 @@ public class NoteServiceImpl implements NoteService {
     		throw new IllegalArgumentException("The authorPrincipalId must not be null.");
     	}
 
-        Note tmpNote = (Note) new CopiedObject(noteToCopy).getContent();
+        Note tmpNote = new CopiedObject<Note>(noteToCopy).getContent();
         tmpNote.setRemoteObjectIdentifier(bo.getObjectId());
         tmpNote.setAuthorUniversalIdentifier(authorPrincipalId);
 
         return tmpNote;
     }
 
-    /**
-     * Sets the data access object
-     * 
-     * @param d
-     */
-    public void setNoteDao(NoteDao d) {
-        this.noteDao = d;
-    }
-
-    /**
-     * Retrieves a data access object
-     */
-    protected NoteDao getNoteDao() {
-        return noteDao;
-    }
-    
     public void setAttachmentService(AttachmentService attachmentService) {
     	this.attachmentService = attachmentService;
     }
-    
+
     protected AttachmentService getAttachmentService() {
     	return this.attachmentService;
     }
-    
+
     private void validateNoteNotNull(Note note) {
     	if (note == null) {
     		throw new IllegalArgumentException("Note must not be null.");
     	}
     }
-    
+
 }

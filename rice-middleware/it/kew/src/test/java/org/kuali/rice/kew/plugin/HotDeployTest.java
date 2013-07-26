@@ -15,21 +15,17 @@
  */
 package org.kuali.rice.kew.plugin;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.io.File;
-
-import javax.xml.namespace.QName;
-
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 import org.kuali.rice.core.api.config.CoreConfigHelper;
+import org.kuali.rice.core.api.util.ClasspathOrFileResourceLoader;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 
+import javax.xml.namespace.QName;
+import java.io.File;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests the HotDeployer and Reloader which handle hot deployment and hot reloading
@@ -78,7 +74,7 @@ public class HotDeployTest extends KEWTestCase {
 		assertEquals("There should still be no plugins.", 0, registry.getPluginEnvironments().size());
 		
 		// now let's copy a plugin over and run the hot deployer
-        String pluginZipFileLocation = getBaseDir() + "/src/test/resources/org/kuali/rice/kew/plugin/ziptest.zip";
+        String pluginZipFileLocation = new ClasspathOrFileResourceLoader().getResource("classpath:org/kuali/rice/kew/plugin/ziptest.zip").getURL().getPath();
 		File pluginZipFile = new File(pluginZipFileLocation);
 		assertTrue("Plugin file '" + pluginZipFileLocation + "' should exist", pluginZipFile.exists());
 		assertTrue("Plugin file '" + pluginZipFileLocation + "' should be a file", pluginZipFile.isFile());
@@ -139,7 +135,7 @@ public class HotDeployTest extends KEWTestCase {
 		assertEquals("Resource loader should have no children.", 0, registry.getResourceLoaders().size());
 				
         // now let's copy a plugin over and run the hot deployer
-        String pluginZipFileLocation = getBaseDir() + "/src/test/resources/org/kuali/rice/kew/plugin/ziptest.zip";
+        String pluginZipFileLocation = new ClasspathOrFileResourceLoader().getResource("classpath:org/kuali/rice/kew/plugin/ziptest.zip").getURL().getPath();
         File pluginZipFile = new File(pluginZipFileLocation);
         assertTrue("Plugin file '" + pluginZipFileLocation + "' should exist", pluginZipFile.exists());
         assertTrue("Plugin file '" + pluginZipFileLocation + "' should be a file", pluginZipFile.isFile());

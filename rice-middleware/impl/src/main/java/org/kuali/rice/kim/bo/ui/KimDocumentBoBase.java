@@ -36,7 +36,7 @@ public class KimDocumentBoBase  extends PersistableBusinessObjectBase {
 	//@Type(type="yes_no")
 	//@Column(name="ACTV_IND")
     //protected boolean active = true;
-	//@Type(type="yes_no")
+	////@Type(type="yes_no")
 	//@Column(name="EDIT_FLAG")
 	//protected boolean edit;
 

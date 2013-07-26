@@ -19,6 +19,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:beans="http://www.springframework.org/schema/beans"
        xmlns:context="http://www.springframework.org/schema/context"
@@ -63,15 +64,6 @@
     <property name="serviceName" value="dateTimeService"/>
   </bean>
 
-  <bean id="kradOjbConfigurer" class="org.kuali.rice.core.framework.persistence.ojb.BaseOjbConfigurer">
-    <property name="jcdAliases">
-      <list>
-        <value>kradApplicationDataSource</value>
-      </list>
-    </property>
-    <property name="metadataLocation" value="classpath:org/kuali/rice/krad/config/OJB-repository-krad.xml"/>
-  </bean>
-
   <bean id="kradApplicationDataSource"
         class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean" lazy-init="true">
     <property name="preferredDataSourceParams">
@@ -87,12 +79,13 @@
     <property name="serverDataSource" value="false"/>
   </bean>
 
+  <!-- we define a kradApplicationModuleConfiguration-parentBean which allows for extension with KNS config
+       when KNS is enabled and the KNSSpringBeans.xml is loaded -->
   <bean id="kradApplicationModuleConfiguration" parent="kradApplicationModuleConfiguration-parentBean"/>
   <bean id="kradApplicationModuleConfiguration-parentBean" class="org.kuali.rice.krad.bo.ModuleConfiguration"
         abstract="true">
     <property name="namespaceCode" value="KR-NS"/>
     <property name="dataSourceName" value="kradApplicationDataSource"/>
-    <property name="entityManager" ref="kradApplicationEntityManager"/>
     <property name="initializeDataDictionary" value="true"/>
     <property name="dataDictionaryService" ref="dataDictionaryService"/>
     <property name="persistenceService" ref="persistenceServiceOjb"/>
@@ -134,12 +127,14 @@
         <value>org.kuali.rice.krad.</value>
       </list>
     </property>
-  </bean>
+    <property name="entityManager" ref="kradSharedEntityManager"/>
+    <property name="providers">
+      <list>
+        <ref bean="kradJpaPersistenceProvider"/>
+        <ref bean="kradMetadataProvider"/>
+      </list>
+    </property>
 
-  <bean id="platformAwareDao" abstract="true"
-        class="org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb">
-    <property name="jcdAlias" value="kradApplicationDataSource"/>
-    <property name="dbPlatform" ref="dbPlatform"/>
   </bean>
 
   <bean class="org.kuali.rice.core.framework.util.spring.NamedOrderedListBean">
@@ -176,21 +171,6 @@
   <bean id="dataDictionaryService" class="org.kuali.rice.krad.service.impl.DataDictionaryServiceImpl" scope="singleton">
     <property name="kualiConfigurationService" ref="kualiConfigurationService"/>
     <property name="kualiModuleService" ref="kualiModuleService"/>
-  </bean>
-
-  <bean id="businessObjectService" class="org.kuali.rice.krad.service.impl.BusinessObjectServiceImpl">
-    <property name="businessObjectDao">
-      <ref bean="businessObjectDao"/>
-    </property>
-    <property name="persistenceStructureService">
-      <ref bean="persistenceStructureService"/>
-    </property>
-    <property name="persistenceService">
-      <ref bean="persistenceService"/>
-    </property>
-    <property name="dataObjectMetaDataService">
-      <ref bean="dataObjectMetaDataService"/>
-    </property>
   </bean>
 
   <bean id="kualiModuleService" class="org.kuali.rice.krad.service.impl.KualiModuleServiceImpl"/>
@@ -236,11 +216,16 @@
     </property>
   </bean>
 
-  <bean id="xmlObjectSerializerService" class="org.kuali.rice.krad.service.impl.XmlObjectSerializerServiceImpl"></bean>
+  <bean id="xmlObjectSerializerService" class="org.kuali.rice.krad.service.impl.XmlObjectSerializerServiceImpl"
+        p:legacyDataAdapter-ref="legacyDataAdapter"/>
 
-  <bean id="xmlObjectSerializerIgnoreMissingFieldsService" class="org.kuali.rice.krad.service.impl.XmlObjectSerializerIgnoreMissingFieldsServiceImpl"></bean>
+  <bean id="xmlObjectSerializerIgnoreMissingFieldsService" class="org.kuali.rice.krad.service.impl.XmlObjectSerializerIgnoreMissingFieldsServiceImpl"
+        p:legacyDataAdapter-ref="legacyDataAdapter"/>
 
   <bean id="documentService" class="org.kuali.rice.krad.service.impl.DocumentServiceImpl">
+    <property name="legacyDataAdapter">
+      <ref bean="legacyDataAdapter"/>
+    </property>
     <property name="documentDao">
       <ref bean="documentDao"/>
     </property>
@@ -253,9 +238,6 @@
     <property name="documentHeaderService">
       <ref bean="documentHeaderService"/>
     </property>
-    <property name="businessObjectService">
-      <ref bean="businessObjectService"/>
-    </property>
     <property name="noteService">
       <ref bean="noteService"/>
     </property>
@@ -267,11 +249,8 @@
     </property>
   </bean>
 
-  <bean id="documentHeaderService" class="org.kuali.rice.krad.service.impl.DocumentHeaderServiceImpl">
-    <property name="documentHeaderDao">
-      <ref bean="documentHeaderDao"/>
-    </property>
-  </bean>
+  <bean id="documentHeaderService" class="org.kuali.rice.krad.service.impl.DocumentHeaderServiceImpl"
+        p:legacyDataAdapter-ref="legacyDataAdapter"/>
 
   <bean id="kualiRuleService" class="org.kuali.rice.krad.service.impl.KualiRuleServiceImpl">
     <property name="documentDictionaryService">
@@ -299,8 +278,8 @@
   </bean>
 
   <bean id="lookupService" class="org.kuali.rice.krad.service.impl.LookupServiceImpl">
-    <property name="lookupDao">
-      <ref bean="lookupDao"/>
+    <property name="legacyDataAdapter">
+      <ref bean="legacyDataAdapter"/>
     </property>
     <property name="kualiConfigurationService">
       <ref bean="kualiConfigurationService"/>
@@ -322,42 +301,27 @@
 
   <bean id="workflowDocumentService" class="org.kuali.rice.krad.workflow.service.impl.WorkflowDocumentServiceImpl"/>
 
-  <bean id="maintenanceDocumentService" class="org.kuali.rice.krad.service.impl.MaintenanceDocumentServiceImpl">
-    <property name="maintenanceDocumentDao">
-      <ref bean="maintenanceDocumentDao"/>
-    </property>
+  <bean id="maintenanceDocumentService" class="org.kuali.rice.krad.service.impl.MaintenanceDocumentServiceImpl"
+        p:legacyDataAdapter-ref="legacyDataAdapter">
     <property name="documentDictionaryService">
       <ref bean="documentDictionaryService"/>
-    </property>
-    <property name="dataObjectMetaDataService">
-      <ref bean="dataObjectMetaDataService"/>
     </property>
     <property name="documentService">
       <ref bean="documentService"/>
     </property>
   </bean>
 
-  <bean id="noteService" class="org.kuali.rice.krad.service.impl.NoteServiceImpl">
-    <property name="noteDao">
-      <ref bean="noteDao"/>
-    </property>
+  <bean id="noteService" class="org.kuali.rice.krad.service.impl.NoteServiceImpl"
+        p:legacyDataAdapter-ref="legacyDataAdapter">
     <property name="attachmentService" ref="attachmentService"/>
   </bean>
 
-  <bean id="attachmentService" class="org.kuali.rice.krad.service.impl.AttachmentServiceImpl">
+  <bean id="attachmentService" class="org.kuali.rice.krad.service.impl.AttachmentServiceImpl"
+        p:legacyDataAdapter-ref="legacyDataAdapter">
     <property name="kualiConfigurationService">
       <ref bean="kualiConfigurationService"/>
     </property>
-    <property name="attachmentDao">
-      <ref bean="attachmentDao"/>
-    </property>
   </bean>
-
-  <bean id="persistenceStructureServiceJpa"
-        class="org.kuali.rice.krad.service.impl.PersistenceStructureServiceJpaImpl"/>
-
-  <bean id="persistenceStructureServiceOjb"
-        class="org.kuali.rice.krad.service.impl.PersistenceStructureServiceOjbImpl"/>
 
   <bean id="persistenceStructureService" class="org.kuali.rice.krad.service.impl.PersistenceStructureServiceImpl">
     <property name="persistenceStructureServiceJpa" ref="persistenceStructureServiceJpa"/>
@@ -365,36 +329,17 @@
   </bean>
 
   <bean id="persistenceService" class="org.kuali.rice.krad.service.impl.PersistenceServiceImpl">
-    <property name="persistenceServiceJpa" ref="persistenceServiceJpa"/>
     <property name="persistenceServiceOjb" ref="persistenceServiceOjb"/>
     <property name="kualiModuleService" ref="kualiModuleService"/>
   </bean>
 
-  <bean id="persistenceServiceJpa" class="org.kuali.rice.krad.service.impl.PersistenceServiceJpaImpl">
-    <property name="persistenceDao" ref="persistenceDao"/>
-  </bean>
-
-  <bean id="persistenceServiceOjb" class="org.kuali.rice.krad.service.impl.PersistenceServiceOjbImpl">
-    <property name="persistenceDao" ref="persistenceDao"/>
-  </bean>
-
   <bean id="persistenceDao" class="org.kuali.rice.krad.dao.proxy.PersistenceDaoProxy">
-    <property name="persistenceDaoJpa" ref="persistenceDaoJpa"/>
     <property name="persistenceDaoOjb" ref="persistenceDaoOjb"/>
   </bean>
 
   <bean id="platformAwareDaoJdbc" abstract="true"
         class="org.kuali.rice.core.framework.persistence.jdbc.dao.PlatformAwareDaoBaseJdbc">
     <property name="dataSource" ref="kradApplicationDataSource"/>
-    <property name="dbPlatform" ref="dbPlatform"/>
-  </bean>
-
-  <bean id="persistenceDaoJpa" class="org.kuali.rice.krad.dao.impl.PersistenceDaoJpa">
-    <property name="entityManager" ref="kradApplicationEntityManager"/>
-  </bean>
-
-  <bean id="persistenceDaoOjb" parent="platformAwareDao" class="org.kuali.rice.krad.dao.impl.PersistenceDaoOjb">
-    <property name="jcdAlias" value="kradApplicationDataSource"/>
     <property name="dbPlatform" ref="dbPlatform"/>
   </bean>
 
@@ -437,17 +382,8 @@
     <property name="dataDictionaryService">
       <ref bean="dataDictionaryService"/>
     </property>
-    <property name="businessObjectService">
-      <ref bean="businessObjectService"/>
-    </property>
     <property name="documentDictionaryService">
       <ref bean="documentDictionaryService"/>
-    </property>
-    <property name="persistenceService">
-      <ref bean="persistenceService"/>
-    </property>
-    <property name="persistenceStructureService">
-      <ref bean="persistenceStructureService"/>
     </property>
     <!-- Collection constraint processors are classes that determine if a feature of a collection of objects satisfies some constraint -->
     <property name="collectionConstraintProcessors">
@@ -534,15 +470,6 @@
     <property name="sequenceAccessorDao" ref="sequenceAccessorDao"/>
   </bean>
 
-  <bean id="keyValuesService" class="org.kuali.rice.krad.service.impl.KeyValuesServiceImpl">
-    <property name="businessObjectDao">
-      <ref bean="businessObjectDao"/>
-    </property>
-    <property name="persistenceStructureService">
-      <ref bean="persistenceStructureService"/>
-    </property>
-  </bean>
-
   <bean id="encryptionService" class="org.kuali.rice.core.impl.encryption.DemonstrationGradeEncryptionServiceImpl">
     <property name="secretKey">
       <bean class="org.kuali.rice.core.impl.config.property.ConfigPropertyFactoryBean">
@@ -557,46 +484,9 @@
     </property>
   </bean>
 
-  <bean id="pessimisticLockService" class="org.kuali.rice.krad.service.impl.PessimisticLockServiceImpl">
-    <property name="businessObjectService">
-      <ref bean="businessObjectService"/>
-    </property>
-  </bean>
+  <bean id="pessimisticLockService" class="org.kuali.rice.krad.service.impl.PessimisticLockServiceImpl"
+        p:legacyDataAdapter-ref="legacyDataAdapter"/>
 
-  <bean id="ojbCollectionHelper" class="org.kuali.rice.krad.service.util.OjbCollectionHelper"/>
-
-  <bean id="persistedLookupMetadataDao" class="org.kuali.rice.krad.dao.proxy.PersistedLookupMetadataDaoProxy">
-    <property name="persistedLookupMetadataDaoJpa" ref="persistedLookupMetadataDaoJpa"/>
-    <property name="persistedLookupMetadataDaoOjb" ref="persistedLookupMetadataDaoOjb"/>
-  </bean>
-
-  <bean id="persistedLookupMetadataDaoOjb" parent="platformAwareDao"
-        class="org.kuali.rice.krad.dao.impl.PersistedLookupMetadataDaoOjb"/>
-
-  <bean id="dataObjectMetaDataService" class="org.kuali.rice.krad.service.impl.DataObjectMetaDataServiceImpl">
-    <property name="dataDictionaryService">
-      <ref bean="dataDictionaryService"/>
-    </property>
-    <property name="persistenceStructureService">
-      <ref bean="persistenceStructureService"/>
-    </property>
-    <property name="kualiModuleService">
-      <ref bean="kualiModuleService"/>
-    </property>
-    <property name="viewDictionaryService">
-      <ref bean="viewDictionaryService"/>
-    </property>
-  </bean>
-
-  <!-- Deprecated and removed from use in KRAD (KULRICE-9149) -->
-  <bean id="sessionDocumentService" class="org.kuali.rice.krad.service.impl.SessionDocumentServiceImpl">
-    <property name="businessObjectService">
-      <ref bean="businessObjectService"/>
-    </property>
-    <property name="sessionDocumentDao">
-      <ref bean="sessionDocumentDao"/>
-    </property>
-  </bean>
 
   <!-- Since these beans are not a singletons, Spring does not inject their static
         members until the first one is created. This bean causes one to be created.
@@ -617,136 +507,41 @@
   <bean id="documentAdHocService" class="org.kuali.rice.krad.service.impl.DocumentAdHocServiceImpl"/>
 
   <bean id="documentDao" class="org.kuali.rice.krad.dao.proxy.DocumentDaoProxy">
-    <property name="documentDaoJpa" ref="documentDaoJpa"/>
     <property name="documentDaoOjb" ref="documentDaoOjb"/>
   </bean>
 
-  <bean id="documentDaoOjb" parent="platformAwareDao" class="org.kuali.rice.krad.dao.impl.DocumentDaoOjb">
-    <!-- Constructor injection only please to help enforce completeness of instances -->
-    <constructor-arg ref="businessObjectDao"/>
-    <constructor-arg ref="documentAdHocService"/>
-    <property name="ojbCollectionHelper" ref="ojbCollectionHelper"/>
-  </bean>
-
-  <bean id="documentHeaderDao" class="org.kuali.rice.krad.dao.proxy.DocumentHeaderDaoProxy">
-    <property name="documentHeaderDaoJpa" ref="documentHeaderDaoJpa"/>
-    <property name="documentHeaderDaoOjb" ref="documentHeaderDaoOjb"/>
-  </bean>
-
-  <bean id="documentHeaderDaoOjb" parent="platformAwareDao" class="org.kuali.rice.krad.dao.impl.DocumentHeaderDaoOjb"/>
-
   <bean id="lookupDao" class="org.kuali.rice.krad.dao.proxy.LookupDaoProxy">
-    <property name="lookupDaoJpa" ref="lookupDaoJpa"/>
     <property name="lookupDaoOjb" ref="lookupDaoOjb"/>
   </bean>
 
   <bean id="criterialookupDao" class="org.kuali.rice.krad.criteria.CriteriaLookupDaoProxy">
-    <property name="criteriaLookupDaoJpa" ref="criterialookupDaoJpa"/>
     <property name="criteriaLookupDaoOjb" ref="criterialookupDaoOjb"/>
   </bean>
 
-  <bean id="maintenanceDocumentDao" class="org.kuali.rice.krad.dao.proxy.MaintenanceDocumentDaoProxy">
-    <property name="maintenanceDocumentDaoJpa" ref="maintenanceDocumentDaoJpa"/>
-    <property name="maintenanceDocumentDaoOjb" ref="maintenanceDocumentDaoOjb"/>
-  </bean>
-
-  <bean id="maintenanceDocumentDaoOjb" parent="platformAwareDao"
-        class="org.kuali.rice.krad.dao.impl.MaintenanceDocumentDaoOjb"/>
-
-  <bean id="noteDao" class="org.kuali.rice.krad.dao.proxy.NoteDaoProxy">
-    <property name="noteDaoJpa" ref="noteDaoJpa"/>
-    <property name="noteDaoOjb" ref="noteDaoOjb"/>
-  </bean>
-
-  <bean id="noteDaoOjb" parent="platformAwareDao" class="org.kuali.rice.krad.dao.impl.NoteDaoOjb"/>
-
-  <bean id="attachmentDao" class="org.kuali.rice.krad.dao.proxy.AttachmentDaoProxy">
-    <property name="attachmentDaoJpa" ref="attachmentDaoJpa"/>
-    <property name="attachmentDaoOjb" ref="attachmentDaoOjb"/>
-  </bean>
-
-  <bean id="attachmentDaoOjb" parent="platformAwareDao" class="org.kuali.rice.krad.dao.impl.AttachmentDaoOjb"/>
-
   <bean id="businessObjectDao" class="org.kuali.rice.krad.dao.proxy.BusinessObjectDaoProxy">
     <!-- Constructor injection only please to help enforce completeness of instances -->
-    <property name="businessObjectDaoJpa" ref="businessObjectDaoJpa"/>
     <property name="businessObjectDaoOjb" ref="businessObjectDaoOjb"/>
   </bean>
 
-  <bean id="businessObjectDaoJpa" class="org.kuali.rice.krad.dao.impl.BusinessObjectDaoJpa">
-    <!-- Constructor injection only please to help enforce completeness of instances -->
-    <constructor-arg ref="kradApplicationEntityManager"/>
-    <constructor-arg ref="persistenceStructureService"/>
-  </bean>
-
-  <bean id="businessObjectDaoOjb" parent="platformAwareDao" class="org.kuali.rice.krad.dao.impl.BusinessObjectDaoOjb">
-    <!-- Constructor injection only please to help enforce completeness of instances -->
-    <constructor-arg ref="persistenceStructureService"/>
-    <property name="ojbCollectionHelper" ref="ojbCollectionHelper"/>
-  </bean>
-
-  <bean id="sessionDocumentDao" class="org.kuali.rice.krad.dao.proxy.SessionDocumentDaoProxy">
-    <property name="sessionDocumentDaoJpa" ref="sessionDocumentDaoJpa"/>
-    <property name="sessionDocumentDaoOjb" ref="sessionDocumentDaoOjb"/>
-  </bean>
-
-  <bean id="sessionDocumentDaoOjb" parent="platformAwareDao"
-        class="org.kuali.rice.krad.dao.impl.SessionDocumentDaoOjb"/>
-
   <bean id="inactivationBlockingDetectionService"
-        class="org.kuali.rice.krad.service.impl.InactivationBlockingDetectionServiceImpl">
-    <property name="dataObjectMetaDataService">
-      <ref bean="dataObjectMetaDataService"/>
-    </property>
-    <property name="businessObjectService">
-      <ref bean="businessObjectService"/>
+        class="org.kuali.rice.krad.service.impl.InactivationBlockingDetectionServiceImpl"
+        p:legacyDataAdapter-ref="legacyDataAdapter">
+    <property name="dataObjectService">
+      <ref bean="kd-dataObjectService"/>
     </property>
   </bean>
 
   <bean id="inactivationBlockingDisplayService"
-        class="org.kuali.rice.krad.service.impl.InactivationBlockingDisplayServiceImpl">
-    <property name="persistenceService">
-      <ref bean="persistenceService"/>
-    </property>
+        class="org.kuali.rice.krad.service.impl.InactivationBlockingDisplayServiceImpl"
+        p:legacyDataAdapter-ref="legacyDataAdapter">
     <property name="dataDictionaryService">
       <ref bean="dataDictionaryService"/>
     </property>
-    <property name="persistenceStructureService">
-      <ref bean="persistenceStructureService"/>
-    </property>
-  </bean>
-
-  <!-- START JPA CONFIGURATION -->
-
-  <bean id="abstractKradApplicationPersistenceUnitManager"
-        class="org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager" abstract="true">
-    <property name="persistenceXmlLocations">
-      <list>
-        <value>META-INF/krad-persistence.xml</value>
-      </list>
-    </property>
-    <property name="defaultDataSource" ref="kradApplicationDataSource"/>
-    <property name="persistenceUnitPostProcessors">
-      <list>
-        <bean class="org.kuali.rice.krad.app.persistence.jpa.RicePersistenceUnitPostProcessor"/>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="kradApplicationEntityManagerFactory"
-        class="org.kuali.rice.krad.app.persistence.jpa.RiceEntityManagerProxyFactoryBean">
-    <constructor-arg value="rice.krad.application"/>
-    <constructor-arg ref="kradApplicationDataSource"/>
-    <constructor-arg value="rice.krad"/>
-  </bean>
-
-  <bean id="kradApplicationEntityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
-    <property name="entityManagerFactory" ref="kradApplicationEntityManagerFactory"/>
   </bean>
 
   <bean id="documentSerializerService" class="org.kuali.rice.krad.service.impl.DocumentSerializerServiceImpl">
-    <property name="persistenceService">
-      <ref bean="persistenceService"/>
+    <property name="legacyDataAdapter">
+      <ref bean="legacyDataAdapter"/>
     </property>
     <property name="xmlObjectSerializerService">
       <ref bean="xmlObjectSerializerService"/>
@@ -755,8 +550,8 @@
 
   <bean id="businessObjectSerializerService"
         class="org.kuali.rice.krad.service.impl.BusinessObjectSerializerServiceImpl">
-    <property name="persistenceService">
-      <ref bean="persistenceService"/>
+    <property name="legacyDataAdapter">
+      <ref bean="legacyDataAdapter"/>
     </property>
     <property name="xmlObjectSerializerService">
       <ref bean="xmlObjectSerializerService"/>
@@ -877,78 +672,6 @@
     </property>
   </bean>
 
-  <bean id="persistedLookupMetadataDaoJpa" class="org.kuali.rice.krad.dao.impl.PersistedLookupMetadataDaoJpa">
-    <property name="entityManager" ref="kradApplicationEntityManager"/>
-  </bean>
-
-  <bean id="documentDaoJpa" class="org.kuali.rice.krad.dao.impl.DocumentDaoJpa">
-    <!-- Constructor injection only please to help enforce completeness of instances -->
-    <constructor-arg ref="businessObjectDao"/>
-    <constructor-arg ref="documentAdHocService"/>
-    <constructor-arg ref="kradApplicationEntityManager"/>
-  </bean>
-
-  <bean id="documentHeaderDaoJpa" class="org.kuali.rice.krad.dao.impl.DocumentHeaderDaoJpa">
-    <property name="entityManager" ref="kradApplicationEntityManager"/>
-  </bean>
-
-  <bean id="lookupDaoJpa" class="org.kuali.rice.krad.dao.impl.LookupDaoJpa">
-    <property name="persistenceStructureService" ref="persistenceStructureService"/>
-    <property name="dateTimeService" ref="dateTimeService"/>
-    <property name="dataDictionaryService" ref="dataDictionaryService"/>
-    <property name="entityManager" ref="kradApplicationEntityManager"/>
-  </bean>
-
-  <bean id="lookupDaoOjb" parent="platformAwareDao" class="org.kuali.rice.krad.dao.impl.LookupDaoOjb">
-    <property name="persistenceStructureService" ref="persistenceStructureService"/>
-    <property name="dateTimeService" ref="dateTimeService"/>
-    <property name="dataDictionaryService" ref="dataDictionaryService"/>
-  </bean>
-
-  <bean id="criterialookupDaoJpa" class="org.kuali.rice.krad.criteria.CriteriaLookupDaoJpa">
-    <property name="entityManager" ref="kradApplicationEntityManager"/>
-  </bean>
-
-  <bean id="criterialookupDaoOjb" parent="platformAwareDao" class="org.kuali.rice.krad.criteria.CriteriaLookupDaoOjb" />
-
-  <bean id="maintenanceDocumentDaoJpa" class="org.kuali.rice.krad.dao.impl.MaintenanceDocumentDaoJpa">
-    <property name="entityManager" ref="kradApplicationEntityManager"/>
-  </bean>
-
-  <bean id="noteDaoJpa" class="org.kuali.rice.krad.dao.impl.NoteDaoJpa">
-    <property name="entityManager" ref="kradApplicationEntityManager"/>
-  </bean>
-
-  <bean id="attachmentDaoJpa" class="org.kuali.rice.krad.dao.impl.AttachmentDaoJpa">
-    <property name="entityManager" ref="kradApplicationEntityManager"/>
-  </bean>
-
-  <bean id="sessionDocumentDaoJpa" class="org.kuali.rice.krad.dao.impl.SessionDocumentDaoJpa">
-    <property name="entityManager" ref="kradApplicationEntityManager"/>
-  </bean>
-
-  <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
-    <property name="interceptorNames">
-      <list>
-        <idref bean="NoResultExceptionInterceptor"/>
-      </list>
-    </property>
-    <property name="beanNames">
-      <list>
-        <idref local="businessObjectDaoJpa"/>
-        <idref local="documentDaoJpa"/>
-        <idref local="documentHeaderDao"/>
-        <idref local="lookupDaoJpa"/>
-        <idref local="persistenceDaoJpa"/>
-        <idref local="maintenanceDocumentDao"/>
-        <idref local="noteDao"/>
-        <idref local="persistedLookupMetadataDao"/>
-        <idref local="sessionDocumentDao"/>
-        <idref local="postProcessorService"/>
-      </list>
-    </property>
-  </bean>
-
   <bean id="KRADConstants" class="org.kuali.rice.core.api.util.collect.ConstantsMap">
     <property name="constantClass" value="org.kuali.rice.krad.util.KRADConstants"/>
   </bean>
@@ -1050,12 +773,48 @@
     </property>
   </bean>
 
-  <bean id="databaseMessageProvider" class="org.kuali.rice.krad.messages.providers.DatabaseMessageProvider">
-    <property name="lookupService">
-      <ref bean="lookupService"/>
-    </property>
-  </bean>
+  <bean id="databaseMessageProvider" class="org.kuali.rice.krad.messages.providers.DatabaseMessageProvider"
+        p:lookupService-ref="lookupService"/>
 
   <bean id="resourceMessageProvider" class="org.kuali.rice.krad.messages.providers.ResourceMessageProvider"/>
 
+  <!-- Ensures legacy framework services cannot be called if legacy framework is disabled -->
+  <bean class="org.springframework.aop.support.DefaultPointcutAdvisor">
+    <property name="pointcut">
+      <bean class="org.springframework.aop.support.annotation.AnnotationMatchingPointcut"
+            c:classAnnotationType="org.kuali.rice.krad.util.LegacyDataFramework" c:checkInherited="true"/>
+    </property>
+    <property name="advice">
+      <bean class="org.kuali.rice.krad.util.LegacyDetectionAdvice"/>
+    </property>
+  </bean>
+
+  <import resource="KRADSpringBeans-ojb.xml"/>
+
+  <import resource="KRADSpringBeans-jpa.xml"/>
+
+  <import resource="classpath:org/kuali/rice/krad/data/config/KRADDataSpringBeans.xml"/>
+
+  <bean id="lookupCriteriaGenerator" class="org.kuali.rice.krad.service.impl.LookupCriteriaGeneratorImpl"
+        p:dateTimeService-ref="dateTimeService"
+        p:dataDictionaryService-ref="dataDictionaryService"
+        p:dbPlatform-ref="dbPlatform"
+        p:dataObjectService-ref="kd-dataObjectService"
+        p:metadataRepository-ref="kd-metadataRepository"/>
+
+  <bean id="legacyDataAdapter" class="org.kuali.rice.krad.service.impl.LegacyDataAdapterImpl"
+        p:dataDictionaryService-ref="dataDictionaryService"
+        p:kradLegacyDataAdapter-ref="kradLegacyDataAdapter"/>
+
+  <bean id="kradLegacyDataAdapter" class="org.kuali.rice.krad.service.impl.KRADLegacyDataAdapterImpl"
+        p:dataObjectService-ref="kd-dataObjectService"
+        p:metadataRepository-ref="kd-metadataRepository"
+        p:lookupCriteriaGenerator-ref="lookupCriteriaGenerator"
+        p:kualiModuleService-ref="kualiModuleService"
+        p:dataDictionaryService-ref="dataDictionaryService"
+        p:kualiConfigurationService-ref="kualiConfigurationService"
+        p:viewDictionaryService-ref="viewDictionaryService"/>
+
+  <bean id="legacyAppFrameworkAdapter" class="org.kuali.rice.krad.service.impl.LegacyAppFrameworkAdapterServiceImpl"
+          p:legacyDataAdapter-ref="legacyDataAdapter"/>
 </beans>

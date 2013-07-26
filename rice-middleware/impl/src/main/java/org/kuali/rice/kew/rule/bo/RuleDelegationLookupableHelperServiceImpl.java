@@ -53,10 +53,11 @@ import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.exception.ValidationException;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -400,7 +401,7 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
         boolean hasReturnableRow = false;
 
         List returnKeys = getReturnKeys();
-        List pkNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(getBusinessObjectClass());
+        List pkNames = KRADServiceLocatorWeb.getLegacyDataAdapter().listPrimaryKeyFieldNames(getBusinessObjectClass());
         Person user = GlobalVariables.getUserSession().getPerson();
 
         // iterate through result list and wrap rows with return url and action urls
@@ -437,14 +438,14 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
                     skipPropTypeCheck = true;
                 }
                 if (prop == null) {
-                    prop = ObjectUtils.getPropertyValue(element, curPropName);
+                    prop = DataObjectUtils.getPropertyValue(element, curPropName);
                 }
 
                 // set comparator and formatter based on property type
                 Class propClass = propertyTypes.get(curPropName);
                 if ( propClass == null && !skipPropTypeCheck) {
                     try {
-                        propClass = ObjectUtils.getPropertyType( element, curPropName, getPersistenceStructureService() );
+                        propClass = KRADServiceLocatorWeb.getLegacyDataAdapter().getPropertyType(element, col.getPropertyName());
                         propertyTypes.put( curPropName, propClass );
                     } catch (Exception e) {
                         throw new RuntimeException("Cannot access PropertyType for property " + "'" + curPropName + "' " + " on an instance of '" + element.getClass().getName() + "'.", e);

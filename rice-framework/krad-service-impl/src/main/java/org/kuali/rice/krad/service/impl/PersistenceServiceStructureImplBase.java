@@ -15,24 +15,27 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.ojb.broker.metadata.ClassDescriptor;
 import org.apache.ojb.broker.metadata.ClassNotPersistenceCapableException;
 import org.apache.ojb.broker.metadata.DescriptorRepository;
 import org.apache.ojb.broker.metadata.FieldDescriptor;
 import org.apache.ojb.broker.metadata.ObjectReferenceDescriptor;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.core.framework.persistence.jpa.metadata.EntityDescriptor;
-import org.kuali.rice.core.framework.persistence.jpa.metadata.MetadataManager;
-import org.kuali.rice.core.framework.persistence.jpa.metadata.ObjectDescriptor;
 import org.kuali.rice.core.framework.persistence.ojb.BaseOjbConfigurer;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.krad.exception.ClassNotPersistableException;
+import org.kuali.rice.krad.metadata.EntityDescriptor;
+import org.kuali.rice.krad.metadata.MetadataManager;
+import org.kuali.rice.krad.metadata.ObjectDescriptor;
+import org.kuali.rice.krad.util.LegacyDataFramework;
+import org.kuali.rice.krad.util.LegacyUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-
+@Deprecated
+@LegacyDataFramework
 public class PersistenceServiceStructureImplBase {
     protected static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PersistenceServiceStructureImplBase.class);
 	private DescriptorRepository descriptorRepository;
@@ -78,7 +81,7 @@ public class PersistenceServiceStructureImplBase {
 		if (isJpaEnabledForKradClass(clazz)) {
 			List fieldNames = new ArrayList();
 	    	EntityDescriptor descriptor = MetadataManager.getEntityDescriptor(clazz);
-	    	for (org.kuali.rice.core.framework.persistence.jpa.metadata.FieldDescriptor field : descriptor.getPrimaryKeys()) {
+	    	for (org.kuali.rice.krad.metadata.FieldDescriptor field : descriptor.getPrimaryKeys()) {
 	    		fieldNames.add(field.getName());
 	    	}
 	    	return fieldNames;
@@ -144,18 +147,15 @@ public class PersistenceServiceStructureImplBase {
 
 		return classDescriptor;
 	}
-	
+
 	/**
 	 * Determines if JPA is enabled for the KNS and for the given class
-	 * 
+	 *
 	 * @param clazz the class to check for JPA enabling of
 	 * @return true if JPA is enabled for the class, false otherwise
 	 */
 	public boolean isJpaEnabledForKradClass(Class clazz) {
-		final boolean jpaAnnotated = OrmUtils.isJpaAnnotated(clazz);
-		final boolean jpaEnabled = OrmUtils.isJpaEnabled();
-		final boolean prefixJpaEnabled = OrmUtils.isJpaEnabled("rice.krad");
-		return jpaAnnotated && (jpaEnabled || prefixJpaEnabled);
+		return !LegacyUtils.useLegacy(clazz);
 	}
 
 	/**

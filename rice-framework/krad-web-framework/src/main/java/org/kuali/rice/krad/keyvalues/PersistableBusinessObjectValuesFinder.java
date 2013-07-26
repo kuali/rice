@@ -15,36 +15,35 @@
  */
 package org.kuali.rice.krad.keyvalues;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.service.KeyValuesService;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 /**
  * This class is a Generic ValuesFinder that builds the list of KeyValuePairs it returns
  * in getKeyValues() based on a BO along with a keyAttributeName and labelAttributeName
  * that are specified.
  */
-@Transactional
 public class PersistableBusinessObjectValuesFinder <T extends PersistableBusinessObject> extends KeyValuesBase {
-
     private static final Log LOG = LogFactory.getLog(PersistableBusinessObjectValuesFinder.class);
+    private static final long serialVersionUID = 1L;
 
-    private Class<T> businessObjectClass;
-    private String keyAttributeName;
-    private String labelAttributeName;
-    private boolean includeKeyInDescription = false;
-    private boolean includeBlankRow = false;
+    protected Class<T> businessObjectClass;
+    protected String keyAttributeName;
+    protected String labelAttributeName;
+    protected boolean includeKeyInDescription = false;
+    protected boolean includeBlankRow = false;
 
     /**
      * Build the list of KeyValues using the key (keyAttributeName) and
@@ -55,11 +54,9 @@ public class PersistableBusinessObjectValuesFinder <T extends PersistableBusines
      */
     @Override
 	public List<KeyValue> getKeyValues() {
-    	List<KeyValue> labels = new ArrayList<KeyValue>();
-
     	try {
-    	    KeyValuesService boService = KRADServiceLocator.getKeyValuesService();
-            Collection<T> objects = boService.findAll(businessObjectClass);
+            Collection<T> objects = KRADServiceLocatorWeb.getLegacyDataAdapter().findMatching(businessObjectClass, Collections.singletonMap(CoreConstants.CommonElements.ACTIVE, true) );
+            List<KeyValue> labels = new ArrayList<KeyValue>(objects.size());
             if(includeBlankRow) {
             	labels.add(new ConcreteKeyValue("", ""));
             }
@@ -71,91 +68,42 @@ public class PersistableBusinessObjectValuesFinder <T extends PersistableBusines
             	}
             	labels.add(new ConcreteKeyValue(key.toString(), label));
     	    }
-    	} catch (IllegalAccessException e) {
-            LOG.debug(e.getMessage(), e);
-            LOG.error(e.getMessage());
-            throw new RuntimeException("IllegalAccessException occurred while trying to build keyValues List. dataObjectClass: " + businessObjectClass + "; keyAttributeName: " + keyAttributeName + "; labelAttributeName: " + labelAttributeName + "; includeKeyInDescription: " + includeKeyInDescription, e);
-    	} catch (InvocationTargetException e) {
-            LOG.debug(e.getMessage(), e);
-            LOG.error(e.getMessage());
-            throw new RuntimeException("InvocationTargetException occurred while trying to build keyValues List. dataObjectClass: " + businessObjectClass + "; keyAttributeName: " + keyAttributeName + "; labelAttributeName: " + labelAttributeName + "; includeKeyInDescription: " + includeKeyInDescription, e);
-    	} catch (NoSuchMethodException e) {
-            LOG.debug(e.getMessage(), e);
-            LOG.error(e.getMessage());
-            throw new RuntimeException("NoSuchMethodException occurred while trying to build keyValues List. dataObjectClass: " + businessObjectClass + "; keyAttributeName: " + keyAttributeName + "; labelAttributeName: " + labelAttributeName + "; includeKeyInDescription: " + includeKeyInDescription, e);
+            return labels;
+    	} catch (Exception e) {
+            LOG.debug("Exception occurred while trying to build keyValues List: " + this, e);
+            throw new RuntimeException("Exception occurred while trying to build keyValues List: " + this, e);
     	}
-
-        return labels;
     }
 
-    /**
-     * @return the dataObjectClass
-     */
-    public Class<T> getBusinessObjectClass() {
-        return this.businessObjectClass;
-    }
-
-    /**
-     * @param businessObjectClass the dataObjectClass to set
-     */
     public void setBusinessObjectClass(Class<T> businessObjectClass) {
         this.businessObjectClass = businessObjectClass;
     }
 
-    /**
-     * @return the includeKeyInDescription
-     */
-    public boolean isIncludeKeyInDescription() {
-        return this.includeKeyInDescription;
-    }
-
-    /**
-     * @param includeKeyInDescription the includeKeyInDescription to set
-     */
     public void setIncludeKeyInDescription(boolean includeKeyInDescription) {
         this.includeKeyInDescription = includeKeyInDescription;
     }
 
-    /**
-     * @return the keyAttributeName
-     */
-    public String getKeyAttributeName() {
-        return this.keyAttributeName;
-    }
-
-    /**
-     * @param keyAttributeName the keyAttributeName to set
-     */
     public void setKeyAttributeName(String keyAttributeName) {
         this.keyAttributeName = keyAttributeName;
     }
 
-    /**
-     * @return the labelAttributeName
-     */
-    public String getLabelAttributeName() {
-        return this.labelAttributeName;
-    }
-
-    /**
-     * @param labelAttributeName the labelAttributeName to set
-     */
     public void setLabelAttributeName(String labelAttributeName) {
         this.labelAttributeName = labelAttributeName;
     }
 
-	/**
-	 * @return the includeBlankRow
-	 */
-	public boolean isIncludeBlankRow() {
-		return this.includeBlankRow;
-	}
-
-	/**
-	 * @param includeBlankRow the includeBlankRow to set
-	 */
 	public void setIncludeBlankRow(boolean includeBlankRow) {
 		this.includeBlankRow = includeBlankRow;
 	}
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("PersistableBusinessObjectValuesFinder [businessObjectClass=").append(this.businessObjectClass)
+                .append(", keyAttributeName=").append(this.keyAttributeName).append(", labelAttributeName=")
+                .append(this.labelAttributeName).append(", includeKeyInDescription=")
+                .append(this.includeKeyInDescription).append(", includeBlankRow=").append(this.includeBlankRow)
+                .append("]");
+        return builder.toString();
+    }
 
 }

@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.lookup;
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
@@ -26,12 +25,13 @@ import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
+import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
 import org.kuali.rice.krad.service.DataObjectAuthorizationService;
-import org.kuali.rice.krad.service.DataObjectMetaDataService;
 import org.kuali.rice.krad.service.DocumentDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.LookupService;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -53,7 +53,6 @@ import org.kuali.rice.krad.util.BeanPropertyComparator;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
-import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.krad.web.form.LookupForm;
 
@@ -78,9 +77,9 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
     private transient ConfigurationService configurationService;
     private transient DataObjectAuthorizationService dataObjectAuthorizationService;
-    private transient DataObjectMetaDataService dataObjectMetaDataService;
     private transient DocumentDictionaryService documentDictionaryService;
     private transient LookupService lookupService;
+    private transient LegacyDataAdapter legacyDataAdapter;
     private transient EncryptionService encryptionService;
 
     /**
@@ -244,7 +243,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                 && searchResultsSize > searchResultsLimit ? true : false;
 
         if (usingPrimaryKey) {
-            List<String> pkNames = getDataObjectMetaDataService().listPrimaryKeyFieldNames(getDataObjectClass());
+            List<String> pkNames = getLegacyDataAdapter().listPrimaryKeyFieldNames(getDataObjectClass());
             for (String pkName : pkNames) {
                 pkLabels.add(getDataDictionaryService().getAttributeLabel(getDataObjectClass(), pkName));
             }
@@ -476,7 +475,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             // get the parent property type
             Class<?> eboParentClass;
             String eboParentPropertyName;
-            if (ObjectUtils.isNestedAttribute(eboPropertyName)) {
+            if (DataObjectUtils.isNestedAttribute(eboPropertyName)) {
                 eboParentPropertyName = StringUtils.substringBeforeLast(eboPropertyName, ".");
                 try {
                     eboParentClass = PropertyUtils.getPropertyType(getDataObjectClass().newInstance(),
@@ -499,7 +498,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             // find the appropriate relationship
             // CHECK THIS: what if eboPropertyName is a nested attribute -
             // need to strip off the eboParentPropertyName if not null
-            RelationshipDefinition rd = getDataObjectMetaDataService().getDictionaryRelationship(eboParentClass,
+            RelationshipDefinition rd = KRADServiceLocatorWeb.getLegacyDataAdapter().getDictionaryRelationship(eboParentClass,
                     eboPropertyName);
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Obtained RelationshipDefinition for " + eboPropertyName);
@@ -512,7 +511,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             // layer is directly involved
             // (can't make (field1,field2) in ( (v1,v2),(v3,v4) ) style
             // queries in the lookup framework
-            if (ObjectUtils.isNotNull(rd)) {
+            if (KRADUtils.isNotNull(rd)) {
                 if (rd.getPrimitiveAttributes().size() > 1) {
                     throw new RuntimeException(
                             "EBO Links don't work for relationships with multiple-field primary keys.");
@@ -885,7 +884,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         if (lookupForm.getFieldConversions() != null && !lookupForm.getFieldConversions().isEmpty()) {
             returnKeys = new ArrayList<String>(lookupForm.getFieldConversions().keySet());
         } else {
-            returnKeys = getDataObjectMetaDataService().listPrimaryKeyFieldNames(getDataObjectClass());
+            returnKeys = getLegacyDataAdapter().listPrimaryKeyFieldNames(getDataObjectClass());
         }
 
         return returnKeys;
@@ -899,7 +898,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         LookupView lookupView = (LookupView) actionLink.getContext().get(UifConstants.ContextVariableNames.VIEW);
         Object dataObject = actionLink.getContext().get(UifConstants.ContextVariableNames.LINE);
 
-        List<String> pkNames = getDataObjectMetaDataService().listPrimaryKeyFieldNames(getDataObjectClass());
+        List<String> pkNames = getLegacyDataAdapter().listPrimaryKeyFieldNames(getDataObjectClass());
 
         // build maintenance link href
         String href = getActionUrlHref(lookupForm, dataObject, maintenanceMethodToCall, pkNames);
@@ -1119,17 +1118,6 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         this.dataObjectAuthorizationService = dataObjectAuthorizationService;
     }
 
-    protected DataObjectMetaDataService getDataObjectMetaDataService() {
-        if (dataObjectMetaDataService == null) {
-            this.dataObjectMetaDataService = KRADServiceLocatorWeb.getDataObjectMetaDataService();
-        }
-        return dataObjectMetaDataService;
-    }
-
-    public void setDataObjectMetaDataService(DataObjectMetaDataService dataObjectMetaDataService) {
-        this.dataObjectMetaDataService = dataObjectMetaDataService;
-    }
-
     public DocumentDictionaryService getDocumentDictionaryService() {
         if (documentDictionaryService == null) {
             documentDictionaryService = KRADServiceLocatorWeb.getDocumentDictionaryService();
@@ -1150,6 +1138,17 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
     public void setLookupService(LookupService lookupService) {
         this.lookupService = lookupService;
+    }
+
+    protected LegacyDataAdapter getLegacyDataAdapter() {
+        if (legacyDataAdapter == null) {
+            this.legacyDataAdapter = KRADServiceLocatorWeb.getLegacyDataAdapter();
+        }
+        return legacyDataAdapter;
+    }
+
+    public void setLegacyDataAdapter(LegacyDataAdapter lookupService) {
+        this.legacyDataAdapter = lookupService;
     }
 
     protected EncryptionService getEncryptionService() {

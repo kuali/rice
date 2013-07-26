@@ -16,6 +16,8 @@
 package org.kuali.rice.kim.api.identity.visa
 
 import org.junit.Test
+import org.kuali.rice.kim.api.identity.CodedAttribute
+import org.kuali.rice.kim.api.identity.CodedAttributeContract
 import org.kuali.rice.kim.api.test.JAXBAssert
 import org.junit.Assert
 
@@ -29,6 +31,13 @@ class EntityVisaTest {
     private static final Long VERSION_NUMBER = new Integer(1);
     private static final String OBJECT_ID = UUID.randomUUID();
 
+    private static final String TYPE_CODE = "Visa"
+    private static final String TYPE_NAME = "Visa-y"
+    private static final String TYPE_SORT_CODE = "0"
+    private static final String TYPE_ACTIVE = "true"
+    private static final Long TYPE_VERSION_NUMBER = Integer.valueOf(1)
+    private static final String TYPE_OBJECT_ID = UUID.randomUUID()
+
     private static final String XML = """
     <entityVisa xmlns="http://rice.kuali.org/kim/v2_0">
         <id>${ID}</id>
@@ -38,6 +47,14 @@ class EntityVisaTest {
         <visaId>${VISA_ID}</visaId>
         <versionNumber>${VERSION_NUMBER}</versionNumber>
         <objectId>${OBJECT_ID}</objectId>
+        <visaType>
+            <code>${TYPE_CODE}</code>
+            <name>${TYPE_NAME}</name>
+            <active>${TYPE_ACTIVE}</active>
+            <sortCode>${TYPE_SORT_CODE}</sortCode>
+            <versionNumber>${TYPE_VERSION_NUMBER}</versionNumber>
+            <objectId>${TYPE_OBJECT_ID}</objectId>
+        </visaType>
     </entityVisa>
     """
 
@@ -74,6 +91,16 @@ class EntityVisaTest {
             def String id = EntityVisaTest.ID
             def Long versionNumber = EntityVisaTest.VERSION_NUMBER;
             def String objectId = EntityVisaTest.OBJECT_ID
+            def CodedAttribute getVisaType() { CodedAttribute.Builder.create(new CodedAttributeContract() {
+                def String code = EntityVisaTest.TYPE_CODE
+                def String name = EntityVisaTest.TYPE_NAME
+                def boolean active = EntityVisaTest.TYPE_ACTIVE
+                def String sortCode = EntityVisaTest.TYPE_SORT_CODE
+                def Long versionNumber = EntityVisaTest.TYPE_VERSION_NUMBER
+                def String objectId = EntityVisaTest.TYPE_OBJECT_ID
+            }).build()
+            }
+
         }).build()
 
     }

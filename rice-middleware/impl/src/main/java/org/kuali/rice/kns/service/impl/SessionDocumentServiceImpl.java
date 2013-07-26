@@ -44,7 +44,6 @@ import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Implementation of <code>SessionDocumentService</code> that persists the document form
@@ -207,8 +206,7 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
     }
 
     /**
-     * @see org.kuali.rice.krad.service.SessionDocumentService#purgeDocumentForm(String
-     *      documentNumber, String docFormKey, UserSession userSession)
+     * @see org.kuali.rice.krad.service.SessionDocumentService#purgeDocumentForm(String, String, org.kuali.rice.krad.UserSession, String)
      */
     @Override
     public void purgeDocumentForm(String documentNumber, String docFormKey, UserSession userSession, String ipAddress) {

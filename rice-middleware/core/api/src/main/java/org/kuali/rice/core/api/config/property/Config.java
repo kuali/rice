@@ -253,7 +253,7 @@ public interface Config {
 
 	public String getKeystorePassword();
 
-	public String getKeystoreFile();
+	public String getKeystoreFile() throws IOException;
 
 	public String getDocumentLockTimeout();
 	

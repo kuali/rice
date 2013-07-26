@@ -23,12 +23,12 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.PerformanceLogger;
 
 /**
- *
+ * Tests WorkflowDocumentService document xml loading/parsing/saving performance
  */
 public class WorkflowDocumentServiceTest extends KEWTestCase {
-    protected void loadTestData() throws Exception {
-        
-    }
+
+    @Override
+    protected void loadTestData() {}
 
     @Ignore @Test
     public void testCreatePerformanceWithBranches() {
@@ -58,4 +58,5 @@ public class WorkflowDocumentServiceTest extends KEWTestCase {
         document.saveDocumentData();
         logger.log("finished save routing data");
     }
+
 }

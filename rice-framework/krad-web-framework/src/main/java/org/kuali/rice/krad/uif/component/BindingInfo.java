@@ -21,7 +21,6 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.io.Serializable;
 

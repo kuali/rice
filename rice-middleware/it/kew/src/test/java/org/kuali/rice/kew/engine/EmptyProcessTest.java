@@ -1,18 +1,3 @@
-/**
- * Copyright 2005-2013 The Kuali Foundation
- *
- * Licensed under the Educational Community License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.opensource.org/licenses/ecl2.php
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.kuali.rice.kew.engine;
 
 import org.junit.Test;
@@ -21,11 +6,16 @@ import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.doctype.ProcessDefinition;
 import org.kuali.rice.kew.api.doctype.RoutePath;
+import org.kuali.rice.kew.api.document.DocumentStatus;
+import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
+import org.kuali.rice.kew.framework.postprocessor.ProcessDocReport;
+import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
 import org.kuali.rice.kew.test.KEWTestCase;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Integration test cases for documents with empty processes
@@ -43,10 +33,25 @@ public class EmptyProcessTest extends KEWTestCase {
      * @throws Exception
      */
     @Test public void testEmptyProcess() throws Exception {
+        PostProcessor.clear();
+
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), DOCUMENT_TYPE_NAME);
         document.route("test");
         assertNotNull(document.getDocumentId());
         assertTrue(document.isFinal());
+
+        // verify that the PostProcessor invoked the proper status transitions
+        // Initiated -> Enroute -> Processed -> Final
+        assertEquals(3, PostProcessor.statusChanges.size());
+        DocumentRouteStatusChange iToR = PostProcessor.statusChanges.get(0);
+        DocumentRouteStatusChange rToP = PostProcessor.statusChanges.get(1);
+        DocumentRouteStatusChange pToF = PostProcessor.statusChanges.get(2);
+        assertEquals(DocumentStatus.INITIATED.getCode(), iToR.getOldRouteStatus());
+        assertEquals(DocumentStatus.ENROUTE.getCode(), iToR.getNewRouteStatus());
+        assertEquals(DocumentStatus.ENROUTE.getCode(), rToP.getOldRouteStatus());
+        assertEquals(DocumentStatus.PROCESSED.getCode(), rToP.getNewRouteStatus());
+        assertEquals(DocumentStatus.PROCESSED.getCode(), pToF.getOldRouteStatus());
+        assertEquals(DocumentStatus.FINAL.getCode(), pToF.getNewRouteStatus());
     }
 
     /**
@@ -61,6 +66,21 @@ public class EmptyProcessTest extends KEWTestCase {
         ProcessDefinition processDefinition = routePath.getPrimaryProcess();
         assertNotNull(processDefinition);
         assertNull("The initial route node *should* be null since this is an empty process", processDefinition.getInitialRouteNode());
+    }
+
+    public static class PostProcessor extends DefaultPostProcessor {
+
+        private static List<DocumentRouteStatusChange> statusChanges = new ArrayList<DocumentRouteStatusChange>();
+
+        public static void clear() {
+            statusChanges.clear();
+        }
+
+        @Override
+        public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) throws Exception {
+            statusChanges.add(statusChangeEvent);
+            return super.doRouteStatusChange(statusChangeEvent);
+        }
     }
 
 }

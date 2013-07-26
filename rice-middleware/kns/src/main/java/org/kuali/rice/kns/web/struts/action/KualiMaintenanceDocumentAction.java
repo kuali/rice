@@ -28,6 +28,7 @@ import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.Person;
@@ -45,13 +46,9 @@ import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.KNSGlobalVariables;
 import org.kuali.rice.kns.util.MaintenanceUtils;
 import org.kuali.rice.kns.util.WebUtils;
-import org.kuali.rice.kns.web.struts.form.InquiryForm;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
-import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.Row;
-import org.kuali.rice.kns.web.ui.Section;
 import org.kuali.rice.krad.bo.DocumentAttachment;
 import org.kuali.rice.krad.bo.MultiDocumentAttachment;
 import org.kuali.rice.krad.bo.PersistableAttachment;
@@ -231,33 +228,9 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 				document.getOldMaintainableObject().prepareBusinessObject(oldBusinessObject);
             	oldBusinessObject = document.getOldMaintainableObject().getBusinessObject();
 			}
-             //KULRICE-6985 Commented out because of StringIndexOutOfBoundsException for some classnames and since we are not using JPA at the moment.
-			// Temp solution for loading extension objects - need to find a better way
-//			final String TMP_NM = oldBusinessObject.getClass().getName();
-//			final int START_INDEX = TMP_NM.indexOf('.', TMP_NM.indexOf('.') + 1) + 1;
-//			if ( ( OrmUtils.isJpaEnabled() || OrmUtils.isJpaEnabled(TMP_NM.substring(START_INDEX, TMP_NM.indexOf('.', TMP_NM.indexOf('.', START_INDEX) + 1))) ) &&
-//					OrmUtils.isJpaAnnotated(oldBusinessObject.getClass()) && oldBusinessObject.getExtension() != null && OrmUtils.isJpaAnnotated(oldBusinessObject.getExtension().getClass())) {
-//				if (oldBusinessObject.getExtension() != null) {
-//					PersistableBusinessObjectExtension boe = oldBusinessObject.getExtension();
-//					EntityDescriptor entity = MetadataManager.getEntityDescriptor(oldBusinessObject.getExtension().getClass());
-//					Criteria extensionCriteria = new Criteria(boe.getClass().getName());
-//					for (FieldDescriptor fieldDescriptor : entity.getPrimaryKeys()) {
-//						try {
-//							Field field = oldBusinessObject.getClass().getDeclaredField(fieldDescriptor.getName());
-//							field.setAccessible(true);
-//							extensionCriteria.eq(fieldDescriptor.getName(), field.get(oldBusinessObject));
-//						} catch (Exception e) {
-//							LOG.error(e.getMessage(),e);
-//						}
-//					}
-//					try {
-//						boe = (PersistableBusinessObjectExtension) new QueryByCriteria(getEntityManagerFactory().createEntityManager(), extensionCriteria).toQuery().getSingleResult();
-//					} catch (PersistenceException e) {}
-//					oldBusinessObject.setExtension(boe);
-//				}
-//			}
 
-			PersistableBusinessObject newBusinessObject = (PersistableBusinessObject) ObjectUtils.deepCopy(oldBusinessObject);
+			PersistableBusinessObject newBusinessObject = (PersistableBusinessObject) SerializationUtils.deepCopy(
+                    oldBusinessObject);
 
 			// set business object instance for editing
 			Class<? extends PersistableBusinessObject> businessObjectClass = ClassLoaderUtils.getClass(maintenanceForm.getBusinessObjectClassName(), PersistableBusinessObject.class); 
@@ -758,7 +731,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 			}
 		}
 		else {
-			keyFieldNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(maintainable.getBusinessObject().getClass());
+			keyFieldNames = KRADServiceLocatorWeb.getLegacyDataAdapter().listPrimaryKeyFieldNames(maintainable.getBusinessObject().getClass());
 		}
 		return getRequestParameters(keyFieldNames, maintainable, request);
 	}
@@ -1100,7 +1073,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
     protected void clearPrimaryKeyFields(MaintenanceDocument document) {
 		// get business object being maintained and its keys
 		PersistableBusinessObject bo = document.getNewMaintainableObject().getBusinessObject();
-		List<String> keyFieldNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(bo.getClass());
+		List<String> keyFieldNames = KRADServiceLocatorWeb.getLegacyDataAdapter().listPrimaryKeyFieldNames(bo.getClass());
 
 		for (String keyFieldName : keyFieldNames) {
 			try {

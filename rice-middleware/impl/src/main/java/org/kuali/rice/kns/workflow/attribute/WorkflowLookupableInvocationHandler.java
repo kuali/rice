@@ -15,15 +15,14 @@
  */
 package org.kuali.rice.kns.workflow.attribute;
 
-import java.lang.reflect.Method;
-import java.util.HashMap;
-
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.InvocationHandler;
-
 import org.kuali.rice.core.web.format.BooleanFormatter;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.util.ObjectUtils;
+
+import java.lang.reflect.Method;
+import java.util.HashMap;
 
 /**
  * This class provides access to the properties of business objects returned as search results by the WorkflowLookupableImpl.

@@ -15,10 +15,8 @@
  */
 package org.kuali.rice.kew.routeheader;
 
-import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;
-import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
@@ -30,22 +28,17 @@ import org.kuali.rice.kew.api.action.RequestedActions;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
-import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeString;
-import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
-import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.util.KRADUtils;
 
 import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 public class AppDocStatusTest extends KEWTestCase {
     	    
@@ -269,11 +262,11 @@ public class AppDocStatusTest extends KEWTestCase {
         assertTrue("Document should be initiatied", document.isInitiated());
         assertTrue("Invalid route level.", document.getNodeNames().contains("Initiated"));
         DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName("TestAppDocStatusDoc3");
-        assertTrue(ObjectUtils.isNotNull(documentType));
-        assertTrue(ObjectUtils.isNotNull(documentType.getValidApplicationStatuses()));
+        assertTrue(KRADUtils.isNotNull(documentType));
+        assertTrue(KRADUtils.isNotNull(documentType.getValidApplicationStatuses()));
         assertEquals(6,documentType.getValidApplicationStatuses().size());
         LOG.info("valid application status size: " + documentType.getValidApplicationStatuses().size());
-        assertTrue(ObjectUtils.isNotNull(documentType.getApplicationStatusCategories()));
+        assertTrue(KRADUtils.isNotNull(documentType.getApplicationStatusCategories()));
         assertEquals(0,documentType.getApplicationStatusCategories().size());
     }
 
@@ -291,11 +284,11 @@ public class AppDocStatusTest extends KEWTestCase {
         assertTrue("Document should be initiatied", document.isInitiated());
         assertTrue("Invalid route level.", document.getNodeNames().contains("Initiated"));
         DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName("TestAppDocStatusDoc5");
-        assertTrue(ObjectUtils.isNotNull(documentType));
-        assertTrue(ObjectUtils.isNotNull(documentType.getValidApplicationStatuses()));
+        assertTrue(KRADUtils.isNotNull(documentType));
+        assertTrue(KRADUtils.isNotNull(documentType.getValidApplicationStatuses()));
         LOG.info("valid application status size: " + documentType.getValidApplicationStatuses().size());
         assertEquals(6,documentType.getValidApplicationStatuses().size());
-        assertTrue(ObjectUtils.isNotNull(documentType.getApplicationStatusCategories()));
+        assertTrue(KRADUtils.isNotNull(documentType.getApplicationStatusCategories()));
         assertEquals(2,documentType.getApplicationStatusCategories().size());
     }
 
@@ -313,11 +306,11 @@ public class AppDocStatusTest extends KEWTestCase {
         assertTrue("Document should be initiatied", document.isInitiated());
         assertTrue("Invalid route level.", document.getNodeNames().contains("Initiated"));
         DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName("TestAppDocStatusDoc6");
-        assertTrue(ObjectUtils.isNotNull(documentType));
-        assertTrue(ObjectUtils.isNotNull(documentType.getValidApplicationStatuses()));
+        assertTrue(KRADUtils.isNotNull(documentType));
+        assertTrue(KRADUtils.isNotNull(documentType.getValidApplicationStatuses()));
         assertEquals(0,documentType.getValidApplicationStatuses().size());
         LOG.info("valid application status size: " + documentType.getValidApplicationStatuses().size());
-        assertTrue(ObjectUtils.isNotNull(documentType.getApplicationStatusCategories()));
+        assertTrue(KRADUtils.isNotNull(documentType.getApplicationStatusCategories()));
         assertEquals(0,documentType.getApplicationStatusCategories().size());
     }
 

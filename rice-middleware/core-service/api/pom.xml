@@ -33,10 +33,6 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.kuali.db.ojb</groupId>
-      <artifactId>db-ojb</artifactId>
-    </dependency>
-    <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
     </dependency>

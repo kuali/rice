@@ -15,12 +15,6 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kim.api.identity.Person;
@@ -29,11 +23,21 @@ import org.kuali.rice.kns.document.authorization.FieldRestriction;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata;
 import org.kuali.rice.krad.datadictionary.mask.MaskFormatter;
-import org.kuali.rice.krad.service.*;
+import org.kuali.rice.krad.service.DataDictionaryService;
+import org.kuali.rice.krad.service.InactivationBlockingDetectionService;
+import org.kuali.rice.krad.service.InactivationBlockingDisplayService;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.util.ObjectUtils;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - wliang don't forget to fill this in.
@@ -43,17 +47,12 @@ import org.kuali.rice.krad.util.ObjectUtils;
  */
 public class InactivationBlockingDisplayServiceImpl implements InactivationBlockingDisplayService {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(InactivationBlockingDetectionServiceImpl.class);
-	
-	private PersistenceService persistenceService;
+
 	private DataDictionaryService dataDictionaryService;
-	private PersistenceStructureService persistenceStructureService;
 	private BusinessObjectAuthorizationService businessObjectAuthorizationService;
-	
-	/**
-	 * This overridden method ...
-	 *
-	 * @see org.kuali.rice.krad.service.InactivationBlockingDisplayService#listAllBlockerRecords(org.kuali.rice.krad.bo.BusinessObject, org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata)
-	 */
+    private LegacyDataAdapter legacyDataAdapter;
+
+	@Override
 	public List<String> listAllBlockerRecords(BusinessObject blockedBo, InactivationBlockingMetadata inactivationBlockingMetadata) {
         String inactivationBlockingDetectionServiceBeanName = inactivationBlockingMetadata.getInactivationBlockingDetectionServiceBeanName();
         if (StringUtils.isBlank(inactivationBlockingDetectionServiceBeanName)) {
@@ -67,9 +66,9 @@ public class InactivationBlockingDisplayServiceImpl implements InactivationBlock
         Map<String, Formatter> formatters = getFormattersForPrimaryKeyFields(inactivationBlockingMetadata.getBlockingReferenceBusinessObjectClass());
 
         List<String> displayValues = new ArrayList<String>();
-        List<String> pkFieldNames = persistenceStructureService.listPrimaryKeyFieldNames(inactivationBlockingMetadata.getBlockingReferenceBusinessObjectClass());
+        List<String> pkFieldNames = getLegacyDataAdapter().listPrimaryKeyFieldNames(inactivationBlockingMetadata.getBlockingReferenceBusinessObjectClass());
         Person user = GlobalVariables.getUserSession().getPerson();
-        
+
         for (BusinessObject element : collection) {
         	StringBuilder buf = new StringBuilder();
 
@@ -77,7 +76,7 @@ public class InactivationBlockingDisplayServiceImpl implements InactivationBlock
         	BusinessObjectRestrictions businessObjectRestrictions = getBusinessObjectAuthorizationService().getLookupResultRestrictions(element, user);
         	for (int i = 0; i < pkFieldNames.size(); i++) {
         		String pkFieldName = pkFieldNames.get(i);
-        		Object value = ObjectUtils.getPropertyValue(element, pkFieldName);
+        		Object value = DataObjectUtils.getPropertyValue(element, pkFieldName);
 
         		String displayValue = null;
         		if (!businessObjectRestrictions.hasRestriction(pkFieldName)) {
@@ -112,8 +111,69 @@ public class InactivationBlockingDisplayServiceImpl implements InactivationBlock
 		return displayValues;
 	}
 
-	protected Map<String, Formatter> getFormattersForPrimaryKeyFields(Class boClass) {
-		List<String> keyNames = persistenceStructureService.listPrimaryKeyFieldNames(boClass);
+    @Override
+    public List<String> displayAllBlockingRecords(Object blockedBo, InactivationBlockingMetadata inactivationBlockingMetadata) {
+        String inactivationBlockingDetectionServiceBeanName = inactivationBlockingMetadata.getInactivationBlockingDetectionServiceBeanName();
+        if (StringUtils.isBlank(inactivationBlockingDetectionServiceBeanName)) {
+            inactivationBlockingDetectionServiceBeanName = KRADServiceLocatorWeb.DEFAULT_INACTIVATION_BLOCKING_DETECTION_SERVICE;
+        }
+        InactivationBlockingDetectionService inactivationBlockingDetectionService = KRADServiceLocatorWeb
+                .getInactivationBlockingDetectionService(inactivationBlockingDetectionServiceBeanName);
+
+        Collection<?> collection = inactivationBlockingDetectionService.detectAllBlockingRecords(blockedBo, inactivationBlockingMetadata);
+
+        Map<String, Formatter> formatters = getFormattersForPrimaryKeyFields(inactivationBlockingMetadata.getBlockingReferenceBusinessObjectClass());
+
+        List<String> displayValues = new ArrayList<String>();
+        List<String> pkFieldNames = getLegacyDataAdapter().listPrimaryKeyFieldNames(inactivationBlockingMetadata.getBlockingReferenceBusinessObjectClass());
+        Person user = GlobalVariables.getUserSession().getPerson();
+
+        for (Object element : collection) {
+            StringBuilder buf = new StringBuilder();
+
+            // the following method will return a restriction for all DD-defined attributes
+            BusinessObjectRestrictions businessObjectRestrictions = getBusinessObjectAuthorizationService().getLookupResultRestrictions(element, user);
+            for (int i = 0; i < pkFieldNames.size(); i++) {
+                String pkFieldName = pkFieldNames.get(i);
+                Object value = DataObjectUtils.getPropertyValue(element, pkFieldName);
+
+                String displayValue = null;
+                if (!businessObjectRestrictions.hasRestriction(pkFieldName)) {
+                    Formatter formatter = formatters.get(pkFieldName);
+                    if (formatter != null) {
+                        displayValue = (String) formatter.format(value);
+                    }
+                    else {
+                        displayValue = String.valueOf(value);
+                    }
+                }
+                else {
+                    FieldRestriction fieldRestriction = businessObjectRestrictions.getFieldRestriction(pkFieldName);
+                    if (fieldRestriction.isMasked() || fieldRestriction.isPartiallyMasked()) {
+                        MaskFormatter maskFormatter = fieldRestriction.getMaskFormatter();
+                        displayValue = maskFormatter.maskValue(value);
+                    }
+                    else {
+                        // there was a restriction, but we did not know how to obey it.
+                        LOG.warn("Restriction was defined for class: " + element.getClass() + " field name: " + pkFieldName + ", but it was not honored by the inactivation blocking display framework");
+                    }
+                }
+
+                buf.append(displayValue);
+                if (i < pkFieldNames.size() - 1) {
+                    buf.append(" - ");
+                }
+            }
+
+            displayValues.add(buf.toString());
+        }
+        return displayValues;
+    }
+
+
+    @Deprecated
+	protected Map<String, Formatter> getFormattersForPrimaryKeyFields(Class<?> boClass) {
+		List<String> keyNames = getLegacyDataAdapter().listPrimaryKeyFieldNames(boClass);
 		Map<String, Formatter> formattersForPrimaryKeyFields = new HashMap<String, Formatter>();
 
 		for (String pkFieldName : keyNames) {
@@ -131,24 +191,26 @@ public class InactivationBlockingDisplayServiceImpl implements InactivationBlock
 		return formattersForPrimaryKeyFields;
 	}
 
-	public void setPersistenceService(PersistenceService persistenceService) {
-		this.persistenceService = persistenceService;
-	}
-
-	public void setPersistenceStructureService(
-			PersistenceStructureService persistenceStructureService) {
-		this.persistenceStructureService = persistenceStructureService;
-	}
-
 	public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
 		this.dataDictionaryService = dataDictionaryService;
 	}
-	
+
 	protected BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
 		if (businessObjectAuthorizationService == null) {
 			businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
 		}
 		return businessObjectAuthorizationService;
 	}
+
+    public void setLegacyDataAdapter(LegacyDataAdapter legacyDataAdapter) {
+        this.legacyDataAdapter = legacyDataAdapter;
+    }
+
+    protected LegacyDataAdapter getLegacyDataAdapter() {
+        if (legacyDataAdapter == null) {
+            legacyDataAdapter = KRADServiceLocatorWeb.getLegacyDataAdapter();
+        }
+        return legacyDataAdapter;
+    }
 }
 

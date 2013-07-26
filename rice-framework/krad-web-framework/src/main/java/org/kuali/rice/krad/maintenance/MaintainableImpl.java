@@ -15,6 +15,14 @@
  */
 package org.kuali.rice.krad.maintenance;
 
+import java.io.Serializable;
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.metadata.ClassNotPersistenceCapableException;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -26,29 +34,22 @@ import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.data.CompoundKey;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.DataObjectWrapper;
 import org.kuali.rice.krad.exception.PessimisticLockingException;
-import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataObjectAuthorizationService;
-import org.kuali.rice.krad.service.DataObjectMetaDataService;
 import org.kuali.rice.krad.service.DocumentDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.service.LookupService;
+import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.MaintenanceDocumentService;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
-
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Default implementation of the <code>Maintainable</code> interface
@@ -65,11 +66,11 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
     private Class<?> dataObjectClass;
     private String maintenanceAction;
 
-    private transient LookupService lookupService;
+    private transient LegacyDataAdapter legacyDataAdapter;
     private transient DataObjectAuthorizationService dataObjectAuthorizationService;
-    private transient DataObjectMetaDataService dataObjectMetaDataService;
     private transient DocumentDictionaryService documentDictionaryService;
     private transient EncryptionService encryptionService;
+    private transient DataObjectService dataObjectService;
     private transient MaintenanceDocumentService maintenanceDocumentService;
 
     /**
@@ -78,16 +79,19 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
     @Override
     public Object retrieveObjectForEditOrCopy(MaintenanceDocument document, Map<String, String> dataObjectKeys) {
         Object dataObject = null;
-
-        try {
-            dataObject = getLookupService().findObjectBySearch(getDataObjectClass(), dataObjectKeys);
-        } catch (ClassNotPersistenceCapableException ex) {
-            if (!document.getOldMaintainableObject().isExternalBusinessObject()) {
-                throw new RuntimeException("Data Object Class: "
-                        + getDataObjectClass()
-                        + " is not persistable and is not externalizable - configuration error");
+        if ( getDataObjectService().supports(getDataObjectClass())) {
+            dataObject = getDataObjectService().find(getDataObjectClass(), new CompoundKey(dataObjectKeys));
+        } else {
+            try {
+                dataObject = getLegacyDataAdapter().findObjectBySearch(getDataObjectClass(), dataObjectKeys);
+            } catch (ClassNotPersistenceCapableException ex) {
+                if (!document.getOldMaintainableObject().isExternalBusinessObject()) {
+                    throw new RuntimeException("Data Object Class: "
+                            + getDataObjectClass()
+                            + " is not persistable and is not externalizable - configuration error");
+                }
+                // otherwise, let fall through
             }
-            // otherwise, let fall through
         }
 
         return dataObject;
@@ -131,7 +135,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
      * @see org.kuali.rice.krad.maintenance.Maintainable#getDataObjectClass
      */
     @Override
-    public Class getDataObjectClass() {
+    public Class<?> getDataObjectClass() {
         return dataObjectClass;
     }
 
@@ -139,33 +143,30 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
      * @see org.kuali.rice.krad.maintenance.Maintainable#setDataObjectClass
      */
     @Override
-    public void setDataObjectClass(Class dataObjectClass) {
+    public void setDataObjectClass(Class<?> dataObjectClass) {
         this.dataObjectClass = dataObjectClass;
     }
 
     /**
      * Persistable business objects are lockable
      *
-     * @see org.kuali.rice.krad.maintenance.Maintainable#isLockable
+     * @deprecated note used by Rice framework
      */
     @Override
+    @Deprecated
     public boolean isLockable() {
-        return KRADServiceLocator.getPersistenceStructureService().isPersistable(getDataObject().getClass());
+        return KRADServiceLocatorWeb.getLegacyDataAdapter().isLockable(getDataObject());
     }
 
     /**
-     * Returns the data object if its persistable, null otherwise
+     * Returns the data object if its persistable, null otherwise.
      *
-     * @see org.kuali.rice.krad.maintenance.Maintainable#getPersistableBusinessObject
+     * @deprecated this method has been left for compatibility reasons, use getDataObject instead.
      */
     @Override
+    @Deprecated // Uses KNS Classes
     public PersistableBusinessObject getPersistableBusinessObject() {
-        if (KRADServiceLocator.getPersistenceStructureService().isPersistable(getDataObject().getClass())) {
-            return (PersistableBusinessObject) getDataObject();
-        } else {
-            return null;
-        }
-
+        return KRADServiceLocatorWeb.getLegacyDataAdapter().toPersistableBusinessObject(getDataObject());
     }
 
     /**
@@ -197,11 +198,14 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
         lockRepresentation.append(KRADConstants.Maintenance.LOCK_AFTER_CLASS_DELIM);
 
         Object bo = getDataObject();
-        List keyFieldNames = getDocumentDictionaryService().getLockingKeys(getDocumentTypeName());
+        DataObjectWrapper<Object> wrapper = getDataObjectService().wrap(bo);
 
-        for (Iterator i = keyFieldNames.iterator(); i.hasNext(); ) {
+        List<String> keyFieldNames = getDocumentDictionaryService().getLockingKeys(getDocumentTypeName());
+
+        for (Iterator<?> i = keyFieldNames.iterator(); i.hasNext(); ) {
             String fieldName = (String) i.next();
-            Object fieldValue = ObjectUtils.getPropertyValue(bo, fieldName);
+
+            Object fieldValue = wrapper.getPropertyValueNullSafe(fieldName);
             if (fieldValue == null) {
                 fieldValue = "";
             }
@@ -247,32 +251,26 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
     /**
      * @see org.kuali.rice.krad.maintenance.Maintainable#saveDataObject
      */
+    @SuppressWarnings("deprecation")
     @Override
     public void saveDataObject() {
-        if (dataObject instanceof PersistableBusinessObject) {
-            getBusinessObjectService().linkAndSave((PersistableBusinessObject) dataObject);
-        } else {
-            throw new RuntimeException(
-                    "Cannot save object of type: " + dataObjectClass + " with business object service");
+        if ( dataObject == null ) {
+            LOG.warn( "dataObject in maintainable was null - this should not be the case.  Skipping saveDataObject()");
+            return;
         }
+        dataObject = getLegacyDataAdapter().linkAndSave((Serializable)dataObject);
     }
 
     /**
      * @see org.kuali.rice.krad.maintenance.Maintainable#deleteDataObject
      */
+    @SuppressWarnings("deprecation")
     @Override
     public void deleteDataObject() {
         if (dataObject == null) {
             return;
         }
-
-        if (dataObject instanceof PersistableBusinessObject) {
-            getBusinessObjectService().delete((PersistableBusinessObject) dataObject);
-            dataObject = null;
-        } else {
-            throw new RuntimeException(
-                    "Cannot delete object of type: " + dataObjectClass + " with business object service");
-        }
+        getLegacyDataAdapter().delete(dataObject);
     }
 
     /**
@@ -330,7 +328,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
      */
     @Override
     public boolean isNotesEnabled() {
-        return getDataObjectMetaDataService().areNotesSupported(dataObjectClass);
+        return getLegacyDataAdapter().areNotesSupported(dataObjectClass);
     }
 
     /**
@@ -345,6 +343,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
      * @see org.kuali.rice.krad.maintenance.MaintainableImpl#prepareExternalBusinessObject
      */
     @Override
+    @Deprecated
     public void prepareExternalBusinessObject(BusinessObject businessObject) {
         // by default do nothing
     }
@@ -361,7 +360,8 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
         if (getDataObject() == null) {
             isOldDataObjectInExistence = false;
         } else {
-            Map<String, ?> keyFieldValues = getDataObjectMetaDataService().getPrimaryKeyFieldValues(getDataObject());
+            @SuppressWarnings("deprecation")
+            Map<String, ?> keyFieldValues = getLegacyDataAdapter().getPrimaryKeyFieldValuesDOMDS(getDataObject());
             for (Object keyValue : keyFieldValues.values()) {
                 if (keyValue == null) {
                     isOldDataObjectInExistence = false;
@@ -440,9 +440,6 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
      * TODO: should this write some sort of missing message on the old side
      * instead?
      *
-     * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#processAfterAddLine(org.kuali.rice.krad.uif.view.View,
-     *      org.kuali.rice.krad.uif.container.CollectionGroup, java.lang.Object,
-     *      java.lang.Object)
      */
     @Override
     protected void processAfterAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine,
@@ -474,7 +471,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
                 Object blankLine = collectionGroup.getCollectionObjectClass().newInstance();
                 //Add a blank line to the top of the collection
                 if (oldCollection instanceof List) {
-                    ((List) oldCollection).add(0, blankLine);
+                    ((List<Object>) oldCollection).add(0, blankLine);
                 } else {
                     oldCollection.add(blankLine);
                 }
@@ -526,15 +523,17 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
         return this.documentNumber;
     }
 
-    protected LookupService getLookupService() {
-        if (lookupService == null) {
-            lookupService = KRADServiceLocatorWeb.getLookupService();
+    @Deprecated // KNS Service
+    protected LegacyDataAdapter getLegacyDataAdapter() {
+        if (legacyDataAdapter == null) {
+            legacyDataAdapter = KRADServiceLocatorWeb.getLegacyDataAdapter();
         }
-        return this.lookupService;
+        return this.legacyDataAdapter;
     }
 
-    public void setLookupService(LookupService lookupService) {
-        this.lookupService = lookupService;
+    @Deprecated // KNS Service
+    public void setLegacyDataAdapter(LegacyDataAdapter legacyDataAdapter) {
+        this.legacyDataAdapter = legacyDataAdapter;
     }
 
     protected DataObjectAuthorizationService getDataObjectAuthorizationService() {
@@ -546,17 +545,6 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
 
     public void setDataObjectAuthorizationService(DataObjectAuthorizationService dataObjectAuthorizationService) {
         this.dataObjectAuthorizationService = dataObjectAuthorizationService;
-    }
-
-    protected DataObjectMetaDataService getDataObjectMetaDataService() {
-        if (dataObjectMetaDataService == null) {
-            this.dataObjectMetaDataService = KRADServiceLocatorWeb.getDataObjectMetaDataService();
-        }
-        return dataObjectMetaDataService;
-    }
-
-    public void setDataObjectMetaDataService(DataObjectMetaDataService dataObjectMetaDataService) {
-        this.dataObjectMetaDataService = dataObjectMetaDataService;
     }
 
     public DocumentDictionaryService getDocumentDictionaryService() {
@@ -579,6 +567,13 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
 
     public void setEncryptionService(EncryptionService encryptionService) {
         this.encryptionService = encryptionService;
+    }
+
+    protected DataObjectService getDataObjectService() {
+        if (dataObjectService == null) {
+            dataObjectService = KRADServiceLocator.getDataObjectService();
+        }
+        return dataObjectService;
     }
 
     protected MaintenanceDocumentService getMaintenanceDocumentService() {

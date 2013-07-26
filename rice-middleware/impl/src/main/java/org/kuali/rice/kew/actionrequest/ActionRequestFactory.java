@@ -55,7 +55,7 @@ import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.util.KRADUtils;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -357,7 +357,7 @@ public class ActionRequestFactory {
                 if (recipientId instanceof UserId)
                 {
                     Principal principal = getIdentityHelperService().getPrincipal((UserId) recipientId);
-                    if(ObjectUtils.isNotNull(principal)) {
+                    if(KRADUtils.isNotNull(principal)) {
                         role.setTarget(new KimPrincipalRecipient(principal));
                     }
                 } else if (recipientId instanceof GroupId)

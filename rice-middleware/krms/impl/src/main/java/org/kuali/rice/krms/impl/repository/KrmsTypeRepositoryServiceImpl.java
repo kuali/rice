@@ -30,13 +30,6 @@ import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeBoService;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
-import static org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService.AGENDA_SERVICE_NAME;
-import static org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService.CONTEXT_SERVICE_NAME;
-import static org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService.PROPOSITION_PARAMETER_SERVICE_NAMES;
-import static org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService.PROPOSITION_SERVICE_NAMES;
-import static org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService.RULE_SERVICE_NAME;
-import static org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService.TERM_PARAMETER_SERVICE_NAME;
-import static org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService.TERM_PROPOSITION_PARAMETER_SERVICE_NAME;
 import org.kuali.rice.krms.api.repository.typerelation.RelationshipType;
 import org.kuali.rice.krms.api.repository.typerelation.TypeTypeRelation;
 

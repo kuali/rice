@@ -39,7 +39,6 @@ import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.FieldUtils;
-import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MaintenanceUtils;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.krad.bo.BusinessObject;
@@ -785,7 +784,7 @@ public class SectionBridge {
     		//TODO: Revisit this. Changing since getPrimaryKeys and listPrimaryKeyFieldNames are apparently same.
     		//May be we might want to replace listPrimaryKeyFieldNames with getPrimaryKeys... Not sure.
 	    	List primaryKeyPropertyNames = 
-	    		KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(businessObjectClass);
+	    		KRADServiceLocatorWeb.getLegacyDataAdapter().listPrimaryKeyFieldNames(businessObjectClass);
 	        if (primaryKeyPropertyNames.contains(field.getPropertyName())) {
 	            field.setReadOnly(true);
 	        }

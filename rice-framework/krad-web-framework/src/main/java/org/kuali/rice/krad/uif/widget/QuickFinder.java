@@ -21,6 +21,7 @@ import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.BindingInfo;
@@ -179,7 +180,7 @@ public class QuickFinder extends WidgetBase {
                     if ((fieldConversions == null) || fieldConversions.isEmpty()) {
                         // use PK fields for collection class
                         List<String> collectionObjectPKFields =
-                                KRADServiceLocatorWeb.getDataObjectMetaDataService().listPrimaryKeyFieldNames(
+                                KRADServiceLocatorWeb.getLegacyDataAdapter().listPrimaryKeyFieldNames(
                                         collectionObjectClass);
 
                         for (String pkField : collectionObjectPKFields) {
@@ -247,7 +248,7 @@ public class QuickFinder extends WidgetBase {
         }
 
         // get relationship from metadata service
-        return KRADServiceLocatorWeb.getDataObjectMetaDataService().getDataObjectRelationship(parentObject,
+        return KRADServiceLocatorWeb.getLegacyDataAdapter().getDataObjectRelationship(parentObject,
                 parentObjectClass, propertyName, "", true, true, false);
     }
 

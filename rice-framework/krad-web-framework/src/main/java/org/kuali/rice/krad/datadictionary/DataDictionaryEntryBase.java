@@ -16,6 +16,13 @@
 package org.kuali.rice.krad.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
+import org.kuali.rice.krad.data.metadata.DataObjectAttribute;
+import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
+import org.kuali.rice.krad.data.metadata.DataObjectCollection;
+import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
+import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
+import org.kuali.rice.krad.data.provider.MetadataProvider;
 import org.kuali.rice.krad.datadictionary.exception.DuplicateEntryException;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.state.StateMapping;
@@ -37,6 +44,11 @@ import java.util.Set;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 abstract public class DataDictionaryEntryBase extends DictionaryBeanBase implements DataDictionaryEntry, Serializable, InitializingBean {
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DataDictionaryEntryBase.class);
+    private static final long serialVersionUID = 5133059101016080533L;
+
+    protected DataObjectMetadata dataObjectMetadata;
+
     protected List<AttributeDefinition> attributes;
     protected List<ComplexAttributeDefinition> complexAttributes;
     protected List<CollectionDefinition> collections;
@@ -66,6 +78,7 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
      * @param attributeName
      * @return AttributeDefinition with the given name, or null if none with that name exists
      */
+    @Override
     public AttributeDefinition getAttributeDefinition(String attributeName) {
         if (StringUtils.isBlank(attributeName)) {
             throw new IllegalArgumentException("invalid (blank) attributeName");
@@ -165,6 +178,7 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
      * @return a Map containing all RelationshipDefinitions associated with this BusinessObjectEntry, indexed by
      *         relationshipName
      */
+    @Override
     @BeanTagAttribute(name = "relationships", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<RelationshipDefinition> getRelationships() {
         return this.relationships;
@@ -173,20 +187,155 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
     /**
      * Directly validate simple fields, call completeValidation on Definition fields.
      */
+    @Override
     public void completeValidation() {
+        completeValidation( new ValidationTrace() );
+    }
 
-        for (AttributeDefinition attributeDefinition : attributes) {
-            attributeDefinition.completeValidation(getEntryClass(), null);
-        }
-
-        for (CollectionDefinition collectionDefinition : collections) {
-            collectionDefinition.completeValidation(getEntryClass(), null);
-        }
-
-        for (RelationshipDefinition relationshipDefinition : relationships) {
-            relationshipDefinition.completeValidation(getEntryClass(), null);
+    protected void embedMetadata() {
+        // Once we get to this point, the providers must also be loaded
+        // See if this DataObjectEntry's class has associated metadata
+        MetadataProvider metadataProvider = KradDataServiceLocator.getProviderRegistry().getMetadataProvider(getEntryClass());
+        if ( metadataProvider != null ) {
+            dataObjectMetadata = metadataProvider.getMetadataForType(getEntryClass());
+            if ( dataObjectMetadata == null ) {
+                LOG.warn( "No metadata defined for " + getEntryClass() + " even though provider returned." );
+            } else {
+                // Since we have metadata, attempt to match it up on property name with the attributes defined
+                // We want to do this before calling the super.completeValidation() as it will validate that the
+                // AttributeDefinition objects have certain values and we want to take advantage of defaulting from
+                // the metadata model
+                injectMetadataIntoAttributes(dataObjectMetadata);
+                injectMetadataIntoCollections(dataObjectMetadata);
+                injectMetadataIntoRelationships(dataObjectMetadata);
+            }
+        } else {
+            LOG.info( "No metadata provider exists which handles: " + getEntryClass());
         }
     }
+
+    /**
+     * Inject the metadata into the relationship definitions.  Unlike attributes, in this case
+     * we only add missing relationships.  If a relationship was defined for a given attribute
+     * we leave it alone.
+     *
+     * @param dataObjectMetadata
+     */
+    protected void injectMetadataIntoRelationships(DataObjectMetadata dataObjectMetadata) {
+        List<RelationshipDefinition> relationships = getRelationships();
+        boolean relationshipsChanged = false;
+        if ( relationships == null ) {
+            relationships = new ArrayList<RelationshipDefinition>();
+        }
+        for ( DataObjectRelationship rel : dataObjectMetadata.getRelationships() ) {
+            if ( rel.getAttributeRelationships().isEmpty() ) {
+                // If we have no attributes to link with, we don't have anything to contribute
+                continue;
+            }
+            if ( StringUtils.isNotBlank(rel.getName()) ) {
+                RelationshipDefinition relationshipDefinition = getRelationshipDefinition(rel.getName());
+                // no relationship defined for attribute - proceed
+                if ( relationshipDefinition == null ) {
+                    relationshipDefinition = new RelationshipDefinition();
+                    relationshipDefinition.setObjectAttributeName(rel.getName());
+                    relationshipDefinition.setSourceClass(getEntryClass());
+                    relationshipDefinition.setTargetClass(rel.getRelatedType());
+                    for ( DataObjectAttributeRelationship attrRel : rel.getAttributeRelationships() ) {
+                        PrimitiveAttributeDefinition attrDef = new PrimitiveAttributeDefinition();
+                        attrDef.setSourceName(attrRel.getParentAttributeName());
+                        attrDef.setTargetName(attrRel.getChildAttributeName());
+                        relationshipDefinition.getPrimitiveAttributes().add(attrDef);
+                    }
+                    relationshipDefinition.setGeneratedFromMetadata(true);
+                    relationshipDefinition.setEmbeddedDataObjectMetadata(true);
+                    relationships.add(relationshipDefinition);
+                    relationshipsChanged = true;
+                }
+            } else {
+                LOG.warn( "Relationship in metadata model contained blank name attribute: " + rel );
+            }
+        }
+        // now that we are done, we need to set the resulting list back to the entry
+        // This triggers the needed indexing
+        if ( relationshipsChanged ) {
+            setRelationships(relationships);
+            // relationship post-processing is handled in afterPropertiesSet()
+            try {
+                afterPropertiesSet();
+            } catch (Exception ex) {
+                LOG.error( "Problem running afterPropertiesSet() after updating relationships from DataObjectMetadata: " + this, ex );
+            }
+        }
+    }
+
+    protected void injectMetadataIntoCollections(DataObjectMetadata dataObjectMetadata) {
+        List<CollectionDefinition> collections = getCollections();
+        boolean collectionsChanged = false;
+        if ( collections == null ) {
+            collections = new ArrayList<CollectionDefinition>();
+        }
+        for ( DataObjectCollection coll : dataObjectMetadata.getCollections() ) {
+            if ( StringUtils.isNotBlank(coll.getName()) ) {
+                // Odd special case where a list attribute has been mapped as a singular attribute in the DD.
+                // Due to validation logic, a given name can not be both a collection and an attribute.
+                if ( getAttributeDefinition(coll.getName()) != null ) {
+                    continue;
+                }
+                CollectionDefinition collectionDefinition = getCollectionDefinition(coll.getName());
+                // no relationship defined for attribute - proceed
+                if ( collectionDefinition == null ) {
+                    collectionDefinition = new CollectionDefinition();
+                    collectionDefinition.setName(coll.getName());
+                    collectionDefinition.setDataObjectClass(coll.getRelatedType().getName());
+                    collectionDefinition.setGeneratedFromMetadata(true);
+                    collections.add(collectionDefinition);
+                    // only need to trigger re-indexing if we add a new collection
+                    collectionsChanged = true;
+                }
+                collectionDefinition.setDataObjectCollection(coll);
+                collectionDefinition.setEmbeddedDataObjectMetadata(true);
+            } else {
+                LOG.warn( "Relationship in metadata model contained blank name attribute: " + coll );
+            }
+        }
+        // now that we are done, we need to set the resulting list back to the entry
+        // This triggers the needed indexing
+        if ( collectionsChanged ) {
+            setCollections(collections);
+        }
+    }
+
+    protected void injectMetadataIntoAttributes( DataObjectMetadata dataObjectMetadata ) {
+        List<AttributeDefinition> dataObjectEntryAttributes = getAttributes();
+        // this should never happen, but just in case someone was pathological enough to set it to null manually, let's be prepared
+        if ( dataObjectEntryAttributes == null ) {
+            dataObjectEntryAttributes = new ArrayList<AttributeDefinition>();
+        }
+        // We are going to loop over the data in the metadata instead of the DD
+        // because we want to add attribute definitions if they do not exist
+        // and we don't care about attributes which only exist in the DD
+        for ( DataObjectAttribute attr : dataObjectMetadata.getAttributes() ) {
+            if ( StringUtils.isNotBlank(attr.getName())) {
+                AttributeDefinition attributeDefinition = getAttributeDefinition(attr.getName());
+
+                if ( attributeDefinition == null ) {
+                    attributeDefinition = new AttributeDefinition();
+                    attributeDefinition.setName(attr.getName());
+                    attributeDefinition.setGeneratedFromMetadata(true);
+                    dataObjectEntryAttributes.add(attributeDefinition);
+
+                }
+                attributeDefinition.setDataObjectAttribute(attr);
+                attributeDefinition.setEmbeddedDataObjectMetadata(true);
+            } else {
+                LOG.warn( "Attribute in metadata model contained blank name attribute: " + attr );
+            }
+        }
+        // now that we are done, we need to set the resulting list back to the entry
+        // This triggers the needed indexing
+        setAttributes(dataObjectEntryAttributes);
+    }
+
 
     /**
      * Directly validate simple fields, call completeValidation on Definition
@@ -194,15 +343,26 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
      *
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(org.kuali.rice.krad.datadictionary.validator.ValidationTrace)
      */
+    @Override
     public void completeValidation(ValidationTrace tracer) {
-        for (AttributeDefinition definition : getAttributes()) {
-            definition.completeValidation(getEntryClass(), null, tracer.getCopy());
-        }
-        for (CollectionDefinition definition : getCollections()) {
-            definition.completeValidation(getEntryClass(), null, tracer.getCopy());
-        }
-        for (RelationshipDefinition definition : getRelationships()) {
-            definition.completeValidation(getEntryClass(), null, tracer.getCopy());
+        if ( getEntryClass() != null ) {
+            if ( LOG.isDebugEnabled() ) {
+                LOG.debug( "Processing Validation for " + this.getClass().getSimpleName() + " for class: " + getEntryClass().getName() );
+            }
+            tracer.addBean(this.getClass().getSimpleName(), getEntryClass().getSimpleName());
+            embedMetadata();
+            for (AttributeDefinition definition : getAttributes()) {
+                definition.completeValidation(getEntryClass(), null, tracer.getCopy());
+            }
+            for (CollectionDefinition definition : getCollections()) {
+                definition.completeValidation(getEntryClass(), null, tracer.getCopy());
+            }
+            for (RelationshipDefinition definition : getRelationships()) {
+                definition.completeValidation(getEntryClass(), null, tracer.getCopy());
+            }
+        } else {
+            tracer.addBean(this.getClass().getSimpleName(), toString() );
+            tracer.createError("DataObjectClass is not set,  remaining validations aborted", null );
         }
     }
 
@@ -403,6 +563,7 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
     /**
      * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
      */
+    @Override
     public void afterPropertiesSet() throws Exception {
         if (relationships != null) {
             relationshipMap.clear();
@@ -473,7 +634,7 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
             attrDefCopy.setRequired(attrDefToCopy.isRequired());
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.warn( "Problem copying properties from attribute definition: " + attrDefToCopy, e);
         }
 
         return attrDefCopy;
@@ -482,6 +643,7 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
     /**
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#getStateMapping()
      */
+    @Override
     @BeanTagAttribute(name = "stateMapping", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public StateMapping getStateMapping() {
         return stateMapping;
@@ -490,7 +652,20 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
     /**
      * @see DataDictionaryEntry#setStateMapping(org.kuali.rice.krad.datadictionary.state.StateMapping)
      */
+    @Override
     public void setStateMapping(StateMapping stateMapping) {
         this.stateMapping = stateMapping;
+    }
+
+    public boolean hasEmbeddedDataObjectMetadata() {
+        return getDataObjectMetadata() != null;
+    }
+
+    public DataObjectMetadata getDataObjectMetadata() {
+        return dataObjectMetadata;
+    }
+
+    public void setDataObjectMetadata(DataObjectMetadata dataObjectMetadata) {
+        this.dataObjectMetadata = dataObjectMetadata;
     }
 }

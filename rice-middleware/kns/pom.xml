@@ -109,6 +109,11 @@
       <groupId>joda-time</groupId>
       <artifactId>joda-time-jsptags</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.kuali.db.ojb</groupId>
+      <artifactId>db-ojb</artifactId>
+    </dependency>
+
 
     <dependency>
       <groupId>commons-fileupload</groupId>

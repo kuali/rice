@@ -17,6 +17,7 @@ package edu.sampleu.bookstore.document.keyvalue;
 
 import edu.sampleu.bookstore.bo.Book;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 
@@ -29,7 +30,7 @@ public class BookKeyValues extends KeyValuesBase {
     public List getKeyValues() {
         List keyValues = new ArrayList();
 
-        Collection<Book> bos = KRADServiceLocator.getBusinessObjectService().findAll( Book.class );
+        Collection<Book> bos = KNSServiceLocator.getBusinessObjectService().findAll( Book.class );
         
         keyValues.add(new ConcreteKeyValue("", ""));
         for ( Book typ : bos ) {

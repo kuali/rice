@@ -47,7 +47,6 @@ public class KRADServiceLocatorWeb {
     public static final String DATA_DICTIONARY_REMOTE_FIELD_SERVICE = "dataDictionaryRemoteFieldService";
     public static final String DATA_DICTIONARY_COMPONENT_PUBLISHER_SERVICE = "dataDictionaryComponentPublisherService";
     public static final String DOCUMENT_DICTIONARY_SERVICE = "documentDictionaryService";
-    public static final String SESSION_DOCUMENT_SERVICE = "sessionDocumentService";
     public static final String DATA_OBJECT_AUTHORIZATION_SERVICE = "dataObjectAuthorizationService";
     public static final String MAINTENANCE_DOCUMENT_SERVICE = "maintenanceDocumentService";
     public static final String WORKFLOW_DOCUMENT_SERVICE = "workflowDocumentService";
@@ -64,7 +63,6 @@ public class KRADServiceLocatorWeb {
     public static final String LOOKUP_SERVICE = "lookupService";
     public static final String DICTIONARY_VALIDATION_SERVICE = "dictionaryValidationService";
     public static final String DEFAULT_INACTIVATION_BLOCKING_DETECTION_SERVICE = "inactivationBlockingDetectionService";
-    public static final String DATA_OBJECT_METADATA_SERVICE = "dataObjectMetaDataService";
     public static final String VIEW_SERVICE = "viewService";
     public static final String VIEW_DICTIONARY_SERVICE = "viewDictionaryService";
     public static final String VIEW_VALIDATION_SERVICE = "viewValidationService";
@@ -72,6 +70,7 @@ public class KRADServiceLocatorWeb {
     public static final String MESSAGE_SERVICE = "messageService";
     public static final String POST_PROCESSOR_SERVICE = "postProcessorService";
     public static final String INACTIVATION_BLOCKING_DISPLAY_SERVICE = "inactivationBlockingDisplayService";
+    public static final String LEGACY_DATA_ADAPTER = "legacyDataAdapter";
 
     public static <T extends Object> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
@@ -79,10 +78,6 @@ public class KRADServiceLocatorWeb {
 
     public static DocumentDictionaryService getDocumentDictionaryService() {
         return getService(DOCUMENT_DICTIONARY_SERVICE);
-    }
-
-    public static SessionDocumentService getSessionDocumentService() {
-        return getService(SESSION_DOCUMENT_SERVICE);
     }
 
     public static DataObjectAuthorizationService getDataObjectAuthorizationService() {
@@ -109,6 +104,7 @@ public class KRADServiceLocatorWeb {
         return getService(DATA_DICTIONARY_SERVICE);
     }
 
+    @Deprecated
     public static DocumentHeaderService getDocumentHeaderService() {
         return getService(DOCUMENT_HEADER_SERVICE);
     }
@@ -121,6 +117,7 @@ public class KRADServiceLocatorWeb {
         return getService(lookupableName);
     }
 
+    @Deprecated
     public static PersistenceService getPersistenceServiceOjb() {
         return getService(PERSISTENCE_SERVICE_OJB);
     }
@@ -151,10 +148,6 @@ public class KRADServiceLocatorWeb {
 
     public static InactivationBlockingDetectionService getInactivationBlockingDetectionService(String serviceName) {
         return (InactivationBlockingDetectionService) getService(serviceName);
-    }
-
-    public static DataObjectMetaDataService getDataObjectMetaDataService() {
-        return (DataObjectMetaDataService) getService(DATA_OBJECT_METADATA_SERVICE);
     }
 
     public static ViewService getViewService() {
@@ -191,5 +184,16 @@ public class KRADServiceLocatorWeb {
 
     public static InactivationBlockingDisplayService getInactivationBlockingDisplayService() {
     	return (InactivationBlockingDisplayService) getService(INACTIVATION_BLOCKING_DISPLAY_SERVICE);
+    }
+
+    /**
+     * Returns the legacy data adapter for handling legacy KNS and KRAD data and metadata.
+     *
+     * @return the legacy data adapter
+     * @deprecated application code should never use this! Always use KRAD code directly.
+     */
+    @Deprecated
+    public static LegacyDataAdapter getLegacyDataAdapter() {
+        return getService(LEGACY_DATA_ADAPTER);
     }
 }

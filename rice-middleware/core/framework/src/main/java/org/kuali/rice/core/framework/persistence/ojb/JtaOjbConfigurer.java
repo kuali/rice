@@ -29,6 +29,7 @@ import org.springmodules.orm.ojb.support.LocalOjbConfigurer;
  * @see TransactionManagerFactory
  * @see org.apache.ojb.broker.transaction.tm.TransactionManagerFactory
  */
+@Deprecated
 public class JtaOjbConfigurer extends LocalOjbConfigurer implements InitializingBean, DisposableBean {
     private static final Logger LOG = Logger.getLogger(JtaOjbConfigurer.class);
 

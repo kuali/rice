@@ -16,18 +16,23 @@
 package org.kuali.rice.kim.impl.group;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.criteria.CriteriaLookupService;
-import org.kuali.rice.core.api.criteria.GenericQueryResults;
+import org.joda.time.DateTime;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.criteria.LookupCustomizer;
+import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kim.api.KimConstants;
+import org.kuali.rice.kim.api.common.history.HistoryQueryUtils;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.group.GroupHistory;
+import org.kuali.rice.kim.api.group.GroupHistoryQueryResults;
 import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.api.group.GroupMemberQueryResults;
 import org.kuali.rice.kim.api.group.GroupQueryResults;
@@ -36,12 +41,14 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.KIMPropertyConstants;
 import org.kuali.rice.kim.impl.common.attribute.AttributeTransform;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataHistoryBo;
 import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
-import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.data.DataObjectService;
 
 import javax.jws.WebParam;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -55,8 +62,7 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 public class GroupServiceImpl extends GroupServiceBase implements GroupService {
     private static final Logger LOG = Logger.getLogger(GroupServiceImpl.class);
 
-    protected BusinessObjectService businessObjectService;
-    private CriteriaLookupService criteriaLookupService;
+    private DataObjectService dataObjectService;
 
     @Override
     public Group getGroup(String groupId) throws RiceIllegalArgumentException {
@@ -74,13 +80,13 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
     public List<Group> getGroupsByPrincipalIdAndNamespaceCode(String principalId, String namespaceCode) throws RiceIllegalArgumentException {
         incomingParamCheck(principalId, "principalId");
         incomingParamCheck(namespaceCode, "namespaceCode");
-
+           Collections.singleton("name");
 		return getGroupsByPrincipalIdAndNamespaceCodeInternal(principalId, namespaceCode);
     }
 
     protected List<Group> getGroupsByPrincipalIdAndNamespaceCodeInternal(String principalId, String namespaceCode) throws RiceIllegalArgumentException {
 
-        Collection<Group> directGroups = getDirectGroupsForPrincipal( principalId, namespaceCode );
+        Collection<Group> directGroups = getDirectGroupsForPrincipal( principalId, namespaceCode, new DateTime(System.currentTimeMillis()) );
 		Set<Group> groups = new HashSet<Group>();
         groups.addAll(directGroups);
 		for ( Group group : directGroups ) {
@@ -109,18 +115,16 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         incomingParamCheck(principalId, "principalId");
         incomingParamCheck(groupId, "groupId");
 
-		Map<String,String> criteria = new HashMap<String,String>();
-		criteria.put(KIMPropertyConstants.GroupMember.MEMBER_ID, principalId);
-		criteria.put(KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode());
-		criteria.put(KIMPropertyConstants.GroupMember.GROUP_ID, groupId);
-
-		Collection<GroupMemberBo> groupMembers = businessObjectService.findMatching(GroupMemberBo.class, criteria);
-		for ( GroupMemberBo gm : groupMembers ) {
-			if ( gm.isActive(new Timestamp(System.currentTimeMillis())) ) {
-				return true;
-			}
-		}
-		return false;
+        final QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(
+                and(
+                        equal(KIMPropertyConstants.GroupMember.MEMBER_ID, principalId),
+                        equal(KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode()),
+                        equal(KIMPropertyConstants.GroupMember.GROUP_ID, groupId),
+                        HistoryQueryUtils.between(KIMPropertyConstants.KimMember.ACTIVE_FROM_DATE_VALUE, KIMPropertyConstants.KimMember.ACTIVE_TO_DATE_VALUE, DateTime.now()))
+        );
+		QueryResults<GroupMemberBo> groupMembers = dataObjectService.findMatching(GroupMemberBo.class, builder.build());
+		return (groupMembers.getResults().size() > 0);
     }
 
     @Override
@@ -239,23 +243,42 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 
     @Override
 	public boolean isGroupMemberOfGroup(String groupMemberId, String groupId) throws RiceIllegalArgumentException {
-        incomingParamCheck(groupMemberId, "groupMemberId");
-        incomingParamCheck(groupId, "groupId");
-
-		return isMemberOfGroupInternal(groupMemberId, groupId, new HashSet<String>(), KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE);
+		return isGroupMemberOfGroupWithDate(groupMemberId, groupId, new DateTime(System.currentTimeMillis()));
 	}
 
     @Override
+    public boolean isGroupMemberOfGroupWithDate(String groupMemberId, String groupId, DateTime asOfDate) throws RiceIllegalArgumentException {
+        incomingParamCheck(groupMemberId, "groupMemberId");
+        incomingParamCheck(groupId, "groupId");
+        incomingParamCheck(asOfDate, "asOfDate");
+
+        return isMemberOfGroupInternal(groupMemberId, groupId, new HashSet<String>(), KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE, asOfDate);
+    }
+
+    @Override
     public boolean isMemberOfGroup(String principalId, String groupId) throws RiceIllegalArgumentException{
+        return isMemberOfGroupWithDate(principalId, groupId, new DateTime(System.currentTimeMillis()));
+    }
+
+    @Override
+    public boolean isMemberOfGroupWithDate(String principalId, String groupId, DateTime asOfDate) throws RiceIllegalArgumentException{
         incomingParamCheck(principalId, "principalId");
         incomingParamCheck(groupId, "groupId");
+        incomingParamCheck(asOfDate, "asOfDate");
 
-		Set<String> visitedGroupIds = new HashSet<String>();
-		return isMemberOfGroupInternal(principalId, groupId, visitedGroupIds, KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
+        Set<String> visitedGroupIds = new HashSet<String>();
+        return isMemberOfGroupInternal(principalId, groupId, visitedGroupIds, KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE, asOfDate);
     }
 
     @Override
     public List<String> getDirectMemberGroupIds(String groupId) throws RiceIllegalArgumentException{
+        incomingParamCheck(groupId, "groupId");
+
+        return this.getMemberIdsByType(getMembersOfGroup(groupId), KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE);
+    }
+
+    @Override
+    public List<String> getDirectMemberGroupIdsWithDate(String groupId) throws RiceIllegalArgumentException{
         incomingParamCheck(groupId, "groupId");
 
         return this.getMemberIdsByType(getMembersOfGroup(groupId), KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE);
@@ -279,11 +302,17 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 
     @Override
     public List<String> getDirectParentGroupIds(String groupId) throws RiceIllegalArgumentException {
+        return getDirectParentGroupIdsWithDate(groupId, new DateTime(System.currentTimeMillis()));
+    }
+
+    @Override
+    public List<String> getDirectParentGroupIdsWithDate(String groupId, DateTime asOfDate) throws RiceIllegalArgumentException {
         incomingParamCheck(groupId, "groupId");
+        incomingParamCheck(asOfDate, "asOfDate");
 
         List<String> result = new ArrayList<String>();
         if (groupId != null) {
-            List<Group> groupList = getDirectParentGroups(groupId);
+            List<Group> groupList = getDirectParentGroups(groupId, asOfDate);
             for (Group group : groupList) {
                 result.add(group.getId());
             }
@@ -305,16 +334,21 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 
     @Override
     public List<GroupMember> getMembers(List<String> groupIds) throws RiceIllegalArgumentException{
-        if (CollectionUtils.isEmpty(groupIds)) {
-            throw new RiceIllegalArgumentException("groupIds is empty");
-		}
+        return getMembersWithDate(groupIds, new DateTime(System.currentTimeMillis()));
+    }
 
-        //TODO: PRIME example of something for new Criteria API
-        List<GroupMember> groupMembers = new ArrayList<GroupMember>();
-        for (String groupId : groupIds) {
-              groupMembers.addAll(getMembersOfGroup(groupId));
-        }
-        return Collections.unmodifiableList(groupMembers);
+    @Override
+    public List<GroupMember> getMembersWithDate(List<String> groupIds, DateTime asOfDate) throws RiceIllegalArgumentException{
+        incomingParamCheck(groupIds, "groupIds");
+        incomingParamCheck(asOfDate, "asOfDate");
+
+        final QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(
+                and(
+                    in(KIMPropertyConstants.GroupMember.GROUP_ID, groupIds.toArray(new String[groupIds.size()])),
+                    HistoryQueryUtils.between(KIMPropertyConstants.KimMember.ACTIVE_FROM_DATE_VALUE, KIMPropertyConstants.KimMember.ACTIVE_TO_DATE_VALUE, asOfDate))
+                );
+        return findGroupMembers(builder.build()).getResults();
     }
 
     @Override
@@ -324,7 +358,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
             return Collections.emptyList();
         }
         final QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
-        builder.setPredicates(and(in("id", groupIds.toArray()), equal("active", "Y")));
+        builder.setPredicates(and(in("id", groupIds.toArray()), equal("active", Boolean.TRUE)));
         GroupQueryResults qr = findGroups(builder.build());
 
         return qr.getResults();
@@ -335,12 +369,14 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(groupName, "groupName");
 
-		Map<String,String> criteria = new HashMap<String,String>();
-		criteria.put(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode);
-		criteria.put(KimConstants.UniqueKeyConstants.GROUP_NAME, groupName);
-		Collection<GroupBo> groups = businessObjectService.findMatching(GroupBo.class, criteria);
-		if ( !groups.isEmpty() ) {
-			return GroupBo.to(groups.iterator().next());
+        final QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(
+                    and(
+                        equal(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode),
+                        equal(KimConstants.UniqueKeyConstants.GROUP_NAME, groupName)));
+		QueryResults<GroupBo> groups = dataObjectService.findMatching(GroupBo.class, builder.build());
+		if ( !groups.getResults().isEmpty() ) {
+			return GroupBo.to(groups.getResults().iterator().next());
 		}
 		return null;
     }
@@ -352,7 +388,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         LookupCustomizer.Builder<GroupBo> lc = LookupCustomizer.Builder.create();
         lc.setPredicateTransform(AttributeTransform.getInstance());
 
-        GenericQueryResults<GroupBo> results = criteriaLookupService.lookup(GroupBo.class, queryByCriteria, lc.build());
+        QueryResults<GroupBo> results = dataObjectService.findMatching(GroupBo.class, queryByCriteria, lc.build());
 
         GroupQueryResults.Builder builder = GroupQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -371,7 +407,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
     public GroupMemberQueryResults findGroupMembers(final QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
         incomingParamCheck(queryByCriteria, "queryByCriteria");
 
-        GenericQueryResults<GroupMemberBo> results = criteriaLookupService.lookup(GroupMemberBo.class, queryByCriteria);
+        QueryResults<GroupMemberBo> results = dataObjectService.findMatching(GroupMemberBo.class, queryByCriteria);
 
         GroupMemberQueryResults.Builder builder = GroupMemberQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -387,8 +423,13 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
     }
 
 
-    protected boolean isMemberOfGroupInternal(String memberId, String groupId, Set<String> visitedGroupIds, MemberType memberType) {
-		if ( memberId == null || groupId == null ) {
+    protected boolean isMemberOfGroupInternal(String memberId,
+            String groupId,
+            Set<String> visitedGroupIds,
+            MemberType memberType,
+            DateTime asOfDate) {
+
+        if ( memberId == null || groupId == null ) {
 			return false;
 		}
 
@@ -398,7 +439,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 			return false;
 		}
 
-        List<GroupMember> members = getMembersOfGroup(group.getId());
+        List<GroupMember> members = getMembersOfGroupWithDate(group.getId(), asOfDate);
 		// check the immediate group
 		for (String groupMemberId : getMemberIdsByType(members, memberType)) {
 			if (groupMemberId.equals(memberId)) {
@@ -410,7 +451,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 		for ( String memberGroupId : getMemberIdsByType(members, KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE) ) {
 			if (!visitedGroupIds.contains(memberGroupId)){
 				visitedGroupIds.add(memberGroupId);
-				if ( isMemberOfGroupInternal( memberId, memberGroupId, visitedGroupIds, memberType ) ) {
+				if ( isMemberOfGroupInternal( memberId, memberGroupId, visitedGroupIds, memberType, asOfDate ) ) {
 					return true;
 				}
 			}
@@ -421,7 +462,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 	}
 
     protected void getParentGroupsInternal( String groupId, Set<Group> groups ) {
-		List<Group> parentGroups = getDirectParentGroups( groupId );
+		List<Group> parentGroups = getDirectParentGroups( groupId, new DateTime(System.currentTimeMillis()) );
 		for ( Group group : parentGroups ) {
 			if ( !groups.contains( group ) ) {
 				groups.add( group );
@@ -430,21 +471,22 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 		}
 	}
 
-    protected List<Group> getDirectParentGroups(String groupId) {
-		if ( groupId == null ) {
-			return Collections.emptyList();
-		}
-		Map<String,String> criteria = new HashMap<String,String>();
-		criteria.put(KIMPropertyConstants.GroupMember.MEMBER_ID, groupId);
-		criteria.put(KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE.getCode());
+    protected List<Group> getDirectParentGroups(String groupId, DateTime asOfDate) {
+        incomingParamCheck(groupId, "groupId");
 
-		List<GroupMemberBo> groupMembers = (List<GroupMemberBo>)businessObjectService.findMatching(GroupMemberBo.class, criteria);
+        final QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(
+                and(
+                    equal(KIMPropertyConstants.GroupMember.MEMBER_ID, groupId),
+                    equal(KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE.getCode()),
+                    HistoryQueryUtils.between(KIMPropertyConstants.KimMember.ACTIVE_FROM_DATE_VALUE,
+                            KIMPropertyConstants.KimMember.ACTIVE_TO_DATE_VALUE, asOfDate)));
+
+        List<GroupMember> groupMembers = findGroupMembers(builder.build()).getResults();
 		Set<String> matchingGroupIds = new HashSet<String>();
 		// filter to active groups
-		for ( GroupMemberBo gm : groupMembers ) {
-			if ( gm.isActive(new Timestamp(System.currentTimeMillis())) ) {
-				matchingGroupIds.add(gm.getGroupId());
-			}
+		for ( GroupMember gm : groupMembers ) {
+		    matchingGroupIds.add(gm.getGroupId());
 		}
 		if (CollectionUtils.isNotEmpty(matchingGroupIds)) {
             return getGroups(matchingGroupIds);
@@ -455,17 +497,20 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
     @Override
     public List<GroupMember> getMembersOfGroup(String groupId) throws RiceIllegalArgumentException {
         incomingParamCheck(groupId, "groupId");
-        Map<String,String> criteria = new HashMap<String,String>();
-		criteria.put(KIMPropertyConstants.GroupMember.GROUP_ID, groupId);
+        return getMembersOfGroupWithDate(groupId, DateTime.now());
+    }
 
-		Collection<GroupMemberBo> groupMembersBos = businessObjectService.findMatching(GroupMemberBo.class, criteria);
-        List<GroupMember> groupMembers = new ArrayList<GroupMember>();
-        for (GroupMemberBo groupBo : groupMembersBos) {
-            if (groupBo.isActive(new Timestamp(System.currentTimeMillis()))){
-                groupMembers.add(GroupMemberBo.to(groupBo));
-            }
-        }
-        return Collections.unmodifiableList(groupMembers);
+    @Override
+    public List<GroupMember> getMembersOfGroupWithDate(String groupId, DateTime asOfDate) throws RiceIllegalArgumentException {
+        incomingParamCheck(groupId, "groupId");
+
+        final QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(
+                and(
+                    equal(KIMPropertyConstants.GroupMember.GROUP_ID, groupId),
+                    HistoryQueryUtils.between(KIMPropertyConstants.KimMember.ACTIVE_FROM_DATE_VALUE, KIMPropertyConstants.KimMember.ACTIVE_TO_DATE_VALUE, asOfDate)));
+
+        return findGroupMembers(builder.build()).getResults();
     }
 
     protected List<String> getMemberIdsByType(Collection<GroupMember> members, MemberType memberType) {
@@ -482,12 +527,12 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 
     protected GroupBo getGroupBo(String groupId) {
         incomingParamCheck(groupId, "groupId");
-        return businessObjectService.findByPrimaryKey(GroupBo.class, Collections.singletonMap("id", groupId));
+        return dataObjectService.find(GroupBo.class, groupId);
     }
 
     protected GroupMemberBo getGroupMemberBo(String id) {
         incomingParamCheck(id, "id");
-        return businessObjectService.findByPrimaryKey(GroupMemberBo.class, Collections.singletonMap("id", id));
+        return dataObjectService.find(GroupMemberBo.class, id);
     }
 
 	protected List<Group> getParentGroups(String groupId) throws RiceIllegalArgumentException {
@@ -524,24 +569,27 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 	}
 
     protected Collection<Group> getDirectGroupsForPrincipal( String principalId ) {
-		return getDirectGroupsForPrincipal( principalId, null );
+		return getDirectGroupsForPrincipal( principalId, null, new DateTime(System.currentTimeMillis()) );
 	}
 
-	protected Collection<Group> getDirectGroupsForPrincipal( String principalId, String namespaceCode ) {
+	protected Collection<Group> getDirectGroupsForPrincipal( String principalId, String namespaceCode, DateTime asOfDate ) {
 		if ( principalId == null ) {
 			return Collections.emptyList();
 		}
-		Map<String,Object> criteria = new HashMap<String,Object>();
-		criteria.put(KIMPropertyConstants.GroupMember.MEMBER_ID, principalId);
-		criteria.put(KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode());
-		Collection<GroupMemberBo> groupMembers = businessObjectService.findMatching(GroupMemberBo.class, criteria);
-		Set<String> groupIds = new HashSet<String>( groupMembers.size() );
+
 		// only return the active members
-		for ( GroupMemberBo gm : groupMembers ) {
-			if ( gm.isActive(new Timestamp(System.currentTimeMillis())) ) {
-				groupIds.add( gm.getGroupId() );
-			}
-		}
+        final QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(
+                and(
+                    equal(KIMPropertyConstants.GroupMember.MEMBER_ID, principalId),
+                    equal(KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, MemberType.PRINCIPAL.getCode()),
+                    HistoryQueryUtils.between(KIMPropertyConstants.KimMember.ACTIVE_FROM_DATE_VALUE, KIMPropertyConstants.KimMember.ACTIVE_TO_DATE_VALUE, asOfDate)));
+		List<GroupMember> groupMembers = findGroupMembers(builder.build()).getResults();
+        Set<String> groupIds = new HashSet<String>( groupMembers.size());
+        for (GroupMember gm : groupMembers) {
+            groupIds.add(gm.getGroupId());
+        }
+
 		// pull all the group information for the matching members
 		List<Group> groups = CollectionUtils.isEmpty(groupIds) ? Collections.<Group>emptyList() : getGroups(groupIds);
 		List<Group> result = new ArrayList<Group>( groups.size() );
@@ -573,7 +621,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         groupMember.setType(KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE);
         groupMember.setMemberId(childId);
 
-        this.businessObjectService.save(groupMember);
+        this.dataObjectService.save(groupMember);
         return true;
     }
 
@@ -587,7 +635,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         groupMember.setType(KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
         groupMember.setMemberId(principalId);
 
-        groupMember = this.businessObjectService.save(groupMember);
+        groupMember = this.dataObjectService.save(groupMember);
         KimImplServiceLocator.getGroupInternalService().updateForUserAddedToGroup(groupMember.getMemberId(),
                 groupMember.getGroupId());
         return true;
@@ -611,6 +659,11 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 
         bo = saveGroup(bo);
 
+        //save history
+        Timestamp currentTime = CoreApiServiceLocator.getDateTimeService().getCurrentTimestamp();
+        GroupHistoryBo historyBo = GroupHistoryBo.from(GroupBo.to(bo), new DateTime(currentTime.getTime()), null);
+        createGroupHistory(GroupHistoryBo.to(historyBo));
+
         return GroupBo.to(bo);
     }
 
@@ -631,6 +684,11 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
                 && !bo.isActive()) {
             KimImplServiceLocator.getRoleInternalService().groupInactivated(bo.getId());
         }
+
+        //save history
+        Timestamp currentTime = CoreApiServiceLocator.getDateTimeService().getCurrentTimestamp();
+        GroupHistoryBo historyBo = GroupHistoryBo.from(GroupBo.to(bo), new DateTime(currentTime.getTime()), null);
+        createGroupHistory(GroupHistoryBo.to(historyBo));
 
         return GroupBo.to(bo);
     }
@@ -661,6 +719,11 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         //inactivate and save old group
         groupBo.setActive(false);
         saveGroup(groupBo);
+
+        //save history
+        Timestamp currentTime = CoreApiServiceLocator.getDateTimeService().getCurrentTimestamp();
+        GroupHistoryBo historyBo = GroupHistoryBo.from(GroupBo.to(groupBo), new DateTime(currentTime.getTime()), null);
+        createGroupHistory(GroupHistoryBo.to(historyBo));
 
         return GroupBo.to(newGroup);
     }
@@ -739,7 +802,9 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         }
 
         // Save
-        this.businessObjectService.save(new ArrayList<GroupMemberBo>(toDeactivate));
+        for (GroupMemberBo bo : toDeactivate) {
+            this.dataObjectService.save(bo);
+        }
         List<String> memberPrincipalsAfter = groupService.getMemberPrincipalIds(groupId);
 
         if (!CollectionUtils.isEmpty(memberPrincipalsAfter)) {
@@ -765,7 +830,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         if(groupMembers.size() == 1) {
         	GroupMemberBo groupMember = groupMembers.get(0);
         	groupMember.setActiveToDateValue(today);
-            this.businessObjectService.save(groupMember);
+            this.dataObjectService.save(groupMember);
             return true;
         }
 
@@ -782,8 +847,8 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 
         if(groupMembers.size() == 1) {
         	GroupMemberBo member = groupMembers.iterator().next();
-        	member.setActiveToDateValue(new java.sql.Timestamp(System.currentTimeMillis()));
-        	this.businessObjectService.save(member);
+        	member.setActiveToDateValue(new java.sql.Timestamp(DateTime.now().getMillis()));
+        	this.dataObjectService.save(member);
             KimImplServiceLocator.getGroupInternalService().updateForUserRemovedFromGroup(member.getMemberId(),
                     member.getGroupId());
             return true;
@@ -827,7 +892,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
                     }
 					group.setMembers(groupMembers);
 				}
-			}
+            }
 		}
 
 		return KimImplServiceLocator.getGroupInternalService().saveWorkgroup(group);
@@ -851,43 +916,43 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
             throw new RiceRuntimeException("memberType must be non-null if childId is non-null");
         }
 
-		Map<String,Object> criteria = new HashMap<String,Object>(4);
-        criteria.put(KIMPropertyConstants.GroupMember.GROUP_ID, parentId);
+        final QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
 
-        if (childId != null) {
-        	criteria.put(KIMPropertyConstants.GroupMember.MEMBER_ID, childId);
-        	criteria.put(KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, memberType.getCode());
+        builder.setPredicates(
+                and(
+                        equal(KIMPropertyConstants.GroupMember.GROUP_ID, parentId),
+                        HistoryQueryUtils.between(KIMPropertyConstants.KimMember.ACTIVE_FROM_DATE_VALUE,
+                                KIMPropertyConstants.KimMember.ACTIVE_TO_DATE_VALUE, DateTime.now())));
+
+        List<Predicate> optionalPredicates = new ArrayList<Predicate>();
+        if (StringUtils.isNotEmpty(childId)) {
+            optionalPredicates.add(equal(KIMPropertyConstants.GroupMember.MEMBER_ID, childId));
+        }
+        if (memberType != null) {
+            optionalPredicates.add(equal(KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, memberType.getCode()));
+        }
+        if (CollectionUtils.isNotEmpty(optionalPredicates)) {
+            optionalPredicates.addAll(Arrays.asList(builder.getPredicates()));
+            builder.setPredicates(
+                    and(optionalPredicates.toArray(new Predicate[optionalPredicates.size()])));
         }
 
-        Collection<GroupMemberBo> groupMembers = this.businessObjectService.findMatching(GroupMemberBo.class, criteria);
+        QueryResults<GroupMemberBo> groupMembers = this.dataObjectService.findMatching(GroupMemberBo.class, builder.build());
 
-        CollectionUtils.filter(groupMembers, new Predicate() {
+        /*CollectionUtils.filter(groupMembers, new Predicate() {
 			@Override public boolean evaluate(Object object) {
 				GroupMemberBo member = (GroupMemberBo) object;
 				// keep in the collection (return true) if the activeToDate is null, or if it is set to a future date
 				return member.getActiveToDate() == null || today.before(member.getActiveToDate().toDate());
 			}
-		});
+		});*/
 
-        return new ArrayList<GroupMemberBo>(groupMembers);
+        return new ArrayList<GroupMemberBo>(groupMembers.getResults());
 	}
 
-    /**
-     * Sets the businessObjectService attribute value.
-     *
-     * @param businessObjectService The businessObjectService to set.
-     */
-    public void setBusinessObjectService(final BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
-    }
 
-    /**
-     * Sets the criteriaLookupService attribute value.
-     *
-     * @param criteriaLookupService The criteriaLookupService to set.
-     */
-    public void setCriteriaLookupService(final CriteriaLookupService criteriaLookupService) {
-        this.criteriaLookupService = criteriaLookupService;
+    public void setDataObjectService(final DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 
     private void incomingParamCheck(Object object, String name) {
@@ -897,5 +962,107 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
                 && StringUtils.isBlank((String) object)) {
             throw new RiceIllegalArgumentException(name + " was blank");
         }
+    }
+
+    @Override
+    public GroupHistoryQueryResults findGroupHistories(final QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
+        incomingParamCheck(queryByCriteria, "queryByCriteria");
+
+        LookupCustomizer.Builder<GroupHistoryBo> lc = LookupCustomizer.Builder.create();
+        lc.setPredicateTransform(AttributeTransform.getInstance());
+
+        QueryResults<GroupHistoryBo> results = dataObjectService.findMatching(GroupHistoryBo.class, queryByCriteria, lc.build());
+
+        GroupHistoryQueryResults.Builder builder = GroupHistoryQueryResults.Builder.create();
+        builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
+        builder.setTotalRowCount(results.getTotalRowCount());
+
+        final List<GroupHistory.Builder> ims = new ArrayList<GroupHistory.Builder>();
+        for (GroupHistoryBo bo : results.getResults()) {
+            ims.add(GroupHistory.Builder.create(bo));
+        }
+
+        builder.setResults(ims);
+        return builder.build();
+    }
+
+    protected GroupHistoryBo getGroupHistoryBo(String historyId) {
+        incomingParamCheck(historyId, "groupId");
+        return dataObjectService.find(GroupHistoryBo.class, historyId);
+    }
+
+    @Override
+    public GroupHistory getGroupHistory(String id, DateTime asOfDate) {
+        incomingParamCheck(id, "id");
+        incomingParamCheck(asOfDate, "asOfDate");
+
+        GroupHistoryQueryResults results = findGroupHistories(HistoryQueryUtils.historyQuery(id, asOfDate));
+
+        //should be either 0 or 1 results
+        if (CollectionUtils.isEmpty(results.getResults())) {
+            return null;
+        }
+        return results.getResults().get(0);
+    }
+
+    protected GroupHistoryBo saveGroupHistory(GroupHistoryBo groupHistory, boolean allowIfFuture) throws RiceIllegalArgumentException {
+        if ( groupHistory == null ) {
+            return null;
+        } else if (!allowIfFuture) {
+            // check to see if there is a later record
+            List<GroupHistory> futureRecords = findGroupHistories(HistoryQueryUtils.futureRecordQuery(
+                    groupHistory.getId(), groupHistory.getActiveFromDate())).getResults();
+            if (!futureRecords.isEmpty()) {
+                throw new RiceIllegalArgumentException("There is a future effective date of the groupHistory that is attempting to save");
+            }
+        }
+
+        return dataObjectService.save( groupHistory );
+    }
+
+    @Override
+    public GroupHistory createGroupHistory(GroupHistory groupHistory) throws RiceIllegalArgumentException {
+        incomingParamCheck(groupHistory, "groupHistory");
+        if (!Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KimConstants.KIM_ENABLE_HISTORY_KEY))) {
+            return null;
+        }
+
+        GroupHistoryBo bo = GroupHistoryBo.from(groupHistory);
+
+        bo.setHistoryId(null);
+        Timestamp activeFrom = groupHistory.getActiveFromDate() == null ? null : new Timestamp(groupHistory.getActiveFromDate().getMillis());
+        Timestamp activeTo = groupHistory.getActiveToDate() == null ? null : new Timestamp(groupHistory.getActiveToDate().getMillis());
+        List<GroupAttributeHistoryBo> attrHistBos = KimAttributeDataHistoryBo
+                .createFrom(GroupAttributeHistoryBo.class, groupHistory.getAttributes(), groupHistory.getKimTypeId());
+        if (StringUtils.isNotEmpty(groupHistory.getId())) {
+            for (GroupAttributeHistoryBo attr : attrHistBos) {
+                attr.setAssignedToId(groupHistory.getId());
+                if (groupHistory.getHistoryId() != null) {
+                    attr.setAssignedToHistoryId(groupHistory.getHistoryId());
+                }
+            }
+            bo.setAttributeHistoryDetails(attrHistBos);
+        }
+        return GroupHistoryBo.to(saveGroupHistory(bo, false));
+    }
+
+    @Override
+    public GroupHistory inactivateGroupHistory(String id, DateTime inactiveDate) throws RiceIllegalArgumentException {
+        incomingParamCheck(id, "id");
+        incomingParamCheck(inactiveDate, "inactiveDate");
+        if (!Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KimConstants.KIM_ENABLE_HISTORY_KEY))) {
+            return null;
+        }
+
+        //Todo: check inactive date.  Should we update actual group object?
+        //Todo:  worry about looping...
+
+
+        // get groupHistory for inactive date
+        GroupHistory history = getGroupHistory(id, inactiveDate);
+        GroupHistoryBo bo = GroupHistoryBo.from(history);
+        Timestamp activeTo = new Timestamp(inactiveDate.getMillis());
+        bo.setActiveToDateValue(activeTo);
+        return GroupHistoryBo.to(saveGroupHistory(bo, false));
     }
 }

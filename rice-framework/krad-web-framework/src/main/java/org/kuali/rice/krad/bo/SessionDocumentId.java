@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krad.bo;
 
-import org.kuali.rice.core.framework.persistence.jpa.CompositePrimaryKeyBase;
-
 import javax.persistence.Column;
 import javax.persistence.Id;
+
+import org.kuali.rice.core.framework.persistence.jpa.CompositePrimaryKeyBase;
 
 /**
  * PK for SessionDocument.  'Cause we love the JPAness.
@@ -27,17 +27,17 @@ import javax.persistence.Id;
  *
  */
 public class SessionDocumentId extends CompositePrimaryKeyBase {
+    @Id
+    @Column(name="SESN_DOC_ID",length=40)
+    protected String sessionId;
 	@Id
-	@Column(name="DOC_HDR_ID")
+	@Column(name="DOC_HDR_ID",length=14)
 	protected String documentNumber;
 	@Id
-	@Column(name="SESN_DOC_ID")
-	protected String sessionId;
-	@Id
-	@Column(name="PRNCPL_ID")
+	@Column(name="PRNCPL_ID",length=40)
 	protected String principalId;
 	@Id
-	@Column(name="IP_ADDR")
+	@Column(name="IP_ADDR",length=60)
 	protected String ipAddress;
 
 	public SessionDocumentId() {}

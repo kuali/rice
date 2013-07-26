@@ -37,9 +37,7 @@ public class ExtractDAOJpaImpl implements ExtractDAO {
 
     public Dump getDumpByDocumentId(String docId) {
         LOG.debug("finding Document Extract by documentId " + docId);
-        Criteria crit = new Criteria(Dump.class.getName());
-        crit.eq("docId", docId);
-        return (Dump) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
+        return entityManager.find(Dump.class, docId);
     }
 
     public List<Fields> getFieldsByDocumentId(String docId) {

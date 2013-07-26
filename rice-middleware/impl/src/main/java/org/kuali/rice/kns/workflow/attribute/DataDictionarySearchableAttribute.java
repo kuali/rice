@@ -22,6 +22,7 @@ import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.DocumentWithContent;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
@@ -39,6 +40,7 @@ import org.kuali.rice.kns.maintenance.KualiGlobalMaintainableImpl;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.WorkflowAttributePropertyResolutionService;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
@@ -60,7 +62,6 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.util.ObjectUtils;
-import org.kuali.rice.kns.service.WorkflowAttributePropertyResolutionService;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -245,7 +246,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
         ConfigurationService configurationService = CoreApiServiceLocator.getKualiConfigurationService();
 
         if(GlobalVariables.getMessageMap().hasErrors()){
-            MessageMap deepCopy = (MessageMap)ObjectUtils.deepCopy(GlobalVariables.getMessageMap());
+            MessageMap deepCopy = (MessageMap) SerializationUtils.deepCopy(GlobalVariables.getMessageMap());
             for (String errorKey : deepCopy.getErrorMessages().keySet()) {
                 List<ErrorMessage> errorMessages = deepCopy.getErrorMessages().get(errorKey);
                 if (CollectionUtils.isNotEmpty(errorMessages)) {
@@ -327,7 +328,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
     protected List<DocumentAttribute> parsePrimaryKeyValuesFromDocument(Class<? extends BusinessObject> businessObjectClass, MaintenanceDocument document) {
         List<DocumentAttribute> values = new ArrayList<DocumentAttribute>();
 
-        final List primaryKeyNames = KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(businessObjectClass);
+        final List primaryKeyNames = KRADServiceLocatorWeb.getLegacyDataAdapter().listPrimaryKeyFieldNames(businessObjectClass);
 
         for (Object primaryKeyNameAsObj : primaryKeyNames) {
             final String primaryKeyName = (String)primaryKeyNameAsObj;
@@ -396,7 +397,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
         Map pkMap = new LinkedHashMap();
         pkMap.put(KRADPropertyConstants.DOCUMENT_NUMBER, documentNumber);
 
-        List returnedBOs = (List) KRADServiceLocator.getBusinessObjectService().findMatching(businessObjectClass, pkMap);
+        List returnedBOs = (List) KNSServiceLocator.getBusinessObjectService().findMatching(businessObjectClass, pkMap);
         if (returnedBOs.size() > 0) {
             globalBO = (GlobalBusinessObject)returnedBOs.get(0);
         }
@@ -418,7 +419,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
     }
 
     protected DocumentAttribute generateSearchableAttributeFromChange(PersistableBusinessObject changeToPersist) {
-        List<String> primaryKeyNames = KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(changeToPersist.getClass());
+        List<String> primaryKeyNames = KRADServiceLocatorWeb.getLegacyDataAdapter().listPrimaryKeyFieldNames(changeToPersist.getClass());
 
         for (Object primaryKeyNameAsObject : primaryKeyNames) {
             String primaryKeyName = (String)primaryKeyNameAsObject;
@@ -442,7 +443,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
     protected List<Row> createFieldRowsForBusinessObject(Class<? extends BusinessObject> businessObjectClass) {
         List<Row> searchFields = new ArrayList<Row>();
 
-        final List primaryKeyNamesAsObjects = KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(businessObjectClass);
+        final List primaryKeyNamesAsObjects = KRADServiceLocatorWeb.getLegacyDataAdapter().listPrimaryKeyFieldNames(businessObjectClass);
         final BusinessObjectEntry boEntry = KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(businessObjectClass.getName());
         final WorkflowAttributePropertyResolutionService propertyResolutionService = KNSServiceLocator
                 .getWorkflowAttributePropertyResolutionService();

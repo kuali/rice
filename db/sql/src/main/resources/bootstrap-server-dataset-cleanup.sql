@@ -374,6 +374,29 @@ drop table TRV_ATT_SAMPLE
 drop sequence trv_fo_id_s
 /
 
+drop table KRTST_TEST_TABLE_T
+/
+drop table KRTST_TEST_TABLE_EXT_T
+/
+drop table KRTST_TEST_ANOTHER_REF_OBJ_T
+/
+drop table KRTST_TEST_YARDO_T
+/
+drop table KRDATA_TEST_INDIR_LINK_T
+/
+drop table KRTST_TEST_TABLE_2_T
+/
+drop table KRTST_TEST_COLL_T
+/
+drop table KRTST_TEST_COLL_TWO_T
+/
+drop table KRTST_TEST_INDIRECT_COLL_T
+/
+drop table KRTST_TEST_REF_OBJ_T
+/
+
+
+
 delete from krim_role_perm_t where perm_id in (select perm_id from krim_perm_t where nmspc_cd = 'KR-SAP')
 /
 delete from krim_perm_attr_data_t where perm_id in (select perm_id from krim_perm_t where nmspc_cd = 'KR-SAP')
@@ -389,9 +412,6 @@ drop table kr_kim_test_bo
 /
 drop table TST_SEARCH_ATTR_INDX_TST_DOC_T
 /
-delete from ACCT_DD_ATTR_DOC
-/
-
 
 -- clean out KRMS sample data
 

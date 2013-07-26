@@ -25,13 +25,16 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 /**
  * This formatter calls the encryption service to encrypt/decrypt values.
  */
+@Deprecated
 public class EncryptionFormatter extends Formatter {
     private static final long serialVersionUID = -4109390572922205211L;
     private transient EncryptionService encryptionService;
 
+    @Override
     protected Object convertToObject(String target) {
-        if (Formatter.isEmptyValue(target))
+        if (Formatter.isEmptyValue(target)) {
             return null;
+        }
 
         String decryptedValue = null;
         try {
@@ -45,6 +48,7 @@ public class EncryptionFormatter extends Formatter {
         return decryptedValue;
     }
 
+    @Override
     public Object format(Object target) {
         String encryptedValue = null;
         try {
@@ -57,7 +61,7 @@ public class EncryptionFormatter extends Formatter {
 
         return encryptedValue;
     }
-    
+
     protected EncryptionService getEncryptionFormatter() {
     	if (this.encryptionService == null) {
     		this.encryptionService = GlobalResourceLoader.getService(CoreConstants.Services.ENCRYPTION_SERVICE);

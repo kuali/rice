@@ -21,13 +21,14 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://rice.kuali.org/dd http://rice.kuali.org/dd/dd.xsd">
 
   <bean id="TravelerDetail" parent="TravelerDetail-parentBean" />
-  <bean id="TravelerDetail-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.krad.demo.travel.authorization.dataobject.TravelerDetail" />
-    <property name="lookupDefinition">
+  <bean id="TravelerDetail-parentBean" abstract="true" parent="DataObjectEntry">
+    <property name="dataObjectClass" value="org.kuali.rice.krad.demo.travel.authorization.dataobject.TravelerDetail" />
+<!--     <property name="lookupDefinition">
       <ref bean="TravelerDetail-lookupDefinition"/>
     </property>
+ -->
     <property name="titleAttribute" value="id" />
-    <property name="objectLabel" value="TravelerDetail" />
+    <property name="objectLabel" value="Traveler Detail" />
     <property name="attributes">
       <list>
         <ref bean="TravelerDetail-id" />
@@ -360,7 +361,7 @@
     <property name="summary" value="Version Number" />
     <property name="description" value="Version Number" />
   </bean>
-
+<!-- 
   <bean id="TravelerDetail-inquiryDefinition" parent="TravelerDetail-inquiryDefinition-parentBean" />
   <bean id="TravelerDetail-inquiryDefinition-parentBean" abstract="true"
         parent="InquiryDefinition">
@@ -427,5 +428,5 @@
       </list>
     </property>
   </bean>
-
+ -->
 </beans>

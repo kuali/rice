@@ -49,7 +49,7 @@ import org.kuali.rice.krad.datadictionary.AttributeSecurity;
 import org.kuali.rice.krad.datadictionary.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
 import org.kuali.rice.krad.service.DataDictionaryService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.DataObjectMetaDataService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.service.PersistenceStructureService;
@@ -74,6 +74,8 @@ import java.util.Set;
 
 /**
  * Base Maintainable class to hold things common to all maintainables.
+ *
+ * @deprecated use KRAD
  */
 @Deprecated
 public class KualiMaintainableImpl extends MaintainableImpl implements Maintainable {
@@ -91,10 +93,15 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 
 	protected transient BusinessObjectDictionaryService businessObjectDictionaryService;
 	protected transient PersonService personService;
+    @Deprecated
 	protected transient BusinessObjectMetaDataService businessObjectMetaDataService;
+    @Deprecated
 	protected transient BusinessObjectAuthorizationService businessObjectAuthorizationService;
+    @Deprecated
 	protected transient DocumentHelperService documentHelperService;
     protected transient MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
+    @Deprecated
+    private transient DataObjectMetaDataService dataObjectMetaDataService;
 
 	/**
 	 * Default empty constructor
@@ -118,6 +125,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 	 * @see Maintainable#populateBusinessObject(java.util.Map,
 	 *      org.kuali.rice.krad.maintenance.MaintenanceDocument, String)
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public Map populateBusinessObject(Map<String, String> fieldValues, MaintenanceDocument maintenanceDocument,
 			String methodToCall) {
@@ -137,7 +145,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 	 * the those parameters in the map, whose value gives us the property name
 	 * that has an encrypted value. We then need to decrypt the value in the Map
 	 * before the business object is populated.
-	 * 
+	 *
 	 * @param fieldValues
 	 *            - possibly with encrypted values
 	 * @return Map fieldValues - with no encrypted values
@@ -185,7 +193,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 	/**
 	 * Determines whether the field in a request should be encrypted. This base
 	 * implementation does not work for properties of collection elements.
-	 * 
+	 *
 	 * This base implementation will only return true if the maintenance
 	 * document is being refreshed after a lookup (i.e. methodToCall is
 	 * "refresh") and the data dictionary-based attribute security definition
@@ -194,7 +202,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 	 * encrypted in a request. If the user otherwise has no permissions to
 	 * view/edit the field, then a request parameter will not be sent back to
 	 * the server for population.
-	 * 
+	 *
 	 * @param maintenanceDocument
 	 * @param fieldName
 	 * @param auths
@@ -220,9 +228,10 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 	 * Calls method to get all the core sections for the business object defined
 	 * in the data dictionary. Then determines if the bo has custom attributes,
 	 * if so builds a custom attribute section and adds to the section list.
-	 * 
+	 *
 	 * @return List of org.kuali.ui.Section objects
 	 */
+	@Override
 	public List getSections(MaintenanceDocument document, Maintainable oldMaintainable) {
 		List<Section> sections = new ArrayList<Section>();
 		sections.addAll(getCoreSections(document, oldMaintainable));
@@ -236,7 +245,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 	 * place under Section UI. If section contains a maintenance collection,
 	 * call method to build a Section UI which contains rows of Container
 	 * Fields.
-	 * 
+	 *
 	 * @return List of org.kuali.ui.Section objects
 	 */
 	public List<Section> getCoreSections(MaintenanceDocument document, Maintainable oldMaintainable) {
@@ -295,11 +304,12 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 
 
     /**
-	 * 
+	 *
 	 * @see Maintainable#saveBusinessObject()
 	 */
+	@Override
 	public void saveBusinessObject() {
-		getBusinessObjectService().linkAndSave(businessObject);
+		KNSServiceLocator.getBusinessObjectService().linkAndSave(businessObject);
 	}
 
     /**
@@ -314,6 +324,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
     /**
 	 * Retrieves title for maintenance document from data dictionary
 	 */
+	@Override
 	public String getMaintainableTitle() {
 		return getMaintenanceDocumentDictionaryService().getMaintenanceLabel(getDocumentTypeName());
 	}
@@ -322,8 +333,9 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
     public void setupNewFromExisting(MaintenanceDocument document, Map<String, String[]> parameters) {
     }
 
+	@Override
 	public boolean isBoNotesEnabled() {
-        return getDataObjectMetaDataService().areNotesSupported(getDataObjectClass());
+        return KRADServiceLocatorWeb.getLegacyDataAdapter().areNotesSupported(getDataObjectClass());
 	}
 
     /**
@@ -339,6 +351,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 	 *      java.util.Map) Impls will be needed if custom action is needed on
 	 *      refresh.
 	 */
+	@Override
 	public void refresh(String refreshCaller, Map fieldValues, MaintenanceDocument document) {
 		String referencesToRefresh = (String) fieldValues.get(KRADConstants.REFERENCES_TO_REFRESH);
 		refreshReferences(referencesToRefresh);
@@ -471,6 +484,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 		}
 	}
 
+	@Override
 	public void addMultipleValueLookupResults(MaintenanceDocument document, String collectionName,
 			Collection<PersistableBusinessObject> rawValues, boolean needsBlank, PersistableBusinessObject bo) {
 		Collection maintCollection = (Collection) ObjectUtils.getPropertyValue(bo, collectionName);
@@ -538,10 +552,11 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 	 * duplicateIdentificationFields. This List is used to determine whether the
 	 * new entry being added to the collection is a duplicate entry and if so,
 	 * we should not add the new entry to the existing collection
-	 * 
+	 *
 	 * @param docTypeName
 	 * @param collectionName
 	 */
+	@Override
 	public List<String> getDuplicateIdentifierFieldsFromDataDictionary(String docTypeName, String collectionName) {
 		List<String> duplicateIdentifierFieldNames = new ArrayList<String>();
 		MaintainableCollectionDefinition collDef = getMaintenanceDocumentDictionaryService().getMaintainableCollection(
@@ -553,6 +568,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 		return duplicateIdentifierFieldNames;
 	}
 
+	@Override
 	public List<String> getMultiValueIdentifierList(Collection maintCollection, List<String> duplicateIdentifierFields) {
 		List<String> identifierList = new ArrayList<String>();
 		for (PersistableBusinessObject bo : (Collection<PersistableBusinessObject>) maintCollection) {
@@ -568,6 +584,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 		return identifierList;
 	}
 
+	@Override
 	public boolean hasBusinessObjectExisted(BusinessObject bo, List<String> existingIdentifierList,
 			List<String> duplicateIdentifierFields) {
 		String uniqueIdentifier = new String();
@@ -590,9 +607,10 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 	/**
 	 * Set the new collection records back to true so they can be deleted (copy
 	 * should act like new)
-	 * 
+	 *
 	 * @see KualiMaintainableImpl#processAfterCopy()
 	 */
+	@Override
 	public void processAfterCopy(MaintenanceDocument document, Map<String, String[]> parameters) {
 		try {
 			ObjectUtils.setObjectPropertyDeep(businessObject, KRADPropertyConstants.NEW_COLLECTION_RECORD,
@@ -621,7 +639,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
     @Override
     public void setDataObject(Object object) {
         super.setDataObject(object);
-        
+
         if(object instanceof PersistableBusinessObject) {
             this.businessObject = (PersistableBusinessObject)object;
         }
@@ -635,7 +653,8 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
     /**
      * @return Returns the instance of the business object being maintained.
      */
-    public PersistableBusinessObject getBusinessObject() {
+    @Override
+	public PersistableBusinessObject getBusinessObject() {
         return businessObject;
     }
 
@@ -644,7 +663,8 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
      *            Sets the instance of a business object that will be
      *            maintained.
      */
-    public void setBusinessObject(PersistableBusinessObject businessObject) {
+    @Override
+	public void setBusinessObject(PersistableBusinessObject businessObject) {
         this.businessObject = businessObject;
         setDataObject(businessObject);
     }
@@ -652,6 +672,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 	/**
 	 * @return Returns the boClass.
 	 */
+	@Override
 	public Class getBoClass() {
 		return super.getDataObjectClass();
 	}
@@ -660,14 +681,16 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 	 * @param boClass
 	 *            The boClass to set.
 	 */
+	@Override
 	public void setBoClass(Class boClass) {
 		setDataObjectClass(boClass);
 	}
 
 	/**
-	 * 
+	 *
 	 * @see Maintainable#setGenerateDefaultValues()
 	 */
+	@Override
 	public void setGenerateDefaultValues(String docTypeName) {
 		List<MaintainableSectionDefinition> sectionDefinitions = getMaintenanceDocumentDictionaryService()
 				.getMaintainableSections(docTypeName);
@@ -716,9 +739,10 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 	}
 
 	/**
-	 * 
+	 *
 	 * @see Maintainable#setGenerateBlankRequiredValues()
 	 */
+	@Override
 	public void setGenerateBlankRequiredValues(String docTypeName) {
 		try {
 			List<MaintainableSectionDefinition> sectionDefinitions = getMaintenanceDocumentDictionaryService()
@@ -763,12 +787,14 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 	 * @see Maintainable#processBeforeAddLine(java.lang.String,
 	 *      java.lang.Class, org.kuali.rice.krad.bo.BusinessObject)
 	 */
+	@Override
 	public void processBeforeAddLine(String colName, Class colClass, BusinessObject addBO) {
 	}
 
 	/**
 	 * @see Maintainable#getShowInactiveRecords(java.lang.String)
 	 */
+	@Override
 	public boolean getShowInactiveRecords(String collectionName) {
 		return InactiveRecordsHidingUtils.getShowInactiveRecords(inactiveRecordDisplay, collectionName);
 	}
@@ -777,6 +803,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 	 * @see Maintainable#setShowInactiveRecords(java.lang.String,
 	 *      boolean)
 	 */
+	@Override
 	public void setShowInactiveRecords(String collectionName, boolean showInactive) {
 		InactiveRecordsHidingUtils.setShowInactiveRecords(inactiveRecordDisplay, collectionName, showInactive);
 	}
@@ -784,10 +811,12 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 	/**
 	 * @return the inactiveRecordDisplay
 	 */
+	@Override
 	public Map<String, Boolean> getInactiveRecordDisplay() {
 		return inactiveRecordDisplay;
 	}
 
+	@Override
 	public void addNewLineToCollection(String collectionName) {
 
 		if (LOG.isDebugEnabled()) {
@@ -824,6 +853,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 
 	}
 
+	@Override
 	public PersistableBusinessObject getNewCollectionLine(String collectionName) {
 		if (LOG.isDebugEnabled()) {
 			// LOG.debug( this + ") getNewCollectionLine( " + collectionName +
@@ -863,9 +893,10 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 	}
 
 	/**
-	 * 
+	 *
 	 * @see Maintainable#populateNewCollectionLines(java.util.Map)
 	 */
+	@Override
 	public Map<String, String> populateNewCollectionLines(Map<String, String> fieldValues,
 			MaintenanceDocument maintenanceDocument, String methodToCall) {
 		if (LOG.isDebugEnabled()) {
@@ -983,6 +1014,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 		return cachedValues;
 	}
 
+	@Override
 	public Collection<String> getAffectedReferencesFromLookup(BusinessObject baseBO, String attributeName,
 			String collectionPrefix) {
 		PersistenceStructureService pss = getPersistenceStructureService();
@@ -1176,6 +1208,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 	/**
 	 * @see Maintainable#clearBusinessObjectOfRestrictedValues(org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions)
 	 */
+	@Override
 	public void clearBusinessObjectOfRestrictedValues(MaintenanceDocumentRestrictions maintenanceDocumentRestrictions) {
 		List<MaintainableSectionDefinition> sections = getMaintenanceDocumentDictionaryService()
 				.getMaintainableSections(getDocumentTypeName());
@@ -1404,9 +1437,10 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 
 	/**
 	 * By default a maintainable is not external
-	 * 
+	 *
 	 * @see Maintainable#isExternalBusinessObject()
 	 */
+	@Override
 	public boolean isExternalBusinessObject() {
 		return false;
 	}
@@ -1414,19 +1448,22 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 	/**
 	 * @see Maintainable#getExternalBusinessObject()
 	 */
+	@Override
 	public void prepareBusinessObject(BusinessObject businessObject) {
 		// Do nothing by default
 	}
 
 	// 3070
+	@Override
 	public void deleteBusinessObject() {
 		if (businessObject == null)
 			return;
 
-		KRADServiceLocator.getBusinessObjectService().delete(businessObject);
+		KNSServiceLocator.getBusinessObjectService().delete(businessObject);
 		businessObject = null;
 	}
 
+	@Override
 	public boolean isOldBusinessObjectInDocument() {
 		return super.isOldDataObjectInDocument();
 	}
@@ -1445,6 +1482,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 		return personService;
 	}
 
+    @Deprecated
 	protected BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
 		if (businessObjectMetaDataService == null) {
 			businessObjectMetaDataService = KNSServiceLocator.getBusinessObjectMetaDataService();
@@ -1474,6 +1512,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 		this.personService = personService;
 	}
 
+    @Deprecated
 	public void setBusinessObjectMetaDataService(BusinessObjectMetaDataService businessObjectMetaDataService) {
 		this.businessObjectMetaDataService = businessObjectMetaDataService;
 	}
@@ -1498,4 +1537,18 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
             MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService) {
         this.maintenanceDocumentDictionaryService = maintenanceDocumentDictionaryService;
     }
+
+    @Deprecated // KNS Metadata service
+    protected DataObjectMetaDataService getDataObjectMetaDataService() {
+        if (dataObjectMetaDataService == null) {
+            this.dataObjectMetaDataService = KNSServiceLocator.getDataObjectMetaDataService();
+        }
+        return dataObjectMetaDataService;
+    }
+
+    @Deprecated
+    public void setDataObjectMetaDataService(DataObjectMetaDataService dataObjectMetaDataService) {
+        this.dataObjectMetaDataService = dataObjectMetaDataService;
+    }
+
 }

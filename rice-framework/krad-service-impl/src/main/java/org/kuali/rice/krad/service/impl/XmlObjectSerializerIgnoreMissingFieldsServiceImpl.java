@@ -15,15 +15,12 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.mapper.MapperWrapper;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl;
-import org.kuali.rice.krad.service.PersistenceService;
+import java.util.ArrayList;
+
 import org.kuali.rice.krad.service.util.DateTimeConverter;
 
-import java.util.ArrayList;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.mapper.MapperWrapper;
 
 /**
  * Service implementation for the XmlObjectSerializer structure. This is the default implementation that gets
@@ -32,11 +29,6 @@ import java.util.ArrayList;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class XmlObjectSerializerIgnoreMissingFieldsServiceImpl extends XmlObjectSerializerServiceImpl {
-	private static final Log LOG = LogFactory.getLog(XmlObjectSerializerIgnoreMissingFieldsServiceImpl.class);
-
-	private PersistenceService persistenceService;
-
-	private XStream xstream;
 
 	public XmlObjectSerializerIgnoreMissingFieldsServiceImpl() {
 
@@ -57,22 +49,13 @@ public class XmlObjectSerializerIgnoreMissingFieldsServiceImpl extends XmlObject
        };
 
 		xstream.registerConverter(new ProxyConverter(xstream.getMapper(), xstream.getReflectionProvider() ));
-		xstream.addDefaultImplementation(ArrayList.class, ListProxyDefaultImpl.class);
+        try {
+        	Class<?> objListProxyClass = Class.forName("org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl");
+            xstream.addDefaultImplementation(ArrayList.class, objListProxyClass);
+        } catch ( Exception ex ) {
+        	// Do nothing - this will blow if the OJB class does not exist, which it won't in some installs
+        }
         xstream.registerConverter(new DateTimeConverter());
 	}
 
-    /**
-     * @see org.kuali.rice.krad.service.XmlObjectSerializer#fromXml(java.lang.String)
-     *
-     *  Fields on the XML that do not exist on the class will be ignored.
-     */
-    public Object fromXml(String xml) {
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug( "fromXml() : \n" + xml );
-        }
-        if ( xml != null ) {
-            xml = xml.replaceAll( "--EnhancerByCGLIB--[0-9a-f]{0,8}", "" );
-        }
-        return xstream.fromXML(xml);
-    }
 }

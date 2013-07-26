@@ -18,6 +18,7 @@ package org.kuali.rice.core.api.uif
 import org.junit.Test
 import static org.junit.Assert.*
 
+import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.core.test.JAXBAssert;
 
 class RemotableAttributeFieldTest {

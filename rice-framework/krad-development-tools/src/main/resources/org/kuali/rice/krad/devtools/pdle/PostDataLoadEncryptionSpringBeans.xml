@@ -55,9 +55,9 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-    <bean id="businessObjectService"
+    <bean id="legacyDataAdapter"
 		class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
-		<property name="serviceName" value="businessObjectService" />
+		<property name="serviceName" value="legacyDataAdapter" />
 	</bean>
 
     <bean id="encryptionService"
@@ -69,7 +69,7 @@
 
 	<bean id="postDataLoadEncryptionService" class="org.kuali.rice.krad.devtools.pdle.PostDataLoadEncryptionServiceImpl">
 		<property name="postDataLoadEncryptionDao" ref="postDataLoadEncryptionDao" />
-		<property name="businessObjectService" ref="businessObjectService" />
+		<property name="legacyDataAdapter" ref="legacyDataAdapter" />
 		<property name="encryptionService" ref="encryptionService" />
 	</bean>
 </beans>

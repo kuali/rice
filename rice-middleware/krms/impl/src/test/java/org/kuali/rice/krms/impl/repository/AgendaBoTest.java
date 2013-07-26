@@ -153,7 +153,7 @@ class IncrementalSas implements SequenceAccessorService {
     static Map<String, Long> sasMap = new HashMap<String, Long>();
 
     @Override
-    public Long getNextAvailableSequenceNumber(String sequenceName, Class<? extends BusinessObject> clazz) {
+    public Long getNextAvailableSequenceNumber(String sequenceName, Class clazz) {
         return getNextAvailableSequenceNumber(sequenceName + clazz.getCanonicalName());
     }
 

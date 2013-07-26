@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kew.engine.node;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.api.doctype.RouteNodeConfigurationParameterContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
@@ -52,11 +50,7 @@ public class RouteNodeConfigParam extends PersistableBusinessObjectBase implemen
     @Id
 	@Column(name="RTE_NODE_CFG_PARM_ID")
 	@GeneratedValue(generator="KREW_RTE_NODE_CFG_PARM_S")
-	@GenericGenerator(name="KREW_RTE_NODE_CFG_PARM_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_RTE_NODE_CFG_PARM_S"),
-			@Parameter(name="value_column",value="id")
-	})
-    //@SequenceGenerator(name="KREW_RTE_NODE_CFG_PARM_SEQ_GEN", sequenceName="KREW_RTE_NODE_CFG_PARM_S")	
+    //@SequenceGenerator(name="KREW_RTE_NODE_CFG_PARM_SEQ_GEN", sequenceName="KREW_RTE_NODE_CFG_PARM_S")
 	private String id;
 	private String key;
     private String value;

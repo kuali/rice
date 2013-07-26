@@ -15,32 +15,37 @@
  */
 package org.kuali.rice.krad.demo.travel.authorization.dataobject;
 
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import java.util.LinkedHashMap;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import org.kuali.rice.core.api.mo.common.active.Inactivatable;
+
+import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
+import org.kuali.rice.krad.bo.VersionedAndGloballyUniqueBase;
 
 
 
 @Entity
 @Table(name="TRVL_TRAVELER_TYP_T")
-public class TravelerType extends PersistableBusinessObjectBase implements Inactivatable {
+public class TravelerType extends VersionedAndGloballyUniqueBase implements MutableInactivatable {
+	private static final long serialVersionUID = 1L;
 
+	@Id
+    @Column(name="code",length=3,nullable=false)
     private String code;
 
+    @Column(name="src_code",length=10)
     private String sourceCode;
 
+    @Column(name="nm",length=40,nullable=false)
     private String name;
 
+    @Column(name="advances_ind",nullable=false,length=1)
     private Boolean advances = Boolean.FALSE;
 
+    @Column(name="actv_ind",nullable=false,length=1)
     private Boolean active = Boolean.TRUE;
 
-    @Id
-    @Column(name="code",length=3,nullable=false)
     public String getCode() {
         return code;
     }
@@ -49,7 +54,6 @@ public class TravelerType extends PersistableBusinessObjectBase implements Inact
         this.code = code;
     }
 
-    @Column(name="src_code",length=10)
     public String getSourceCode() {
         return sourceCode;
     }
@@ -58,7 +62,6 @@ public class TravelerType extends PersistableBusinessObjectBase implements Inact
         this.sourceCode = sourceCode;
     }
 
-    @Column(name="nm",length=40,nullable=false)
     public String getName() {
         return name;
     }
@@ -67,7 +70,6 @@ public class TravelerType extends PersistableBusinessObjectBase implements Inact
         this.name = name;
     }
 
-    @Column(name="advances_ind",nullable=false,length=1)
     public Boolean getAdvances() {
         return advances;
     }
@@ -77,21 +79,12 @@ public class TravelerType extends PersistableBusinessObjectBase implements Inact
     }
 
     @Override
-    @Column(name="actv_ind",nullable=false,length=1)
     public boolean isActive() {
         return active;
     }
 
     public void setActive(boolean active) {
         this.active = active;
-    }
-
-    protected LinkedHashMap toStringMapper() {
-        LinkedHashMap map = new LinkedHashMap();
-        map.put("code", code);
-        map.put("name", name);
-
-        return map;
     }
 }
 

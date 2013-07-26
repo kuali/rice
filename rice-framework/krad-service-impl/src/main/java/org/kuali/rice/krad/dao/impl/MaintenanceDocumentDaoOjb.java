@@ -15,11 +15,8 @@
  */
 package org.kuali.rice.krad.dao.impl;
 
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
-import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb;
 import org.kuali.rice.krad.dao.MaintenanceDocumentDao;
@@ -59,50 +56,6 @@ public class MaintenanceDocumentDaoOjb extends PlatformAwareDaoBaseOjb implement
             lockingDocNumber = maintenanceLock.getDocumentNumber();
         }
         return lockingDocNumber;
-    }
-
-//    /**
-//     * Returns all pending maintenance documents locked by the given business object class.
-//     */
-//    public Collection getPendingDocumentsForClass(Class dataObjectClass) {
-//        Criteria criteria = new Criteria();
-//        criteria.addLike("lockingRepresentation", "%" + dataObjectClass.getName() + "%");
-//
-//        Collection maintenanceLocks = getPersistenceBrokerTemplate().getCollectionByQuery(QueryFactory.newQuery(MaintenanceLock.class, criteria));
-//
-//        if (!maintenanceLocks.isEmpty()) {
-//            criteria = new Criteria();
-//            Collection<String> documentNumbers = new ArrayList();
-//
-//            for (Object maintenanceLock : maintenanceLocks) {
-//                documentNumbers.add(((MaintenanceLock) maintenanceLock).getDocumentNumber());
-//            }
-//            criteria.addIn("documentNumber", documentNumbers);
-//
-//            MaintenanceDocumentEntry entry = KRADServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getMaintenanceDocumentEntryForBusinessObjectClass(dataObjectClass);
-//            return getPersistenceBrokerTemplate().getCollectionByQuery(QueryFactory.newQuery(entry.getStandardDocumentBaseClass(), criteria));
-//        } else {
-//            return maintenanceLocks;
-//        }
-//    }
-
-    /**
-     * @see org.kuali.rice.krad.dao.MaintenanceDocumentDao#deleteLocks(java.lang.String)
-     */
-    public void deleteLocks(String documentNumber) {
-        Criteria criteria = new Criteria();
-        criteria.addEqualTo("documentNumber", documentNumber);
-        QueryByCriteria query = new QueryByCriteria(MaintenanceLock.class, criteria);
-        getPersistenceBrokerTemplate().deleteByQuery(query);
-    }
-
-    /**
-     * @see org.kuali.rice.krad.dao.MaintenanceDocumentDao#storeLocks(java.util.List)
-     */
-    public void storeLocks(List<MaintenanceLock> maintenanceLocks) {
-        for (MaintenanceLock maintenanceLock : maintenanceLocks) {
-            getPersistenceBrokerTemplate().store(maintenanceLock);
-        }
     }
 
 }

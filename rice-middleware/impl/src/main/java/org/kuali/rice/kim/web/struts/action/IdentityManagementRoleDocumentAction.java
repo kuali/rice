@@ -23,6 +23,7 @@ import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
@@ -44,14 +45,14 @@ import org.kuali.rice.kim.rule.event.ui.AddDelegationMemberEvent;
 import org.kuali.rice.kim.rule.event.ui.AddMemberEvent;
 import org.kuali.rice.kim.rule.event.ui.AddPermissionEvent;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
+import org.kuali.rice.kns.question.ConfirmationQuestion;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
-import org.kuali.rice.kns.question.ConfirmationQuestion;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.ObjectUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -265,7 +266,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         if (newResponsibility != null && StringUtils.isNotBlank(newResponsibility.getResponsibilityId())) {
             Map<String, String> criteria = new HashMap<String, String>();
             criteria.put(KimConstants.PrimaryKeyConstants.RESPONSIBILITY_ID, newResponsibility.getResponsibilityId());
-            ResponsibilityBo responsibilityImpl = KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(ResponsibilityBo.class, criteria);
+            ResponsibilityBo responsibilityImpl = KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ResponsibilityBo.class, criteria);
             newResponsibility.setKimResponsibility(responsibilityImpl);
         }
 
@@ -424,7 +425,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
     public ActionForward editMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         KimDocumentRoleMember roleMemberToEdit = roleDocumentForm.getRoleDocument().getMembers().get(getLineToEdit(request));
-        KimDocumentRoleMember copiedMember = (KimDocumentRoleMember)ObjectUtils.deepCopy(roleMemberToEdit);
+        KimDocumentRoleMember copiedMember = (KimDocumentRoleMember) SerializationUtils.deepCopy(roleMemberToEdit);
         roleDocumentForm.getRoleDocument().getModifiedMembers().add(copiedMember);
         roleDocumentForm.getRoleDocument().getMembers().remove(roleMemberToEdit);
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
@@ -433,7 +434,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
     public ActionForward editSearchResultsMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         KimDocumentRoleMember roleMemberToEdit = roleDocumentForm.getRoleDocument().getSearchResultMembers().get(getLineToEdit(request));
-        KimDocumentRoleMember copiedMember = (KimDocumentRoleMember)ObjectUtils.deepCopy(roleMemberToEdit);
+        KimDocumentRoleMember copiedMember = (KimDocumentRoleMember)SerializationUtils.deepCopy(roleMemberToEdit);
         roleDocumentForm.getRoleDocument().getModifiedMembers().add(copiedMember);
         roleDocumentForm.getRoleDocument().getSearchResultMembers().remove(roleMemberToEdit);
         roleDocumentForm.getRoleDocument().getMembers().remove(roleMemberToEdit);

@@ -15,16 +15,6 @@
  */
 package org.kuali.rice.kns.service.impl;
 
-import java.beans.IndexedPropertyDescriptor;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -48,10 +38,22 @@ import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
 
+import java.beans.IndexedPropertyDescriptor;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 /**
  * This class is the service implementation for the BusinessObjectDictionary.
  * This is the default, Kuali delivered implementation which leverages the
  * DataDictionaryService.
+ *
+ * @deprecated use KRAD
  */
 @Deprecated
 public class BusinessObjectDictionaryServiceImpl implements BusinessObjectDictionaryService {

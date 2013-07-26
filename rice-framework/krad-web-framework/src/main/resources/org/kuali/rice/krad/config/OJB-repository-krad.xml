@@ -37,7 +37,6 @@
   -->
 
   <!--  MAINTENANCE/REFERENCE TABLE DOCUMENT MAPPING -->
-
   <class-descriptor class="org.kuali.rice.krad.maintenance.MaintenanceDocumentBase" table="KRNS_MAINT_DOC_T">
     <field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" primarykey="true"/>
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"/>
@@ -134,7 +133,6 @@
       <foreignkey field-ref="noteTypeCode"/>
     </reference-descriptor>
 
-    <!-- fdocAttachmentIdentifier ABOVE AND REFERENCE BELOW ARE TEMPORARY B/C THIS SHOULD BE 1 TO MANY -->
     <reference-descriptor name="attachment" class-ref="org.kuali.rice.krad.bo.Attachment" auto-retrieve="true"
                           auto-update="object" auto-delete="object">
       <foreignkey field-ref="noteIdentifier"/>

@@ -452,7 +452,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
     /**
      * Gets the lookup service
      *
-     * @return lookup service
+     * @return LookupService lookup service
      */
     protected LookupService getLookupService() {
         if (lookupService == null) {

@@ -16,12 +16,19 @@
 package org.kuali.rice.kew.rule;
 
 import org.apache.commons.lang.ObjectUtils;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
 import java.io.Serializable;
 
 
@@ -43,10 +50,6 @@ public class RuleExtensionValue implements Serializable {
 	private static final long serialVersionUID = 8909789087052290261L;
 	@Id
 	@GeneratedValue(generator="KREW_RTE_TMPL_S")
-	@GenericGenerator(name="KREW_RTE_TMPL_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_RTE_TMPL_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="RULE_EXT_VAL_ID")
 	private String ruleExtensionValueId;
     @Column(name="RULE_EXT_ID", insertable=false, updatable=false)

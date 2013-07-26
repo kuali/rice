@@ -16,12 +16,9 @@
 package org.kuali.rice.kew.rule;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.rule.RuleContract;
 import org.kuali.rice.kew.api.rule.RuleExtension;
 import org.kuali.rice.kew.api.util.CodeTranslator;
@@ -34,12 +31,9 @@ import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.rule.service.RuleServiceInternal;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.impl.identity.PersonImpl;
-import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.CascadeType;
@@ -78,10 +72,6 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
     private static final long serialVersionUID = 6137765574728530156L;
     @Id
     @GeneratedValue(generator="KREW_RTE_TMPL_S")
-	@GenericGenerator(name="KREW_RTE_TMPL_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_RTE_TMPL_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="RULE_ID")
     private String id;
     /**
@@ -113,10 +103,8 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
 	private Integer versionNbr = new Integer(0);
     @Column(name="FRC_ACTN")
 	private boolean forceAction;
-    @Fetch(value = FetchMode.SELECT)
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},mappedBy="ruleBaseValues")
 	private List<RuleResponsibilityBo> ruleResponsibilities;
-    @Fetch(value = FetchMode.SELECT)
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},mappedBy="ruleBaseValues")
 	private List<RuleExtensionBo> ruleExtensions;
     @ManyToOne(fetch=FetchType.EAGER)

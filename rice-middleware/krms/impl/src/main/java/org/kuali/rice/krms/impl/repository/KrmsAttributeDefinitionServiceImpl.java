@@ -15,6 +15,14 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.criteria.CriteriaLookupService;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -22,23 +30,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.criteria.CriteriaLookupService;
-import org.kuali.rice.core.api.criteria.GenericQueryResults;
-import org.kuali.rice.core.api.criteria.Predicate;
-import org.kuali.rice.core.api.criteria.QueryByCriteria;
-import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
-import org.kuali.rice.krms.impl.util.KrmsImplConstants;
-
-import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.in;
 
 public final class KrmsAttributeDefinitionServiceImpl implements KrmsAttributeDefinitionService {
+    private CriteriaLookupService criteriaLookupService;
 
     private BusinessObjectService businessObjectService;
-    private CriteriaLookupService criteriaLookupService;
 
 	@Override
 	/**
@@ -106,7 +103,7 @@ public final class KrmsAttributeDefinitionServiceImpl implements KrmsAttributeDe
 		}
 		
 		KrmsAttributeDefinitionBo bo = KrmsAttributeDefinitionBo.from(attributeDefinition);
-		getBusinessObjectService().save(bo);
+        getBusinessObjectService().save(bo);
 		return KrmsAttributeDefinitionBo.to(bo);
 	}
 
@@ -132,7 +129,7 @@ public final class KrmsAttributeDefinitionServiceImpl implements KrmsAttributeDe
 			toUpdate = attributeDefinition;
 		}
 		KrmsAttributeDefinitionBo bo = KrmsAttributeDefinitionBo.from(toUpdate);
-		getBusinessObjectService().save(bo);
+        getBusinessObjectService().save(bo);
 	}
 
 	@Override
@@ -214,30 +211,10 @@ public final class KrmsAttributeDefinitionServiceImpl implements KrmsAttributeDe
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("active", Boolean.TRUE);
         
-        Collection<KrmsAttributeDefinitionBo> krmsAttributeDefinitionBos = getBusinessObjectService().findMatching(KrmsAttributeDefinitionBo.class, Collections.unmodifiableMap(map));
+        Collection<KrmsAttributeDefinitionBo> krmsAttributeDefinitionBos = getBusinessObjectService().findMatching(
+                KrmsAttributeDefinitionBo.class, Collections.unmodifiableMap(map));
         return convertListOfBosToImmutables(krmsAttributeDefinitionBos);
     }
-
-    /**
-     * Sets the businessObjectService attribute value.
-     *
-     * @param businessObjectService The businessObjectService to set.
-     */
-    public void setBusinessObjectService(final BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
-    }
-
-    /**
-     * This method returns a reference to the businessObjectService.
-     * If the businessObjectService is not set, get it from the KRADServiceLocator.
-     * @return businessObjectService
-     */
-    protected BusinessObjectService getBusinessObjectService() {
-		if ( businessObjectService == null ) {
-			businessObjectService = KRADServiceLocator.getBusinessObjectService();
-		}
-		return businessObjectService;
-	}
 
     /**
      * Converts a List<KrmsAttributeDefinitionBo> to an Unmodifiable List<KrmsAttributeDefinition>
@@ -265,6 +242,27 @@ public final class KrmsAttributeDefinitionServiceImpl implements KrmsAttributeDe
 
     protected CriteriaLookupService getCriteriaLookupService() {
         return criteriaLookupService;
+    }
+
+    /**
+     * Sets the businessObjectService attribute value.
+     *
+     * @param businessObjectService The businessObjectService to set.
+     */
+    public void setBusinessObjectService(final BusinessObjectService businessObjectService) {
+        this.businessObjectService = businessObjectService;
+    }
+
+    /**
+     * This method returns a reference to the businessObjectService.
+     * If the businessObjectService is not set, get it from the KRADServiceLocator.
+     * @return businessObjectService
+     */
+    protected BusinessObjectService getBusinessObjectService() {
+        if ( businessObjectService == null ) {
+            businessObjectService = KNSServiceLocator.getBusinessObjectService();
+        }
+        return businessObjectService;
     }
 
 }

@@ -40,10 +40,6 @@ import javax.persistence.Version;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.api.doctype.RouteNodeConfigurationParameterContract;
 import org.kuali.rice.kew.api.doctype.RouteNodeContract;
@@ -79,10 +75,6 @@ public class RouteNode implements Serializable, RouteNodeContract {
 
     @Id
     @GeneratedValue(generator="KREW_RTE_NODE_S")
-	@GenericGenerator(name="KREW_RTE_NODE_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_RTE_NODE_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="RTE_NODE_ID")
 	private String routeNodeId;
     @Column(name="DOC_TYP_ID",insertable=false, updatable=false)
@@ -125,19 +117,16 @@ public class RouteNode implements Serializable, RouteNodeContract {
     
     //@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST}, mappedBy="nextNodes")
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST}, mappedBy="nextNodes")
-    @Fetch(value = FetchMode.SELECT)
     //@JoinTable(name = "KREW_RTE_NODE_LNK_T", joinColumns = @JoinColumn(name = "TO_RTE_NODE_ID"), inverseJoinColumns = @JoinColumn(name = "FROM_RTE_NODE_ID"))
     private List<RouteNode> previousNodes = new ArrayList<RouteNode>();
     //@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
-    @Fetch(value = FetchMode.SELECT)
     @JoinTable(name = "KREW_RTE_NODE_LNK_T", joinColumns = @JoinColumn(name = "FROM_RTE_NODE_ID"), inverseJoinColumns = @JoinColumn(name = "TO_RTE_NODE_ID"))
     private List<RouteNode> nextNodes = new ArrayList<RouteNode>();
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name="BRCH_PROTO_ID")
 	private BranchPrototype branch;
     @OneToMany(fetch=FetchType.EAGER,mappedBy="routeNode",cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    @Fetch(value = FetchMode.SELECT)
     private List<RouteNodeConfigParam> configParams  = new ArrayList<RouteNodeConfigParam>(0);
 
     /**

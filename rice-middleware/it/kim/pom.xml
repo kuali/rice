@@ -79,17 +79,7 @@
       <groupId>mysql</groupId>
       <artifactId>${mysql.jdbc.artifactId}</artifactId>
     </dependency>
-   <!-- <dependency>
-      <groupId>com.oracle</groupId>
-      <artifactId>${oracle.jdbc.artifactId}</artifactId>
-      <version>${oracle.jdbc.version}</version>
-      <scope>runtime</scope>
-    </dependency>   -->
-    <dependency>
-      <groupId>org.hibernate.javax.persistence</groupId>
-      <artifactId>hibernate-jpa-2.0-api</artifactId>
-      <scope>test</scope>
-    </dependency>
+
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>

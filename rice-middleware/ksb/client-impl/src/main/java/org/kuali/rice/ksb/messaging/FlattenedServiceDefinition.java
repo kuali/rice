@@ -24,8 +24,6 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
@@ -42,11 +40,7 @@ public class FlattenedServiceDefinition implements Serializable {
 	
 	@Id
 	@GeneratedValue(generator="KRSB_FLT_SVC_DEF_S")
-	@GenericGenerator(name="KRSB_FLT_SVC_DEF_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KRSB_FLT_SVC_DEF_S"),
-			@Parameter(name="value_column",value="id")
-	})
-	@Column(name="FLT_SVC_DEF_ID")  
+	@Column(name="FLT_SVC_DEF_ID")
 	private Long flattenedServiceDefinitionId;
 	@Lob
 	@Column(name="FLT_SVC_DEF", length=4000)

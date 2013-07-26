@@ -27,6 +27,7 @@ import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.ksb.config.wss4j.CryptoPasswordCallbackHandler;
 
+import java.io.IOException;
 import java.util.Properties;
 
 
@@ -65,7 +66,7 @@ public class CXFWSS4JOutInterceptor extends WSS4JOutInterceptor {
 		return loadSignatureCrypto(reqData);
 	}
 
-	protected Properties getMerlinProperties() {
+	protected Properties getMerlinProperties() throws IOException {
 		Properties props = new Properties();
 		props.put("org.apache.ws.security.crypto.merlin.keystore.type", "jks");
 		props.put("org.apache.ws.security.crypto.merlin.keystore.password", ConfigContext.getCurrentContextConfig().getKeystorePassword());

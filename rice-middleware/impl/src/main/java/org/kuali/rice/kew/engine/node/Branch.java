@@ -15,10 +15,8 @@
  */
 package org.kuali.rice.kew.engine.node;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -32,13 +30,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.kew.service.KEWServiceLocator;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Represents a branch in the routing path of the document.
@@ -54,10 +49,6 @@ public class Branch implements Serializable {
 	
 	@Id
 	@GeneratedValue(generator="KREW_RTE_NODE_S")
-	@GenericGenerator(name="KREW_RTE_NODE_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_RTE_NODE_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="RTE_BRCH_ID")
 	private String branchId;
 	@ManyToOne(fetch=FetchType.EAGER,cascade=CascadeType.PERSIST)
@@ -66,7 +57,6 @@ public class Branch implements Serializable {
 	@Column(name="NM")
 	private String name;
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST,CascadeType.MERGE}, mappedBy="branch", orphanRemoval=true)
-    @Fetch(value=FetchMode.SELECT)
 	private List<BranchState> branchState = new ArrayList<BranchState>();
 //	  apache lazy list commented out due to not being serializable
 //    private List branchState = ListUtils.lazyList(new ArrayList(),

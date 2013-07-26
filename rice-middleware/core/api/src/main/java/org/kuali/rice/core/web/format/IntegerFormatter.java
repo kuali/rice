@@ -24,6 +24,7 @@ import org.kuali.rice.core.api.util.RiceKeyConstants;
 /**
  * This class is used to format Integer objects.
  */
+@Deprecated
 public class IntegerFormatter extends Formatter {
 	// begin Kuali Foundation modification
     private static final long serialVersionUID = 226069363610021292L;
@@ -36,10 +37,12 @@ public class IntegerFormatter extends Formatter {
      * Returns an object representation of the provided string.
      * end Kuali Foundation modification
      */
+    @Override
     protected Object convertToObject(String string) {
     	// begin Kuali Foundation modification
-        if (StringUtils.isEmpty(string))
+        if (StringUtils.isEmpty(string)) {
             return null;
+        }
 
         try {
             return new Integer(string);
@@ -54,6 +57,7 @@ public class IntegerFormatter extends Formatter {
     /**
      * Returns the provided value as a formatted string
      */
+    @Override
     public Object format(Object value) {
         return (value == null ? null : value.toString());
     }

@@ -168,7 +168,7 @@
       <list>
         <bean parent="Uif-DataField" p:label="Inquiry" p:propertyName="field3">
           <property name="inquiry">
-            <bean parent="Uif-Inquiry" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+            <bean parent="Uif-Inquiry" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
                   p:inquiryParameters="field3:number"/>
           </property>
         </bean>

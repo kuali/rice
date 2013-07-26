@@ -15,77 +15,77 @@
  */
 package org.kuali.rice.core.framework.persistence.jta;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.config.ConfigurationException;
-import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.core.api.util.reflect.TargetedInvocationHandler;
 import org.springframework.beans.factory.FactoryBean;
-import org.springframework.jndi.JndiTemplate;
 
-import javax.naming.NamingException;
+import javax.transaction.TransactionManager;
 import javax.transaction.UserTransaction;
-
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 /**
- * Factory bean that supplies a UserTransaction object from the the current context
- * (i.e. plugin, embedding webapp) Config object map if defined therein (under the Config.USER_TRANSACTION key),
- * from JNDI if {@link Config#USER_TRANSACTION_JNDI} is defined,
- * or from a default declaratively assigned in containing bean factory.
- * 
+ * Factory bean that supplies a the currently configured JTA UserTransaction. This factory bean simply returns a
+ * reference to the UserTransaction configured on {@link Jta#getUserTransaction()}
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UserTransactionFactoryBean implements FactoryBean {
+public class UserTransactionFactoryBean implements FactoryBean<UserTransaction> {
 
-	private UserTransaction defaultUserTransaction;
-	private JndiTemplate jndiTemplate;
-	
-	public Object getObject() throws Exception {
-		
-		if (ConfigContext.getCurrentContextConfig().getObject(RiceConstants.SPRING_TRANSACTION_MANAGER) != null) {
-			return null;
-		}
-		
-		UserTransaction userTransaction = (UserTransaction)ConfigContext.getCurrentContextConfig().getObject(RiceConstants.USER_TRANSACTION_OBJ);
-		if (userTransaction == null) {
-			String userTransactionJndiName = ConfigContext.getCurrentContextConfig().getProperty(RiceConstants.USER_TRANSACTION_JNDI);
-			if (!StringUtils.isEmpty(userTransactionJndiName)) {
-				if (this.jndiTemplate == null) {
-				    this.jndiTemplate = new JndiTemplate();
-				}
-				try {
-					userTransaction = (UserTransaction)this.jndiTemplate.lookup(userTransactionJndiName, UserTransaction.class);
-				} catch (NamingException e) {
-					throw new ConfigurationException("Could not locate the UserTransaction at the given JNDI location: '" + userTransactionJndiName + "'", e);
-				}
-			}
-			
-		}
-		if (userTransaction != null) {
-			return userTransaction;
-		}
-		return this.defaultUserTransaction;
+    @Override
+	public UserTransaction getObject() throws Exception {
+		return (UserTransaction)Proxy.newProxyInstance(getClass().getClassLoader(),
+                new Class<?>[] { getObjectType() },
+                new LazyInitializationHandler());
 	}
 
-	public Class getObjectType() {
+    @Override
+	public Class<UserTransaction> getObjectType() {
 		return UserTransaction.class;
 	}
 
+    @Override
 	public boolean isSingleton() {
 		return true;
 	}
-	
-	public void setDefaultUserTransaction(UserTransaction userTransaction) {
-	    this.defaultUserTransaction = userTransaction;
-	}
 
-	public JndiTemplate getJndiTemplate() {
-		return this.jndiTemplate;
-	}
+    private static class LazyInitializationHandler implements TargetedInvocationHandler<UserTransaction> {
 
-	public void setJndiTemplate(JndiTemplate jndiTemplate) {
-		this.jndiTemplate = jndiTemplate;
-	}
-	
-	
+        private volatile boolean initialized = false;
+        private UserTransaction userTransaction = null;
+
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            try {
+                if (!this.initialized) {
+                    if (Jta.isFrozen()) {
+                        this.userTransaction = Jta.getUserTransaction();
+                        this.initialized = true;
+                    } else {
+                        throw new IllegalStateException("JTA has not been initialized, in order to use the "
+                                + "UserTransaction please ensure that it has been configured on " + Jta.class.getName());
+                    }
+                }
+                if (this.userTransaction == null) {
+                    throw new IllegalStateException("Attempting to use TransactionManager but JTA is not enabled.");
+                }
+                return method.invoke(userTransaction, args);
+            } catch (InvocationTargetException e) {
+                throw e.getTargetException();
+            }
+        }
+
+        public boolean isInitialized() {
+            return initialized;
+        }
+
+        @Override
+        public UserTransaction getTarget() {
+            return userTransaction;
+        }
+
+
+    }
 
 }

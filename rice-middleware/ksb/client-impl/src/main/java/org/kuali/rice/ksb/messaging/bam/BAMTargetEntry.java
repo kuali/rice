@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.ksb.messaging.bam;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.ksb.api.messaging.AsynchronousCallback;
 
 import javax.persistence.Basic;
@@ -50,10 +48,6 @@ public class BAMTargetEntry implements Serializable {
 
 	@Id
 	@GeneratedValue(generator="KRSB_BAM_S")
-	@GenericGenerator(name="KRSB_BAM_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KRSB_BAM_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="BAM_ID")
 	private Long bamId;
 	@Column(name="SVC_NM")

@@ -1,0 +1,85 @@
+<!--
+
+    Copyright 2005-2013 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<!--<!DOCTYPE descriptor-repository PUBLIC
+       "-//Apache Software Foundation//DTD OJB Repository//EN"
+       "http://db.apache.org/dtds/1.0/repository.dtd">-->
+
+<descriptor-repository version="1.0">
+
+  <jdbc-connection-descriptor jcd-alias="kradApplicationDataSource" default-connection="false" jdbc-level="3.0"
+                              eager-release="false" batch-mode="false"
+                              useAutoCommit="0" ignoreAutoCommitExceptions="false">
+    <object-cache class="org.apache.ojb.broker.cache.ObjectCachePerBrokerImpl"/>
+    <sequence-manager className="org.kuali.rice.core.framework.persistence.ojb.ConfigurableSequenceManager">
+      <attribute attribute-name="property.prefix" attribute-value="datasource.ojb.sequenceManager"/>
+    </sequence-manager>
+  </jdbc-connection-descriptor>
+
+  <!--  DOCUMENT MAPPINGS -->
+  <!--
+    NOTE:  we are not relating from document header to the other document
+    specific tables, we are relating in the other direction in order
+    to minimize the number of relations to the document header object
+    since if we map everything to doc header we would have at least 250
+    objects that relate to document header.
+  -->
+
+  <class-descriptor class="org.kuali.rice.krad.data.bo.SimpleTestBo" table="KRAD_MSG_T">
+    <field-descriptor name="namespaceCode" column="NMSPC_CD" jdbc-type="VARCHAR" primarykey="true"/>
+    <field-descriptor name="componentCode" column="CMPNT_CD" jdbc-type="VARCHAR" primarykey="true"/>
+    <field-descriptor name="key" column="MSG_KEY" jdbc-type="VARCHAR" primarykey="true"/>
+    <field-descriptor name="locale" column="LOC" jdbc-type="VARCHAR" primarykey="true"/>
+    <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"/>
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"/>
+    <field-descriptor name="description" column="MSG_DESC" jdbc-type="VARCHAR"/>
+    <field-descriptor name="text" column="TXT" jdbc-type="VARCHAR"/>
+  </class-descriptor>
+
+    <class-descriptor class="org.kuali.rice.krad.data.bo.ParameterBo" table="KRCR_PARM_T">
+        <field-descriptor name="namespaceCode" column="NMSPC_CD" jdbc-type="VARCHAR" primarykey="true"/>
+        <field-descriptor name="componentCode" column="CMPNT_CD" jdbc-type="VARCHAR" primarykey="true"/>
+        <field-descriptor name="name" column="PARM_NM" jdbc-type="VARCHAR" primarykey="true"/>
+        <field-descriptor name="value" column="VAL" jdbc-type="VARCHAR"/>
+        <field-descriptor name="description" column="PARM_DESC_TXT" jdbc-type="VARCHAR"/>
+        <field-descriptor name="parameterTypeCode" column="PARM_TYP_CD" jdbc-type="VARCHAR"/>
+        <field-descriptor name="evaluationOperatorCode" column="EVAL_OPRTR_CD" jdbc-type="VARCHAR"/>
+        <field-descriptor name="applicationId" column="APPL_ID" jdbc-type="VARCHAR" primarykey="true"/>
+        <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"/>
+        <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"/>
+
+        <!--<reference-descriptor name="component" class-ref="org.kuali.rice.coreservice.impl.component.ComponentBo"-->
+                              <!--auto-retrieve="true" auto-update="none" auto-delete="none">-->
+            <!--<foreignkey field-ref="namespaceCode"/>-->
+            <!--<foreignkey field-ref="componentCode" target-field-ref="code"/>-->
+        <!--</reference-descriptor>-->
+        <!--<reference-descriptor name="derivedComponent" class-ref="org.kuali.rice.coreservice.impl.component.DerivedComponentBo"-->
+                              <!--auto-retrieve="true" auto-update="none" auto-delete="none">-->
+            <!--<foreignkey field-ref="namespaceCode"/>-->
+            <!--<foreignkey field-ref="componentCode" target-field-ref="code"/>-->
+        <!--</reference-descriptor>-->
+        <!--<reference-descriptor name="parameterType" class-ref="org.kuali.rice.coreservice.impl.parameter.ParameterTypeBo"-->
+                              <!--auto-retrieve="true" auto-update="none" auto-delete="none">-->
+            <!--<foreignkey field-ref="parameterTypeCode" target-field-ref="code"/>-->
+        <!--</reference-descriptor>-->
+        <!--<reference-descriptor name="namespace" class-ref="org.kuali.rice.coreservice.impl.namespace.NamespaceBo"-->
+                              <!--auto-retrieve="true" auto-update="none" auto-delete="none">-->
+            <!--<foreignkey field-ref="namespaceCode" target-field-ref="code"/>-->
+        <!--</reference-descriptor>-->
+    </class-descriptor>
+
+</descriptor-repository>

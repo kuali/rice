@@ -18,10 +18,6 @@ package org.kuali.rice.kew.routeheader;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.actionitem.ActionItem;
@@ -169,10 +165,6 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
 
     @Id
     @GeneratedValue(generator="KREW_DOC_HDR_S")
-    @GenericGenerator(name="KREW_DOC_HDR_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-            @Parameter(name="sequence_name",value="KREW_DOC_HDR_S"),
-            @Parameter(name="value_column",value="id")
-    })
     @Column(name="DOC_HDR_ID")
     private java.lang.String documentId;
 
@@ -197,7 +189,6 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
     @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy="documentId")
     //@JoinColumn(referencedColumnName="DOC_HDR_ID")
     @OrderBy("statusTransitionId ASC")
-    @Fetch(value = FetchMode.SELECT)
     private List<DocumentStatusTransition> appDocStatusHistory = new ArrayList<DocumentStatusTransition>();
 
     @OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.REMOVE})
@@ -221,7 +212,6 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
     /* New Workflow 2.1 Field */
     @ManyToMany(fetch=FetchType.EAGER, cascade=CascadeType.REMOVE)
     @JoinTable(name = "KREW_INIT_RTE_NODE_INSTN_T", joinColumns = @JoinColumn(name = "DOC_HDR_ID"), inverseJoinColumns = @JoinColumn(name = "RTE_NODE_INSTN_ID")) 
-    @Fetch(value = FetchMode.SELECT)
     private List<RouteNodeInstance> initialRouteNodeInstances = new ArrayList<RouteNodeInstance>();
 
     // an empty list of target document statuses or legal actions

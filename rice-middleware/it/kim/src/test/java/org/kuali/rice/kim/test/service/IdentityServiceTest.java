@@ -174,7 +174,7 @@ public class IdentityServiceTest extends KIMTestCase {
             predicates.add(like(key, entityCriteria.get(key)));
         }
         if (!predicates.isEmpty()) {
-            query.setPredicates(and(predicates.toArray(new Predicate[] {})));
+            query.setPredicates(and(predicates.toArray(new Predicate[predicates.size()])));
         }
         return query.build();
 	}

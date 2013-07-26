@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
@@ -32,10 +31,10 @@ import javax.persistence.Transient;
 public class RoleDocumentBoBase  extends PersistableBusinessObjectBase {
     @Column(name="DOC_HDR_ID")
     protected String documentNumber;
-	@Type(type="yes_no")
+	//@Type(type="yes_no")
 	@Column(name="ACTV_IND")
     protected boolean active;
-	@Type(type="yes_no")
+	//@Type(type="yes_no")
 	@Column(name="EDIT_FLAG")
     protected boolean edit;
 	@Transient

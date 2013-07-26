@@ -344,7 +344,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 
         
         // get business object being maintained and its keys
-        List keyFieldNames = KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(((MaintenanceDocumentBase) getDocument()).getNewMaintainableObject().getBusinessObject().getClass());
+        List keyFieldNames = KRADServiceLocatorWeb.getLegacyDataAdapter().listPrimaryKeyFieldNames(((MaintenanceDocumentBase) getDocument()).getNewMaintainableObject().getBusinessObject().getClass());
 
         // sections for maintenance document
         Maintainable oldMaintainable = ((MaintenanceDocumentBase) getDocument()).getOldMaintainableObject();

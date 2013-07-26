@@ -15,14 +15,6 @@
  */
 package org.kuali.rice.kns.service.impl;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.datadictionary.FieldDefinition;
 import org.kuali.rice.kns.datadictionary.InquirySectionDefinition;
@@ -36,66 +28,86 @@ import org.kuali.rice.krad.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.krad.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
 import org.kuali.rice.krad.datadictionary.SupportAttributeDefinition;
-import org.kuali.rice.krad.valuefinder.ValueFinder;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.service.impl.DataObjectMetaDataServiceImpl;
+import org.kuali.rice.krad.util.LegacyDataFramework;
 import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.valuefinder.ValueFinder;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
- * 
+ *
  * Implementation of the <code>BusinessObjectMetaDataService</code> which uses
  * the following services to gather its meta data:
- * 
+ *
  * @see BusinessObjectDictionaryService
  * @see DataDictionaryService
  * @see PersistenceStructureService
+ *
+ * @deprecated use KRAD
  */
-@Deprecated
+@Deprecated // Replaced by new metadata provider
+@LegacyDataFramework
 public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataServiceImpl implements BusinessObjectMetaDataService {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
 			.getLogger(BusinessObjectMetaDataServiceImpl.class);
 
 	private BusinessObjectDictionaryService businessObjectDictionaryService;
 
-	public Collection<String> getCollectionNames(BusinessObject bo) {
+	@Override
+    public Collection<String> getCollectionNames(BusinessObject bo) {
 		return getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(bo.getClass().getName())
 				.getCollectionNames();
 	}
 
-	public Collection<String> getInquirableFieldNames(Class boClass, String sectionTitle) {
+	@Override
+    public Collection<String> getInquirableFieldNames(Class boClass, String sectionTitle) {
 		return businessObjectDictionaryService.getInquiryFieldNames(boClass, sectionTitle);
 	}
 
-	public List<String> getLookupableFieldNames(Class boClass) {
+	@Override
+    public List<String> getLookupableFieldNames(Class boClass) {
 		return businessObjectDictionaryService.getLookupFieldNames(boClass);
 	}
 
-	public String getLookupFieldDefaultValue(Class businessObjectClass, String attributeName) {
+	@Override
+    public String getLookupFieldDefaultValue(Class businessObjectClass, String attributeName) {
 		return businessObjectDictionaryService.getLookupFieldDefaultValue(businessObjectClass, attributeName);
 	}
 
-	public Class getLookupFieldDefaultValueFinderClass(Class businessObjectClass, String attributeName) {
+	@Override
+    public Class getLookupFieldDefaultValueFinderClass(Class businessObjectClass, String attributeName) {
 		return businessObjectDictionaryService
 				.getLookupFieldDefaultValueFinderClass(businessObjectClass, attributeName);
 	}
 
 	/** {@inheritDoc} */
-	public String getLookupFieldQuickfinderParameterString(Class businessObjectClass, String attributeName) {
+	@Override
+    public String getLookupFieldQuickfinderParameterString(Class businessObjectClass, String attributeName) {
 		return businessObjectDictionaryService.getLookupFieldQuickfinderParameterString(businessObjectClass,
 				attributeName);
 	}
 
 	/** {@inheritDoc} */
-	public Class<? extends ValueFinder> getLookupFieldQuickfinderParameterStringBuilderClass(Class businessObjectClass,
+	@Override
+    public Class<? extends ValueFinder> getLookupFieldQuickfinderParameterStringBuilderClass(Class businessObjectClass,
 			String attributeName) {
 		return businessObjectDictionaryService.getLookupFieldQuickfinderParameterStringBuilderClass(
 				businessObjectClass, attributeName);
 	}
 
-	public boolean isAttributeInquirable(Class boClass, String attributeName, String sectionTitle) {
+	@Override
+    public boolean isAttributeInquirable(Class boClass, String attributeName, String sectionTitle) {
 		Collection sections = businessObjectDictionaryService.getInquirySections(boClass);
 		boolean isInquirable = true;
 
@@ -134,7 +146,8 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
 		return isInquirable;
 	}
 
-	public boolean isInquirable(Class boClass) {
+	@Override
+    public boolean isInquirable(Class boClass) {
 		boolean inquirable = false;
 		ModuleService moduleService = getKualiModuleService().getResponsibleModuleService(boClass);
 		if (moduleService != null && moduleService.isExternalizable(boClass)) {
@@ -149,7 +162,8 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
 		return inquirable;
 	}
 
-	public boolean isAttributeLookupable(Class boClass, String attributeName) {
+	@Override
+    public boolean isAttributeLookupable(Class boClass, String attributeName) {
 		Object obj = null;
 		if (boClass != null && BusinessObject.class.isAssignableFrom(boClass)) {
 			obj = ObjectUtils.createNewObjectFromClass(boClass);
@@ -171,7 +185,8 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
 		}
 	}
 
-	public boolean isLookupable(Class boClass) {
+	@Override
+    public boolean isLookupable(Class boClass) {
 		boolean lookupable = false;
 		ModuleService moduleService =  getKualiModuleService().getResponsibleModuleService(boClass);
 		if (moduleService != null && moduleService.isExternalizable(boClass)) {
@@ -186,12 +201,14 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
 		return lookupable;
 	}
 
-	public DataObjectRelationship getBusinessObjectRelationship(BusinessObject bo, String attributeName) {
+	@Override
+    public DataObjectRelationship getBusinessObjectRelationship(BusinessObject bo, String attributeName) {
 		return getBusinessObjectRelationship(bo, bo.getClass(), attributeName, "", true);
 	}
 
 	// TODO: four different exit points?!
-	public DataObjectRelationship getBusinessObjectRelationship(RelationshipDefinition ddReference,
+	@Override
+    public DataObjectRelationship getBusinessObjectRelationship(RelationshipDefinition ddReference,
 			BusinessObject bo, Class boClass, String attributeName, String attributePrefix, boolean keysOnly) {
 
 		DataObjectRelationship relationship = null;
@@ -301,24 +318,27 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
 
 
 
-	public RelationshipDefinition getBusinessObjectRelationshipDefinition(Class c, String attributeName) {
+	@Override
+    public RelationshipDefinition getBusinessObjectRelationshipDefinition(Class c, String attributeName) {
 		return getDictionaryRelationship(c, attributeName);
 	}
 
-	public RelationshipDefinition getBusinessObjectRelationshipDefinition(BusinessObject bo, String attributeName) {
+	@Override
+    public RelationshipDefinition getBusinessObjectRelationshipDefinition(BusinessObject bo, String attributeName) {
 		return getBusinessObjectRelationshipDefinition(bo.getClass(), attributeName);
 	}
 
-	public DataObjectRelationship getBusinessObjectRelationship(BusinessObject bo, Class boClass,
+	@Override
+    public DataObjectRelationship getBusinessObjectRelationship(BusinessObject bo, Class boClass,
 			String attributeName, String attributePrefix, boolean keysOnly) {
 		RelationshipDefinition ddReference = getBusinessObjectRelationshipDefinition(boClass, attributeName);
 		return getBusinessObjectRelationship(ddReference, bo, boClass, attributeName, attributePrefix, keysOnly);
 	}
 
 	/**
-	 * 
+	 *
 	 * This method retrieves the business object class for a specific attribute
-	 * 
+	 *
 	 * @param bo
 	 * @param attributeName
 	 * @return a business object class for a specific attribute
@@ -360,14 +380,16 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
 		return clazz;
 	}
 
-	public List<DataObjectRelationship> getBusinessObjectRelationships(BusinessObject bo) {
+	@Override
+    public List<DataObjectRelationship> getBusinessObjectRelationships(BusinessObject bo) {
 		if (bo == null) {
 			return null;
 		}
 		return getBusinessObjectRelationships(bo.getClass());
 	}
 
-	@SuppressWarnings("unchecked")
+	@Override
+    @SuppressWarnings("unchecked")
 	public List<DataObjectRelationship> getBusinessObjectRelationships(Class<? extends BusinessObject> boClass) {
 		if (boClass == null) {
 			return null;
@@ -418,7 +440,8 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
 	 * @see org.kuali.rice.kns.service.BusinessObjectMetaDataService#getReferencesForForeignKey(java.lang.Class,
 	 *      java.lang.String)
 	 */
-	public Map<String, Class> getReferencesForForeignKey(BusinessObject bo, String attributeName) {
+	@Override
+    public Map<String, Class> getReferencesForForeignKey(BusinessObject bo, String attributeName) {
 		List<DataObjectRelationship> dataObjectRelationships = getBusinessObjectRelationships(bo);
 		Map<String, Class> referencesForForeignKey = new HashMap<String, Class>();
 		for (DataObjectRelationship dataObjectRelationship : dataObjectRelationships) {
@@ -431,7 +454,8 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
 		return referencesForForeignKey;
 	}
 
-	public String getForeignKeyFieldName(Class businessObjectClass, String attributeName, String targetName) {
+	@Override
+    public String getForeignKeyFieldName(Class businessObjectClass, String attributeName, String targetName) {
 
 		String fkName = "";
 
@@ -460,6 +484,7 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
     /**
      * @see org.kuali.rice.krad.service.DataObjectMetaDataService#hasLocalLookup
      */
+    @Override
     public boolean hasLocalLookup(Class<?> dataObjectClass) {
         boolean hasLookup = super.hasLocalLookup(dataObjectClass);
 
@@ -477,6 +502,7 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
     /**
      * @see org.kuali.rice.krad.service.DataObjectMetaDataService#hasLocalInquiry
      */
+    @Override
     public boolean hasLocalInquiry(Class<?> dataObjectClass) {
         boolean hasInquiry = super.hasLocalInquiry(dataObjectClass);
 

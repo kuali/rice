@@ -16,10 +16,6 @@
 package org.kuali.rice.kew.rule;
 
 import org.apache.commons.lang.ObjectUtils;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.util.collect.CollectionUtils;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.api.rule.RuleExtension;
@@ -64,10 +60,6 @@ public class RuleExtensionBo implements RuleExtensionContract, Serializable {
 
 	@Id
 	@GeneratedValue(generator="KREW_RTE_TMPL_S")
-	@GenericGenerator(name="KREW_RTE_TMPL_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_RTE_TMPL_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="RULE_EXT_ID")
 	private String ruleExtensionId;
 
@@ -90,7 +82,6 @@ public class RuleExtensionBo implements RuleExtensionContract, Serializable {
 	private RuleTemplateAttributeBo ruleTemplateAttribute;
 
 	@OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, mappedBy="extension")
-	@Fetch(value = FetchMode.SELECT)
 	private List<RuleExtensionValue> extensionValues;
 
 	public RuleExtensionBo() {

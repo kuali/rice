@@ -18,8 +18,9 @@ package org.kuali.rice.core.web.format;
 import java.sql.Date;
 import java.sql.Timestamp;
 
+@Deprecated
 public class DateViewTimestampObjectFormatter extends DateFormatter {
-	
+
 	private static final long serialVersionUID = 2069562793196038664L;
 
 	@Override
@@ -29,8 +30,9 @@ public class DateViewTimestampObjectFormatter extends DateFormatter {
 
 	@Override
 	public Object format(Object value) {
-		if (value == null)
-			return null;
+		if (value == null) {
+            return null;
+        }
 		return getDateTimeService().toDateTimeString((Timestamp) value);
 
 	}

@@ -15,16 +15,12 @@
  */
 package org.kuali.rice.kew.notes;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.note.NoteContract;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -67,10 +63,6 @@ public class Note implements Serializable, NoteContract {
 	private static final long serialVersionUID = -6136544551121011531L;
 	@Id
 	@GeneratedValue(generator="KREW_DOC_NTE_S")
-	@GenericGenerator(name="KREW_DOC_NTE_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_DOC_NTE_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="DOC_NTE_ID")
 	private String noteId;
     @Column(name="DOC_HDR_ID")
@@ -87,7 +79,6 @@ public class Note implements Serializable, NoteContract {
     
     @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST},
     	targetEntity=org.kuali.rice.kew.notes.Attachment.class, mappedBy="note")
-    @Fetch(value = FetchMode.SELECT)
     private List<Attachment> attachments = new ArrayList<Attachment>();
 
     //additional data not in database

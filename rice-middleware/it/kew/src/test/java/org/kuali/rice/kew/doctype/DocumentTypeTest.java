@@ -17,7 +17,6 @@ package org.kuali.rice.kew.doctype;
 
 import mocks.MockPostProcessor;
 import org.apache.log4j.Logger;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
@@ -40,7 +39,7 @@ import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.xml.export.DocumentTypeXmlExporter;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.test.BaselineTestCase;
 
 import java.util.ArrayList;
@@ -577,7 +576,7 @@ public class DocumentTypeTest extends KEWTestCase {
     }
 
     private String constructGroupNameWithNamespace(Group group) {
-        if (ObjectUtils.isNull(group)) {
+        if (group == null) {
             return null;
         }
         return group.getNamespaceCode() + KewApiConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + group.getName();
@@ -592,7 +591,7 @@ public class DocumentTypeTest extends KEWTestCase {
     	for (Iterator iterator = documentTypes.iterator(); iterator.hasNext();) {
 			DocumentType documentType = (DocumentType) iterator.next();
 			// check that all document types with parents are current
-			if (ObjectUtils.isNotNull(documentType.getParentDocType())) {
+			if (KRADUtils.isNotNull(documentType.getParentDocType())) {
 			    assertEquals("Parent of document type '" + documentType.getName() + "' should be Current", Boolean.TRUE, documentType.getParentDocType().getCurrentInd());
 			}
 			List children = service.getChildDocumentTypes(documentType.getDocumentTypeId());

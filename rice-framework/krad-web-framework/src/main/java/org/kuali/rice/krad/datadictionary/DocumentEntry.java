@@ -221,11 +221,6 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
         return getDocumentClass();
     }
 
-    @Override
-    public String toString() {
-        return "DocumentEntry for documentType " + documentTypeName;
-    }
-
     /**
      * Indicates whether the "Notes and Attachments" tab will render a column for a note topic
      *
@@ -246,7 +241,7 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     /**
-     * Accessor method for contained usePessimisticLocking
+     * DataObjectWrapper method for contained usePessimisticLocking
      *
      * @return usePessimisticLocking boolean
      */
@@ -267,7 +262,7 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     /**
-     * Accessor method for contained useWorkflowPessimisticLocking
+     * DataObjectWrapper method for contained useWorkflowPessimisticLocking
      *
      * @return useWorkflowPessimisticLocking boolean
      */

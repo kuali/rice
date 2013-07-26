@@ -15,6 +15,12 @@
  */
 package org.kuali.rice.krad.service;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Pattern;
+
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
@@ -24,14 +30,8 @@ import org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata;
 import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Pattern;
+import org.kuali.rice.krad.uif.view.View;
 
 /**
  * Defines the API for interacting with the data dictionary
@@ -83,92 +83,93 @@ public interface DataDictionaryService {
     /**
      * the html control type used to render the field
      */
-    ControlDefinition getAttributeControlDefinition(Class dataObjectClass, String attributeName);
+    ControlDefinition getAttributeControlDefinition(Class<?> dataObjectClass, String attributeName);
 
     /**
      * the display size of the field if text control
      */
-    Integer getAttributeSize(Class dataObjectClass, String attributeName);
+    Integer getAttributeSize(Class<?> dataObjectClass, String attributeName);
 
     /**
      * the max length defined for the given attribute name.
      */
-    Integer getAttributeMaxLength(Class dataObjectClass, String attributeName);
+    Integer getAttributeMaxLength(Class<?> dataObjectClass, String attributeName);
 
     /**
      * the regular expression defined to validate the given attribute name.
      */
-    Pattern getAttributeValidatingExpression(Class dataObjectClass, String attributeName);
+    Pattern getAttributeValidatingExpression(Class<?> dataObjectClass, String attributeName);
 
     /**
      * the label to be used for displaying the attribute.
      */
-    String getAttributeLabel(Class dataObjectClass, String attributeName);
+    String getAttributeLabel(Class<?> dataObjectClass, String attributeName);
 
     /**
      * the short label to be used for displaying the attribute.
      */
-    String getAttributeShortLabel(Class dataObjectClass, String attributeName);
+    String getAttributeShortLabel(Class<?> dataObjectClass, String attributeName);
 
     /**
      * the "label (short label)" used for displaying error messages
      */
-    String getAttributeErrorLabel(Class dataObjectClass, String attributeName);
+    String getAttributeErrorLabel(Class<?> dataObjectClass, String attributeName);
 
     /**
      * the formatter class used to format the attribute value
      */
-    Class<? extends Formatter> getAttributeFormatter(Class dataObjectClass, String attributeName);
+    @Deprecated
+    Class<? extends Formatter> getAttributeFormatter(Class<?> dataObjectClass, String attributeName);
 
     /**
      * indicates whether or not to force input text into uppercase
      */
-    Boolean getAttributeForceUppercase(Class dataObjectClass, String attributeName);
+    Boolean getAttributeForceUppercase(Class<?> dataObjectClass, String attributeName);
 
     /**
      * short help text for attribute
      */
-    String getAttributeSummary(Class dataObjectClass, String attributeName);
+    String getAttributeSummary(Class<?> dataObjectClass, String attributeName);
 
     /**
      * detailed help text for attribute
      */
-    String getAttributeDescription(Class dataObjectClass, String attributeName);
+    String getAttributeDescription(Class<?> dataObjectClass, String attributeName);
 
     /**
      * indicates whether or not the named attribute is required
      */
-    Boolean isAttributeRequired(Class dataObjectClass, String attributeName);
+    Boolean isAttributeRequired(Class<?> dataObjectClass, String attributeName);
 
     /**
      * indicates whether or not the named attribute is defined in the business object xml
      */
-    Boolean isAttributeDefined(Class dataObjectClass, String attributeName);
+    Boolean isAttributeDefined(Class<?> dataObjectClass, String attributeName);
 
     /**
      * the Class that returns a values list for this attribute
      */
-    Class<? extends KeyValuesFinder> getAttributeValuesFinderClass(Class dataObjectClass, String attributeName);
+    Class<? extends KeyValuesFinder> getAttributeValuesFinderClass(Class<?> dataObjectClass, String attributeName);
 
     /**
      * the label to be used for displaying the collection.
      */
-    String getCollectionLabel(Class dataObjectClass, String collectionName);
+    String getCollectionLabel(Class<?> dataObjectClass, String collectionName);
 
     /**
      * the short label to be used for displaying the collection.
      */
-    String getCollectionShortLabel(Class dataObjectClass, String collectionName);
+    String getCollectionShortLabel(Class<?> dataObjectClass, String collectionName);
 
     /**
      * short help text for collection
      */
-    String getCollectionSummary(Class dataObjectClass, String collectionName);
+    String getCollectionSummary(Class<?> dataObjectClass, String collectionName);
 
     /**
      * detailed help text for collection
      */
-    String getCollectionDescription(Class dataObjectClass, String collectionName);
+    String getCollectionDescription(Class<?> dataObjectClass, String collectionName);
 
     /**
      * the html control type used to render the field
@@ -227,6 +228,7 @@ public interface DataDictionaryService {
     /**
      * the formatter class used to format the attribute value
      */
+    @Deprecated
     Class<? extends Formatter> getAttributeFormatter(String entryName, String attributeName);
 
     /**
@@ -286,7 +288,7 @@ public interface DataDictionaryService {
     /**
      * the element label to be used for displaying the collection.
      */
-    String getCollectionElementLabel(String entryName, String collectionName, Class dataObjectClass);
+    String getCollectionElementLabel(String entryName, String collectionName, Class<?> dataObjectClass);
 
     /**
      * short help text for collection
@@ -393,7 +395,7 @@ public interface DataDictionaryService {
      * @param documentOrBusinessObjectClass
      * @return label
      */
-    String getDocumentLabelByClass(Class documentOrBusinessObjectClass);
+    String getDocumentLabelByClass(Class<?> documentOrBusinessObjectClass);
 
     /**
      * Returns the document type name declared in the dd for the given document
@@ -402,7 +404,7 @@ public interface DataDictionaryService {
      * @param documentClass
      * @return documentTypeName
      */
-    String getDocumentTypeNameByClass(Class documentClass);
+    String getDocumentTypeNameByClass(Class<?> documentClass);
 
     /**
      * Returns the document type name declared in the dd for the given document
@@ -412,7 +414,7 @@ public interface DataDictionaryService {
      * @param documentClass
      * @return documentTypeName
      */
-    String getValidDocumentTypeNameByClass(Class documentClass);
+    String getValidDocumentTypeNameByClass(Class<?> documentClass);
 
     /**
      * Returns the document class declared in the dd for the given document type
@@ -441,7 +443,7 @@ public interface DataDictionaryService {
      * @param businessObjectClass - business object class to get configured list for
      * @return List of string attribute names that gives the group by list
      */
-    List<String> getGroupByAttributesForEffectiveDating(Class businessObjectClass);
+    List<String> getGroupByAttributesForEffectiveDating(Class<?> businessObjectClass);
 
     /**
      * Returns all of the inactivation blocks registered for a particular business object
@@ -450,7 +452,7 @@ public interface DataDictionaryService {
      * @return a set of all registered inactivation blocks for a particular business object
      */
     Set<InactivationBlockingMetadata> getAllInactivationBlockingDefinitions(
-            Class inactivationBlockedBusinessObjectClass);
+            Class<?> inactivationBlockedBusinessObjectClass);
 
     /**
      * Returns the View entry identified by the given id

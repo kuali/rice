@@ -19,7 +19,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.core.proxy.ProxyHelper;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.doctype.DocumentType;
@@ -50,8 +49,8 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.MaintenanceDocumentService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.NoteType;
-import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -64,10 +63,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.PostLoad;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -91,7 +94,9 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
-@Table(name = "KRNS_MAINT_DOC_T")
+@Table(name = "KRNS_MAINT_DOC_T",uniqueConstraints= {
+        @UniqueConstraint(name="KRNS_MAINT_DOC_TC0",columnNames="OBJ_ID")
+})
 public class MaintenanceDocumentBase extends DocumentBase implements MaintenanceDocument, SessionDocument {
     private static final long serialVersionUID = -505085142412593305L;
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintenanceDocumentBase.class);
@@ -116,7 +121,8 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     @Transient
     protected Maintainable newMaintainableObject;
 
-    @Column(name = "DOC_CNTNT", length = 4096)
+    @Lob
+    @Column(name = "DOC_CNTNT")
     protected String xmlDocumentContents;
     @Transient
     protected boolean fieldsClearedOnCopy;
@@ -480,9 +486,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
             Object oldBo = oldMaintainableObject.getDataObject();
 
             // hack to resolve XStream not dealing well with Proxies
-            if (oldBo instanceof PersistableBusinessObject) {
-                ObjectUtils.materializeAllSubObjects((PersistableBusinessObject) oldBo);
-            }
+            KRADServiceLocatorWeb.getLegacyDataAdapter().materializeAllSubObjects(oldBo);
 
             docContentBuffer.append(
                     KRADServiceLocator.getBusinessObjectSerializerService().serializeBusinessObjectToXml(oldBo));
@@ -498,10 +502,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 
         Object newBo = newMaintainableObject.getDataObject();
 
-        if (newBo instanceof PersistableBusinessObject) {
-            // hack to resolve XStream not dealing well with Proxies
-            ObjectUtils.materializeAllSubObjects((PersistableBusinessObject) newBo);
-        }
+        KRADServiceLocatorWeb.getLegacyDataAdapter().materializeAllSubObjects(newBo);
 
         docContentBuffer.append(KRADServiceLocator.getBusinessObjectSerializerService().serializeBusinessObjectToXml(
                 newBo));
@@ -528,7 +529,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         // commit the changes to the Maintainable BusinessObject when it goes to Processed (ie, fully approved),
         // and also unlock it
         if (workflowDocument.isProcessed()) {
-            String documentNumber = getDocumentHeader().getDocumentNumber();
+            final String documentNumber = getDocumentHeader().getDocumentNumber();
             newMaintainableObject.setDocumentNumber(documentNumber);
 
             //Populate Attachment Property
@@ -764,7 +765,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      * properly handle the proxied attachment BO.  This is a hack and should be removed post JPA migration.
      */
     protected void refreshAttachment() {
-        if (ObjectUtils.isNull(attachment)) {
+        if (KRADUtils.isNull(attachment)) {
             this.refreshReferenceObject("attachment");
             final boolean isProxy = attachment != null && ProxyHelper.isProxy(attachment);
             if (isProxy && ProxyHelper.getRealObject(attachment) == null) {
@@ -774,7 +775,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     }
 
     protected void refreshAttachmentList() {
-        if (ObjectUtils.isNull(attachments)) {
+        if (KRADUtils.isNull(attachments)) {
             this.refreshReferenceObject("attachments");
             final boolean isProxy = attachments != null && ProxyHelper.isProxy(attachments);
             if (isProxy && ProxyHelper.getRealObject(attachments) == null) {
@@ -830,13 +831,13 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     public void populateBoAttachmentListBeforeSave() { }
 
     public void deleteDocumentAttachment() {
-        KRADServiceLocator.getBusinessObjectService().delete(attachment);
+        KRADServiceLocatorWeb.getLegacyDataAdapter().delete(attachment);
         attachment = null;
     }
 
     public void deleteDocumentAttachmentList() {
         if (CollectionUtils.isNotEmpty(attachments)) {
-            KRADServiceLocator.getBusinessObjectService().delete(attachments);
+            KRADServiceLocatorWeb.getLegacyDataAdapter().delete(attachments);
             attachments = null;
         }
     }
@@ -857,22 +858,9 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         checkForLockingDocument(true);
 
         // Make sure the business object's version number matches that of the databases copy.
-        if (newMaintainableObject != null) {
-            if (KRADServiceLocator.getPersistenceStructureService().isPersistable(
-                    newMaintainableObject.getDataObject().getClass())) {
-                PersistableBusinessObject pbObject = KRADServiceLocator.getBusinessObjectService().retrieve(
-                        (PersistableBusinessObject) newMaintainableObject.getDataObject());
-                Long pbObjectVerNbr = ObjectUtils.isNull(pbObject) ? null : pbObject.getVersionNumber();
-                Long newObjectVerNbr =
-                        ((PersistableBusinessObject) newMaintainableObject.getDataObject()).getVersionNumber();
 
-                if (pbObjectVerNbr != null && !(pbObjectVerNbr.equals(newObjectVerNbr))) {
-                    GlobalVariables.getMessageMap().putError(KRADConstants.GLOBAL_ERRORS,
-                            RiceKeyConstants.ERROR_VERSION_MISMATCH);
-                    throw new ValidationException(
-                            "Version mismatch between the local business object and the database business object");
-                }
-            }
+        if (newMaintainableObject != null) {
+            KRADServiceLocatorWeb.getLegacyDataAdapter().verifyVersionNumber(newMaintainableObject.getDataObject());
         }
 
         // perform validation against rules engine
@@ -922,7 +910,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         if (getNewMaintainableObject().getDataObject() instanceof PersistableBusinessObject) {
             PersistableBusinessObject bo = (PersistableBusinessObject) getNewMaintainableObject().getDataObject();
             if (bo instanceof GlobalBusinessObject) {
-                KRADServiceLocator.getBusinessObjectService().save(bo);
+                KRADServiceLocatorWeb.getLegacyDataAdapter().save(bo);
             }
         }
 
@@ -931,8 +919,8 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         //to always do the delete and re-add...seems a bit inefficient though if nothing has changed, which is
         //most of the time...could also try to only add/update/delete what's changed, but this is easier
         if (!(event instanceof SaveDocumentEvent)) { //don't lock until they route
-            getMaintenanceDocumentService().deleteLocks(this.getDocumentNumber());
-            getMaintenanceDocumentService().storeLocks(this.getNewMaintainableObject().generateMaintenanceLocks());
+            getMaintenanceDocumentService().deleteLocks(MaintenanceDocumentBase.this.getDocumentNumber());
+            getMaintenanceDocumentService().storeLocks(MaintenanceDocumentBase.this.getNewMaintainableObject().generateMaintenanceLocks());
         }
     }
 
@@ -947,7 +935,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     /**
      * <p>The Note target for maintenance documents is determined by whether or not the underlying {@link Maintainable}
      * supports business object notes or not.  This is determined via a call to {@link
-     * Maintainable#isBoNotesEnabled()}.
+     * org.kuali.rice.krad.maintenance.Maintainable#isNotesEnabled()}.
      * The note target is then derived as follows: <p/> <ul> <li>If the {@link Maintainable} supports business object
      * notes, delegate to {@link #getDocumentDataObject()}. <li>Otherwise, delegate to the default implementation of
      * getNoteTarget on the superclass which will effectively return a reference to the {@link DocumentHeader}. </ul>
@@ -1064,7 +1052,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     @Override
     protected void postRemove() {
         super.postRemove();
-        getDocumentHeaderService().deleteDocumentHeader(getDocumentHeader());
+        KRADServiceLocatorWeb.getLegacyDataAdapter().delete(getDocumentHeader());
     }
 
     /**
@@ -1074,22 +1062,23 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      * @see org.kuali.rice.krad.bo.PersistableBusinessObjectBase#postLoad()
      */
     @Override
+    @PostLoad
     protected void postLoad() {
         super.postLoad();
-        setDocumentHeader(getDocumentHeaderService().getDocumentHeaderById(getDocumentNumber()));
+        setDocumentHeader(KRADServiceLocatorWeb.getLegacyDataAdapter().getByDocumentHeaderId(getDocumentNumber()));
     }
 
-    /**
-     * This overridden method is used to insert the {@link DocumentHeader} object due to the system not being able to
-     * manage the {@link DocumentHeader} object via mapping files
-     *
-     * @see org.kuali.rice.krad.bo.PersistableBusinessObjectBase#prePersist()
-     */
-    @Override
-    protected void prePersist() {
-        super.prePersist();
-        getDocumentHeaderService().saveDocumentHeader(getDocumentHeader());
-    }
+//    /**
+//     * This overridden method is used to insert the {@link DocumentHeader} object due to the system not being able to
+//     * manage the {@link DocumentHeader} object via mapping files
+//     *
+//     * @see org.kuali.rice.krad.bo.PersistableBusinessObjectBase#prePersist()
+//     */
+//    @Override
+//    @PrePersist
+//    protected void prePersist() {
+//        super.prePersist();
+//    }
 
     /**
      * This overridden method is used to save the {@link DocumentHeader} object due to the system not being able to
@@ -1098,9 +1087,10 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      * @see org.kuali.rice.krad.bo.PersistableBusinessObjectBase#preUpdate()
      */
     @Override
+    @PreUpdate
     protected void preUpdate() {
         super.preUpdate();
-        getDocumentHeaderService().saveDocumentHeader(getDocumentHeader());
+        KRADServiceLocatorWeb.getLegacyDataAdapter().save(getDocumentHeader());
     }
 
     /**
@@ -1156,6 +1146,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         return maintenanceDocumentService;
     }
 
+    @Deprecated
     protected DocumentHeaderService getDocumentHeaderService() {
         if (documentHeaderService == null) {
             documentHeaderService = KRADServiceLocatorWeb.getDocumentHeaderService();
@@ -1169,6 +1160,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         }
         return documentService;
     }
+
 
     //for issue KULRice3070
     protected boolean checkAllowsRecordDeletion() {

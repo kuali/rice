@@ -28,7 +28,7 @@
 	<param name="config.location">${alt.config.location}</param>
 	
 	<param name="keystore.alias">rice</param>
-	<param name="keystore.file">${basedir}/../ksb/src/test/resources/keystore/ricekeystore</param>
+	<param name="keystore.file">classpath:keystore/ricekeystore</param>
 	<param name="keystore.password">r1c3pw</param>
 
  </config>

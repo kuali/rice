@@ -98,14 +98,15 @@ public class DocumentFormBase extends UifFormBase {
     protected void instantiateDocument() {
         if (document == null && StringUtils.isNotBlank(getDefaultDocumentTypeName())) {
             Class<? extends Document> documentClass = KRADServiceLocatorWeb.getDataDictionaryService()
-                    .getDocumentClassByTypeName(getDefaultDocumentTypeName());
+                    .getValidDocumentClassByTypeName(getDefaultDocumentTypeName());
             try {
                 Document newDocument = documentClass.newInstance();
                 setDocument(newDocument);
             } catch (Exception e) {
-                LOG.error("Unable to instantiate document class " + documentClass.getName() + " document type "
+                LOG.error("Unable to instantiate document class " + documentClass + " document type "
                         + getDefaultDocumentTypeName());
-                throw new RuntimeException(e);
+                throw new RuntimeException("Unable to instantiate document class " + documentClass + " document type "
+                        + getDefaultDocumentTypeName(),e);
             }
         }
     }

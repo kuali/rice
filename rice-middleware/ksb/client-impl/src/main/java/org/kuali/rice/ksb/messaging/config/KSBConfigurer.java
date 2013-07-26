@@ -119,14 +119,6 @@ public class KSBConfigurer extends ModuleConfigurer implements SmartApplicationL
 		springFileLocations.add(SERVICE_BUS_CLIENT_SPRING);
 
         if (getRunMode() != RunMode.THIN) {
-
-            boolean isJpa = OrmUtils.isJpaEnabled("rice.ksb");
-            if (isJpa) {
-                // TODO redo this once we're back to JPA
-                // springFileLocations.add("classpath:org/kuali/rice/ksb/config/KSBJPASpringBeans.xml");
-                throw new UnsupportedOperationException("JPA not currently supported for KSB");
-            }
-
             // Loading these beans unconditionally now, see:
             // KULRICE-6574: Some KSB beans not defined unless message persistence turned on
             //

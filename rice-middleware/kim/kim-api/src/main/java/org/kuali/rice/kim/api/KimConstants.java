@@ -40,6 +40,8 @@ public final class KimConstants {
 	public static final String KIM_ATTRIBUTE_BOOLEAN_FALSE_STR_VALUE_DISPLAY = "No";
 	public static final String KIM_ATTRIBUTE_BOOLEAN_TRUE_STR_VALUE = "Y";
 	public static final String KIM_ATTRIBUTE_BOOLEAN_FALSE_STR_VALUE = "N";
+
+    public static final String KIM_ENABLE_HISTORY_KEY = "kim.enable.history";
 	
 	public static final class EntityTypes {
 		public static final String PERSON = "PERSON";

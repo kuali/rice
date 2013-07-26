@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.document;
 
+import java.util.List;
+
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
 import org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange;
@@ -29,8 +31,6 @@ import org.kuali.rice.krad.document.authorization.PessimisticLock;
 import org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent;
 import org.kuali.rice.krad.util.NoteType;
 import org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluator;
-
-import java.util.List;
 
 
 /**
@@ -229,7 +229,7 @@ public interface Document extends PersistableBusinessObject {
 
     /**
      * Return the target PersistableBusinessObject that notes associated with this document should be attached to.
-     * In general, this method should never return null.  However, it is permissible that it will return a 
+     * In general, this method should never return null.  However, it is permissible that it will return a
      * business object which has not been persisted yet (and therefore does not have it's unique object id
      * established).  This is only valid in cases where the note type is {@link NoteType#BUSINESS_OBJECT}.
      *
@@ -301,12 +301,19 @@ public interface Document extends PersistableBusinessObject {
     void addPessimisticLock(PessimisticLock lock);
 
     /**
+     * Renamed:
+     * @see Document#getLockClearingMethodNames()
+     */
+    @Deprecated
+    List<String> getLockClearningMethodNames();
+
+    /**
      * This is a method that is used by Kuali Pessimistic Locking to get the names (method to call values)
      * of the {@link KualiDocumentActionBase} methods that should release locks
      *
      * @return the list of method names of an action that should clear locks for the current user
      */
-    List<String> getLockClearningMethodNames();
+    List<String> getLockClearingMethodNames();
     /**
      * Returns an evaluator object that determines whether a given property relative to the root object ({@link #wrapDocumentWithMetadataForXmlSerialization()}
      * is serializable during the document serialization process.

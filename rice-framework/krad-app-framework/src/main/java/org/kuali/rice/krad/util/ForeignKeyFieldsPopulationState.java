@@ -18,17 +18,20 @@ package org.kuali.rice.krad.util;
 import java.io.Serializable;
 import java.util.List;
 
+import org.kuali.rice.krad.data.DataObjectWrapper;
+
 /**
  * This class is a token-style class, that is write-once, then read-only for all consumers of the class. It is often used as a
  * return value from various PersistenceStructureService methods.
- * 
+ *
  * The object represents the state of the foreign-key fields of a reference object. For example, if Account is the bo, and
  * organization is the reference object, then chartOfAccountsCode and organizationCode are the foreign key fields. Their state,
  * rather they are all filled out, whether any of them are filled out, and which ones are not filled out, is what this class
  * represents.
- * 
- * 
+ *
+ * @deprecated Replaced with methods on {@link DataObjectWrapper}
  */
+@Deprecated
 public class ForeignKeyFieldsPopulationState implements Serializable {
 
     private boolean allFieldsPopulated;
@@ -43,7 +46,7 @@ public class ForeignKeyFieldsPopulationState implements Serializable {
 
     /**
      * Gets the allFieldsPopulated attribute.
-     * 
+     *
      * @return Returns the allFieldsPopulated.
      */
     public boolean isAllFieldsPopulated() {
@@ -52,7 +55,7 @@ public class ForeignKeyFieldsPopulationState implements Serializable {
 
     /**
      * Gets the anyFieldsPopulated attribute.
-     * 
+     *
      * @return Returns the anyFieldsPopulated.
      */
     public boolean isAnyFieldsPopulated() {
@@ -61,7 +64,7 @@ public class ForeignKeyFieldsPopulationState implements Serializable {
 
     /**
      * Gets the unpopulatedFieldNames attribute.
-     * 
+     *
      * @return Returns the unpopulatedFieldNames.
      */
     public List<String> getUnpopulatedFieldNames() {

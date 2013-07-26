@@ -16,8 +16,6 @@
 package org.kuali.rice.ken.bo;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ken.api.notification.NotificationProducer;
 import org.kuali.rice.ken.api.notification.NotificationProducerContract;
@@ -48,10 +46,6 @@ import java.util.List;
 public class NotificationProducerBo extends PersistableBusinessObjectBase implements NotificationProducerContract {
     @Id
     @GeneratedValue(generator="KREN_PRODCR_S")
-	@GenericGenerator(name="KREN_PRODCR_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREN_PRODCR_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="PRODCR_ID")
 	private Long id;
     @Column(name="NM", nullable=false)

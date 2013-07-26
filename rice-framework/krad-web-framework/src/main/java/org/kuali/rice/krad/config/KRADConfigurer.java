@@ -59,6 +59,8 @@ public class KRADConfigurer extends ModuleConfigurer implements SmartApplication
 
     @Override
     public void addAdditonalToConfig() {
+        // export the state of KNS enablement to the global config
+        ConfigContext.getCurrentContextConfig().putProperty(KRADConstants.Config.KNS_ENABLED, Boolean.valueOf(isIncludeKnsSpringBeans()).toString());
         configureDataSource();
     }
 

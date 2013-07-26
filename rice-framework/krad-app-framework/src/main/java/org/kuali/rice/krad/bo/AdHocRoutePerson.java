@@ -15,21 +15,20 @@
  */
 package org.kuali.rice.krad.bo;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-
-import javax.persistence.Entity;
-import javax.persistence.IdClass;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 
 /**
  * Ad Hoc Route Person Business Object
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@IdClass(AdHocRoutePersonId.class)
+//@IdClass(AdHocRoutePersonId.class)
 @Entity
 @Table(name = "KRNS_ADHOC_RTE_ACTN_RECIP_T")
 public class AdHocRoutePerson extends AdHocRouteRecipient {

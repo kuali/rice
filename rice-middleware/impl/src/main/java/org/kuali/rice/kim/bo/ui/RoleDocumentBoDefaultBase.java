@@ -15,12 +15,11 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
+import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
+
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.Type;
-import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -30,7 +29,7 @@ import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
  */
 @MappedSuperclass
 public class RoleDocumentBoDefaultBase extends KimDocumentBoBase{
-    @Type(type="yes_no")
+    //@Type(type="yes_no")
 	@Column(name="DFLT_IND")
 	protected boolean dflt;
 

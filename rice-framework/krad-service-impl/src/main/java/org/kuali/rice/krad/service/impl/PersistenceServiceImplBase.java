@@ -24,7 +24,10 @@ import java.util.TreeMap;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.kuali.rice.krad.exception.IntrospectionException;
+import org.kuali.rice.krad.util.LegacyDataFramework;
 
+@Deprecated
+@LegacyDataFramework
 public class PersistenceServiceImplBase extends PersistenceServiceStructureImplBase {
 
 	/**

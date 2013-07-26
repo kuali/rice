@@ -18,16 +18,13 @@ package org.kuali.rice.kew.actionrequest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
@@ -44,7 +41,6 @@ import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.service.RuleServiceInternal;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.RoleRecipient;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -108,10 +104,6 @@ public class ActionRequestValue implements Serializable {
 
     @Id
     @GeneratedValue(generator="KREW_ACTN_RQST_S")
-	@GenericGenerator(name="KREW_ACTN_RQST_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_ACTN_RQST_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="ACTN_RQST_ID")
 	private String actionRequestId;
     @Column(name="ACTN_RQST_CD")
@@ -167,7 +159,6 @@ public class ActionRequestValue implements Serializable {
     @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="PARNT_ID")
 	private ActionRequestValue parentActionRequest;
-    @Fetch(value = FetchMode.SELECT)
     @OneToMany(mappedBy="parentActionRequest",cascade={CascadeType.PERSIST, CascadeType.MERGE},fetch=FetchType.EAGER)
     private List<ActionRequestValue> childrenRequests = new ArrayList<ActionRequestValue>();
     @ManyToOne(fetch=FetchType.EAGER)

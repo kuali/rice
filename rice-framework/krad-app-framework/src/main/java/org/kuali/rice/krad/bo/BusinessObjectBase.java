@@ -16,15 +16,14 @@
 package org.kuali.rice.krad.bo;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 
 import java.lang.reflect.Field;
-import java.util.LinkedHashMap;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @deprecated use new KRAD Data framework {@link org.kuali.rice.krad.data.DataObjectService}
  */
+@Deprecated
 public abstract class BusinessObjectBase implements BusinessObject {
 
     /**

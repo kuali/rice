@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import org.hibernate.annotations.Type;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -31,23 +29,23 @@ import javax.persistence.Table;
 @Table(name = "KRIM_PND_PRIV_PREF_MT")
 public class PersonDocumentPrivacy extends KimDocumentBoEditableBase {
 	
-	@Type(type="yes_no")
+	//@Type(type="yes_no")
 	@Column(name="SUPPRESS_NM_IND")
 	protected boolean suppressName;
 	
-	@Type(type="yes_no")
+	//@Type(type="yes_no")
 	@Column(name="SUPPRESS_EMAIL_IND")
 	protected boolean suppressEmail;
 	
-	@Type(type="yes_no")
+	//@Type(type="yes_no")
 	@Column(name="SUPPRESS_ADDR_IND")
 	protected boolean suppressAddress;
 	
-	@Type(type="yes_no")
+	//@Type(type="yes_no")
 	@Column(name="SUPPRESS_PHONE_IND")
 	protected boolean suppressPhone;
 	
-	@Type(type="yes_no")
+	//@Type(type="yes_no")
 	@Column(name="SUPPRESS_PRSNL_IND")
 	protected boolean suppressPersonal;
 	

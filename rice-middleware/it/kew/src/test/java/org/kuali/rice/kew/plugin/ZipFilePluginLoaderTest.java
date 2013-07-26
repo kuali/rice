@@ -22,6 +22,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.ClasspathOrFileResourceLoader;
 import org.kuali.rice.core.impl.config.property.JAXBConfigImpl;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
@@ -95,7 +96,7 @@ public class ZipFilePluginLoaderTest extends KEWTestCase {
 	    ConfigContext.init(config);
 	}
 
-	File pluginZipFile = new File(this.getBaseDir() + "/src/test/resources/org/kuali/rice/kew/plugin/ziptest.zip");
+	File pluginZipFile = new ClasspathOrFileResourceLoader().getResource("classpath:org/kuali/rice/kew/plugin/ziptest.zip").getFile();
 	assertTrue(pluginZipFile.exists());
 	assertTrue(pluginZipFile.isFile());
 

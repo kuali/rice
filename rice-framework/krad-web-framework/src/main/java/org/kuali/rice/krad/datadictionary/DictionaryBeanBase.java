@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 
 /**
@@ -34,6 +35,7 @@ public abstract class DictionaryBeanBase implements DictionaryBean {
     /**
      * @see DictionaryBean#getNamespaceCode()
      */
+    @Override
     @BeanTagAttribute(name = "namespaceCode")
     public String getNamespaceCode() {
         return namespaceCode;
@@ -51,6 +53,7 @@ public abstract class DictionaryBeanBase implements DictionaryBean {
     /**
      * @see DictionaryBean#getComponentCode()
      */
+    @Override
     @BeanTagAttribute(name = "componentCode")
     public String getComponentCode() {
         return componentCode;
@@ -63,6 +66,28 @@ public abstract class DictionaryBeanBase implements DictionaryBean {
      */
     public void setComponentCode(String componentCode) {
         this.componentCode = componentCode;
+    }
+
+    /**
+     * Helper method to allow reasonable names to be defaulted from class or property names
+     */
+    protected String getLabelFromCamelCasedName(String name) {
+        // We only want to include the component after the last property separator
+        if (name.contains(".")) {
+            name = StringUtils.substringAfterLast(name, ".");
+        }
+        StringBuilder label = new StringBuilder(name);
+        // upper case the 1st letter
+        label.replace(0, 1, label.substring(0, 1).toUpperCase());
+        // loop through, inserting spaces when cap
+        for (int i = 0; i < label.length(); i++) {
+            if (Character.isUpperCase(label.charAt(i))) {
+                label.insert(i, ' ');
+                i++;
+            }
+        }
+
+        return label.toString().trim();
     }
 
     /**

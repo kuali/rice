@@ -30,83 +30,81 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 public class InactivationBlockingDefinition extends DataDictionaryDefinitionBase implements InactivationBlockingMetadata {
     private static final long serialVersionUID = -8765429636173190984L;
 
-    protected Class<? extends BusinessObject> blockingReferenceBusinessObjectClass;
+    protected Class<?> blockingReferenceBusinessObjectClass;
     protected String blockedReferencePropertyName;
-    protected Class<? extends BusinessObject> blockedBusinessObjectClass;
+    protected Class<?> blockedBusinessObjectClass;
     protected String inactivationBlockingDetectionServiceBeanName;
     protected String relationshipLabel;
-    protected Class<? extends BusinessObject> businessObjectClass;
+    protected Class<?> businessObjectClass;
 
-    public InactivationBlockingDefinition() {
-    }
-
-    /**
-     * This overridden method ...
-     *
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class,
-     *      java.lang.Class)
-     */
-    @SuppressWarnings("unchecked")
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
+    @Override
+    public void completeValidation(Class<?> rootDataObjectClass, Class<?> otherDataObjectClass) {
         if (StringUtils.isBlank(inactivationBlockingDetectionServiceBeanName)) {
             if (StringUtils.isBlank(blockedReferencePropertyName)) {
                 // the default inactivation blocking detection service (used when inactivationBlockingDetectionServiceBeanName is blank) requires that the property name be set
                 throw new AttributeValidationException(
                         "inactivationBlockingDetectionServiceBeanName and  blockedReferencePropertyName can't both be blank in InactivationBlockingDefinition for class "
-                                + rootBusinessObjectClass.getClass().getName());
+                                + rootDataObjectClass.getClass().getName());
             }
         }
-        if (getBlockedBusinessObjectClass() == null) {
+        if (getBlockedDataObjectClass() == null) {
             throw new AttributeValidationException(
                     "Unable to determine blockedReferenceBusinessObjectClass in InactivationBlockingDefinition for class "
-                            + rootBusinessObjectClass.getClass().getName());
-        }
-        if (!BusinessObject.class.isAssignableFrom(getBlockedBusinessObjectClass())) {
-            throw new AttributeValidationException(
-                    "InactivationBlockingDefinitions must block a reference of type BusinessObject.  Class name: "
-                            +
-                            rootBusinessObjectClass.getClass().getName()
-                            + " blockedReferencePropertyName "
-                            + blockedReferencePropertyName
-                            +
-                            " class that should have been a BusinessObject: "
-                            + getBlockedBusinessObjectClass());
+                            + rootDataObjectClass.getClass().getName());
         }
     }
 
-    /**
-     * This overridden method ...
-     *
-     * @see org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata#getBlockedReferencePropertyName()
-     */
+    @Override
+    @Deprecated
     @BeanTagAttribute(name = "blockedReferencePropertyName")
     public String getBlockedReferencePropertyName() {
         return this.blockedReferencePropertyName;
     }
 
+    /**
+     * @deprecated use {@link #setBlockedAttributeName(String)} instead
+     */
+    @Deprecated
     public void setBlockedReferencePropertyName(String blockedReferencePropertyName) {
         this.blockedReferencePropertyName = blockedReferencePropertyName;
     }
 
-    /**
-     * This overridden method ...
-     *
-     * @see org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata#getBlockedBusinessObjectClass()
-     */
-    @BeanTagAttribute(name = "blockedBusinessObjectClass")
-    public Class<? extends BusinessObject> getBlockedBusinessObjectClass() {
-        return this.blockedBusinessObjectClass;
+    @Override
+    @BeanTagAttribute(name = "blockedAttributeName")
+    public String getBlockedAttributeName() {
+        return this.blockedReferencePropertyName;
     }
 
+    public void setBlockedAttributeName(String blockedAttributeName) {
+        this.blockedReferencePropertyName = blockedAttributeName;
+    }
+
+    @Override
+    @Deprecated
+    @SuppressWarnings("unchecked")
+    @BeanTagAttribute(name = "blockedBusinessObjectClass")
+    public Class<? extends BusinessObject> getBlockedBusinessObjectClass() {
+        return (Class<? extends BusinessObject>)blockedBusinessObjectClass;
+    }
+
+    /**
+     * @deprecated use {@link #setBlockedDataObjectClass(Class)} instead
+     */
+    @Deprecated
     public void setBlockedBusinessObjectClass(Class<? extends BusinessObject> blockedBusinessObjectClass) {
         this.blockedBusinessObjectClass = blockedBusinessObjectClass;
     }
 
-    /**
-     * This overridden method ...
-     *
-     * @see org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata#getInactivationBlockingDetectionServiceBeanName()
-     */
+    @Override
+    @BeanTagAttribute(name = "blockedDataObjectClass")
+    public Class<?> getBlockedDataObjectClass() {
+        return blockedBusinessObjectClass;
+    }
+
+    public void setBlockedDataObjectClass(Class<?> blockedDataObjectClass) {
+        this.blockedBusinessObjectClass = blockedDataObjectClass;
+    }
+
     @BeanTagAttribute(name = "inactivationBlockingDetectionServiceBeanName")
     public String getInactivationBlockingDetectionServiceBeanName() {
         return this.inactivationBlockingDetectionServiceBeanName;
@@ -116,21 +114,34 @@ public class InactivationBlockingDefinition extends DataDictionaryDefinitionBase
         this.inactivationBlockingDetectionServiceBeanName = inactivationBlockingDetectionServiceImpl;
     }
 
-    /**
-     * This overridden method ...
-     *
-     * @see org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata#getBlockingReferenceBusinessObjectClass()
-     */
+    @Override
+    @Deprecated
+    @SuppressWarnings("unchecked")
     @BeanTagAttribute(name = "blockingReferenceBusinessObjectClass")
     public Class<? extends BusinessObject> getBlockingReferenceBusinessObjectClass() {
-        return this.blockingReferenceBusinessObjectClass;
+        return (Class<? extends BusinessObject>)this.blockingReferenceBusinessObjectClass;
     }
 
+    /**
+     * @deprecated use {@link #setBlockingReferenceDataObjectClass(Class)}
+     */
+    @Deprecated
     public void setBlockingReferenceBusinessObjectClass(
             Class<? extends BusinessObject> blockingReferenceBusinessObjectClass) {
         this.blockingReferenceBusinessObjectClass = blockingReferenceBusinessObjectClass;
     }
 
+    @Override
+    @BeanTagAttribute(name = "blockingDataObjectClass")
+    public Class<?> getBlockingDataObjectClass() {
+        return blockingReferenceBusinessObjectClass;
+    }
+
+    public void setBlockingReferenceDataObjectClass(Class<?> blockingDataObjectClass) {
+        this.blockingReferenceBusinessObjectClass = blockingDataObjectClass;
+    }
+
+    @Override
     @BeanTagAttribute(name = "relationshipLabel")
     public String getRelationshipLabel() {
         return this.relationshipLabel;
@@ -140,11 +151,22 @@ public class InactivationBlockingDefinition extends DataDictionaryDefinitionBase
         this.relationshipLabel = relationshipLabel;
     }
 
+    /**
+     * @deprecated the businessObjectClass does not appear to be used anywhere significantly internally or externally,
+     *             no replacement
+     */
+    @Deprecated
+    @SuppressWarnings("unchecked")
     @BeanTagAttribute(name = "businessObjectClass")
     public Class<? extends BusinessObject> getBusinessObjectClass() {
-        return this.businessObjectClass;
+        return (Class<? extends BusinessObject>)this.businessObjectClass;
     }
 
+    /**
+     * @deprecated the businessObjectClass does not appear to be used anywhere significantly internally or externally,
+     *             no replacement
+     */
+    @Deprecated
     public void setBusinessObjectClass(Class<? extends BusinessObject> businessObjectClass) {
         this.businessObjectClass = businessObjectClass;
     }

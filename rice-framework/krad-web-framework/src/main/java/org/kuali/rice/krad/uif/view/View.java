@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.view;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -52,7 +53,6 @@ import org.kuali.rice.krad.uif.widget.BlockUI;
 import org.kuali.rice.krad.uif.widget.Breadcrumbs;
 import org.kuali.rice.krad.uif.widget.Growls;
 import org.kuali.rice.krad.util.KRADUtils;
-import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.form.HistoryFlow;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
@@ -1349,7 +1349,7 @@ public class View extends ContainerBase {
     public void setViewHelperServiceClass(Class<? extends ViewHelperService> viewHelperServiceClass) {
         this.viewHelperServiceClass = viewHelperServiceClass;
         if ((this.viewHelperService == null) && (this.viewHelperServiceClass != null)) {
-            viewHelperService = ObjectUtils.newInstance(viewHelperServiceClass);
+            viewHelperService = DataObjectUtils.newInstance(viewHelperServiceClass);
         }
     }
 
@@ -1509,7 +1509,7 @@ public class View extends ContainerBase {
      */
     public void setPresentationControllerClass(
             Class<? extends ViewPresentationController> presentationControllerClass) {
-        this.presentationController = ObjectUtils.newInstance(presentationControllerClass);
+        this.presentationController = DataObjectUtils.newInstance(presentationControllerClass);
     }
 
     /**
@@ -1548,7 +1548,7 @@ public class View extends ContainerBase {
      * @param authorizerClass
      */
     public void setAuthorizerClass(Class<? extends ViewAuthorizer> authorizerClass) {
-        this.authorizer = ObjectUtils.newInstance(authorizerClass);
+        this.authorizer = DataObjectUtils.newInstance(authorizerClass);
     }
 
     /**

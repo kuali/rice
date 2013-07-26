@@ -398,7 +398,7 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
     @Override
     public String getPrimaryKeyFieldLabels() {
         StringBuilder buf = new StringBuilder();
-        List<String> primaryKeyFieldNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(getBusinessObjectClass());
+        List<String> primaryKeyFieldNames = KRADServiceLocatorWeb.getLegacyDataAdapter().listPrimaryKeyFieldNames(getBusinessObjectClass());
         Iterator<String> pkIter = primaryKeyFieldNames.iterator();
         while (pkIter.hasNext()) {
             String pkFieldName = (String) pkIter.next();

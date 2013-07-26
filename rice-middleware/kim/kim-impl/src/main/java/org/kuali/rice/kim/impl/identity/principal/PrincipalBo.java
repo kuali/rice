@@ -1,0 +1,112 @@
+package org.kuali.rice.kim.impl.identity.principal;
+
+import org.eclipse.persistence.annotations.Convert;
+import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+/**
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+@Entity
+@Table(name = "KRIM_PRNCPL_T")
+public class PrincipalBo extends PersistableBusinessObjectBase implements PrincipalContract {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Column(name = "PRNCPL_ID", columnDefinition = "VARCHAR(40)")
+    private String principalId;
+    @Column(name = "PRNCPL_NM")
+    private String principalName;
+    @Column(name = "ENTITY_ID")
+    private String entityId;
+    @Column(name = "PRNCPL_PSWD")
+    private String password;
+    @Column(name = "ACTV_IND")
+    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    private boolean active;
+
+    public static Principal to(PrincipalBo bo) {
+        if (bo == null) {
+            return null;
+        }
+
+        return Principal.Builder.create(bo).build();
+    }
+
+    /**
+     * Creates a PrincipalBo business object from an immutable representation of a Principal.
+     *
+     * @param immutable an immutable Principal
+     * @return a PrincipalBo
+     */
+    public static PrincipalBo from(Principal immutable) {
+        if (immutable == null) {
+            return null;
+        }
+
+        PrincipalBo bo = new PrincipalBo();
+        bo.active = immutable.isActive();
+        bo.principalId = immutable.getPrincipalId();
+        bo.entityId = immutable.getEntityId();
+        bo.principalName = immutable.getPrincipalName();
+        bo.active = immutable.isActive();
+        bo.setVersionNumber(immutable.getVersionNumber());
+        bo.setObjectId(immutable.getObjectId());
+
+        return bo;
+    }
+
+    @Override
+    public String getPrincipalId() {
+        return principalId;
+    }
+
+    public void setPrincipalId(String principalId) {
+        this.principalId = principalId;
+    }
+
+    @Override
+    public String getPrincipalName() {
+        return principalName;
+    }
+
+    public void setPrincipalName(String principalName) {
+        this.principalName = principalName;
+    }
+
+    @Override
+    public String getEntityId() {
+        return entityId;
+    }
+
+    public void setEntityId(String entityId) {
+        this.entityId = entityId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public boolean getActive() {
+        return active;
+    }
+
+    @Override
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+}

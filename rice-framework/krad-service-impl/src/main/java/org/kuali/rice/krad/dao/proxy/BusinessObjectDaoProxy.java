@@ -16,33 +16,33 @@
 package org.kuali.rice.krad.dao.proxy;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.config.ConfigurationException;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.ModuleConfiguration;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.dao.BusinessObjectDao;
-import org.kuali.rice.krad.dao.impl.BusinessObjectDaoJpa;
 import org.kuali.rice.krad.dao.impl.BusinessObjectDaoOjb;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.service.ModuleService;
+import org.kuali.rice.krad.util.LegacyUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @deprecated use new KRAD Data framework {@link org.kuali.rice.krad.data.DataObjectService}
+ */
+@Deprecated
 @Transactional
 public class BusinessObjectDaoProxy implements BusinessObjectDao {
 
 	private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BusinessObjectDaoProxy.class);
 
-	private BusinessObjectDao businessObjectDaoJpa;
 	private BusinessObjectDao businessObjectDaoOjb;
     private static KualiModuleService kualiModuleService;
     private static HashMap<String, BusinessObjectDao> boDaoValues = new HashMap<String, BusinessObjectDao>();
@@ -52,29 +52,17 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
         if (moduleService != null) {
             ModuleConfiguration moduleConfig = moduleService.getModuleConfiguration();
             String dataSourceName = "";
-            EntityManager entityManager = null;
             if (moduleConfig != null) {
                 dataSourceName = moduleConfig.getDataSourceName();
-                entityManager = moduleConfig.getEntityManager();
             }
 
             if (StringUtils.isNotEmpty(dataSourceName)) {
                 if (boDaoValues.get(dataSourceName) != null) {
                     return boDaoValues.get(dataSourceName);
                 } else {
-                	if (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) {
-                        //using JPA
-                		if (entityManager != null) {
-                            BusinessObjectDaoJpa boDaoJpa =
-                            	new BusinessObjectDaoJpa(entityManager, KRADServiceLocator
-                                        .getPersistenceStructureService());
-                            // add to our cache of bo daos
-                			boDaoValues.put(dataSourceName, boDaoJpa);
-                			return boDaoJpa;
-                		} else {
-                			throw new ConfigurationException("EntityManager is null. EntityManager must be set in the Module Configuration bean in the appropriate spring beans xml. (see nested exception for details).");
-                		}
-                	} else {	
+                	if (!LegacyUtils.useLegacy(clazz)) {
+                        throw new IllegalStateException("BusinessObjectDaoProxy called with non-legacy class: " + clazz);
+                	} else {
                 	    //using OJB
                         BusinessObjectDaoOjb boDaoOjb = new BusinessObjectDaoOjb(
                                 KRADServiceLocator.getPersistenceStructureService());
@@ -88,7 +76,10 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
             }
         }
         //return businessObjectDaoJpa;
-        return (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) ? businessObjectDaoJpa : businessObjectDaoOjb;
+        if (!LegacyUtils.useLegacy(clazz)) {
+            throw new IllegalStateException("BusinessObjectDaoProxy called with non-legacy class: " + clazz);
+        }
+        return businessObjectDaoOjb;
     }
 
 	/**
@@ -262,10 +253,6 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
         }
         return kualiModuleService;
     }
-
-	public void setBusinessObjectDaoJpa(BusinessObjectDao businessObjectDaoJpa) {
-		this.businessObjectDaoJpa = businessObjectDaoJpa;
-	}
 
 	public void setBusinessObjectDaoOjb(BusinessObjectDao businessObjectDaoOjb) {
 		this.businessObjectDaoOjb = businessObjectDaoOjb;

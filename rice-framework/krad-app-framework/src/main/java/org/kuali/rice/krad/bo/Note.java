@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.krad.bo;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
+import org.eclipse.persistence.annotations.Index;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.data.platform.generator.Sequence;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.UrlFactory;
@@ -28,12 +28,12 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -41,42 +41,42 @@ import java.util.Properties;
  * Represents a user note in the system.
  */
 @Entity
-@Table(name="KRNS_NTE_T")
+@Table(name="KRNS_NTE_T",uniqueConstraints= {
+        @UniqueConstraint(name="KRNS_NTE_TC0",columnNames="OBJ_ID")
+})
+@Sequence(name="KRNS_NTE_S",property="noteIdentifier")
 public class Note extends PersistableBusinessObjectBase {
     private static final long serialVersionUID = -7647166354016356770L;
 
     @Id
-    @GeneratedValue(generator="KRNS_NTE_S")
-	@GenericGenerator(name="KRNS_NTE_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KRNS_NTE_S"),
-			@Parameter(name="value_column",value="id")
-	})
-	@Column(name="NTE_ID")
+	@Column(name="NTE_ID",length=14,precision=0,updatable=false)
 	private Long noteIdentifier;
-    @Column(name="RMT_OBJ_ID")
+    @Index(name="KRNS_NTE_TI1")
+    @Column(name="RMT_OBJ_ID",length=36,nullable=false)
 	private String remoteObjectIdentifier;
-    @Column(name="AUTH_PRNCPL_ID")
+    @Column(name="AUTH_PRNCPL_ID",length=40,nullable=false)
 	private String authorUniversalIdentifier;
+//    @Temporal(TemporalType.TIMESTAMP)
 	@Column(name="POST_TS")
 	private Timestamp notePostedTimestamp;
-    @Column(name="NTE_TYP_CD")
+    @Column(name="NTE_TYP_CD",length=4,nullable=false)
 	private String noteTypeCode;
-    @Column(name="TXT")
+    @Column(name="TXT",length=800)
 	private String noteText;
-    @Column(name="TPC_TXT")
+    @Column(name="TPC_TXT",length=40)
 	private String noteTopicText;
-    @Column(name="PRG_CD")
+    @Column(name="PRG_CD",length=1)
 	private String notePurgeCode;
     @Transient
     private String attachmentIdentifier;
 
     @OneToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="NTE_TYP_CD", insertable=false, updatable=false)
+	@JoinColumn(name="NTE_TYP_CD",updatable=false,insertable=false)
 	private NoteType noteType;
     @Transient
     private transient Person authorUniversal;
     @OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
-	@JoinColumn(name = "NTE_ID", insertable = false, updatable = false)
+	@JoinColumn(name = "NTE_ID",updatable=false,insertable=false)
 	private Attachment attachment;
     @Transient
     private AdHocRouteRecipient adHocRouteRecipient;
@@ -94,7 +94,7 @@ public class Note extends PersistableBusinessObjectBase {
 
         this.setAdHocRouteRecipient(new AdHocRoutePerson());
     }
-    
+
     /**
      * Sets the {@link #setNotePostedTimestamp(Timestamp)} to the current time.
      */
@@ -105,7 +105,7 @@ public class Note extends PersistableBusinessObjectBase {
 
     /**
      * Gets the noteIdentifier attribute.
-     * 
+     *
      * @return Returns the noteIdentifier.
      */
     public Long getNoteIdentifier() {
@@ -114,7 +114,7 @@ public class Note extends PersistableBusinessObjectBase {
 
     /**
      * Sets the noteIdentifier attribute value.
-     * 
+     *
      * @param noteIdentifier The noteIdentifier to set.
      */
     public void setNoteIdentifier(Long noteIdentifier) {
@@ -123,7 +123,7 @@ public class Note extends PersistableBusinessObjectBase {
 
     /**
      * Gets the remoteObjectIdentifier attribute.
-     * 
+     *
      * @return Returns the remoteObjectIdentifier
      */
     public String getRemoteObjectIdentifier() {
@@ -132,7 +132,7 @@ public class Note extends PersistableBusinessObjectBase {
 
     /**
      * Sets the remoteObjectIdentifier attribute.
-     * 
+     *
      * @param remoteObjectIdentifier The remoteObjectIdentifier to set.
      */
     public void setRemoteObjectIdentifier(String remoteObjectIdentifier) {
@@ -142,7 +142,7 @@ public class Note extends PersistableBusinessObjectBase {
 
     /**
      * Gets the authorUniversalIdentifier attribute.
-     * 
+     *
      * @return Returns the authorUniversalIdentifier
      */
     public String getAuthorUniversalIdentifier() {
@@ -151,7 +151,7 @@ public class Note extends PersistableBusinessObjectBase {
 
     /**
      * Sets the authorUniversalIdentifier attribute.
-     * 
+     *
      * @param noteAuthorIdentifier The author ID to be set as the AuthorUniversalIdentifier
      */
     public void setAuthorUniversalIdentifier(String noteAuthorIdentifier) {
@@ -161,7 +161,7 @@ public class Note extends PersistableBusinessObjectBase {
 
     /**
      * Gets the notePostedTimestamp attribute.
-     * 
+     *
      * @return Returns the notePostedTimestamp
      */
     public Timestamp getNotePostedTimestamp() {
@@ -170,7 +170,7 @@ public class Note extends PersistableBusinessObjectBase {
 
     /**
      * Sets the notePostedTimestamp attribute.
-     * 
+     *
      * @param notePostedTimestamp The notePostedTimestamp to set.
      */
     public void setNotePostedTimestamp(Timestamp notePostedTimestamp) {
@@ -180,7 +180,7 @@ public class Note extends PersistableBusinessObjectBase {
 
     /**
      * Gets the noteTypeCode attribute.
-     * 
+     *
      * @return Returns the noteTypeCode
      */
     public String getNoteTypeCode() {
@@ -189,7 +189,7 @@ public class Note extends PersistableBusinessObjectBase {
 
     /**
      * Sets the noteTypeCode attribute.
-     * 
+     *
      * @param noteTypeCode The noteTypeCode to set.
      */
     public void setNoteTypeCode(String noteTypeCode) {
@@ -199,7 +199,7 @@ public class Note extends PersistableBusinessObjectBase {
 
     /**
      * Gets the noteText attribute.
-     * 
+     *
      * @return Returns the noteText
      */
     public String getNoteText() {
@@ -208,7 +208,7 @@ public class Note extends PersistableBusinessObjectBase {
 
     /**
      * Sets the noteText attribute.
-     * 
+     *
      * @param noteText The noteText to set.
      */
     public void setNoteText(String noteText) {
@@ -218,7 +218,7 @@ public class Note extends PersistableBusinessObjectBase {
 
     /**
      * Gets the noteTopicText attribute.
-     * 
+     *
      * @return Returns the noteTopicText.
      */
     public String getNoteTopicText() {
@@ -227,7 +227,7 @@ public class Note extends PersistableBusinessObjectBase {
 
     /**
      * Sets the noteTopicText attribute value.
-     * 
+     *
      * @param noteTopicText The noteTopicText to set.
      */
     public void setNoteTopicText(String noteTopicText) {
@@ -236,7 +236,7 @@ public class Note extends PersistableBusinessObjectBase {
 
     /**
      * Gets the notePurgeCode attribute.
-     * 
+     *
      * @return Returns the notePurgeCode
      */
     public String getNotePurgeCode() {
@@ -245,7 +245,7 @@ public class Note extends PersistableBusinessObjectBase {
 
     /**
      * Sets the notePurgeCode attribute.
-     * 
+     *
      * @param notePurgeCode The notePurgeCode to set.
      */
     public void setNotePurgeCode(String notePurgeCode) {
@@ -254,7 +254,7 @@ public class Note extends PersistableBusinessObjectBase {
 
     /**
      * Gets the noteType attribute.
-     * 
+     *
      * @return Returns the noteType.
      */
     public NoteType getNoteType() {
@@ -263,17 +263,18 @@ public class Note extends PersistableBusinessObjectBase {
 
     /**
      * Sets the noteType attribute value.
-     * 
+     *
      * @param noteType The noteType to set.
      * @deprecated
      */
+    @Deprecated
     public void setNoteType(NoteType noteType) {
         this.noteType = noteType;
     }
 
     /**
      * Gets the authorUniversal attribute.
-     * 
+     *
      * @return Returns the authorUniversal.
      */
     public Person getAuthorUniversal() {
@@ -283,17 +284,18 @@ public class Note extends PersistableBusinessObjectBase {
 
     /**
      * Sets the authorUniversal attribute value.
-     * 
+     *
      * @param authorUniversal The authorUniversal to set.
      * @deprecated
      */
+    @Deprecated
     public void setAuthorUniversal(Person authorUniversal) {
         this.authorUniversal = authorUniversal;
     }
 
     /**
      * Gets the attachment attribute.
-     * 
+     *
      * @return Returns the attachment.
      */
     public Attachment getAttachment() {
@@ -302,7 +304,7 @@ public class Note extends PersistableBusinessObjectBase {
 
     /**
      * Sets the attachment attribute value.
-     * 
+     *
      * @param attachment The attachment to set.
      */
     public void setAttachment(Attachment attachment) {
@@ -311,7 +313,7 @@ public class Note extends PersistableBusinessObjectBase {
 
     /**
      * Gets the attachmentIdentifier attribute.
-     * 
+     *
      * @return Returns the attachmentIdentifier.
      */
     public String getAttachmentIdentifier() {
@@ -320,7 +322,7 @@ public class Note extends PersistableBusinessObjectBase {
 
     /**
      * Sets the attachmentIdentifier attribute value.
-     * 
+     *
      * @param attachmentIdentifier The attachmentIdentifier to set.
      */
     public void setAttachmentIdentifier(String attachmentIdentifier) {
@@ -330,7 +332,7 @@ public class Note extends PersistableBusinessObjectBase {
     /**
      * Adds the given attachment to this note. More specifically, sets both the attachmentIdentifier and the attachment reference,
      * since they both need to be done separately now that we aren't using anonymous keys.
-     * 
+     *
      * @param attachment
      */
     public void addAttachment(Attachment attachment) {
@@ -371,9 +373,11 @@ public class Note extends PersistableBusinessObjectBase {
      */
     public String getAttachmentLink() {
         //getAttachment() is always return null.
-        if(KRADServiceLocator.getAttachmentService().getAttachmentByNoteId(this.getNoteIdentifier()) == null){
+        Attachment attachment = KRADServiceLocator.getAttachmentService().getAttachmentByNoteId(Note.this.getNoteIdentifier());
+
+        if(attachment == null) {
             return "";
-        }else{
+        } else{
             Properties params = new Properties();
             params.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, KRADConstants.DOWNLOAD_BO_ATTACHMENT_METHOD);
             params.put(KRADConstants.DOC_FORM_KEY, "88888888");

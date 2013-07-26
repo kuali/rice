@@ -23,7 +23,7 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
 
   <persistence-unit name="krad-application-unit" transaction-type="JTA">
-    <mapping-file>META-INF/krad-orm.xml</mapping-file>
+    <!--<mapping-file>META-INF/krad-orm.xml</mapping-file>-->
     <mapping-file>META-INF/krad-test-orm.xml</mapping-file>
     <class>org.kuali.rice.krad.test.document.AccountRequestDocument</class>
     <class>org.kuali.rice.krad.test.document.AccountRequestDocumentWithCyclicalReference</class>
@@ -33,7 +33,24 @@
     <class>org.kuali.rice.krad.test.document.bo.AccountExtension</class>
     <class>org.kuali.rice.krad.test.document.AccountWithDDAttributesDocument</class>
     <class>org.kuali.rice.krad.test.document.SearchAttributeIndexTestDocument</class>
+    <class>org.kuali.rice.krad.document.authorization.PessimisticLock</class>
+    <class>org.kuali.rice.krad.bo.DocumentHeader</class>
+
+    <class>org.kuali.rice.krad.data.provider.jpa.testbo.TestDataObject</class>
+    <class>org.kuali.rice.krad.data.provider.jpa.testbo.TestDataObjectTwoPkFields</class>
+    <class>org.kuali.rice.krad.data.provider.jpa.testbo.TestDataObjectTwoPkFieldsId</class>
+    <class>org.kuali.rice.krad.data.provider.jpa.testbo.IndirectlyLinkedCollectionDataObject</class>
+    <class>org.kuali.rice.krad.data.provider.jpa.testbo.CollectionDataObject</class>
+    <class>org.kuali.rice.krad.data.provider.jpa.testbo.CollectionDataObjectTwo</class>
+    <class>org.kuali.rice.krad.data.provider.jpa.testbo.ReferencedDataObject</class>
+    <class>org.kuali.rice.krad.data.provider.jpa.testbo.AnotherReferencedDataObject</class>
+    <class>org.kuali.rice.krad.data.provider.jpa.testbo.YetAnotherReferencedDataObject</class>
+
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <properties>
+      <property name="rice.krad.data.jpa.eclipselink.logging.level.sql" value="FINE"/>
+      <property name="rice.krad.data.jpa.eclipselink.logging.parameters" value="true"/>
+    </properties>
   </persistence-unit>
   
 </persistence>

@@ -20,6 +20,10 @@ import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.lookup.LookupResultsService;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.question.Question;
+import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.service.DataObjectMetaDataService;
+import org.kuali.rice.krad.service.KeyValuesService;
+import org.kuali.rice.krad.service.util.OjbCollectionHelper;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -43,11 +47,16 @@ public class KNSServiceLocator {
     public static final String KUALI_LOOKUPABLE = "kualiLookupable";
     public static final String MAINTENANCE_DOCUMENT_DICTIONARY_SERVICE = "maintenanceDocumentDictionaryService";
     public static final String TRANSACTIONAL_DOCUMENT_DICTIONARY_SERVICE = "transactionalDocumentDictionaryService";
-    public static final String SESSION_DOCUMENT_SERVICE = "knsSessionDocumentService";
+    public static final String KNS_SESSION_DOCUMENT_SERVICE = "knsSessionDocumentService";
     public static final String WORKFLOW_ATTRIBUTE_PROPERTY_RESOLUTION_SERVICE = "workflowAttributesPropertyResolutionService";
     public static final String TRANSACTION_MANAGER = "transactionManager";
     public static final String TRANSACTION_TEMPLATE = "transactionTemplate";
     public static final String MAINTENANCE_DOCUMENT_AUTHORIZATION_SERVICE = "maintenanceDocumentAuthorizationService";
+    public static final String BUSINESS_OBJECT_SERVICE = "businessObjectService";
+    public static final String DATA_OBJECT_METADATA_SERVICE = "dataObjectMetaDataService";
+    public static final String KEY_VALUES_SERVICE = "keyValuesService";
+    public static final String SESSION_DOCUMENT_SERVICE = "sessionDocumentService";
+    public static final String OJB_COLLECTION_HELPER = "ojbCollectionHelper";
 
     public static <T extends Object> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
@@ -85,8 +94,8 @@ public class KNSServiceLocator {
         return (TransactionalDocumentDictionaryService) getService(TRANSACTIONAL_DOCUMENT_DICTIONARY_SERVICE);
     }
 
-    public static SessionDocumentService getSessionDocumentService() {
-        return  getService(SESSION_DOCUMENT_SERVICE);
+    public static org.kuali.rice.kns.service.SessionDocumentService getKNSSessionDocumentService() {
+        return  getService(KNS_SESSION_DOCUMENT_SERVICE);
     }
 
     public static Lookupable getLookupable(String lookupableName) {
@@ -123,5 +132,25 @@ public class KNSServiceLocator {
 
     public static BusinessObjectAuthorizationService getMaintenanceDocumentAuthorizationService() {
     	return (BusinessObjectAuthorizationService) getService(MAINTENANCE_DOCUMENT_AUTHORIZATION_SERVICE);
+    }
+
+    public static BusinessObjectService getBusinessObjectService(){
+        return (BusinessObjectService) getService(BUSINESS_OBJECT_SERVICE);
+    }
+
+    public static DataObjectMetaDataService getDataObjectMetaDataService() {
+        return (DataObjectMetaDataService) getService(DATA_OBJECT_METADATA_SERVICE);
+    }
+
+    public static KeyValuesService getKeyValuesService() {
+        return getService(KEY_VALUES_SERVICE);
+    }
+
+    public static SessionDocumentService getSessionDocumentService() {
+        return getService(SESSION_DOCUMENT_SERVICE);
+    }
+
+    public static OjbCollectionHelper getOjbCollectionHelper() {
+        return (OjbCollectionHelper) getService(OJB_COLLECTION_HELPER);
     }
 }

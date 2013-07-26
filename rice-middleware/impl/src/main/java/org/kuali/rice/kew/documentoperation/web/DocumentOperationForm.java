@@ -15,25 +15,24 @@
  */
 package org.kuali.rice.kew.documentoperation.web;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.collections.Factory;
 import org.apache.commons.collections.ListUtils;
+import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
 import org.kuali.rice.kew.api.action.RecipientType;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
-import org.kuali.rice.krad.util.ObjectUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * struts form bean for {@link DocumentOperationAction}.
@@ -302,7 +301,7 @@ public class DocumentOperationForm extends KualiForm {
     }
 
     public  List<ActionRequestValue> getActionRequests() {
-        if (ObjectUtils.isNull(actionRequests) || actionRequests.isEmpty()) {
+        if (actionRequests == null || actionRequests.isEmpty()) {
             List<ActionRequestValue> actionRequestsList = KEWServiceLocator.getActionRequestService().findByDocumentIdIgnoreCurrentInd(documentId);
             this.actionRequests = actionRequestsList;
         }
@@ -310,7 +309,7 @@ public class DocumentOperationForm extends KualiForm {
     }
 
     public  List<ActionTakenValue> getActionsTaken() {
-        if (ObjectUtils.isNull(actionsTaken) || actionsTaken.isEmpty()) {
+        if (actionsTaken == null || actionsTaken.isEmpty()) {
             List<ActionTakenValue> actionsTakenList = KEWServiceLocator.getActionTakenService().findByDocumentIdIgnoreCurrentInd(documentId);
             this.actionsTaken = actionsTakenList;
         }
@@ -318,7 +317,7 @@ public class DocumentOperationForm extends KualiForm {
     }
 
     public  List<ActionItem> getActionItems() {
-        if (ObjectUtils.isNull(actionItems) || actionItems.isEmpty()) {
+        if (actionItems == null || actionItems.isEmpty()) {
             List<ActionItem> actionItemsList =  (List<ActionItem>)KEWServiceLocator.getActionListService().findByDocumentId(documentId);
             this.actionItems = actionItemsList;
         }

@@ -20,6 +20,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase;
 import org.kuali.rice.krad.uif.view.ViewModel;
@@ -55,7 +56,7 @@ public class ValidTermsForPropositionValuesFinder extends UifKeyValuesFinderBase
         // Get all valid terms
 
         Collection<ContextValidTermBo> contextValidTerms = null;
-        contextValidTerms = KRADServiceLocator.getBusinessObjectService()
+        contextValidTerms = KNSServiceLocator.getBusinessObjectService()
                 .findMatching(ContextValidTermBo.class, Collections.singletonMap("contextId", "20000"));
 
         List<String> termSpecIds = new ArrayList();
@@ -67,7 +68,7 @@ public class ValidTermsForPropositionValuesFinder extends UifKeyValuesFinderBase
             Collection<TermBo> terms = null;
             Map<String,Object> criteria = new HashMap<String,Object>();
             criteria.put("specificationId", termSpecIds);
-            terms = KRADServiceLocator.getBusinessObjectService().findMatchingOrderBy(TermBo.class, criteria, "description", true);
+            terms = KNSServiceLocator.getBusinessObjectService().findMatchingOrderBy(TermBo.class, criteria, "description", true);
 
             // add all terms that are in the selected category (or else add 'em all if no category is selected)
             for (TermBo term : terms) {
@@ -93,7 +94,7 @@ public class ValidTermsForPropositionValuesFinder extends UifKeyValuesFinderBase
 
             // get term resolvers for the given term specs
             Collection<TermResolverBo> termResolvers =
-                    KRADServiceLocator.getBusinessObjectService().findMatchingOrderBy(
+                    KNSServiceLocator.getBusinessObjectService().findMatchingOrderBy(
                             TermResolverBo.class, Collections.singletonMap("outputId", termSpecIds), "name", true
                     );
 

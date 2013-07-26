@@ -15,16 +15,16 @@
  */
 package org.kuali.rice.krad.service;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.bo.ModuleConfiguration;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContextAware;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 
 /**
  * Defines service methods for module services
@@ -47,14 +47,6 @@ public interface ModuleService extends InitializingBean, ApplicationContextAware
      * @return
      */
     public boolean isResponsibleFor(Class businessObjectClass);
-
-    /**
-     * This method determines whether this service is responsible for the given jobname, or not.
-     *
-     * @param jobName
-     * @return
-     */
-    public boolean isResponsibleForJob(String jobName);
 
     /**
      * This method returns the list of primary keys for the EBO.

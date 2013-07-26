@@ -73,14 +73,14 @@ public interface Maintainable extends ViewHelperService, java.io.Serializable {
      *
      * @return Class data object class
      */
-    public Class getDataObjectClass();
+    public Class<?> getDataObjectClass();
 
     /**
      * Sets the class for the data object that will be maintained
      *
      * @param dataObjectClass - class for maintenance data object
      */
-    public void setDataObjectClass(Class dataObjectClass);
+    public void setDataObjectClass(Class<?> dataObjectClass);
 
     /**
      * Indicates whether the object can be locked

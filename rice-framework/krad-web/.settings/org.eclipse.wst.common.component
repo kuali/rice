@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="rice-krad-web">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <dependent-module archiveName="rice-krad-web-framework-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-krad-web-framework/rice-krad-web-framework">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="rice-krad-app-framework-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-krad-app-framework/rice-krad-app-framework">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="rice-core-framework-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-core-framework/rice-core-framework">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="rice-kew-framework-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-kew-framework/rice-kew-framework">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="rice-kim-api-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-kim-api/rice-kim-api">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="rice-kim-framework-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-kim-framework/rice-kim-framework">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="rice-core-impl-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-core-impl/rice-core-impl">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="rice-core-api-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-core-api/rice-core-api">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="rice-kns-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-kns/rice-kns">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="rice-core-web-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-core-web/rice-core-web">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="rice-impl-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-impl/rice-impl">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="rice-kew-api-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-kew-api/rice-kew-api">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="rice-kew-impl-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-kew-impl/rice-kew-impl">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="rice-kim-impl-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-kim-impl/rice-kim-impl">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="rice-krad-data-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-krad-data/rice-krad-data">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="rice-krad-service-impl-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-krad-service-impl/rice-krad-service-impl">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="rice-krad-web"/>
+        <property name="java-output-path" value="/rice-krad-web/target/classes"/>
+    </wb-module>
+</project-modules>

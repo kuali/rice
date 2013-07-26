@@ -15,10 +15,6 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kim.api.KimConstants;
@@ -59,10 +55,6 @@ public class RoleDocumentDelegationMember extends KimDocumentBoActivatableToFrom
 	
 	@Id
 	@GeneratedValue(generator="KRIM_DLGN_MBR_ID_S")
-	@GenericGenerator(name="KRIM_DLGN_MBR_ID_S",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KRIM_DLGN_MBR_ID_S"),
-			@Parameter(name="value_column",value="id")
-		})
 	@Column(name="DLGN_MBR_ID")
 	protected String delegationMemberId;
 	
@@ -98,8 +90,7 @@ public class RoleDocumentDelegationMember extends KimDocumentBoActivatableToFrom
 	@Column(name="MBR_NM")
 	protected String memberName;
 	@OneToMany(targetEntity=RoleDocumentDelegationMemberQualifier.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
-    @Fetch(value = FetchMode.SELECT)
-	@JoinColumns({
+    @JoinColumns({
 		@JoinColumn(name="dlgn_id",insertable=false,updatable=false),
 		@JoinColumn(name="fdoc_nbr", insertable=false, updatable=false)
 	})

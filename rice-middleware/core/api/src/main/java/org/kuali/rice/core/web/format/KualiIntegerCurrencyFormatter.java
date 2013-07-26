@@ -15,17 +15,19 @@
  */
 package org.kuali.rice.core.web.format;
 
+import java.text.NumberFormat;
+
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.core.api.util.type.KualiInteger;
 
-import java.text.NumberFormat;
-
+@Deprecated
 public class KualiIntegerCurrencyFormatter extends CurrencyFormatter {
 
     private static final long serialVersionUID = 1022217841658237940L;
 
-	protected Object convertToObject(String target) {
+	@Override
+    protected Object convertToObject(String target) {
         KualiDecimal value = (KualiDecimal) (super.convertToObject(target));
         return new KualiInteger(value.longValue());
     }
@@ -33,9 +35,11 @@ public class KualiIntegerCurrencyFormatter extends CurrencyFormatter {
     /**
      * Returns a string representation of its argument formatted as a currency value.
      */
+    @Override
     public Object format(Object obj) {
-        if (obj == null)
+        if (obj == null) {
             return null;
+        }
 
         NumberFormat formatter = NumberFormat.getNumberInstance();
         String string = null;

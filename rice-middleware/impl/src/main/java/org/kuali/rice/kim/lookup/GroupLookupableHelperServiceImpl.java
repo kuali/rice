@@ -20,7 +20,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.PredicateUtils;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
-import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.web.format.BooleanFormatter;
@@ -54,13 +53,13 @@ import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.keyvalues.IndicatorValuesFinder;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
-import org.kuali.rice.krad.keyvalues.KimAttributeValuesFinder;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.util.UrlFactory;
 
 import java.sql.Date;
@@ -303,7 +302,7 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
         boolean hasReturnableRow = false;
 
         List returnKeys = getReturnKeys();
-        List pkNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(getBusinessObjectClass());
+        List pkNames = KRADServiceLocatorWeb.getLegacyDataAdapter().listPrimaryKeyFieldNames(getBusinessObjectClass());
         Person user = GlobalVariables.getUserSession().getPerson();
 
         // iterate through result list and wrap rows with return url and action urls
@@ -337,7 +336,7 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
                     prop = ((GroupBo)element).getGroupAttributeValueById(id);
                 }
                 if (prop == null) {
-                    prop = ObjectUtils.getPropertyValue(element, col.getPropertyName());
+                    prop = DataObjectUtils.getPropertyValue(element, col.getPropertyName());
                 } else {
                 }
 
@@ -345,7 +344,8 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
                 Class propClass = propertyTypes.get(col.getPropertyName());
                 if ( propClass == null /*&& !skipPropTypeCheck*/) {
                     try {
-                        propClass = ObjectUtils.getPropertyType( element, col.getPropertyName(), getPersistenceStructureService() );
+                        propClass = KRADServiceLocatorWeb.getLegacyDataAdapter().getPropertyType(element,
+                                col.getPropertyName());
                         propertyTypes.put( col.getPropertyName(), propClass );
                     } catch (Exception e) {
                         throw new RuntimeException("Cannot access PropertyType for property " + "'" + col.getPropertyName() + "' " + " on an instance of '" + element.getClass().getName() + "'.", e);

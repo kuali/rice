@@ -16,13 +16,16 @@
 package org.kuali.rice.kew.rule;
 
 import org.apache.commons.lang.ObjectUtils;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kew.api.rule.*;
 import org.kuali.rice.kew.api.rule.RuleExpression;
+import org.kuali.rice.kew.api.rule.RuleExpressionContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Parameter;
+import javax.persistence.Table;
 
 /**
  * BO for rule expressions 
@@ -38,10 +41,6 @@ public class RuleExpressionDef extends PersistableBusinessObjectBase implements 
      */
     @Id
     @GeneratedValue(generator="KREW_RULE_EXPR_S")
-	@GenericGenerator(name="KREW_RULE_EXPR_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_RULE_EXPR_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="RULE_EXPR_ID")
 	private String id;
     /**

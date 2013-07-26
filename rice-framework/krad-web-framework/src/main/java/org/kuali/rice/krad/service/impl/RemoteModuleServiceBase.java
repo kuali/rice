@@ -15,8 +15,15 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
@@ -26,29 +33,25 @@ import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.bo.ModuleConfiguration;
+import org.kuali.rice.krad.data.DataObjectUtils;
+import org.kuali.rice.krad.data.provider.PersistenceProvider;
+import org.kuali.rice.krad.data.provider.Provider;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
 import org.kuali.rice.krad.service.BusinessObjectNotLookupableException;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
+import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.LookupService;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
-
-import java.lang.reflect.Modifier;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -61,23 +64,31 @@ public abstract class RemoteModuleServiceBase implements ModuleService {
     protected ApplicationContext applicationContext;
     protected ConfigurationService kualiConfigurationService;
     protected LookupService lookupService;
+    protected LegacyDataAdapter legacyDataAdapter;
 
     /**
      * @see org.kuali.rice.krad.service.ModuleService#isResponsibleFor(java.lang.Class)
      */
+    @Override
     public boolean isResponsibleFor(Class businessObjectClass) {
-        if (getModuleConfiguration() == null) {
+        ModuleConfiguration mc = getModuleConfiguration();
+
+        if (mc == null) {
             throw new IllegalStateException("Module configuration has not been initialized for the module service.");
         }
 
-        if (getModuleConfiguration().getPackagePrefixes() == null || businessObjectClass == null) {
+        if (businessObjectClass == null) {
             return false;
         }
-        for (String prefix : getModuleConfiguration().getPackagePrefixes()) {
-            if (businessObjectClass.getPackage().getName().startsWith(prefix)) {
-                return true;
-            }
+
+        if (packagePrefixesMatchesDataObject(businessObjectClass)) {
+            return true;
         }
+
+        if (persistenceProvidersMatchDataObject(businessObjectClass)) {
+            return true;
+        }
+
         if (ExternalizableBusinessObject.class.isAssignableFrom(businessObjectClass)) {
             Class externalizableBusinessObjectInterface =
                     ExternalizableBusinessObjectUtils.determineExternalizableBusinessObjectSubInterface(
@@ -85,6 +96,39 @@ public abstract class RemoteModuleServiceBase implements ModuleService {
             if (externalizableBusinessObjectInterface != null) {
                 for (String prefix : getModuleConfiguration().getPackagePrefixes()) {
                     if (externalizableBusinessObjectInterface.getPackage().getName().startsWith(prefix)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param dataObjectClass the dataobject class
+     * @return true if package prefixes has been defined and matches a package containing the dataObject
+     */
+    protected boolean packagePrefixesMatchesDataObject(Class dataObjectClass) {
+        if (getModuleConfiguration().getPackagePrefixes() != null) {
+            for (String prefix : getModuleConfiguration().getPackagePrefixes()) {
+                if (dataObjectClass.getPackage().getName().startsWith(prefix)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param dataObjectClass the dataobject class
+     * @return true if a PersistenceProvider which handles the class is registered with the ModuleConfiguration
+     */
+    protected boolean persistenceProvidersMatchDataObject(Class dataObjectClass) {
+        List<Provider> providers = getModuleConfiguration().getProviders();
+        if (providers != null) {
+            for (Provider provider: providers) {
+                if (provider instanceof PersistenceProvider) {
+                    if (((PersistenceProvider) provider).handles(dataObjectClass)) {
                         return true;
                     }
                 }
@@ -111,30 +155,16 @@ public abstract class RemoteModuleServiceBase implements ModuleService {
         return result != null;
     }
 
-    /**
-     * @see org.kuali.rice.krad.service.ModuleService#isResponsibleFor(java.lang.Class)
-     */
-    public boolean isResponsibleForJob(String jobName) {
-        if (getModuleConfiguration() == null) {
-            throw new IllegalStateException("Module configuration has not been initialized for the module service.");
-        }
-
-        if (getModuleConfiguration().getJobNames() == null || StringUtils.isEmpty(jobName)) {
-            return false;
-        }
-
-        return getModuleConfiguration().getJobNames().contains(jobName);
-    }
-
-
+    @Override
     public List listPrimaryKeyFieldNames(Class businessObjectInterfaceClass) {
         Class clazz = getExternalizableBusinessObjectImplementation(businessObjectInterfaceClass);
-        return KRADServiceLocator.getPersistenceStructureService().listPrimaryKeyFieldNames(clazz);
+        return KRADServiceLocatorWeb.getLegacyDataAdapter().listPrimaryKeyFieldNames(clazz);
     }
 
     /**
      * @see org.kuali.rice.krad.service.ModuleService#getExternalizableBusinessObjectDictionaryEntry(java.lang.Class)
      */
+    @Override
     public BusinessObjectEntry getExternalizableBusinessObjectDictionaryEntry(Class businessObjectInterfaceClass) {
         Class boClass = getExternalizableBusinessObjectImplementation(businessObjectInterfaceClass);
 
@@ -146,6 +176,7 @@ public abstract class RemoteModuleServiceBase implements ModuleService {
      * @see org.kuali.rice.krad.service.ModuleService#getExternalizableDataObjectInquiryUrl(java.lang.Class,
      * java.util.Properties)
      */
+    @Override
     public String getExternalizableDataObjectInquiryUrl(Class<?> inquiryDataObjectClass, Properties parameters) {
         String baseUrl = getBaseInquiryUrl();
 
@@ -177,6 +208,7 @@ public abstract class RemoteModuleServiceBase implements ModuleService {
      * @see org.kuali.rice.krad.service.ModuleService#getExternalizableDataObjectLookupUrl(java.lang.Class,
      * java.util.Properties)
      */
+    @Override
     public String getExternalizableDataObjectLookupUrl(Class<?> lookupDataObjectClass, Properties parameters) {
         String baseUrl = getBaseLookupUrl();
 
@@ -225,6 +257,7 @@ public abstract class RemoteModuleServiceBase implements ModuleService {
         return getRiceBaseLookupUrl();
     }
 
+    @Override
     @Deprecated
     public String getExternalizableBusinessObjectInquiryUrl(Class inquiryBusinessObjectClass,
             Map<String, String[]> parameters) {
@@ -282,6 +315,7 @@ public abstract class RemoteModuleServiceBase implements ModuleService {
      * @see org.kuali.rice.krad.service.ModuleService#getExternalizableBusinessObjectsListForLookup(java.lang.Class,
      *      java.util.Map, boolean)
      */
+    @Override
     public <T extends ExternalizableBusinessObject> List<T> getExternalizableBusinessObjectsListForLookup(
             Class<T> externalizableBusinessObjectClass, Map<String, Object> fieldValues, boolean unbounded) {
         Class<? extends ExternalizableBusinessObject> implementationClass =
@@ -310,6 +344,7 @@ public abstract class RemoteModuleServiceBase implements ModuleService {
      * @see org.kuali.rice.krad.service.ModuleService#retrieveExternalizableBusinessObjectIfNecessary(org.kuali.rice.krad.bo.BusinessObject,
      *      org.kuali.rice.krad.bo.BusinessObject, java.lang.String)
      */
+    @Override
     public <T extends ExternalizableBusinessObject> T retrieveExternalizableBusinessObjectIfNecessary(
             BusinessObject businessObject, T currentInstanceExternalizableBO, String externalizableRelationshipName) {
 
@@ -344,10 +379,10 @@ public abstract class RemoteModuleServiceBase implements ModuleService {
         Object targetPropertyValue = null;
         boolean sourceTargetPropertyValuesSame = true;
         for (PrimitiveAttributeDefinition primitiveAttributeDefinition : primitiveAttributeDefinitions) {
-            sourcePropertyValue = ObjectUtils.getPropertyValue(businessObject,
+            sourcePropertyValue = DataObjectUtils.getPropertyValue(businessObject,
                     primitiveAttributeDefinition.getSourceName());
             if (currentInstanceExternalizableBO != null) {
-                targetPropertyValue = ObjectUtils.getPropertyValue(currentInstanceExternalizableBO,
+                targetPropertyValue = DataObjectUtils.getPropertyValue(currentInstanceExternalizableBO,
                         primitiveAttributeDefinition.getTargetName());
             }
             if (sourcePropertyValue == null) {
@@ -392,7 +427,7 @@ public abstract class RemoteModuleServiceBase implements ModuleService {
         Map<String, Object> fieldValuesInEBO = new HashMap<String, Object>();
         Object sourcePropertyValue;
         for (PrimitiveAttributeDefinition primitiveAttributeDefinition : primitiveAttributeDefinitions) {
-            sourcePropertyValue = ObjectUtils.getPropertyValue(businessObject,
+            sourcePropertyValue = DataObjectUtils.getPropertyValue(businessObject,
                     primitiveAttributeDefinition.getSourceName());
             if (sourcePropertyValue == null) {
                 return null;
@@ -463,6 +498,7 @@ public abstract class RemoteModuleServiceBase implements ModuleService {
     /**
      * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
      */
+    @Override
     public void afterPropertiesSet() throws Exception {
         KualiModuleService kualiModuleService = null;
         try {
@@ -481,6 +517,7 @@ public abstract class RemoteModuleServiceBase implements ModuleService {
     /**
      * @return the moduleConfiguration
      */
+    @Override
     public ModuleConfiguration getModuleConfiguration() {
         return this.moduleConfiguration;
     }
@@ -503,6 +540,7 @@ public abstract class RemoteModuleServiceBase implements ModuleService {
         return ExternalizableBusinessObject.class.isAssignableFrom(boClazz);
     }
 
+    @Override
     public <T extends ExternalizableBusinessObject> T createNewObjectFromExternalizableClass(Class<T> boClass) {
         try {
             return (T) getExternalizableBusinessObjectImplementation(boClass).newInstance();
@@ -592,8 +630,25 @@ public abstract class RemoteModuleServiceBase implements ModuleService {
         return lookupService != null ? lookupService : KRADServiceLocatorWeb.getLookupService();
     }
 
+    /**
+     * Gets the legacyDataAdapter service.
+     *
+     * @return Returns the legacyDataAdapter service.
+     */
+    protected LegacyDataAdapter getLegacyDataAdapter() {
+        return legacyDataAdapter != null ? legacyDataAdapter : KRADServiceLocatorWeb.getLegacyDataAdapter();
+    }
+
     @Override
     public boolean goToCentralRiceForInquiry() {
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                    .append("applicationContext", applicationContext.getDisplayName())
+                    .append("moduleConfiguration", moduleConfiguration)
+                    .toString();
     }
 }

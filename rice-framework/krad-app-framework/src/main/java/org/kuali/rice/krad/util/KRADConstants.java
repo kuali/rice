@@ -617,6 +617,8 @@ public final class KRADConstants {
         public static final String COMPONENT_PUBLISHING_ENABLED = "rice.krad.componentPublishing.enabled";
         public static final String COMPONENT_PUBLISHING_DELAY = "rice.krad.componentPublishing.delay";
         public static final String IGNORE_MISSIONG_FIELDS_ON_DESERIALIZE = "rice.krad.bos.ignoreMissingFieldsOnDeserialize";
+        public static final String KNS_ENABLED = "rice.krad.kns.enabled";
+        public static final String ENABLE_LEGACY_DATA_FRAMEWORK = "rice.krad.enableLegacyDataFramework";
 
         private Config() {
             throw new UnsupportedOperationException("do not call");

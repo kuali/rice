@@ -15,14 +15,19 @@
  */
 package org.kuali.rice.ken.bo;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.ken.api.notification.NotificationContentType;
 import org.kuali.rice.ken.api.notification.UserChannelSubscription;
 import org.kuali.rice.ken.api.notification.UserChannelSubscriptionContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 /**
  * This class represents an instance of a user's subscription to a specific 
@@ -34,10 +39,6 @@ import javax.persistence.*;
 public class UserChannelSubscriptionBo extends PersistableBusinessObjectBase implements UserChannelSubscriptionContract {
     @Id
     @GeneratedValue(generator="KREN_CHNL_SUBSCRP_S")
-	@GenericGenerator(name="KREN_CHNL_SUBSCRP_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREN_CHNL_SUBSCRP_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="CHNL_SUBSCRP_ID")
 	private Long id;
     @Column(name="PRNCPL_ID", nullable=false)

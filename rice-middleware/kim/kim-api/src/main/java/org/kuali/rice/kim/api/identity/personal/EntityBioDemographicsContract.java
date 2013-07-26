@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.kim.api.identity.personal;
 
-import org.joda.time.DateTime;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Versioned;
 
-import java.util.Date;
+import java.util.List;
+
 /**
  * This is a contract for EntityBioDemographics and represents the
  * demographic information of an Entity.
@@ -180,6 +180,29 @@ public interface EntityBioDemographicsContract extends Versioned, GloballyUnique
      * @return the gender change code or null if no change
      */
     String getGenderChangeCodeUnmasked();
+
+    /**
+     * Get the {@link EntityBioDemographicsContract}'s disabilities
+     */
+    List<? extends EntityDisabilityContract> getDisabilities();
+
+    /**
+     * Returns an indicator that signifies if the {@link EntityBioDemographicsContract}'s entity is disabled.
+     * This value is determined by the contents of the {@link EntityBioDemographicsContract}'s disabilities values
+     */
+    boolean isDisabled();
+
+    /**
+     * Returns if the {@link EntityBioDemographicsContract}'s entity is disabled.
+     * This value is determined by the contents of the {@link EntityBioDemographicsContract}'s disabilities values
+     */
+    List<? extends EntityMilitaryContract> getMilitaryRecords();
+
+    /**
+     * Returns an indicator that signifies if the {@link EntityBioDemographicsContract}'s entity is a veteran.
+     * This value is determined by the contents of the {@link EntityBioDemographicsContract}'s military values
+     */
+    boolean isVeteran();
 
     /**
      * Returns a boolean value that determines if personal fields should be suppressed.

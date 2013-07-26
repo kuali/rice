@@ -17,6 +17,8 @@ package org.kuali.rice.krad.service;
 
 import java.util.List;
 
+import org.kuali.rice.krad.exception.ModuleServiceNotFoundException;
+
 public interface KualiModuleService {
 
     /**
@@ -53,15 +55,6 @@ public interface KualiModuleService {
      * @throws ModuleServiceNotFoundException if boClass is an ExternalizableBusinessObject that no ModuleService is responsible for.
      */
     ModuleService getResponsibleModuleService(Class boClass);
-
-    /**
-     * Given a job name, this method will return the module service which is responsible for handling it. It returns null if no
-     * module is found.
-     *
-     * @param jobName
-     * @return
-     */
-    ModuleService getResponsibleModuleServiceForJob(String jobName);
 
     public void setInstalledModuleServices(List<ModuleService> moduleServices);
 

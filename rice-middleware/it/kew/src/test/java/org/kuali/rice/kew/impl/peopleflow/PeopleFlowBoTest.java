@@ -25,6 +25,7 @@ import org.kuali.rice.kew.impl.type.KewTypeBo;
 import org.kuali.rice.kew.responsibility.service.ResponsibilityIdService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 
@@ -43,7 +44,7 @@ public class PeopleFlowBoTest extends KEWTestCase {
 
     @org.junit.Before
     public void setupBoService() {
-        boService = KRADServiceLocator.getBusinessObjectService();
+        boService = KNSServiceLocator.getBusinessObjectService();
         responsibilityIdService = KEWServiceLocator.getResponsibilityIdService();
     }
 

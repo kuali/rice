@@ -15,36 +15,38 @@
  */
 package org.kuali.rice.core.web.format;
 
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.util.RiceKeyConstants;
-
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
+
 /**
  * This class is used to format BigDecimal objects.
  */
+@Deprecated
 public class BigDecimalFormatter extends Formatter {
-	
+
     private static final long serialVersionUID = 4628393689860734306L;
-    
+
 	private static Logger LOG = Logger.getLogger(BigDecimalFormatter.class);
     private static final Pattern DECIMAL_PATTERN = Pattern.compile("\\-?[0-9,]*\\.?[0-9]*");
 
     /**
      * Unformats its argument and returns a KualiDecimal instance initialized with the resulting string value
-     * 
+     *
      * @see org.kuali.rice.core.web.format.Formatter#convertToObject(java.lang.String)
      */
+    @Override
     protected Object convertToObject(String target) {
         BigDecimal value = null;
 
         LOG.debug("convertToObject '" + target + "'");
 
         if (target != null) {
- 
+
             // preemptively detect non-numeric-related symbols, since NumberFormat.parse seems to be silently deleting them
             // (i.e. 9aaaaaaaaaaaaaaa is silently converted into 9)
             if (!DECIMAL_PATTERN.matcher(target).matches()) {
@@ -74,13 +76,15 @@ public class BigDecimalFormatter extends Formatter {
 
     /**
      * Returns a string representation of its argument formatted as a decimal value.
-     * 
+     *
      * @see org.kuali.rice.core.web.format.Formatter#format(java.lang.Object)
      */
+    @Override
     public Object format(Object obj) {
         LOG.debug("format '" + obj + "'");
-        if (obj == null)
+        if (obj == null) {
             return null;
+        }
 
         DecimalFormat formatter = new DecimalFormat();
         String string = null;
@@ -94,7 +98,7 @@ public class BigDecimalFormatter extends Formatter {
                 formatter.setMinimumFractionDigits(number.scale());
             } else {//arbitrary scale
                 //according to the api this line shouldn't be needed for BigDecimal and it should be
-                //able to do arbitrary precision, however it didn't work in my tests it appears there 
+                //able to do arbitrary precision, however it didn't work in my tests it appears there
                 //is an open java bug that relates to this sun bug (sun BUG:5060859) and that's why
                 //we may need this workaround for now
                 formatter.setMaximumFractionDigits(340);

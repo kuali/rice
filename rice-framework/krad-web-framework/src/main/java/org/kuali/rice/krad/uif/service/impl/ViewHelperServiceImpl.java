@@ -22,43 +22,39 @@ import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.inquiry.Inquirable;
 import org.kuali.rice.krad.messages.MessageService;
-import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.service.PersistenceService;
 import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.component.ComponentSecurity;
-import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.element.Action;
-import org.kuali.rice.krad.uif.element.Label;
-import org.kuali.rice.krad.uif.field.ActionField;
-import org.kuali.rice.krad.uif.field.FieldGroup;
-import org.kuali.rice.krad.uif.layout.TableLayoutManager;
-import org.kuali.rice.krad.uif.util.ViewCleaner;
-import org.kuali.rice.krad.uif.view.DefaultExpressionEvaluator;
-import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
-import org.kuali.rice.krad.uif.view.ViewAuthorizer;
-import org.kuali.rice.krad.uif.view.ViewPresentationController;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.ClientSideState;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
+import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.control.Control;
+import org.kuali.rice.krad.uif.element.Action;
+import org.kuali.rice.krad.uif.element.Label;
+import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.DataField;
-import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.Field;
+import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.RemoteFieldsHolder;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
+import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.service.ViewDictionaryService;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
@@ -69,9 +65,14 @@ import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
+import org.kuali.rice.krad.uif.util.ViewCleaner;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
+import org.kuali.rice.krad.uif.view.DefaultExpressionEvaluator;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.view.ViewAuthorizer;
 import org.kuali.rice.krad.uif.view.ViewModel;
+import org.kuali.rice.krad.uif.view.ViewPresentationController;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.Widget;
 import org.kuali.rice.krad.util.ErrorMessage;
@@ -80,7 +81,6 @@ import org.kuali.rice.krad.util.GrowlMessage;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.MessageMap;
-import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.util.ClassUtils;
@@ -106,14 +106,14 @@ import java.util.Set;
  */
 public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ViewHelperServiceImpl.class);
-
-    private transient BusinessObjectService businessObjectService;
     private transient PersistenceService persistenceService;
     private transient PersistenceStructureService persistenceStructureService;
     private transient DataDictionaryService dataDictionaryService;
     private transient ExpressionEvaluator expressionEvaluator;
     private transient ViewDictionaryService viewDictionaryService;
     private transient ConfigurationService configurationService;
+
+    private transient LegacyDataAdapter legacyDataAdapter;
 
     /**
      * Uses reflection to find all fields defined on the <code>View</code> instance that have
@@ -1624,10 +1624,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
             //ToDo: handle add line
 
-            if (ObjectUtils.isNestedAttribute(reference)) {
-                String parentPath = ObjectUtils.getNestedAttributePrefix(reference);
+            if (DataObjectUtils.isNestedAttribute(reference)) {
+                String parentPath = DataObjectUtils.getNestedAttributePrefix(reference);
                 Object parentObject = ObjectPropertyUtils.getPropertyValue(model, parentPath);
-                String referenceObjectName = ObjectUtils.getNestedAttributePrimitive(reference);
+                String referenceObjectName = DataObjectUtils.getNestedAttributePrimitive(reference);
 
                 if (parentObject == null) {
                     LOG.warn("Unable to refresh references for " + referencesToRefresh +
@@ -1665,14 +1665,14 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             getPersistenceService().retrieveReferenceObject(parentObject, referenceObjectName);
         } else if (getDataDictionaryService().hasRelationship(parentObject.getClass().getName(), referenceObjectName)) {
             // refresh via data dictionary mapping
-            Object referenceObject = ObjectUtils.getPropertyValue(parentObject, referenceObjectName);
+            Object referenceObject = DataObjectUtils.getPropertyValue(parentObject, referenceObjectName);
             if (!(referenceObject instanceof PersistableBusinessObject)) {
                 LOG.warn("Could not refresh reference " + referenceObjectName + " off class " + parentObject.getClass()
                         .getName() + ". Class not of type PersistableBusinessObject");
                 return;
             }
 
-            referenceObject = getBusinessObjectService().retrieve((PersistableBusinessObject) referenceObject);
+            referenceObject = getLegacyDataAdapter().retrieve((PersistableBusinessObject) referenceObject);
             if (referenceObject == null) {
                 LOG.warn("Could not refresh reference " + referenceObjectName + " off class " + parentObject.getClass()
                         .getName() + ".");
@@ -1680,7 +1680,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             }
 
             try {
-                ObjectUtils.setObjectProperty(parentObject, referenceObjectName, referenceObject);
+                KRADUtils.setObjectProperty(parentObject, referenceObjectName, referenceObject);
             } catch (Exception e) {
                 LOG.error("Unable to refresh persistable business object: " + referenceObjectName + "\n" + e
                         .getMessage());
@@ -1791,7 +1791,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             logAndThrowRuntime("Unable to get collection property from model for path: " + collectionPath);
         }
 
-        Object newLine = ObjectUtils.newInstance(collectionGroup.getCollectionObjectClass());
+        Object newLine = DataObjectUtils.newInstance(collectionGroup.getCollectionObjectClass());
         applyDefaultValuesForCollectionLine(view, model, collectionGroup, newLine);
         addLine(collection, newLine, collectionGroup.getAddLinePlacement().equals("TOP"));
 
@@ -1910,7 +1910,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         if (collection == null) {
             Class<?> collectionClass = ObjectPropertyUtils.getPropertyType(model,
                     collectionGroup.getBindingInfo().getBindingPath());
-            collection = (Collection<Object>) ObjectUtils.newInstance(collectionClass);
+            collection = (Collection<Object>) DataObjectUtils.newInstance(collectionClass);
             ObjectPropertyUtils.setPropertyValue(model, collectionGroup.getBindingInfo().getBindingPath(), collection);
         }
 
@@ -1934,7 +1934,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 lineDataObject = moduleService.createNewObjectFromExternalizableClass(collectionObjectClass.asSubclass(
                         ExternalizableBusinessObject.class));
             } else {
-                lineDataObject = ObjectUtils.newInstance(collectionObjectClass);
+                lineDataObject = DataObjectUtils.newInstance(collectionObjectClass);
             }
 
             // apply default values to new line
@@ -2057,7 +2057,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValues);
         } else {
             if (StringUtils.isBlank(defaultValue) && (dataField.getDefaultValueFinderClass() != null)) {
-                ValueFinder defaultValueFinder = ObjectUtils.newInstance(dataField.getDefaultValueFinderClass());
+                ValueFinder defaultValueFinder = DataObjectUtils.newInstance(dataField.getDefaultValueFinderClass());
                 defaultValue = defaultValueFinder.getValue();
             }
 
@@ -2220,26 +2220,19 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         throw new RuntimeException(message);
     }
 
-    /**
-     * Gets the business object service
-     *
-     * @return business object service
-     */
-    public BusinessObjectService getBusinessObjectService() {
-        if (this.businessObjectService == null) {
-            this.businessObjectService = KRADServiceLocator.getBusinessObjectService();
+
+
+    protected LegacyDataAdapter getLegacyDataAdapter() {
+        if(legacyDataAdapter == null){
+            return KRADServiceLocatorWeb.getLegacyDataAdapter();
         }
-        return businessObjectService;
+        return legacyDataAdapter;
     }
 
-    /**
-     * Set the business object service
-     *
-     * @param businessObjectService
-     */
-    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
+    public void setLegacyDataAdapter(LegacyDataAdapter legacyDataAdapter) {
+        this.legacyDataAdapter = legacyDataAdapter;
     }
+
 
     /**
      * Gets the persistence service

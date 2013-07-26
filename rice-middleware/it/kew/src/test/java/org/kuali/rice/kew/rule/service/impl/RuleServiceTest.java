@@ -28,12 +28,12 @@ import java.util.List;
 import javax.persistence.PersistenceException;
 
 import org.junit.Test;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleExtensionBo;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.krad.util.LegacyUtils;
 import org.kuali.rice.test.BaselineTestCase;
 import org.springframework.dao.DataIntegrityViolationException;
 
@@ -81,7 +81,11 @@ public class RuleServiceTest extends KEWTestCase {
          * 
          * However, a longer-term solution will be needed in case there are similar areas in the system with these kinds of problems.
          */
-        final boolean isKewJpaEnabled = OrmUtils.isJpaEnabled("rice.kew");
+        // TODO: this isn't really the same test as isJpaEnabled
+        // i.e. JPA will be present even when the legacy data framework is enabled
+        // what do we do in this case?
+        //final boolean isKewJpaEnabled = OrmUtils.isJpaEnabled("rice.kew");
+        final boolean isKewJpaEnabled = !LegacyUtils.isLegacyDataFrameworkEnabled();
         try {
             KEWServiceLocator.getRuleService().save2(rbv);
             fail("exception did not happen");

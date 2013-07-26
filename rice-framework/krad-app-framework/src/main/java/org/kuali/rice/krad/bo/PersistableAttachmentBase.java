@@ -19,72 +19,52 @@ import javax.persistence.Column;
 import javax.persistence.Lob;
 import javax.persistence.MappedSuperclass;
 
+
 /**
- * This is a description of what this class does - chitra07 don't forget to fill this in. 
- * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 @MappedSuperclass
 public class PersistableAttachmentBase extends PersistableBusinessObjectBase implements PersistableAttachment {
 	@Lob
 	@Column(name="ATT_CNTNT")
     private byte[] attachmentContent;
-	@Column(name="FILE_NM")
+	@Column(name="FILE_NM",length=150)
     private String fileName;
-	@Column(name="CNTNT_TYP")
+	@Column(name="CNTNT_TYP",length=255)
     private String contentType;
 
-    /**
-     * This overridden method ...
-     * 
-     * @see PersistableAttachment#getAttachmentContent()
-     */
+
+    @Override
     public byte[] getAttachmentContent() {
         return this.attachmentContent;
     }
 
-    /**
-     * This overridden method ...
-     * 
-     * @see PersistableAttachment#setAttachmentContent(byte[])
-     */
+
+    @Override
     public void setAttachmentContent(byte[] attachmentContent) {
         this.attachmentContent = attachmentContent;
     }
 
-    /**
-     * This overridden method ...
-     * 
-     * @see PersistableAttachment#getFileName()
-     */
+
+    @Override
     public String getFileName() {
         return fileName;
     }
 
-    /**
-     * This overridden method ...
-     * 
-     * @see PersistableAttachment#setFileName(java.lang.String)
-     */
+
+    @Override
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
 
-    /**
-     * This overridden method ...
-     * 
-     * @see PersistableAttachment#getContentType()
-     */
+
+    @Override
     public String getContentType() {
         return contentType;
     }
 
-    /**
-     * This overridden method ...
-     * 
-     * @see PersistableAttachment#setContentType(java.lang.String)
-     */
+
+    @Override
     public void setContentType(String contentType) {
         this.contentType = contentType;
     }

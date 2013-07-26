@@ -19,12 +19,14 @@ import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -38,8 +40,8 @@ public class KewTypeOptionsFinder extends UifKeyValuesFinderBase {
     public List<KeyValue> getKeyValues(ViewModel model) {
         List<KeyValue> kewTypes = new ArrayList<KeyValue>();
 
-        Collection<KewTypeBo> kewTypeBos = KRADServiceLocator.getBusinessObjectService().findAllOrderBy(KewTypeBo.class,
-                "namespace", true);
+        Collection<KewTypeBo> kewTypeBos = KRADServiceLocatorWeb.getLegacyDataAdapter().findMatchingOrderBy(KewTypeBo.class,
+                Collections.<String, Object>emptyMap(), "namespace", true);
         for (KewTypeBo typeBo : kewTypeBos) {
             if (typeBo.isActive()) {
                 kewTypes.add(new ConcreteKeyValue(typeBo.getId(), typeBo.getNamespace() + " - " + typeBo.getName()));

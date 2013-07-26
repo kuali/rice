@@ -87,7 +87,7 @@
               </property>
               <property name="suggest">
                   <bean parent="Uif-Suggest" p:render="true" p:valuePropertyName="accountTypeCode"
-                        p:suggestQuery.dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccountType"/>
+                        p:suggestQuery.dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccountType"/>
               </property>
             </bean>
 

@@ -17,10 +17,10 @@ package org.kuali.rice.krms.impl.repository;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
-import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinitionContract;
@@ -29,7 +29,6 @@ import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import static org.kuali.rice.krms.impl.repository.AgendaItemBo.COPY_OF_TEXT;
 
 /**
  * Agenda Item business object
@@ -361,7 +360,7 @@ public class AgendaItemBo extends PersistableBusinessObjectBase implements Agend
     public AgendaItemBo copyAgendaItem(AgendaBo copiedAgenda,  Map<String, RuleBo> oldRuleIdToNew,
             Map<String, AgendaItemBo> oldAgendaItemIdToNew, List<AgendaItemBo> copiedAgendaItems, final String dts) {
         // Use deepCopy and update all the ids.
-        AgendaItemBo copiedAgendaItem = (AgendaItemBo) ObjectUtils.deepCopy(this);
+        AgendaItemBo copiedAgendaItem = (AgendaItemBo) SerializationUtils.deepCopy(this);
         copiedAgendaItem.setId(getNewId());
         copiedAgendaItem.setAgendaId(copiedAgenda.getId());
 

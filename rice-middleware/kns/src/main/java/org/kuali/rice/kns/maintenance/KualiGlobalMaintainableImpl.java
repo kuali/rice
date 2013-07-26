@@ -21,7 +21,7 @@ import org.kuali.rice.krad.bo.GlobalBusinessObjectDetail;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.maintenance.MaintenanceLock;
 import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
 
@@ -78,7 +78,7 @@ public abstract class KualiGlobalMaintainableImpl extends KualiMaintainableImpl 
         boolean assumptionIsWrong = false;
         //TODO: Revisit this. Changing since getPrimaryKeys and listPrimaryKeyFieldNames are apparently same.
         //May be we might want to replace listPrimaryKeyFieldNames with getPrimaryKeys... Not sure.
-        List primaryKeys = KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(gboClass);
+        List primaryKeys = KRADServiceLocatorWeb.getLegacyDataAdapter().listPrimaryKeyFieldNames(gboClass);
         if (primaryKeys == null) {
             assumptionIsWrong = true;
         }
@@ -106,7 +106,7 @@ public abstract class KualiGlobalMaintainableImpl extends KualiMaintainableImpl 
         Map pkMap = new HashMap();
         pkMap.put(KRADPropertyConstants.DOCUMENT_NUMBER, finDocNumber);
         PersistableBusinessObject newBo = null;
-        newBo = (PersistableBusinessObject) KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(gboClass, pkMap);
+        newBo = (PersistableBusinessObject) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(gboClass, pkMap);
         if (newBo == null) {
             throw new RuntimeException("The Global Business Object could not be retrieved from the DB.  " + "This should never happen under normal circumstances.  If this is a legitimate case " + "Then this exception should be removed.");
         }
@@ -152,7 +152,7 @@ public abstract class KualiGlobalMaintainableImpl extends KualiMaintainableImpl 
      */
     @Override
     public void saveBusinessObject() {
-        BusinessObjectService boService = KRADServiceLocator.getBusinessObjectService();
+        BusinessObjectService boService = KNSServiceLocator.getBusinessObjectService();
         GlobalBusinessObject gbo = (GlobalBusinessObject) businessObject;
 
         // delete any indicated BOs

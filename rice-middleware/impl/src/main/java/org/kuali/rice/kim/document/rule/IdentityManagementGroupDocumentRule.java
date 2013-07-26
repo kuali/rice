@@ -17,7 +17,6 @@ package org.kuali.rice.kim.document.rule;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.KimConstants;
@@ -34,6 +33,7 @@ import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.rule.event.ui.AddGroupMemberEvent;
 import org.kuali.rice.kim.rule.ui.AddGroupMemberRule;
 import org.kuali.rice.kim.rules.ui.GroupDocumentMemberRule;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
 import org.kuali.rice.krad.service.BusinessObjectService;
@@ -44,7 +44,6 @@ import org.kuali.rice.krad.util.MessageMap;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -222,7 +221,7 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
 	 */
 	public BusinessObjectService getBusinessObjectService() {
 		if(businessObjectService == null){
-			businessObjectService = KRADServiceLocator.getBusinessObjectService();
+			businessObjectService = KNSServiceLocator.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}

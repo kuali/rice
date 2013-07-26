@@ -27,10 +27,13 @@ abstract public class DataDictionaryDefinitionBase extends DictionaryBeanBase im
     private static final long serialVersionUID = -2003626577498716712L;
 
     protected String id;
+    protected boolean embeddedDataObjectMetadata = false;
+    protected boolean generatedFromMetadata = false;
 
     public DataDictionaryDefinitionBase() {
     }
 
+    @Override
     @BeanTagAttribute(name = "id")
     public String getId() {
         return this.id;
@@ -46,5 +49,31 @@ abstract public class DataDictionaryDefinitionBase extends DictionaryBeanBase im
     /**
      * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
      */
+    @Override
     public void afterPropertiesSet() throws Exception {}
+
+    /**
+     *
+     * Returns true if the given object contains an embedded KRAD Data metadata object
+     * which may be used for defaulting certain attributes.
+     */
+    public boolean hasEmbeddedDataObjectMetadata() {
+        return embeddedDataObjectMetadata;
+    }
+
+    /**
+     * Returns true if this data dictionary object was completely generated from
+     * KRAD Data metadata.
+     */
+    public boolean wasGeneratedFromMetadata() {
+        return generatedFromMetadata;
+    }
+
+    public void setEmbeddedDataObjectMetadata(boolean embeddedDataObjectMetadata) {
+        this.embeddedDataObjectMetadata = embeddedDataObjectMetadata;
+    }
+
+    public void setGeneratedFromMetadata(boolean generatedFromMetadata) {
+        this.generatedFromMetadata = generatedFromMetadata;
+    }
 }

@@ -15,29 +15,32 @@
  */
 package org.kuali.rice.krad.bo;
 
-import org.hibernate.annotations.Type;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
 
 
 /**
- * 
+ *
  */
 @Entity
-@Table(name="KRNS_NTE_TYP_T")
-public class NoteType extends PersistableBusinessObjectBase {
+@Table(name="KRNS_NTE_TYP_T",uniqueConstraints= {
+        @UniqueConstraint(name="KRNS_NTE_TYP_TC0",columnNames="OBJ_ID")
+})
+public class NoteType extends PersistableBusinessObjectBase implements MutableInactivatable {
+	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="NTE_TYP_CD")
+	@Column(name="NTE_TYP_CD",length=4)
 	private String noteTypeCode;
-	@Column(name="TYP_DESC_TXT")
+	@Column(name="TYP_DESC_TXT",length=100,nullable=false)
 	private String noteTypeDescription;
-	@Type(type="yes_no")
-	@Column(name="ACTV_IND")
-	private boolean noteTypeActiveIndicator;
+	@Column(name="ACTV_IND",length=1)
+	private Boolean noteTypeActiveIndicator;
 
 	/**
 	 * Default constructor.
@@ -48,19 +51,19 @@ public class NoteType extends PersistableBusinessObjectBase {
 
 	/**
 	 * Gets the noteTypeCode attribute.
-	 * 
+	 *
 	 * @return Returns the noteTypeCode
-	 * 
+	 *
 	 */
-	public String getNoteTypeCode() { 
+	public String getNoteTypeCode() {
 		return noteTypeCode;
 	}
 
 	/**
 	 * Sets the noteTypeCode attribute.
-	 * 
+	 *
 	 * @param noteTypeCode The noteTypeCode to set.
-	 * 
+	 *
 	 */
 	public void setNoteTypeCode(String noteTypeCode) {
 		this.noteTypeCode = noteTypeCode;
@@ -69,19 +72,19 @@ public class NoteType extends PersistableBusinessObjectBase {
 
 	/**
 	 * Gets the noteTypeDescription attribute.
-	 * 
+	 *
 	 * @return Returns the noteTypeDescription
-	 * 
+	 *
 	 */
-	public String getNoteTypeDescription() { 
+	public String getNoteTypeDescription() {
 		return noteTypeDescription;
 	}
 
 	/**
 	 * Sets the noteTypeDescription attribute.
-	 * 
+	 *
 	 * @param noteTypeDescription The noteTypeDescription to set.
-	 * 
+	 *
 	 */
 	public void setNoteTypeDescription(String noteTypeDescription) {
 		this.noteTypeDescription = noteTypeDescription;
@@ -90,23 +93,43 @@ public class NoteType extends PersistableBusinessObjectBase {
 
 	/**
 	 * Gets the noteTypeActiveIndicator attribute.
-	 * 
+	 *
 	 * @return Returns the noteTypeActiveIndicator
-	 * 
+	 *
 	 */
-	public boolean isNoteTypeActiveIndicator() { 
+	public boolean isNoteTypeActiveIndicator() {
 		return noteTypeActiveIndicator;
 	}
-	
+
 
 	/**
 	 * Sets the noteTypeActiveIndicator attribute.
-	 * 
+	 *
 	 * @param noteTypeActiveIndicator The noteTypeActiveIndicator to set.
-	 * 
+	 *
 	 */
 	public void setNoteTypeActiveIndicator(boolean noteTypeActiveIndicator) {
 		this.noteTypeActiveIndicator = noteTypeActiveIndicator;
+	}
+
+	/**
+	 * This overridden method ...
+	 *
+	 * @see org.kuali.rice.core.api.mo.common.active.Inactivatable#isActive()
+	 */
+	@Override
+	public boolean isActive() {
+	    return noteTypeActiveIndicator;
+	}
+
+	/**
+	 * This overridden method ...
+	 *
+	 * @see org.kuali.rice.core.api.mo.common.active.MutableInactivatable#setActive(boolean)
+	 */
+	@Override
+	public void setActive(boolean active) {
+	    this.noteTypeActiveIndicator = active;
 	}
 }
 

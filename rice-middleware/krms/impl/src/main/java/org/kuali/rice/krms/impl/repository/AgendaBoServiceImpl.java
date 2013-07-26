@@ -37,6 +37,7 @@ import org.kuali.rice.core.api.mo.ModelObjectUtils;
 import org.kuali.rice.core.impl.services.CoreImplServiceLocator;
 import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
@@ -425,7 +426,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 
     protected BusinessObjectService getBusinessObjectService() {
         if ( businessObjectService == null ) {
-            businessObjectService = KRADServiceLocator.getBusinessObjectService();
+            businessObjectService = KNSServiceLocator.getBusinessObjectService();
         }
         return businessObjectService;
     }

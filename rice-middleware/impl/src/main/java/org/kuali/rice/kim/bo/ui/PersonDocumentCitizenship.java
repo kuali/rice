@@ -15,10 +15,12 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
 import java.sql.Date;
 
 /**
@@ -33,10 +35,6 @@ import java.sql.Date;
 public class PersonDocumentCitizenship extends KimDocumentBoActivatableEditableBase {
 	@Id
 	@GeneratedValue(generator="KRIM_ENTITY_CTZNSHP_ID_S")
-	@GenericGenerator(name="KRIM_ENTITY_CTZNSHP_ID_S",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KRIM_ENTITY_CTZNSHP_ID_S"),
-			@Parameter(name="value_column",value="id")
-		})
 	@Column(name = "ENTITY_CTZNSHP_ID")
 	protected String entityCitizenshipId;
 	

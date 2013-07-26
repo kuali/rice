@@ -15,19 +15,22 @@
  */
 package org.kuali.rice.krad.util;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
+import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.api.util.Truth;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.core.web.format.BooleanFormatter;
+import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.coreservice.framework.parameter.ParameterConstants;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.krad.UserSession;
-import org.kuali.rice.krad.messages.Message;
+import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.messages.MessageService;
-import org.kuali.rice.krad.service.DataObjectMetaDataService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.service.ModuleService;
@@ -37,6 +40,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Image;
 import org.kuali.rice.krad.uif.element.Link;
+import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
@@ -54,6 +58,7 @@ import org.springframework.util.Assert;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.GeneralSecurityException;
 import java.text.MessageFormat;
@@ -74,8 +79,9 @@ import java.util.regex.Pattern;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class KRADUtils {
-    private static KualiModuleService kualiModuleService;
+    private static final Logger LOG = Logger.getLogger(KRADUtils.class);
 
+    private static KualiModuleService kualiModuleService;
     private static final KualiDecimal ONE_HUNDRED = new KualiDecimal("100.00");
 
     /**
@@ -831,9 +837,8 @@ public final class KRADUtils {
             dataObjectClass = view.getFormClass();
         }
 
-        DataObjectMetaDataService mds = KRADServiceLocatorWeb.getDataObjectMetaDataService();
         if (dataObjectClass != null) {
-            viewLabelPropertyName = mds.getTitleAttribute(dataObjectClass);
+            viewLabelPropertyName = KRADServiceLocatorWeb.getLegacyDataAdapter().getTitleAttribute(dataObjectClass);
         }
 
         String viewLabelPropertyPath = "";
@@ -857,7 +862,7 @@ public final class KRADUtils {
             }
 
             if (dataObjectClass != null) {
-                String titleAttribute = mds.getTitleAttribute(dataObjectClass);
+                String titleAttribute = KRADServiceLocatorWeb.getLegacyDataAdapter().getTitleAttribute(dataObjectClass);
                 if (StringUtils.isNotBlank(titleAttribute)) {
                     viewLabelPropertyPath = view.getDefaultBindingObjectPath() + "." + titleAttribute;
                 }
@@ -984,4 +989,148 @@ public final class KRADUtils {
 
         return message;
     }
+
+    /**
+     * LegacyCase - This method simply uses PojoPropertyUtilsBean logic to get the Class of a Class property.
+     * This method does not have any of the logic needed to obtain the Class of an element of a Collection specified in
+     * the DataDictionary.
+     *
+     * @param object An instance of the Class of which we're trying to get the property Class.
+     * @param propertyName The name of the property.
+     * @return
+     * @throws IllegalAccessException
+     * @throws NoSuchMethodException
+     * @throws InvocationTargetException
+     */
+    static public Class easyGetPropertyType(Object object,
+            String propertyName) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        if(LegacyUtils.useLegacyForObject(object)){
+            return PropertyUtils.getPropertyType(object, propertyName);
+        }
+        return DataObjectUtils.getPropertyType(object, propertyName);
+    }
+
+
+
+    /**
+     * Sets the property of an object with the given value. Converts using the formatter of the type for the property.
+     * Note: propertyType does not need passed, is found by util method.
+     */
+    public static void setObjectProperty(Object bo, String propertyName,
+            Object propertyValue) throws FormatException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+        Class propertyType = easyGetPropertyType(bo, propertyName);
+        setObjectProperty(bo, propertyName, propertyType, propertyValue);
+
+    }
+
+    /**
+     * Sets the property of an object with the given value. Converts using the formatter of the given type if one is
+     * found.
+     *
+     * @param bo
+     * @param propertyName
+     * @param propertyType
+     * @param propertyValue
+     * @throws NoSuchMethodException
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
+    public static void setObjectProperty(Object bo, String propertyName, Class propertyType,
+            Object propertyValue) throws FormatException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+        KRADServiceLocatorWeb.getLegacyDataAdapter().setObjectProperty(bo,propertyName,propertyType,propertyValue);
+    }
+
+    /**
+     * Removes all query characters from a string.
+     *
+     * @param string
+     * @return Cleaned string
+     */
+    public static String clean(String string) {
+        for (SearchOperator op : SearchOperator.QUERY_CHARACTERS) {
+            string = StringUtils.replace(string, op.op(), KRADConstants.EMPTY_STRING);
+        }
+        return string;
+    }
+
+    /**
+     * This method is a confirms if object is null, and unproxies if necessary to determine this
+     *
+     * @param object - any object, proxied or not, materialized or not
+     * @return true if the object (or underlying materialized object) is null, false otherwise
+     */
+    public static boolean isNull(Object object) {
+        if(object == null){
+            return true;
+        }
+        return KRADServiceLocatorWeb.getLegacyDataAdapter().isNull(object);
+    }
+
+    /**
+     * This method is a confirms if object is not null, and unproxies if necessary to determine this
+     *
+     * @param object - any object, proxied or not, materialized or not
+     * @return true if the object (or underlying materialized object) is not null, true if its null
+     */
+    public static boolean isNotNull(Object object) {
+        return !isNull(object);
+    }
+
+    /**
+     * Attempts to find the Class for the given potentially proxied object
+     *
+     * @param object the potentially proxied object to find the Class of
+     * @return the best Class which could be found for the given object
+     */
+    public static Class materializeClassForProxiedObject(Object object) {
+        return KRADServiceLocatorWeb.getLegacyDataAdapter().materializeClassForProxiedObject(object);
+    }
+
+    /**
+     * This method runs the KRADUtils.isNotNull() method for each item in a list of BOs. KRADUtils.isNotNull() will
+     * materialize
+     * the objects if they are currently OJB proxies.
+     *
+     * @param possiblyProxiedObjects - a Collection of objects that may be proxies
+     */
+    public static void materializeObjects(Collection possiblyProxiedObjects) {
+        for (Iterator i = possiblyProxiedObjects.iterator(); i.hasNext(); ) {
+            KRADUtils.isNotNull(i.next());
+        }
+    }
+
+    /**
+     * This method safely extracts either simple values OR nested values. For example, if the bo is SubAccount, and the
+     * fieldName is
+     * a21SubAccount.subAccountTypeCode, this thing makes sure it gets the value off the very end attribute, no matter
+     * how deeply
+     * nested it is. The code would be slightly simpler if this was done recursively, but this is safer, and consumes a
+     * constant
+     * amount of memory, no matter how deeply nested it goes.
+     *
+     * @param bo
+     * @param fieldName
+     * @return The field value if it exists. If it doesnt, and the name is invalid, and
+     */
+    public static Object getNestedValue(Object bo, String fieldName) {
+        return KRADServiceLocatorWeb.getLegacyDataAdapter().getNestedValue(bo,fieldName);
+    }
+
+    /**
+     * This method safely creates a object from a class
+     * Convenience method to create new object and throw a runtime exception if it cannot
+     * If the class is an {@link org.kuali.rice.krad.bo.ExternalizableBusinessObject}, this method will determine the interface for the EBO and
+     * query the
+     * appropriate module service to create a new instance.
+     *
+     * @param clazz
+     * @return a newInstance() of clazz
+     */
+    public static Object createNewObjectFromClass(Class clazz) {
+        if (clazz == null) {
+            throw new RuntimeException("BO class was passed in as null");
+        }
+        return KRADServiceLocatorWeb.getLegacyDataAdapter().createNewObjectFromClass(clazz);
+    }
+
 }

@@ -17,8 +17,6 @@ package org.kuali.rice.kew.actionitem;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.util.RiceConstants;
@@ -27,7 +25,6 @@ import org.kuali.rice.kew.api.action.ActionItemContract;
 import org.kuali.rice.kew.api.action.RecipientType;
 import org.kuali.rice.kew.api.util.CodeTranslator;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.web.RowStyleable;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -42,14 +39,11 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.persistence.Version;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This is the model for action items. These are displayed as the action list as well.  Mapped to ActionItemService.
@@ -76,10 +70,6 @@ public class ActionItem implements ActionItemContract, Serializable {
 
     @Id
     @GeneratedValue(generator="KREW_ACTN_ITM_S")
-	@GenericGenerator(name="KREW_ACTN_ITM_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_ACTN_ITM_S"),
-			@Parameter(name="value_column",value="id")
-	})
     @Column(name="ACTN_ITM_ID")
 	private String id;
     @Column(name="PRNCPL_ID")

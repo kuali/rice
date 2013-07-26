@@ -26,7 +26,7 @@
 	<!-- Axis Configuration -->
     <param name="keystore.alias">rice.keystore</param>
     <param name="keystore.password">s1t0spss!xX-tst</param>
-	<param name="keystore.file">${basedir}/../ksb/src/test/resources/keystore/rice.keystore</param>
+	<param name="keystore.file">classpath:keystore/rice.keystore</param>
 
 	<!-- default config files -->
 	<param name="config.location">classpath:META-INF/kew-test-config.xml</param>

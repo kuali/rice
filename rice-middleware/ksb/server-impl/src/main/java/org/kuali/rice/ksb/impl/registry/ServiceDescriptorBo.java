@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.ksb.impl.registry;
 
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.mo.ModelObjectBasic;
 import org.kuali.rice.ksb.api.registry.ServiceDescriptor;
 import org.kuali.rice.ksb.api.registry.ServiceDescriptorContract;
@@ -32,10 +31,10 @@ public class ServiceDescriptorBo implements ServiceDescriptorContract, ModelObje
 
 	@javax.persistence.Id
 	@javax.persistence.GeneratedValue(generator="KRSB_SVC_DSCRPTR_S")
-	@org.hibernate.annotations.GenericGenerator(name="KRSB_FLT_SVC_DEF_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name", value="KRSB_SVC_DSCRPTR_S"),
-			@Parameter(name="value_column", value="id")
-    })
+//	@org.hibernate.annotations.GenericGenerator(name="KRSB_FLT_SVC_DEF_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+//			@Parameter(name="sequence_name", value="KRSB_SVC_DSCRPTR_S"),
+//			@Parameter(name="value_column", value="id")
+//    })
 	@javax.persistence.Column(name="SVC_DSCRPTR_ID")
 	private String id;
 	

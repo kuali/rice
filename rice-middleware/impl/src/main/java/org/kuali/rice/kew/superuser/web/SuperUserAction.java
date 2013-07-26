@@ -15,16 +15,6 @@
  */
 package org.kuali.rice.kew.superuser.web;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.namespace.QName;
-
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
@@ -39,15 +29,14 @@ import org.kuali.rice.kew.api.action.AdHocRevoke;
 import org.kuali.rice.kew.api.action.DocumentActionParameters;
 import org.kuali.rice.kew.api.action.ReturnPoint;
 import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
-import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
 import org.kuali.rice.kew.api.document.WorkflowDocumentService;
+import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.web.AppSpecificRouteRecipient;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kim.api.group.GroupService;
@@ -57,8 +46,16 @@ import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.namespace.QName;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * A Struts Action which provides super user functionality.
@@ -265,7 +262,7 @@ public class SuperUserAction extends KewKualiAction {
         SuperUserForm superUserForm = (SuperUserForm) form;
         DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(
                 superUserForm.getDocumentId());
-        if(ObjectUtils.isNull(routeHeader)) {
+        if(routeHeader == null) {
             throw new ValidationException("No route header ID found.  Try searching for the document again using the super user document search.");
         }
         superUserForm.setRouteHeader(routeHeader);

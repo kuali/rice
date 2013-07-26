@@ -15,13 +15,14 @@
  */
 package org.kuali.rice.kew.routeheader;
 
-import org.bouncycastle.ocsp.OCSPReqGenerator;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.joda.time.DateTime;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.sql.Timestamp;
 
 
@@ -38,10 +39,6 @@ public class DocumentStatusTransition extends PersistableBusinessObjectBase {
 
 	@Id
 	@GeneratedValue(generator="KREW_DOC_HDR_S")
-	@GenericGenerator(name="KREW_DOC_HDR_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_DOC_HDR_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="APP_DOC_STAT_TRAN_ID")
 	private String statusTransitionId;
 	

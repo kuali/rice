@@ -54,6 +54,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Deprecated
 public class BaseOjbConfigurer extends BaseLifecycle implements InitializingBean {
 
     private static final Logger LOG = Logger.getLogger(BaseOjbConfigurer.class);

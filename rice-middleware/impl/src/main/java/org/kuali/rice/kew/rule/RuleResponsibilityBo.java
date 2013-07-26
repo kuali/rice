@@ -17,18 +17,15 @@ package org.kuali.rice.kew.rule;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.rule.RuleResponsibilityContract;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.user.RoleRecipient;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -62,10 +59,6 @@ public class RuleResponsibilityBo extends PersistableBusinessObjectBase implemen
 	private static final long serialVersionUID = -1565688857123316797L;
 	@Id
 	@GeneratedValue(generator="KREW_RSP_S")
-	@GenericGenerator(name="KREW_RSP_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_RSP_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="RULE_RSP_ID")
 	private String id;
     @Column(name="RSP_ID")

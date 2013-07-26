@@ -15,7 +15,8 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.util.List;
+import org.kuali.rice.core.api.delegation.DelegationType;
+import org.springframework.util.AutoPopulatingList;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -29,13 +30,7 @@ import javax.persistence.JoinColumns;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.core.api.delegation.DelegationType;
-import org.springframework.util.AutoPopulatingList;
+import java.util.List;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in.
@@ -52,10 +47,6 @@ public class RoleDocumentDelegation extends KimDocumentBoActivatableBase {
 
 	@Id
 	@GeneratedValue(generator="KRIM_DLGN_ID_S")
-	@GenericGenerator(name="KRIM_DLGN_ID_S",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KRIM_DLGN_ID_S"),
-			@Parameter(name="value_column",value="id")
-		})
 	@Column(name="DLGN_ID")
 	protected String delegationId;
 
@@ -69,8 +60,7 @@ public class RoleDocumentDelegation extends KimDocumentBoActivatableBase {
 	protected String delegationTypeCode;
 
 	@OneToMany(targetEntity=RoleDocumentDelegationMember.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
-    @Fetch(value = FetchMode.SELECT)
-	@JoinColumns({
+    @JoinColumns({
 		@JoinColumn(name="dlgn_id",insertable=false,updatable=false),
 		@JoinColumn(name="fdoc_nbr", insertable=false, updatable=false)
 	})

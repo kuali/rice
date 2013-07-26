@@ -24,7 +24,7 @@
   <param name="filtermapping.login.1">/*</param>
 
   <!--
-   Because this file is loaded during unit tests but outside of the test harness
+          Because this file is loaded during unit tests but outside of the test harness
    context (in its own webapp), we need to be sure to include the defaults directly.
   -->
   <param name="config.location">classpath:META-INF/test-config-defaults.xml</param>

@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.edl.impl.extract;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.edl.framework.extract.DumpDTO;
@@ -76,7 +74,6 @@ public class Dump {
 	private Integer lockVerNbr;
 
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE},mappedBy="dump")
-    @Fetch(value = FetchMode.SELECT)
     private List<Fields> fields = new ArrayList<Fields>();
 
     //@PrePersist

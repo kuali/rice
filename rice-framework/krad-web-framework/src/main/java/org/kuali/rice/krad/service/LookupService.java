@@ -19,7 +19,9 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * Defines business logic methods that support the Lookup framework
+ * Provides search capabilities for the lookup framework. This service is primarily intended for internal use by the
+ * lookup framework. Client code should preferably invoke {@link org.kuali.rice.krad.data.DataObjectService#findMatching(org.kuali.rice.krad.data.DataObjectType, org.kuali.rice.core.api.criteria.QueryByCriteria)}
+ * passing the appropriate criteria.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -28,34 +30,41 @@ public interface LookupService {
     /**
      * Returns a collection of objects based on the given search parameters.
      * Will not limit results, so the returned Collection could be huge.
-     *                                                         o
-     * @param example
-     * @param formProps
-     * @return
+     *
+     * @param type the type of the object for which to search
+     * @param formProps a map of attributes against which to query
+     *
+     * @return an unbounded collection of results from the search
      */
-    public <T extends Object> Collection<T> findCollectionBySearchUnbounded(Class<T> example,
-            Map<String, String> formProps);
+    <T> Collection<T> findCollectionBySearchUnbounded(Class<T> type, Map<String, String> formProps);
 
     /**
      * Returns a collection of objects based on the given search parameters.
      *
      * @return Collection returned from the search
      */
-    public <T extends Object> Collection<T> findCollectionBySearch(Class<T> example, Map<String, String> formProps);
-
-    public <T extends Object> Collection<T> findCollectionBySearchHelper(Class<T> example,
-            Map<String, String> formProperties, boolean unbounded);
-
-    public <T extends Object> Collection<T> findCollectionBySearchHelper(Class<T> example,
-            Map<String, String> formProperties, boolean unbounded, Integer searchResultsLimit);
+    <T> Collection<T> findCollectionBySearch(Class<T> type, Map<String, String> formProps);
 
     /**
-     * Retrieves a Object based on the search criteria, which should uniquely
+     * This version of findCollectionBySearchHelper is needed for version compatibility.   It allows executeSearch
+     * to behave the same way as it did prior to 2.3. In the LookupDao, the value for searchResultsLimit will be
+     * retrieved from the KNS version of LookupUtils in the LookupDao.
+     *
+     * @since 2.3
+     */
+    <T> Collection<T> findCollectionBySearchHelper(Class<T> type, Map<String, String> formProperties,
+            boolean unbounded);
+
+    <T> Collection<T> findCollectionBySearchHelper(Class<T> type, Map<String, String> formProperties,
+            boolean unbounded, Integer searchResultsLimit);
+
+    /**
+     * Retrieves an Object based on the search criteria, which should uniquely
      * identify a record.
      *
      * @return Object returned from the search
      */
-    public <T extends Object> T findObjectBySearch(Class<T> example, Map<String, String> formProps);
+    <T> T findObjectBySearch(Class<T> type, Map<String, String> formProps);
 
-    public boolean allPrimaryKeyValuesPresentAndNotWildcard(Class<?> boClass, Map<String, String> formProps);
+     boolean allPrimaryKeyValuesPresentAndNotWildcard(Class<?> boClass, Map<String, String> formProps);
 }

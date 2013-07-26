@@ -26,7 +26,9 @@ import org.kuali.rice.coreservice.api.parameter.ParameterKey
 import org.kuali.rice.coreservice.api.parameter.ParameterRepositoryService
 import org.kuali.rice.coreservice.api.parameter.ParameterType
 import org.kuali.rice.coreservice.api.parameter.ParameterTypeContract
-import org.kuali.rice.krad.service.BusinessObjectService
+
+import org.kuali.rice.krad.service.LegacyDataAdapter
+
 import static org.junit.Assert.assertNotNull
 
 class ParameterRepositoryServiceImplTest {
@@ -43,7 +45,7 @@ class ParameterRepositoryServiceImplTest {
     ParameterRepositoryService pservice;
     org.kuali.rice.coreservice.impl.parameter.ParameterRepositoryServiceImpl pserviceImpl;
     org.kuali.rice.coreservice.impl.parameter.ParameterBo bo = org.kuali.rice.coreservice.impl.parameter.ParameterBo.from(parameter);
-    BusinessObjectService boService;
+    LegacyDataAdapter legacyDataAdapter;
 
     @Before
     void setupServiceUnderTest() {
@@ -53,13 +55,13 @@ class ParameterRepositoryServiceImplTest {
 
     @Before
     void setupBoServiceMockContext() {
-        mock = new MockFor(BusinessObjectService)
+        mock = new MockFor(LegacyDataAdapter)
 
     }
 
     void injectBusinessObjectServiceIntoParameterRepositoryService() {
-        boService = mock.proxyDelegateInstance()
-        pserviceImpl.setBusinessObjectService(boService)
+        legacyDataAdapter = mock.proxyDelegateInstance()
+        pserviceImpl.setLegacyDataAdapter(legacyDataAdapter)
     }
 
     @Test
@@ -69,7 +71,7 @@ class ParameterRepositoryServiceImplTest {
         shouldFail(IllegalArgumentException.class) {
             pservice.createParameter(null)
         }
-        mock.verify(boService)
+        mock.verify(legacyDataAdapter)
     }
 
     @Test
@@ -81,7 +83,7 @@ class ParameterRepositoryServiceImplTest {
         shouldFail(IllegalStateException.class) {
             pservice.createParameter(parameter)
         }
-        mock.verify(boService)
+        mock.verify(legacyDataAdapter)
     }
 
     @Test
@@ -91,7 +93,7 @@ class ParameterRepositoryServiceImplTest {
         injectBusinessObjectServiceIntoParameterRepositoryService()
         def p = pservice.createParameter(parameter)
         assertNotNull p
-        mock.verify(boService)
+        mock.verify(legacyDataAdapter)
 
     }
 
@@ -102,7 +104,7 @@ class ParameterRepositoryServiceImplTest {
         shouldFail(IllegalArgumentException.class) {
             pservice.updateParameter(null)
         }
-        mock.verify(boService)
+        mock.verify(legacyDataAdapter)
     }
 
     @Test
@@ -112,7 +114,7 @@ class ParameterRepositoryServiceImplTest {
         injectBusinessObjectServiceIntoParameterRepositoryService()
         def p = pservice.updateParameter(parameter)
         assertNotNull p
-        mock.verify(boService)
+        mock.verify(legacyDataAdapter)
     }
 
     @Test
@@ -124,7 +126,7 @@ class ParameterRepositoryServiceImplTest {
         shouldFail(IllegalStateException.class) {
             pservice.updateParameter(parameter)
         }
-        mock.verify(boService)
+        mock.verify(legacyDataAdapter)
     }
 
     @Test
@@ -134,7 +136,7 @@ class ParameterRepositoryServiceImplTest {
         shouldFail(IllegalArgumentException.class) {
             pservice.getParameter(null)
         }
-        mock.verify(boService)
+        mock.verify(legacyDataAdapter)
     }
 
     @Test
@@ -142,7 +144,7 @@ class ParameterRepositoryServiceImplTest {
         mock.demand.findByPrimaryKey(1..1) { clazz, map -> bo }
         injectBusinessObjectServiceIntoParameterRepositoryService()
         Assert.assertEquals(parameter, pservice.getParameter(key))
-        mock.verify(boService)
+        mock.verify(legacyDataAdapter)
     }
 
     @Test
@@ -150,7 +152,7 @@ class ParameterRepositoryServiceImplTest {
         mock.demand.findByPrimaryKey(2..2) { clazz, map -> null }
         injectBusinessObjectServiceIntoParameterRepositoryService()
         Assert.assertNull(pservice.getParameter(key))
-        mock.verify(boService)
+        mock.verify(legacyDataAdapter)
     }
 
     @Test
@@ -158,7 +160,7 @@ class ParameterRepositoryServiceImplTest {
         mock.demand.findByPrimaryKey(1..1) { clazz, map -> bo }
         injectBusinessObjectServiceIntoParameterRepositoryService()
         Assert.assertEquals(parameter.value, pservice.getParameterValueAsString(key))
-        mock.verify(boService)
+        mock.verify(legacyDataAdapter)
     }
 
     @Test
@@ -166,7 +168,7 @@ class ParameterRepositoryServiceImplTest {
         mock.demand.findByPrimaryKey(2..2) { clazz, map -> null }
         injectBusinessObjectServiceIntoParameterRepositoryService()
         Assert.assertNull(pservice.getParameterValueAsString(key))
-        mock.verify(boService)
+        mock.verify(legacyDataAdapter)
     }
 
     @Test
@@ -174,7 +176,7 @@ class ParameterRepositoryServiceImplTest {
         mock.demand.findByPrimaryKey(2..2) { clazz, map -> null }
         injectBusinessObjectServiceIntoParameterRepositoryService()
         Assert.assertNull(pservice.getParameterValueAsBoolean(key))
-        mock.verify(boService)
+        mock.verify(legacyDataAdapter)
     }
 
     private test_get_parameter_value_as_boolean_not_null(String value, boolean bValue) {
@@ -184,7 +186,7 @@ class ParameterRepositoryServiceImplTest {
         mock.demand.findByPrimaryKey(1..1) { clazz, map -> bo }
         injectBusinessObjectServiceIntoParameterRepositoryService()
         Assert.assertEquals(bValue, pservice.getParameterValueAsBoolean(key))
-        mock.verify(boService)
+        mock.verify(legacyDataAdapter)
     }
 
     @Test
@@ -216,7 +218,7 @@ class ParameterRepositoryServiceImplTest {
         mock.demand.findByPrimaryKey(1..1) { clazz, map ->  bo}
         injectBusinessObjectServiceIntoParameterRepositoryService()
         Assert.assertNull(pservice.getParameterValueAsBoolean(key))
-        mock.verify(boService)
+        mock.verify(legacyDataAdapter)
     }
 
     @Test
@@ -230,7 +232,7 @@ class ParameterRepositoryServiceImplTest {
         shouldFail(UnsupportedOperationException.class) {
             values.add("")
         }
-        mock.verify(boService)
+        mock.verify(legacyDataAdapter)
     }
 
     @Test
@@ -250,7 +252,7 @@ class ParameterRepositoryServiceImplTest {
         shouldFail(UnsupportedOperationException.class) {
             values.add("")
         }
-        mock.verify(boService)
+        mock.verify(legacyDataAdapter)
     }
 
     @Test
@@ -268,7 +270,7 @@ class ParameterRepositoryServiceImplTest {
         shouldFail(UnsupportedOperationException.class) {
             values.add("")
         }
-        mock.verify(boService)
+        mock.verify(legacyDataAdapter)
     }
 
     @Test
@@ -297,7 +299,7 @@ class ParameterRepositoryServiceImplTest {
         mock.demand.findByPrimaryKey(2..2) { clazz, map ->  null}
         injectBusinessObjectServiceIntoParameterRepositoryService()
         Assert.assertNull(pservice.getSubParameterValueAsString(key, "foo"))
-        mock.verify(boService)
+        mock.verify(legacyDataAdapter)
     }
 
     @Test
@@ -309,7 +311,7 @@ class ParameterRepositoryServiceImplTest {
         injectBusinessObjectServiceIntoParameterRepositoryService()
 
         Assert.assertEquals("f1", pservice.getSubParameterValueAsString(key, "foo"))
-        mock.verify(boService)
+        mock.verify(legacyDataAdapter)
     }
 
     @Test
@@ -321,7 +323,7 @@ class ParameterRepositoryServiceImplTest {
 
         //should return first match
         Assert.assertEquals("f1", pservice.getSubParameterValueAsString(key, "foo"))
-        mock.verify(boService)
+        mock.verify(legacyDataAdapter)
     }
 
     @Test
@@ -356,7 +358,7 @@ class ParameterRepositoryServiceImplTest {
         shouldFail(UnsupportedOperationException.class) {
             values.add("")
         }
-        mock.verify(boService)
+        mock.verify(legacyDataAdapter)
     }
 
     @Test
@@ -377,7 +379,7 @@ class ParameterRepositoryServiceImplTest {
         shouldFail(UnsupportedOperationException.class) {
             values.add("")
         }
-        mock.verify(boService)
+        mock.verify(legacyDataAdapter)
     }
 
     @Test
@@ -398,7 +400,7 @@ class ParameterRepositoryServiceImplTest {
         shouldFail(UnsupportedOperationException.class) {
             values.add("")
         }
-        mock.verify(boService)
+        mock.verify(legacyDataAdapter)
     }
 
     private static createParameter() {

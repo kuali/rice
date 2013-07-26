@@ -130,7 +130,7 @@
     <wro4j.version>1.7.0</wro4j.version>
     <groovy.version>1.8.5</groovy.version>
     <guava.version>11.0</guava.version>
-    <hibernate.version>3.6.9.Final</hibernate.version>
+    <eclipselink.version>2.6.0-M1</eclipselink.version>
     <kuali-mvn.version>1.0.2</kuali-mvn.version>
     <mail.version>1.4.4</mail.version>
     <jackson.version>1.8.8</jackson.version>
@@ -168,7 +168,7 @@
     <soa.model.core.version>1.2.2</soa.model.core.version>
     <httpclient.version>4.2.3</httpclient.version>
     <spring-modules-ojb.version>0.8a</spring-modules-ojb.version>
-    <spring.version>3.1.0.RELEASE</spring.version>
+    <spring.version>3.2.3.RELEASE</spring.version>
     <spring.security.version>3.1.0.RELEASE</spring.security.version>
     <struts.version>1.3.10</struts.version>
     <subethasmtp.version>3.1.6</subethasmtp.version>
@@ -218,6 +218,9 @@
     <!-- Directory wsdl's get generated into -->
     <wsdl.dir>${project.build.directory}/wsdl</wsdl.dir>
     <plugin.http.version>1.0.5</plugin.http.version>
+
+    <!-- Location where the spring instrumentation jar can be found -->
+    <spring.instrument.javaagent>-javaagent:${settings.localRepository}/org/springframework/spring-instrument/${spring.version}/spring-instrument-${spring.version}.jar</spring.instrument.javaagent>
 
   </properties>
 
@@ -575,9 +578,6 @@
                       <exclude>org.ow2.spec.ee:ow2-jta-1.1-spec</exclude>
                       <exclude>jta</exclude>
 
-                      <!-- aleady including the hibernate implementation -->
-                      <exclude>javax.persistence</exclude>
-
                       <!-- activation apis - in jdk 6 -->
                       <exclude>javax.activation</exclude>
                       <exclude>org.apache.geronimo.specs:geronimo-activation_1.0.2_spec</exclude>
@@ -768,6 +768,7 @@
                 <value>${bootstrap.spring.file}</value>
               </systemProperty>
             </systemProperties>
+            <jvmArgs>${spring.instrument.javaagent}</jvmArgs>
           </configuration>
 
           <dependencies>
@@ -781,6 +782,12 @@
               <groupId>mysql</groupId>
               <artifactId>${mysql.jdbc.artifactId}</artifactId>
               <version>${mysql.jdbc.version}</version>
+              <scope>runtime</scope>
+            </dependency>
+            <dependency>
+              <groupId>org.springframework</groupId>
+              <artifactId>spring-instrument</artifactId>
+              <version>${spring.version}</version>
               <scope>runtime</scope>
             </dependency>
           </dependencies>
@@ -893,13 +900,20 @@
             <reportFormat>plain</reportFormat>
             <argLine>-Dalt.config.location="${build.alt.config.location}" -Xmx1024m -XX:MaxPermSize=512m
               -XX:+UseConcMarkSweepGC
-              -XX:+CMSClassUnloadingEnabled</argLine>
+              -XX:+CMSClassUnloadingEnabled ${spring.instrument.javaagent}</argLine>
           </configuration>
           <dependencies>
             <dependency>
               <groupId>mysql</groupId>
               <artifactId>${mysql.jdbc.artifactId}</artifactId>
               <version>${mysql.jdbc.version}</version>
+            </dependency>
+            <!-- Adding as a provided scope dependency so that I can ensure that it is downloaded to our Maven repository -->
+            <dependency>
+              <groupId>org.springframework</groupId>
+              <artifactId>spring-instrument</artifactId>
+              <version>${spring.version}</version>
+              <scope>runtime</scope>
             </dependency>
           </dependencies>
         </plugin>
@@ -951,6 +965,19 @@
                   <action>
                     <ignore />
                   </action>
+                </pluginExecution>
+                <pluginExecution>
+                	<pluginExecutionFilter>
+                		<groupId>org.kuali.maven.plugins</groupId>
+                		<artifactId>spring-maven-plugin</artifactId>
+                		<versionRange>[2.0.6,)</versionRange>
+                		<goals>
+                			<goal>load</goal>
+                		</goals>
+                	</pluginExecutionFilter>
+                	<action>
+                		<ignore></ignore>
+                	</action>
                 </pluginExecution>
               </pluginExecutions>
             </lifecycleMappingMetadata>
@@ -1183,7 +1210,7 @@
         <enabled>true</enabled>
       </releases>
       <snapshots>
-        <enabled>true</enabled>
+        <enabled>false</enabled>
       </snapshots>
     </repository>
   </repositories>
@@ -1734,45 +1761,9 @@
       </dependency>
 
       <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-core</artifactId>
-        <version>${hibernate.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>antlr</groupId>
-            <artifactId>antlr</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-
-      <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-entitymanager</artifactId>
-        <version>${hibernate.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>cglib</groupId>
-            <artifactId>cglib</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>javassist</groupId>
-            <artifactId>javassist</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-
-      <dependency>
-        <groupId>org.hibernate.javax.persistence</groupId>
-        <artifactId>hibernate-jpa-2.0-api</artifactId>
-        <version>${persistence.version}</version>
+        <groupId>org.eclipse.persistence</groupId>
+        <artifactId>org.eclipse.persistence.jpa</artifactId>
+        <version>${eclipselink.version}</version>
       </dependency>
 
       <dependency>
@@ -1847,6 +1838,10 @@
           <exclusion>
             <groupId>asm</groupId>
             <artifactId>asm</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
           </exclusion>
         </exclusions>
       </dependency>

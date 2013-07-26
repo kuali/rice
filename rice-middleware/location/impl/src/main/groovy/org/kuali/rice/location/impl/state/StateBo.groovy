@@ -24,7 +24,7 @@ import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.Table
 
-import org.hibernate.annotations.Type
+
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.location.api.state.State
 import org.kuali.rice.location.framework.state.StateEbo
@@ -46,7 +46,7 @@ class StateBo extends PersistableBusinessObjectBase implements StateEbo {
     @Column(name = "POSTAL_STATE_NM")
     def String name;
 
-    @Type(type = "yes_no")
+    //@Type(type="yes_no")(type = "yes_no")
     @Column(name = "ACTV_IND")
     def boolean active;
 

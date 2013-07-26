@@ -22,6 +22,7 @@ import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.coreservice.api.component.Component;
 import org.kuali.rice.coreservice.api.component.ComponentService;
 import org.kuali.rice.coreservice.impl.component.ComponentBo;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 
 import java.util.ArrayList;
@@ -103,7 +104,7 @@ public class ComponentServiceTest extends CORETestCase {
 
         // inactivate schedule step component
         scheduleStepComponent.setActive(false);
-        KRADServiceLocator.getBusinessObjectService().save(scheduleStepComponent);
+        KNSServiceLocator.getBusinessObjectService().save(scheduleStepComponent);
 
         components = componentService.getAllComponentsByNamespaceCode("KR-NS");
         assertEquals(7, components.size());
@@ -162,7 +163,7 @@ public class ComponentServiceTest extends CORETestCase {
 
         // inactivate schedule step component
         scheduleStepComponent.setActive(false);
-        KRADServiceLocator.getBusinessObjectService().save(scheduleStepComponent);
+        KNSServiceLocator.getBusinessObjectService().save(scheduleStepComponent);
 
         components = componentService.getActiveComponentsByNamespaceCode("KR-NS");
         assertEquals(6, components.size());

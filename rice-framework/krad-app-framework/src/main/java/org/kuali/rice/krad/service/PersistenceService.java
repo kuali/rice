@@ -16,21 +16,27 @@
 package org.kuali.rice.krad.service;
 
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.util.LegacyDataFramework;
 
 import java.util.List;
 import java.util.Map;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @deprecated use new KRAD Data framework {@link org.kuali.rice.krad.data.DataObjectService}
  */
+@Deprecated
+@LegacyDataFramework
 public interface PersistenceService {
-//    public void initialize();
-    
-	public void loadRepositoryDescriptor(String ojbRepositoryFilePath);
-    
-    public void clearCache();
-    
-    public Object resolveProxy(Object o);
+
+    @Deprecated
+	void loadRepositoryDescriptor(String ojbRepositoryFilePath);
+
+    @Deprecated
+    void clearCache();
+
+    @Deprecated
+    Object resolveProxy(Object o);
 
     /**
      * @param persistableObject object whose primary key field name,value pairs you want
@@ -39,7 +45,8 @@ public interface PersistenceService {
      * @throws IllegalArgumentException if the given Object is null
      * @throws org.kuali.rice.krad.exception.ClassNotPersistableException if the given object is of a type not described in the OJB repository
      */
-    public Map getPrimaryKeyFieldValues(Object persistableObject);
+    @Deprecated
+    Map getPrimaryKeyFieldValues(Object persistableObject);
 
     /**
      * @param persistableObject object whose primary key field name,value pairs you want
@@ -49,7 +56,8 @@ public interface PersistenceService {
      * @throws IllegalArgumentException if the given Object is null
      * @throws org.kuali.rice.krad.exception.ClassNotPersistableException if the given object is of a type not described in the OJB repository
      */
-    public Map getPrimaryKeyFieldValues(Object persistableObject, boolean sortFieldNames);
+    @Deprecated
+    Map getPrimaryKeyFieldValues(Object persistableObject, boolean sortFieldNames);
 
     /**
      * @param persistableObject object whose objects need to be filled in based on primary keys
@@ -57,7 +65,8 @@ public interface PersistenceService {
      * @throws IllegalArgumentException if the given Object is null
      * @throws org.kuali.rice.krad.exception.ClassNotPersistableException if the given object is of a type not described in the OJB repository
      */
-    public void retrieveNonKeyFields(Object persistableObject);
+    @Deprecated
+    void retrieveNonKeyFields(Object persistableObject);
 
     /**
      * @param persistableObject object whose specified reference object needs to be filled in based on primary keys
@@ -65,7 +74,8 @@ public interface PersistenceService {
      * @throws IllegalArgumentException if the given Object is null
      * @throws org.kuali.rice.krad.exception.ClassNotPersistableException if the given object is of a type not described in the OJB repository
      */
-    public void retrieveReferenceObject(Object persistableObject, String referenceObjectName);
+    @Deprecated
+    void retrieveReferenceObject(Object persistableObject, String referenceObjectName);
 
 
     /**
@@ -75,7 +85,8 @@ public interface PersistenceService {
      *         blank
      * @throws org.kuali.rice.krad.exception.ClassNotPersistableException if the given object is of a type not described in the OJB repository
      */
-    public void retrieveReferenceObjects(Object persistableObject, List referenceObjectNames);
+    @Deprecated
+    void retrieveReferenceObjects(Object persistableObject, List referenceObjectNames);
 
     /**
      * @param persistableObjects objects whose specified reference objects need to be filled in based on primary keys
@@ -84,7 +95,8 @@ public interface PersistenceService {
      *         blank
      * @throws org.kuali.rice.krad.exception.ClassNotPersistableException if the given object is of a type not described in the OJB repository
      */
-    public void retrieveReferenceObjects(List persistableObjects, List referenceObjectNames);
+    @Deprecated
+    void retrieveReferenceObjects(List persistableObjects, List referenceObjectNames);
 
 
     /**
@@ -93,18 +105,8 @@ public interface PersistenceService {
      * @throws IllegalArgumentException if the given Object is null
      * @throws org.kuali.rice.krad.exception.ClassNotPersistableException if the given object is of a type not described in the OJB repository
      */
-    public void linkObjects(Object persistableObject);
-
-
-    /**
-     * Gets the value for the given field name from the object, works for anonymous fields as well as simple fields
-     * 
-     * @param persistableObject object to get value from
-     * @param fieldName name of the field to get from the object
-     * @return Object value of field in object, or null
-     */
-    // This method never called
-    //public Object getFieldValue(Object persistableObject, String fieldName);
+    @Deprecated
+    void linkObjects(Object persistableObject);
 
     /**
      * @param persistableObject object whose primary key field name,value pairs you want
@@ -113,7 +115,8 @@ public interface PersistenceService {
      * @throws IllegalArgumentException if the given Object is null
      * @throws org.kuali.rice.krad.exception.ClassNotPersistableException if the given object is of a type not described in the OJB repository
      */
-    public String getFlattenedPrimaryKeyFieldValues(Object persistableObject);
+    @Deprecated
+    String getFlattenedPrimaryKeyFieldValues(Object persistableObject);
 
     /**
      * 
@@ -124,7 +127,8 @@ public interface PersistenceService {
      * @return true if they all are accessible and have values, false otherwise
      * 
      */
-    public boolean allForeignKeyValuesPopulatedForReference(PersistableBusinessObject bo, String referenceName);
+    @Deprecated
+    boolean allForeignKeyValuesPopulatedForReference(PersistableBusinessObject bo, String referenceName);
 
     /**
      * 
@@ -138,7 +142,8 @@ public interface PersistenceService {
      * @param bo - the businessObject to be refreshed
      * 
      */
-    public void refreshAllNonUpdatingReferences(PersistableBusinessObject bo);
+    @Deprecated
+    void refreshAllNonUpdatingReferences(PersistableBusinessObject bo);
 
     
     /**
@@ -147,7 +152,8 @@ public interface PersistenceService {
      * @param object the object to determine if it is a proxy
      * @return true if the object is an ORM proxy; false otherwise
      */
-    public abstract boolean isProxied(Object object);
+    @Deprecated
+    boolean isProxied(Object object);
     
     /**
 	 * Determines if JPA is enabled for the KNS and for the given class
@@ -155,5 +161,7 @@ public interface PersistenceService {
 	 * @param clazz the class to check for JPA enabling of
 	 * @return true if JPA is enabled for the class, false otherwise
 	 */
-	public abstract boolean isJpaEnabledForKradClass(Class clazz);
+    @Deprecated
+    boolean isJpaEnabledForKradClass(Class clazz);
+
 }

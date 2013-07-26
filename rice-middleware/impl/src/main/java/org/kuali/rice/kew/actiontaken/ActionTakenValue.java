@@ -16,10 +16,6 @@
 package org.kuali.rice.kew.actiontaken;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
@@ -28,11 +24,11 @@ import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.action.ActionTaken;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.util.CodeTranslator;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.role.Role;
@@ -70,10 +66,6 @@ public class ActionTakenValue implements Serializable {
 	private static final long serialVersionUID = -81505450567067594L;
 	@Id
 	@GeneratedValue(generator="KREW_ACTN_TKN_S")
-	@GenericGenerator(name="KREW_ACTN_TKN_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_ACTN_TKN_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="ACTN_TKN_ID")
     private String actionTakenId;
     @Column(name="DOC_HDR_ID")//,insertable=false, updatable=false)
@@ -99,7 +91,6 @@ public class ActionTakenValue implements Serializable {
     //@JoinColumn(name="DOC_HDR_ID")
     //private DocumentRouteHeaderValue routeHeader;
     @OneToMany(fetch=FetchType.EAGER, mappedBy="actionTaken")
-    @Fetch(value = FetchMode.SELECT)
 	private Collection<ActionRequestValue> actionRequests;
     @Column(name="CUR_IND")
     private Boolean currentIndicator = Boolean.TRUE;

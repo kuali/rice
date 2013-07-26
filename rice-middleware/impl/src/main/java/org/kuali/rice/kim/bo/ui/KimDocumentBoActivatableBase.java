@@ -19,8 +19,6 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.Type;
-
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
  * 
@@ -31,7 +29,7 @@ import org.hibernate.annotations.Type;
 public class KimDocumentBoActivatableBase  extends KimDocumentBoBase {
     private static final long serialVersionUID = 9042706897191231670L;
 
-	@Type(type="yes_no")
+	//@Type(type="yes_no")
 	@Column(name="ACTV_IND")
     protected boolean active = true;
 	

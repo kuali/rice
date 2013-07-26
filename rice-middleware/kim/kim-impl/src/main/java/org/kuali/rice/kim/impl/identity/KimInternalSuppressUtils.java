@@ -15,10 +15,11 @@
  */
 package org.kuali.rice.kim.impl.identity;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.IdentityService;
-import org.kuali.rice.kim.api.identity.entity.EntityDefault;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.permission.PermissionService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -26,6 +27,7 @@ import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
 
 import java.util.Collections;
+import java.util.List;
 
 class KimInternalSuppressUtils {
 
@@ -37,107 +39,83 @@ class KimInternalSuppressUtils {
 	}
 
     public static boolean isSuppressName(String entityId) {
-        EntityPrivacyPreferences privacy = null;
-        EntityDefault entityInfo = getIdentityService().getEntityDefault(entityId);
-        if (entityInfo != null) {
-            privacy = entityInfo.getPrivacyPreferences();
-        } else {
+        EntityPrivacyPreferences privacy = getIdentityService().getEntityPrivacyPreferences(entityId);
+        if (privacy == null) {
             return true;
         }
         UserSession userSession = GlobalVariables.getUserSession();
 
-        boolean suppressName = false;
-        if (privacy != null) {
-            suppressName = privacy.isSuppressName();
-        }
+        boolean suppressName = privacy.isSuppressName();
 
         return suppressName
                 && userSession != null
                 && !StringUtils.equals(userSession.getPerson().getEntityId(), entityId)
-                && !canOverrideEntityPrivacyPreferences(entityInfo.getPrincipals().get(0).getPrincipalId());
+                && !canOverrideEntityPrivacyPreferences(entityId);
     }
 
     public static boolean isSuppressEmail(String entityId) {
-        EntityPrivacyPreferences privacy = null;
-        EntityDefault entityInfo = getIdentityService().getEntityDefault(entityId);
-        if (entityInfo != null) {
-            privacy = entityInfo.getPrivacyPreferences();
-        } else {
+        EntityPrivacyPreferences privacy = getIdentityService().getEntityPrivacyPreferences(entityId);
+        if (privacy == null) {
             return true;
         }
         UserSession userSession = GlobalVariables.getUserSession();
 
-        boolean suppressEmail = false;
-        if (privacy != null) {
-            suppressEmail = privacy.isSuppressEmail();
-        }
+        boolean suppressEmail = privacy.isSuppressEmail();
         return suppressEmail
                 && userSession != null
                 && !StringUtils.equals(userSession.getPerson().getEntityId(), entityId)
-                && !canOverrideEntityPrivacyPreferences(entityInfo.getPrincipals().get(0).getPrincipalId());
+                && !canOverrideEntityPrivacyPreferences(entityId);
     }
 
     public static boolean isSuppressAddress(String entityId) {
-        EntityPrivacyPreferences privacy = null;
-        EntityDefault entityInfo = getIdentityService().getEntityDefault(entityId);
-        if (entityInfo != null) {
-            privacy = entityInfo.getPrivacyPreferences();
-        } else {
-            return false;
+        EntityPrivacyPreferences privacy = getIdentityService().getEntityPrivacyPreferences(entityId);
+        if (privacy == null) {
+            return true;
         }
         UserSession userSession = GlobalVariables.getUserSession();
 
-        boolean suppressAddress = false;
-        if (privacy != null) {
-            suppressAddress = privacy.isSuppressAddress();
-        }
+        boolean suppressAddress = privacy.isSuppressAddress();
         return suppressAddress
                 && userSession != null
                 && !StringUtils.equals(userSession.getPerson().getEntityId(), entityId)
-                && !canOverrideEntityPrivacyPreferences(entityInfo.getPrincipals().get(0).getPrincipalId());
+                && !canOverrideEntityPrivacyPreferences(entityId);
     }
 
     public static boolean isSuppressPhone(String entityId) {
-        EntityPrivacyPreferences privacy = null;
-        EntityDefault entityInfo = getIdentityService().getEntityDefault(entityId);
-        if (entityInfo != null) {
-            privacy = entityInfo.getPrivacyPreferences();
-        } else {
+        EntityPrivacyPreferences privacy = getIdentityService().getEntityPrivacyPreferences(entityId);
+        if (privacy == null) {
             return true;
         }
         UserSession userSession = GlobalVariables.getUserSession();
 
-        boolean suppressPhone = false;
-        if (privacy != null) {
-            suppressPhone = privacy.isSuppressPhone();
-        }
+        boolean suppressPhone = privacy.isSuppressPhone();
         return suppressPhone
                 && userSession != null
                 && !StringUtils.equals(userSession.getPerson().getEntityId(), entityId)
-                && !canOverrideEntityPrivacyPreferences(entityInfo.getPrincipals().get(0).getPrincipalId());
+                && !canOverrideEntityPrivacyPreferences(entityId);
     }
 
     public static boolean isSuppressPersonal(String entityId) {
-        EntityPrivacyPreferences privacy = null;
-        EntityDefault entityInfo = getIdentityService().getEntityDefault(entityId);
-        if (entityInfo != null) {
-            privacy = entityInfo.getPrivacyPreferences();
-        } else {
+        EntityPrivacyPreferences privacy = getIdentityService().getEntityPrivacyPreferences(entityId);
+        if (privacy == null) {
             return true;
         }
         UserSession userSession = GlobalVariables.getUserSession();
 
-        boolean suppressPersonal = false;
-        if (privacy != null) {
-            suppressPersonal = privacy.isSuppressPersonal();
-        }
+        boolean suppressPersonal = privacy.isSuppressPersonal();
         return suppressPersonal
                 && userSession != null
                 && !StringUtils.equals(userSession.getPerson().getEntityId(), entityId)
-                && !canOverrideEntityPrivacyPreferences(entityInfo.getPrincipals().get(0).getPrincipalId());
+                && !canOverrideEntityPrivacyPreferences(entityId);
     }
 
-    protected static boolean canOverrideEntityPrivacyPreferences( String principalId ){
+    protected static boolean canOverrideEntityPrivacyPreferences( String entityId ){
+        List<Principal> principals = getIdentityService().getPrincipalsByEntityId(entityId);
+
+        if (CollectionUtils.isEmpty(principals)) {
+            return false;
+        }
+        String principalId = principals.get(0).getPrincipalId();
 		return getPermissionService().isAuthorized(
 				GlobalVariables.getUserSession().getPrincipalId(),
 				KimConstants.NAMESPACE_CODE,

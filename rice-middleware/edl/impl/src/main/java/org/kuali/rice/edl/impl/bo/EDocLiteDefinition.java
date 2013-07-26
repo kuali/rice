@@ -15,11 +15,16 @@
  */
 package org.kuali.rice.edl.impl.bo;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
 
 /**
  * EDocLite document definition
@@ -36,10 +41,6 @@ public class EDocLiteDefinition  extends PersistableBusinessObjectBase {
      */
     @Id
     @GeneratedValue(generator="KREW_EDL_S")
-	@GenericGenerator(name="KREW_EDL_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_EDL_S"),
-			@Parameter(name="value_column",value="id")
-	})
     @Column(name = "EDOCLT_DEF_ID")
 	private Long eDocLiteDefId;
     /**

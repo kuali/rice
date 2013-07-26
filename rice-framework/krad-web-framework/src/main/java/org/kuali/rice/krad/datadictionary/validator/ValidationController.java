@@ -15,15 +15,15 @@
  */
 package org.kuali.rice.krad.datadictionary.validator;
 
-import org.apache.commons.logging.Log;
-import org.kuali.rice.krad.uif.component.Component;
-import org.springframework.beans.factory.support.KualiDefaultListableBeanFactory;
-import org.springframework.core.io.ResourceLoader;
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
+
+import org.apache.commons.logging.Log;
+import org.kuali.rice.krad.uif.component.Component;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.core.io.ResourceLoader;
 
 /**
  * A combination view controller for the Rice Dictionary Validator that handles both the setup/execution of the
@@ -79,7 +79,7 @@ public class ValidationController {
      * @param failOnWarning - Whether detecting a warning should cause the validation to fail
      * @return Returns true if the beans past validation
      */
-    public boolean validate(String[] xmlFiles, ResourceLoader loader, KualiDefaultListableBeanFactory beans,
+    public boolean validate(String[] xmlFiles, ResourceLoader loader, DefaultListableBeanFactory beans,
             boolean failOnWarning) {
         // LOG.debug("Validating without output");
         Validator validator = new Validator();
@@ -99,7 +99,7 @@ public class ValidationController {
      * @param failOnWarning - Whether detecting a warning should cause the validation to fail
      * @return Returns true if the beans past validation
      */
-    public boolean validate(String[] xmlFiles, ResourceLoader loader, KualiDefaultListableBeanFactory beans,
+    public boolean validate(String[] xmlFiles, ResourceLoader loader, DefaultListableBeanFactory beans,
             String outputFile, boolean failOnWarning) {
         Validator validator = new Validator();
         // LOG.debug("Validating with file output to "+outputFile);
@@ -121,7 +121,7 @@ public class ValidationController {
      * @param failOnWarning - Whether detecting a warning should cause the validation to fail
      * @return Returns true if the beans past validation
      */
-    public boolean validate(String[] xmlFiles, ResourceLoader loader, KualiDefaultListableBeanFactory beans,
+    public boolean validate(String[] xmlFiles, ResourceLoader loader, DefaultListableBeanFactory beans,
             PrintStream stream, boolean failOnWarning) {
         Validator validator = new Validator();
         // LOG.debug("Validating with Print Stream output");
@@ -143,7 +143,7 @@ public class ValidationController {
      * @param failOnWarning - Whether detecting a warning should cause the validation to fail
      * @return Returns true if the beans past validation
      */
-    public boolean validate(String[] xmlFiles, ResourceLoader loader, KualiDefaultListableBeanFactory beans, Log log,
+    public boolean validate(String[] xmlFiles, ResourceLoader loader, DefaultListableBeanFactory beans, Log log,
             boolean failOnWarning) {
         Validator validator = new Validator();
         //LOG.debug("Validating with Log4j output");

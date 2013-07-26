@@ -30,4 +30,15 @@
 			</one-to-one>
 		</attributes>
 	</entity>
+    <!-- map AccountExtension onto the test SimpleAccount BO as well -->
+    <entity class="org.kuali.rice.krad.test.document.bo.SimpleAccount">
+        <attributes>
+            <one-to-one name="extension" fetch="EAGER" target-entity="org.kuali.rice.krad.test.document.bo.AccountExtension">
+                <join-column name="ACCT_NUM" insertable="false" updatable="false" />
+                <cascade>
+                    <cascade-all />
+                </cascade>
+            </one-to-one>
+        </attributes>
+    </entity>
 </entity-mappings>

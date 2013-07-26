@@ -126,7 +126,7 @@
         <bean parent="Uif-InputField-LabelTop" p:label="Quickfinder Field" p:propertyName="inputField7"
               p:instructionalText="Click the quickfinder to select a value, TravelAccount number will be returned">
           <property name="quickfinder">
-            <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+            <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
                   p:fieldConversions="number:inputField7"/>
           </property>
         </bean>
@@ -144,7 +144,7 @@
               p:instructionalText="Click the inquiry image to see details of TravelAccount with number corresponding
                   to the input" p:constraintText="Input a1-a9" p:defaultValue="a2">
           <property name="inquiry">
-            <bean parent="Uif-Inquiry" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+            <bean parent="Uif-Inquiry" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
                   p:inquiryParameters="inputField8:number"/>
           </property>
         </bean>

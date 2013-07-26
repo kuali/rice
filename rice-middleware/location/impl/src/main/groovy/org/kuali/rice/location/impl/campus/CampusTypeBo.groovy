@@ -20,7 +20,7 @@ import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
 
-import org.hibernate.annotations.Type
+
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.location.api.campus.CampusType
 import org.kuali.rice.location.framework.campus.CampusTypeEbo
@@ -35,7 +35,7 @@ public class CampusTypeBo extends PersistableBusinessObjectBase implements Campu
 	@Column(name="CMP_TYP_NM")
 	def String name;
 	
-	@Type(type="yes_no")
+	//@Type(type="yes_no")(type="yes_no")
 	@Column(name="ACTV_IND")
 	def boolean active;
 	

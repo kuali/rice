@@ -259,7 +259,7 @@ public interface ViewModel extends Serializable {
      * </p>
      *
      * @return Map<String, Set<String>> map of collections and their selected lines
-     * @see org.kuali.rice.krad.service.DataObjectMetaDataService#getDataObjectIdentifierString(java.lang.Object)
+     * @see org.kuali.rice.krad.service.LegacyDataAdapter#getDataObjectIdentifierString(java.lang.Object)
      */
     public Map<String, Set<String>> getSelectedCollectionLines();
 

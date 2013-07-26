@@ -19,42 +19,14 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:p="http://www.springframework.org/schema/p"
-       xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:beans="http://www.springframework.org/schema/beans"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
-       xmlns:jee="http://www.springframework.org/schema/jee"
-       xmlns:jms="http://www.springframework.org/schema/jms"
-       xmlns:lang="http://www.springframework.org/schema/lang"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:task="http://www.springframework.org/schema/task"
-       xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:util="http://www.springframework.org/schema/util"
-       xmlns:cache="http://www.springframework.org/schema/cache"
-       xsi:schemaLocation="http://www.springframework.org/schema/aop
-                           http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
-                           http://www.springframework.org/schema/beans
-                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-                           http://www.springframework.org/schema/context
-                           http://www.springframework.org/schema/context/spring-context-3.0.xsd
-                           http://www.springframework.org/schema/jdbc
-                           http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
-                           http://www.springframework.org/schema/jee
-                           http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
-                           http://www.springframework.org/schema/jms
-                           http://www.springframework.org/schema/jms/spring-jms-3.0.xsd
-                           http://www.springframework.org/schema/lang
-                           http://www.springframework.org/schema/lang/spring-lang-3.0.xsd
-                           http://www.springframework.org/schema/mvc
-                           http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
-                           http://www.springframework.org/schema/task
-                           http://www.springframework.org/schema/task/spring-task-3.0.xsd
-                           http://www.springframework.org/schema/tx
-                           http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
                            http://www.springframework.org/schema/util
-                           http://www.springframework.org/schema/util/spring-util-3.0.xsd
-                           http://www.springframework.org/schema/cache
-                           http://www.springframework.org/schema/cache/spring-cache-3.1.xsd">
+                           http://www.springframework.org/schema/util/spring-util-3.2.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
   <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
     <property name="properties" value="#{bootstrapConfig.getProperties()}"/>
@@ -138,11 +110,13 @@
   <bean id="testModuleConfiguration-parentBean" abstract="true" class="org.kuali.rice.krad.bo.ModuleConfiguration">
     <property name="namespaceCode" value="TEST"/>
     <property name="initializeDataDictionary" value="true"/>
+    <property name="packagePrefixes" value="org.kuali.rice.krad.test.document"/>
     <property name="dataDictionaryPackages">
       <list>
         <value>org/kuali/rice/krad/test/document</value>
+        <!-- <value>org/kuali/rice/krad/test/datadictionary/TestDataObject.xml</value> -->
         <!--Due to maven dependencies, this entry will break the krad integrations tests
-         uncomment only to run sample app travel docs  tests-->
+                      uncomment only to run sample app travel docs  tests-->
         <!--<value>edu/sampleu/travel/datadictionary</value>-->
       </list>
     </property>
@@ -150,7 +124,7 @@
       <list>
         <value>OJB-repository-krad-test.xml</value>
         <!--Due to maven dependencies, this entry will break the krad integrations tests
-         uncomment only to run sample app travel docs  tests-->
+                      uncomment only to run sample app travel docs  tests-->
         <!--<value>OJB-repository-sampleapp.xml</value>-->
       </list>
     </property>
@@ -158,6 +132,13 @@
       <list>
         <value>TestModuleResources</value>
       </list>
+    </property>
+    <property name="entityManager" ref="kradSharedEntityManager"/>
+    <property name="providers">
+        <list>
+            <ref bean="kradJpaPersistenceProvider"/>
+            <ref bean="kradMetadataProvider"/>
+        </list>
     </property>
   </bean>
 
@@ -183,5 +164,46 @@
   <bean class="org.kuali.rice.core.framework.resourceloader.RiceSpringResourceLoaderConfigurer">
     <property name="localServiceName" value="KRADTestContext"/>
   </bean>
+
+  <!-- JPA/KRAD config -->
+
+  <import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
+  <import resource="classpath:org/kuali/rice/krad/config/KRADSpringBeans-jpa.xml"/>
+
+  <bean id="kd-providerRegistry"
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
+        p:serviceName="kd-providerRegistry"/>
+
+  <bean id="kd-dataObjectService"
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
+        p:serviceName="kd-dataObjectService"/>
+
+  <!-- Enables Load-Time Weaving -->
+  <context:load-time-weaver/>
+
+  <bean id="jpaPackagesToScan" 
+  		class="org.kuali.rice.core.framework.util.spring.ListMergeBeanFactory">
+  		<constructor-arg>
+  			<list>
+  				<ref bean="coreJpaPackagesToScan"/>
+  				<ref bean="kradJpaPackagesToScan"/>
+  				<ref bean="moduleJpaPackagesToScan"/>
+  			</list>
+  		</constructor-arg>
+  </bean>
+
+  <util:list id="moduleJpaPackagesToScan">
+    <!-- include test entities -->
+    <value>org.kuali.rice.krad.test.document</value>
+    <value>org.kuali.rice.krad.data.provider.jpa.testbo</value>
+  </util:list>
+
+  <!-- Override the EntityManagerFactory -->
+  <bean id="kradEntityManagerFactory"
+        class="org.kuali.rice.krad.data.provider.jpa.eclipselink.KradEclipseLinkEntityManagerFactoryBean"
+        p:jtaDataSource-ref="riceDataSource"
+        p:persistenceUnitName="krad-application"
+        p:packagesToScan-ref="jpaPackagesToScan"/>
+        <!-- p:mappingResources="META-INF/krad-test-orm.xml" -->
 
 </beans>

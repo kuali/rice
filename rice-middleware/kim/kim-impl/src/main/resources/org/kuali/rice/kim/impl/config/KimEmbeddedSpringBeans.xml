@@ -27,6 +27,7 @@
   <import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/kim/impl/config/_KimCommonSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/kim/impl/config/_KimOjbSpringBeans.xml"/>
+  <import resource="classpath:org/kuali/rice/kim/impl/config/_KimJpaSpringBeans.xml"/>
 
     <!-- Forwards cache evictions to the kewCacheDistributionQueue on the standalone server, this allows the standalone
        server to handle distribution of cache flush messages -->
@@ -83,8 +84,7 @@
   -->
 
   <bean id="kimGroupService" class="org.kuali.rice.kim.impl.group.GroupServiceImpl"
-        p:businessObjectService-ref="rice.kim.import.businessObjectService"
-        p:criteriaLookupService-ref="rice.kim.import.criteriaLookupService"/>
+        p:dataObjectService-ref="dataObjectService"/>
 
   <!--
         Permission Service
@@ -208,7 +208,7 @@
         <value>classpath:org/kuali/rice/kim/bo/datadictionary/EntityType.xml</value>
         <value>classpath:org/kuali/rice/kim/bo/datadictionary/ExternalIdentifierType.xml</value>
         <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimAddressType.xml</value>
-        
+
         <value>classpath:org/kuali/rice/kim/impl/identity/PersonImpl.xml</value>
         <value>classpath:org/kuali/rice/kim/impl/role/RoleBo.xml</value>
         <value>classpath:org/kuali/rice/kim/impl/role/RoleMemberBo.xml</value>
@@ -288,6 +288,13 @@
         <entry key="org.kuali.rice.kim.framework.identity.phone.EntityPhoneTypeEbo"
                value="org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo"/>
       </map>
+    </property>
+    <property name="entityManager" ref="kimSharedEntityManager" />
+    <property name="providers">
+      <list>
+        <ref bean="kimJpaPersistenceProvider"/>
+        <ref bean="kimMetadataProvider"/>
+      </list>
     </property>
   </bean>
 

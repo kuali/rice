@@ -57,11 +57,6 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.kuali.rice</groupId>
-      <artifactId>rice-client-contrib</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
@@ -70,6 +65,12 @@
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>${mysql.jdbc.artifactId}</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.kuali.db.ojb</groupId>
+      <artifactId>db-ojb</artifactId>
       <scope>test</scope>
     </dependency>
 

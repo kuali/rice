@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krad.bo;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.util.RiceUtilities;
-import org.kuali.rice.krad.service.KRADServiceLocator;
+import java.io.IOException;
+import java.io.InputStream;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,33 +26,38 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.io.IOException;
-import java.io.InputStream;
+import javax.persistence.UniqueConstraint;
+
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.util.RiceUtilities;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
-@Table(name="KRNS_ATT_T")
+@Table(name="KRNS_ATT_T",uniqueConstraints= {
+        @UniqueConstraint(name="KRNS_ATT_TC0",columnNames="OBJ_ID")
+})
 public class Attachment extends PersistableBusinessObjectBase {
 	private static final long serialVersionUID = 402432724949441326L;
-	
+
     @Id
-	@Column(name="NTE_ID")
+	@Column(name="NTE_ID",length=14,precision=0,updatable=false)
 	private Long noteIdentifier;
-	@Column(name="MIME_TYP")
+	@Column(name="MIME_TYP",length=255)
 	private String attachmentMimeTypeCode;
-	@Column(name="FILE_NM")
+	@Column(name="FILE_NM",length=250)
 	private String attachmentFileName;
-	@Column(name="ATT_ID")
+	@Column(name="ATT_ID",length=36)
 	private String attachmentIdentifier;
-	@Column(name="FILE_SZ")
+	@Column(name="FILE_SZ",length=14,precision=0)
 	private Long attachmentFileSize;
-	@Column(name="ATT_TYP_CD")
+	@Column(name="ATT_TYP_CD",length=40)
 	private String attachmentTypeCode;
 
-    @OneToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="NTE_ID")
+    @OneToOne(fetch=FetchType.EAGER,cascade= {CascadeType.REFRESH,CascadeType.DETACH})
+	@JoinColumn(name="NTE_ID",updatable=false,insertable=false)
 	private Note note;
 
 	/**
@@ -165,10 +170,10 @@ public class Attachment extends PersistableBusinessObjectBase {
 	public void setAttachmentFileSize(Long attachmentFileSize) {
 		this.attachmentFileSize = attachmentFileSize;
 	}
-	
+
     /**
      * Returns the size of the attachment with units (byte, kilobyte, ...)
-     * 
+     *
      * @return String attachment file size
      */
     public String getAttachmentFileSizeWithUnits() {

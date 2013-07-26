@@ -143,6 +143,12 @@
 
     <dependency>
       <groupId>${project.groupId}</groupId>
+      <artifactId>rice-krad-data</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
       <artifactId>rice-krad-app-framework</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -351,6 +357,7 @@
     <dependency>
       <groupId>org.kuali.db.ojb</groupId>
       <artifactId>db-ojb</artifactId>
+      <optional>true</optional>
     </dependency>
 
     <dependency>
@@ -388,19 +395,6 @@
       <groupId>mysql</groupId>
       <artifactId>${mysql.jdbc.artifactId}</artifactId>
       <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-entitymanager</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate.javax.persistence</groupId>
-      <artifactId>hibernate-jpa-2.0-api</artifactId>
     </dependency>
 
     <dependency>

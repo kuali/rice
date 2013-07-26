@@ -115,6 +115,8 @@ public final class KIMPropertyConstants {
 		public static final String MEMBER_TYPE_CODE = "typeCode";
 		public static final String ACTIVE_FROM_DATE = "activeFromDate";
 		public static final String ACTIVE_TO_DATE = "activeToDate";
+        public static final String ACTIVE_FROM_DATE_VALUE = "activeFromDateValue";
+        public static final String ACTIVE_TO_DATE_VALUE = "activeToDateValue";
 		
 		private KimMember() {
 			throw new UnsupportedOperationException("do not call");

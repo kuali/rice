@@ -18,6 +18,7 @@ package org.kuali.rice.krms.impl.ui;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase;
 import org.kuali.rice.krad.uif.view.ViewModel;
@@ -71,7 +72,7 @@ public class CategoryValuesFinder extends UifKeyValuesFinderBase {
 
             Map<String, String> criteria = Collections.singletonMap("namespace", namespace);
             Collection<CategoryBo> categories =
-                    KRADServiceLocator.getBusinessObjectService().findMatchingOrderBy(
+                    KNSServiceLocator.getBusinessObjectService().findMatchingOrderBy(
                             CategoryBo.class, criteria, "name", true
                     );
 

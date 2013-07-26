@@ -15,6 +15,14 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.StopWatch;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -28,8 +36,8 @@ import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.PersonService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.UserSessionUtils;
 import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.UserSessionUtils;
 import org.kuali.rice.krad.bo.AdHocRoutePerson;
 import org.kuali.rice.krad.bo.AdHocRouteRecipient;
 import org.kuali.rice.krad.bo.AdHocRouteWorkgroup;
@@ -42,10 +50,11 @@ import org.kuali.rice.krad.datadictionary.exception.UnknownDocumentTypeException
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.DocumentAuthorizer;
 import org.kuali.rice.krad.document.DocumentPresentationController;
-import org.kuali.rice.krad.maintenance.MaintenanceDocument;
-import org.kuali.rice.krad.maintenance.MaintenanceDocumentBase;
 import org.kuali.rice.krad.exception.DocumentAuthorizationException;
 import org.kuali.rice.krad.exception.ValidationException;
+import org.kuali.rice.krad.maintenance.Maintainable;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
+import org.kuali.rice.krad.maintenance.MaintenanceDocumentBase;
 import org.kuali.rice.krad.rules.rule.event.ApproveDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.BlanketApproveDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.CompleteDocumentEvent;
@@ -53,29 +62,22 @@ import org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.RouteDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.SaveDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.SaveEvent;
-import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataDictionaryService;
+import org.kuali.rice.krad.service.DocumentAdHocService;
 import org.kuali.rice.krad.service.DocumentDictionaryService;
 import org.kuali.rice.krad.service.DocumentHeaderService;
 import org.kuali.rice.krad.service.DocumentService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.NoteService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.KRADUtils;
+import org.kuali.rice.krad.util.LegacyUtils;
 import org.kuali.rice.krad.util.NoteType;
-import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
 import org.springframework.dao.OptimisticLockingFailureException;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 
 
 /**
@@ -94,7 +96,7 @@ public class DocumentServiceImpl implements DocumentService {
     private DateTimeService dateTimeService;
     private NoteService noteService;
     private WorkflowDocumentService workflowDocumentService;
-    private BusinessObjectService businessObjectService;
+    private LegacyDataAdapter legacyDataAdapter;
     private DataDictionaryService dataDictionaryService;
     private DocumentHeaderService documentHeaderService;
     private DocumentDictionaryService documentDictionaryService;
@@ -154,7 +156,7 @@ public class DocumentServiceImpl implements DocumentService {
                         paramList.add(null);
                     }
                 }
-                if (ObjectUtils.isNotNull(usableConstructor)) {
+                if (KRADUtils.isNotNull(usableConstructor)) {
                     break;
                 }
             }
@@ -227,7 +229,7 @@ public class DocumentServiceImpl implements DocumentService {
      */
     @Override
     public Document superUserApproveDocument(Document document, String annotation) throws WorkflowException {
-        getDocumentDao().save(document);
+    	getLegacyDataAdapter().saveDocument(document);
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().superUserApprove(document.getDocumentHeader().getWorkflowDocument(), annotation);
         UserSessionUtils.addWorkflowDocument(GlobalVariables.getUserSession(),
@@ -242,7 +244,7 @@ public class DocumentServiceImpl implements DocumentService {
      */
     @Override
     public Document superUserCancelDocument(Document document, String annotation) throws WorkflowException {
-        getDocumentDao().save(document);
+    	getLegacyDataAdapter().saveDocument(document);
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().superUserCancel(document.getDocumentHeader().getWorkflowDocument(), annotation);
         UserSessionUtils.addWorkflowDocument(GlobalVariables.getUserSession(),
@@ -257,7 +259,7 @@ public class DocumentServiceImpl implements DocumentService {
      */
     @Override
     public Document superUserDisapproveDocument(Document document, String annotation) throws WorkflowException {
-        getDocumentDao().save(document);
+    	getLegacyDataAdapter().saveDocument(document);
         return superUserDisapproveDocumentWithoutSaving(document, annotation);
     }
 
@@ -463,9 +465,9 @@ public class DocumentServiceImpl implements DocumentService {
         }
         Map<String, String> criteria = new HashMap<String, String>();
         criteria.put("documentNumber", document.getDocumentNumber());
-        getBusinessObjectService().deleteMatching(AdHocRouteRecipient.class, criteria);
+        getLegacyDataAdapter().deleteMatching(AdHocRouteRecipient.class, criteria);
 
-        getBusinessObjectService().save(adHocRoutingRecipients);
+        getLegacyDataAdapter().save(adHocRoutingRecipients);
         return validateAndPersistDocument(document, event);
     }
 
@@ -561,7 +563,7 @@ public class DocumentServiceImpl implements DocumentService {
             initiator = GlobalVariables.getUserSession().getPerson();
         } else {
             initiator = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(initiatorPrincipalNm);
-            if (ObjectUtils.isNull(initiator)) {
+            if (initiator == null) {
                 initiator = GlobalVariables.getUserSession().getPerson();
             }
         }
@@ -571,7 +573,9 @@ public class DocumentServiceImpl implements DocumentService {
         DocumentPresentationController documentPresentationController =
                 getDocumentDictionaryService().getDocumentPresentationController(documentTypeName);
         // make sure this person is authorized to initiate
-        LOG.debug("calling canInitiate from getNewDocument()");
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("calling canInitiate from getNewDocument(" + documentTypeName + "," + initiatorPrincipalNm + ")");
+        }
         if (!documentPresentationController.canInitiate(documentTypeName) ||
                 !documentAuthorizer.canInitiate(documentTypeName, initiator)) {
             throw new DocumentAuthorizationException(initiator.getPrincipalName(), "initiate", documentTypeName);
@@ -582,20 +586,9 @@ public class DocumentServiceImpl implements DocumentService {
         UserSessionUtils.addWorkflowDocument(GlobalVariables.getUserSession(), workflowDocument);
 
         // create a new document header object
-        DocumentHeader documentHeader = null;
-        try {
-            // create a new document header object
-            Class<? extends DocumentHeader> documentHeaderClass =
-                    getDocumentHeaderService().getDocumentHeaderBaseClass();
-            documentHeader = documentHeaderClass.newInstance();
-            documentHeader.setWorkflowDocument(workflowDocument);
-            documentHeader.setDocumentNumber(workflowDocument.getDocumentId());
-            // status and notes are initialized correctly in the constructor
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("Error instantiating DocumentHeader", e);
-        } catch (InstantiationException e) {
-            throw new RuntimeException("Error instantiating DocumentHeader", e);
-        }
+        DocumentHeader documentHeader = new DocumentHeader();
+        documentHeader.setWorkflowDocument(workflowDocument);
+        documentHeader.setDocumentNumber(workflowDocument.getDocumentId());
 
         // build Document of specified type
         Document document = null;
@@ -604,7 +597,7 @@ public class DocumentServiceImpl implements DocumentService {
             if (MaintenanceDocumentBase.class.isAssignableFrom(documentClass)) {
                 Class<?>[] defaultConstructor = new Class[]{String.class};
                 Constructor<? extends Document> cons = documentClass.getConstructor(defaultConstructor);
-                if (ObjectUtils.isNull(cons)) {
+                if (cons == null) {
                     throw new ConfigurationException(
                             "Could not find constructor with document type name parameter needed for Maintenance Document Base class");
                 }
@@ -686,7 +679,14 @@ public class DocumentServiceImpl implements DocumentService {
 	        Class<? extends Document> documentClass = getDocumentClassByTypeName(workflowDocument.getDocumentTypeName());
 
             // retrieve the Document
-            Document document = getDocumentDao().findByDocumentHeaderId(documentClass, documentHeaderId);
+//	        getLegacyDataAdapter().
+	        Document document = null;
+	        if (LegacyUtils.useLegacy(documentClass)) {
+	        	document = getDocumentDao().findByDocumentHeaderId(documentClass, documentHeaderId);
+	        } else {
+	        	document = KRADServiceLocator.getDataObjectService().find(documentClass, documentHeaderId);
+        		((DocumentAdHocService) KRADServiceLocatorWeb.getService("documentAdHocService")).addAdHocs(document);
+	        }
 
             return postProcessDocument(documentHeaderId, workflowDocument, document);
         } finally {
@@ -719,7 +719,13 @@ public class DocumentServiceImpl implements DocumentService {
         Class<? extends Document> documentClass = getDocumentClassByTypeName(workflowDocument.getDocumentTypeName());
 
         // retrieve the Document
-        Document document = getDocumentDao().findByDocumentHeaderId(documentClass, documentHeaderId);
+        Document document = null;
+        if (LegacyUtils.useLegacy(documentClass)) {
+        	document = getDocumentDao().findByDocumentHeaderId(documentClass, documentHeaderId);
+        } else {
+        	document = KRADServiceLocator.getDataObjectService().find(documentClass, documentHeaderId);
+        	((DocumentAdHocService) KRADServiceLocatorWeb.getService("documentAdHocService")).addAdHocs(document);
+        }
 
         return postProcessDocument(documentHeaderId, workflowDocument, document);
     }
@@ -742,15 +748,23 @@ public class DocumentServiceImpl implements DocumentService {
      *
      * @param document the document for which to load the notes
      */
-    protected void loadNotes(Document document) {
+    protected void loadNotes(final Document document) {
         if (isNoteTargetReady(document)) {
+            Object legacyObjectClass;
+            if (document instanceof MaintenanceDocument) {
+                MaintenanceDocument mdoc = (MaintenanceDocument) document;
+                legacyObjectClass = ((Maintainable) org.apache.commons.lang.ObjectUtils.defaultIfNull(mdoc.getOldMaintainableObject(), mdoc.getNewMaintainableObject())).getDataObjectClass();
+            } else {
+                legacyObjectClass = document.getClass();
+            }
+
             List<Note> notes = new ArrayList<Note>();
             if (StringUtils.isNotBlank(document.getNoteTarget().getObjectId())) {
                 notes.addAll(getNoteService().getByRemoteObjectId(document.getNoteTarget().getObjectId()));
             }
             //notes created on 'disapprove' are linked to Doc Header, so this checks that even if notetype = BO
-            if (document.getNoteType().equals(NoteType.BUSINESS_OBJECT)
-                 && document.getDocumentHeader().getWorkflowDocument().isDisapproved()) {
+            if (document.getNoteType().equals(NoteType.BUSINESS_OBJECT) && document.getDocumentHeader()
+                    .getWorkflowDocument().isDisapproved()) {
                 notes.addAll(getNoteService().getByRemoteObjectId(document.getDocumentHeader().getObjectId()));
             }
 
@@ -760,6 +774,7 @@ public class DocumentServiceImpl implements DocumentService {
                 note.refreshReferenceObject("attachment");
             }
             document.setNotes(notes);
+
         }
     }
 
@@ -856,13 +871,13 @@ public class DocumentServiceImpl implements DocumentService {
             if (LOG.isInfoEnabled()) {
                 LOG.info("storing document " + document.getDocumentNumber());
             }
-            savedDocument = getDocumentDao().save(document);
+            savedDocument = getLegacyDataAdapter().saveDocument(document);
         } catch (OptimisticLockingFailureException e) {
             LOG.error("exception encountered on store of document " + e.getMessage());
             throw e;
         }
 
-        boolean notesSaved = saveDocumentNotes(document);
+        boolean notesSaved = saveDocumentNotes(savedDocument);
         if (!notesSaved) {
             if (LOG.isInfoEnabled()) {
                 LOG.info(
@@ -930,7 +945,7 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public Document updateDocument(Document document) {
         checkForNulls(document);
-        return getDocumentDao().save(document);
+        return getLegacyDataAdapter().saveDocument(document);
     }
 
     /**
@@ -1055,8 +1070,8 @@ public class DocumentServiceImpl implements DocumentService {
     private void removeAdHocPersonsAndWorkgroups(Document document) {
         List<AdHocRoutePerson> adHocRoutePersons = new ArrayList<AdHocRoutePerson>();
         List<AdHocRouteWorkgroup> adHocRouteWorkgroups = new ArrayList<AdHocRouteWorkgroup>();
-        getBusinessObjectService().delete(document.getAdHocRoutePersons());
-        getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
+        getLegacyDataAdapter().delete(document.getAdHocRoutePersons());
+        getLegacyDataAdapter().delete(document.getAdHocRouteWorkgroups());
         document.setAdHocRoutePersons(adHocRoutePersons);
         document.setAdHocRouteWorkgroups(adHocRouteWorkgroups);
     }
@@ -1083,15 +1098,12 @@ public class DocumentServiceImpl implements DocumentService {
         return this.noteService;
     }
 
-    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
+    public void setLegacyDataAdapter(LegacyDataAdapter legacyDataAdapter) {
+        this.legacyDataAdapter = legacyDataAdapter;
     }
 
-    protected BusinessObjectService getBusinessObjectService() {
-        if (this.businessObjectService == null) {
-            this.businessObjectService = KRADServiceLocator.getBusinessObjectService();
-        }
-        return this.businessObjectService;
+    protected LegacyDataAdapter getLegacyDataAdapter() {
+        return this.legacyDataAdapter;
     }
 
     public void setWorkflowDocumentService(WorkflowDocumentService workflowDocumentService) {

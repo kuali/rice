@@ -19,10 +19,10 @@ import org.apache.ojb.broker.metadata.DescriptorRepository;
 import org.apache.ojb.broker.metadata.MetadataManager;
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.util.ClasspathOrFileResourceLoader;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.impl.KIMPropertyConstants;
 import org.kuali.rice.kim.impl.identity.PersonServiceImpl;
 import org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierBo;
 import org.kuali.rice.kim.test.KIMTestCase;
@@ -35,7 +35,6 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.test.BaselineTestCase;
-import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.util.AutoPopulatingList;
 
 import javax.xml.namespace.QName;
@@ -79,7 +78,7 @@ public class PersonServiceImplTest extends KIMTestCase {
 		externalIdentifier.setEntityId(principal.getEntityId());
 		externalIdentifier.setExternalId("000-00-0000");
 		externalIdentifier.setExternalIdentifierTypeCode("SSN");
-		KRADServiceLocator.getBusinessObjectService().save(externalIdentifier);
+        KNSServiceLocator.getBusinessObjectService().save(externalIdentifier);
 		
 		List<Person> people = personService.getPersonByExternalIdentifier( "SSN", "000-00-0000" );
 		assertNotNull( "result object must not be null", people );
@@ -309,14 +308,14 @@ public class PersonServiceImplTest extends KIMTestCase {
 	public void testLookupWithPersonJoin() throws Exception {
 		
 		// merge the OJB file in containing the OJB metadata
-        InputStream is = new DefaultResourceLoader().getResource("classpath:org/kuali/rice/kim/test/OJB-repository-kimunittests.xml").getInputStream();
+        InputStream is = new ClasspathOrFileResourceLoader().getResource("classpath:org/kuali/rice/kim/test/OJB-repository-kimunittests.xml").getInputStream();
         MetadataManager mm = MetadataManager.getInstance();
         DescriptorRepository dr = mm.readDescriptorRepository(is);
         mm.mergeDescriptorRepository(dr);
 		
 		KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().addConfigFileLocation("KR-KIM", "classpath:org/kuali/rice/kim/bo/datadictionary/test/BOContainingPerson.xml" );
 		KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().parseDataDictionaryConfigurationFiles( false );
-		BusinessObjectService bos = KRADServiceLocator.getBusinessObjectService();
+		BusinessObjectService bos = KNSServiceLocator.getBusinessObjectService();
 		bos.delete( new ArrayList(bos.findAll( BOContainingPerson.class )) );
 		BOContainingPerson bo = new BOContainingPerson();
 		bo.setBoPrimaryKey( "ONE" );

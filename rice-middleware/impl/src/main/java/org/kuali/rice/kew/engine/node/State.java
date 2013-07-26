@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kew.engine.node;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -38,10 +36,6 @@ import java.util.LinkedHashMap;
 public abstract class State extends PersistableBusinessObjectBase implements KeyValue {
     @Id
     @GeneratedValue(generator="KREW_RTE_NODE_S")
-	@GenericGenerator(name="KREW_RTE_NODE_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_RTE_NODE_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	protected String stateId;
 	private String key;
     private String value;

@@ -16,10 +16,6 @@
 package org.kuali.rice.kew.rule.bo;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.api.extension.ExtensionDefinitionContract;
@@ -65,10 +61,6 @@ public class RuleAttribute extends PersistableBusinessObjectBase implements Exte
 
 	@Id
 	@GeneratedValue(generator="KREW_RTE_TMPL_S")
-	@GenericGenerator(name="KREW_RTE_TMPL_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_RTE_TMPL_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="RULE_ATTR_ID")
 	private String id;
     @Column(name="NM")
@@ -91,7 +83,6 @@ public class RuleAttribute extends PersistableBusinessObjectBase implements Exte
     
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
            targetEntity=RuleTemplateAttributeBo.class, mappedBy="ruleAttribute")
-    @Fetch(value=FetchMode.SELECT)
 	private List ruleTemplateAttributes;
     @Transient
     private List validValues;

@@ -17,27 +17,29 @@ package org.kuali.rice.krms.impl.ui;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.core.api.util.tree.Node;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.controller.MaintenanceDocumentController;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
 import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krms.api.KrmsApiServiceLocator;
 import org.kuali.rice.krms.api.engine.expression.ComparisonOperatorService;
+import org.kuali.rice.krms.api.repository.LogicalOperator;
+import org.kuali.rice.krms.api.repository.proposition.PropositionType;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.kuali.rice.krms.api.repository.term.TermDefinition;
 import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
 import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.impl.repository.ActionBo;
-import org.kuali.rice.krms.api.repository.LogicalOperator;
-import org.kuali.rice.krms.api.repository.proposition.PropositionType;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.AgendaItemBo;
 import org.kuali.rice.krms.impl.repository.ContextBoService;
@@ -183,7 +185,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             agendaEditor.setAgendaItemLine(agendaItem);
         } else {
             // TODO: Add a copy not the reference
-            agendaEditor.setAgendaItemLine((AgendaItemBo) ObjectUtils.deepCopy(agendaItem));
+            agendaEditor.setAgendaItemLine((AgendaItemBo) SerializationUtils.deepCopy(agendaItem));
         }
 
 
@@ -456,7 +458,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 criteria.put("specification.namespace", namespace);
 
                 Collection<TermBo> matchingTerms =
-                        KRADServiceLocator.getBusinessObjectService().findMatching(TermBo.class, criteria);
+                        KNSServiceLocator.getBusinessObjectService().findMatching(TermBo.class, criteria);
 
                 if (!CollectionUtils.isEmpty(matchingTerms)) {
                     // this is a Warning -- maybe it should be an error?
@@ -2192,7 +2194,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 }
             }
         } else { // no parent, it is the root
-            if (ObjectUtils.isNotNull(parentNode)) {
+            if (KRADUtils.isNotNull(parentNode)) {
                 parentNode.getChildren().clear();
                 agendaEditor.getAgendaItemLine().getRule().getPropositionTree().setRootElement(null);
                 agendaEditor.getAgendaItemLine().getRule().setPropId(null);

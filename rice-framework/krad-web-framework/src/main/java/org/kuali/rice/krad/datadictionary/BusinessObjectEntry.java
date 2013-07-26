@@ -109,11 +109,4 @@ public class BusinessObjectEntry extends DataObjectEntry {
         }
     }
 
-    /**
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        return "BusinessObjectEntry for " + getBusinessObjectClass();
-    }
 }

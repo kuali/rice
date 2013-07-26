@@ -27,12 +27,26 @@ import java.util.List;
  *
  */
 public interface InactivationBlockingDisplayService {
-	/**
+
+    /**
 	 * Retrieves a List of Strings representing each record that blocks the inactivation of blockedBo
 	 *
 	 * @param blockedBo
 	 * @param inactivationBlockingMetadata the blocking relationship
 	 * @return
+     *
+     * @deprecated use {@link #displayAllBlockingRecords(Object, org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata)} instead
 	 */
-	public List<String> listAllBlockerRecords(BusinessObject blockedBo, InactivationBlockingMetadata inactivationBlockingMetadata);
+    @Deprecated
+	List<String> listAllBlockerRecords(BusinessObject blockedBo, InactivationBlockingMetadata inactivationBlockingMetadata);
+
+    /**
+     * Retrieves a List of Strings representing each record that blocks the inactivation of blockedDataObject
+     *
+     * @param blockedDataObject
+     * @param inactivationBlockingMetadata the blocking relationship
+     * @return list of all bocking records
+     */
+    List<String> displayAllBlockingRecords(Object blockedDataObject, InactivationBlockingMetadata inactivationBlockingMetadata);
+
 }

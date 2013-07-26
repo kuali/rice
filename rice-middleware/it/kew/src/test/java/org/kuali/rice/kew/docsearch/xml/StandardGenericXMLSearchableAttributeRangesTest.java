@@ -15,11 +15,21 @@
  */
 package org.kuali.rice.kew.docsearch.xml;
 
-import com.google.common.base.Function;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.core.api.uif.DataType;
+import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
@@ -50,12 +60,7 @@ import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.util.KRADConstants;
 
-import javax.annotation.Nullable;
-import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.List;
-
-import static org.junit.Assert.*;
+import com.google.common.base.Function;
 
 /**
  * Tests the StandardGenericXMLSearchableAttribute.

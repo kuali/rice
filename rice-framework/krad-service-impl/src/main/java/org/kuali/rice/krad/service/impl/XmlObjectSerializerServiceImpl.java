@@ -15,43 +15,43 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import javax.persistence.Transient;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.kuali.rice.krad.service.LegacyDataAdapter;
+import org.kuali.rice.krad.service.XmlObjectSerializerService;
+import org.kuali.rice.krad.service.util.DateTimeConverter;
+import org.springframework.beans.factory.annotation.Required;
+
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.MarshallingContext;
-import com.thoughtworks.xstream.converters.SingleValueConverter;
 import com.thoughtworks.xstream.converters.reflection.ObjectAccessException;
 import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
 import com.thoughtworks.xstream.converters.reflection.ReflectionConverter;
 import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.mapper.Mapper;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl;
-import org.joda.time.DateTime;
-import org.joda.time.format.ISODateTimeFormat;
-import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.service.PersistenceService;
-import org.kuali.rice.krad.service.XmlObjectSerializerService;
-import org.kuali.rice.krad.service.util.DateTimeConverter;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 
 /**
  * Service implementation for the XmlObjectSerializer structure. This is the default implementation that gets
  * delivered with Kuali. It utilizes the XStream open source libraries and framework.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerService {
 	private static final Log LOG = LogFactory.getLog(XmlObjectSerializerServiceImpl.class);
-	
-	private PersistenceService persistenceService;
-	
-	private XStream xstream;
-	
+
+	protected LegacyDataAdapter lda;
+
+	protected XStream xstream;
+
 	public XmlObjectSerializerServiceImpl() {
 		xstream = new XStream(new ProxyAwareJavaReflectionProvider());
 
@@ -71,24 +71,30 @@ public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerServic
 //        xstream.registerConverter(new CGLIBEnhancedConverter(xstream.getMapper(), xstream.getReflectionProvider()));
 
 		xstream.registerConverter(new ProxyConverter(xstream.getMapper(), xstream.getReflectionProvider() ));
-		xstream.addDefaultImplementation(ArrayList.class, ListProxyDefaultImpl.class);
+        try {
+        	Class<?> objListProxyClass = Class.forName("org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl");
+            xstream.addDefaultImplementation(ArrayList.class, objListProxyClass);
+        } catch ( Exception ex ) {
+        	// Do nothing - this will blow if the OJB class does not exist, which it won't in some installs
+        }
         xstream.registerConverter(new DateTimeConverter());
 	}
-	
-    /**
-     * @see org.kuali.rice.krad.service.XmlObjectSerializer#toXml(java.lang.Object)
-     */
-    public String toXml(Object object) {
+
+    @Required
+    public void setLegacyDataAdapter(LegacyDataAdapter lda) {
+        this.lda = lda;
+    }
+
+    @Override
+	public String toXml(Object object) {
     	if ( LOG.isDebugEnabled() ) {
     		LOG.debug( "toXml(" + object + ") : \n" + xstream.toXML(object) );
     	}
         return xstream.toXML(object);
     }
 
-    /**
-     * @see org.kuali.rice.krad.service.XmlObjectSerializer#fromXml(java.lang.String)
-     */
-    public Object fromXml(String xml) {
+    @Override
+	public Object fromXml(String xml) {
     	if ( LOG.isDebugEnabled() ) {
     		LOG.debug( "fromXml() : \n" + xml );
     	}
@@ -100,13 +106,13 @@ public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerServic
 
     /**
      * This custom converter only handles proxies for BusinessObjects.  List-type proxies are handled by configuring XStream to treat
-     * ListProxyDefaultImpl as ArrayLists (see constructor for this service). 
+     * ListProxyDefaultImpl as ArrayLists (see constructor for this service).
      */
     public class ProxyConverter extends ReflectionConverter {
         public ProxyConverter(Mapper mapper, ReflectionProvider reflectionProvider) {
             super(mapper, reflectionProvider);
         }
-        
+
         @Override
         // since the ReflectionConverter supertype defines canConvert without using a parameterized Class type, we must declare
         // the overridden version the same way
@@ -117,12 +123,12 @@ public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerServic
 
         @Override
         public void marshal(Object obj, HierarchicalStreamWriter writer, MarshallingContext context) {
-            super.marshal(getPersistenceService().resolveProxy(obj), writer, context);
+            super.marshal(lda.resolveProxy(obj), writer, context);
         }
-        
-        // we shouldn't need an unmarshal method because all proxy metadata is taken out of the XML, so we'll reserialize as a base BO. 
+
+        // we shouldn't need an unmarshal method because all proxy metadata is taken out of the XML, so we'll reserialize as a base BO.
     }
-    
+
     public class ProxyAwareJavaReflectionProvider extends PureJavaReflectionProvider {
 
     	public ProxyAwareJavaReflectionProvider() {
@@ -139,11 +145,14 @@ public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerServic
                     continue;
                 }
                 validateFieldAccess(field);
+                if (ignoreField(field)) {
+                    continue;
+                }
                 Object value = null;
                 try {
                     value = field.get(object);
-                    if (value != null && getPersistenceService().isProxied(value)) {
-                        value = getPersistenceService().resolveProxy(value);
+                    if (value != null && lda.isProxied(value)) {
+                        value = lda.resolveProxy(value);
                     }
                 } catch (IllegalArgumentException e) {
                     throw new ObjectAccessException("Could not get field " + field.getClass() + "." + field.getName(), e);
@@ -153,14 +162,22 @@ public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerServic
                 visitor.visit(field.getName(), field.getType(), field.getDeclaringClass(), value);
             }
         }
-        
+        protected boolean ignoreField(Field field) {
+        	// Ignore @Transient annotated fields when saving to XML
+        	Annotation transientAnnotation = field.getAnnotation(Transient.class);
+        	if ( transientAnnotation != null ) {
+        		return true;
+        	}
+            return false;
+        }
+
     }
 
-	public PersistenceService getPersistenceService() {
-		if ( persistenceService == null ) {
-			persistenceService = KRADServiceLocator.getPersistenceService();
-		}
-		return persistenceService;
-	}
+//	public PersistenceService getPersistenceService() {
+//		if ( persistenceService == null ) {
+//			persistenceService = KRADServiceLocator.getPersistenceService();
+//		}
+//		return persistenceService;
+//	}
 
 }

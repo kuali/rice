@@ -16,8 +16,6 @@
 package org.kuali.rice.kew.rule;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.kew.api.rule.RuleDelegationContract;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -54,10 +52,6 @@ public class RuleDelegationBo extends PersistableBusinessObjectBase implements R
 	private static final long serialVersionUID = 7989203310473741293L;
 	@Id
 	@GeneratedValue(generator="KREW_RTE_TMPL_S")
-	@GenericGenerator(name="KREW_RTE_TMPL_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_RTE_TMPL_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="DLGN_RULE_ID")
 	private String ruleDelegationId;
     @Column(name="RSP_ID")

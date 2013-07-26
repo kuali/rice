@@ -16,8 +16,6 @@
 package org.kuali.rice.kim.bo.ui;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 
@@ -42,10 +40,6 @@ public class PersonDocumentGroup extends KimDocumentBoActivatableToFromEditableB
 	private static final long serialVersionUID = -1551337026170706411L;
 	@Id
 	@GeneratedValue(generator="KRIM_GRP_MBR_ID_S")
-	@GenericGenerator(name="KRIM_GRP_MBR_ID_S",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KRIM_GRP_MBR_ID_S"),
-			@Parameter(name="value_column",value="id")
-		})
 	@Column(name="GRP_MBR_ID")
 	protected String groupMemberId;
 	@Column(name="GRP_TYPE")

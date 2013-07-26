@@ -17,19 +17,16 @@ package org.kuali.rice.krad.dao.proxy;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.core.api.config.ConfigurationException;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.krad.bo.ModuleConfiguration;
 import org.kuali.rice.krad.dao.LookupDao;
-import org.kuali.rice.krad.dao.impl.LookupDaoJpa;
 import org.kuali.rice.krad.dao.impl.LookupDaoOjb;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.service.ModuleService;
+import org.kuali.rice.krad.util.LegacyUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -38,14 +35,9 @@ import java.util.Map;
 @Transactional
 public class LookupDaoProxy implements LookupDao {
     
-	private LookupDao lookupDaoJpa;
 	private LookupDao lookupDaoOjb;
     private static KualiModuleService kualiModuleService;
     private static Map<String, LookupDao> lookupDaoValues = Collections.synchronizedMap(new HashMap<String, LookupDao>());
-	
-    public void setLookupDaoJpa(LookupDao lookupDaoJpa) {
-		this.lookupDaoJpa = lookupDaoJpa;
-	}
 	
 	public void setLookupDaoOjb(LookupDao lookupDaoOjb) {
 		this.lookupDaoOjb = lookupDaoOjb;
@@ -56,29 +48,16 @@ public class LookupDaoProxy implements LookupDao {
         if (moduleService != null) {
             ModuleConfiguration moduleConfig = moduleService.getModuleConfiguration();
             String dataSourceName = "";
-            EntityManager entityManager = null;
             if (moduleConfig != null) {
                 dataSourceName = moduleConfig.getDataSourceName();
-                entityManager = moduleConfig.getEntityManager();
             }
 
             if (StringUtils.isNotEmpty(dataSourceName)) {
                 if (lookupDaoValues.get(dataSourceName) != null) {
                     return lookupDaoValues.get(dataSourceName);
                 } else {         
-                    if (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) {
-                        //using JPA       	
-                	    LookupDaoJpa classSpecificLookupDaoJpa = new LookupDaoJpa();
-                		if (entityManager != null) {
-                			classSpecificLookupDaoJpa.setEntityManager(entityManager);
-                			classSpecificLookupDaoJpa.setPersistenceStructureService(
-                                    KRADServiceLocator.getPersistenceStructureService());
-                        	classSpecificLookupDaoJpa.setDateTimeService(CoreApiServiceLocator.getDateTimeService());
-                			lookupDaoValues.put(dataSourceName, classSpecificLookupDaoJpa);
-                			return classSpecificLookupDaoJpa;
-                		} else {
-                			throw new ConfigurationException("EntityManager is null. EntityManager must be set in the Module Configuration bean in the appropriate spring beans xml. (see nested exception for details).");
-                		}
+                    if (!LegacyUtils.useLegacy(clazz)) {
+                        throw new IllegalStateException(this.getClass() + " called with non-legacy class: " + clazz);
 					} else {
 						LookupDaoOjb classSpecificLookupDaoOjb = new LookupDaoOjb();
                         classSpecificLookupDaoOjb.setJcdAlias(dataSourceName);
@@ -94,8 +73,10 @@ public class LookupDaoProxy implements LookupDao {
 
             }
         }
-        //return lookupDaoJpa;
-        return (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) ? lookupDaoJpa : lookupDaoOjb;
+        if (!LegacyUtils.useLegacy(clazz)) {
+            throw new IllegalStateException(this.getClass() + " called with non-legacy class: " + clazz);
+        }
+        return lookupDaoOjb;
     }
     
 	/**
@@ -145,12 +126,10 @@ public class LookupDaoProxy implements LookupDao {
 		return getDao(example.getClass()).findCountByMap(example, formProps);
 	}
 
-	/**
-	 * @see org.kuali.rice.krad.dao.LookupDao#findObjectByMap(java.lang.Object, java.util.Map)
-	 */
-	public Object findObjectByMap(Object example, Map formProps) {
-		return getDao(example.getClass()).findObjectByMap(example, formProps);
-	}
+    @Override
+    public <T extends Object> T findObjectByMap(Class<T> type, Map<String, String> formProps) {
+        return getDao(type).findObjectByMap(type, formProps);
+    }
 
 	private static KualiModuleService getKualiModuleService() {
         if (kualiModuleService == null) {

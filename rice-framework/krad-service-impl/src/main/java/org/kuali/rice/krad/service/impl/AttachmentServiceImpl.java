@@ -21,10 +21,10 @@ import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.krad.bo.Attachment;
 import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.dao.AttachmentDao;
-import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.AttachmentService;
+import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedInputStream;
@@ -45,14 +45,20 @@ public class AttachmentServiceImpl implements AttachmentService {
     private static Logger LOG = Logger.getLogger(AttachmentServiceImpl.class);
 
     private ConfigurationService kualiConfigurationService;
-    private AttachmentDao attachmentDao;
+    private LegacyDataAdapter lda;
+
+    @Required
+    public void setLegacyDataAdapter(LegacyDataAdapter lpd) {
+        this.lda = lda;
+    }
+
     /**
      * Retrieves an Attachment by note identifier.
      * 
      * @see org.kuali.rice.krad.service.AttachmentService#getAttachmentByNoteId(java.lang.Long)
      */
     public Attachment getAttachmentByNoteId(Long noteId) {
-		return attachmentDao.getAttachmentByNoteId(noteId);
+		return lda.getAttachmentByNoteId(noteId);
 	}
 
     /**
@@ -248,23 +254,6 @@ public class AttachmentServiceImpl implements AttachmentService {
             }
         }
         
-    }
-    
-    // needed for Spring injection
-    /**
-     * Sets the data access object
-     * 
-     * @param d
-     */
-    public void setAttachmentDao(AttachmentDao d) {
-        this.attachmentDao = d;
-    }
-
-    /**
-     * Retrieves a data access object
-     */
-    public AttachmentDao getAttachmentDao() {
-        return attachmentDao;
     }
 
     /**

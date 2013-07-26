@@ -16,8 +16,6 @@
 package org.kuali.rice.kim.bo.ui;
 
 import org.apache.log4j.Logger;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
@@ -82,8 +80,7 @@ public class PersonDocumentRole extends KimDocumentBoActivatableEditableBase {
 	@Transient
 	protected transient Map<String,Object> attributeEntry;
 	@OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.ALL})
-    @Fetch(value = FetchMode.SELECT)
-	@JoinColumns({
+    @JoinColumns({
 		@JoinColumn(name="ROLE_ID",insertable=false,updatable=false),
 		@JoinColumn(name="FDOC_NBR", insertable=false, updatable=false)
 	})
@@ -94,7 +91,6 @@ public class PersonDocumentRole extends KimDocumentBoActivatableEditableBase {
 	//The reason for this is it is linked with a partial Composite-id, which technically can't 
 	//guarantee uniqueness.  
 	@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.ALL})
-    @Fetch(value = FetchMode.SELECT)
     @JoinColumn(name="ROLE_ID",insertable=false,updatable=false)
     //@JoinColumns({
 	//	@JoinColumn(name="ROLE_ID",insertable=false,updatable=false),

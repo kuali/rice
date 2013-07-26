@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.krad.bo;
 
+/**
+ * @deprecated use new KRAD Data framework {@link org.kuali.rice.krad.data.DataObjectService}
+ */
+@Deprecated
 public interface ExternalizableBusinessObject extends BusinessObject {
 
 }

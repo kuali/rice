@@ -114,7 +114,7 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
             // Retrieving the FileName from BO table
             Maintainable tmpMaintainable = form.getDocument().getNewMaintainableObject();
             if (tmpMaintainable.getDataObject() instanceof PersistableAttachment) {
-                PersistableAttachment bo = (PersistableAttachment) getBusinessObjectService()
+                PersistableAttachment bo = (PersistableAttachment) getLegacyDataAdapter()
                         .retrieve((PersistableBusinessObject) tmpMaintainable.getDataObject());
                 if (bo != null) {
                     request.setAttribute("fileName", bo.getFileName());
@@ -250,7 +250,7 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
 
         MaintenanceDocument document = (MaintenanceDocument) form.getDocument();
         if (document.getNewMaintainableObject().getDataObject() instanceof PersistableAttachment) {
-            PersistableAttachment bo = (PersistableAttachment) getBusinessObjectService()
+            PersistableAttachment bo = (PersistableAttachment) getLegacyDataAdapter()
                     .retrieve((PersistableBusinessObject) document.getNewMaintainableObject().getDataObject());
             request.setAttribute("fileName", bo.getFileName());
         }

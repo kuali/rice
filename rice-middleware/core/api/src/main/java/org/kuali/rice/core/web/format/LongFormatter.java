@@ -21,15 +21,18 @@ import org.kuali.rice.core.api.util.RiceKeyConstants;
 /**
  * This class is used to format Long objects.
  */
+@Deprecated
 public class LongFormatter extends Formatter {
     private static final long serialVersionUID = -926525576380295384L;
 
     /**
      * Returns an object representation of the provided string.
      */
+    @Override
     protected Object convertToObject(String string) {
-        if (StringUtils.isEmpty(string))
+        if (StringUtils.isEmpty(string)) {
             return null;
+        }
 
         try {
             return new Long(string);
@@ -42,6 +45,7 @@ public class LongFormatter extends Formatter {
     /**
      * Returns the provided value as a formatted string
      */
+    @Override
     public Object format(Object value) {
         return (value == null ? null : value.toString());
     }

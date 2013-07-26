@@ -17,6 +17,8 @@ package org.kuali.rice.krms.impl.repository;
 
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.web.form.InquiryForm;
@@ -33,6 +35,8 @@ import java.util.Map;
 public class AgendaStudentInquiryHelperServiceImpl extends KualiInquirableImpl {
 
     private transient KrmsRetriever krmsRetriever = new KrmsRetriever();
+
+    private BusinessObjectService businessObjectService;
 
     @Override
     public AgendaEditor retrieveDataObject(Map fieldValues) {
@@ -109,5 +113,16 @@ public class AgendaStudentInquiryHelperServiceImpl extends KualiInquirableImpl {
      */
     public List<RemotableAttributeField> retrieveTermParameters(View view, Object model, Container container) {
         return Collections.emptyList();
+    }
+
+    public BusinessObjectService getBusinessObjectService() {
+        if(businessObjectService == null){
+            return KNSServiceLocator.getBusinessObjectService();
+        }
+        return businessObjectService;
+    }
+
+    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
+        this.businessObjectService = businessObjectService;
     }
 }

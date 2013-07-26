@@ -63,6 +63,13 @@
       <artifactId>rice-krad-app-framework</artifactId>
       <version>${project.version}</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.kuali.db.ojb</groupId>
+      <artifactId>db-ojb</artifactId>
+      <optional>true</optional>
+    </dependency>
+
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>

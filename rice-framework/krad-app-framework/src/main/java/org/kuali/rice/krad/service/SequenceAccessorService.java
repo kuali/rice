@@ -31,7 +31,7 @@ public interface SequenceAccessorService {
      * @return next available sequence number
      */	
 	public Long getNextAvailableSequenceNumber(String sequenceName, 
-			Class<? extends BusinessObject> clazz);
+			Class clazz);
 	
     /**
      * This method retrieves the next available sequence number

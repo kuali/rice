@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.krad.dao.proxy;
 
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.dao.DocumentHeaderDao;
+import org.kuali.rice.krad.util.LegacyUtils;
 
 public class DocumentHeaderDaoProxy implements DocumentHeaderDao {
     private DocumentHeaderDao documentHeaderDaoJpa;
@@ -26,8 +26,7 @@ public class DocumentHeaderDaoProxy implements DocumentHeaderDao {
     private DocumentHeaderDao getDao(Class clazz) {
     	final String TMP_NM = clazz.getName();
 		final int START_INDEX = TMP_NM.indexOf('.', TMP_NM.indexOf('.') + 1) + 1;
-    	return (OrmUtils.isJpaAnnotated(clazz) && (OrmUtils.isJpaEnabled() || OrmUtils.isJpaEnabled("rice.krad"))) ?
-						documentHeaderDaoJpa : documentHeaderDaoOjb; 
+    	return LegacyUtils.useLegacy(clazz) ? documentHeaderDaoOjb : documentHeaderDaoJpa;
     }
     
     public DocumentHeader getByDocumentHeaderId(String id) {    	

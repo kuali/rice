@@ -20,8 +20,8 @@ import java.util.Map.Entry
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.api.repository.context.ContextDefinitionContract
-import org.kuali.rice.krad.util.ObjectUtils
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.StringUtils
+import org.kuali.rice.core.api.util.io.SerializationUtils;
 
 
 public class ContextBo extends PersistableBusinessObjectBase implements ContextDefinitionContract {
@@ -58,7 +58,7 @@ public class ContextBo extends PersistableBusinessObjectBase implements ContextD
 	}
 
     public ContextBo copyContext(String additionalNameText) {
-        ContextBo copy = ObjectUtils.deepCopy(this);
+        ContextBo copy = SerializationUtils.deepCopy(this);
         
         //
         // set all IDs to null

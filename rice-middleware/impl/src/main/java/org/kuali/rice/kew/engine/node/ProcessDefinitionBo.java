@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kew.engine.node;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.api.doctype.ProcessDefinitionContract;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -52,10 +50,6 @@ public class ProcessDefinitionBo implements Serializable, ProcessDefinitionContr
     
     @Id
     @GeneratedValue(generator="KREW_RTE_NODE_S")
-	@GenericGenerator(name="KREW_RTE_NODE_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_RTE_NODE_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="DOC_TYP_PROC_ID")
 	private String processId;
 	@Column(name="NM")

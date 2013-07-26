@@ -15,14 +15,20 @@
  */
 package org.kuali.rice.ken.bo;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.ken.api.notification.NotificationListRecipient;
 import org.kuali.rice.ken.api.notification.NotificationListRecipientContract;
-import org.kuali.rice.ken.api.notification.NotificationProducer;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Parameter;
+import javax.persistence.Table;
 
 /**
  * This class represents the data structure that will house a default recipient list for a notification channel.
@@ -33,10 +39,6 @@ import javax.persistence.*;
 public class NotificationRecipientListBo extends PersistableBusinessObjectBase implements NotificationListRecipientContract {
     @Id
     @GeneratedValue(generator="KREN_RECIP_LIST_S")
-	@GenericGenerator(name="KREN_RECIP_LIST_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREN_RECIP_LIST_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="RECIP_LIST_ID")
 	private Long id;
     @Column(name="RECIP_TYP_CD", nullable=false)

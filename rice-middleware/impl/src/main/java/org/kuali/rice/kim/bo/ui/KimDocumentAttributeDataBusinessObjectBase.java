@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
 
 import javax.persistence.Column;
@@ -40,10 +38,6 @@ public class KimDocumentAttributeDataBusinessObjectBase extends KimDocumentBoAct
 	private static final long serialVersionUID = -1512640359333185819L;
 	@Id
 	@GeneratedValue(generator="KRIM_ATTR_DATA_ID_S")
-	@GenericGenerator(name="KRIM_ATTR_DATA_ID_S",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KRIM_ATTR_DATA_ID_S"),
-			@Parameter(name="value_column",value="id")
-		})
 	@Column(name = "ATTR_DATA_ID")
 	private String attrDataId;
 	@Column(name = "KIM_TYP_ID")

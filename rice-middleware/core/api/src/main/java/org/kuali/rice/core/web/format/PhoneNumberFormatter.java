@@ -26,6 +26,7 @@ import org.kuali.rice.core.api.util.RiceKeyConstants;
  * This class is used to format phone number objects.
  * end Kuali Foundation modification
  */
+@Deprecated
 public class PhoneNumberFormatter extends Formatter {
 	// begin Kuali Foundation modification
     private static final long serialVersionUID = 241458864711484787L;
@@ -43,12 +44,15 @@ public class PhoneNumberFormatter extends Formatter {
      * requires a ten-digit number.
      * end Kuali Foundation modification
      */
+    @Override
     protected Object convertToObject(String target) {
         String digits = target.replaceAll("[^0-9]", "");
         if (digits.length() != NUM_DIGITS)
-        	// begin Kuali Foundation modification
+         {
+            // begin Kuali Foundation modification
             throw new FormatException("parsing", RiceKeyConstants.ERROR_PHONE_NUMBER, target);
             // end Kuali Foundation modification
+        }
 
         return digits;
     }
@@ -56,25 +60,31 @@ public class PhoneNumberFormatter extends Formatter {
     /**
      * Returns its argument formatted as a phone number in the style:
      * <p>
-     * 
+     *
      * <pre>
      *   (999) 999-9999
      * </pre>
      */
+    @Override
     public Object format(Object value) {
-        if (value == null)
+        if (value == null) {
             return null;
+        }
         if (!(value instanceof String))
-        	// begin Kuali Foundation modification
+         {
+            // begin Kuali Foundation modification
             throw new FormatException("formatting", RiceKeyConstants.ERROR_PHONE_NUMBER, value.toString());
             // end Kuali Foundation modification
+        }
 
 		// begin Kuali Foundation modification
         String digits = ((String) value).replaceAll("[^0-9]", "");
 
         if (digits.length() != NUM_DIGITS)
+         {
             throw new FormatException("formatting", RiceKeyConstants.ERROR_PHONE_NUMBER, value.toString());
         // end Kuali Foundation modification
+        }
 
         StringBuffer buf = new StringBuffer("(");
         buf.append(digits.substring(0, 3));

@@ -15,14 +15,13 @@
  */
 package org.kuali.rice.kew.rule;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.api.rule.RuleTemplateOptionContract;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObjectBase;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -51,10 +50,6 @@ public class RuleTemplateOptionBo extends BusinessObjectBase implements RuleTemp
 	private static final long serialVersionUID = 8913119135197149224L;
 	@Id
 	@GeneratedValue(generator="KREW_RULE_TMPL_OPTN_S")
-	@GenericGenerator(name="KREW_RULE_TMPL_OPTN_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_RULE_TMPL_OPTN_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="RULE_TMPL_OPTN_ID")
 	private String id;
     @Column(name="RULE_TMPL_ID", insertable=false, updatable=false)
@@ -134,7 +129,7 @@ public class RuleTemplateOptionBo extends BusinessObjectBase implements RuleTemp
 
     @Override
     public void refresh() {
-        KRADServiceLocator.getPersistenceService().retrieveNonKeyFields(this);
+        KRADServiceLocatorWeb.getLegacyDataAdapter().retrieveNonKeyFields(this);
     }
 }
 

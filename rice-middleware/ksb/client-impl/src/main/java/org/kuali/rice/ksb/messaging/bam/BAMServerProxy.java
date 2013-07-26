@@ -37,7 +37,7 @@ import java.lang.reflect.Proxy;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public class BAMServerProxy extends BaseTargetedInvocationHandler {
+public class BAMServerProxy extends BaseTargetedInvocationHandler<Object> {
 
 	private ServiceDefinition serviceDefinition;
 	

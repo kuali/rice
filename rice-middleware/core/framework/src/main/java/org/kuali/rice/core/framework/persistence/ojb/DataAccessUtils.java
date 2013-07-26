@@ -28,6 +28,7 @@ import org.springframework.dao.OptimisticLockingFailureException;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Deprecated
 public final class DataAccessUtils {
 
     private static final Set<Class<? extends Throwable>> OPTIMISTIC_LOCK_EXCEPTION_CLASSES = new HashSet<Class<? extends Throwable>>();

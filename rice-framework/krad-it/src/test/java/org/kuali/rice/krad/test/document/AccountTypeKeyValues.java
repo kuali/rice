@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.test.document;
 
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.test.document.bo.AccountType;
@@ -29,7 +30,7 @@ public class AccountTypeKeyValues extends KeyValuesBase {
     public List getKeyValues() {
         List keyValues = new ArrayList();
 
-        Collection<AccountType> bos = KRADServiceLocator.getBusinessObjectService().findAll( AccountType.class );
+        Collection<AccountType> bos = KNSServiceLocator.getBusinessObjectService().findAll( AccountType.class );
         
         keyValues.add(new ConcreteKeyValue("", ""));
         for ( AccountType typ : bos ) {

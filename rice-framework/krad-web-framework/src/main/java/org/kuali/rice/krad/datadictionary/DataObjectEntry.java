@@ -15,16 +15,14 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
-import org.apache.commons.lang.StringUtils;
+import java.util.List;
+
 import org.kuali.rice.krad.bo.Exporter;
-import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validation.capability.MustOccurConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstraint;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
-
-import java.util.List;
 
 /**
  * Generic dictionary entry for an object that does not have to implement BusinessObject. It provides support
@@ -34,6 +32,8 @@ import java.util.List;
  */
 @BeanTag(name = "dataObjectEntry-bean")
 public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccurConstrainable {
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DataObjectEntry.class);
+    private static final long serialVersionUID = 1L;
 
     protected String name;
     protected Class<?> dataObjectClass;
@@ -57,13 +57,7 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
 
     @Override
     public void completeValidation() {
-        //KFSMI-1340 - Object label should never be blank
-        if (StringUtils.isBlank(getObjectLabel())) {
-            throw new AttributeValidationException(
-                    "Object label cannot be blank for class " + dataObjectClass.getName());
-        }
-
-        super.completeValidation();
+        completeValidation( new ValidationTrace() );
     }
 
     /**
@@ -73,13 +67,7 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
      */
     @Override
     public void completeValidation(ValidationTrace tracer) {
-        tracer.addBean(this.getClass().getSimpleName(), dataObjectClass.getSimpleName());
-        if (StringUtils.isBlank(getObjectLabel())) {
-            String currentValues[] = {"objectLabel = " + getObjectLabel()};
-            tracer.createError("Object Label is not set", currentValues);
-        }
-
-        super.completeValidation(tracer.getCopy());
+        super.completeValidation(tracer);
     }
 
     /**
@@ -91,7 +79,7 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
             throw new IllegalStateException("cannot generate JSTL key: dataObjectClass is null");
         }
 
-        return (dataObjectClass != null) ? dataObjectClass.getSimpleName() : dataObjectClass.getSimpleName();
+        return dataObjectClass.getSimpleName();
     }
 
     /**
@@ -128,6 +116,7 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
     /**
      * @return the name
      */
+    @Override
     @BeanTagAttribute(name = "name")
     public String getName() {
         return this.name;
@@ -145,7 +134,15 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
      */
     @BeanTagAttribute(name = "objectLabel")
     public String getObjectLabel() {
-        return objectLabel;
+        // If the object label was set in the DD, use that
+        if ( objectLabel != null ) {
+            return objectLabel;
+        }
+        // Otherwise, pull what we can from the metadata model
+        if ( getDataObjectMetadata() != null ) {
+            return getDataObjectMetadata().getLabel();
+        }
+        return getLabelFromCamelCasedName( dataObjectClass.getSimpleName() );
     }
 
     /**
@@ -163,7 +160,13 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
      */
     @BeanTagAttribute(name = "objectDescription")
     public String getObjectDescription() {
-        return objectDescription;
+        if ( objectDescription != null ) {
+            return objectDescription;
+        }
+        if ( getDataObjectMetadata() != null ) {
+            return getDataObjectMetadata().getDescription();
+        }
+        return "";
     }
 
     /**
@@ -203,16 +206,9 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
     }
 
     /**
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        return "DataObjectEntry for " + getDataObjectClass();
-    }
-
-    /**
      * @return the mustOccurConstraints
      */
+    @Override
     @BeanTagAttribute(name = "mustOccurConstraints", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<MustOccurConstraint> getMustOccurConstraints() {
         return this.mustOccurConstraints;
@@ -230,7 +226,13 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
      */
     @BeanTagAttribute(name = "titleAttribute")
     public String getTitleAttribute() {
-        return this.titleAttribute;
+        if ( titleAttribute != null ) {
+            return titleAttribute;
+        }
+        if ( getDataObjectMetadata() != null ) {
+            return getDataObjectMetadata().getPrimaryDisplayAttributeName();
+        }
+        return null;
     }
 
     /**
@@ -251,7 +253,13 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
      */
     @BeanTagAttribute(name = "primaryKeys", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getPrimaryKeys() {
-        return this.primaryKeys;
+        if ( primaryKeys != null ) {
+            return primaryKeys;
+        }
+        if ( getDataObjectMetadata() != null ) {
+            return getDataObjectMetadata().getPrimaryKeyAttributeNames();
+        }
+        return null;
     }
 
     /**
@@ -316,10 +324,6 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
 
     /**
      * Gets the inactivationBlockingDefinitions for the Data object
-     *
-     * <p>
-     *
-     * </p>
      *
      * @return the list of <code>InactivationBlockingDefinition</code>
      */

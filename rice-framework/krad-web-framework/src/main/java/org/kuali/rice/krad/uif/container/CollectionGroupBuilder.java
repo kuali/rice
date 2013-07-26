@@ -21,6 +21,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
@@ -35,17 +36,16 @@ import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.RemoteFieldsHolder;
 import org.kuali.rice.krad.uif.layout.CollectionLayoutManager;
-import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewAuthorizer;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.view.ViewPresentationController;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
-import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.io.Serializable;
@@ -869,7 +869,7 @@ public class CollectionGroupBuilder implements Serializable {
             if (!newCollectionLines.containsKey(newCollectionLineKey) || (newCollectionLines.get(newCollectionLineKey)
                     == null) || clearExistingLine) {
                 // create new instance of the collection type for the add line
-                newLine = ObjectUtils.newInstance(collectionGroup.getCollectionObjectClass());
+                newLine = DataObjectUtils.newInstance(collectionGroup.getCollectionObjectClass());
                 newCollectionLines.put(newCollectionLineKey, newLine);
             }
         } else {
@@ -877,7 +877,7 @@ public class CollectionGroupBuilder implements Serializable {
             Object addLine = ObjectPropertyUtils.getPropertyValue(model,
                     collectionGroup.getAddLineBindingInfo().getBindingPath());
             if ((addLine == null) || clearExistingLine) {
-                newLine = ObjectUtils.newInstance(collectionGroup.getCollectionObjectClass());
+                newLine = DataObjectUtils.newInstance(collectionGroup.getCollectionObjectClass());
                 ObjectPropertyUtils.setPropertyValue(model, collectionGroup.getAddLineBindingInfo().getBindingPath(),
                         newLine);
             }

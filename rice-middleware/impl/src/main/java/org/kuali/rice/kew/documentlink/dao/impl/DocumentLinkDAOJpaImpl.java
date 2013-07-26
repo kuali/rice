@@ -15,18 +15,17 @@
  */
 package org.kuali.rice.kew.documentlink.dao.impl;
 
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-
+import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.kew.documentlink.DocumentLink;
 import org.kuali.rice.kew.documentlink.dao.DocumentLinkDAO;
-import org.kuali.rice.krad.util.ObjectUtils;
+
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import java.util.List;
 
 /**
  * This is a description of what this class does - g1zhang don't forget to fill this in. 
@@ -67,7 +66,7 @@ public class DocumentLinkDAOJpaImpl implements DocumentLinkDAO {
 	 */
 	public void deleteDocumentLink(DocumentLink link) {
 		deleteSingleLinkFromOrgnDoc(link);
-		deleteSingleLinkFromOrgnDoc(DocumentLinkDaoUtil.reverseLink((DocumentLink)ObjectUtils.deepCopy(link)));
+		deleteSingleLinkFromOrgnDoc(DocumentLinkDaoUtil.reverseLink((DocumentLink) SerializationUtils.deepCopy(link)));
 	}
 
 	/**
@@ -121,7 +120,7 @@ public class DocumentLinkDAOJpaImpl implements DocumentLinkDAO {
 			link.setDocLinkId(linkedDocument.getDocLinkId());
 		}
 //		//if we want a 2-way linked pair
-		DocumentLink rLink = DocumentLinkDaoUtil.reverseLink((DocumentLink)ObjectUtils.deepCopy(link));
+		DocumentLink rLink = DocumentLinkDaoUtil.reverseLink((DocumentLink)SerializationUtils.deepCopy(link));
 		if(getLinkedDocument(rLink) == null) {
 			if (link.getDocLinkId() == null) {
 				entityManager.persist(rLink);

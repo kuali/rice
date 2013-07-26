@@ -22,6 +22,7 @@ import javax.persistence.Query;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Deprecated
 public class QueryByCriteria {
 
     private EntityManager entityManager;

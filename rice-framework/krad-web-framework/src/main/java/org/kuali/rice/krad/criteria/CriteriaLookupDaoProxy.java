@@ -16,30 +16,24 @@
 package org.kuali.rice.krad.criteria;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.krad.bo.ModuleConfiguration;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.service.ModuleService;
+import org.kuali.rice.krad.util.LegacyUtils;
 
-import javax.persistence.EntityManager;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 public class CriteriaLookupDaoProxy implements CriteriaLookupDao {
     CriteriaLookupDao criteriaLookupDaoOjb;
-    CriteriaLookupDao criteriaLookupDaoJpa;
+
     private static KualiModuleService kualiModuleService;
     private static Map<String, CriteriaLookupDao> lookupDaoValues = Collections.synchronizedMap(new HashMap<String, CriteriaLookupDao>());
-
-    public void setCriteriaLookupDaoJpa(CriteriaLookupDao lookupDaoJpa) {
-		this.criteriaLookupDaoJpa = lookupDaoJpa;
-	}
 
 	public void setCriteriaLookupDaoOjb(CriteriaLookupDao lookupDaoOjb) {
 		this.criteriaLookupDaoOjb = lookupDaoOjb;
@@ -50,26 +44,16 @@ public class CriteriaLookupDaoProxy implements CriteriaLookupDao {
         if (moduleService != null) {
             ModuleConfiguration moduleConfig = moduleService.getModuleConfiguration();
             String dataSourceName = "";
-            EntityManager entityManager = null;
             if (moduleConfig != null) {
                 dataSourceName = moduleConfig.getDataSourceName();
-                entityManager = moduleConfig.getEntityManager();
             }
 
             if (StringUtils.isNotEmpty(dataSourceName)) {
                 if (lookupDaoValues.get(dataSourceName) != null) {
                     return lookupDaoValues.get(dataSourceName);
                 } else {
-                    if (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) {
-                        //using JPA
-                	    CriteriaLookupDaoJpa classSpecificLookupDaoJpa = new CriteriaLookupDaoJpa();
-                		if (entityManager != null) {
-                			classSpecificLookupDaoJpa.setEntityManager(entityManager);
-                			lookupDaoValues.put(dataSourceName, classSpecificLookupDaoJpa);
-                			return classSpecificLookupDaoJpa;
-                		} else {
-                			throw new ConfigurationException("EntityManager is null. EntityManager must be set in the Module Configuration bean in the appropriate spring beans xml. (see nested exception for details).");
-                		}
+                    if (!LegacyUtils.useLegacy(clazz)) {
+                        throw new IllegalStateException(this.getClass() + " called with non-legacy class: " + clazz);
 					} else {
 						CriteriaLookupDaoOjb classSpecificLookupDaoOjb = new CriteriaLookupDaoOjb();
                         classSpecificLookupDaoOjb.setJcdAlias(dataSourceName);
@@ -81,7 +65,11 @@ public class CriteriaLookupDaoProxy implements CriteriaLookupDao {
             }
         }
         //return lookupDaoJpa;
-        return (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) ? criteriaLookupDaoJpa : criteriaLookupDaoOjb;
+
+        if (!LegacyUtils.useLegacy(clazz)) {
+            throw new IllegalStateException(this.getClass() + " called with non-legacy class: " + clazz);
+        }
+        return criteriaLookupDaoOjb;
     }
 
     @Override

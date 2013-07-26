@@ -53,7 +53,7 @@ public class LookupResultsServiceTest extends KNSTestCase {
 		parameterPK.put("namespaceCode", MOCK_PARAMETER_NMSPC);
 		parameterPK.put("componentCode", MOCK_PARAMETER_DETAIL_TYPE_CODE);
 		parameterPK.put("name", MOCK_PARAMETER_NAME);
-		final ParameterBo parameter = (ParameterBo) KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(ParameterBo.class, parameterPK);
+		final ParameterBo parameter = (ParameterBo) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ParameterBo.class, parameterPK);
 		final Person person = KimApiServiceLocator.getPersonService().getPerson(LookupResultsServiceTest.MOCK_PERSON);
 		final LookupResultsDDBo ddBo = new LookupResultsDDBo("horse");
 		final LookupResultsService lookupResultsService = KNSServiceLocator.getLookupResultsService();
@@ -73,7 +73,7 @@ public class LookupResultsServiceTest extends KNSTestCase {
 		parameterPK.put("namespaceCode", MOCK_PARAMETER_NMSPC);
 		parameterPK.put("componentCode", MOCK_PARAMETER_DETAIL_TYPE_CODE);
 		parameterPK.put("name", MOCK_PARAMETER_NAME);
-		final ParameterBo parameter = (ParameterBo) KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(ParameterBo.class, parameterPK);
+		final ParameterBo parameter = (ParameterBo) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ParameterBo.class, parameterPK);
 		final LookupResultsService lookupResultsService = KNSServiceLocator.getLookupResultsService();
 		
 		Set<String> parameterIds = new HashSet<String>();

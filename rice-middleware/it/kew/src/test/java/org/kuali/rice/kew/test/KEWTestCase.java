@@ -17,6 +17,7 @@ package org.kuali.rice.kew.test;
 
 import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
+import org.kuali.rice.core.api.util.ClasspathOrFileResourceLoader;
 import org.kuali.rice.core.framework.resourceloader.SpringResourceLoader;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.batch.KEWXmlDataLoader;
@@ -199,7 +200,7 @@ public abstract class KEWTestCase extends BaselineTestCase {
 
 	protected void loadXmlFileFromFileSystem(String fileName) {
 		try {
-			KEWXmlDataLoader.loadXmlFile(fileName);
+			KEWXmlDataLoader.loadXmlFile(new ClasspathOrFileResourceLoader().getResource(fileName).getURL().getPath());
 		} catch (Exception e) {
 			throw new WorkflowRuntimeException(e);
 		}

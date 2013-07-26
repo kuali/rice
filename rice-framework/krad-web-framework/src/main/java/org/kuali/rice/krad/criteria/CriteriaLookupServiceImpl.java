@@ -20,6 +20,10 @@ import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 
+/**
+ * @deprecated use new KRAD Data framework {@link org.kuali.rice.krad.data.DataObjectService}
+ */
+@Deprecated
 public class CriteriaLookupServiceImpl implements CriteriaLookupService {
     CriteriaLookupDao criteriaLookupDao;
 

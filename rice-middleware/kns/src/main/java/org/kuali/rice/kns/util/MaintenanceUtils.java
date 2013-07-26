@@ -39,6 +39,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiExceptionIncidentService;
 import org.kuali.rice.krad.service.MaintenanceDocumentService;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.LegacyUtils;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
 
 import java.util.Collection;
@@ -49,6 +50,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.concurrent.Executors;
 
 public final class MaintenanceUtils {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintenanceUtils.class);
@@ -294,14 +296,14 @@ public final class MaintenanceUtils {
     /**
      * This method will throw a {@link ValidationException} if there is a valid locking document in existence and throwExceptionIfLocked is true.
      */
-    public static void checkForLockingDocument(Maintainable maintainable, boolean throwExceptionIfLocked) {
+    public static void checkForLockingDocument(Maintainable maintainable, final boolean throwExceptionIfLocked) {
         LOG.info("starting checkForLockingDocument (by Maintainable)");
 
         // get the docHeaderId of the blocking docs, if any are locked and blocking
         //String blockingDocId = getMaintenanceDocumentService().getLockingDocumentId(maintainable, null);
-        String blockingDocId = maintainable.getLockingDocumentId();
-        org.kuali.rice.krad.maintenance.MaintenanceUtils
-                .checkDocumentBlockingDocumentId(blockingDocId, throwExceptionIfLocked);
+        final String blockingDocId = maintainable.getLockingDocumentId();
+
+        org.kuali.rice.krad.maintenance.MaintenanceUtils.checkDocumentBlockingDocumentId(blockingDocId, throwExceptionIfLocked);
     }
 
     private static MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {

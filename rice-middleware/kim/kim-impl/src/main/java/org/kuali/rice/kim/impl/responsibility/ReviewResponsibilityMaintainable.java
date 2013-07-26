@@ -27,6 +27,7 @@ import org.kuali.rice.kim.impl.permission.PermissionTemplateBo;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
 import org.kuali.rice.kns.maintenance.Maintainable;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kns.web.ui.Section;
@@ -137,7 +138,7 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
             throw new RuntimeException( "Configuration ERROR: ReviewResponsibilityBoMaintainable.prepareBusinessObject passed a null object." );
         }
         if ( businessObject instanceof ResponsibilityBo ) {
-            ResponsibilityBo resp = getBusinessObjectService().findBySinglePrimaryKey(ResponsibilityBo.class, ((ResponsibilityBo)businessObject).getId() );
+            ResponsibilityBo resp = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(ResponsibilityBo.class, ((ResponsibilityBo)businessObject).getId() );
             businessObject = new ReviewResponsibilityBo( resp );
             setBusinessObject( (PersistableBusinessObject)businessObject );
         } else {

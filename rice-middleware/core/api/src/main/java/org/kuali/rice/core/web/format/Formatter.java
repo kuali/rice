@@ -75,6 +75,7 @@ import java.util.Map.Entry;
  *
  */
 // end Kuali Foundation modification
+@Deprecated
 public class Formatter implements Serializable {
 
 	// begin Kuali Foundation modification

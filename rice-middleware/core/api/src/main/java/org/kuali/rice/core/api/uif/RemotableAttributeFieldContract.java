@@ -17,6 +17,8 @@ package org.kuali.rice.core.api.uif;
 
 import java.util.Collection;
 
+import org.kuali.rice.core.api.data.DataType;
+
 /**
  * This interface describes an attribute.  It can be considered the definition for an attribute.
  * It also contains preferred rendering instructions for an attribute. ie when rendering an attribute

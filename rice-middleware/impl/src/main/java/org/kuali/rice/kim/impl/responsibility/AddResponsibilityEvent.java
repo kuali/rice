@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.kim.impl.responsibility;
 
+import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.rules.rule.BusinessRule;
 import org.kuali.rice.krad.rules.rule.event.KualiDocumentEventBase;
-import org.kuali.rice.krad.util.ObjectUtils;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -37,7 +37,7 @@ public class AddResponsibilityEvent extends KualiDocumentEventBase {
 
     public AddResponsibilityEvent(String errorPathPrefix, Document document, KimDocumentRoleResponsibility permission) {
         this(errorPathPrefix, (IdentityManagementRoleDocument) document);
-        this.permission = (KimDocumentRoleResponsibility) ObjectUtils.deepCopy(permission);
+        this.permission = (KimDocumentRoleResponsibility) SerializationUtils.deepCopy(permission);
     }
 
     public Class<? extends BusinessRule> getRuleInterfaceClass() {

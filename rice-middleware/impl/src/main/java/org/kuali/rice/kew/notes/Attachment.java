@@ -15,7 +15,8 @@
  */
 package org.kuali.rice.kew.notes;
 
-import java.io.InputStream;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,11 +30,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.krad.service.KRADServiceLocator;
+import java.io.InputStream;
 
 /**
  * An attachment which is attached to a {@link Note}.
@@ -52,10 +49,6 @@ public class Attachment {
 
 	@Id
 	@GeneratedValue(generator="KREW_DOC_NTE_S")
-	@GenericGenerator(name="KREW_DOC_NTE_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_DOC_NTE_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="ATTACHMENT_ID")
 	private String attachmentId;
 	@Transient

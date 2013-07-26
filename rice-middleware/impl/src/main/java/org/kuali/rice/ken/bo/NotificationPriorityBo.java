@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.ken.bo;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.ken.api.notification.NotificationPriority;
 import org.kuali.rice.ken.api.notification.NotificationPriorityContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
@@ -39,10 +37,6 @@ import javax.persistence.Table;
 public class NotificationPriorityBo extends PersistableBusinessObjectBase implements NotificationPriorityContract {
     @Id
     @GeneratedValue(generator="KREN_PRIO_S")
-	@GenericGenerator(name="KREN_PRIO_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREN_PRIO_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="PRIO_ID")
 	private Long id;
     @Column(name="NM", nullable=false)

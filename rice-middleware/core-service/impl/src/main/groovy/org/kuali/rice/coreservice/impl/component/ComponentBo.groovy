@@ -13,8 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.coreservice.impl.component;
+package org.kuali.rice.coreservice.impl.component
 
+import org.kuali.rice.coreservice.api.component.Component
+import org.kuali.rice.coreservice.api.namespace.NamespaceService
+import org.kuali.rice.coreservice.framework.component.ComponentEbo
+import org.kuali.rice.coreservice.impl.namespace.NamespaceBo
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -24,14 +29,6 @@ import javax.persistence.IdClass
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.Table
-
-import org.hibernate.annotations.Type
-import org.kuali.rice.coreservice.api.component.Component
-import org.kuali.rice.coreservice.framework.component.ComponentEbo
-import org.kuali.rice.coreservice.impl.namespace.NamespaceBo
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
-import org.kuali.rice.coreservice.api.namespace.NamespaceService
-import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator
 
 @IdClass(ComponentId.class)
 @Entity
@@ -53,7 +50,7 @@ public class ComponentBo extends PersistableBusinessObjectBase implements Compon
 	@Column(name="NM")
 	String name;
 
-	@Type(type="yes_no")
+	//@Type(type="yes_no")
 	@Column(name="ACTV_IND")
 	boolean active = true;
 

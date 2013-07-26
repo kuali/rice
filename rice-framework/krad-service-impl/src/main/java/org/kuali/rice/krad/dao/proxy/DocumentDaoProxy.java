@@ -16,21 +16,18 @@
 package org.kuali.rice.krad.dao.proxy;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.config.ConfigurationException;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.krad.bo.ModuleConfiguration;
 import org.kuali.rice.krad.dao.BusinessObjectDao;
 import org.kuali.rice.krad.dao.DocumentDao;
-import org.kuali.rice.krad.dao.impl.DocumentDaoJpa;
 import org.kuali.rice.krad.dao.impl.DocumentDaoOjb;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.DocumentAdHocService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.service.ModuleService;
+import org.kuali.rice.krad.util.LegacyUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -38,7 +35,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @Transactional
 public class DocumentDaoProxy implements DocumentDao {
 
-    private DocumentDao documentDaoJpa;
     private DocumentDao documentDaoOjb;
 
     private static KualiModuleService kualiModuleService;
@@ -49,28 +45,16 @@ public class DocumentDaoProxy implements DocumentDao {
         if (moduleService != null) {
             ModuleConfiguration moduleConfig = moduleService.getModuleConfiguration();
             String dataSourceName = "";
-            EntityManager entityManager = null;
             if (moduleConfig != null) {
                 dataSourceName = moduleConfig.getDataSourceName();
-                entityManager = moduleConfig.getEntityManager();
             }
 
             if (StringUtils.isNotEmpty(dataSourceName)) {
                 if (documentDaoValues.get(dataSourceName) != null) {
                     return documentDaoValues.get(dataSourceName);
                 }
-                if (OrmUtils.isJpaAnnotated(clazz) && (OrmUtils.isJpaEnabled() || OrmUtils.isJpaEnabled("rice.krad"))) {
-                	//using JPA
-                	if (entityManager != null) {
-                		// we set the entity manager directly in the constructor
-                		DocumentDaoJpa documentDaoJpaInstance =
-                			new DocumentDaoJpa(entityManager, this.documentDaoJpa.getBusinessObjectDao(),
-                					this.documentDaoJpa.getDocumentAdHocService());
-
-                		documentDaoValues.put(dataSourceName, documentDaoJpaInstance);
-                		return documentDaoJpaInstance;
-                	}
-                	throw new ConfigurationException("EntityManager is null. EntityManager must be set in the Module Configuration bean in the appropriate spring beans xml. (see nested exception for details).");
+                if (!LegacyUtils.useLegacy(clazz)) {
+                    throw new IllegalStateException(this.getClass() + " called with non-legacy class: " + clazz);
                 }
                 //using OJB
                 DocumentDaoOjb documentDaoOjbInstance =
@@ -87,7 +71,12 @@ public class DocumentDaoProxy implements DocumentDao {
                 }
 
         }
-        return (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) ? documentDaoJpa : documentDaoOjb;
+
+        if (!LegacyUtils.useLegacy(clazz)) {
+            throw new IllegalStateException(this.getClass() + " called with non-legacy class: " + clazz);
+        }
+
+        return documentDaoOjb;
     }
     
     /**
@@ -119,9 +108,6 @@ public class DocumentDaoProxy implements DocumentDao {
 	 */
     @Override
 	public BusinessObjectDao getBusinessObjectDao() {
-		if (OrmUtils.isJpaEnabled()) {
-			return documentDaoJpa.getBusinessObjectDao();
-		}
 		return documentDaoOjb.getBusinessObjectDao();
 	}
 
@@ -130,15 +116,8 @@ public class DocumentDaoProxy implements DocumentDao {
 	 */
     @Override
 	public DocumentAdHocService getDocumentAdHocService() {
-		if (OrmUtils.isJpaEnabled()) {
-			return documentDaoJpa.getDocumentAdHocService();
-		}
 		return documentDaoOjb.getDocumentAdHocService();
     }
-	
-	public void setDocumentDaoJpa(DocumentDao documentDaoJpa) {
-		this.documentDaoJpa = documentDaoJpa;
-	}
 
 	public void setDocumentDaoOjb(DocumentDao documentDaoOjb) {
 		this.documentDaoOjb = documentDaoOjb;

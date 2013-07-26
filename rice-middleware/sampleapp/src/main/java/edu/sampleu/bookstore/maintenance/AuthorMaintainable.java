@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import edu.sampleu.bookstore.bo.Account;
 import edu.sampleu.bookstore.bo.Address;
@@ -51,17 +52,17 @@ public class AuthorMaintainable extends KualiMaintainableImpl {
 				address.setAuthorId(null);
 			}
 		}
-		
-		KRADServiceLocator.getBusinessObjectService().save(author);
+
+        KNSServiceLocator.getBusinessObjectService().save(author);
 		
 		if(account != null && account.getAuthorId() == null) {			
-			account.setAuthorId(author.getAuthorId());			
-			KRADServiceLocator.getBusinessObjectService().save(account);
+			account.setAuthorId(author.getAuthorId());
+            KNSServiceLocator.getBusinessObjectService().save(account);
 		}
 		for(Address address : addresses){
 			if(address != null && address.getAuthorId() == null) {			
-				address.setAuthorId(author.getAuthorId());			
-				KRADServiceLocator.getBusinessObjectService().save(address);
+				address.setAuthorId(author.getAuthorId());
+                KNSServiceLocator.getBusinessObjectService().save(address);
 			}
 		}
 	}

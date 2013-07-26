@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.maintenance;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
@@ -24,11 +25,13 @@ import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.LegacyUtils;
 import org.kuali.rice.krad.util.UrlFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.Executors;
 
 /**
  * Provides static utility methods for use within the maintenance framework
@@ -46,12 +49,14 @@ public class MaintenanceUtils {
      * @param throwExceptionIfLocked - indicates if an exception should be thrown in the case of found locking document,
      * if false only an error will be added
      */
-    public static void checkForLockingDocument(MaintenanceDocument document, boolean throwExceptionIfLocked) {
+    public static void checkForLockingDocument(MaintenanceDocument document, final boolean throwExceptionIfLocked) {
         LOG.info("starting checkForLockingDocument (by MaintenanceDocument)");
 
         // get the docHeaderId of the blocking docs, if any are locked and blocking
         //String blockingDocId = getMaintenanceDocumentService().getLockingDocumentId(document);
-        String blockingDocId = document.getNewMaintainableObject().getLockingDocumentId();
+        final String blockingDocId = document.getNewMaintainableObject().getLockingDocumentId();
+
+        Maintainable maintainable = (Maintainable) ObjectUtils.defaultIfNull(document.getOldMaintainableObject(), document.getNewMaintainableObject());
         checkDocumentBlockingDocumentId(blockingDocId, throwExceptionIfLocked);
     }
 

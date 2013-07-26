@@ -18,9 +18,9 @@ package org.kuali.rice.krad.dao.proxy;
 import java.sql.Timestamp;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.krad.bo.SessionDocument;
 import org.kuali.rice.krad.dao.SessionDocumentDao;
+import org.kuali.rice.krad.util.LegacyUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -32,8 +32,7 @@ public class SessionDocumentDaoProxy implements SessionDocumentDao {
     private SessionDocumentDao sessionDocumentDaoOjb;
 	
     private SessionDocumentDao getDao(Class clazz) {
-    	return (OrmUtils.isJpaAnnotated(clazz) && (OrmUtils.isJpaEnabled() || OrmUtils.isJpaEnabled("rice.krad"))) ?
-						sessionDocumentDaoJpa : sessionDocumentDaoOjb; 
+    	return LegacyUtils.useLegacy(clazz) ? sessionDocumentDaoOjb : sessionDocumentDaoJpa;
     }
     
 	public void setSessionDocumentDaoJpa(SessionDocumentDao sessionDocumentDaoJpa) {

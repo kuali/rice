@@ -15,15 +15,16 @@
  */
 package org.kuali.rice.krad.bo;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.api.KewApiConstants;
-import org.kuali.rice.kew.api.util.CodeTranslator;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
-import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.util.CodeTranslator;
 
 
 /**
@@ -36,32 +37,32 @@ import java.util.Map;
 public class AdHocRouteRecipient extends PersistableBusinessObjectBase {
     private static final long serialVersionUID = -6499610180752232494L;
 
-    private static Map actionRequestCds;
+    private static Map<String, String> actionRequestCds;
     public static final Integer PERSON_TYPE = new Integer(0);
     public static final Integer WORKGROUP_TYPE = new Integer(1);
 
     @Id
-	@Column(name="RECIP_TYP_CD")
+	@Column(name="RECIP_TYP_CD",length=1)
 	protected Integer type;
 
     @Id
-	@Column(name="ACTN_RQST_CD")
+	@Column(name="ACTN_RQST_CD",length=30)
 	protected String actionRequested;
 
     @Id
-	@Column(name="ACTN_RQST_RECIP_ID")
+	@Column(name="ACTN_RQST_RECIP_ID",length=70)
 	protected String id; // can be networkId or group id
 
     @Transient
     protected String name;
 
-    @Column(name="DOC_HDR_ID")
+    @Column(name="DOC_HDR_ID",length=14)
 	protected String documentNumber;
 
     public AdHocRouteRecipient() {
         // set some defaults that can be overridden
         this.actionRequested = KewApiConstants.ACTION_REQUEST_APPROVE_REQ;
-        this.versionNumber = new Long(1);
+        this.versionNumber = 1L;
     }
 
     public String getActionRequested() {

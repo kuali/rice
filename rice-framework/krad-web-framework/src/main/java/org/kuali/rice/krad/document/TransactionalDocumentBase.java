@@ -15,9 +15,10 @@
  */
 package org.kuali.rice.krad.document;
 
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
+
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 /**
  * Base class for transactional documents
@@ -26,23 +27,21 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 public abstract class TransactionalDocumentBase extends DocumentBase implements TransactionalDocument, SessionDocument {
-    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(TransactionalDocumentBase.class);
+    private static final long serialVersionUID = 1L;
 
-    /**
-     * Default constructor.
-     */
-    public TransactionalDocumentBase() {
-        super();
-    }
-
+    // EclipseLink chokes with an NPE if a mapped superclass does not have any attributes.  This keeps it happy.
+    @Transient
+    transient private String eclipseLinkBugHackAttribute;
+    
     /**
      * @see org.kuali.rice.krad.document.TransactionalDocument#getAllowsCopy()
      *      Checks if copy is set to true in data dictionary and the document instance implements
      *      Copyable.
      */
+    @Override
     public boolean getAllowsCopy() {
-        return KRADServiceLocatorWeb.getDocumentDictionaryService().getAllowsCopy(this).booleanValue() &&
-                this instanceof Copyable;
+        return this instanceof Copyable
+                && KRADServiceLocatorWeb.getDocumentDictionaryService().getAllowsCopy(this).booleanValue();
     }
 
     /**

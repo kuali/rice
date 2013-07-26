@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.data.DataType;
+import org.kuali.rice.krad.data.metadata.DataObjectAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validation.capability.ExistenceConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.capability.SimpleConstrainable;
@@ -31,6 +33,8 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint
 public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBase implements ExistenceConstrainable,
         SimpleConstrainable {
 
+    private static final long serialVersionUID = 1L;
+
     protected String name;
 
     protected String label;
@@ -43,6 +47,8 @@ public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBa
 
     protected SimpleConstraint simpleConstraint;
 
+    protected DataObjectAttribute dataObjectAttribute;
+
     public AttributeDefinitionBase() {
         super();
         simpleConstraint = new SimpleConstraint();
@@ -53,6 +59,7 @@ public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBa
      *
      * @return the name
      */
+    @Override
     @BeanTagAttribute(name="name")
     public String getName() {
         return name;
@@ -79,7 +86,13 @@ public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBa
      */
     @BeanTagAttribute(name="label")
     public String getLabel() {
-        return label;
+        if ( label != null ) {
+            return label;
+        }
+        if ( getDataObjectAttribute() != null ) {
+            return getDataObjectAttribute().getLabel();
+        }
+        return getLabelFromCamelCasedName( getName() );
     }
 
     /**
@@ -99,14 +112,31 @@ public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBa
      */
     @BeanTagAttribute(name="shortLabel")
     public String getShortLabel() {
-        return (shortLabel != null) ? shortLabel : getLabel();
+        if ( shortLabel != null ) {
+            return shortLabel;
+        }
+        if ( getDataObjectAttribute() != null ) {
+            // if the short label was not explicitly set on the metadata but the label was on the DD, default to the DD label
+            if ( StringUtils.equals(getDataObjectAttribute().getLabel(), getDataObjectAttribute().getShortLabel())
+                    && label != null ) {
+                return getLabel();
+            }
+            return getDataObjectAttribute().getShortLabel();
+        }
+        return getLabel();
     }
 
     /**
      * @return the shortLabel directly, without substituting in the label
      */
     protected String getDirectShortLabel() {
-        return shortLabel;
+        if ( shortLabel != null ) {
+            return shortLabel;
+        }
+        if ( getDataObjectAttribute() != null ) {
+            return getDataObjectAttribute().getShortLabel();
+        }
+        return "";
     }
 
     /**
@@ -134,7 +164,19 @@ public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBa
      */
     @BeanTagAttribute(name="constraintText")
     public String getConstraintText() {
-        return this.constraintText;
+        if ( constraintText == null ) {
+            constraintText = deriveConstraintText();
+        }
+        return constraintText;
+    }
+
+    protected String deriveConstraintText() {
+        if ( getDataObjectAttribute() != null ) {
+            if ( getDataObjectAttribute().getDataType().equals(DataType.DATE) ) {
+                return "mm/dd/yyyy";
+            }
+        }
+        return "";
     }
 
     /**
@@ -154,7 +196,13 @@ public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBa
      */
     @BeanTagAttribute(name="summary")
     public String getSummary() {
-        return summary;
+        if ( summary != null ) {
+            return summary;
+        }
+        if ( getDataObjectAttribute() != null ) {
+            return getDataObjectAttribute().getSummary();
+        }
+        return "";
     }
 
     /**
@@ -173,7 +221,13 @@ public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBa
      */
     @BeanTagAttribute(name="description")
     public String getDescription() {
-        return description;
+        if ( description != null ) {
+            return description;
+        }
+        if ( getDataObjectAttribute() != null ) {
+            return getDataObjectAttribute().getDescription();
+        }
+        return "";
     }
 
     /**
@@ -185,7 +239,13 @@ public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBa
     }
 
     public String getDisplayLabelAttribute() {
-        return displayLabelAttribute;
+        if ( displayLabelAttribute != null ) {
+            return displayLabelAttribute;
+        }
+        if ( getDataObjectAttribute() != null ) {
+            return getDataObjectAttribute().getDisplayAttributeName();
+        }
+        return null;
     }
 
     /**
@@ -206,6 +266,7 @@ public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBa
      *
      * @return SimpleConstraint object
      */
+    @Override
     public SimpleConstraint getSimpleConstraint() {
         return simpleConstraint;
     }
@@ -233,9 +294,24 @@ public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBa
      * "true" indicates that a value must be entered for this business object
      * when creating or editing a new business object.
      */
+    @Override
     @BeanTagAttribute(name="required")
     public Boolean isRequired() {
-        return this.simpleConstraint.isRequired();
+        if ( simpleConstraint.isRequired() != null ) {
+            return simpleConstraint.isRequired();
+        }
+        if ( getDataObjectAttribute() != null ) {
+            return getDataObjectAttribute().isRequired();
+        }
+        return Boolean.FALSE;
     }
 
+
+    public DataObjectAttribute getDataObjectAttribute() {
+        return dataObjectAttribute;
+    }
+
+    public void setDataObjectAttribute(DataObjectAttribute dataObjectAttribute) {
+        this.dataObjectAttribute = dataObjectAttribute;
+    }
 }

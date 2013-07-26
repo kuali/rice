@@ -15,6 +15,12 @@
  */
 package org.kuali.rice.krad.messages;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 /**
@@ -24,13 +30,28 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Entity
+@Table(name="KRAD_MSG_T",uniqueConstraints= {
+        @UniqueConstraint(name="KRAD_MSG_TC0",columnNames="OBJ_ID")
+})
 public class Message extends PersistableBusinessObjectBase {
 
+    @Id
+    @Column(name="NMSPC_CD",length=20)
     private String namespaceCode;
+    @Id
+    @Column(name="CMPNT_CD",length=100)
     private String componentCode;
+    @Id
+    @Column(name="MSG_KEY",length=100)
     private String key;
+    @Id
+    @Column(name="LOC",length=255)
     private String locale;
+
+    @Column(name="MSG_DESC",length=255)
     private String description;
+    @Column(name="TXT",length=4000)
     private String text;
 
     public Message() {
@@ -175,7 +196,7 @@ public class Message extends PersistableBusinessObjectBase {
      */
     @Override
     public final String toString() {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
 
         buffer.append("namespaceCode=" + this.namespaceCode);
         buffer.append(",componentCode=" + this.componentCode);

@@ -21,22 +21,29 @@ import org.eclipse.jetty.webapp.WebAppContext;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.ksb.BaseTestServer;
 
+import java.net.URL;
+
 public class TestClient1 extends BaseTestServer {
 	
 	private static final Logger LOG = Logger.getLogger(TestClient1.class);
 
+    private static final String WEB_ROOT = "org/kuali/rice/ksb/testclient1";
 	private static final String CONTEXT = "/TestClient1";
 	
 	@Override
 	protected Server createServer() {
 		Server server = new Server(new Integer(ConfigContext.getCurrentContextConfig().getProperty("ksb.client1.port")));
-		String location = ConfigContext.getCurrentContextConfig().getProperty("client1.location");
+        URL webRoot = getClass().getClassLoader().getResource(WEB_ROOT);
+        String location = webRoot.getPath();
+
 		LOG.debug("#####################################");
 		LOG.debug("#");
-		LOG.debug("#  Starting Client1 using location " + location);
+		LOG.debug("#  Starting Client1 using following web root " + location);
 		LOG.debug("#");
 		LOG.debug("#####################################");
-		WebAppContext context = new WebAppContext(location, CONTEXT);	
+
+
+		WebAppContext context = new WebAppContext(location, CONTEXT);
 		server.setHandler(context);
 		return server;
 	}

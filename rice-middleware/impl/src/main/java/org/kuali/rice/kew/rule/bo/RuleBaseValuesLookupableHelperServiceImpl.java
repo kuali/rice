@@ -52,10 +52,12 @@ import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.exception.ValidationException;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.util.KRADUtils;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -394,7 +396,8 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         boolean hasReturnableRow = false;
 
         List returnKeys = getReturnKeys();
-        List pkNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(getBusinessObjectClass());
+
+        List pkNames = KRADServiceLocatorWeb.getLegacyDataAdapter().listPrimaryKeyFieldNames(getBusinessObjectClass());
         Person user = GlobalVariables.getUserSession().getPerson();
         
         // iterate through result list and wrap rows with return url and action urls
@@ -433,14 +436,14 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
                     skipPropTypeCheck = true;
                 }
                 if (prop == null) {
-                    prop = ObjectUtils.getPropertyValue(element, col.getPropertyName());
+                    prop = DataObjectUtils.getPropertyValue(element, col.getPropertyName());
                 }
 
                 // set comparator and formatter based on property type
                 Class propClass = propertyTypes.get(col.getPropertyName());
                 if ( propClass == null && !skipPropTypeCheck) {
                     try {
-                        propClass = ObjectUtils.getPropertyType( element, col.getPropertyName(), getPersistenceStructureService() );
+                        propClass = KRADServiceLocatorWeb.getLegacyDataAdapter().getPropertyType(element, col.getPropertyName());
                         propertyTypes.put( col.getPropertyName(), propClass );
                     } catch (Exception e) {
                         throw new RuntimeException("Cannot access PropertyType for property " + "'" + col.getPropertyName() + "' " + " on an instance of '" + element.getClass().getName() + "'.", e);
@@ -485,7 +488,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
                 		// If the row represents a delegate rule, make the ID column's inquiry link lead to the corresponding delegate rule instead.
                    		List<?> delegationList = KEWServiceLocator.getRuleDelegationService().findByDelegateRuleId(
                    				((RuleBaseValues) element).getId());
-                		if (ObjectUtils.isNotNull(delegationList) && !delegationList.isEmpty()) {
+                		if (KRADUtils.isNotNull(delegationList) && !delegationList.isEmpty()) {
                 			BusinessObject ruleDelegation = (BusinessObject) delegationList.get(0);
                 			col.setColumnAnchor(getInquiryUrl(ruleDelegation, "ruleDelegationId"));
                 		} else {
@@ -548,7 +551,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         	if (ruleBaseValues.getDelegateRule().booleanValue()) {
         		// If the rule is a delegate rule, have the edit/copy links open the rule delegation maintenance document screen instead.
         		List<?> delegationList = KEWServiceLocator.getRuleDelegationService().findByDelegateRuleId(ruleBaseValues.getId());
-        		if (ObjectUtils.isNotNull(delegationList) && !delegationList.isEmpty()) {
+        		if (KRADUtils.isNotNull(delegationList) && !delegationList.isEmpty()) {
         			BusinessObject ruleDelegation = (BusinessObject) delegationList.get(0);
     				// Retrieve the rule delegation lookupable helper service and the primary key names, if they have not been obtained yet.
         	        if (ruleDelegationLookupableHelperService == null) {
@@ -558,7 +561,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         				if (ruleDelegationLookupableHelperService.getBusinessObjectClass() == null) {
         					ruleDelegationLookupableHelperService.setBusinessObjectClass(ruleDelegation.getClass());
         				}
-        				delegationPkNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(ruleDelegation.getClass());
+                        delegationPkNames = KRADServiceLocatorWeb.getLegacyDataAdapter().listPrimaryKeyFieldNames(ruleDelegation.getClass());
         			}
         	        // Allow the rule delegation's lookupable helper service to handle the custom action URL generation instead.
         			htmlDataList = ruleDelegationLookupableHelperService.getCustomActionUrls(ruleDelegation, delegationPkNames);

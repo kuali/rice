@@ -17,6 +17,7 @@ package org.kuali.rice.krms.impl.repository;
 
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KeyValuesService;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase;
@@ -58,7 +59,7 @@ public class ContextTypeValuesFinder extends UifKeyValuesFinderBase {
         }
 
         // ToDo: Currently we hardcoded any types named "CONTEXT" to be valid with contexts.
-        KeyValuesService boService = KRADServiceLocator.getKeyValuesService();
+        KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
         Map<String,Object> fieldValues = new HashMap<String, Object>();
         fieldValues.put("name", "CONTEXT");
         Collection<KrmsTypeBo> types = boService.findMatching(KrmsTypeBo.class, fieldValues);

@@ -15,25 +15,25 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.coreservice.api.namespace.Namespace;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.coreservice.framework.parameter.ParameterConstants;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.document.TransactionalDocument;
+import org.kuali.rice.krad.exception.ModuleServiceNotFoundException;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.service.ModuleService;
-import org.kuali.rice.krad.exception.ModuleServiceNotFoundException;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -43,7 +43,7 @@ public class KualiModuleServiceImpl implements KualiModuleService, InitializingB
     private List<ModuleService> installedModuleServices = new ArrayList<ModuleService>();
     private boolean loadRiceInstalledModuleServices;
     private ApplicationContext applicationContext;
-    
+
     /**
 	 * @param applicationContext the applicationContext to set
 	 */
@@ -63,7 +63,7 @@ public class KualiModuleServiceImpl implements KualiModuleService, InitializingB
             if ( moduleService.getModuleConfiguration().getNamespaceCode().equals( moduleId ) ) {
                 return moduleService;
             }
-        } 
+        }
         return null;
     }
 
@@ -73,7 +73,7 @@ public class KualiModuleServiceImpl implements KualiModuleService, InitializingB
             if ( moduleService.getModuleConfiguration().getNamespaceCode().equals( namespaceCode ) ) {
                 return moduleService;
             }
-        } 
+        }
         return null;
     }
 
@@ -83,7 +83,7 @@ public class KualiModuleServiceImpl implements KualiModuleService, InitializingB
             if ( moduleService.getModuleConfiguration().getNamespaceCode().equals( namespaceCode ) ) {
                 return true;
             }
-        } 
+        }
         return false;
     }
 
@@ -106,21 +106,11 @@ public class KualiModuleServiceImpl implements KualiModuleService, InitializingB
 				message = "There is no responsible module for the externalized business object interface: "+boClass;
 			}
     		throw new ModuleServiceNotFoundException(message);
-    	} 
+    	}
     	//Returning null for business objects other than externalizable to keep the framework backward compatible
     	return null;
     }
 
-    @Override
-	public ModuleService getResponsibleModuleServiceForJob(String jobName){
-        for(ModuleService moduleService : installedModuleServices){
-            if(moduleService.isResponsibleForJob(jobName)){
-                return moduleService;
-            }
-        }
-        return null;
-    }
-    
     @Override
 	public void setInstalledModuleServices(List<ModuleService> installedModuleServices) {
         this.installedModuleServices = installedModuleServices;
@@ -142,7 +132,7 @@ public class KualiModuleServiceImpl implements KualiModuleService, InitializingB
     	Namespace parameterNamespace = CoreServiceApiServiceLocator.getNamespaceService().getNamespace(namespaceCode);
     	return parameterNamespace==null ? "" : parameterNamespace.getName();
     }
-    
+
 	/**
 	 * @param loadRiceInstalledModuleServices the loadRiceInstalledModuleServices to set
 	 */

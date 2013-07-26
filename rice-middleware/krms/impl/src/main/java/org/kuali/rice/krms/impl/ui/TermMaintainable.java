@@ -15,12 +15,20 @@
  */
 package org.kuali.rice.krms.impl.ui;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.collections.CollectionUtils;
-import org.kuali.rice.core.api.uif.DataType;
+import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.uif.RemotableTextInput;
-import org.kuali.rice.krad.maintenance.MaintenanceDocument;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
@@ -31,13 +39,6 @@ import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 import org.kuali.rice.krms.impl.repository.TermBo;
 import org.kuali.rice.krms.impl.repository.TermResolverBo;
 import org.kuali.rice.krms.impl.repository.TermResolverParameterSpecificationBo;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
 
 /**
  * {@link org.kuali.rice.krad.maintenance.Maintainable} for the {@link org.kuali.rice.krms.impl.ui.AgendaEditor}
@@ -55,7 +56,7 @@ public class TermMaintainable extends MaintainableImpl {
 	 * @return the boService
 	 */
 	public BusinessObjectService getBoService() {
-		return KRADServiceLocator.getBusinessObjectService();
+		return KNSServiceLocator.getBusinessObjectService();
 	}
 
 

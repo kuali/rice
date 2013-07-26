@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.datadictionary.validator;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,14 +28,11 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.UifBeanFactoryPostProcessor;
 import org.kuali.rice.krad.uif.view.View;
-import org.springframework.beans.factory.support.KualiDefaultListableBeanFactory;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-
-import java.util.ArrayList;
-import java.util.Map;
 
 /**
  * A validator for Rice Dictionaries that stores the information found during its validation.
@@ -72,7 +72,7 @@ public class Validator {
      * @param failOnWarning - Whether detecting a warning should cause the validation to fail
      * @return Returns true if the beans past validation
      */
-    private boolean runValidations(KualiDefaultListableBeanFactory beans, boolean failOnWarning) {
+    private boolean runValidations(DefaultListableBeanFactory beans, boolean failOnWarning) {
         LOG.info("Starting Dictionary Validation");
         resetErrorReport();
         Map<String, View> uifBeans;
@@ -180,7 +180,7 @@ public class Validator {
      * @return Returns true if the beans past validation
      */
     public boolean validate(String[] xmlFiles, boolean failOnWarning) {
-        KualiDefaultListableBeanFactory beans = loadBeans(xmlFiles);
+        DefaultListableBeanFactory beans = loadBeans(xmlFiles);
 
         return runValidations(beans, failOnWarning);
     }
@@ -194,7 +194,7 @@ public class Validator {
      * @param failOnWarning - Whether detecting a warning should cause the validation to fail
      * @return Returns true if the beans past validation
      */
-    public boolean validate(String xmlFiles[], ResourceLoader loader, KualiDefaultListableBeanFactory beans,
+    public boolean validate(String xmlFiles[], ResourceLoader loader, DefaultListableBeanFactory beans,
             boolean failOnWarning) {
         tracerTemp = new ValidationTrace(xmlFiles, loader);
         return runValidations(beans, failOnWarning);
@@ -445,10 +445,10 @@ public class Validator {
      * @param xmlFiles
      * @return The Spring Bean Factory for the provided list of xml files
      */
-    public KualiDefaultListableBeanFactory loadBeans(String[] xmlFiles) {
+    public DefaultListableBeanFactory loadBeans(String[] xmlFiles) {
 
         LOG.info("Starting XML File Load");
-        KualiDefaultListableBeanFactory beans = new KualiDefaultListableBeanFactory();
+        DefaultListableBeanFactory beans = new DefaultListableBeanFactory();
         XmlBeanDefinitionReader xmlReader = new XmlBeanDefinitionReader(beans);
 
         DataDictionary.setupProcessor(beans);

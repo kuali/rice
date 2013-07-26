@@ -21,6 +21,8 @@ import java.util.Map;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 /**
@@ -41,6 +43,8 @@ public class RoleMemberInquirableImpl extends KualiInquirableImpl {
 	protected final String ASSIGNED_TO_ROLES = "assignedToRolesToDisplay";
 	protected final String ATTRIBUTE_DATA_ID = "attributeDataId";
 
+    private BusinessObjectService businessObjectService;
+
     protected String getKimAttributeLabelFromDD(String attributeName){
     	return KRADServiceLocatorWeb.getDataDictionaryService().getAttributeLabel(KimAttributes.class, attributeName);
     }
@@ -49,6 +53,18 @@ public class RoleMemberInquirableImpl extends KualiInquirableImpl {
 		Map<String, String> criteria = new HashMap<String, String>();
 		criteria.put("id", roleId);
 		return getBusinessObjectService().findByPrimaryKey(RoleBo.class, criteria);
+    }
+
+
+    public BusinessObjectService getBusinessObjectService() {
+        if(businessObjectService == null){
+            return KNSServiceLocator.getBusinessObjectService();
+        }
+        return businessObjectService;
+    }
+
+    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
+        this.businessObjectService = businessObjectService;
     }
 
 }

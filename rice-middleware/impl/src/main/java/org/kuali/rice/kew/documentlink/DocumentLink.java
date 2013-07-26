@@ -15,19 +15,16 @@
  */
 package org.kuali.rice.kew.documentlink;
 
-import java.io.Serializable;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.kew.api.document.DocumentLinkContract;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.kew.api.document.DocumentLinkContract;
-import org.kuali.rice.kew.service.KEWServiceLocator;
+import java.io.Serializable;
 
 /**
  * Server side bean for DocumentLinkDAO 
@@ -45,10 +42,6 @@ public class DocumentLink implements Serializable, DocumentLinkContract {
 	
 	@Id
 	@GeneratedValue(generator="KREW_DOC_LNK_S")
-	@GenericGenerator(name="KREW_DOC_LNK_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_DOC_LNK_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="DOC_LNK_ID")
 	private String docLinkId;
     @Column(name="ORGN_DOC_ID")

@@ -38,9 +38,4 @@ public class TransactionalDocumentEntry extends DocumentEntry {
             reference.completeValidation(documentClass, null);
         }
     }
-
-    @Override
-    public String toString() {
-        return "TransactionalDocumentEntry for documentType " + getDocumentTypeName();
-    }
 }

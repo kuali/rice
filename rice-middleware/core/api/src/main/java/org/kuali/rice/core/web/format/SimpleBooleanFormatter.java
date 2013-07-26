@@ -20,13 +20,15 @@ package org.kuali.rice.core.web.format;
  * This class is used to convert Boolean objects into and from 'true' and 'false' Strings, since that's what JSTL expects to use in
  * conditionals.
  */
+@Deprecated
 public class SimpleBooleanFormatter extends Formatter {
-	
+
     private static final long serialVersionUID = 1733029018087594949L;
 
 	/**
      * Converts the given true/false String into a Boolean.
      */
+    @Override
     protected Object convertToObject(String target) {
         return Boolean.valueOf(target);
     }
@@ -34,6 +36,7 @@ public class SimpleBooleanFormatter extends Formatter {
     /**
      * Converts the given Boolean into a boolean String.
      */
+    @Override
     public Object format(Object value) {
         Object formatted = value;
 

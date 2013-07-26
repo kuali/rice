@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.core.framework.persistence.platform;
 
+import java.sql.Connection;
 import java.util.regex.Pattern;
 
 import javax.persistence.EntityManager;
@@ -23,7 +24,7 @@ import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.query.Criteria;
 
 /**
- * DatabasePlatform implementation that generates Mckoi-compliant SQL
+ * DatabasePlatform implementation that generates Derby-compliant SQL
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DerbyDatabasePlatform extends ANSISqlDatabasePlatform {
@@ -47,19 +48,26 @@ public class DerbyDatabasePlatform extends ANSISqlDatabasePlatform {
 	public String getStrToDateFunction() {
 		return null;
 	}
-	
-    public Long getNextValSQL(String sequenceName,	PersistenceBroker persistenceBroker) {
-		return nextVal++;
-	}
+
+    @Override
+    protected Long getNextValSqlOjb(String sequenceName, PersistenceBroker persistenceBroker) {
+        return nextVal++;
+    }
+
+    @Override
+    protected Long getNextValSqlJpa(String sequenceName, EntityManager entityManager) {
+        return nextVal++;
+    }
+
+    @Override
+    protected Long getNextValSqlJdbc(String sequenceName, Connection connection) {
+        return nextVal++;
+    }
 
     public String toString() {
         return "[Derby]";
     }
 
-    public Long getNextValSQL(String sequenceName, EntityManager entityManger) {
-        return nextVal++;
-    }
-    
     public String getSelectForUpdateSuffix(long waitMillis) {
     	throw new UnsupportedOperationException("Implement me!");
     }
@@ -72,8 +80,10 @@ public class DerbyDatabasePlatform extends ANSISqlDatabasePlatform {
     public String escapeString(String sqlString) {
     	return (sqlString != null) ? APOS_PAT.matcher(sqlString).replaceAll("''") : null;
     }
-    
-	public void applyLimit(Integer limit, Criteria criteria) {
-		// derby has no such concept
-	}    
+
+    @Override
+    public String applyLimitSql(Integer limit) {
+        // derby has no such concept
+        return null;
+    }
 }

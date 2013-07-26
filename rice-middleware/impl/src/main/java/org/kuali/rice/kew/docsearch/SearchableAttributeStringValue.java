@@ -17,17 +17,25 @@ package org.kuali.rice.kew.docsearch;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeString;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -57,10 +65,6 @@ public class SearchableAttributeStringValue implements CaseAwareSearchableAttrib
 
     @Id
     @GeneratedValue(generator="KREW_SRCH_ATTR_S")
-	@GenericGenerator(name="KREW_SRCH_ATTR_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_SRCH_ATTR_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="DOC_HDR_EXT_ID")
 	private String searchableAttributeValueId;
     @Column(name="KEY_CD")

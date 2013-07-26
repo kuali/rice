@@ -24,6 +24,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
@@ -65,22 +66,24 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
 
     public void deleteByDocumentId(String documentId) {
         // FIXME should be jpa bulk update?
-        Query query = entityManager.createNamedQuery("ActionRequestValue.FindByDocumentId");
+        TypedQuery<ActionRequestValue> query = entityManager.createNamedQuery("ActionRequestValue.FindByDocumentId", ActionRequestValue.class);
         query.setParameter("documentId", documentId);
-        List<ActionRequestValue> actionRequestValues = (List<ActionRequestValue>) query.getSingleResult();
+
+        List<ActionRequestValue> actionRequestValues = query.getResultList();
         for(ActionRequestValue arv : actionRequestValues) {
             entityManager.remove(arv);
         }
     }
 
+    @Override
     public boolean doesDocumentHaveUserRequest(String principalId, String documentId) {
-        Query query = entityManager.createNamedQuery("ActionRequestValue.GetUserRequestCount");
+        TypedQuery<Long> query = entityManager.createNamedQuery("ActionRequestValue.GetUserRequestCount", Long.class);
         query.setParameter("principalId", principalId);
         query.setParameter("documentId", documentId);
         query.setParameter("recipientTypeCd", RecipientType.PRINCIPAL.getCode());
         query.setParameter("currentIndicator", Boolean.TRUE);
         
-        return ((Long)query.getSingleResult()) > 0;
+        return query.getSingleResult().longValue() > 0;
     }
 
     public List<?> findActivatedByGroup(Group group) {

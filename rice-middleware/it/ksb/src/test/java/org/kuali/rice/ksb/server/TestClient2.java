@@ -21,6 +21,7 @@ import org.eclipse.jetty.webapp.WebAppContext;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.ksb.BaseTestServer;
 
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +29,7 @@ public class TestClient2 extends BaseTestServer {
 
 	private static final Logger LOG = Logger.getLogger(TestClient2.class);
 
+    private static final String WEB_ROOT = "org/kuali/rice/ksb/testclient2";
 	private static final String CONTEXT = "/TestClient2";
 	
 	/**
@@ -41,10 +43,12 @@ public class TestClient2 extends BaseTestServer {
 	protected Server createServer() {
 		
 		Server server = new Server(new Integer(ConfigContext.getCurrentContextConfig().getProperty("ksb.client2.port")));
-		String location = ConfigContext.getCurrentContextConfig().getProperty("client2.location");
-		LOG.debug("#####################################");
+        URL webRoot = getClass().getClassLoader().getResource(WEB_ROOT);
+        String location = webRoot.getPath();
+
+        LOG.debug("#####################################");
 		LOG.debug("#");
-		LOG.debug("#  Starting Client2 using location " + location);
+		LOG.debug("#  Starting Client2 using web root " + location);
 		LOG.debug("#");
 		LOG.debug("#####################################");
 		WebAppContext context = new WebAppContext(location, CONTEXT);	

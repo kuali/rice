@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.krad.document.authorization;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -51,11 +49,7 @@ public class PessimisticLock extends PersistableBusinessObjectBase {
     // id is sequence number and primary key
     @Id
     @GeneratedValue(generator="KRNS_LOCK_S")
-	@GenericGenerator(name="KRNS_LOCK_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KRNS_LOCK_S"),
-			@Parameter(name="value_column",value="id")
-	})
-    @Column(name="PESSIMISTIC_LOCK_ID")
+	@Column(name="PESSIMISTIC_LOCK_ID")
     private Long id;
     
     @Column(name="PRNCPL_ID")

@@ -21,8 +21,8 @@ import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.impex.xml.FileXmlDocCollection;
 import org.kuali.rice.core.api.impex.xml.XmlDoc;
 import org.kuali.rice.core.api.impex.xml.XmlDocCollection;
+import org.kuali.rice.core.api.util.ClasspathOrFileResourceLoader;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
-import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 
 import java.io.File;
@@ -55,7 +55,7 @@ public class KEWXmlDataLoader {
      * @throws Exception 
      */
     public static void loadXmlResource(String resource) throws Exception {
-        Resource res = new DefaultResourceLoader().getResource(resource);
+        Resource res = new ClasspathOrFileResourceLoader().getResource(resource);
         InputStream xmlFile = res.getInputStream();
         if (xmlFile == null) {
             throw new ConfigurationException("Didn't find resource " + resource);

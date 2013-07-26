@@ -40,6 +40,7 @@ import java.util.Properties;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Deprecated
 public class ConfigurableSequenceManager implements SequenceManager {
 
 	private static final String PROPERTY_PREFIX_ATTRIBUTE = "property.prefix";

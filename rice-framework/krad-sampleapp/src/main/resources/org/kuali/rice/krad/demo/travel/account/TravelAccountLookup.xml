@@ -23,7 +23,7 @@
 
   <bean id="TravelAccount-LookupView" parent="Uif-LookupView">
     <property name="headerText" value="Travel Account Lookup" />
-    <property name="dataObjectClassName" value="org.kuali.rice.krad.demo.travel.account.TravelAccount" />
+    <property name="dataObjectClassName" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount" />
     <property name="criteriaFields">
       <list>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number" />
@@ -32,15 +32,8 @@
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subAccountName" />
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" />
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subsidizedPercent" />
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="foId" />
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="extension.accountTypeCode">
-          <property name="control">
-            <bean parent="Uif-DropdownControl" />
-          </property>
-          <property name="optionsFinder">
-            <bean class="org.kuali.rice.krad.demo.travel.account.AccountTypeKeyValues" />
-          </property>
-        </bean>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="fiscalOfficer.principalName" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="accountTypeCode" />
       </list>
     </property>
     <property name="resultFields">
@@ -49,9 +42,10 @@
         <bean parent="Uif-DataField" p:propertyName="name" />
         <bean parent="Uif-DataField" p:propertyName="subAccount" />
         <bean parent="Uif-DataField" p:propertyName="subAccountName" />
+        <bean parent="Uif-DataField" p:propertyName="accountTypeCode" />
         <bean parent="Uif-DataField" p:propertyName="subsidizedPercent" />
         <bean parent="Uif-DataField" p:propertyName="createDate" />
-        <bean parent="Uif-DataField" p:propertyName="foId" />
+        <bean parent="Uif-DataField" p:propertyName="fiscalOfficer.principalName" />
       </list>
     </property>
   </bean>

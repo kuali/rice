@@ -893,7 +893,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         if (fieldConversions != null && !fieldConversions.isEmpty()) {
             returnKeys = new ArrayList<String>(fieldConversions.keySet());
         } else {
-            returnKeys = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(getBusinessObjectClass());
+            returnKeys = KRADServiceLocatorWeb.getLegacyDataAdapter().listPrimaryKeyFieldNames(getBusinessObjectClass());
         }
 
         return returnKeys;
@@ -1108,7 +1108,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         boolean hasReturnableRow = false;
 
         List<String> returnKeys = getReturnKeys();
-        List<String> pkNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(getBusinessObjectClass());
+        List<String> pkNames = KRADServiceLocatorWeb.getLegacyDataAdapter().listPrimaryKeyFieldNames(getBusinessObjectClass());
         Person user = GlobalVariables.getUserSession().getPerson();
 
         // iterate through result list and wrap rows with return url and action
@@ -1271,7 +1271,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     }
 
     public BusinessObjectService getBusinessObjectService() {
-        return businessObjectService != null ? businessObjectService : KRADServiceLocator.getBusinessObjectService();
+        return businessObjectService != null ? businessObjectService : KNSServiceLocator.getBusinessObjectService();
     }
 
     public void setBusinessObjectService(BusinessObjectService businessObjectService) {

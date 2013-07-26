@@ -15,13 +15,16 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -54,7 +57,12 @@ public class CloneUtils {
 
     @SuppressWarnings("unchecked")
     public static final <O> O deepCloneReflection(O original) throws Exception {
-        return (O) deepCloneReflectionInternal(original, new HashMap<Object, Object>(), false);
+        try {
+            return (O) deepCloneReflectionInternal(original, new HashMap<Object, Object>(), false);
+        } catch (Exception ex) {
+            LOG.warn("Exception during clone (returning original): ", ex);
+            return original;
+        }
     }
 
     protected static final Object deepCloneReflectionInternal(Object original, Map<Object, Object> cache,
@@ -74,8 +82,23 @@ public class CloneUtils {
         else if (Map.class.isAssignableFrom(original.getClass())) {
             clone = deepCloneMap(original, cache, referenceCollectionCopy);
         }
-        else {
+        else if ( original.getClass().isArray() ) {
+            clone = deepCloneArray( original, cache);
+        } else {
             clone = deepCloneObject(original, cache);
+        }
+
+        return clone;
+    }
+    
+    protected static Object deepCloneArray(Object original,  Map<Object, Object> cache)
+            throws Exception {
+        // Instantiate a new instance
+        Object[] clone = (Object[]) Array.newInstance(original.getClass().getComponentType(), ((Object[])original).length);
+
+        // Populate data
+        for ( int i = 0; i < ((Object[])original).length; i++ ) {
+            clone[i] = deepCloneReflectionInternal(((Object[])original)[i], cache, false);
         }
 
         return clone;
@@ -112,7 +135,7 @@ public class CloneUtils {
         // To our understanding, this is a mutable object, so clone it
         Class<?> c = original.getClass();
         Field[] fields = getFields(c, false);
-        try {
+        //try {
             Object copy = instantiate(original);
 
             // Put into cache
@@ -121,27 +144,31 @@ public class CloneUtils {
             // iterate through and copy fields
             for (Field f : fields) {
                 Object object = f.get(original);
-
-                boolean referenceCopy = false;
-                boolean referenceCollectionCopy = false;
-                ReferenceCopy copyAnnotation = f.getAnnotation(ReferenceCopy.class);
-                if (copyAnnotation != null) {
-                    referenceCopy = true;
-                    referenceCollectionCopy = copyAnnotation.newCollectionInstance();
+                try {    
+                    boolean referenceCopy = false;
+                    boolean referenceCollectionCopy = false;
+                    ReferenceCopy copyAnnotation = f.getAnnotation(ReferenceCopy.class);
+                    if (copyAnnotation != null) {
+                        referenceCopy = true;
+                        referenceCollectionCopy = copyAnnotation.newCollectionInstance();
+                    }
+    
+                    if (!referenceCopy || referenceCollectionCopy) {
+                        object = CloneUtils.deepCloneReflectionInternal(object, cache, referenceCollectionCopy);
+                    }
+                    f.set(copy, object);
+                } catch ( Exception ex ) {
+                    LOG.warn("Exception during field cloning (using original object value). Field: " + original.getClass() + "." + f.getName() + "(" + f.getType() + ")", ex);
+                    f.set(copy, object);
                 }
-
-                if (!referenceCopy || referenceCollectionCopy) {
-                    object = CloneUtils.deepCloneReflectionInternal(object, cache, referenceCollectionCopy);
-                }
-                f.set(copy, object);
             }
 
             return copy;
-        }
-        catch (Throwable t) {
-            LOG.warn("Exception during clone (returning original): " + t.getMessage());
-            return original;
-        }
+//        }
+//        catch (Exception ex) {
+//            LOG.warn("Exception during clone (returning original): ", ex);
+//            return original;
+//        }
     }
 
     @SuppressWarnings("unchecked")

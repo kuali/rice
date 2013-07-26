@@ -28,8 +28,9 @@ import org.kuali.rice.krad.web.form.TransactionalDocumentFormBase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class TravelAuthorizationForm extends TransactionalDocumentFormBase {
+	private static final long serialVersionUID = 6857088926834897587L;
 
-    private String travelerFirstName;
+	private String travelerFirstName;
     private String travelerLastName;
 
     public TravelAuthorizationForm() {

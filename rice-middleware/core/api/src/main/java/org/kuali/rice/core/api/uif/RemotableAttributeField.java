@@ -15,11 +15,10 @@
  */
 package org.kuali.rice.core.api.uif;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
-import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.w3c.dom.Element;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -30,10 +29,13 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.data.DataType;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
+import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.w3c.dom.Element;
 
 /**
  * @see RemotableAttributeFieldContract for more info.

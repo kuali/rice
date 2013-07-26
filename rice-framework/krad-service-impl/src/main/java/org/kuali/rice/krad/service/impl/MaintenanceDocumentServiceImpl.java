@@ -15,34 +15,35 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.core.framework.persistence.jta.TransactionalNoValidationExceptionRollback;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.dao.MaintenanceDocumentDao;
-import org.kuali.rice.krad.maintenance.MaintenanceDocument;
-import org.kuali.rice.krad.maintenance.MaintenanceLock;
 import org.kuali.rice.krad.exception.DocumentTypeAuthorizationException;
 import org.kuali.rice.krad.maintenance.Maintainable;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
+import org.kuali.rice.krad.maintenance.MaintenanceLock;
 import org.kuali.rice.krad.service.DataObjectAuthorizationService;
 import org.kuali.rice.krad.service.DataObjectMetaDataService;
 import org.kuali.rice.krad.service.DocumentDictionaryService;
 import org.kuali.rice.krad.service.DocumentService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.MaintenanceDocumentService;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
-import org.kuali.rice.krad.util.ObjectUtils;
+import org.springframework.beans.factory.annotation.Required;
+
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Service implementation for the MaintenanceDocument structure. This is the
@@ -54,11 +55,16 @@ import org.kuali.rice.krad.util.ObjectUtils;
 public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentService {
     protected static final Logger LOG = Logger.getLogger(MaintenanceDocumentServiceImpl.class);
 
-    private MaintenanceDocumentDao maintenanceDocumentDao;
+    private LegacyDataAdapter legacyDataAdapter;
     private DataObjectAuthorizationService dataObjectAuthorizationService;
     private DocumentService documentService;
     private DataObjectMetaDataService dataObjectMetaDataService;
     private DocumentDictionaryService documentDictionaryService;
+
+    @Required
+    public void setLegacyDataAdapter(LegacyDataAdapter legacyDataAdapter) {
+        this.legacyDataAdapter = legacyDataAdapter;
+    }
 
     /**
      * @see org.kuali.rice.krad.service.MaintenanceDocumentService#setupNewMaintenanceDocument(java.lang.String,
@@ -127,7 +133,7 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
 
             // TODO should we be using ObjectUtils? also, this needs dictionary
             // enhancement to indicate fields to/not to copy
-            Object newDataObject = ObjectUtils.deepCopy((Serializable) oldDataObject);
+            Object newDataObject = SerializationUtils.deepCopy((Serializable) oldDataObject);
 
             // set object instance for editing
             document.getOldMaintainableObject().setDataObject(oldDataObject);
@@ -277,11 +283,11 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
     /**
      * Clears the value of the primary key fields on the maintenance object
      *
-     * @param document - document to clear the pk fields on
+     * @param maintenanceObject - document to clear the pk fields on
      * @param dataObjectClass - class to use for retrieving primary key metadata
      */
     protected void clearPrimaryKeyFields(Object maintenanceObject, Class<?> dataObjectClass) {
-        List<String> keyFieldNames = getDataObjectMetaDataService().listPrimaryKeyFieldNames(dataObjectClass);
+        List<String> keyFieldNames = legacyDataAdapter.listPrimaryKeyFieldNames(dataObjectClass);
         for (String keyFieldName : keyFieldNames) {
             ObjectPropertyUtils.setPropertyValue(maintenanceObject, keyFieldName, null);
         }
@@ -330,7 +336,7 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
                     parameters.get(KRADConstants.OVERRIDE_KEYS).split(KRADConstants.FIELD_CONVERSIONS_SEPARATOR);
             keyFieldNames = Arrays.asList(overrideKeys);
         } else {
-            keyFieldNames = getDataObjectMetaDataService().listPrimaryKeyFieldNames(dataObjectClass);
+            keyFieldNames = legacyDataAdapter.listPrimaryKeyFieldNames(dataObjectClass);
         }
 
         return KRADUtils.getParametersFromRequest(keyFieldNames, dataObjectClass, parameters);
@@ -377,12 +383,12 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
      * @see org.kuali.rice.krad.service.MaintenanceDocumentService#getLockingDocumentId(org.kuali.rice.krad.maintenance.Maintainable,
      *      java.lang.String)
      */
-    public String getLockingDocumentId(Maintainable maintainable, String documentNumber) {
+    public String getLockingDocumentId(Maintainable maintainable, final String documentNumber) {
+        final List<MaintenanceLock> maintenanceLocks = maintainable.generateMaintenanceLocks();
         String lockingDocId = null;
-        List<MaintenanceLock> maintenanceLocks = maintainable.generateMaintenanceLocks();
         for (MaintenanceLock maintenanceLock : maintenanceLocks) {
-            lockingDocId = maintenanceDocumentDao
-                    .getLockingDocumentNumber(maintenanceLock.getLockingRepresentation(), documentNumber);
+            lockingDocId = legacyDataAdapter.getLockingDocumentNumber(maintenanceLock.getLockingRepresentation(),
+                    documentNumber);
             if (StringUtils.isNotBlank(lockingDocId)) {
                 break;
             }
@@ -394,22 +400,14 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
      * @see org.kuali.rice.krad.service.MaintenanceDocumentService#deleteLocks(String)
      */
     public void deleteLocks(String documentNumber) {
-        maintenanceDocumentDao.deleteLocks(documentNumber);
+        legacyDataAdapter.deleteLocks(documentNumber);
     }
 
     /**
-     * @see org.kuali.rice.krad.service.MaintenanceDocumentService#saveLocks(List)
+     * @see org.kuali.rice.krad.service.MaintenanceDocumentService#storeLocks(java.util.List)
      */
     public void storeLocks(List<MaintenanceLock> maintenanceLocks) {
-        maintenanceDocumentDao.storeLocks(maintenanceLocks);
-    }
-
-    public MaintenanceDocumentDao getMaintenanceDocumentDao() {
-        return maintenanceDocumentDao;
-    }
-
-    public void setMaintenanceDocumentDao(MaintenanceDocumentDao maintenanceDocumentDao) {
-        this.maintenanceDocumentDao = maintenanceDocumentDao;
+        legacyDataAdapter.storeLocks(maintenanceLocks);
     }
 
     protected DataObjectAuthorizationService getDataObjectAuthorizationService() {
@@ -429,17 +427,6 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
 
     public void setDocumentService(DocumentService documentService) {
         this.documentService = documentService;
-    }
-
-    protected DataObjectMetaDataService getDataObjectMetaDataService() {
-        if (dataObjectMetaDataService == null) {
-            dataObjectMetaDataService = KRADServiceLocatorWeb.getDataObjectMetaDataService();
-        }
-        return dataObjectMetaDataService;
-    }
-
-    public void setDataObjectMetaDataService(DataObjectMetaDataService dataObjectMetaDataService) {
-        this.dataObjectMetaDataService = dataObjectMetaDataService;
     }
 
     public DocumentDictionaryService getDocumentDictionaryService() {

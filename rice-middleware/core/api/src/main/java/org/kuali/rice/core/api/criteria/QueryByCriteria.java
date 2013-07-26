@@ -15,11 +15,14 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
-import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.util.collect.CollectionUtils;
-import org.w3c.dom.Element;
+import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -30,33 +33,35 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+
+import org.apache.commons.beanutils.PropertyUtils;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
+import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.core.api.util.collect.CollectionUtils;
+import org.w3c.dom.Element;
 
 /**
  * Defines a criteria-based query.  Consists of a {@link Predicate} definition
  * as well as a set of additional properties which control paging and other
  * aspects of the results which should be returned from the query.
- * 
+ *
  * <p>In order to construct a new {@link QueryByCriteria}, the {@link Builder}
  * should be used.  Use the {@link PredicateFactory} to construct
  * the predicate for use by the query.
- * 
+ *
  * <p>This class specifies nothing regarding how the query will be executed.
  * It is expected that an instance will be constructed and then passed to code
  * which understands how to execute the desired query.
- * 
+ *
  * <p>This class is mapped for use by JAXB and can therefore be used by clients
  * as part of remotable service definitions.
- * 
+ *
  * @see Predicate
  * @see PredicateFactory
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * 
+ *
  */
 @XmlRootElement(name = QueryByCriteria.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -92,13 +97,13 @@ public final class QueryByCriteria extends AbstractDataTransferObject {
         @XmlElement(name = OrPredicate.Constants.ROOT_ELEMENT_NAME, type = OrPredicate.class, required = false)
     })
 	private final Predicate predicate;
-	
+
 	@XmlElement(name = Elements.START_AT_INDEX, required = false)
 	private final Integer startAtIndex;
-		
+
 	@XmlElement(name = Elements.MAX_RESULTS, required = false)
 	private final Integer maxResults;
-	
+
 	@XmlJavaTypeAdapter(CountFlag.Adapter.class)
 	@XmlElement(name = Elements.COUNT_FLAG, required = true)
 	private final String countFlag;
@@ -139,7 +144,7 @@ public final class QueryByCriteria extends AbstractDataTransferObject {
 
 	/**
 	 * Returns the {@link Predicate} which will be used to execute the query.
-	 * 
+	 *
 	 * @return can be null if no predicate was specified
 	 */
 	public Predicate getPredicate() {
@@ -185,7 +190,7 @@ public final class QueryByCriteria extends AbstractDataTransferObject {
 	 * query.  See {@link CountFlag} for more information on what each of these
 	 * flags means.  This will never return null and defaults to
 	 * {@link CountFlag#NONE}.
-	 * 
+	 *
 	 * @return the flag specifying whether or not a total row count should be
 	 * produced by the query
 	 */
@@ -301,6 +306,95 @@ public final class QueryByCriteria extends AbstractDataTransferObject {
             final Builder b = Builder.create();
             b.setPredicates(predicates);
             return b.build();
+        }
+
+        /**
+         * Static helper for generating a QueryByCriteria from a Map<String, ?> of attributes
+         * @param attributes key/value map of attributes
+         * @return a QueryByCriteria which selects the given attributes (if map is non-null and non-empty)
+         */
+        public static QueryByCriteria forAttributes(Map<String, ?> attributes) {
+            List<Predicate> predicates = new ArrayList<Predicate>(attributes.size());
+            if (attributes != null) {
+                for (Map.Entry<String, ?> entry: attributes.entrySet()) {
+                    predicates.add(PredicateFactory.equal(entry.getKey(), entry.getValue()));
+                }
+            }
+            QueryByCriteria.Builder qbc = QueryByCriteria.Builder.create();
+            qbc.setPredicates(PredicateFactory.or(predicates.toArray(new Predicate[predicates.size()])));
+            return qbc.build();
+        }
+
+        /**
+         * Static helper for generating a QueryByCriteria from a Map<String, ?> of attributes
+         * @param attributes key/value map of attributes
+         * @return a QueryByCriteria which selects the given attributes (if map is non-null and non-empty)
+         */
+        public static QueryByCriteria forAttributesAndOrderBy(Map<String, ?> attributes, List<String> sortAttributeNames, boolean sortAscending ) {
+            List<Predicate> predicates = new ArrayList<Predicate>(attributes.size());
+            if (attributes != null) {
+                for (Map.Entry<String, ?> entry: attributes.entrySet()) {
+                    predicates.add(PredicateFactory.equal(entry.getKey(), entry.getValue()));
+                }
+            }
+            QueryByCriteria.Builder qbc = QueryByCriteria.Builder.create();
+            qbc.setPredicates(PredicateFactory.or(predicates.toArray(new Predicate[predicates.size()])));
+            if ( sortAttributeNames != null && !sortAttributeNames.isEmpty() ) {
+                List<OrderByField> orderByFields = new ArrayList<OrderByField>( sortAttributeNames.size() );
+                for ( String attributeName : sortAttributeNames ) {
+                    orderByFields.add( OrderByField.Builder.create(attributeName, sortAscending?OrderDirection.ASCENDING:OrderDirection.DESCENDING).build() );
+                }
+                qbc.setOrderByFields(orderByFields);
+            }
+            return qbc.build();
+        }
+
+        /**
+         * Static helper for generating a QueryByCriteria from a single attribute key/value pair
+         * @param name attribute name
+         * @param value attribute value
+         * @return a QueryByCriteria which selects the specified attribute value
+         */
+        public static QueryByCriteria forAttribute(String name, Object value) {
+            Map<String, Object> attrib = new HashMap<String, Object>();
+            attrib.put(name, value);
+            return forAttributes(attrib);
+        }
+
+        /**
+         * Static helper for generating a QueryByCriteria that selects the attribute values
+         * that exist on the example object.
+         * @param object the example object
+         * @param attributes list of attributes to select from the example object
+         * @return a QueryByCriteria that selects the attribute values that exist on the example object
+         */
+        public static QueryByCriteria forAttributes(Object object, Collection<String> attributes) {
+            return forAttributes(getAttributeValueMap(object, attributes));
+        }
+
+        /**
+         * Uses PropertyUtils to generate a Map of attribute names/values given an example object
+         * and list of attribute names
+         * @param object the object from which to obtain attribute values
+         * @param attribNames the list of attribute names
+         * @return a map of attribute name/value
+         */
+        private static Map<String, ?> getAttributeValueMap(Object object, Collection<String> attribNames) {
+            Map<String, Object> attributeMap = new HashMap<String, Object>();
+            for (String attr: attribNames) {
+                Object value;
+                try {
+                    value = PropertyUtils.getProperty(object, attr);
+                } catch (IllegalAccessException iae) {
+                    throw new RuntimeException(iae);
+                } catch (InvocationTargetException ite) {
+                    throw new RuntimeException(ite);
+                } catch (NoSuchMethodException nsme) {
+                    throw new RuntimeException(nsme);
+                }
+                attributeMap.put(attr, value);
+            }
+            return attributeMap;
         }
     }
 

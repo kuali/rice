@@ -38,6 +38,7 @@ import org.kuali.rice.krad.bo.AdHocRouteRecipient;
 import org.kuali.rice.krad.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.krad.exception.UnknownDocumentIdException;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
 import org.springframework.transaction.annotation.Transactional;
@@ -356,8 +357,8 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
                     }
                 }
             }
-            KRADServiceLocator.getBusinessObjectService().delete(adHocRoutePersons);
-            KRADServiceLocator.getBusinessObjectService().delete(adHocRouteWorkgroups);  
+            KRADServiceLocatorWeb.getLegacyDataAdapter().delete(adHocRoutePersons);
+            KRADServiceLocatorWeb.getLegacyDataAdapter().delete(adHocRouteWorkgroups);
         }
     }
 

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2005-2013 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<persistence
+        version="1.0"
+        xmlns="http://java.sun.com/xml/ns/persistence"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+
+  <persistence-unit name="kim-unit" transaction-type="JTA">
+    <!--<mapping-file>META-INF/kim-orm.xml</mapping-file>-->
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>org.kuali.rice.kim.impl.group.GroupHistoryBo</class>
+    <class>org.kuali.rice.kim.impl.group.GroupBo</class>
+    <class>org.kuali.rice.kim.impl.group.GroupAttributeBo</class>
+    <class>org.kuali.rice.kim.impl.group.GroupMemberBo</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <properties>
+      <property name="rice.krad.data.jpa.eclipselink.logging.level.sql" value="FINE"/>
+      <property name="rice.krad.data.jpa.eclipselink.logging.parameters" value="true"/>
+    </properties>
+  </persistence-unit>
+
+</persistence>

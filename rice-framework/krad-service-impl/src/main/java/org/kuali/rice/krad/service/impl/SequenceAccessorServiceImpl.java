@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.dao.SequenceAccessorDao;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +25,7 @@ public class SequenceAccessorServiceImpl implements SequenceAccessorService {
     private SequenceAccessorDao sequenceAccessorDao;
 
 	public Long getNextAvailableSequenceNumber(String sequenceName, 
-			Class<? extends BusinessObject> clazz) {
+			Class clazz) {
     	if (StringUtils.isBlank(sequenceName)) {
     		throw new RuntimeException("Sequence name cannot be blank.");
     	}

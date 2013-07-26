@@ -19,7 +19,6 @@ import groovy.mock.interceptor.MockFor
 import org.junit.Before
 import org.junit.Test
 import org.kuali.rice.krad.service.BusinessObjectService
-import org.kuali.rice.krms.api.repository.term.TermRepositoryService
 
 import static groovy.util.GroovyTestCase.assertEquals
 import org.kuali.rice.krms.api.repository.function.FunctionRepositoryService

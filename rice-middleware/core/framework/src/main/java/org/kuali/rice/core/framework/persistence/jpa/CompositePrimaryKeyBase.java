@@ -25,6 +25,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Comparator;
 
+@Deprecated
 public abstract class CompositePrimaryKeyBase implements Serializable {
 
     public boolean equals(Object o) {

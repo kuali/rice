@@ -15,26 +15,11 @@
  */
 package org.kuali.rice.kew.batch;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.File;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.regex.Pattern;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
 import org.junit.Test;
+import org.kuali.rice.core.api.util.ClasspathOrFileResourceLoader;
 import org.kuali.rice.core.web.impex.IngesterAction;
 import org.kuali.rice.core.web.impex.IngesterForm;
 import org.kuali.rice.kew.test.KEWTestCase;
@@ -44,7 +29,21 @@ import org.kuali.rice.krad.web.filter.UserLoginFilter;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.springframework.core.io.Resource;
 import org.springframework.mock.web.MockHttpServletResponse;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import java.io.File;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.regex.Pattern;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests workflow Struts IngesterAction
@@ -102,20 +101,22 @@ public class IngesterActionTest extends KEWTestCase {
         List shouldPass = new LinkedList();
         List shouldFail = new LinkedList();
 
+        ClasspathOrFileResourceLoader rl = new ClasspathOrFileResourceLoader();
+
         // add all test files to form
         Iterator entries = filesToIngest.entrySet().iterator();
         int i = 0;
         while (entries.hasNext()) {
             Map.Entry entry = (Map.Entry) entries.next();
-            String filePath = entry.getKey().toString();
-            filePath = filePath.replace("${basedir}", getBaseDir());
-            String fileName = new File(filePath).getName();
+            Resource resource = rl.getResource(entry.getKey().toString());
+            File resourceFile = resource.getFile();
+            String fileName = resourceFile.getName();
             if (Boolean.valueOf(entry.getValue().toString()).booleanValue()) {
                 shouldPass.add(fileName);
             } else {
                 shouldFail.add(fileName);
             }
-            FormFile file = new MockFormFile(new File(filePath));
+            FormFile file = new MockFormFile(resourceFile);
             form.setFile(i, file);
             assertTrue(form.getFiles().size() == i+1);
             i++;

@@ -21,6 +21,7 @@ import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDefinition;
 import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krms.api.KrmsApiServiceLocator;
@@ -75,7 +76,7 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
     @Override
     protected void loadTestData() throws Exception {
         loadXmlFile("KewToRulesEngineIntegrationTest.xml");
-        businessObjectService = KRADServiceLocator.getBusinessObjectService();
+        businessObjectService = KNSServiceLocator.getBusinessObjectService();
         assertNotNull(businessObjectService);
         PeopleFlowDefinition peopleFlow = createFirstPeopleFlow();
         this.peopleFlowIdAttributeDefinition = createPeopleFlowIdAttributeDefinition();

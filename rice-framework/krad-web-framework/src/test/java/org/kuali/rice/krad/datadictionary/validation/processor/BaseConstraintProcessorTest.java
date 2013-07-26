@@ -15,8 +15,12 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.processor;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.junit.Before;
-import org.kuali.rice.core.api.uif.DataType;
+import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.datadictionary.validation.AttributeValueReader;
@@ -31,10 +35,6 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.WhenConstraint;
 import org.kuali.rice.krad.datadictionary.validation.result.ConstraintValidationResult;
 import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult;
 import org.kuali.rice.krad.datadictionary.validation.result.ProcessorResult;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * BaseConstraintProcessorTest is a base class that is contains a setup method that prepares test data dictionary

@@ -30,6 +30,7 @@ import org.kuali.rice.kew.rule.dao.RuleDAO;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
@@ -155,7 +156,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
         Map<String, String> criteria = new HashMap<String, String>();
         criteria.put("id", ruleBaseValuesId);
 		// crit.addEqualTo("currentInd", new Boolean(true));
-        return KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(RuleBaseValues.class, criteria);
+        return KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(RuleBaseValues.class, criteria);
 		//return (RuleBaseValues) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(RuleBaseValues.class, crit));
 	}
 

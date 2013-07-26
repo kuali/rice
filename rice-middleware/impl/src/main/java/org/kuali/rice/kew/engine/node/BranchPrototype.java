@@ -15,7 +15,8 @@
  */
 package org.kuali.rice.kew.engine.node;
 
-import java.io.Serializable;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,11 +24,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.kew.service.KEWServiceLocator;
+import java.io.Serializable;
 
 /**
  * Represents a Branch in the definition of a DocumentType.  This should not be confused with the
@@ -44,10 +41,6 @@ public class BranchPrototype implements Serializable {
     
     @Id
     @GeneratedValue(generator="KREW_RTE_NODE_S")
-	@GenericGenerator(name="KREW_RTE_NODE_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_RTE_NODE_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="RTE_BRCH_PROTO_ID")
 	private String branchId;
 	@Column(name="BRCH_NM")

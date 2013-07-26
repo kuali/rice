@@ -15,41 +15,31 @@
  */
 package org.kuali.rice.kns.web.struts.form;
 
-import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.struts.upload.FormFile;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
-import org.kuali.rice.kns.document.MaintenanceDocumentBase;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.Exporter;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.exception.UnknownBusinessClassAttributeException;
-import org.kuali.rice.krad.datadictionary.exception.UnknownDocumentTypeException;
-import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.ObjectUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
 
 /**
  * This class is the action form for inquiries.
@@ -192,7 +182,7 @@ public class InquiryForm extends KualiForm {
             Class businessObjectClass = Class.forName(boClassName);
 
             // build list of key values from request, if all keys not given throw error
-            List<String> boPKeys = businessObjectMetaDataService.listPrimaryKeyFieldNames(businessObjectClass);
+            List<String> boPKeys = KRADServiceLocatorWeb.getLegacyDataAdapter().listPrimaryKeyFieldNames(businessObjectClass);
             final List<List<String>> altKeys = this.getAltkeys(businessObjectClass);
 
             altKeys.add(boPKeys);

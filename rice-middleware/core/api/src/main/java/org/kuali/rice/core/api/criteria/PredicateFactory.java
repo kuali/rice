@@ -17,6 +17,7 @@ package org.kuali.rice.core.api.criteria;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.search.SearchOperator;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -445,6 +446,53 @@ public final class PredicateFactory {
 	public static Predicate isNotNull(String propertyPath) {
 		return new NotNullPredicate(propertyPath);
 	}
+
+    /**
+     * Creates a (min/max -inclusive) between predicate.
+     * @param propertyPath the path to the property which should be evaluated
+     * @param value1 the first (lower bound) value
+     * @param value2 the second (upper bound) value
+     * @return a predicate representing the between expression
+     */
+    public static Predicate between(String propertyPath, Object value1, Object value2) {
+        return between(propertyPath, value1, value2, SearchOperator.BETWEEN);
+    }
+
+    /**
+     * Creates a between predicate of the specified type
+     * @param propertyPath the path to the property which should be evaluated
+     * @param value1 the first (lower bound) value
+     * @param value2 the second (upper bound) value
+     * @param betweenType the type of between inclusivity/exclusivity
+     * @return a predicate representing the between expression
+     * @throws IllegalArgumentException of betweenType is not a valid BETWEEN search operator
+     */
+    public static Predicate between(String propertyPath, Object value1, Object value2, SearchOperator betweenType) {
+        Predicate lower;
+        Predicate upper;
+        switch (betweenType) {
+            case BETWEEN:
+                lower = greaterThanOrEqual(propertyPath, value1);
+                upper = lessThanOrEqual(propertyPath, value2);
+                break;
+            case BETWEEN_EXCLUSIVE:
+                lower = greaterThan(propertyPath, value1);
+                upper = lessThan(propertyPath, value2);
+                break;
+            case BETWEEN_EXCLUSIVE_LOWER:
+                lower = greaterThan(propertyPath, value1);
+                upper = lessThanOrEqual(propertyPath, value2);
+                break;
+            case BETWEEN_EXCLUSIVE_UPPER:
+            case BETWEEN_EXCLUSIVE_UPPER2:
+                lower = greaterThanOrEqual(propertyPath, value1);
+                upper = lessThan(propertyPath, value2);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid between operator: " + betweenType);
+        }
+        return and(lower, upper);
+    }
 
 	/**
 	 * Creates an and predicate that is used to "and" predicates together.

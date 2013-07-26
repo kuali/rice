@@ -16,22 +16,27 @@
 package org.kuali.rice.ken.bo;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.ken.api.notification.NotificationChannel;
 import org.kuali.rice.ken.api.notification.NotificationChannelContract;
 import org.kuali.rice.ken.api.notification.NotificationChannelReviewer;
-import org.kuali.rice.ken.api.notification.NotificationChannelReviewerContract;
-import org.kuali.rice.ken.api.notification.NotificationContentType;
 import org.kuali.rice.ken.api.notification.NotificationListRecipient;
-import org.kuali.rice.ken.api.notification.NotificationListRecipientContract;
 import org.kuali.rice.ken.api.notification.NotificationProducer;
-import org.kuali.rice.ken.api.notification.NotificationProducerContract;
 import org.kuali.rice.ken.api.notification.UserChannelSubscription;
-import org.kuali.rice.ken.api.notification.UserChannelSubscriptionContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Parameter;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,10 +52,6 @@ import java.util.List;
 public class NotificationChannelBo extends PersistableBusinessObjectBase implements NotificationChannelContract {
 	@Id
 	@GeneratedValue(generator="KREN_CHNL_S")
-	@GenericGenerator(name="KREN_CHNL_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREN_CHNL_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name = "CHNL_ID")
 	private Long id;
 	@Column(name = "NM", nullable = false)

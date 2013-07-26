@@ -16,6 +16,7 @@
 package org.kuali.rice.kew.batch;
 
 import org.junit.Test;
+import org.kuali.rice.core.api.util.ClasspathOrFileResourceLoader;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
 import org.kuali.rice.core.impl.impex.xml.ClassLoaderEntityResolver;
 import org.kuali.rice.kew.rule.xmlrouting.WorkflowNamespaceContext;
@@ -81,8 +82,7 @@ public class XmlSchemaTest extends RiceTestCase {
         while (entries.hasNext()) {
             Map.Entry entry = (Map.Entry) entries.next();
             String filePath = entry.getKey().toString();
-            filePath = filePath.replace("${basedir}", getBaseDir());
-            File testFile = new File(filePath);
+            File testFile = new ClasspathOrFileResourceLoader().getResource(filePath).getFile();
             boolean shouldSucceed = Boolean.valueOf(entry.getValue().toString()).booleanValue();
             System.out.println("Validating " + testFile);
             try {

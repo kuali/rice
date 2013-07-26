@@ -16,23 +16,25 @@
 package org.kuali.rice.kns.service;
 
 import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
 import org.kuali.rice.kns.inquiry.InquiryRestrictions;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.DataObjectAuthorizationService;
+import org.kuali.rice.krad.util.LegacyDataFramework;
 
 /**
  * Responsible for using AttributeSecurity on
  * AttributeDefinitions, InquirableField the data dictionary business object and
  * maintenance document entries
- * 
+ *
  * TODO: refactor for general objects
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Deprecated
+@LegacyDataFramework
 public interface BusinessObjectAuthorizationService extends DataObjectAuthorizationService {
 	public BusinessObjectRestrictions getLookupResultRestrictions(
 			Object dataObject, Person user);

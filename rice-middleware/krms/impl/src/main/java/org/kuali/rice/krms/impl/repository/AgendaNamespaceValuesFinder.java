@@ -19,6 +19,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.coreservice.impl.namespace.NamespaceBo;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase;
 import org.kuali.rice.krad.uif.view.ViewModel;
@@ -41,9 +42,9 @@ public class AgendaNamespaceValuesFinder extends UifKeyValuesFinderBase {
 
         // TODO: this is not efficient -- do a smart 'select distinct' and make sure we have a good index!
 
-        Collection<ContextBo> contexts = KRADServiceLocator.getBusinessObjectService().findAll(ContextBo.class);
+        Collection<ContextBo> contexts = KNSServiceLocator.getBusinessObjectService().findAll(ContextBo.class);
 
-        Collection<NamespaceBo> namespaceBos = KRADServiceLocator.getBusinessObjectService().findAll(NamespaceBo.class);
+        Collection<NamespaceBo> namespaceBos = KNSServiceLocator.getBusinessObjectService().findAll(NamespaceBo.class);
         Map<String, String> namespaceCodeToName = new HashMap<String, String>();
         if (!CollectionUtils.isEmpty(namespaceBos)) for (NamespaceBo namespaceBo : namespaceBos) {
             namespaceCodeToName.put(namespaceBo.getCode(), namespaceBo.getName());

@@ -23,10 +23,9 @@ import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiEncryptDecryptFieldConversion;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.exception.ClassNotPersistableException;
-import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.impl.PersistenceServiceImplBase;
 
-import java.util.Collections;
 import java.util.Set;
 
 import java.util.ArrayList;
@@ -34,10 +33,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Deprecated
 public class PostDataLoadEncryptionServiceImpl extends PersistenceServiceImplBase implements PostDataLoadEncryptionService {
     protected Logger LOG = Logger.getLogger(PostDataLoadEncryptionServiceImpl.class);
 
-    private BusinessObjectService businessObjectService;
+    private LegacyDataAdapter legacyDataAdapter;
     private EncryptionService encryptionService;
     private PostDataLoadEncryptionDao postDataLoadEncryptionDao;
 
@@ -113,7 +113,7 @@ public class PostDataLoadEncryptionServiceImpl extends PersistenceServiceImplBas
 			attributeName).append(" of Class ").append(businessObject.getClass()).toString(), e);
 	    }
 	}
-	businessObjectService.save(businessObject);
+	legacyDataAdapter.save(businessObject);
     }
 
     @Override
@@ -123,7 +123,7 @@ public class PostDataLoadEncryptionServiceImpl extends PersistenceServiceImplBas
 	    classDescriptor.getFieldDescriptorByName(attributeName).setFieldConversionClassName(
 		    OjbKualiEncryptDecryptFieldConversion.class.getName());
 	}
-	businessObjectService.countMatching(businessObjectClass, Collections.<String, Object>emptyMap());
+	legacyDataAdapter.findAll(businessObjectClass);
     }
 
     @Override
@@ -206,7 +206,7 @@ public class PostDataLoadEncryptionServiceImpl extends PersistenceServiceImplBas
 	this.encryptionService = encryptionService;
     }
 
-    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
-	this.businessObjectService = businessObjectService;
+    public void setLegacyDataAdapter(LegacyDataAdapter legacyDataAdapter) {
+	this.legacyDataAdapter = legacyDataAdapter;
     }
 }

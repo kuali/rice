@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.krms.impl.repository
 
-import java.util.ArrayList
-import java.util.List
-
 import junit.framework.Assert
 
 import org.junit.Before

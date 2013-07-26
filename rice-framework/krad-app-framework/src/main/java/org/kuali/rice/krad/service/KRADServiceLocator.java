@@ -17,6 +17,9 @@ package org.kuali.rice.krad.service;
 
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.metadata.MetadataRepository;
+import org.kuali.rice.krad.data.provider.ProviderRegistry;
 
 import javax.persistence.EntityManagerFactory;
 
@@ -30,7 +33,6 @@ public class KRADServiceLocator {
     public static final String PERSISTENCE_SERVICE = "persistenceService";
     public static final String PERSISTENCE_STRUCTURE_SERVICE = "persistenceStructureService";
     public static final String NOTE_SERVICE = "noteService";
-    public static final String BUSINESS_OBJECT_SERVICE = "businessObjectService";
     public static final String ENTITY_MANAGER_FACTORY = "entityManagerFactory";
     public static final String APPLICATION_ENTITY_MANAGER_FACTORY = "kradApplicationEntityManagerFactory";
     public static final String XML_OBJECT_SERIALIZER_SERVICE = "xmlObjectSerializerService";
@@ -38,10 +40,13 @@ public class KRADServiceLocator {
             "xmlObjectSerializerIgnoreMissingFieldsService";
     public static final String SERIALIZER_SERVICE = "businessObjectSerializerService";
     public static final String SEQUENCE_ACCESSOR_SERVICE = "sequenceAccessorService";
-    public static final String KEY_VALUES_SERVICE = "keyValuesService";
     public static final String MAIL_SERVICE = "mailService";
     public static final String DB_PLATFORM = "dbPlatform";
     public static final String INACTIVATEABLE_FROM_TO_SERVICE = "inactivateableFromToService";
+    public static final String KD_DATA_OBJECT_SERVICE = "kd-dataObjectService";
+    public static final String KD_METADATA_REPOSITORY = "kd-metadataRepository";
+    public static final String KD_PROVIDER_REGISTRY = "kd-providerRegistry";
+    public static final String LEGACY_DATA_ADAPTER_FRAMEWORK = "legacyAppFrameworkAdapter";
 
     static <T> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
@@ -51,20 +56,18 @@ public class KRADServiceLocator {
         return getService(ATTACHMENT_SERVICE);
     }
 
+    @Deprecated
     public static PersistenceService getPersistenceService() {
         return getService(PERSISTENCE_SERVICE);
     }
 
+    @Deprecated
     public static PersistenceStructureService getPersistenceStructureService() {
         return getService(PERSISTENCE_STRUCTURE_SERVICE);
     }
 
     public static NoteService getNoteService() {
         return getService(NOTE_SERVICE);
-    }
-
-    public static BusinessObjectService getBusinessObjectService() {
-        return getService(BUSINESS_OBJECT_SERVICE);
     }
 
     public static EntityManagerFactory getEntityManagerFactory() {
@@ -91,10 +94,6 @@ public class KRADServiceLocator {
         return getService(SEQUENCE_ACCESSOR_SERVICE);
     }
 
-    public static KeyValuesService getKeyValuesService() {
-        return getService(KEY_VALUES_SERVICE);
-    }
-
     public static final MailService getMailService() {
         return (MailService) getService(MAIL_SERVICE);
     }
@@ -105,6 +104,23 @@ public class KRADServiceLocator {
 
     public static InactivateableFromToService getInactivateableFromToService() {
         return (InactivateableFromToService) getService(INACTIVATEABLE_FROM_TO_SERVICE);
+    }
+
+    public static LegacyAppFrameworkAdapterService getLegacyAppFrameworkAdapterService(){
+        return (LegacyAppFrameworkAdapterService) getService(LEGACY_DATA_ADAPTER_FRAMEWORK);
+    }
+
+
+    public static DataObjectService getDataObjectService() {
+        return getService(KD_DATA_OBJECT_SERVICE);
+    }
+
+    public static MetadataRepository getMetadataRepository() {
+        return getService(KD_METADATA_REPOSITORY);
+    }
+
+    public static ProviderRegistry getProviderRegistry() {
+        return getService(KD_PROVIDER_REGISTRY);
     }
 
 }

@@ -34,7 +34,6 @@ public interface Person extends ExternalizableBusinessObject {
 	String getPrincipalName();
 	String getEntityId();
 	String getEntityTypeCode();
-
 	/**
 	 * The first name from the default name record for the entity.
 	 */

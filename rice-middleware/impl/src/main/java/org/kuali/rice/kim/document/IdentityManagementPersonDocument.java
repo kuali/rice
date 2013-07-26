@@ -17,11 +17,6 @@ package org.kuali.rice.kim.document;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
 import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
@@ -42,13 +37,11 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
-import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
 import org.kuali.rice.kim.impl.type.KimTypeAttributesHelper;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krad.util.GlobalVariables;
 
@@ -92,29 +85,20 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     // principal data
     
     @GeneratedValue(generator="KRIM_PRNCPL_ID_S")
-	@GenericGenerator(name="KRIM_PRNCPL_ID_S",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KRIM_PRNCPL_ID_S"),
-			@Parameter(name="value_column",value="id")
-		})
 	@Column(name="PRNCPL_ID")
     protected String principalId;
     @Column(name="PRNCPL_NM")
     protected String principalName;
     @GeneratedValue(generator="KRIM_ENTITY_ID_S")
-	@GenericGenerator(name="KRIM_ENTITY_ID_S",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KRIM_ENTITY_ID_S"),
-			@Parameter(name="value_column",value="id")
-		})
 	@Column(name="ENTITY_ID")
     protected String entityId;
-    @Type(type="org.kuali.rice.krad.util.HibernateKualiHashType")
+    //@Type(type="org.kuali.rice.krad.util.HibernateKualiHashType")
     @Column(name="PRNCPL_PSWD")
     protected String password;
 
     protected String univId = "";
     // affiliation data
     @OneToMany(targetEntity=PersonDocumentAffiliation.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
-    @Fetch(value = FetchMode.SELECT)
     @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
     protected List<PersonDocumentAffiliation> affiliations;
 
@@ -125,7 +109,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     protected Map<String, String> externalIdentifiers = null;
 
     @Column(name="ACTV_IND")
-	@Type(type="yes_no")
+	//@Type(type="yes_no")
     protected boolean active;
 
     // citizenship
@@ -133,27 +117,21 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     protected List<PersonDocumentCitizenship> citizenships;
     // protected List<DocEmploymentInfo> employmentInformations;
     @OneToMany(targetEntity=PersonDocumentName.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
-    @Fetch(value = FetchMode.SELECT)
     @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
     protected List<PersonDocumentName> names;
     @OneToMany(targetEntity=PersonDocumentAddress.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
-    @Fetch(value = FetchMode.SELECT)
     @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
     protected List<PersonDocumentAddress> addrs;
     @OneToMany(targetEntity=PersonDocumentPhone.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
-    @Fetch(value = FetchMode.SELECT)
     @JoinColumn(name="FDOC_NBR")
     protected List<PersonDocumentPhone> phones;
     @OneToMany(targetEntity=PersonDocumentEmail.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
-    @Fetch(value = FetchMode.SELECT)
     @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
     protected List<PersonDocumentEmail> emails;
     @OneToMany(targetEntity=PersonDocumentGroup.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
-    @Fetch(value = FetchMode.SELECT)
     @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
     protected List<PersonDocumentGroup> groups;
     @OneToMany(targetEntity=PersonDocumentRole.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
-    @Fetch(value = FetchMode.SELECT)
     @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
     protected List<PersonDocumentRole> roles;
 

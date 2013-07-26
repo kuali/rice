@@ -77,6 +77,7 @@ import java.util.regex.Pattern;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @SuppressWarnings("unchecked")
+@Deprecated
 public class Criteria {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(Criteria.class);

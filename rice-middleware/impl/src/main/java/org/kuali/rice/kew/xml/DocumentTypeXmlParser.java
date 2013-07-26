@@ -51,7 +51,7 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.util.MaintenanceUtils;
 import org.kuali.rice.krad.exception.GroupNotFoundException;
-import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -430,7 +430,7 @@ public class DocumentTypeXmlParser {
             // export the document type that exists in the database
         }
         // if we don't have a valid value for documentType create a brand new instance
-        if (ObjectUtils.isNull(documentType)) {
+        if (documentType == null) {
             documentType = new DocumentType();
         }
         documentType.setName(documentTypeName);
@@ -451,7 +451,7 @@ public class DocumentTypeXmlParser {
         // at this point we know the ingested value is blank
         else if (!isOverwrite) {
             // if this is not an overwrite we need to check the previous document type version for a value to pull forward
-            if ( (ObjectUtils.isNotNull(previousDocumentType)) && (StringUtils.isNotBlank(previousDocumentType.getDescription())) ) {
+            if ( (KRADUtils.isNotNull(previousDocumentType)) && (StringUtils.isNotBlank(previousDocumentType.getDescription())) ) {
                 // keep the same value from the previous version of the document type from the database
                 description = previousDocumentType.getDescription();
             }
@@ -473,7 +473,7 @@ public class DocumentTypeXmlParser {
         // at this point we know the ingested value is blank
         else if (!isOverwrite) {
             // if this is not an overwrite we need to check the previous document type version for a value to pull forward
-            if (ObjectUtils.isNotNull(previousDocumentType) && StringUtils.isNotBlank(previousDocumentType.getLabel())) {
+            if (KRADUtils.isNotNull(previousDocumentType) && StringUtils.isNotBlank(previousDocumentType.getLabel())) {
                 // keep the same value from the previous version of the document type from the database
                 label = previousDocumentType.getLabel();
             } else {
@@ -547,7 +547,7 @@ public class DocumentTypeXmlParser {
         // at this point we know the ingested value is blank
         else if (!isOverwrite) {
             // if this is not an overwrite, we need to check the previous document type version for a value to pull forward
-            if ( (ObjectUtils.isNotNull(previousDocumentType)) && (StringUtils.isNotBlank(previousDocumentType.getUnresolvedHelpDefinitionUrl())) ) {
+            if ( (KRADUtils.isNotNull(previousDocumentType)) && (StringUtils.isNotBlank(previousDocumentType.getUnresolvedHelpDefinitionUrl())) ) {
                 // keep the same value from the previous version of the document type from the database
                 helpDefUrl = previousDocumentType.getUnresolvedHelpDefinitionUrl();
             }
@@ -569,7 +569,7 @@ public class DocumentTypeXmlParser {
         // at this point we know the ingested value is blank
         else if (!isOverwrite) {
             // if this is not an overwrite, we need to check the previous document type version for a value to pull forward
-            if ( (ObjectUtils.isNotNull(previousDocumentType)) && (StringUtils.isNotBlank(previousDocumentType.getUnresolvedDocSearchHelpUrl())) ) {
+            if ( (KRADUtils.isNotNull(previousDocumentType)) && (StringUtils.isNotBlank(previousDocumentType.getUnresolvedDocSearchHelpUrl())) ) {
                 // keep the same value from the previous version of the document type from the database
                 docSearchHelpUrl = previousDocumentType.getUnresolvedDocSearchHelpUrl();
             }
@@ -883,7 +883,7 @@ public class DocumentTypeXmlParser {
     public DocumentType generateNewDocumentTypeFromExisting(String documentTypeName) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException, GroupNotFoundException, WorkflowException {
         // export the document type that exists in the database
         DocumentType docTypeFromDatabase = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
-        if (ObjectUtils.isNotNull(docTypeFromDatabase)) {
+        if (KRADUtils.isNotNull(docTypeFromDatabase)) {
             KewExportDataSet kewExportDataSet = new KewExportDataSet();
             kewExportDataSet.getDocumentTypes().add(docTypeFromDatabase);
             byte[] xmlBytes = CoreApiServiceLocator.getXmlExporterService().export(kewExportDataSet.createExportDataSet());
@@ -898,7 +898,7 @@ public class DocumentTypeXmlParser {
     private void routeDocumentType(DocumentType documentType) {
         DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(documentType.getName());
         // if the docType exists then check locking
-        if (ObjectUtils.isNotNull(docType)) {
+        if (KRADUtils.isNotNull(docType)) {
             Maintainable docTypeMaintainable = new DocumentTypeMaintainable();
             docTypeMaintainable.setBusinessObject(docType);
             docTypeMaintainable.setBoClass(docType.getClass());

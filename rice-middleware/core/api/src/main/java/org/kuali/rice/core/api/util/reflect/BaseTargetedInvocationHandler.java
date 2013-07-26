@@ -25,19 +25,20 @@ package org.kuali.rice.core.api.util.reflect;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class BaseTargetedInvocationHandler extends BaseInvocationHandler implements TargetedInvocationHandler {
+public abstract class BaseTargetedInvocationHandler<T> extends BaseInvocationHandler implements TargetedInvocationHandler<T> {
 
-	private Object target;
+	private T target;
 
-	public BaseTargetedInvocationHandler(Object target) {
+	public BaseTargetedInvocationHandler(T target) {
 		this.target = target;
 	}
 
-	public Object getTarget() {
+    @Override
+	public T getTarget() {
 		return this.target;
 	}
 	
-	public void setTarget(Object target) {
+	public void setTarget(T target) {
 		this.target = target;
 	}
 

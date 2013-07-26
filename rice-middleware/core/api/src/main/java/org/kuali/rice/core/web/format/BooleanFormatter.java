@@ -26,6 +26,7 @@ import org.kuali.rice.core.api.util.Truth;
  * end Kuali Foundation modification
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Deprecated
 public class BooleanFormatter extends Formatter {
     // begin Kuali Foundation modification
     // deleted line: public static final String BOOLEAN_ERROR_KEY = "error.boolean";
@@ -38,17 +39,19 @@ public class BooleanFormatter extends Formatter {
 	   deleted following method */
     // /**
 	//  * Returns the error key for this Formatter.
-	//  * 
+	//  *
 	//  * @see Formatter#getErrorKey()
 	//  */
 	// public String getErrorKey() {
 	// 	return BOOLEAN_ERROR_KEY;
 	// }
 	// end Kuali Foundation modification
-	
+
+    @Override
     protected Object convertToObject(String target) {
-        if (Formatter.isEmptyValue(target))
+        if (Formatter.isEmptyValue(target)) {
             return null;
+        }
 
         String stringValue = target.getClass().isArray() ? unwrapString(target) : (String) target;
         stringValue = stringValue.trim().toLowerCase();
@@ -61,9 +64,11 @@ public class BooleanFormatter extends Formatter {
         return b;
     }
 
+    @Override
     public Object format(Object target) {
-        if (target == null)
+        if (target == null) {
             return null;
+        }
         // begin Kuali Foundation modification
         if (target instanceof String) {
             return target;

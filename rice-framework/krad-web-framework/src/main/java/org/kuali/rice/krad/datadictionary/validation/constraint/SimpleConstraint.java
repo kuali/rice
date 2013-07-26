@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
-import org.kuali.rice.core.api.uif.DataType;
+import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
@@ -29,6 +29,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 @BeanTags({@BeanTag(name = "simpleContraint-bean", parent = "SimpleConstraint"),
         @BeanTag(name = "requiredConstraint-bean", parent = "RequiredConstraint")})
 public class SimpleConstraint extends BaseConstraint implements ExistenceConstraint, RangeConstraint, LengthConstraint {
+    private static final long serialVersionUID = -5988843786798202907L;
 
     private Boolean required;
     private Integer maxLength;

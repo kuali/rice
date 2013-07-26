@@ -36,12 +36,31 @@
   <param name="config.location">classpath:META-INF/common-config-test-locations.xml</param>
   <param name="config.location">${alt.config.location}</param>
 
+  <!-- <param name="rice.krad.jpa.enabled">true</param> -->
   <param name="rice.krad.application.jpa.PersistenceUnitName">krad-application-unit</param>
   <param name="rice.krad.application.jpa.GenerateDdl">false</param>
   <param name="rice.krad.application.jpa.PersistenceXmlLocation">classpath:META-INF/krad-test-persistence.xml</param>
+
+  <param name="rice.krad.data.jpa.enabled">true</param>
+  <param name="rice.krad.data.jpa.PersistenceUnitName">krad-application-unit</param>
+  <param name="rice.krad.data.jpa.GenerateDdl">false</param>
+  <param name="rice.krad.data.jpa.PersistenceXmlLocation">classpath:META-INF/krad-test-persistence.xml</param>
+
+  <!-- disable weaving for now -->
+  <param name="rice.krad.data.jpa.eclipselink.weaving">false</param>
+  <param name="rice.krad.data.jpa.eclipselink.logging.level.sql">FINE</param>
+  <param name="rice.krad.data.jpa.eclipselink.logging.parameters">true</param>
+  <param name="rice.krad.data.jpa.eclipselink.jdbc.first-result">0</param>
+
+  <param name="rice.jpa.eclipselink.ddl-generation">create-tables</param>
+  <param name="rice.jpa.eclipselink.create-ddl-jdbc-file-name">${external.config.home}/create_tables.sql</param>
+  <param name="rice.jpa.eclipselink.ddl-generation.output-mode">sql-script</param>
 
   <param name="resourceBundleNames">org.kuali.rice.krad.KRADApplicationResources,TestApplicationResources</param>
 
   <!-- this is used for the testharness test -->
   <param name="rice.test.case.test">test</param>
+
+  <!-- test-only beans defined herein -->
+  <param name="rice.kr.additionalSpringFiles">classpath:org/kuali/rice/krad/test/KRADOverrideTestSpringBeans.xml</param>
 </config>

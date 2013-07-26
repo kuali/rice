@@ -71,7 +71,7 @@ public class CollectionLayoutUtils {
 
             if ((selectControl != null) && (selectControl instanceof ValueConfiguredControl)) {
                 String lineIdentifier =
-                        KRADServiceLocatorWeb.getDataObjectMetaDataService().getDataObjectIdentifierString(line);
+                        KRADServiceLocatorWeb.getLegacyDataAdapter().getDataObjectIdentifierString(line);
                 ((ValueConfiguredControl) selectControl).setValue(lineIdentifier);
             }
         }

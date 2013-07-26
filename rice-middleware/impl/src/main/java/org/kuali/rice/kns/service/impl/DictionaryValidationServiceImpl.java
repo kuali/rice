@@ -141,8 +141,7 @@ public class DictionaryValidationServiceImpl extends org.kuali.rice.krad.service
                         itemDefinition.getName())) {
                     Object value = ObjectUtils.getPropertyValue(businessObject, itemDefinition.getName());
                     if (value != null && StringUtils.isNotBlank(value.toString())) {
-                        Class propertyType = ObjectUtils.getPropertyType(businessObject, itemDefinition.getName(),
-                                persistenceStructureService);
+                        Class propertyType = ObjectUtils.getPropertyType(businessObject, itemDefinition.getName(), null);
                         if (TypeUtils.isStringClass(propertyType) ||
                                 TypeUtils.isIntegralClass(propertyType) ||
                                 TypeUtils.isDecimalClass(propertyType) ||

@@ -16,6 +16,9 @@
 package org.kuali.rice.kim.impl.group
 
 import groovy.mock.interceptor.MockFor
+import org.kuali.rice.core.api.criteria.QueryResults
+import org.kuali.rice.krad.data.DataObjectService
+
 import java.sql.Timestamp
 import org.junit.Assert
 import org.junit.Before
@@ -32,7 +35,6 @@ import org.kuali.rice.kim.api.group.GroupQueryResults
 import org.kuali.rice.kim.api.group.GroupService
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo
 import org.kuali.rice.kim.impl.type.KimTypeBo
-import org.kuali.rice.krad.service.BusinessObjectService
 import static org.kuali.rice.core.api.criteria.PredicateFactory.equal
 import org.kuali.rice.core.api.membership.MemberType
 
@@ -45,18 +47,19 @@ class GroupServiceImplTest {
     static GroupMemberBo memberGroupMember
     static List<GroupMemberBo> group1Members = new ArrayList<GroupMemberBo>()
     static List<GroupMemberBo> group2Members = new ArrayList<GroupMemberBo>()
+    static GenericQueryResults member1Result
+    static QueryResults<GroupMemberBo> group1MemberResult
+    static GenericQueryResults group2MemberResult
+    static GenericQueryResults group1and2MemberResult
+    static GenericQueryResults memberGroupMemberResult
+    static GenericQueryResults emptyGroupMemberResult
 
-    MockFor businessObjectServiceMockFor
-    BusinessObjectService bos
+
+    MockFor dataObjectServiceMockFor
+    DataObjectService dos
     static GenericQueryResults queryResults1
     static GenericQueryResults queryResultsAll
     static GenericQueryResults queryResultsEmpty
-
-    //MockFor groupDaoMockFor
-    //GroupDao groupDao
-
-    MockFor criteriaLookupMockFor
-    CriteriaLookupService cls
 
     GroupServiceImpl groupServiceImpl
     GroupService groupService
@@ -91,6 +94,40 @@ class GroupServiceImplTest {
             group2Members.add(bo)
         }
 
+        GenericQueryResults.Builder builder = GenericQueryResults.Builder.create()
+        //QueryResults<GroupMemberBo> builder = QueryResults<GroupMemberBo>
+        builder.setMoreResultsAvailable(false)
+        builder.setTotalRowCount(new Integer(1))
+        builder.setResults(Collections.singletonList(member1))
+        member1Result = builder.build()
+
+        builder.setMoreResultsAvailable(false)
+        builder.setTotalRowCount(new Integer(group1Members.size()))
+        builder.setResults(group1Members)
+        group1MemberResult = builder.build()
+
+        builder.setMoreResultsAvailable(false)
+        builder.setTotalRowCount(new Integer(group2Members.size()))
+        builder.setResults(group2Members)
+        group2MemberResult = builder.build()
+
+        List<GroupMemberBo> allMembers = new ArrayList<GroupMemberBo>();
+        allMembers.addAll(group1Members);
+        allMembers.addAll(group2Members);
+        builder.setResults(allMembers);
+        builder.setTotalRowCount(allMembers.size())
+        group1and2MemberResult = builder.build()
+
+
+        builder.setTotalRowCount(new Integer(1))
+        builder.setResults(Collections.singletonList(member3))
+        memberGroupMemberResult = builder.build()
+
+        builder.setMoreResultsAvailable(false)
+        builder.setTotalRowCount(new Integer(0))
+        builder.setResults(new ArrayList<GroupMemberBo>())
+        emptyGroupMemberResult = builder.build()
+
         KimTypeBo kimTypeBo = new KimTypeBo(id: "2", serviceName: "service", namespaceCode: "KUALI", name: "thisType",
                 active: true)
 
@@ -120,7 +157,7 @@ class GroupServiceImplTest {
         }
 
         //setup groupQueryResults
-        GenericQueryResults.Builder builder = GenericQueryResults.Builder.create()
+        //GenericQueryResults.Builder builder = GenericQueryResults.Builder.create()
         builder.setMoreResultsAvailable(false)
         builder.setTotalRowCount(new Integer(0))
         builder.setResults(new ArrayList<GroupBo>())
@@ -139,8 +176,8 @@ class GroupServiceImplTest {
 
     @Before
     void setupMockContext() {
-        businessObjectServiceMockFor = new MockFor(BusinessObjectService.class)
-        criteriaLookupMockFor = new MockFor(CriteriaLookupService.class)
+
+        dataObjectServiceMockFor = new MockFor(DataObjectService.class)
 
     }
 
@@ -150,88 +187,86 @@ class GroupServiceImplTest {
         groupService = groupServiceImpl    //assign Interface type to implementation reference for unit test only
     }
 
-    void injectBusinessObjectServiceIntoGroupService() {
-        bos =  businessObjectServiceMockFor.proxyDelegateInstance()
-        groupServiceImpl.setBusinessObjectService(bos)
-    }
-
-    void injectCriteriaLookupServiceIntoGroupService() {
-        cls = criteriaLookupMockFor.proxyDelegateInstance()
-        groupServiceImpl.setCriteriaLookupService(cls)
+    void injectDataObjectServiceIntoGroupService() {
+        dos =  dataObjectServiceMockFor.proxyDelegateInstance()
+        groupServiceImpl.setDataObjectService(dos)
     }
 
     @Test
     public void test_getGroup() {
-        businessObjectServiceMockFor.demand.findByPrimaryKey(1..sampleGroups.size()) {
-            Class clazz, Map primaryKey -> return sampleGroups.get(primaryKey.get("id"))
+        dataObjectServiceMockFor.demand.find(1..sampleGroups.size()) {
+            Class clazz, Object primaryKey -> return sampleGroups.get(primaryKey)
         }
-        injectBusinessObjectServiceIntoGroupService()
+        injectDataObjectServiceIntoGroupService()
         for (String id : sampleGroups.keySet()) {
             Group group = groupService.getGroup(id)
             Assert.assertEquals(GroupBo.to(sampleGroups.get(id)), group)
         }
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dos)
     }
 
     @Test
     public void test_getGroupNonExistent() {
-        businessObjectServiceMockFor.demand.findByPrimaryKey(1) {
-            Class clazz, Map primaryKey -> return null
+        dataObjectServiceMockFor.demand.find(1) {
+            Class clazz, Object primaryKey -> return null
         }
-        injectBusinessObjectServiceIntoGroupService()
+        injectDataObjectServiceIntoGroupService()
         Group group = groupService.getGroup("badId")
         Assert.assertNull(group)
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dos)
     }
 
     @Test
     public void test_getGroupByName() {
-        businessObjectServiceMockFor.demand.findMatching(1..sampleGroupsByName.size()) {
-            Class clazz, Map map -> return Collections.singletonList(sampleGroupsByName.get(map.get(KimConstants.UniqueKeyConstants.NAMESPACE_CODE) + ";" + map.get(KimConstants.UniqueKeyConstants.GROUP_NAME)))
+        GenericQueryResults.Builder builder = GenericQueryResults.Builder.create()
+        dataObjectServiceMockFor.demand.findMatching(1..sampleGroupsByName.size()) {
+            Class clazz, QueryByCriteria map -> return builder.build()
         }
-        injectBusinessObjectServiceIntoGroupService()
+        injectDataObjectServiceIntoGroupService()
 
         for (String name : sampleGroupsByName.keySet()) {
             GroupBo tempGroup = sampleGroupsByName.get(name)
+            builder.setResults(Collections.singletonList(sampleGroupsByName.get(tempGroup.namespaceCode +";"+tempGroup.name)));
+            builder.setTotalRowCount(builder.getResults().size());
             Group group = groupService.getGroupByNamespaceCodeAndName(tempGroup.namespaceCode, tempGroup.name)
             Assert.assertEquals(GroupBo.to(sampleGroupsByName.get(name)), group)
         }
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dos)
     }
 
     @Test
     public void test_getGroupByNameNonExistent() {
-        businessObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, Map map -> return Collections.emptyList()
+        dataObjectServiceMockFor.demand.findMatching(1) {
+            Class clazz, QueryByCriteria map -> return GenericQueryResults.Builder.create().build()
         }
-        injectBusinessObjectServiceIntoGroupService()
+        injectDataObjectServiceIntoGroupService()
 
         Group group = groupService.getGroupByNamespaceCodeAndName("badNamespace", "noname")
         Assert.assertNull(group)
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dos)
     }
 
     @Test
     public void test_isMemberOfGroup() {
-        businessObjectServiceMockFor.demand.findByPrimaryKey(1) {
-            Class clazz, Map groupId -> return sampleGroups.get(groupId.get("id"))
+        dataObjectServiceMockFor.demand.find(1) {
+            Class clazz, Object groupId -> return sampleGroups.get(groupId)
         }
-        businessObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, Map map -> group1Members
+        dataObjectServiceMockFor.demand.findMatching(1) {
+            Class clazz, QueryByCriteria query -> return group1MemberResult
         }
-        businessObjectServiceMockFor.demand.findByPrimaryKey(1) {
-            Class clazz, Map groupId -> return sampleGroups.get(groupId.get("id"))
+        dataObjectServiceMockFor.demand.find(1) {
+            Class clazz, Object groupId -> return sampleGroups.get(groupId)
         }
-        businessObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, Map map -> group2Members
+        dataObjectServiceMockFor.demand.findMatching(1) {
+            Class clazz, QueryByCriteria query -> return group2MemberResult
         }
-        businessObjectServiceMockFor.demand.findByPrimaryKey(1) {
-            Class clazz, Map groupId -> return sampleGroups.get(groupId.get("id"))
+        dataObjectServiceMockFor.demand.find(1) {
+            Class clazz, Object groupId -> return sampleGroups.get(groupId)
         }
-        businessObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, Map map -> Collections.emptyList()
+        dataObjectServiceMockFor.demand.findMatching(1) {
+            Class clazz, QueryByCriteria query -> return emptyGroupMemberResult
         }
-        injectBusinessObjectServiceIntoGroupService()
+        injectDataObjectServiceIntoGroupService()
 
         // Should be member
         Assert.assertTrue("Principal '240' should be a member of 'somegroup'", groupService.isMemberOfGroup("240", "1"))
@@ -239,45 +274,42 @@ class GroupServiceImplTest {
         //Should not be member
         Assert.assertFalse("Principal '240' should not be a member of 'othergroup'", groupService.isMemberOfGroup("240", "2"))
 
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dos)
     }
 
     @Test
     public void test_getGroupsForPrincipal() {
-        businessObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, Map map -> return Collections.singletonList(sampleGroups.get("1").getMembers().get(0))
+        dataObjectServiceMockFor.demand.findMatching(1) {
+            Class clazz, QueryByCriteria query -> return member1Result
         }
-        criteriaLookupMockFor.demand.lookup(1) {
+        dataObjectServiceMockFor.demand.findMatching(1) {
             Class clazz, QueryByCriteria query, LookupCustomizer lc -> return queryResults1
         }
-        businessObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, Map map -> return Collections.emptyList()
+        dataObjectServiceMockFor.demand.findMatching(1) {
+            Class clazz, QueryByCriteria query -> return emptyGroupMemberResult
         }
-        injectBusinessObjectServiceIntoGroupService()
-        injectCriteriaLookupServiceIntoGroupService()
-
+        injectDataObjectServiceIntoGroupService()
         // Should be member
         List<Group> groups = groupService.getGroupsByPrincipalId("240");
         Assert.assertEquals("Pricipal should only be a member of 1 group", 1, groups.size())
         List<Group> expectedGroups = new ArrayList<Group>();
         expectedGroups.add(GroupBo.to(sampleGroups.get("1")))
         Assert.assertEquals(expectedGroups, groups)
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dos)
     }
 
-        @Test
+    @Test
     public void test_getGroupsForPrincipalByNamespace() {
-        businessObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, Map map -> return Collections.singletonList(sampleGroups.get("1").getMembers().get(0))
+        dataObjectServiceMockFor.demand.findMatching(1) {
+            Class clazz, QueryByCriteria query -> return member1Result
         }
-        criteriaLookupMockFor.demand.lookup(1) {
+        dataObjectServiceMockFor.demand.findMatching(1) {
             Class clazz, QueryByCriteria query, LookupCustomizer lc -> return queryResults1
         }
-        businessObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, Map map -> return Collections.emptyList()
+        dataObjectServiceMockFor.demand.findMatching(1) {
+            Class clazz, QueryByCriteria query -> return emptyGroupMemberResult
         }
-        injectBusinessObjectServiceIntoGroupService()
-        injectCriteriaLookupServiceIntoGroupService()
+        injectDataObjectServiceIntoGroupService()
 
         // Should be member
         List<Group> groups = groupService.getGroupsByPrincipalIdAndNamespaceCode("240", "PUNK")
@@ -285,16 +317,15 @@ class GroupServiceImplTest {
         List<Group> expectedGroups = new ArrayList<Group>();
         expectedGroups.add(GroupBo.to(sampleGroups.get("1")))
         Assert.assertEquals(expectedGroups, groups)
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dos)
     }
 
     @Test
     public void test_findGroupIds() {
-        criteriaLookupMockFor.demand.lookup(1) {
+        dataObjectServiceMockFor.demand.findMatching(1) {
             Class clazz, QueryByCriteria query, LookupCustomizer lc -> return queryResultsAll
         }
-        injectCriteriaLookupServiceIntoGroupService()
-        injectCriteriaLookupServiceIntoGroupService()
+        injectDataObjectServiceIntoGroupService()
         List<String> expectedIds = new ArrayList<String>()
         expectedIds.addAll(sampleGroups.keySet())
 
@@ -304,16 +335,15 @@ class GroupServiceImplTest {
 
         Assert.assertEquals(groupIds.size(), sampleGroups.size())
         Assert.assertEquals(expectedIds, groupIds)
-        criteriaLookupMockFor.verify(cls)
+        dataObjectServiceMockFor.verify(dos)
     }
 
     @Test
     public void test_lookupGroups() {
-        criteriaLookupMockFor.demand.lookup(1) {
+        dataObjectServiceMockFor.demand.findMatching(1) {
             Class clazz, QueryByCriteria query, LookupCustomizer lc -> return queryResultsAll
         }
-        injectCriteriaLookupServiceIntoGroupService()
-        injectCriteriaLookupServiceIntoGroupService()
+        injectDataObjectServiceIntoGroupService()
         List<Group> expectedGroups = new ArrayList<Group>()
         for (GroupBo groupBo : sampleGroups.values()) {
             expectedGroups.add(GroupBo.to(groupBo))
@@ -325,18 +355,24 @@ class GroupServiceImplTest {
 
         Assert.assertEquals(qr.getTotalRowCount(), sampleGroups.size())
         Assert.assertEquals(expectedGroups, qr.getResults())
-        criteriaLookupMockFor.verify(cls)
+        dataObjectServiceMockFor.verify(dos)
     }
 
     @Test
     public void test_isDirectMemberOfGroup() {
-        businessObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, Map map -> return Collections.singletonList(sampleGroups.get("1").getMembers().get(0))
+        GenericQueryResults.Builder builder1 = GenericQueryResults.Builder.create()
+        builder1.setResults(Collections.singletonList(sampleGroups.get("1").getMembers().get(0)))
+        builder1.setTotalRowCount(1);
+        dataObjectServiceMockFor.demand.findMatching(1) {
+            Class clazz, QueryByCriteria map -> return builder1.build()
         }
-        businessObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, Map map -> return Collections.emptyList()
+        GenericQueryResults.Builder builder2 = GenericQueryResults.Builder.create()
+        builder2.setResults(Collections.emptyList())
+        builder2.setTotalRowCount(0);
+        dataObjectServiceMockFor.demand.findMatching(1) {
+            Class clazz, QueryByCriteria map -> return builder2.build()
         }
-        injectBusinessObjectServiceIntoGroupService()
+        injectDataObjectServiceIntoGroupService()
 
         // Should be member
         Assert.assertTrue("Principal '240' should be a direct member of 'somegroup'", groupService.isDirectMemberOfGroup("240", "1"))
@@ -344,82 +380,77 @@ class GroupServiceImplTest {
         //Should not be member
         Assert.assertFalse("Principal '240' should not be a member of 'othergroup'", groupService.isDirectMemberOfGroup("240", "2"))
 
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dos)
     }
 
     @Test void test_getGroupIdsForPrincipal() {
-        businessObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, Map map -> return Collections.singletonList(sampleGroups.get("1").getMembers().get(0))
+
+        dataObjectServiceMockFor.demand.findMatching(1) {
+            Class clazz, QueryByCriteria query -> return member1Result
         }
-        criteriaLookupMockFor.demand.lookup(1) {
+        dataObjectServiceMockFor.demand.findMatching(1) {
             Class clazz, QueryByCriteria query, LookupCustomizer lc -> return queryResults1
         }
-        businessObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, Map map -> return Collections.emptyList()
+        dataObjectServiceMockFor.demand.findMatching(1) {
+            Class clazz, QueryByCriteria query -> return emptyGroupMemberResult
         }
-        injectBusinessObjectServiceIntoGroupService()
-        injectCriteriaLookupServiceIntoGroupService()
+        injectDataObjectServiceIntoGroupService()
 
         // Should be member
         List<String> groupIds = groupService.getGroupIdsByPrincipalId("240");
         Assert.assertEquals("PricipalId 240 should only be a member of 1 group", 1, groupIds.size())
         List<String> expectedGroupIds = Collections.singletonList("1");
         Assert.assertEquals(expectedGroupIds, groupIds)
-        businessObjectServiceMockFor.verify(bos)
-        criteriaLookupMockFor.verify(cls)
+        dataObjectServiceMockFor.verify(dos)
 
     }
 
     @Test
     void test_getGroupIdsForPrincipalByNamespace() {
-        businessObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, Map map -> return Collections.singletonList(sampleGroups.get("1").getMembers().get(0))
+        dataObjectServiceMockFor.demand.findMatching(1) {
+            Class clazz, QueryByCriteria query -> return member1Result
         }
-        criteriaLookupMockFor.demand.lookup(1) {
+        dataObjectServiceMockFor.demand.findMatching(1) {
             Class clazz, QueryByCriteria query, LookupCustomizer lc -> return queryResults1
         }
-        businessObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, Map map -> return Collections.emptyList()
+        dataObjectServiceMockFor.demand.findMatching(1) {
+            Class clazz, QueryByCriteria query -> return emptyGroupMemberResult
         }
-        injectBusinessObjectServiceIntoGroupService()
-        injectCriteriaLookupServiceIntoGroupService()
+        injectDataObjectServiceIntoGroupService()
 
         // Should be member
         List<String> groupIds = groupService.getGroupIdsByPrincipalIdAndNamespaceCode("240", "PUNK");
         Assert.assertEquals("PricipalId 240 should only be a member of 1 group", 1, groupIds.size())
         List<String> expectedGroupIds = Collections.singletonList("1");
         Assert.assertEquals(expectedGroupIds, groupIds)
-        businessObjectServiceMockFor.verify(bos)
-        criteriaLookupMockFor.verify(cls)
+        dataObjectServiceMockFor.verify(dos)
     }
 
     @Test
     void test_getDirectGroupIdsForPrincipal() {
-        businessObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, Map map -> return Collections.singletonList(sampleGroups.get("1").getMembers().get(0))
+        dataObjectServiceMockFor.demand.findMatching(1) {
+            Class clazz, QueryByCriteria query -> return member1Result
         }
-        criteriaLookupMockFor.demand.lookup(1) {
+        dataObjectServiceMockFor.demand.findMatching(1) {
             Class clazz, QueryByCriteria query, LookupCustomizer lc -> return queryResults1
         }
-        injectBusinessObjectServiceIntoGroupService()
-        injectCriteriaLookupServiceIntoGroupService()
+        injectDataObjectServiceIntoGroupService()
 
         // Should be member
         List<String> groupIds = groupService.getDirectGroupIdsByPrincipalId("240");
         Assert.assertEquals("PricipalId 240 should only be a member of 1 group", 1, groupIds.size())
         List<String> expectedGroupIds = Collections.singletonList("1");
         Assert.assertEquals(expectedGroupIds, groupIds)
-        businessObjectServiceMockFor.verify(bos)
-        criteriaLookupMockFor.verify(cls)
+        dataObjectServiceMockFor.verify(dos)
     }
 
     @Test
     void test_getMemberPrincipalIds() {
-        businessObjectServiceMockFor.demand.findByPrimaryKey(0..3) {
-            Class clazz, Map primaryKey -> return sampleGroups.get(primaryKey.get("id"))
+        dataObjectServiceMockFor.demand.find(0..3) {
+            Class clazz, Object primaryKey -> return sampleGroups.get(primaryKey)
         }
 
-        injectBusinessObjectServiceIntoGroupService()
+        injectDataObjectServiceIntoGroupService()
 
         List<String> expectedIds = new ArrayList<String>()
         for (GroupMemberBo memberBo : sampleGroups.get("1").getMembers()){
@@ -432,15 +463,15 @@ class GroupServiceImplTest {
         for (String id : actualIds) {
             Assert.assertTrue(id + "should be in List", expectedIds.contains(id) )
         }
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dos)
     }
 
     @Test
     void test_getDirectMemberPrincipalIds() {
-        businessObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, Map map -> return group1Members
+        dataObjectServiceMockFor.demand.findMatching(1) {
+            Class clazz, QueryByCriteria query -> return group1MemberResult
         }
-        injectBusinessObjectServiceIntoGroupService()
+        injectDataObjectServiceIntoGroupService()
 
         List<String> expectedIds = new ArrayList<String>()
         for (GroupMemberBo memberBo : sampleGroups.get("1").getMembers()){
@@ -453,15 +484,15 @@ class GroupServiceImplTest {
         for (String id : actualIds) {
             Assert.assertTrue(id + "should be in List", expectedIds.contains(id) )
         }
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dos)
     }
 
     @Test
     void test_getMemberGroupIds() {
-        businessObjectServiceMockFor.demand.findByPrimaryKey(0..4) {
-            Class clazz, Map primaryKey -> return sampleGroups.get(primaryKey.get("id"))
+        dataObjectServiceMockFor.demand.find(0..4) {
+            Class clazz, Object primaryKey -> return sampleGroups.get(primaryKey)
         }
-        injectBusinessObjectServiceIntoGroupService()
+        injectDataObjectServiceIntoGroupService()
 
         List<String> expectedIds = new ArrayList<String>()
         for (GroupMemberBo memberBo : sampleGroups.get("1").getMembers()){
@@ -474,15 +505,15 @@ class GroupServiceImplTest {
         for (String id : actualIds) {
             Assert.assertTrue(id + " should be in List", expectedIds.contains(id) )
         }
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dos)
     }
 
     @Test
     void test_getDirectMemberGroupIds() {
-        businessObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, Map map -> return group1Members
+        dataObjectServiceMockFor.demand.findMatching(1) {
+            Class clazz, QueryByCriteria query -> return group1MemberResult
         }
-        injectBusinessObjectServiceIntoGroupService()
+        injectDataObjectServiceIntoGroupService()
 
         List<String> expectedIds = new ArrayList<String>()
         for (GroupMemberBo memberBo : sampleGroups.get("1").getMembers()){
@@ -495,63 +526,53 @@ class GroupServiceImplTest {
         for (String id : actualIds) {
             Assert.assertTrue(id + "should be in List", expectedIds.contains(id) )
         }
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dos)
     }
 
     @Test
     void test_getParentGroupIds() {
-        businessObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, Map map -> return Collections.singletonList(memberGroupMember)
+        dataObjectServiceMockFor.demand.findMatching(1) {
+            Class clazz, QueryByCriteria query -> return memberGroupMemberResult
         }
-        criteriaLookupMockFor.demand.lookup(1) {
+        dataObjectServiceMockFor.demand.findMatching(1) {
             Class clazz, QueryByCriteria query, LookupCustomizer lc -> return queryResults1
         }
-        businessObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, Map map -> return Collections.emptyList()
+        dataObjectServiceMockFor.demand.findMatching(1) {
+            Class clazz, QueryByCriteria query -> return emptyGroupMemberResult
         }
-
-        injectBusinessObjectServiceIntoGroupService()
-        injectCriteriaLookupServiceIntoGroupService()
+        injectDataObjectServiceIntoGroupService()
 
         List<String> expectedIds = Collections.singletonList(sampleGroups.get("1").id)
         List<String> actualIds = groupService.getParentGroupIds(memberGroupMember.memberId)
         Assert.assertEquals("Should be " + expectedIds.size() + "Ids returned", expectedIds.size(), actualIds.size())
         Assert.assertEquals(expectedIds, actualIds)
-        businessObjectServiceMockFor.verify(bos)
-        criteriaLookupMockFor.verify(cls)
+        dataObjectServiceMockFor.verify(dos)
     }
 
     @Test
     void test_getDirectParentGroupIds() {
-        businessObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, Map map -> return Collections.singletonList(memberGroupMember)
+        dataObjectServiceMockFor.demand.findMatching(1) {
+            Class clazz, QueryByCriteria query -> return memberGroupMemberResult
         }
-        criteriaLookupMockFor.demand.lookup(1) {
+        dataObjectServiceMockFor.demand.findMatching(1) {
             Class clazz, QueryByCriteria query, LookupCustomizer lc -> return queryResults1
         }
-        injectBusinessObjectServiceIntoGroupService()
-        injectCriteriaLookupServiceIntoGroupService()
+        injectDataObjectServiceIntoGroupService()
 
         List<String> expectedIds = Collections.singletonList(sampleGroups.get("1").id)
         List<String> actualIds = groupService.getDirectParentGroupIds(memberGroupMember.memberId)
         Assert.assertEquals("Should be " + expectedIds.size() + "Ids returned", expectedIds.size(), actualIds.size())
         Assert.assertEquals(expectedIds, actualIds)
-        businessObjectServiceMockFor.verify(bos)
-        criteriaLookupMockFor.verify(cls)
+        dataObjectServiceMockFor.verify(dos)
     }
 
     @Test
     void test_getMembers() {
-        businessObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, Map map -> return group1Members
+
+        dataObjectServiceMockFor.demand.findMatching(1) {
+            Class clazz, QueryByCriteria query -> return group1and2MemberResult
         }
-        businessObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, Map map -> return group2Members
-        }
-        /*businessObjectServiceMockFor.demand.findByPrimaryKey(1..sampleGroups.size()) {
-            Class clazz, Map primaryKey -> return sampleGroups.get(primaryKey)
-        }*/
-        injectBusinessObjectServiceIntoGroupService()
+        injectDataObjectServiceIntoGroupService()
 
         List<GroupMember> expected = new ArrayList<GroupMember>();
         for (GroupBo groupBo : sampleGroups.values()) {
@@ -565,7 +586,7 @@ class GroupServiceImplTest {
         for (GroupMember gm : actual) {
             Assert.assertTrue(gm.getId() + "should be in List", expected.contains(gm) )
         }
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dos)
     }
 
     @Test
@@ -585,23 +606,23 @@ class GroupServiceImplTest {
 
     @Test
     void test_createGroupNullGroup(){
-        injectBusinessObjectServiceIntoGroupService()
+        injectDataObjectServiceIntoGroupService()
 
         shouldFail(IllegalArgumentException.class) {
             groupService.createGroup(null)
         }
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dos)
 
     }
 
     @Test
     void test_updateGroupNullGroup(){
-        injectBusinessObjectServiceIntoGroupService()
+        injectDataObjectServiceIntoGroupService()
 
         shouldFail(IllegalArgumentException.class) {
             groupService.updateGroup(null, null)
         }
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dos)
 
     }
 }

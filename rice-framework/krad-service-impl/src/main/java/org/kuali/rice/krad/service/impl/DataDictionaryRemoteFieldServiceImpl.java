@@ -15,11 +15,10 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.uif.RemotableAbstractControl;
 import org.kuali.rice.core.api.uif.RemotableAbstractWidget;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
@@ -33,12 +32,12 @@ import org.kuali.rice.core.api.uif.RemotableTextInput;
 import org.kuali.rice.core.api.uif.RemotableTextarea;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.service.DataDictionaryRemoteFieldService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DataObjectMetaDataService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.uif.control.CheckboxControl;
 import org.kuali.rice.krad.uif.control.CheckboxGroupControl;
 import org.kuali.rice.krad.uif.control.Control;
@@ -51,7 +50,6 @@ import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.control.UserControl;
 import org.kuali.rice.krad.util.DataTypeUtil;
-import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -65,17 +63,14 @@ import java.util.Map;
  */
 public class DataDictionaryRemoteFieldServiceImpl implements DataDictionaryRemoteFieldService {
 
-    /**
-     * @see org.kuali.rice.krad.service.DataDictionaryRemoteFieldService#buildRemotableFieldFromAttributeDefinition(java.lang.String,
-     *      java.lang.String)
-     */
+    @Override
     public RemotableAttributeField buildRemotableFieldFromAttributeDefinition(String componentClassName,
             String attributeName) {
         AttributeDefinition baseDefinition;
         Class<?> componentClass;
         // try to resolve the component name - if not possible - try to pull the definition from the app mediation service
         try {
-            componentClass = (Class<? extends BusinessObject>) Class.forName(componentClassName);
+            componentClass = Class.forName(componentClassName);
             baseDefinition = getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(componentClassName)
                     .getAttributeDefinition(attributeName);
         } catch (ClassNotFoundException ex) {
@@ -89,10 +84,10 @@ public class DataDictionaryRemoteFieldServiceImpl implements DataDictionaryRemot
         definition.setMaxLength(baseDefinition.getMaxLength());
 
         if (baseDefinition.isRequired() != null) {
-            definition.setRequired(baseDefinition.isRequired());
+            definition.setRequired(baseDefinition.isRequired().booleanValue());
         }
 
-        definition.setForceUpperCase(baseDefinition.getForceUppercase());
+        definition.setForceUpperCase(baseDefinition.getForceUppercase().booleanValue());
 
         //set the datatype - needed for successful custom doc searches
         String dataType = DataTypeUtil.determineFieldDataType((Class<? extends BusinessObject>) componentClass,
@@ -199,76 +194,18 @@ public class DataDictionaryRemoteFieldServiceImpl implements DataDictionaryRemot
      * @return RemotableQuickFinder.Builder instance for the configured lookup, or null if one could not be found
      */
     protected RemotableQuickFinder.Builder createQuickFinder(Class<?> componentClass, String attributeName) {
-        Object sampleComponent;
-        try {
-            sampleComponent = componentClass.newInstance();
-        } catch (InstantiationException e) {
-            throw new RiceRuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RiceRuntimeException(e);
-        }
-
-        String lookupClassName = null;
-        Map<String, String> fieldConversions = new HashMap<String, String>();
-        Map<String, String> lookupParameters = new HashMap<String, String>();
-
-        DataObjectRelationship relationship = getDataObjectMetaDataService().getDataObjectRelationship(sampleComponent,
-                componentClass, attributeName, "", true, true, false);
-        if (relationship != null) {
-            lookupClassName = relationship.getRelatedClass().getName();
-
-            for (Map.Entry<String, String> entry : relationship.getParentToChildReferences().entrySet()) {
-                String fromField = entry.getValue();
-                String toField = entry.getKey();
-                fieldConversions.put(fromField, toField);
-            }
-
-            for (Map.Entry<String, String> entry : relationship.getParentToChildReferences().entrySet()) {
-                String fromField = entry.getKey();
-                String toField = entry.getValue();
-
-                if (relationship.getUserVisibleIdentifierKey() == null || relationship.getUserVisibleIdentifierKey()
-                        .equals(fromField)) {
-                    lookupParameters.put(fromField, toField);
-                }
-            }
-        } else {
-            // check for title attribute and if match build lookup to component class using pk fields
-            String titleAttribute = getDataObjectMetaDataService().getTitleAttribute(componentClass);
-            if (StringUtils.equals(titleAttribute, attributeName)) {
-                lookupClassName = componentClass.getName();
-
-                List<String> pkAttributes = getDataObjectMetaDataService().listPrimaryKeyFieldNames(componentClass);
-                for (String pkAttribute : pkAttributes) {
-                    fieldConversions.put(pkAttribute, pkAttribute);
-                    if (!StringUtils.equals(pkAttribute, attributeName)) {
-                        lookupParameters.put(pkAttribute, pkAttribute);
-                    }
-                }
-            }
-        }
-        
-        if (StringUtils.isNotBlank(lookupClassName)) {
-            String baseUrl = getKualiConfigurationService().getPropertyValueAsString(KRADConstants.KRAD_LOOKUP_URL_KEY);
-            RemotableQuickFinder.Builder builder = RemotableQuickFinder.Builder.create(baseUrl, lookupClassName);
-            builder.setLookupParameters(lookupParameters);
-            builder.setFieldConversions(fieldConversions);
-
-            return builder;
-        }
-
-        return null;
+        return getLegacyDataAdapter().createQuickFinder(componentClass, attributeName);
     }
 
     protected DataDictionaryService getDataDictionaryService() {
         return KRADServiceLocatorWeb.getDataDictionaryService();
     }
 
-    protected DataObjectMetaDataService getDataObjectMetaDataService() {
-        return KRADServiceLocatorWeb.getDataObjectMetaDataService();
-    }
-
     protected ConfigurationService getKualiConfigurationService() {
         return CoreApiServiceLocator.getKualiConfigurationService();
+    }
+
+    protected LegacyDataAdapter getLegacyDataAdapter() {
+        return KRADServiceLocatorWeb.getLegacyDataAdapter();
     }
 }

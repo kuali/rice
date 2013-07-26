@@ -30,6 +30,7 @@ import org.kuali.rice.kim.impl.identity.entity.EntityBo;
 import org.kuali.rice.kim.impl.identity.name.EntityNameBo;
 import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
 import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.xml.sax.SAXException;
@@ -176,7 +177,7 @@ public class UserXmlParser {
 			entity.setNames(Collections.singletonList(name));
 		}
 
-		entity =  KRADServiceLocator.getBusinessObjectService().save(entity);
+		entity =  KNSServiceLocator.getBusinessObjectService().save(entity);
 		
 		return entity;
     }
@@ -196,7 +197,7 @@ public class UserXmlParser {
 		principal.setPrincipalId(principalId);
 		principal.setPrincipalName(principalName);
 		principal.setEntityId(entityId);
-		principal = (PrincipalBo) KRADServiceLocator.getBusinessObjectService().save(principal);
+		principal = (PrincipalBo) KNSServiceLocator.getBusinessObjectService().save(principal);
 		
 		return principal;
     }

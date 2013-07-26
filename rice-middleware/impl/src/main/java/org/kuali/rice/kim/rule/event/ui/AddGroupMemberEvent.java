@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.kim.rule.event.ui;
 
+import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.rule.ui.AddGroupMemberRule;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.rules.rule.BusinessRule;
 import org.kuali.rice.krad.rules.rule.event.KualiDocumentEventBase;
-import org.kuali.rice.krad.util.ObjectUtils;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -38,7 +38,7 @@ public class AddGroupMemberEvent extends KualiDocumentEventBase {
 
     public AddGroupMemberEvent(String errorPathPrefix, Document document, GroupDocumentMember member) {
         this(errorPathPrefix, (IdentityManagementGroupDocument) document);
-        this.member = (GroupDocumentMember) ObjectUtils.deepCopy(member);
+        this.member = (GroupDocumentMember) SerializationUtils.deepCopy(member);
     }
 
     public Class<? extends BusinessRule> getRuleInterfaceClass() {

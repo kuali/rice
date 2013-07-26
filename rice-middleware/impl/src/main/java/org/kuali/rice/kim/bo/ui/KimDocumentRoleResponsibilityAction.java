@@ -15,15 +15,13 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kew.api.util.CodeTranslator;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.util.ObjectUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -46,10 +44,6 @@ public class KimDocumentRoleResponsibilityAction extends KimDocumentBoEditableBa
 	private static final long serialVersionUID = 696663543888096105L;
 	@Id
 	@GeneratedValue(generator="KRIM_ROLE_RSP_ACTN_ID_S")
-	@GenericGenerator(name="KRIM_ROLE_RSP_ACTN_ID_S",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KRIM_ROLE_RSP_ACTN_ID_S"),
-			@Parameter(name="value_column",value="id")
-		})
 	@Column(name="ROLE_RSP_ACTN_ID")
 	protected String roleResponsibilityActionId;
 	@Column(name="ROLE_RSP_ID")
@@ -84,7 +78,7 @@ public class KimDocumentRoleResponsibilityAction extends KimDocumentBoEditableBa
 	 * @return the kimResponsibility
 	 */
 	public ResponsibilityBo getKimResponsibility() {
-			if ( ObjectUtils.isNull( kimResponsibility ) && ObjectUtils.isNotNull( getRoleResponsibility() ) ) {
+			if (kimResponsibility == null && getRoleResponsibility() != null) {
 			//TODO: this needs to be changed to use the KimResponsibilityInfo object
 			// but the changes are involved in the UiDocumentService based on the copyProperties method used
 			// to move the data to/from the document/real objects
@@ -160,11 +154,11 @@ public class KimDocumentRoleResponsibilityAction extends KimDocumentBoEditableBa
 	 * @return the roleResponsibility
 	 */
 	public RoleResponsibilityBo getRoleResponsibility() {
-		if ( ObjectUtils.isNull( roleResponsibility ) && roleResponsibilityId != null ) {
+		if (roleResponsibility == null && roleResponsibilityId != null ) {
 			//TODO: this needs to be changed to use the KimResponsibilityInfo object
 			// but the changes are involved in the UiDocumentService based on the copyProperties method used
 			// to move the data to/from the document/real objects
-			roleResponsibility = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(RoleResponsibilityBo.class, getRoleResponsibilityId());
+			roleResponsibility = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(RoleResponsibilityBo.class, getRoleResponsibilityId());
 		}
 		return roleResponsibility;
 	}

@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.kim.impl.common.template;
 
-import javax.persistence.Column;
-import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.api.common.template.TemplateContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+
+import javax.persistence.Column;
 
 public abstract class TemplateBo extends PersistableBusinessObjectBase implements TemplateContract {
 
@@ -35,7 +35,7 @@ public abstract class TemplateBo extends PersistableBusinessObjectBase implement
     private String kimTypeId;
 
     @Column(name="ACTV_IND")
-    @Type(type="yes_no")
+    //@Type(type="yes_no")
     private boolean active;
 
     @Override

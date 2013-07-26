@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.core.framework.persistence.platform;
 
-import javax.persistence.EntityManager;
-
-import org.apache.ojb.broker.PersistenceBroker;
-import org.apache.ojb.broker.query.Criteria;
-
 /**
  * Interface that abstracts database dependent sql from core
  *
@@ -39,14 +34,17 @@ public interface DatabasePlatform {
      * @return the name of a function as a String
      */ 
     String getUpperCaseFunction();
-    
+
     /**
-     * Supplies a parameterized sequence incrementation query
+     * Supplies a parameterized sequence incrementation query.
+     *
      * @param sequenceName name of the sequence to be incremented
-     * @return parameterized sequence incrementation query
+     * @param nextValSource the source to use to pull the next value from the sequence, must be of a type that the
+     * platform recognizes, such as a JDBC Connection or one of the ORM apis (like PersistenceBroker from OJB or
+     * EntityManager from JPA)
+     * @return the next available value from the sequence
      */
-    Long getNextValSQL(String sequenceName, PersistenceBroker persistenceBroker);
-    Long getNextValSQL(String sequenceName, EntityManager entityManager);
+    Long getNextValSQL(String sequenceName, Object nextValSource);
     
     /**
      * Generates the query used to select route header rows for update
@@ -126,10 +124,7 @@ public interface DatabasePlatform {
     String escapeString(String sqlString);
     
     // Methods Imported from KualiDBPlatform
-    
-    /*
-     * MySQL impl of this method copied to org.kuali.rice.core.database.platform.MySQLDatabasePlatform
-     * No other impl exists in this legacy package (Derby impl returned null)
-     */
-    public void applyLimit(Integer limit, Criteria criteria);
+
+    public String applyLimitSql(Integer limit);
+
 }

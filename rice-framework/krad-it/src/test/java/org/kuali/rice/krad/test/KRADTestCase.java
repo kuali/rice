@@ -43,6 +43,8 @@ public abstract class KRADTestCase extends BaselineTestCase {
 
     protected DataDictionary dd;
 
+    protected static SpringResourceLoader kradTestHarnessSpringResourceLoader;
+
     public KRADTestCase() {
         super(KRAD_MODULE_NAME);
     }
@@ -53,6 +55,10 @@ public abstract class KRADTestCase extends BaselineTestCase {
      */
     public KRADTestCase(String moduleName) {
         super(moduleName);
+    }
+
+    protected ConfigurableApplicationContext getKRADTestHarnessContext() {
+        return kradTestHarnessSpringResourceLoader.getContext();
     }
 
     @Override
@@ -85,7 +91,8 @@ public abstract class KRADTestCase extends BaselineTestCase {
                 }
             }
 
-            dd.parseDataDictionaryConfigurationFiles(true);
+            dd.parseDataDictionaryConfigurationFiles(false);
+            dd.validateDD(); // Validation performs some necessary post-processing of the beans - we need to run this each time we add new files
         }
     }
 
@@ -119,9 +126,14 @@ public abstract class KRADTestCase extends BaselineTestCase {
 
     @Override
     protected Lifecycle getLoadApplicationLifecycle() {
-        SpringResourceLoader springResourceLoader = new SpringResourceLoader(new QName("KRADTestResourceLoader"),
-                "classpath:KRADTestHarnessSpringBeans.xml", null);
-        springResourceLoader.setParentSpringResourceLoader(getTestHarnessSpringResourceLoader());
-        return springResourceLoader;
+        // cache the KRAD test harness spring resource loader
+        // this is not great because it doesn't conform to the lifecycle
+        // ...but why are we creating sub-resourceloaders instead of just adding locations to the test harness context?
+        if (kradTestHarnessSpringResourceLoader == null) {
+            kradTestHarnessSpringResourceLoader = new SpringResourceLoader(new QName("KRADTestResourceLoader"),
+                    "classpath:KRADTestHarnessSpringBeans.xml", null);
+            kradTestHarnessSpringResourceLoader.setParentSpringResourceLoader(getTestHarnessSpringResourceLoader());
+        }
+        return kradTestHarnessSpringResourceLoader;
     }
 }

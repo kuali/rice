@@ -40,7 +40,7 @@ import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
 
 
 
-public class BusClientFailureProxy extends BaseTargetedInvocationHandler {
+public class BusClientFailureProxy extends BaseTargetedInvocationHandler<Object> {
 
 	private static final Logger LOG = Logger.getLogger(BusClientFailureProxy.class);
 

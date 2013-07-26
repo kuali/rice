@@ -373,7 +373,6 @@
     &lt;param name="keystore.alias"&gt;rice&lt;param&gt;
     &lt;param name="keystore.password"&gt;keystorepass&lt;/param&gt;
     &lt;param name="keystore.file"&gt;${basedir}/src/test/resources/keystore/ricekeystore&lt;/param&gt;
-    &lt;param name="keystore.location"&gt;${basedir}/src/test/resources/keystore/ricekeystore&lt;/param&gt;
     &lt;param name="use.clearDatabaseLifecycle"&gt;true&lt;/param&gt;
     &lt;param name="use.sqlDataLoaderLifecycle"&gt;true&lt;/param&gt;
     &lt;!-- bus messaging props --&gt;

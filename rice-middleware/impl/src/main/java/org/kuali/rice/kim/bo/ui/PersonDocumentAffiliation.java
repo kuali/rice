@@ -15,12 +15,7 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeBo;
-import org.kuali.rice.krad.util.ObjectUtils;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -52,10 +47,6 @@ public class PersonDocumentAffiliation extends PersonDocumentBoDefaultBase {
 
 	@Id
 	@GeneratedValue(generator="KRIM_ENTITY_AFLTN_ID_S")
-	@GenericGenerator(name="KRIM_ENTITY_AFLTN_ID_S",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KRIM_ENTITY_AFLTN_ID_S"),
-			@Parameter(name="value_column",value="id")
-		})
 	@Column(name = "ENTITY_AFLTN_ID")
 	protected String entityAffiliationId;
 
@@ -73,7 +64,6 @@ public class PersonDocumentAffiliation extends PersonDocumentBoDefaultBase {
 
 	@OneToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE},fetch=FetchType.EAGER)
 	//@JoinColumn(name="ENTITY_AFLTN_ID", insertable=false, updatable=false)
-	@Fetch(value = FetchMode.SELECT)
 	@JoinColumns({
 		@JoinColumn(name="FDOC_NBR",insertable=false,updatable=false),
 		@JoinColumn(name="ENTITY_AFLTN_ID", insertable=false, updatable=false)
@@ -90,8 +80,9 @@ public class PersonDocumentAffiliation extends PersonDocumentBoDefaultBase {
 	 * @see org.kuali.rice.kim.api.identity.EntityAffiliationContract#getAffiliationTypeCode()
 	 */
 	public String getAffiliationTypeCode() {
-		if(ObjectUtils.isNull(affiliationTypeCode))
+		if(affiliationTypeCode == null) {
 			return "";
+        }
 		return affiliationTypeCode;
 	}
 
@@ -106,8 +97,9 @@ public class PersonDocumentAffiliation extends PersonDocumentBoDefaultBase {
 	 * @see org.kuali.rice.kim.api.identity.EntityAffiliationContract#getEntityAffiliationId()
 	 */
 	public String getEntityAffiliationId() {
-		if(ObjectUtils.isNull(entityAffiliationId))
+		if(entityAffiliationId == null) {
 			return "";
+        }
 		return entityAffiliationId;
 	}
 
@@ -146,14 +138,13 @@ public class PersonDocumentAffiliation extends PersonDocumentBoDefaultBase {
 	}
 
 	public EntityAffiliationTypeBo getAffiliationType() {
-		if(ObjectUtils.isNull(affiliationType))
-			return null;
 		return this.affiliationType;
 	}
 
 	public boolean isEmploymentAffiliationType() {
-		if(ObjectUtils.isNull(affiliationType))
+		if(affiliationType == null) {
 			return false;
+        }
 		return this.affiliationType.isEmploymentAffiliationType();
 	}
 	 

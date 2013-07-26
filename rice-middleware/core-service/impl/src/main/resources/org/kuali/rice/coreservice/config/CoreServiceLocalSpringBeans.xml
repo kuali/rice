@@ -51,7 +51,7 @@
   </bean>
 
   <bean id="parameterRepositoryService" class="org.kuali.rice.coreservice.impl.parameter.ParameterRepositoryServiceImpl">
-    <property name="businessObjectService" ref="rice.coreService.import.businessObjectService"/>
+    <property name="legacyDataAdapter" ref="rice.coreService.import.legacyDataAdapter"/>
     <property name="criteriaLookupService" ref="rice.coreService.import.criteriaLookupService"/>
   </bean>
 
@@ -152,6 +152,10 @@
 
   <bean id="rice.coreService.import.businessObjectService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="businessObjectService"/>
+  </bean>
+
+  <bean id="rice.coreService.import.legacyDataAdapter" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="legacyDataAdapter"/>
   </bean>
 
   <bean id="rice.coreService.import.criteriaLookupService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">

@@ -15,9 +15,12 @@
  */
 package org.kuali.rice.kew.docsearch;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.joda.time.DateTime;
-import org.kuali.rice.core.api.uif.AttributeLookupSettings;
-import org.kuali.rice.core.api.uif.DataType;
+import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.uif.RemotableAttributeLookupSettings;
@@ -28,10 +31,6 @@ import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.framework.document.attribute.SearchableAttribute;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class TestXMLSearchableAttributeDateTime implements SearchableAttribute {
 

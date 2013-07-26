@@ -18,6 +18,7 @@ package org.kuali.rice.krad.bo;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.test.document.bo.Account;
 import org.kuali.rice.krad.test.document.bo.AccountManager;
@@ -69,7 +70,7 @@ public class BusinessObjectRefreshTest extends KRADTestCase {
      */
 	public void testLazyRefreshField() {
 		final String accountNumber = "b101";
-		Account account = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Account.class, accountNumber);
+		Account account = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Account.class, accountNumber);
 		
 		Assert.assertEquals("Retrieved account should have name b101", "b101", account.getName());
 		Assert.assertEquals("Retrieved account should have a account manager with user name fo-101", "fo-101", account.getAccountManager().getUserName());
@@ -87,7 +88,7 @@ public class BusinessObjectRefreshTest extends KRADTestCase {
      */
 	public void testLazyRefreshWholeObject() {
 		final String accountNumber = "b101";
-		Account account = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Account.class, accountNumber);
+		Account account = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Account.class, accountNumber);
 		
 		Assert.assertEquals("Retrieved account should have name b101", "b101", account.getName());
 		Assert.assertEquals("Retrieved account should have a account manager with user name fo-101", "fo-101", account.getAccountManager().getUserName());
@@ -102,16 +103,16 @@ public class BusinessObjectRefreshTest extends KRADTestCase {
 	@Test
 	public void testLazyCollectionRefresh() {
 		final Long fredManagerId = 101L;
-		AccountManager manager = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(AccountManager.class, new Long(fredManagerId));
+		AccountManager manager = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(AccountManager.class, new Long(fredManagerId));
 		
 		Assert.assertEquals("Retrieve manager should have a name 'fo-101'", "fo-101", manager.getUserName());
 		Assert.assertEquals("Manager should have one account", new Integer(101), new Integer(manager.getAccounts().size()));
 		
 		final String accountNumber = "b102";
-		Account account = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Account.class, accountNumber);
+		Account account = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Account.class, accountNumber);
 
 		account.setAmId(101L);
-		account = (Account) KRADServiceLocator.getBusinessObjectService().save(account);
+		account = (Account) KNSServiceLocator.getBusinessObjectService().save(account);
 		
 		manager.refreshReferenceObject("accounts");
 		Assert.assertEquals("Manager should have one account", new Integer(2), new Integer(manager.getAccounts().size()));
@@ -132,13 +133,13 @@ public class BusinessObjectRefreshTest extends KRADTestCase {
         primaryKeys.put("countryCode", "US");
         primaryKeys.put("stateCode","AZ");
 		//final CountyId countyId = new CountyId("COCONINO", "US", "AZ");
-		CountyBo county = KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(CountyBo.class, primaryKeys);
+		CountyBo county = KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(CountyBo.class, primaryKeys);
 
         primaryKeys.clear();
         primaryKeys.put("countryCode","US");
         primaryKeys.put("code","AZ");
 		//final StateId arizonaStateId = new StateId("US", "AZ");
-		final StateBo arizonaState = KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(StateBo.class, primaryKeys);
+		final StateBo arizonaState = KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(StateBo.class, primaryKeys);
 		
 		Assert.assertEquals("On retrieval from database, state code should be AZ", arizonaState.getCode(), county.getState().getCode());
 		Assert.assertEquals("On retrieval from database, state name should be ARIZONA", arizonaState.getName(), county.getState().getName());
@@ -152,7 +153,7 @@ public class BusinessObjectRefreshTest extends KRADTestCase {
         primaryKeys.clear();
         primaryKeys.put("countryCode","US");
         primaryKeys.put("code","CA");
-		final StateBo californiaState = KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(StateBo.class, primaryKeys);
+		final StateBo californiaState = KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(StateBo.class, primaryKeys);
 		
 		Assert.assertEquals("Does eager fetching automatically refresh?", californiaState.getCode(), county.getState().getCode());
 		Assert.assertEquals("On refresh, state name should be CALIFORNIA", californiaState.getName(), county.getState().getName());

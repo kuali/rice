@@ -15,19 +15,17 @@
  */
 package org.kuali.rice.kew.plugin;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import org.apache.commons.io.FileUtils;
+import org.junit.Test;
+import org.kuali.rice.core.api.config.property.Config;
+import org.kuali.rice.core.api.util.ClasspathOrFileResourceLoader;
+import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kew.test.TestUtilities;
 
 import java.io.File;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
-import org.junit.Test;
-import org.kuali.rice.core.api.config.property.Config;
-import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.test.TestUtilities;
-
+import static org.junit.Assert.*;
 
 /**
  * Tests that the extra classpath features of the plugin work as advertised.
@@ -49,7 +47,7 @@ public class ExtraClassPathTest extends KEWTestCase {
 		// test harness starts up.  That way the plugin will be loaded at startup time.
         super.setUp();
 		TestUtilities.initializePluginDirectories();
-		String pluginZipFileLocation = getBaseDir() + "/src/test/resources/org/kuali/rice/kew/plugin/extraclasspathtest.zip";
+		String pluginZipFileLocation = new ClasspathOrFileResourceLoader().getResource("classpath:org/kuali/rice/kew/plugin/extraclasspathtest.zip").getURL().getPath();
 		File pluginZipFile = new File(pluginZipFileLocation);
 		assertTrue("File " + pluginZipFileLocation + " should exist", pluginZipFile.exists());
 		assertTrue("File " + pluginZipFileLocation + " should be a file", pluginZipFile.isFile());
@@ -80,8 +78,8 @@ public class ExtraClassPathTest extends KEWTestCase {
 		// check that the properties were configured correctly
         String extraClassesDirName = environment.getPlugin().getConfig().getProperty(Config.EXTRA_CLASSES_DIR);
         String extraLibDirName = environment.getPlugin().getConfig().getProperty(Config.EXTRA_LIB_DIR);
-		
-		File extraClassesDir = new File(extraClassesDirName);
+
+        File extraClassesDir = new ClasspathOrFileResourceLoader().getResource(extraClassesDirName).getFile();
 		assertTrue("extra classes dir (" + extraClassesDirName + ") should exist.", extraClassesDir.exists());
 		assertTrue("extra classes dir (" + extraClassesDirName + ") should be a directory.", extraClassesDir.isDirectory());
 		File extraLibDir = new File(extraLibDirName);

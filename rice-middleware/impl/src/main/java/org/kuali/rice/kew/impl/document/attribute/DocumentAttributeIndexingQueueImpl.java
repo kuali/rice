@@ -90,12 +90,16 @@ public class DocumentAttributeIndexingQueueImpl implements DocumentAttributeInde
 		for (DocumentType.ExtensionHolder<SearchableAttribute> searchableAttributeHolder : documentTypeBo.loadSearchableAttributes()) {
             DocumentWithContent documentWithContent = DocumentWithContent.create(document, documentContent);
             SearchableAttribute searchableAttribute = searchableAttributeHolder.getExtension();
+            if ( searchableAttribute == null ) {
+                LOG.warn( "Encountered a 'null' SearchableAttribute on " + document.getDocumentTypeName() + " : " + searchableAttributeHolder.getExtensionDefinition().getName() );
+                continue;
+            }
             List<DocumentAttribute> documentAttributes = searchableAttribute.extractDocumentAttributes(
                     searchableAttributeHolder.getExtensionDefinition(), documentWithContent);
 			if (documentAttributes != null) {
                 for (DocumentAttribute documentAttribute : documentAttributes) {
                     if (documentAttribute == null) {
-                        LOG.warn("Encountered a 'null' DocumentAttribute from searchable attribute: " + searchableAttribute);
+                        LOG.warn("Encountered a 'null' DocumentAttribute on " + document.getDocumentTypeName() + " from searchable attribute: " + searchableAttribute);
                         continue;
                     }
                     SearchableAttributeValue searchableAttributeValue = null;

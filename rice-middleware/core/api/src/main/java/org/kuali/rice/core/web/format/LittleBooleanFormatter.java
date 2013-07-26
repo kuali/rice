@@ -21,13 +21,16 @@ import org.kuali.rice.core.api.util.Truth;
 /**
  * This class is a formatter for little-b boolean classes, that cannot accept a null.
  */
+@Deprecated
 public class LittleBooleanFormatter extends Formatter {
 
     private static final long serialVersionUID = -1800859871401901842L;
 
+    @Override
     protected Object convertToObject(String target) {
-        if (Formatter.isEmptyValue(target))
+        if (Formatter.isEmptyValue(target)) {
             return Boolean.FALSE;
+        }
 
         String stringValue = target.getClass().isArray() ? unwrapString(target) : (String) target;
         stringValue = stringValue.trim().toLowerCase();
@@ -39,9 +42,11 @@ public class LittleBooleanFormatter extends Formatter {
         return b;
     }
 
+    @Override
     public Object format(Object target) {
-        if (target == null)
+        if (target == null) {
             return "No";
+        }
         if (target instanceof String) {
             return target;
         }
@@ -51,6 +56,7 @@ public class LittleBooleanFormatter extends Formatter {
         return isTrue ? "Yes" : "No";
     }
 
+    @Override
     protected Object getNullObjectValue() {
         return Boolean.FALSE;
     }

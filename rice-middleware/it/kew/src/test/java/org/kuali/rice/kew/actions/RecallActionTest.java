@@ -43,6 +43,7 @@ import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -541,7 +542,7 @@ public class RecallActionTest extends KEWTestCase {
         chartAttribute.setNamespaceCode("KR-SYS");
         chartAttribute.setAttributeLabel(roleQualifierName);
         chartAttribute.setActive(true);
-        KRADServiceLocator.getBusinessObjectService().save(chartAttribute);
+        KNSServiceLocator.getBusinessObjectService().save(chartAttribute);
 
         KimApiServiceLocator.getRoleService().assignPermissionToRole(recallPerm.getId(), customRole.getId());
 

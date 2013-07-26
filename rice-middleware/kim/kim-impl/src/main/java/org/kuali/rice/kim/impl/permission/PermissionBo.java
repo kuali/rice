@@ -15,19 +15,6 @@
  */
 package org.kuali.rice.kim.impl.permission;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.permission.PermissionContract;
@@ -42,6 +29,16 @@ import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.springframework.util.AutoPopulatingList;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -68,7 +65,7 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
     private String templateId;
 
     @Column(name = "ACTV_IND")
-    @Type(type = "yes_no")
+    //@javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
     private boolean active;
 
     @OneToOne(targetEntity = PermissionTemplateBo.class, cascade = {}, fetch = FetchType.EAGER)
@@ -76,14 +73,12 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
     private PermissionTemplateBo template = new PermissionTemplateBo();
 
     @OneToMany(targetEntity = PermissionAttributeBo.class, cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "id")
-    @Fetch(value = FetchMode.SELECT)
     private List<PermissionAttributeBo> attributeDetails;
 
     @Transient
     private Map<String,String> attributes;
 
     @OneToMany(targetEntity = RolePermissionBo.class, cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "id")
-    @Fetch(value = FetchMode.SELECT)
     private List<RolePermissionBo> rolePermissions = new AutoPopulatingList(RolePermissionBo.class);
 
 

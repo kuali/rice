@@ -50,7 +50,7 @@ public enum SearchOperator {
     }
 
     public static final Collection<SearchOperator> QUERY_CHARACTERS =
-        Collections.unmodifiableCollection(Arrays.asList(LIKE_MANY, LIKE_ONE, LIKE_MANY_P, GREATER_THAN, LESS_THAN, BETWEEN, BETWEEN_EXCLUSIVE_UPPER, OR, NOT, EQUAL));
+        Collections.unmodifiableCollection(Arrays.asList(BETWEEN_EXCLUSIVE_UPPER, BETWEEN, LIKE_MANY, LIKE_ONE, LIKE_MANY_P, GREATER_THAN, LESS_THAN, OR, NOT, EQUAL));
 
     public static final Collection<SearchOperator> RANGE_CHARACTERS =
         Collections.unmodifiableCollection(Arrays.asList(GREATER_THAN_EQUAL, LESS_THAN_EQUAL, GREATER_THAN, LESS_THAN, BETWEEN, BETWEEN_EXCLUSIVE_LOWER,

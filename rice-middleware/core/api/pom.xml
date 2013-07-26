@@ -27,12 +27,16 @@
   <artifactId>rice-core-api</artifactId>
   <dependencies>
     <dependency>
-      <groupId>org.kuali.db.ojb</groupId>
-      <artifactId>db-ojb</artifactId>
-    </dependency>
-    <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>

@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo;
 
 import javax.persistence.Column;
@@ -44,11 +41,8 @@ import java.sql.Timestamp;
 public class PersonDocumentAddress extends PersonDocumentBoDefaultBase {
 	@Id
 	@GeneratedValue(generator="KRIM_ENTITY_ADDR_ID_S")
-	@GenericGenerator(name="KRIM_ENTITY_ADDR_ID_S",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KRIM_ENTITY_ADDR_ID_S"),
-			@Parameter(name="value_column",value="id")
-		})
-	@Column(name = "ENTITY_ADDR_ID")
+
+    @Column(name = "ENTITY_ADDR_ID")
 	protected String entityAddressId;
 
 
@@ -92,7 +86,7 @@ public class PersonDocumentAddress extends PersonDocumentBoDefaultBase {
     @Column(name = "VALID_DT")
     protected Timestamp validatedDate;
 
-    @Type(type="yes_no")
+    //@Type(type="yes_no")
 	@Column(name="VALID_IND")
     protected boolean validated;
 

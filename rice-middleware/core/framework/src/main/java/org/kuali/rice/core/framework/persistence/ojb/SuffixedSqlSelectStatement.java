@@ -33,6 +33,7 @@ import org.apache.ojb.broker.util.logging.Logger;
  * @see SuffixableQueryByCriteria
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Deprecated
 public class SuffixedSqlSelectStatement extends SqlSelectStatement {
 
     public SuffixedSqlSelectStatement(Platform pf, ClassDescriptor cld, Query query, Logger logger) {

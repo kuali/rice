@@ -36,6 +36,7 @@ import org.apache.ojb.broker.util.logging.LoggerFactory;
  * @see SuffixedSqlSelectStatement
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Deprecated
 public class SqlGeneratorSuffixableImpl extends SqlGeneratorDefaultImpl {
     private Logger logger = LoggerFactory.getLogger(SqlGeneratorSuffixableImpl.class);
 

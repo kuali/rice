@@ -15,7 +15,13 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import java.sql.Timestamp;
+import org.kuali.rice.core.api.config.CoreConfigHelper;
+import org.kuali.rice.core.api.util.RiceUtilities;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
+import org.kuali.rice.ksb.api.messaging.AsynchronousCall;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
+import org.kuali.rice.ksb.util.KSBConstants;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,16 +32,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.core.api.config.CoreConfigHelper;
-import org.kuali.rice.core.api.util.RiceUtilities;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
-import org.kuali.rice.ksb.api.messaging.AsynchronousCall;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
-import org.kuali.rice.ksb.util.KSBConstants;
+import java.sql.Timestamp;
 
 /**
  * A message which has been persisted to the data store.
@@ -56,10 +53,6 @@ public class PersistedMessageBO implements PersistedMessage {
 
 	@Id
 	@GeneratedValue(generator="KRSB_MSG_QUE_S")
-	@GenericGenerator(name="KRSB_MSG_QUE_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KRSB_MSG_QUE_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="MSG_QUE_ID")
 	private Long routeQueueId;
 	@Column(name="PRIO")

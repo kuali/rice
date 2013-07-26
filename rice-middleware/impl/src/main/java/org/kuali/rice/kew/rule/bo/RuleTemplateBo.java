@@ -16,10 +16,6 @@
 package org.kuali.rice.kew.rule.bo;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.api.rule.RuleTemplate;
@@ -77,10 +73,6 @@ public class RuleTemplateBo extends PersistableBusinessObjectBase implements Rul
     
     @Id
     @GeneratedValue(generator="KREW_RTE_TMPL_S")
-	@GenericGenerator(name="KREW_RTE_TMPL_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_RTE_TMPL_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="RULE_TMPL_ID")
 	private String id;
     @Column(name="NM")
@@ -93,11 +85,9 @@ public class RuleTemplateBo extends PersistableBusinessObjectBase implements Rul
     @OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="DLGN_RULE_TMPL_ID")
 	private RuleTemplateBo delegationTemplate;
-    @Fetch(value = FetchMode.SELECT)
     @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
            mappedBy="ruleTemplate")
 	private List<RuleTemplateAttributeBo> ruleTemplateAttributes;
-    @Fetch(value = FetchMode.SELECT)
     @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
            mappedBy="ruleTemplate", orphanRemoval=true)
 	private List<RuleTemplateOptionBo> ruleTemplateOptions;

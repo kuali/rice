@@ -17,6 +17,7 @@ package org.kuali.rice.edl.impl;
 
 import org.junit.Test;
 import org.kuali.rice.kew.test.KEWTestCase;
+import org.springframework.core.io.DefaultResourceLoader;
 
 /**
  * Tests the web GUI for the ActionList.
@@ -26,7 +27,7 @@ import org.kuali.rice.kew.test.KEWTestCase;
 public class OfficeOfAffirmativeActionTest extends KEWTestCase {
 
 	//private static final String URL_PREFIX = "http://localhost:9952/en-test/";
-	private final String OAA_DIR = getBaseDir() + "/src/test/config/edoclite/OfficeOfAffirmativeAction/";
+	private final String OAA_DIR = "org/kuali/rice/edl/OfficeOfAffirmativeAction/";
 
 	protected void loadTestData() throws Exception {
 		// workgroups

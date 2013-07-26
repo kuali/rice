@@ -23,17 +23,12 @@ import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
-import org.kuali.rice.location.api.campus.Campus;
-import org.kuali.rice.location.api.campus.CampusQueryResults;
 import org.kuali.rice.location.api.country.Country;
 import org.kuali.rice.location.api.country.CountryQueryResults;
 import org.kuali.rice.location.api.country.CountryService;
-import org.kuali.rice.location.impl.campus.CampusBo;
 
 import java.util.ArrayList;
 import java.util.Collection;

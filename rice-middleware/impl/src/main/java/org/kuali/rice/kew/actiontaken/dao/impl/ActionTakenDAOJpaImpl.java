@@ -128,8 +128,10 @@ public class ActionTakenDAOJpaImpl implements ActionTakenDAO {
     public void deleteByDocumentId(String documentId){
 	    Criteria crit = new Criteria(ActionRequestValue.class.getName());
 	    crit.eq("documentId", documentId);
-	    ActionRequestValue actionRequestValue = (ActionRequestValue) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
-	    entityManager.remove(actionRequestValue);
+	    List<ActionRequestValue> actionRequestValues = new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+	    for (ActionRequestValue actionRequestValue : actionRequestValues) {
+            entityManager.remove(actionRequestValue);
+        }
     }
 
     public boolean hasUserTakenAction(String workflowId, String documentId) {

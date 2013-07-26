@@ -19,20 +19,21 @@ package org.kuali.rice.core.web.format;
 
 // begin Kuali Foundation modification
 
-import org.kuali.rice.core.api.util.RiceKeyConstants;
-import org.kuali.rice.core.api.util.type.KualiDecimal;
-import org.kuali.rice.core.api.util.type.KualiPercent;
-
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
+
+import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiPercent;
 
 /**
  * begin Kuali Foundation modification
  * This class is used to format objects as a percent.
  * end Kuali Foundation modification
  */
+@Deprecated
 public class PercentageFormatter extends Formatter {
 	// begin Kuali Foundation modification
     private static final long serialVersionUID = 1323889942436009589L;
@@ -51,12 +52,13 @@ public class PercentageFormatter extends Formatter {
 	// begin Kuali Foundation modification
 	// removed PARSE_MSG
 	// end Kuali Foundation modification
-	
+
     /**
      * Unformats its argument and returns a BigDecimal instance initialized with the resulting string value
-     * 
+     *
      * @return a BigDecimal initialized with the provided string
      */
+    @Override
     protected Object convertToObject(String target) {
     	// begin Kuali Foundation modification
     	// using KualiPercent instead of BigDecimal, and exception msg changes
@@ -76,12 +78,14 @@ public class PercentageFormatter extends Formatter {
 
     /**
      * Returns a string representation of its argument, formatted as a percentage value.
-     * 
+     *
      * @return a formatted String
      */
+    @Override
     public Object format(Object value) {
-        if (value == null)
+        if (value == null) {
             return "N/A";
+        }
 
         String stringValue = "";
         try {

@@ -16,8 +16,6 @@
 package org.kuali.rice.kim.impl.role;
 
 import org.kuali.rice.kim.api.group.GroupMember;
-import org.kuali.rice.kim.api.role.RoleMember;
-import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 

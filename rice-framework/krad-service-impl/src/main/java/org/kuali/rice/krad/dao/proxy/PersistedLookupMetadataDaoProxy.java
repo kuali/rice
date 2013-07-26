@@ -17,10 +17,10 @@ package org.kuali.rice.krad.dao.proxy;
 
 import java.sql.Timestamp;
 
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kns.lookup.LookupResults;
 import org.kuali.rice.kns.lookup.SelectedObjectIds;
 import org.kuali.rice.krad.dao.PersistedLookupMetadataDao;
+import org.kuali.rice.krad.util.LegacyUtils;
 
 public class PersistedLookupMetadataDaoProxy implements PersistedLookupMetadataDao {
 
@@ -30,8 +30,7 @@ public class PersistedLookupMetadataDaoProxy implements PersistedLookupMetadataD
     private PersistedLookupMetadataDao getDao(Class clazz) {
     	final String TMP_NM = clazz.getName();
 		final int START_INDEX = TMP_NM.indexOf('.', TMP_NM.indexOf('.') + 1) + 1;
-    	return (OrmUtils.isJpaAnnotated(clazz) && (OrmUtils.isJpaEnabled() || OrmUtils.isJpaEnabled("rice.krad"))) ?
-						persistedLookupMetadataDaoJpa : persistedLookupMetadataDaoOjb; 
+    	return LegacyUtils.useLegacy(clazz) ? persistedLookupMetadataDaoOjb : persistedLookupMetadataDaoJpa;
     }
 
     public void deleteOldLookupResults(Timestamp expirationDate) {

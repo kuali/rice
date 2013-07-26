@@ -24,7 +24,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
   <bean id="TravelAccount-InquiryView" parent="Uif-InquiryView">
     <property name="headerText" value="Travel Account Inquiry"/>
-    <property name="dataObjectClassName" value="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
      <property name="Items">
          <list>
            <bean id="TravelAccount-InquiryView-General" parent="Uif-Disclosure-GridSection">
@@ -32,107 +32,17 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                <list>
                 <bean parent="Uif-DataField" p:propertyName="number"/>
                 <bean parent="Uif-DataField" p:propertyName="name"/>
-                <bean parent="Uif-DataField" p:propertyName="extension.accountType.codeAndDescription"/>
+                <bean parent="Uif-DataField" p:propertyName="accountType.codeAndDescription"/>
                 <bean parent="Uif-DataField" p:propertyName="subAccount"/>
                 <bean parent="Uif-DataField" p:propertyName="subAccountName"/>
                 <bean parent="Uif-DataField" p:propertyName="createDate"/>
                 <bean parent="Uif-DataField" p:propertyName="subsidizedPercent"/>
-                <bean parent="Uif-DataField" p:propertyName="foId"/>
+                <bean parent="Uif-DataField" p:propertyName="fiscalOfficer.principalName"/>
+                <bean parent="Uif-DataField" p:propertyName="fiscalOfficer.name"/>
                </list>
              </property>
              <property name="headerText" value="Account Information"/>
            </bean>
-
-           <bean id="TravelAccount-InquiryView-FO1" parent="Uif-Disclosure-StackedCollectionSection">
-              <property name="headerText" value="Fiscal Officer Accounts"/>
-              <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
-              <property name="propertyName" value="fiscalOfficer.accounts"/>
-              <property name="items">
-                <list>
-                  <bean parent="Uif-DataField" p:propertyName="number"/>
-                  <bean parent="Uif-DataField" p:propertyName="name"/>
-                  <bean parent="Uif-DataField" p:propertyName="foId"/>
-                </list>
-              </property>      
-              <property name="layoutManager.summaryTitle" value="Travel Account"/> 
-              <property name="layoutManager.summaryFields">
-                <list>
-                  <value>number</value>
-                </list>
-              </property>
-           </bean>
-
-           <bean id="TravelAccount-InquiryView-FO2" parent="Uif-Disclosure-TableCollectionSection">
-              <property name="headerText" value="Fiscal Officer Accounts - Default (No Column Options set)"/>
-              <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
-              <property name="propertyName" value="fiscalOfficer.accounts"/>
-              <property name="layoutManager.renderSequenceField" value="false"/>
-              <property name="items">
-                <list>
-                  <bean parent="Uif-DataField" p:propertyName="number"/>
-                  <bean parent="Uif-DataField" p:propertyName="name"/>
-                  <bean parent="Uif-DataField" p:propertyName="foId"/>
-                  <bean parent="Uif-DataField" p:propertyName="subsidizedPercent"/>
-                  <bean parent="Uif-DataField" p:propertyName="createDate"/>
-                 </list>
-              </property>
-           </bean>
-
-           <bean parent="Uif-Disclosure-TableCollectionSection">
-              <property name="headerText" value="Fiscal Officer Accounts - using hiddenColumns and sortableColumns properties on rich table"/>
-              <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
-              <property name="propertyName" value="fiscalOfficer.accounts"/>
-              <property name="layoutManager.renderSequenceField" value="false"/>
-              <property name="items">
-                <list>
-                  <bean parent="Uif-DataField" p:propertyName="number"/>
-                  <bean parent="Uif-DataField" p:propertyName="name"/>
-                  <bean parent="Uif-DataField" p:propertyName="foId"/>
-                  <bean parent="Uif-DataField" p:propertyName="subsidizedPercent"/>
-                  <bean parent="Uif-DataField" p:propertyName="createDate"/>
-                 </list>
-              </property>
-             <property name="layoutManager.richTable.hiddenColumns">
-               <set>
-                 <value>name</value>
-               </set>
-             </property>
-              <property name="layoutManager.richTable.sortableColumns">
-               <set>
-                 <value>number</value>
-                 <value>createDate</value>
-               </set>
-             </property>
-           </bean>
-
-           <bean parent="Uif-Disclosure-TableCollectionSection">
-              <property name="headerText" value="Fiscal Officer Accounts - using hiddenColumns and sortableColumns properties on layout manager"/>
-              <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
-              <property name="propertyName" value="fiscalOfficer.accounts"/>
-              <property name="layoutManager.renderSequenceField" value="false"/>
-              <property name="items">
-                <list>
-                  <bean parent="Uif-DataField" p:propertyName="number"/>
-                  <bean parent="Uif-DataField" p:propertyName="name"/>
-                  <bean parent="Uif-DataField" p:propertyName="foId"/>
-                  <bean parent="Uif-DataField" p:propertyName="subsidizedPercent"/>
-                  <bean parent="Uif-DataField" p:propertyName="createDate"/>
-                 </list>
-              </property>
-             <property name="layoutManager.hiddenColumns">
-               <set>
-                 <value>name</value>
-                 <value>foId</value>
-               </set>
-             </property>
-              <property name="layoutManager.sortableColumns">
-               <set>
-                 <value>number</value>
-                 <value>createDate</value>
-               </set>
-             </property>
-           </bean>
-
          </list>
      </property>
   </bean>

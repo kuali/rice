@@ -41,11 +41,13 @@ public class OracleDatabasePlatform extends ANSISqlDatabasePlatform {
 	public static final long WAIT_FOREVER = -1;
 	
 	private static final Pattern APOS_PAT = Pattern.compile("'");
-	    
-    public void applyLimit(Integer limit, Criteria criteria) {
+
+    @Override
+    public String applyLimitSql(Integer limit) {
         if (limit != null) {
-            criteria.addSql("rownum <= " + limit.intValue());
+            return "rownum <= " + limit.intValue();
         }
+        return null;
     }  
     
     public String getStrToDateFunction() {
@@ -59,43 +61,58 @@ public class OracleDatabasePlatform extends ANSISqlDatabasePlatform {
     public String getDateFormatString(String dateFormatString) {
         return "'" + dateFormatString + "'";
     }
-    
+
+    /**
+     * Generate next id value for the logical sequence given the JDBC Connection
+     * @param sequenceName the logical sequence name
+     * @param connection JDBC Connection to use (without closing)
+     * @return next id in sequence or RuntimeException on error
+     */
+    @Override
+    protected Long getNextValSqlJdbc(String sequenceName, Connection connection) {
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            statement = connection.prepareStatement("select " + sequenceName + ".nextval from dual");
+            resultSet = statement.executeQuery();
+
+            if (!resultSet.next()) {
+                throw new RuntimeException("Error retrieving next option id for action list from sequence.");
+            }
+            return new Long(resultSet.getLong(1));
+        } catch (SQLException e) {
+            throw new RuntimeException("Error retrieving next option id for action list from sequence.", e);
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                }
+            }
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+    }
+
     @SuppressWarnings("unchecked")
-    public Long getNextValSQL(String sequenceName,  EntityManager entityManager) {
+    @Override
+    protected Long getNextValSqlJpa(String sequenceName,  EntityManager entityManager) {
         List resultList = entityManager.createNativeQuery("select " + sequenceName + ".nextval from dual").getResultList();
         return new Long(((BigDecimal)resultList.get(0)).longValue());
-//        return new Long(((BigDecimal) entityManager.createNativeQuery("select " + sequenceName + ".nextval from dual").getSingleResult()).longValue());
     }
     
-	public Long getNextValSQL(String sequenceName,	PersistenceBroker persistenceBroker) {
-		PreparedStatement statement = null;
-		ResultSet resultSet = null;
+    @Deprecated
+    @Override
+	protected Long getNextValSqlOjb(String sequenceName, PersistenceBroker persistenceBroker) {
 		try {
 			Connection connection = persistenceBroker.serviceConnectionManager().getConnection();
-			statement = connection.prepareStatement("select " + sequenceName + ".nextval from dual");
-			resultSet = statement.executeQuery();
-
-			if (!resultSet.next()) {
-				throw new RuntimeException("Error retrieving next option id for action list from sequence.");
-			}
-			return new Long(resultSet.getLong(1));
-		} catch (SQLException e) {
-			throw new RuntimeException("Error retrieving next option id for action list from sequence.", e);
+            return getNextValSqlJdbc(sequenceName, connection);
 		} catch (LookupException e) {
 			throw new RuntimeException("Error retrieving next option id for action list from sequence.", e);
-		} finally {
-			if (statement != null) {
-				try {
-					statement.close();
-				} catch (SQLException e) {
-				}
-			}
-			if (resultSet != null) {
-				try {
-					resultSet.close();
-				} catch (SQLException e) {
-				}
-			}
 		}
 	}
 
@@ -126,9 +143,6 @@ public class OracleDatabasePlatform extends ANSISqlDatabasePlatform {
     	return DEFAULT_TIMEOUT_SECONDS;
     }
     
-    /**
-     * @see org.kuali.rice.ken.DatabasePlatform.Platform#getSelectForUpdateSuffix(long)
-     */
     public String getSelectForUpdateSuffix(long waitMillis) {
         String sql = "for update";
         if (WAIT_FOREVER == waitMillis) {

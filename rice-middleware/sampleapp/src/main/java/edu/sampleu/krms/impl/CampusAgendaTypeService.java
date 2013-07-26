@@ -15,10 +15,18 @@
  */
 package edu.sampleu.krms.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import javax.jws.WebParam;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.uif.RemotableAbstractWidget;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
@@ -34,14 +42,6 @@ import org.kuali.rice.location.api.campus.Campus;
 import org.kuali.rice.location.api.services.LocationApiServiceLocator;
 import org.kuali.rice.location.impl.campus.CampusBo;
 import org.springframework.beans.factory.annotation.Required;
-
-import javax.jws.WebParam;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Sample AgendaTypeService that creates a RemotableAttributeField for specifying the campus

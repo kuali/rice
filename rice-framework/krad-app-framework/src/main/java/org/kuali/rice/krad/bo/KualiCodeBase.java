@@ -15,12 +15,11 @@
  */
 package org.kuali.rice.krad.bo;
 
-import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.Type;
-
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+
+import org.apache.commons.lang.StringUtils;
 
 @MappedSuperclass
 public class KualiCodeBase extends PersistableBusinessObjectBase implements KualiCode {
@@ -28,13 +27,13 @@ public class KualiCodeBase extends PersistableBusinessObjectBase implements Kual
     private static final long serialVersionUID = 1194744068788100482L;
 	// Code and Name will be overridden by Column annotations in their children classes
     @Id
-    @Column(name="CODE")
+    @Column(name="CODE",length=10)
     protected String code;
-    @Column(name="NM")
+    @Column(name="NM",length=40)
     protected String name;
-    @Type(type="yes_no")
+
     @Column(name="ACTV_IND")
-    protected boolean active;
+    protected Boolean active;
 
     public KualiCodeBase() {
         this.active = true;
@@ -48,6 +47,7 @@ public class KualiCodeBase extends PersistableBusinessObjectBase implements Kual
     /**
      * @return Getter for the Code.
      */
+    @Override
     public String getCode() {
         return code;
     }
@@ -55,6 +55,7 @@ public class KualiCodeBase extends PersistableBusinessObjectBase implements Kual
     /**
      * @param code - Setter for the Code.
      */
+    @Override
     public void setCode(String code) {
         this.code = code;
     }
@@ -63,6 +64,7 @@ public class KualiCodeBase extends PersistableBusinessObjectBase implements Kual
     /**
      * @return Getter for the Name.
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -71,6 +73,7 @@ public class KualiCodeBase extends PersistableBusinessObjectBase implements Kual
     /**
      * @param name - Setter for the name.
      */
+    @Override
     public void setName(String name) {
         this.name = name;
     }
@@ -79,6 +82,7 @@ public class KualiCodeBase extends PersistableBusinessObjectBase implements Kual
     /**
      * @return Getter for the active field.
      */
+    @Override
     public boolean isActive() {
         return active;
     }
@@ -87,6 +91,7 @@ public class KualiCodeBase extends PersistableBusinessObjectBase implements Kual
     /**
      * @param name - Setter for the active field.
      */
+    @Override
     public void setActive(boolean a) {
         this.active = a;
     }
@@ -94,9 +99,9 @@ public class KualiCodeBase extends PersistableBusinessObjectBase implements Kual
     /**
      * @return Returns the code and description in format: xx - xxxxxxxxxxxxxxxx
      */
-    public String getCodeAndDescription() { 
-    	return KualiCodeBase.getCodeAndDescription(getCode(), getName()); 
-    } 
+    public String getCodeAndDescription() {
+    	return KualiCodeBase.getCodeAndDescription(getCode(), getName());
+    }
 
     /**
      * Static helper method to allow other classes to provide consistent "code and description"
@@ -115,9 +120,10 @@ public class KualiCodeBase extends PersistableBusinessObjectBase implements Kual
 
     /**
      * Implements equals comparing code to code.
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof KualiCodeBase) {
             return StringUtils.equals(this.getCode(), ((KualiCodeBase) obj).getCode());
@@ -127,9 +133,10 @@ public class KualiCodeBase extends PersistableBusinessObjectBase implements Kual
 
     /**
      * Overriding equals requires writing a hashCode method.
-     * 
+     *
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public int hashCode() {
         int hashCode = 0;
 

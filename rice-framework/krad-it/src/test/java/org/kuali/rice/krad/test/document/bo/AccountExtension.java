@@ -15,22 +15,31 @@
  */
 package org.kuali.rice.krad.test.document.bo;
 
-import org.kuali.rice.krad.bo.PersistableBusinessObjectExtensionBase;
+import org.kuali.rice.krad.bo.VersionedAndGloballyUniqueBase;
+import org.kuali.rice.krad.data.provider.annotation.ExtensionFor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import java.io.Serializable;
 
 @Entity
 @Table(name="TRV_ACCT_EXT")
-public class AccountExtension extends PersistableBusinessObjectExtensionBase {
+@ExtensionFor(SimpleAccount.class)
+public class AccountExtension extends VersionedAndGloballyUniqueBase {
     
 	@Id
-	@Column(name="acct_num")
+	@Column(name="ACCT_NUM")
     private String number;
-	@Column(name="acct_type")
+	@Column(name="ACCT_TYPE")
     private String accountTypeCode;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="acct_type",insertable=false,updatable=false)
+	@JoinColumn(name="ACCT_TYPE",insertable=false,updatable=false)
     private AccountType accountType; 
     
     public String getNumber() {

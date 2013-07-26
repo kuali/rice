@@ -26,8 +26,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.edl.framework.extract.FieldDTO;
 import org.kuali.rice.krad.service.KRADServiceLocator;
@@ -48,10 +46,6 @@ public class Fields {
 
     @Id
     @GeneratedValue(generator="KREW_EDL_FLD_DMP_S")
-	@GenericGenerator(name="KREW_EDL_FLD_DMP_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_EDL_FLD_DMP_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="EDL_FIELD_DMP_ID")
 	private Long fieldId;
     @Column(name="DOC_HDR_ID")

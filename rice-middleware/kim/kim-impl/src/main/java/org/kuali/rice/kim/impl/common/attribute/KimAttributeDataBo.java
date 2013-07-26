@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kim.impl.common.attribute;
 
-import javax.persistence.Transient;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract;
@@ -26,24 +24,39 @@ import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.util.ObjectUtils;
 
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@MappedSuperclass
 public abstract class KimAttributeDataBo extends PersistableBusinessObjectBase implements KimAttributeDataContract {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KimAttributeDataBo.class);
     private static final long serialVersionUID = 1L;
 
     private static KimTypeInfoService kimTypeInfoService;
 
+    @Id
+    @Column(name="ATTR_DATA_ID")
     private String id;
+    @Column(name="ATTR_VAL")
     private String attributeValue;
+    @Column(name="KIM_ATTR_DEFN_ID")
     private String kimAttributeId;
+
+    @OneToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name = "KIM_ATTR_DEFN_ID", insertable = false, updatable = false)
     private KimAttributeBo kimAttribute;
+    @Column(name="KIM_TYP_ID")
     private String kimTypeId;
     @Transient
     private KimTypeBo kimType;
@@ -52,7 +65,7 @@ public abstract class KimAttributeDataBo extends PersistableBusinessObjectBase i
 
     @Override
     public KimAttributeBo getKimAttribute() {
-        if(ObjectUtils.isNull(this.kimAttribute)
+        if(this.kimAttribute == null
                 && StringUtils.isNotBlank(kimAttributeId)) {
             this.refreshReferenceObject("kimAttribute");
         }

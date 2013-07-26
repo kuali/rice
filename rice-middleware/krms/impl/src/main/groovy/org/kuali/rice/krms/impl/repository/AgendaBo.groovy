@@ -19,10 +19,10 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract
 import org.apache.commons.lang.StringUtils
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition
-import org.kuali.rice.krad.util.ObjectUtils
 import org.kuali.rice.krad.service.SequenceAccessorService
 import org.kuali.rice.krad.service.KRADServiceLocator
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition
+import org.kuali.rice.core.api.util.io.SerializationUtils
 
 
 public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDefinitionContract {
@@ -87,7 +87,7 @@ public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDef
      */
     public AgendaBo copyAgenda(String newAgendaName, String dateTimeStamp) {
         List<AgendaItemBo> agendaItems = this.getItems();
-        AgendaBo copiedAgenda = (AgendaBo) ObjectUtils.deepCopy(this);
+        AgendaBo copiedAgenda = (AgendaBo) SerializationUtils.deepCopy(this);
         copiedAgenda.setName(newAgendaName);
         // Previous Comment:
         // If we don't clear the primary key and set the fieldsClearedOnCopy flag then the

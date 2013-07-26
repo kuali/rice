@@ -70,6 +70,14 @@ public class ModelObjectUtils {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    public static <T> T buildImmutable(ModelBuilder builder) {
+        if (builder == null) {
+            return null;
+        }
+        return (T)builder.build();
+    }
+
     /**
      * Takes the given list and returns an unmodifiable copy of that list containing the same elements as the original
      * list.  This method handles a null list being passed to it by returning an unmodifiable empty list.

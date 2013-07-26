@@ -15,18 +15,26 @@
  */
 package org.kuali.rice.krms.impl.ui;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.metadata.ClassNotPersistenceCapableException;
-import org.kuali.rice.core.api.uif.DataType;
+import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.uif.RemotableTextInput;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.maintenance.Maintainable;
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
@@ -51,13 +59,6 @@ import org.kuali.rice.krms.impl.repository.TermParameterBo;
 import org.kuali.rice.krms.impl.util.KrmsImplConstants;
 import org.kuali.rice.krms.impl.util.KrmsRetriever;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
  * {@link Maintainable} for the {@link AgendaEditor}
  *
@@ -80,7 +81,7 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
      * @return the boService
      */
     public BusinessObjectService getBoService() {
-        return KRADServiceLocator.getBusinessObjectService();
+        return KNSServiceLocator.getBusinessObjectService();
     }
 
     /**
@@ -236,7 +237,7 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         try {
             // Since the dataObject is a wrapper class we need to build it and populate with the agenda bo.
             AgendaEditor agendaEditor = new AgendaEditor();
-            AgendaBo agenda = getLookupService().findObjectBySearch(
+            AgendaBo agenda = getLegacyDataAdapter().findObjectBySearch(
                     ((AgendaEditor) getDataObject()).getAgenda().getClass(), dataObjectKeys);
             if (KRADConstants.MAINTENANCE_COPY_ACTION.equals(getMaintenanceAction())) {
                 String dateTimeStamp = (new Date()).getTime() + "";
@@ -317,16 +318,12 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
             }
         }
 
-        if (agendaBo instanceof PersistableBusinessObject) {
-            Map<String, String> primaryKeys = new HashMap<String, String>();
-            primaryKeys.put("id", agendaBo.getId());
-            AgendaBo blah = getBusinessObjectService().findByPrimaryKey(AgendaBo.class, primaryKeys);
-            getBusinessObjectService().delete(blah);
+        Map<String, String> primaryKeys = new HashMap<String, String>();
+        primaryKeys.put("id", agendaBo.getId());
+        AgendaBo blah = getLegacyDataAdapter().findByPrimaryKey(AgendaBo.class, primaryKeys);
+        getLegacyDataAdapter().delete(blah);
 
-            getBusinessObjectService().linkAndSave(agendaBo);
-        } else {
-            throw new RuntimeException("Cannot save object of type: " + agendaBo + " with business object service");
-        }
+        getLegacyDataAdapter().linkAndSave(agendaBo);
     }
 
     /**
@@ -362,7 +359,7 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
 
                 newTerm.setParameters(params);
 
-                KRADServiceLocator.getBusinessObjectService().linkAndSave(newTerm);
+                KNSServiceLocator.getBusinessObjectService().linkAndSave(newTerm);
                 propositionBo.getParameters().get(0).setValue(newTerm.getId());
             }
         } else {
@@ -404,7 +401,7 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
             isOldDataObjectInExistence = false;
         } else {
             // dataObject contains a non persistable wrapper - use agenda from the wrapper object instead
-            Map<String, ?> keyFieldValues = getDataObjectMetaDataService().getPrimaryKeyFieldValues(
+            Map<String, ?> keyFieldValues = getLegacyDataAdapter().getPrimaryKeyFieldValues(
                     ((AgendaEditor) getDataObject()).getAgenda());
             for (Object keyValue : keyFieldValues.values()) {
                 if (keyValue == null) {

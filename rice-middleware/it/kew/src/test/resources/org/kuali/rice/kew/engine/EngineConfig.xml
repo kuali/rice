@@ -512,7 +512,7 @@
 			<name>EmptyProcessDocType</name>
 			<description>EmptyProcessDocType</description>
 			<label>EmptyProcessDocType</label>
-			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.kew.engine.EmptyProcessTest$PostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
 			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
 			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>

@@ -15,75 +15,84 @@
  */
 package org.kuali.rice.core.framework.persistence.jta;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.core.api.util.reflect.BaseTargetedInvocationHandler;
+import org.kuali.rice.core.api.util.reflect.TargetedInvocationHandler;
 import org.springframework.beans.factory.FactoryBean;
-import org.springframework.jndi.JndiTemplate;
 
-import javax.naming.NamingException;
 import javax.transaction.TransactionManager;
-
+import javax.transaction.UserTransaction;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 /**
- * Factory bean that supplies a TransactionManager object from the the current context
- * (i.e. plugin, embedding webapp) Config object map if defined therein (under the Config.TRANSACTION_MANAGER_OBJ key),
- * from JNDI if {@link Config#TRANSACTION_MANAGER_JNDI} is defined,
- * or from a default declaratively assigned in containing bean factory.
+ * Factory bean that supplies a the currently configured JTA TransactionManager. This factory bean simply returns a
+ * reference to the TransactionManager configured on {@link Jta#getTransactionManager()}.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TransactionManagerFactoryBean implements FactoryBean {
+public class TransactionManagerFactoryBean implements FactoryBean<TransactionManager> {
 
-	private TransactionManager defaultTransactionManager;
-	private JndiTemplate jndiTemplate;
-	
-	public Object getObject() throws Exception {
-		
-		if (ConfigContext.getCurrentContextConfig().getObject(RiceConstants.SPRING_TRANSACTION_MANAGER) != null) {
-			return null;
-		}
-		
-		TransactionManager transactionManager =  (TransactionManager)ConfigContext.getCurrentContextConfig().getObject(RiceConstants.TRANSACTION_MANAGER_OBJ);
-		if (transactionManager == null) {
-			String transactionManagerJndiName = ConfigContext.getCurrentContextConfig().getProperty(RiceConstants.TRANSACTION_MANAGER_JNDI);
-			if (!StringUtils.isEmpty(transactionManagerJndiName)) {
-				if (this.jndiTemplate == null) {
-				    this.jndiTemplate = new JndiTemplate();
-				}
-				try {
-					transactionManager = (TransactionManager)this.jndiTemplate.lookup(transactionManagerJndiName, TransactionManager.class);
-				} catch (NamingException e) {
-					throw new ConfigurationException("Could not locate the TransactionManager at the given JNDI location: '" + transactionManagerJndiName + "'", e);
-				}
-			}
-			
-		}
-		if (transactionManager != null) {
-			return transactionManager;
-		}
-		return this.defaultTransactionManager;
-	}
+    @Override
+    public TransactionManager getObject() throws Exception {
+        if (ConfigContext.getCurrentContextConfig() != null &&
+                ConfigContext.getCurrentContextConfig().getObject(RiceConstants.SPRING_TRANSACTION_MANAGER) != null) {
+            return null;
+        }
+        return (TransactionManager) Proxy.newProxyInstance(getClass().getClassLoader(),
+                new Class<?>[]{getObjectType()},
+                new LazyInitializationHandler());
+    }
 
-	public Class getObjectType() {
-		return TransactionManager.class;
-	}
+    @Override
+    public Class<TransactionManager> getObjectType() {
+        return TransactionManager.class;
+    }
 
-	public boolean isSingleton() {
-		return true;
-	}
-	
-	public void setDefaultTransactionManager(TransactionManager transactionManager) {
-	    this.defaultTransactionManager = transactionManager;
-	}
+    @Override
+    public boolean isSingleton() {
+        return true;
+    }
 
-	public JndiTemplate getJndiTemplate() {
-		return this.jndiTemplate;
-	}
+    static class LazyInitializationHandler implements TargetedInvocationHandler<TransactionManager> {
 
-	public void setJndiTemplate(JndiTemplate jndiTemplate) {
-		this.jndiTemplate = jndiTemplate;
-	}
+        private volatile boolean initialized = false;
+        private TransactionManager transactionManager = null;
+
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            try {
+                if (!this.initialized) {
+                    if (Jta.isFrozen()) {
+                        this.transactionManager = Jta.getTransactionManager();
+                        this.initialized = true;
+                    } else {
+                        throw new IllegalStateException("JTA has not been initialized, in order to use the "
+                                + "TransactionManager please ensure that it has been configured on " + Jta.class.getName());
+                    }
+                }
+                if (this.transactionManager == null) {
+                    throw new IllegalStateException("Attempting to use TransactionManager but JTA is not enabled.");
+                }
+                return method.invoke(transactionManager, args);
+            } catch (InvocationTargetException e) {
+                throw e.getTargetException();
+            }
+        }
+
+        public boolean isInitialized() {
+            return initialized;
+        }
+
+        @Override
+        public TransactionManager getTarget() {
+            return transactionManager;
+        }
+
+    }
+
 
 }

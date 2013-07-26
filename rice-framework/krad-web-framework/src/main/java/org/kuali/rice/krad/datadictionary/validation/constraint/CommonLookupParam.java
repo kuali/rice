@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
-import org.kuali.rice.core.api.uif.DataType;
-
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import org.kuali.rice.core.api.data.DataType;
 
 /**
  * This class is a direct copy of one that was in Kuali Student. Look up constraints are currently not implemented.

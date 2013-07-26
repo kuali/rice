@@ -15,7 +15,16 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import com.google.common.base.Function;
+import java.io.IOException;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.List;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -24,11 +33,11 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.joda.time.DateTime;
 import org.joda.time.MutableDateTime;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.search.Range;
 import org.kuali.rice.core.api.search.SearchExpressionUtils;
 import org.kuali.rice.core.api.uif.AttributeLookupSettings;
-import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
@@ -40,15 +49,7 @@ import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 import org.kuali.rice.krad.util.GlobalVariables;
 
-import java.io.IOException;
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
+import com.google.common.base.Function;
 
 /**
  * Defines various utilities for internal use in the reference implementation of the document search functionality.

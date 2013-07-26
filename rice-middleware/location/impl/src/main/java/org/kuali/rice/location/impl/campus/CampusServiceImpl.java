@@ -18,10 +18,8 @@ package org.kuali.rice.location.impl.campus;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
-import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.kim.api.group.GroupQueryResults;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.location.api.campus.Campus;
 import org.kuali.rice.location.api.campus.CampusQueryResults;
@@ -29,7 +27,6 @@ import org.kuali.rice.location.api.campus.CampusService;
 import org.kuali.rice.location.api.campus.CampusType;
 import org.kuali.rice.location.api.campus.CampusTypeQueryResults;
 
-import javax.jws.WebParam;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

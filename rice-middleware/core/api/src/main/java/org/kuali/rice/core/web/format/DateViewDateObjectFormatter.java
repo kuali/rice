@@ -18,6 +18,7 @@ package org.kuali.rice.core.web.format;
 import java.sql.Date;
 import java.sql.Timestamp;
 
+@Deprecated
 public class DateViewDateObjectFormatter extends DateFormatter {
 
 	private static final long serialVersionUID = 742928759315505509L;

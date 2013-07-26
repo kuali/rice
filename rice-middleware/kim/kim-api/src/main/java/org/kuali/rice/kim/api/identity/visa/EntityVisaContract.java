@@ -18,6 +18,7 @@ package org.kuali.rice.kim.api.identity.visa;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.kim.api.identity.CodedAttributeContract;
 
 /**
  * visa information for a KIM identity
@@ -25,6 +26,7 @@ import org.kuali.rice.core.api.mo.common.Versioned;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
+@Deprecated
 public interface EntityVisaContract extends Versioned, GloballyUnique, Identifiable {
 
 	/**
@@ -32,6 +34,12 @@ public interface EntityVisaContract extends Versioned, GloballyUnique, Identifia
      * @return the identity id for this {@link EntityVisaContract}, or null if none has been assigned.
      */
 	String getEntityId();
+
+    /**
+     * Gets this {@link EntityVisaContract}'s visa type.
+     * @return the visa type for this {@link EntityVisaContract}, or null if none has been assigned.
+     */
+    CodedAttributeContract getVisaType();
 	
 	/**
      * Gets this {@link EntityVisaContract}'s visa type key.

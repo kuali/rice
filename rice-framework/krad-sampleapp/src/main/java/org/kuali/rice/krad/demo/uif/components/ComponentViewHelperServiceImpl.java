@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.demo.uif.components;
 
 import org.kuali.rice.core.api.search.SearchOperator;
-import org.kuali.rice.krad.demo.travel.account.TravelAccount;
+import org.kuali.rice.krad.demo.travel.dataobject.TravelAccount;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 

@@ -19,21 +19,23 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
+import org.kuali.rice.krad.data.CompoundKey;
+import org.kuali.rice.krad.data.DataObjectUtils;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.datadictionary.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DataObjectAuthorizationService;
-import org.kuali.rice.krad.service.DataObjectMetaDataService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
+import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.util.KRADUtils;
 
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -87,15 +89,15 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
         }
 
         // build list of key values from the map parameters
-        List<String> pkPropertyNames = getDataObjectMetaDataService().listPrimaryKeyFieldNames(dataObjectClass);
+        List<String> pkPropertyNames = getLegacyDataAdapter().listPrimaryKeyFieldNames(dataObjectClass);
 
         // some classes might have alternate keys defined for retrieving
-        List<List<String>> alternateKeyNames = this.getAlternateKeysForClass(dataObjectClass);
+        List<List<String>> alternateKeyNameSets = getAlternateKeysForClass(dataObjectClass);
 
         // add pk set as beginning so it will be checked first for match
-        alternateKeyNames.add(0, pkPropertyNames);
+        alternateKeyNameSets.add(0, pkPropertyNames);
 
-        List<String> dataObjectKeySet = retrieveKeySetFromMap(alternateKeyNames, parameters);
+        List<String> dataObjectKeySet = retrieveKeySetFromMap(alternateKeyNameSets, parameters);
         if ((dataObjectKeySet == null) || dataObjectKeySet.isEmpty()) {
             LOG.warn("Matching key set not found in request for class: " + getDataObjectClass());
 
@@ -158,13 +160,17 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
         if (moduleService != null && moduleService.isExternalizable(getDataObjectClass())) {
             dataObject = moduleService.getExternalizableBusinessObject(getDataObjectClass().asSubclass(
                     ExternalizableBusinessObject.class), keyPropertyValues);
+        } else if ( KradDataServiceLocator.getDataObjectService().supports(getDataObjectClass())) {
+            dataObject = KradDataServiceLocator.getDataObjectService().find(getDataObjectClass(), new CompoundKey(keyPropertyValues));
         } else if (BusinessObject.class.isAssignableFrom(getDataObjectClass())) {
-            dataObject = getBusinessObjectService().findByPrimaryKey(getDataObjectClass().asSubclass(
+            dataObject = getLegacyDataAdapter().findByPrimaryKey(getDataObjectClass().asSubclass(
                     BusinessObject.class), keyPropertyValues);
+        } else {
+            throw new IllegalArgumentException( "ERROR: Unsupported object type passed to inquiry: " + getDataObjectClass() + " / keys=" + keyPropertyValues );
         }
-
         return dataObject;
     }
+
 
     /**
      * Iterates through the list of key sets looking for a set where the given map of parameters has
@@ -222,18 +228,18 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
         Class<?> inquiryObjectClass = null;
 
         // inquiry into data object class if property is title attribute
-        Class<?> objectClass = ObjectUtils.materializeClassForProxiedObject(dataObject);
-        if (propertyName.equals(getDataObjectMetaDataService().getTitleAttribute(objectClass))) {
+        Class<?> objectClass = KRADUtils.materializeClassForProxiedObject(dataObject);
+        if (propertyName.equals(KRADServiceLocatorWeb.getLegacyDataAdapter().getTitleAttribute(objectClass))) {
             inquiryObjectClass = objectClass;
-        } else if (ObjectUtils.isNestedAttribute(propertyName)) {
-            String nestedPropertyName = ObjectUtils.getNestedAttributePrefix(propertyName);
-            Object nestedPropertyObject = ObjectUtils.getNestedValue(dataObject, nestedPropertyName);
+        } else if (DataObjectUtils.isNestedAttribute(propertyName)) {
+            String nestedPropertyName = DataObjectUtils.getNestedAttributePrefix(propertyName);
+            Object nestedPropertyObject = KRADUtils.getNestedValue(dataObject, nestedPropertyName);
 
-            if (ObjectUtils.isNotNull(nestedPropertyObject)) {
-                String nestedPropertyPrimitive = ObjectUtils.getNestedAttributePrimitive(propertyName);
-                Class<?> nestedPropertyObjectClass = ObjectUtils.materializeClassForProxiedObject(nestedPropertyObject);
+            if (KRADUtils.isNotNull(nestedPropertyObject)) {
+                String nestedPropertyPrimitive = DataObjectUtils.getNestedAttributePrimitive(propertyName);
+                Class<?> nestedPropertyObjectClass = KRADUtils.materializeClassForProxiedObject(nestedPropertyObject);
 
-                if (nestedPropertyPrimitive.equals(getDataObjectMetaDataService().getTitleAttribute(
+                if (nestedPropertyPrimitive.equals(KRADServiceLocatorWeb.getLegacyDataAdapter().getTitleAttribute(
                         nestedPropertyObjectClass))) {
                     inquiryObjectClass = nestedPropertyObjectClass;
                 }
@@ -241,14 +247,7 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
         }
 
         // if not title, then get primary relationship
-        DataObjectRelationship relationship = null;
-        if (inquiryObjectClass == null) {
-            relationship = getDataObjectMetaDataService().getDataObjectRelationship(dataObject, objectClass,
-                    propertyName, "", true, false, true);
-            if (relationship != null) {
-                inquiryObjectClass = relationship.getRelatedClass();
-            }
-        }
+        inquiryObjectClass = getLegacyDataAdapter().getInquiryObjectClassIfNotTitle(dataObject,propertyName);
 
         // if haven't found inquiry class, then no inquiry can be rendered
         if (inquiryObjectClass == null) {
@@ -258,7 +257,7 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
         }
 
         if (DocumentHeader.class.isAssignableFrom(inquiryObjectClass)) {
-            String documentNumber = (String) ObjectUtils.getPropertyValue(dataObject, propertyName);
+            String documentNumber = (String) DataObjectUtils.getPropertyValue(dataObject, propertyName);
             if (StringUtils.isNotBlank(documentNumber)) {
                 inquiry.getInquiryLink().setHref(getConfigurationService().getPropertyValueAsString(
                         KRADConstants.WORKFLOW_URL_KEY)
@@ -288,7 +287,7 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
         }
 
         // listPrimaryKeyFieldNames returns an unmodifiable list. So a copy is necessary.
-        List<String> keys = new ArrayList<String>(getDataObjectMetaDataService().listPrimaryKeyFieldNames(
+        List<String> keys = new ArrayList<String>(getLegacyDataAdapter().listPrimaryKeyFieldNames(
                 inquiryObjectClass));
 
         if (keys == null) {
@@ -296,18 +295,7 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
         }
 
         // build inquiry parameter mappings
-        Map<String, String> inquiryParameters = new HashMap<String, String>();
-        for (String keyName : keys) {
-            String keyConversion = keyName;
-            if (relationship != null) {
-                keyConversion = relationship.getParentAttributeForChildAttribute(keyName);
-            } else if (ObjectUtils.isNestedAttribute(propertyName)) {
-                String nestedAttributePrefix = ObjectUtils.getNestedAttributePrefix(propertyName);
-                keyConversion = nestedAttributePrefix + "." + keyName;
-            }
-
-            inquiryParameters.put(keyConversion, keyName);
-        }
+        Map<String, String> inquiryParameters = getLegacyDataAdapter().getInquiryParameters(dataObject,keys,propertyName);
 
         inquiry.buildInquiryLink(dataObject, propertyName, inquiryObjectClass, inquiryParameters);
     }
@@ -329,14 +317,15 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
         return this.dataObjectClass;
     }
 
-    protected DataObjectMetaDataService getDataObjectMetaDataService() {
-        return KRADServiceLocatorWeb.getDataObjectMetaDataService();
+    protected LegacyDataAdapter getLegacyDataAdapter() {
+        return KRADServiceLocatorWeb.getLegacyDataAdapter();
     }
 
     protected KualiModuleService getKualiModuleService() {
         return KRADServiceLocatorWeb.getKualiModuleService();
     }
 
+    @Override
     protected DataDictionaryService getDataDictionaryService() {
         return KRADServiceLocatorWeb.getDataDictionaryService();
     }

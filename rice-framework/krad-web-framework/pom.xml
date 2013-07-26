@@ -112,11 +112,23 @@
     </dependency>
 
     <dependency>
+      <groupId>org.kuali.db.ojb</groupId>
+      <artifactId>db-ojb</artifactId>
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.persistence</groupId>
+      <artifactId>org.eclipse.persistence.jpa</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
       <scope>test</scope>
     </dependency>
 
+    <!--
     <dependency>
       <groupId>org.springmodules</groupId>
       <artifactId>spring-modules-ojb</artifactId>
@@ -126,12 +138,15 @@
           <artifactId>spring</artifactId>
         </exclusion>
         <exclusion>
+          -->
           <!-- we moved our patch to groupId org.kuali.db.ojb -->
+          <!--
           <groupId>ojb</groupId>
           <artifactId>db-ojb</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
+    -->
 
     <dependency>
       <groupId>org.freemarker</groupId>

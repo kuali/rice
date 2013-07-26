@@ -38,10 +38,6 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.api.document.node.RouteNodeInstanceState;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -73,10 +69,6 @@ public class RouteNodeInstance implements Serializable {
 	
 	@Id
 	@GeneratedValue(generator="KREW_RTE_NODE_S")
-	@GenericGenerator(name="KREW_RTE_NODE_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_RTE_NODE_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="RTE_NODE_INSTN_ID")
 	private String routeNodeInstanceId;
     @Column(name="DOC_HDR_ID")
@@ -99,16 +91,13 @@ public class RouteNodeInstance implements Serializable {
     
     @ManyToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinTable(name = "KREW_RTE_NODE_INSTN_LNK_T", joinColumns = @JoinColumn(name = "FROM_RTE_NODE_INSTN_ID"), inverseJoinColumns = @JoinColumn(name = "TO_RTE_NODE_INSTN_ID"))
-    @Fetch(value = FetchMode.SELECT)
     private List<RouteNodeInstance> nextNodeInstances = new ArrayList<RouteNodeInstance>();
     
     @ManyToMany(fetch=FetchType.EAGER, mappedBy="nextNodeInstances")
-    @Fetch(value = FetchMode.SELECT)
     //@JoinTable(name = "KREW_RTE_NODE_INSTN_LNK_T", joinColumns = @JoinColumn(name = "TO_RTE_NODE_INSTN_ID"), inverseJoinColumns = @JoinColumn(name = "FROM_RTE_NODE_INSTN_ID"))
     private List<RouteNodeInstance> previousNodeInstances = new ArrayList<RouteNodeInstance>();
 
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, mappedBy="nodeInstance", orphanRemoval=true)    
-    @Fetch(value = FetchMode.SELECT)
     private List<NodeState> state = new ArrayList<NodeState>();
     	
     @Version

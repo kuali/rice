@@ -40,6 +40,7 @@ import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.role.RoleMemberAttributeDataBo;
 import org.kuali.rice.kim.impl.role.RoleMemberBo;
 import org.kuali.rice.kim.test.KIMTestCase;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 
@@ -49,7 +50,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.Assert.*;
 
@@ -117,7 +117,7 @@ public class RoleServiceImplTest extends KIMTestCase {
         delegate.setRoleId(r2.getId());
         delegate.setActive(true);
         delegate.setKimTypeId("" + kimTypeId);
-        delegate = KRADServiceLocator.getBusinessObjectService().save(delegate);
+        delegate = KNSServiceLocator.getBusinessObjectService().save(delegate);
 
         //Create delegate member
         DelegateMember.Builder delegateMemberInfo = DelegateMember.Builder.create();
@@ -324,7 +324,7 @@ public class RoleServiceImplTest extends KIMTestCase {
         delegate.setRoleId(r2.getId());
         delegate.setActive(true);
         delegate.setKimTypeId("" + kimTypeId);
-        delegate = KRADServiceLocator.getBusinessObjectService().save(delegate);
+        delegate = KNSServiceLocator.getBusinessObjectService().save(delegate);
 
         //Create delegate member
         DelegateMember.Builder delegateMemberInfo = DelegateMember.Builder.create();
@@ -401,7 +401,7 @@ public class RoleServiceImplTest extends KIMTestCase {
 
     protected BusinessObjectService getBusinessObjectService() {
         if (businessObjectService == null) {
-            businessObjectService = KRADServiceLocator.getBusinessObjectService();
+            businessObjectService = KNSServiceLocator.getBusinessObjectService();
         }
         return businessObjectService;
     }

@@ -25,9 +25,6 @@ import org.kuali.rice.krad.util.KRADPropertyConstants
 import org.kuali.rice.location.api.country.Country
 import org.kuali.rice.location.api.country.CountryService
 import org.kuali.rice.coreservice.framework.parameter.ParameterService
-import org.kuali.rice.coreservice.api.parameter.Parameter
-import org.kuali.rice.coreservice.api.parameter.ParameterType
-import org.kuali.rice.krad.util.KRADConstants
 
 class CountryServiceImplTest {
 

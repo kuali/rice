@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.ken.bo;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
 import org.kuali.rice.ken.api.notification.NotificationContentType;
 import org.kuali.rice.ken.api.notification.NotificationContentTypeContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
@@ -38,15 +35,11 @@ import javax.persistence.Table;
 public class NotificationContentTypeBo extends PersistableBusinessObjectBase implements NotificationContentTypeContract {
     @Id
     @GeneratedValue(generator="KREN_CNTNT_TYP_S")
-	@GenericGenerator(name="KREN_CNTNT_TYP_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREN_CNTNT_TYP_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="CNTNT_TYP_ID")
 	private Long id;
     @Column(name="NM", nullable=false)
 	private String name;
-    @Type(type="true_false")
+    //@Type(type="true_false")
     private boolean current = true;
     @Column(name="CNTNT_TYP_VER_NBR", nullable=false)
     private Integer version = Integer.valueOf(0);

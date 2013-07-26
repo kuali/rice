@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.util.ClasspathOrFileResourceLoader;
 import org.kuali.rice.core.api.util.Truth;
 
 import java.io.IOException;
@@ -215,8 +216,9 @@ public abstract class AbstractBaseConfig implements org.kuali.rice.core.api.conf
         return getProperty(org.kuali.rice.core.api.config.property.Config.KEYSTORE_ALIAS);
     }
 
-    public String getKeystoreFile() {
-        return getProperty(org.kuali.rice.core.api.config.property.Config.KEYSTORE_FILE);
+    public String getKeystoreFile() throws IOException {
+        String keyStoreFile = getProperty(org.kuali.rice.core.api.config.property.Config.KEYSTORE_FILE);
+        return new ClasspathOrFileResourceLoader().getResource(keyStoreFile).getURL().getPath();
     }
 
     public String getKeystorePassword() {

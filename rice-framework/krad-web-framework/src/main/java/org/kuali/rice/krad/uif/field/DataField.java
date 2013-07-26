@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.KualiCode;
+import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -42,7 +43,6 @@ import org.kuali.rice.krad.uif.widget.Helpable;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.Tooltip;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
-import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
 
 import java.beans.PropertyEditor;
@@ -370,7 +370,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
             // check for any relationship present for this field and it's of type KualiCode
             Class<?> parentObjectClass = ViewModelUtils.getParentObjectClassForMetadata(view, model, this);
             DataObjectRelationship relationship =
-                    KRADServiceLocatorWeb.getDataObjectMetaDataService().getDataObjectRelationship(null,
+                    KRADServiceLocatorWeb.getLegacyDataAdapter().getDataObjectRelationship(null,
                             parentObjectClass, getBindingInfo().getBindingName(), "", true, false, false);
 
             if (relationship != null
@@ -511,7 +511,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * @param propertyEditorClass
      */
     public void setPropertyEditorClass(Class<? extends PropertyEditor> propertyEditorClass) {
-        this.propertyEditor = ObjectUtils.newInstance(propertyEditorClass);
+        this.propertyEditor = DataObjectUtils.newInstance(propertyEditorClass);
     }
 
     /**

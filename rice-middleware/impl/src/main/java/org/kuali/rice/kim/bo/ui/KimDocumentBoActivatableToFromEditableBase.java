@@ -15,15 +15,11 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-
-import org.hibernate.annotations.Type;
+import java.sql.Timestamp;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -37,11 +33,11 @@ import org.hibernate.annotations.Type;
 })
 public class KimDocumentBoActivatableToFromEditableBase  extends KimDocumentBoBase {
     private static final long serialVersionUID = 9042706897191231673L;
-	@Type(type="yes_no")
+	//@Type(type="yes_no")
 	@Column(name="ACTV_IND")
     protected boolean active = true;
 	
-	@Type(type="yes_no")
+	//@Type(type="yes_no")
 	@Column(name="EDIT_FLAG")
     protected boolean edit;
 

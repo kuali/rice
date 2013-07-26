@@ -17,7 +17,6 @@ package org.kuali.rice.coreservice.impl.namespace;
 
 
 import groovy.transform.EqualsAndHashCode
-import org.hibernate.annotations.Type
 import org.kuali.rice.coreservice.api.namespace.Namespace
 import org.kuali.rice.coreservice.framework.namespace.NamespaceEbo
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
@@ -44,7 +43,7 @@ class NamespaceBo extends PersistableBusinessObjectBase implements NamespaceEbo 
     @Column(name="NM")
     def String name;
 
-    @Type(type="yes_no")
+    //@Type(type="yes_no")
     @Column(name="ACTV_IND")
     def boolean active = true;
 

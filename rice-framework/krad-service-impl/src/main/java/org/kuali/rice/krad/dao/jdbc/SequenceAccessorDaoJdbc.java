@@ -20,14 +20,13 @@ import org.apache.ojb.broker.PBKey;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.framework.persistence.jdbc.dao.PlatformAwareDaoBaseJdbc;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.ModuleConfiguration;
 import org.kuali.rice.krad.dao.SequenceAccessorDao;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.service.ModuleService;
+import org.kuali.rice.krad.util.LegacyUtils;
 import org.springmodules.orm.ojb.OjbFactoryUtils;
 
 import javax.persistence.EntityManager;
@@ -37,9 +36,9 @@ import javax.persistence.EntityManager;
  */
 public class SequenceAccessorDaoJdbc extends PlatformAwareDaoBaseJdbc implements SequenceAccessorDao {
 	private KualiModuleService kualiModuleService;
-	
-	private Long nextAvailableSequenceNumber(String sequenceName, 
-			Class<? extends BusinessObject> clazz) {
+
+	private Long nextAvailableSequenceNumber(String sequenceName,
+			Class clazz) {
 		
         ModuleService moduleService = getKualiModuleService().getResponsibleModuleService(clazz);
         if ( moduleService == null )
@@ -49,7 +48,7 @@ public class SequenceAccessorDaoJdbc extends PlatformAwareDaoBaseJdbc implements
         if ( moduleConfig == null )
         	throw new ConfigurationException("moduleConfiguration is null");
         
-    	if ( OrmUtils.isJpaAnnotated(clazz) && ( OrmUtils.isJpaEnabled() ||	OrmUtils.isJpaEnabled("rice.krad") ) ) {
+    	if (!LegacyUtils.useLegacy(clazz)) {
     		EntityManager entityManager = moduleConfig.getEntityManager();
     		
             if ( entityManager != null ) 
@@ -59,9 +58,15 @@ public class SequenceAccessorDaoJdbc extends PlatformAwareDaoBaseJdbc implements
         } 
     	else {
     		String dataSourceName = moduleConfig.getDataSourceName();
-    		if ( StringUtils.isEmpty(dataSourceName) ) 
-            	throw new ConfigurationException("dataSourceName is not set");
-    		
+    		if ( StringUtils.isEmpty(dataSourceName) ) {
+                // fall back to trying the DocumentHeader module service and data source name for OJB
+                moduleConfig = getKualiModuleService().getResponsibleModuleService(DocumentHeader.class).getModuleConfiguration();
+                dataSourceName = moduleConfig.getDataSourceName();
+            }
+            if (StringUtils.isEmpty(dataSourceName)) {
+                throw new ConfigurationException("dataSourceName is not set");
+            }
+
     		PBKey key = new PBKey(dataSourceName);
     		PersistenceBroker broker = OjbFactoryUtils.getPersistenceBroker(key, false);
     		if ( broker != null )
@@ -72,7 +77,7 @@ public class SequenceAccessorDaoJdbc extends PlatformAwareDaoBaseJdbc implements
 	}
 	
 	public Long getNextAvailableSequenceNumber(String sequenceName, 
-			Class<? extends BusinessObject> clazz) {
+			Class clazz) {
 		
 		// There are situations where a module hasn't been configured with
 		// a dataSource.  In these cases, this method would have previously

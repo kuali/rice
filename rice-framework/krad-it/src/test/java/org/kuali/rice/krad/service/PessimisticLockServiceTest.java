@@ -22,6 +22,7 @@ import org.kuali.rice.kim.api.KimConstants.PermissionNames;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
@@ -86,7 +87,7 @@ public class PessimisticLockServiceTest extends KRADTestCase {
     @Test
     public void testDeleteLocks() throws Exception {
     	
-        List<PessimisticLock> locks = (List<PessimisticLock>) KRADServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
+        List<PessimisticLock> locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 4 locks in DB", 4, locks.size());
 
         String userId = "employee";
@@ -106,7 +107,7 @@ public class PessimisticLockServiceTest extends KRADTestCase {
         verifyDelete("employee", Arrays.asList(new String[]{"1111"}), null, false);
         verifyDelete("frank", Arrays.asList(new String[]{"1112"}), null, false);
         verifyDelete("fred", Arrays.asList(new String[]{"1113"}), null, false);
-        locks = (List<PessimisticLock>) KRADServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
+        locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 1 lock left in DB", 1, locks.size());
 
         // test admin user can delete any lock
@@ -115,7 +116,7 @@ public class PessimisticLockServiceTest extends KRADTestCase {
         userId = "admin";
         assertTrue("User " + userId + " should be member of pessimistic lock admin permission", KimApiServiceLocator.getPermissionService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KRADConstants.KNS_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, Collections.<String, String>emptyMap() ) );
         verifyDelete(userId, Arrays.asList(new String[]{"1114"}), null, false);
-        locks = (List<PessimisticLock>) KRADServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
+        locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 0 locks left in DB", 0, locks.size());
     }
 
@@ -171,7 +172,7 @@ public class PessimisticLockServiceTest extends KRADTestCase {
         Map primaryKeys = new HashMap();
         primaryKeys.put(KRADPropertyConstants.ID, lock.getId());
         lock = null;
-        lock = (PessimisticLock) KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(PessimisticLock.class, primaryKeys);
+        lock = (PessimisticLock) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(PessimisticLock.class, primaryKeys);
         assertNotNull("Generated lock should be available from BO Service", lock);
         assertNotNull("Generated lock should have id", lock.getId());
         assertEquals("Document Number should match", documentNumber, lock.getDocumentNumber());
@@ -192,7 +193,7 @@ public class PessimisticLockServiceTest extends KRADTestCase {
         primaryKeys = new HashMap();
         primaryKeys.put(KRADPropertyConstants.ID, lock.getId());
         lock = null;
-        lock = (PessimisticLock) KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(PessimisticLock.class, primaryKeys);
+        lock = (PessimisticLock) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(PessimisticLock.class, primaryKeys);
         assertNotNull("Generated lock should be available from BO Service", lock);
         assertNotNull("Generated lock should have id", lock.getId());
         assertEquals("Document Number should match", documentNumber, lock.getDocumentNumber());
@@ -276,31 +277,31 @@ public class PessimisticLockServiceTest extends KRADTestCase {
     @Test
     public void testReleaseAllLocksForUser() throws Exception {
         String lockDescriptor = "Temporary Lock";
-        List<PessimisticLock> locks = (List<PessimisticLock>) KRADServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
+        List<PessimisticLock> locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 8 manually inserted locks", 8, locks.size());
 
         KRADServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(locks, KimApiServiceLocator.getPersonService().getPerson("fran"), lockDescriptor);
-        locks = (List<PessimisticLock>) KRADServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
+        locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 7 locks left after releasing locks for fran using lock descriptor " + lockDescriptor, 7, locks.size());
 
         KRADServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(locks, KimApiServiceLocator.getPersonService().getPerson("frank"), lockDescriptor);
-        locks = (List<PessimisticLock>) KRADServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
+        locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 5 locks left after releasing locks for fran and frank using lock descriptor " + lockDescriptor, 5, locks.size());
 
         KRADServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(locks, KimApiServiceLocator.getPersonService().getPerson("fred"), lockDescriptor);
-        locks = (List<PessimisticLock>) KRADServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
+        locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 4 locks left after releasing locks for fran, frank, and fred using lock descriptor " + lockDescriptor, 4, locks.size());
 
         KRADServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(locks, KimApiServiceLocator.getPersonService().getPerson("fran"));
-        locks = (List<PessimisticLock>) KRADServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
+        locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 3 locks left after releasing locks for fran with no lock descriptor", 3, locks.size());
 
         KRADServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(locks, KimApiServiceLocator.getPersonService().getPerson("frank"));
-        locks = (List<PessimisticLock>) KRADServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
+        locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 1 lock left after releasing locks for fran and frank with no lock descriptor", 1, locks.size());
 
         KRADServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(locks, KimApiServiceLocator.getPersonService().getPerson("fred"));
-        locks = (List<PessimisticLock>) KRADServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
+        locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be no locks left after releasing locks for fran, frank, and fred with no lock descriptor", 0, locks.size());
     }
 
@@ -321,12 +322,12 @@ public class PessimisticLockServiceTest extends KRADTestCase {
         // get existing lock and update lock descriptor and save
         Map primaryKeys = new HashMap();
         primaryKeys.put(KRADPropertyConstants.ID, Long.valueOf("1111"));
-        PessimisticLock lock = (PessimisticLock) KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(PessimisticLock.class, primaryKeys);
+        PessimisticLock lock = (PessimisticLock) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(PessimisticLock.class, primaryKeys);
         lock.setLockDescriptor(lockDescriptor);
         KRADServiceLocatorWeb.getPessimisticLockService().save(lock);
 
         // verify retrieved lock has lock descriptor set previously
-        PessimisticLock savedLock = (PessimisticLock) KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(PessimisticLock.class, primaryKeys);
+        PessimisticLock savedLock = (PessimisticLock) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(PessimisticLock.class, primaryKeys);
         assertEquals("Lock descriptor is not correct from lock that was saved", lockDescriptor, savedLock.getLockDescriptor());
     }
     

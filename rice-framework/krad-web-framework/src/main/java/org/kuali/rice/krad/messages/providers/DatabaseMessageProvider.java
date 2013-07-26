@@ -33,6 +33,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DatabaseMessageProvider implements MessageProvider {
+
     private LookupService lookupService;
 
     /**
@@ -93,7 +94,11 @@ public class DatabaseMessageProvider implements MessageProvider {
             }
 
             String localeLanguage = localeIdentifiers[0];
-            criteria.put("locale", locale + SearchOperator.OR.op() + localeLanguage);
+            if ( StringUtils.isNotBlank(localeLanguage)) {
+                criteria.put("locale", locale + SearchOperator.OR.op() + localeLanguage);
+            } else {
+                criteria.put("locale", locale );
+            }
         }
 
         results = getLookupService().findCollectionBySearch(Message.class, criteria);
@@ -129,4 +134,5 @@ public class DatabaseMessageProvider implements MessageProvider {
     public void setLookupService(LookupService lookupService) {
         this.lookupService = lookupService;
     }
+
 }

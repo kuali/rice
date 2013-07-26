@@ -198,23 +198,6 @@
 
   <!-- end quartz -->
 
-  <!-- START JPA CONFIGURATION -->
-  <bean id="kenEntityManagerFactory" class="org.kuali.rice.krad.app.persistence.jpa.RiceEntityManagerProxyFactoryBean">
-    <constructor-arg value="rice.ken"/>
-    <constructor-arg ref="kenDataSource"/>
-  </bean>
-
-  <bean id="kenEntityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
-  	<property name="entityManagerFactory" ref="kenEntityManagerFactory"/>
-  </bean>
-  <!-- END JPA CONFIGURATION -->
-
-
-
-
-
-
-
   <!-- KCB stuff (Always loaded with local KEN)-->
       <!-- Eagerly-init KCB initializer; sets OJB platform dynamically for now -->
         <bean id="initializer" class="org.kuali.rice.kcb.config.KCBInitializer" lazy-init="false" depends-on="ojbConfigurer">

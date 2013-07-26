@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+
+	<bean parent="DataObjectMetadata"
+		p:dataObjectTypeClassName="org.kuali.rice.krad.data.provider.jpa.testbo.TestDataObject"
+		p:label="A Spring-Provided Label"
+		p:summary="Summary from Spring Configuration"
+		p:backingObjectName="ANOTHER_TABLE_NAME_T">
+		<property name="attributes">
+			<list>
+				<bean parent="DataObjectAttribute"
+					p:name="nonPersistedProperty"
+					p:label="Attribute Added via Spring" 
+					p:mergeAction="MERGE" />
+				<bean parent="DataObjectAttribute"
+					p:name="nonStandardDataType"
+					p:label="Non Standard Label-Spring" 
+					p:mergeAction="MERGE" />
+
+				<!-- <bean parent="DataObjectAttribute"
+					p:name="dateProperty"
+					p:mergeAction="REMOVE" /> -->
+			</list>					
+		</property>
+	</bean>
+
+
+</beans>

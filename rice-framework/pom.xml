@@ -29,6 +29,7 @@
   <packaging>pom</packaging>
 
   <modules>
+    <module>krad-data</module>
     <module>krad-app-framework</module>
     <module>krad-development-tools</module>
     <module>krad-it</module>

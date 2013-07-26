@@ -77,7 +77,11 @@ public class EDocLiteDAOJpaImpl implements EDocLiteDAO {
         final Criteria crit = new Criteria(EDocLiteDefinition.class.getName());
         crit.eq(NAME_CRITERIA, defName);
         crit.eq(ACTIVE_IND_CRITERIA, Boolean.TRUE);
-        return (EDocLiteDefinition) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
+        List<EDocLiteDefinition> edls = new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+        if (edls.isEmpty()) {
+            return null;
+        }
+        return edls.get(0);
     }
 
     /**
@@ -89,7 +93,11 @@ public class EDocLiteDAOJpaImpl implements EDocLiteDAO {
         final Criteria crit = new Criteria(EDocLiteAssociation.class.getName());
         crit.eq("edlName", docTypeName);
         crit.eq(ACTIVE_IND_CRITERIA, Boolean.TRUE);
-        return (EDocLiteAssociation) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
+        List<EDocLiteAssociation> edls = new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+        if (edls.isEmpty()) {
+            return null;
+        }
+        return edls.get(0);
     }
 
     /**
@@ -151,9 +159,7 @@ public class EDocLiteDAOJpaImpl implements EDocLiteDAO {
      * @see org.kuali.rice.edl.impl.dao.EDocLiteDAO#getEDocLiteAssociation(java.lang.Long)
      */
     public EDocLiteAssociation getEDocLiteAssociation(final Long associationId) {
-        final Criteria crit = new Criteria(EDocLiteAssociation.class.getName());
-        crit.eq("edocLiteAssocId", associationId);
-        return (EDocLiteAssociation) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
+        return entityManager.find(EDocLiteAssociation.class, associationId);
     }
 
     public EntityManager getEntityManager() {

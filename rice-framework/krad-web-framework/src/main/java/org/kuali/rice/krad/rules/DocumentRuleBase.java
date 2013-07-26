@@ -19,8 +19,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
-import org.kuali.rice.coreservice.framework.parameter.ParameterConstants;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
+import org.kuali.rice.coreservice.framework.parameter.ParameterConstants;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.doctype.DocumentType;
@@ -38,8 +38,8 @@ import org.kuali.rice.krad.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.document.TransactionalDocument;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.rules.rule.AddAdHocRoutePersonRule;
 import org.kuali.rice.krad.rules.rule.AddAdHocRouteWorkgroupRule;
 import org.kuali.rice.krad.rules.rule.AddNoteRule;
@@ -58,7 +58,6 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.MessageMap;
-import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.util.RouteToCompletionUtil;
 
 import java.util.HashMap;
@@ -432,7 +431,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
      */
     protected boolean hasAdHocRouteCompletion(Document document, AdHocRouteRecipient adHocRouteRecipient){         
         List<AdHocRoutePerson> adHocRoutePersons = document.getAdHocRoutePersons();
-        if(ObjectUtils.isNotNull(adHocRoutePersons)){
+        if(KRADUtils.isNotNull(adHocRoutePersons)){
             for(AdHocRoutePerson adhocRecipient : adHocRoutePersons){
                 // the given adhoc route recipient doesn't count
                 if(adHocRouteRecipient==adhocRecipient){
@@ -447,7 +446,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
         }
         
         List<AdHocRouteWorkgroup> adHocRouteWorkgroups = document.getAdHocRouteWorkgroups();
-        if(ObjectUtils.isNotNull(adHocRouteWorkgroups)){
+        if(KRADUtils.isNotNull(adHocRouteWorkgroups)){
             for(AdHocRouteWorkgroup adhocRecipient : adHocRouteWorkgroups){
                 // the given adhoc route recipient doesn't count
                 if(adHocRouteRecipient==adhocRecipient){

@@ -49,7 +49,7 @@ public final class KRADPropertyConstants {
 	public static final String CREATE_DATE = "createDate";
 	public static final String CODE = "code";
     public static final String COMPONENT_CODE = "componentCode";
-	public static final String CURRENT = "current";
+	public static final String  CURRENT = "current";
 	public static final String DATA_OBJECT_MAINTENANCE_CODE_ACTIVE_INDICATOR = "dataObjectMaintenanceCodeActiveIndicator";
 	public static final String DESCRIPTION = "description";
 	public static final String DICTIONARY_BUSINESS_OBJECT_NAME = "dictionaryBusinessObjectName";

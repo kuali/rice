@@ -289,7 +289,7 @@ public class Inquiry extends WidgetBase {
             // Direct inquiry
             String inquiryUrl = UrlFactory.parameterizeUrl(getBaseInquiryUrl(), urlParameters);
 
-            StringBuilder paramMapString = new StringBuilder();
+            StringBuilder paramMapStringBuilder = new StringBuilder();
 
             // Build parameter string using the actual names of the fields as on the html page
             for (Entry<String, String> inquiryParameter : inquiryParams.entrySet()) {
@@ -299,12 +299,12 @@ public class Inquiry extends WidgetBase {
                     inquiryParameterFrom = fieldBindingInfo.getPropertyAdjustedBindingPath(inquiryParameterFrom);
                 }
 
-                paramMapString.append(inquiryParameterFrom);
-                paramMapString.append(":");
-                paramMapString.append(inquiryParameter.getValue());
-                paramMapString.append(",");
+                paramMapStringBuilder.append(inquiryParameterFrom);
+                paramMapStringBuilder.append(":");
+                paramMapStringBuilder.append(inquiryParameter.getValue());
+                paramMapStringBuilder.append(",");
             }
-            paramMapString.deleteCharAt(paramMapString.length() - 1);
+            String paramMapString = StringUtils.removeEnd(paramMapStringBuilder.toString(), ",");
 
             // Check if lightbox is set. Get lightbox options.
             String lightBoxOptions = "";

@@ -23,7 +23,6 @@ import org.kuali.rice.ksb.messaging.MessagingTestObject;
 import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 import org.kuali.rice.ksb.test.KSBTestCase;
 
-//@Ignore
 public class StartBusTest extends KSBTestCase {
 
 	@Override
@@ -40,16 +39,6 @@ public class StartBusTest extends KSBTestCase {
 		KSBJavaService testJavaAsyncService = (KSBJavaService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
 		testJavaAsyncService.invoke(new MessagingTestObject("message content"));
 		
-		// verifyServiceCalls(serviceName);
 	}
 
-	// @Test public void testStartClient1() throws Exception {
-	// new TestClient1().start();
-	// }
-	//	
-	// @Test public void testStartClient2() throws Exception {
-	// new TestClient1().start();
-	// new TestClient2().start();
-	// }
-	//	
 }

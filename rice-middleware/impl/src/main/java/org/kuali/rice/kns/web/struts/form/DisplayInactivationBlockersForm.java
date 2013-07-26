@@ -21,6 +21,7 @@ import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.GeneralSecurityException;
@@ -68,7 +69,7 @@ public class DisplayInactivationBlockersForm extends KualiForm {
 		BusinessObjectAuthorizationService businessObjectAuthorizationService = KNSServiceLocator
                 .getBusinessObjectAuthorizationService();
 		
-		List primaryKeyFieldNames = KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(businessObjectClass);
+		List primaryKeyFieldNames = KRADServiceLocatorWeb.getLegacyDataAdapter().listPrimaryKeyFieldNames(businessObjectClass);
 		for (Iterator i = primaryKeyFieldNames.iterator(); i.hasNext();) {
 			String primaryKeyFieldName = (String) i.next();
 			

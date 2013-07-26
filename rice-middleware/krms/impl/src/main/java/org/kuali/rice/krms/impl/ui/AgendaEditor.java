@@ -332,14 +332,8 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
     // Need to override this method since the actual persistable BO is wrapped inside dataObject.
     @Override
     public void refreshNonUpdateableReferences() {
-        getPersistenceService().refreshAllNonUpdatingReferences(this.getAgenda());
+        throw new UnsupportedOperationException("refreshNonUpdateableReferences is not supported");
+        //getPersistenceService().refreshAllNonUpdatingReferences(this.getAgenda());
     }
 
-    /**
-     * @see org.kuali.rice.krad.bo.BusinessObject#refresh()
-     */
-    @Override
-    public void refresh() {
-        getPersistenceService().retrieveNonKeyFields(this.getAgenda());
-    }
 }

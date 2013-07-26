@@ -24,7 +24,6 @@ import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.exception.AuthenticationException;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
-import org.kuali.rice.krad.util.ObjectUtils;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;

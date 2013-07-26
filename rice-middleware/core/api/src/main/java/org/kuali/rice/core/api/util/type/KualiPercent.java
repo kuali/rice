@@ -21,14 +21,16 @@ import java.math.BigDecimal;
 
 /**
  * This class is a wrapper around java.math.BigDecimal for percents.
- * 
- * 
+ *
+ *
  */
 public class KualiPercent extends KualiDecimal {
+    private static final long serialVersionUID = 1L;
+    protected static final KualiDecimal ONE_HUNDRED = new KualiDecimal("100.00");
 
     /**
      * Constructs a KualiPercent.java.
-     * 
+     *
      * @param d
      */
     public KualiPercent(double d) {
@@ -40,12 +42,14 @@ public class KualiPercent extends KualiDecimal {
         super(d);
     }
 
+    public KualiPercent(String d) {
+        super(d);
+    }
+
     /**
      * @return the percent as a decimal
      */
     public KualiDecimal toKualiDecimal() {
-        return this.divide(new KualiDecimal("100"));
+        return divide(ONE_HUNDRED);
     }
-
-
 }

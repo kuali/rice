@@ -31,7 +31,10 @@ import java.util.Map;
  * PersistenceStructureService
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated use {@link org.kuali.rice.krad.data.metadata.MetadataRepository}
  */
+@Deprecated
 public interface BusinessObjectMetaDataService extends DataObjectMetaDataService {
 
 	public DataObjectRelationship getBusinessObjectRelationship(RelationshipDefinition ddReference,

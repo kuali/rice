@@ -1,0 +1,130 @@
+package org.kuali.rice.krad.data.provider;
+
+import org.kuali.rice.core.api.criteria.LookupCustomizer;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
+import org.kuali.rice.krad.data.PersistenceOption;
+
+/**
+ * Defines persistence SPI for data providers.  PersistenceProviders are responsible for creating, updating, querying,
+ * and deleting data objects.  DataObjectTypes the PersistenceProvider supports must be queried through
+ * {@link #handles(Class)} before interaction with the PersistenceProvider.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+public interface PersistenceProvider extends Provider {
+
+    /**
+     * Saves the given data object, determining whether or not this is a new data object which is being created, or an
+     * existing one which should be updated.
+     *
+     * <p>Optional persistence options can be passed to indicate whether or not linking should be performed prior to
+     * persistence and whether or not validation should be performed. By default, linking is performed as well as
+     * validation.</p>
+     *
+     * @param dataObject the data object to save
+     * @param options the options to use when saving the data object
+     * @param <T> the data object class type
+     *
+     * @return the saved data object, calling code should always use the reference the object returned from this method
+     * for future operations after calling the save since it could have been updated
+     *
+     * @throws IllegalArgumentException if {@code dataObject} is not a valid data object
+     * @throws org.springframework.dao.DataAccessException if data access fails
+     */
+    <T> T save(T dataObject, PersistenceOption... options);
+
+    /**
+     * Invoked to retrieve a data object instance by a single primary key field or id object. In the
+     * case of a compound primary key consisting of multiple attributes on the data object, a
+     * CompoundKey can be passed in order to encapsulate these into a single argument.
+     *
+     * @param type the type of the data object to find
+     * @param id the id representing the primary key of the data object to find
+     * @param <T> the data object class type
+     *
+     * @return the entity with the given primary key or null if none found
+     *
+     * @throws IllegalArgumentException if {@code type} does not denote a data object type or {@code id} is not a valid
+     * type for the data object's primary key or is null
+     * @throws org.springframework.dao.DataAccessException if data access fails
+     */
+    <T> T find(Class<T> type, Object id);
+
+    /**
+     * Executes a query for the given data object. If the given QueryByCriteria is empty or null, then
+     * all data objects for the given type will be returned. Depending on the given criteria and the
+     * implementation for the query execution, not all matching results may be returned. The QueryResults
+     * will contain information on whether or not there are additional results which can be used for paging
+     * and similar functionality.
+     *
+     * @param type the type of the data objects to query
+     * @param queryByCriteria query object, can contain sorting and page request configuration
+     * @param <T> the data object class type
+     *
+     * @return the results of the query, will never return null but may return empty results
+     *
+     * @throws IllegalArgumentException if {@code type} does not denote a data object type
+     * @throws org.springframework.dao.DataAccessException if data access fails
+     */
+    <T> QueryResults<T> findMatching(Class<T> type, QueryByCriteria queryByCriteria);
+
+    /**
+     * Executes a query for the given data object. If the given QueryByCriteria is empty or null, then
+     * all data objects for the given type will be returned. Depending on the given criteria and the
+     * implementation for the query execution, not all matching results may be returned. The QueryResults
+     * will contain information on whether or not there are additional results which can be used for paging
+     * and similar functionality.
+     *
+     * @param type the type of the data objects to query
+     * @param queryByCriteria query object, can contain sorting and page request configuration
+     * @param lookupCustomizer predication transformation
+     * @param <T> the data object class type
+     *
+     * @return the results of the query, will never return null but may return empty results
+     *
+     * @throws IllegalArgumentException if {@code type} does not denote a data object type
+     * @throws org.springframework.dao.DataAccessException if data access fails
+     */
+    <T> QueryResults<T> findMatching(Class<T> type, QueryByCriteria queryByCriteria, LookupCustomizer<T> lookupCustomizer);
+
+
+    /**
+     * Deletes a given data object.
+     *
+     * @param dataObject the data object to delete
+     *
+     * @throws IllegalArgumentException if {@code dataObject} is not a valid data object
+     * @throws org.springframework.dao.DataAccessException if data access fails
+     */
+    void delete(Object dataObject);
+
+    /**
+     * Indicates whether or not this provider handles persistence for the given data object type.
+     * Responsibility on with the caller to call prior to invocation of any other PersistenceProvider methods
+     * to ensure the data objects of the right type are passed.
+     *
+     * @param type the data object type to check
+     *
+     * @return true if this provider can handle the given type, false otherwise
+     */
+    boolean handles(Class<?> type);
+
+    /**
+     * Determine if given object is a proxy object.
+     *
+     * @param  dataObject the data object to be checked
+     *
+     * @return true if a proxy, false otherwise
+     */
+    boolean isProxied(Object dataObject);
+
+    /**
+     * Resolve data object from its proxy
+     * @param dataObject
+     * @return unproxied object
+     */
+    Object resolveProxy(Object dataObject);
+
+
+}

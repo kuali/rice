@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kew.rule.bo;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
@@ -58,10 +56,6 @@ public class RuleTemplateAttributeBo extends PersistableBusinessObjectBase
     private static final long serialVersionUID = -3580049225424553828L;
     @Id
     @GeneratedValue(generator="KREW_RTE_TMPL_S")
-	@GenericGenerator(name="KREW_RTE_TMPL_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_RTE_TMPL_S"),
-			@Parameter(name="value_column",value="id")
-	})
 	@Column(name="RULE_TMPL_ATTR_ID")
 	private String id;
     @Column(name="RULE_TMPL_ID", insertable=false, updatable=false)

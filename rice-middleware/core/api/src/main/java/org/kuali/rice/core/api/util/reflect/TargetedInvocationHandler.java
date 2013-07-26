@@ -23,13 +23,13 @@ import java.lang.reflect.InvocationHandler;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface TargetedInvocationHandler extends InvocationHandler {
+public interface TargetedInvocationHandler<T> extends InvocationHandler {
 
 	/**
 	 * Returns the target object wrapped by this InvocationHandler.
 	 * 
 	 * @return the target object
 	 */
-	public Object getTarget();
+	T getTarget();
 	
 }

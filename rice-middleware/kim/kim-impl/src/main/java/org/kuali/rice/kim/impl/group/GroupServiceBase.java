@@ -16,10 +16,9 @@
 package org.kuali.rice.kim.impl.group;
 
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
-import org.kuali.rice.krad.service.BusinessObjectService;
 
 public abstract class GroupServiceBase {
-    protected BusinessObjectService businessObjectService;
+    //protected BusinessObjectService businessObjectService;
     private CriteriaLookupService criteriaLookupService;
 
 }

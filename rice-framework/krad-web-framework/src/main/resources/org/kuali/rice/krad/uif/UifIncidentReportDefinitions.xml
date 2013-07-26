@@ -105,7 +105,7 @@
     <property name="header.headerText" value="Stacktrace (only in dev mode)"/>
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="exceptionStackTrace" p:labelPlacement="TOP"
+        <bean parent="Uif-InputField" p:propertyName="exceptionStackTrace" p:labelPlacement="TOP" p:style="font-family: monospace; white-space: pre;"
               p:fieldLabel.cssClasses="kr-labelTop" p:fieldLabel.renderColon="false" p:label="" p:readOnly="true"
               p:width="auto" p:multiLineReadOnlyDisplay="true">
           <property name="control">

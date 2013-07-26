@@ -18,12 +18,16 @@ package org.kuali.rice.krad.criteria;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.krad.util.LegacyDataFramework;
 
 /**
  * Defines basic methods that CriteriaLookup Dao's must provide
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @deprecated use new KRAD Data framework {@link org.kuali.rice.krad.data.DataObjectService}
  */
+@Deprecated
+@LegacyDataFramework
 public interface CriteriaLookupDao {
 
     /**

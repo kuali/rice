@@ -159,13 +159,6 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
         }
     }
 
-    /**
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
-        return "MaintenanceDocumentEntry for documentType " + getDocumentTypeName();
-    }
-
     @BeanTagAttribute(name = "lockingKeys", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getLockingKeys() {
         return lockingKeys;

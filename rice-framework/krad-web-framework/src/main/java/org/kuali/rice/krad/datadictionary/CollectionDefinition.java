@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.data.metadata.DataObjectCollection;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.validation.capability.CollectionSizeConstrainable;
@@ -37,22 +38,16 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 public class CollectionDefinition extends DataDictionaryDefinitionBase implements CollectionSizeConstrainable {
     private static final long serialVersionUID = -2644072136271281041L;
 
+    protected DataObjectCollection dataObjectCollection;
+
     protected String dataObjectClass;
-
     protected String name;
-
     protected String label;
-
     protected String shortLabel;
-
     protected String elementLabel;
-
     protected String summary;
-
     protected String description;
-
     protected Integer minOccurs;
-
     protected Integer maxOccurs;
 
     /**
@@ -63,10 +58,11 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
     }
 
     /**
-     * gets the name of the collection
+     * gets the name of the collection (collection property on owning data object)
      *
      * @return the collection name
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -90,7 +86,14 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
      * @return the label
      */
     public String getLabel() {
-        return label;
+        if ( label != null ) {
+            return label;
+        }
+        // Otherwise, pull what we can from the metadata model
+        if ( getDataObjectCollection() != null ) {
+            return getDataObjectCollection().getLabel();
+        }
+        return "";
     }
 
     /**
@@ -111,7 +114,18 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
      * @return the shortLabel, or the label if no shortLabel has been set
      */
     public String getShortLabel() {
-        return (shortLabel != null) ? shortLabel : label;
+        if ( shortLabel != null ) {
+            return shortLabel;
+        }
+        if ( getDataObjectCollection() != null ) {
+            // if the short label was not explicitly set on the metadata but the label was on the DD, default to the DD label
+            if ( StringUtils.equals(getDataObjectCollection().getLabel(), getDataObjectCollection().getShortLabel())
+                    && label != null ) {
+                return getLabel();
+            }
+            return getDataObjectCollection().getShortLabel();
+        }
+        return getLabel();
     }
 
     /**
@@ -133,7 +147,14 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
      * @return the element Label
      */
     public String getElementLabel() {
-        return elementLabel;
+        if ( elementLabel != null ) {
+            return elementLabel;
+        }
+        // Otherwise, pull what we can from the metadata model
+        if ( getDataObjectCollection() != null ) {
+            return getDataObjectCollection().getElementLabel();
+        }
+        return dataObjectClass;
     }
 
     /**
@@ -156,7 +177,13 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
      * @return the summary
      */
     public String getSummary() {
-        return summary;
+        if ( summary != null ) {
+            return summary;
+        }
+        if ( getDataObjectCollection() != null ) {
+            return getDataObjectCollection().getSummary();
+        }
+        return "";
     }
 
     /**
@@ -175,7 +202,13 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
      * @return the description
      */
     public String getDescription() {
-        return description;
+        if ( description != null ) {
+            return description;
+        }
+        if ( getDataObjectCollection() != null ) {
+            return getDataObjectCollection().getDescription();
+        }
+        return "";
     }
 
     /**
@@ -195,7 +228,15 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
      * @return the dataObjectClass
      */
     public String getDataObjectClass() {
-        return this.dataObjectClass;
+        // we aren't going to allow this value to change over the life of the
+        // system, so we push it in directly if not set in the DD
+        // (E.g., the implementor may only be overriding the labels)
+        if ( dataObjectClass == null ) {
+            if ( getDataObjectCollection() != null ) {
+                dataObjectClass = getDataObjectCollection().getRelatedType().getName();
+            }
+        }
+        return dataObjectClass;
     }
 
     /**
@@ -212,6 +253,7 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
      *
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation()
      */
+    @Override
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
         if (!DataDictionary.isCollectionPropertyOf(rootBusinessObjectClass, name)) {
             throw new AttributeValidationException("property '"
@@ -240,15 +282,6 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
     }
 
     /**
-     * @return a descriptive string with the collection name
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        return "CollectionDefinition for collection " + getName();
-    }
-
-    /**
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.CollectionSizeConstraint#getMaximumNumberOfElements()
      */
     @Override
@@ -261,7 +294,13 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
      */
     @Override
     public Integer getMinimumNumberOfElements() {
-        return this.minOccurs;
+        if ( minOccurs != null ) {
+            return minOccurs;
+        }
+        if ( getDataObjectCollection() != null ) {
+            return getDataObjectCollection().getMinItems().intValue();
+        }
+        return null;
     }
 
     /**
@@ -288,7 +327,13 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
      * @return the maxOccurs
      */
     public Integer getMaxOccurs() {
-        return this.maxOccurs;
+        if ( maxOccurs != null ) {
+            return maxOccurs;
+        }
+        if ( getDataObjectCollection() != null ) {
+            return getDataObjectCollection().getMaxItems().intValue();
+        }
+        return null;
     }
 
     /**
@@ -298,6 +343,14 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
      */
     public void setMaxOccurs(Integer maxOccurs) {
         this.maxOccurs = maxOccurs;
+    }
+
+    public DataObjectCollection getDataObjectCollection() {
+        return this.dataObjectCollection;
+    }
+
+    public void setDataObjectCollection(DataObjectCollection dataObjectCollection) {
+        this.dataObjectCollection = dataObjectCollection;
     }
 
 }

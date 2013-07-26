@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.service;
 
 import org.junit.Test;
+import org.kuali.rice.krad.data.provider.jpa.testbo.TestDataObject;
 import org.kuali.rice.krad.test.document.bo.Account;
 import org.kuali.rice.krad.test.document.bo.AccountManager;
 import org.kuali.rice.test.BaselineTestCase;
@@ -47,16 +48,19 @@ import static org.junit.Assert.assertTrue;
                 sqlStatements = {
                         @UnitTestSql("delete from trv_acct where acct_fo_id between 101 and 301")
                         ,@UnitTestSql("delete from trv_acct_fo where acct_fo_id between 101 and 301")
+                        ,@UnitTestSql("delete from krtst_test_table_t")
                 },
                 sqlFiles = {
                         @UnitTestFile(filename = "classpath:testAccountManagers.sql", delimiter = ";")
                         , @UnitTestFile(filename = "classpath:testAccounts.sql", delimiter = ";")
+                        , @UnitTestFile(filename = "classpath:testDataObjects.sql", delimiter = ";")
                 }
         ),
         tearDown = @UnitTestData(
                 sqlStatements = {
                         @UnitTestSql("delete from trv_acct where acct_fo_id between 101 and 301")
                         ,@UnitTestSql("delete from trv_acct_fo where acct_fo_id between 101 and 301")
+                        ,@UnitTestSql("delete from krtst_test_table_t")
                 }
        )
 )
@@ -65,21 +69,44 @@ public class LookupServiceTest extends KRADTestCase {
 
     public LookupServiceTest() {}
 
+    // Methods which can be overridden by subclasses to reuse test cases. Here we are just testing the LookupService
+
+    protected <T> Collection<T> findCollectionBySearchHelper(Class<T> clazz, Map<String, String> formProps, boolean unbounded) {
+        return KRADServiceLocatorWeb.getLookupService().findCollectionBySearchHelper(clazz, formProps, unbounded);
+    }
+
+    protected <T> Collection<T> findCollectionBySearch(Class<T> clazz, Map<String, String> formProps) {
+        return KRADServiceLocatorWeb.getLookupService().findCollectionBySearch(clazz, formProps);
+    }
+
+    protected <T> Collection<T> findCollectionBySearchUnbounded(Class<T> clazz, Map<String, String> formProps) {
+        return KRADServiceLocatorWeb.getLookupService().findCollectionBySearchUnbounded(clazz, formProps);
+    }
+
     /**
      * tests lookup return limits
      *
      * @throws Exception
      */
     @Test
-    public void testLookupReturnLimits() throws Exception {
-        LookupService lookupService = KRADServiceLocatorWeb.getLookupService();
+    public void testLookupReturnLimits_AccountManager() throws Exception {
         Map formProps = new HashMap();
-        Collection accountManagers = lookupService.findCollectionBySearchHelper(AccountManager.class, formProps, false);
+        Collection accountManagers = findCollectionBySearchHelper(AccountManager.class, formProps, false);
         assertEquals(90, accountManagers.size());
 
         accountManagers = null;
-        accountManagers = lookupService.findCollectionBySearch(AccountManager.class, formProps);
+        accountManagers = findCollectionBySearch(AccountManager.class, formProps);
         assertEquals(90, accountManagers.size());
+    }
+
+    @Test
+    public void testLookupReturnLimits_TestDataObject() throws Exception {
+        Map formProps = new HashMap();
+        Collection testDataObjects = findCollectionBySearchHelper(TestDataObject.class, formProps, false);
+        assertEquals(200, testDataObjects.size());
+
+        testDataObjects = findCollectionBySearch(TestDataObject.class, formProps);
+        assertEquals(200, testDataObjects.size());
     }
 
     /**
@@ -89,13 +116,12 @@ public class LookupServiceTest extends KRADTestCase {
      */
     @Test
     public void testLookupReturnDefaultLimit() throws Exception {
-        LookupService lookupService = KRADServiceLocatorWeb.getLookupService();
         Map formProps = new HashMap();
-        Collection travelAccounts = lookupService.findCollectionBySearchHelper(Account.class, formProps, false);
+        Collection travelAccounts = findCollectionBySearchHelper(Account.class, formProps, false);
         assertEquals(200, travelAccounts.size());
 
         travelAccounts = null;
-        travelAccounts = lookupService.findCollectionBySearch(Account.class, formProps);
+        travelAccounts = findCollectionBySearch(Account.class, formProps);
         assertEquals(200, travelAccounts.size());
     }
 
@@ -105,18 +131,18 @@ public class LookupServiceTest extends KRADTestCase {
      * @throws Exception
      */
     @Test
-    public void testLookupReturnDefaultUnbounded() throws Exception {
-        LookupService lookupService = KRADServiceLocatorWeb.getLookupService();
+    public void testLookupReturnDefaultUnbounded_AccountManager() throws Exception {
         Map formProps = new HashMap();
-        Collection accountManagers = lookupService.findCollectionBySearchHelper(AccountManager.class, formProps, true);
+        Collection accountManagers = findCollectionBySearchHelper(AccountManager.class, formProps, true);
         int size = accountManagers.size();
         assertTrue("# of Fiscal Officers should be > 200", size > 200);
 
         accountManagers = null;
-        accountManagers = lookupService.findCollectionBySearchUnbounded(AccountManager.class, formProps);
+        accountManagers = findCollectionBySearchUnbounded(AccountManager.class, formProps);
         size = accountManagers.size();
         assertTrue("# of Fiscal Officers should be > 200", size > 200);
     }
+
 
     /**
      * tests an unbounded lookup
@@ -124,17 +150,28 @@ public class LookupServiceTest extends KRADTestCase {
      * @throws Exception
      */
     @Test
-    public void testLookupReturnDefaultUnbounded2() throws Exception {
-        LookupService lookupService = KRADServiceLocatorWeb.getLookupService();
+    public void testLookupReturnDefaultUnbounded_Account() throws Exception {
         Map formProps = new HashMap();
-        Collection travelAccounts = lookupService.findCollectionBySearchHelper(Account.class, formProps, true);
+        Collection travelAccounts = findCollectionBySearchHelper(Account.class, formProps, true);
         int size = travelAccounts.size();
         assertTrue("# of Travel Accounts should be > 200", size > 200);
 
         travelAccounts = null;
-        travelAccounts = lookupService.findCollectionBySearchUnbounded(Account.class, formProps);
+        travelAccounts = findCollectionBySearchUnbounded(Account.class, formProps);
         size = travelAccounts.size();
         assertTrue("# of Travel Accounts should be > 200", size > 200);
+    }
+
+    @Test
+    public void testLookupReturnDefaultUnbounded_TestDataObject() throws Exception {
+        Map formProps = new HashMap();
+        Collection testDataObjects = findCollectionBySearchHelper(TestDataObject.class, formProps, true);
+        int size = testDataObjects.size();
+        assertTrue("# of Test Data objects should be > 200", size > 200);
+
+        testDataObjects = findCollectionBySearchUnbounded(TestDataObject.class, formProps);
+        size = testDataObjects.size();
+        assertTrue("# of Test Data objects should be > 200", size > 200);
     }
 
 }

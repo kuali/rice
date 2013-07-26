@@ -86,8 +86,12 @@ public class ConfigurationBasedRegexPatternConstraint extends ValidDataPatternCo
      *
      * @return String regex validation string
      */
+    @Override
     protected String getRegexString() {
-        return (String) CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(getPatternTypeKey());
+        if ( StringUtils.isBlank(getPatternTypeKey())) {
+            throw new IllegalArgumentException("patternTypeKey is null, configuration of " + this.getClass().getName() + " is incomplete" );
+        }
+        return CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(getPatternTypeKey());
     }
 
 }

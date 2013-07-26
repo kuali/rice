@@ -17,10 +17,6 @@ package org.kuali.rice.kew.doctype.bo;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRemoteServiceConnectionException;
@@ -59,7 +55,8 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.data.DataObjectUtils;
+import org.kuali.rice.krad.util.KRADUtils;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -111,10 +108,6 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
 
     @Id
     @GeneratedValue(generator = "KREW_DOC_HDR_S")
-    @GenericGenerator(name = "KREW_DOC_HDR_S", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
-            @Parameter(name = "sequence_name", value = "KREW_DOC_HDR_S"),
-            @Parameter(name = "value_column", value = "id")
-    })
     @Column(name = "DOC_TYP_ID")
     private String documentTypeId;
     @Column(name = "PARNT_ID")
@@ -186,7 +179,6 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     private Group defaultExceptionWorkgroup;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "documentType")
-    @Fetch(value = FetchMode.SELECT)
     private Collection<DocumentTypePolicy> documentTypePolicies;
 
     /* This property contains the list of valid ApplicationDocumentStatus values, 
@@ -195,7 +187,6 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     * be set to any value by the client.
     */
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "documentType")
-    @Fetch(value = FetchMode.SELECT)
     private List<ApplicationDocumentStatus> validApplicationStatuses;
 
     // TODO: map this for JPA
@@ -205,13 +196,11 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     private List routeLevels;
     @Transient
     private Collection childrenDocTypes;
-    @Fetch(value = FetchMode.SELECT)
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "documentType")
     @OrderBy("orderIndex ASC")
     private List<DocumentTypeAttributeBo> documentTypeAttributes;
 
     /* New Workflow 2.1 Field */
-    @Fetch(value = FetchMode.SELECT)
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "documentType")
     private List<ProcessDefinitionBo> processes = new ArrayList();
     @Column(name = "RTE_VER_NBR")
@@ -246,10 +235,11 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
                 currentPropertyName = propertyName;
                 if (KEWPropertyConstants.PARENT_DOC_TYPE_NAME.equals(propertyName)) {
                     // this is trying to set the parent document type name so lets set the entire parent document
-                    String parentDocumentTypeName = (String) ObjectUtils.getPropertyValue(dataDictionaryEditedType, propertyName);
+                    String parentDocumentTypeName = (String) DataObjectUtils.getPropertyValue(dataDictionaryEditedType,
+                            propertyName);
                     if (StringUtils.isNotBlank(parentDocumentTypeName)) {
                         DocumentType parentDocType = KEWServiceLocator.getDocumentTypeService().findByName(parentDocumentTypeName);
-                        if (ObjectUtils.isNull(parentDocType)) {
+                        if (parentDocType == null) {
                             throw new WorkflowRuntimeException("Could not find valid document type for document type name '" + parentDocumentTypeName + "' to set as Parent Document Type");
                         }
                         setDocTypeParentId(parentDocType.getDocumentTypeId());
@@ -258,7 +248,8 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
 //                else if (!FIELD_PROPERTY_NAME_DOCUMENT_TYPE_ID.equals(propertyName)) {
                 else {
                     LOG.info("*** COPYING PROPERTY NAME FROM OLD BO TO NEW BO: " + propertyName);
-                    ObjectUtils.setObjectProperty(this, propertyName, ObjectUtils.getPropertyValue(dataDictionaryEditedType, propertyName));
+                    KRADUtils.setObjectProperty(this, propertyName, DataObjectUtils.getPropertyValue(
+                            dataDictionaryEditedType, propertyName));
                 }
             }
         } catch (FormatException e) {
@@ -626,8 +617,8 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     }
 
     public List<ApplicationDocumentStatus> getValidApplicationStatuses()  {
-        if((ObjectUtils.isNull(this.validApplicationStatuses) || this.validApplicationStatuses.isEmpty())
-                && ObjectUtils.isNotNull(getParentDocType()) && isAppDocStatusInUse()) {
+        if((this.validApplicationStatuses == null || this.validApplicationStatuses.isEmpty())
+                && getParentDocType() != null && isAppDocStatusInUse()) {
             return getParentDocType().getValidApplicationStatuses();
        }
         return this.validApplicationStatuses;
@@ -645,8 +636,8 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
      * @return the application document status categories for this document type
      */
     public List<ApplicationDocumentStatusCategory> getApplicationStatusCategories() {
-        if((ObjectUtils.isNull(this.validApplicationStatuses) || this.validApplicationStatuses.isEmpty())
-                && ObjectUtils.isNotNull(getParentDocType()) && isAppDocStatusInUse()) {
+        if((this.validApplicationStatuses == null || this.validApplicationStatuses.isEmpty())
+                && KRADUtils.isNotNull(getParentDocType()) && isAppDocStatusInUse()) {
             return getParentDocType().getApplicationStatusCategories();
         }
         return applicationStatusCategories;
@@ -779,7 +770,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         }
         // check for a parent document to see if the doc handler url can be inherited
         DocumentType docType = getParentDocType();
-        if (ObjectUtils.isNotNull(docType)) {
+        if (KRADUtils.isNotNull(docType)) {
             String parentValue = docType.getUnresolvedDocHandlerUrl();
             if (StringUtils.isNotBlank(parentValue)) {
                 // found a parent value set on the immediate parent object so return it
@@ -961,7 +952,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
             // this object has a post processor class so return it
             return getPostProcessorName();
         }
-        if (ObjectUtils.isNotNull(getParentDocType())) {
+        if (KRADUtils.isNotNull(getParentDocType())) {
             // direct parent document type exists
             String parentValue = getParentDocType().getPostProcessorName();
             if (StringUtils.isNotBlank(parentValue)) {
@@ -1140,7 +1131,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
 
     public void setSuperUserWorkgroupNoInheritence(Group suWorkgroup) {
         this.workgroupId = null;
-        if (ObjectUtils.isNotNull(suWorkgroup)) {
+        if (KRADUtils.isNotNull(suWorkgroup)) {
             this.workgroupId = suWorkgroup.getId();
         }
     }
@@ -1176,7 +1167,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
 
     public void setBlanketApproveWorkgroup(Group blanketApproveWorkgroup) {
         this.blanketApproveWorkgroupId = null;
-        if (ObjectUtils.isNotNull(blanketApproveWorkgroup)) {
+        if (KRADUtils.isNotNull(blanketApproveWorkgroup)) {
             this.blanketApproveWorkgroupId = blanketApproveWorkgroup.getId();
         }
     }
@@ -1251,7 +1242,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
 
     public void setReportingWorkgroup(Group reportingWorkgroup) {
         this.reportingWorkgroupId = null;
-        if (ObjectUtils.isNotNull(reportingWorkgroup)) {
+        if (KRADUtils.isNotNull(reportingWorkgroup)) {
             this.reportingWorkgroupId = reportingWorkgroup.getId();
         }
     }
@@ -1323,7 +1314,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
             if (defaultNoteClass == null) {
                 // attempt to use deprecated parameter
                 defaultNoteClass = ConfigContext.getCurrentContextConfig().getDefaultKewNoteClass();
-                if (ObjectUtils.isNull(defaultNoteClass)) {
+                if (defaultNoteClass == null) {
                     return null;
                 }
             }
@@ -1517,7 +1508,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
             // this object has an address so return it
             return getActualNotificationFromAddress();
         }
-        if (ObjectUtils.isNotNull(getParentDocType())) {
+        if (KRADUtils.isNotNull(getParentDocType())) {
             // direct parent document type exists
             String parentNotificationFromAddress = getParentDocType().getActualNotificationFromAddress();
             if (StringUtils.isNotBlank(parentNotificationFromAddress)) {
@@ -1623,7 +1614,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
             return getActualApplicationId();
         }
         // this object has no application id... check for a parent document type
-        if (ObjectUtils.isNotNull(getParentDocType())) {
+        if (KRADUtils.isNotNull(getParentDocType())) {
             // direct parent document type exists
             String parentValue = getParentDocType().getActualApplicationId();
             if (StringUtils.isNotBlank(parentValue)) {

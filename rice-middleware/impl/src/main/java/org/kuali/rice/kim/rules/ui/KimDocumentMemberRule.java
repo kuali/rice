@@ -21,6 +21,7 @@ import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.VersionHelper;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
@@ -33,11 +34,8 @@ import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.kim.rule.event.ui.AddMemberEvent;
 import org.kuali.rice.kim.rule.ui.AddMemberRule;
 import org.kuali.rice.kns.rules.DocumentRuleBase;
-import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.service.impl.KRADModuleService;
-import org.kuali.rice.core.api.util.VersionHelper;
 import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.bus.Endpoint;
 import org.kuali.rice.ksb.api.bus.ServiceBus;
@@ -106,7 +104,7 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 	    }
 
         boolean shouldNotValidate = newMember.isRole();
-	    if ( kimTypeService != null && ObjectUtils.isNotNull( document.getKimType() ) && StringUtils.isNotBlank(document.getKimType().getServiceName()) ) {
+	    if ( kimTypeService != null && KRADUtils.isNotNull(document.getKimType()) && StringUtils.isNotBlank(document.getKimType().getServiceName()) ) {
             VersionedService<RoleTypeService> versionedRoleTypeService = getVersionedRoleTypeService(document.getKimType());
             if (versionedRoleTypeService != null) {
                 boolean versionOk = VersionHelper.compareVersion(versionedRoleTypeService.getVersion(), CoreConstants.Versions.VERSION_2_1_2)!=-1? true:false;

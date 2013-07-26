@@ -24,16 +24,16 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionTaken;
-import org.kuali.rice.kew.api.doctype.RouteNode;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentContent;
 import org.kuali.rice.kew.api.document.DocumentDetail;
 import org.kuali.rice.kew.api.document.DocumentLink;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.WorkflowDocumentService;
+import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
-import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
@@ -46,11 +46,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * 
@@ -78,6 +74,21 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	    DocumentRouteHeaderValue documentBo = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
 	    return documentBo != null;
 	}
+
+    @Override
+    public String getDocumentTypeName(String documentId) {
+        if (StringUtils.isBlank(documentId)) {
+            throw new RiceIllegalArgumentException("documentId was blank or null");
+        }
+        DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByDocumentId(documentId);
+        if (documentType == null) {
+            throw new RiceIllegalArgumentException("Failed to determine document type name for document with id "
+                    + documentId
+                    + ". Perhaps document does not exist?");
+        }
+        return documentType.getName();
+    }
+
 
     @Override
     public DocumentDetail getDocumentDetailByAppId(String documentTypeName, String appId) {

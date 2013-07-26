@@ -56,7 +56,7 @@ import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.util.KRADUtils;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -88,7 +88,7 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
         identityManagementPersonDocument.setActive(principal.isActive());
         Entity kimEntity = this.getIdentityService().getEntity(principal.getEntityId());
 		identityManagementPersonDocument.setEntityId(kimEntity.getId());
-		if ( ObjectUtils.isNotNull( kimEntity.getPrivacyPreferences() ) ) {
+		if ( KRADUtils.isNotNull( kimEntity.getPrivacyPreferences() ) ) {
 			identityManagementPersonDocument.setPrivacy(loadPrivacyReferences(kimEntity.getPrivacyPreferences()));
 		}
 		//identityManagementPersonDocument.setActive(kimEntity.isActive());
@@ -164,7 +164,7 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 		//principal.setPassword(identityManagementPersonDocument.getPassword());
 		principal.setActive(identityManagementPersonDocument.isActive());
 		principal.setEntityId(identityManagementPersonDocument.getEntityId());
-		if(ObjectUtils.isNotNull(origPrincipals)){
+		if(KRADUtils.isNotNull(origPrincipals)){
 			for (PrincipalBo prncpl : origPrincipals) {
 				if (prncpl.getPrincipalId()!=null && StringUtils.equals(prncpl.getPrincipalId(), principal.getPrincipalId())) {
 					principal.setVersionNumber(prncpl.getVersionNumber());
@@ -184,7 +184,7 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 
 	protected List<PersonDocumentAffiliation> loadAffiliations(List <EntityAffiliation> affiliations, List<EntityEmployment> empInfos) {
 		List<PersonDocumentAffiliation> docAffiliations = new ArrayList<PersonDocumentAffiliation>();
-		if(ObjectUtils.isNotNull(affiliations)){
+		if(KRADUtils.isNotNull(affiliations)){
 			for (EntityAffiliation affiliation: affiliations) {
 				if(affiliation.isActive()){
 					PersonDocumentAffiliation docAffiliation = new PersonDocumentAffiliation();
@@ -199,7 +199,7 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 					docAffiliation.setEdit(true);
 					// employment informations
 					List<PersonDocumentEmploymentInfo> docEmploymentInformations = new ArrayList<PersonDocumentEmploymentInfo>();
-					if(ObjectUtils.isNotNull(empInfos)){
+					if(KRADUtils.isNotNull(empInfos)){
 						for (EntityEmployment empInfo: empInfos) {
 							if (empInfo.isActive()
                                     && StringUtils.equals(docAffiliation.getEntityAffiliationId(),
@@ -234,7 +234,7 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
     
     protected List<PersonDocumentName> loadNames( IdentityManagementPersonDocument personDoc, String principalId, List <EntityName> names, boolean suppressDisplay ) {
 		List<PersonDocumentName> docNames = new ArrayList<PersonDocumentName>();
-		if(ObjectUtils.isNotNull(names)){
+		if(KRADUtils.isNotNull(names)){
 			for (EntityName name: names) {
 				if(name.isActive()){
 					PersonDocumentName docName = new PersonDocumentName();
@@ -262,7 +262,7 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 
     protected List<PersonDocumentAddress> loadAddresses(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId, List<EntityAddress> entityAddresses, boolean suppressDisplay ) {
 		List<PersonDocumentAddress> docAddresses = new ArrayList<PersonDocumentAddress>();
-		if(ObjectUtils.isNotNull(entityAddresses)){
+		if(KRADUtils.isNotNull(entityAddresses)){
 			for (EntityAddress address: entityAddresses) {
 				if(address.isActive()){
 					PersonDocumentAddress docAddress = new PersonDocumentAddress();
@@ -291,7 +291,7 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 
     protected List<PersonDocumentEmail> loadEmails(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId, List<EntityEmail> entityEmails, boolean suppressDisplay ) {
 		List<PersonDocumentEmail> emails = new ArrayList<PersonDocumentEmail>();
-		if(ObjectUtils.isNotNull(entityEmails)){
+		if(KRADUtils.isNotNull(entityEmails)){
 			for (EntityEmail email: entityEmails) {
 				if(email.isActive()){
 					PersonDocumentEmail docEmail = new PersonDocumentEmail();
@@ -318,7 +318,7 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 
     protected List<PersonDocumentPhone> loadPhones(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId, List<EntityPhone> entityPhones, boolean suppressDisplay ) {
 		List<PersonDocumentPhone> docPhones = new ArrayList<PersonDocumentPhone>();
-		if(ObjectUtils.isNotNull(entityPhones)){
+		if(KRADUtils.isNotNull(entityPhones)){
 			for (EntityPhone phone: entityPhones) {
 				if(phone.isActive()){
 					PersonDocumentPhone docPhone = new PersonDocumentPhone();
@@ -409,7 +409,7 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
                 newRoleMember = new RoleMemberBo();
                 KimCommonUtilsInternal.copyProperties(newRoleMember, documentRoleMember);
                 newRoleMember.setRoleId(identityManagementRoleDocument.getRoleId());
-                if(ObjectUtils.isNotNull(origRoleMembers)){
+                if(KRADUtils.isNotNull(origRoleMembers)){
                     for(RoleMemberBo origRoleMemberImpl: origRoleMembers){
                         if((origRoleMemberImpl.getRoleId()!=null && StringUtils.equals(origRoleMemberImpl.getRoleId(), newRoleMember.getRoleId())) &&
                             (origRoleMemberImpl.getMemberId()!=null && StringUtils.equals(origRoleMemberImpl.getMemberId(), newRoleMember.getMemberId())) &&

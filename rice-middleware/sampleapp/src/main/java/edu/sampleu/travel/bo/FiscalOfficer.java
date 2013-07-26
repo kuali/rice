@@ -18,7 +18,7 @@ package edu.sampleu.travel.bo;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.kuali.rice.core.framework.persistence.jpa.annotations.Sequence;
+import org.kuali.rice.krad.data.platform.generator.Sequence;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.CascadeType;

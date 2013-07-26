@@ -47,6 +47,7 @@ import org.kuali.rice.core.api.exception.RiceRuntimeException;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Deprecated
 public class TransactionManagerFactory implements org.apache.ojb.broker.transaction.tm.TransactionManagerFactory {
 
 	private static TransactionManager transactionManager;

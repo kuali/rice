@@ -15,6 +15,22 @@
  */
 package org.kuali.rice.kns.web.struts.action;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+
+import javax.persistence.EntityManagerFactory;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.namespace.QName;
+
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -29,9 +45,10 @@ import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.coreservice.framework.parameter.ParameterConstants;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
-import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.action.ActionRequest;
@@ -40,7 +57,6 @@ import org.kuali.rice.kew.api.action.DocumentActionParameters;
 import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
 import org.kuali.rice.kew.api.doctype.DocumentType;
 import org.kuali.rice.kew.api.exception.WorkflowException;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
@@ -104,22 +120,6 @@ import org.kuali.rice.krad.util.SessionTicket;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.springmodules.orm.ojb.OjbOperationException;
-
-import javax.persistence.EntityManagerFactory;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.namespace.QName;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
 
 
 /**
@@ -249,7 +249,7 @@ public class KualiDocumentActionBase extends KualiAction {
                     //DataDictionary dataDictionary = getDataDictionaryService().getDataDictionary();
                     DataDictionary dataDictionary = getDataDictionaryService().getDataDictionary();
 
-                    org.kuali.rice.krad.datadictionary.DocumentEntry entry = (org.kuali.rice.krad.datadictionary.DocumentEntry) dataDictionary.getDocumentEntry(document.getClass().getName());
+                    org.kuali.rice.krad.datadictionary.DocumentEntry entry = dataDictionary.getDocumentEntry(document.getClass().getName());
                     entry.setAllowsNoteAttachments(Boolean.parseBoolean(attachmentEnabled));
                 }
                 //the request attribute will be used in KualiRequestProcess#processActionPerform
@@ -276,7 +276,7 @@ public class KualiDocumentActionBase extends KualiAction {
         }
 
 
-        
+
         return returnForward;
     }
 
@@ -300,7 +300,7 @@ public class KualiDocumentActionBase extends KualiAction {
 
     protected void releaseLocks(Document document, String methodToCall) {
         // first check if the method to call is listed as required lock clearing
-        if (document.getLockClearningMethodNames().contains(methodToCall)) {
+        if (document.getLockClearingMethodNames().contains(methodToCall)) {
             // find all locks for the current user and remove them
             getPessimisticLockService().releaseAllLocksForUser(document.getPessimisticLocks(), GlobalVariables.getUserSession().getPerson());
         }
@@ -950,10 +950,11 @@ public class KualiDocumentActionBase extends KualiAction {
             // else go to cancel logic below
         }
 
-        KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
+        final KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
         doProcessingAfterPost(kualiDocumentFormBase, request);
         // KULRICE-4447 Call cancelDocument() only if the document exists
-        if (getDocumentService().documentExists(kualiDocumentFormBase.getDocId())) {
+        boolean docExists = getDocumentService().documentExists(kualiDocumentFormBase.getDocId());
+        if (docExists) {
             getDocumentService().cancelDocument(kualiDocumentFormBase.getDocument(), kualiDocumentFormBase.getAnnotation());
         }
 
@@ -972,14 +973,14 @@ public class KualiDocumentActionBase extends KualiAction {
      */
     public ActionForward recall(ActionMapping mapping, ActionForm form, HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        
+
         ReasonPrompt prompt = new ReasonPrompt(KRADConstants.DOCUMENT_RECALL_QUESTION, RiceKeyConstants.QUESTION_RECALL_DOCUMENT, KRADConstants.RECALL_QUESTION, RiceKeyConstants.ERROR_DOCUMENT_RECALL_REASON_REQUIRED, KRADConstants.MAPPING_RECALL, null, RiceKeyConstants.MESSAGE_RECALL_NOTE_TEXT_INTRO);
         ReasonPrompt.Response resp = prompt.ask(mapping, form, request, response);
 
         if (resp.forward != null) {
             return resp.forward;
         }
-        
+
         boolean cancel = !((KRADConstants.DOCUMENT_RECALL_QUESTION.equals(resp.question)) && RecallQuestion.RECALL_TO_ACTIONLIST.equals(resp.button));
 
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
@@ -1031,9 +1032,11 @@ public class KualiDocumentActionBase extends KualiAction {
                     // KULRICE-7306: Unconverted Values not carried through during a saveOnClose action.
                     // If there were values that couldn't be converted, we attempt to populate them so that the
                     // the appropriate errors get set on those fields
-                    if (MapUtils.isNotEmpty(unconvertedValues)) for (Map.Entry<String, Object> entry : unconvertedValues.entrySet()) {
-                        docForm.populateForProperty(entry.getKey(), entry.getValue(), unconvertedValues);
-                    }
+                    if (MapUtils.isNotEmpty(unconvertedValues)) {
+						for (Map.Entry<String, Object> entry : unconvertedValues.entrySet()) {
+						    docForm.populateForProperty(entry.getKey(), entry.getValue(), unconvertedValues);
+						}
+					}
 
                     ActionForward forward = checkAndWarnAboutSensitiveData(mapping, form, request, response, KRADPropertyConstants.DOCUMENT_EXPLANATION, document.getDocumentHeader().getExplanation(), "save", "");
                     if (forward != null) {
@@ -1699,7 +1702,7 @@ public class KualiDocumentActionBase extends KualiAction {
     protected void setupDocumentExit() {
     	String methodCalledViaDispatch = (String) GlobalVariables.getUserSession().retrieveObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_OBJECT_KEY);
     	if(StringUtils.isNotEmpty(methodCalledViaDispatch)) {
-    		GlobalVariables.getUserSession().addObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_COMPLETE_OBJECT_KEY, (Object) (methodCalledViaDispatch + DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_COMPLETE_MARKER));
+    		GlobalVariables.getUserSession().addObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_COMPLETE_OBJECT_KEY, methodCalledViaDispatch + DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_COMPLETE_MARKER);
     	}
     }
 
@@ -1860,7 +1863,7 @@ public class KualiDocumentActionBase extends KualiAction {
 
     protected BusinessObjectService getBusinessObjectService() {
         if (businessObjectService == null) {
-            businessObjectService = KRADServiceLocator.getBusinessObjectService();
+            businessObjectService = KNSServiceLocator.getBusinessObjectService();
         }
         return this.businessObjectService;
     }
@@ -1968,7 +1971,7 @@ public class KualiDocumentActionBase extends KualiAction {
         }
 
         /**
-         * @param questionId the question id/instance, 
+         * @param questionId the question id/instance,
          * @param questionTextKey application resources key for question text
          * @param questionType the {@link org.kuali.rice.kns.question.Question} question type
          * @param questionCallerMapping mapping of original action
@@ -2181,10 +2184,10 @@ public class KualiDocumentActionBase extends KualiAction {
         }
         return service;
     }
-    
+
     /**
      * Complete document action
-     * 
+     *
      * @param mapping
      * @param form
      * @param request
@@ -2210,7 +2213,7 @@ public class KualiDocumentActionBase extends KualiAction {
 
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
-    
+
     /**
      * KULRICE-7864: blanket approve should not be allowed when adhoc route for completion request is newly added 
      * 

@@ -15,20 +15,6 @@
  */
 package org.kuali.rice.kew.mail.service.impl;
 
-import java.text.FieldPosition;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.mail.EmailBody;
@@ -61,7 +47,7 @@ import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.quartz.CronTrigger;
 import org.quartz.JobDetail;
@@ -69,6 +55,20 @@ import org.quartz.ObjectAlreadyExistsException;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
+
+import java.text.FieldPosition;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * ActionListeEmailService which generates messages whose body and subject can be customized via KEW
@@ -272,7 +272,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
         // If the user has document type notification preferences check them to
         // see if the action item should be included in the email.
         if(preferences.getDocumentTypeNotificationPreferences().size() > 0) {   
-            while(ObjectUtils.isNotNull(documentType)) {
+            while(KRADUtils.isNotNull(documentType)) {
                 // Check to see if there is a notification preference for the
                 // given document type in the user's preferences
                 String documentTypePreference = preferences.getDocumentTypeNotificationPreference(documentType.getName());

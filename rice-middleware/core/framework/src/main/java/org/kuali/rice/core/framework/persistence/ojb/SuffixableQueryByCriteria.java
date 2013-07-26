@@ -27,6 +27,7 @@ import org.apache.ojb.broker.query.QueryByCriteria;
  * removed.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Deprecated
 public class SuffixableQueryByCriteria extends QueryByCriteria {
     protected String suffix;
 

@@ -65,19 +65,6 @@
       <artifactId>aopalliance</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-entitymanager</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate.javax.persistence</groupId>
-      <artifactId>hibernate-jpa-2.0-api</artifactId>
-      <version>${persistence.version}</version>
-    </dependency>
-    <dependency>
       <groupId>xapool</groupId>
       <artifactId>xapool</artifactId>
     </dependency>

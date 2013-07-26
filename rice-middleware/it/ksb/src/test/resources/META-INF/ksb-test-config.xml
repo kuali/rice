@@ -25,8 +25,6 @@
     
 	<param name="config.location">classpath:META-INF/common-config-test-locations.xml</param>
 	
-	<param name="client1.location">${basedir}/src/test/clients/TestClient1/</param>	
-	<param name="client2.location">${basedir}/src/test/clients/TestClient2/</param>
 	<param name="ksb.client1.port" override="false">9913</param>
 	<param name="ksb.client2.port" override="false">9914</param>
 	<param name="ksb.testharness.port" override="false">9915</param>
@@ -36,18 +34,11 @@
 	<param name="bus.refresh.rate">3000</param>
 	<param name="bam.enabled">true</param>
 	<param name="transaction.timeout">3600</param>
-	
-	
-	<!-- 
-	<param name="keystore.alias">rice.keystore</param>
-	<param name="keystore.password">s1t0spss!xX-tst</param>
-	<param name="keystore.file">${basedir}/src/test/resources/keystore/rice.keystore</param>
-	-->
+
 	<param name="keystore.alias">rice</param>
 	<param name="keystore.password">r1c3pw</param>
-	<param name="keystore.file">${basedir}/src/test/resources/keystore/ricekeystore</param>
-	<param name="keystore.location">${basedir}/src/test/resources/keystore/ricekeystore</param>
-	
+	<param name="keystore.file">classpath:keystore/ricekeystore</param>
+
 	<param name="use.clearDatabaseLifecycle">true</param>
 	<param name="use.sqlDataLoaderLifecycle">true</param>
 

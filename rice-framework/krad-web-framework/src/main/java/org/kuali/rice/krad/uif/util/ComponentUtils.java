@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.util;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
@@ -28,7 +29,6 @@ import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
-import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.OrderComparator;
 

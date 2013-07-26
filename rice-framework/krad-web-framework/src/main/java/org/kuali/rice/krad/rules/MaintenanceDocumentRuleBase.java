@@ -27,34 +27,31 @@ import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kim.api.identity.PersonService;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.GlobalBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata;
 import org.kuali.rice.krad.datadictionary.validation.ErrorLevel;
 import org.kuali.rice.krad.datadictionary.validation.result.ConstraintValidationResult;
 import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.maintenance.Maintainable;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.maintenance.MaintenanceDocumentAuthorizer;
 import org.kuali.rice.krad.rules.rule.event.ApproveDocumentEvent;
-import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DataObjectAuthorizationService;
-import org.kuali.rice.krad.service.DataObjectMetaDataService;
 import org.kuali.rice.krad.service.DictionaryValidationService;
 import org.kuali.rice.krad.service.InactivationBlockingDetectionService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.service.PersistenceStructureService;
+import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.ForeignKeyFieldsPopulationState;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
-import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.util.RouteToCompletionUtil;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
@@ -82,28 +79,26 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
     public static final String DOCUMENT_ERROR_PREFIX = "document.";
     public static final String MAINTAINABLE_ERROR_PATH = DOCUMENT_ERROR_PREFIX + "newMaintainableObject";
 
-    private PersistenceStructureService persistenceStructureService;
     private DataDictionaryService ddService;
-    private BusinessObjectService boService;
+    private DataObjectService dataObjectService;
     private DictionaryValidationService dictionaryValidationService;
     private ConfigurationService configService;
     private WorkflowDocumentService workflowDocumentService;
     private PersonService personService;
     private RoleService roleService;
-    private DataObjectMetaDataService dataObjectMetaDataService;
     private DataObjectAuthorizationService dataObjectAuthorizationService;
 
     private Object oldDataObject;
     private Object newDataObject;
-    private Class dataObjectClass;
+    private Class<?> dataObjectClass;
 
-    protected List priorErrorPath;
+    protected List<String> priorErrorPath;
 
     /**
      * Default constructor a MaintenanceDocumentRuleBase.java.
      */
     public MaintenanceDocumentRuleBase() {
-        priorErrorPath = new ArrayList();
+        priorErrorPath = new ArrayList<String>();
     }
 
     /**
@@ -223,7 +218,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      */
     protected boolean isDocumentInactivatingBusinessObject(MaintenanceDocument maintenanceDocument) {
         if (maintenanceDocument.isEdit()) {
-            Class dataObjectClass = maintenanceDocument.getNewMaintainableObject().getDataObjectClass();
+            Class<?> dataObjectClass = maintenanceDocument.getNewMaintainableObject().getDataObjectClass();
             // we can only be inactivating a business object if we're editing it
             if (dataObjectClass != null && MutableInactivatable.class.isAssignableFrom(dataObjectClass)) {
                 MutableInactivatable oldInactivateableBO = (MutableInactivatable) oldDataObject;
@@ -243,7 +238,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      */
     protected boolean processInactivationBlockChecking(MaintenanceDocument maintenanceDocument) {
         if (isDocumentInactivatingBusinessObject(maintenanceDocument)) {
-            Class dataObjectClass = maintenanceDocument.getNewMaintainableObject().getDataObjectClass();
+            Class<?> dataObjectClass = maintenanceDocument.getNewMaintainableObject().getDataObjectClass();
             Set<InactivationBlockingMetadata> inactivationBlockingMetadatas =
                     getDataDictionaryService().getAllInactivationBlockingDefinitions(dataObjectClass);
 
@@ -272,28 +267,24 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      */
     protected boolean processInactivationBlockChecking(MaintenanceDocument maintenanceDocument,
             InactivationBlockingMetadata inactivationBlockingMetadata) {
-        if (newDataObject instanceof PersistableBusinessObject) {
-            String inactivationBlockingDetectionServiceBeanName =
-                    inactivationBlockingMetadata.getInactivationBlockingDetectionServiceBeanName();
-            if (StringUtils.isBlank(inactivationBlockingDetectionServiceBeanName)) {
-                inactivationBlockingDetectionServiceBeanName =
-                        KRADServiceLocatorWeb.DEFAULT_INACTIVATION_BLOCKING_DETECTION_SERVICE;
-            }
-            InactivationBlockingDetectionService inactivationBlockingDetectionService =
-                    KRADServiceLocatorWeb.getInactivationBlockingDetectionService(
-                            inactivationBlockingDetectionServiceBeanName);
+        String inactivationBlockingDetectionServiceBeanName =
+                inactivationBlockingMetadata.getInactivationBlockingDetectionServiceBeanName();
+        if (StringUtils.isBlank(inactivationBlockingDetectionServiceBeanName)) {
+            inactivationBlockingDetectionServiceBeanName =
+                    KRADServiceLocatorWeb.DEFAULT_INACTIVATION_BLOCKING_DETECTION_SERVICE;
+        }
+        InactivationBlockingDetectionService inactivationBlockingDetectionService =
+                KRADServiceLocatorWeb.getInactivationBlockingDetectionService(
+                        inactivationBlockingDetectionServiceBeanName);
 
-            boolean foundBlockingRecord = inactivationBlockingDetectionService.hasABlockingRecord(
-                    (PersistableBusinessObject) newDataObject, inactivationBlockingMetadata);
+        boolean foundBlockingRecord = inactivationBlockingDetectionService.detectBlockingRecord(
+                newDataObject, inactivationBlockingMetadata);
 
-            if (foundBlockingRecord) {
-                putInactivationBlockingErrorOnPage(maintenanceDocument, inactivationBlockingMetadata);
-            }
-
-            return !foundBlockingRecord;
+        if (foundBlockingRecord) {
+            putInactivationBlockingErrorOnPage(maintenanceDocument, inactivationBlockingMetadata);
         }
 
-        return true;
+        return !foundBlockingRecord;
     }
 
     /**
@@ -305,28 +296,23 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      */
     protected void putInactivationBlockingErrorOnPage(MaintenanceDocument document,
             InactivationBlockingMetadata inactivationBlockingMetadata) {
-        if (!getPersistenceStructureService().hasPrimaryKeyFieldValues(newDataObject)) {
+        if (!getLegacyDataAdapter().hasPrimaryKeyFieldValues(newDataObject)) {
             throw new RuntimeException("Maintenance document did not have all primary key values filled in.");
         }
         Properties parameters = new Properties();
         parameters.put(KRADConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE,
-                inactivationBlockingMetadata.getBlockedBusinessObjectClass().getName());
+                inactivationBlockingMetadata.getBlockedDataObjectClass().getName());
         parameters.put(KRADConstants.DISPATCH_REQUEST_PARAMETER,
                 KRADConstants.METHOD_DISPLAY_ALL_INACTIVATION_BLOCKERS);
 
-        List keys = new ArrayList();
-        if (getPersistenceStructureService().isPersistable(newDataObject.getClass())) {
-            keys = getPersistenceStructureService().listPrimaryKeyFieldNames(newDataObject.getClass());
-        }
+        List<String> keys = getLegacyDataAdapter().listPrimaryKeyFieldNames(newDataObject.getClass());
 
         // build key value url parameters used to retrieve the business object
-        String keyName = null;
-        for (Iterator iter = keys.iterator(); iter.hasNext(); ) {
-            keyName = (String) iter.next();
+        for (String keyName : keys) {
 
             Object keyValue = null;
             if (keyName != null) {
-                keyValue = ObjectUtils.getPropertyValue(newDataObject, keyName);
+                keyValue = getDataObjectService().wrap(newDataObject).getPropertyValueNullSafe(keyName);
             }
 
             if (keyValue == null) {
@@ -342,7 +328,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 
             // Encrypt value if it is a secure field
             if (getDataObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(
-                    inactivationBlockingMetadata.getBlockedBusinessObjectClass(), keyName)) {
+                    inactivationBlockingMetadata.getBlockedDataObjectClass(), keyName)) {
                 try {
                     if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
                         keyValue = CoreApiServiceLocator.getEncryptionService().encrypt(keyValue);
@@ -645,8 +631,6 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      * @return true if it passes DD validation, false otherwise
      */
     protected boolean dataDictionaryValidate(MaintenanceDocument document) {
-        // default to success if no failures
-        boolean success = true;
         LOG.debug("MaintenanceDocument validation beginning");
 
         // explicitly put the errorPath that the dictionaryValidationService
@@ -674,8 +658,6 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         DictionaryValidationResult dictionaryValidationResult = getDictionaryValidationService().validate(
                 newDataObject);
         if (dictionaryValidationResult.getNumberOfErrors() > 0) {
-            success &= false;
-
             for (ConstraintValidationResult cvr : dictionaryValidationResult) {
                 if (cvr.getStatus() == ErrorLevel.ERROR) {
                     GlobalVariables.getMessageMap().putError(cvr.getAttributePath(), cvr.getErrorKey());
@@ -731,7 +713,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         // fail and complain if the person has changed the primary keys on
         // an EDIT maintenance document.
         if (document.isEdit()) {
-            if (!getDataObjectMetaDataService().equalsByPrimaryKeys(oldBo, newDataObject)) {
+            if (!getLegacyDataAdapter().equalsByPrimaryKeys(oldBo, newDataObject)) {
                 // add a complaint to the errors
                 putDocumentError(KRADConstants.DOCUMENT_ERRORS,
                         RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_PRIMARY_KEYS_CHANGED_ON_EDIT,
@@ -748,7 +730,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
             if (newDataObject instanceof PersistableBusinessObject) {
 
                 // get a map of the pk field names and values
-                Map<String, ?> newPkFields = getDataObjectMetaDataService().getPrimaryKeyFieldValues(newDataObject);
+                Map<String, ?> newPkFields = getLegacyDataAdapter().getPrimaryKeyFieldValuesDOMDS(newDataObject);
 
                 // TODO: Good suggestion from Aaron, dont bother checking the DB, if all of the
                 // objects PK fields dont have values. If any are null or empty, then
@@ -756,8 +738,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
                 // DB call that may not be necessary, and we want to minimize these.
 
                 // attempt to do a lookup, see if this object already exists by these Primary Keys
-                PersistableBusinessObject testBo = getBoService().findByPrimaryKey(dataObjectClass.asSubclass(
-                        PersistableBusinessObject.class), newPkFields);
+                Object testBo = getLegacyDataAdapter().findByPrimaryKey(dataObjectClass, newPkFields);
 
                 // if the retrieve was successful, then this object already exists, and we need
                 // to complain
@@ -782,10 +763,10 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      */
     protected String getHumanReadablePrimaryKeyFieldNames(Class<?> dataObjectClass) {
         String delim = "";
-        StringBuffer pkFieldNames = new StringBuffer();
+        StringBuilder pkFieldNames = new StringBuilder();
 
         // get a list of all the primary key field names, walk through them
-        List<String> pkFields = getDataObjectMetaDataService().listPrimaryKeyFieldNames(dataObjectClass);
+        List<String> pkFields = getLegacyDataAdapter().listPrimaryKeyFieldNames(dataObjectClass);
         for (Iterator<String> iter = pkFields.iterator(); iter.hasNext(); ) {
             String pkFieldName = (String) iter.next();
 
@@ -1008,7 +989,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
             return success;
         }
 
-        PersistableBusinessObject bo = (PersistableBusinessObject) document.getNewMaintainableObject().getDataObject();
+        Object bo = document.getNewMaintainableObject().getDataObject();
         GlobalBusinessObject gbo = (GlobalBusinessObject) bo;
         return gbo.isPersistable();
     }
@@ -1139,6 +1120,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
     /**
      * @see MaintenanceDocumentRule#setupBaseConvenienceObjects(org.kuali.rice.krad.maintenance.MaintenanceDocument)
      */
+    @Override
     public void setupBaseConvenienceObjects(MaintenanceDocument document) {
         // setup oldAccount convenience objects, make sure all possible sub-objects are populated
         oldDataObject = document.getOldMaintainableObject().getDataObject();
@@ -1158,6 +1140,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         setupConvenienceObjects();
     }
 
+    @Override
     public void setupConvenienceObjects() {
         // should always be overriden by subclass
     }
@@ -1175,34 +1158,30 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
     protected boolean checkForPartiallyFilledOutReferenceForeignKeys(String referenceName) {
         boolean success = true;
 
-        if (newDataObject instanceof PersistableBusinessObject) {
-            ForeignKeyFieldsPopulationState fkFieldsState;
-            fkFieldsState = getPersistenceStructureService().getForeignKeyFieldsPopulationState(
-                    (PersistableBusinessObject) newDataObject, referenceName);
+        ForeignKeyFieldsPopulationState fkFieldsState = getLegacyDataAdapter().getForeignKeyFieldsPopulationState( newDataObject, referenceName);
 
-            // determine result
-            if (fkFieldsState.isAnyFieldsPopulated() && !fkFieldsState.isAllFieldsPopulated()) {
-                success = false;
+        // determine result
+        if (fkFieldsState.isAnyFieldsPopulated() && !fkFieldsState.isAllFieldsPopulated()) {
+            success = false;
 
-                // add errors if appropriate
+            // add errors if appropriate
 
-                // get the full set of foreign-keys
-                List fKeys = new ArrayList(getPersistenceStructureService().getForeignKeysForReference(
-                        newDataObject.getClass().asSubclass(PersistableBusinessObject.class), referenceName).keySet());
-                String fKeysReadable = consolidateFieldNames(fKeys, ", ").toString();
+            // get the full set of foreign-keys
+            List fKeys = new ArrayList(getLegacyDataAdapter().getForeignKeysForReference(
+                    newDataObject.getClass(), referenceName).keySet());
+            String fKeysReadable = consolidateFieldNames(fKeys, ", ").toString();
 
-                // walk through the missing fields
-                for (Iterator iter = fkFieldsState.getUnpopulatedFieldNames().iterator(); iter.hasNext(); ) {
-                    String fieldName = (String) iter.next();
+            // walk through the missing fields
+            for (Iterator iter = fkFieldsState.getUnpopulatedFieldNames().iterator(); iter.hasNext(); ) {
+                String fieldName = (String) iter.next();
 
-                    // get the human-readable name
-                    String fieldNameReadable = getDataDictionaryService().getAttributeLabel(newDataObject.getClass(),
-                            fieldName);
+                // get the human-readable name
+                String fieldNameReadable = getDataDictionaryService().getAttributeLabel(newDataObject.getClass(),
+                        fieldName);
 
-                    // add a field error
-                    putFieldError(fieldName, RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_PARTIALLY_FILLED_OUT_REF_FKEYS,
-                            new String[]{fieldNameReadable, fKeysReadable});
-                }
+                // add a field error
+                putFieldError(fieldName, RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_PARTIALLY_FILLED_OUT_REF_FKEYS,
+                        new String[]{fieldNameReadable, fKeysReadable});
             }
         }
 
@@ -1215,15 +1194,15 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      * @param fieldNames - List of fieldNames
      * @return A filled StringBuffer ready to go in an error message
      */
-    protected StringBuffer consolidateFieldNames(List fieldNames, String delimiter) {
-        StringBuffer sb = new StringBuffer();
+    protected StringBuilder consolidateFieldNames(List<String> fieldNames, String delimiter) {
+        StringBuilder sb = new StringBuilder();
 
         // setup some vars
         boolean firstPass = true;
         String delim = "";
 
         // walk through the list
-        for (Iterator iter = fieldNames.iterator(); iter.hasNext(); ) {
+        for (Iterator<String> iter = fieldNames.iterator(); iter.hasNext(); ) {
             String fieldName = (String) iter.next();
 
             // get the human-readable name
@@ -1262,7 +1241,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      * @param fieldName The fieldName you want a human-readable label for.
      * @return A human-readable label, pulled from the DataDictionary.
      */
-    protected String getFieldLabel(Class dataObjectClass, String fieldName) {
+    protected String getFieldLabel(Class<?> dataObjectClass, String fieldName) {
         return getDataDictionaryService().getAttributeLabel(dataObjectClass, fieldName) + "(" +
                 getDataDictionaryService().getAttributeShortLabel(dataObjectClass, fieldName) + ")";
     }
@@ -1294,17 +1273,6 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         return true;
     }
 
-    protected final BusinessObjectService getBoService() {
-        if (boService == null) {
-            this.boService = KRADServiceLocator.getBusinessObjectService();
-        }
-        return boService;
-    }
-
-    public final void setBoService(BusinessObjectService boService) {
-        this.boService = boService;
-    }
-
     protected final ConfigurationService getConfigService() {
         if (configService == null) {
             this.configService = CoreApiServiceLocator.getKualiConfigurationService();
@@ -1327,6 +1295,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         this.ddService = ddService;
     }
 
+    @Override
     protected final DictionaryValidationService getDictionaryValidationService() {
         if (dictionaryValidationService == null) {
             this.dictionaryValidationService = KRADServiceLocatorWeb.getDictionaryValidationService();
@@ -1338,6 +1307,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         this.dictionaryValidationService = dictionaryValidationService;
     }
 
+    @Override
     public PersonService getPersonService() {
         if (personService == null) {
             this.personService = KimApiServiceLocator.getPersonService();
@@ -1360,28 +1330,6 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         return this.roleService;
     }
 
-    protected DataObjectMetaDataService getDataObjectMetaDataService() {
-        if (dataObjectMetaDataService == null) {
-            this.dataObjectMetaDataService = KRADServiceLocatorWeb.getDataObjectMetaDataService();
-        }
-        return dataObjectMetaDataService;
-    }
-
-    public void setDataObjectMetaDataService(DataObjectMetaDataService dataObjectMetaDataService) {
-        this.dataObjectMetaDataService = dataObjectMetaDataService;
-    }
-
-    protected final PersistenceStructureService getPersistenceStructureService() {
-        if (persistenceStructureService == null) {
-            this.persistenceStructureService = KRADServiceLocator.getPersistenceStructureService();
-        }
-        return persistenceStructureService;
-    }
-
-    public final void setPersistenceStructureService(PersistenceStructureService persistenceStructureService) {
-        this.persistenceStructureService = persistenceStructureService;
-    }
-
     public WorkflowDocumentService getWorkflowDocumentService() {
         if (workflowDocumentService == null) {
             this.workflowDocumentService = KRADServiceLocatorWeb.getWorkflowDocumentService();
@@ -1402,6 +1350,17 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 
     public void setDataObjectAuthorizationService(DataObjectAuthorizationService dataObjectAuthorizationService) {
         this.dataObjectAuthorizationService = dataObjectAuthorizationService;
+    }
+
+    private LegacyDataAdapter getLegacyDataAdapter() {
+        return KRADServiceLocatorWeb.getLegacyDataAdapter();
+    }
+
+    public DataObjectService getDataObjectService() {
+        if ( dataObjectService == null ) {
+            dataObjectService = KradDataServiceLocator.getDataObjectService();
+        }
+        return dataObjectService;
     }
 
 }

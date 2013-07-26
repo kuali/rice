@@ -33,6 +33,7 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.ObjectUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -199,10 +200,10 @@ public class MultiColumnComparator implements Comparator<Integer> {
                 // try getting the class from the modelCollection element
                 try {
                     dataClass = ObjectUtils.easyGetPropertyType(modelCollection.get(i), propertyPath);
-                } catch (ReflectiveOperationException e) {
-                    // unable to determine the class, but let's not explode here
-                } catch (IllegalArgumentException e) {
-                    // the nested property value was probably null
+                } catch (IllegalArgumentException e) {   // unable to determine the class, but let's not explode here
+                } catch (InvocationTargetException e) {  //
+                } catch (NoSuchMethodException e) {      //
+                } catch (IllegalAccessException e) {     //
                 }
             }
 

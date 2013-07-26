@@ -239,16 +239,21 @@ public class UifConstants {
         public static final String DOM_SELECT = "dom-select";
         public static final String DOM_CHECK = "dom-checkbox";
         public static final String DOM_RADIO = "dom-radio";
+
+        // sort types:
+
         public static final String NUMERIC = "numeric";
         public static final String STRING = "string";
         public static final String DATE = "kuali_date";
         public static final String PERCENT = "kuali_percent";
         public static final String CURRENCY = "kuali_currency";
         public static final String TIMESTAMP = "kuali_timestamp";
+
         public static final String FALSE = "false";
         public static final String TRUE = "true";
 
         public static final int ADD_ROW_DEFAULT_INDEX = 0;
+        public static final String JSON_TEMPLATE = "dataTablesJson.ftl";
     }
 
     public static class TableLayoutValues {

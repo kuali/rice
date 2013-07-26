@@ -796,7 +796,8 @@ function createTable(tableId, additionalOptions, groupingOptions) {
 
         // allow table column size recalculation on window resize
         jQuery(window).bind('resize', function () {
-            oTable.fnAdjustColumnSizing();
+            // passing false to avoid copious ajax requests during window resize
+            oTable.fnAdjustColumnSizing(false);
         });
 
         if (groupingOptions) {

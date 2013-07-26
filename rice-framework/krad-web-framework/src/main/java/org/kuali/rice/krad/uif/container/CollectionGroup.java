@@ -148,6 +148,11 @@ public class CollectionGroup extends Group implements DataBinding {
     private boolean addViaLightBox;
     private Action addViaLightBoxAction;
 
+    private boolean usePaging = false;      // indicates the use of server side paging
+    private Integer displayStart;           // the index of the first element for the page to display
+    private Integer displayLength;          // the number of items to display on the page
+    private Integer filteredCollectionSize; // the total number of visible elements in the collection
+
     private List<String> totalColumns;
 
     public CollectionGroup() {
@@ -1133,6 +1138,80 @@ public class CollectionGroup extends Group implements DataBinding {
      */
     public void setAddViaLightBoxAction(Action addViaLightBoxAction) {
         this.addViaLightBoxAction = addViaLightBoxAction;
+    }
+
+    /**
+     * Gets usePaging, the flat that indicates whether server side paging is enabled.  Defaults to false.
+     *
+     * @return true if server side paging is enabled.
+     */
+    public boolean isUsePaging() {
+        return usePaging;
+    }
+
+    /**
+     * Sets usePaging, the flag indicating whether server side paging is enabled.
+     *
+     * @param usePaging the usePaging value to set
+     */
+    public void setUsePaging(boolean usePaging) {
+        this.usePaging = usePaging;
+    }
+
+    /**
+     * Gets the displayStart, the index of the first item to display on the page (assuming usePaging is enabled).
+     *
+     * @return the index of the first item to display
+     */
+    public Integer getDisplayStart() {
+        return displayStart;
+    }
+
+    /**
+     * Sets the displayStart, the index of the first item to display on the page (assuming usePaging is enabled).
+     *
+     * @param displayStart the displayStart to set
+     */
+    public void setDisplayStart(Integer displayStart) {
+        this.displayStart = displayStart;
+    }
+
+    /**
+     * Gets the displayLength, the number of items to display on the page (assuming usePaging is enabled).
+     *
+     * @return the number of items to display on the page
+     */
+    public Integer getDisplayLength() {
+        return displayLength;
+    }
+
+    /**
+     * Sets the displayLength, the number of items to display on the page (assuming usePaging is enabled).
+     *
+     * @param displayLength the displayLength to set
+     */
+    public void setDisplayLength(Integer displayLength) {
+        this.displayLength = displayLength;
+    }
+
+    /**
+     * Gets the number of un-filtered elements from the model collection.
+     *
+     * @return the filtered collection size
+     */
+    public Integer getFilteredCollectionSize() {
+        return filteredCollectionSize;
+    }
+
+    /**
+     * Sets the number of un-filtered elements from the model collection.
+     *
+     * <p>This value is used for display and rendering purposes, it has no effect on the model collection</p>
+     *
+     * @param filteredCollectionSize the filtered collection size
+     */
+    public void setFilteredCollectionSize(Integer filteredCollectionSize) {
+        this.filteredCollectionSize = filteredCollectionSize;
     }
 
     /**

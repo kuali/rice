@@ -2224,7 +2224,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             List<Component> footerCalculationComponentsCopy = Lists.newArrayListWithExpectedSize(
                     footerCalculationComponents.size());
             for (Component footerCalculationComponent : footerCalculationComponents) {
-                footerCalculationComponentsCopy.add((Component) footerCalculationComponent.copy());
+                if (footerCalculationComponent != null) {
+                    footerCalculationComponentsCopy.add((Component) footerCalculationComponent.copy());
+                }
             }
             tableLayoutManagerCopy.setFooterCalculationComponents(footerCalculationComponentsCopy);
         }

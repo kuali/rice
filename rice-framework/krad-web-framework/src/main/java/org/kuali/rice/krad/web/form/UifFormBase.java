@@ -126,7 +126,7 @@ public class UifFormBase implements ViewModel {
     protected boolean ajaxRequest;
     @SessionTransient
     protected String ajaxReturnType;
-
+    @SessionTransient
     private String requestJsonTemplate;
 
     // dialog fields

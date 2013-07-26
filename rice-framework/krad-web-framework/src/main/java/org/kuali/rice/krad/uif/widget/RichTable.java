@@ -166,6 +166,10 @@ public class RichTable extends WidgetBase {
         if (StringUtils.isNotBlank(ajaxSource)) {
             getTemplateOptions().put(UifConstants.TableToolsKeys.SAJAX_SOURCE, ajaxSource);
         } else if (component instanceof CollectionGroup && this.forceAjaxJsonData) {
+            // enable required dataTables options for server side paging
+            getTemplateOptions().put("bProcessing", "true");
+            getTemplateOptions().put("bServerSide", "true");
+
             //build sAjaxSource url to call
             getTemplateOptions().put(UifConstants.TableToolsKeys.SAJAX_SOURCE, kradUrl
                     + ((UifFormBase) model).getControllerMapping()
@@ -313,6 +317,10 @@ public class RichTable extends WidgetBase {
                 }
 
                 tableToolsColumnOptions.append("{\""
+                        + UifConstants.TableToolsKeys.SORTABLE
+                        + "\" : "
+                        + isSequenceColumnSortable((TableLayoutManager)layoutManager)
+                        + ", \""
                         + UifConstants.TableToolsKeys.SORT_TYPE
                         + "\" : \""
                         + UifConstants.TableToolsValues.NUMERIC
@@ -492,6 +500,25 @@ public class RichTable extends WidgetBase {
                         tableToolsColumnOptions.toString());
             }
         }
+    }
+
+    /**
+     * Is the sequence column sortable?
+     *
+     * <p>The answer depends on if it is an auto sequence, and if we are doing server side paging.  The server side
+     * sort is incompatible with the auto sequence column.</p>
+     *
+     * @param tableLayoutManager the table layout manager
+     * @return true if the sequence column is sortable, false otherwise
+     */
+    private boolean isSequenceColumnSortable(TableLayoutManager tableLayoutManager) {
+        boolean result = true;
+
+        if (this.forceAjaxJsonData && tableLayoutManager.isGenerateAutoSequence()) {
+            result = false;
+        }
+
+        return result;
     }
 
     /**

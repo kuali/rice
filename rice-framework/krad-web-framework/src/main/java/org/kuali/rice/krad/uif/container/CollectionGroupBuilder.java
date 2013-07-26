@@ -169,9 +169,7 @@ public class CollectionGroupBuilder implements Serializable {
     private void buildLinesForDisplayedRows(List<IndexedElement> filteredIndexedElements, View view, Object model,
             CollectionGroup collectionGroup) {
 
-        TableLayoutManager tableLayoutManager = (TableLayoutManager)collectionGroup.getLayoutManager();
-        boolean isForceAjaxJsonData =
-                tableLayoutManager.getRichTable() != null && tableLayoutManager.getRichTable().isForceAjaxJsonData();
+        boolean isForceAjaxJsonData = isForceAjaxData(collectionGroup);
 
         // if we are doing server side paging, don't build the lines unless DataTables set the displayLength
         if (isForceAjaxJsonData && collectionGroup.getDisplayLength() == null) {
@@ -209,6 +207,23 @@ public class CollectionGroupBuilder implements Serializable {
 
             buildLine(view, model, collectionGroup, bindingPathPrefix, lineActions, false, currentLine, indexedElement.index);
         }
+    }
+
+    /**
+     * Is server side paging enabled?
+     *
+     * @param collectionGroup the collection group
+     * @return true if server side paging is enabled
+     */
+    private boolean isForceAjaxData(CollectionGroup collectionGroup) {
+        boolean isForceAjaxJsonData = false;
+
+        if (collectionGroup.getLayoutManager() instanceof TableLayoutManager) {
+            TableLayoutManager tableLayoutManager = (TableLayoutManager)collectionGroup.getLayoutManager();
+            isForceAjaxJsonData = tableLayoutManager.getRichTable() != null && tableLayoutManager.getRichTable().isForceAjaxJsonData();
+        }
+
+        return isForceAjaxJsonData;
     }
 
     /**

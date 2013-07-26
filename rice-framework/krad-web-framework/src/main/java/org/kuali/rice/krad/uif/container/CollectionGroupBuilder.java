@@ -35,6 +35,7 @@ import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.RemoteFieldsHolder;
 import org.kuali.rice.krad.uif.layout.CollectionLayoutManager;
+import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -168,10 +169,19 @@ public class CollectionGroupBuilder implements Serializable {
     private void buildLinesForDisplayedRows(List<IndexedElement> filteredIndexedElements, View view, Object model,
             CollectionGroup collectionGroup) {
 
+        TableLayoutManager tableLayoutManager = (TableLayoutManager)collectionGroup.getLayoutManager();
+        boolean isForceAjaxJsonData =
+                tableLayoutManager.getRichTable() != null && tableLayoutManager.getRichTable().isForceAjaxJsonData();
+
+        // if we are doing server side paging, don't build the lines unless DataTables set the displayLength
+        if (isForceAjaxJsonData && collectionGroup.getDisplayLength() == null) {
+            collectionGroup.setDisplayLength(0);
+        }
+
         final int displayStart = (collectionGroup.getDisplayStart() != null) ? collectionGroup.getDisplayStart() : 0;
 
         final int displayLength =
-                (collectionGroup.getDisplayLength() != null && collectionGroup.getDisplayLength() != 0) ?
+                (collectionGroup.getDisplayLength() != null) ?
                         collectionGroup.getDisplayLength() : filteredIndexedElements.size() - displayStart;
 
         // make sure we don't exceed the size of our collection

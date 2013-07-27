@@ -40,14 +40,4 @@ public class BreadcrumbSTJUnitBkMrkGen extends BreadcrumbSTJUnitBase {
     public void testBreadcrumbShuffledBookmark() throws Exception {
         testBreadcrumbShuffledBookmark(this);
     }
-
-    @Test
-    public void testBreadcrumbNavigateToBookmark() throws Exception {
-        testBreadcrumbNavigateToBookmark(this);
-    }
-
-    @Test
-    public void testBreadcrumbNavigateToShuffledBookmark() throws Exception {
-        testBreadcrumbNavigateToShuffledBookmark(this);
-    }
 }

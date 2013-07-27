@@ -16,6 +16,7 @@
 
 package edu.samplu.krad.travelview;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -23,6 +24,7 @@ import org.junit.Test;
  */
 public class MaintenanceDisclosuresSTJUnitNavGen extends MaintenanceDisclosuresSTJUnitBase {
 
+    @Ignore // link removed
     @Test
     public void testMaintenanceDisclosuresNav() throws Exception {
         testMaintenanceDisclosuresNav(this);

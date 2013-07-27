@@ -16,6 +16,7 @@
 
 package edu.samplu.krad.travelview;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -28,6 +29,7 @@ public class MaintenanceQuickfinderIconsSTJUnitBkMrkGen extends MaintenanceQuick
         return BOOKMARK_URL;
     }
 
+    @Ignore // link removed
     @Test
     public void testMaintenanceQuickfinderIconsBookmark() throws Exception {
         testMaintenanceQuickfinderIconsBookmark(this);

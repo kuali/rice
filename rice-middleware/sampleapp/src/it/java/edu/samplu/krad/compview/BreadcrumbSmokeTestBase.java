@@ -48,7 +48,7 @@ public abstract class BreadcrumbSmokeTestBase extends WebDriverLegacyITBase {
     /**
      * //*[@id='Uif-BreadcrumbWrapper']/ol/li[2]/a
      */
-    public static final String SECOND_DOWN_TRIANGLE_XPATH = "(//a[@class='uif-breadcrumbSiblingLink'])[2]";
+    public static final String SECOND_DOWN_TRIANGLE_XPATH = "(//a[@class='uif-breadcrumbSiblingLink'])";
 
     /**
      * Nav tests start at {@link edu.samplu.common.ITUtil#PORTAL}.  Bookmark Tests should override and return {@link BreadcrumbSmokeTestBase#BOOKMARK_URL}

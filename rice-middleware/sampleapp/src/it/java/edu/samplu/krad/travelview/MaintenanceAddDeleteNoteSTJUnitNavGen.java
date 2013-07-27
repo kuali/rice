@@ -16,6 +16,7 @@
 
 package edu.samplu.krad.travelview;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -23,6 +24,7 @@ import org.junit.Test;
  */
 public class MaintenanceAddDeleteNoteSTJUnitNavGen extends MaintenanceAddDeleteNoteSTJUnitBase {
 
+    @Ignore // link removed
     @Test
     public void testMaintenanceAddDeleteNoteNav() throws Exception {
         testMaintenanceAddDeleteNoteNav(this);

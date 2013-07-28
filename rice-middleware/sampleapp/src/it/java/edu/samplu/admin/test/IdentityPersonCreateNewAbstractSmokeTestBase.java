@@ -46,10 +46,12 @@ public abstract class IdentityPersonCreateNewAbstractSmokeTestBase extends Admin
    
     public void testIdentityPersonCreateNewBookmark(Failable failable) throws Exception {
         testIdentityPersonCreateNew();
+        passed();
     }
 
     public void testIdentityPersonCreateNewNav(Failable failable) throws Exception {
         testIdentityPersonCreateNew();
+        passed();
     }
     
     public void testIdentityPersonCreateNew() throws Exception {

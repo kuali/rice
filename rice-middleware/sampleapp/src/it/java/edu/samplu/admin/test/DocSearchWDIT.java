@@ -107,7 +107,7 @@ public class DocSearchWDIT extends WebDriverLegacyITBase {
         assertEquals("", driver.findElement(By.xpath("//input[@name='dateCreated']")).getAttribute("value"));
         waitAndClickByXpath("//a[@title='cancel']");
         waitForPageToLoad();
-        
+        passed();
     }
     
     @Test
@@ -146,6 +146,7 @@ public class DocSearchWDIT extends WebDriverLegacyITBase {
         //assertEquals("", driver.findElement(By.xpath("//input[@name='dateCreated']")).getAttribute("value"));
         waitAndClickByXpath("//a[@title='cancel']");
         waitForPageToLoad();
+        passed();
     }
     
     @Test
@@ -181,7 +182,7 @@ public class DocSearchWDIT extends WebDriverLegacyITBase {
         waitAndClickByXpath("//input[@name='methodToCall.search' and @alt='search']");
         waitForPageToLoad();
         assertEquals("FINAL", driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[4]")).getText());
-        
+        passed();
     }
     
     @Test
@@ -198,6 +199,7 @@ public class DocSearchWDIT extends WebDriverLegacyITBase {
         List<WebElement> options = select1.findElements(By.tagName("option"));
         int count= options.size();
         assertEquals(5,count);
+        passed();
     }
     
     @Test
@@ -220,6 +222,6 @@ public class DocSearchWDIT extends WebDriverLegacyITBase {
         assertElementPresentByName("documentAttribute.notificationRecipients");
         assertElementPresentByName("documentAttribute.notificationSenders");
         waitAndClickByXpath("//a[@title='cancel']");
+        passed();
     }
-    
 }

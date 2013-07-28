@@ -29,6 +29,7 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriverService;
@@ -508,14 +509,17 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     private void closeAndQuitWebDriver() {
-        if (driver != null) {
-            if (ITUtil.dontTearDownPropertyNotSet() && dontTearDownOnFailure()) {
+        if (driver != null && ITUtil.dontTearDownPropertyNotSet() && dontTearDownOnFailure()) {
+            try {
                 driver.close();
-                driver.quit();
+            } catch (NoSuchWindowException nswe) {
+                System.out.println("NoSuchWindowException closing WebDriver " + nswe.getMessage());
+            } finally {
+                if (driver != null) {
+                    driver.quit();
+                }
             }
-        }
-        
-        else {
+        } else {
             System.out.println("WebDriver is null for " + this.getClass().toString() + ", if using saucelabs, has" +
                     " sauceleabs been uncommented in WebDriverUtil.java?  If using a remote hub did you include the port?");
         }

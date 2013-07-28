@@ -16,6 +16,7 @@
 
 package edu.samplu.krad.travelview;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -28,6 +29,7 @@ public class MaintenanceConstraintTextSTJUnitBkMrkGen extends MaintenanceConstra
         return BOOKMARK_URL;
     }
 
+    @Ignore // link remove
     @Test
     public void testMaintenanceConstraintTextBookmark() throws Exception {
         testMaintenanceConstraintTextBookmark(this);

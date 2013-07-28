@@ -60,6 +60,8 @@ public class FieldBase extends ComponentBase implements Field {
     private boolean labelRendered;
 
     public FieldBase() {
+        super();
+
         labelRendered = false;
         labelPlacement = Position.LEFT;
     }

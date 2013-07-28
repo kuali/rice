@@ -601,7 +601,7 @@ color:#FFF;">
                 <map>
                   <entry key="showOn" value="button"/>
                   <entry key="constrainInput" value="false"/>
-                  <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
+                  <entry key="buttonImage" value="@{#ThemeImages}cal.gif"/>
                   <entry key="buttonImageOnly" value="true"/>
                   <entry key="showAnim" value="fadeIn"/>
                   <entry key="showButtonPanel" value="true"/>
@@ -623,7 +623,7 @@ color:#FFF;">
                   <entry key="showOn" value="button"/>
                   <entry key="dateFormat" value="mm-dd-y"/>
                   <entry key="constrainInput" value="false"/>
-                  <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
+                  <entry key="buttonImage" value="@{#ThemeImages}cal.gif"/>
                   <entry key="buttonImageOnly" value="true"/>
                   <entry key="showAnim" value="fadeIn"/>
                   <entry key="showButtonPanel" value="true"/>
@@ -647,7 +647,7 @@ color:#FFF;">
                   <entry key="showOn" value="button"/>
                   <entry key="dateFormat" value="mm-dd-yy"/>
                   <entry key="constrainInput" value="false"/>
-                  <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
+                  <entry key="buttonImage" value="@{#ThemeImages}cal.gif"/>
                   <entry key="buttonImageOnly" value="true"/>
                   <entry key="showAnim" value="fadeIn"/>
                   <entry key="showButtonPanel" value="true"/>
@@ -668,7 +668,7 @@ color:#FFF;">
                   <entry key="showOn" value="button"/>
                   <entry key="dateFormat" value="mm-dd-yy"/>
                   <entry key="constrainInput" value="false"/>
-                  <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
+                  <entry key="buttonImage" value="@{#ThemeImages}cal.gif"/>
                   <entry key="buttonImageOnly" value="true"/>
                   <entry key="showAnim" value="fadeIn"/>
                   <entry key="showButtonPanel" value="true"/>
@@ -691,7 +691,7 @@ color:#FFF;">
                 <map>
                   <entry key="showOn" value="button"/>
                   <entry key="constrainInput" value="true"/>
-                  <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
+                  <entry key="buttonImage" value="@{#ThemeImages}cal.gif"/>
                   <entry key="buttonImageOnly" value="true"/>
                   <entry key="showAnim" value="fadeIn"/>
                   <entry key="showButtonPanel" value="true"/>
@@ -710,7 +710,7 @@ color:#FFF;">
               <property name="datePicker.templateOptions">
                 <map>
                   <entry key="showOn" value="both"/>
-                  <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
+                  <entry key="buttonImage" value="@{#ThemeImages}cal.gif"/>
                   <entry key="buttonImageOnly" value="true"/>
                   <entry key="showAnim" value="fadeIn"/>
                   <entry key="showButtonPanel" value="true"/>
@@ -1022,7 +1022,7 @@ color:#FFF;">
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:propertyName="field133">
+        <bean parent="Uif-InputField" p:propertyName="field140">
           <property name="control">
             <bean parent="Uif-SpinnerControl">
               <property name="spinner">

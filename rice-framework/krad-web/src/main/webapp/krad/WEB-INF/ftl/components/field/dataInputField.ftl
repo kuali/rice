@@ -42,8 +42,7 @@
                              ${field.readOnlyDisplayReplacement}
                         <#else>
                             <#-- display actual field value -->
-                            <@spring.bindEscaped path="KualiForm.${field.bindingInfo.bindingPath}"
-                               htmlEscape=field.escapeHtmlInPropertyValue/>
+                            <@spring.bind path="KualiForm.${field.bindingInfo.bindingPath}"/>
                             ${(spring.status.value?default(""))}
 
                             <#-- add display suffix value if set -->
@@ -53,6 +52,10 @@
                         </#if>
                     </#if>
                 </#local>
+
+                <#if field.escapeHtmlInPropertyValue>
+                    <#local readOnlyDisplay=readOnlyDisplay?html>
+                </#if>
 
                 <#if field.multiLineReadOnlyDisplay>
                     <#local readOnlyDisplay="<pre>${readOnlyDisplay?trim?replace(' ','&nbsp;')}</pre>"/>

@@ -144,22 +144,24 @@ public abstract class UifControllerBase {
         }
 
         //get initial request params
-        if (requestForm != null && requestForm.getInitialRequestParameters() == null) {
+        if (requestForm.getInitialRequestParameters() == null) {
             Map<String, String> requestParams = new HashMap<String, String>();
             Enumeration<String> names = request.getParameterNames();
 
             while (names != null && names.hasMoreElements()) {
-                String name = names.nextElement();
-                requestParams.put(name, request.getParameter(name));
+                String name = KRADUtils.stripXSSPatterns(names.nextElement());
+                String value = KRADUtils.stripXSSPatterns(request.getParameter(name));
+
+                requestParams.put(name, value);
             }
 
             requestParams.remove(UifConstants.UrlParams.LOGIN_USER);
-            //requestParams.remove();
             requestForm.setInitialRequestParameters(requestParams);
         }
 
         //set the original request url for this view/form
-        requestForm.setRequestUrl(KRADUtils.getFullURL(request));
+        String requestUrl = KRADUtils.stripXSSPatterns(KRADUtils.getFullURL(request));
+        requestForm.setRequestUrl(requestUrl);
 
         Object historyManager = request.getSession().getAttribute(UifConstants.HistoryFlow.HISTORY_MANAGER);
         String flowKey = request.getParameter(UifConstants.HistoryFlow.FLOW);

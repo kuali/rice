@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.util;
 
+import org.apache.commons.codec.EncoderException;
+import org.apache.commons.codec.net.URLCodec;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
@@ -619,16 +621,79 @@ public final class KRADUtils {
         if (StringUtils.isBlank(fieldValue)) {
             return false;
         }
+
         ParameterService parameterService = CoreFrameworkServiceLocator.getParameterService();
         Collection<String> sensitiveDataPatterns = parameterService.getParameterValuesAsString(
                 KRADConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT,
                 KRADConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS);
+
         for (String pattern : sensitiveDataPatterns) {
             if (Pattern.compile(pattern).matcher(fieldValue).find()) {
                 return true;
             }
         }
+
         return false;
+    }
+
+    /**
+     * Strips out common patterns used in cross side scripting
+     *
+     * @param value string to strip patterns from
+     * @return cleaned string
+     */
+    public static String stripXSSPatterns(String value) {
+        if (value == null) {
+            return null;
+        }
+
+        // Avoid null characters
+        value = value.replaceAll("", "");
+
+        // Avoid anything between script tags
+        Pattern scriptPattern = Pattern.compile("<script>(.*?)</script>", Pattern.CASE_INSENSITIVE);
+        value = scriptPattern.matcher(value).replaceAll("");
+
+        // Avoid anything in a src='...' type of expression
+        scriptPattern = Pattern.compile("src[\r\n]*=[\r\n]*\\\'(.*?)\\\'",
+                Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
+        value = scriptPattern.matcher(value).replaceAll("");
+
+        scriptPattern = Pattern.compile("src[\r\n]*=[\r\n]*\\\"(.*?)\\\"",
+                Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
+        value = scriptPattern.matcher(value).replaceAll("");
+
+        // Remove any lonesome </script> tag
+        scriptPattern = Pattern.compile("</script>", Pattern.CASE_INSENSITIVE);
+        value = scriptPattern.matcher(value).replaceAll("");
+
+        // Remove any lonesome <script ...> tag
+        scriptPattern = Pattern.compile("<script(.*?)>", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
+        value = scriptPattern.matcher(value).replaceAll("");
+
+        // Avoid eval(...) expressions
+        scriptPattern = Pattern.compile("eval\\((.*?)\\)",
+                Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
+        value = scriptPattern.matcher(value).replaceAll("");
+
+        // Avoid expression(...) expressions
+        scriptPattern = Pattern.compile("expression\\((.*?)\\)",
+                Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
+        value = scriptPattern.matcher(value).replaceAll("");
+
+        // Avoid javascript:... expressions
+        scriptPattern = Pattern.compile("javascript:", Pattern.CASE_INSENSITIVE);
+        value = scriptPattern.matcher(value).replaceAll("");
+
+        // Avoid vbscript:... expressions
+        scriptPattern = Pattern.compile("vbscript:", Pattern.CASE_INSENSITIVE);
+        value = scriptPattern.matcher(value).replaceAll("");
+
+        // Avoid onload= expressions
+        scriptPattern = Pattern.compile("onload(.*?)=", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
+        value = scriptPattern.matcher(value).replaceAll("");
+
+        return value;
     }
 
     /**
@@ -730,12 +795,21 @@ public final class KRADUtils {
             return requestString;
         }
 
+        URLCodec urlCodec = new URLCodec(KRADConstants.DEFAULT_ENCODING);
+
         for (String key : requestParameters.keySet()) {
-            if (StringUtils.isNotBlank(requestString)) {
-                requestString = requestString + "&" + key + "=" + requestParameters.get(key);
-            } else {
-                requestString = key + "=" + requestParameters.get(key);
+            String value = null;
+            try {
+                value = urlCodec.encode(requestParameters.get(key));
+            } catch (EncoderException e) {
+                throw new RuntimeException("Unable to encode parameter name or value: " + key + "=" + value, e);
             }
+
+            if (StringUtils.isNotBlank(requestString)) {
+                requestString = requestString + "&";
+            }
+
+            requestString = requestString + key + "=" + value;
         }
 
         return "?" + requestString;
@@ -816,7 +890,7 @@ public final class KRADUtils {
      *
      * @param form the form
      * @param view the view
-     * @return the headerText with the title attribute in paranthesis or just the headerText if it title attribute
+     * @return the headerText with the title attribute in parenthesis or just the headerText if it title attribute
      *         cannot be determined
      */
     public static String generateUniqueViewTitle(UifFormBase form, View view) {

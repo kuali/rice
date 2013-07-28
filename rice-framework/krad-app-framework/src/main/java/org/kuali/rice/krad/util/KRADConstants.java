@@ -35,6 +35,8 @@ public final class KRADConstants {
 
     public static final String KR_MODULE_NAME = "kr";
 
+    public static final String DEFAULT_ENCODING = "UTF-8";
+
     // special user used in the post-processor
     public static final String SYSTEM_USER = "kr";
 

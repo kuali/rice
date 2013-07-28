@@ -54,8 +54,10 @@ public class ViewAttributeValueReader extends BaseAttributeValueReader {
 
         List<InputField> containerInputFields = ComponentUtils.getAllInputFieldsWithinContainer(view);
         for (InputField field : containerInputFields) {
-            inputFields.add(field);
-            inputFieldMap.put(field.getName(), field);
+            if (StringUtils.isNotBlank(field.getName())) {
+                inputFields.add(field);
+                inputFieldMap.put(field.getName(), field);
+            }
         }
     }
 

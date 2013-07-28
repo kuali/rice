@@ -29,6 +29,7 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriverService;
@@ -510,8 +511,15 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     private void closeAndQuitWebDriver() {
         if (driver != null) {
             if (ITUtil.dontTearDownPropertyNotSet() && dontTearDownOnFailure()) {
-                driver.close();
-                driver.quit();
+                try {
+                    driver.close();
+                } catch (NoSuchWindowException nswe) {
+                    System.out.println("NoSuchWindowException closing WebDriver " + nswe.getMessage());
+                } finally {
+                    if (driver != null) {
+                        driver.quit();
+                    }
+                }
             }
         }
         

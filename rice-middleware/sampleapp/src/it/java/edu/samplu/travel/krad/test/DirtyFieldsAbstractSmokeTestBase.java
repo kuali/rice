@@ -30,7 +30,7 @@ public abstract class DirtyFieldsAbstractSmokeTestBase extends WebDriverLegacyIT
     /**
      * "/kr-krad/uicomponents?viewId=UifCompView_KNS&methodToCall=start&readOnlyFields=field91";
      */
-    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView_KNS&methodToCall=start&readOnlyFields=field91";
+    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&readOnlyFields=field91";
 
     protected void bookmark() {
         open(ITUtil.getBaseUrlString() + BOOKMARK_URL);

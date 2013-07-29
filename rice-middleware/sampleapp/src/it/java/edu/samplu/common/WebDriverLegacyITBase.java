@@ -353,7 +353,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     /**
      * (//a[contains(text(),'Validation Framework Demo')])[2]
      */
-    public static final String VALIDATION_FRAMEWORK_DEMO_XPATH = "(//a[contains(text(),'Validation Framework Demo')])[2]";
+    public static final String VALIDATION_FRAMEWORK_DEMO_XPATH = "(//a[contains(text(),'Validation Framework Demo')])";
 
     /**
      * Kuali :: Collection Totaling
@@ -2127,7 +2127,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         String stateLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.state.StateBo!!).(((countryCode:document.newMaintainableObject.countryCode,code:document.newMaintainableObject.stateCode,))).((`document.newMaintainableObject.countryCode:countryCode,document.newMaintainableObject.stateCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
                 + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
         waitAndClickByXpath(stateLookUp);
-        waitAndTypeByName("code", RandomStringUtils.randomAlphabetic(2));
+        waitAndTypeByName("code", "IN");
         waitAndClickSearch();
         waitAndClickReturnValue();
         String countyName = "Validation Test County" + ITUtil.createUniqueDtsPlusTwoRandomChars();

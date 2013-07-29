@@ -55,7 +55,7 @@ public abstract class ConfigurationTestViewAbstractSmokeTestBase extends WebDriv
 
     protected void navigation() throws InterruptedException {
         waitAndClickKRAD();
-        waitAndClickByXpath("(//a[text()='Configuration Test View'])[2]");
+        waitAndClickByXpath("(//a[text()='Configuration Test View'])");
         switchToWindow(CONFIGURATION_VIEW_WINDOW_TITLE);
         waitForTitleToEqualKualiPortalIndex();   
     }

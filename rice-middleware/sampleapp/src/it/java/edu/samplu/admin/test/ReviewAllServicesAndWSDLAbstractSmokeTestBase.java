@@ -58,6 +58,6 @@ public abstract class ReviewAllServicesAndWSDLAbstractSmokeTestBase extends Admi
         waitAndClickByXpath("//input[@value='Refresh Service Registry']");
         Thread.sleep(10000);
         assertTextPresent("{http://rice.kuali.org/core/v2_0}componentService");
-        waitAndClickByXpath("//a[contains(text(),'http://env1.rice.kuali.org/remoting/soap/core/v2_0/componentService')]");
+        waitAndClickByXpath("//a[contains(text(),'/remoting/soap/core/v2_0/componentService')]");
     }
 }

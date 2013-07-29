@@ -58,14 +58,6 @@ public class UifBeanFactoryPostProcessorTest extends KRADTestCase {
 
         assertNotNull("Expression not in graph", inputField.getExpressionGraph().get("inquiry.render"));
 
-        // one level of nesting
-        inputField = (InputField) getTestDictionaryObject("testNestedExpressionOverride");
-        assertNotNull("No bean exists with id: testNestedExpressionOverride", inputField);
-
-        assertFalse("Child property did not override", inputField.getInquiry().isRender());
-        assertNull("Parent nested bean expression still in expression graph", inputField.getExpressionGraph().get(
-                "inquiry.render"));
-
         // one level of nesting, parent with nested notation
         inputField = (InputField) getTestDictionaryObject("testNestedExpressionOverride3");
         assertNotNull("No bean exists with id: testNestedExpressionOverride3", inputField);
@@ -80,7 +72,7 @@ public class UifBeanFactoryPostProcessorTest extends KRADTestCase {
 
         assertEquals("Child property did not override", "old school",
                 testBean.getReference1().getReference1().getProperty1());
-        assertNull("Parent nested bean expression still in expression graph", inputField.getExpressionGraph().get(
+        assertNull("Parent nested bean expression still in expression graph", testBean.getExpressionGraph().get(
                 "reference1.reference1.property1"));
     }
 
@@ -221,21 +213,6 @@ public class UifBeanFactoryPostProcessorTest extends KRADTestCase {
         assertEquals("Bean does not have the correct property3 value", simpleBean1.getExpressionGraph().get(
                 "property3"), "@{1 eq 1}");
         assertNull("Bean should not have a property3 value", simpleBean4.getExpressionGraph().get("property3"));
-    }
-
-    /**
-     * Tests the postProcessBeanFactory method using the people flow inquiry view
-     *
-     * @throws Exception
-     */
-    @Test
-    public void testPostProcessBeanFactoryWithPeopleFlowSucceeds() throws Exception {
-        InquiryView inquiryView = (InquiryView) getTestDictionaryObject("testPeopleFlow-InquiryView");
-
-        assertNotNull("Bean should have an inquiry property value", ((DataField) inquiryView.getItems().get(0)
-                .getItems().get(0)).getInquiry());
-        assertFalse("Bean should have an inquiry render value of false", ((DataField) inquiryView.getItems().get(0)
-                .getItems().get(0)).getInquiry().isRender());
     }
 
     /**

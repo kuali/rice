@@ -28,9 +28,7 @@ public abstract class DictionaryBeanBase implements DictionaryBean {
     private String namespaceCode;
     private String componentCode;
 
-    public DictionaryBeanBase() {
-
-    }
+    public DictionaryBeanBase() {}
 
     /**
      * @see DictionaryBean#getNamespaceCode()
@@ -101,7 +99,7 @@ public abstract class DictionaryBeanBase implements DictionaryBean {
             copiedClass = (T)this.getClass().newInstance();
         }
         catch(Exception exception) {
-            throw new RuntimeException();
+            throw new RuntimeException(exception);
         }
 
         copyProperties(copiedClass);
@@ -118,5 +116,9 @@ public abstract class DictionaryBeanBase implements DictionaryBean {
         DictionaryBeanBase dictionaryBeanBaseCopy = (DictionaryBeanBase) dictionaryBeanBase;
         dictionaryBeanBaseCopy.setComponentCode(this.componentCode);
         dictionaryBeanBaseCopy.setNamespaceCode(this.namespaceCode);
+    }
+
+    protected void dataDictionaryPostProcessing() {
+        // Do nothing here - will be implemented by subclasses
     }
 }

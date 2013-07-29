@@ -15,6 +15,18 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import java.beans.PropertyDescriptor;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.ArrayUtils;
@@ -46,18 +58,7 @@ import org.springframework.context.expression.StandardBeanExpressionResolver;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
-
-import java.beans.PropertyDescriptor;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import org.springframework.util.StopWatch;
 
 /**
  * Encapsulates a bean factory and indexes to the beans within the factory for providing
@@ -91,6 +92,7 @@ public class DataDictionary {
      * or the same thread
      */
     public void parseDataDictionaryConfigurationFiles(boolean allowConcurrentValidation) {
+        timer = new StopWatch("DD Processing");
         setupProcessor(ddBeans);
 
         loadDictionaryBeans(ddBeans, moduleDictionaryFiles, ddIndex, beanValidationFiles);
@@ -122,6 +124,8 @@ public class DataDictionary {
         }
     }
 
+    transient StopWatch timer;
+
     /**
      * Populates and processes the dictionary bean factory based on the configured files
      *
@@ -134,11 +138,16 @@ public class DataDictionary {
             Map<String, List<String>> moduleDictionaryFiles, DataDictionaryIndex index,
             ArrayList<String> validationFiles) {
         // expand configuration locations into files
+        timer.start("XML File Loading");
         LOG.info("Starting DD XML File Load");
 
         List<String> allBeanNames = new ArrayList<String>();
         for (String namespaceCode : moduleLoadOrder) {
+            LOG.info( "Processing Module: " + namespaceCode);
             List<String> moduleDictionaryLocations = moduleDictionaryFiles.get(namespaceCode);
+            if ( LOG.isDebugEnabled() ) {
+                LOG.debug("DD Locations in Module: " + moduleDictionaryLocations);
+            }
 
             if (moduleDictionaryLocations == null) {
                continue;
@@ -163,11 +172,12 @@ public class DataDictionary {
 
                 allBeanNames.addAll(addedBeanNames);
             } catch (Exception e) {
-                throw new DataDictionaryException("Error loading bean definitions: " + e.getLocalizedMessage());
+                throw new DataDictionaryException("Error loading bean definitions: " + e.getLocalizedMessage(),e);
             }
         }
 
         LOG.info("Completed DD XML File Load");
+        timer.stop();
     }
 
     /**
@@ -177,6 +187,8 @@ public class DataDictionary {
      * or the same thread
      */
     public void performDictionaryPostProcessing(boolean allowConcurrentValidation) {
+        LOG.info( "Starting Data Dictionary Post Processing");
+        timer.start("Spring Post Processing");
         PropertyPlaceholderConfigurer propertyPlaceholderConfigurer = new PropertyPlaceholderConfigurer();
         propertyPlaceholderConfigurer.setProperties(ConfigContext.getCurrentContextConfig().getProperties());
         propertyPlaceholderConfigurer.postProcessBeanFactory(ddBeans);
@@ -184,10 +196,24 @@ public class DataDictionary {
         DictionaryBeanFactoryPostProcessor dictionaryBeanPostProcessor = new DictionaryBeanFactoryPostProcessor(this,
                 ddBeans);
         dictionaryBeanPostProcessor.postProcessBeanFactory();
-
+        timer.stop();
+        timer.start("UIF Post Processing");
         // post processes UIF beans for pulling out expressions within property values
         UifBeanFactoryPostProcessor factoryPostProcessor = new UifBeanFactoryPostProcessor();
         factoryPostProcessor.postProcessBeanFactory(ddBeans);
+        timer.stop();
+
+        // Allow the DD to perform final post processing in a controlled order
+        // Unlike the Spring post processor, we will only call for these operations on the
+        // "top-level" beans and have them call post processing actions on embedded DD objects, if needed
+        timer.start("DD Post Processing + Bean Lazy Init");
+        for (DataObjectEntry entry : ddBeans.getBeansOfType(DataObjectEntry.class).values()) {
+            entry.dataDictionaryPostProcessing();
+        }
+        for (DocumentEntry entry : ddBeans.getBeansOfType(DocumentEntry.class).values()) {
+            entry.dataDictionaryPostProcessing();
+        }
+        timer.stop();
 
         if (allowConcurrentValidation) {
             Thread t = new Thread(ddIndex);
@@ -195,13 +221,18 @@ public class DataDictionary {
 
             Thread t2 = new Thread(uifIndex);
             t2.start();
+            LOG.info( "Completed Data Dictionary Post Processing - Not Including Indexing");
         } else {
+            timer.start("Indexing");
             ddIndex.run();
             uifIndex.run();
+            timer.stop();
+            LOG.info( "Completed Data Dictionary Post Processing");
         }
     }
 
     public void validateDD(boolean validateEbos) {
+        timer.start("Validation");
         DataDictionary.validateEBOs = validateEbos;
 
         /*  ValidationController validator = new ValidationController();
@@ -218,6 +249,7 @@ public class DataDictionary {
         for (DocumentEntry entry : docBeans.values()) {
             entry.completeValidation();
         }
+        timer.stop();
     }
 
     public void validateDD() {
@@ -940,6 +972,7 @@ public class DataDictionary {
      */
     // KULRICE-4513
     public void performBeanOverrides() {
+        timer.start("Processing BeanOverride beans");
         Collection<BeanOverride> beanOverrides = ddBeans.getBeansOfType(BeanOverride.class).values();
 
         if (beanOverrides.isEmpty()) {
@@ -951,6 +984,9 @@ public class DataDictionary {
             beanOverride.performOverride(bean);
             LOG.info("DataDictionary.performOverrides(): Performing override on bean: " + bean.toString());
         }
+        timer.stop();
+        // This is the last hook we have upon startup, so pretty-print the results here
+        LOG.info( "\n" + timer.prettyPrint() );
     }
 
 }

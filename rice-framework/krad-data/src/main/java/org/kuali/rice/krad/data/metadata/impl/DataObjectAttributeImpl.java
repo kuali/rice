@@ -24,7 +24,13 @@ import org.kuali.rice.krad.data.metadata.DataObjectAttributeSecurity;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 
 /**
- * Base implementation class for attributes on data object classes.
+ * Base implementation class for attribute metadata for data object classes.
+ * 
+ * This implementation supports "chaining" for most attributes. That is, if the value for a property is defined locally,
+ * it will me used. If unset (null) it will, if there is an {@link #embeddedAttribute}, request it from that
+ * DataObjectAttribute. (This could be a recursive operation if multiple metadata providers are chained.)
+ * 
+ * If the value is unset and there is no embedded attribute, most methods will return a non-null default value.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

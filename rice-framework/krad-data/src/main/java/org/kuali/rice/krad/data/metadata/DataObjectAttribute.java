@@ -22,11 +22,9 @@ import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 
 /**
- * Represents an attribute (persistent or non-persistent) on a data object.
+ * Represents attribute metadata (persistent or non-persistent) for a data object.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
-
- * 
  */
 public interface DataObjectAttribute extends MetadataCommon {
 
@@ -39,7 +37,7 @@ public interface DataObjectAttribute extends MetadataCommon {
 	 * To be used on attributes which have an associated business key that is shown to users rather than the "internal"
 	 * key which is likely a meaningless (to the users) sequence number.
 	 */
-	String getDisplayAttributeName(); // KNS: displayLabelAttribute
+	String getDisplayAttributeName();
 
 	/**
 	 * The maximum length value which will be accepted into this field.
@@ -54,12 +52,12 @@ public interface DataObjectAttribute extends MetadataCommon {
 	/**
 	 * Whether this attribute should be treated as case insensitive when performing lookups and searches.
 	 */
-	boolean isCaseInsensitive(); // KNS : forceUppercase
+	boolean isCaseInsensitive();
 
 	/**
 	 * Whether (at the data level) this attribute must have a non-null value.
 	 */
-	boolean isRequired(); // not null at ORM level
+	boolean isRequired();
 
 	/**
 	 * The bean name (in the UIF data dictionary), which checks the entered value's characters for correctness.

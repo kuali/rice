@@ -74,6 +74,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     @Deprecated
     protected ValidationPattern validationPattern;
 
+    @Deprecated
     protected ControlDefinition control;
 
     // TODO: rename to control once ControlDefinition is removed
@@ -135,6 +136,9 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     }
 
     /**
+     * Returns the maximum length for this field, if set.  If not set, it attempts to pull from
+     * the embedded metadata, if any.
+     * 
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.LengthConstraint#getMaxLength()
      */
     @BeanTagAttribute(name = "maxLength")
@@ -293,6 +297,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * @return control
      */
     @BeanTagAttribute(name = "oldControl", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @Deprecated
     public ControlDefinition getControl() {
         return control;
     }
@@ -373,7 +378,9 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
 
     /**
      * Performs formatting of the field value for display and then converting the value back to its
-     * expected type from a string
+     * expected type from a string.
+     * 
+     * If not set in the AttributeDefinition, it attempts to pull from the embedded metadata, if any.
      *
      * <p>
      * Note property editors exist and are already registered for the basic Java types and the
@@ -573,107 +580,21 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * Default {@code Control} to use when the attribute is to be rendered
      * for the UI. Used by the UIF when a control is not defined for an
      * {@code InputField}
+     * 
+     * If not set in the AttributeDefinition, a default will be generated from the metadata for this field.
      *
      * @return Control instance
      */
     @BeanTagAttribute(name = "control", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Control getControlField() {
         if ( controlField != null ) {
-            return this.controlField;
+            return controlField;
         }
         if ( cachedDerivedControl == null ) {
-            cachedDerivedControl = deriveControlAttribute();
+            cachedDerivedControl = KRADServiceLocatorWeb.getUifControlDefaultingService().deriveControlAttributeFromMetadata(this);
         }
         return cachedDerivedControl;
     }
-
-    protected Control deriveControlAttribute() {
-        Control c = null;
-        // First, check if a values finder has been established
-        // If so, use a drop-down list
-        if ( getOptionsFinder() != null ) {
-            c = ComponentFactory.getSelectControl();
-        // FIXME: JHK: Yes, I know this is a *HORRIBLE* hack - but the alternative
-        // would look even more "hacky" and error-prone
-        } else if ( getName().endsWith( ".principalName" ) && getDataObjectAttribute() != null ) {
-            c = ComponentFactory.getUserControl();
-            // Need to find the relationship information
-            // get the relationship ID by removing .principalName from the attribute name
-            String relationshipName = StringUtils.removeEnd(getName(), ".principalName");
-            DataObjectMetadata metadata = KradDataServiceLocator.getMetadataRepository().getMetadata(getDataObjectAttribute().getOwningType());
-            if ( metadata != null ) {
-                DataObjectRelationship relationship = metadata.getRelationship(relationshipName);
-                if ( relationship != null ) {
-                    ((UserControl)c).setPrincipalIdPropertyName(relationship.getAttributeRelationships().get(0).getParentAttributeName());
-                    ((UserControl)c).setPersonObjectPropertyName(relationshipName);
-                }
-            } else {
-                LOG.warn( "Attempt to pull relationship name: " + relationshipName + " resulted in missing metadata when looking for: " + getDataObjectAttribute().getOwningType() );
-            }
-//
-        } else {
-            switch ( getDataType() ) {
-                case STRING :
-                    // TODO: Determine better way to store the "200" metric below
-                    if ( getMaxLength() != null && getMaxLength().intValue() > 200 ) {
-                        c = ComponentFactory.getTextAreaControl();
-                    } else {
-                        c = ComponentFactory.getTextControl();
-                    }
-                    break;
-                case BOOLEAN:
-                    c = ComponentFactory.getCheckboxControl();
-                    break;
-                case DATE:
-                case DATETIME:
-                case TRUNCATED_DATE:
-                    c = ComponentFactory.getDateControl();
-                    break;
-                case CURRENCY:
-                case DOUBLE:
-                case FLOAT:
-                case INTEGER:
-                case LARGE_INTEGER:
-                case LONG:
-                case PRECISE_DECIMAL:
-                    c = ComponentFactory.getTextControl();
-                    break;
-                case MARKUP:
-                    c = ComponentFactory.getTextAreaControl();
-                    break;
-                default:
-                    c = ComponentFactory.getTextControl();
-                    break;
-            }
-        }
-        if ( c != null ) {
-            if ( c instanceof TextControl ) {
-                if ( getMaxLength() != null ) {
-                    ((TextControl) c).setMaxLength( getMaxLength() );
-                    ((TextControl) c).setSize( getMaxLength() );
-                    // If it's a larger field, add the expand icon by default
-                    if ( getMaxLength() > 80 ) { // JHK : yes, this was a mostly arbitrary choice
-                        ((TextControl) c).setTextExpand(true);
-                    }
-                }
-                if ( getMinLength() != null ) {
-                    ((TextControl) c).setMinLength( getMinLength() );
-                }
-            }
-            if ( c instanceof TextAreaControl ) {
-                if ( getMaxLength() != null ) {
-                    ((TextAreaControl) c).setMaxLength( getMaxLength() );
-                    ((TextAreaControl) c).setRows(getMaxLength()/((TextAreaControl) c).getCols());
-                }
-                if ( getMinLength() != null ) {
-                    ((TextControl) c).setMinLength( getMinLength() );
-                }
-            }
-            c.setRequired(isRequired());
-        }
-        return c;
-    }
-
 
     /**
      * Setter for the default control
@@ -710,7 +631,11 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     }
 
     /**
-     * @return the dataType
+     * Returns the Kuali datatype for this field.  See {@link DataType} for the defined types.
+     * 
+     * If not defined in the AttributeDefinition, it will be retrieved from the embedded metadata, if defined.
+     * 
+     * If not defined by either, will return {@link DataType#STRING}.
      */
     @BeanTagAttribute(name = "dataType", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public DataType getDataType() {

@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.krad.lookup.Lookupable;
 import org.kuali.rice.krad.messages.MessageService;
 import org.kuali.rice.krad.uif.service.AttributeQueryService;
+import org.kuali.rice.krad.uif.service.UifControlDefaultingService;
 import org.kuali.rice.krad.uif.service.ViewDictionaryService;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
@@ -71,6 +72,7 @@ public class KRADServiceLocatorWeb {
     public static final String POST_PROCESSOR_SERVICE = "postProcessorService";
     public static final String INACTIVATION_BLOCKING_DISPLAY_SERVICE = "inactivationBlockingDisplayService";
     public static final String LEGACY_DATA_ADAPTER = "legacyDataAdapter";
+    public static final String UIF_CONTROL_DEFAULTING_SERVICE = "uifControlDefaultingService";
 
     public static <T extends Object> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
@@ -184,6 +186,10 @@ public class KRADServiceLocatorWeb {
 
     public static InactivationBlockingDisplayService getInactivationBlockingDisplayService() {
     	return (InactivationBlockingDisplayService) getService(INACTIVATION_BLOCKING_DISPLAY_SERVICE);
+    }
+    
+    public static UifControlDefaultingService getUifControlDefaultingService() {
+        return getService(UIF_CONTROL_DEFAULTING_SERVICE);
     }
 
     /**

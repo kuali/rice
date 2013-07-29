@@ -15,6 +15,7 @@
  */
 package edu.samplu.travel.krad.test;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -27,6 +28,7 @@ public class TravelAccountTypeLookupSTJUnitBkMrkGen extends TravelAccountTypeLoo
         return BOOKMARK_URL;
     }
 
+    @Ignore // link removed
     @Test
     public void testTravelAccountTypeLookupBookmark() throws Exception {
         testTravelAccountTypeLookupBookmark(this);

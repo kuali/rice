@@ -16,6 +16,7 @@
 
 package edu.samplu.travel.test;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -23,6 +24,7 @@ import org.junit.Test;
  */
 public class FiscalOfficerInfoMaintenanceSTJUnitNavGen extends FiscalOfficerInfoMaintenanceSTJUnitBase {
 
+    @Ignore // link removed
     @Test
     public void testFiscalOfficerInfoMaintenanceNav() throws Exception {
         testFiscalOfficerInfoMaintenanceNav(this);

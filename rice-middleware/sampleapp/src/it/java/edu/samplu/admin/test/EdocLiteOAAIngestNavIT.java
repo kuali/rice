@@ -15,7 +15,6 @@
  */
 package edu.samplu.admin.test;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -25,11 +24,7 @@ public class EdocLiteOAAIngestNavIT extends EdocLiteXmlIngesterBase {
 
     @Test
     public void test() throws Exception {
-        try {
-            setUpFiles("src/it/resources/OAA");
-        } catch (Exception e) {
-            Assert.fail("Resources not found. Test will be skipped");
-        }
+        setUpResourceDir("OAA");
         testEdocLiteIngestion();
         assertTextPresent("InterviewRequest");
         assertTextPresent("OfferRequest");

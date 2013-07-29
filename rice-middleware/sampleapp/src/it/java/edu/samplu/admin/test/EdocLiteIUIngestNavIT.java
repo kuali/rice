@@ -25,11 +25,7 @@ public class EdocLiteIUIngestNavIT extends EdocLiteXmlIngesterBase {
 
     @Test
     public void test() throws Exception {
-        try {
-            setUpFiles("src/it/resources/IU");
-        } catch (Exception e) {
-            Assert.fail("Resources not found. Test will be skipped");
-        }
+        setUpResourceDir("IU");
         testEdocLiteIngestion();
         assertTextPresent("PhDCommencement");
         assertTextPresent("CommitteeChange.Doctype");

@@ -75,6 +75,14 @@ public abstract class EdocLiteXmlIngesterBase extends AdminTmplMthdSTNavBase {
         return subLists;
     }
 
+    protected void setUpResourceDir(String resourceDir) {
+        try {
+            setUpFiles("src/it/resources/" + resourceDir);
+        } catch (Exception e) {
+            failableFail("Files not found. If running from Intellij make sure working directory is rice-middleware/sampleapp");
+        }
+    }
+
     protected void setUpFiles(String path) throws Exception {
         fileUploadList = new ArrayList<File>();
         // Load the directory as a resource

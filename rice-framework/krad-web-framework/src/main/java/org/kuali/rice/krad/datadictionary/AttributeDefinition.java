@@ -25,9 +25,6 @@ import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.krad.data.DataObjectUtils;
-import org.kuali.rice.krad.data.KradDataServiceLocator;
-import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
-import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
 import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.exception.ClassValidationException;
@@ -49,10 +46,6 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.control.Control;
-import org.kuali.rice.krad.uif.control.TextAreaControl;
-import org.kuali.rice.krad.uif.control.TextControl;
-import org.kuali.rice.krad.uif.control.UserControl;
-import org.kuali.rice.krad.uif.util.ComponentFactory;
 
 /**
  * A single attribute definition in the DataDictionary, which contains
@@ -138,7 +131,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     /**
      * Returns the maximum length for this field, if set.  If not set, it attempts to pull from
      * the embedded metadata, if any.
-     * 
+     *
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.LengthConstraint#getMaxLength()
      */
     @BeanTagAttribute(name = "maxLength")
@@ -379,7 +372,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     /**
      * Performs formatting of the field value for display and then converting the value back to its
      * expected type from a string.
-     * 
+     *
      * If not set in the AttributeDefinition, it attempts to pull from the embedded metadata, if any.
      *
      * <p>
@@ -428,6 +421,9 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     @Override
     @Deprecated
     public void completeValidation(Class<?> rootObjectClass, Class<?> otherObjectClass) {
+        if (StringUtils.isEmpty(name)) {
+            throw new AttributeValidationException("blank name for bean: " + id);
+        }
         try {
             if (!DataDictionary.isPropertyOf(rootObjectClass, getName())) {
                 throw new AttributeValidationException("property '"
@@ -557,9 +553,6 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      */
     @Override
     public void afterPropertiesSet() throws Exception {
-        if (StringUtils.isEmpty(name)) {
-            throw new RuntimeException("blank name for bean: " + id);
-        }
     }
 
     /**
@@ -580,7 +573,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * Default {@code Control} to use when the attribute is to be rendered
      * for the UI. Used by the UIF when a control is not defined for an
      * {@code InputField}
-     * 
+     *
      * If not set in the AttributeDefinition, a default will be generated from the metadata for this field.
      *
      * @return Control instance
@@ -632,9 +625,9 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
 
     /**
      * Returns the Kuali datatype for this field.  See {@link DataType} for the defined types.
-     * 
+     *
      * If not defined in the AttributeDefinition, it will be retrieved from the embedded metadata, if defined.
-     * 
+     *
      * If not defined by either, will return {@link DataType#STRING}.
      */
     @BeanTagAttribute(name = "dataType", type = BeanTagAttribute.AttributeType.SINGLEBEAN)

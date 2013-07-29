@@ -31,7 +31,7 @@ JavascriptKradVariables.prototype = {
 
      CACHE_KEY : "cacheKey",
      CHANGED_HEADER_ICON_CLASS : "uif-changedHeaderIcon",
-     CLEAR_FORM_METHOD_TO_CALL : "retrieveMessage",
+     CLEAR_FORM_METHOD_TO_CALL : "clearForm",
      CLIENT_MESSAGE_ITEMS_CLASS : "uif-clientMessageItems",
      CLIENT_WARNING_DIV_CLASS : "uif-clientWarningDiv",
      COLLAPSED_ERRORS_CLASS : "uif-collapsedErrors",

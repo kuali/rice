@@ -1970,11 +1970,11 @@ function removeFromSession(key) {
  * Makes a get request to the server so that the form with the specified formKey will
  * be cleared server side
  *
- * @param formKey key for the form to clear
+ * @param formKeyToClear key for the form to clear
  */
-function clearServerSideForm(formKey) {
+function clearServerSideForm(formKeyToClear) {
     var params = {};
-    params.formKey = formKey;
+    params.formKeyToClear = formKeyToClear;
 
     invokeServerListener(kradVariables.CLEAR_FORM_METHOD_TO_CALL, params);
 }

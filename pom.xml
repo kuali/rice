@@ -47,7 +47,6 @@
 
   <properties>
     <properties.resolve>false</properties.resolve>
-    <project.metainf.phase>none</project.metainf.phase>
 
     <!-- This works for Linux/Windows. See the MacOSX profile for the equivalent of this for Mac -->
     <tools.jar.path>${java.home}/../lib/tools.jar</tools.jar.path>
@@ -432,6 +431,17 @@
     </testResources>
     <pluginManagement>
       <plugins>
+        <plugin>
+          <groupId>org.kuali.maven.plugins</groupId>
+          <artifactId>spring-maven-plugin</artifactId>
+          <dependencies>
+            <dependency>
+              <groupId>commons-io</groupId>
+              <artifactId>commons-io</artifactId>
+              <version>2.4</version>
+            </dependency>
+          </dependencies>
+        </plugin>
         <plugin>
           <artifactId>maven-checkstyle-plugin</artifactId>
           <dependencies>

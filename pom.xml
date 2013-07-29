@@ -47,6 +47,7 @@
 
   <properties>
     <properties.resolve>false</properties.resolve>
+    <project.metainf.phase>none</project.metainf.phase>
 
     <!-- This works for Linux/Windows. See the MacOSX profile for the equivalent of this for Mac -->
     <tools.jar.path>${java.home}/../lib/tools.jar</tools.jar.path>

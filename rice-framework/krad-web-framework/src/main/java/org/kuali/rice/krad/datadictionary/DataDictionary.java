@@ -203,10 +203,14 @@ public class DataDictionary {
         factoryPostProcessor.postProcessBeanFactory(ddBeans);
         timer.stop();
 
+//        timer.start("Instantiating DD Beans");
+//        ddBeans.preInstantiateSingletons();
+//        timer.stop();
+
         // Allow the DD to perform final post processing in a controlled order
         // Unlike the Spring post processor, we will only call for these operations on the
         // "top-level" beans and have them call post processing actions on embedded DD objects, if needed
-        timer.start("DD Post Processing + Bean Lazy Init");
+        timer.start("DD Post Processing");
         for (DataObjectEntry entry : ddBeans.getBeansOfType(DataObjectEntry.class).values()) {
             entry.dataDictionaryPostProcessing();
         }

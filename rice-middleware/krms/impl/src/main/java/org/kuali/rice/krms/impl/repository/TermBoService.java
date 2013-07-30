@@ -17,12 +17,12 @@ package org.kuali.rice.krms.impl.repository;
 
 import java.util.List;
 
+import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.krms.api.repository.term.TermDefinition;
 import org.kuali.rice.krms.api.repository.term.TermRepositoryService;
-import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
-import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
+
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
 
 /**
  * BO service for terms and related entities
@@ -30,38 +30,8 @@ import org.springframework.cache.annotation.Cacheable;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@WebService(name = "termBoService", targetNamespace = KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0)
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface TermBoService extends TermRepositoryService {
-	
-	// TODO: javadocs
-    //@Cacheable(value= TermSpecificationDefinition.Cache.NAME, key="'id=' + #p0")
-	TermSpecificationDefinition getTermSpecificationById(String id);
 
-    //@CacheEvict(value={TermSpecificationDefinition.Cache.NAME, TermDefinition.Cache.NAME}, allEntries = true)
-	TermSpecificationDefinition createTermSpecification(TermSpecificationDefinition termSpec);
-
-    //@Cacheable(value= TermDefinition.Cache.NAME, key="'id=' + #p0")
-    TermDefinition getTerm(String id);
-
-    //@CacheEvict(value={TermDefinition.Cache.NAME}, allEntries = true)
-	TermDefinition createTerm(TermDefinition termDef);
-
-    //@Cacheable(value= TermResolverDefinition.Cache.NAME, key="'id=' + #p0")
-	TermResolverDefinition getTermResolverById(String id);
-
-    /**
-     * Get the {@link TermResolverDefinition}s for any term resolvers in the specified namespace that have the given
-     * term specification as their output.
-     *
-     * @param id the id for the term specification
-     * @param namespace the namespace to search
-     * @return the List of term resolvers found.  If none are found, an empty list will be returned.
-     */
-    //@Cacheable(value= TermResolverDefinition.Cache.NAME, key="'id=' + #p0 + '|' + 'namespace=' + #p1")
-    List<TermResolverDefinition> findTermResolversByOutputId(String id, String namespace);
-
-    //@Cacheable(value= TermResolverDefinition.Cache.NAME, key="'namespace=' + #p0")
-    List<TermResolverDefinition> findTermResolversByNamespace(String namespace);
-
-    //@CacheEvict(value={TermResolverDefinition.Cache.NAME, TermDefinition.Cache.NAME}, allEntries = true)
-	TermResolverDefinition createTermResolver(TermResolverDefinition termResolver);
 }

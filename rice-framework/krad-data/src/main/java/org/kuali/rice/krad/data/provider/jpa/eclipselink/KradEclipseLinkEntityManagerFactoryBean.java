@@ -49,6 +49,7 @@ public class KradEclipseLinkEntityManagerFactoryBean extends KradEntityManagerFa
             jpaProperties.put(PersistenceUnitProperties.TARGET_SERVER, JtaTransactionController.class.getName());
         }
         jpaProperties.put(PersistenceUnitProperties.SESSION_CUSTOMIZER, KradEclipseLinkCustomizer.class.getName());
+        jpaProperties.put(PersistenceUnitProperties.CACHE_SHARED_DEFAULT,"false");
     }
 
 }

@@ -18,10 +18,13 @@ package org.kuali.rice.krad.service.impl;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.krad.bo.Attachment;
 import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.service.AttachmentService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.springframework.beans.factory.annotation.Required;
@@ -52,20 +55,30 @@ public class AttachmentServiceImpl implements AttachmentService {
         this.lda = lda;
     }
 
+    public LegacyDataAdapter getLegacyDataAdapter(){
+        if(lda == null){
+            return KRADServiceLocatorWeb.getLegacyDataAdapter();
+        }
+        return lda;
+    }
+
     /**
      * Retrieves an Attachment by note identifier.
      * 
      * @see org.kuali.rice.krad.service.AttachmentService#getAttachmentByNoteId(java.lang.Long)
      */
     public Attachment getAttachmentByNoteId(Long noteId) {
-		return lda.getAttachmentByNoteId(noteId);
+        if(noteId == null){
+            return null;
+        }
+		return getLegacyDataAdapter().getAttachmentByNoteId(noteId);
 	}
 
     /**
-     * @see org.kuali.rice.krad.service.AttachmentService#createAttachment(org.kuali.rice.krad.bo.PersistableBusinessObject,
+     * @see org.kuali.rice.krad.service.AttachmentService#createAttachment(GloballyUnique,
      * String, String, int, java.io.InputStream, String)
      */
-    public Attachment createAttachment(PersistableBusinessObject parent, String uploadedFileName, String mimeType, int fileSize, InputStream fileContents, String attachmentTypeCode) throws IOException {
+    public Attachment createAttachment(GloballyUnique parent, String uploadedFileName, String mimeType, int fileSize, InputStream fileContents, String attachmentTypeCode) throws IOException {
         if ( LOG.isDebugEnabled() ) {
             LOG.debug("starting to create attachment for document: " + parent.getObjectId());
         }

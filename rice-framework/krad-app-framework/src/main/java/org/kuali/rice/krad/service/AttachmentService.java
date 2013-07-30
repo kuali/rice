@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.krad.service;
 
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.krad.bo.Attachment;
 import org.kuali.rice.krad.bo.Note;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,7 +41,7 @@ public interface AttachmentService {
      * @return Attachment - the attachment, having been written to the file system
      * @throws IOException
      */
-    public Attachment createAttachment(PersistableBusinessObject parent, String uploadedFileName, String mimeType, int fileSize, InputStream fileContents, String attachmentType) throws IOException;
+    public Attachment createAttachment(GloballyUnique parent, String uploadedFileName, String mimeType, int fileSize, InputStream fileContents, String attachmentType) throws IOException;
 
     /**
      * Retrieves a given Attachments contents from the corresponding Attachment object

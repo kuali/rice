@@ -69,18 +69,28 @@ public class NativeJpaQueryTranslator extends QueryTranslatorBase<NativeJpaQuery
 
         void or(TranslationContext predicate) {
             List<Predicate> newpredicates = new ArrayList<Predicate>();
-            // NOTE: On EclipseLink 2.4.1 I encounter NPE from CriteriaBiulderImpl.or if invoked with predicate order reversed
-            // apparently the current getCriteriaPredicate() for some reason does not have a "current node", but the incoming (nested)
-            // one does?
-            // NPE: Predicate orPredicate = builder.or(new Predicate[] { getCriteriaPredicate(), predicate.getCriteriaPredicate() });
-            Predicate orPredicate = builder.or(new Predicate[] { predicate.getCriteriaPredicate(), getCriteriaPredicate() });
+
+            //When traversed to a simple OR predicate you may not have a criteria predicate set so check and just
+            //add to builder if necKradEclipseLinkEntityManagerFactoryessary
+            Predicate criteriaPredicate = getCriteriaPredicate();
+            Predicate orPredicate = null;
+            if(criteriaPredicate != null){
+                orPredicate = builder.or(new Predicate[] {  predicate.getCriteriaPredicate(), getCriteriaPredicate() });
+            } else {
+                orPredicate = builder.or(predicate.getCriteriaPredicate());
+            }
             newpredicates.add(orPredicate);
             predicates = newpredicates;
         }
 
         Predicate getCriteriaPredicate() {
-            if (predicates.size() == 1) return predicates.get(0);
-            return builder.and(predicates.toArray(new Predicate[predicates.size()]));
+            if (predicates.size() == 1) {
+                return predicates.get(0);
+            }   else if(predicates.size() > 1){
+                return builder.and(predicates.toArray(new Predicate[predicates.size()]));
+            }  else {
+                return null;
+            }
         }
 
         Path attr(String attr) {

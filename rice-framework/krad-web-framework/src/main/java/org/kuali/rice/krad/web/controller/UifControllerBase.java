@@ -496,8 +496,9 @@ public abstract class UifControllerBase {
         // TODO: this code still needs to handle reference refreshes
 
         String flashMapSelectedLineValues = "";
-        if (RequestContextUtils.getInputFlashMap(request)!=null) {
-            flashMapSelectedLineValues = (String) RequestContextUtils.getInputFlashMap(request).get(UifParameters.SELECTED_LINE_VALUES);
+        if (RequestContextUtils.getInputFlashMap(request) != null) {
+            flashMapSelectedLineValues = (String) RequestContextUtils.getInputFlashMap(request).get(
+                    UifParameters.SELECTED_LINE_VALUES);
         }
         String refreshCallerType = "";
         if (request.getParameterMap().containsKey(KRADConstants.REFRESH_CALLER_TYPE)) {

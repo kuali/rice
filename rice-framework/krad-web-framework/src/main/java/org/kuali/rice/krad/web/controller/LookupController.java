@@ -91,8 +91,9 @@ public class LookupController extends UifControllerBase {
         }
         lookupable.initSuppressAction(lookupForm);
 
-        if (request.getParameter("messageToDisplay") != null) {
-            lookupable.generateErrorMessageForResults(lookupForm, request.getParameter("messageToDisplay"));
+        if (request.getParameter(UifParameters.MESSAGE_TO_DISPLAY) != null) {
+            lookupable.generateErrorMessageForResults(lookupForm, request.getParameter(
+                    UifParameters.MESSAGE_TO_DISPLAY));
         }
 
         // if request is not a redirect, determine if we need to redirect for an externalizable object lookup
@@ -242,18 +243,18 @@ public class LookupController extends UifControllerBase {
         }
 
         if (redirectUrl.length() > RiceConstants.MAXIMUM_URL_LENGTH && lookupCameFromDifferentServer) {
-            HashMap<String, String> parms =(HashMap<String,String>) lookupForm.getInitialRequestParameters();
-            parms.remove("returnFormKey");
+            HashMap<String, String> parms = (HashMap<String, String>) lookupForm.getInitialRequestParameters();
+            parms.remove(UifParameters.RETURN_FORM_KEY);
 
             //add an error message to display to the user
             redirectAttributes.mergeAttributes(parms);
-            redirectAttributes.addAttribute("messageToDisplay", RiceKeyConstants.INFO_LOOKUP_RESULTS_MV_RETURN_EXCEEDS_LIMIT);
+            redirectAttributes.addAttribute(UifParameters.MESSAGE_TO_DISPLAY,
+                    RiceKeyConstants.INFO_LOOKUP_RESULTS_MV_RETURN_EXCEEDS_LIMIT);
 
             String formKeyParam = request.getParameter(UifParameters.FORM_KEY);
             redirectAttributes.addAttribute(UifParameters.FORM_KEY, formKeyParam);
 
-            return "redirect:" + lookupForm.getRequestUrl();
-
+            return UifConstants.REDIRECT_PREFIX + lookupForm.getRequestUrl();
         }
 
         if (redirectUrl.length() < RiceConstants.MAXIMUM_URL_LENGTH) {
@@ -267,7 +268,8 @@ public class LookupController extends UifControllerBase {
         }
 
         redirectAttributes.addAttribute(KRADConstants.REFRESH_CALLER, lookupForm.getView().getId());
-        redirectAttributes.addAttribute(KRADConstants.REFRESH_CALLER_TYPE, UifConstants.RefreshCallerTypes.MULTI_VALUE_LOOKUP);
+        redirectAttributes.addAttribute(KRADConstants.REFRESH_CALLER_TYPE,
+                UifConstants.RefreshCallerTypes.MULTI_VALUE_LOOKUP);
         redirectAttributes.addAttribute(KRADConstants.REFRESH_DATA_OBJECT_CLASS, lookupForm.getDataObjectClassName());
 
         if (StringUtils.isNotBlank(lookupForm.getDocNum())) {
@@ -285,28 +287,30 @@ public class LookupController extends UifControllerBase {
         // clear current form from session
         GlobalVariables.getUifFormManager().removeSessionForm(lookupForm);
 
-        return "redirect:" + lookupForm.getReturnLocation();
+        return UifConstants.REDIRECT_PREFIX + lookupForm.getReturnLocation();
     }
 
     /**
      * Convenience method for determining whether two URLs point at the same domain
+     *
      * @param firstDomain
      * @param secondDomain
-     * @return
+     * @return true if the domains are different, false otherwise
      */
     private boolean areDifferentDomains(String firstDomain, String secondDomain) {
         try {
             URL urlOne = new URL(firstDomain.toLowerCase());
             URL urlTwo = new URL(secondDomain.toLowerCase());
             if(urlOne.getHost().equals(urlTwo.getHost())){
-                LOG.debug("Hosts " + urlOne.getHost() + " of domains " + firstDomain + " and " + secondDomain + " were determined to be equal");
+                LOG.debug("Hosts " + urlOne.getHost() + " of domains " + firstDomain
+                        + " and " + secondDomain + " were determined to be equal");
                 return false;
             }
             else {
-                LOG.debug("Hosts " + urlOne.getHost() + " of domains " + firstDomain + " and " + secondDomain + " are not equal");
+                LOG.debug("Hosts " + urlOne.getHost() + " of domains " + firstDomain
+                        + " and " + secondDomain + " are not equal");
                 return true;
             }
-
         } catch (MalformedURLException mue) {
             LOG.error("Unable to successfully compare domains " + firstDomain + " and " + secondDomain);
         }

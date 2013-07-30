@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
@@ -38,6 +37,7 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
  */
 @BeanTag(name = "primitiveAttributeDefinition-bean")
 public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PrimitiveAttributeDefinition.class);
     private static final long serialVersionUID = -715128943756700821L;
 
     protected String sourceName;
@@ -45,9 +45,6 @@ public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
 
     public PrimitiveAttributeDefinition() {}
 
-    /**
-     * @return sourceName
-     */
     @BeanTagAttribute(name = "sourceName")
     public String getSourceName() {
         return sourceName;
@@ -66,9 +63,6 @@ public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
         this.sourceName = sourceName;
     }
 
-    /**
-     * @return targetName
-     */
     @BeanTagAttribute(name = "targetName")
     public String getTargetName() {
         return targetName;
@@ -93,47 +87,9 @@ public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class,
      *      java.lang.Class)
      */
+    @Override
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
-        if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, sourceName)) {
-            throw new AttributeValidationException("unable to find attribute '"
-                    + sourceName
-                    + "' in relationship class '"
-                    + rootBusinessObjectClass
-                    + "' ("
-                    + ""
-                    + ")");
-        }
-        if (!DataDictionary.isPropertyOf(otherBusinessObjectClass, targetName)) {
-            throw new AttributeValidationException(
-                    "unable to find attribute '" + targetName + "' in related class '" + otherBusinessObjectClass
-                            .getName() + "' (" + "" + ")");
-        }
-
-        Class sourceClass = DataDictionary.getAttributeClass(rootBusinessObjectClass, sourceName);
-        Class targetClass = DataDictionary.getAttributeClass(otherBusinessObjectClass, targetName);
-        if ((null == sourceClass && null != targetClass) || (null != sourceClass && null == targetClass) || !StringUtils
-                .equals(sourceClass.getName(), targetClass.getName())) {
-            String sourceClassName = rootBusinessObjectClass.getName();
-            String targetClassName = otherBusinessObjectClass.getName();
-            String sourcePath = sourceClassName + "." + sourceName;
-            String targetPath = targetClassName + "." + targetName;
-
-            // Just a temp hack to ignore null Person objects
-            if ((sourcePath != null && !StringUtils.contains(sourcePath, ".principalId")) && (targetPath != null
-                    && !StringUtils.contains(targetPath, ".principalId"))) {
-                throw new AttributeValidationException("source attribute '"
-                        + sourcePath
-                        + "' ("
-                        + sourceClass
-                        + ") and target attribute '"
-                        + targetPath
-                        + "' ("
-                        + targetClass
-                        + ") are of differing types ("
-                        + ""
-                        + ")");
-            }
-        }
+        completeValidation(rootBusinessObjectClass, otherBusinessObjectClass, new ValidationTrace());
     }
 
     /**
@@ -154,6 +110,7 @@ public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
             String currentValues[] = {"attribute = " + getSourceName(), "class = " + rootBusinessObjectClass,
                     "Exception = " + ex.getMessage()};
             tracer.createError("Unable to find attribute on class", currentValues);
+            LOG.error( "Exception while validating PrimitiveAttributeDefintion on " + rootBusinessObjectClass + ": " + this, ex);
         }
         try {
             if (!DataDictionary.isPropertyOf(otherBusinessObjectClass, targetName)) {
@@ -164,6 +121,7 @@ public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
             String currentValues[] = {"attribute = " + getTargetName(), "class = " + otherBusinessObjectClass,
                     "Exception = " + ex.getMessage()};
             tracer.createError("Unable to find attribute on class", currentValues);
+            LOG.error( "Exception while validating PrimitiveAttributeDefintion on " + rootBusinessObjectClass + ": " + this, ex);
         }
         try {
             Class sourceClass = DataDictionary.getAttributeClass(rootBusinessObjectClass, sourceName);
@@ -187,14 +145,16 @@ public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
         } catch (RuntimeException ex) {
             String currentValues[] = {"Exception = " + ex.getMessage()};
             tracer.createError("Unable to validate property", currentValues);
+            LOG.error( "Exception while validating PrimitiveAttributeDefintion on " + rootBusinessObjectClass + ": " + this, ex);
         }
     }
 
-    /**
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
-        return "PrimitiveAttributeDefinition (" + getSourceName() + "," + getTargetName() + ")";
+        StringBuilder builder = new StringBuilder();
+        builder.append("PrimitiveAttributeDefinition [sourceName=").append(this.sourceName).append(", targetName=")
+                .append(this.targetName).append("]");
+        return builder.toString();
     }
+
 }

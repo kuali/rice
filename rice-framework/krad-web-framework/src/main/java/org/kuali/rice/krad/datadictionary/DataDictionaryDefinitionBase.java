@@ -76,4 +76,11 @@ abstract public class DataDictionaryDefinitionBase extends DictionaryBeanBase im
     public void setGeneratedFromMetadata(boolean generatedFromMetadata) {
         this.generatedFromMetadata = generatedFromMetadata;
     }
+
+    /**
+     * Empty implementation so that all subclasses do not need to implement this deprecated method.
+     */
+    @Override
+    @Deprecated
+    public void completeValidation(Class<?> rootBusinessObjectClass, Class<?> otherBusinessObjectClass) {}
 }

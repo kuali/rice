@@ -20,14 +20,11 @@ import java.util.List;
 
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
-import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.krad.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validation.ValidationPattern;
@@ -413,6 +410,19 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     }
 
     /**
+     * This overridden method ...
+     *
+     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#dataDictionaryPostProcessing()
+     */
+    @Override
+    protected void dataDictionaryPostProcessing() {
+        super.dataDictionaryPostProcessing();
+        if ( attributeSecurity != null ) {
+            attributeSecurity.dataDictionaryPostProcessing();
+        }
+    }
+
+    /**
      * Directly validate simple fields, call completeValidation on Definition
      * fields.
      *
@@ -421,60 +431,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     @Override
     @Deprecated
     public void completeValidation(Class<?> rootObjectClass, Class<?> otherObjectClass) {
-        if (StringUtils.isEmpty(name)) {
-            throw new AttributeValidationException("blank name for bean: " + id);
-        }
-        try {
-            if (!DataDictionary.isPropertyOf(rootObjectClass, getName())) {
-                throw new AttributeValidationException("property '"
-                        + getName()
-                        + "' is not a property of class '"
-                        + rootObjectClass.getName()
-                        + "' ("
-                        + ""
-                        + ")");
-            }
-
-            //TODO currently requiring a control or controlField, but this should not be case (AttrField should probably do the check)
-            if (getControl() == null && getControlField() == null) {
-                throw new AttributeValidationException("property '"
-                        + getName()
-                        + "' in class '"
-                        + rootObjectClass.getName()
-                        + " does not have a control defined");
-            }
-
-            if (getControl() != null) {
-                getControl().completeValidation(rootObjectClass, otherObjectClass);
-            }
-
-            if (attributeSecurity != null) {
-                attributeSecurity.completeValidation(rootObjectClass, otherObjectClass);
-            }
-
-            if (validationPattern != null) {
-                validationPattern.completeValidation();
-            }
-
-            if (formatterClass != null) {
-                try {
-                    Class formatterClassObject = ClassUtils.getClass(ClassLoaderUtils.getDefaultClassLoader(),
-                            getFormatterClass());
-                    if (!Formatter.class.isAssignableFrom(formatterClassObject)) {
-                        throw new ClassValidationException("formatterClass is not a valid instance of "
-                                + Formatter.class.getName()
-                                + " instead was: "
-                                + formatterClassObject.getName());
-                    }
-                } catch (ClassNotFoundException e) {
-                    throw new ClassValidationException("formatterClass could not be found: " + getFormatterClass(), e);
-                }
-            }
-        } catch (RuntimeException ex) {
-            Logger.getLogger(getClass()).error(
-                    "Unable to validate attribute " + rootObjectClass + "." + getName() + ": " + ex.getMessage(), ex);
-            throw ex;
-        }
+        completeValidation(rootObjectClass, otherObjectClass, new ValidationTrace());
     }
 
     /**
@@ -484,32 +441,35 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(org.kuali.rice.krad.datadictionary.validator.ValidationTrace)
      */
     public void completeValidation(Class rootObjectClass, Class otherObjectClass, ValidationTrace tracer) {
-        tracer.addBean(this.getClass().getSimpleName(), "Attribute: " + getName());
+        tracer.addBean(this.getClass().getSimpleName(), "id: " + getId());
         try {
+            if (StringUtils.isBlank(getName())) {
+                String currentValues[] = {"id = " + getId(), "class = " + rootObjectClass.getName()};
+                tracer.createError("AttributeDefinition missing name", currentValues);
+            }
             if (!DataDictionary.isPropertyOf(rootObjectClass, getName())) {
                 String currentValues[] = {"property = " + getName(), "class = " + rootObjectClass.getName()};
                 tracer.createError("Property is not found in class", currentValues);
             }
 
-            //TODO currently requiring a control or controlField, but this should not be case (AttrField should probably do the check)
             if (getControl() == null && getControlField() == null) {
                 String currentValues[] = {"property = " + getName(), "class = " + rootObjectClass.getName()};
                 tracer.createError("Property does not have a control defined in the class", currentValues);
             }
 
+            if (getAttributeSecurity() != null) {
+                getAttributeSecurity().completeValidation(rootObjectClass, otherObjectClass, tracer.getCopy());
+            }
+
+            // KNS Controls - do not use KRAD Validation style
             if (getControl() != null) {
-                //getControl().completeValidation(rootObjectClass, otherObjectClass, tracer.getCopy());
+                getControl().completeValidation(rootObjectClass, otherObjectClass);
             }
-
-            if (attributeSecurity != null) {
-                attributeSecurity.completeValidation(rootObjectClass, otherObjectClass, tracer.getCopy());
-            }
-
             if (validationPattern != null) {
-                // validationPattern.completeValidation(tracer.getCopy());
+                 validationPattern.completeValidation();
             }
 
-            if (formatterClass != null) {
+            if (getFormatterClass() != null) {
                 try {
                     Class formatterClassObject = ClassUtils.getClass(ClassLoaderUtils.getDefaultClassLoader(),
                             getFormatterClass());
@@ -526,6 +486,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
             String currentValues[] =
                     {"attribute = " + rootObjectClass + "." + getName(), "Exception = " + ex.getMessage()};
             tracer.createError("Unable to validate attribute", currentValues);
+            LOG.error("Exception while validating AttributeDefinition: " + getId(), ex );
         }
     }
 

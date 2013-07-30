@@ -15,14 +15,13 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A single Relationship definition in the DataDictionary, which contains information concerning which primitive
@@ -48,6 +47,7 @@ import java.util.List;
  */
 @BeanTag(name = "relationshipDefinition-bean")
 public class RelationshipDefinition extends DataDictionaryDefinitionBase {
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RelationshipDefinition.class);
     private static final long serialVersionUID = 2946722646095412576L;
 
     protected String objectAttributeName; //Same as parentAttributeName of DataObjectRelationship
@@ -82,18 +82,6 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
      */
     @BeanTagAttribute(name = "targetClass")
     public Class<?> getTargetClass() {
-        if (targetClass == null) {
-            Class propertyClass = DataDictionary.getAttributeClass(sourceClass, objectAttributeName);
-            if (propertyClass == null) {
-                throw new AttributeValidationException("cannot get valid class for property '"
-                        + objectAttributeName
-                        + "' as an attribute of '"
-                        + sourceClass
-                        + "'");
-            }
-
-            targetClass = propertyClass;
-        }
         return targetClass;
     }
 
@@ -147,30 +135,36 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
     }
 
     /**
+     * This overridden method ...
+     *
+     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#dataDictionaryPostProcessing()
+     */
+    @Override
+    protected void dataDictionaryPostProcessing() {
+        super.dataDictionaryPostProcessing();
+        if (targetClass == null) {
+            Class<?> propertyClass = DataDictionary.getAttributeClass(sourceClass, objectAttributeName);
+            if (propertyClass != null) {
+                targetClass = propertyClass;
+            }
+        }
+        for (PrimitiveAttributeDefinition primitiveAttributeDefinition : primitiveAttributes) {
+            primitiveAttributeDefinition.dataDictionaryPostProcessing();
+        }
+        for (SupportAttributeDefinition supportAttributeDefinition : supportAttributes) {
+            supportAttributeDefinition.dataDictionaryPostProcessing();
+        }
+    }
+
+    /**
      * Directly validate simple fields, call completeValidation on Definition fields.
      *
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation()
      */
+    @Override
+    @Deprecated
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
-        String propertyName = objectAttributeName;
-        if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, propertyName)) {
-            throw new AttributeValidationException("property '"
-                    + propertyName
-                    + "' is not an attribute of class '"
-                    + rootBusinessObjectClass
-                    + "' ("
-                    + ""
-                    + ")");
-        }
-
-        getTargetClass(); // performs validation when this is called the first time
-
-        for (PrimitiveAttributeDefinition primitiveAttributeDefinition : primitiveAttributes) {
-            primitiveAttributeDefinition.completeValidation(rootBusinessObjectClass, targetClass);
-        }
-        for (SupportAttributeDefinition supportAttributeDefinition : supportAttributes) {
-            supportAttributeDefinition.completeValidation(rootBusinessObjectClass, targetClass);
-        }
+        completeValidation(rootBusinessObjectClass, otherBusinessObjectClass, new ValidationTrace());
     }
 
     /**
@@ -190,33 +184,22 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
         } catch (RuntimeException ex) {
             String currentValues[] = {"attribute = " + getObjectAttributeName(), "Exception = " + ex.getMessage()};
             tracer.createError("Unable to validate attribute", currentValues);
+            LOG.error( "Exception while validating attribute: " + getObjectAttributeName(), ex );
         }
 
         if (targetClass == null) {
-            Class propertyClass = DataDictionary.getAttributeClass(sourceClass, objectAttributeName);
-            if (propertyClass == null) {
-                String currentValues[] =
-                        {"property = " + getObjectAttributeName(), "sourceClass = " + getSourceClass()};
-                tracer.createError("Cannot get valid class for property", currentValues);
-            } else {
-                targetClass = propertyClass;
+            String currentValues[] =
+                    {"property = " + getObjectAttributeName(), "sourceClass = " + getSourceClass()};
+            tracer.createError("Cannot get valid class for property", currentValues);
+        } else {
+
+            for (PrimitiveAttributeDefinition primitiveAttributeDefinition : primitiveAttributes) {
+                primitiveAttributeDefinition.completeValidation(rootBusinessObjectClass, targetClass, tracer.getCopy());
+            }
+            for (SupportAttributeDefinition supportAttributeDefinition : supportAttributes) {
+                supportAttributeDefinition.completeValidation(rootBusinessObjectClass, targetClass, tracer.getCopy());
             }
         }
-
-        for (PrimitiveAttributeDefinition primitiveAttributeDefinition : primitiveAttributes) {
-            primitiveAttributeDefinition.completeValidation(rootBusinessObjectClass, targetClass, tracer.getCopy());
-        }
-        for (SupportAttributeDefinition supportAttributeDefinition : supportAttributes) {
-            supportAttributeDefinition.completeValidation(rootBusinessObjectClass, targetClass, tracer.getCopy());
-        }
-    }
-
-    /**
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        return "RelationshipDefinition for relationship " + getObjectAttributeName();
     }
 
     /**
@@ -261,6 +244,16 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
      */
     public void setSourceClass(Class<?> sourceClass) {
         this.sourceClass = sourceClass;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("RelationshipDefinition [objectAttributeName=").append(this.objectAttributeName)
+                .append(", sourceClass=").append(this.sourceClass).append(", targetClass=").append(this.targetClass)
+                .append(", primitiveAttributes=").append(this.primitiveAttributes).append(", supportAttributes=")
+                .append(this.supportAttributes).append("]");
+        return builder.toString();
     }
 }
 

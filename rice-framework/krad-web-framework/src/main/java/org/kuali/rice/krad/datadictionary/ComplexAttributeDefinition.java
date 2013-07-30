@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
-import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 
 /**
  * A complex attribute definition in the DataDictictionary. This can be be used to define
@@ -25,6 +25,7 @@ import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ComplexAttributeDefinition extends AttributeDefinitionBase {
+    private static final long serialVersionUID = 3977923609388434447L;
 
     protected DataDictionaryEntry dataObjectEntry;
 
@@ -42,20 +43,11 @@ public class ComplexAttributeDefinition extends AttributeDefinitionBase {
         this.dataObjectEntry = dataObjectEntry;
     }
 
-    /**
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class,
-     *      java.lang.Class)
-     */
-    @Override
-    public void completeValidation(Class<?> rootObjectClass, Class<?> otherObjectClass) {
+    public void completeValidation(Class<?> rootObjectClass, Class<?> otherObjectClass, ValidationTrace tracer) {
+        tracer.addBean(this.getClass().getSimpleName(), "id: " + getId());
         if (getDataObjectEntry() == null) {
-            throw new AttributeValidationException("complex property '"
-                    + getName()
-                    + "' in class '"
-                    + rootObjectClass.getName()
-                    + " does not have a dataObjectClass defined");
-
+            String currentValues[] = {"id = " + getId(), "class = " + rootObjectClass.getName()};
+            tracer.createError("ComplexAttributeDefinition missing dataObjectClass", currentValues);
         }
     }
-
 }

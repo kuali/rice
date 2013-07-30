@@ -32,6 +32,7 @@ public interface DataDictionaryDefinition extends DictionaryBean, Serializable {
      * @throws org.kuali.rice.krad.datadictionary.exception.CompletionException if a problem arises during
      * validation-completion
      */
+    @Deprecated
     public void completeValidation(Class<?> rootBusinessObjectClass, Class<?> otherBusinessObjectClass);
 
     public String getId();

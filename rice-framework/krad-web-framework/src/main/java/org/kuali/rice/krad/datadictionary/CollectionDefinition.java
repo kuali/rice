@@ -17,7 +17,6 @@ package org.kuali.rice.krad.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.data.metadata.DataObjectCollection;
-import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.validation.capability.CollectionSizeConstrainable;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
@@ -254,16 +253,9 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation()
      */
     @Override
+    @Deprecated
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
-        if (!DataDictionary.isCollectionPropertyOf(rootBusinessObjectClass, name)) {
-            throw new AttributeValidationException("property '"
-                    + name
-                    + "' is not a collection property of class '"
-                    + rootBusinessObjectClass
-                    + "' ("
-                    + ""
-                    + ")");
-        }
+        completeValidation(rootBusinessObjectClass, otherBusinessObjectClass, new ValidationTrace());
     }
 
     /**

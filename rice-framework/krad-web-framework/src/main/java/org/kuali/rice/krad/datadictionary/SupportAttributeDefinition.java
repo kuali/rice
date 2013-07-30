@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
-import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
@@ -37,6 +36,7 @@ import org.kuali.rice.krad.util.ExternalizableBusinessObjectUtils;
  */
 @BeanTag(name = "supportAttributeDefinition-bean")
 public class SupportAttributeDefinition extends PrimitiveAttributeDefinition {
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SupportAttributeDefinition.class);
     private static final long serialVersionUID = -1719022365280776405L;
 
     protected boolean identifier;
@@ -62,23 +62,9 @@ public class SupportAttributeDefinition extends PrimitiveAttributeDefinition {
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class,
      *      java.lang.Object)
      */
+    @Override
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
-        if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, getSourceName())) {
-            throw new AttributeValidationException("unable to find attribute '"
-                    + getSourceName()
-                    + "' in relationship class '"
-                    + rootBusinessObjectClass
-                    + "' ("
-                    + ""
-                    + ")");
-        }
-        if (!DataDictionary.isPropertyOf(otherBusinessObjectClass, getTargetName())
-                && !ExternalizableBusinessObjectUtils.isExternalizableBusinessObjectInterface(
-                otherBusinessObjectClass)) {
-            throw new AttributeValidationException(
-                    "unable to find attribute '" + getTargetName() + "' in related class '" + otherBusinessObjectClass
-                            .getName() + "' (" + "" + ")");
-        }
+        completeValidation(rootBusinessObjectClass, otherBusinessObjectClass, new ValidationTrace());
     }
 
     /**
@@ -86,6 +72,7 @@ public class SupportAttributeDefinition extends PrimitiveAttributeDefinition {
      *
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(org.kuali.rice.krad.datadictionary.validator.ValidationTrace)
      */
+    @Override
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass,
             ValidationTrace tracer) {
         tracer.addBean(this.getClass().getSimpleName(), ValidationTrace.NO_BEAN_ID);
@@ -104,15 +91,16 @@ public class SupportAttributeDefinition extends PrimitiveAttributeDefinition {
         } catch (RuntimeException ex) {
             String currentValues[] = {"Exception = " + ex.getMessage()};
             tracer.createError("Unable to validate attribute", currentValues);
+            LOG.error( "Exception while validating SupportAttributeDefintion on " + rootBusinessObjectClass + ": " + this, ex);
         }
     }
 
-    /**
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
-        return "SupportAttributeDefinition (" + getSourceName() + "," + getTargetName() + "," + identifier + ")";
+        StringBuilder builder = new StringBuilder();
+        builder.append("SupportAttributeDefinition [identifier=").append(this.identifier).append(", sourceName=")
+                .append(this.sourceName).append(", targetName=").append(this.targetName).append("]");
+        return builder.toString();
     }
 
 }

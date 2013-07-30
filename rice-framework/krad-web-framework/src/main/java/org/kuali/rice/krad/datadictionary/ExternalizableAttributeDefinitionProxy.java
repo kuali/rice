@@ -23,6 +23,7 @@ import org.kuali.rice.krad.datadictionary.exception.CompletionException;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validation.ValidationPattern;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 /**
@@ -125,6 +126,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
     /**
      * @see org.kuali.rice.krad.datadictionary.AttributeDefinition#getForceUppercase()
      */
+    @Override
     public Boolean getForceUppercase() {
         Boolean value = super.getForceUppercase();
         if (value == null) {
@@ -137,6 +139,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
     /**
      * @see org.kuali.rice.krad.datadictionary.AttributeDefinition#getName()
      */
+    @Override
     public String getName() {
         String name = super.getName();
         if (name == null) {
@@ -149,6 +152,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
     /**
      * @see org.kuali.rice.krad.datadictionary.AttributeDefinition#getLabel()
      */
+    @Override
     public String getLabel() {
         String label = super.getLabel();
 
@@ -162,6 +166,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
     /**
      * @see org.kuali.rice.krad.datadictionary.AttributeDefinition#getShortLabel()
      */
+    @Override
     public String getShortLabel() {
         String shortLabel = super.getDirectShortLabel();
         if (shortLabel == null) {
@@ -174,6 +179,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
     /**
      * @see org.kuali.rice.krad.datadictionary.AttributeDefinition#getMaxLength()
      */
+    @Override
     public Integer getMaxLength() {
         Integer maxLength = super.getMaxLength();
         if (maxLength == null) {
@@ -186,6 +192,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
     /**
      * @see org.kuali.rice.krad.datadictionary.AttributeDefinition#hasValidationPattern()
      */
+    @Override
     public boolean hasValidationPattern() {
         return (getValidationPattern() != null);
     }
@@ -193,6 +200,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
     /**
      * @see org.kuali.rice.krad.datadictionary.AttributeDefinition#getValidationPattern()
      */
+    @Override
     public ValidationPattern getValidationPattern() {
         ValidationPattern validationPattern = super.getValidationPattern();
         if (validationPattern == null) {
@@ -205,6 +213,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
     /**
      * @see org.kuali.rice.krad.datadictionary.AttributeDefinition#isRequired()
      */
+    @Override
     public Boolean isRequired() {
         Boolean required = super.isRequired();
         if (required == null) {
@@ -217,6 +226,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
     /**
      * @see org.kuali.rice.krad.datadictionary.AttributeDefinition#getControl()
      */
+    @Override
     public ControlDefinition getControl() {
         ControlDefinition control = super.getControl();
         if (control == null) {
@@ -229,6 +239,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
     /**
      * @see org.kuali.rice.krad.datadictionary.AttributeDefinition#getSummary()
      */
+    @Override
     public String getSummary() {
         String summary = super.getSummary();
         if (summary == null) {
@@ -241,6 +252,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
     /**
      * @see org.kuali.rice.krad.datadictionary.AttributeDefinition#getDescription()
      */
+    @Override
     public String getDescription() {
         String description = super.getDescription();
         if (description == null) {
@@ -253,6 +265,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
     /**
      * @see org.kuali.rice.krad.datadictionary.AttributeDefinition#hasFormatterClass()
      */
+    @Override
     public boolean hasFormatterClass() {
         return (getFormatterClass() != null);
     }
@@ -260,6 +273,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
     /**
      * @see org.kuali.rice.krad.datadictionary.AttributeDefinition#getFormatterClass()
      */
+    @Override
     public String getFormatterClass() {
         String formatterClass = super.getFormatterClass();
         if (formatterClass == null) {
@@ -285,30 +299,26 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation()
      */
     @Override
-    public void completeValidation(Class rootObjectClass, Class otherObjectClass) {
+    public void completeValidation(Class rootObjectClass, Class otherObjectClass, ValidationTrace tracer) {
+        tracer.addBean(this.getClass().getSimpleName(), "id: " + getId());
         if (StringUtils.isBlank(sourceExternalizableBusinessObjectInterface)) {
-            throw new IllegalArgumentException("invalid (blank) sourceClassName for attribute '"
-                    + rootObjectClass.getName()
-                    + "."
-                    + getName()
-                    + "'");
+            String currentValues[] = {"property = " + getName(), "class = " + rootObjectClass.getName()};
+            tracer.createError("invalid (blank) sourceClassName for", currentValues);
         }
         if (StringUtils.isBlank(sourceAttributeName)) {
-            throw new IllegalArgumentException("invalid (blank) sourceAttributeName for attribute '"
-                    + rootObjectClass.getName()
-                    + "."
-                    + getName()
-                    + "'");
+            String currentValues[] = {"property = " + getName(), "class = " + rootObjectClass.getName()};
+            tracer.createError("invalid (blank) sourceAttributeName for", currentValues);
         }
         if (DataDictionary.validateEBOs) {
             getDelegate(); // forces validation
-            super.completeValidation(rootObjectClass, otherObjectClass);
+            super.completeValidation(rootObjectClass, otherObjectClass, tracer);
         }
     }
 
     /**
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         String name = super.getName();
 

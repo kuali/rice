@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.kns.kim.type;
 
+import java.util.Map;
+
 import org.apache.commons.lang.ClassUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
-import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
-import org.kuali.rice.krad.datadictionary.exception.ClassValidationException;
-
-import java.util.Map;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 
 /**
  * @deprecated A krad integrated type service base class will be provided in the future.
@@ -110,6 +110,7 @@ public final class KimAttributeDefinition extends AttributeDefinition {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return new ToStringBuilder( this )
 			.append( "name", getName() )
@@ -134,23 +135,17 @@ public final class KimAttributeDefinition extends AttributeDefinition {
     }
 
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void completeValidation(Class rootObjectClass, Class otherObjectClass) {
-		if (lookupBoClass != null) {
+	public void completeValidation(Class rootObjectClass, Class otherObjectClass, ValidationTrace tracer) {
+		super.completeValidation(rootObjectClass, otherObjectClass,tracer);
+		if ( StringUtils.isNotBlank(lookupBoClass) ) {
         	try {
-        		Class lookupBoClassObject = ClassUtils.getClass(ClassLoaderUtils.getDefaultClassLoader(), getLookupBoClass());
-        		if (!BusinessObject.class.isAssignableFrom(lookupBoClassObject)) {
-        			throw new ClassValidationException("lookupBoClass is not a valid instance of " + BusinessObject.class.getName() + " instead was: " + lookupBoClassObject.getName());
-        		}
+        		ClassUtils.getClass(ClassLoaderUtils.getDefaultClassLoader(), getLookupBoClass());
         	} catch (ClassNotFoundException e) {
-        		throw new ClassValidationException("lookupBoClass could not be found: " + getLookupBoClass(), e);
+                String currentValues[] = {"property = " + getName(), "class = " + rootObjectClass.getName(), "lookupBoClass = " + getLookupBoClass()};
+                tracer.createError("lookupBoClass could not be found", currentValues);
         	}
         }
-		super.completeValidation(rootObjectClass, otherObjectClass);
 	}
-    
-    
 
-	
 }

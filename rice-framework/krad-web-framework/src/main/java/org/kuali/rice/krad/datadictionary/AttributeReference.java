@@ -15,18 +15,22 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.core.api.util.type.KualiPercent;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-
 /**
  * Object for creating generic attribute definitions in the data dictionary
  *
+ * @deprecated Should be removed - with Spring, parent attribute definitions do not
+ * need to be bound to a business object.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Deprecated
 public class AttributeReference extends PersistableBusinessObjectBase {
     private static final long serialVersionUID = 6582568341825342401L;
 
@@ -279,6 +283,7 @@ public class AttributeReference extends PersistableBusinessObjectBase {
      *
      * @return Returns the newCollectionRecord.
      */
+    @Override
     public boolean isNewCollectionRecord() {
         return newCollectionRecord;
     }
@@ -288,6 +293,7 @@ public class AttributeReference extends PersistableBusinessObjectBase {
      *
      * @param newCollectionRecord The newCollectionRecord to set.
      */
+    @Override
     public void setNewCollectionRecord(boolean newCollectionRecord) {
         this.newCollectionRecord = newCollectionRecord;
     }

@@ -15,6 +15,13 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.data.metadata.DataObjectAttribute;
@@ -30,13 +37,6 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.InitializingBean;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Contains common properties and methods for data dictionary entries
@@ -337,6 +337,21 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
     }
 
 
+    @Override
+    protected void dataDictionaryPostProcessing() {
+        super.dataDictionaryPostProcessing();
+        embedMetadata();
+        for (AttributeDefinition definition : getAttributes()) {
+            definition.dataDictionaryPostProcessing();
+        }
+        for (CollectionDefinition definition : getCollections()) {
+            definition.dataDictionaryPostProcessing();
+        }
+        for (RelationshipDefinition definition : getRelationships()) {
+            definition.dataDictionaryPostProcessing();
+        }
+    }
+
     /**
      * Directly validate simple fields, call completeValidation on Definition
      * fields.
@@ -350,7 +365,6 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
                 LOG.debug( "Processing Validation for " + this.getClass().getSimpleName() + " for class: " + getEntryClass().getName() );
             }
             tracer.addBean(this.getClass().getSimpleName(), getEntryClass().getSimpleName());
-            embedMetadata();
             for (AttributeDefinition definition : getAttributes()) {
                 definition.completeValidation(getEntryClass(), null, tracer.getCopy());
             }

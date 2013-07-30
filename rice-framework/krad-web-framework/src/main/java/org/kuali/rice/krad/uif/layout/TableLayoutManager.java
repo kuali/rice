@@ -44,6 +44,7 @@ import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.RichTable;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
@@ -553,48 +554,34 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             this.addStyleClass(CssConstants.Classes.HAS_ADD_LINE);
         }
 
+        // do not allow null rowCss
         if (rowCss == null) {
             rowCss = "";
         }
 
-        int evenRemainder = 0;
-        int oddRemainder = 1;
-        if (!addLineInTable) {
-            evenRemainder = 1;
-            oddRemainder = 0;
-        }
-
-        for (String cssRule : conditionalRowCssClasses.keySet()) {
-            if (cssRule.startsWith(UifConstants.EL_PLACEHOLDER_PREFIX)) {
-                //cssRule = StringUtils.removeStart("@{", cssRule);
-                //cssRule = StringUtils.removeEnd("}", cssRule);
-                Map<String, Object> lineContext = new HashMap<String, Object>();
-                //Object line = ObjectPropertyUtils.getPropertyValue(model, bindingPath);
-
-                lineContext.putAll(this.getContext());
-                lineContext.put(UifConstants.ContextVariableNames.LINE, currentLine);
-                lineContext.put(UifConstants.ContextVariableNames.MANAGER, this);
-                lineContext.put(UifConstants.ContextVariableNames.VIEW, view);
-                lineContext.put(UifConstants.ContextVariableNames.LINE_SUFFIX, idSuffix);
-                lineContext.put(UifConstants.ContextVariableNames.INDEX, new Integer(lineIndex));
-                lineContext.put(UifConstants.ContextVariableNames.COLLECTION_GROUP, collectionGroup);
-                lineContext.put(UifConstants.ContextVariableNames.IS_ADD_LINE, isAddLine && !isSeparateAddLine());
-                lineContext.put(UifConstants.ContextVariableNames.READONLY_LINE, collectionGroup.isReadOnly());
-
-                String outcome = expressionEvaluator.evaluateExpressionTemplate(lineContext, cssRule);
-                if (outcome != null && Boolean.parseBoolean(outcome)) {
-                    rowCss = rowCss + " " + conditionalRowCssClasses.get(cssRule);
-                }
-            } else if (cssRule.equals(UifConstants.RowSelection.ALL)) {
-                rowCss = rowCss + " " + conditionalRowCssClasses.get(cssRule);
-            } else if (cssRule.equals(UifConstants.RowSelection.EVEN) && lineIndex % 2 == evenRemainder) {
-                rowCss = rowCss + " " + conditionalRowCssClasses.get(cssRule);
-            } else if ((cssRule.equals(UifConstants.RowSelection.ODD) && (lineIndex % 2 == oddRemainder
-                    || lineIndex == -1))) {
-                rowCss = rowCss + " " + conditionalRowCssClasses.get(cssRule);
-            } else if (StringUtils.isNumeric(cssRule) && (lineIndex + 1) == Integer.parseInt(cssRule)) {
-                rowCss = rowCss + " " + conditionalRowCssClasses.get(cssRule);
+        // conditionalRowCssClass generation logic, if applicable
+        if (conditionalRowCssClasses != null && !conditionalRowCssClasses.isEmpty()) {
+            int oddRemainder = 1;
+            if (!addLineInTable) {
+                oddRemainder = 0;
             }
+
+            boolean isOdd = lineIndex % 2 == oddRemainder || lineIndex == -1;
+            Map<String, Object> lineContext = new HashMap<String, Object>();
+
+            lineContext.putAll(this.getContext());
+            lineContext.put(UifConstants.ContextVariableNames.LINE, currentLine);
+            lineContext.put(UifConstants.ContextVariableNames.MANAGER, this);
+            lineContext.put(UifConstants.ContextVariableNames.VIEW, view);
+            lineContext.put(UifConstants.ContextVariableNames.LINE_SUFFIX, idSuffix);
+            lineContext.put(UifConstants.ContextVariableNames.INDEX, new Integer(lineIndex));
+            lineContext.put(UifConstants.ContextVariableNames.COLLECTION_GROUP, collectionGroup);
+            lineContext.put(UifConstants.ContextVariableNames.IS_ADD_LINE, isAddLine && !isSeparateAddLine());
+            lineContext.put(UifConstants.ContextVariableNames.READONLY_LINE, collectionGroup.isReadOnly());
+
+            // get row css based on conditionalRowCssClasses map
+            rowCss = rowCss + " " + KRADUtils.generateRowCssClassString(conditionalRowCssClasses, lineIndex, isOdd,
+                    lineContext, expressionEvaluator);
         }
 
         rowCss = StringUtils.removeStart(rowCss, " ");
@@ -2135,7 +2122,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         if (this.headerLabels != null) {
             List<Label> headerLabelsCopy = Lists.newArrayListWithExpectedSize(this.headerLabels.size());
             for (Label headerLabel : headerLabels) {
-                headerLabelsCopy.add((Label) headerLabel.copy());
+                if (headerLabel != null) {
+                    headerLabelsCopy.add((Label) headerLabel.copy());
+                }
             }
             tableLayoutManagerCopy.setHeaderLabels(headerLabelsCopy);
         }
@@ -2143,7 +2132,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         if (this.allRowFields != null) {
             List<Field> allRowFieldsCopy = Lists.newArrayListWithExpectedSize(allRowFields.size());
             for (Field allRowField : allRowFields) {
-                allRowFieldsCopy.add((Field) allRowField.copy());
+                if (allRowField != null) {
+                    allRowFieldsCopy.add((Field) allRowField.copy());
+                }
             }
             tableLayoutManagerCopy.setAllRowFields(allRowFieldsCopy);
         }
@@ -2151,7 +2142,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         if (this.firstRowFields != null) {
             List<Field> firstRowFieldsCopy = Lists.newArrayListWithExpectedSize(firstRowFields.size());
             for (Field firstRowField : firstRowFields) {
-                firstRowFieldsCopy.add((Field) firstRowField.copy());
+                if (firstRowField != null) {
+                    firstRowFieldsCopy.add((Field) firstRowField.copy());
+                }
             }
             tableLayoutManagerCopy.setFirstRowFields(firstRowFieldsCopy);
         }
@@ -2225,7 +2218,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                     footerCalculationComponents.size());
             for (Component footerCalculationComponent : footerCalculationComponents) {
                 if (footerCalculationComponent != null) {
-                    footerCalculationComponentsCopy.add((Component) footerCalculationComponent.copy());
+                    if (footerCalculationComponent != null) {
+                        footerCalculationComponentsCopy.add((Component) footerCalculationComponent.copy());
+                    }
                 }
             }
             tableLayoutManagerCopy.setFooterCalculationComponents(footerCalculationComponentsCopy);

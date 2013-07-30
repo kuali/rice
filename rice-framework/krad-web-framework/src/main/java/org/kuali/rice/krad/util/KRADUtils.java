@@ -49,6 +49,7 @@ import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.field.SpaceField;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.util.Assert;
@@ -974,20 +975,19 @@ public final class KRADUtils {
             String propertyPath = ((DataField) field).getBindingInfo().getBindingPath();
             Object valueObject = null;
 
-            if (field.isHidden()){
+            if (field.isHidden()) {
                 return "";
             }
 
             // check if readable
-            if (ObjectPropertyUtils.isReadableProperty(model, propertyPath)){
+            if (ObjectPropertyUtils.isReadableProperty(model, propertyPath)) {
                 valueObject = ObjectPropertyUtils.getPropertyValue(model, propertyPath);
             }
 
             // use object's string value
             if (valueObject != null && !((DataField) field).isApplyMask()) {
                 value = valueObject.toString();
-            }
-            else if(valueObject != null && ((DataField) field).isApplyMask()){
+            } else if (valueObject != null && ((DataField) field).isApplyMask()) {
                 value = ((DataField) field).getMaskFormatter().maskValue(valueObject);
             }
         } else if (field instanceof ActionField) {
@@ -1015,11 +1015,10 @@ public final class KRADUtils {
             // check first component type to extract value
             if (firstComponent != null && firstComponent instanceof Field) {
                 value = getSimpleFieldValue(model, field);
-            } else if (firstComponent instanceof Action
-                    && StringUtils.isNotBlank(((Action) firstComponent).getActionLabel())) {
+            } else if (firstComponent instanceof Action && StringUtils.isNotBlank(
+                    ((Action) firstComponent).getActionLabel())) {
                 value = ((Action) firstComponent).getActionLabel();
-            } else if (firstComponent instanceof Action
-                    && ((Action) firstComponent).getActionImage() != null) {
+            } else if (firstComponent instanceof Action && ((Action) firstComponent).getActionImage() != null) {
                 value = ((Action) firstComponent).getActionImage().getAltText();
             } else if (firstComponent instanceof Link) {
                 value = ((Link) firstComponent).getLinkText();
@@ -1057,5 +1056,42 @@ public final class KRADUtils {
         }
 
         return message;
+    }
+
+    /**
+     * Get the rowCss for the line specified, by evaluating the conditionalRowCssClasses map for that row
+     *
+     * @param conditionalRowCssClasses the conditionalRowCssClass map, where key is the condition and value is
+     * the class(es)
+     * @param lineIndex the line/row index
+     * @param isOdd true if the row is considered odd
+     * @param lineContext the lineContext for expressions, pass null if not applicable
+     * @param expressionEvaluator the expressionEvaluator, pass null if not applicable
+     * @return row csss class String for the class attribute of this row
+     */
+    public static String generateRowCssClassString(Map<String, String> conditionalRowCssClasses, int lineIndex,
+            boolean isOdd, Map<String, Object> lineContext, ExpressionEvaluator expressionEvaluator) {
+        String rowCss = "";
+        for (String cssRule : conditionalRowCssClasses.keySet()) {
+            if (cssRule.startsWith(UifConstants.EL_PLACEHOLDER_PREFIX) && lineContext != null &&
+                    expressionEvaluator != null) {
+                String outcome = expressionEvaluator.evaluateExpressionTemplate(lineContext, cssRule);
+                if (outcome != null && Boolean.parseBoolean(outcome)) {
+                    rowCss = rowCss + " " + conditionalRowCssClasses.get(cssRule);
+                }
+            } else if (cssRule.equals(UifConstants.RowSelection.ALL)) {
+                rowCss = rowCss + " " + conditionalRowCssClasses.get(cssRule);
+            } else if (cssRule.equals(UifConstants.RowSelection.EVEN) && !isOdd) {
+                rowCss = rowCss + " " + conditionalRowCssClasses.get(cssRule);
+            } else if (cssRule.equals(UifConstants.RowSelection.ODD) && isOdd) {
+                rowCss = rowCss + " " + conditionalRowCssClasses.get(cssRule);
+            } else if (StringUtils.isNumeric(cssRule) && (lineIndex + 1) == Integer.parseInt(cssRule)) {
+                rowCss = rowCss + " " + conditionalRowCssClasses.get(cssRule);
+            }
+        }
+
+        rowCss = StringUtils.removeStart(rowCss, " ");
+
+        return rowCss;
     }
 }

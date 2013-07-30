@@ -19,10 +19,10 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
-import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.util.KRADUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,12 +71,14 @@ public class CssGridLayoutManager extends LayoutManagerBase {
         super.performFinalize(view, model, container);
 
         int rowSpaceLeft = NUMBER_OF_COLUMNS;
-        int rowIndex = 1;
+        int rowIndex = 0;
+        boolean isOdd = true;
         List<Component> currentRow = new ArrayList<Component>();
         for (Component item : container.getItems()) {
             if (item == null) {
                 continue;
             }
+            isOdd = rowIndex % 2 == 0;
 
             // set colSpan to default setting (9 is the default)
             int colSpan = this.defaultItemColSpan;
@@ -104,7 +106,8 @@ public class CssGridLayoutManager extends LayoutManagerBase {
                 currentRow.add(item);
 
                 // determine "row" div css
-                rowCssClassAttributes.add(generateRowClassProperty(rowIndex));
+                rowCssClassAttributes.add(KRADUtils.generateRowCssClassString(conditionalRowCssClasses, rowIndex, isOdd,
+                        null, null));
                 rowIndex++;
                 rowSpaceLeft = NUMBER_OF_COLUMNS - colSpan;
             } else if (rowSpaceLeft == 0) {
@@ -114,41 +117,20 @@ public class CssGridLayoutManager extends LayoutManagerBase {
                 currentRow = new ArrayList<Component>();
 
                 // determine "row" div css
-                rowCssClassAttributes.add(generateRowClassProperty(rowIndex));
+                rowCssClassAttributes.add(KRADUtils.generateRowCssClassString(conditionalRowCssClasses, rowIndex, isOdd,
+                        null, null));
                 rowIndex++;
                 rowSpaceLeft = NUMBER_OF_COLUMNS;
             }
         }
 
+        isOdd = rowIndex % 2 == 0;
         // add the last row if it wasn't full (but has items)
         if (!currentRow.isEmpty()) {
             // determine "row" div css
-            rowCssClassAttributes.add(generateRowClassProperty(rowIndex));
+            rowCssClassAttributes.add(KRADUtils.generateRowCssClassString(conditionalRowCssClasses, rowIndex, isOdd,
+                    null, null));
             rows.add(currentRow);
-        }
-    }
-
-    /**
-     * Generate the row's class attribute based on settings passed into the conditionalRowCssClasses map
-     *
-     * @param index the current row's index
-     * @return String that are the class selector names seperated by spaces
-     */
-    private String generateRowClassProperty(int index) {
-        String stringIndex = String.valueOf(index);
-        String allClass = StringUtils.isNotBlank(conditionalRowCssClasses.get(UifConstants.RowSelection.ALL)) ?
-                " " + conditionalRowCssClasses.get(UifConstants.RowSelection.ALL) : "";
-        String evenClass = StringUtils.isNotBlank(conditionalRowCssClasses.get(UifConstants.RowSelection.EVEN)) ?
-                " " + conditionalRowCssClasses.get(UifConstants.RowSelection.EVEN) : "";
-        String oddClass = StringUtils.isNotBlank(conditionalRowCssClasses.get(UifConstants.RowSelection.ODD)) ?
-                " " + conditionalRowCssClasses.get(UifConstants.RowSelection.ODD) : "";
-        String customClass = StringUtils.isNotBlank(conditionalRowCssClasses.get(stringIndex)) ?
-                " " + conditionalRowCssClasses.get(stringIndex) : "";
-
-        if (index % 2 == 0) {
-            return rowLayoutCssClass + allClass + evenClass + customClass;
-        } else {
-            return rowLayoutCssClass + allClass + oddClass + customClass;
         }
     }
 
@@ -263,7 +245,7 @@ public class CssGridLayoutManager extends LayoutManagerBase {
         super.copyProperties(component);
         CssGridLayoutManager cssGridLayoutManagerCopy = (CssGridLayoutManager) component;
 
-        if (this.rowLayoutCssClass != null){
+        if (this.rowLayoutCssClass != null) {
             cssGridLayoutManagerCopy.setRowLayoutCssClass(this.rowLayoutCssClass);
         }
 

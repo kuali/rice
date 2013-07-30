@@ -27,7 +27,7 @@ import org.junit.Test;
 public class CollectionTotallingSmokeTest extends SmokeTestBase {
 
     /**
-     * "/kr-krad/uicomponents?viewId=UifCompView_KNS&methodToCall=start&readOnlyFields=field91";
+     * "/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&readOnlyFields=field91";
      */
     public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=Demo-CollectionTotaling&methodToCall=start";
 

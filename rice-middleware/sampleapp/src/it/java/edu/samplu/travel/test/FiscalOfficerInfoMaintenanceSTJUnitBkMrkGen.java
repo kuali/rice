@@ -16,6 +16,7 @@
 
 package edu.samplu.travel.test;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -28,6 +29,7 @@ public class FiscalOfficerInfoMaintenanceSTJUnitBkMrkGen extends FiscalOfficerIn
         return BOOKMARK_URL;
     }
 
+    @Ignore // link removed
     @Test
     public void testFiscalOfficerInfoMaintenanceBookmark() throws Exception {
         testFiscalOfficerInfoMaintenanceBookmark(this);

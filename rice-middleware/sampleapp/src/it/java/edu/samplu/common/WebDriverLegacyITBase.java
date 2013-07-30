@@ -116,7 +116,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     /**
      * (//a[contains(text(),'Configuration Test View')])[3]
      */
-    public static final String CONFIGURATION_VIEW_XPATH = "(//a[contains(text(),'Configuration Test View')])[3]";
+    public static final String CONFIGURATION_VIEW_XPATH = "(//a[contains(text(),'Configuration Test View')])";
 
     /**
      * copy
@@ -353,7 +353,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     /**
      * (//a[contains(text(),'Validation Framework Demo')])[2]
      */
-    public static final String VALIDATION_FRAMEWORK_DEMO_XPATH = "(//a[contains(text(),'Validation Framework Demo')])[2]";
+    public static final String VALIDATION_FRAMEWORK_DEMO_XPATH = "(//a[contains(text(),'Validation Framework Demo')])";
 
     /**
      * Kuali :: Collection Totaling
@@ -1657,7 +1657,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedDocHandlerUrl']","${kr.url}/maintenance.do?methodToCall=docHandler");
         
         //waitAndTypeByXpath("//input[@id='document.newMaintainableObject.actualNotificationFromAddress']", "NFA");
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.label']", "TestDocument Label");
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.label']", "Label for " + docTypeName);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedHelpDefinitionUrl']","default.htm?turl=WordDocuments%2Fdocumenttype.htm");
         waitAndClickByXpath("//*[@name='methodToCall.route' and @alt='submit']");
         checkForIncidentReport();
@@ -2123,7 +2123,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         String stateLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.state.StateBo!!).(((countryCode:document.newMaintainableObject.countryCode,code:document.newMaintainableObject.stateCode,))).((`document.newMaintainableObject.countryCode:countryCode,document.newMaintainableObject.stateCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
                 + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
         waitAndClickByXpath(stateLookUp);
-        waitAndTypeByName("code", RandomStringUtils.randomAlphabetic(2));
+        waitAndTypeByName("code", "IN");
         waitAndClickSearch();
         waitAndClickReturnValue();
         String countyName = "Validation Test County" + ITUtil.createUniqueDtsPlusTwoRandomChars();
@@ -3322,6 +3322,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         while (hasDocError("same primary key already exists") && attemptCount < 25) {
             clearTextByXpath(DOC_CODE_XPATH);
             waitAndTypeByXpath(DOC_CODE_XPATH, Character.toString((char) ('A' + attemptCount++)));
+            Thread.sleep(2000); // wait for validation
         }
         blanketApproveTest();
         assertDocFinal(docId);
@@ -3772,7 +3773,8 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndCreateNew();
         String docId = waitForDocId();
         assertBlanketApproveButtonsPresent();
-        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Document Type " + ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits());
+        String dts = ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits();
+        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Document Type " + dts);
         String parentDocType = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:document.newMaintainableObject.parentDocType.name,documentTypeId:document.newMaintainableObject.docTypeParentId,))).((`document.newMaintainableObject.parentDocType.name:name,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
                 + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
         waitAndClickByXpath(parentDocType);
@@ -3783,7 +3785,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedDocHandlerUrl']",
                 "${kr.url}/maintenance.do?methodToCall=docHandler");
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.label']",
-                "Workflow Maintenance Document Type Document");
+                "Workflow Maintenance Document Type Document " + dts);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedHelpDefinitionUrl']",
                 "default.htm?turl=WordDocuments%2Fdocumenttype.htm");
         blanketApproveTest();

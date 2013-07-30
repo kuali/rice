@@ -53,8 +53,8 @@ public abstract class IdentityPersonLookUpEditAbstractSmokeTestBase extends Admi
         passed();
     }
     
-    public void testIdentityPersonLookUpEdit() throws Exception
-    {
+    public void testIdentityPersonLookUpEdit() throws Exception {
+        // This tests only runs correctly the first time.
         selectFrameIframePortlet();
         waitAndTypeByName("principalName","fran");
         waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]");

@@ -15,6 +15,7 @@
  */
 package edu.samplu.travel.krad.test;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -22,6 +23,7 @@ import org.junit.Test;
  */
 public class TravelAccountLookupSTJUnitNavGen extends TravelAccountLookupSTJUnitBase {
 
+    @Ignore // link removed
     @Test
     public void testTravelAccountLookupNav() throws Exception {
         testTravelAccountLookupNav(this);

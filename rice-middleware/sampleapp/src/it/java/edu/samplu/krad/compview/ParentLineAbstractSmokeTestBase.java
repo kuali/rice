@@ -27,9 +27,9 @@ import edu.samplu.common.WebDriverLegacyITBase;
 public abstract class ParentLineAbstractSmokeTestBase extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/uicomponents?viewId=RichMessagesView&methodToCall=start
+     * /kr-krad/uicomponents?methodToCall=start&readOnlyFields=field91&viewId=UifCompView#UifCompView-Page7
      */
-    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?methodToCall=start&readOnlyFields=field91&viewId=UifCompView_KNS#UifCompView-Page7";
+    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?methodToCall=start&readOnlyFields=field91&viewId=UifCompView#UifCompView-Page7";
             
     /**
      * Nav tests start at {@link edu.samplu.common.ITUtil#PORTAL}.  Bookmark Tests should override and return {@link ParentLineAbstractSmokeTestBase#BOOKMARK_URL}

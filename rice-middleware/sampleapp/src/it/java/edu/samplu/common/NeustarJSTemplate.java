@@ -15,11 +15,11 @@
  */
 package edu.samplu.common;
 
-import java.io.File;
-import java.util.Properties;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.io.File;
+import java.util.Properties;
 
 /**
  * TODO Setup as command line tool or implement gold standard/acceptance testing for the templated result.
@@ -64,7 +64,7 @@ public class NeustarJSTemplate extends FreemarkerSTBase {
                 writeTemplateToFile(f1, cfg.getTemplate(TMPL_CONTENT), props);
 
                 // Setting props and building files of KRAD tab
-                props.setProperty("viewId",""+ props.get("view")+"_KNS");
+                props.setProperty("viewId",""+ props.get("view"));
                 File f2= new File("Temp" + File.separatorChar + "Env11 Kitchen Sink "+subTitle +" KNS WebDriver.txt");
                 writeTemplateToFile(f2, cfg.getTemplate(TMPL_CONTENT), props);
 

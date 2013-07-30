@@ -80,6 +80,11 @@ public class ITUtil {
     public static final String HIDE_RETURN_LINK =  "&hideReturnLink=true";
 
     /**
+     *  &hideReturnLink=false
+     */
+    public static final String HIDE_RETURN_LINK_FALSE =  "&hideReturnLink=false";
+
+    /**
      * remote.public.hub
      */
     public static final String HUB_PROPERTY = "remote.public.hub";

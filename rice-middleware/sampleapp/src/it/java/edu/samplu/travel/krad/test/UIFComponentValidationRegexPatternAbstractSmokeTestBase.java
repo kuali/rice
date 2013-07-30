@@ -27,9 +27,9 @@ import edu.samplu.common.WebDriverLegacyITBase;
 public abstract class UIFComponentValidationRegexPatternAbstractSmokeTestBase extends WebDriverLegacyITBase  {
 
     /**
-     * "/kr-krad/uicomponents?viewId=UifCompView_KNS&methodToCall=start&readOnlyFields=field91"
+     * "/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&readOnlyFields=field91"
      */
-    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView_KNS&methodToCall=start&readOnlyFields=field91";
+    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&readOnlyFields=field91";
 
 
     protected void bookmark() {
@@ -65,7 +65,8 @@ public abstract class UIFComponentValidationRegexPatternAbstractSmokeTestBase ex
     }
 
     protected void testValidCharacterConstraint() throws Exception {
-        waitAndClickByXpath("//a[contains(text(),'Validation - Regex')]");
+//        waitAndClickByXpath("//a[contains(text(),'Validation - Regex')][2]");
+        waitAndClickById("UifCompView-Navigation4");
 
         //---------------------------------------------Fixed Point------------------------------//
         waitAndTypeByName("field50", "123.12");

@@ -15,11 +15,11 @@
  */
 package edu.samplu.krad.compview;
 
-import static org.junit.Assert.assertNotSame;
-
 import edu.samplu.common.Failable;
 import edu.samplu.common.ITUtil;
 import edu.samplu.common.WebDriverLegacyITBase;
+
+import static org.junit.Assert.assertNotSame;
 
 /**
  * Tests the Component section in Rice.
@@ -29,9 +29,9 @@ import edu.samplu.common.WebDriverLegacyITBase;
 public abstract class DeleteSubCollectionLineAbstractSmokeTestBase extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/uicomponents?viewId=UifCompView_KNS&methodToCall=start&readOnlyFields=field91
+     * /kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&readOnlyFields=field91
      */
-    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView_KNS&methodToCall=start&readOnlyFields=field91";
+    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&readOnlyFields=field91";
     
     /**
      * list4[0].subList[0].field1
@@ -77,7 +77,7 @@ public abstract class DeleteSubCollectionLineAbstractSmokeTestBase extends WebDr
         waitAndTypeByName(FIELD_ELEMENT_NAME, "selenium");
 
         // click the delete button
-        waitAndClickByXpath("//div[@id='collection4_disclosureContent']/div[@class='uif-stackedCollectionLayout']/div[@class='uif-group uif-gridGroup uif-collectionItem uif-gridCollectionItem']/table/tbody/tr[5]/td/div/fieldset/div/div[@class='uif-disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button");
+        waitAndClickById("subCollection1_line0_del_line0_line0");
         Thread.sleep(2000);
 
         // confirm that the input box containing the modified value is not present

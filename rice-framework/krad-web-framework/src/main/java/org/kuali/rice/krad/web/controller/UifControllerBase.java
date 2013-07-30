@@ -1067,12 +1067,12 @@ public abstract class UifControllerBase {
     @RequestMapping(method = RequestMethod.GET, params = "methodToCall=tableJsonRetrieval")
     public  ModelAndView tableJsonRetrieval(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
-        UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
         String tableId = request.getParameter(UifParameters.TABLE_ID);
         View postedView = form.getPostedView();
 
         @SuppressWarnings("unchecked")
-        List<ColumnSort> oldColumnSorts = (List<ColumnSort>) form.getExtensionData().get(tableId + "_columnSorts");
+        List<ColumnSort> oldColumnSorts =
+                (List<ColumnSort>) form.getExtensionData().get(tableId + UifConstants.IdSuffixes.COLUMN_SORTS);
 
         // Create references that we'll need beyond the synchronized block here.
         CollectionGroup newCollectionGroup = null;
@@ -1097,7 +1097,7 @@ public abstract class UifControllerBase {
 
             // set up the collection group properties related to paging in the collection group to set the bounds for
             // what needs to be rendered
-            newCollectionGroup.setUsePaging(true);
+            newCollectionGroup.setUseServerPaging(true);
             newCollectionGroup.setDisplayStart(dataTablesInputs.iDisplayStart);
             newCollectionGroup.setDisplayLength(dataTablesInputs.iDisplayLength);
 
@@ -1114,6 +1114,8 @@ public abstract class UifControllerBase {
         form.getExtensionData().put(tableId + "_tableLayoutManager", newCollectionGroup.getLayoutManager());
         form.getExtensionData().put(tableId + "_filteredCollectionSize", newCollectionGroup.getFilteredCollectionSize());
         form.getExtensionData().put(tableId + "_totalCollectionSize", modelCollection.size());
+
+        // these other params above don't need to stay in the form after this request, but <tableId>_columnSorts does
         form.getExtensionData().put(tableId + "_columnSorts", newColumnSorts);
 
         return getUIFModelAndView(form);
@@ -1236,6 +1238,7 @@ public abstract class UifControllerBase {
             for (int i=0; i<sortIndices.length; i++) {
                 sorted[i] = modelCollection.get(sortIndices[i]);
             }
+
             for (int i=0; i<sorted.length; i++) {
                 modelCollection.set(i, sorted[i]);
             }
@@ -1285,6 +1288,7 @@ public abstract class UifControllerBase {
 
             bRegex_ = new boolean[iColumns];
             bSortable_ = new boolean[iColumns];
+
             for (int i = 0; i < iColumns; i++) {
 
 //                bSearchable_[i] = (s = request.getParameter("bSearchable_" + i)) == null ? false
@@ -1300,18 +1304,24 @@ public abstract class UifControllerBase {
                 bSortable_[i] = (s = request.getParameter("bSortable_" + i)) == null ? false
                         : new Boolean(s);
             }
+
             iSortingCols = (s = request.getParameter("iSortingCols")) == null ? 0
                     : Integer.parseInt(s);
             iSortCol_ = new int[iSortingCols];
             sSortDir_ = new String[iSortingCols];
+
             for (int i = 0; i < iSortingCols; i++) {
                 iSortCol_[i] = (s = request.getParameter("iSortCol_" + i)) == null ? 0
                         : Integer.parseInt(s);
                 sSortDir_[i] = request.getParameter("sSortDir_" + i);
             }
+
             mDataProp_ = new String[iColumns];
-            for (int i = 0; i < iColumns; i++)
+
+            for (int i = 0; i < iColumns; i++) {
                 mDataProp_[i] = request.getParameter("mDataProp_" + i);
+            }
+
             sEcho = (s = request.getParameter("sEcho")) == null ? 0 : Integer
                     .parseInt(s);
         }
@@ -1331,6 +1341,7 @@ public abstract class UifControllerBase {
 
             sb.append("\n\tbRegex = ");
             sb.append(bRegex);
+
             for (int i = 0; i < iColumns; i++) {
 
 //                sb.append("\n\tbSearchable_").append(i).append(" = ");
@@ -1345,20 +1356,25 @@ public abstract class UifControllerBase {
                 sb.append("\n\tbSortable_").append(i).append(" = ");
                 sb.append(bSortable_[i]);
             }
+
             sb.append("\n\tiSortingCols = ");
             sb.append(iSortingCols);
+
             for (int i = 0; i < iSortingCols; i++) {
                 sb.append("\n\tiSortCol_").append(i).append(" = ");
                 sb.append(iSortCol_[i]);
                 sb.append("\n\tsSortDir_").append(i).append(" = ");
                 sb.append(sSortDir_[i]);
             }
+
             for (int i = 0; i < iColumns; i++) {
                 sb.append("\n\tmDataProp_").append(i).append(" = ");
                 sb.append(mDataProp_[i]);
             }
+
             sb.append("\n\tsEcho = ");
             sb.append(sEcho);
+
             return sb.toString();
         }
     }

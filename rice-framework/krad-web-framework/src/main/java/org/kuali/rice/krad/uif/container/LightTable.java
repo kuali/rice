@@ -396,7 +396,7 @@ public class LightTable extends Group implements DataBinding {
 
         StringBuffer tableToolsColumnOptions = new StringBuffer("[");
         for (int index = 0; index < this.getItems().size(); index++) {
-            String colOptions = richTable.constructTableColumnOptions(index, true, String.class, null);
+            String colOptions = richTable.constructTableColumnOptions(index, true, false, String.class, null);
             tableToolsColumnOptions.append(colOptions + " , ");
         }
 

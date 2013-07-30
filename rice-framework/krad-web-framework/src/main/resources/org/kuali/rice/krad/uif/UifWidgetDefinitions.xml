@@ -134,7 +134,6 @@
         <entry key="sScrollY" value="100%"/>
       </map>
     </property>
-    <property name="forceAjaxJsonData" value="false"/>
   </bean>
 
   <bean id="Uif-QuickFinder" parent="Uif-QuickFinder-parentBean"/>

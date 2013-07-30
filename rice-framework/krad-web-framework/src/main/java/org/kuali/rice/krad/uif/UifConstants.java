@@ -159,6 +159,7 @@ public class UifConstants {
         public static final String CONTROL = "_control";
         public static final String ATTRIBUTE = "_attribute";
         public static final String COLUMN = "_c";
+        public static final String COLUMN_SORTS = "_columnSorts";
         public static final String COMPARE = "_comp";
         public static final String CONSTRAINT = "_constraint";
         public static final String DETAIL_LINK = "_detLink";
@@ -213,6 +214,8 @@ public class UifConstants {
     public static class TableToolsKeys {
         public static final String AASORTING = "aaSorting";
         public static final String BAUTO_TYPE = "bAutoType";
+        public static final String BPROCESSING = "bProcessing";
+        public static final String BSERVER_SIDE = "bServerSide";
         public static final String SDOM = "sDom";
         public static final String CELL_CLASS = "sClass";
         public static final String MDATA = "mDataProp";

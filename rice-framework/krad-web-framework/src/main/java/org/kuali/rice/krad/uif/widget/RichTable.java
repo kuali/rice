@@ -77,7 +77,6 @@ public class RichTable extends WidgetBase {
 
     private boolean forceAoColumnDefsOverride;
 
-    private boolean forceAjaxJsonData;
     private boolean forceLocalJsonData;
     private int nestedLevel;
     private String aaData;
@@ -147,16 +146,17 @@ public class RichTable extends WidgetBase {
         }
 
         if ((component instanceof CollectionGroup)) {
-            LayoutManager layoutManager = ((CollectionGroup) component).getLayoutManager();
+            CollectionGroup collectionGroup = (CollectionGroup) component;
+            LayoutManager layoutManager = collectionGroup.getLayoutManager();
 
-            //if forceAjaxJsonData is true, add the css cell styling to the template options so it can still be used
+            //if useServerPaging is true, add the css cell styling to the template options so it can still be used
             //since this will not go through the grid ftl
-            if (layoutManager instanceof TableLayoutManager && (this.forceLocalJsonData)) {
+            if (layoutManager instanceof TableLayoutManager && collectionGroup.isUseServerPaging()) {
                 addCellStyling((TableLayoutManager) layoutManager);
             }
 
-            buildTableOptions((CollectionGroup) component);
-            setTotalOptions((CollectionGroup) component);
+            buildTableOptions(collectionGroup);
+            setTotalOptions(collectionGroup);
         }
 
         if (isDisableTableSort()) {
@@ -166,10 +166,10 @@ public class RichTable extends WidgetBase {
         String kradUrl = getConfigurationService().getPropertyValueAsString(UifConstants.ConfigProperties.KRAD_URL);
         if (StringUtils.isNotBlank(ajaxSource)) {
             getTemplateOptions().put(UifConstants.TableToolsKeys.SAJAX_SOURCE, ajaxSource);
-        } else if (component instanceof CollectionGroup && this.forceAjaxJsonData) {
+        } else if (component instanceof CollectionGroup && ((CollectionGroup) component).isUseServerPaging()) {
             // enable required dataTables options for server side paging
-            getTemplateOptions().put("bProcessing", "true");
-            getTemplateOptions().put("bServerSide", "true");
+            getTemplateOptions().put(UifConstants.TableToolsKeys.BPROCESSING, "true");
+            getTemplateOptions().put(UifConstants.TableToolsKeys.BSERVER_SIDE, "true");
 
             //build sAjaxSource url to call
             getTemplateOptions().put(UifConstants.TableToolsKeys.SAJAX_SOURCE, kradUrl
@@ -271,6 +271,7 @@ public class RichTable extends WidgetBase {
      */
     protected void buildTableOptions(CollectionGroup collectionGroup) {
         LayoutManager layoutManager = collectionGroup.getLayoutManager();
+        final boolean isUseServerPaging = collectionGroup.isUseServerPaging();
 
         // if sub collection exists, don't allow the table sortable
         if (!collectionGroup.getSubCollections().isEmpty()) {
@@ -298,7 +299,8 @@ public class RichTable extends WidgetBase {
             }
 
             if (actionIndex == UifConstants.TableLayoutValues.ACTIONS_COLUMN_LEFT_INDEX && actionFieldVisible) {
-                String actionColOptions = constructTableColumnOptions(columnIndex, false, null, null);
+                String actionColOptions =
+                        constructTableColumnOptions(columnIndex, false, isUseServerPaging, null, null);
                 tableToolsColumnOptions.append(actionColOptions + " , ");
                 columnIndex++;
             }
@@ -308,7 +310,7 @@ public class RichTable extends WidgetBase {
 
                 //add mData handling if using a json data source
                 String mDataOption = "";
-                if (this.forceAjaxJsonData || this.forceLocalJsonData) {
+                if (collectionGroup.isUseServerPaging() || this.forceLocalJsonData) {
                     mDataOption = "\""
                             + UifConstants.TableToolsKeys.MDATA
                             +
@@ -320,7 +322,7 @@ public class RichTable extends WidgetBase {
                 tableToolsColumnOptions.append("{\""
                         + UifConstants.TableToolsKeys.SORTABLE
                         + "\" : "
-                        + isSequenceColumnSortable((TableLayoutManager)layoutManager)
+                        + false  // auto sequence column is never sortable
                         + ", \""
                         + UifConstants.TableToolsKeys.SORT_TYPE
                         + "\" : \""
@@ -334,7 +336,8 @@ public class RichTable extends WidgetBase {
                         + "]}, ");
                 columnIndex++;
                 if (actionIndex == 2 && actionFieldVisible) {
-                    String actionColOptions = constructTableColumnOptions(columnIndex, false, null, null);
+                    String actionColOptions =
+                            constructTableColumnOptions(columnIndex, false, isUseServerPaging, null, null);
                     tableToolsColumnOptions.append(actionColOptions + " , ");
                     columnIndex++;
                 }
@@ -342,7 +345,7 @@ public class RichTable extends WidgetBase {
 
             // skip select field if enabled
             if (collectionGroup.isIncludeLineSelectionField()) {
-                String colOptions = constructTableColumnOptions(columnIndex, false, null, null);
+                String colOptions = constructTableColumnOptions(columnIndex, false, isUseServerPaging, null, null);
                 tableToolsColumnOptions.append(colOptions + " , ");
                 columnIndex++;
             }
@@ -356,7 +359,8 @@ public class RichTable extends WidgetBase {
                 tableToolsColumnOptions.append(StringUtils.substring(jsArray, startBrace + 1, endBrace) + ", ");
 
                 if (actionFieldVisible && (actionIndex == -1 || actionIndex >= columnIndex)) {
-                    String actionColOptions = constructTableColumnOptions(columnIndex, false, null, null);
+                    String actionColOptions =
+                            constructTableColumnOptions(columnIndex, false, isUseServerPaging, null, null);
                     tableToolsColumnOptions.append(actionColOptions);
                 } else {
                     tableToolsColumnOptions = new StringBuffer(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
@@ -373,7 +377,8 @@ public class RichTable extends WidgetBase {
                 tableToolsColumnOptions.append(StringUtils.substring(jsArray, startBrace + 1, endBrace) + ", ");
 
                 if (actionFieldVisible && (actionIndex == -1 || actionIndex >= columnIndex)) {
-                    String actionColOptions = constructTableColumnOptions(columnIndex, false, null, null);
+                    String actionColOptions =
+                            constructTableColumnOptions(columnIndex, false, isUseServerPaging, null, null);
                     tableToolsColumnOptions.append(actionColOptions);
                 } else {
                     tableToolsColumnOptions = new StringBuffer(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
@@ -389,14 +394,15 @@ public class RichTable extends WidgetBase {
                 // build column defs from the the first row of the table
                 for (Component component : rowFields) {
                     if (actionFieldVisible && columnIndex + 1 == actionIndex) {
-                        String actionColOptions = constructTableColumnOptions(columnIndex, false, null, null);
+                        String actionColOptions =
+                                constructTableColumnOptions(columnIndex, false, isUseServerPaging, null, null);
                         tableToolsColumnOptions.append(actionColOptions + " , ");
                         columnIndex++;
                     }
 
                     //add mData handling if using a json data source
                     String mDataOption = "";
-                    if (this.forceAjaxJsonData || this.forceLocalJsonData) {
+                    if (collectionGroup.isUseServerPaging() || this.forceLocalJsonData) {
                         mDataOption = "\""
                                 + UifConstants.TableToolsKeys.MDATA
                                 +
@@ -469,19 +475,21 @@ public class RichTable extends WidgetBase {
                                 + "}, ");
                         columnIndex++;
                     } else if (component instanceof LinkField) {
-                        String colOptions = constructTableColumnOptions(columnIndex, true, String.class,
-                                UifConstants.TableToolsValues.DOM_TEXT);
+                        String colOptions = constructTableColumnOptions(columnIndex, true, isUseServerPaging,
+                                String.class, UifConstants.TableToolsValues.DOM_TEXT);
                         tableToolsColumnOptions.append(colOptions + " , ");
                         columnIndex++;
                     } else {
-                        String colOptions = constructTableColumnOptions(columnIndex, false, null, null);
+                        String colOptions =
+                                constructTableColumnOptions(columnIndex, false, isUseServerPaging, null, null);
                         tableToolsColumnOptions.append(colOptions + " , ");
                         columnIndex++;
                     }
                 }
 
                 if (actionFieldVisible && (actionIndex == -1 || actionIndex >= columnIndex)) {
-                    String actionColOptions = constructTableColumnOptions(columnIndex, false, null, null);
+                    String actionColOptions =
+                            constructTableColumnOptions(columnIndex, false, isUseServerPaging, null, null);
                     tableToolsColumnOptions.append(actionColOptions);
                 } else {
                     tableToolsColumnOptions = new StringBuffer(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
@@ -501,25 +509,6 @@ public class RichTable extends WidgetBase {
                         tableToolsColumnOptions.toString());
             }
         }
-    }
-
-    /**
-     * Is the sequence column sortable?
-     *
-     * <p>The answer depends on if it is an auto sequence, and if we are doing server side paging.  The server side
-     * sort is incompatible with the auto sequence column.</p>
-     *
-     * @param tableLayoutManager the table layout manager
-     * @return true if the sequence column is sortable, false otherwise
-     */
-    private boolean isSequenceColumnSortable(TableLayoutManager tableLayoutManager) {
-        boolean result = true;
-
-        if (this.forceAjaxJsonData && tableLayoutManager.isGenerateAutoSequence()) {
-            result = false;
-        }
-
-        return result;
     }
 
     /**
@@ -557,21 +546,24 @@ public class RichTable extends WidgetBase {
             isSortable = false;
         }
 
-        return constructTableColumnOptions(target, isSortable, dataTypeClass, sortType);
+        return constructTableColumnOptions(target, isSortable,
+                collectionGroup.isUseServerPaging(), dataTypeClass, sortType);
     }
 
     /**
      * Constructs the sort data type for each data table columns in a format that will be used to initialize the data
      * table widget via javascript
      *
+     * @param target the column index
      * @param isSortable whether a column should be marked as sortable
+     * @param isUseServerPaging is server side paging enabled?
      * @param dataTypeClass the class type of the column value - used determine the sType option - which identifies
      * the search plugin to use
      * @param sortDataType Defines a data source type for the sorting which can be used to read realtime information
      * from the table
      * @return a formatted string with data table options for one column
      */
-    public String constructTableColumnOptions(int target, boolean isSortable, Class dataTypeClass,
+    public String constructTableColumnOptions(int target, boolean isSortable, boolean isUseServerPaging, Class dataTypeClass,
             String sortDataType) {
         String colOptions = "null";
 
@@ -597,7 +589,7 @@ public class RichTable extends WidgetBase {
 
             colOptions = "\"" + UifConstants.TableToolsKeys.SORT_TYPE + "\" : \"" + sortType + "\"";
 
-            if (!this.forceAjaxJsonData && !this.forceLocalJsonData) {
+            if (!isUseServerPaging && !this.forceLocalJsonData) {
                 colOptions += ", \"" + UifConstants.TableToolsKeys.SORT_DATA_TYPE + "\" : \"" + sortDataType + "\"";
             }
         }
@@ -611,7 +603,7 @@ public class RichTable extends WidgetBase {
         }
 
         // only use the mDataProp when using json data (only relevant for this table type)
-        if (this.forceAjaxJsonData || this.forceLocalJsonData) {
+        if (isUseServerPaging || this.forceLocalJsonData) {
             colOptions += ", \"" + UifConstants.TableToolsKeys.MDATA +
                     "\" : function(row,type,newVal){ return _handleColData(row,type,'c" + target + "',newVal);}";
         }
@@ -828,36 +820,6 @@ public class RichTable extends WidgetBase {
     }
 
     /**
-     * If true, the table will automatically call the tableJsonRetrieval method on the controller with the tableId and
-     * formKey necessary to retrieve the aaData generated by this table
-     *
-     * <p>If set, this will always take precedence over the forceLocalJsonData flag.
-     * This forces the table backed by this RichTable to get its content from an ajax source.  This will turn
-     * the sAjaxSource template option to true automatically, automatically skip row generation in the template, and
-     * cause the table to call a server method asynchronously to render its data after the table is created.  The
-     * effect is faster initial page loading times, but small waits per table for content to be returned which may
-     * lock up some browsers if the view contains multiple visible tables.  It also
-     * allows the table to take advantage of bDeferRender option (automatically set to true)
-     * when this table is a paged table (performance increase).
-     * This option is ignored and not used for the LightTable component implementation.</p>
-     *
-     * @return true if backed by the default ajax source method (also enables the necessary framework automation to
-     *         call this correctly), false otherwise
-     */
-    public boolean isForceAjaxJsonData() {
-        return forceAjaxJsonData;
-    }
-
-    /**
-     * Set the forceAjaxJsonData flag to force the data to be retrieved after the page loads
-     *
-     * @param forceAjaxJsonData
-     */
-    public void setForceAjaxJsonData(boolean forceAjaxJsonData) {
-        this.forceAjaxJsonData = forceAjaxJsonData;
-    }
-
-    /**
      * If true, the table will automatically use row JSON data generated by this widget
      *
      * <p>This forces the table backed by this RichTable to get its content from a template option called aaData.  This
@@ -865,7 +827,8 @@ public class RichTable extends WidgetBase {
      * the table receive its data from the aaData template option automatically generated and set by this RichTable.
      * This allows the table to take advantage of the bDeferRender option (also automatically set to true)
      * when this table is a paged table (performance increase for tables that are more than one page).
-     * Note: the forceAjaxJsonData flag will always override this functionality if it is also true.</p>
+     * Note: the CollectionGroup's isUseServerPaging flag will always override this functionality if it is also true.
+     * </p>
      *
      * @return true if backed by the aaData option in JSON, that is generated during the ftl rendering process by
      *         this widget for this table
@@ -911,8 +874,8 @@ public class RichTable extends WidgetBase {
      * Get the translated aaData array generated by calls to addRowToTableData by the ftl
      *
      * <p>This data is in JSON format and expected to be consumed by datatables when utilizing the forceLocalJsonData
-     * option or forceAjaxJsonData options.
-     * This will be populated automatically if either flag is set to true.</p>
+     * option.
+     * This will be populated automatically if that flag is set to true.</p>
      *
      * @return the generated aaData
      */
@@ -923,8 +886,7 @@ public class RichTable extends WidgetBase {
     /**
      * Set the translated aaData array
      *
-     * <p>This data is in JSON format and expected to be consumed by datatables when utilizing the forceLocalJsonData
-     * option or forceAjaxJsonData options.
+     * <p>This data is in JSON format and expected to be consumed by datatables when utilizing the forceLocalJsonData.
      * This setter is required for copyProperties()</p>
      *
      * @return the generated aaData
@@ -936,7 +898,7 @@ public class RichTable extends WidgetBase {
     /**
      * Get the simple value as a string that represents the field's sortable value, to be used as val in the custom
      * uif json data object (accessed by mDataProp option on datatables - automated by framework) when using the
-     * forceAjaxJsonData or forceLocalJsonData option
+     * forceLocalJsonData option or the CollectionGroup's isUseServerPaging option
      *
      * @param model model the current model
      * @param field the field to retrieve a sortable value from for use in custom json data
@@ -995,8 +957,8 @@ public class RichTable extends WidgetBase {
             aaData = aaData.substring(0, aaData.length() - 1) + "," + row + "]";
         }
 
-        //force json data use if forceLocalJsonData flag is set and forceAjaxJsonData is not
-        if (forceLocalJsonData && !forceAjaxJsonData) {
+        //force json data use if forceLocalJsonData flag is set
+        if (forceLocalJsonData) {
             this.getTemplateOptions().put(UifConstants.TableToolsKeys.AA_DATA, aaData);
         }
     }
@@ -1015,7 +977,6 @@ public class RichTable extends WidgetBase {
         richTableCopy.setEmptyTableMessage(this.getEmptyTableMessage());
         richTableCopy.setDisableTableSort(this.isDisableTableSort());
         richTableCopy.setForceAoColumnDefsOverride(this.isForceAoColumnDefsOverride());
-        richTableCopy.setForceAjaxJsonData(this.isForceAjaxJsonData());
         richTableCopy.setForceLocalJsonData(this.isForceLocalJsonData());
         richTableCopy.setNestedLevel(this.getNestedLevel());
         richTableCopy.setAaData(this.getAaData());

@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.WeakHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,9 +49,33 @@ import java.util.regex.Pattern;
  * <p>This may include DataFields, as well as Fields that don't map directly to elements in the model collection, such
  * as {@link org.kuali.rice.krad.uif.field.LinkField}s that may contain expressions.</p>
  *
+ * <p>NOTE: This class is not thread safe, and each instance is intended to be used only once.</p>
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MultiColumnComparator implements Comparator<Integer> {
+
+    private final List<Object> modelCollection;
+    private final CollectionGroup collectionGroup;
+    private final List<ColumnSort> columnSorts;
+    private final View view;
+
+    // we use the layout manager a lot, so for convenience we'll keep a handy reference to it
+    private final TableLayoutManager tableLayoutManager;
+
+    // we need the prototype row to be able to get Fields that can be used in extracting & calculating column values
+    private final List<Field> prototypeRow;
+
+    // if we have to evaluate expressions to sort a column, we want to cache the values so we don't have to
+    // evaluate the same expressions repeatedly.  This cache could get too big, so we'll use a weak reference map
+    private final WeakHashMap<String, String> calculatedValueCache;
+
+    // Calculating adjusted binding paths requires compiling patterns and doing regexp matches, and there are
+    // just a few prototype fields so we cache these
+    private final HashMap<DataField, String> adjustedBindingPathCache;
+
+    // Reflection is used to determine the class of certain column values.  Cache those classes
+    private final HashMap<String, Class> propertyClassCache;
 
     /**
      * Constructs a MultiColumnComparator instance
@@ -71,36 +96,13 @@ public class MultiColumnComparator implements Comparator<Integer> {
         // initialize convenience members and calculated members.  Caches first!
         //
 
-        calculatedValueCache = new HashMap<String, String>();
+        calculatedValueCache = new WeakHashMap<String, String>();
         adjustedBindingPathCache = new HashMap<DataField, String>();
         propertyClassCache = new HashMap<String, Class>();
 
-        tableLayoutManager = (TableLayoutManager)collectionGroup.getLayoutManager();
+        tableLayoutManager = (TableLayoutManager) collectionGroup.getLayoutManager();
         prototypeRow = buildPrototypeRow();
     }
-
-    private final List<Object> modelCollection;
-    private final CollectionGroup collectionGroup;
-    private final List<ColumnSort> columnSorts;
-    private final View view;
-
-    // we use the layout manager a lot, so for convenience we'll keep a handy reference to it
-    private final TableLayoutManager tableLayoutManager;
-
-    // we need the prototype row to be able to get Fields that can be used in extracting & calculating column values
-    private final List<Field> prototypeRow;
-
-    // if we have to evaluate expressions to sort a column, we want to cache the values so we don't have to
-    // evaluate the same expressions repeatedly
-    private final HashMap<String, String> calculatedValueCache;
-
-    // Calculating adjusted binding paths requires compiling patterns and doing regexp matches, and there are
-    // just a few prototype fields so we cache these
-    private final HashMap<DataField, String> adjustedBindingPathCache;
-
-    // Reflection is used to determine the class of certain column values.  Cache those classes
-    private final HashMap<String, Class> propertyClassCache;
-
 
     /**
      * Compares the modelCollecton element at index1 to the element at index2 based on the provided
@@ -194,16 +196,11 @@ public class MultiColumnComparator implements Comparator<Integer> {
         Class<?> dataClass = propertyClassCache.get(propertyPath);
 
         if (dataClass == null) {
+
             // for the elements in the modelCollection while dataClass is null
             for (int i=0; i<modelCollection.size() && dataClass == null; i++) {
                 // try getting the class from the modelCollection element
-                try {
-                    dataClass = ObjectUtils.easyGetPropertyType(modelCollection.get(i), propertyPath);
-                } catch (IllegalArgumentException e) {   // unable to determine the class, but let's not explode here
-                } catch (InvocationTargetException e) {  //
-                } catch (NoSuchMethodException e) {      //
-                } catch (IllegalAccessException e) {     //
-                }
+                dataClass = ObjectPropertyUtils.getPropertyType(modelCollection.get(i), propertyPath);
             }
 
             if (dataClass == null) {

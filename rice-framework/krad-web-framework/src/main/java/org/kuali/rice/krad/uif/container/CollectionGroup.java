@@ -31,7 +31,6 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.element.Action;
-import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
@@ -148,10 +147,10 @@ public class CollectionGroup extends Group implements DataBinding {
     private boolean addViaLightBox;
     private Action addViaLightBoxAction;
 
-    private boolean usePaging = false;      // indicates the use of server side paging
-    private Integer displayStart;           // the index of the first element for the page to display
-    private Integer displayLength;          // the number of items to display on the page
-    private Integer filteredCollectionSize; // the total number of visible elements in the collection
+    private boolean useServerPaging = false;  // indicates the use of server side paging
+    private int displayStart = -1;            // the index of the first element for the page to display
+    private int displayLength = -1;           // the number of items to display on the page
+    private int filteredCollectionSize = -1;  // the total number of visible elements in the collection
 
     private List<String> totalColumns;
 
@@ -1141,65 +1140,71 @@ public class CollectionGroup extends Group implements DataBinding {
     }
 
     /**
-     * Gets usePaging, the flat that indicates whether server side paging is enabled.  Defaults to false.
+     * Gets useServerPaging, the flag that indicates whether server side paging is enabled.  Defaults to false.
      *
      * @return true if server side paging is enabled.
      */
-    public boolean isUsePaging() {
-        return usePaging;
+    public boolean isUseServerPaging() {
+        return useServerPaging;
     }
 
     /**
-     * Sets usePaging, the flag indicating whether server side paging is enabled.
+     * Sets useServerPaging, the flag indicating whether server side paging is enabled.
      *
-     * @param usePaging the usePaging value to set
+     * @param useServerPaging the useServerPaging value to set
      */
-    public void setUsePaging(boolean usePaging) {
-        this.usePaging = usePaging;
+    public void setUseServerPaging(boolean useServerPaging) {
+        this.useServerPaging = useServerPaging;
     }
 
     /**
-     * Gets the displayStart, the index of the first item to display on the page (assuming usePaging is enabled).
+     * Gets the displayStart, the index of the first item to display on the page (assuming useServerPaging is enabled).
      *
-     * @return the index of the first item to display
+     * <p>if this field has not been set, the returned value will be -1</p>
+     *
+     * @return the index of the first item to display, or -1 if unset
      */
-    public Integer getDisplayStart() {
+    public int getDisplayStart() {
         return displayStart;
     }
 
     /**
-     * Sets the displayStart, the index of the first item to display on the page (assuming usePaging is enabled).
+     * Sets the displayStart, the index of the first item to display on the page (assuming useServerPaging is enabled).
      *
      * @param displayStart the displayStart to set
      */
-    public void setDisplayStart(Integer displayStart) {
+    public void setDisplayStart(int displayStart) {
         this.displayStart = displayStart;
     }
 
     /**
-     * Gets the displayLength, the number of items to display on the page (assuming usePaging is enabled).
+     * Gets the displayLength, the number of items to display on the page (assuming useServerPaging is enabled).
      *
-     * @return the number of items to display on the page
+     * <p>if this field has not been set, the returned value will be -1</p>
+     *
+     * @return the number of items to display on the page, or -1 if unset
      */
-    public Integer getDisplayLength() {
+    public int getDisplayLength() {
         return displayLength;
     }
 
     /**
-     * Sets the displayLength, the number of items to display on the page (assuming usePaging is enabled).
+     * Sets the displayLength, the number of items to display on the page (assuming useServerPaging is enabled).
      *
      * @param displayLength the displayLength to set
      */
-    public void setDisplayLength(Integer displayLength) {
+    public void setDisplayLength(int displayLength) {
         this.displayLength = displayLength;
     }
 
     /**
      * Gets the number of un-filtered elements from the model collection.
      *
-     * @return the filtered collection size
+     * <p>if this field has not been set, the returned value will be -1</p>
+     *
+     * @return the filtered collection size, or -1 if unset
      */
-    public Integer getFilteredCollectionSize() {
+    public int getFilteredCollectionSize() {
         return filteredCollectionSize;
     }
 
@@ -1210,7 +1215,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @param filteredCollectionSize the filtered collection size
      */
-    public void setFilteredCollectionSize(Integer filteredCollectionSize) {
+    public void setFilteredCollectionSize(int filteredCollectionSize) {
         this.filteredCollectionSize = filteredCollectionSize;
     }
 
@@ -1300,6 +1305,7 @@ public class CollectionGroup extends Group implements DataBinding {
         collectionGroupCopy.setHighlightAddItem(this.highlightAddItem);
         collectionGroupCopy.setHighlightNewItems(this.highlightNewItems);
         collectionGroupCopy.setIncludeLineSelectionField(this.includeLineSelectionField);
+        collectionGroupCopy.setUseServerPaging(this.useServerPaging);
 
         if (lineActions != null) {
             List<Action> lineActions = Lists.newArrayListWithExpectedSize(getLineActions().size());

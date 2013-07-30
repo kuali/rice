@@ -166,19 +166,17 @@ public class CollectionGroupBuilder implements Serializable {
      * @param model Top level object containing the data
      * @param collectionGroup CollectionGroup component for the collection
      */
-    private void buildLinesForDisplayedRows(List<IndexedElement> filteredIndexedElements, View view, Object model,
+    protected void buildLinesForDisplayedRows(List<IndexedElement> filteredIndexedElements, View view, Object model,
             CollectionGroup collectionGroup) {
 
-        boolean isForceAjaxJsonData = isForceAjaxData(collectionGroup);
-
         // if we are doing server side paging, don't build the lines unless DataTables set the displayLength
-        if (isForceAjaxJsonData && collectionGroup.getDisplayLength() == null) {
+        if (collectionGroup.isUseServerPaging() && collectionGroup.getDisplayLength() == -1) {
             collectionGroup.setDisplayLength(1);
         }
 
-        final int displayStart = (collectionGroup.getDisplayStart() != null) ? collectionGroup.getDisplayStart() : 0;
+        final int displayStart = (collectionGroup.getDisplayStart() != -1) ? collectionGroup.getDisplayStart() : 0;
 
-        final int displayLength = (collectionGroup.getDisplayLength() != null) ?
+        final int displayLength = (collectionGroup.getDisplayLength() != -1) ?
                         collectionGroup.getDisplayLength() : filteredIndexedElements.size() - displayStart;
 
         // make sure we don't exceed the size of our collection
@@ -206,23 +204,6 @@ public class CollectionGroupBuilder implements Serializable {
 
             buildLine(view, model, collectionGroup, bindingPathPrefix, lineActions, false, currentLine, indexedElement.index);
         }
-    }
-
-    /**
-     * Is server side paging enabled?
-     *
-     * @param collectionGroup the collection group
-     * @return true if server side paging is enabled
-     */
-    private boolean isForceAjaxData(CollectionGroup collectionGroup) {
-        boolean isForceAjaxJsonData = false;
-
-        if (collectionGroup.getLayoutManager() instanceof TableLayoutManager) {
-            TableLayoutManager tableLayoutManager = (TableLayoutManager)collectionGroup.getLayoutManager();
-            isForceAjaxJsonData = tableLayoutManager.getRichTable() != null && tableLayoutManager.getRichTable().isForceAjaxJsonData();
-        }
-
-        return isForceAjaxJsonData;
     }
 
     /**

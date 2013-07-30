@@ -59,6 +59,7 @@ public abstract class HelpAbstractSmokeTestBase extends WebDriverLegacyITBase {
         testDisplayOnlyTooltipHelp();
         navigation();
         testMissingTooltipHelp();
+        passed();
     }
 
     protected void testHelpBookmark(Failable failable) throws Exception {

@@ -64,7 +64,7 @@ public class NeustarJSTemplate extends FreemarkerSTBase {
                 writeTemplateToFile(f1, cfg.getTemplate(TMPL_CONTENT), props);
 
                 // Setting props and building files of KRAD tab
-                props.setProperty("viewId",""+ props.get("view")+"_KNS");
+                props.setProperty("viewId",""+ props.get("view"));
                 File f2= new File("Temp" + File.separatorChar + "Env11 Kitchen Sink "+subTitle +" KNS WebDriver.txt");
                 writeTemplateToFile(f2, cfg.getTemplate(TMPL_CONTENT), props);
 

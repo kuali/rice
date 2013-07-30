@@ -27,9 +27,9 @@ import edu.samplu.common.WebDriverLegacyITBase;
 public abstract class ConfigurationTestViewAbstractSmokeTestBase extends WebDriverLegacyITBase {
 
     /**
-     * "/kr-krad/configuration-test-view-uif-controller?viewId=ConfigurationTestView_KNS&methodToCall=start";
+     * "/kr-krad/configuration-test-view-uif-controller?viewId=ConfigurationTestView&methodToCall=start";
      */
-    public static final String BOOKMARK_URL = "/kr-krad/configuration-test-view-uif-controller?viewId=ConfigurationTestView_KNS&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/configuration-test-view-uif-controller?viewId=ConfigurationTestView&methodToCall=start";
     
     /** bean id prefix in used in view */
     private String idPrefix = "ConfigurationTestView-ProgressiveRender-";

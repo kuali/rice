@@ -31,7 +31,7 @@ public abstract class LocationStateAbstractSmokeTestBase extends AdminTmplMthdST
     public static final String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=State&channelUrl=" 
             + ITUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD +
             "org.kuali.rice.location.impl.state.StateBo&docFormKey=88888888&returnLocation=" +
-            ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK ;
+            ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK + ITUtil.SHOW_MAINTENANCE_LINKS;
 
     /**
      * {@inheritDoc}

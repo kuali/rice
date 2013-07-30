@@ -39,7 +39,7 @@ public class SimpleAccount extends VersionedAndGloballyUniqueBase {
 
     @Id
     @GeneratedValue(generator="TRVL_ID_SEQ")
-    @PortableSequenceGenerator(name="TRVL_ID_SEQ", sequenceName="TRVL_ID_SEQ", initialValue = 1000)
+    @PortableSequenceGenerator(name="TRVL_ID_SEQ")
     @Column(name="ACCT_NUM")
     private String number;
 

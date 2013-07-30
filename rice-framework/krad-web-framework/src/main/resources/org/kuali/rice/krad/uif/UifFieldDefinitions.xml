@@ -148,8 +148,8 @@
   <bean id="Uif-CheckboxConvertedRadioControl-parentBean" abstract="true" parent="Uif-HorizontalRadioControl">
     <property name="options">
       <list>
-        <bean parent="Uif-KeyLabelPair" p:key="true" p:value="Yes"/>
-        <bean parent="Uif-KeyLabelPair" p:key="false" p:value="No"/>
+        <bean parent="Uif-KeyLabelPair" p:key="Y" p:value="Yes"/>
+        <bean parent="Uif-KeyLabelPair" p:key="N" p:value="No"/>
         <bean parent="Uif-KeyLabelPair" p:key="" p:value="Both"/>
       </list>
     </property>
@@ -159,6 +159,7 @@
   <bean id="Uif-LookupActiveInputField-parentBean" parent="Uif-LookupCriteriaInputField-parentBean">
     <property name="propertyName" value="active"/>
     <property name="label" value="Active"/>
+    <property name="defaultValue" value="Y"/>
     <property name="control">
       <bean parent="Uif-CheckboxConvertedRadioControl"/>
     </property>

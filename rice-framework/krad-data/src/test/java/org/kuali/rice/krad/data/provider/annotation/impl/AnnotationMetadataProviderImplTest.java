@@ -40,11 +40,11 @@ import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
 import org.kuali.rice.krad.data.provider.MetadataProvider;
 import org.kuali.rice.krad.data.provider.impl.CompositeMetadataProviderImpl;
-import org.kuali.rice.krad.data.provider.jpa.eclipselink.EclipseLinkJpaMetadataProviderImpl;
-import org.kuali.rice.krad.data.provider.jpa.testbo.ReferencedDataObject;
-import org.kuali.rice.krad.data.provider.jpa.testbo.SomeOtherCollection;
-import org.kuali.rice.krad.data.provider.jpa.testbo.TestDataObject;
-import org.kuali.rice.krad.data.provider.jpa.testbo.TestDataObjectExtension;
+import org.kuali.rice.krad.data.jpa.eclipselink.EclipseLinkJpaMetadataProviderImpl;
+import org.kuali.rice.krad.data.jpa.testbo.ReferencedDataObject;
+import org.kuali.rice.krad.data.jpa.testbo.SomeOtherCollection;
+import org.kuali.rice.krad.data.jpa.testbo.TestDataObject;
+import org.kuali.rice.krad.data.jpa.testbo.TestDataObjectExtension;
 
 public class AnnotationMetadataProviderImplTest {
 

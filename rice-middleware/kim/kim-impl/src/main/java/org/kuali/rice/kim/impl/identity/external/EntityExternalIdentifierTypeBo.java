@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.kim.impl.identity.external;
 
-import org.eclipse.persistence.annotations.Convert;
 import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierTypeContract;
 import org.kuali.rice.kim.framework.identity.external.EntityExternalIdentifierTypeEbo;
 import org.kuali.rice.kim.impl.identity.CodedAttributeBo;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -35,7 +35,7 @@ import javax.persistence.Table;
 @Table(name = "KRIM_EXT_ID_TYP_T")
 public class EntityExternalIdentifierTypeBo extends CodedAttributeBo implements EntityExternalIdentifierTypeEbo, EntityExternalIdentifierTypeContract {
     private static final long serialVersionUID = 1058518958597912170L;
-    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     @Column(name = "ENCR_REQ_IND")
     private boolean encryptionRequired;
 

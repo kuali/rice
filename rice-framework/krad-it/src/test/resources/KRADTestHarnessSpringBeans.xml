@@ -200,7 +200,7 @@
 
   <!-- Override the EntityManagerFactory -->
   <bean id="kradEntityManagerFactory"
-        class="org.kuali.rice.krad.data.provider.jpa.eclipselink.KradEclipseLinkEntityManagerFactoryBean"
+        class="org.kuali.rice.krad.data.jpa.eclipselink.KradEclipseLinkEntityManagerFactoryBean"
         p:jtaDataSource-ref="riceDataSource"
         p:persistenceUnitName="krad-application"
         p:packagesToScan-ref="jpaPackagesToScan"/>

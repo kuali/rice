@@ -17,19 +17,18 @@ package org.kuali.rice.kim.impl.identity.external;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.eclipse.persistence.annotations.Customizer;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifier;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierContract;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.platform.generator.Sequence;
-import org.kuali.rice.krad.data.provider.jpa.eclipselink.EclipseLinkSequenceCustomizer;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -38,14 +37,14 @@ import javax.persistence.Transient;
 import java.util.HashMap;
 import java.util.Map;
 
-@Sequence(name="KRIM_ENTITY_EXT_ID_ID_S", property = "id")
-@Customizer(EclipseLinkSequenceCustomizer.class)
 @Entity
 @Table(name = "KRIM_ENTITY_EXT_ID_T")
 public class EntityExternalIdentifierBo extends PersistableBusinessObjectBase implements EntityExternalIdentifierContract {
     private static final Logger LOG = org.apache.log4j.Logger.getLogger(EntityExternalIdentifierBo.class);
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(generator = "KRIM_GRP_MBR_ID_S")
+    @PortableSequenceGenerator(name = "KRIM_ENTITY_EXT_ID_ID_S")
     @Column(name = "ENTITY_EXT_ID_ID")
     private String id;
     @Column(name = "ENTITY_ID")

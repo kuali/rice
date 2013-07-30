@@ -90,7 +90,7 @@
           <element id="library" level="project" name="Maven: org.codehaus.btm:btm:2.1.2" />
           <element id="library" level="project" name="Maven: javax.transaction:jta:1.1" />
           <element id="library" level="project" name="Maven: javax.inject:javax.inject:1" />
-          <element id="archive" name="rice-krad-data-2.4.0-M1-SNAPSHOT.jar">
+          <element id="archive" name="rice-2.4.0-M1-SNAPSHOT.jar">
             <element id="module-output" name="rice-krad-data" />
           </element>
           <element id="archive" name="rice-core-service-api-2.4.0-M1-SNAPSHOT.jar">

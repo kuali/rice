@@ -23,5 +23,5 @@ pushd ../krad-web-framework
 mvn --offline install -Dmaven.surefire.skip=true -DskipTests
 popd
 pushd ../krad-it
-mvn --offline -Dit.test=org.kuali.rice.krad.data.provider.jpa.JpaMetadataProviderTest verify -Pitests
+mvn --offline -Dit.test=org.kuali.rice.krad.data.jpa.JpaMetadataProviderTest verify -Pitests
 popd

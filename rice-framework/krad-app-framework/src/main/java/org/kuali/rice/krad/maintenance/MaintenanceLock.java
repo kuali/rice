@@ -15,36 +15,39 @@
  */
 package org.kuali.rice.krad.maintenance;
 
+import org.eclipse.persistence.annotations.Index;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-
-import org.eclipse.persistence.annotations.Customizer;
-import org.eclipse.persistence.annotations.Index;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.provider.jpa.eclipselink.EclipseLinkSequenceCustomizer;
-import org.kuali.rice.krad.data.platform.generator.Sequence;
 
 /**
  * List of business objects that this maintenance document is locking (prevents two documents from being routed trying to update the same object)
  * Most maintenance documents have only one lock, but globals have many
  */
 @Entity
-@Sequence(name="KRNS_MAINT_LOCK_S",property="lockId")
-@Customizer(EclipseLinkSequenceCustomizer.class)
 @Table(name="KRNS_MAINT_LOCK_T",uniqueConstraints= {
         @UniqueConstraint(name="KRNS_MAINT_LOCK_TC0",columnNames="OBJ_ID")
 })
 public class MaintenanceLock extends PersistableBusinessObjectBase {
+
     private static final long serialVersionUID = 7766326835852387301L;
+
 	@Id
+    @GeneratedValue(generator = "KRIM_ROLE_MBR_ID_S")
+    @PortableSequenceGenerator(name = "KRIM_ROLE_MBR_ID_S")
     @Column(name="MAINT_LOCK_ID",length=14)
     private String lockId;
+
 	@Column(name="MAINT_LOCK_REP_TXT",length=500)
 	private String lockingRepresentation;
+
     @Column(name="DOC_HDR_ID",length=14,nullable=false)
     @Index(name="KRNS_MAINT_LOCK_TI2")
 	private String documentNumber;

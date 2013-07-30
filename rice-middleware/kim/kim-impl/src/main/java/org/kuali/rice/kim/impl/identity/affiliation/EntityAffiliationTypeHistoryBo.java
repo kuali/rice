@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kim.impl.identity.affiliation;
 
-import org.eclipse.persistence.annotations.Convert;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
 import org.kuali.rice.kim.api.identity.CodedAttribute;
@@ -25,6 +24,7 @@ import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationTypeHistory;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationTypeHistoryContract;
 import org.kuali.rice.kim.impl.identity.CodedAttributeHistoryBoContract;
 import org.kuali.rice.kim.impl.identity.CodedAttributeHistoryBoUtil;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 import javax.persistence.Column;
 import java.sql.Timestamp;
@@ -37,7 +37,7 @@ public class EntityAffiliationTypeHistoryBo extends EntityAffiliationTypeBo impl
     private Timestamp activeFromDateValue;
     @Column(name = "ACTV_TO_DT")
     private Timestamp activeToDateValue;
-    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     @Column(name = "EMP_AFLTN_TYP_IND")
     private boolean employmentAffiliationType;
 

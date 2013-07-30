@@ -5,7 +5,7 @@
 
 
 	<bean id="TestDataObject" parent="DataObjectEntry">
-		<property name="dataObjectClass" value="org.kuali.rice.krad.data.provider.jpa.testbo.TestDataObject" />
+		<property name="dataObjectClass" value="org.kuali.rice.krad.data.jpa.testbo.TestDataObject" />
  		<property name="objectDescription" value="UIF-Provided Description" />
  	</bean>
 </beans>

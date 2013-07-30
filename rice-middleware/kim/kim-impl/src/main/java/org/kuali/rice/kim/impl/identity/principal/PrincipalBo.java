@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.kim.impl.identity.principal;
 
-import org.eclipse.persistence.annotations.Convert;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,7 +42,7 @@ public class PrincipalBo extends PersistableBusinessObjectBase implements Princi
     @Column(name = "PRNCPL_PSWD")
     private String password;
     @Column(name = "ACTV_IND")
-    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     private boolean active;
 
     public static Principal to(PrincipalBo bo) {

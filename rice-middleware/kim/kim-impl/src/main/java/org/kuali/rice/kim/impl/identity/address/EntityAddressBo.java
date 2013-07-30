@@ -16,7 +16,6 @@
 package org.kuali.rice.kim.impl.identity.address;
 
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
-import org.eclipse.persistence.annotations.Convert;
 import org.joda.time.DateTime;
 import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.identity.address.EntityAddress;
@@ -24,6 +23,7 @@ import org.kuali.rice.kim.api.identity.address.EntityAddressContract;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -66,10 +66,10 @@ public class EntityAddressBo extends PersistableBusinessObjectBase implements En
     private String line2;
     @Column(name = "ADDR_LINE_3")
     private String line3;
-    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     @Column(name = "DFLT_IND")
     private boolean defaultValue;
-    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     @Column(name = "ACTV_IND")
     private boolean active;
     @ManyToOne(targetEntity = EntityAddressTypeBo.class, fetch = FetchType.EAGER, cascade = {})
@@ -81,7 +81,7 @@ public class EntityAddressBo extends PersistableBusinessObjectBase implements En
     private Timestamp modifiedDate;
     @Column(name = "VALID_DT")
     private Timestamp validatedDate;
-    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     @Column(name = "VALID_IND")
     private boolean validated;
     @Column(name = "NOTE_MSG")

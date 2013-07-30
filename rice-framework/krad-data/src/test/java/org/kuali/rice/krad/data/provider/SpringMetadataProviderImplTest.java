@@ -22,7 +22,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
-import org.kuali.rice.krad.data.provider.jpa.testbo.TestDataObject;
+import org.kuali.rice.krad.data.jpa.testbo.TestDataObject;
 import org.kuali.rice.krad.data.provider.spring.SpringMetadataProviderImpl;
 
 import java.util.ArrayList;

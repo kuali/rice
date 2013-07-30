@@ -29,7 +29,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
-import org.kuali.rice.krad.data.provider.jpa.JpaPersistenceProvider;
+import org.kuali.rice.krad.data.jpa.JpaPersistenceProvider;
 import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.krad.test.document.bo.AccountType;
 import org.kuali.rice.test.BaselineTestCase;

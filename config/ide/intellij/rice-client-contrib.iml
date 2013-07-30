@@ -19,6 +19,9 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../client-contrib/target/test-classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/client-contrib/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/client-contrib/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/client-contrib/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/client-contrib/target/maven-status" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/client-contrib/target/surefire-reports" />
       <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/client-contrib/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />

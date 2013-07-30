@@ -15,25 +15,27 @@
  */
 package org.kuali.rice.kim.impl.common.attribute;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-import org.eclipse.persistence.annotations.Customizer;
 import org.kuali.rice.kim.api.common.attribute.KimAttribute;
 import org.kuali.rice.kim.api.common.attribute.KimAttributeContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.provider.jpa.eclipselink.EclipseLinkSequenceCustomizer;
-import org.kuali.rice.krad.data.platform.generator.Sequence;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
-@Sequence(name="KRIM_ATTR_DEFN_ID_S", property="id")
-@Customizer(EclipseLinkSequenceCustomizer.class)
 @Table(name="KRIM_ATTR_DEFN_T")
 public class KimAttributeBo extends PersistableBusinessObjectBase implements KimAttributeContract {
+
     private static final long serialVersionUID = 1L;
+
     @Id
+    @GeneratedValue(generator="KRIM_ATTR_DEFN_ID_S")
+    @PortableSequenceGenerator(name="KRIM_ATTR_DEFN_ID_S")
     @Column(name="KIM_ATTR_DEFN_ID")
     private String id;
 
@@ -50,7 +52,7 @@ public class KimAttributeBo extends PersistableBusinessObjectBase implements Kim
     private String attributeLabel;
 
     @Column(name="ACTV_IND")
-    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     private boolean active;
 
 

@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.kim.impl.identity.affiliation;
 
-import org.eclipse.persistence.annotations.Convert;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 import javax.persistence.Column;
 import javax.persistence.FetchType;
@@ -41,10 +41,10 @@ public class EntityAffiliationBo extends PersistableBusinessObjectBase implement
     @JoinColumn(
             name = "AFLTN_TYP_CD", insertable = false, updatable = false)
     private EntityAffiliationTypeBo affiliationType;
-    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     @Column(name = "DFLT_IND")
     private boolean defaultValue;
-    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     @Column(name = "ACTV_IND")
     private boolean active;
 

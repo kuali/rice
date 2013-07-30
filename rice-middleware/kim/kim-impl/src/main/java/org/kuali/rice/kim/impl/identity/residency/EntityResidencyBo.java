@@ -15,28 +15,26 @@
  */
 package org.kuali.rice.kim.impl.identity.residency;
 
-import org.eclipse.persistence.annotations.Customizer;
 import org.joda.time.DateTime;
 import org.kuali.rice.kim.api.identity.CodedAttributeContract;
 import org.kuali.rice.kim.api.identity.residency.EntityResidency;
 import org.kuali.rice.kim.api.identity.residency.EntityResidencyContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.provider.jpa.eclipselink.EclipseLinkSequenceCustomizer;
-
-import org.kuali.rice.krad.data.platform.generator.Sequence;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Customizer(EclipseLinkSequenceCustomizer.class)
-@Sequence(name="KRIM_ENTITY_RESIDENCY_ID_S", property="id")
 @Table(name = "KRIM_ENTITY_RESIDENCY_T")
 public class EntityResidencyBo extends PersistableBusinessObjectBase implements EntityResidencyContract {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(generator = "KRIM_ENTITY_RESIDENCY_ID_S")
+    @PortableSequenceGenerator(name = "KRIM_ENTITY_RESIDENCY_ID_S")
     @Column(name = "ID")
     private String id;
     @Column(name = "ENTITY_ID")

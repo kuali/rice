@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.metadata;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.data.platform.generator.Sequence;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -288,10 +287,7 @@ public class MetadataManager {
 		if (clazz.isAnnotationPresent(IdClass.class)) {
 			entityDescriptor.setIdClass(((IdClass)clazz.getAnnotation(IdClass.class)).value());
 		}
-		if (clazz.isAnnotationPresent(Sequence.class)) {
-			entityDescriptor.setSequence((Sequence)clazz.getAnnotation(Sequence.class));
-		}		
-		
+
 		// Check for an "extension"
 		try {
 			Class extensionClass = Class.forName(clazz.getName() + "Extension");

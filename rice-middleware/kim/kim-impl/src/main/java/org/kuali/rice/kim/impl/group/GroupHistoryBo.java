@@ -15,19 +15,18 @@
  */
 package org.kuali.rice.kim.impl.group;
 
-import org.eclipse.persistence.annotations.Customizer;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupHistory;
 import org.kuali.rice.kim.api.group.GroupHistoryContract;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataHistoryBo;
-import org.kuali.rice.krad.data.provider.jpa.eclipselink.EclipseLinkSequenceCustomizer;
-import org.kuali.rice.krad.data.platform.generator.Sequence;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -37,16 +36,13 @@ import java.util.List;
 import java.util.Map;
 
 @Entity
-@Customizer(EclipseLinkSequenceCustomizer.class)
-//@Sequences({
-    @Sequence(name="KRIM_HIST_GRP_ID_S", property="historyId")
-//    @Sequence(name="KRIM_GRP_ID_S",property="id")
-//})
 @Table(name="KRIM_HIST_GRP_T")
 public class GroupHistoryBo extends GroupBase implements GroupHistoryContract{
     private static final long serialVersionUID = 2322098027572496681L;
 
     @Id
+    @GeneratedValue(generator = "KRIM_HIST_GRP_ID_S")
+    @PortableSequenceGenerator(name = "KRIM_HIST_GRP_ID_S")
     @Column(name ="GRP_HIST_ID", nullable = false)
     private Long historyId;
 

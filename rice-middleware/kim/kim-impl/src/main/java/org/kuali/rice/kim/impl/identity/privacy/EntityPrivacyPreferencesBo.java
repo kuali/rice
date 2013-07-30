@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.kim.impl.identity.privacy;
 
-import org.eclipse.persistence.annotations.Convert;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferencesContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,19 +32,19 @@ public class EntityPrivacyPreferencesBo extends PersistableBusinessObjectBase im
     @Id
     @Column(name = "ENTITY_ID")
     private String entityId;
-    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     @Column(name = "SUPPRESS_NM_IND")
     private boolean suppressName;
-    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     @Column(name = "SUPPRESS_EMAIL_IND")
     private boolean suppressEmail;
-    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     @Column(name = "SUPPRESS_ADDR_IND")
     private boolean suppressAddress;
-    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     @Column(name = "SUPPRESS_PHONE_IND")
     private boolean suppressPhone;
-    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     @Column(name = "SUPPRESS_PRSNL_IND")
     private boolean suppressPersonal;
 

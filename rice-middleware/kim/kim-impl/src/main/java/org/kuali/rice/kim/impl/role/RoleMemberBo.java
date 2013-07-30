@@ -18,7 +18,6 @@ package org.kuali.rice.kim.impl.role;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
-import org.eclipse.persistence.annotations.Customizer;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -33,15 +32,14 @@ import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
 import org.kuali.rice.kim.impl.membership.AbstractMemberBo;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.data.provider.jpa.eclipselink.EclipseLinkSequenceCustomizer;
-
-import org.kuali.rice.krad.data.platform.generator.Sequence;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 import org.springframework.util.AutoPopulatingList;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -59,14 +57,13 @@ import java.util.Map;
  * column names are made here.
  */
 @Entity
-@Customizer(EclipseLinkSequenceCustomizer.class)
-@Sequence(name="KRIM_ROLE_MBR_ID_S",property="id")
 @Table(name = "KRIM_ROLE_MBR_T")
 public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract {
 
     private static final long serialVersionUID = 1L;
     @Id
-
+    @GeneratedValue(generator = "KRIM_ROLE_MBR_ID_S")
+    @PortableSequenceGenerator(name = "KRIM_ROLE_MBR_ID_S")
     @Column(name = "ROLE_MBR_ID")
     private String id;
     @Column(name = "ROLE_ID")

@@ -3,9 +3,9 @@ package org.kuali.rice.krad.data.provider.jpa;
 import org.junit.Assert;
 import org.junit.Test;
 import org.kuali.rice.krad.data.provider.PersistenceProvider;
-import org.kuali.rice.krad.data.provider.jpa.testbo.TestDataObject;
-import org.kuali.rice.krad.data.provider.jpa.testbo.TestDataObjectExtension;
-import org.kuali.rice.krad.data.provider.jpa.testbo.YetAnotherReferencedDataObject;
+import org.kuali.rice.krad.data.jpa.testbo.TestDataObject;
+import org.kuali.rice.krad.data.jpa.testbo.TestDataObjectExtension;
+import org.kuali.rice.krad.data.jpa.testbo.YetAnotherReferencedDataObject;
 import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.test.BaselineTestCase;
 

@@ -15,18 +15,17 @@
  */
 package org.kuali.rice.kim.impl.role;
 
-import org.eclipse.persistence.annotations.Convert;
-import org.eclipse.persistence.annotations.Customizer;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.framework.role.RoleEbo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.provider.jpa.eclipselink.EclipseLinkSequenceCustomizer;
-
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
@@ -37,16 +36,17 @@ import javax.persistence.Transient;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@Customizer(EclipseLinkSequenceCustomizer.class)
 public class RoleBoLite extends PersistableBusinessObjectBase implements RoleEbo {
     @Id
+    @GeneratedValue(generator = "KRIM_ROLE_ID_S")
+    @PortableSequenceGenerator(name = "KRIM_ROLE_ID_S")
     @Column(name = "ROLE_ID")
     private String id;
     @Column(name = "ROLE_NM")
     private String name;
     @Column(name = "DESC_TXT", length = 4000)
     private String description;
-    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     @Column(name = "ACTV_IND")
     private boolean active;
     @Column(name = "KIM_TYP_ID")

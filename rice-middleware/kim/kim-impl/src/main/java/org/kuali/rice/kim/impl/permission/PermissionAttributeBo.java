@@ -15,13 +15,16 @@
  */
 package org.kuali.rice.kim.impl.permission;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import org.kuali.rice.kim.api.common.attribute.KimAttributeData;
 import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -30,8 +33,33 @@ import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 @Table(name="KRIM_PERM_ATTR_DATA_T")
 public class PermissionAttributeBo extends KimAttributeDataBo implements KimAttributeDataContract {
 
+    @Id
+    @GeneratedValue(generator = "KRIM_ATTR_DATA_ID_S")
+    @Column(name="ATTR_DATA_ID")
+    private String id;
+
     @Column(name="PERM_ID")
     private String assignedToId;
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public String getAssignedToId() {
+        return assignedToId;
+    }
+
+    @Override
+    public void setAssignedToId(String assignedToId) {
+        this.assignedToId = assignedToId;
+    }
 
     /**
      * Converts a mutable bo to its immutable counterpart
@@ -69,13 +97,4 @@ public class PermissionAttributeBo extends KimAttributeDataBo implements KimAttr
         return bo;
     }
 
-    @Override
-    public String getAssignedToId() {
-        return assignedToId;
-    }
-
-    @Override
-    public void setAssignedToId(String assignedToId) {
-        this.assignedToId = assignedToId;
-    }
 }

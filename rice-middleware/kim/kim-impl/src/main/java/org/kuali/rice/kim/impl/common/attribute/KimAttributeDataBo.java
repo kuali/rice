@@ -24,6 +24,7 @@ import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.FetchType;
@@ -39,29 +40,33 @@ import java.util.List;
 import java.util.Map;
 
 @MappedSuperclass
+@PortableSequenceGenerator(name = "KRIM_ATTR_DATA_ID_S")
 public abstract class KimAttributeDataBo extends PersistableBusinessObjectBase implements KimAttributeDataContract {
+
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KimAttributeDataBo.class);
     private static final long serialVersionUID = 1L;
 
     private static KimTypeInfoService kimTypeInfoService;
 
-    @Id
-    @Column(name="ATTR_DATA_ID")
-    private String id;
     @Column(name="ATTR_VAL")
     private String attributeValue;
+
     @Column(name="KIM_ATTR_DEFN_ID")
     private String kimAttributeId;
 
     @OneToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "KIM_ATTR_DEFN_ID", insertable = false, updatable = false)
     private KimAttributeBo kimAttribute;
+
     @Column(name="KIM_TYP_ID")
     private String kimTypeId;
+
     @Transient
     private KimTypeBo kimType;
 
-    public abstract void setAssignedToId(String s);
+    public abstract void setId(String id);
+
+    public abstract void setAssignedToId(String assignedToId);
 
     @Override
     public KimAttributeBo getKimAttribute() {
@@ -74,7 +79,7 @@ public abstract class KimAttributeDataBo extends PersistableBusinessObjectBase i
 
     @Override
     public KimTypeBo getKimType() {
-        if (kimType == null && StringUtils.isNotEmpty(id)) {
+        if (kimType == null && StringUtils.isNotEmpty(getId())) {
             kimType = KimTypeBo.from(KimApiServiceLocator.getKimTypeInfoService().getKimType(kimTypeId));
         }
         return kimType;
@@ -129,15 +134,6 @@ public abstract class KimAttributeDataBo extends PersistableBusinessObjectBase i
             }
         }
         return attrs;
-    }
-
-    @Override
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     @Override

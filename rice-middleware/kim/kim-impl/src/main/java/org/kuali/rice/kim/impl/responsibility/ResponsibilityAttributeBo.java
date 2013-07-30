@@ -23,6 +23,8 @@ import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -31,6 +33,15 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "KRIM_RSP_ATTR_DATA_T")
 public class ResponsibilityAttributeBo extends KimAttributeDataBo {
+
+    @Id
+    @GeneratedValue(generator = "KRIM_ATTR_DATA_ID_S")
+    @Column(name="ATTR_DATA_ID")
+    private String id;
+
+    @Column(name = "RSP_ID")
+    private String assignedToId;
+
     /**
      * Converts a mutable bo to its immutable counterpart
      *
@@ -71,14 +82,24 @@ public class ResponsibilityAttributeBo extends KimAttributeDataBo {
         return bo;
     }
 
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
     public String getAssignedToId() {
         return assignedToId;
     }
 
+    @Override
     public void setAssignedToId(String assignedToId) {
         this.assignedToId = assignedToId;
     }
 
-    @Column(name = "RSP_ID")
-    private String assignedToId;
 }

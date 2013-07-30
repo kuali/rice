@@ -18,13 +18,14 @@ package edu.sampleu.travel.bo;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.kuali.rice.krad.data.platform.generator.Sequence;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -36,12 +37,13 @@ import java.util.List;
  */
 @Entity
 @Table(name="TRV_ACCT_FO")
-@Sequence(name="seq_acct_fo_id", property="id")
 public class FiscalOfficer extends PersistableBusinessObjectBase {
 	private static final long serialVersionUID = -4645124696676896963L;
 
 	@Id
-	@Column(name="acct_fo_id")
+    @GeneratedValue(generator = "SEQ_ACCT_FO_ID")
+    @PortableSequenceGenerator(name = "SEQ_ACCT_FO_ID")
+    @Column(name="acct_fo_id")
 	private Long id;
 	
 	@Column(name="acct_fo_user_name")

@@ -15,32 +15,17 @@
  */
 package org.kuali.rice.kim.impl.group;
 
-import org.eclipse.persistence.annotations.Convert;
-import org.eclipse.persistence.annotations.Customizer;
-import org.joda.time.DateTime;
-import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.framework.group.GroupEbo;
-import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.provider.jpa.eclipselink.EclipseLinkSequenceCustomizer;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
-import org.kuali.rice.krad.data.platform.generator.Sequence;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -58,7 +43,7 @@ public abstract class GroupBase extends PersistableBusinessObjectBase implements
     private String description;
 
     @Column(name="ACTV_IND")
-    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     private boolean active;
 
     @Column(name="KIM_TYP_ID")

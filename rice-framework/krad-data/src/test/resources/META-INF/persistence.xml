@@ -16,7 +16,6 @@
     limitations under the License.
 
 -->
-<!-- This persistence.xml file is used only for unit testing -->
 <persistence
     version="1.0"
     xmlns="http://java.sun.com/xml/ns/persistence"
@@ -26,26 +25,26 @@
   <persistence-unit name="krad-data-unit-test">
   	<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
   	
-    <class>org.kuali.rice.krad.data.provider.jpa.testbo.TestDataObject</class>
-    <class>org.kuali.rice.krad.data.provider.jpa.testbo.TestDataObjectExtension</class>
-    <class>org.kuali.rice.krad.data.provider.jpa.testbo.TestDataObjectTwoPkFields</class>
-    <class>org.kuali.rice.krad.data.provider.jpa.testbo.TestDataObjectTwoPkFieldsId</class>
-    <class>org.kuali.rice.krad.data.provider.jpa.testbo.IndirectlyLinkedCollectionDataObject</class>
-    <class>org.kuali.rice.krad.data.provider.jpa.testbo.CollectionDataObject</class>
-    <class>org.kuali.rice.krad.data.provider.jpa.testbo.CollectionDataObjectTwo</class>
-    <class>org.kuali.rice.krad.data.provider.jpa.testbo.ReferencedDataObject</class>
-    <class>org.kuali.rice.krad.data.provider.jpa.testbo.AnotherReferencedDataObject</class>
-    <class>org.kuali.rice.krad.data.provider.jpa.testbo.YetAnotherReferencedDataObject</class>
+    <class>org.kuali.rice.krad.data.jpa.testbo.TestDataObject</class>
+    <class>org.kuali.rice.krad.data.jpa.testbo.TestDataObjectExtension</class>
+    <class>org.kuali.rice.krad.data.jpa.testbo.TestDataObjectTwoPkFields</class>
+    <class>org.kuali.rice.krad.data.jpa.testbo.TestDataObjectTwoPkFieldsId</class>
+    <class>org.kuali.rice.krad.data.jpa.testbo.IndirectlyLinkedCollectionDataObject</class>
+    <class>org.kuali.rice.krad.data.jpa.testbo.CollectionDataObject</class>
+    <class>org.kuali.rice.krad.data.jpa.testbo.CollectionDataObjectTwo</class>
+    <class>org.kuali.rice.krad.data.jpa.testbo.ReferencedDataObject</class>
+    <class>org.kuali.rice.krad.data.jpa.testbo.AnotherReferencedDataObject</class>
+    <class>org.kuali.rice.krad.data.jpa.testbo.YetAnotherReferencedDataObject</class>
     
-    <class>org.kuali.rice.krad.data.converters.EncryptionConverter</class>
-    <class>org.kuali.rice.krad.data.provider.jpa.testbo.NonStandardDataTypeConverter</class>
-    <class>org.kuali.rice.krad.data.converters.KualiDecimalConverter</class>
-    <class>org.kuali.rice.krad.data.converters.KualiIntegerConverter</class>
-    <class>org.kuali.rice.krad.data.converters.KualiPercentConverter</class>
-    <class>org.kuali.rice.krad.data.converters.BooleanYNConverter</class>
-    <class>org.kuali.rice.krad.data.converters.BooleanTFConverter</class>
-    <class>org.kuali.rice.krad.data.converters.Boolean01Converter</class>
-    <class>org.kuali.rice.krad.data.converters.HashConverter</class>
+    <class>org.kuali.rice.krad.data.jpa.converters.EncryptionConverter</class>
+    <class>org.kuali.rice.krad.data.jpa.testbo.NonStandardDataTypeConverter</class>
+    <class>org.kuali.rice.krad.data.jpa.converters.KualiDecimalConverter</class>
+    <class>org.kuali.rice.krad.data.jpa.converters.KualiIntegerConverter</class>
+    <class>org.kuali.rice.krad.data.jpa.converters.KualiPercentConverter</class>
+    <class>org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter</class>
+    <class>org.kuali.rice.krad.data.jpa.converters.BooleanTFConverter</class>
+    <class>org.kuali.rice.krad.data.jpa.converters.Boolean01Converter</class>
+    <class>org.kuali.rice.krad.data.jpa.converters.HashConverter</class>
     
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>

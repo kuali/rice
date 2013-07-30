@@ -15,42 +15,44 @@
  */
 package org.kuali.rice.kim.impl.group;
 
-import org.eclipse.persistence.annotations.Customizer;
 import org.kuali.rice.kim.api.common.attribute.KimAttribute;
-import org.kuali.rice.kim.api.common.attribute.KimAttributeData;
 import org.kuali.rice.kim.api.common.attribute.KimAttributeDataHistory;
-import org.kuali.rice.kim.api.common.attribute.KimAttributeDataHistoryContract;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataHistoryBo;
-import org.kuali.rice.krad.data.provider.jpa.eclipselink.EclipseLinkSequenceCustomizer;
 
-import org.kuali.rice.krad.data.platform.generator.Sequence;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Id;
 import javax.persistence.Table;
-import java.sql.Timestamp;
 
 @Entity
-@Customizer(EclipseLinkSequenceCustomizer.class)
-@Sequence(name="KRIM_HIST_GRP_ATTR_DATA_ID_S", property="id")
-//@Sequence(name="KRIM_GRP_ATTR_DATA_ID_S", property="id")
 @Table(name = "KRIM_HIST_GRP_ATTR_DATA_T")
-public class GroupAttributeHistoryBo extends KimAttributeDataHistoryBo implements KimAttributeDataHistoryContract
-{
+public class GroupAttributeHistoryBo extends KimAttributeDataHistoryBo {
+
     private static final long serialVersionUID = -1358263879165065051L;
+
+    @Id
+    @Column(name="HIST_ID")
+    private String historyId;
+
+    @Column(name="ATTR_DATA_ID")
+    private String id;
+
     @Column(name = "GRP_ID")
     private String assignedToId;
 
     @Column(name="GRP_HIST_ID")
     private Long assignedToHistoryId;
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
 
     @Override
     public Long getAssignedToHistoryId() {

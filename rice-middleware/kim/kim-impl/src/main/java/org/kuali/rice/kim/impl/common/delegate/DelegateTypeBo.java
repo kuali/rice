@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.kim.impl.common.delegate;
 
-import org.eclipse.persistence.annotations.Convert;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
 import org.kuali.rice.kim.api.common.delegate.DelegateTypeContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.springframework.util.AutoPopulatingList;
 
 import javax.persistence.CascadeType;
@@ -43,7 +43,7 @@ public class DelegateTypeBo extends PersistableBusinessObjectBase implements Del
     private String delegationId;
     @Column(name = "ROLE_ID")
     private String roleId;
-    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     @Column(name = "ACTV_IND")
     private boolean active = true;
     @Column(name = "KIM_TYP_ID")

@@ -1,0 +1,63 @@
+<!--
+
+    Copyright 2005-2013 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                           http://www.springframework.org/schema/util
+                           http://www.springframework.org/schema/util/spring-util-3.1.xsd">
+
+  <bean id="testDataSource"
+        class="org.apache.commons.dbcp.BasicDataSource"
+        destroy-method="close"
+        p:driverClassName="org.hsqldb.jdbcDriver"
+        p:url="jdbc:hsqldb:mem:testdb"
+        p:username="sa"
+        p:password=""/>
+
+  <util:list id="managedClassNames">
+    <value>org.kuali.rice.krad.data.jpa.eclipselink.KradEclipseLinkEntityManagerFactoryBeanTest$TestEntity1</value>
+    <value>org.kuali.rice.krad.data.jpa.eclipselink.KradEclipseLinkEntityManagerFactoryBeanTest$TestEntity2</value>
+  </util:list>
+
+  <bean id="testPersistenceUnitPostProcessor"
+        class="org.kuali.rice.krad.data.jpa.eclipselink.KradEclipseLinkEntityManagerFactoryBeanTest$TestPersistenceUnitPostProcessor"/>
+
+  <bean id="loadTimeWeaver" class="org.springframework.instrument.classloading.SimpleLoadTimeWeaver"/>
+
+  <bean id="full"
+        class="org.kuali.rice.krad.data.jpa.eclipselink.KradEclipseLinkEntityManagerFactoryBean"
+        p:persistenceUnitName="full-persistence-unit"
+        p:packagesToScan="org.kuali.rice.krad.data.jpa.eclipselink.testentities"
+        p:managedClassNames-ref="managedClassNames"
+        p:dataSource-ref="testDataSource"
+        p:mappingResources="org/kuali/rice/krad/data/jpa/eclipselink/TestMappingResource.xml"
+        p:persistenceUnitPostProcessors-ref="testPersistenceUnitPostProcessor"
+        p:loadTimeWeaver-ref="loadTimeWeaver">
+    <property name="jpaProperties">
+      <props>
+        <prop key="eclipselink.weaving">true</prop>
+      </props>
+    </property>
+  </bean>
+
+  <!-- need a JTA version too!!! -->
+
+</beans>

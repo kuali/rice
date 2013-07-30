@@ -19,7 +19,7 @@ import org.eclipse.persistence.annotations.Index;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.data.platform.generator.Sequence;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.UrlFactory;
@@ -28,6 +28,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -44,11 +45,12 @@ import java.util.Properties;
 @Table(name="KRNS_NTE_T",uniqueConstraints= {
         @UniqueConstraint(name="KRNS_NTE_TC0",columnNames="OBJ_ID")
 })
-@Sequence(name="KRNS_NTE_S",property="noteIdentifier")
 public class Note extends PersistableBusinessObjectBase {
     private static final long serialVersionUID = -7647166354016356770L;
 
     @Id
+    @GeneratedValue(generator = "KRNS_NTE_S")
+    @PortableSequenceGenerator(name = "KRNS_NTE_S")
 	@Column(name="NTE_ID",length=14,precision=0,updatable=false)
 	private Long noteIdentifier;
     @Index(name="KRNS_NTE_TI1")

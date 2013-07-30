@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.kim.impl.identity;
 
-import org.eclipse.persistence.annotations.Convert;
 import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.kuali.rice.kim.api.identity.CodedAttributeContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -33,7 +33,7 @@ public abstract class CodedAttributeBo extends PersistableBusinessObjectBase imp
     private String code;
     @Column(name = "NM")
     private String name;
-    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     @Column(name = "ACTV_IND")
     private boolean active;
     @Column(name = "DISPLAY_SORT_CD")

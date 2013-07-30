@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.kim.impl.role;
 
-import org.eclipse.persistence.annotations.Convert;
 import org.kuali.rice.kim.api.role.RolePermission;
 import org.kuali.rice.kim.api.role.RolePermissionContract;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,7 +41,7 @@ public class RolePermissionBo extends PersistableBusinessObjectBase implements R
     @Column(name = "PERM_ID")
     private String permissionId;
     @Column(name = "ACTV_IND")
-    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     private boolean active;
     @OneToOne(targetEntity = PermissionBo.class, cascade = {}, fetch = FetchType.EAGER)
     @JoinColumn(name = "PERM_ID", insertable = false, updatable = false)

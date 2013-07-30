@@ -66,9 +66,9 @@ import org.kuali.rice.krad.data.provider.annotation.Security.NullMaskFormatter;
 import org.kuali.rice.krad.data.provider.annotation.ShortLabel;
 import org.kuali.rice.krad.data.provider.annotation.Summary;
 import org.kuali.rice.krad.data.provider.annotation.ValidCharactersConstraintBeanName;
-import org.kuali.rice.krad.data.provider.exception.MetadataConfigurationException;
+import org.kuali.rice.krad.data.metadata.MetadataConfigurationException;
 import org.kuali.rice.krad.data.provider.impl.MetadataProviderBase;
-import org.kuali.rice.krad.data.provider.jpa.JpaMetadataProvider;
+import org.kuali.rice.krad.data.jpa.JpaMetadataProvider;
 
 /**
  * Parses custom krad-data annotations for additional metadata to layer on top of that provided by the persistence

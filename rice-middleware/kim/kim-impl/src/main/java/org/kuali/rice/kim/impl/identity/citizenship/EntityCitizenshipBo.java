@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.kim.impl.identity.citizenship;
 
-import org.eclipse.persistence.annotations.Convert;
 import org.joda.time.DateTime;
 import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenship;
 import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenshipContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -51,7 +51,7 @@ public class EntityCitizenshipBo extends PersistableBusinessObjectBase implement
     @JoinColumn(
             name = "CTZNSHP_STAT_CD", insertable = false, updatable = false)
     private EntityCitizenshipStatusBo status;
-    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     @Column(name = "ACTV_IND")
     private boolean active;
 

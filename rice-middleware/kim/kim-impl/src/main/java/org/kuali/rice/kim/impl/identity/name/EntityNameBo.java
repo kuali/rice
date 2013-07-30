@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kim.impl.identity.name;
 
-import org.eclipse.persistence.annotations.Convert;
 import org.joda.time.DateTime;
 import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.identity.name.EntityName;
@@ -23,6 +22,7 @@ import org.kuali.rice.kim.api.identity.name.EntityNameContract;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 import javax.persistence.Column;
 import javax.persistence.FetchType;
@@ -56,10 +56,10 @@ public class EntityNameBo extends PersistableBusinessObjectBase implements Entit
     @JoinColumn(
             name = "NM_TYP_CD", insertable = false, updatable = false)
     private EntityNameTypeBo nameType;
-    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     @Column(name = "ACTV_IND")
     private boolean active;
-    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     @Column(name = "DFLT_IND")
     private boolean defaultValue;
     @Column(name = "NOTE_MSG")

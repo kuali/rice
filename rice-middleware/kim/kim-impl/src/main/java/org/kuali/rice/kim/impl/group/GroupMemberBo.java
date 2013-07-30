@@ -15,13 +15,10 @@
  */
 package org.kuali.rice.kim.impl.group;
 
-import org.eclipse.persistence.annotations.Customizer;
 import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.api.group.GroupMemberContract;
 import org.kuali.rice.kim.impl.membership.AbstractMemberBo;
-import org.kuali.rice.krad.data.provider.jpa.eclipselink.EclipseLinkSequenceCustomizer;
-
-import org.kuali.rice.krad.data.platform.generator.Sequence;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,13 +28,14 @@ import javax.persistence.Table;
 import java.sql.Timestamp;
 
 @Entity
-@Customizer(EclipseLinkSequenceCustomizer.class)
-@Sequence(name="KRIM_GRP_MBR_ID_S", property="id")
 @Table(name = "KRIM_GRP_MBR_T")
 public class GroupMemberBo extends AbstractMemberBo implements GroupMemberContract {
 
     private static final long serialVersionUID = 6773749266062306217L;
+
     @Id
+    @GeneratedValue(generator = "KRIM_GRP_MBR_ID_S")
+    @PortableSequenceGenerator(name = "KRIM_GRP_MBR_ID_S")
     @Column(name = "GRP_MBR_ID")
     private String id;
 

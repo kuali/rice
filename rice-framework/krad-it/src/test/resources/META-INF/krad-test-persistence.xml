@@ -36,15 +36,15 @@
     <class>org.kuali.rice.krad.document.authorization.PessimisticLock</class>
     <class>org.kuali.rice.krad.bo.DocumentHeader</class>
 
-    <class>org.kuali.rice.krad.data.provider.jpa.testbo.TestDataObject</class>
-    <class>org.kuali.rice.krad.data.provider.jpa.testbo.TestDataObjectTwoPkFields</class>
-    <class>org.kuali.rice.krad.data.provider.jpa.testbo.TestDataObjectTwoPkFieldsId</class>
-    <class>org.kuali.rice.krad.data.provider.jpa.testbo.IndirectlyLinkedCollectionDataObject</class>
-    <class>org.kuali.rice.krad.data.provider.jpa.testbo.CollectionDataObject</class>
-    <class>org.kuali.rice.krad.data.provider.jpa.testbo.CollectionDataObjectTwo</class>
-    <class>org.kuali.rice.krad.data.provider.jpa.testbo.ReferencedDataObject</class>
-    <class>org.kuali.rice.krad.data.provider.jpa.testbo.AnotherReferencedDataObject</class>
-    <class>org.kuali.rice.krad.data.provider.jpa.testbo.YetAnotherReferencedDataObject</class>
+    <class>org.kuali.rice.krad.data.jpa.testbo.TestDataObject</class>
+    <class>org.kuali.rice.krad.data.jpa.testbo.TestDataObjectTwoPkFields</class>
+    <class>org.kuali.rice.krad.data.jpa.testbo.TestDataObjectTwoPkFieldsId</class>
+    <class>org.kuali.rice.krad.data.jpa.testbo.IndirectlyLinkedCollectionDataObject</class>
+    <class>org.kuali.rice.krad.data.jpa.testbo.CollectionDataObject</class>
+    <class>org.kuali.rice.krad.data.jpa.testbo.CollectionDataObjectTwo</class>
+    <class>org.kuali.rice.krad.data.jpa.testbo.ReferencedDataObject</class>
+    <class>org.kuali.rice.krad.data.jpa.testbo.AnotherReferencedDataObject</class>
+    <class>org.kuali.rice.krad.data.jpa.testbo.YetAnotherReferencedDataObject</class>
 
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>

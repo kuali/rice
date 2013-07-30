@@ -23,7 +23,7 @@
 
 
 	<bean parent="DataObjectMetadata"
-		p:typeClassName="org.kuali.rice.krad.data.provider.jpa.testbo.TestDataObject"
+		p:typeClassName="org.kuali.rice.krad.data.jpa.testbo.TestDataObject"
 		p:label="A Spring-Provided Label"
 		p:backingObjectName="ANOTHER_TABLE_NAME_T">
 		<property name="attributes">

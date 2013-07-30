@@ -16,7 +16,6 @@
 package org.kuali.rice.kim.impl.identity.type;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.eclipse.persistence.annotations.Convert;
 import org.kuali.rice.kim.api.identity.EntityUtils;
 import org.kuali.rice.kim.api.identity.address.EntityAddress;
 import org.kuali.rice.kim.api.identity.email.EntityEmail;
@@ -29,6 +28,7 @@ import org.kuali.rice.kim.impl.identity.address.EntityAddressBo;
 import org.kuali.rice.kim.impl.identity.email.EntityEmailBo;
 import org.kuali.rice.kim.impl.identity.phone.EntityPhoneBo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -72,7 +72,7 @@ public class EntityTypeContactInfoBo extends PersistableBusinessObjectBase imple
     @JoinColumns({@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false),
             @JoinColumn(name = "ENT_TYP_CD", insertable = false, updatable = false)})
     private List<EntityAddressBo> addresses;
-    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     @Column(name = "ACTV_IND")
     private boolean active;
 

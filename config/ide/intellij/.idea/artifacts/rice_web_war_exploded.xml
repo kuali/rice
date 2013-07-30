@@ -81,7 +81,7 @@
             <element id="module-output" name="rice-location-api" />
           </element>
           <element id="library" level="project" name="Maven: net.sf.ehcache:ehcache-core:2.5.0" />
-          <element id="archive" name="rice-krad-data-2.4.0-M1-SNAPSHOT.jar">
+          <element id="archive" name="rice-2.4.0-M1-SNAPSHOT.jar">
             <element id="module-output" name="rice-krad-data" />
           </element>
           <element id="archive" name="rice-core-service-api-2.4.0-M1-SNAPSHOT.jar">

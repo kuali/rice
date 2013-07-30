@@ -50,7 +50,7 @@ public class DocumentLink implements Serializable, DocumentLinkContract {
 	private String destDocId;
     
 	/**
-	 * @return the docLinkId
+	 * @return the docLinkId             ee
 	 */
 	public String getDocLinkId() {
 		return this.docLinkId;

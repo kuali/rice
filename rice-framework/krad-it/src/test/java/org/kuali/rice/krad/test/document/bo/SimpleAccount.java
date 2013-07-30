@@ -15,15 +15,14 @@
  */
 package org.kuali.rice.krad.test.document.bo;
 
-import org.eclipse.persistence.annotations.Customizer;
 import org.kuali.rice.krad.bo.VersionedAndGloballyUniqueBase;
-import org.kuali.rice.krad.data.provider.jpa.eclipselink.EclipseLinkSequenceCustomizer;
-import org.kuali.rice.krad.data.platform.generator.Sequence;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -36,15 +35,17 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name="TRV_ACCT")
-@Sequence(name="TRVL_ID_SEQ", property="whatever")
-@Customizer(EclipseLinkSequenceCustomizer.class)
 public class SimpleAccount extends VersionedAndGloballyUniqueBase {
+
     @Id
+    @GeneratedValue(generator="TRVL_ID_SEQ")
+    @PortableSequenceGenerator(name="TRVL_ID_SEQ", sequenceName="TRVL_ID_SEQ", initialValue = 1000)
     @Column(name="ACCT_NUM")
-    //@GeneratedValue(generator="trvl_id_seq")
     private String number;
+
     @Column(name="ACCT_NAME")
     private String name;
+
     @Column(name="ACCT_FO_ID")
     private Long amId;
 

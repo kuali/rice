@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kim.impl.responsibility;
 
-import org.eclipse.persistence.annotations.Convert;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityContract;
@@ -26,6 +25,7 @@ import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.springframework.util.AutoPopulatingList;
@@ -59,7 +59,7 @@ public class ResponsibilityBo extends PersistableBusinessObjectBase implements R
     @Column(name = "PERM_TMPL_ID")
     private String templateId;
     @Column(name = "ACTV_IND")
-    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     private boolean active;
     @OneToOne(targetEntity = ResponsibilityTemplateBo.class, cascade = {}, fetch = FetchType.EAGER)
     @JoinColumn(name = "PERM_TMPL_ID", insertable = false, updatable = false)

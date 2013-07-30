@@ -19,6 +19,8 @@ import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -27,6 +29,23 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "KRIM_DLGN_MBR_ATTR_DATA_T")
 public class DelegateMemberAttributeDataBo extends KimAttributeDataBo {
+
+    @Id
+    @GeneratedValue(generator = "KRIM_ATTR_DATA_ID_S")
+    @Column(name="ATTR_DATA_ID")
+    private String id;
+
+    @Column(name = "DLGN_MBR_ID")
+    private String assignedToId;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @Override
     public String getAssignedToId() {
         return assignedToId;
@@ -37,6 +56,4 @@ public class DelegateMemberAttributeDataBo extends KimAttributeDataBo {
         this.assignedToId = assignedToId;
     }
 
-    @Column(name = "DLGN_MBR_ID")
-    private String assignedToId;
 }

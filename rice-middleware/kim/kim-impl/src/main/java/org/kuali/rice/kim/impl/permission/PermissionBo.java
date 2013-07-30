@@ -65,7 +65,7 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
     private String templateId;
 
     @Column(name = "ACTV_IND")
-    //@javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    //@javax.persistence.Convert(converter=org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter.class)
     private boolean active;
 
     @OneToOne(targetEntity = PermissionTemplateBo.class, cascade = {}, fetch = FetchType.EAGER)

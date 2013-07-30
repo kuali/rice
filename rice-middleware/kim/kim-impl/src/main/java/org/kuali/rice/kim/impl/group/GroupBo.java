@@ -15,22 +15,19 @@
  */
 package org.kuali.rice.kim.impl.group;
 
-import org.eclipse.persistence.annotations.Customizer;
 import org.joda.time.DateTime;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
-import org.kuali.rice.krad.data.provider.jpa.eclipselink.EclipseLinkSequenceCustomizer;
-
-import org.kuali.rice.krad.data.platform.generator.Sequence;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Cacheable;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -41,15 +38,15 @@ import java.util.List;
 import java.util.Map;
 
 @Entity
-@Sequence(name="KRIM_GRP_ID_S",property="id")
-@Customizer(EclipseLinkSequenceCustomizer.class)
 @Cacheable(false)
 @Table(name="KRIM_GRP_T")
 public class GroupBo extends GroupBase {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name="GRP_ID")
+    @GeneratedValue(generator = "KRIM_GRP_ID_S")
+    @PortableSequenceGenerator(name = "KRIM_GRP_ID_S")
+    @Column(name = "GRP_ID")
     private String id;
 
     @OneToMany(fetch= FetchType.EAGER)

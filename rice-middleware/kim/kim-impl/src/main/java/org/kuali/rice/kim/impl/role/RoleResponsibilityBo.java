@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.kim.impl.role;
 
-import org.eclipse.persistence.annotations.Convert;
 import org.kuali.rice.kim.api.role.RoleResponsibility;
 import org.kuali.rice.kim.api.role.RoleResponsibilityContract;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -43,7 +43,7 @@ public class RoleResponsibilityBo extends PersistableBusinessObjectBase implemen
     private String roleId;
     @Column(name = "RSP_ID")
     private String responsibilityId;
-    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     @Column(name = "ACTV_IND")
     private boolean active;
     @ManyToOne(targetEntity = ResponsibilityBo.class, fetch = FetchType.EAGER, cascade = {})

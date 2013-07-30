@@ -25,8 +25,8 @@ import org.junit.Test;
 import org.kuali.rice.krad.data.metadata.DataObjectAttribute;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.provider.impl.CompositeMetadataProviderImpl;
-import org.kuali.rice.krad.data.provider.jpa.eclipselink.EclipseLinkJpaMetadataProviderImpl;
-import org.kuali.rice.krad.data.provider.jpa.testbo.TestDataObject;
+import org.kuali.rice.krad.data.jpa.eclipselink.EclipseLinkJpaMetadataProviderImpl;
+import org.kuali.rice.krad.data.jpa.testbo.TestDataObject;
 import org.kuali.rice.krad.data.provider.spring.SpringMetadataProviderImpl;
 
 import javax.persistence.EntityManagerFactory;

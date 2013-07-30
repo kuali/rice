@@ -17,10 +17,10 @@ package org.kuali.rice.kim.impl.role;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
-import org.eclipse.persistence.annotations.Convert;
 import org.kuali.rice.kim.api.role.RoleResponsibilityAction;
 import org.kuali.rice.kim.api.role.RoleResponsibilityActionContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -51,7 +51,7 @@ public class RoleResponsibilityActionBo extends PersistableBusinessObjectBase im
     @Column(name = "ACTN_PLCY_CD")
     private String actionPolicyCode;
     @Column(name = "FRC_ACTN")
-    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     private boolean forceAction;
     @Column(name = "PRIORITY_NBR")
     private Integer priorityNumber;

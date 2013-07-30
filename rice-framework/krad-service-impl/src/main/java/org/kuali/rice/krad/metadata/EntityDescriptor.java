@@ -23,8 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.kuali.rice.krad.data.platform.generator.Sequence;
-
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -37,8 +35,7 @@ public class EntityDescriptor implements Serializable {
 	private String table;
 	private Class clazz;
 	private Class idClass;
-	private Sequence sequence;
-	
+
 	private Map<String, FieldDescriptor> fieldsByName = new HashMap<String, FieldDescriptor>();
 	private Map<String, FieldDescriptor> fieldsByColumnName = new HashMap<String, FieldDescriptor>();
 
@@ -89,15 +86,7 @@ public class EntityDescriptor implements Serializable {
 	public void setIdClass(Class idClass) {
 		this.idClass = idClass;
 	}
-	
-	public Sequence getSequence() {
-		return sequence;
-	}
 
-	public void setSequence(Sequence sequence) {
-		this.sequence = sequence;
-	}
-	
 	public FieldDescriptor getFieldByName(String name) {
 		return fieldsByName.get(name.toUpperCase());
 	}
@@ -174,9 +163,6 @@ public class EntityDescriptor implements Serializable {
 		sb.append("\n   class:    ").append(clazz.getName());
 		if (idClass != null) {
 			sb.append("\n   id class: ").append(idClass.getName());
-		}
-		if (sequence != null) {
-			sb.append("\n   sequence: ").append(sequence.property()).append(" -> ").append(sequence.name());
 		}
 		if (!primaryKeys.isEmpty()) {
 			sb.append("\n   primary keys = {");

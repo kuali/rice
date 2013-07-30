@@ -16,26 +16,24 @@
 package org.kuali.rice.kim.impl.identity.personal;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.eclipse.persistence.annotations.Convert;
-import org.eclipse.persistence.annotations.Customizer;
 import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.kuali.rice.kim.api.identity.personal.EntityDisability;
 import org.kuali.rice.kim.api.identity.personal.EntityDisabilityContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.provider.jpa.eclipselink.EclipseLinkSequenceCustomizer;
-
-import org.kuali.rice.krad.data.platform.generator.Sequence;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.List;
 
-@Customizer(EclipseLinkSequenceCustomizer.class)
-@Sequence(name="KRIM_ENTITY_DSBTY_ID_S",property="id")
 public class EntityDisabilityBo extends PersistableBusinessObjectBase implements EntityDisabilityContract {
     private static final long serialVersionUID = -575024049319370685L;
     @Id
+    @GeneratedValue(generator = "KRIM_ENTITY_DSBTY_ID_S")
+    @PortableSequenceGenerator(name = "KRIM_ENTITY_DSBTY_ID_S")
     @Column(name = "ID")
     private String id;
     @Column(name = "ENTITY_ID")
@@ -47,7 +45,7 @@ public class EntityDisabilityBo extends PersistableBusinessObjectBase implements
     private List<EntityDisabilityAccomodationNeededBo> accommodationsNeeded;
     private String conditionTypeCode;
     private EntityDisabilityConditionTypeBo conditionType;
-    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     @Column(name = "ACTV_IND")
     private boolean active;
 

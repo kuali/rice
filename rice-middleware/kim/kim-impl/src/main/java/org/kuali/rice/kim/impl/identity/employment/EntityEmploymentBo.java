@@ -21,6 +21,7 @@ import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
 import org.kuali.rice.kim.api.identity.employment.EntityEmploymentContract;
 import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 import javax.persistence.Column;
 import javax.persistence.FetchType;
@@ -50,13 +51,13 @@ public class EntityEmploymentBo extends PersistableBusinessObjectBase implements
     @Convert("kualiDecimalConverter")
     @Column(name = "BASE_SLRY_AMT")
     private KualiDecimal baseSalaryAmount;
-    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     @Column(name = "PRMRY_IND")
     private boolean primary;
-    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     @Column(name = "ACTV_IND")
     private boolean active;
-    @javax.persistence.Convert(converter=org.kuali.rice.krad.data.converters.BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     @Column(name = "TNR_IND")
     private boolean tenured;
     @ManyToOne(targetEntity = EntityEmploymentTypeBo.class, fetch = FetchType.EAGER, cascade = {})

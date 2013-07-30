@@ -15,28 +15,52 @@
  */
 package org.kuali.rice.kim.impl.group;
 
-import org.eclipse.persistence.annotations.Customizer;
 import org.kuali.rice.kim.api.common.attribute.KimAttribute;
 import org.kuali.rice.kim.api.common.attribute.KimAttributeData;
-import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
-import org.kuali.rice.krad.data.provider.jpa.eclipselink.EclipseLinkSequenceCustomizer;
-
-import org.kuali.rice.krad.data.platform.generator.Sequence;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Customizer(EclipseLinkSequenceCustomizer.class)
-@Sequence(name="KRIM_GRP_ATTR_DATA_ID_S", property="id")
 @Table(name = "KRIM_GRP_ATTR_DATA_T")
-public class GroupAttributeBo extends KimAttributeDataBo implements KimAttributeDataContract {
+public class GroupAttributeBo extends KimAttributeDataBo {
+
     private static final long serialVersionUID = 6380313567330578976L;
+
+    @Id
+    @GeneratedValue(generator = "KRIM_GRP_ATTR_DATA_ID_S")
+    @PortableSequenceGenerator(name = "KRIM_GRP_ATTR_DATA_ID_S")
+    @Column(name="ATTR_DATA_ID")
+    private String id;
+
     @Column(name = "GRP_ID")
     private String assignedToId;
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public String getAssignedToId() {
+        return assignedToId;
+    }
+
+    @Override
+    public void setAssignedToId(String assignedToId) {
+        this.assignedToId = assignedToId;
+    }
 
     public static KimAttributeData to(GroupAttributeBo bo) {
         if (bo == null) {
@@ -63,16 +87,5 @@ public class GroupAttributeBo extends KimAttributeDataBo implements KimAttribute
         bo.setObjectId(im.getObjectId());
         return bo;
     }
-
-    @Override
-    public String getAssignedToId() {
-        return assignedToId;
-    }
-
-    @Override
-    public void setAssignedToId(String assignedToId) {
-        this.assignedToId = assignedToId;
-    }
-
 
 }

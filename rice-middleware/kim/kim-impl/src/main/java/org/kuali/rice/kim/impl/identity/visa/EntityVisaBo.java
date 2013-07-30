@@ -15,30 +15,28 @@
  */
 package org.kuali.rice.kim.impl.identity.visa;
 
-import org.eclipse.persistence.annotations.Customizer;
 import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.kuali.rice.kim.api.identity.visa.EntityVisa;
 import org.kuali.rice.kim.api.identity.visa.EntityVisaContract;
 import org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.provider.jpa.eclipselink.EclipseLinkSequenceCustomizer;
-
-import org.kuali.rice.krad.data.platform.generator.Sequence;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Customizer(EclipseLinkSequenceCustomizer.class)
-@Sequence(name="KRIM_ENTITY_VISA_ID_S", property = "id")
 @Table(name = "KRIM_ENTITY_VISA_T")
 public class EntityVisaBo extends PersistableBusinessObjectBase implements EntityVisaContract {
     @Id
+    @GeneratedValue(generator = "KRIM_ENTITY_VISA_ID_S")
+    @PortableSequenceGenerator(name = "KRIM_ENTITY_VISA_ID_S")
     @Column(name = "ID")
     private String id;
     @Column(name = "VISA_TYP_CD")

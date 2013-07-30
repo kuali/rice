@@ -35,12 +35,12 @@ import org.kuali.rice.krad.uif.control.TextControl;
 @TestDictionaryConfig(namespaceCode="KR-NS",dataDictionaryFiles="classpath:org/kuali/rice/krad/test/datadictionary/TestDataObject.xml")
 public class DataDictionaryMetadataDefaultingTest extends KRADTestCase {
 
-    protected static final String MAIN_DATA_OBJECT_FOR_TESTING = "org.kuali.rice.krad.data.provider.jpa.testbo.TestDataObject";
+    protected static final String MAIN_DATA_OBJECT_FOR_TESTING = "org.kuali.rice.krad.data.jpa.testbo.TestDataObject";
 
     @Override
     @Before
     public void setUp() throws Exception {
-        setLogLevel("org.kuali.rice.krad.data.provider.jpa.eclipselink.EclipseLinkJpaMetadataProviderImpl", Level.DEBUG);
+        setLogLevel("org.kuali.rice.krad.data.jpa.eclipselink.EclipseLinkJpaMetadataProviderImpl", Level.DEBUG);
         setLogLevel("org.kuali.rice.krad.data.provider.jpa.JpaMetadataProviderImpl", Level.DEBUG);
         setLogLevel("org.kuali.rice.krad.data.provider.SpringMetadataProviderImpl", Level.DEBUG);
         setLogLevel("org.kuali.rice.krad.data.provider.CompositeMetadataProviderImpl", Level.DEBUG);

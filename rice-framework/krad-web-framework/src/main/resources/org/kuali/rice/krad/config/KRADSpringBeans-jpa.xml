@@ -55,7 +55,7 @@
   </bean>
 
   <bean id="kradEntityManagerFactory"
-        class="org.kuali.rice.krad.data.provider.jpa.eclipselink.KradEclipseLinkEntityManagerFactoryBean"
+        class="org.kuali.rice.krad.data.jpa.eclipselink.KradEclipseLinkEntityManagerFactoryBean"
         p:jtaDataSource-ref="kradApplicationDataSource"
         p:persistenceUnitName="krad-application"
         p:packagesToScan-ref="jpaPackagesToScan"/>
@@ -65,7 +65,7 @@
         p:entityManagerFactory-ref="kradEntityManagerFactory"/>
 
   <bean id="kradJpaPersistenceProvider"
-        class="org.kuali.rice.krad.data.provider.jpa.JpaPersistenceProvider"
+        class="org.kuali.rice.krad.data.jpa.JpaPersistenceProvider"
         p:providerRegistry-ref="kd-providerRegistry"
         p:dataObjectService-ref="kd-dataObjectService"
         p:sharedEntityManager-ref="kradSharedEntityManager"/>
@@ -81,7 +81,7 @@
         p:resourceLocations-ref="kradSpringMetadataFileLocations" />
 
   <bean id="kradMetadataProviderJpa"
-        class="org.kuali.rice.krad.data.provider.jpa.eclipselink.EclipseLinkJpaMetadataProviderImpl"
+        class="org.kuali.rice.krad.data.jpa.eclipselink.EclipseLinkJpaMetadataProviderImpl"
         p:entityManager-ref="kradSharedEntityManager" />
 
   <bean id="kradMetadataProviderAnnotation"

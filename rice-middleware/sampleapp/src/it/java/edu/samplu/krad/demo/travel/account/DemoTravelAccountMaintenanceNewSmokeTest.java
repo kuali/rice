@@ -52,7 +52,6 @@ public class DemoTravelAccountMaintenanceNewSmokeTest extends SmokeTestBase {
         waitAndTypeByName("document.documentHeader.documentDescription","Travel Account Maintenance New Test Document");
         waitAndTypeByName("document.newMaintainableObject.dataObject.number","a1");
         waitAndClickByXpath("//input[@alt='Direct Inquiry']");
-        waitForElementPresentByXpath("//a[@title='Travel Account ']");
         waitAndClickByXpath(FANCY_BOX_CLOSE_XPATH);
         assertTextPresent("Travel Account Maintenance");
     }

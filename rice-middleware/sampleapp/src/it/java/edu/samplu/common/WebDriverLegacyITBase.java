@@ -1542,6 +1542,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndClickSave();
         waitAndClickSubmit();
         waitForPageToLoad();
+        Thread.sleep(2000);
         assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByLinkText("Administration");
@@ -4234,6 +4235,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void waitForElementPresentById(String id) throws InterruptedException {
         jiraAwareWaitFor(By.id(id), "");
+    }
+
+    protected void waitForElementPresentById(String id, String message) throws InterruptedException {
+        jiraAwareWaitFor(By.id(id), message);
     }
 
     protected void waitForElementPresentByName(String name) throws InterruptedException {

@@ -61,6 +61,12 @@ public class DemoTravelAccountInquirySmokeTest extends SmokeTestBase {
         assertTextPresent("Demo - Travel Application", "Expected Demo - Travel Application did back work?");
     }
 
+    protected void testInquiryBackToLoginButton() throws Exception {
+        waitAndClickButtonByText("Back");
+        Thread.sleep(2000); // seems to take a while to load
+        waitForElementPresentById("Rice-LoginButton", "Expected Login - Travel Application Bookmark back work?");
+    }
+
     protected void testCollapseExpand() throws InterruptedException {
         waitForElementPresentByClassName("demo-contactInfo");
         assertTextPresent("Travel Account Number:");
@@ -94,7 +100,7 @@ public class DemoTravelAccountInquirySmokeTest extends SmokeTestBase {
 
     @Test
     public void testInquiryBackButtonBookmark() throws Exception {
-        testInquiryBackButton();
+        testInquiryBackToLoginButton();
         passed();
     }
 

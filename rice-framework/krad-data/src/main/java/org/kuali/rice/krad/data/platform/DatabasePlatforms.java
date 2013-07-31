@@ -29,8 +29,9 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * Contains constants and utilities related to the supported database platforms.
  *
- * We use a String to represent the platform name as opposed to an Enum because this allows for the potential to
+ * <p>We use a String to represent the platform name as opposed to an Enum because this allows for the potential to
  * configure and use custom platforms at runtime without requiring internal code modification to support a new platform.
+ * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

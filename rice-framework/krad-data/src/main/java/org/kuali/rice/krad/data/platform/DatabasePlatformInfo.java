@@ -15,18 +15,23 @@
  */
 package org.kuali.rice.krad.data.platform;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Contains database platform information, specifically the name and major version of the database. The name of the
  * database platform should be considered as case insensitive.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DatabasePlatformInfo {
+public final class DatabasePlatformInfo {
 
     private final String name;
     private final int majorVersion;
 
     public DatabasePlatformInfo(String name, int majorVersion) {
+        if (StringUtils.isBlank(name)) {
+            throw new IllegalArgumentException("Name cannot be null or blank");
+        }
         this.name = name;
         this.majorVersion = majorVersion;
     }

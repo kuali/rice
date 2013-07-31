@@ -422,8 +422,13 @@ public class ITUtil {
 
     private static void processFreemarkerException(String contents, String linkLocator, Failable failable, String message) {
         JiraAwareFailureUtil.failOnMatchedJira(contents, failable);
-        String stackTrace = contents.substring(contents.indexOf("Error: on line"), contents.indexOf("more<") - 1);
-        failable.fail( "\nFreemarker Exception " + message + " navigating to " + linkLocator + "\nStackTrace: " + stackTrace.trim());
+        String ftlStackTrace = null;
+        if (contents.contains("more<")) {
+            ftlStackTrace = contents.substring(contents.indexOf("Error: on line"), contents.indexOf("more<") - 1);
+        } else if (contents.contains("at java.lang.Thread.run(Thread.java:")) {
+            ftlStackTrace = contents.substring(contents.indexOf("Error: on line"), contents.indexOf("at java.lang.Thread.run(Thread.java:") + 39 );
+        }
+        failable.fail( "\nFreemarker Exception " + message + " navigating to " + linkLocator + "\nStackTrace: " + ftlStackTrace.trim());
     }
 
 /*

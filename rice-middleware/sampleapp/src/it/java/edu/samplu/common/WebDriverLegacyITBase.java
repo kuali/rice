@@ -4330,22 +4330,35 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * @throws InterruptedException
      */
     protected void waitForElementVisible(String elementLocator, String message) throws InterruptedException {
+        waitForElementVisibleBy(By.cssSelector(elementLocator), message);
+    }
+
+    protected void waitForElementVisibleBy(By by, String message) throws InterruptedException {
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+
         boolean failed = false;
 
         for (int second = 0;; second++) {
             if (second >= waitSeconds)
                 failed = true;
             try {
-                if (failed || (driver.findElements(By.cssSelector(elementLocator))).size() > 0)
+                if (failed || (driver.findElements(by)).size() > 0)
                     break;
             } catch (Exception e) {}
             Thread.sleep(1000);
         }
 
-        checkForIncidentReport(elementLocator); // after timeout to be sure page is loaded
+        checkForIncidentReport(by.toString()); // after timeout to be sure page is loaded
 
-        if (failed)
-            failableFail("timeout of " + waitSeconds + " seconds waiting for " + elementLocator + " " + message + " " + driver.getCurrentUrl());
+        driver.manage().timeouts().implicitlyWait(DEFAULT_WAIT_SEC, TimeUnit.SECONDS);
+
+        if (failed) {
+            failableFail("timeout of " + waitSeconds + " seconds waiting for " + by + " " + message + " " + driver.getCurrentUrl());
+        }
+    }
+
+    protected void waitForElementVisibleById(String id, String message) throws InterruptedException {
+        waitForElementVisibleBy(By.id(id), message);
     }
 
     protected void waitIsVisible(String locator) throws InterruptedException {

@@ -43,6 +43,14 @@ public class LoginInvalidUserSmokeTest extends SmokeTestBase {
         super.testSetUp();
     }
 
+    @Test
+    public void testAdStarUserName() throws InterruptedException {
+        System.setProperty(ITUtil.REMOTE_AUTOLOGIN_PROPERTY, "true");
+        WebDriverUtil.loginKradOrKns(driver, "ad*", this);
+        waitForElementVisibleById("Rice-LoginButton", "ad* should not be a valid login");
+        passed();
+    }
+
     /**
      * Invalid user name test
      * @throws InterruptedException

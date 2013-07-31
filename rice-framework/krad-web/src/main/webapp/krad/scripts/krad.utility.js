@@ -2399,7 +2399,7 @@ function initStickyFooterContent() {
     });
     currentFooterHeight = bottomOffset;
 
-    var contentWindowDiff = jQuery(window).height() - jQuery("#Uif-Application").height();
+    var contentWindowDiff = jQuery(window).height() - jQuery("#" + kradVariables.APP_ID).height();
     if (bottomOffset > contentWindowDiff) {
         jQuery("#" + kradVariables.APP_ID).css("paddingBottom", bottomOffset + "px");
     } else {

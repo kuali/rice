@@ -23,17 +23,17 @@ import org.kuali.rice.core.framework.persistence.jdbc.dao.PlatformAwareDaoBaseJd
 import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.ModuleConfiguration;
 import org.kuali.rice.krad.dao.SequenceAccessorDao;
+import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.util.LegacyUtils;
 import org.springmodules.orm.ojb.OjbFactoryUtils;
 
-import javax.persistence.EntityManager;
-
 /**
  * This class uses the KualiDBPlatform to get the next number from a given sequence.
  */
+@Deprecated
 public class SequenceAccessorDaoJdbc extends PlatformAwareDaoBaseJdbc implements SequenceAccessorDao {
 	private KualiModuleService kualiModuleService;
 
@@ -49,13 +49,9 @@ public class SequenceAccessorDaoJdbc extends PlatformAwareDaoBaseJdbc implements
         	throw new ConfigurationException("moduleConfiguration is null");
         
     	if (!LegacyUtils.useLegacy(clazz)) {
-    		EntityManager entityManager = moduleConfig.getEntityManager();
-    		
-            if ( entityManager != null ) 
-            	return getDbPlatform().getNextValSQL(sequenceName, entityManager);
-            else
-            	throw new ConfigurationException("EntityManager is null");
-        } 
+            throw new ConfigurationException("SequenceAccessorService should not be used with new data framework! Use "
+                    + MaxValueIncrementerFactory.class.getName() + " instead.");
+        }
     	else {
     		String dataSourceName = moduleConfig.getDataSourceName();
     		if ( StringUtils.isEmpty(dataSourceName) ) {

@@ -21,6 +21,7 @@ import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
+@Deprecated
 public class SequenceAccessorServiceImpl implements SequenceAccessorService {
     private SequenceAccessorDao sequenceAccessorDao;
 

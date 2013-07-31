@@ -64,8 +64,7 @@ public class DemoTravelAccountInquirySmokeTest extends SmokeTestBase {
     protected void testInquiryBackToLoginButton() throws Exception {
         waitAndClickButtonByText("Back");
         Thread.sleep(2000); // seems to take a while to load
-        waitForElementPresentById("Rice-LoginButton", "Expected Demo - Travel Application did back work?");
-        assertTextPresent("Demo - Travel Application", "Expected Demo - Travel Application did back work?");
+        waitForElementPresentById("Rice-LoginButton", "Expected Login - Travel Application Bookmark back work?");
     }
 
     protected void testCollapseExpand() throws InterruptedException {

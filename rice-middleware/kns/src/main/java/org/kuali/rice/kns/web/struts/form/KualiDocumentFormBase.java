@@ -296,7 +296,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         //Document Number    	
         HeaderField docNumber = new HeaderField("DataDictionary.DocumentHeader.attributes.documentNumber", workflowDocument != null? getDocument().getDocumentNumber() : null);
         docNumber.setId(KRADConstants.DocumentFormHeaderFieldIds.DOCUMENT_NUMBER);
-        HeaderField docStatus = new HeaderField("DataDictionary.AttributeReferenceDummy.attributes.workflowDocumentStatus", workflowDocument != null? workflowDocument.getStatus().getLabel() : null);
+        HeaderField docStatus = new HeaderField("DataDictionary.AttributeReference.attributes.workflowDocumentStatus", workflowDocument != null? workflowDocument.getStatus().getLabel() : null);
         docStatus.setId(KRADConstants.DocumentFormHeaderFieldIds.DOCUMENT_WORKFLOW_STATUS);
         String initiatorNetworkId = null;
         Person user = null;
@@ -310,7 +310,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
     	}
         String inquiryUrl = getPersonInquiryUrlLink(user, workflowDocument != null? initiatorNetworkId:null);
 
-        HeaderField docInitiator = new HeaderField(KRADConstants.DocumentFormHeaderFieldIds.DOCUMENT_INITIATOR, "DataDictionary.AttributeReferenceDummy.attributes.initiatorNetworkId",
+        HeaderField docInitiator = new HeaderField(KRADConstants.DocumentFormHeaderFieldIds.DOCUMENT_INITIATOR, "DataDictionary.AttributeReference.attributes.initiatorNetworkId",
         workflowDocument != null? initiatorNetworkId : null, workflowDocument != null? inquiryUrl : null);
         
         String createDateStr = null;
@@ -318,7 +318,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
             createDateStr = CoreApiServiceLocator.getDateTimeService().toString(workflowDocument.getDateCreated().toDate(), "hh:mm a MM/dd/yyyy");
         }
         
-        HeaderField docCreateDate = new HeaderField("DataDictionary.AttributeReferenceDummy.attributes.createDate", createDateStr);
+        HeaderField docCreateDate = new HeaderField("DataDictionary.AttributeReference.attributes.createDate", createDateStr);
         docCreateDate.setId(KRADConstants.DocumentFormHeaderFieldIds.DOCUMENT_CREATE_DATE);
         if (ObjectUtils.isNotNull(docTemplateNumber)) {
         	setNumColumns(3);

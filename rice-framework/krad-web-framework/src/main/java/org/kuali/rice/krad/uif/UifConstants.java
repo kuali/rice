@@ -322,6 +322,8 @@ public class UifConstants {
     public static final class RoleTypes {
         public static final String CONTROL = "Control";
         public static final String INPUT_FIELD = "InputField";
+        public static final String GROUP = "Group";
+        public static final String ROW_GROUPING = "RowGrouping";
     }
 
     public static final class DataAttributes {

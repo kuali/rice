@@ -299,8 +299,8 @@ public class RichTable extends WidgetBase {
             }
 
             if (actionIndex == UifConstants.TableLayoutValues.ACTIONS_COLUMN_LEFT_INDEX && actionFieldVisible) {
-                String actionColOptions =
-                        constructTableColumnOptions(columnIndex, false, isUseServerPaging, null, null);
+                String actionColOptions = constructTableColumnOptions(columnIndex, false, isUseServerPaging, null,
+                        null);
                 tableToolsColumnOptions.append(actionColOptions + " , ");
                 columnIndex++;
             }
@@ -322,7 +322,8 @@ public class RichTable extends WidgetBase {
                 tableToolsColumnOptions.append("{\""
                         + UifConstants.TableToolsKeys.SORTABLE
                         + "\" : "
-                        + false  // auto sequence column is never sortable
+                        + false
+                        // auto sequence column is never sortable
                         + ", \""
                         + UifConstants.TableToolsKeys.SORT_TYPE
                         + "\" : \""
@@ -336,8 +337,8 @@ public class RichTable extends WidgetBase {
                         + "]}, ");
                 columnIndex++;
                 if (actionIndex == 2 && actionFieldVisible) {
-                    String actionColOptions =
-                            constructTableColumnOptions(columnIndex, false, isUseServerPaging, null, null);
+                    String actionColOptions = constructTableColumnOptions(columnIndex, false, isUseServerPaging, null,
+                            null);
                     tableToolsColumnOptions.append(actionColOptions + " , ");
                     columnIndex++;
                 }
@@ -359,8 +360,8 @@ public class RichTable extends WidgetBase {
                 tableToolsColumnOptions.append(StringUtils.substring(jsArray, startBrace + 1, endBrace) + ", ");
 
                 if (actionFieldVisible && (actionIndex == -1 || actionIndex >= columnIndex)) {
-                    String actionColOptions =
-                            constructTableColumnOptions(columnIndex, false, isUseServerPaging, null, null);
+                    String actionColOptions = constructTableColumnOptions(columnIndex, false, isUseServerPaging, null,
+                            null);
                     tableToolsColumnOptions.append(actionColOptions);
                 } else {
                     tableToolsColumnOptions = new StringBuffer(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
@@ -377,8 +378,8 @@ public class RichTable extends WidgetBase {
                 tableToolsColumnOptions.append(StringUtils.substring(jsArray, startBrace + 1, endBrace) + ", ");
 
                 if (actionFieldVisible && (actionIndex == -1 || actionIndex >= columnIndex)) {
-                    String actionColOptions =
-                            constructTableColumnOptions(columnIndex, false, isUseServerPaging, null, null);
+                    String actionColOptions = constructTableColumnOptions(columnIndex, false, isUseServerPaging, null,
+                            null);
                     tableToolsColumnOptions.append(actionColOptions);
                 } else {
                     tableToolsColumnOptions = new StringBuffer(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
@@ -394,8 +395,8 @@ public class RichTable extends WidgetBase {
                 // build column defs from the the first row of the table
                 for (Component component : rowFields) {
                     if (actionFieldVisible && columnIndex + 1 == actionIndex) {
-                        String actionColOptions =
-                                constructTableColumnOptions(columnIndex, false, isUseServerPaging, null, null);
+                        String actionColOptions = constructTableColumnOptions(columnIndex, false, isUseServerPaging,
+                                null, null);
                         tableToolsColumnOptions.append(actionColOptions + " , ");
                         columnIndex++;
                     }
@@ -457,9 +458,9 @@ public class RichTable extends WidgetBase {
                             tableToolsColumnOptions.append(colOptions + " , ");
                         }
                         columnIndex++;
-                    } else if (component instanceof MessageField
-                            && component.getDataAttributes().get("role") != null
-                            && component.getDataAttributes().get("role").equals("grouping")) {
+                    } else if (component instanceof MessageField && component.getDataAttributes().get(
+                            UifConstants.DataAttributes.ROLE) != null && component.getDataAttributes().get(
+                            UifConstants.DataAttributes.ROLE).equals(UifConstants.RoleTypes.ROW_GROUPING)) {
                         //Grouping column is never shown, so skip
                         tableToolsColumnOptions.append("{"
                                 + UifConstants.TableToolsKeys.VISIBLE
@@ -480,16 +481,16 @@ public class RichTable extends WidgetBase {
                         tableToolsColumnOptions.append(colOptions + " , ");
                         columnIndex++;
                     } else {
-                        String colOptions =
-                                constructTableColumnOptions(columnIndex, false, isUseServerPaging, null, null);
+                        String colOptions = constructTableColumnOptions(columnIndex, false, isUseServerPaging, null,
+                                null);
                         tableToolsColumnOptions.append(colOptions + " , ");
                         columnIndex++;
                     }
                 }
 
                 if (actionFieldVisible && (actionIndex == -1 || actionIndex >= columnIndex)) {
-                    String actionColOptions =
-                            constructTableColumnOptions(columnIndex, false, isUseServerPaging, null, null);
+                    String actionColOptions = constructTableColumnOptions(columnIndex, false, isUseServerPaging, null,
+                            null);
                     tableToolsColumnOptions.append(actionColOptions);
                 } else {
                     tableToolsColumnOptions = new StringBuffer(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
@@ -546,8 +547,8 @@ public class RichTable extends WidgetBase {
             isSortable = false;
         }
 
-        return constructTableColumnOptions(target, isSortable,
-                collectionGroup.isUseServerPaging(), dataTypeClass, sortType);
+        return constructTableColumnOptions(target, isSortable, collectionGroup.isUseServerPaging(), dataTypeClass,
+                sortType);
     }
 
     /**
@@ -563,8 +564,8 @@ public class RichTable extends WidgetBase {
      * from the table
      * @return a formatted string with data table options for one column
      */
-    public String constructTableColumnOptions(int target, boolean isSortable, boolean isUseServerPaging, Class dataTypeClass,
-            String sortDataType) {
+    public String constructTableColumnOptions(int target, boolean isSortable, boolean isUseServerPaging,
+            Class dataTypeClass, String sortDataType) {
         String colOptions = "null";
 
         String sortType = "";

@@ -27,6 +27,8 @@ import java.io.Serializable;
  * ColumnCalculationInfo is used to specify which columns and what types of calculations are performed on those columns
  * of table collection.  This functionality can only be used when the dataTables plugin is being used
  * (richTable.render="true" for TableLayoutManager)
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTags({@BeanTag(name = "columnCalculationInfo-bean", parent = "Uif-ColumnCalculationInfo"),
         @BeanTag(name = "columnCalculationInfo-sum-bean", parent = "Uif-ColumnCalculationInfo-Sum"),
@@ -50,7 +52,7 @@ public class ColumnCalculationInfo extends UifDictionaryBeanBase implements Seri
     private String calculationFunctionExtraData;
 
     private boolean calculateOnKeyUp;
-    private boolean recalculateTotalClientside;
+    private boolean recalculateTotalClientSide;
 
     /**
      * Gets the column number.  This should not be set through configuration as it is overridden by the
@@ -255,18 +257,18 @@ public class ColumnCalculationInfo extends UifDictionaryBeanBase implements Seri
      *
      * @return true if calculating the totalField client-side, false otherwise
      */
-    @BeanTagAttribute(name = "recalculateTotalClientside")
-    public boolean isRecalculateTotalClientside() {
-        return recalculateTotalClientside;
+    @BeanTagAttribute(name = "recalculateTotalClientSide")
+    public boolean isRecalculateTotalClientSide() {
+        return recalculateTotalClientSide;
     }
 
     /**
-     * Set the recalculateTotalClientside flag
+     * Set the recalculateTotalClientSide flag
      *
-     * @param recalculateTotalClientside
+     * @param recalculateTotalClientSide
      */
-    public void setRecalculateTotalClientside(boolean recalculateTotalClientside) {
-        this.recalculateTotalClientside = recalculateTotalClientside;
+    public void setRecalculateTotalClientSide(boolean recalculateTotalClientSide) {
+        this.recalculateTotalClientSide = recalculateTotalClientSide;
     }
 
     /**
@@ -319,9 +321,8 @@ public class ColumnCalculationInfo extends UifDictionaryBeanBase implements Seri
     public <T> T copy() {
         T copiedClass = null;
         try {
-            copiedClass = (T)this.getClass().newInstance();
-        }
-        catch(Exception exception) {
+            copiedClass = (T) this.getClass().newInstance();
+        } catch (Exception exception) {
             throw new RuntimeException();
         }
 
@@ -338,7 +339,7 @@ public class ColumnCalculationInfo extends UifDictionaryBeanBase implements Seri
         columnCalculationInfoCopy.setColumnNumber(this.columnNumber);
 
         if (this.groupTotalFieldPrototype != null) {
-            columnCalculationInfoCopy.setGroupTotalFieldPrototype((MessageField)this.groupTotalFieldPrototype.copy());
+            columnCalculationInfoCopy.setGroupTotalFieldPrototype((MessageField) this.groupTotalFieldPrototype.copy());
         }
 
         if (this.pageTotalField != null) {
@@ -346,13 +347,13 @@ public class ColumnCalculationInfo extends UifDictionaryBeanBase implements Seri
         }
 
         columnCalculationInfoCopy.setPropertyName(this.propertyName);
-        columnCalculationInfoCopy.setRecalculateTotalClientside(this.recalculateTotalClientside);
+        columnCalculationInfoCopy.setRecalculateTotalClientSide(this.recalculateTotalClientSide);
         columnCalculationInfoCopy.setShowGroupTotal(this.showGroupTotal);
         columnCalculationInfoCopy.setShowPageTotal(this.showPageTotal);
         columnCalculationInfoCopy.setShowTotal(this.showTotal);
 
         if (this.totalField != null) {
-            columnCalculationInfoCopy.setTotalField((MessageField)this.totalField.copy());
+            columnCalculationInfoCopy.setTotalField((MessageField) this.totalField.copy());
         }
     }
 }

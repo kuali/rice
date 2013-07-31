@@ -206,13 +206,9 @@
   <bean id="Uif-ColGroupingField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.MessageField"
         parent="Uif-MessageField" scope="prototype">
     <property name="template" value="/krad/WEB-INF/ftl/components/field/colGroupingField.ftl"/>
+    <property name="label" value="Group"/>
     <property name="templateName" value="uif_colGroupingField"/>
     <property name="message.generateSpan" value="false"/>
-    <property name="dataAttributes">
-      <map>
-        <entry key="role" value="grouping"/>
-      </map>
-    </property>
   </bean>
 
   <bean id="Uif-LinkField" parent="Uif-LinkField-parentBean"/>

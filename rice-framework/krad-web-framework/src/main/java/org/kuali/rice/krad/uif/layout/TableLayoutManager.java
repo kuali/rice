@@ -270,24 +270,29 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     private void setupGrouping(CollectionGroup collectionGroup, View view) {
         //Grouping setup
         String groupingTitleExpression = "";
-        if (StringUtils.isNotBlank(this.getPropertyExpression("groupingTitle"))) {
-            groupingTitleExpression = this.getPropertyExpression("groupingTitle");
-            this.setGroupingTitle(this.getPropertyExpression("groupingTitle"));
+        if (StringUtils.isNotBlank(this.getPropertyExpression(UifPropertyPaths.GROUPING_TITLE))) {
+            groupingTitleExpression = this.getPropertyExpression(UifPropertyPaths.GROUPING_TITLE);
+            this.setGroupingTitle(this.getPropertyExpression(UifPropertyPaths.GROUPING_TITLE));
         } else if (this.getGroupingPropertyNames() != null) {
 
             for (String propertyName : this.getGroupingPropertyNames()) {
                 groupingTitleExpression = groupingTitleExpression + ", " + propertyName;
             }
 
-            groupingTitleExpression = groupingTitleExpression.replaceFirst(", ", "@{#lp.");
-            groupingTitleExpression = groupingTitleExpression.replace(", ", "}, @{#lp.");
+            groupingTitleExpression = groupingTitleExpression.replaceFirst(", ",
+                    "@{" + UifConstants.LINE_PATH_BIND_ADJUST_PREFIX);
+            groupingTitleExpression = groupingTitleExpression.replace(", ",
+                    "}, @{" + UifConstants.LINE_PATH_BIND_ADJUST_PREFIX);
             groupingTitleExpression = groupingTitleExpression.trim() + "}";
         }
 
         if (StringUtils.isNotBlank(groupingTitleExpression)) {
             MessageField groupingMessageField = ComponentFactory.getColGroupingField();
-            groupingMessageField.getMessage().getPropertyExpressions().put("messageText", groupingTitleExpression);
-            groupingMessageField.setLabel("Group");
+            groupingMessageField.getMessage().getPropertyExpressions().put(UifPropertyPaths.MESSAGE_TEXT,
+                    groupingTitleExpression);
+
+            groupingMessageField.addDataAttribute(UifConstants.DataAttributes.ROLE,
+                    UifConstants.RoleTypes.ROW_GROUPING);
 
             view.assignComponentIds(groupingMessageField);
 
@@ -355,7 +360,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                 Field totalDataField = setupTotalField(cInfo.getTotalField(), cInfo, this.isShowTotal(),
                         this.getTotalLabel(), "total", leftLabelColumnIndex);
 
-                if (!cInfo.isRecalculateTotalClientside()) {
+                if (!cInfo.isRecalculateTotalClientSide()) {
                     totalDataField.addDataAttribute(UifConstants.DataAttributes.SKIP_TOTAL, "true");
                 }
 
@@ -723,13 +728,15 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
             //special handling for grouping field - this field MUST be first
             if (hasGrouping && lineField instanceof MessageField &&
-                    lineField.getDataAttributes().get("role") != null && lineField.getDataAttributes().get("role")
-                    .equals("grouping")) {
+                    lineField.getDataAttributes().get(UifConstants.DataAttributes.ROLE) != null && lineField
+                    .getDataAttributes().get(UifConstants.DataAttributes.ROLE).equals(
+                            UifConstants.RoleTypes.ROW_GROUPING)) {
                 int groupFieldIndex = allRowFields.size() - extraColumns;
                 allRowFields.add(groupFieldIndex, lineField);
                 groupingColumnIndex = 0;
                 if (isAddLine) {
-                    ((MessageField) lineField).getMessage().getPropertyExpressions().remove("messageText");
+                    ((MessageField) lineField).getMessage().getPropertyExpressions().remove(
+                            UifPropertyPaths.MESSAGE_TEXT);
                     ((MessageField) lineField).getMessage().setMessageText("addLine");
                 }
             } else {

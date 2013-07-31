@@ -31,6 +31,11 @@
     display: none;
 }
 
+
+.ui-widget-content a {
+    color: #1150b0/*{fcContent}*/;
+}
+
 /*********** Home styles *******************************************************/
 .demo-sampleAppHomeView {
     margin-bottom: -8px;
@@ -261,7 +266,7 @@
 .demo-componentLibView .demo-sampleAppPage .uif-pageHeader select {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
-    width: 120px;
+    width: 220px;
 }
 
 .uif-page > .uif-header-contentWrapper{
@@ -387,10 +392,11 @@
 
 
 .ui-widget-header {
-   
+
     background: #ffffff /*{bgColorHeader}*/ url("");
-   
+
 }
+
 
 
 
@@ -1058,3 +1064,5 @@ table.dataTable tr.demo-index2 {
 table.dataTable tr.demo-rowCondition {
     font-style: italic;
 }
+
+

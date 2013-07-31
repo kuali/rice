@@ -55,7 +55,7 @@
         <#if manager.richTable?has_content && manager.richTable.render
             && (manager.richTable.forceLocalJsonData)>
 
-            <#if container.isUseServerPaging>
+            <#if container.useServerPaging>
                 <#-- empty body because content is being retrieved from the server after render -->
                 <tbody></tbody>
             </#if>

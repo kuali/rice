@@ -53,9 +53,9 @@
         </#if>
 
         <#if manager.richTable?has_content && manager.richTable.render
-            && (manager.richTable.forceAjaxJsonData || manager.richTable.forceLocalJsonData)>
+            && (manager.richTable.forceLocalJsonData)>
 
-            <#if manager.richTable.forceAjaxJsonData>
+            <#if container.isUseServerPaging>
                 <#-- empty body because content is being retrieved from the server after render -->
                 <tbody></tbody>
             </#if>

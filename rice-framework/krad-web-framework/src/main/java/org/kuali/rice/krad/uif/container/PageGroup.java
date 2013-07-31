@@ -84,7 +84,7 @@ public class PageGroup extends Group {
             }
         }
 
-        setupBreadcrumbs(view, model);
+        breadcrumbOptions.setupBreadcrumbs(view, model);
     }
 
     /**
@@ -112,118 +112,7 @@ public class PageGroup extends Group {
             this.setOnDocumentReadyScript(prefixScript + "\nsetupPage(false);");
         }
 
-        finalizeBreadcrumbs(view, model);
-    }
-
-    /**
-     * Setup the BreadcrumbOptions and BreadcrumbItem for a PageGroup.  To be called from performInitialization.
-     *
-     * @param view the page's View
-     * @param model the model
-     */
-    protected void setupBreadcrumbs(View view, Object model) {
-        BreadcrumbOptions viewBreadcrumbOptions = view.getBreadcrumbOptions();
-
-        //inherit prePageBreadcrumbs, preViewBreadcrumbs, and overrides from the view if not set
-        if (breadcrumbOptions.getHomewardPathBreadcrumbs() == null
-                && viewBreadcrumbOptions != null
-                && viewBreadcrumbOptions.getHomewardPathBreadcrumbs() != null) {
-            breadcrumbOptions.setHomewardPathBreadcrumbs(viewBreadcrumbOptions.getHomewardPathBreadcrumbs());
-
-            for (BreadcrumbItem item : breadcrumbOptions.getHomewardPathBreadcrumbs()) {
-                view.assignComponentIds(item);
-            }
-        }
-
-        if (breadcrumbOptions.getPrePageBreadcrumbs() == null
-                && viewBreadcrumbOptions != null
-                && viewBreadcrumbOptions.getPrePageBreadcrumbs() != null) {
-            breadcrumbOptions.setPrePageBreadcrumbs(viewBreadcrumbOptions.getPrePageBreadcrumbs());
-
-            for (BreadcrumbItem item : breadcrumbOptions.getPrePageBreadcrumbs()) {
-                view.assignComponentIds(item);
-            }
-        }
-
-        if (breadcrumbOptions.getPreViewBreadcrumbs() == null
-                && viewBreadcrumbOptions != null
-                && viewBreadcrumbOptions.getPreViewBreadcrumbs() != null) {
-            breadcrumbOptions.setPreViewBreadcrumbs(viewBreadcrumbOptions.getPreViewBreadcrumbs());
-
-            for (BreadcrumbItem item : breadcrumbOptions.getPreViewBreadcrumbs()) {
-                view.assignComponentIds(item);
-            }
-        }
-
-        if (breadcrumbOptions.getBreadcrumbOverrides() == null
-                && viewBreadcrumbOptions != null
-                && viewBreadcrumbOptions.getBreadcrumbOverrides() != null) {
-            breadcrumbOptions.setBreadcrumbOverrides(viewBreadcrumbOptions.getBreadcrumbOverrides());
-
-            for (BreadcrumbItem item : breadcrumbOptions.getBreadcrumbOverrides()) {
-                view.assignComponentIds(item);
-            }
-        }
-    }
-
-    /**
-     * Finalize the setup of the BreadcrumbOptions and the BreadcrumbItem for the PageGroup.  To be called from the
-     * performFinalize method.
-     *
-     * @param view the page's View
-     * @param model the model
-     */
-    protected void finalizeBreadcrumbs(View view, Object model) {
-        //set breadcrumbItem label same as the header, if not set
-        if (StringUtils.isBlank(breadcrumbItem.getLabel()) && this.getHeader() != null && StringUtils.isNotBlank(
-                this.getHeader().getHeaderText())) {
-            breadcrumbItem.setLabel(this.getHeader().getHeaderText());
-        }
-
-        //if label still blank, dont render
-        if (StringUtils.isBlank(breadcrumbItem.getLabel())) {
-            breadcrumbItem.setRender(false);
-        }
-
-        //special breadcrumb request param handling
-        if (breadcrumbItem.getUrl().getControllerMapping() == null
-                && breadcrumbItem.getUrl().getViewId() == null
-                && model instanceof UifFormBase
-                && breadcrumbItem.getUrl().getRequestParameters() == null
-                && ((UifFormBase) model).getInitialRequestParameters() != null) {
-            //add the current request parameters if controllerMapping, viewId, and requestParams are null
-            //(this means that no explicit breadcrumbItem customization was set)
-            Map<String, String> requestParameters = ((UifFormBase) model).getInitialRequestParameters();
-
-            //remove ajax properties because breadcrumb should always be a full view request
-            requestParameters.remove("ajaxReturnType");
-            requestParameters.remove("ajaxRequest");
-
-            //remove pageId because this should be set by the BreadcrumbItem setting
-            requestParameters.remove("pageId");
-
-            breadcrumbItem.getUrl().setRequestParameters(requestParameters);
-        }
-
-        //form key handling
-        if (breadcrumbItem.getUrl().getFormKey() == null
-                && model instanceof UifFormBase
-                && ((UifFormBase) model).getFormKey() != null) {
-            breadcrumbItem.getUrl().setFormKey(((UifFormBase) model).getFormKey());
-        }
-
-        //automatically set breadcrumbItem UifUrl properties below, if not set
-        if (breadcrumbItem.getUrl().getControllerMapping() == null && model instanceof UifFormBase) {
-            breadcrumbItem.getUrl().setControllerMapping(((UifFormBase) model).getControllerMapping());
-        }
-
-        if (breadcrumbItem.getUrl().getViewId() == null) {
-            breadcrumbItem.getUrl().setViewId(view.getId());
-        }
-
-        if (breadcrumbItem.getUrl().getPageId() == null) {
-            breadcrumbItem.getUrl().setPageId(this.getId());
-        }
+        breadcrumbOptions.finalizeBreadcrumbs(view, model, this, breadcrumbItem);
     }
 
     /**

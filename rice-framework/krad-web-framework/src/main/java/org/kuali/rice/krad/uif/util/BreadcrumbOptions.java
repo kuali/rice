@@ -16,12 +16,19 @@
 package org.kuali.rice.krad.uif.util;
 
 import com.google.common.collect.Lists;
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.uif.container.Container;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.util.KRADUtils;
+import org.kuali.rice.krad.web.form.HistoryFlow;
+import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * BreadcrumbOptions represents the options for the current view breadcrumbs that are displayed.
@@ -46,6 +53,133 @@ public class BreadcrumbOptions implements Serializable {
     private List<BreadcrumbItem> preViewBreadcrumbs;
     private List<BreadcrumbItem> prePageBreadcrumbs;
     private List<BreadcrumbItem> breadcrumbOverrides;
+
+    /**
+     * Sets up the history and breadcrumb configuration for this View.  Should be called from performInitialization.
+     *
+     * @param model the model
+     */
+    public void setupBreadcrumbs(View view, Object model) {
+        if (model != null && model instanceof UifFormBase) {
+            UifFormBase form = (UifFormBase) model;
+
+            //flow is being tracked if there is a flowKey or the breadcrumbs widget is forcing it
+            boolean usingFlow = StringUtils.isNotBlank(form.getFlowKey()) || (view.getBreadcrumbs() != null && view
+                    .getBreadcrumbs().isUsePathBasedBreadcrumbs());
+
+            //if using flow setup a new HistoryFlow for this view and set into the HistoryManager
+            if (usingFlow && form.getHistoryManager() != null) {
+
+                //use original request form key if present to match history flows stored in map (incase key changed)
+                String formKey = form.getRequestedFormKey();
+                if (StringUtils.isBlank(formKey)) {
+                    formKey = form.getFormKey();
+                    form.setRequestedFormKey(formKey);
+                }
+
+                //get the historyFlow for this view
+                HistoryFlow historyFlow = form.getHistoryManager().process(form.getFlowKey(), formKey,
+                        form.getRequestUrl());
+                if (historyFlow != null) {
+                    form.setHistoryFlow(historyFlow);
+                    form.setFlowKey(historyFlow.getFlowKey());
+                }
+            }
+
+            view.getBreadcrumbs().setUsePathBasedBreadcrumbs(usingFlow);
+
+            //get the pastItems from the flow and set them so they can be picked up by the Breadcrumbs widget
+            if (view.getBreadcrumbs() != null
+                    && view.getBreadcrumbs().isUsePathBasedBreadcrumbs()
+                    && form.getHistoryFlow().getPastItems() != null) {
+                List<BreadcrumbItem> pastItems = form.getHistoryFlow().getPastItems();
+
+                ComponentUtils.clearIds(pastItems);
+
+                for (BreadcrumbItem item : pastItems) {
+                    view.assignComponentIds(item);
+                }
+
+                view.setPathBasedBreadcrumbs(pastItems);
+            }
+        }
+    }
+
+    /**
+     * Finalize the setup of the BreadcrumbOptions and the BreadcrumbItem for the View.  To be called from the
+     * performFinalize method.
+     *
+     * @param model the model
+     */
+    public void finalizeBreadcrumbs(View view, Object model, Container parent, BreadcrumbItem breadcrumbItem) {
+        //set breadcrumbItem label same as the header, if not set
+        if (StringUtils.isBlank(breadcrumbItem.getLabel()) && view.getHeader() != null && !StringUtils.isBlank(
+                view.getHeader().getHeaderText()) && model instanceof UifFormBase) {
+            breadcrumbItem.setLabel(KRADUtils.generateUniqueViewTitle((UifFormBase) model, view));
+        }
+
+        //if label still blank, don't render
+        if (StringUtils.isBlank(breadcrumbItem.getLabel())) {
+            breadcrumbItem.setRender(false);
+        }
+
+        //special breadcrumb request param handling
+        if (breadcrumbItem.getUrl().getControllerMapping() == null
+                && breadcrumbItem.getUrl().getViewId() == null
+                && model instanceof UifFormBase
+                && breadcrumbItem.getUrl().getRequestParameters() == null
+                && ((UifFormBase) model).getInitialRequestParameters() != null) {
+            //add the current request parameters if controllerMapping, viewId, and requestParams are null
+            //(this means that no explicit breadcrumbItem customization was set)
+            Map<String, String> requestParameters = ((UifFormBase) model).getInitialRequestParameters();
+
+            //remove ajax properties because breadcrumb should always be a full view request
+            requestParameters.remove("ajaxReturnType");
+            requestParameters.remove("ajaxRequest");
+
+            //remove pageId so we can use special handling
+            requestParameters.remove("pageId");
+
+            breadcrumbItem.getUrl().setRequestParameters(requestParameters);
+        }
+
+        //form key handling
+        if (breadcrumbItem.getUrl().getFormKey() == null
+                && model instanceof UifFormBase
+                && ((UifFormBase) model).getFormKey() != null) {
+            breadcrumbItem.getUrl().setFormKey(((UifFormBase) model).getFormKey());
+        }
+
+        //automatically set breadcrumbItem UifUrl properties if not set
+        if (breadcrumbItem.getUrl().getControllerMapping() == null && model instanceof UifFormBase) {
+            breadcrumbItem.getUrl().setControllerMapping(((UifFormBase) model).getControllerMapping());
+        }
+
+        if (breadcrumbItem.getUrl().getViewId() == null) {
+            breadcrumbItem.getUrl().setViewId(view.getId());
+        }
+
+        //explicitly set the page to default for the view breadcrumb when not using path based (path based will pick
+        //up the breadcrumb pageId from the form data automatically)
+        if (breadcrumbItem.getUrl().getPageId() == null && !view.getBreadcrumbs().isUsePathBasedBreadcrumbs()) {
+            //set breadcrumb to default to the default page if an explicit page id for view breadcrumb is not set
+            if (view.getEntryPageId() != null) {
+                breadcrumbItem.getUrl().setPageId(view.getEntryPageId());
+            } else if (view.isSinglePageView() && view.getPage() != null) {
+                //single page
+                breadcrumbItem.getUrl().setPageId(view.getPage().getId());
+            } else if (!view.getItems().isEmpty() && view.getItems().get(0) != null) {
+                //multi page
+                breadcrumbItem.getUrl().setPageId(view.getItems().get(0).getId());
+            }
+        }
+
+        //add to breadcrumbItem to current items if it is set to use in path based
+        if (model instanceof UifFormBase && ((UifFormBase) model).getHistoryFlow() != null) {
+            ((UifFormBase) model).getHistoryFlow().setCurrentViewItem(view.getBreadcrumbItem());
+        }
+
+    }
 
     /**
      * The homewardPathBreadcrumbs represent the path to "Home" location, these appear before anything else - including
@@ -143,9 +277,8 @@ public class BreadcrumbOptions implements Serializable {
     public <T> T copy() {
         T copiedClass = null;
         try {
-            copiedClass = (T)this.getClass().newInstance();
-        }
-        catch(Exception exception) {
+            copiedClass = (T) this.getClass().newInstance();
+        } catch (Exception exception) {
             throw new RuntimeException();
         }
 
@@ -162,40 +295,41 @@ public class BreadcrumbOptions implements Serializable {
     protected <T> void copyProperties(T breadcrumbOptions) {
         BreadcrumbOptions breadcrumbOptionsCopy = (BreadcrumbOptions) breadcrumbOptions;
 
-        if(breadcrumbOverrides != null) {
-            List<BreadcrumbItem> breadcrumbOverrides = Lists.newArrayListWithExpectedSize(getBreadcrumbOverrides().size());
+        if (breadcrumbOverrides != null) {
+            List<BreadcrumbItem> breadcrumbOverrides = Lists.newArrayListWithExpectedSize(
+                    getBreadcrumbOverrides().size());
             for (BreadcrumbItem breadcrumbOverride : this.breadcrumbOverrides) {
-                breadcrumbOverrides.add((BreadcrumbItem)breadcrumbOverride.copy());
+                breadcrumbOverrides.add((BreadcrumbItem) breadcrumbOverride.copy());
             }
 
             breadcrumbOptionsCopy.setBreadcrumbOverrides(breadcrumbOverrides);
         }
 
-        if(homewardPathBreadcrumbs != null) {
+        if (homewardPathBreadcrumbs != null) {
             List<BreadcrumbItem> homewardPathBreadcrumbs = Lists.newArrayListWithExpectedSize(
                     getHomewardPathBreadcrumbs().size());
             for (BreadcrumbItem homewardPathBreadcrumb : this.homewardPathBreadcrumbs) {
-                homewardPathBreadcrumbs.add((BreadcrumbItem)homewardPathBreadcrumb.copy());
+                homewardPathBreadcrumbs.add((BreadcrumbItem) homewardPathBreadcrumb.copy());
             }
 
             breadcrumbOptionsCopy.setHomewardPathBreadcrumbs(homewardPathBreadcrumbs);
         }
 
-        if(prePageBreadcrumbs != null) {
+        if (prePageBreadcrumbs != null) {
             List<BreadcrumbItem> prePageBreadcrumbs = Lists.newArrayListWithExpectedSize(
                     getPrePageBreadcrumbs().size());
             for (BreadcrumbItem prePageBreadcrumb : this.prePageBreadcrumbs) {
-                prePageBreadcrumbs.add((BreadcrumbItem)prePageBreadcrumb.copy());
+                prePageBreadcrumbs.add((BreadcrumbItem) prePageBreadcrumb.copy());
             }
 
             breadcrumbOptionsCopy.setPrePageBreadcrumbs(prePageBreadcrumbs);
         }
 
-        if(preViewBreadcrumbs != null) {
+        if (preViewBreadcrumbs != null) {
             List<BreadcrumbItem> preViewBreadcrumbs = Lists.newArrayListWithExpectedSize(
                     getPreViewBreadcrumbs().size());
             for (BreadcrumbItem preViewBreadcrumb : this.preViewBreadcrumbs) {
-                preViewBreadcrumbs.add((BreadcrumbItem)preViewBreadcrumb.copy());
+                preViewBreadcrumbs.add((BreadcrumbItem) preViewBreadcrumb.copy());
             }
 
             breadcrumbOptionsCopy.setPreViewBreadcrumbs(preViewBreadcrumbs);

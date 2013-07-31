@@ -137,36 +137,7 @@
       <inputField parent="TestInputField" propertyName="field20"/>
     </items>
   </group>
-  <group headertext="Box Layout Fluid Containers" id="UifLayoutView-BoxLayoutFluidContainers"
-         instructionalText="Applying Fluid styles to size the container" parent="Uif-Disclosure-VerticalBoxSection">
-    <items>
-      <group headertext="FSS Layout 100%" layoutManager.cssClasses="fl-container-flex"
-             layoutManager.style="border:1px dashed;" parent="Uif-HorizontalBoxSection">
-        <items>
-          <inputField parent="TestInputField" propertyName="field21"/>
-          <inputField parent="TestInputField" propertyName="field22"/>
-          <inputField parent="TestInputField" propertyName="field23"/>
-        </items>
-      </group>
-      <group headertext="FSS Layout 75%" layoutManager.cssClasses="fl-container-flex75"
-             layoutManager.style="border:1px dashed;" parent="Uif-HorizontalBoxSection">
-        <items>
-          <inputField parent="TestInputField" propertyName="field24"/>
-          <inputField parent="TestInputField" propertyName="field25"/>
-          <inputField parent="TestInputField" propertyName="field26"/>
-        </items>
-      </group>
-      <group headertext="FSS Layout 600px" layoutManager.cssClasses="fl-container-600"
-             layoutManager.style="border:1px dashed;" parent="Uif-HorizontalBoxSection">
-        <items>
-          <inputField parent="TestInputField" propertyName="field27"/>
-          <inputField parent="TestInputField" propertyName="field28"/>
-          <inputField parent="TestInputField" propertyName="field29"/>
-        </items>
-      </group>
-    </items>
-  </group>
-  <group headertext="Box Layout Horizontal with Nested Vertical Groups" id="UifLayoutView-BoxHorizontalNestedVertical"
+   <group headertext="Box Layout Horizontal with Nested Vertical Groups" id="UifLayoutView-BoxHorizontalNestedVerticajhdsa
          instructionalText="Box layouts are nested with different orientations to form complex layouts. Here groups with vertical orientation are nested within horizontal group."
          parent="Uif-Disclosure-HorizontalBoxSection">
     <items>

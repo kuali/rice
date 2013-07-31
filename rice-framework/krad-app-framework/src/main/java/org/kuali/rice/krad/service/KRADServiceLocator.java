@@ -90,6 +90,7 @@ public class KRADServiceLocator {
         return getService(SERIALIZER_SERVICE);
     }
 
+    @Deprecated
     public static SequenceAccessorService getSequenceAccessorService() {
         return getService(SEQUENCE_ACCESSOR_SERVICE);
     }

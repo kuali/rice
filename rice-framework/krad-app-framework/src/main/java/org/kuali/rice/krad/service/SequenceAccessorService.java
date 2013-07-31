@@ -15,28 +15,30 @@
  */
 package org.kuali.rice.krad.service;
 
-import org.kuali.rice.krad.bo.BusinessObject;
-
-
 /**
  * Provides access to sequence numbers.
- * 
- * 
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @deprecated use {@link org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory} instead
  */
+@Deprecated
 public interface SequenceAccessorService {
+
     /**
      * This method retrieves the next available sequence number using the
      * dataSource that is associated with the specified BusinessObject class.
      * 
      * @return next available sequence number
-     */	
-	public Long getNextAvailableSequenceNumber(String sequenceName, 
-			Class clazz);
+     */
+    @Deprecated
+	Long getNextAvailableSequenceNumber(String sequenceName, Class<?> clazz);
 	
     /**
      * This method retrieves the next available sequence number
      * 
      * @return next available sequence number
      */
-    public Long getNextAvailableSequenceNumber(String sequenceName);
+    @Deprecated
+    Long getNextAvailableSequenceNumber(String sequenceName);
+
 }

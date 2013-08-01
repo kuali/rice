@@ -780,6 +780,13 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndClickSearch();
     }
 
+    protected void blanketApproveCheck() throws InterruptedException {
+        ITUtil.checkForIncidentReport(driver.getPageSource(), BLANKET_APPROVE_NAME, this, "");
+        waitAndClickByName(BLANKET_APPROVE_NAME,
+                "No blanket approve button does the user " + getUserName() + " have permission?");
+        Thread.sleep(2000);
+    }
+
     /**
      * Tests blanket approve action.
      * This method is used by several different tests which perform various types of blanket approvals.
@@ -872,10 +879,13 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      */
     public boolean hasDocError(String errorTextToMatch) {
         if (driver.findElements(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).size() > 0) {
-            // TODO need to get the next div downs test to get the actual error text like in checkForDocError()
             String errorText = driver.findElement(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).getText();
             if (errorText != null && errorText.contains("error(s) found on page.")) {
-                return errorText.contains(errorTextToMatch);
+                WebElement errorDiv = driver.findElement(By.xpath("//div[@class='left-errmsg']/div[2]/div"));
+                if (errorDiv != null) {
+                    errorText = errorDiv.getText();
+                    return errorText != null && errorText.contains(errorTextToMatch);
+                }
             }
         }
         return false;
@@ -2103,6 +2113,13 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndTypeByXpath(DOC_CODE_XPATH, twoUpperCaseLetters);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", countryName);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.alternateCode']", "V" + twoUpperCaseLetters);
+        int attemptCount = 0;
+        blanketApproveCheck();
+        while (hasDocError("same primary key already exists") && attemptCount < 25) {
+            clearTextByXpath(DOC_CODE_XPATH);
+            waitAndTypeByXpath(DOC_CODE_XPATH, twoUpperCaseLetters.substring(0, 1) + Character.toString((char) ('A' + attemptCount++)));
+            blanketApproveCheck();
+        }
         blanketApproveTest();
         assertDocFinal(docId);
     }
@@ -3319,10 +3336,11 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndTypeByXpath(DOC_CODE_XPATH, RandomStringUtils.randomAlphabetic(1));
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "Indianapolis" + dtsTwo);
         int attemptCount = 1;
+        blanketApproveCheck();
         while (hasDocError("same primary key already exists") && attemptCount < 25) {
             clearTextByXpath(DOC_CODE_XPATH);
             waitAndTypeByXpath(DOC_CODE_XPATH, Character.toString((char) ('A' + attemptCount++)));
-            Thread.sleep(2000); // wait for validation
+            blanketApproveCheck();
         }
         blanketApproveTest();
         assertDocFinal(docId);

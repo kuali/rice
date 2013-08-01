@@ -206,9 +206,9 @@ public class DataDictionary {
         factoryPostProcessor.postProcessBeanFactory(ddBeans);
         timer.stop();
 
-//        timer.start("Instantiating DD Beans");
-//        ddBeans.preInstantiateSingletons();
-//        timer.stop();
+        timer.start("Instantiating DD Beans");
+        ddBeans.preInstantiateSingletons();
+        timer.stop();
 
         // Allow the DD to perform final post processing in a controlled order
         // Unlike the Spring post processor, we will only call for these operations on the
@@ -241,11 +241,6 @@ public class DataDictionary {
     public void validateDD(boolean validateEbos) {
         timer.start("Validation");
         DataDictionary.validateEBOs = validateEbos;
-
-        /*  ValidationController validator = new ValidationController();
-    String files[] = new String[beanValidationFiles.size()];
-    files = beanValidationFiles.toArray(files);
-    validator.validate(files, xmlReader.getResourceLoader(), ddBeans, LOG, false);*/
 
         Validator.resetErrorReport();
 
@@ -785,7 +780,7 @@ public class DataDictionary {
      * @param attributeName
      * @return
      */
-    private static Class getAttributeClassWhenBOIsClass(Class boClass, String attributeName) {
+    private static Class<?> getAttributeClassWhenBOIsClass(Class<?> boClass, String attributeName) {
         Object boInstance;
         try {
             boInstance = boClass.newInstance();
@@ -811,7 +806,7 @@ public class DataDictionary {
      * @param attributeName
      * @return
      */
-    private static Class getAttributeClassWhenBOIsInterface(Class boClass, String attributeName) {
+    private static Class<?> getAttributeClassWhenBOIsInterface(Class<?> boClass, String attributeName) {
         if (boClass == null) {
             throw new IllegalArgumentException("invalid (null) boClass");
         }

@@ -31,13 +31,11 @@
   <bean id="Uif-View" abstract="true" parent="Uif-View-parentBean">
     <property name="additionalCssFiles">
       <list>
-        <value>css/jquery.tweet.css</value>
         <value>css/kradSampleApp.css</value>
       </list>
     </property>
     <property name="additionalScriptFiles">
       <list>
-        <value>scripts/jquery.tweet.js</value>
         <value>scripts/kradSampleApp.js</value>
       </list>
     </property>
@@ -48,13 +46,11 @@
     <property name="unifiedHeader" value="false"/>
     <property name="additionalCssFiles">
       <list>
-        <value>css/jquery.tweet.css</value>
         <value>css/kradSampleApp.css</value>
       </list>
     </property>
     <property name="additionalScriptFiles">
       <list>
-        <value>scripts/jquery.tweet.js</value>
         <value>scripts/kradSampleApp.js</value>
       </list>
     </property>

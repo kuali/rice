@@ -34,7 +34,7 @@
         <ref bean="TravelerDetail-id" />
         <ref bean="TravelerDetail-documentNumber" />
         <ref bean="TravelerDetail-principalId" />
-        <ref bean="TravelerDetail-principalName" />
+        <!-- <ref bean="TravelerDetail-principalName" /> -->
         <ref bean="TravelerDetail-firstName" />
         <ref bean="TravelerDetail-lastName" />
         <ref bean="TravelerDetail-streetAddressLine1" />
@@ -119,7 +119,7 @@
     </property>
   </bean>
 
-  <bean id="TravelerDetail-principalName" parent="TravelerDetail-principalName-parentBean" />
+<!--   <bean id="TravelerDetail-principalName" parent="TravelerDetail-principalName-parentBean" />
   <bean id="TravelerDetail-principalName-parentBean" parent="AttributeDefinition">
     <property name="name" value="principalName" />
     <property name="label" value="Principal Name" />
@@ -131,7 +131,7 @@
       <bean parent="TextControlDefinition" p:size="20" />
     </property>
   </bean>
-
+ -->
   <bean id="TravelerDetail-firstName" parent="TravelerDetail-firstName-parentBean" />
   <bean id="TravelerDetail-firstName-parentBean" parent="AttributeDefinition">
     <property name="name" value="firstName" />

@@ -46,7 +46,6 @@
   <bean id="ContextMaintenanceDocument-EditContext" parent="ContextMaintenanceDocument-EditContext-parentBean"/>
   <bean id="ContextMaintenanceDocument-EditContext-parentBean" abstract="true" parent="MaintainableSectionDefinition">
     <property name="id" value="Edit Context"/>
-    <property name="headerText" value="Edit Context"/>
     <property name="maintainableItems">
       <list>
         <bean parent="MaintainableFieldDefinition" p:name="id" p:required="true"/>

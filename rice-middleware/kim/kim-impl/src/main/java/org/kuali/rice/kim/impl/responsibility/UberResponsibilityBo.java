@@ -15,26 +15,27 @@
  */
 package org.kuali.rice.kim.impl.responsibility;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.impl.group.GroupBo;
+import org.kuali.rice.kim.impl.identity.PersonImpl;
 import org.kuali.rice.kim.impl.role.RoleBo;
 import org.springframework.util.AutoPopulatingList;
-
-import java.util.List;
 
 public class UberResponsibilityBo extends ResponsibilityBo {
     private static final long serialVersionUID = 1L;
     private List<RoleBo> assignedToRoles = new AutoPopulatingList<RoleBo>(RoleBo.class);
     private String assignedToRoleNamespaceForLookup;
     private String assignedToRoleNameForLookup;
-    private RoleBo assignedToRole;
+    private RoleBo assignedToRole = new RoleBo();
     private String assignedToPrincipalNameForLookup;
-    private Person assignedToPrincipal;
+    private Person assignedToPrincipal = new PersonImpl();
     private String assignedToGroupNamespaceForLookup;
     private String assignedToGroupNameForLookup;
-    private GroupBo assignedToGroup;
+    private GroupBo assignedToGroup = new GroupBo();
     private String attributeName;
     private String attributeValue;
     private String detailCriteria;

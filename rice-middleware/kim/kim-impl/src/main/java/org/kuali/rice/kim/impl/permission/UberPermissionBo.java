@@ -17,15 +17,16 @@ package org.kuali.rice.kim.impl.permission;
 
 
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.impl.group.GroupBo;
+import org.kuali.rice.kim.impl.identity.PersonImpl;
 import org.kuali.rice.kim.impl.role.RoleBo;
 import org.springframework.util.AutoPopulatingList;
-import org.kuali.rice.kim.api.permission.Permission;
-
-import java.util.List;
 
 //strange - hacky non-PBO
 public class UberPermissionBo extends PermissionBo {
@@ -35,12 +36,12 @@ public class UberPermissionBo extends PermissionBo {
     private List<RoleBo> assignedToRoles = new AutoPopulatingList(RoleBo.class);
     private String assignedToRoleNamespaceForLookup;
     private String assignedToRoleNameForLookup;
-    private RoleBo assignedToRole;
+    private RoleBo assignedToRole = new RoleBo();
     private String assignedToPrincipalNameForLookup;
-    private Person assignedToPrincipal;
+    private Person assignedToPrincipal = new PersonImpl();
     private String assignedToGroupNamespaceForLookup;
     private String assignedToGroupNameForLookup;
-    private GroupBo assignedToGroup;
+    private GroupBo assignedToGroup = new GroupBo();
     private String attributeName;
     private String attributeValue;
     private String detailCriteria;

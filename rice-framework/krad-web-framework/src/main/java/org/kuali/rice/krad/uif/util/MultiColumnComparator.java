@@ -70,10 +70,6 @@ public class MultiColumnComparator implements Comparator<Integer> {
     // evaluate the same expressions repeatedly.  This cache could get too big, so we'll use a weak reference map
     private final WeakHashMap<String, String> calculatedValueCache;
 
-    // Calculating adjusted binding paths requires compiling patterns and doing regexp matches, and there are
-    // just a few prototype fields so we cache these
-    private final HashMap<DataField, String> adjustedBindingPathCache;
-
     // Reflection is used to determine the class of certain column values.  Cache those classes
     private final HashMap<String, Class> propertyClassCache;
 
@@ -97,7 +93,6 @@ public class MultiColumnComparator implements Comparator<Integer> {
         //
 
         calculatedValueCache = new WeakHashMap<String, String>();
-        adjustedBindingPathCache = new HashMap<DataField, String>();
         propertyClassCache = new HashMap<String, Class>();
 
         tableLayoutManager = (TableLayoutManager) collectionGroup.getLayoutManager();
@@ -161,7 +156,7 @@ public class MultiColumnComparator implements Comparator<Integer> {
         final Object modelElement2 = modelCollection.get(index2);
 
         // get the rest of the property path after the collection
-        final String propertyPath = getElementAdjustedBindingPath(protoField);
+        final String propertyPath = protoField.getBindingInfo().getBindingName();
         final Class<?> columnDataClass = getColumnDataClass(propertyPath);
 
         // we can do smart comparisons for Comparables
@@ -375,7 +370,8 @@ public class MultiColumnComparator implements Comparator<Integer> {
         int componentsSkipped = 0;
         int columnsSkipped = 0;
 
-        if (collectionGroup.isRenderAddLine() && !tableLayoutManager.isSeparateAddLine()) {
+        if (collectionGroup.isRenderAddLine() && !collectionGroup.isReadOnly()
+                && !tableLayoutManager.isSeparateAddLine()) {
             while (columnsSkipped < tableLayoutManager.getNumberOfColumns()) {
                 columnsSkipped += allRowFieldsIter.next().getColSpan();
                 componentsSkipped += 1;
@@ -394,7 +390,7 @@ public class MultiColumnComparator implements Comparator<Integer> {
                 final BindingInfo bindingInfoCopy = dataField.getBindingInfo().copy();
                 dataField.setBindingInfo(bindingInfoCopy);
 
-                String elementAdjustedBindingPath = getElementAdjustedBindingPath(dataField);
+                String elementAdjustedBindingPath = dataField.getBindingInfo().getBindingName();
                 bindingInfoCopy.setBindingPath(elementAdjustedBindingPath);
             }
 
@@ -402,75 +398,6 @@ public class MultiColumnComparator implements Comparator<Integer> {
         }
 
         return prototypeRow;
-    }
-
-    /**
-     * Get the binding path adjusted so that the property is accessed directly via the model collection element
-     * instead of via the data object.
-     *
-     * <p>For example, "list1[0].field1" would be adjusted to "field1", and a property
-     * in a subcollection such as "list1[0].sublist1[0].field2" would be adjusted to "field2".</p>
-     *
-     * @param dataField the DataField to get the adjusted binding path for
-     * @return the adjusted binding path
-     */
-    private String getElementAdjustedBindingPath(DataField dataField) {
-        String adjustedBindingPath = adjustedBindingPathCache.get(dataField);
-
-        if (adjustedBindingPath == null) { // cache miss
-            adjustedBindingPath = calculateElementAdjustedBindingPath(dataField);
-            adjustedBindingPathCache.put(dataField, adjustedBindingPath);
-        }
-
-        return adjustedBindingPath;
-    }
-
-    /**
-     * Caculate the adjusted binding path.
-     *
-     * <p>See
-     * {@link MultiColumnComparator#getElementAdjustedBindingPath(org.kuali.rice.krad.uif.field.DataField)} for more
-     * details.</p>
-     *
-     * @param dataField the DataField to get the adjusted binding path for
-     * @return the adjusted binding path
-     */
-    private String calculateElementAdjustedBindingPath(DataField dataField) {
-        final String adjustedBindingPath;BindingInfo bindingInfo = dataField.getBindingInfo();
-        String originalBindingPath = bindingInfo.getBindingPath();
-
-        int collectionPathEndIndex = -1; // We'll calculate the index after the collection path.  the value -1 flags
-                                         // that we haven't been able to caculcate this value thus far.
-
-        if (!StringUtils.isEmpty(bindingInfo.getCollectionPath())) {
-            // our prototypes' bindingInfos have indexes (e.g. "collection[1]") specified in them, so we need regexps
-            // to be able to match across those
-            Pattern collectionPattern =
-                    Pattern.compile(bindingInfo.getCollectionPath().replace(".", "\\[[0-9]+\\]\\."));
-            Matcher collectionPatternMatcher = collectionPattern.matcher(originalBindingPath);
-
-            if (collectionPatternMatcher.find()) { // if true, the regexp matched
-                collectionPathEndIndex = collectionPatternMatcher.end();
-            }
-        }
-
-        if (collectionPathEndIndex == -1) {
-            // this fallback heuristic assumes the collection property name doesn't have an index in it,
-            // but it should work almost all of the time
-            collectionPathEndIndex = originalBindingPath.lastIndexOf(']');
-        }
-
-        // find the next property separator after the collection path
-        int postCollectionIndex = originalBindingPath.indexOf(".", collectionPathEndIndex);
-
-        // make sure that we don't violate the underlying array boundaries
-        if (postCollectionIndex >= 0 && originalBindingPath.length() >= postCollectionIndex + 1) {
-            adjustedBindingPath = originalBindingPath.substring(postCollectionIndex + 1);
-        } else {
-            throw new IllegalArgumentException("could not calculate the adjusted binding path");
-        }
-
-        return adjustedBindingPath;
     }
 }
 

@@ -20,49 +20,50 @@
     Template for providing JSON table data via ajax to the DataTables plugin.
 -->
 
-<#assign tableId=KualiForm.updateComponentId/>
-<#assign manager=KualiForm.extensionData['${tableId}_tableLayoutManager']/>
-<#assign filteredCollectionSize=KualiForm.extensionData['${tableId}_filteredCollectionSize']/>
-<#assign totalCollectionSize=KualiForm.extensionData['${tableId}_totalCollectionSize']/>
+<#if KualiForm.updateComponentId??>
+    <#assign tableId=KualiForm.updateComponentId/>
+    <#assign manager=KualiForm.extensionData['${tableId}_tableLayoutManager']/>
+    <#assign filteredCollectionSize=KualiForm.extensionData['${tableId}_filteredCollectionSize']/>
+    <#assign totalCollectionSize=KualiForm.extensionData['${tableId}_totalCollectionSize']/>
 
-<#-- Make the custom directive for escaping quotes available in our template -->
-<#assign jsonEscape = "org.kuali.rice.krad.uif.freemarker.JsonStringEscapeDirective"?new()>
+    <#-- Make the custom directive for escaping quotes available in our template -->
+    <#assign jsonEscape = "org.kuali.rice.krad.uif.freemarker.JsonStringEscapeDirective"?new()>
 
-<#-- define a macro to allow the use of locals -->
-<#macro uif_table_json manager filteredCollectionSize totalCollectionSize>
-    <#compress>
-        <#local allRowFields=manager.allRowFields/>
+    <#-- define a macro to allow the use of locals -->
+    <#macro uif_table_json manager filteredCollectionSize totalCollectionSize>
+        <#compress>
+            <#local allRowFields=manager.allRowFields/>
 {
     <#-- see http://datatables.net/usage/server-side for documentation on these top-level properties -->
     "sEcho"  :  "${request.getParameter("sEcho")}",
     "iTotalDisplayRecords" : ${filteredCollectionSize},
     "iTotalRecords" : ${totalCollectionSize},
     "aaData" :  [
-        <#-- iterate over each item (we'll use math to determine row boundaries) and convert them -->
-        <#local row=""/>
-        <#local rowCount=0/>
-        <#local colIndex=0/>
-        <#local firstIteration=true/>
+            <#-- iterate over each item (we'll use math to determine row boundaries) and convert them -->
+            <#local row=""/>
+            <#local rowCount=0/>
+            <#local colIndex=0/>
+            <#local firstIteration=true/>
 
-        <#list allRowFields as item>
+            <#list allRowFields as item>
 
-            <#-- take care of commas between rows -->
-            <#if colIndex == 0 && !firstIteration>
+                <#-- take care of commas between rows -->
+                <#if colIndex == 0 && !firstIteration>
         ,
-            </#if>
+                </#if>
 
-            <#-- set the flag that is just used to avoid having a comma before the first row -->
-            <#if firstIteration>
-                <#local firstIteration=false/>
-            </#if>
+                <#-- set the flag that is just used to avoid having a comma before the first row -->
+                <#if firstIteration>
+                    <#local firstIteration=false/>
+                </#if>
 
-            <#-- add open brace, row classes for row beginning -->
-            <#if colIndex == 0>
+                <#-- add open brace, row classes for row beginning -->
+                <#if colIndex == 0>
         {
 
             <#-- add metadata used to set custom classes on table rows -->
             "DT_RowClass" : "${manager.rowCssClasses[rowCount]}",
-            </#if>
+                </#if>
 
             "c${colIndex}": {
 
@@ -73,22 +74,26 @@
                 "render": "<@jsonEscape><@krad.template component=item/></@jsonEscape>"
             }
 
-            <#local colIndex=colIndex+1/>
+                <#local colIndex=colIndex+1/>
 
-            <#-- when we've finished the row, reset the column index to 0 -->
-            <#if colIndex == manager.numberOfColumns>
-                <#local colIndex=0/>
-                <#local rowCount=rowCount+1/>
+                <#-- when we've finished the row, reset the column index to 0 -->
+                <#if colIndex == manager.numberOfColumns>
+                    <#local colIndex=0/>
+                    <#local rowCount=rowCount+1/>
         }
-            <#else>
-            <#-- otherwise, we need a comma between columns -->
+                <#else>
+                <#-- otherwise, we need a comma between columns -->
             ,
-            </#if>
-        </#list>
+                </#if>
+            </#list>
     ]
 }
-    </#compress>
-</#macro>
+        </#compress>
+    </#macro>
 
-<#-- call our macro to render the JSON data -->
-<@uif_table_json manager filteredCollectionSize totalCollectionSize/>
+    <#-- call our macro to render the JSON data -->
+    <@uif_table_json manager filteredCollectionSize totalCollectionSize/>
+
+<#else>
+{ "aaData" :  [] }
+</#if>

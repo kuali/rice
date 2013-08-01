@@ -1070,53 +1070,57 @@ public abstract class UifControllerBase {
         String tableId = request.getParameter(UifParameters.TABLE_ID);
         View postedView = form.getPostedView();
 
-        @SuppressWarnings("unchecked")
-        List<ColumnSort> oldColumnSorts =
-                (List<ColumnSort>) form.getExtensionData().get(tableId + UifConstants.IdSuffixes.COLUMN_SORTS);
-
-        // Create references that we'll need beyond the synchronized block here.
-        CollectionGroup newCollectionGroup = null;
-        List<Object> modelCollection = null;
-        List<ColumnSort> newColumnSorts = null;
-
-        synchronized (postedView) { // only one concurrent request per view please
-
-            CollectionGroup oldCollectionGroup = (CollectionGroup)postedView.getViewIndex().getComponentById(tableId);
-            DataTablesInputs dataTablesInputs = new DataTablesInputs(request);
-            newColumnSorts = buildColumnSorts(dataTablesInputs, oldCollectionGroup);
-
-            // get a new instance of the collection group component that we'll run the lifecycle on
-            newCollectionGroup =
-                    (CollectionGroup) ComponentFactory.getNewInstanceForRefresh(form.getPostedView(), tableId);
-
-            // get the collection for this group from the model
-            modelCollection = ObjectPropertyUtils.getPropertyValue(form, newCollectionGroup.getBindingInfo()
-                    .getPropertyAdjustedBindingPath(newCollectionGroup.getPropertyName()));
-
-            applyTableJsonSort(modelCollection, oldColumnSorts, newColumnSorts, oldCollectionGroup, postedView);
-
-            // set up the collection group properties related to paging in the collection group to set the bounds for
-            // what needs to be rendered
-            newCollectionGroup.setUseServerPaging(true);
-            newCollectionGroup.setDisplayStart(dataTablesInputs.iDisplayStart);
-            newCollectionGroup.setDisplayLength(dataTablesInputs.iDisplayLength);
-
-            // run lifecycle on the table component and update in view
-            postedView.getViewHelperService()
-                    .performComponentLifecycle(postedView, form, newCollectionGroup, oldCollectionGroup.getId());
-        }
-
         // Set property to trigger special JSON rendering logic in uifRender.ftl
         form.setRequestJsonTemplate(UifConstants.TableToolsValues.JSON_TEMPLATE);
-        form.setUpdateComponentId(tableId);
 
-        // are these polluting the form and pinning more junk in memory? form.extensionData is not @SessionTransient
-        form.getExtensionData().put(tableId + "_tableLayoutManager", newCollectionGroup.getLayoutManager());
-        form.getExtensionData().put(tableId + "_filteredCollectionSize", newCollectionGroup.getFilteredCollectionSize());
-        form.getExtensionData().put(tableId + "_totalCollectionSize", modelCollection.size());
+        if (postedView != null) { // avoid blowing the stack if the session expired
+            // don't set the component to update unless we have a postedView, otherwise we'll get an NPE later
+            form.setUpdateComponentId(tableId);
 
-        // these other params above don't need to stay in the form after this request, but <tableId>_columnSorts does
-        form.getExtensionData().put(tableId + "_columnSorts", newColumnSorts);
+            @SuppressWarnings("unchecked")
+            List<ColumnSort> oldColumnSorts =
+                    (List<ColumnSort>) form.getExtensionData().get(tableId + UifConstants.IdSuffixes.COLUMN_SORTS);
+
+            // Create references that we'll need beyond the synchronized block here.
+            CollectionGroup newCollectionGroup = null;
+            List<Object> modelCollection = null;
+            List<ColumnSort> newColumnSorts = null;
+
+            synchronized (postedView) { // only one concurrent request per view please
+
+                CollectionGroup oldCollectionGroup = (CollectionGroup)postedView.getViewIndex().getComponentById(tableId);
+                DataTablesInputs dataTablesInputs = new DataTablesInputs(request);
+                newColumnSorts = buildColumnSorts(dataTablesInputs, oldCollectionGroup);
+
+                // get a new instance of the collection group component that we'll run the lifecycle on
+                newCollectionGroup =
+                        (CollectionGroup) ComponentFactory.getNewInstanceForRefresh(form.getPostedView(), tableId);
+
+                // get the collection for this group from the model
+                modelCollection = ObjectPropertyUtils.getPropertyValue(form, newCollectionGroup.getBindingInfo()
+                        .getPropertyAdjustedBindingPath(newCollectionGroup.getPropertyName()));
+
+                applyTableJsonSort(modelCollection, oldColumnSorts, newColumnSorts, oldCollectionGroup, postedView);
+
+                // set up the collection group properties related to paging in the collection group to set the bounds for
+                // what needs to be rendered
+                newCollectionGroup.setUseServerPaging(true);
+                newCollectionGroup.setDisplayStart(dataTablesInputs.iDisplayStart);
+                newCollectionGroup.setDisplayLength(dataTablesInputs.iDisplayLength);
+
+                // run lifecycle on the table component and update in view
+                postedView.getViewHelperService()
+                        .performComponentLifecycle(postedView, form, newCollectionGroup, oldCollectionGroup.getId());
+            }
+
+            // are these polluting the form and pinning more junk in memory? form.extensionData is not @SessionTransient
+            form.getExtensionData().put(tableId + "_tableLayoutManager", newCollectionGroup.getLayoutManager());
+            form.getExtensionData().put(tableId + "_filteredCollectionSize", newCollectionGroup.getFilteredCollectionSize());
+            form.getExtensionData().put(tableId + "_totalCollectionSize", modelCollection.size());
+
+            // these other params above don't need to stay in the form after this request, but <tableId>_columnSorts does
+            form.getExtensionData().put(tableId + "_columnSorts", newColumnSorts);
+        }
 
         return getUIFModelAndView(form);
     }

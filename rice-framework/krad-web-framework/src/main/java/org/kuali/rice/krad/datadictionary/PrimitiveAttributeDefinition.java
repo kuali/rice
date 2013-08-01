@@ -97,6 +97,7 @@ public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
      *
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(org.kuali.rice.krad.datadictionary.validator.ValidationTrace)
      */
+    @Override
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass,
             ValidationTrace tracer) {
         tracer.addBean(this.getClass().getSimpleName(), ValidationTrace.NO_BEAN_ID);
@@ -135,8 +136,8 @@ public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
                 String targetPath = targetClassName + "." + targetName;
 
                 // Just a temp hack to ignore null Person objects
-                if ((sourcePath != null && !StringUtils.contains(sourcePath, ".principalId")) && (targetPath != null
-                        && !StringUtils.contains(targetPath, ".principalId"))) {
+                if ((sourcePath != null && !StringUtils.contains(sourcePath, ".principalId"))
+                        && (targetPath != null && !StringUtils.contains(targetPath, ".principalId")) ) {
                     String currentValues[] = {"source = " + sourcePath + "' (" + sourceClass + ")",
                             "target = " + targetPath + "' (" + targetClass + ")"};
                     tracer.createError("Source and target of different types", currentValues);

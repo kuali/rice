@@ -25,9 +25,9 @@ import java.util.List;
 public class DocumentCollectionPath extends DataDictionaryDefinitionBase {
     private static final long serialVersionUID = -8165456163213868710L;
 
-    private String collectionPath;
-    private List<String> paths;
-    private DocumentCollectionPath nestedCollection;
+    protected String collectionPath;
+    protected List<String> paths;
+    protected DocumentCollectionPath nestedCollection;
 
     /**
      * @return the documentValues
@@ -55,17 +55,6 @@ public class DocumentCollectionPath extends DataDictionaryDefinitionBase {
      */
     public void setNestedCollection(DocumentCollectionPath documentCollectionPath) {
         this.nestedCollection = documentCollectionPath;
-    }
-
-    /**
-     * This overridden method ...
-     *
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class,
-     *      java.lang.Class)
-     */
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
-        // TODO mpham - THIS METHOD NEEDS JAVADOCS
-
     }
 
     /**

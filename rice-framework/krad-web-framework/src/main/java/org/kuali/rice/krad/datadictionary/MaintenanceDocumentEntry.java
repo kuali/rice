@@ -15,19 +15,19 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
-import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.krad.datadictionary.exception.ClassValidationException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.maintenance.Maintainable;
 import org.kuali.rice.krad.maintenance.MaintenanceDocumentAuthorizer;
 import org.kuali.rice.krad.maintenance.MaintenanceDocumentAuthorizerBase;
 import org.kuali.rice.krad.maintenance.MaintenanceDocumentBase;
 import org.kuali.rice.krad.maintenance.MaintenanceDocumentPresentationControllerBase;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Data dictionary entry class for <code>MaintenanceDocument</code>
@@ -64,10 +64,6 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
             of the BO being maintained.
      */
     public void setDataObjectClass(Class<?> dataObjectClass) {
-        if (dataObjectClass == null) {
-            throw new IllegalArgumentException("invalid (null) dataObjectClass");
-        }
-
         this.dataObjectClass = dataObjectClass;
     }
 
@@ -92,9 +88,6 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
             The normal one is KualiMaintainableImpl.java.
      */
     public void setMaintainableClass(Class<? extends Maintainable> maintainableClass) {
-        if (maintainableClass == null) {
-            throw new IllegalArgumentException("invalid (null) maintainableClass");
-        }
         this.maintainableClass = maintainableClass;
     }
 
@@ -135,29 +128,44 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
      *
      * @see org.kuali.rice.krad.datadictionary.DocumentEntry#completeValidation()
      */
-    public void completeValidation() {
-        super.completeValidation();
+    @Override
+    public void completeValidation(ValidationTrace tracer) {
+        super.completeValidation(tracer);
+
+        if (dataObjectClass == null) {
+            String currentValues[] = {};
+            tracer.createError("invalid (null) dataObjectClass", currentValues);
+        }
+
+        if (maintainableClass == null) {
+            String currentValues[] = {};
+            tracer.createError("invalid (null) maintainableClass", currentValues);
+        }
 
         for (String lockingKey : lockingKeys) {
-            if (!DataDictionary.isPropertyOf(dataObjectClass, lockingKey)) {
-                throw new AttributeValidationException(
-                        "unable to find attribute '" + lockingKey + "' for lockingKey in dataObjectClass '" +
-                                dataObjectClass.getName());
+            if ( StringUtils.isBlank(lockingKey) ) {
+                String currentValues[] = {"lockingKeys = " + lockingKeys};
+                tracer.createError("invalid (blank) lockingKey", currentValues);
+            } else if (!DataDictionary.isPropertyOf(dataObjectClass, lockingKey)) {
+                String currentValues[] = {"dataObjectClass = " + lockingKeys, "lockingKey = " + lockingKey};
+                tracer.createError("lockingKey not found in data object class", currentValues);
             }
         }
 
-        for (ReferenceDefinition reference : defaultExistenceChecks) {
-            reference.completeValidation(dataObjectClass, null);
-        }
-
-        if (documentAuthorizerClass != null && !MaintenanceDocumentAuthorizer.class.isAssignableFrom(
-                documentAuthorizerClass)) {
-            throw new ClassValidationException(
-                    "This maintenance document for '" + getDataObjectClass().getName() + "' has an invalid " +
-                            "documentAuthorizerClass ('" + documentAuthorizerClass.getName() + "').  " +
-                            "Maintenance Documents must use an implementation of MaintenanceDocumentAuthorizer.");
+        if (documentAuthorizerClass != null
+                && !MaintenanceDocumentAuthorizer.class.isAssignableFrom(documentAuthorizerClass)) {
+            String currentValues[] = {"documentAuthorizerClass = " + documentAuthorizerClass.getName()};
+            tracer.createError("Maintenance Documents must use an implementation of MaintenanceDocumentAuthorizer", currentValues);
         }
     }
+
+    @Override
+    protected void validateDefaultExistenceChecks( ValidationTrace tracer ) {
+        for ( ReferenceDefinition refDef : defaultExistenceChecks ) {
+            refDef.completeValidation(dataObjectClass, null, tracer.getCopy());
+        }
+    }
+
 
     @BeanTagAttribute(name = "lockingKeys", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getLockingKeys() {
@@ -170,11 +178,6 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
            during the file maintenance process.
     */
     public void setLockingKeys(List<String> lockingKeys) {
-        for (String lockingKey : lockingKeys) {
-            if (lockingKey == null) {
-                throw new IllegalArgumentException("invalid (null) lockingKey");
-            }
-        }
         this.lockingKeys = lockingKeys;
     }
 

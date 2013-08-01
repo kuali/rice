@@ -28,14 +28,4 @@ public class TransactionalDocumentEntry extends DocumentEntry {
 
     public TransactionalDocumentEntry() {}
 
-    /**
-     * @see org.kuali.rice.krad.datadictionary.DocumentEntry#completeValidation()
-     */
-    @Override
-    public void completeValidation() {
-        super.completeValidation();
-        for (ReferenceDefinition reference : defaultExistenceChecks) {
-            reference.completeValidation(documentClass, null);
-        }
-    }
 }

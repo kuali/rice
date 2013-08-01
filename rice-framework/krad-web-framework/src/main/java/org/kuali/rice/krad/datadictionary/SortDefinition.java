@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 
 /**
  * The defaultSort element specifies the sequence in which the lookup search results should be displayed
@@ -98,28 +98,23 @@ public class SortDefinition extends DataDictionaryDefinitionBase {
         this.sortAscending = sortAscending;
     }
 
-    /**
-     * Directly validate simple fields
-     *
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(Class, Class)
-     */
     @Override
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
+    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass, ValidationTrace tracer) {
+
+        if ( attributeNames == null || attributeNames.isEmpty() ) {
+            String currentValues[] = {"attributeNames = " + attributeNames, "rootBusinessObjectClass = " + rootBusinessObjectClass};
+            tracer.createError("SortDefinition may not have an empty attribute list", currentValues);
+        }
+
         for (String attributeName : attributeNames) {
             if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, attributeName)) {
-                throw new AttributeValidationException("unable to find sort attribute '"
-                        + attributeName
-                        + "' in rootBusinessObjectClass '"
-                        + rootBusinessObjectClass.getName()
-                        + "' ("
-                        + ")");
+                String currentValues[] = {"attributeName = " + attributeName, "rootBusinessObjectClass = " + rootBusinessObjectClass};
+                tracer.createError("attribute in SortDefinition not found on business object", currentValues);
             }
         }
     }
 
-    /**
-     * @see java.lang.Object#toString()
-     */
+    @Override
     public String toString() {
         StringBuilder attrList = new StringBuilder("[");
         for (Iterator<String> i = attributeNames.iterator(); i.hasNext(); ) {

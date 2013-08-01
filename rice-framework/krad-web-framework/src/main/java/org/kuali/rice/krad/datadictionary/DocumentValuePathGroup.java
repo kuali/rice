@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import java.util.List;
+
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-
-import java.util.List;
 
 /**
  * This is a description of what this class does - mpham don't forget to fill this in.
@@ -29,8 +29,8 @@ import java.util.List;
 public class DocumentValuePathGroup extends DataDictionaryDefinitionBase {
     private static final long serialVersionUID = 6285682208264817105L;
 
-    private List<String> paths;
-    private DocumentCollectionPath documentCollectionPath;
+    protected List<String> paths;
+    protected DocumentCollectionPath documentCollectionPath;
 
     /**
      * @return the documentValues
@@ -60,17 +60,6 @@ public class DocumentValuePathGroup extends DataDictionaryDefinitionBase {
      */
     public void setDocumentCollectionPath(DocumentCollectionPath documentCollectionPath) {
         this.documentCollectionPath = documentCollectionPath;
-    }
-
-    /**
-     * This overridden method ...
-     *
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class,
-     *      java.lang.Class)
-     */
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
-        // TODO mpham - THIS METHOD NEEDS JAVADOCS
-
     }
 
 }

@@ -17,9 +17,9 @@ package org.kuali.rice.krad.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 
 /**
  * This is a description of what this class does - wliang don't forget to fill this in.
@@ -38,19 +38,17 @@ public class InactivationBlockingDefinition extends DataDictionaryDefinitionBase
     protected Class<?> businessObjectClass;
 
     @Override
-    public void completeValidation(Class<?> rootDataObjectClass, Class<?> otherDataObjectClass) {
+    public void completeValidation(Class<?> rootDataObjectClass, Class<?> otherDataObjectClass, ValidationTrace tracer) {
         if (StringUtils.isBlank(inactivationBlockingDetectionServiceBeanName)) {
             if (StringUtils.isBlank(blockedReferencePropertyName)) {
                 // the default inactivation blocking detection service (used when inactivationBlockingDetectionServiceBeanName is blank) requires that the property name be set
-                throw new AttributeValidationException(
-                        "inactivationBlockingDetectionServiceBeanName and  blockedReferencePropertyName can't both be blank in InactivationBlockingDefinition for class "
-                                + rootDataObjectClass.getClass().getName());
+                String currentValues[] = {"rootDataObjectClass = " + rootDataObjectClass};
+                tracer.createError("inactivationBlockingDetectionServiceBeanName and  blockedReferencePropertyName can't both be blank in InactivationBlockingDefinition", currentValues);
             }
         }
         if (getBlockedDataObjectClass() == null) {
-            throw new AttributeValidationException(
-                    "Unable to determine blockedReferenceBusinessObjectClass in InactivationBlockingDefinition for class "
-                            + rootDataObjectClass.getClass().getName());
+            String currentValues[] = {"rootDataObjectClass = " + rootDataObjectClass};
+            tracer.createError("Unable to determine blockedReferenceBusinessObjectClass in InactivationBlockingDefinition", currentValues);
         }
     }
 
@@ -105,6 +103,7 @@ public class InactivationBlockingDefinition extends DataDictionaryDefinitionBase
         this.blockedBusinessObjectClass = blockedDataObjectClass;
     }
 
+    @Override
     @BeanTagAttribute(name = "inactivationBlockingDetectionServiceBeanName")
     public String getInactivationBlockingDetectionServiceBeanName() {
         return this.inactivationBlockingDetectionServiceBeanName;

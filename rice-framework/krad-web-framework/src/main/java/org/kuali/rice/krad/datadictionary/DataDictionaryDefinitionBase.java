@@ -16,14 +16,14 @@
 package org.kuali.rice.krad.datadictionary;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.springframework.beans.factory.InitializingBean;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 
 /**
  * Common base class for DataDictionaryDefinition types.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-abstract public class DataDictionaryDefinitionBase extends DictionaryBeanBase implements DataDictionaryDefinition, InitializingBean {
+abstract public class DataDictionaryDefinitionBase extends DictionaryBeanBase implements DataDictionaryDefinition {
     private static final long serialVersionUID = -2003626577498716712L;
 
     protected String id;
@@ -45,12 +45,6 @@ abstract public class DataDictionaryDefinitionBase extends DictionaryBeanBase im
     public void setId(String id) {
         this.id = id;
     }
-
-    /**
-     * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
-     */
-    @Override
-    public void afterPropertiesSet() throws Exception {}
 
     /**
      *
@@ -78,9 +72,17 @@ abstract public class DataDictionaryDefinitionBase extends DictionaryBeanBase im
     }
 
     /**
-     * Empty implementation so that all subclasses do not need to implement this deprecated method.
+     * Default implementation so that all subclasses do not need to implement this deprecated method.
      */
     @Override
     @Deprecated
-    public void completeValidation(Class<?> rootBusinessObjectClass, Class<?> otherBusinessObjectClass) {}
+    public void completeValidation(Class<?> rootBusinessObjectClass, Class<?> otherBusinessObjectClass) {
+        completeValidation(rootBusinessObjectClass, otherBusinessObjectClass, new ValidationTrace());
+    }
+
+    /**
+     * Empty implementation so that all subclasses do not need to implement this method if they have no local validation to perform.
+     */
+    @Override
+    public void completeValidation(Class<?> rootBusinessObjectClass, Class<?> otherBusinessObjectClass, ValidationTrace tracer) {}
 }

@@ -15,6 +15,11 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.exception.DuplicateEntryException;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -26,11 +31,6 @@ import org.kuali.rice.krad.document.DocumentPresentationController;
 import org.kuali.rice.krad.document.DocumentPresentationControllerBase;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.rules.rule.BusinessRule;
-
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * A single Document entry in the DataDictionary, which contains information relating to the display, validation, and
@@ -82,6 +82,7 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
     /**
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#getJstlKey()
      */
+    @Override
     public String getJstlKey() {
         return documentTypeName;
     }
@@ -173,23 +174,39 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
         return this.documentTypeName;
     }
 
-    /**
-     * Directly validate simple fields
-     *
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(org.kuali.rice.krad.datadictionary.validator.ValidationTrace)
-     */
-    public void completeValidation() {
-        super.completeValidation();
+    @Override
+    public void dataDictionaryPostProcessing() {
+        super.dataDictionaryPostProcessing();
 
-        if (workflowProperties != null && workflowAttributes != null) {
-            throw new DataDictionaryException(documentTypeName
-                    + ": workflowProperties and workflowAttributes cannot both be defined for a document");
+        if (defaultExistenceChecks != null) {
+            defaultExistenceCheckMap.clear();
+            for (ReferenceDefinition reference : defaultExistenceChecks) {
+                if (reference == null) {
+                    continue;
+                }
+
+                String keyName = reference.isCollectionReference() ?
+                        (reference.getCollection() + "." + reference.getAttributeName()) : reference.getAttributeName();
+                if (defaultExistenceCheckMap.containsKey(keyName)) {
+                    throw new DuplicateEntryException(
+                            "duplicate defaultExistenceCheck entry for attribute '" + keyName + "'");
+                }
+                reference.setBusinessObjectClass(getEntryClass());
+                defaultExistenceCheckMap.put(keyName, reference);
+            }
+        }
+
+        if ( workflowAttributes != null ) {
+            workflowAttributes.dataDictionaryPostProcessing();
+        }
+        for ( ReferenceDefinition refDef : defaultExistenceChecks ) {
+            refDef.dataDictionaryPostProcessing();
         }
     }
 
     @Override
     public void completeValidation(ValidationTrace tracer) {
-        tracer.addBean(this.getClass().getSimpleName(), getDocumentTypeName());
+        tracer.addBean(getClass().getSimpleName(), getDocumentTypeName());
 
         if (workflowProperties != null && workflowAttributes != null) {
             String currentValues[] = {"workflowProperties = " + getWorkflowProperties(),
@@ -198,12 +215,21 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
                     currentValues);
         }
 
+        validateDefaultExistenceChecks(tracer);
+
         super.completeValidation(tracer.getCopy());
+    }
+
+    protected void validateDefaultExistenceChecks( ValidationTrace tracer ) {
+        for ( ReferenceDefinition refDef : defaultExistenceChecks ) {
+            refDef.completeValidation(documentClass, null,tracer.getCopy());
+        }
     }
 
     /**
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#getFullClassName()
      */
+    @Override
     public String getFullClassName() {
         if (getBaseDocumentClass() != null) {
             return getBaseDocumentClass().getName();
@@ -217,6 +243,7 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
     /**
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntryBase#getEntryClass()
      */
+    @Override
     public Class getEntryClass() {
         return getDocumentClass();
     }
@@ -482,30 +509,5 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
     public void setEncryptDocumentDataInPersistentSessionStorage(
             boolean encryptDocumentDataInPersistentSessionStorage) {
         this.encryptDocumentDataInPersistentSessionStorage = encryptDocumentDataInPersistentSessionStorage;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntryBase#afterPropertiesSet()
-     */
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        super.afterPropertiesSet();
-        if (defaultExistenceChecks != null) {
-            defaultExistenceCheckMap.clear();
-            for (ReferenceDefinition reference : defaultExistenceChecks) {
-                if (reference == null) {
-                    throw new IllegalArgumentException("invalid (null) defaultExistenceCheck");
-                }
-
-                String keyName = reference.isCollectionReference() ?
-                        (reference.getCollection() + "." + reference.getAttributeName()) : reference.getAttributeName();
-                if (defaultExistenceCheckMap.containsKey(keyName)) {
-                    throw new DuplicateEntryException(
-                            "duplicate defaultExistenceCheck entry for attribute '" + keyName + "'");
-                }
-                reference.setBusinessObjectClass(getEntryClass());
-                defaultExistenceCheckMap.put(keyName, reference);
-            }
-        }
     }
 }

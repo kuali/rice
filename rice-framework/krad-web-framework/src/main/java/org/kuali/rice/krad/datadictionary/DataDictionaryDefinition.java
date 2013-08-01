@@ -17,6 +17,8 @@ package org.kuali.rice.krad.datadictionary;
 
 import java.io.Serializable;
 
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+
 /**
  * Defines methods common to all DataDictionaryDefinition types.
  */
@@ -33,7 +35,18 @@ public interface DataDictionaryDefinition extends DictionaryBean, Serializable {
      * validation-completion
      */
     @Deprecated
-    public void completeValidation(Class<?> rootBusinessObjectClass, Class<?> otherBusinessObjectClass);
+    void completeValidation(Class<?> rootBusinessObjectClass, Class<?> otherBusinessObjectClass);
 
-    public String getId();
+    /**
+     * Performs complete intra-definition validation which couldn't be done earlier - for example, verifies that field
+     * references
+     * refer to actual fields of some specific class.
+     *
+     * @param rootBusinessObjectClass Class of the BusinessObjectEntry which ultimately contains this definition
+     * @param otherBusinessObjectClass other stuff required to complete validation
+     * @param tracer {@link ValidationTrace} class used to track what was being validated at the time of any problems discovered
+     */
+    void completeValidation(Class<?> rootBusinessObjectClass, Class<?> otherBusinessObjectClass, ValidationTrace tracer);
+
+    String getId();
 }

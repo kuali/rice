@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krad.datadictionary.validator;
 
+import java.util.ArrayList;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import java.util.ArrayList;
 
 /**
  * Collection of information regarding a single error detected within a dictionary bean
@@ -324,11 +324,25 @@ public class ErrorReport {
     }
 
     /**
-     * Retireves the number of xml pages involved in the error
+     * Retrieves the number of xml pages involved in the error
      *
      * @return The number of xml pages involved
      */
     public int getXmlPageSize() {
         return xmlPages.size();
+    }
+
+    /**
+     * Returns whether this message represents an error per its errorStatus.
+     */
+    public boolean isError() {
+        return errorStatus == ERROR;
+    }
+
+    /**
+     * Returns whether this message represents a warning per its errorStatus.
+     */
+    public boolean isWarning() {
+        return errorStatus == WARNING;
     }
 }

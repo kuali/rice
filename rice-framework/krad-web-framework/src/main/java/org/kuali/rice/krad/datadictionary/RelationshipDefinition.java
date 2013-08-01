@@ -140,7 +140,7 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
      * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#dataDictionaryPostProcessing()
      */
     @Override
-    protected void dataDictionaryPostProcessing() {
+    public void dataDictionaryPostProcessing() {
         super.dataDictionaryPostProcessing();
         if (targetClass == null) {
             Class<?> propertyClass = DataDictionary.getAttributeClass(sourceClass, objectAttributeName);
@@ -172,6 +172,7 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
      *
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(org.kuali.rice.krad.datadictionary.validator.ValidationTrace)
      */
+    @Override
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass,
             ValidationTrace tracer) {
         tracer.addBean(this.getClass().getSimpleName(), "Attribute: " + getObjectAttributeName());

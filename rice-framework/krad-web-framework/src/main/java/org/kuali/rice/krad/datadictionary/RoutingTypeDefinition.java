@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import java.util.List;
+
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-
-import java.util.List;
 
 /**
  * This is a description of what this class does - mpham don't forget to fill this in.
@@ -29,8 +29,8 @@ import java.util.List;
 public class RoutingTypeDefinition extends DataDictionaryDefinitionBase {
     private static final long serialVersionUID = -5455042765223753531L;
 
-    private List<RoutingAttribute> routingAttributes;
-    private List<DocumentValuePathGroup> documentValuePathGroups;
+    protected List<RoutingAttribute> routingAttributes;
+    protected List<DocumentValuePathGroup> documentValuePathGroups;
 
     /**
      * @return the routingAttributes
@@ -60,17 +60,6 @@ public class RoutingTypeDefinition extends DataDictionaryDefinitionBase {
      */
     public void setDocumentValuePathGroups(List<DocumentValuePathGroup> documentValuePathGroups) {
         this.documentValuePathGroups = documentValuePathGroups;
-    }
-
-    /**
-     * This overridden method ...
-     *
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class,
-     *      java.lang.Class)
-     */
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
-        // TODO wliang - THIS METHOD NEEDS JAVADOCS
-
     }
 
 }

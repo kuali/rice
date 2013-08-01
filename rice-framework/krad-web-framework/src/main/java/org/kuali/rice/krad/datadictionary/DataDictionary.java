@@ -41,6 +41,9 @@ import org.kuali.rice.krad.datadictionary.exception.CompletionException;
 import org.kuali.rice.krad.datadictionary.parse.StringListConverter;
 import org.kuali.rice.krad.datadictionary.parse.StringMapConverter;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryIndex;
+import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
@@ -244,15 +247,37 @@ public class DataDictionary {
     files = beanValidationFiles.toArray(files);
     validator.validate(files, xmlReader.getResourceLoader(), ddBeans, LOG, false);*/
 
+        Validator.resetErrorReport();
+
         Map<String, DataObjectEntry> doBeans = ddBeans.getBeansOfType(DataObjectEntry.class);
         for (DataObjectEntry entry : doBeans.values()) {
-            entry.completeValidation();
+            entry.completeValidation( new ValidationTrace() );
         }
 
         Map<String, DocumentEntry> docBeans = ddBeans.getBeansOfType(DocumentEntry.class);
         for (DocumentEntry entry : docBeans.values()) {
-            entry.completeValidation();
+            entry.completeValidation( new ValidationTrace() );
         }
+
+        List<ErrorReport> errorReports = Validator.getErrorReports();
+        if ( errorReports.size() > 0 ) {
+            boolean errors = false;
+            LOG.error( "***********************************************************");
+            LOG.error( "ERRORS OR WARNINGS REPORTED UPON DATA DICTIONARY VALIDATION");
+            LOG.error( "***********************************************************");
+            for ( ErrorReport err : errorReports ) {
+                if ( err.isError() ) {
+                    LOG.error(err.errorMessage());
+                    errors = true;
+                } else {
+                    LOG.warn(err.errorMessage());
+                }
+            }
+            if ( errors ) {
+                throw new DataDictionaryException( "Errors during DD validation, failing validation." );
+            }
+        }
+
         timer.stop();
     }
 

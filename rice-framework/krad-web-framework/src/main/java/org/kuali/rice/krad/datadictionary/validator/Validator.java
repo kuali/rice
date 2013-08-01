@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.datadictionary.validator;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -543,5 +545,9 @@ public class Validator {
      */
     public int getErrorReportSize() {
         return errorReports.size();
+    }
+
+    public static List<ErrorReport> getErrorReports() {
+        return Collections.unmodifiableList(errorReports);
     }
 }

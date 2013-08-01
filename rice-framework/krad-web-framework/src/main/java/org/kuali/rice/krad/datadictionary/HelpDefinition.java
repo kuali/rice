@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-
-import java.io.Serializable;
 
 /**
  * The help element provides the keys to obtain a
@@ -48,15 +48,6 @@ public class HelpDefinition extends DataDictionaryDefinitionBase implements Seri
      * Constructs a HelpDefinition.
      */
     public HelpDefinition() {}
-
-    /**
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class,
-     *      java.lang.Class)
-     */
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
-        // No real validation to be done here other than perhaps checking to be
-        // sure that the security workgroup is a valid workgroup.
-    }
 
     /**
      * @return

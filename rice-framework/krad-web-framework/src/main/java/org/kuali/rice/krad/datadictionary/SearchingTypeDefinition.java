@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import java.util.List;
+
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-
-import java.util.List;
 
 /**
  * This is a description of what this class does - mpham don't forget to fill this in.
@@ -29,8 +29,8 @@ import java.util.List;
 public class SearchingTypeDefinition extends DataDictionaryDefinitionBase {
     private static final long serialVersionUID = -8779609937539520677L;
 
-    private SearchingAttribute searchingAttribute;
-    private List<String> paths;
+    protected SearchingAttribute searchingAttribute;
+    protected List<String> paths;
 
     /**
      * @return the searchingAttribute
@@ -62,13 +62,4 @@ public class SearchingTypeDefinition extends DataDictionaryDefinitionBase {
         this.paths = paths;
     }
 
-    /**
-     * This overridden method ...
-     *
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class,
-     *      java.lang.Class)
-     */
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
-
-    }
 }

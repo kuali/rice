@@ -415,7 +415,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#dataDictionaryPostProcessing()
      */
     @Override
-    protected void dataDictionaryPostProcessing() {
+    public void dataDictionaryPostProcessing() {
         super.dataDictionaryPostProcessing();
         if ( attributeSecurity != null ) {
             attributeSecurity.dataDictionaryPostProcessing();
@@ -440,6 +440,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      *
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(org.kuali.rice.krad.datadictionary.validator.ValidationTrace)
      */
+    @Override
     public void completeValidation(Class rootObjectClass, Class otherObjectClass, ValidationTrace tracer) {
         tracer.addBean(this.getClass().getSimpleName(), "id: " + getId());
         try {
@@ -507,13 +508,6 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
 
     public boolean hasAttributeSecurity() {
         return (attributeSecurity != null);
-    }
-
-    /**
-     * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
-     */
-    @Override
-    public void afterPropertiesSet() throws Exception {
     }
 
     /**

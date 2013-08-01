@@ -118,7 +118,8 @@ public abstract class DictionaryBeanBase implements DictionaryBean {
         dictionaryBeanBaseCopy.setNamespaceCode(this.namespaceCode);
     }
 
-    protected void dataDictionaryPostProcessing() {
+    @Override
+    public void dataDictionaryPostProcessing() {
         // Do nothing here - will be implemented by subclasses
     }
 }

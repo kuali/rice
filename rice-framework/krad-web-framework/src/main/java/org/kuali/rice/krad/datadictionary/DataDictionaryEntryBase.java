@@ -109,11 +109,11 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
         complexAttributeMap.clear();
         for (ComplexAttributeDefinition complexAttribute : complexAttributes) {
             if (complexAttribute == null) {
-                throw new IllegalArgumentException("invalid (null) complexAttributeDefinition");
+                throw new DataDictionaryException("invalid (null) complexAttributeDefinition on " + this);
             }
             String complexAttributeName = complexAttribute.getName();
             if (StringUtils.isBlank(complexAttributeName)) {
-                throw new ValidationException("invalid (blank) collectionName");
+                throw new DataDictionaryException("invalid (blank) complexAttributeName on " + this);
             }
 
             if (complexAttributeMap.containsKey(complexAttribute)) {
@@ -255,17 +255,6 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
                 LOG.warn( "Relationship in metadata model contained blank name attribute: " + rel );
             }
         }
-        // now that we are done, we need to set the resulting list back to the entry
-        // This triggers the needed indexing
-        if ( relationshipsChanged ) {
-            setRelationships(relationships);
-            // relationship post-processing is handled in afterPropertiesSet()
-            try {
-                afterPropertiesSet();
-            } catch (Exception ex) {
-                LOG.error( "Problem running afterPropertiesSet() after updating relationships from DataObjectMetadata: " + this, ex );
-            }
-        }
     }
 
     protected void injectMetadataIntoCollections(DataObjectMetadata dataObjectMetadata) {
@@ -338,9 +327,34 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
 
 
     @Override
-    protected void dataDictionaryPostProcessing() {
+    public void dataDictionaryPostProcessing() {
         super.dataDictionaryPostProcessing();
         embedMetadata();
+        if (relationships != null) {
+            relationshipMap.clear();
+            for (RelationshipDefinition relationship : relationships) {
+                if (relationship == null) {
+                    LOG.warn("Skipping invalid (null) relationshipDefinition on " + this);
+                    continue;
+                }
+                String relationshipName = relationship.getObjectAttributeName();
+                if (StringUtils.isBlank(relationshipName)) {
+                    LOG.warn("Skipping invalid relationshipDefinition with blank relationshipName on " + this);
+                    continue;
+                }
+                relationship.setSourceClass(getEntryClass());
+                relationshipMap.put(relationshipName, relationship);
+            }
+        }
+
+        //Populate attributes with nested attribute definitions
+        if (complexAttributes != null) {
+            for (ComplexAttributeDefinition complexAttribute : complexAttributes) {
+                if ( complexAttribute != null ) {
+                    addNestedAttributes(complexAttribute, complexAttribute.getName());
+                }
+            }
+        }
         for (AttributeDefinition definition : getAttributes()) {
             definition.dataDictionaryPostProcessing();
         }
@@ -579,27 +593,6 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
      */
     @Override
     public void afterPropertiesSet() throws Exception {
-        if (relationships != null) {
-            relationshipMap.clear();
-            for (RelationshipDefinition relationship : relationships) {
-                if (relationship == null) {
-                    throw new IllegalArgumentException("invalid (null) relationshipDefinition");
-                }
-                String relationshipName = relationship.getObjectAttributeName();
-                if (StringUtils.isBlank(relationshipName)) {
-                    throw new ValidationException("invalid (blank) relationshipName");
-                }
-                relationship.setSourceClass(getEntryClass());
-                relationshipMap.put(relationshipName, relationship);
-            }
-        }
-
-        //Populate attributes with nested attribute definitions
-        if (complexAttributes != null) {
-            for (ComplexAttributeDefinition complexAttribute : complexAttributes) {
-                addNestedAttributes(complexAttribute, complexAttribute.getName());
-            }
-        }
     }
 
     /**

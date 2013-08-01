@@ -15,14 +15,16 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
-import org.kuali.rice.krad.datadictionary.parse.BeanTag;
-import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 
 /**
  * A container that holds all of the {@link WorkflowAttributeDefinition} for a document for both document searches
@@ -39,7 +41,6 @@ public class WorkflowAttributes extends UifDictionaryBeanBase {
 
     public WorkflowAttributes() {
         searchingTypeDefinitions = new ArrayList<SearchingTypeDefinition>();
-        ;
         routingTypeDefinitions = new HashMap<String, RoutingTypeDefinition>();
     }
 
@@ -70,15 +71,24 @@ public class WorkflowAttributes extends UifDictionaryBeanBase {
     /**
      * This overridden method ...
      *
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class,
-     *      java.lang.Class)
+     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#dataDictionaryPostProcessing()
      */
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
+    @Override
+    public void dataDictionaryPostProcessing() {
         for (SearchingTypeDefinition definition : searchingTypeDefinitions) {
-            definition.completeValidation(rootBusinessObjectClass, otherBusinessObjectClass);
+            definition.dataDictionaryPostProcessing();
         }
-        for (RoutingTypeDefinition definitions : routingTypeDefinitions.values()) {
-            definitions.completeValidation(rootBusinessObjectClass, otherBusinessObjectClass);
+        for (RoutingTypeDefinition definition : routingTypeDefinitions.values()) {
+            definition.dataDictionaryPostProcessing();
+        }
+    }
+
+    public void completeValidation(Class<?> rootBusinessObjectClass, Class<?> otherBusinessObjectClass, ValidationTrace tracer) {
+        for (SearchingTypeDefinition definition : searchingTypeDefinitions) {
+            definition.completeValidation(rootBusinessObjectClass, otherBusinessObjectClass,tracer);
+        }
+        for (RoutingTypeDefinition definition : routingTypeDefinitions.values()) {
+            definition.completeValidation(rootBusinessObjectClass, otherBusinessObjectClass,tracer);
         }
     }
 

@@ -17,9 +17,9 @@ package org.kuali.rice.krad.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 
 /**
  * The reference element specifies the name of a reference
@@ -141,10 +141,6 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
 
     @BeanTagAttribute(name = "collectionBusinessObjectClass")
     public Class<? extends BusinessObject> getCollectionBusinessObjectClass() {
-        if (collectionBusinessObjectClass == null && isCollectionReference()) {
-            collectionBusinessObjectClass = DataDictionary.getCollectionElementClass(businessObjectClass, collection);
-        }
-
         return collectionBusinessObjectClass;
     }
 
@@ -156,63 +152,49 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
         this.collectionBusinessObjectClass = collectionBusinessObjectClass;
     }
 
-    /**
-     * Directly validate simple fields.
-     *
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class,
-     *      java.lang.Object)
-     */
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
+    @Override
+    public void dataDictionaryPostProcessing() {
+        super.dataDictionaryPostProcessing();
+        if (collectionBusinessObjectClass == null && isCollectionReference()) {
+            collectionBusinessObjectClass = DataDictionary.getCollectionElementClass(businessObjectClass, collection);
+        }
+    }
 
-        // make sure the attributeName is actually a property of the BO
+    @Override
+    public void completeValidation(Class<?> rootBusinessObjectClass, Class<?> otherBusinessObjectClass, ValidationTrace tracer) {
         String tmpAttributeName = isCollectionReference() ? collection : attributeName;
+        // make sure the attributeName is actually a property of the BO
         if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, tmpAttributeName)) {
-            throw new AttributeValidationException("unable to find attribute '"
-                    + tmpAttributeName
-                    + "' in rootBusinessObjectClass '"
-                    + rootBusinessObjectClass.getName()
-                    + "' ("
-                    + ""
-                    + ")");
+            String currentValues[] = {"rootBusinessObjectClass = " + rootBusinessObjectClass.getName(),
+                    "attribute = " + tmpAttributeName};
+            tracer.createError("ReferenceDefinition attribute does not exist on parent object",
+                    currentValues);
         }
         // make sure the attributeToHighlightOnFail is actually a property of the BO
         if (isCollectionReference()) {
-            getCollectionBusinessObjectClass(); // forces loading of the class
             if (collectionBusinessObjectClass == null) {
-                throw new AttributeValidationException(
-                        "Unable to determine collectionBusinessObjectClass for collection '" + businessObjectClass
-                                .getName() + "." + collection + "'");
-            }
-
-            if (!DataDictionary.isPropertyOf(collectionBusinessObjectClass, attributeToHighlightOnFail)) {
-                throw new AttributeValidationException("unable to find attribute '"
-                        + attributeToHighlightOnFail
-                        + "' in collectionBusinessObjectClass '"
-                        + collectionBusinessObjectClass.getName()
-                        + "' ("
-                        + ""
-                        + ")");
+                String currentValues[] = {"rootBusinessObjectClass = " + rootBusinessObjectClass.getName(),
+                        "attribute = " + tmpAttributeName};
+                tracer.createError("ReferenceDefinition: Unable to determine BO class for collection",
+                        currentValues);
+            } else {
+	            if (!DataDictionary.isPropertyOf(collectionBusinessObjectClass, attributeToHighlightOnFail)) {
+                    String currentValues[] = {"collectionBusinessObjectClass = " + collectionBusinessObjectClass.getName(),
+                            "attributeToHighlightOnFail = " + attributeToHighlightOnFail};
+                    tracer.createError("ReferenceDefinition: attributeToHighlightOnFail does not exist on collection class",
+                            currentValues);
+	            }
             }
         } else {
-            if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, attributeToHighlightOnFail)) {
-                throw new AttributeValidationException("unable to find attribute '"
-                        + attributeToHighlightOnFail
-                        + "' in rootBusinessObjectClass '"
-                        + rootBusinessObjectClass.getName()
-                        + "' ("
-                        + ""
-                        + ")");
-            }
+        	if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, attributeToHighlightOnFail)) {
+                String currentValues[] = {"rootBusinessObjectClass = " + rootBusinessObjectClass.getName(),
+                        "attributeToHighlightOnFail = " + attributeToHighlightOnFail};
+                tracer.createError("ReferenceDefinition: attributeToHighlightOnFail does not exist on parent class",
+                        currentValues);
+        	}
         }
-
     }
 
-    /**
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
-        return "ReferenceDefinition for attribute " + getAttributeName();
-    }
 
     @BeanTagAttribute(name = "businessObjectClass")
     public Class<? extends BusinessObject> getBusinessObjectClass() {

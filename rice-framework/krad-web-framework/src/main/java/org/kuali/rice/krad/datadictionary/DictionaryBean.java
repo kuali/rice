@@ -42,4 +42,11 @@ public interface DictionaryBean extends Serializable {
      * @return String representing a component code
      */
     public String getComponentCode();
+
+    /**
+     * Perform any needed post-processing of the bean properties.  This will be called
+     * starting at the parent data object entry or document entry class and recursed down
+     * though all other DictionaryBean objects contained within.
+     */
+    public void dataDictionaryPostProcessing();
 }

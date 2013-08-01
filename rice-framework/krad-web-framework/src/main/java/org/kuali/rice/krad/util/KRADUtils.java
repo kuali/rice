@@ -1072,6 +1072,10 @@ public final class KRADUtils {
     public static String generateRowCssClassString(Map<String, String> conditionalRowCssClasses, int lineIndex,
             boolean isOdd, Map<String, Object> lineContext, ExpressionEvaluator expressionEvaluator) {
         String rowCss = "";
+        if (conditionalRowCssClasses == null || conditionalRowCssClasses.isEmpty()) {
+            return rowCss;
+        }
+
         for (String cssRule : conditionalRowCssClasses.keySet()) {
             if (cssRule.startsWith(UifConstants.EL_PLACEHOLDER_PREFIX) && lineContext != null &&
                     expressionEvaluator != null) {

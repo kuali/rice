@@ -774,7 +774,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return Inquiry field inquiry
      */
-    @BeanTagAttribute(name = "inguiry", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "inquiry", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Inquiry getInquiry() {
         return this.inquiry;
     }

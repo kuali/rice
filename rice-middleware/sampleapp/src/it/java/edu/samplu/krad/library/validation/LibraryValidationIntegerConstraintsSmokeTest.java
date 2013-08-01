@@ -82,6 +82,4 @@ public class LibraryValidationIntegerConstraintsSmokeTest extends SmokeTestBase 
         testValidationNumericConstraintsFlags();
         passed();
     }
-
-  
 }

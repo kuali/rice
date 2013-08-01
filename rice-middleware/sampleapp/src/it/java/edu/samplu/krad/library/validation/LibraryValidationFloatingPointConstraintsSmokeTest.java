@@ -73,6 +73,4 @@ public class LibraryValidationFloatingPointConstraintsSmokeTest extends SmokeTes
         testValidationFloatingPointConstraintsAdditional();
         passed();
     }
-
-  
 }

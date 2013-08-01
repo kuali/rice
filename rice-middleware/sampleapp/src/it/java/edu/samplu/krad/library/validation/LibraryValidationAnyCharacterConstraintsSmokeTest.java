@@ -76,6 +76,4 @@ public class LibraryValidationAnyCharacterConstraintsSmokeTest extends SmokeTest
         testValidationAnyCharacterConstraintsAllowWhitespace();
         passed();
     }
-
-  
 }

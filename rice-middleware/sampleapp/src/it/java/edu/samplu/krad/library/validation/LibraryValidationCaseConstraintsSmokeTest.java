@@ -97,6 +97,4 @@ public class LibraryValidationCaseConstraintsSmokeTest extends SmokeTestBase {
         testValidationCaseConstraintsNested();
         passed();
     }
-
-  
 }

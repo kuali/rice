@@ -64,6 +64,4 @@ public class LibraryValidationCharsetPatternConstraintsSmokeTest extends SmokeTe
         testValidationCharsetPatternConstraints();
         passed();
     }
-
-  
 }

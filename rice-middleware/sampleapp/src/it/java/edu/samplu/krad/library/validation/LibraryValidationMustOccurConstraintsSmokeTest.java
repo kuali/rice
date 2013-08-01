@@ -32,16 +32,34 @@ public class LibraryValidationMustOccurConstraintsSmokeTest extends SmokeTestBas
      */
     public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-MustOccurConstraint-View&methodToCall=start";
 
+    /**
+     *   1-2 of the following must occur: (Field 1A) OR (Field 2A and Field 2B)
+     */
     private static final String EXAMPLE1_VALIDATION_MESSAGE="  1-2 of the following must occur: (Field 1A) OR (Field 2A and Field 2B)";
     
+    /**
+     *   The following must occur: (Field 1A) OR (Field 2A and Field 2B)
+     */
     private static final String EXAMPLE2_VALIDATION_MESSAGE="  The following must occur: (Field 1A) OR (Field 2A and Field 2B)";
     
+    /**
+     *   1-2 of the following must occur: (Field 1A or Field 1B) OR (Field 2A and Field 2B)
+     */
     private static final String EXAMPLE3_VALIDATION_MESSAGE="  1-2 of the following must occur: (Field 1A or Field 1B) OR (Field 2A and Field 2B)";
     
+    /**
+     * //input[@name='inputField4' and @class='uif-textControl dependsOn-inputField1 dependsOn-inputField2 dependsOn-inputField3 dirty error']
+     */
     private static final String EXAMPLE1_ERROR_XPATH="//input[@name='inputField4' and @class='uif-textControl dependsOn-inputField1 dependsOn-inputField2 dependsOn-inputField3 dirty error']";
     
+    /**
+     * //input[@name='inputField8' and @class='uif-textControl dependsOn-inputField5 dependsOn-inputField6 dependsOn-inputField7 dirty error']
+     */
     private static final String EXAMPLE2_ERROR_XPATH="//input[@name='inputField8' and @class='uif-textControl dependsOn-inputField5 dependsOn-inputField6 dependsOn-inputField7 dirty error']";
     
+    /**
+     * //input[@name='inputField13' and @class='uif-textControl dependsOn-inputField9 dependsOn-inputField10 dependsOn-inputField11 dependsOn-inputField12 dirty error']
+     */
     private static final String EXAMPLE3_ERROR_XPATH="//input[@name='inputField13' and @class='uif-textControl dependsOn-inputField9 dependsOn-inputField10 dependsOn-inputField11 dependsOn-inputField12 dirty error']";
  
     @Override
@@ -186,6 +204,4 @@ public class LibraryValidationMustOccurConstraintsSmokeTest extends SmokeTestBas
         testValidationMustOccurConstraintsExample3();
         passed();
     }
-
-  
 }

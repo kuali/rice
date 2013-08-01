@@ -91,7 +91,5 @@ public class LibraryValidationNumericConstraintsSmokeTest extends SmokeTestBase 
         testValidationNumericConstraintsFlags();
         testValidationNumericConstraintsPreconfiguredBeans();
         passed();
-    }
-
-  
+    }  
 }

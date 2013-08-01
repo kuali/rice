@@ -177,7 +177,7 @@ public class LibraryValidationRegexBasedConstraintsSmokeTest extends SmokeTestBa
         passed();
     }
 
-//    @Test
+    @Test
     public void testValidationRegexBasedConstraintsNav() throws Exception {
         testValidationRegexBasedConstraintsPhone();
         testValidationRegexBasedConstraintsEmail();
@@ -193,6 +193,4 @@ public class LibraryValidationRegexBasedConstraintsSmokeTest extends SmokeTestBa
         testValidationRegexBasedConstraintsCustom();
         passed();
     }
-
-  
 }

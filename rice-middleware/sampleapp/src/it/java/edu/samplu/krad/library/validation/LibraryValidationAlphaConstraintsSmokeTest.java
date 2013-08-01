@@ -91,7 +91,5 @@ public class LibraryValidationAlphaConstraintsSmokeTest extends SmokeTestBase {
         testValidationAlphaConstraintsFlags();
         testValidationAlphaConstraintsPreconfiguredBeans();
         passed();
-    }
-
-  
+    }  
 }

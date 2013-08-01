@@ -86,6 +86,4 @@ public class LibraryValidationDatePatternConstraintsSmokeTest extends SmokeTestB
         testValidationDatePatternCustomize();
         passed();
     }
-
-  
 }

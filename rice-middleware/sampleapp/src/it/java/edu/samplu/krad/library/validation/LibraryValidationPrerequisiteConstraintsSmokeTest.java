@@ -68,6 +68,4 @@ public class LibraryValidationPrerequisiteConstraintsSmokeTest extends SmokeTest
         testValidationPrerequisiteConstraintsRequired();
         passed();
     }
-
-  
 }

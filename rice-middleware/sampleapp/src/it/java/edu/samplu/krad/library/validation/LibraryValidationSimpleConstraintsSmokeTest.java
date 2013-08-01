@@ -73,7 +73,6 @@ public class LibraryValidationSimpleConstraintsSmokeTest extends SmokeTestBase {
         assertElementPresentByXpath("//input[@name='inputField7' and @class='uif-textControl dirty error']");
     }
     
-
     @Test
     public void testValidationSimpleConstraintsBookmark() throws Exception {
         testValidationSimpleConstraintsRequired();
@@ -89,6 +88,4 @@ public class LibraryValidationSimpleConstraintsSmokeTest extends SmokeTestBase {
         testValidationSimpleConstraintsMinMaxValue();
         passed();
     }
-
-  
 }

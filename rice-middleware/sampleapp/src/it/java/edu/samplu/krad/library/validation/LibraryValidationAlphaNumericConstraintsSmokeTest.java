@@ -92,6 +92,4 @@ public class LibraryValidationAlphaNumericConstraintsSmokeTest extends SmokeTest
         testValidationAlphaNumericConstraintsPreconfiguredBeans();
         passed();
     }
-
-  
 }

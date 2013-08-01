@@ -536,10 +536,12 @@ function coerceValue(name) {
     }
 
     // boolean matching
-    if (value && value.toUpperCase() == "TRUE") {
-        value = true;
-    } else if (value && value.toUpperCase() == "FALSE") {
-        value = false;
+    if (value && !jQuery.isArray(value)) {
+        if (value.toUpperCase() == "TRUE") {
+            value = true;
+        } else if (value.toUpperCase() == "FALSE") {
+            value = false;
+        }
     }
 
     return value;

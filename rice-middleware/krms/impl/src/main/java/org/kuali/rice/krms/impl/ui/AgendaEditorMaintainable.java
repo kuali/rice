@@ -320,8 +320,8 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         if (agendaBo instanceof PersistableBusinessObject) {
             Map<String, String> primaryKeys = new HashMap<String, String>();
             primaryKeys.put("id", agendaBo.getId());
-            AgendaBo blah = getBusinessObjectService().findByPrimaryKey(AgendaBo.class, primaryKeys);
-            getBusinessObjectService().delete(blah);
+            AgendaBo dbAgendaBo = getBusinessObjectService().findByPrimaryKey(AgendaBo.class, primaryKeys);
+            getBusinessObjectService().delete(dbAgendaBo);
 
             getBusinessObjectService().linkAndSave(agendaBo);
         } else {

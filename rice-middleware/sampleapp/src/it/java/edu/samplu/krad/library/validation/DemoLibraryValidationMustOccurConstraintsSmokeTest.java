@@ -17,15 +17,12 @@ package edu.samplu.krad.library.validation;
 
 import org.junit.Test;
 
-import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
 import edu.samplu.common.SmokeTestBase;
-import edu.samplu.common.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LibraryValidationMustOccurConstraintsSmokeTest extends SmokeTestBase {
+public class DemoLibraryValidationMustOccurConstraintsSmokeTest extends SmokeTestBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-MustOccurConstraint-View&methodToCall=start
@@ -85,8 +82,7 @@ public class LibraryValidationMustOccurConstraintsSmokeTest extends SmokeTestBas
        //Scenario-2
        waitAndTypeByName("inputField1","a");
        waitAndTypeByName("inputField2","");
-       if(isElementPresentByXpath(EXAMPLE1_ERROR_XPATH))
-       {
+       if(isElementPresentByXpath(EXAMPLE1_ERROR_XPATH)) {
            fail("Criteria Not Satisfied");
        }
        
@@ -101,8 +97,7 @@ public class LibraryValidationMustOccurConstraintsSmokeTest extends SmokeTestBas
        //Scenario-4
        waitAndTypeByName("inputField3","a");
        waitAndTypeByName("inputField1","");
-       if(isElementPresentByXpath(EXAMPLE1_ERROR_XPATH))
-       {
+       if(isElementPresentByXpath(EXAMPLE1_ERROR_XPATH)) {
            fail("Criteria Not Satisfied");
        }
     }
@@ -120,8 +115,7 @@ public class LibraryValidationMustOccurConstraintsSmokeTest extends SmokeTestBas
         //Scenario-2
         waitAndTypeByName("inputField5","a");
         waitAndTypeByName("inputField6","");
-        if(isElementPresentByXpath(EXAMPLE2_ERROR_XPATH))
-        {
+        if(isElementPresentByXpath(EXAMPLE2_ERROR_XPATH)) {
             fail("Criteria Not Satisfied");
         }
         
@@ -136,8 +130,7 @@ public class LibraryValidationMustOccurConstraintsSmokeTest extends SmokeTestBas
         //Scenario-4
         waitAndTypeByName("inputField7","a");
         waitAndTypeByName("inputField5","");
-        if(isElementPresentByXpath(EXAMPLE2_ERROR_XPATH))
-        {
+        if (isElementPresentByXpath(EXAMPLE2_ERROR_XPATH)){
             fail("Criteria Not Satisfied");
         }
         
@@ -163,8 +156,7 @@ public class LibraryValidationMustOccurConstraintsSmokeTest extends SmokeTestBas
         //Scenario-2
         waitAndTypeByName("inputField9","a");
         waitAndTypeByName("inputField13","");
-        if(isElementPresentByXpath(EXAMPLE3_ERROR_XPATH))
-        {
+        if (isElementPresentByXpath(EXAMPLE3_ERROR_XPATH)) {
             fail("Criteria Not Satisfied");
         }
         clearTextByName("inputField9");
@@ -172,8 +164,7 @@ public class LibraryValidationMustOccurConstraintsSmokeTest extends SmokeTestBas
         //Scenario-3
         waitAndTypeByName("inputField10","a");
         waitAndTypeByName("inputField13","");
-        if(isElementPresentByXpath(EXAMPLE3_ERROR_XPATH))
-        {
+        if (isElementPresentByXpath(EXAMPLE3_ERROR_XPATH)) {
             fail("Criteria Not Satisfied");
         }
         clearTextByName("inputField10");
@@ -182,8 +173,7 @@ public class LibraryValidationMustOccurConstraintsSmokeTest extends SmokeTestBas
         waitAndTypeByName("inputField11","a");
         waitAndTypeByName("inputField12","a");
         waitAndTypeByName("inputField13","");
-        if(isElementPresentByXpath(EXAMPLE3_ERROR_XPATH))
-        {
+        if (isElementPresentByXpath(EXAMPLE3_ERROR_XPATH)) {
             fail("Criteria Not Satisfied");
         }
     }

@@ -17,21 +17,18 @@ package edu.samplu.krad.library.validation;
 
 import org.junit.Test;
 
-import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
 import edu.samplu.common.SmokeTestBase;
-import edu.samplu.common.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LibraryValidationIntegerConstraintsSmokeTest extends SmokeTestBase {
+public class DemoLibraryValidationNumericConstraintsSmokeTest extends SmokeTestBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-IntegerPatternConstraint-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-NumericPatternConstraint-View&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-IntegerPatternConstraint-View&methodToCall=start";
-
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-NumericPatternConstraint-View&methodToCall=start";
+   
     /**
      *  Can only be alpha characters, whitespace, newlines, periods, parentheses, forward slashes, double quotes, apostrophes, colons, semi-colons, question marks, exclaimation marks, dashes
      */
@@ -46,12 +43,12 @@ public class LibraryValidationIntegerConstraintsSmokeTest extends SmokeTestBase 
     protected void navigate() throws Exception {
         waitAndClickById("Demo-LibraryLink", "");
         waitAndClickByLinkText("Validation");
-        waitAndClickByLinkText("Integer Constraint");
+        waitAndClickByLinkText("Numeric Constraint");
     }
 
     protected void testValidationNumericConstraints() throws Exception {
        //Scenario-1
-       waitAndTypeByName("inputField1","1.3");
+       waitAndTypeByName("inputField1","a");
        waitAndClickByLinkText("Usage");
        assertElementPresentByXpath("//input[@name='inputField1' and @class='uif-textControl validChar-inputField10 dirty error']");
     }
@@ -60,19 +57,28 @@ public class LibraryValidationIntegerConstraintsSmokeTest extends SmokeTestBase 
         waitAndClickByLinkText("Flags");
         
         //Scenario-1
-        waitAndTypeByName("inputField2","1.2");
-        waitAndTypeByName("inputField3","-0");
-        waitAndTypeByName("inputField4","0");
+        waitAndTypeByName("inputField2","a s");
+        waitAndTypeByName("inputField3","a#s");
         assertElementPresentByXpath("//input[@name='inputField2' and @class='uif-textControl validChar-inputField20 dirty error']");
-        assertElementPresentByXpath("//input[@name='inputField3' and @class='uif-textControl validChar-inputField30 dirty error']");
         waitAndTypeByName("inputField2","");
-        assertElementPresentByXpath("//input[@name='inputField4' and @class='uif-textControl validChar-inputField40 dirty error']");
+        assertElementPresentByXpath("//input[@name='inputField3' and @class='uif-textControl validChar-inputField30 dirty error']");
     }
+    
+    protected void testValidationNumericConstraintsPreconfiguredBeans() throws Exception {
+        waitAndClickByLinkText("Preconfigured Bean(s)");
+        
+        //Scenario-1
+        waitAndTypeByName("inputField4","1@2");
+        waitAndClickByLinkText("Usage");
+        fireMouseOverEventByName("inputField4");
+        assertTextPresent(ERROR_MSG);
+     }
     
     @Test
     public void testValidationNumericConstraintsBookmark() throws Exception {
         testValidationNumericConstraints();
         testValidationNumericConstraintsFlags();
+        testValidationNumericConstraintsPreconfiguredBeans();
         passed();
     }
 
@@ -80,6 +86,7 @@ public class LibraryValidationIntegerConstraintsSmokeTest extends SmokeTestBase 
     public void testValidationNumericConstraintsNav() throws Exception {
         testValidationNumericConstraints();
         testValidationNumericConstraintsFlags();
+        testValidationNumericConstraintsPreconfiguredBeans();
         passed();
-    }
+    }  
 }

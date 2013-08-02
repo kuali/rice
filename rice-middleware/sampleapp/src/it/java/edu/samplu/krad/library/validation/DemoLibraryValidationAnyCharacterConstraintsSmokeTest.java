@@ -17,15 +17,12 @@ package edu.samplu.krad.library.validation;
 
 import org.junit.Test;
 
-import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
 import edu.samplu.common.SmokeTestBase;
-import edu.samplu.common.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LibraryValidationAnyCharacterConstraintsSmokeTest extends SmokeTestBase {
+public class DemoLibraryValidationAnyCharacterConstraintsSmokeTest extends SmokeTestBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-AnyCharacterPatternConstraint-View&methodToCall=start
@@ -57,8 +54,7 @@ public class LibraryValidationAnyCharacterConstraintsSmokeTest extends SmokeTest
        waitAndTypeByName("inputField2","a x u");
        waitAndClickByLinkText("Usage");
        fireMouseOverEventByName("inputField2");
-       if(isElementPresentByXpath("//input[@name='inputField2' and @class='uif-textControl validChar-inputField20 dirty error']"))
-       {
+       if (isElementPresentByXpath("//input[@name='inputField2' and @class='uif-textControl validChar-inputField20 dirty error']")) {
            fail("Criteria not satisfied.");
        }
     }

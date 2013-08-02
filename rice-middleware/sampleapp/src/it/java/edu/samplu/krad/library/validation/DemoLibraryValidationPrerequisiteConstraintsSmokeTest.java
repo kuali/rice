@@ -17,15 +17,12 @@ package edu.samplu.krad.library.validation;
 
 import org.junit.Test;
 
-import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
 import edu.samplu.common.SmokeTestBase;
-import edu.samplu.common.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LibraryValidationPrerequisiteConstraintsSmokeTest extends SmokeTestBase {
+public class DemoLibraryValidationPrerequisiteConstraintsSmokeTest extends SmokeTestBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-PrerequisiteConstraint-View&methodToCall=start

@@ -17,25 +17,22 @@ package edu.samplu.krad.library.validation;
 
 import org.junit.Test;
 
-import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
 import edu.samplu.common.SmokeTestBase;
-import edu.samplu.common.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LibraryValidationAlphaConstraintsSmokeTest extends SmokeTestBase {
+public class DemoLibraryValidationAlphaNumericConstraintsSmokeTest extends SmokeTestBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-AlphaPatternConstraint-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-AlphaNumericPatternConstraint-View&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-AlphaPatternConstraint-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-AlphaNumericPatternConstraint-View&methodToCall=start";
 
     /**
      *  Can only be alpha characters, whitespace, newlines, periods, parentheses, forward slashes, double quotes, apostrophes, colons, semi-colons, question marks, exclaimation marks, dashes
      */
-    private static final String ERROR_MSG= "  Can only be alpha characters, whitespace, newlines, periods, parentheses, forward slashes, double quotes, apostrophes, colons, semi-colons, question marks, exclaimation marks, dashes";
+    private static final String ERROR_MSG= "  Can only be alphanumeric characters, whitespace, newlines, periods, parentheses, forward slashes, double quotes, apostrophes, colons, semi-colons, question marks, exclaimation marks, dashes ";
     
     @Override
     protected String getBookmarkUrl() {
@@ -46,50 +43,50 @@ public class LibraryValidationAlphaConstraintsSmokeTest extends SmokeTestBase {
     protected void navigate() throws Exception {
         waitAndClickById("Demo-LibraryLink", "");
         waitAndClickByLinkText("Validation");
-        waitAndClickByLinkText("Alpha Constraint");
+        waitAndClickByLinkText("AlphaNumeric Constraint");
     }
 
-    protected void testValidationAlphaConstraints() throws Exception {
+    protected void testValidationAlphaNumericConstraints() throws Exception {
        //Scenario-1
-       waitAndTypeByName("inputField1","12");
+       waitAndTypeByName("inputField1","_as");
        waitAndClickByLinkText("Usage");
        assertElementPresentByXpath("//input[@name='inputField1' and @class='uif-textControl validChar-inputField10 dirty error']");
     }
     
-    protected void testValidationAlphaConstraintsFlags() throws Exception {
+    protected void testValidationAlphaNumericConstraintsFlags() throws Exception {
         waitAndClickByLinkText("Flags");
         
         //Scenario-1
-        waitAndTypeByName("inputField2","1 2");
-        waitAndTypeByName("inputField3","1,2");
+        waitAndTypeByName("inputField2","as 1_4");
+        waitAndTypeByName("inputField3","a_s");
         assertElementPresentByXpath("//input[@name='inputField2' and @class='uif-textControl validChar-inputField20 dirty error']");
         waitAndTypeByName("inputField2","");
-        assertElementPresentByXpath("//input[@name='inputField3' and @class='uif-textControl validChar-inputField30 dirty error']");
+        assertElementPresentByXpath("//input[@name='inputField3' and @class='uif-textControl validChar-inputField30 error']");
     }
     
-    protected void testValidationAlphaConstraintsPreconfiguredBeans() throws Exception {
+    protected void testValidationAlphaNumericConstraintsPreconfiguredBeans() throws Exception {
         waitAndClickByLinkText("Preconfigured Bean(s)");
         
         //Scenario-1
-        waitAndTypeByName("inputField4","as=-0");
+        waitAndTypeByName("inputField4","as#");
         waitAndClickByLinkText("Usage");
         fireMouseOverEventByName("inputField4");
         assertTextPresent(ERROR_MSG);
      }
     
     @Test
-    public void testValidationAlphaConstraintsBookmark() throws Exception {
-        testValidationAlphaConstraints();
-        testValidationAlphaConstraintsFlags();
-        testValidationAlphaConstraintsPreconfiguredBeans();
+    public void testValidationAlphaNumericConstraintsBookmark() throws Exception {
+        testValidationAlphaNumericConstraints();
+        testValidationAlphaNumericConstraintsFlags();
+        testValidationAlphaNumericConstraintsPreconfiguredBeans();
         passed();
     }
 
     @Test
-    public void testValidationAlphaConstraintsNav() throws Exception {
-        testValidationAlphaConstraints();
-        testValidationAlphaConstraintsFlags();
-        testValidationAlphaConstraintsPreconfiguredBeans();
+    public void testValidationAlphaNumericConstraintsNav() throws Exception {
+        testValidationAlphaNumericConstraints();
+        testValidationAlphaNumericConstraintsFlags();
+        testValidationAlphaNumericConstraintsPreconfiguredBeans();
         passed();
-    }  
+    }
 }

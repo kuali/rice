@@ -49,9 +49,9 @@ public class CssGridLayoutManager extends LayoutManagerBase {
     private int defaultItemColSpan;
 
     // non-settable
-    private List<List<Component>> rows;
-    private List<String> rowCssClassAttributes;
-    private List<String> cellCssClassAttributes;
+    protected List<List<Component>> rows;
+    protected List<String> rowCssClassAttributes;
+    protected List<String> cellCssClassAttributes;
 
     public CssGridLayoutManager() {
         rows = new ArrayList<List<Component>>();
@@ -106,8 +106,10 @@ public class CssGridLayoutManager extends LayoutManagerBase {
                 currentRow.add(item);
 
                 // determine "row" div css
-                rowCssClassAttributes.add(KRADUtils.generateRowCssClassString(conditionalRowCssClasses, rowIndex, isOdd,
-                        null, null));
+                String rowCss = rowLayoutCssClass + " " + KRADUtils.generateRowCssClassString(conditionalRowCssClasses,
+                        rowIndex, isOdd, null, null);
+                rowCssClassAttributes.add(rowCss);
+
                 rowIndex++;
                 rowSpaceLeft = NUMBER_OF_COLUMNS - colSpan;
             } else if (rowSpaceLeft == 0) {
@@ -117,8 +119,10 @@ public class CssGridLayoutManager extends LayoutManagerBase {
                 currentRow = new ArrayList<Component>();
 
                 // determine "row" div css
-                rowCssClassAttributes.add(KRADUtils.generateRowCssClassString(conditionalRowCssClasses, rowIndex, isOdd,
-                        null, null));
+                String rowCss = rowLayoutCssClass + " " + KRADUtils.generateRowCssClassString(conditionalRowCssClasses,
+                        rowIndex, isOdd, null, null);
+                rowCssClassAttributes.add(rowCss);
+
                 rowIndex++;
                 rowSpaceLeft = NUMBER_OF_COLUMNS;
             }
@@ -128,8 +132,10 @@ public class CssGridLayoutManager extends LayoutManagerBase {
         // add the last row if it wasn't full (but has items)
         if (!currentRow.isEmpty()) {
             // determine "row" div css
-            rowCssClassAttributes.add(KRADUtils.generateRowCssClassString(conditionalRowCssClasses, rowIndex, isOdd,
-                    null, null));
+            String rowCss = rowLayoutCssClass + " " + KRADUtils.generateRowCssClassString(conditionalRowCssClasses,
+                    rowIndex, isOdd, null, null);
+            rowCssClassAttributes.add(rowCss);
+
             rows.add(currentRow);
         }
     }
@@ -255,5 +261,36 @@ public class CssGridLayoutManager extends LayoutManagerBase {
             cssGridLayoutManagerCopy.setConditionalRowCssClasses(new HashMap<String, String>(
                     this.conditionalRowCssClasses));
         }
+
+        if (this.cellCssClassAttributes != null) {
+            cssGridLayoutManagerCopy.cellCssClassAttributes = new ArrayList<String>(this.cellCssClassAttributes);
+        }
+
+        if (this.rowCssClassAttributes != null) {
+            cssGridLayoutManagerCopy.rowCssClassAttributes = new ArrayList<String>(this.rowCssClassAttributes);
+        }
+
+        if (this.rows != null) {
+            cssGridLayoutManagerCopy.rows = new ArrayList<List<Component>>();
+            for (List<Component> row : this.rows) {
+                List<Component> rowCopy = new ArrayList<Component>();
+
+                if (row == null) {
+                    cssGridLayoutManagerCopy.rows.add(row);
+                    continue;
+                }
+
+                for (Component cellComp : row) {
+                    if (cellComp == null) {
+                        rowCopy.add(cellComp);
+                        continue;
+                    }
+                    rowCopy.add((Component) cellComp.copy());
+                }
+
+                cssGridLayoutManagerCopy.rows.add(rowCopy);
+            }
+        }
+
     }
 }

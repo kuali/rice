@@ -156,7 +156,7 @@ public class MessageStructureUtils {
                 }
             } else {
                 //raw string
-                addBlanks(messagePiece);
+                messagePiece = addBlanks(messagePiece);
                 currentMessageComponent = concatenateStringMessageContent(currentMessageComponent, messagePiece, view);
             }
         }
@@ -180,6 +180,15 @@ public class MessageStructureUtils {
      */
     private static Message concatenateStringMessageContent(Message currentMessageComponent, String messagePiece,
             View view) {
+        //messagePiece = messagePiece.indexOf(" ");
+/*        if (messagePiece.startsWith(" ")){
+            messagePiece.replaceFirst(" ", "&nbsp;");
+        }
+
+        if (messagePiece.endsWith(" ")){
+
+        }*/
+
         if (currentMessageComponent == null) {
             currentMessageComponent = ComponentFactory.getMessage();
 

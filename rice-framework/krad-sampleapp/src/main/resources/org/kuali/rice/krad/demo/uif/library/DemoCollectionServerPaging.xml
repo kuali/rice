@@ -41,7 +41,7 @@
         <!-- ex:Demo-CollectionServerPaging-Example1 start-->
         <bean parent="Uif-Disclosure-TableCollectionSection"	p:layoutManager.numberOfColumns="4"
               p:refreshWhenChangedPropertyNames="collection1Size">
-          <property name="headerText" value="Server Side Paging" />
+          <property name="headerText" value="Server Paging" />
           <property name="collectionObjectClass"
                     value="org.kuali.rice.krad.demo.uif.form.ServerPagingTestObject" />
           <property name="propertyName" value="collection1" />

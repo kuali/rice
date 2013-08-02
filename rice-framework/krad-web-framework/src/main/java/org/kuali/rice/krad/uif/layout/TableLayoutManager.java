@@ -579,7 +579,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             lineContext.put(UifConstants.ContextVariableNames.MANAGER, this);
             lineContext.put(UifConstants.ContextVariableNames.VIEW, view);
             lineContext.put(UifConstants.ContextVariableNames.LINE_SUFFIX, idSuffix);
-            lineContext.put(UifConstants.ContextVariableNames.INDEX, new Integer(lineIndex));
+            lineContext.put(UifConstants.ContextVariableNames.INDEX, Integer.valueOf(lineIndex));
             lineContext.put(UifConstants.ContextVariableNames.COLLECTION_GROUP, collectionGroup);
             lineContext.put(UifConstants.ContextVariableNames.IS_ADD_LINE, isAddLine && !isSeparateAddLine());
             lineContext.put(UifConstants.ContextVariableNames.READONLY_LINE, collectionGroup.isReadOnly());

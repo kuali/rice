@@ -30,6 +30,13 @@ import java.util.Random;
  */
 public class ServerPagingTestForm extends UifFormBase {
 
+    private static final long serialVersionUID = -8790636700086973158L;
+
+    // Fields needed on component library forms
+    private String themeName;
+    private String exampleShown;
+    private String currentExampleIndex;
+
     List<ServerPagingTestObject> collection1;
 
     public ServerPagingTestForm() {
@@ -66,6 +73,30 @@ public class ServerPagingTestForm extends UifFormBase {
 
             collection1.add(listItem);
         }
+    }
+
+    public String getThemeName() {
+        return themeName;
+    }
+
+    public void setThemeName(String themeName) {
+        this.themeName = themeName;
+    }
+
+    public String getExampleShown() {
+        return exampleShown;
+    }
+
+    public void setExampleShown(String exampleShown) {
+        this.exampleShown = exampleShown;
+    }
+
+    public String getCurrentExampleIndex() {
+        return currentExampleIndex;
+    }
+
+    public void setCurrentExampleIndex(String currentExampleIndex) {
+        this.currentExampleIndex = currentExampleIndex;
     }
 
     public List<ServerPagingTestObject> getCollection1() {

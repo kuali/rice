@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.web.controller;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
@@ -26,15 +25,9 @@ import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
-import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.field.AttributeQueryResult;
-import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.service.ViewService;
-import org.kuali.rice.krad.uif.util.ColumnSort;
-import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
-import org.kuali.rice.krad.uif.util.MultiColumnComparator;
-import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.DialogManager;
 import org.kuali.rice.krad.uif.view.MessageView;
 import org.kuali.rice.krad.uif.view.View;
@@ -42,6 +35,7 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.UrlFactory;
+import org.kuali.rice.krad.web.controller.helper.DataTablesPagingHelper;
 import org.kuali.rice.krad.web.form.HistoryFlow;
 import org.kuali.rice.krad.web.form.HistoryManager;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -56,18 +50,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -974,6 +960,27 @@ public abstract class UifControllerBase {
         return UifControllerHelper.getUIFModelAndView(form, form.getPageId());
     }
 
+    /**
+     * Configures the <code>ModelAndView</code> instance containing the form data and pointing to the UIF
+     * generic spring view, additional attributes may be exposed to the view through the map argument
+     *
+     * @param form form instance containing the model data
+     * @param additionalViewAttributes map of additional attributes to expose, key will be string the object
+     * is exposed under
+     * @return ModelAndView object with the contained form
+     */
+    protected ModelAndView getUIFModelAndView(UifFormBase form, Map<String, Object> additionalViewAttributes) {
+        ModelAndView modelAndView = UifControllerHelper.getUIFModelAndView(form, form.getPageId());
+
+        if (additionalViewAttributes != null) {
+            for (Map.Entry<String, Object> additionalViewAttribute : additionalViewAttributes.entrySet()) {
+                modelAndView.getModelMap().put(additionalViewAttribute.getKey(), additionalViewAttribute.getValue());
+            }
+        }
+
+        return modelAndView;
+    }
+
     protected ViewService getViewService() {
         return KRADServiceLocatorWeb.getViewService();
     }
@@ -1057,330 +1064,20 @@ public abstract class UifControllerBase {
      *
      * <p>This will render the aaData JSON for the displayed page of the table matching the tableId passed in the
      * request parameters.</p>
-     *
-     * @param form the form
-     * @param result binding result
-     * @param request http request
-     * @param response http response
-     * @return the ModelAndView
      */
     @RequestMapping(method = RequestMethod.GET, params = "methodToCall=tableJsonRetrieval")
-    public  ModelAndView tableJsonRetrieval(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+    public ModelAndView tableJsonRetrieval(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         String tableId = request.getParameter(UifParameters.TABLE_ID);
-        View postedView = form.getPostedView();
 
-        // Set property to trigger special JSON rendering logic in uifRender.ftl
-        form.setRequestJsonTemplate(UifConstants.TableToolsValues.JSON_TEMPLATE);
+        DataTablesPagingHelper.DataTablesInputs dataTablesInputs = new DataTablesPagingHelper.DataTablesInputs(request);
 
-        if (postedView != null) { // avoid blowing the stack if the session expired
-            // don't set the component to update unless we have a postedView, otherwise we'll get an NPE later
-            form.setUpdateComponentId(tableId);
+        DataTablesPagingHelper pagingHelper = new DataTablesPagingHelper();
+        pagingHelper.processPagingRequest(form.getPostedView(), tableId, form, dataTablesInputs);
 
-            @SuppressWarnings("unchecked")
-            List<ColumnSort> oldColumnSorts =
-                    (List<ColumnSort>) form.getExtensionData().get(tableId + UifConstants.IdSuffixes.COLUMN_SORTS);
+        Map<String, Object> additionalViewAttributes = new HashMap<String, Object>();
+        additionalViewAttributes.put(UifParameters.DATA_TABLES_PAGING_HELPER, pagingHelper);
 
-            // Create references that we'll need beyond the synchronized block here.
-            CollectionGroup newCollectionGroup = null;
-            List<Object> modelCollection = null;
-            List<ColumnSort> newColumnSorts = null;
-
-            synchronized (postedView) { // only one concurrent request per view please
-
-                CollectionGroup oldCollectionGroup = (CollectionGroup)postedView.getViewIndex().getComponentById(tableId);
-                DataTablesInputs dataTablesInputs = new DataTablesInputs(request);
-                newColumnSorts = buildColumnSorts(dataTablesInputs, oldCollectionGroup);
-
-                // get a new instance of the collection group component that we'll run the lifecycle on
-                newCollectionGroup =
-                        (CollectionGroup) ComponentFactory.getNewInstanceForRefresh(form.getPostedView(), tableId);
-
-                // get the collection for this group from the model
-                modelCollection = ObjectPropertyUtils.getPropertyValue(form, newCollectionGroup.getBindingInfo()
-                        .getPropertyAdjustedBindingPath(newCollectionGroup.getPropertyName()));
-
-                applyTableJsonSort(modelCollection, oldColumnSorts, newColumnSorts, oldCollectionGroup, postedView);
-
-                // set up the collection group properties related to paging in the collection group to set the bounds for
-                // what needs to be rendered
-                newCollectionGroup.setUseServerPaging(true);
-                newCollectionGroup.setDisplayStart(dataTablesInputs.iDisplayStart);
-                newCollectionGroup.setDisplayLength(dataTablesInputs.iDisplayLength);
-
-                // run lifecycle on the table component and update in view
-                postedView.getViewHelperService()
-                        .performComponentLifecycle(postedView, form, newCollectionGroup, oldCollectionGroup.getId());
-            }
-
-            // are these polluting the form and pinning more junk in memory? form.extensionData is not @SessionTransient
-            form.getExtensionData().put(tableId + "_tableLayoutManager", newCollectionGroup.getLayoutManager());
-            form.getExtensionData().put(tableId + "_filteredCollectionSize", newCollectionGroup.getFilteredCollectionSize());
-            form.getExtensionData().put(tableId + "_totalCollectionSize", modelCollection.size());
-
-            // these other params above don't need to stay in the form after this request, but <tableId>_columnSorts does
-            form.getExtensionData().put(tableId + "_columnSorts", newColumnSorts);
-        }
-
-        return getUIFModelAndView(form);
+        return getUIFModelAndView(form, additionalViewAttributes);
     }
-
-    /**
-     * Extract the sorting information from the DataTablesInputs into a more generic form.
-     *
-     * @param dataTablesInputs the parsed request data from dataTables
-     * @return the List of ColumnSort elements representing the requested sort columns, types, and directions
-     */
-    private List<ColumnSort> buildColumnSorts(DataTablesInputs dataTablesInputs, CollectionGroup collectionGroup) {
-        int [] sortCols = dataTablesInputs.iSortCol_; // cols being sorted on (for multi-col sort)
-        boolean [] sortable = dataTablesInputs.bSortable_; // which columns are sortable
-        String [] sortDir = dataTablesInputs.sSortDir_; // direction to sort
-
-        // parse table options to gather the sort types
-        String aoColumnDefsValue = ((TableLayoutManager)collectionGroup.getLayoutManager())
-                .getRichTable().getTemplateOptions().get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
-        JsonArray jsonColumnDefs = null;
-
-        if (!StringUtils.isEmpty(aoColumnDefsValue)) { // we'll parse this using a JSON library to make things simpler
-            // function definitions are not allowed in JSON
-            aoColumnDefsValue = aoColumnDefsValue.replaceAll("function\\([^)]*\\)\\s*\\{[^}]*\\}", "\"REDACTED\"");
-            JsonReader jsonReader = Json.createReader(new StringReader(aoColumnDefsValue));
-            jsonColumnDefs = jsonReader.readArray();
-        }
-
-        List<ColumnSort> columnSorts = new ArrayList<ColumnSort>(sortCols.length);
-
-        for (int sortColsIndex = 0; sortColsIndex < sortCols.length; sortColsIndex++) {
-            int sortCol = sortCols[sortColsIndex]; // get the index of the column being sorted on
-
-            if (sortable[sortCol]) {
-                String sortType = getSortType(jsonColumnDefs, sortCol);
-                ColumnSort.Direction sortDirection = ColumnSort.Direction.valueOf(sortDir[sortColsIndex].toUpperCase());
-                columnSorts.add(new ColumnSort(sortCol, sortDirection, sortType));
-            }
-        }
-
-        return columnSorts;
-    }
-
-    /**
-     * Get the sort type string from the parsed column definitions object.
-     *
-     * @param jsonColumnDefs the JsonArray representation of the aoColumnDefs property from the RichTable template
-     * options
-     * @param sortCol the index of the column to get the sort type for
-     * @return the name of the sort type specified in the template options, or the default of "string" if none is found.
-     */
-    private String getSortType(JsonArray jsonColumnDefs, int sortCol) {
-        String sortType = "string"; // default to string if nothing is spec'd
-
-        if (jsonColumnDefs != null) {
-            JsonObject column = jsonColumnDefs.getJsonObject(sortCol);
-
-            if (column.containsKey("sType")) {
-                sortType = column.getString("sType");
-            }
-        }
-        return sortType;
-    }
-
-    /**
-     * Sort the given modelCollection (in place) according to the specified columnSorts.
-     *
-     * <p>Not all columns will necessarily be directly mapped to the modelCollection, so the collectionGroup and view
-     * are available as well for use in calculating those other column values.  However, if all the columns are in fact
-     * mapped to the elements of the modelCollection, subclasses should be able to easily override this method to
-     * provide custom sorting logic.</p>
-     *
-     * @param modelCollection the collection to sort
-     * @param oldColumnSorts the sorting that reflects the current state of the collection
-     * @param newColumnSorts the sorting to apply to the collection
-     * @param collectionGroup the CollectionGroup that is being rendered
-     * @param view the view
-     */
-    protected void applyTableJsonSort(List<Object> modelCollection, List<ColumnSort> oldColumnSorts,
-            List<ColumnSort> newColumnSorts, CollectionGroup collectionGroup, View view) {
-
-        boolean isCollectionEmpty = CollectionUtils.isEmpty(modelCollection);
-        boolean isSortingSpecified = !CollectionUtils.isEmpty(newColumnSorts);
-        boolean isSortOrderChanged = newColumnSorts != oldColumnSorts && !newColumnSorts.equals(oldColumnSorts);
-
-        if (!isCollectionEmpty && isSortingSpecified && isSortOrderChanged) {
-
-            //
-            // create an index array and sort that. The array slots represents the slots in the modelCollection, and
-            // the values are indices to the elements in the modelCollection.  At the end, we'll re-order the
-            // modelCollection so that the elements are in the collection slots that correspond to the array locations.
-            //
-            // A small example may be in order.  Here's the incoming modelCollection:
-            //
-            //     modelCollection = { "Washington, George", "Adams, John", "Jefferson, Thomas", "Madison, James" }
-            //
-            // Initialize the array with its element references all matching initial positions in the modelCollection:
-            //
-            //     reSortIndices = { 0, 1, 2, 3 }
-            //
-            // After doing our sort in the array (where we sort indices based on the values in the modelCollection):
-            //
-            //     reSortIndices = { 1, 2, 3, 0 }
-            //
-            // Then, we go back and apply that ordering to the modelCollection:
-            //
-            //     modelCollection = { "Adams, John", "Jefferson, Thomas", "Madison, James", "Washington, George" }
-            //
-            // Why do it this way instead of just sorting the modelCollection directly?  Because we may need to know
-            // the original index of the element e.g. for the auto sequence column.
-            //
-
-            Integer [] sortIndices = new Integer [modelCollection.size()];
-            for (int i=0; i<sortIndices.length; i++) { sortIndices[i] = i; }
-
-            Arrays.sort(sortIndices, new MultiColumnComparator(modelCollection, collectionGroup, newColumnSorts, view));
-
-            // apply the sort to the modelCollection
-            Object [] sorted = new Object [sortIndices.length];
-            for (int i=0; i<sortIndices.length; i++) {
-                sorted[i] = modelCollection.get(sortIndices[i]);
-            }
-
-            for (int i=0; i<sorted.length; i++) {
-                modelCollection.set(i, sorted[i]);
-            }
-        }
-    }
-
-    /**
-     * Input command processor for supporting DataTables server-side processing.
-     *
-     * @see <a href="http://datatables.net/usage/server-side">http://datatables.net/usage/server-side</a>
-     */
-    private static class DataTablesInputs {
-        private final int iDisplayStart, iDisplayLength, iColumns,
-                iSortingCols, sEcho;
-
-        // TODO: All search related options are commented out of this class.
-        // If we implement search for datatables we'll want to re-activate that code to capture the configuration
-        // values from the request
-
-//        private final String sSearch;
-//        private final Pattern patSearch;
-
-        private final boolean bRegex;
-        private final boolean[] /*bSearchable_,*/ bRegex_, bSortable_;
-        private final String[] /*sSearch_,*/ sSortDir_, mDataProp_;
-
-//        private final Pattern[] patSearch_;
-
-        private final int[] iSortCol_;
-
-        private DataTablesInputs(HttpServletRequest request) {
-            String s;
-            iDisplayStart = (s = request.getParameter("iDisplayStart")) == null ? 0
-                    : Integer.parseInt(s);
-            iDisplayLength = (s = request.getParameter("iDisplayLength")) == null ? 0
-                    : Integer.parseInt(s);
-            iColumns = (s = request.getParameter("iColumns")) == null ? 0
-                    : Integer.parseInt(s);
-            bRegex = (s = request.getParameter("bRegex")) == null ? false
-                    : new Boolean(s);
-
-//            patSearch = (sSearch = request.getParameter("sSearch")) == null
-//                    || !bRegex ? null : Pattern.compile(sSearch);
-//            bSearchable_ = new boolean[iColumns];
-//            sSearch_ = new String[iColumns];
-//            patSearch_ = new Pattern[iColumns];
-
-            bRegex_ = new boolean[iColumns];
-            bSortable_ = new boolean[iColumns];
-
-            for (int i = 0; i < iColumns; i++) {
-
-//                bSearchable_[i] = (s = request.getParameter("bSearchable_" + i)) == null ? false
-//                        : new Boolean(s);
-
-                bRegex_[i] = (s = request.getParameter("bRegex_" + i)) == null ? false
-                        : new Boolean(s);
-
-//                patSearch_[i] = (sSearch_[i] = request.getParameter("sSearch_"
-//                        + i)) == null
-//                        || !bRegex_[i] ? null : Pattern.compile(sSearch_[i]);
-
-                bSortable_[i] = (s = request.getParameter("bSortable_" + i)) == null ? false
-                        : new Boolean(s);
-            }
-
-            iSortingCols = (s = request.getParameter("iSortingCols")) == null ? 0
-                    : Integer.parseInt(s);
-            iSortCol_ = new int[iSortingCols];
-            sSortDir_ = new String[iSortingCols];
-
-            for (int i = 0; i < iSortingCols; i++) {
-                iSortCol_[i] = (s = request.getParameter("iSortCol_" + i)) == null ? 0
-                        : Integer.parseInt(s);
-                sSortDir_[i] = request.getParameter("sSortDir_" + i);
-            }
-
-            mDataProp_ = new String[iColumns];
-
-            for (int i = 0; i < iColumns; i++) {
-                mDataProp_[i] = request.getParameter("mDataProp_" + i);
-            }
-
-            sEcho = (s = request.getParameter("sEcho")) == null ? 0 : Integer
-                    .parseInt(s);
-        }
-
-        @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder(super.toString());
-            sb.append("\n\tiDisplayStart = ");
-            sb.append(iDisplayStart);
-            sb.append("\n\tiDisplayLength = ");
-            sb.append(iDisplayLength);
-            sb.append("\n\tiColumns = ");
-            sb.append(iColumns);
-
-//            sb.append("\n\tsSearch = ");
-//            sb.append(sSearch);
-
-            sb.append("\n\tbRegex = ");
-            sb.append(bRegex);
-
-            for (int i = 0; i < iColumns; i++) {
-
-//                sb.append("\n\tbSearchable_").append(i).append(" = ");
-//                sb.append(bSearchable_[i]);
-
-                sb.append("\n\tsSearch_").append(i).append(" = ");
-
-//                sb.append(sSearch_[i]);
-//                sb.append("\n\tbRegex_").append(i).append(" = ");
-
-                sb.append(bRegex_[i]);
-                sb.append("\n\tbSortable_").append(i).append(" = ");
-                sb.append(bSortable_[i]);
-            }
-
-            sb.append("\n\tiSortingCols = ");
-            sb.append(iSortingCols);
-
-            for (int i = 0; i < iSortingCols; i++) {
-                sb.append("\n\tiSortCol_").append(i).append(" = ");
-                sb.append(iSortCol_[i]);
-                sb.append("\n\tsSortDir_").append(i).append(" = ");
-                sb.append(sSortDir_[i]);
-            }
-
-            for (int i = 0; i < iColumns; i++) {
-                sb.append("\n\tmDataProp_").append(i).append(" = ");
-                sb.append(mDataProp_[i]);
-            }
-
-            sb.append("\n\tsEcho = ");
-            sb.append(sEcho);
-
-            return sb.toString();
-        }
-    }
-
 }

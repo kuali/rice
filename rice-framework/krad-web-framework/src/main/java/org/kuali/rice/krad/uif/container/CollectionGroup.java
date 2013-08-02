@@ -147,10 +147,10 @@ public class CollectionGroup extends Group implements DataBinding {
     private boolean addViaLightBox;
     private Action addViaLightBoxAction;
 
-    private boolean useServerPaging = false;  // indicates the use of server side paging
-    private int displayStart = -1;            // the index of the first element for the page to display
-    private int displayLength = -1;           // the number of items to display on the page
-    private int filteredCollectionSize = -1;  // the total number of visible elements in the collection
+    private boolean useServerPaging = false;
+    private int displayStart = -1;
+    private int displayLength = -1;
+    private int filteredCollectionSize = -1;
 
     private List<String> totalColumns;
 
@@ -1144,6 +1144,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return true if server side paging is enabled.
      */
+    @BeanTagAttribute(name = "useServerPaging")
     public boolean isUseServerPaging() {
         return useServerPaging;
     }

@@ -474,7 +474,7 @@ public class Header extends ContentElementBase {
         headerCopy.setHeaderText(this.headerText);
 
         if(inlineComponents != null) {
-            List<Component> inlineComponents = Lists.newArrayListWithExpectedSize(getInlineComponents().size());
+            List<Component> inlineComponents = Lists.newArrayListWithExpectedSize(this.inlineComponents.size());
             for (Component inlineComponent : this.inlineComponents) {
                 inlineComponents.add((Component)inlineComponent.copy());
             }

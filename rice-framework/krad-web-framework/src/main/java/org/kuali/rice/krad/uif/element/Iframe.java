@@ -30,72 +30,72 @@ import java.util.ArrayList;
  */
 @BeanTag(name = "iFrame-bean", parent = "Uif-Iframe")
 public class Iframe extends ContentElementBase {
-	private static final long serialVersionUID = 5797473302619055088L;
+    private static final long serialVersionUID = 5797473302619055088L;
 
-	private String source;
-	private String height;
-	private String frameborder;
+    private String source;
+    private String height;
+    private String frameborder;
 
-	public Iframe() {
-		super();
-	}
+    public Iframe() {
+        super();
+    }
 
     /**
      * The IFrame's source
      *
      * @return source
      */
-    @BeanTagAttribute(name="source")
-	public String getSource() {
-		return this.source;
-	}
+    @BeanTagAttribute(name = "source")
+    public String getSource() {
+        return this.source;
+    }
 
     /**
      * Setter for the IFrame's source
      *
      * @param source
      */
-	public void setSource(String source) {
-		this.source = source;
-	}
+    public void setSource(String source) {
+        this.source = source;
+    }
 
     /**
      * The IFrame's height
      *
      * @return height
      */
-    @BeanTagAttribute(name="height")
-	public String getHeight() {
-		return this.height;
-	}
+    @BeanTagAttribute(name = "height")
+    public String getHeight() {
+        return this.height;
+    }
 
     /**
      * Setter for the IFrame's height
      *
      * @param height
      */
-	public void setHeight(String height) {
-		this.height = height;
-	}
+    public void setHeight(String height) {
+        this.height = height;
+    }
 
     /**
      * The IFrame's frame border
      *
      * @return frameborder
      */
-    @BeanTagAttribute(name="frameborder")
-	public String getFrameborder() {
-		return this.frameborder;
-	}
+    @BeanTagAttribute(name = "frameborder")
+    public String getFrameborder() {
+        return this.frameborder;
+    }
 
     /**
      * Setter for the IFrame's frame border
      *
      * @param frameborder
      */
-	public void setFrameborder(String frameborder) {
-		this.frameborder = frameborder;
-	}
+    public void setFrameborder(String frameborder) {
+        this.frameborder = frameborder;
+    }
 
     /**
      * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
@@ -104,23 +104,23 @@ public class Iframe extends ContentElementBase {
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         Iframe iframeCopy = (Iframe) component;
-        iframeCopy.setSource(this.getSource());
-        iframeCopy.setHeight(this.getHeight());
-        iframeCopy.setFrameborder(this.getFrameborder());
+        iframeCopy.setSource(this.source);
+        iframeCopy.setHeight(this.height);
+        iframeCopy.setFrameborder(this.frameborder);
     }
 
     /**
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
-    public void completeValidation(ValidationTrace tracer){
+    public void completeValidation(ValidationTrace tracer) {
         tracer.addBean(this);
 
         // Checks that a source is set
-        if(getSource()==null){
-            if(!Validator.checkExpressions(this, "source")){
-                String currentValues [] = {"source ="+getSource()};
-                tracer.createError("Source must be set",currentValues);
+        if (getSource() == null) {
+            if (!Validator.checkExpressions(this, "source")) {
+                String currentValues[] = {"source =" + getSource()};
+                tracer.createError("Source must be set", currentValues);
             }
         }
 

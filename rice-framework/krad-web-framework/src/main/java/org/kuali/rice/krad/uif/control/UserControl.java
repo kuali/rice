@@ -79,7 +79,9 @@ public class UserControl extends TextControl implements FilterableLookupCriteria
 
             // setup script to clear id field when name is modified
             String idPropertyPath = field.getBindingInfo().getPropertyAdjustedBindingPath(principalIdPropertyName);
-            String onChangeScript = UifConstants.JsFunctions.SET_VALUE + "('" + ScriptUtils.escapeName(idPropertyPath)
+            String onChangeScript = UifConstants.JsFunctions.SET_VALUE
+                    + "('"
+                    + ScriptUtils.escapeName(idPropertyPath)
                     + "','');";
 
             if (StringUtils.isNotBlank(getOnChangeScript())) {
@@ -266,8 +268,8 @@ public class UserControl extends TextControl implements FilterableLookupCriteria
 
         UserControl userControlCopy = (UserControl) component;
 
-        userControlCopy.setPrincipalIdPropertyName(this.getPrincipalIdPropertyName());
-        userControlCopy.setPersonNamePropertyName(this.getPersonNamePropertyName());
-        userControlCopy.setPersonObjectPropertyName(this.getPersonObjectPropertyName());
+        userControlCopy.setPrincipalIdPropertyName(this.principalIdPropertyName);
+        userControlCopy.setPersonNamePropertyName(this.personNamePropertyName);
+        userControlCopy.setPersonObjectPropertyName(this.personObjectPropertyName);
     }
 }

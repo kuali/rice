@@ -51,8 +51,8 @@ public class FieldValidationMessages extends ValidationMessages {
         HashMap<String, Object> validationMessagesDataAttributes = new HashMap<String, Object>();
 
         Map<String, String> dataDefaults =
-                        (Map<String, String>) (KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
-                                "Uif-FieldValidationMessages-DataDefaults"));
+                (Map<String, String>) (KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
+                        "Uif-FieldValidationMessages-DataDefaults"));
 
         //display
         this.addValidationDataSettingsValue(validationMessagesDataAttributes, dataDefaults, "displayMessages",
@@ -79,9 +79,9 @@ public class FieldValidationMessages extends ValidationMessages {
         this.addValidationDataSettingsValue(validationMessagesDataAttributes, dataDefaults, "serverInfo",
                 ScriptUtils.escapeHtml(this.getInfos()));
 
-        if (!validationMessagesDataAttributes.isEmpty()){
+        if (!validationMessagesDataAttributes.isEmpty()) {
             parent.addDataAttribute(UifConstants.DataAttributes.VALIDATION_MESSAGES, ScriptUtils.translateValue(
-                validationMessagesDataAttributes));
+                    validationMessagesDataAttributes));
         }
     }
 
@@ -131,7 +131,7 @@ public class FieldValidationMessages extends ValidationMessages {
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         FieldValidationMessages fieldValidationMessagesCopy = (FieldValidationMessages) component;
-        fieldValidationMessagesCopy.setUseTooltip(this.isUseTooltip());
-        fieldValidationMessagesCopy.setShowIcons(this.isShowIcons());
+        fieldValidationMessagesCopy.setUseTooltip(this.useTooltip);
+        fieldValidationMessagesCopy.setShowIcons(this.showIcons);
     }
 }

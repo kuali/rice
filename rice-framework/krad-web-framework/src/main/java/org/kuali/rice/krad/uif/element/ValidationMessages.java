@@ -361,15 +361,30 @@ public class ValidationMessages extends ContentElementBase {
         }
     }
 
-    public void setErrors(List<String> errors) {
+    /**
+     * Sets errors
+     *
+     * @param errors
+     */
+    protected void setErrors(List<String> errors) {
         this.errors = errors;
     }
 
-    public void setWarnings(List<String> warnings) {
+    /**
+     * Sets warnings
+     *
+     * @param warnings
+     */
+    protected void setWarnings(List<String> warnings) {
         this.warnings = warnings;
     }
 
-    public void setInfos(List<String> infos) {
+    /**
+     * Sets infos
+     *
+     * @param infos
+     */
+    protected void setInfos(List<String> infos) {
         this.infos = infos;
     }
 
@@ -390,7 +405,7 @@ public class ValidationMessages extends ContentElementBase {
             validationMessagesCopy.setAdditionalKeysToMatch(additionalKeysToMatchCopy);
         }
 
-        validationMessagesCopy.setDisplayMessages(this.isDisplayMessages());
+        validationMessagesCopy.setDisplayMessages(this.displayMessages);
 
         if (warnings != null) {
             // Error messages
@@ -420,10 +435,10 @@ public class ValidationMessages extends ContentElementBase {
             validationMessagesCopy.setInfos(infosCopy);
         }
 
-        if (this.getValidationDataDefaults() != null) {
+        if (this.validationDataDefaults != null) {
             Map<String, String> validationDataDefaultsCopy = Maps.newHashMapWithExpectedSize(
-                    this.getValidationDataDefaults().size());
-            for (Map.Entry validationDataDefault : getValidationDataDefaults().entrySet()) {
+                    this.validationDataDefaults.size());
+            for (Map.Entry validationDataDefault : validationDataDefaults.entrySet()) {
                 validationDataDefaultsCopy.put(validationDataDefault.getKey().toString(),
                         validationDataDefault.getValue().toString());
             }

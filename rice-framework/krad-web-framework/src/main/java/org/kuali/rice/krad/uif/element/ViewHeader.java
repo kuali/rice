@@ -240,17 +240,17 @@ public class ViewHeader extends Header {
         ViewHeader viewHeaderCopy = (ViewHeader) component;
 
         if (this.areaTitleMessage != null) {
-            viewHeaderCopy.setAreaTitleMessage((Message) this.getAreaTitleMessage().copy());
+            viewHeaderCopy.setAreaTitleMessage((Message) this.areaTitleMessage.copy());
         }
 
         if (this.supportTitleMessage != null) {
-            viewHeaderCopy.setSupportTitleMessage((Message) this.getSupportTitleMessage().copy());
+            viewHeaderCopy.setSupportTitleMessage((Message) this.supportTitleMessage.copy());
         }
 
         if (this.metadataMessage != null) {
-            viewHeaderCopy.setMetadataMessage((Message) this.getMetadataMessage().copy());
+            viewHeaderCopy.setMetadataMessage((Message) this.metadataMessage.copy());
         }
 
-        viewHeaderCopy.setSticky(this.isSticky());
+        viewHeaderCopy.setSticky(this.sticky);
     }
 }

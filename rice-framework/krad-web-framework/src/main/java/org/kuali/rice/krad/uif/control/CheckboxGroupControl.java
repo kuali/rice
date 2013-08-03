@@ -108,10 +108,10 @@ public class CheckboxGroupControl extends MultiValueControlBase {
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         CheckboxGroupControl checkboxGroupControlCopy = (CheckboxGroupControl) component;
-        checkboxGroupControlCopy.setDelimiter(this.getDelimiter());
+        checkboxGroupControlCopy.setDelimiter(this.delimiter);
 
         if(fieldsetClasses != null) {
-            List<String> fieldsetClassesCopy = Lists.newArrayListWithExpectedSize(getFieldsetClasses().size());
+            List<String> fieldsetClassesCopy = Lists.newArrayListWithExpectedSize(fieldsetClasses.size());
             for(String fieldsetClass : fieldsetClasses)   {
                 fieldsetClassesCopy.add(fieldsetClass);
             }

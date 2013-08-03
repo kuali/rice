@@ -284,12 +284,12 @@ public abstract class ControlBase extends ContentElementBase implements Control 
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         ControlBase controlBaseCopy = (ControlBase) component;
-        controlBaseCopy.setTabIndex(this.getTabIndex());
-        controlBaseCopy.setDisabled(this.isDisabled());
-        controlBaseCopy.setDisabledExpression(this.getDisabledExpression());
-        controlBaseCopy.setDisabledReason(this.getDisabledReason());
-        controlBaseCopy.setEvaluateDisabledOnKeyUp(this.isEvaluateDisabledOnKeyUp());
-        controlBaseCopy.setDisabledConditionJs(this.getDisabledConditionJs());
+        controlBaseCopy.setTabIndex(this.tabIndex);
+        controlBaseCopy.setDisabled(this.disabled);
+        controlBaseCopy.setDisabledExpression(this.disabledExpression);
+        controlBaseCopy.setDisabledReason(this.disabledReason);
+        controlBaseCopy.setEvaluateDisabledOnKeyUp(this.evaluateDisabledOnKeyUp);
+        controlBaseCopy.setDisabledConditionJs(this.disabledConditionJs);
 
         if (disabledConditionControlNames != null) {
             List<String> disabledConditionControlNamesCopy = Lists.newArrayListWithExpectedSize(

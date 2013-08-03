@@ -324,14 +324,14 @@ public class TreeGroup extends Group implements DataBinding {
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         TreeGroup treeGroupCopy = (TreeGroup) component;
-        treeGroupCopy.setPropertyName(this.getPropertyName());
+        treeGroupCopy.setPropertyName(this.propertyName);
 
         if (this.bindingInfo != null) {
-            treeGroupCopy.setBindingInfo((BindingInfo) this.getBindingInfo().copy());
+            treeGroupCopy.setBindingInfo((BindingInfo) this.bindingInfo.copy());
         }
 
         if (this.defaultNodePrototype != null) {
-            treeGroupCopy.setDefaultNodePrototype((NodePrototype) this.getDefaultNodePrototype().copy());
+            treeGroupCopy.setDefaultNodePrototype((NodePrototype) this.defaultNodePrototype.copy());
         }
 
         if (this.treeGroups != null) {
@@ -342,13 +342,13 @@ public class TreeGroup extends Group implements DataBinding {
         }
 
         if (this.tree != null) {
-            treeGroupCopy.setTree((org.kuali.rice.krad.uif.widget.Tree) this.getTree().copy());
+            treeGroupCopy.setTree((org.kuali.rice.krad.uif.widget.Tree) this.tree.copy());
         }
 
         if (this.nodePrototypeMap != null) {
             Map<Class<?>, NodePrototype> nodePrototypeMapCopy = Maps.newHashMapWithExpectedSize(
                     this.getNodePrototypeMap().size());
-            for (Map.Entry<Class<?>, NodePrototype> nodePrototypeMapEntry : getNodePrototypeMap().entrySet()) {
+            for (Map.Entry<Class<?>, NodePrototype> nodePrototypeMapEntry : nodePrototypeMap.entrySet()) {
                 NodePrototype prototypeCopy = nodePrototypeMapEntry.getValue().copy();
                 nodePrototypeMapCopy.put(nodePrototypeMapEntry.getKey(), prototypeCopy);
             }

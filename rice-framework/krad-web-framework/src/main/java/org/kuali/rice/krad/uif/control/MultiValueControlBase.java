@@ -245,6 +245,6 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
             multiValueControlBaseCopy.setInlineComponents(inlineComponentsCopy);
         }
 
-        multiValueControlBaseCopy.setLocationSelect(this.isLocationSelect());
+        multiValueControlBaseCopy.setLocationSelect(this.locationSelect);
     }
 }

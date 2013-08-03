@@ -188,7 +188,7 @@ public class GroupControl extends TextControl implements FilterableLookupCriteri
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         GroupControl groupControlCopy = (GroupControl) component;
-        groupControlCopy.setNamespaceCodePropertyName(this.getNamespaceCodePropertyName());
-        groupControlCopy.setGroupIdPropertyName(this.getGroupIdPropertyName());
+        groupControlCopy.setNamespaceCodePropertyName(this.namespaceCodePropertyName);
+        groupControlCopy.setGroupIdPropertyName(this.groupIdPropertyName);
     }
 }

@@ -86,7 +86,7 @@ public class SelectControl extends MultiValueControlBase implements SizedControl
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         SelectControl selectControlCopy = (SelectControl) component;
-        selectControlCopy.setSize(this.getSize());
-        selectControlCopy.setMultiple(this.isMultiple());
+        selectControlCopy.setSize(this.size);
+        selectControlCopy.setMultiple(this.multiple);
     }
 }

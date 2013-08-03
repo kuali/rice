@@ -206,7 +206,12 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
         return locationSelect;
     }
 
-    public void setLocationSelect(boolean locationSelect) {
+    /**
+     * Sets the location select (navigate on select of option)
+     *
+     * @param locationSelect
+     */
+    protected void setLocationSelect(boolean locationSelect) {
         this.locationSelect = locationSelect;
     }
 

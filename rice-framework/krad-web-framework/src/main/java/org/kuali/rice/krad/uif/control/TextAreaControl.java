@@ -201,11 +201,11 @@ public class TextAreaControl extends ControlBase {
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         TextAreaControl textAreaControlCopy = (TextAreaControl) component;
-        textAreaControlCopy.setRows(this.getRows());
-        textAreaControlCopy.setCols(this.getCols());
-        textAreaControlCopy.setMaxLength(this.getMaxLength());
-        textAreaControlCopy.setMinLength(this.getMinLength());
-        textAreaControlCopy.setTextExpand(this.isTextExpand());
-        textAreaControlCopy.setWatermarkText(this.getWatermarkText());
+        textAreaControlCopy.setRows(this.rows);
+        textAreaControlCopy.setCols(this.cols);
+        textAreaControlCopy.setMaxLength(this.maxLength);
+        textAreaControlCopy.setMinLength(this.minLength);
+        textAreaControlCopy.setTextExpand(this.textExpand);
+        textAreaControlCopy.setWatermarkText(this.watermarkText);
     }
 }

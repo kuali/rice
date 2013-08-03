@@ -261,19 +261,30 @@ public abstract class ControlBase extends ContentElementBase implements Control 
         this.enabledWhenChangedPropertyNames = enabledWhenChangedPropertyNames;
     }
 
-    public void setDisabledExpression(String disabledExpression) {
+    /**
+     * Sets the disabled expression
+     *
+     * @param disabledExpression
+     */
+    protected void setDisabledExpression(String disabledExpression) {
         this.disabledExpression = disabledExpression;
     }
 
-    public String getDisabledExpression() {
-        return disabledExpression;
-    }
-
-    public void setDisabledConditionJs(String disabledConditionJs) {
+    /**
+     * Sets the disabled condition javascript
+     *
+     * @param disabledConditionJs
+     */
+    protected void setDisabledConditionJs(String disabledConditionJs) {
         this.disabledConditionJs = disabledConditionJs;
     }
 
-    public void setDisabledConditionControlNames(List<String> disabledConditionControlNames) {
+    /**
+     * Sets the disabled condition control names
+     *
+     * @param disabledConditionControlNames
+     */
+    protected void setDisabledConditionControlNames(List<String> disabledConditionControlNames) {
         this.disabledConditionControlNames = disabledConditionControlNames;
     }
 

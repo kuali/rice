@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif.control;
 
-import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -303,34 +302,15 @@ public abstract class ControlBase extends ContentElementBase implements Control 
         controlBaseCopy.setDisabledConditionJs(this.disabledConditionJs);
 
         if (disabledConditionControlNames != null) {
-            List<String> disabledConditionControlNamesCopy = Lists.newArrayListWithExpectedSize(
-                    disabledConditionControlNames.size());
-
-            for(String disabledConditionControlName : disabledConditionControlNames)   {
-                disabledConditionControlNamesCopy.add(disabledConditionControlName);
-            }
-
-            controlBaseCopy.setDisabledConditionControlNames(disabledConditionControlNamesCopy);
+            controlBaseCopy.setDisabledConditionControlNames(new ArrayList<String>(this.disabledConditionControlNames));
         }
 
         if (disabledWhenChangedPropertyNames != null) {
-            List<String> disabledWhenChangedPropertyNamesCopy = Lists.newArrayListWithExpectedSize(disabledWhenChangedPropertyNames.size());
-
-            for(String disabledWhenChangedPropertyName : disabledWhenChangedPropertyNames)   {
-                disabledWhenChangedPropertyNamesCopy.add(disabledWhenChangedPropertyName);
-            }
-
-            controlBaseCopy.setDisabledWhenChangedPropertyNames(disabledWhenChangedPropertyNamesCopy);
+            controlBaseCopy.setDisabledWhenChangedPropertyNames(new ArrayList<String>(this.disabledWhenChangedPropertyNames));
         }
 
         if (enabledWhenChangedPropertyNames != null) {
-            List<String> enabledWhenChangedPropertyNamesCopy = Lists.newArrayListWithExpectedSize(enabledWhenChangedPropertyNames.size());
-
-            for(String enabledWhenChangedPropertyName : enabledWhenChangedPropertyNames)   {
-                enabledWhenChangedPropertyNamesCopy.add(enabledWhenChangedPropertyName);
-            }
-
-            controlBaseCopy.setEnabledWhenChangedPropertyNames(enabledWhenChangedPropertyNamesCopy);
+            controlBaseCopy.setEnabledWhenChangedPropertyNames(new ArrayList<String>(this.enabledWhenChangedPropertyNames));
         }
     }
 }

@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif.control;
 
-import com.google.common.collect.Lists;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
@@ -181,7 +180,7 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
         }
 
         if(inlineComponents != null) {
-            List<Component> inlineComponentsCopy = Lists.newArrayListWithExpectedSize(inlineComponents.size());
+            List<Component> inlineComponentsCopy = new ArrayList<Component>();
             for(Component inlineComponent : inlineComponents)   {
                 inlineComponentsCopy.add((Component)inlineComponent.copy());
             }

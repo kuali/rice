@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif.control;
 
-import com.google.common.collect.Lists;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -224,7 +223,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
         MultiValueControlBase multiValueControlBaseCopy = (MultiValueControlBase) component;
 
         if(options != null) {
-            List<KeyValue> optionsCopy = Lists.newArrayListWithExpectedSize(options.size());
+            List<KeyValue> optionsCopy = new ArrayList<KeyValue>();
             for(KeyValue option : options)   {
                 KeyValue keyValue = null;
                 keyValue = new ConcreteKeyValue(option.getKey(), option.getValue());
@@ -234,7 +233,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
         }
 
         if(richOptions != null) {
-            List<KeyMessage> richOptionsCopy = Lists.newArrayListWithExpectedSize(richOptions.size());
+            List<KeyMessage> richOptionsCopy = new ArrayList<KeyMessage>();
             for(KeyMessage richOption : richOptions)   {
                 KeyMessage keyMessage = new KeyMessage(richOption.getKey(),richOption.getValue(),richOption.getMessage());
                 richOptionsCopy.add(keyMessage);
@@ -243,7 +242,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
         }
 
         if(inlineComponents != null) {
-            List<Component> inlineComponentsCopy = Lists.newArrayListWithExpectedSize(inlineComponents.size());
+            List<Component> inlineComponentsCopy = new ArrayList<Component>();
             for(Component inlineComponent : inlineComponents)   {
                 inlineComponentsCopy.add((Component)inlineComponent.copy());
             }

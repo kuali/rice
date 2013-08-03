@@ -1276,7 +1276,7 @@ public class CollectionGroup extends Group implements DataBinding {
         collectionGroupCopy.setAddItemCssClass(this.addItemCssClass);
 
         if (addLineItems != null) {
-            List<Component> addLineItemsCopy = Lists.newArrayListWithExpectedSize(getAddLineItems().size());
+            List<Component> addLineItemsCopy = new ArrayList<Component>();
 
             for (Component addLineItem : this.addLineItems) {
                 addLineItemsCopy.add((Component) addLineItem.copy());
@@ -1286,7 +1286,7 @@ public class CollectionGroup extends Group implements DataBinding {
         }
 
         if (addLineActions != null) {
-            List<Action> addLineActionsCopy = Lists.newArrayListWithExpectedSize(getAddLineActions().size());
+            List<Action> addLineActionsCopy = new ArrayList<Action>();
 
             for (Action addLineAction : this.addLineActions) {
                 addLineActionsCopy.add((Action) addLineAction.copy());
@@ -1327,7 +1327,7 @@ public class CollectionGroup extends Group implements DataBinding {
         collectionGroupCopy.setUseServerPaging(this.useServerPaging);
 
         if (lineActions != null) {
-            List<Action> lineActions = Lists.newArrayListWithExpectedSize(getLineActions().size());
+            List<Action> lineActions = new ArrayList<Action>();
             for (Action lineAction : this.lineActions) {
                 lineActions.add((Action) lineAction.copy());
             }
@@ -1348,7 +1348,7 @@ public class CollectionGroup extends Group implements DataBinding {
         collectionGroupCopy.setShowInactiveLines(this.showInactiveLines);
 
         if (subCollections != null) {
-            List<CollectionGroup> subCollectionsCopy = Lists.newArrayListWithExpectedSize(getSubCollections().size());
+            List<CollectionGroup> subCollectionsCopy = new ArrayList<CollectionGroup>();
             for (CollectionGroup subCollection : this.subCollections) {
                 subCollectionsCopy.add((CollectionGroup) subCollection.copy());
             }

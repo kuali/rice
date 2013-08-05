@@ -112,14 +112,11 @@ public class ScriptUtils {
             } else {
                 // treat as data object
                 jsValue = "{";
-
-                PropertyDescriptor[] propertyDescriptors = ObjectPropertyUtils.getPropertyDescriptors(value);
-                for (int i = 0; i < propertyDescriptors.length; i++) {
-                    PropertyDescriptor descriptor = propertyDescriptors[i];
-                    if ((descriptor.getReadMethod() != null) && !"class".equals(descriptor.getName())) {
-                        Object propertyValue = ObjectPropertyUtils.getPropertyValue(value, descriptor.getName());
-
-                        jsValue += descriptor.getName() + ":";
+                Map<String, PropertyDescriptor> propertyDescriptors = ObjectPropertyUtils.getPropertyDescriptors(valueClass);
+                for (String propertyName : propertyDescriptors.keySet()) {
+                    if (ObjectPropertyUtils.canRead(valueClass, propertyName) && !"class".equals(propertyName)) {
+                        Object propertyValue = ObjectPropertyUtils.getPropertyValue(value, propertyName);
+                        jsValue += propertyName + ":";
                         jsValue += translateValue(propertyValue);
                         jsValue += ",";
                     }

@@ -16,7 +16,8 @@
 package org.kuali.rice.krad.uif.util;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -32,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
+import org.kuali.rice.krad.uif.util.ObjectPropertyUtils.PathEntry;
 
 public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
 
@@ -194,30 +196,11 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
 
     @Test
     public void testGetPropertyDescriptor() {
-        TestBean tb = new TestBean();
-        PropertyDescriptor[] pds = ObjectPropertyUtils.getPropertyDescriptors(tb);
-        boolean rwProp = false;
-        boolean roProp = false;
-        boolean woProp = false;
-        boolean foobar = false;
-        for (PropertyDescriptor pd : pds) {
-            if (pd.getName().equals("rwProp")) {
-                rwProp = true;
-            }
-            if (pd.getName().equals("roProp")) {
-                roProp = true;
-            }
-            if (pd.getName().equals("woProp")) {
-                woProp = true;
-            }
-            if (pd.getName().equals("foobar")) {
-                foobar = true;
-            }
-        }
-        assertTrue(rwProp);
-        assertTrue(roProp);
-        assertTrue(woProp);
-        assertFalse(foobar);
+        Map<String, PropertyDescriptor> pds = ObjectPropertyUtils.getPropertyDescriptors(TestBean.class);
+        assertNotNull(pds.get("rwProp"));
+        assertNotNull(pds.get("roProp"));
+        assertNotNull(pds.get("woProp"));
+        assertNull(pds.get("foobar"));
     }
 
     @Test
@@ -323,6 +306,71 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
             assertEquals("bar", tb.getStuffs().get(1));
             assertEquals("baz", tb.getStuffs().get(2));
         }
+    }
+
+    @Test
+    public void testIndexOfClose() {
+        assertEquals(7, ObjectPropertyUtils.indexOfExt("foo(bar)", ')', new char[]{'\"'}, '\\', 3));
+        assertEquals(8, ObjectPropertyUtils.indexOfExt("foo(ba(r))", ')', new char[]{'\"'}, '\\', 6));
+        assertEquals(9, ObjectPropertyUtils.indexOfExt("foo(ba(r))", ')', new char[]{'\"'}, '\\', 3));
+        assertEquals(7, ObjectPropertyUtils.indexOfExt("foo'bar'", '\'', new char[]{'\"'}, '\\', 3));
+        assertEquals(8, ObjectPropertyUtils.indexOfExt("foo'ba'r''", '\'', new char[]{'\"'}, '\\', 6));
+        assertEquals(6, ObjectPropertyUtils.indexOfExt("foo'ba'r''", '\'', new char[]{'\"'}, '\\', 3));
+        assertEquals(-1, ObjectPropertyUtils.indexOfExt("\"foo(bar)\"", '('));
+        assertEquals(5, ObjectPropertyUtils.indexOfExt("foo\\((bar)", '('));
+    }
+
+    public static class DoIt implements PathEntry<String, String> {
+
+        @Override
+        public String parse(String node, String next, boolean inherit) {
+            if (next == null)
+                return "";
+            StringBuilder rv = new StringBuilder();
+            if (node != null && node.length() > 0)
+                rv.append(node);
+            if (inherit)
+                rv.append('<');
+            else if (rv.length() > 0)
+                rv.append('+');
+            rv.append(next);
+            if (inherit)
+                rv.append('>');
+            return rv.toString();
+        }
+
+        @Override
+        public String prepare(String prev) {
+            return prev;
+        }
+
+        @Override
+        public String dereference(String prev) {
+            return prev;
+        }
+
+    }
+
+    @Test
+    public void testParsePathExpression() {
+        assertEquals("foo+bar",
+                ObjectPropertyUtils.parsePathExpression(null, "foo.bar", new DoIt())
+                        .toString());
+        assertEquals("foo<bar>",
+                ObjectPropertyUtils.parsePathExpression(null, "foo[bar]", new DoIt())
+                        .toString());
+        assertEquals("foo<bar>+baz",
+                ObjectPropertyUtils
+                        .parsePathExpression(null, "foo[bar].baz", new DoIt())
+                        .toString());
+        assertEquals(
+                "foo<bar<baz>>",
+                ObjectPropertyUtils.parsePathExpression(null, "foo[bar[baz]]",
+                        new DoIt()).toString());
+        assertEquals(
+                "foo+bar-bar.baz+fez",
+                ObjectPropertyUtils.parsePathExpression(null, "foo(bar-bar.baz)+fez",
+                        new DoIt()).toString());
     }
 
 }

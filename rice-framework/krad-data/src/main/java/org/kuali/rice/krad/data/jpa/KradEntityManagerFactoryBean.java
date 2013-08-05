@@ -507,10 +507,10 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
      * @see {@link DefaultPersistenceUnitManager#setPackagesToScan(String...)}
      */
     public void setPackagesToScan(String... packagesToScan) {
-		if (LOG.isInfoEnabled()) {
-			LOG.info(getPersistenceUnitName() + ": Setting Packages to Scan for JPA Annotations:\n"
-					+ Arrays.deepToString(packagesToScan));
-		}
+        if (LOG.isInfoEnabled()) {
+            LOG.info(getPersistenceUnitName() + ": Setting Packages to Scan for JPA Annotations:\n"
+                + Arrays.deepToString(packagesToScan));
+        }
         persistenceUnitManager.setPackagesToScan(packagesToScan);
 		converterPackageNames = Arrays.asList(packagesToScan);
     }

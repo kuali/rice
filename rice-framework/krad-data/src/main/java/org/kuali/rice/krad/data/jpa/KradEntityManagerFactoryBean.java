@@ -201,6 +201,7 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
 					+ " was configured with both a JTA and Non-JTA "
                 + " datasource. Must configure one or the other, but not both.");
         }
+
         this.internalFactoryBean.setJpaPropertyMap(defaultAndMergeJpaProperties());
         persistenceUnitManager.setPersistenceUnitPostProcessors(assemblePersistenceUnitPostProcessors());
         persistenceUnitManager.afterPropertiesSet();
@@ -212,6 +213,7 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
         loadGlobalJpaDefaults(jpaProperties);
         loadPersistenceUnitJpaDefaults(jpaProperties);
         loadCustomJpaDefaults(jpaProperties);
+
         return jpaProperties;
     }
 
@@ -222,6 +224,7 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
 		if (LOG.isDebugEnabled()) {
 			LOG.debug(getPersistenceUnitName() + ": JPA Properties Set:\n" + jpaProperties);
 		}
+
         return jpaProperties;
     }
 
@@ -257,14 +260,31 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
         return this.persistenceUnitPostProcessors.toArray(new PersistenceUnitPostProcessor[this.persistenceUnitPostProcessors.size()]);
     }
 
+    /**
+     * Returns the list of all managed class names which have been configured on this factory bean. This list is
+     * modifiable, so the returned list may be modified directly if desired.
+     *
+     * @return list of all managed class names, may be an empty list but will never return null
+     */
     public List<String> getManagedClassNames() {
         return managedClassNames;
     }
 
+    /**
+     * Returns an array of the {@link PersistenceUnitPostProcessor} instances which have been configured on this
+     * factory bean.
+     *
+     * @return array of post processors, may be empty but will never return null
+     */
     public PersistenceUnitPostProcessor[] getPersistenceUnitPostProcessors() {
         return persistenceUnitPostProcessors.toArray(new PersistenceUnitPostProcessor[persistenceUnitPostProcessors.size()]);
     }
 
+    /**
+     * Returns a reference to the internal {@link DefaultPersistenceUnitManager} which is used by this factory bean.
+     *
+     * @return the internal persistence unit manager, will never return null
+     */
     protected DefaultPersistenceUnitManager getPersistenceUnitManager() {
         return persistenceUnitManager;
     }
@@ -367,37 +387,125 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
         return internalFactoryBean.translateExceptionIfPossible(ex);
     }
 
+    /**
+     * Specifies a List of class names which should be loaded into the resulting EntityManagerFactory as managed
+     * JPA classes.
+     *
+     * @param managedClassNames the List of managed class names to set on this factory bean
+     */
     public void setManagedClassNames(List<String> managedClassNames) {
-		if (LOG.isInfoEnabled()) {
-			LOG.info(getPersistenceUnitName() + ": Setting Managed Class Names JPA:\n" + managedClassNames);
-		}
+        if (managedClassNames == null) {
+            managedClassNames = new ArrayList<String>();
+        }
+        if (LOG.isInfoEnabled()) {
+            LOG.info(getPersistenceUnitName() + ": Setting Managed Class Names JPA:\n" + managedClassNames);
+        }
         this.managedClassNames = managedClassNames;
     }
 
+    /**
+     * Specify the (potentially vendor-specific) EntityManager interface
+     * that this factory's EntityManagers are supposed to implement.
+     *
+     * <p>The default will be taken from the specific JpaVendorAdapter, if any,
+     * or set to the standard {@code javax.persistence.EntityManager}
+     * interface else.</p>
+     *
+     * @param emInterface the {@link EntityManager} interface to use
+     *
+     * @see JpaVendorAdapter#getEntityManagerInterface()
+     * @see EntityManagerFactoryInfo#getEntityManagerInterface()
+     */
     public void setEntityManagerInterface(Class<? extends EntityManager> emInterface) {
         internalFactoryBean.setEntityManagerInterface(emInterface);
     }
 
+    /**
+     * Specify the (potentially vendor-specific) EntityManagerFactory interface that this EntityManagerFactory proxy is
+     * supposed to implement.
+     *
+     * <p>The default will be taken from the specific JpaVendorAdapter, if any, or set to the standard
+     * {@code javax.persistence.EntityManagerFactory} interface else.</p>
+     *
+     * @param emfInterface the {@link EntityManagerFactory} interface to use
+     *
+     * @see JpaVendorAdapter#getEntityManagerFactoryInterface()
+     */
     public void setEntityManagerFactoryInterface(Class<? extends EntityManagerFactory> emfInterface) {
         internalFactoryBean.setEntityManagerFactoryInterface(emfInterface);
     }
 
+    /**
+     * Allow Map access to the JPA properties to be passed to the persistence
+     * provider, with the option to add or override specific entries.
+     *
+     * <p>Useful for specifying entries directly, for example via
+     * "jpaPropertyMap[myKey]".</p>
+     *
+     * @return the map of JPA properties
+     */
     public Map<String, Object> getJpaPropertyMap() {
         return internalFactoryBean.getJpaPropertyMap();
     }
 
+    /**
+     * Specify JPA properties as a Map, to be passed into {@code Persistence.createEntityManagerFactory} (if any).
+     *
+     * <p>Can be populated with a "map" or "props" element in XML bean definitions.</p>
+     *
+     * @param jpaProperties map of JPA properties to set
+     *
+     * @see javax.persistence.Persistence#createEntityManagerFactory(String, java.util.Map)
+     * @see javax.persistence.spi.PersistenceProvider#createContainerEntityManagerFactory(javax.persistence.spi.PersistenceUnitInfo, java.util.Map)
+     */
     public void setJpaPropertyMap(Map<String, ?> jpaProperties) {
         internalFactoryBean.setJpaPropertyMap(jpaProperties);
     }
 
+    /**
+     * Specify JPA properties, to be passed into {@code Persistence.createEntityManagerFactory} (if any).
+     *
+     * <p>Can be populated with a String "value" (parsed via PropertiesEditor) or a "props" element in XML bean
+     * definitions.</p>
+     *
+     * @param jpaProperties the properties to set
+     *
+     * @see javax.persistence.Persistence#createEntityManagerFactory(String, java.util.Map)
+     * @see javax.persistence.spi.PersistenceProvider#createContainerEntityManagerFactory(javax.persistence.spi.PersistenceUnitInfo, java.util.Map)
+     */
     public void setJpaProperties(Properties jpaProperties) {
         internalFactoryBean.setJpaProperties(jpaProperties);
     }
 
+    /**
+     * Specify the name of the EntityManagerFactory configuration.
+     *
+     * <p>Default is none, indicating the default EntityManagerFactory configuration. The persistence provider will
+     * throw an exception if ambiguous EntityManager configurations are found.</p>
+     *
+     * @param persistenceUnitName the name of the persistence unit
+     *
+     * @see javax.persistence.Persistence#createEntityManagerFactory(String)
+     */
     public void setPersistenceUnitName(String persistenceUnitName) {
         internalFactoryBean.setPersistenceUnitName(persistenceUnitName);
         persistenceUnitManager.setDefaultPersistenceUnitName(persistenceUnitName);
     }
+
+    /**
+     * Set whether to use Spring-based scanning for entity classes in the classpath instead of using JPA's standard
+     * scanning of jar files with {@code persistence.xml} markers in them. In case of Spring-based scanning, no
+     * {@code persistence.xml} is necessary; all you need to do is to specify base packages to search here.
+     *
+     * <p>Default is none. Specify packages to search for autodetection of your entity classes in the classpath. This is
+     * analogous to Spring's component-scan feature
+     * ({@link org.springframework.context.annotation.ClassPathBeanDefinitionScanner}).</p>
+     *
+     * @param packagesToScan one or more base packages to search, analogous to Spring's component-scan configuration for
+     *        regular Spring components
+     *
+     * @see {@link DefaultPersistenceUnitManager#setPackagesToScan(String...)}
+     */
     public void setPackagesToScan(String... packagesToScan) {
 		if (LOG.isInfoEnabled()) {
 			LOG.info(getPersistenceUnitName() + ": Setting Packages to Scan for JPA Annotations:\n"
@@ -407,30 +515,108 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
 		converterPackageNames = Arrays.asList(packagesToScan);
     }
 
+    /**
+     * Specify one or more mapping resources (equivalent to {@code &lt;mapping-file&gt;} entries in
+     * {@code persistence.xml}) for the default persistence unit. Can be used on its own or in combination with entity\
+     * scanning in the classpath, in both cases avoiding {@code persistence.xml}.
+     *
+     * <p>Note that mapping resources must be relative to the classpath root, e.g. "META-INF/mappings.xml" or
+     * "com/mycompany/repository/mappings.xml", so that they can be loaded through {@code ClassLoader.getResource}.</p>
+     *
+     * @param mappingResources one or more mapping resources to use
+     *
+     * @see {@link DefaultPersistenceUnitManager#setMappingResources(String...)}
+     */
     public void setMappingResources(String... mappingResources) {
         persistenceUnitManager.setMappingResources(mappingResources);
     }
 
+    /**
+     * Specify the JDBC DataSource that the JPA persistence provider is supposed to use for accessing the database. This
+     * is an alternative to keeping the JDBC configuration in {@code persistence.xml}, passing in a Spring-managed
+     * DataSource instead.
+     *
+     * <p>In JPA speak, a DataSource passed in here will be used as "nonJtaDataSource" on the PersistenceUnitInfo passed
+     * to the PersistenceProvider, as well as overriding data source configuration in {@code persistence.xml} (if any).
+     * Note that this variant typically works for JTA transaction management as well; if it does not, consider using the
+     * explicit {@link #setJtaDataSource} instead.</p>
+     *
+     * @param dataSource the DataSource to use for this EntityManagerFactory
+     *
+     * @see javax.persistence.spi.PersistenceUnitInfo#getNonJtaDataSource()
+     * @see {@link DefaultPersistenceUnitManager#setDefaultDataSource(javax.sql.DataSource)}
+     */
     public void setDataSource(DataSource dataSource) {
         persistenceUnitManager.setDefaultDataSource(dataSource);
     }
 
+    /**
+     * Specify the JDBC DataSource that the JPA persistence provider is supposed to use for accessing the database. This
+     * is an alternative to keeping the JDBC configuration in {@code persistence.xml}, passing in a Spring-managed
+     * DataSource instead.
+     *
+     * <p>In JPA speak, a DataSource passed in here will be used as "jtaDataSource" on the PersistenceUnitInfo passed to
+     * the PersistenceProvider, as well as overriding data source configuration in {@code persistence.xml} (if any).</p>
+     *
+     * @param jtaDataSource the JTA-enabled DataSource to use for this EntityManagerFactory
+     *
+     * @see javax.persistence.spi.PersistenceUnitInfo#getJtaDataSource()
+     * @see {@link DefaultPersistenceUnitManager#setDefaultJtaDataSource(javax.sql.DataSource)}
+     */
     public void setJtaDataSource(DataSource jtaDataSource) {
         persistenceUnitManager.setDefaultJtaDataSource(jtaDataSource);
     }
 
+    /**
+     * Set the PersistenceProvider instance to use for creating the EntityManagerFactory. If not specified, the
+     * persistence provider will be taken from the JpaVendorAdapter (if any) or determined by the persistence unit
+     * deployment descriptor (as far as possible).
+     *
+     * @param persistenceProvider the PersistenceProvider to set
+     *
+     * @see JpaVendorAdapter#getPersistenceProvider()
+     * @see javax.persistence.spi.PersistenceProvider
+     * @see javax.persistence.Persistence
+     */
     public void setPersistenceProvider(PersistenceProvider persistenceProvider) {
         this.internalFactoryBean.setPersistenceProvider(persistenceProvider);
     }
 
+    /**
+     * Specify the vendor-specific JpaDialect implementation to associate with this EntityManagerFactory. This will be
+     * exposed through the EntityManagerFactoryInfo interface, to be picked up as default dialect by accessors that
+     * intend to use JpaDialect functionality.
+     *
+     * @param jpaDialect the JPA dialect to set
+     *
+     * @see EntityManagerFactoryInfo#getJpaDialect()
+     */
     public void setJpaDialect(JpaDialect jpaDialect) {
         this.internalFactoryBean.setJpaDialect(jpaDialect);
     }
 
+    /**
+     * Specify the JpaVendorAdapter implementation for the desired JPA provider, if any. This will initialize
+     * appropriate defaults for the given provider, such as persistence provider class and JpaDialect, unless locally
+     * overridden in this FactoryBean.
+     *
+     * @param jpaVendorAdapter the JpaVendorAdapter to set
+     */
     public void setJpaVendorAdapter(JpaVendorAdapter jpaVendorAdapter) {
         this.internalFactoryBean.setJpaVendorAdapter(jpaVendorAdapter);
     }
 
+    /**
+     * Set the PersistenceUnitPostProcessors to be applied to the * PersistenceUnitInfo used for creating this
+     * EntityManagerFactory. Note that if executed before {@link #afterPropertiesSet()} then this factory bean may
+     * introduce it's own post processor instances. If invoked after, then this method will override internally
+     * configured post processors.
+     *
+     * <p>Such post-processors can, for example, register further entity classes and jar files, in addition to the
+     * metadata read from {@code persistence.xml}.</p>
+     *
+     * @param postProcessors one or more post processors to set
+     */
     public void setPersistenceUnitPostProcessors(PersistenceUnitPostProcessor... postProcessors) {
         // persistence unit post processors will get applied to the internal factory bean during afterPropertiesSet(),
         // this allows us to add our own internal post processor to the list)
@@ -447,11 +633,8 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
         public void postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo pui) {
             pui.setExcludeUnlistedClasses(DEFAULT_EXCLUDE_UNLISTED_CLASSES);
 			processConverterPackages(pui);
-            List<String> managedClassNames = getManagedClassNames();
-            if (managedClassNames != null) {
-                for (String managedClassName : managedClassNames) {
-                    pui.addManagedClassName(managedClassName);
-                }
+            for (String managedClassName : getManagedClassNames()) {
+                pui.addManagedClassName(managedClassName);
             }
         }
 

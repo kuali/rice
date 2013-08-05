@@ -44,7 +44,6 @@
             <list>
               <ref bean="UifLayoutView-BoxSection1"/>
               <ref bean="UifLayoutView-BoxSection2"/>
-              <ref bean="UifLayoutView-BoxLayoutFluidContainers"/>
             </list>
           </property>
         </bean>
@@ -85,7 +84,7 @@
             <list>
               <ref bean="tableLayoutMultiRow-1"/>
               <ref bean="tableLayoutMultiRow-2"/>
-              <ref bean="tableLayoutMultiRow-3"/>
+              <!--              <ref bean="tableLayoutMultiRow-3"/>-->
             </list>
           </property>
         </bean>
@@ -203,52 +202,6 @@
         <bean parent="TestInputField" p:propertyName="field18"/>
         <bean parent="TestInputField" p:propertyName="field19"/>
         <bean parent="TestInputField" p:propertyName="field20"/>
-      </list>
-    </property>
-  </bean>
-
-  <!--
-  ********************************************************************************************************************
-                                           UIF Layout View Box Layout Fluid Container Sizes
-  ********************************************************************************************************************
-  -->
-  <bean id="UifLayoutView-BoxLayoutFluidContainers" parent="Uif-Disclosure-VerticalBoxSection">
-    <property name="headerText" value="Box Layout Fluid Containers"/>
-    <property name="instructionalText" value="Applying Fluid styles to size the container"/>
-    <property name="items">
-      <list>
-        <bean parent="Uif-HorizontalBoxSection" p:headerText="FSS Layout 100%"
-              p:layoutManager.cssClasses="fl-container-flex" p:layoutManager.style="border:1px dashed;">
-          <property name="items">
-            <list>
-              <bean parent="TestInputField" p:propertyName="field21"/>
-              <bean parent="TestInputField" p:propertyName="field22"/>
-              <bean parent="TestInputField" p:propertyName="field23"/>
-            </list>
-          </property>
-        </bean>
-
-        <bean parent="Uif-HorizontalBoxSection" p:headerText="FSS Layout 75%"
-              p:layoutManager.cssClasses="fl-container-flex75" p:layoutManager.style="border:1px dashed;">
-          <property name="items">
-            <list>
-              <bean parent="TestInputField" p:propertyName="field24"/>
-              <bean parent="TestInputField" p:propertyName="field25"/>
-              <bean parent="TestInputField" p:propertyName="field26"/>
-            </list>
-          </property>
-        </bean>
-
-        <bean parent="Uif-HorizontalBoxSection" p:headerText="FSS Layout 600px"
-              p:layoutManager.cssClasses="fl-container-600" p:layoutManager.style="border:1px dashed;">
-          <property name="items">
-            <list>
-              <bean parent="TestInputField" p:propertyName="field27"/>
-              <bean parent="TestInputField" p:propertyName="field28"/>
-              <bean parent="TestInputField" p:propertyName="field29"/>
-            </list>
-          </property>
-        </bean>
       </list>
     </property>
   </bean>
@@ -726,7 +679,7 @@
     </property>
   </bean>
 
-  <bean id="tableLayoutMultiRow-1" parent="Uif-Page">
+  <bean id="tableLayoutMultiRow-1" parent="Uif-VerticalBoxGroup">
     <property name="items">
       <list>
         <bean id="collection1-generated" parent="Uif-Disclosure-TableCollectionSection"
@@ -737,7 +690,7 @@
           <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>
           <property name="propertyName" value="list1generated"/>
           <property name="layoutManager.sequencePropertyName" value="field1"/>
-          <property name="layoutManager.generateAutoSequence" value ="false"/>
+          <property name="layoutManager.generateAutoSequence" value="false"/>
           <property name="layoutManager.sequenceFieldPrototype">
             <bean parent="Uif-InputField" p:propertyName="field1" p:readOnly="true"/>
           </property>
@@ -768,7 +721,7 @@
       </list>
     </property>
   </bean>
-  <bean id="tableLayoutMultiRow-2" parent="Uif-Page">
+  <bean id="tableLayoutMultiRow-2" parent="Uif-VerticalBoxGroup">
     <property name="items">
       <list>
         <bean id="collection2-generated" parent="Uif-Disclosure-TableCollectionSection"
@@ -779,7 +732,7 @@
           <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>
           <property name="propertyName" value="list1generated"/>
           <property name="layoutManager.sequencePropertyName" value="field1"/>
-          <property name="layoutManager.generateAutoSequence" value ="false"/>
+          <property name="layoutManager.generateAutoSequence" value="false"/>
           <property name="layoutManager.sequenceFieldPrototype">
             <bean parent="Uif-InputField" p:propertyName="field1" p:readOnly="true"/>
           </property>
@@ -810,47 +763,50 @@
       </list>
     </property>
   </bean>
-  <bean id="tableLayoutMultiRow-3" parent="Uif-Page">
-    <property name="items">
-      <list>
-        <bean id="collection3-generated" parent="Uif-Disclosure-TableCollectionSection"
-              p:layoutManager.numberOfColumns="3" p:layoutManager.suppressLineWrapping="false">
-          <property name="headerText" value="Collection Group - 10 items"/>
-          <property name="instructionalText"
-                    value="This is a table based layout of a collection.Number of columns is 3 and collection line size is 4 - CollectionGroupTableLayout"/>
-          <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>
-          <property name="propertyName" value="list1generated"/>
-          <property name="layoutManager.sequencePropertyName" value="field1"/>
-          <property name="layoutManager.generateAutoSequence" value ="false"/>
-          <property name="layoutManager.sequenceFieldPrototype">
-            <bean parent="Uif-InputField" p:propertyName="field1" p:readOnly="true"/>
-          </property>
-          <property name="layoutManager.richTable.render" value="false"/>
-          <property name="items">
-            <list>
-              <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1" p:required="true" p:colSpan="2"
-                    p:instructionalText="Field1 has a colspan of 2"/>
-              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2" p:required="true"
-                    p:constraintText="Requires Field 1 be filled out">
-                <property name="dependencyConstraints">
-                  <list>
-                    <bean parent="PrerequisiteConstraint" p:propertyName="field1"/>
-                  </list>
-                </property>
-              </bean>
-              <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3" p:required="true" p:rowSpan="2"/>
-              <bean parent="Uif-InputField" p:propertyName="bfield" p:label="SubField 4"
-                    p:required="true">
-                <property name="control">
-                  <bean parent="Uif-CheckboxControl">
-                    <property name="onChangeScript" value="alert('checkbox clicked')"/>
-                  </bean>
-                </property>
-              </bean>
-            </list>
-          </property>
-        </bean>
-      </list>
-    </property>
-  </bean>
+
+  <!-- TODO this example no longer works -->
+
+  <!--  <bean id="tableLayoutMultiRow-3" parent="Uif-VerticalBoxGroup">
+      <property name="items">
+        <list>
+          <bean id="collection3-generated" parent="Uif-Disclosure-TableCollectionSection"
+                p:layoutManager.numberOfColumns="3" p:layoutManager.suppressLineWrapping="false">
+            <property name="headerText" value="Collection Group - 10 items"/>
+            <property name="instructionalText"
+                      value="This is a table based layout of a collection.Number of columns is 3 and collection line size is 4 - CollectionGroupTableLayout"/>
+            <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>
+            <property name="propertyName" value="list1generated"/>
+            <property name="layoutManager.sequencePropertyName" value="field1"/>
+            <property name="layoutManager.generateAutoSequence" value ="false"/>
+            <property name="layoutManager.sequenceFieldPrototype">
+              <bean parent="Uif-InputField" p:propertyName="field1" p:readOnly="true"/>
+            </property>
+            <property name="layoutManager.richTable.render" value="false"/>
+            <property name="items">
+              <list>
+                <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1" p:required="true" p:colSpan="2"
+                      p:instructionalText="Field1 has a colspan of 2"/>
+                <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2" p:required="true"
+                      p:constraintText="Requires Field 1 be filled out">
+                  <property name="dependencyConstraints">
+                    <list>
+                      <bean parent="PrerequisiteConstraint" p:propertyName="field1"/>
+                    </list>
+                  </property>
+                </bean>
+                <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3" p:required="true" p:rowSpan="2"/>
+                <bean parent="Uif-InputField" p:propertyName="bfield" p:label="SubField 4"
+                      p:required="true">
+                  <property name="control">
+                    <bean parent="Uif-CheckboxControl">
+                      <property name="onChangeScript" value="alert('checkbox clicked')"/>
+                    </bean>
+                  </property>
+                </bean>
+              </list>
+            </property>
+          </bean>
+        </list>
+      </property>
+    </bean>-->
 </beans>

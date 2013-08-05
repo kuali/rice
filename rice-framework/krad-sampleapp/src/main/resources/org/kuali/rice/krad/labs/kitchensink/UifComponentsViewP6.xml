@@ -29,7 +29,7 @@
           <bean parent="GenericTextField" p:readOnly="true" p:propertyName="field59" p:defaultValue="a2">
             <property name="inquiry">
               <bean parent="Uif-Inquiry" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
-                    p:inquiryParameters="field49:number"/>
+                    p:inquiryParameters="field59:number"/>
             </property>
           </bean>
           <bean parent="GenericTextField" p:propertyName="field70">

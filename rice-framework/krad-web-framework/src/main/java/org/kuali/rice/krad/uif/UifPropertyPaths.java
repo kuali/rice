@@ -32,7 +32,9 @@ public class UifPropertyPaths {
     public static final String EXPRESSION_GRAPH = "expressionGraph";
     public static final String ID = "id";
     public static final String FACTORY_ID = "factoryId";
+    public static final String GROUPING_TITLE = "groupingTitle";
     public static final String HEADER_TEXT = "headerText";
+    public static final String MESSAGE_TEXT = "messageText";
     public static final String NEW_COLLECTION_LINES = "newCollectionLines";
     public static final String OBJECT_ID = "objectId";
     public static final String PROPERTY_EXPRESSIONS = "propertyExpressions";

@@ -25,7 +25,7 @@
             <ul id="${group.id}_tabList">
                 <#list group.items as item>
                     <li data-tabfor="${item.id}">
-                        <a href="#${item.id}_tab">${item.header.headerText}</a>
+                        <a href="#${item.id}_tab">${(item.header.headerText)}</a>
                     </li>
                 </#list>
             </ul>

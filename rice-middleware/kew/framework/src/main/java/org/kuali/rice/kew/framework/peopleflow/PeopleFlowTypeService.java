@@ -78,6 +78,27 @@ public interface PeopleFlowTypeService {
     );
 
     /**
+     * <p>Resolve any role qualifiers for the given roleId, and document (along with documentContent). Allows for
+     * more than one set of qualifiers to be returned for the purpose of matching.</p>
+     *
+     * @param kewTypeId the people flow type identifier.  Must not be null or blank.
+     * @param roleId the role that the qualifiers are specific to.  Must not be null or blank.
+     * @param document the document that the qualifiers are being resolved against.  Must not be null.
+     * @param documentContent the contents for the document that the qualifiers are being resolved against.
+     * Must not be null.
+     * @return a list of the resolved role qualifiers.  Will not return null.
+     */
+    @WebMethod(operationName="resolveMultipleRoleQualifiers")
+    @WebResult(name = "roleQualifierList")
+    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+    List<Map<String, String>> resolveMultipleRoleQualifiers(
+            @WebParam(name = "kewTypeId") String kewTypeId,
+            @WebParam(name = "roleId") String roleId,
+            @WebParam(name = "document") Document document,
+            @WebParam(name = "documentContent") DocumentContent documentContent
+    );
+
+    /**
      * <p>get the attributes supported by the people flow type with the given kewTypeId.</p>
      *
      * @param kewTypeId the people flow type identifier.  Must not be null or blank.

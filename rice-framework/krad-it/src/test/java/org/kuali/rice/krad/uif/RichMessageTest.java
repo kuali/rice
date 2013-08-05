@@ -94,7 +94,7 @@ public class RichMessageTest extends KRADTestCase {
         generateAndSetMessage("[div][b]Message Content[/b][/div][p]Message [i]Message[/i] Message[/p]");
         components = message.getMessageComponentStructure();
         Assert.assertEquals(1, components.size());
-        Assert.assertEquals("<div><b>Message Content</b></div><p>Message <i>Message</i> Message</p>",
+        Assert.assertEquals("<div><b>Message Content</b></div><p>Message&nbsp;<i>Message</i>&nbsp;Message</p>",
                 ((Message) components.get(0)).getMessageText());
 
         //multiple tags with properties
@@ -103,7 +103,7 @@ public class RichMessageTest extends KRADTestCase {
         components = message.getMessageComponentStructure();
         Assert.assertEquals(1, components.size());
         Assert.assertEquals(
-                "<div class='cssClass'><b>Message Content</b></div><p>Message <a href='http://www.kuali.org'>Message</a> Message</p>",
+                "<div class='cssClass'><b>Message Content</b></div><p>Message&nbsp;<a href='http://www.kuali.org'>Message</a>&nbsp;Message</p>",
                 ((Message) components.get(0)).getMessageText());
     }
 
@@ -152,7 +152,7 @@ public class RichMessageTest extends KRADTestCase {
         Assert.assertEquals(1, components.size());
         Assert.assertTrue(components.get(0) instanceof Message);
         String messageText = ((Message) components.get(0)).getMessageText();
-        Assert.assertEquals("Link here <a href='http://www.kuali.org' target='_blank'>Link</a> text", messageText);
+        Assert.assertEquals("Link here&nbsp;<a href='http://www.kuali.org' target='_blank'>Link</a>&nbsp;text", messageText);
     }
 
     /**
@@ -171,7 +171,7 @@ public class RichMessageTest extends KRADTestCase {
         Assert.assertTrue(components.get(0) instanceof Message);
         String messageText = ((Message) components.get(0)).getMessageText();
         Assert.assertEquals(
-                "Action here <a href=\"javascript:void(null)\" onclick=\"submitForm('methodToCall',null,true,true,null); return false;\">action</a> text",
+                "Action here&nbsp;<a href=\"javascript:void(null)\" onclick=\"submitForm('methodToCall',null,true,true,null); return false;\">action</a>&nbsp;text",
                 messageText);
 
         //Other options
@@ -182,7 +182,7 @@ public class RichMessageTest extends KRADTestCase {
         Assert.assertTrue(components.get(0) instanceof Message);
         messageText = ((Message) components.get(0)).getMessageText();
         Assert.assertEquals(
-                "Action here <a href=\"javascript:void(null)\" onclick=\"submitForm('methodToCall',null,false,true,null); return false;\">action</a> text",
+                "Action here&nbsp;<a href=\"javascript:void(null)\" onclick=\"submitForm('methodToCall',null,false,true,null); return false;\">action</a>&nbsp;text",
                 messageText);
 
         generateAndSetMessage("Action here [action=methodToCall,false,true]action[/action] text");
@@ -192,7 +192,7 @@ public class RichMessageTest extends KRADTestCase {
         Assert.assertTrue(components.get(0) instanceof Message);
         messageText = ((Message) components.get(0)).getMessageText();
         Assert.assertEquals(
-                "Action here <a href=\"javascript:void(null)\" onclick=\"submitForm('methodToCall',null,false,true,null); return false;\">action</a> text",
+                "Action here&nbsp;<a href=\"javascript:void(null)\" onclick=\"submitForm('methodToCall',null,false,true,null); return false;\">action</a>&nbsp;text",
                 messageText);
 
         //ajax submit off
@@ -203,7 +203,7 @@ public class RichMessageTest extends KRADTestCase {
         Assert.assertTrue(components.get(0) instanceof Message);
         messageText = ((Message) components.get(0)).getMessageText();
         Assert.assertEquals(
-                "Action here <a href=\"javascript:void(null)\" onclick=\"submitForm('methodToCall',null,true,false,null); return false;\">action</a> text",
+                "Action here&nbsp;<a href=\"javascript:void(null)\" onclick=\"submitForm('methodToCall',null,true,false,null); return false;\">action</a>&nbsp;text",
                 messageText);
 
         //ajax callback defined
@@ -215,7 +215,7 @@ public class RichMessageTest extends KRADTestCase {
         Assert.assertTrue(components.get(0) instanceof Message);
         messageText = ((Message) components.get(0)).getMessageText();
         Assert.assertEquals(
-                "Action here <a href=\"javascript:void(null)\" onclick=\"submitForm('methodToCall',null,false,true,function(){console.log('success');}); return false;\">action</a> text",
+                "Action here&nbsp;<a href=\"javascript:void(null)\" onclick=\"submitForm('methodToCall',null,false,true,function(){console.log('success');}); return false;\">action</a>&nbsp;text",
                 messageText);
 
         //data ajax
@@ -227,7 +227,7 @@ public class RichMessageTest extends KRADTestCase {
         Assert.assertTrue(components.get(0) instanceof Message);
         messageText = ((Message) components.get(0)).getMessageText();
         Assert.assertEquals(
-                "Action here <a href=\"javascript:void(null)\" onclick=\"submitForm('methodToCall',{something: 'value', something2: 'value2'},true,true,null); return false;\">action</a> text",
+                "Action here&nbsp;<a href=\"javascript:void(null)\" onclick=\"submitForm('methodToCall',{something: 'value', something2: 'value2'},true,true,null); return false;\">action</a>&nbsp;text",
                 messageText);
 
         //data non-ajax
@@ -239,7 +239,7 @@ public class RichMessageTest extends KRADTestCase {
         Assert.assertTrue(components.get(0) instanceof Message);
         messageText = ((Message) components.get(0)).getMessageText();
         Assert.assertEquals(
-                "Action here <a href=\"javascript:void(null)\" onclick=\"submitForm('methodToCall',{something: 'value', something2: 'value2'},true,false,null); return false;\">action</a> text",
+                "Action here&nbsp;<a href=\"javascript:void(null)\" onclick=\"submitForm('methodToCall',{something: 'value', something2: 'value2'},true,false,null); return false;\">action</a>&nbsp;text",
                 messageText);
     }
 
@@ -257,7 +257,7 @@ public class RichMessageTest extends KRADTestCase {
         Assert.assertEquals(1, components.size());
         Assert.assertTrue(components.get(0) instanceof Message);
         String messageText = ((Message) components.get(0)).getMessageText();
-        Assert.assertEquals("color here <span style='color: blue;'>Color</span> text", messageText);
+        Assert.assertEquals("color here&nbsp;<span style='color: blue;'>Color</span>&nbsp;text", messageText);
 
         generateAndSetMessage("color here [color=#FFFFFF]Color[/color] text");
         components = message.getMessageComponentStructure();
@@ -265,7 +265,7 @@ public class RichMessageTest extends KRADTestCase {
         Assert.assertEquals(1, components.size());
         Assert.assertTrue(components.get(0) instanceof Message);
         messageText = ((Message) components.get(0)).getMessageText();
-        Assert.assertEquals("color here <span style='color: #FFFFFF;'>Color</span> text", messageText);
+        Assert.assertEquals("color here&nbsp;<span style='color: #FFFFFF;'>Color</span>&nbsp;text", messageText);
     }
 
     /**
@@ -282,7 +282,7 @@ public class RichMessageTest extends KRADTestCase {
         Assert.assertEquals(1, components.size());
         Assert.assertTrue(components.get(0) instanceof Message);
         String messageText = ((Message) components.get(0)).getMessageText();
-        Assert.assertEquals("css here <span class='c1'>sample</span> text", messageText);
+        Assert.assertEquals("css here&nbsp;<span class='c1'>sample</span>&nbsp;text", messageText);
 
         generateAndSetMessage("css here \\[[css='c1 c2']sample[/css]\\] text");
         components = message.getMessageComponentStructure();
@@ -312,11 +312,11 @@ public class RichMessageTest extends KRADTestCase {
         Assert.assertNotNull(components);
         Assert.assertEquals(3, components.size());
         Assert.assertTrue(components.get(0) instanceof Message);
-        Assert.assertEquals("Message text ", ((Message) components.get(0)).getMessageText());
+        Assert.assertEquals("Message text&nbsp;", ((Message) components.get(0)).getMessageText());
         Assert.assertTrue(components.get(1) instanceof InputField);
         Assert.assertEquals("field1", ((InputField) components.get(1)).getPropertyName());
         Assert.assertTrue(components.get(2) instanceof Message);
-        Assert.assertEquals(" Message text", ((Message) components.get(2)).getMessageText());
+        Assert.assertEquals("&nbsp;Message text", ((Message) components.get(2)).getMessageText());
 
         //Two inline components with html content
         inputField1 = ComponentFactory.getInputField();
@@ -331,16 +331,16 @@ public class RichMessageTest extends KRADTestCase {
         Assert.assertNotNull(components);
         Assert.assertEquals(5, components.size());
         Assert.assertTrue(components.get(0) instanceof Message);
-        Assert.assertEquals("<p class='cssClass'>Message text ", ((Message) components.get(0)).getMessageText());
+        Assert.assertEquals("<p class='cssClass'>Message text&nbsp;", ((Message) components.get(0)).getMessageText());
         Assert.assertTrue(components.get(1) instanceof InputField);
         Assert.assertEquals("field1", ((InputField) components.get(1)).getPropertyName());
         Assert.assertTrue(components.get(2) instanceof Message);
-        Assert.assertEquals(" Message <b>text ", ((Message) components.get(2)).getMessageText());
+        Assert.assertEquals("&nbsp;Message&nbsp;<b>text&nbsp;", ((Message) components.get(2)).getMessageText());
         Assert.assertFalse(((Message) components.get(2)).isGenerateSpan());
         Assert.assertTrue(components.get(3) instanceof InputField);
         Assert.assertEquals("field2", ((InputField) components.get(3)).getPropertyName());
         Assert.assertTrue(components.get(4) instanceof Message);
-        Assert.assertEquals(" other</b> text</p>", ((Message) components.get(4)).getMessageText());
+        Assert.assertEquals("&nbsp;other</b>&nbsp;text</p>", ((Message) components.get(4)).getMessageText());
 
         //inline components with changed properties
         inputField1 = ComponentFactory.getInputField();
@@ -357,17 +357,17 @@ public class RichMessageTest extends KRADTestCase {
         Assert.assertNotNull(components);
         Assert.assertEquals(5, components.size());
         Assert.assertTrue(components.get(0) instanceof Message);
-        Assert.assertEquals("<p class='cssClass'>Message text ", ((Message) components.get(0)).getMessageText());
+        Assert.assertEquals("<p class='cssClass'>Message text&nbsp;", ((Message) components.get(0)).getMessageText());
         Assert.assertTrue(components.get(1) instanceof InputField);
         Assert.assertEquals("field20", ((InputField) components.get(1)).getPropertyName());
         Assert.assertTrue(components.get(2) instanceof Message);
-        Assert.assertEquals(" Message <b>text ", ((Message) components.get(2)).getMessageText());
+        Assert.assertEquals("&nbsp;Message&nbsp;<b>text&nbsp;", ((Message) components.get(2)).getMessageText());
         Assert.assertTrue(components.get(3) instanceof InputField);
         Assert.assertEquals("field2", ((InputField) components.get(3)).getPropertyName());
         Assert.assertTrue(((InputField) components.get(3)).getRequired());
         Assert.assertTrue(((InputField) components.get(3)).getCssClasses().contains("c1 c2"));
         Assert.assertTrue(components.get(4) instanceof Message);
-        Assert.assertEquals(" other</b> text</p>", ((Message) components.get(4)).getMessageText());
+        Assert.assertEquals("&nbsp;other</b>&nbsp;text</p>", ((Message) components.get(4)).getMessageText());
     }
 
     /**
@@ -387,11 +387,11 @@ public class RichMessageTest extends KRADTestCase {
         Assert.assertNotNull(components);
         Assert.assertEquals(4, components.size());
         Assert.assertTrue(components.get(0) instanceof Message);
-        Assert.assertEquals("Message text ", ((Message) components.get(0)).getMessageText());
+        Assert.assertEquals("Message text&nbsp;", ((Message) components.get(0)).getMessageText());
         Assert.assertTrue(components.get(1) instanceof InputField);
         Assert.assertEquals("field1", ((InputField) components.get(1)).getPropertyName());
         Assert.assertTrue(components.get(2) instanceof Message);
-        Assert.assertEquals(" Message text ", ((Message) components.get(2)).getMessageText());
+        Assert.assertEquals("&nbsp;Message text&nbsp;", ((Message) components.get(2)).getMessageText());
         Assert.assertTrue(components.get(3) instanceof Link);
 
         //One inline component and id components
@@ -406,11 +406,11 @@ public class RichMessageTest extends KRADTestCase {
         Assert.assertNotNull(components);
         Assert.assertEquals(5, components.size());
         Assert.assertTrue(components.get(0) instanceof Message);
-        Assert.assertEquals("Message text ", ((Message) components.get(0)).getMessageText());
+        Assert.assertEquals("Message text&nbsp;", ((Message) components.get(0)).getMessageText());
         Assert.assertTrue(components.get(1) instanceof InputField);
         Assert.assertEquals("field1", ((InputField) components.get(1)).getPropertyName());
         Assert.assertTrue(components.get(2) instanceof Message);
-        Assert.assertEquals(" Message text ", ((Message) components.get(2)).getMessageText());
+        Assert.assertEquals("&nbsp;Message text&nbsp;", ((Message) components.get(2)).getMessageText());
         Assert.assertTrue(components.get(3) instanceof InputField);
         Assert.assertEquals("field2", ((InputField) components.get(3)).getPropertyName());
         Assert.assertTrue(components.get(4) instanceof InputField);
@@ -438,19 +438,19 @@ public class RichMessageTest extends KRADTestCase {
         Assert.assertEquals(5, components.size());
         Assert.assertTrue(components.get(0) instanceof Message);
         Assert.assertEquals(
-                "<p><span class='class'>Message <a href='http://www.kuali.org' target='_blank'>link</a></span> ",
+                "<p><span class='class'>Message&nbsp;<a href='http://www.kuali.org' target='_blank'>link</a></span>&nbsp;",
                 ((Message) components.get(0)).getMessageText());
         Assert.assertTrue(components.get(1) instanceof InputField);
         Assert.assertEquals("field1", ((InputField) components.get(1)).getPropertyName());
         Assert.assertTrue(components.get(2) instanceof Message);
-        Assert.assertEquals(" <a href=\"javascript:void(null)\" "
+        Assert.assertEquals("&nbsp;<a href=\"javascript:void(null)\" "
                 + "onclick=\"submitForm('methodToCall',{key: 'value'},false,true,null); return false;\">"
-                + "action text</a> <span style='color: green;'>text ", ((Message) components.get(2)).getMessageText());
+                + "action text</a>&nbsp;<span style='color: green;'>text&nbsp;", ((Message) components.get(2)).getMessageText());
         Assert.assertTrue(components.get(3) instanceof Link);
         Assert.assertEquals("http://www.google.com", ((Link) components.get(3)).getHref());
         Assert.assertEquals("Linky", ((Link) components.get(3)).getLinkText());
         Assert.assertTrue(components.get(4) instanceof Message);
-        Assert.assertEquals(" <b>more text</b></span>"
+        Assert.assertEquals("&nbsp;<b>more text</b></span>"
                 + KRADConstants.MessageParsing.LEFT_BRACKET
                 + "0"
                 + KRADConstants.MessageParsing.RIGHT_BRACKET
@@ -484,15 +484,15 @@ public class RichMessageTest extends KRADTestCase {
         }
 
         List<KeyMessage> richOptions = radioGroupControl.getRichOptions();
-        Assert.assertEquals("<span style='color: green;'>Option <b>1</b></span>", ((Message) (richOptions.get(0)
+        Assert.assertEquals("<span style='color: green;'>Option&nbsp;<b>1</b></span>", ((Message) (richOptions.get(0)
                 .getMessage().getMessageComponentStructure().get(0))).getMessageText());
-        Assert.assertEquals("Option 2 <a href='http://www.kuali.org' target='_blank'>link</a>",
+        Assert.assertEquals("Option 2&nbsp;<a href='http://www.kuali.org' target='_blank'>link</a>",
                 ((Message) (richOptions.get(1).getMessage().getMessageComponentStructure().get(0))).getMessageText());
-        Assert.assertEquals("Other: ", ((Message) (richOptions.get(2).getMessage().getMessageComponentStructure().get(
+        Assert.assertEquals("Other:&nbsp;", ((Message) (richOptions.get(2).getMessage().getMessageComponentStructure().get(
                 0))).getMessageText());
         Assert.assertEquals("field1", ((InputField) (richOptions.get(2).getMessage().getMessageComponentStructure().get(
                 1))).getPropertyName());
-        Assert.assertEquals("Other 2: ", ((Message) (richOptions.get(3).getMessage().getMessageComponentStructure().get(
+        Assert.assertEquals("Other 2:&nbsp;", ((Message) (richOptions.get(3).getMessage().getMessageComponentStructure().get(
                 0))).getMessageText());
         Assert.assertEquals("field2", ((InputField) (richOptions.get(3).getMessage().getMessageComponentStructure().get(
                 1))).getPropertyName());

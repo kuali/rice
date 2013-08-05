@@ -113,7 +113,22 @@
     <property name="packagePrefixes" value="org.kuali.rice.krad.test.document"/>
     <property name="dataDictionaryPackages">
       <list>
-        <value>org/kuali/rice/krad/test/document</value>
+        <value>classpath:org/kuali/rice/krad/test/document/Account.xml</value>
+        <value>classpath:org/kuali/rice/krad/test/document/AccountExtension.xml</value>
+        <value>classpath:org/kuali/rice/krad/test/document/AccountMaintenanceDocument.xml</value>
+        <value>classpath:org/kuali/rice/krad/test/document/AccountManager.xml</value>
+        <value>classpath:org/kuali/rice/krad/test/document/AccountManagerMaintenanceDocument.xml</value>
+        <value>classpath:org/kuali/rice/krad/test/document/AccountRequestDocument.xml</value>
+        <value>classpath:org/kuali/rice/krad/test/document/AccountRequestDocument2.xml</value>
+        <value>classpath:org/kuali/rice/krad/test/document/AccountRequestDocument3.xml</value>
+        <value>classpath:org/kuali/rice/krad/test/document/AccountType.xml</value>
+        <value>classpath:org/kuali/rice/krad/test/document/AccountType2.xml</value>
+        <value>classpath:org/kuali/rice/krad/test/document/AccountTypeDivergent.xml</value>
+        <value>classpath:org/kuali/rice/krad/test/document/AccountWithDDAttributesDocument.xml</value>
+        <value>classpath:org/kuali/rice/krad/test/document/BOContainingPerson.xml</value>
+        <value>classpath:org/kuali/rice/krad/test/document/RiceTestTransactionalDocument2.xml</value>
+        <value>classpath:org/kuali/rice/krad/test/document/RiceTestTransactionalDocumentDivergentType.xml</value>
+        <value>classpath:org/kuali/rice/krad/test/document/SearchAttributeIndexTestDocument.xml</value>
         <!-- <value>org/kuali/rice/krad/test/datadictionary/TestDataObject.xml</value> -->
         <!--Due to maven dependencies, this entry will break the krad integrations tests
                       uncomment only to run sample app travel docs  tests-->

@@ -80,6 +80,9 @@ public class CollectionGroupBuilder implements Serializable {
      * fields to indicate what collection and line they apply to.
      * </p>
      *
+     * <p>Only the lines that are to be rendered (as specified by the displayStart
+     * and displayLength properties of the CollectionGroup) will be built.</p>
+     *
      * @param view View instance the collection belongs to
      * @param model Top level object containing the data
      * @param collectionGroup CollectionGroup component for the collection
@@ -123,24 +126,82 @@ public class CollectionGroupBuilder implements Serializable {
                 showIndexes = newShowIndexes;
             }
 
-            // for each collection row build the line fields
-            for (int index = 0; index < modelCollection.size(); index++) {
-                // display only records that passed filtering
-                if (showIndexes.contains(index)) {
-                    String bindingPathPrefix = collectionGroup.getBindingInfo().getBindingName() + "[" + index + "]";
-                    if (StringUtils.isNotBlank(collectionGroup.getBindingInfo().getBindByNamePrefix())) {
-                        bindingPathPrefix =
-                                collectionGroup.getBindingInfo().getBindByNamePrefix() + "." + bindingPathPrefix;
-                    }
+            List<IndexedElement> filteredIndexedElements = buildFilteredIndexedCollection(showIndexes, modelCollection);
+            // DataTables needs to know the number of filtered elements for rendering purposes
+            collectionGroup.setFilteredCollectionSize(filteredIndexedElements.size());
+            buildLinesForDisplayedRows(filteredIndexedElements, view, model, collectionGroup);
+        }
+    }
 
-                    Object currentLine = modelCollection.get(index);
+    /**
+     * Build a filtered and indexed version of the model collection based on showIndexes.
+     *
+     * <p>The items in the returned collection contain
+     * <ul>
+     *     <li>an <b>index</b> property which refers to the original position within the unfiltered model collection</li>
+     *     <li>an <b>element</b> property which is a reference to the element in the model collection</li>
+     * </ul>
+     * </p>
+     *
+     * @see IndexedElement
+     * @param showIndexes A List of indexes to model collection elements that were not filtered out
+     * @param modelCollection the model collection
+     * @return a filtered and indexed version of the model collection
+     */
+    private List<IndexedElement> buildFilteredIndexedCollection(List<Integer> showIndexes,
+            List<Object> modelCollection) {// apply the filtering in a way that preserves the original indices for binding path use
+        List<IndexedElement> filteredIndexedElements = new ArrayList<IndexedElement>(modelCollection.size());
+        for (Integer showIndex : showIndexes) {
+            filteredIndexedElements.add(new IndexedElement(showIndex, modelCollection.get(showIndex)));
+        }
+        return filteredIndexedElements;
+    }
 
-                    List<Action> lineActions = initializeLineActions(collectionGroup.getLineActions(), view, model,
-                            collectionGroup, currentLine, index);
+    /**
+     * Build the lines for the collection rows to be rendered.
+     *
+     * @param filteredIndexedElements a filtered and indexed list of the model collection elements
+     * @param view View instance the collection belongs to
+     * @param model Top level object containing the data
+     * @param collectionGroup CollectionGroup component for the collection
+     */
+    protected void buildLinesForDisplayedRows(List<IndexedElement> filteredIndexedElements, View view, Object model,
+            CollectionGroup collectionGroup) {
 
-                    buildLine(view, model, collectionGroup, bindingPathPrefix, lineActions, false, currentLine, index);
-                }
+        // if we are doing server side paging, don't build the lines unless DataTables set the displayLength
+        if (collectionGroup.isUseServerPaging() && collectionGroup.getDisplayLength() == -1) {
+            collectionGroup.setDisplayLength(1);
+        }
+
+        final int displayStart = (collectionGroup.getDisplayStart() != -1) ? collectionGroup.getDisplayStart() : 0;
+
+        final int displayLength = (collectionGroup.getDisplayLength() != -1) ?
+                        collectionGroup.getDisplayLength() : filteredIndexedElements.size() - displayStart;
+
+        // make sure we don't exceed the size of our collection
+        final int displayEndExclusive = (displayStart+displayLength > filteredIndexedElements.size()) ?
+                filteredIndexedElements.size() : displayStart+displayLength;
+
+        // get a view of the elements that will be displayed on the page (if paging is enabled)
+        final List<IndexedElement> renderedIndexedElements =
+                filteredIndexedElements.subList(displayStart, displayEndExclusive);
+
+        // for each unfiltered collection row to be rendered, build the line fields
+        for (IndexedElement indexedElement : renderedIndexedElements) {
+            final Object currentLine = indexedElement.element;
+
+            String bindingPathPrefix =
+                    collectionGroup.getBindingInfo().getBindingName() + "[" + indexedElement.index + "]";
+
+            if (StringUtils.isNotBlank(collectionGroup.getBindingInfo().getBindByNamePrefix())) {
+                bindingPathPrefix =
+                        collectionGroup.getBindingInfo().getBindByNamePrefix() + "." + bindingPathPrefix;
             }
+
+            List<Action> lineActions = initializeLineActions(collectionGroup.getLineActions(), view, model,
+                    collectionGroup, currentLine, indexedElement.index);
+
+            buildLine(view, model, collectionGroup, bindingPathPrefix, lineActions, false, currentLine, indexedElement.index);
         }
     }
 
@@ -886,6 +947,33 @@ public class CollectionGroupBuilder implements Serializable {
         // apply default values if a new line was created
         if (newLine != null) {
             view.getViewHelperService().applyDefaultValuesForCollectionLine(view, model, collectionGroup, newLine);
+        }
+    }
+
+    /**
+     * Wrapper object to enable filtering of a collection while preserving original indices
+     */
+    private static class IndexedElement {
+
+        /**
+         * The index associated with the given element
+         */
+        final int index;
+
+        /**
+         * The element itself
+         */
+        final Object element;
+
+        /**
+         * Constructs an {@link org.kuali.rice.krad.uif.container.CollectionGroupBuilder.IndexedElement}
+         *
+         * @param index the index to associate with the element
+         * @param element the element itself
+         */
+        private IndexedElement(int index, Object element) {
+            this.index = index;
+            this.element = element;
         }
     }
 

@@ -31,7 +31,6 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.element.Action;
-import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
@@ -147,6 +146,11 @@ public class CollectionGroup extends Group implements DataBinding {
     private boolean renderSaveLineActions;
     private boolean addViaLightBox;
     private Action addViaLightBoxAction;
+
+    private boolean useServerPaging = false;
+    private int displayStart = -1;
+    private int displayLength = -1;
+    private int filteredCollectionSize = -1;
 
     private List<String> totalColumns;
 
@@ -1136,7 +1140,87 @@ public class CollectionGroup extends Group implements DataBinding {
     }
 
     /**
-     * The list of total columns
+     * Gets useServerPaging, the flag that indicates whether server side paging is enabled.  Defaults to false.
+     *
+     * @return true if server side paging is enabled.
+     */
+    @BeanTagAttribute(name = "useServerPaging")
+    public boolean isUseServerPaging() {
+        return useServerPaging;
+    }
+
+    /**
+     * Sets useServerPaging, the flag indicating whether server side paging is enabled.
+     *
+     * @param useServerPaging the useServerPaging value to set
+     */
+    public void setUseServerPaging(boolean useServerPaging) {
+        this.useServerPaging = useServerPaging;
+    }
+
+    /**
+     * Gets the displayStart, the index of the first item to display on the page (assuming useServerPaging is enabled).
+     *
+     * <p>if this field has not been set, the returned value will be -1</p>
+     *
+     * @return the index of the first item to display, or -1 if unset
+     */
+    public int getDisplayStart() {
+        return displayStart;
+    }
+
+    /**
+     * Sets the displayStart, the index of the first item to display on the page (assuming useServerPaging is enabled).
+     *
+     * @param displayStart the displayStart to set
+     */
+    public void setDisplayStart(int displayStart) {
+        this.displayStart = displayStart;
+    }
+
+    /**
+     * Gets the displayLength, the number of items to display on the page (assuming useServerPaging is enabled).
+     *
+     * <p>if this field has not been set, the returned value will be -1</p>
+     *
+     * @return the number of items to display on the page, or -1 if unset
+     */
+    public int getDisplayLength() {
+        return displayLength;
+    }
+
+    /**
+     * Sets the displayLength, the number of items to display on the page (assuming useServerPaging is enabled).
+     *
+     * @param displayLength the displayLength to set
+     */
+    public void setDisplayLength(int displayLength) {
+        this.displayLength = displayLength;
+    }
+
+    /**
+     * Gets the number of un-filtered elements from the model collection.
+     *
+     * <p>if this field has not been set, the returned value will be -1</p>
+     *
+     * @return the filtered collection size, or -1 if unset
+     */
+    public int getFilteredCollectionSize() {
+        return filteredCollectionSize;
+    }
+
+    /**
+     * Sets the number of un-filtered elements from the model collection.
+     *
+     * <p>This value is used for display and rendering purposes, it has no effect on the model collection</p>
+     *
+     * @param filteredCollectionSize the filtered collection size
+     */
+    public void setFilteredCollectionSize(int filteredCollectionSize) {
+        this.filteredCollectionSize = filteredCollectionSize;
+    }
+
+    /**
      *
      * @return list of total columns
      */
@@ -1192,7 +1276,7 @@ public class CollectionGroup extends Group implements DataBinding {
         collectionGroupCopy.setAddItemCssClass(this.addItemCssClass);
 
         if (addLineItems != null) {
-            List<Component> addLineItemsCopy = Lists.newArrayListWithExpectedSize(getAddLineItems().size());
+            List<Component> addLineItemsCopy = new ArrayList<Component>();
 
             for (Component addLineItem : this.addLineItems) {
                 addLineItemsCopy.add((Component) addLineItem.copy());
@@ -1202,7 +1286,7 @@ public class CollectionGroup extends Group implements DataBinding {
         }
 
         if (addLineActions != null) {
-            List<Action> addLineActionsCopy = Lists.newArrayListWithExpectedSize(getAddLineActions().size());
+            List<Action> addLineActionsCopy = new ArrayList<Action>();
 
             for (Action addLineAction : this.addLineActions) {
                 addLineActionsCopy.add((Action) addLineAction.copy());
@@ -1240,9 +1324,10 @@ public class CollectionGroup extends Group implements DataBinding {
         collectionGroupCopy.setHighlightAddItem(this.highlightAddItem);
         collectionGroupCopy.setHighlightNewItems(this.highlightNewItems);
         collectionGroupCopy.setIncludeLineSelectionField(this.includeLineSelectionField);
+        collectionGroupCopy.setUseServerPaging(this.useServerPaging);
 
         if (lineActions != null) {
-            List<Action> lineActions = Lists.newArrayListWithExpectedSize(getLineActions().size());
+            List<Action> lineActions = new ArrayList<Action>();
             for (Action lineAction : this.lineActions) {
                 lineActions.add((Action) lineAction.copy());
             }
@@ -1263,7 +1348,7 @@ public class CollectionGroup extends Group implements DataBinding {
         collectionGroupCopy.setShowInactiveLines(this.showInactiveLines);
 
         if (subCollections != null) {
-            List<CollectionGroup> subCollectionsCopy = Lists.newArrayListWithExpectedSize(getSubCollections().size());
+            List<CollectionGroup> subCollectionsCopy = new ArrayList<CollectionGroup>();
             for (CollectionGroup subCollection : this.subCollections) {
                 subCollectionsCopy.add((CollectionGroup) subCollection.copy());
             }

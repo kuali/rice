@@ -130,6 +130,7 @@
                 <property name="replacement">
                   <list>
                     <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="downloadAttachment"
+                          p:ajaxSubmit="false"
                           p:actionLabel="download attachment" p:title="download attachment"
                           p:disableBlocking="true"
                           p:onClickScript="writeHiddenToForm(&quot;ajaxReturnType&quot;, &quot;update-none&quot;);">

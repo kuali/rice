@@ -45,7 +45,8 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "action-bean", parent = "Uif-Action"), @BeanTag(name = "actionImage-bean", parent = "Uif-ActionImage"),
+@BeanTags({@BeanTag(name = "action-bean", parent = "Uif-Action"),
+        @BeanTag(name = "actionImage-bean", parent = "Uif-ActionImage"),
         @BeanTag(name = "primaryActionButton-bean", parent = "Uif-PrimaryActionButton"),
         @BeanTag(name = "secondaryActionButton-bean", parent = "Uif-SecondaryActionButton"),
         @BeanTag(name = "primaryActionButton-small-bean", parent = "Uif-PrimaryActionButton-Small"),
@@ -154,8 +155,7 @@ public class Action extends ContentElementBase {
 
         disabledExpression = this.getPropertyExpression("disabled");
         if (disabledExpression != null) {
-            ExpressionEvaluator expressionEvaluator =
-                    view.getViewHelperService().getExpressionEvaluator();
+            ExpressionEvaluator expressionEvaluator = view.getViewHelperService().getExpressionEvaluator();
 
             disabledExpression = expressionEvaluator.replaceBindingPrefixes(view, this, disabledExpression);
             disabled = (Boolean) expressionEvaluator.evaluateExpression(this.getContext(), disabledExpression);
@@ -181,8 +181,7 @@ public class Action extends ContentElementBase {
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
 
-        ExpressionEvaluator expressionEvaluator =
-                view.getViewHelperService().getExpressionEvaluator();
+        ExpressionEvaluator expressionEvaluator = view.getViewHelperService().getExpressionEvaluator();
 
         if (StringUtils.isNotEmpty(disabledExpression)
                 && !disabledExpression.equalsIgnoreCase("true")
@@ -193,15 +192,13 @@ public class Action extends ContentElementBase {
 
         List<String> adjustedDisablePropertyNames = new ArrayList<String>();
         for (String propertyName : disabledWhenChangedPropertyNames) {
-            adjustedDisablePropertyNames.add(expressionEvaluator.replaceBindingPrefixes(view, this,
-                    propertyName));
+            adjustedDisablePropertyNames.add(expressionEvaluator.replaceBindingPrefixes(view, this, propertyName));
         }
         disabledWhenChangedPropertyNames = adjustedDisablePropertyNames;
 
         List<String> adjustedEnablePropertyNames = new ArrayList<String>();
         for (String propertyName : enabledWhenChangedPropertyNames) {
-            adjustedEnablePropertyNames.add(expressionEvaluator.replaceBindingPrefixes(view, this,
-                    propertyName));
+            adjustedEnablePropertyNames.add(expressionEvaluator.replaceBindingPrefixes(view, this, propertyName));
         }
         enabledWhenChangedPropertyNames = adjustedEnablePropertyNames;
 
@@ -349,7 +346,7 @@ public class Action extends ContentElementBase {
         }
 
         // if focus id not set default to focus on action
-        if (focusOnIdAfterSubmit == null){
+        if (focusOnIdAfterSubmit == null) {
             focusOnIdAfterSubmit = UifConstants.Order.SELF.toString();
         }
 
@@ -1196,12 +1193,30 @@ public class Action extends ContentElementBase {
     }
 
     /**
+     * Sets the disabled condition javascript
+     *
+     * @param disabledConditionJs
+     */
+    protected void setDisabledConditionJs(String disabledConditionJs) {
+        this.disabledConditionJs = disabledConditionJs;
+    }
+
+    /**
      * Control names to add handlers to for disable functionality, cannot be set
      *
      * @return control names to add handlers to for disable
      */
     public List<String> getDisabledConditionControlNames() {
         return disabledConditionControlNames;
+    }
+
+    /**
+     * Set disabled condition control names
+     *
+     * @param disabledConditionControlNames
+     */
+    public void setDisabledConditionControlNames(List<String> disabledConditionControlNames) {
+        this.disabledConditionControlNames = disabledConditionControlNames;
     }
 
     /**
@@ -1243,6 +1258,15 @@ public class Action extends ContentElementBase {
     }
 
     /**
+     * Sets the disabled expression
+     *
+     * @param disabledExpression
+     */
+    protected void setDisabledExpression(String disabledExpression) {
+        this.disabledExpression = disabledExpression;
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
      */
     @Override
@@ -1252,7 +1276,7 @@ public class Action extends ContentElementBase {
         actionCopy.setActionEvent(this.actionEvent);
 
         if (this.actionImage != null) {
-            actionCopy.setActionImage((Image)this.actionImage.copy());
+            actionCopy.setActionImage((Image) this.actionImage.copy());
         }
 
         actionCopy.setActionImagePlacement(this.actionImagePlacement);
@@ -1273,10 +1297,18 @@ public class Action extends ContentElementBase {
         actionCopy.setDirtyOnAction(this.dirtyOnAction);
         actionCopy.setDisableBlocking(this.disableBlocking);
         actionCopy.setDisabled(this.disabled);
+        actionCopy.setDisabledConditionJs(this.disabledConditionJs);
+
+        if (this.disabledConditionControlNames != null) {
+            actionCopy.setDisabledConditionControlNames(new ArrayList<String>(this.disabledConditionControlNames));
+        }
+
+        actionCopy.setDisabledExpression(this.disabledExpression);
         actionCopy.setDisabledReason(this.disabledReason);
 
         if (this.disabledWhenChangedPropertyNames != null) {
-            actionCopy.setDisabledWhenChangedPropertyNames(new ArrayList<String>(this.disabledWhenChangedPropertyNames));
+            actionCopy.setDisabledWhenChangedPropertyNames(new ArrayList<String>(
+                    this.disabledWhenChangedPropertyNames));
         }
 
         if (this.enabledWhenChangedPropertyNames != null) {

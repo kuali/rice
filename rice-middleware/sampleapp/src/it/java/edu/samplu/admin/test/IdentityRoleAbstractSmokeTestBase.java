@@ -31,7 +31,7 @@ public abstract class IdentityRoleAbstractSmokeTestBase extends AdminTmplMthdSTN
     public static final String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=Role&channelUrl=" 
             + ITUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD +
             "org.kuali.rice.kim.impl.role.RoleBo&docFormKey=88888888&returnLocation=" +
-            ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK_FALSE ;
+            ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK_FALSE + ITUtil.SHOW_MAINTENANCE_LINKS;
 
     /**
      * {@inheritDoc}

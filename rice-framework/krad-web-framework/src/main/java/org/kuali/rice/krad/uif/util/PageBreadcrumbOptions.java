@@ -15,8 +15,14 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.uif.container.Container;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.web.form.UifFormBase;
+
+import java.util.Map;
 
 /**
  * BreadcrumbOptions specific to page.  Render options are only available at the page level.
@@ -31,6 +37,119 @@ public class PageBreadcrumbOptions extends BreadcrumbOptions {
     private boolean renderPreViewBreadcrumbs;
     private boolean renderPrePageBreadcrumbs;
     private boolean renderParentLocations;
+
+    /**
+     * Setup the BreadcrumbOptions and BreadcrumbItem for a PageGroup.  To be called from performInitialization.
+     *
+     * @param view the page's View
+     * @param model the model
+     */
+    @Override
+    public void setupBreadcrumbs(View view, Object model) {
+        BreadcrumbOptions viewBreadcrumbOptions = view.getBreadcrumbOptions();
+
+        //inherit prePageBreadcrumbs, preViewBreadcrumbs, and overrides from the view if not set
+        if (this.getHomewardPathBreadcrumbs() == null
+                && viewBreadcrumbOptions != null
+                && viewBreadcrumbOptions.getHomewardPathBreadcrumbs() != null) {
+            this.setHomewardPathBreadcrumbs(viewBreadcrumbOptions.getHomewardPathBreadcrumbs());
+
+            for (BreadcrumbItem item : this.getHomewardPathBreadcrumbs()) {
+                view.assignComponentIds(item);
+            }
+        }
+
+        if (this.getPrePageBreadcrumbs() == null
+                && viewBreadcrumbOptions != null
+                && viewBreadcrumbOptions.getPrePageBreadcrumbs() != null) {
+            this.setPrePageBreadcrumbs(viewBreadcrumbOptions.getPrePageBreadcrumbs());
+
+            for (BreadcrumbItem item : this.getPrePageBreadcrumbs()) {
+                view.assignComponentIds(item);
+            }
+        }
+
+        if (this.getPreViewBreadcrumbs() == null
+                && viewBreadcrumbOptions != null
+                && viewBreadcrumbOptions.getPreViewBreadcrumbs() != null) {
+            this.setPreViewBreadcrumbs(viewBreadcrumbOptions.getPreViewBreadcrumbs());
+
+            for (BreadcrumbItem item : this.getPreViewBreadcrumbs()) {
+                view.assignComponentIds(item);
+            }
+        }
+
+        if (this.getBreadcrumbOverrides() == null
+                && viewBreadcrumbOptions != null
+                && viewBreadcrumbOptions.getBreadcrumbOverrides() != null) {
+            this.setBreadcrumbOverrides(viewBreadcrumbOptions.getBreadcrumbOverrides());
+
+            for (BreadcrumbItem item : this.getBreadcrumbOverrides()) {
+                view.assignComponentIds(item);
+            }
+        }
+    }
+
+    /**
+     * Finalize the setup of the BreadcrumbOptions and the BreadcrumbItem for the PageGroup.  To be called from the
+     * performFinalize method.
+     *
+     * @param view the page's View
+     * @param model the model
+     */
+    @Override
+    public void finalizeBreadcrumbs(View view, Object model, Container parent, BreadcrumbItem breadcrumbItem) {
+        //set breadcrumbItem label same as the header, if not set
+        if (StringUtils.isBlank(breadcrumbItem.getLabel()) && parent.getHeader() != null && StringUtils.isNotBlank(
+                parent.getHeader().getHeaderText())) {
+            breadcrumbItem.setLabel(parent.getHeader().getHeaderText());
+        }
+
+        //if label still blank, dont render
+        if (StringUtils.isBlank(breadcrumbItem.getLabel())) {
+            breadcrumbItem.setRender(false);
+        }
+
+        //special breadcrumb request param handling
+        if (breadcrumbItem.getUrl().getControllerMapping() == null
+                && breadcrumbItem.getUrl().getViewId() == null
+                && model instanceof UifFormBase
+                && breadcrumbItem.getUrl().getRequestParameters() == null
+                && ((UifFormBase) model).getInitialRequestParameters() != null) {
+            //add the current request parameters if controllerMapping, viewId, and requestParams are null
+            //(this means that no explicit breadcrumbItem customization was set)
+            Map<String, String> requestParameters = ((UifFormBase) model).getInitialRequestParameters();
+
+            //remove ajax properties because breadcrumb should always be a full view request
+            requestParameters.remove("ajaxReturnType");
+            requestParameters.remove("ajaxRequest");
+
+            //remove pageId because this should be set by the BreadcrumbItem setting
+            requestParameters.remove("pageId");
+
+            breadcrumbItem.getUrl().setRequestParameters(requestParameters);
+        }
+
+        //form key handling
+        if (breadcrumbItem.getUrl().getFormKey() == null
+                && model instanceof UifFormBase
+                && ((UifFormBase) model).getFormKey() != null) {
+            breadcrumbItem.getUrl().setFormKey(((UifFormBase) model).getFormKey());
+        }
+
+        //automatically set breadcrumbItem UifUrl properties below, if not set
+        if (breadcrumbItem.getUrl().getControllerMapping() == null && model instanceof UifFormBase) {
+            breadcrumbItem.getUrl().setControllerMapping(((UifFormBase) model).getControllerMapping());
+        }
+
+        if (breadcrumbItem.getUrl().getViewId() == null) {
+            breadcrumbItem.getUrl().setViewId(view.getId());
+        }
+
+        if (breadcrumbItem.getUrl().getPageId() == null) {
+            breadcrumbItem.getUrl().setPageId(parent.getId());
+        }
+    }
 
     /**
      * Whether or not to render the view breadcrumb at this level

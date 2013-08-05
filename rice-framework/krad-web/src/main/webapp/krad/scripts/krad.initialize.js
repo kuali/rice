@@ -545,34 +545,40 @@ function initFieldHandlers() {
  * Setup a global disclosure handler which will handle click events on disclosure links to toggle them open and closed
  */
 function setupDisclosureHandler(){
-    jQuery(document).on("click", "a[data-role='disclosureLink']", function(event){
+    jQuery(document).on("click",
+            "a[data-role='" + kradVariables.DATA_ROLES.DISCLOSURE_LINK + "']", function(event){
         event.preventDefault();
 
         var link = jQuery(this);
-        var isOpen = link.data("open");
+
         var disclosureContent = jQuery("#" + link.data("linkfor"));
+
+        var isOpen = disclosureContent.attr(kradVariables.ATTRIBUTES.DATA_OPEN);
         var animationSpeed = link.data("speed");
         var linkId = link.attr("id");
         var widgetId = link.data("widgetid");
 
-        if(isOpen){
-            link.data("open", false);
-            disclosureContent.attr("data-open", false);
+        if(isOpen == "true"){
+            disclosureContent.attr(kradVariables.ATTRIBUTES.DATA_OPEN, false);
+
             disclosureContent.slideUp(animationSpeed);
+
             jQuery(this).find("#" + linkId + "_exp").hide();
             jQuery(this).find("#" + linkId + "_col").show();
+
             setComponentState(widgetId, 'open', false);
         }
         else{
-            link.data("open", true);
-            disclosureContent.attr("data-open", true);
+            disclosureContent.attr(kradVariables.ATTRIBUTES.DATA_OPEN, true);
 
             //run scripts for previously hidden content
             runHiddenScripts(disclosureContent, true, true);
 
             disclosureContent.slideDown(animationSpeed);
+
             jQuery(this).find("#" + linkId + "_exp").show();
             jQuery(this).find("#" + linkId + "_col").hide();
+
             setComponentState(widgetId, 'open', true);
         }
     });

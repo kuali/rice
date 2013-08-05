@@ -28,7 +28,7 @@
                     <legend style="display: none">${field.label!}</legend>
             </#if>
 
-            <#local quickfinderInputOnly=(field.widgetInputOnly!false) && ((field.quickfinder.dataObjectClassName)!""?has_content) />
+            <#local quickfinderInputOnly=(field.widgetInputOnly!false) && ((field.quickfinder.dataObjectClassName)!"")?has_content />
 
             <#-- render field value (if read-only/quickfinder-input-only) or control (if edit) -->
             <#if readOnly || quickfinderInputOnly>
@@ -42,8 +42,7 @@
                              ${field.readOnlyDisplayReplacement}
                         <#else>
                             <#-- display actual field value -->
-                            <@spring.bindEscaped path="KualiForm.${field.bindingInfo.bindingPath}"
-                               htmlEscape=field.escapeHtmlInPropertyValue/>
+                            <@spring.bind path="KualiForm.${field.bindingInfo.bindingPath}"/>
                             ${(spring.status.value?default(""))}
 
                             <#-- add display suffix value if set -->
@@ -53,6 +52,10 @@
                         </#if>
                     </#if>
                 </#local>
+
+                <#if field.escapeHtmlInPropertyValue>
+                    <#local readOnlyDisplay=readOnlyDisplay?html>
+                </#if>
 
                 <#if field.multiLineReadOnlyDisplay>
                     <#local readOnlyDisplay="<pre>${readOnlyDisplay?trim?replace(' ','&nbsp;')}</pre>"/>

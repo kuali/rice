@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.control;
 
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.ViewModel;
 
 import java.util.List;
@@ -37,9 +38,22 @@ public interface UifKeyValuesFinder extends KeyValuesFinder {
      * Builds a list of key values representations for valid value selections using the given view model
      * to retrieve values from other fields and conditionally building the options
      *
+     * @param model object instance containing the view data
+     *
      * @return List of KeyValue objects
      */
     public List<KeyValue> getKeyValues(ViewModel model);
+
+    /**
+     * Builds a list of key values representations for valid value selections using the given view model
+     * to retrieve values from other fields and conditionally building the options
+     *
+     * @param model  object instance containing the view data
+     * @param field  object instance containing the field data of the key value lookup
+     *
+     * @return List of KeyValue objects
+     */
+    public List<KeyValue> getKeyValues(ViewModel model, InputField field);
 
     /**
      * Indicates whether a blank option should be included as a valid option

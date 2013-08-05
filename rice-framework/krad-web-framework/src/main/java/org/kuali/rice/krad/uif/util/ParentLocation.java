@@ -271,6 +271,9 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
     private void handleExpressions(View view, Object currentModel, Map<String, Object> currentContext,
             ExpressionEvaluator expressionEvaluator) {
         try {
+            // KULRICE-10053 initialize the expression evaluator
+            expressionEvaluator.initializeEvaluationContext(currentModel);
+
             //Evaluate view url/breadcrumb expressions
             expressionEvaluator.evaluateExpressionsOnConfigurable(view, viewBreadcrumbItem, currentContext);
 

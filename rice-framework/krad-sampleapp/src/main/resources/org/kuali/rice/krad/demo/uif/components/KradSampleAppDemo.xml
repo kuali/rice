@@ -31,13 +31,11 @@
   <bean id="Uif-View" abstract="true" parent="Uif-View-parentBean">
     <property name="additionalCssFiles">
       <list>
-        <value>css/jquery.tweet.css</value>
         <value>css/kradSampleApp.css</value>
       </list>
     </property>
     <property name="additionalScriptFiles">
       <list>
-        <value>scripts/jquery.tweet.js</value>
         <value>scripts/kradSampleApp.js</value>
       </list>
     </property>
@@ -48,13 +46,11 @@
     <property name="unifiedHeader" value="false"/>
     <property name="additionalCssFiles">
       <list>
-        <value>css/jquery.tweet.css</value>
         <value>css/kradSampleApp.css</value>
       </list>
     </property>
     <property name="additionalScriptFiles">
       <list>
-        <value>scripts/jquery.tweet.js</value>
         <value>scripts/kradSampleApp.js</value>
       </list>
     </property>
@@ -488,16 +484,21 @@
     <property name="items">
       <list>
         <bean parent="Uif-Link" p:linkText="Breadcrumbs"
-        p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Breadcrumbs-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Breadcrumbs-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Disclosure"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Disclosure-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Suggest"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Suggest-View&amp;methodToCall=start"/>
-        <bean parent="Uif-Link" p:linkText="Help" p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Help-View&amp;methodToCall=start"/>
-        <bean parent="Uif-Link" p:linkText="Tooltip" p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Tooltip-View&amp;methodToCall=start"/>
-        <bean parent="Uif-Link" p:linkText="DatePicker" p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DatePicker-View&amp;methodToCall=start"/>
-        <bean parent="Uif-Link" p:linkText="SyntaxHighlighter" p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-SyntaxHighlighter-View&amp;methodToCall=start"/>
-        <bean parent="Uif-Link" p:linkText="Growls" p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Growls-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Help"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Help-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Tooltip"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Tooltip-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="DatePicker"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DatePicker-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="SyntaxHighlighter"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-SyntaxHighlighter-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Growls"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Growls-View&amp;methodToCall=start"/>
         <!--<bean parent="Uif-Link" p:linkText="BlockUI" p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-BlockUI-View&amp;methodToCall=start"/>-->
       </list>
     </property>
@@ -517,6 +518,8 @@
       <list>
         <bean parent="Uif-Link" p:linkText="Sequence Column"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionSequence-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Row Css"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutRowCss-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Row Details"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutDetails-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Column Calculations"
@@ -533,6 +536,8 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionInactiveFilter-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Multi-Value Lookup"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionLookup-View"/>
+        <bean parent="Uif-Link" p:linkText="Server Paging"
+              p:href="@{#ConfigProperties['krad.url']}/serverpaging"/>
         <bean parent="Uif-Link" p:linkText="Light Table"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-LightTable-View&amp;methodToCall=start"/>
       </list>

@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
 public class VersionHelper {
 
     // This pattern matches any non-digit string containing a version number of the form A.B.C.D followed by any non-digit string
-    private static final Pattern extractVersion = Pattern.compile("(\\D*)((\\d*\\.?)+)(\\D*)");
+    private static final Pattern extractVersion = Pattern.compile("(\\D*)((\\d*\\.?)+)(\\S*)");
 
     // Pattern used for splitting version number for comparison
     private static final Pattern splitVersion = Pattern.compile("\\.");

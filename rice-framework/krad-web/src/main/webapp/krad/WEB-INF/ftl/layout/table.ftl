@@ -53,14 +53,14 @@
         </#if>
 
         <#if manager.richTable?has_content && manager.richTable.render
-            && (manager.richTable.forceAjaxJsonData || manager.richTable.forceLocalJsonData)>
+            && (manager.richTable.forceLocalJsonData)>
 
-            <#if manager.richTable.forceAjaxJsonData>
-                <!-- empty body because content is being retrieved from the server after render -->
+            <#if container.useServerPaging>
+                <#-- empty body because content is being retrieved from the server after render -->
                 <tbody></tbody>
             </#if>
 
-            <!-- iterate over each row (and its items) and convert them to the json array equivalent for later
+            <#-- iterate over each row (and its items) and convert them to the json array equivalent for later
             retrieval -->
             <#local row=""/>
             <#local colIndex=0/>

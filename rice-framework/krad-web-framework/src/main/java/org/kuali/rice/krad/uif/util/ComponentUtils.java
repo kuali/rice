@@ -22,7 +22,6 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.component.Ordered;
-import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.field.Field;
@@ -33,7 +32,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.core.OrderComparator;
 
 import java.beans.PropertyDescriptor;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -180,6 +178,38 @@ public class ComponentUtils {
         return typeComponents;
     }
 
+    /**
+     * Returns components of the given type that are direct children of the given component (only checks
+     * one level)
+     *
+     * @param component instance to get children for
+     * @param componentType type for component to return
+     * @param <T> type of component that will be returned
+     * @return list of child components with the given type
+     */
+    @SuppressWarnings("unchecked")
+    public static <T extends Component> List<T> getComponentsOfTypeShallow(Component component,
+            Class<T> componentType) {
+        List<T> typeComponents = new ArrayList<T>();
+
+        if (component == null) {
+            return typeComponents;
+        }
+
+        if (componentType.isAssignableFrom(component.getClass())) {
+            typeComponents.add((T) component);
+        }
+
+        for (Component nested : component.getComponentsForLifecycle()) {
+            if ((nested != null) && componentType.isAssignableFrom(nested.getClass())) {
+                typeComponents.add((T) nested);
+            }
+
+        }
+
+        return typeComponents;
+    }
+
     public static List<Component> getAllNestedComponents(Component component) {
         List<Component> components = new ArrayList<Component>();
 
@@ -285,22 +315,15 @@ public class ComponentUtils {
     }
 
     public static void updateChildIdsWithSuffixNested(Component component, String idSuffix) {
-        if (Container.class.isAssignableFrom(component.getClass())) {
-            LayoutManager layoutManager = ((Container) component).getLayoutManager();
-            layoutManager.setId(layoutManager.getId() + idSuffix);
+        for (Component nested : component.getComponentsForLifecycle()) {
+            if (nested != null) {
+                updateIdsWithSuffixNested(nested, idSuffix);
+            }
         }
 
-        if (!(component instanceof CollectionGroup)){
-            for (Component nested : component.getComponentsForLifecycle()) {
-                if (nested != null) {
-                    updateIdsWithSuffixNested(nested, idSuffix);
-                }
-            }
-
-            for (Component nested : component.getPropertyReplacerComponents()) {
-                if (nested != null) {
-                    updateIdsWithSuffixNested(nested, idSuffix);
-                }
+        for (Component nested : component.getPropertyReplacerComponents()) {
+            if (nested != null) {
+                updateIdsWithSuffixNested(nested, idSuffix);
             }
         }
     }
@@ -351,9 +374,11 @@ public class ComponentUtils {
             component.setId(component.getId() + idSuffix);
         }
 
-        if (component instanceof Group){
-            LayoutManager manager = ((Group) component).getLayoutManager();
-            manager.setId(manager.getId() + idSuffix);
+        if (component instanceof Container) {
+            LayoutManager manager = ((Container) component).getLayoutManager();
+            if (manager != null) {
+                manager.setId(manager.getId() + idSuffix);
+            }
         }
     }
 

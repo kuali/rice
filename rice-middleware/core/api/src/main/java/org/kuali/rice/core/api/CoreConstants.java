@@ -51,6 +51,12 @@ public final class CoreConstants {
          *  that backwards compatibility is not broken
          */
         public static final String VERSION_2_1_2 = "2.1.2";
+
+        /**
+         *  Name for complete version 2.3.0 of Kuali Rice which is used to compare against the version of callback services to ensure
+         *  that backwards compatibility is not broken
+         */
+        public static final String VERSION_2_3_0 = "2.3.0";
     	
     }
     

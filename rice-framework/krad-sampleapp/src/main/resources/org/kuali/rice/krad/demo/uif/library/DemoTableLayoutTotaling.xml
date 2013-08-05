@@ -281,7 +281,7 @@ calculation applied to each column here-->
           <property name="layoutManager.columnCalculations">
             <list>
               <bean parent="Uif-ColumnCalculationInfo-Sum" p:showPageTotal="false"
-                    p:showTotal="true" p:propertyName="field3" p:recalculateTotalClientside="false">
+                    p:showTotal="true" p:propertyName="field3" p:recalculateTotalClientSide="false">
                 <!-- note the use of SpringEL here -->
                 <property name="totalField.messageText" value="@{#form.fakeTotal}"/>
               </bean>

@@ -43,7 +43,7 @@ public class ActionSecurity extends FieldSecurity {
      *
      * @return true if the action field has perform action authorization, false if not
      */
-    @BeanTagAttribute(name="performActionAuthz")
+    @BeanTagAttribute(name = "performActionAuthz")
     public boolean isPerformActionAuthz() {
         return performActionAuthz;
     }
@@ -62,7 +62,7 @@ public class ActionSecurity extends FieldSecurity {
      *
      * @return true if the line action field has perform action authorization, false if not
      */
-    @BeanTagAttribute(name="performLineActionAuthz")
+    @BeanTagAttribute(name = "performLineActionAuthz")
     public boolean isPerformLineActionAuthz() {
         return performLineActionAuthz;
     }

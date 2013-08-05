@@ -61,10 +61,13 @@ import static org.junit.Assert.*;
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class PessimisticLockServiceTest extends KNSTestCase {
 
+    String sessionId = "ad4d6c83-4d0f-4309-a528-c2f81ec00395";
+
     @Override
     public void setUp() throws Exception {
         super.setUp();
         GlobalVariables.setUserSession(new UserSession("quickstart"));
+        GlobalVariables.getUserSession().setKualiSessionId(sessionId);
     }
 
     /**
@@ -111,12 +114,8 @@ public class PessimisticLockServiceTest extends KNSTestCase {
     	GlobalVariables.getUserSession().addObject(LOCK_KEY, LOCK_VALUE1);
     	String[] allDescriptors = { testDoc.getCustomLockDescriptor(quickstartSession.getPerson()), null };
    		assertNotNull("The document should have generated a custom lock descriptor", allDescriptors[0]);
-    	Map <?,?> finalModes = null;
-        try {
-            lockService.establishLocks(testDoc, editMode, quickstartSession.getPerson());
-        } catch (Throwable t) {
-            fail("https://jira.kuali.org/browse/KULRICE-9610 " + t.getMessage());
-        }
+    	Map <?,?> finalModes = lockService.establishLocks(testDoc, editMode, quickstartSession.getPerson());
+
     	// Verify that the lock was actually established and that the expected custom lock descriptor was used.
     	assertCorrectLocksAreInPlace(true, finalModes, 1, testDoc.getPessimisticLocks(), allPersons, allDescriptors);
 

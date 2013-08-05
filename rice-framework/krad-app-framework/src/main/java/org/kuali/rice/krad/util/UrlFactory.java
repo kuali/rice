@@ -23,13 +23,13 @@ import org.apache.log4j.Logger;
 import java.util.Properties;
 
 /**
- * This class Provides utility methods for re/building URLs.
+ * Provides utility methods for re/building URLs.
  * 
- * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public class UrlFactory {
     private static Logger LOG = Logger.getLogger(UrlFactory.class);
+
     /**
      * Creates a new URL by taking the given URL and appending the parameter names and values from the given Properties instance to
      * it. Note: parameter names must be non-blank; parameter values must be non-null.

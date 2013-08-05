@@ -20,9 +20,12 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.widget.QuickFinder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -58,6 +61,27 @@ public class GroupControl extends TextControl implements FilterableLookupCriteri
             field.getAdditionalHiddenPropertyNames().add(groupIdPropertyName);
         }
 
+        buildGroupQuickfinder(view, model, field);
+    }
+
+    protected void buildGroupQuickfinder(View view,Object model, InputField field) {
+        QuickFinder quickFinder = field.getQuickfinder();
+
+        // don't build quickfinder if explicitly turned off
+        if ((quickFinder != null) && !quickFinder.isRender()) {
+            return;
+        }
+
+        boolean quickfinderCreated = false;
+        if (quickFinder == null) {
+            quickFinder = ComponentFactory.getQuickFinder();
+            view.assignComponentIds(quickFinder);
+
+            field.setQuickfinder(quickFinder);
+
+            quickfinderCreated = true;
+        }
+
         if (field.getQuickfinder() != null) {
             if (StringUtils.isBlank(field.getQuickfinder().getDataObjectClassName())) {
                 field.getQuickfinder().setDataObjectClassName("org.kuali.rice.kim.impl.group.GroupBo");
@@ -81,6 +105,14 @@ public class GroupControl extends TextControl implements FilterableLookupCriteri
                 }
             }
         }
+
+        // if we created the quickfinder here it will have missed the initialize and apply model phase (it
+        // will be attached to the field for finalize)
+        if (quickfinderCreated) {
+            view.getViewHelperService().spawnSubLifecyle(view, model, quickFinder, field,
+                    UifConstants.ViewPhases.INITIALIZE, UifConstants.ViewPhases.APPLY_MODEL);
+        }
+
     }
 
     /**
@@ -156,7 +188,7 @@ public class GroupControl extends TextControl implements FilterableLookupCriteri
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         GroupControl groupControlCopy = (GroupControl) component;
-        groupControlCopy.setNamespaceCodePropertyName(this.getNamespaceCodePropertyName());
-        groupControlCopy.setGroupIdPropertyName(this.getGroupIdPropertyName());
+        groupControlCopy.setNamespaceCodePropertyName(this.namespaceCodePropertyName);
+        groupControlCopy.setGroupIdPropertyName(this.groupIdPropertyName);
     }
 }

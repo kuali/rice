@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.krad.uif.layout;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
@@ -97,15 +95,15 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
         // put together all css class names for this component, in order
         List<String> finalCssClasses = new ArrayList<String>();
 
-        if(this.libraryCssClasses != null && view.isUseLibraryCssClasses()){
+        if (this.libraryCssClasses != null && view.isUseLibraryCssClasses()) {
             finalCssClasses.addAll(libraryCssClasses);
         }
 
-        if(this.cssClasses != null){
+        if (this.cssClasses != null) {
             finalCssClasses.addAll(cssClasses);
         }
 
-        if(this.additionalCssClasses != null){
+        if (this.additionalCssClasses != null) {
             finalCssClasses.addAll(additionalCssClasses);
         }
 
@@ -352,14 +350,12 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
         this.propertyReplacers = propertyReplacers;
     }
 
-
     @Override
     public <T> T copy() {
         T copiedClass = null;
         try {
-            copiedClass = (T)this.getClass().newInstance();
-        }
-        catch(Exception exception) {
+            copiedClass = (T) this.getClass().newInstance();
+        } catch (Exception exception) {
             throw new RuntimeException();
         }
 
@@ -373,36 +369,30 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
 
         LayoutManagerBase layoutManagerBaseCopy = (LayoutManagerBase) layoutManager;
 
-        layoutManagerBaseCopy.setId(this.getId());
-        layoutManagerBaseCopy.setTemplate(this.getTemplate());
-        layoutManagerBaseCopy.setTemplateName(this.getTemplateName());
-        layoutManagerBaseCopy.setStyle(this.getStyle());
-
-        layoutManagerBaseCopy.setContext(this.getContext());
+        layoutManagerBaseCopy.setId(this.id);
+        layoutManagerBaseCopy.setTemplate(this.template);
+        layoutManagerBaseCopy.setTemplateName(this.templateName);
+        layoutManagerBaseCopy.setStyle(this.style);
 
         if (libraryCssClasses != null) {
             layoutManagerBaseCopy.setLibraryCssClasses(new ArrayList<String>(libraryCssClasses));
         }
 
-        if (getCssClasses() != null) {
-            layoutManagerBaseCopy.setCssClasses(new ArrayList<String>(getCssClasses()));
+        if (cssClasses != null) {
+            layoutManagerBaseCopy.setCssClasses(new ArrayList<String>(cssClasses));
         }
 
-        if (getAdditionalCssClasses() != null) {
-            layoutManagerBaseCopy.setAdditionalCssClasses(new ArrayList<String>(getAdditionalCssClasses()));
+        if (additionalCssClasses != null) {
+            layoutManagerBaseCopy.setAdditionalCssClasses(new ArrayList<String>(additionalCssClasses));
         }
 
-        if (getPropertyReplacers() != null) {
-            List<PropertyReplacer> propertyReplacersCopy = Lists.newArrayListWithExpectedSize(
-                    getPropertyReplacers().size());
+        if (propertyReplacers != null) {
+            List<PropertyReplacer> propertyReplacersCopy = new ArrayList<PropertyReplacer>();
             for (PropertyReplacer propertyReplacer : propertyReplacers) {
                 propertyReplacersCopy.add((PropertyReplacer) propertyReplacer.copy());
             }
 
             layoutManagerBaseCopy.setPropertyReplacers(propertyReplacersCopy);
         }
-
-        layoutManagerBaseCopy.setComponentCode(this.getComponentCode());
-        layoutManagerBaseCopy.setNamespaceCode(this.getNamespaceCode());
     }
 }

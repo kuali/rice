@@ -42,7 +42,7 @@ import static org.mockito.Mockito.*;
 
 public class RichTableTest {
 
-    public static final String S_TYPE = "{\"sType\" : \"numeric\", \"aTargets\": [0]}";
+    public static final String S_TYPE = "{\"bSortable\" : false, \"sType\" : \"numeric\", \"aTargets\": [0]}";
     public static final String S_SORT_DATA_TARGETS_1 = "{\"sType\" : \"string\", \"sSortDataType\" : \"dom-text\", \"aTargets\": [1]}";
     public static final String S_SORT_DATA_TARGETS_2 = S_SORT_DATA_TARGETS_1.replace("1", "2");
     public static final String S_SORT_DATA_TARGETS_3 = S_SORT_DATA_TARGETS_1.replace("1", "3");

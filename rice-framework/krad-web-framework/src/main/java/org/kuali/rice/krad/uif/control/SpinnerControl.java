@@ -78,7 +78,7 @@ public class SpinnerControl extends TextControl {
         SpinnerControl spinnerControlCopy = (SpinnerControl) component;
 
         if(this.spinner != null) {
-            spinnerControlCopy.setSpinner((Spinner)this.getSpinner().copy());
+            spinnerControlCopy.setSpinner((Spinner)this.spinner.copy());
         }
     }
 }

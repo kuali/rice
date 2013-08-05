@@ -115,10 +115,19 @@ public class ValidationMessages extends ContentElementBase {
             parentContainerId = ((Component) parentContainer).getId();
         }
 
-        //special message component case
+        // special message component case
         if (parentContainer != null && parentContainer instanceof Message && ((Message) parentContainer)
                 .isGenerateSpan()) {
             parentContainerId = ((Component) parentContainer).getId();
+        }
+
+        // special case for nested contentElement with no parent
+        if (parentContainer != null && parentContainer instanceof Component && StringUtils.isBlank(parentContainerId)) {
+            parentContainer = ((Component) parentContainer).getContext().get("parent");
+            if (parentContainer != null && (parentContainer instanceof Container
+                    || parentContainer instanceof FieldGroup)) {
+                parentContainerId = ((Component) parentContainer).getId();
+            }
         }
 
         //Add identifying data attributes
@@ -352,15 +361,30 @@ public class ValidationMessages extends ContentElementBase {
         }
     }
 
-    public void setErrors(List<String> errors) {
+    /**
+     * Sets errors
+     *
+     * @param errors
+     */
+    protected void setErrors(List<String> errors) {
         this.errors = errors;
     }
 
-    public void setWarnings(List<String> warnings) {
+    /**
+     * Sets warnings
+     *
+     * @param warnings
+     */
+    protected void setWarnings(List<String> warnings) {
         this.warnings = warnings;
     }
 
-    public void setInfos(List<String> infos) {
+    /**
+     * Sets infos
+     *
+     * @param infos
+     */
+    protected void setInfos(List<String> infos) {
         this.infos = infos;
     }
 
@@ -374,19 +398,19 @@ public class ValidationMessages extends ContentElementBase {
 
         if (additionalKeysToMatch != null) {
             List<String> additionalKeysToMatchCopy = Lists.newArrayListWithExpectedSize(additionalKeysToMatch.size());
-            for(String additionalKeyToMatch : additionalKeysToMatch)   {
+            for (String additionalKeyToMatch : additionalKeysToMatch) {
                 additionalKeysToMatchCopy.add(additionalKeyToMatch);
             }
 
             validationMessagesCopy.setAdditionalKeysToMatch(additionalKeysToMatchCopy);
         }
 
-        validationMessagesCopy.setDisplayMessages(this.isDisplayMessages());
+        validationMessagesCopy.setDisplayMessages(this.displayMessages);
 
         if (warnings != null) {
             // Error messages
             List<String> warningsCopy = Lists.newArrayListWithExpectedSize(warnings.size());
-            for(String warning : warnings)   {
+            for (String warning : warnings) {
                 warningsCopy.add(warning);
             }
 
@@ -395,7 +419,7 @@ public class ValidationMessages extends ContentElementBase {
 
         if (errors != null) {
             List<String> errorsCopy = Lists.newArrayListWithExpectedSize(errors.size());
-            for(String error : errors)   {
+            for (String error : errors) {
                 errorsCopy.add(error);
             }
 
@@ -404,18 +428,19 @@ public class ValidationMessages extends ContentElementBase {
 
         if (infos != null) {
             List<String> infosCopy = Lists.newArrayListWithExpectedSize(infos.size());
-            for(String info : infos)   {
+            for (String info : infos) {
                 infosCopy.add(info);
             }
 
             validationMessagesCopy.setInfos(infosCopy);
         }
 
-        if (this.getValidationDataDefaults() != null) {
+        if (this.validationDataDefaults != null) {
             Map<String, String> validationDataDefaultsCopy = Maps.newHashMapWithExpectedSize(
-                    this.getValidationDataDefaults().size());
-            for(Map.Entry validationDataDefault : getValidationDataDefaults().entrySet()) {
-                validationDataDefaultsCopy.put(validationDataDefault.getKey().toString(),validationDataDefault.getValue().toString());
+                    this.validationDataDefaults.size());
+            for (Map.Entry validationDataDefault : validationDataDefaults.entrySet()) {
+                validationDataDefaultsCopy.put(validationDataDefault.getKey().toString(),
+                        validationDataDefault.getValue().toString());
             }
 
             validationMessagesCopy.setValidationDataDefaults(validationDataDefaultsCopy);

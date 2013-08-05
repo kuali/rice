@@ -66,6 +66,26 @@ public class DataDictionaryPeopleFlowTypeServiceImpl implements PeopleFlowTypeSe
     }
 
     /**
+     * Allows for more than one set of qualifiers to be returned for the purpose of matching.
+     *
+     * @param kewTypeId the people flow type identifier.  Must not be null or blank.
+     * @param roleId the role that the qualifiers are specific to.  Must not be null or blank.
+     * @param document the document that the qualifiers are being resolved against.  Must not be null.
+     * @param documentContent the contents for the document that the qualifiers are being resolved against.
+     * Must not be null.
+     * @return List<Map<String, String>>
+     */
+    @Override
+    public List<Map<String, String>> resolveMultipleRoleQualifiers(
+            @WebParam(name = "kewTypeId") String kewTypeId,
+            @WebParam(name = "roleId") String roleId,
+            @WebParam(name = "document") Document document,
+            @WebParam(name = "documentContent") DocumentContent documentContent) {
+
+        return new ArrayList<Map<String, String>>();
+    }
+
+    /**
      * @see org.kuali.rice.kew.framework.peopleflow.PeopleFlowTypeService#getAttributeFields(java.lang.String)
      */
     public List<RemotableAttributeField> getAttributeFields(@WebParam(name = "kewTypeId") String kewTypeId) {

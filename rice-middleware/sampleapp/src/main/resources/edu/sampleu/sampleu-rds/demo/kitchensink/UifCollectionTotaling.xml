@@ -157,7 +157,7 @@
                                layoutManager.renderSequenceField="false" propertyName="groupedList1">
     <spring:property name="layoutManager.columnCalculations">
       <spring:list>
-        <columnCalculationInfo-sum-bean propertyName="field4" recalculateTotalClientside="false" showPageTotal="false"
+        <columnCalculationInfo-sum-bean propertyName="field4" recalculateTotalClientSide="false" showPageTotal="false"
                                         showTotal="true" totalField.messageText="@{#form.fakeTotal}"/>
       </spring:list>
     </spring:property>

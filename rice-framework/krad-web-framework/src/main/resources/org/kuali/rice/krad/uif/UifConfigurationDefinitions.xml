@@ -76,7 +76,7 @@
     <property name="showPageTotal" value="true"/>
     <property name="showGroupTotal" value="false"/>
     <property name="calculateOnKeyUp" value="false"/>
-    <property name="recalculateTotalClientside" value="true"/>
+    <property name="recalculateTotalClientSide" value="true"/>
     <property name="totalField">
       <bean parent="Uif-MessageField" p:message.messageText="N/A"
             p:fieldLabel.labelText="Total">
@@ -169,12 +169,12 @@
   </bean>
 
   <bean id="Uif-PageBreadcrumbOptions" class="org.kuali.rice.krad.uif.util.PageBreadcrumbOptions" scope="prototype">
-      <property name="renderViewBreadcrumb" value="true"/>
-      <property name="renderHomewardPathBreadcrumbs" value="true"/>
-      <property name="renderPrePageBreadcrumbs" value="true"/>
-      <property name="renderPreViewBreadcrumbs" value="true"/>
-      <property name="renderParentLocations" value="true"/>
-    </bean>
+    <property name="renderViewBreadcrumb" value="true"/>
+    <property name="renderHomewardPathBreadcrumbs" value="true"/>
+    <property name="renderPrePageBreadcrumbs" value="true"/>
+    <property name="renderPreViewBreadcrumbs" value="true"/>
+    <property name="renderParentLocations" value="true"/>
+  </bean>
 
 
   <bean id="Uif-BreadcrumbOptions" class="org.kuali.rice.krad.uif.util.BreadcrumbOptions" scope="prototype">

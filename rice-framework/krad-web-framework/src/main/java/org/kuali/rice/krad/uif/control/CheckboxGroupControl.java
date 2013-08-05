@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif.control;
 
-import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -108,14 +107,10 @@ public class CheckboxGroupControl extends MultiValueControlBase {
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         CheckboxGroupControl checkboxGroupControlCopy = (CheckboxGroupControl) component;
-        checkboxGroupControlCopy.setDelimiter(this.getDelimiter());
+        checkboxGroupControlCopy.setDelimiter(this.delimiter);
 
         if(fieldsetClasses != null) {
-            List<String> fieldsetClassesCopy = Lists.newArrayListWithExpectedSize(getFieldsetClasses().size());
-            for(String fieldsetClass : fieldsetClasses)   {
-                fieldsetClassesCopy.add(fieldsetClass);
-            }
-            checkboxGroupControlCopy.setFieldsetClasses(fieldsetClassesCopy);
+            checkboxGroupControlCopy.setFieldsetClasses(new ArrayList<String>(this.fieldsetClasses));
         }
     }
 }

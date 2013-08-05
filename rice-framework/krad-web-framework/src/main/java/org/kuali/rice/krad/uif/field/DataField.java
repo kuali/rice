@@ -774,7 +774,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return Inquiry field inquiry
      */
-    @BeanTagAttribute(name = "inguiry", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "inquiry", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Inquiry getInquiry() {
         return this.inquiry;
     }
@@ -1215,11 +1215,22 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
         }
 
         dataFieldCopy.setDefaultValue(this.defaultValue);
+
+        if (this.defaultValues != null) {
+            dataFieldCopy.setDefaultValues(this.defaultValues);
+        }
+
         dataFieldCopy.setDictionaryAttributeName(this.dictionaryAttributeName);
         dataFieldCopy.setDictionaryObjectEntry(this.dictionaryObjectEntry);
+        dataFieldCopy.setEnableAutoInquiry(this.enableAutoInquiry);
         dataFieldCopy.setEscapeHtmlInPropertyValue(this.escapeHtmlInPropertyValue);
         dataFieldCopy.setForcedValue(this.forcedValue);
         dataFieldCopy.setMultiLineReadOnlyDisplay(this.multiLineReadOnlyDisplay);
+
+        if (this.propertyEditor != null) {
+            dataFieldCopy.setPropertyEditor(this.propertyEditor);
+        }
+
         dataFieldCopy.setPropertyName(this.propertyName);
 
         if (this.propertyNamesForAdditionalDisplay != null) {

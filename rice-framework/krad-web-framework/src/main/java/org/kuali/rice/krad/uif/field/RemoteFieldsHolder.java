@@ -286,16 +286,16 @@ public class RemoteFieldsHolder extends ComponentBase implements DataBinding {
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         RemoteFieldsHolder remoteFieldsHolderCopy = (RemoteFieldsHolder) component;
-        remoteFieldsHolderCopy.setPropertyName(this.getPropertyName());
+        remoteFieldsHolderCopy.setPropertyName(this.propertyName);
 
         if(this.bindingInfo != null) {
-            remoteFieldsHolderCopy.setBindingInfo((BindingInfo)this.getBindingInfo().copy());
+            remoteFieldsHolderCopy.setBindingInfo((BindingInfo)this.bindingInfo.copy());
         }
 
-        remoteFieldsHolderCopy.setFetchingMethodToCall(this.getFetchingMethodToCall());
+        remoteFieldsHolderCopy.setFetchingMethodToCall(this.fetchingMethodToCall);
 
         if(this.fetchingMethodInvoker != null) {
-            this.setFetchingMethodInvoker((MethodInvokerConfig)this.getFetchingMethodInvoker().copy());
+            this.setFetchingMethodInvoker((MethodInvokerConfig)this.fetchingMethodInvoker.copy());
         }
     }
 

@@ -31,6 +31,11 @@
     display: none;
 }
 
+
+.ui-widget-content a {
+    color: #1150b0/*{fcContent}*/;
+}
+
 /*********** Home styles *******************************************************/
 .demo-sampleAppHomeView {
     margin-bottom: -8px;
@@ -97,6 +102,7 @@
     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
     filter: progid:dximagetransform.microsoft.gradient(startColorstr = '#fffbb450', endColorstr = '#fff89406', GradientType = 0);
     filter: progid:dximagetransform.microsoft.gradient(enabled = false);
+    margin-top: 20px;
 }
 
 .demo-tryItButton:hover, .demo-tryItButton:focus {
@@ -261,7 +267,7 @@
 .demo-componentLibView .demo-sampleAppPage .uif-pageHeader select {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
-    width: 120px;
+    width: 220px;
 }
 
 .uif-page > .uif-header-contentWrapper{
@@ -387,10 +393,11 @@
 
 
 .ui-widget-header {
-   
+
     background: #ffffff /*{bgColorHeader}*/ url("");
-   
+
 }
+
 
 
 
@@ -1033,3 +1040,30 @@ div#Demo-BoxLayoutManager-View .demo-borderBottom{
     border-right: 1px solid black;
     margin-right: -1px;
 }
+
+table.dataTable tr.demo-all {
+    color: white;
+    font-weight: bold;
+}
+
+table.dataTable tr.demo-all td {
+    background-color: transparent !important;
+}
+
+table.dataTable tr.demo-even {
+    background-color: #00CC66;
+}
+
+table.dataTable tr.demo-odd {
+    background-color: #00CCFF;
+}
+
+table.dataTable tr.demo-index2 {
+    background-color: #F4E271;
+}
+
+table.dataTable tr.demo-rowCondition {
+    font-style: italic;
+}
+
+

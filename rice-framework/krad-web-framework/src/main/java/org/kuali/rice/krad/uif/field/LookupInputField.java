@@ -105,7 +105,7 @@ public class LookupInputField extends InputField {
      *
      * @param attributeDefinition AttributeDefinition instance the property values should be copied from
      * @see DataField#copyFromAttributeDefinition(org.kuali.rice.krad.uif.view.View,
-     * org.kuali.rice.krad.datadictionary.AttributeDefinition)
+     *      org.kuali.rice.krad.datadictionary.AttributeDefinition)
      */
     @Override
     public void copyFromAttributeDefinition(View view, AttributeDefinition attributeDefinition) {
@@ -187,7 +187,7 @@ public class LookupInputField extends InputField {
     /**
      * @return the treatWildcardsAndOperatorsAsLiteral
      */
-    @BeanTagAttribute(name="disableWildcardsAndOperators")
+    @BeanTagAttribute(name = "disableWildcardsAndOperators")
     public boolean isDisableWildcardsAndOperators() {
         return this.disableWildcardsAndOperators;
     }
@@ -205,7 +205,7 @@ public class LookupInputField extends InputField {
      *
      * @return boolean true if all option should be added, false if not
      */
-    @BeanTagAttribute(name="addControlSelectAllOption")
+    @BeanTagAttribute(name = "addControlSelectAllOption")
     public boolean isAddControlSelectAllOption() {
         return addControlSelectAllOption;
     }
@@ -261,9 +261,10 @@ public class LookupInputField extends InputField {
      * @param searchCriteria the search criteria to be filtered
      * @return the filteredSearchCriteria
      */
-    public Map<String, String> filterSearchCriteria( Map<String, String> searchCriteria) {
+    public Map<String, String> filterSearchCriteria(Map<String, String> searchCriteria) {
         if (getControl() instanceof FilterableLookupCriteriaControl) {
-            return ((FilterableLookupCriteriaControl) getControl()).filterSearchCriteria(getPropertyName(), searchCriteria);
+            return ((FilterableLookupCriteriaControl) getControl()).filterSearchCriteria(getPropertyName(),
+                    searchCriteria);
         } else {
             return searchCriteria;
         }
@@ -276,10 +277,10 @@ public class LookupInputField extends InputField {
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         LookupInputField lookupInputFieldCopy = (LookupInputField) component;
-        lookupInputFieldCopy.setDisableWildcardsAndOperators(this.isDisableWildcardsAndOperators());
-        lookupInputFieldCopy.setAddControlSelectAllOption(this.isAddControlSelectAllOption());
-        lookupInputFieldCopy.setTriggerOnChange(this.isTriggerOnChange());
-        lookupInputFieldCopy.setRanged(this.isRanged());
+        lookupInputFieldCopy.setDisableWildcardsAndOperators(this.disableWildcardsAndOperators);
+        lookupInputFieldCopy.setAddControlSelectAllOption(this.addControlSelectAllOption);
+        lookupInputFieldCopy.setTriggerOnChange(this.triggerOnChange);
+        lookupInputFieldCopy.setRanged(this.ranged);
     }
 
     /**

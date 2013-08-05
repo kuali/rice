@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -46,6 +45,7 @@ import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.RichTable;
 import org.kuali.rice.krad.uif.widget.Tooltip;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
@@ -380,7 +380,9 @@ public class LightTable extends Group implements DataBinding {
             }
 
             // get rowCss class
-            String rowCss = getRowCss(expandedContext, lineIndex, expressionEvaluator);
+            boolean isOdd = lineIndex % 2 == 0;
+            String rowCss = KRADUtils.generateRowCssClassString(conditionalRowCssClasses, lineIndex, isOdd,
+                    expandedContext, expressionEvaluator);
 
             row = row.replace("\"", "\\\"");
             row = row.replace(ROW_CLASS, rowCss);
@@ -396,7 +398,7 @@ public class LightTable extends Group implements DataBinding {
 
         StringBuffer tableToolsColumnOptions = new StringBuffer("[");
         for (int index = 0; index < this.getItems().size(); index++) {
-            String colOptions = richTable.constructTableColumnOptions(index, true, String.class, null);
+            String colOptions = richTable.constructTableColumnOptions(index, true, false, String.class, null);
             tableToolsColumnOptions.append(colOptions + " , ");
         }
 
@@ -414,38 +416,6 @@ public class LightTable extends Group implements DataBinding {
         //make sure deferred rendering is forced whether set or not
         richTable.getTemplateOptions().put(UifConstants.TableToolsKeys.DEFER_RENDER,
                 UifConstants.TableToolsValues.TRUE);
-    }
-
-    /**
-     * Get the rowCss for the line specified, by evaluating the conditionalRowCssClasses map for this row
-     *
-     * @param context the expression context for the line
-     * @param lineIndex the line index
-     * @param expressionEvaluator the expression evaluator
-     * @return the row css classes
-     */
-    private String getRowCss(Map<String, Object> context, int lineIndex, ExpressionEvaluator expressionEvaluator) {
-        String rowCss = "";
-        for (String cssRule : conditionalRowCssClasses.keySet()) {
-            if (cssRule.startsWith(UifConstants.EL_PLACEHOLDER_PREFIX)) {
-
-                String outcome = expressionEvaluator.evaluateExpressionTemplate(context, cssRule);
-                if (outcome != null && Boolean.parseBoolean(outcome)) {
-                    rowCss = rowCss + " " + conditionalRowCssClasses.get(cssRule);
-                }
-            } else if (cssRule.equals(UifConstants.RowSelection.ALL)) {
-                rowCss = rowCss + " " + conditionalRowCssClasses.get(cssRule);
-            } else if (cssRule.equals(UifConstants.RowSelection.EVEN) && lineIndex % 2 == 1) {
-                rowCss = rowCss + " " + conditionalRowCssClasses.get(cssRule);
-            } else if (cssRule.equals(UifConstants.RowSelection.ODD) && lineIndex % 2 == 0) {
-                rowCss = rowCss + " " + conditionalRowCssClasses.get(cssRule);
-            } else if (StringUtils.isNumeric(cssRule) && (lineIndex + 1) == Integer.parseInt(cssRule)) {
-                rowCss = rowCss + " " + conditionalRowCssClasses.get(cssRule);
-            }
-        }
-        rowCss = StringUtils.removeStart(rowCss, " ");
-
-        return rowCss;
     }
 
     /**
@@ -777,7 +747,6 @@ public class LightTable extends Group implements DataBinding {
     }
 
     /**
-     * The current column value
      *
      * @return the current column value
      */
@@ -805,13 +774,15 @@ public class LightTable extends Group implements DataBinding {
         lightTableCopy.setPropertyName(this.getPropertyName());
 
         if (this.bindingInfo != null) {
-            lightTableCopy.setBindingInfo((BindingInfo) this.bindingInfo.copy());
+            lightTableCopy.setBindingInfo((BindingInfo) this.getBindingInfo().copy());
         }
 
         if (headerLabels != null) {
-            List<Label> headerLabelsCopy = Lists.newArrayListWithExpectedSize(headerLabels.size());
+            List<Label> headerLabelsCopy = new ArrayList<Label>();
             for (Label headerLabel : headerLabels) {
-                headerLabelsCopy.add((Label) headerLabel.copy());
+                if (headerLabel != null) {
+                    headerLabelsCopy.add((Label) headerLabel.copy());
+                }
             }
             lightTableCopy.setHeaderLabels(headerLabelsCopy);
         }
@@ -821,9 +792,8 @@ public class LightTable extends Group implements DataBinding {
         }
 
         if (expressionConversionMap != null) {
-            Map<String, String> expressionConversionMapCopy = Maps.newHashMapWithExpectedSize(
-                    this.getExpressionConversionMap().size());
-            for (Map.Entry expressionConversionMapEntry : getExpressionConversionMap().entrySet()) {
+            Map<String, String> expressionConversionMapCopy = new HashMap<String, String>();
+            for (Map.Entry expressionConversionMapEntry : expressionConversionMap.entrySet()) {
                 expressionConversionMapCopy.put(expressionConversionMapEntry.getKey().toString(),
                         expressionConversionMapEntry.getValue().toString());
             }
@@ -831,9 +801,8 @@ public class LightTable extends Group implements DataBinding {
         }
 
         if (renderIdExpressionMap != null) {
-            Map<String, String> renderIdExpressionMapCopy = Maps.newHashMapWithExpectedSize(
-                    this.getRenderIdExpressionMap().size());
-            for (Map.Entry renderIdExpressionMapEntry : getRenderIdExpressionMap().entrySet()) {
+            Map<String, String> renderIdExpressionMapCopy = new HashMap<String, String>();
+            for (Map.Entry renderIdExpressionMapEntry : renderIdExpressionMap.entrySet()) {
                 renderIdExpressionMapCopy.put(renderIdExpressionMapEntry.getKey().toString(),
                         renderIdExpressionMapEntry.getValue().toString());
             }
@@ -845,8 +814,7 @@ public class LightTable extends Group implements DataBinding {
         }
 
         if (this.conditionalRowCssClasses != null) {
-            lightTableCopy.setConditionalRowCssClasses(new HashMap<String, String>(
-                    this.conditionalRowCssClasses));
+            lightTableCopy.setConditionalRowCssClasses(new HashMap<String, String>(this.conditionalRowCssClasses));
         }
 
         lightTableCopy.setEmptyTable(this.isEmptyTable());

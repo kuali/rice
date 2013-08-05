@@ -33,6 +33,7 @@ public class UifParameters {
     public static final String CONVERSION_FIELDS = "conversionFields";
     public static final String CONFIG_PROPERTIES = "ConfigProperties";
 	public static final String DATA_OBJECT_CLASS_NAME = "dataObjectClassName";
+    public static final String DATA_TABLES_PAGING_HELPER = "DataTablesPagingHelper";
 	public static final String RENDER_SEARCH_BUTTONS = "renderSearchButtons";
     public static final String DOCUMENT_CLASS = "documentClass";
     public static final String DOC_NUM = "docNum";
@@ -76,4 +77,5 @@ public class UifParameters {
     public static final String QUERY_TERM = "queryTerm";
     public static final String UPDATE_COMPONENT_ID = "updateComponentId";
     public static final String REQUESTED_FORM_KEY = "requestedFormKey";
+    public static final String MESSAGE_TO_DISPLAY = "messageToDisplay";
 }

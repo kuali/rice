@@ -107,8 +107,8 @@ public class Inquiry extends WidgetBase {
 
         // Do checks for inquiry when read only
         if (isParentReadOnly()) {
-            if (StringUtils.isBlank(((DataField) parent).getBindingInfo().getBindingPath())
-                    || ((DataField) parent).getBindingInfo().getBindingPath().equals("null")) {
+            if (StringUtils.isBlank(((DataField) parent).getBindingInfo().getBindingPath()) || ((DataField) parent)
+                    .getBindingInfo().getBindingPath().equals("null")) {
                 return;
             }
 
@@ -217,8 +217,8 @@ public class Inquiry extends WidgetBase {
 
         urlParameters.setProperty(UifParameters.DATA_OBJECT_CLASS_NAME, inquiryObjectClass.getName());
         urlParameters.setProperty(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.START);
-        if(StringUtils.isNotBlank(this.viewName)){
-          urlParameters.setProperty(UifParameters.VIEW_NAME, this.viewName);
+        if (StringUtils.isNotBlank(this.viewName)) {
+            urlParameters.setProperty(UifParameters.VIEW_NAME, this.viewName);
         }
 
         // add inquiry specific parms to url
@@ -381,7 +381,7 @@ public class Inquiry extends WidgetBase {
      *
      * @return inquiry base URL
      */
-    @BeanTagAttribute(name="baseInquiryUrl")
+    @BeanTagAttribute(name = "baseInquiryUrl")
     public String getBaseInquiryUrl() {
         return this.baseInquiryUrl;
     }
@@ -406,7 +406,7 @@ public class Inquiry extends WidgetBase {
      *
      * @return inquiry class name
      */
-    @BeanTagAttribute(name="dataObjectClassName")
+    @BeanTagAttribute(name = "dataObjectClassName")
     public String getDataObjectClassName() {
         return this.dataObjectClassName;
     }
@@ -431,7 +431,7 @@ public class Inquiry extends WidgetBase {
      * identify the inquiry view
      * </p>
      */
-    @BeanTagAttribute(name="viewName")
+    @BeanTagAttribute(name = "viewName")
     public String getViewName() {
         return this.viewName;
     }
@@ -457,7 +457,7 @@ public class Inquiry extends WidgetBase {
      *
      * @return mapping of calling view properties to inquiry data object properties
      */
-    @BeanTagAttribute(name="inquiryParameters",type= BeanTagAttribute.AttributeType.MAPVALUE)
+    @BeanTagAttribute(name = "inquiryParameters", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getInquiryParameters() {
         return this.inquiryParameters;
     }
@@ -477,7 +477,7 @@ public class Inquiry extends WidgetBase {
      *
      * @return the inquiry link
      */
-    @BeanTagAttribute(name="inquiryLink",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "inquiryLink", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Link getInquiryLink() {
         return this.inquiryLink;
     }
@@ -496,7 +496,7 @@ public class Inquiry extends WidgetBase {
      *
      * @return the directInquiryAction
      */
-    @BeanTagAttribute(name="directInquiryAction",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "directInquiryAction", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Action getDirectInquiryAction() {
         return this.directInquiryAction;
     }
@@ -515,7 +515,7 @@ public class Inquiry extends WidgetBase {
      *
      * @return true if the direct inquiry should be rendered, false if not
      */
-    @BeanTagAttribute(name="enableDirectInquiry")
+    @BeanTagAttribute(name = "enableDirectInquiry")
     public boolean isEnableDirectInquiry() {
         return enableDirectInquiry;
     }
@@ -530,7 +530,7 @@ public class Inquiry extends WidgetBase {
     }
 
     /**
-     *  Determines whether a normal or direct inquiry should be enabled
+     * Determines whether a normal or direct inquiry should be enabled
      *
      * @return true if parent component is read only, false otherwise
      */
@@ -552,7 +552,7 @@ public class Inquiry extends WidgetBase {
     }
 
     /**
-     *  Determines whether inquiry parameters adjusted
+     * Determines whether inquiry parameters adjusted
      *
      * @return true if adjusted
      */
@@ -596,22 +596,22 @@ public class Inquiry extends WidgetBase {
         inquiryCopy.setBaseInquiryUrl(this.getBaseInquiryUrl());
         inquiryCopy.setDataObjectClassName(this.getDataObjectClassName());
         inquiryCopy.setViewName(this.getViewName());
-        inquiryCopy.setInquiryLink(this.getInquiryLink());
-        inquiryCopy.setDirectInquiryAction(this.getDirectInquiryAction());
+        inquiryCopy.setInquiryLink((Link) this.getInquiryLink().copy());
+        inquiryCopy.setDirectInquiryAction((Action) this.getDirectInquiryAction().copy());
         inquiryCopy.setEnableDirectInquiry(this.isEnableDirectInquiry());
         inquiryCopy.setAdjustInquiryParameters(this.isAdjustInquiryParameters());
         inquiryCopy.setParentReadOnly(this.isParentReadOnly());
 
-        if(inquiryParameters != null) {
+        if (inquiryParameters != null) {
             Map<String, String> inquiryParametersCopy = Maps.newHashMapWithExpectedSize(inquiryParameters.size());
-                for(Map.Entry inquiryParameter : inquiryParameters.entrySet()) {
-                    inquiryParametersCopy.put(inquiryParameter.getKey().toString(),inquiryParameter.getValue().toString());
-                }
+            for (Map.Entry inquiryParameter : inquiryParameters.entrySet()) {
+                inquiryParametersCopy.put(inquiryParameter.getKey().toString(), inquiryParameter.getValue().toString());
+            }
             inquiryCopy.setInquiryParameters(inquiryParametersCopy);
         }
 
-        if(fieldBindingInfo != null) {
-            inquiryCopy.setFieldBindingInfo((BindingInfo)fieldBindingInfo.copy());
+        if (fieldBindingInfo != null) {
+            inquiryCopy.setFieldBindingInfo((BindingInfo) fieldBindingInfo.copy());
         }
     }
 }

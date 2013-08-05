@@ -16,12 +16,14 @@
 package org.kuali.rice.krad.uif.control;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.PersonService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
@@ -35,8 +37,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Represents a user control, which is a special control to handle
- * the input of a Person
+ * Represents a user control, which is a special control to handle the input of a Person
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -72,12 +73,16 @@ public class UserControl extends TextControl implements FilterableLookupCriteria
             if (StringUtils.isNotBlank(personNamePropertyName)) {
                 field.getPropertyNamesForAdditionalDisplay().add(personNamePropertyName);
             } else {
-                field.getPropertyNamesForAdditionalDisplay().add(personObjectPropertyName + ".name");
+                field.getPropertyNamesForAdditionalDisplay().add(
+                        personObjectPropertyName + "." + KimConstants.AttributeConstants.NAME);
             }
 
             // setup script to clear id field when name is modified
             String idPropertyPath = field.getBindingInfo().getPropertyAdjustedBindingPath(principalIdPropertyName);
-            String onChangeScript = "setValue('" + ScriptUtils.escapeName(idPropertyPath) + "','');";
+            String onChangeScript = UifConstants.JsFunctions.SET_VALUE
+                    + "('"
+                    + ScriptUtils.escapeName(idPropertyPath)
+                    + "','');";
 
             if (StringUtils.isNotBlank(getOnChangeScript())) {
                 onChangeScript = getOnChangeScript() + onChangeScript;
@@ -89,7 +94,8 @@ public class UserControl extends TextControl implements FilterableLookupCriteria
             if (StringUtils.isNotBlank(personNamePropertyName)) {
                 field.setReadOnlyDisplaySuffixPropertyName(personNamePropertyName);
             } else {
-                field.setReadOnlyDisplaySuffixPropertyName(personObjectPropertyName + ".name");
+                field.setReadOnlyDisplaySuffixPropertyName(
+                        personObjectPropertyName + "." + KimConstants.AttributeConstants.NAME);
             }
         }
 
@@ -103,29 +109,30 @@ public class UserControl extends TextControl implements FilterableLookupCriteria
         attributeQuery.setQueryMethodInvokerConfig(methodInvokerConfig);
         attributeQuery.setQueryMethodToCall("getPersonByPrincipalName");
         attributeQuery.getQueryMethodArgumentFieldList().add(field.getPropertyName());
-        attributeQuery.getReturnFieldMapping().put("principalId", principalIdPropertyName);
+        attributeQuery.getReturnFieldMapping().put(KimConstants.AttributeConstants.PRINCIPAL_ID,
+                principalIdPropertyName);
 
         if (StringUtils.isNotBlank(personNamePropertyName)) {
-            attributeQuery.getReturnFieldMapping().put("name", personNamePropertyName);
+            attributeQuery.getReturnFieldMapping().put(KimConstants.AttributeConstants.NAME, personNamePropertyName);
         } else {
-            attributeQuery.getReturnFieldMapping().put("name", personObjectPropertyName + ".name");
+            attributeQuery.getReturnFieldMapping().put(KimConstants.AttributeConstants.NAME,
+                    personObjectPropertyName + "." + KimConstants.AttributeConstants.NAME);
         }
         field.setAttributeQuery(attributeQuery);
 
-//        // TODO: revisit this, need to hook new quickfinder into lifecycle
-//        buildUserQuickfinder(view, field);
+        buildUserQuickfinder(view, model, field);
     }
 
     /**
      * @see FilterableLookupCriteriaControl#filterSearchCriteria(String, java.util.Map)
      */
     @Override
-    public Map<String, String>  filterSearchCriteria(String propertyName, Map<String, String> searchCriteria) {
+    public Map<String, String> filterSearchCriteria(String propertyName, Map<String, String> searchCriteria) {
         Map<String, String> filteredSearchCriteria = new HashMap<String, String>(searchCriteria);
 
         // check valid principalName
         // ToDo: move the principalId check and setting to the validation stage.  At that point the personName should
-        //       be set as well or an error be displayed to the user that the principalName is invalid.
+        // be set as well or an error be displayed to the user that the principalName is invalid.
         String principalName = searchCriteria.get(propertyName);
         if (StringUtils.isNotBlank(principalName)) {
             Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalName);
@@ -147,21 +154,25 @@ public class UserControl extends TextControl implements FilterableLookupCriteria
      * Configures the field's quickfinder for a user lookup
      *
      * @param view view instance that contains the field
+     * @param model object containing the view's data
      * @param field field instance the quickfinder should be associated with
      */
-    protected void buildUserQuickfinder(View view, InputField field) {
+    protected void buildUserQuickfinder(View view, Object model, InputField field) {
         QuickFinder quickFinder = field.getQuickfinder();
 
-        // if they explicity turned off the quickfinder we will not build it
+        // if they explicitly turned off the quickfinder we will not build it
         if ((quickFinder != null) && !quickFinder.isRender()) {
             return;
         }
 
+        boolean quickfinderCreated = false;
         if (quickFinder == null) {
             quickFinder = ComponentFactory.getQuickFinder();
             view.assignComponentIds(quickFinder);
 
             field.setQuickfinder(quickFinder);
+
+            quickfinderCreated = true;
         }
 
         if (StringUtils.isBlank(quickFinder.getDataObjectClassName())) {
@@ -169,15 +180,25 @@ public class UserControl extends TextControl implements FilterableLookupCriteria
         }
 
         if (quickFinder.getFieldConversions().isEmpty()) {
-            quickFinder.getFieldConversions().put("principalId", principalIdPropertyName);
+            quickFinder.getFieldConversions().put(KimConstants.AttributeConstants.PRINCIPAL_ID,
+                    principalIdPropertyName);
 
             if (StringUtils.isNotBlank(personNamePropertyName)) {
-                quickFinder.getFieldConversions().put("name", personNamePropertyName);
+                quickFinder.getFieldConversions().put(KimConstants.AttributeConstants.NAME, personNamePropertyName);
             } else {
-                quickFinder.getFieldConversions().put("name", personObjectPropertyName + ".name");
+                quickFinder.getFieldConversions().put(KimConstants.AttributeConstants.NAME,
+                        personObjectPropertyName + "." + KimConstants.AttributeConstants.NAME);
             }
 
-            quickFinder.getFieldConversions().put("principalName", field.getPropertyName());
+            quickFinder.getFieldConversions().put(KimConstants.AttributeConstants.PRINCIPAL_NAME,
+                    field.getPropertyName());
+        }
+
+        // if we created the quickfinder here it will have missed the initialize and apply model phase (it
+        // will be attached to the field for finalize)
+        if (quickfinderCreated) {
+            view.getViewHelperService().spawnSubLifecyle(view, model, quickFinder, field,
+                    UifConstants.ViewPhases.INITIALIZE, UifConstants.ViewPhases.APPLY_MODEL);
         }
     }
 
@@ -186,7 +207,7 @@ public class UserControl extends TextControl implements FilterableLookupCriteria
      *
      * @return principalIdPropertyName
      */
-    @BeanTagAttribute(name="principalIdPropertyName")
+    @BeanTagAttribute(name = "principalIdPropertyName")
     public String getPrincipalIdPropertyName() {
         return principalIdPropertyName;
     }
@@ -205,7 +226,7 @@ public class UserControl extends TextControl implements FilterableLookupCriteria
      *
      * @return personNamePropertyName
      */
-    @BeanTagAttribute(name="personNamePropertyName")
+    @BeanTagAttribute(name = "personNamePropertyName")
     public String getPersonNamePropertyName() {
         return personNamePropertyName;
     }
@@ -224,7 +245,7 @@ public class UserControl extends TextControl implements FilterableLookupCriteria
      *
      * @return personObjectPropertyName
      */
-    @BeanTagAttribute(name="personObjectPropertyName")
+    @BeanTagAttribute(name = "personObjectPropertyName")
     public String getPersonObjectPropertyName() {
         return personObjectPropertyName;
     }
@@ -238,16 +259,17 @@ public class UserControl extends TextControl implements FilterableLookupCriteria
         this.personObjectPropertyName = personObjectPropertyName;
     }
 
-
     /**
      * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
      */
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         UserControl userControlCopy = (UserControl) component;
-        userControlCopy.setPrincipalIdPropertyName(this.getPrincipalIdPropertyName());
-        userControlCopy.setPersonNamePropertyName(this.getPersonNamePropertyName());
-        userControlCopy.setPersonObjectPropertyName(this.getPersonObjectPropertyName());
+
+        userControlCopy.setPrincipalIdPropertyName(this.principalIdPropertyName);
+        userControlCopy.setPersonNamePropertyName(this.personNamePropertyName);
+        userControlCopy.setPersonObjectPropertyName(this.personObjectPropertyName);
     }
 }

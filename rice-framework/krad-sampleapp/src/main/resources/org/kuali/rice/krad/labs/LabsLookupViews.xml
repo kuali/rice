@@ -145,7 +145,7 @@
 
   <bean id="LabsLookup-CriteriaFooterView" parent="LabsLookup-DefaultView">
     <property name="viewName" value="LabsLookup-CriteriaFooterView"/>
-    <property name="headerText" value="Lookup Sample without create new button in the criteria footer"/>
+    <property name="headerText" value="Lookup Sample with create-new button in the criteria footer"/>
     <property name="criteriaGroup.footer">
       <bean parent="Uif-LookupCriteriaFooter">
         <property name="items">

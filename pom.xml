@@ -128,11 +128,10 @@
     <yuicompressor.version>2.4.7</yuicompressor.version>
     <closure.version>v20130603</closure.version>
     <wro4j.version>1.7.0</wro4j.version>
+    <glassfish-javax-json.version>1.0.1</glassfish-javax-json.version>
     <groovy.version>1.8.5</groovy.version>
     <guava.version>11.0</guava.version>
     <eclipselink.version>2.6.0-M1</eclipselink.version>
-    <kuali-mvn.version>1.0.2</kuali-mvn.version>
-    <mail.version>1.4.4</mail.version>
     <jackson.version>1.8.8</jackson.version>
     <javassist.version>3.15.0-GA</javassist.version>
     <javax.inject.version>1</javax.inject.version>
@@ -143,6 +142,7 @@
     <joda-time.version>2.0</joda-time.version>
     <joda-time-jsptags.version>1.1.1</joda-time-jsptags.version>
     <jotm.version>2.1.10</jotm.version>
+    <json-api.version>1.0</json-api.version>
     <jsp-api.version>2.1</jsp-api.version>
     <jsr311-api.version>1.1.1</jsr311-api.version>
 
@@ -154,7 +154,9 @@
 
     <jta.version>1.1</jta.version>
     <junit.version>4.11</junit.version>
+    <kuali-mvn.version>1.0.2</kuali-mvn.version>
     <log4j.version>1.2.16</log4j.version>
+    <mail.version>1.4.4</mail.version>
     <mockito.version>1.9.0</mockito.version>
     <persistence.version>1.0.1.Final</persistence.version>
     <!-- Quartz 1.8.5 appears to cause strange errors in spring on startup,
@@ -432,6 +434,17 @@
     </testResources>
     <pluginManagement>
       <plugins>
+        <plugin>
+          <groupId>org.kuali.maven.plugins</groupId>
+          <artifactId>spring-maven-plugin</artifactId>
+          <dependencies>
+            <dependency>
+              <groupId>commons-io</groupId>
+              <artifactId>commons-io</artifactId>
+              <version>2.4</version>
+            </dependency>
+          </dependencies>
+        </plugin>
         <plugin>
           <artifactId>maven-checkstyle-plugin</artifactId>
           <dependencies>
@@ -1418,6 +1431,12 @@
       </dependency>
 
       <dependency>
+        <groupId>org.glassfish</groupId>
+        <artifactId>javax.json</artifactId>
+        <version>${glassfish-javax-json.version}</version>
+      </dependency>
+
+      <dependency>
         <!--
           KULRICE-7262: Bad jstl version in maven repository
           When we are able to bump this version, go back to the javax.servlet artifact.
@@ -1432,6 +1451,12 @@
         <version>${jstl.version}</version>
         <!-- should be provided scope on newer containers like tomcat 7 -->
         <scope>compile</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>javax.json</groupId>
+        <artifactId>javax.json-api</artifactId>
+        <version>${json-api.version}</version>
       </dependency>
 
       <dependency>
@@ -2201,9 +2226,9 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:svn:https://svn.kuali.org/repos/rice/trunk</connection>
-    <developerConnection>scm:svn:https://svn.kuali.org/repos/rice/trunk</developerConnection>
-    <url>https://svn.kuali.org/repos/rice/trunk</url>
+    <connection>scm:svn:https://svn.kuali.org/repos/rice/branches/rice-2.3</connection>
+    <developerConnection>scm:svn:https://svn.kuali.org/repos/rice/branches/rice-2.3</developerConnection>
+    <url>https://svn.kuali.org/repos/rice/branches/rice-2.3</url>
   </scm>
 
 </project>

@@ -2019,8 +2019,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         componentCopy.setWidth(this.width);
 
         if (componentModifiers != null) {
-            List<ComponentModifier> componentModifiersCopy = Lists.newArrayListWithExpectedSize(
-                    getComponentModifiers().size());
+            List<ComponentModifier> componentModifiersCopy = new ArrayList<ComponentModifier>();
             for (ComponentModifier componentModifer : this.componentModifiers) {
                 componentModifiersCopy.add((ComponentModifier) componentModifer.copy());
             }
@@ -2043,8 +2042,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         }
 
         if (propertyReplacers != null) {
-            List<PropertyReplacer> propertyReplacersCopy = Lists.newArrayListWithExpectedSize(
-                    getPropertyReplacers().size());
+            List<PropertyReplacer> propertyReplacersCopy = new ArrayList<PropertyReplacer>();
             for (PropertyReplacer propertyReplacer : this.propertyReplacers) {
                 propertyReplacersCopy.add((PropertyReplacer) propertyReplacer.copy());
             }

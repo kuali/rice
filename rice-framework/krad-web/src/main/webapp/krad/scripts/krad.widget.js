@@ -621,7 +621,7 @@ function createDatePicker(controlId, options) {
  */
 function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgSrc, expandImgSrc, animationSpeed, renderImage) {
     jQuery(document).ready(function () {
-        var groupToggleLinkId = groupId + "_toggle";
+        var groupToggleLinkId = groupId + kradVariables.ID_SUFFIX.DISCLOSURE_TOGGLE;
 
         var expandImage = "";
         var collapseImage = "";
@@ -634,25 +634,29 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgS
             collapseImage = "<img id='" + groupToggleLinkId + "_col" + "' src='" + collapseImgSrc + "' alt='" + getMessage(kradVariables.MESSAGE_COLLAPSE) + "' class='uif-disclosure-image'/>";
         }
 
-        var content = jQuery("#" + groupId + "_disclosureContent");
+        var content = jQuery("#" + groupId + kradVariables.ID_SUFFIX.DISCLOSURE_CONTENT);
 
         // perform initial open/close and insert toggle link and image
-        //var headerText = jQuery("#" + headerId + " > :header, #" + headerId + " > label").find(".uif-headerText-span");
         var headerText = jQuery("#" + headerId).find(".uif-headerText-span:first");
         if (defaultOpen) {
             content.show();
-            content.attr("data-open", true);
+
+            content.attr(kradVariables.ATTRIBUTES.DATA_OPEN, true);
+
             headerText.prepend(expandImage);
             headerText.prepend(collapseImage);
         }
         else {
             content.hide();
-            content.attr("data-open", false);
+
+            content.attr(kradVariables.ATTRIBUTES.DATA_OPEN, false);
+
             headerText.prepend(collapseImage);
             headerText.prepend(expandImage);
         }
 
-        headerText.wrap("<a data-role='disclosureLink' data-linkfor='" + content.attr("id") + "' href='#' "
+        headerText.wrap("<a data-role=" + kradVariables.DATA_ROLES.DISCLOSURE_LINK + " data-linkfor='"
+                + content.attr("id") + "' href='#' "
                 + "id='" + groupToggleLinkId + "' "
                 + "data-open='" + defaultOpen + "' "
                 + "data-widgetid='" + widgetId + "' "
@@ -665,9 +669,9 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgS
  * Expands all the disclosure divs on the page
  */
 function expandDisclosures() {
-    jQuery("a[data-role='disclosureLink']").each(function () {
+    jQuery("a[data-role='" + kradVariables.DATA_ROLES.DISCLOSURE_LINK + "']").each(function () {
         var contentId = jQuery(this).attr("data-linkfor");
-        if (!jQuery("#" + contentId).data("open")) {
+        if (jQuery("#" + contentId).attr(kradVariables.ATTRIBUTES.DATA_OPEN) == "false") {
             jQuery(this).click();
         }
     });
@@ -677,9 +681,9 @@ function expandDisclosures() {
  * Collapses all the disclosure divs on the page
  */
 function collapseDisclosures() {
-    jQuery("a[data-role='disclosureLink']").each(function () {
+    jQuery("a[data-role='" + kradVariables.DATA_ROLES.DISCLOSURE_LINK + "']").each(function () {
         var contentId = jQuery(this).attr("data-linkfor");
-        if (jQuery("#" + contentId).data("open")) {
+        if (jQuery("#" + contentId).attr(kradVariables.ATTRIBUTES.DATA_OPEN) == "true") {
             jQuery(this).click();
         }
     });
@@ -792,7 +796,8 @@ function createTable(tableId, additionalOptions, groupingOptions) {
 
         // allow table column size recalculation on window resize
         jQuery(window).bind('resize', function () {
-            oTable.fnAdjustColumnSizing();
+            // passing false to avoid copious ajax requests during window resize
+            oTable.fnAdjustColumnSizing(false);
         });
 
         if (groupingOptions) {
@@ -1567,10 +1572,10 @@ function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethod
                 }
 
                 // check for regular fields
-                var infoFieldSpan = jQuery("[name='" + escapeName(returnField) + "']");
-                if (infoFieldSpan.length > 0) {
-                    infoFieldSpan.val(fieldValue);
-                    infoFieldSpan.change();
+                var control = jQuery("[name='" + escapeName(returnField) + "']");
+                if (control.length > 0) {
+                    setValue(returnField, fieldValue);
+                    control.change();
                 }
 
                 // check for info spans
@@ -1578,7 +1583,7 @@ function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethod
                         .replace(/\[/g, "-lbrak-")
                         .replace(/\]/g, "-rbrak-")
                         .replace(/\'/g, "-quot-");
-                infoFieldSpan = jQuery("#" + queryFieldId + "_info_" + returnFieldId);
+                var infoFieldSpan = jQuery("#" + queryFieldId + "_info_" + returnFieldId);
                 if (infoFieldSpan.length > 0) {
                     infoFieldSpan.html(fieldValue);
                 }

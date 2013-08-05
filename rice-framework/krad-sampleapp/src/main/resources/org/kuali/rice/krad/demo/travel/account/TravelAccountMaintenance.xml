@@ -78,6 +78,9 @@
           <property name="headerText" value="Fiscal Officer Accounts"/>
           <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
           <property name="propertyName" value="fiscalOfficer.accounts"/>
+          <property name="collectionLookup">
+            <bean parent="Uif-CollectionQuickFinder"/>
+          </property>
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="number"/>

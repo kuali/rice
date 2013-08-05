@@ -107,6 +107,6 @@ public class RadioGroupControl extends MultiValueControlBase {
             radioGroupControlCopy.setFieldsetClasses(new ArrayList<String>(fieldsetClasses));
         }
 
-        radioGroupControlCopy.setDelimiter(this.getDelimiter());
+        radioGroupControlCopy.setDelimiter(this.delimiter);
     }
 }

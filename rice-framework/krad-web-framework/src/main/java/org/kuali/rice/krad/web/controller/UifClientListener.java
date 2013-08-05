@@ -50,17 +50,17 @@ public class UifClientListener extends UifControllerBase {
      * Invoked from the client when the user is leaving a view (by the portal tabs or other mechanism) to clear
      * the form from session storage
      *
-     * @param formKey - key of form that should be cleared
+     * @param formKeyToClear key of form that should be cleared
      * @return String json success string
      */
     @RequestMapping(params = "methodToCall=clearForm")
     public
     @ResponseBody
-    String clearForm(@RequestParam("formKey") String formKey, HttpServletRequest request,
+    String clearForm(@RequestParam("formKeyToClear") String formKeyToClear, HttpServletRequest request,
             HttpServletResponse response) {
 
         // clear form from session
-        GlobalVariables.getUifFormManager().removeFormWithHistoryFormsByKey(formKey);
+        GlobalVariables.getUifFormManager().removeFormWithHistoryFormsByKey(formKeyToClear);
 
         return "{\"status\":\"success\"}";
     }

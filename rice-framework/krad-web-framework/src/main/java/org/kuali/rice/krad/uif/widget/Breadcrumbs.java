@@ -41,7 +41,7 @@ public class Breadcrumbs extends WidgetBase {
     private boolean usePathBasedBreadcrumbs;
 
     public Breadcrumbs() {
-
+        super();
     }
 
     /**
@@ -65,7 +65,7 @@ public class Breadcrumbs extends WidgetBase {
      *
      * @return the displayBreadcrumbsWhenOne
      */
-    @BeanTagAttribute(name="displayBreadcrumbsWhenOne")
+    @BeanTagAttribute(name = "displayBreadcrumbsWhenOne")
     public boolean isDisplayBreadcrumbsWhenOne() {
         return this.displayBreadcrumbsWhenOne;
     }
@@ -84,7 +84,7 @@ public class Breadcrumbs extends WidgetBase {
      *
      * @return true if using path based breadcrumbs, false otherwise
      */
-    @BeanTagAttribute(name="usePathBasedBreadcrumbs")
+    @BeanTagAttribute(name = "usePathBasedBreadcrumbs")
     public boolean isUsePathBasedBreadcrumbs() {
         return usePathBasedBreadcrumbs;
     }

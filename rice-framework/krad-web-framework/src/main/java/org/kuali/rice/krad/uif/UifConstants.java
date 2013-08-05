@@ -158,8 +158,12 @@ public class UifConstants {
         public static final String ADD_LINE = "_add";
         public static final String CONTROL = "_control";
         public static final String ATTRIBUTE = "_attribute";
+        public static final String COLUMN = "_c";
+        public static final String COLUMN_SORTS = "_columnSorts";
         public static final String COMPARE = "_comp";
         public static final String CONSTRAINT = "_constraint";
+        public static final String DETAIL_LINK = "_detLink";
+        public static final String DETAIL_GROUP = "_detGroup";
         public static final String DIRECT_INQUIRY = "_directinquiry";
         public static final String ERRORS = "_errors";
         public static final String INSTRUCTIONAL = "_instructional";
@@ -210,6 +214,8 @@ public class UifConstants {
     public static class TableToolsKeys {
         public static final String AASORTING = "aaSorting";
         public static final String BAUTO_TYPE = "bAutoType";
+        public static final String BPROCESSING = "bProcessing";
+        public static final String BSERVER_SIDE = "bServerSide";
         public static final String SDOM = "sDom";
         public static final String CELL_CLASS = "sClass";
         public static final String MDATA = "mDataProp";
@@ -236,16 +242,21 @@ public class UifConstants {
         public static final String DOM_SELECT = "dom-select";
         public static final String DOM_CHECK = "dom-checkbox";
         public static final String DOM_RADIO = "dom-radio";
+
+        // sort types:
+
         public static final String NUMERIC = "numeric";
         public static final String STRING = "string";
         public static final String DATE = "kuali_date";
         public static final String PERCENT = "kuali_percent";
         public static final String CURRENCY = "kuali_currency";
         public static final String TIMESTAMP = "kuali_timestamp";
+
         public static final String FALSE = "false";
         public static final String TRUE = "true";
 
         public static final int ADD_ROW_DEFAULT_INDEX = 0;
+        public static final String JSON_TEMPLATE = "dataTablesJson.ftl";
     }
 
     public static class TableLayoutValues {
@@ -311,6 +322,8 @@ public class UifConstants {
     public static final class RoleTypes {
         public static final String CONTROL = "Control";
         public static final String INPUT_FIELD = "InputField";
+        public static final String GROUP = "Group";
+        public static final String ROW_GROUPING = "RowGrouping";
     }
 
     public static final class DataAttributes {
@@ -369,6 +382,7 @@ public class UifConstants {
         public static final String INITIALIZE_VIEW_STATE = "initializeViewState";
         public static final String INITIALIZE_SESSION_TIMERS = "initializeSessionTimers";
         public static final String SET_CONFIG_PARM = "setConfigParam";
+        public static final String SET_VALUE = "setValue";
     }
 
     public static final String EVENT_NAMESPACE = "uif";

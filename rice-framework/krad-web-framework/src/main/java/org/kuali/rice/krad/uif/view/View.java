@@ -287,7 +287,7 @@ public class View extends ContainerBase {
             getDialogs().add(timeoutDialog);
         }
 
-        setupBreadcrumbsAndHistory(model);
+        breadcrumbOptions.setupBreadcrumbs(view, model);
     }
 
     /**
@@ -393,7 +393,7 @@ public class View extends ContainerBase {
         this.setOnDocumentReadyScript(onReadyScript);
 
         // breadcrumb handling
-        finalizeBreadcrumbs(model);
+        breadcrumbOptions.finalizeBreadcrumbs(view, model, this, breadcrumbItem);
 
         // add validation default js options for validation framework to View's data attributes
         Object groupValidationDataDefaults = KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
@@ -401,143 +401,13 @@ public class View extends ContainerBase {
         Object fieldValidationDataDefaults = KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
                 UifConstants.FIELD_VALIDATION_DEFAULTS_MAP_ID);
 
-        this.addDataAttribute(UifConstants.DataAttributes.GROUP_VALIDATION_DEFAULTS,
-                        ScriptUtils.convertToJsValue((Map<String,String>)groupValidationDataDefaults));
-        this.addDataAttribute(UifConstants.DataAttributes.FIELD_VALIDATION_DEFAULTS,
-                ScriptUtils.convertToJsValue((Map<String,String>)fieldValidationDataDefaults));
+        this.addDataAttribute(UifConstants.DataAttributes.GROUP_VALIDATION_DEFAULTS, ScriptUtils.convertToJsValue(
+                (Map<String, String>) groupValidationDataDefaults));
+        this.addDataAttribute(UifConstants.DataAttributes.FIELD_VALIDATION_DEFAULTS, ScriptUtils.convertToJsValue(
+                (Map<String, String>) fieldValidationDataDefaults));
 
         // give view role attribute for js selections
         this.addDataAttribute(UifConstants.DataAttributes.ROLE, "view");
-    }
-
-    /**
-     * Sets up the history and breadcrumb configuration for this View.  Should be called from performInitialization.
-     *
-     * @param model the model
-     */
-    protected void setupBreadcrumbsAndHistory(Object model) {
-        if (model != null && model instanceof UifFormBase) {
-            UifFormBase form = (UifFormBase) model;
-
-            //flow is being tracked if there is a flowKey or the breadcrumbs widget is forcing it
-            boolean usingFlow = StringUtils.isNotBlank(form.getFlowKey()) || (breadcrumbs != null && breadcrumbs
-                    .isUsePathBasedBreadcrumbs());
-
-            //if using flow setup a new HistoryFlow for this view and set into the HistoryManager
-            if (usingFlow && form.getHistoryManager() != null) {
-
-                //use original request form key if present to match history flows stored in map (incase key changed)
-                String formKey = form.getRequestedFormKey();
-                if (StringUtils.isBlank(formKey)) {
-                    formKey = form.getFormKey();
-                    form.setRequestedFormKey(formKey);
-                }
-
-                //get the historyFlow for this view
-                HistoryFlow historyFlow = form.getHistoryManager().process(form.getFlowKey(), formKey,
-                        form.getRequestUrl());
-                if (historyFlow != null) {
-                    form.setHistoryFlow(historyFlow);
-                    form.setFlowKey(historyFlow.getFlowKey());
-                }
-            }
-
-            breadcrumbs.setUsePathBasedBreadcrumbs(usingFlow);
-
-            //get the pastItems from the flow and set them so they can be picked up by the Breadcrumbs widget
-            if (breadcrumbs != null
-                    && breadcrumbs.isUsePathBasedBreadcrumbs()
-                    && form.getHistoryFlow().getPastItems() != null) {
-                List<BreadcrumbItem> pastItems = form.getHistoryFlow().getPastItems();
-
-                ComponentUtils.clearIds(pastItems);
-
-                for (BreadcrumbItem item : pastItems) {
-                    this.assignComponentIds(item);
-                }
-
-                pathBasedBreadcrumbs = pastItems;
-            }
-        }
-
-    }
-
-    /**
-     * Finalize the setup of the BreadcrumbOptions and the BreadcrumbItem for the View.  To be called from the
-     * performFinalize method.
-     *
-     * @param model the model
-     */
-    protected void finalizeBreadcrumbs(Object model) {
-        //set breadcrumbItem label same as the header, if not set
-        if (StringUtils.isBlank(breadcrumbItem.getLabel()) && this.getHeader() != null && !StringUtils.isBlank(
-                this.getHeader().getHeaderText()) && model instanceof UifFormBase) {
-            breadcrumbItem.setLabel(KRADUtils.generateUniqueViewTitle((UifFormBase) model, this));
-        }
-
-        //if label still blank, don't render
-        if (StringUtils.isBlank(breadcrumbItem.getLabel())) {
-            breadcrumbItem.setRender(false);
-        }
-
-        //special breadcrumb request param handling
-        if (breadcrumbItem.getUrl().getControllerMapping() == null
-                && breadcrumbItem.getUrl().getViewId() == null
-                && model instanceof UifFormBase
-                && breadcrumbItem.getUrl().getRequestParameters() == null
-                && ((UifFormBase) model).getInitialRequestParameters() != null) {
-            //add the current request parameters if controllerMapping, viewId, and requestParams are null
-            //(this means that no explicit breadcrumbItem customization was set)
-            Map<String, String> requestParameters = ((UifFormBase) model).getInitialRequestParameters();
-
-            //remove ajax properties because breadcrumb should always be a full view request
-            requestParameters.remove("ajaxReturnType");
-            requestParameters.remove("ajaxRequest");
-
-            //remove pageId so we can use special handling
-            requestParameters.remove("pageId");
-
-            breadcrumbItem.getUrl().setRequestParameters(requestParameters);
-        }
-
-        //form key handling
-        if (breadcrumbItem.getUrl().getFormKey() == null
-                && model instanceof UifFormBase
-                && ((UifFormBase) model).getFormKey() != null) {
-            breadcrumbItem.getUrl().setFormKey(((UifFormBase) model).getFormKey());
-        }
-
-        //automatically set breadcrumbItem UifUrl properties if not set
-        if (breadcrumbItem.getUrl().getControllerMapping() == null && model instanceof UifFormBase) {
-            breadcrumbItem.getUrl().setControllerMapping(((UifFormBase) model).getControllerMapping());
-        }
-
-        if (breadcrumbItem.getUrl().getViewId() == null) {
-            breadcrumbItem.getUrl().setViewId(this.getId());
-        }
-
-        //explicitly set the page to default for the view breadcrumb when not using path based (path based will pick
-        //up the breadcrumb pageId from the form data automatically)
-        if (breadcrumbItem.getUrl().getPageId() == null && !breadcrumbs.isUsePathBasedBreadcrumbs()) {
-            //set breadcrumb to default to the default page if an explicit page id for view breadcrumb is not set
-            if (this.getEntryPageId() != null) {
-                breadcrumbItem.getUrl().setPageId(this.getEntryPageId());
-            } else if (isSinglePageView() && this.getPage() != null) {
-                //single page
-                breadcrumbItem.getUrl().setPageId(this.getPage().getId());
-            } else if (!items.isEmpty() && items.get(0) != null) {
-                //multi page
-                breadcrumbItem.getUrl().setPageId(items.get(0).getId());
-            }
-        }
-
-        //add to breadcrumbItem to current items if it is set to use in path based
-        if (model instanceof UifFormBase
-                && breadcrumbOptions != null
-                && ((UifFormBase) model).getHistoryFlow() != null) {
-            ((UifFormBase) model).getHistoryFlow().setCurrentViewItem(this.getBreadcrumbItem());
-        }
-
     }
 
     /**
@@ -2236,11 +2106,11 @@ public class View extends ContainerBase {
         }
 
         if (this.applicationFooter != null) {
-            viewCopy.setApplicationFooter((Group)this.applicationFooter.copy());
+            viewCopy.setApplicationFooter((Group) this.applicationFooter.copy());
         }
 
         if (this.applicationHeader != null) {
-            viewCopy.setApplicationHeader((Header)this.applicationHeader.copy());
+            viewCopy.setApplicationHeader((Header) this.applicationHeader.copy());
         }
 
         viewCopy.setApplyDirtyCheck(this.applyDirtyCheck);
@@ -2250,21 +2120,20 @@ public class View extends ContainerBase {
         }
 
         if (this.breadcrumbs != null) {
-            viewCopy.setBreadcrumbs((Breadcrumbs)this.breadcrumbs.copy());
+            viewCopy.setBreadcrumbs((Breadcrumbs) this.breadcrumbs.copy());
         }
 
         if (this.breadcrumbOptions != null) {
-            viewCopy.setBreadcrumbOptions((BreadcrumbOptions)this.breadcrumbOptions.copy());
+            viewCopy.setBreadcrumbOptions((BreadcrumbOptions) this.breadcrumbOptions.copy());
         }
 
         viewCopy.setCurrentPageId(this.currentPageId);
         viewCopy.setDefaultBindingObjectPath(this.defaultBindingObjectPath);
 
-        if(this.dialogs != null)
-        {
+        if (this.dialogs != null) {
             List<Group> dialogsCopy = Lists.newArrayListWithExpectedSize(this.dialogs.size());
             for (Group dialog : this.dialogs) {
-                dialogsCopy.add((Group)dialog.copy());
+                dialogsCopy.add((Group) dialog.copy());
             }
             viewCopy.setDialogs(dialogsCopy);
         }
@@ -2278,14 +2147,14 @@ public class View extends ContainerBase {
             viewCopy.setExpressionVariables(new HashMap<String, String>(this.expressionVariables));
         }
 
-        if(this.formClass != null) {
+        if (this.formClass != null) {
             viewCopy.setFormClass(this.formClass);
         }
 
         viewCopy.setGrowlMessagingEnabled(this.growlMessagingEnabled);
 
         if (this.growls != null) {
-            viewCopy.setGrowls((Growls)this.growls.copy());
+            viewCopy.setGrowls((Growls) this.growls.copy());
         }
 
         viewCopy.setIdSequence(this.idSequence);
@@ -2294,7 +2163,7 @@ public class View extends ContainerBase {
         viewCopy.setNamespaceCode(this.namespaceCode);
 
         if (this.navigation != null) {
-            viewCopy.setNavigation((Group)this.navigation.copy());
+            viewCopy.setNavigation((Group) this.navigation.copy());
         }
 
         if (this.navigationBlockUI != null) {
@@ -2302,17 +2171,18 @@ public class View extends ContainerBase {
         }
 
         if (this.page != null) {
-            viewCopy.setPage((PageGroup)this.page.copy());
+            viewCopy.setPage((PageGroup) this.page.copy());
         }
 
         if (this.parentLocation != null) {
-            viewCopy.setParentLocation((ParentLocation)this.parentLocation.copy());
+            viewCopy.setParentLocation((ParentLocation) this.parentLocation.copy());
         }
 
-        if(this.pathBasedBreadcrumbs != null) {
-            List<BreadcrumbItem> pathBasedBreadcrumbsCopy = Lists.newArrayListWithExpectedSize(this.pathBasedBreadcrumbs.size());
+        if (this.pathBasedBreadcrumbs != null) {
+            List<BreadcrumbItem> pathBasedBreadcrumbsCopy = Lists.newArrayListWithExpectedSize(
+                    this.pathBasedBreadcrumbs.size());
             for (BreadcrumbItem pathBasedBreadcrumb : this.pathBasedBreadcrumbs) {
-                pathBasedBreadcrumbs.add((BreadcrumbItem)pathBasedBreadcrumb.copy());
+                pathBasedBreadcrumbs.add((BreadcrumbItem) pathBasedBreadcrumb.copy());
             }
             viewCopy.setPathBasedBreadcrumbs(pathBasedBreadcrumbsCopy);
         }
@@ -2335,7 +2205,7 @@ public class View extends ContainerBase {
         viewCopy.setStickyTopGroup(this.stickyTopGroup);
 
         if (this.topGroup != null) {
-            viewCopy.setTopGroup((Group)this.topGroup.copy());
+            viewCopy.setTopGroup((Group) this.topGroup.copy());
         }
 
         viewCopy.setTranslateCodesOnReadOnlyDisplay(this.translateCodesOnReadOnlyDisplay);
@@ -2344,7 +2214,7 @@ public class View extends ContainerBase {
         viewCopy.setViewMenuGroupName(this.viewMenuGroupName);
 
         if (this.viewMenuLink != null) {
-            viewCopy.setViewMenuLink((Link)this.viewMenuLink.copy());
+            viewCopy.setViewMenuLink((Link) this.viewMenuLink.copy());
         }
 
         viewCopy.setViewName(this.viewName);

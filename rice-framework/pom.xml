@@ -38,6 +38,7 @@
     <module>krad-theme-builder</module>
     <module>krad-web</module>
     <module>krad-web-framework</module>
+    <module>krad-theme-builder/src/test/builder</module>
   </modules>
 
 </project>

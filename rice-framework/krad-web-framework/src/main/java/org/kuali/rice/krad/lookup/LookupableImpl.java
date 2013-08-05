@@ -958,7 +958,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         props.put(UifParameters.VIEW_TYPE_NAME, UifConstants.ViewType.MAINTENANCE.name());
 
         String maintenanceMapping = KRADConstants.Maintenance.REQUEST_MAPPING_MAINTENANCE;
-        if (StringUtils.isNotBlank(lookupView.getMaintenanceUrlMapping())) {
+        if (lookupView != null && StringUtils.isNotBlank(lookupView.getMaintenanceUrlMapping())) {
             maintenanceMapping = lookupView.getMaintenanceUrlMapping();
         }
 

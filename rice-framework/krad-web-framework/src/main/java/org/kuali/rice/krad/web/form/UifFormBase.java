@@ -126,7 +126,7 @@ public class UifFormBase implements ViewModel {
     protected boolean ajaxRequest;
     @SessionTransient
     protected String ajaxReturnType;
-
+    @SessionTransient
     private String requestJsonTemplate;
 
     // dialog fields
@@ -202,6 +202,18 @@ public class UifFormBase implements ViewModel {
             String readOnlyFields = request.getParameter(UifParameters.READ_ONLY_FIELDS);
             setReadOnlyFieldsList(KRADUtils.convertStringParameterToList(readOnlyFields));
         }
+
+        // clean parameters from XSS attacks that will be written out as hiddens
+        this.pageId = KRADUtils.stripXSSPatterns(this.pageId);
+        this.methodToCall = KRADUtils.stripXSSPatterns(this.methodToCall);
+        this.formKey = KRADUtils.stripXSSPatterns(this.formKey);
+        this.requestedFormKey = KRADUtils.stripXSSPatterns(this.requestedFormKey);
+        this.flowKey = KRADUtils.stripXSSPatterns(this.flowKey);
+        this.sessionId = KRADUtils.stripXSSPatterns(this.sessionId);
+        this.formPostUrl = KRADUtils.stripXSSPatterns(this.formPostUrl);
+        this.returnLocation = KRADUtils.stripXSSPatterns(this.returnLocation);
+        this.returnFormKey = KRADUtils.stripXSSPatterns(this.returnFormKey);
+        this.requestUrl = KRADUtils.stripXSSPatterns(this.requestUrl);
     }
 
     /**

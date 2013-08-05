@@ -507,37 +507,40 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
     @Override
     protected <T> void copyProperties(T layoutManager) {
         super.copyProperties(layoutManager);
+
         StackedLayoutManager stackedLayoutManagerCopy = (StackedLayoutManager) layoutManager;
+
         stackedLayoutManagerCopy.setSummaryTitle(this.getSummaryTitle());
 
-        if(summaryFields != null) {
+        if (summaryFields != null) {
             stackedLayoutManagerCopy.setSummaryFields(new ArrayList<String>(summaryFields));
         }
 
-        if(this.addLineGroup != null) {
-            stackedLayoutManagerCopy.setAddLineGroup((Group)this.getAddLineGroup().copy());
+        if (this.addLineGroup != null) {
+            stackedLayoutManagerCopy.setAddLineGroup((Group) this.getAddLineGroup().copy());
         }
 
-        if(this.lineGroupPrototype != null) {
-            stackedLayoutManagerCopy.setLineGroupPrototype((Group)this.getLineGroupPrototype().copy());
+        if (this.lineGroupPrototype != null) {
+            stackedLayoutManagerCopy.setLineGroupPrototype((Group) this.getLineGroupPrototype().copy());
         }
 
-        if(this.wrapperGroup != null) {
-            stackedLayoutManagerCopy.setWrapperGroup((Group)this.getWrapperGroup().copy());
+        if (this.wrapperGroup != null) {
+            stackedLayoutManagerCopy.setWrapperGroup((Group) this.getWrapperGroup().copy());
         }
 
-        if(this.subCollectionFieldGroupPrototype != null) {
-            stackedLayoutManagerCopy.setSubCollectionFieldGroupPrototype((FieldGroup)this.getSubCollectionFieldGroupPrototype().copy());
+        if (this.subCollectionFieldGroupPrototype != null) {
+            stackedLayoutManagerCopy.setSubCollectionFieldGroupPrototype(
+                    (FieldGroup) this.getSubCollectionFieldGroupPrototype().copy());
         }
 
-        if(this.selectFieldPrototype != null) {
-            stackedLayoutManagerCopy.setSelectFieldPrototype((Field)this.getSelectFieldPrototype().copy());
+        if (this.selectFieldPrototype != null) {
+            stackedLayoutManagerCopy.setSelectFieldPrototype((Field) this.getSelectFieldPrototype().copy());
         }
 
-        if(this.stackedGroups != null) {
+        if (this.stackedGroups != null) {
             List<Group> stackedGroupsCopy = Lists.newArrayListWithExpectedSize(stackedGroups.size());
-            for(Group stackedGroup : stackedGroups)   {
-                stackedGroupsCopy.add(stackedGroup);
+            for (Group stackedGroup : stackedGroups) {
+                stackedGroupsCopy.add((Group) stackedGroup.copy());
             }
             stackedLayoutManagerCopy.setStackedGroups(stackedGroupsCopy);
         }

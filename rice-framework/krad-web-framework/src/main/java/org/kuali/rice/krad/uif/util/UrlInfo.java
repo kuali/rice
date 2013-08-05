@@ -40,11 +40,14 @@ import java.util.Map;
  * with any necessary tokens to construct a valid url.  If baseUrl is not provided, the url is not valid and a
  * blank string is returned.
  * </p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTag(name = "url-bean", parent = "Uif-Url")
 public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
 
     private static final long serialVersionUID = 3195177614468120958L;
+
     private String href;
     private String originalHref;
     private String baseUrl;
@@ -91,7 +94,7 @@ public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
      *
      * @return the generatedUrl, blank if not a valid url (no baseUrl value provided)
      */
-    private String generateUrl() {
+    protected String generateUrl() {
         String generatedUrl = "";
 
         if (StringUtils.isBlank(baseUrl)) {
@@ -107,8 +110,6 @@ public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
         }
 
         Map<String, String> allRequestParameters = new HashMap<String, String>();
-
-        //build up the request parameters
 
         if (StringUtils.isNotBlank(methodToCall)) {
             allRequestParameters.put(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME, methodToCall);
@@ -154,12 +155,11 @@ public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
      */
     @BeanTagAttribute(name = "href")
     public String getHref() {
-        if (StringUtils.isNotBlank(href)) {
-            return href;
-        } else {
-            href = generateUrl();
-            return href;
+        if (StringUtils.isBlank(this.href)) {
+            this.href = generateUrl();
         }
+
+        return href;
     }
 
     /**
@@ -358,22 +358,25 @@ public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
     @Override
     protected <T> void copyProperties(T dictionaryBaseBean) {
         super.copyProperties(dictionaryBaseBean);
-        UrlInfo urlInfoCopy = (UrlInfo) dictionaryBaseBean;
-        urlInfoCopy.setHref(this.getHref());
-        urlInfoCopy.setOriginalHref(this.getOriginalHref());
-        urlInfoCopy.setBaseUrl(this.getBaseUrl());
-        urlInfoCopy.setControllerMapping(this.getControllerMapping());
-        urlInfoCopy.setViewType(this.getViewType());
-        urlInfoCopy.setViewId(this.getViewId());
-        urlInfoCopy.setPageId(this.getPageId());
-        urlInfoCopy.setFormKey(this.getFormKey());
-        urlInfoCopy.setMethodToCall(this.getMethodToCall());
 
-        if(this.requestParameters != null) {
-            Map<String, String> requestParametersCopy = Maps.newHashMapWithExpectedSize(this.getRequestParameters().size());
-            for(Map.Entry requestParameter : getRequestParameters().entrySet()) {
-                requestParametersCopy.put(requestParameter.getKey().toString(),requestParameter.getValue().toString());
+        UrlInfo urlInfoCopy = (UrlInfo) dictionaryBaseBean;
+
+        urlInfoCopy.setHref(this.href);
+        urlInfoCopy.setOriginalHref(this.originalHref);
+        urlInfoCopy.setBaseUrl(this.baseUrl);
+        urlInfoCopy.setControllerMapping(this.controllerMapping);
+        urlInfoCopy.setViewType(this.viewType);
+        urlInfoCopy.setViewId(this.viewId);
+        urlInfoCopy.setPageId(this.pageId);
+        urlInfoCopy.setFormKey(this.formKey);
+        urlInfoCopy.setMethodToCall(this.methodToCall);
+
+        if (this.requestParameters != null) {
+            Map<String, String> requestParametersCopy = Maps.newHashMapWithExpectedSize(this.requestParameters.size());
+            for (Map.Entry requestParameter : requestParameters.entrySet()) {
+                requestParametersCopy.put(requestParameter.getKey().toString(), requestParameter.getValue().toString());
             }
+
             urlInfoCopy.setExpressionGraph(requestParametersCopy);
         }
     }

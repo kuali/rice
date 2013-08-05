@@ -180,6 +180,11 @@ public class UifFormManager implements Serializable {
             return;
         }
 
+        if (!sessionForm.getClass().isAssignableFrom(requestForm.getClass())) {
+            throw new RuntimeException(
+                    "Session form mismatch, session form class not assignable from request form class");
+        }
+
         List<Field> fields = new ArrayList<Field>();
         fields = DataObjectUtils.getAllFields(fields, sessionForm.getClass(), UifFormBase.class);
         for (Field field : fields) {

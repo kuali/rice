@@ -16,9 +16,6 @@
 <%@ include file="/rice-portal/jsp/sys/riceTldHeader.jsp"%>
 
 <td class="content" valign="top">
-    <mainChannel:sampleTravelApplication />
-</td>
-<td class="content" valign="top">
 <mainChannel:workflow />
 <mainChannel:rules />
 </td>

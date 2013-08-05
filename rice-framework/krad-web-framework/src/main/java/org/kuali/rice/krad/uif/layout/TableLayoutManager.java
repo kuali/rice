@@ -44,6 +44,7 @@ import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.RichTable;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
@@ -269,24 +270,29 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     private void setupGrouping(CollectionGroup collectionGroup, View view) {
         //Grouping setup
         String groupingTitleExpression = "";
-        if (StringUtils.isNotBlank(this.getPropertyExpression("groupingTitle"))) {
-            groupingTitleExpression = this.getPropertyExpression("groupingTitle");
-            this.setGroupingTitle(this.getPropertyExpression("groupingTitle"));
+        if (StringUtils.isNotBlank(this.getPropertyExpression(UifPropertyPaths.GROUPING_TITLE))) {
+            groupingTitleExpression = this.getPropertyExpression(UifPropertyPaths.GROUPING_TITLE);
+            this.setGroupingTitle(this.getPropertyExpression(UifPropertyPaths.GROUPING_TITLE));
         } else if (this.getGroupingPropertyNames() != null) {
 
             for (String propertyName : this.getGroupingPropertyNames()) {
                 groupingTitleExpression = groupingTitleExpression + ", " + propertyName;
             }
 
-            groupingTitleExpression = groupingTitleExpression.replaceFirst(", ", "@{#lp.");
-            groupingTitleExpression = groupingTitleExpression.replace(", ", "}, @{#lp.");
+            groupingTitleExpression = groupingTitleExpression.replaceFirst(", ",
+                    "@{" + UifConstants.LINE_PATH_BIND_ADJUST_PREFIX);
+            groupingTitleExpression = groupingTitleExpression.replace(", ",
+                    "}, @{" + UifConstants.LINE_PATH_BIND_ADJUST_PREFIX);
             groupingTitleExpression = groupingTitleExpression.trim() + "}";
         }
 
         if (StringUtils.isNotBlank(groupingTitleExpression)) {
             MessageField groupingMessageField = ComponentFactory.getColGroupingField();
-            groupingMessageField.getMessage().getPropertyExpressions().put("messageText", groupingTitleExpression);
-            groupingMessageField.setLabel("Group");
+            groupingMessageField.getMessage().getPropertyExpressions().put(UifPropertyPaths.MESSAGE_TEXT,
+                    groupingTitleExpression);
+
+            groupingMessageField.addDataAttribute(UifConstants.DataAttributes.ROLE,
+                    UifConstants.RoleTypes.ROW_GROUPING);
 
             view.assignComponentIds(groupingMessageField);
 
@@ -354,7 +360,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                 Field totalDataField = setupTotalField(cInfo.getTotalField(), cInfo, this.isShowTotal(),
                         this.getTotalLabel(), "total", leftLabelColumnIndex);
 
-                if (!cInfo.isRecalculateTotalClientside()) {
+                if (!cInfo.isRecalculateTotalClientSide()) {
                     totalDataField.addDataAttribute(UifConstants.DataAttributes.SKIP_TOTAL, "true");
                 }
 
@@ -557,48 +563,34 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             this.addStyleClass(CssConstants.Classes.HAS_ADD_LINE);
         }
 
+        // do not allow null rowCss
         if (rowCss == null) {
             rowCss = "";
         }
 
-        int evenRemainder = 0;
-        int oddRemainder = 1;
-        if (!addLineInTable) {
-            evenRemainder = 1;
-            oddRemainder = 0;
-        }
-
-        for (String cssRule : conditionalRowCssClasses.keySet()) {
-            if (cssRule.startsWith(UifConstants.EL_PLACEHOLDER_PREFIX)) {
-                //cssRule = StringUtils.removeStart("@{", cssRule);
-                //cssRule = StringUtils.removeEnd("}", cssRule);
-                Map<String, Object> lineContext = new HashMap<String, Object>();
-                //Object line = ObjectPropertyUtils.getPropertyValue(model, bindingPath);
-
-                lineContext.putAll(this.getContext());
-                lineContext.put(UifConstants.ContextVariableNames.LINE, currentLine);
-                lineContext.put(UifConstants.ContextVariableNames.MANAGER, this);
-                lineContext.put(UifConstants.ContextVariableNames.VIEW, view);
-                lineContext.put(UifConstants.ContextVariableNames.LINE_SUFFIX, idSuffix);
-                lineContext.put(UifConstants.ContextVariableNames.INDEX, new Integer(lineIndex));
-                lineContext.put(UifConstants.ContextVariableNames.COLLECTION_GROUP, collectionGroup);
-                lineContext.put(UifConstants.ContextVariableNames.IS_ADD_LINE, isAddLine && !isSeparateAddLine());
-                lineContext.put(UifConstants.ContextVariableNames.READONLY_LINE, collectionGroup.isReadOnly());
-
-                String outcome = expressionEvaluator.evaluateExpressionTemplate(lineContext, cssRule);
-                if (outcome != null && Boolean.parseBoolean(outcome)) {
-                    rowCss = rowCss + " " + conditionalRowCssClasses.get(cssRule);
-                }
-            } else if (cssRule.equals(UifConstants.RowSelection.ALL)) {
-                rowCss = rowCss + " " + conditionalRowCssClasses.get(cssRule);
-            } else if (cssRule.equals(UifConstants.RowSelection.EVEN) && lineIndex % 2 == evenRemainder) {
-                rowCss = rowCss + " " + conditionalRowCssClasses.get(cssRule);
-            } else if ((cssRule.equals(UifConstants.RowSelection.ODD) && (lineIndex % 2 == oddRemainder
-                    || lineIndex == -1))) {
-                rowCss = rowCss + " " + conditionalRowCssClasses.get(cssRule);
-            } else if (StringUtils.isNumeric(cssRule) && (lineIndex + 1) == Integer.parseInt(cssRule)) {
-                rowCss = rowCss + " " + conditionalRowCssClasses.get(cssRule);
+        // conditionalRowCssClass generation logic, if applicable
+        if (conditionalRowCssClasses != null && !conditionalRowCssClasses.isEmpty()) {
+            int oddRemainder = 1;
+            if (!addLineInTable) {
+                oddRemainder = 0;
             }
+
+            boolean isOdd = lineIndex % 2 == oddRemainder || lineIndex == -1;
+            Map<String, Object> lineContext = new HashMap<String, Object>();
+
+            lineContext.putAll(this.getContext());
+            lineContext.put(UifConstants.ContextVariableNames.LINE, currentLine);
+            lineContext.put(UifConstants.ContextVariableNames.MANAGER, this);
+            lineContext.put(UifConstants.ContextVariableNames.VIEW, view);
+            lineContext.put(UifConstants.ContextVariableNames.LINE_SUFFIX, idSuffix);
+            lineContext.put(UifConstants.ContextVariableNames.INDEX, Integer.valueOf(lineIndex));
+            lineContext.put(UifConstants.ContextVariableNames.COLLECTION_GROUP, collectionGroup);
+            lineContext.put(UifConstants.ContextVariableNames.IS_ADD_LINE, isAddLine && !isSeparateAddLine());
+            lineContext.put(UifConstants.ContextVariableNames.READONLY_LINE, collectionGroup.isReadOnly());
+
+            // get row css based on conditionalRowCssClasses map
+            rowCss = rowCss + " " + KRADUtils.generateRowCssClassString(conditionalRowCssClasses, lineIndex, isOdd,
+                    lineContext, expressionEvaluator);
         }
 
         rowCss = StringUtils.removeStart(rowCss, " ");
@@ -740,13 +732,15 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
             //special handling for grouping field - this field MUST be first
             if (hasGrouping && lineField instanceof MessageField &&
-                    lineField.getDataAttributes().get("role") != null && lineField.getDataAttributes().get("role")
-                    .equals("grouping")) {
+                    lineField.getDataAttributes().get(UifConstants.DataAttributes.ROLE) != null && lineField
+                    .getDataAttributes().get(UifConstants.DataAttributes.ROLE).equals(
+                            UifConstants.RoleTypes.ROW_GROUPING)) {
                 int groupFieldIndex = allRowFields.size() - extraColumns;
                 allRowFields.add(groupFieldIndex, lineField);
                 groupingColumnIndex = 0;
                 if (isAddLine) {
-                    ((MessageField) lineField).getMessage().getPropertyExpressions().remove("messageText");
+                    ((MessageField) lineField).getMessage().getPropertyExpressions().remove(
+                            UifPropertyPaths.MESSAGE_TEXT);
                     ((MessageField) lineField).getMessage().setMessageText("addLine");
                 }
             } else {
@@ -848,22 +842,26 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         // row count needed to determine the row span for the sequence and
         // action fields, since they should span all rows for the line
         int rowCount = calculateNumberOfRows(lineFields);
+
         boolean renderActions = collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly();
+
+        String idSuffix = collectionGroup.getSubCollectionSuffix();
+
         int extraColumns = 0;
 
         if (actionColumnIndex == 1 && renderActions) {
-            addActionHeader(rowCount, 1);
+            addActionHeader(rowCount, idSuffix, 1);
         }
 
         // first column is sequence label (if action column not 1)
         if (renderSequenceField) {
             getSequenceFieldPrototype().setLabelRendered(true);
             getSequenceFieldPrototype().setRowSpan(rowCount);
-            addHeaderField(getSequenceFieldPrototype(), 1);
+            addHeaderField(getSequenceFieldPrototype(), idSuffix, 1);
             extraColumns++;
 
             if (actionColumnIndex == 2 && renderActions) {
-                addActionHeader(rowCount, 2);
+                addActionHeader(rowCount, idSuffix, 2);
             }
         }
 
@@ -871,13 +869,13 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         if (collectionGroup.isIncludeLineSelectionField()) {
             getSelectFieldPrototype().setLabelRendered(true);
             getSelectFieldPrototype().setRowSpan(rowCount);
-            addHeaderField(getSelectFieldPrototype(), 1);
+            addHeaderField(getSelectFieldPrototype(), idSuffix, 1);
             extraColumns++;
 
             if (actionColumnIndex == 3 && renderActions && renderSequenceField) {
-                addActionHeader(rowCount, 3);
+                addActionHeader(rowCount, idSuffix, 3);
             } else if (actionColumnIndex == 2 && renderActions) {
-                addActionHeader(rowCount, 2);
+                addActionHeader(rowCount, idSuffix, 2);
             }
         }
 
@@ -902,22 +900,22 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                     && ((cellPosition % numberOfDataColumns) == 0));
 
             if (insertActionHeader) {
-                addActionHeader(rowCount, cellPosition);
+                addActionHeader(rowCount, idSuffix, cellPosition);
             }
 
             cellPosition += field.getColSpan();
-            addHeaderField(field, cellPosition);
+            addHeaderField(field, idSuffix, cellPosition);
 
             // add action header
             if (renderActions && !renderActionsLast && cellPosition == actionColumnIndex - extraColumns - 1) {
                 cellPosition += 1;
-                addActionHeader(rowCount, cellPosition);
+                addActionHeader(rowCount, idSuffix, cellPosition);
             }
         }
 
         if (lineFields.size() == numberOfDataColumns && renderActions && renderActionsLast) {
             cellPosition += 1;
-            addActionHeader(rowCount, cellPosition);
+            addActionHeader(rowCount, idSuffix, cellPosition);
         }
     }
 
@@ -925,12 +923,13 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * Adds the action header
      *
      * @param rowCount
+     * @param idSuffix suffix for the header id, also column will be added
      * @param cellPosition
      */
-    private void addActionHeader(int rowCount, int cellPosition) {
+    protected void addActionHeader(int rowCount, String idSuffix, int cellPosition) {
         getActionFieldPrototype().setLabelRendered(true);
         getActionFieldPrototype().setRowSpan(rowCount);
-        addHeaderField(getActionFieldPrototype(), cellPosition);
+        addHeaderField(getActionFieldPrototype(), idSuffix, cellPosition);
     }
 
     /**
@@ -940,10 +939,17 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * making up the table header
      *
      * @param field field instance the header field is being created for
+     * @param idSuffix suffix for the header id, also column will be added
      * @param column column number for the header, used for setting the id
      */
-    protected void addHeaderField(Field field, int column) {
-        Label headerLabel = ComponentUtils.copy(getHeaderLabelPrototype(), "_c" + column);
+    protected void addHeaderField(Field field, String idSuffix, int column) {
+        String labelSuffix = UifConstants.IdSuffixes.COLUMN + column;
+        if (StringUtils.isNotBlank(idSuffix)) {
+            labelSuffix = idSuffix + labelSuffix;
+        }
+
+        Label headerLabel = ComponentUtils.copy(getHeaderLabelPrototype(), labelSuffix);
+
         if (useShortLabels) {
             headerLabel.setLabelText(field.getShortLabel());
         } else {
@@ -1532,12 +1538,12 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         FieldGroup detailsFieldGroup = ComponentFactory.getFieldGroup();
 
         TreeMap<String, String> dataAttributes = new TreeMap<String, String>();
-        dataAttributes.put("role", "detailsFieldGroup");
+        dataAttributes.put(UifConstants.DataAttributes.ROLE, "detailsFieldGroup");
         detailsFieldGroup.setDataAttributes(dataAttributes);
 
         Action rowDetailsAction = this.getExpandDetailsActionPrototype();
         rowDetailsAction.addDataAttribute(UifConstants.DataAttributes.ROLE, "detailsLink");
-        rowDetailsAction.setId(collectionGroup.getId() + "_detLink");
+        rowDetailsAction.setId(collectionGroup.getId() + UifConstants.IdSuffixes.DETAIL_LINK);
 
         List<Component> detailsItems = new ArrayList<Component>();
         detailsItems.add(rowDetailsAction);
@@ -1554,12 +1560,13 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
         detailsItems.add(getRowDetailsGroup());
         detailsFieldGroup.setItems(detailsItems);
-        detailsFieldGroup.setId(collectionGroup.getId() + "_detGroup");
+        detailsFieldGroup.setId(collectionGroup.getId() + UifConstants.IdSuffixes.DETAIL_GROUP);
         view.assignComponentIds(detailsFieldGroup);
 
         List<Component> theItems = new ArrayList<Component>();
         theItems.add(detailsFieldGroup);
         theItems.addAll(collectionGroup.getItems());
+
         collectionGroup.setItems(theItems);
     }
 
@@ -2126,7 +2133,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         if (this.headerLabels != null) {
             List<Label> headerLabelsCopy = Lists.newArrayListWithExpectedSize(this.headerLabels.size());
             for (Label headerLabel : headerLabels) {
-                headerLabelsCopy.add(headerLabel);
+                if (headerLabel != null) {
+                    headerLabelsCopy.add((Label) headerLabel.copy());
+                }
             }
             tableLayoutManagerCopy.setHeaderLabels(headerLabelsCopy);
         }
@@ -2134,7 +2143,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         if (this.allRowFields != null) {
             List<Field> allRowFieldsCopy = Lists.newArrayListWithExpectedSize(allRowFields.size());
             for (Field allRowField : allRowFields) {
-                allRowFieldsCopy.add(allRowField);
+                if (allRowField != null) {
+                    allRowFieldsCopy.add((Field) allRowField.copy());
+                }
             }
             tableLayoutManagerCopy.setAllRowFields(allRowFieldsCopy);
         }
@@ -2142,7 +2153,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         if (this.firstRowFields != null) {
             List<Field> firstRowFieldsCopy = Lists.newArrayListWithExpectedSize(firstRowFields.size());
             for (Field firstRowField : firstRowFields) {
-                firstRowFieldsCopy.add(firstRowField);
+                if (firstRowField != null) {
+                    firstRowFieldsCopy.add((Field) firstRowField.copy());
+                }
             }
             tableLayoutManagerCopy.setFirstRowFields(firstRowFieldsCopy);
         }
@@ -2215,7 +2228,11 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             List<Component> footerCalculationComponentsCopy = Lists.newArrayListWithExpectedSize(
                     footerCalculationComponents.size());
             for (Component footerCalculationComponent : footerCalculationComponents) {
-                footerCalculationComponentsCopy.add((Component) footerCalculationComponent.copy());
+                if (footerCalculationComponent != null) {
+                    if (footerCalculationComponent != null) {
+                        footerCalculationComponentsCopy.add((Component) footerCalculationComponent.copy());
+                    }
+                }
             }
             tableLayoutManagerCopy.setFooterCalculationComponents(footerCalculationComponentsCopy);
         }

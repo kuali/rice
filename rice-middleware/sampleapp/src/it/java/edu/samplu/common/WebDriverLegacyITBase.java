@@ -509,14 +509,16 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     private void closeAndQuitWebDriver() {
-        if (driver != null && ITUtil.dontTearDownPropertyNotSet() && dontTearDownOnFailure()) {
-            try {
-                driver.close();
-            } catch (NoSuchWindowException nswe) {
-                System.out.println("NoSuchWindowException closing WebDriver " + nswe.getMessage());
-            } finally {
-                if (driver != null) {
-                    driver.quit();
+        if (driver != null) {
+            if (ITUtil.dontTearDownPropertyNotSet() && dontTearDownOnFailure()) {
+                try {
+                    driver.close();
+                } catch (NoSuchWindowException nswe) {
+                    System.out.println("NoSuchWindowException closing WebDriver " + nswe.getMessage());
+                } finally {
+                    if (driver != null) {
+                        driver.quit();
+                    }
                 }
             }
         } else {
@@ -1548,6 +1550,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndClickSave();
         waitAndClickSubmit();
         waitForPageToLoad();
+        Thread.sleep(2000);
         assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByLinkText("Administration");

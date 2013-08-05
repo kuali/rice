@@ -68,7 +68,7 @@ public class DataTable extends ContentElementBase {
      *
      * @return RichTable instance
      */
-    @BeanTagAttribute(name="richTable",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "richTable", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public RichTable getRichTable() {
         return richTable;
     }
@@ -85,7 +85,7 @@ public class DataTable extends ContentElementBase {
     /**
      * @see org.kuali.rice.krad.uif.widget.RichTable#getAjaxSource()
      */
-    @BeanTagAttribute(name="ajaxSource")
+    @BeanTagAttribute(name = "ajaxSource")
     public String getAjaxSource() {
         if (richTable != null) {
             return richTable.getAjaxSource();
@@ -106,7 +106,7 @@ public class DataTable extends ContentElementBase {
     /**
      * @see org.kuali.rice.krad.uif.widget.RichTable#getHiddenColumns()
      */
-    @BeanTagAttribute(name="hiddenColumns",type= BeanTagAttribute.AttributeType.SETVALUE)
+    @BeanTagAttribute(name = "hiddenColumns", type = BeanTagAttribute.AttributeType.SETVALUE)
     public Set<String> getHiddenColumns() {
         if (richTable != null) {
             return richTable.getHiddenColumns();
@@ -127,7 +127,7 @@ public class DataTable extends ContentElementBase {
     /**
      * @see org.kuali.rice.krad.uif.widget.RichTable#getSortableColumns()
      */
-    @BeanTagAttribute(name="sortableColumns",type= BeanTagAttribute.AttributeType.SETVALUE)
+    @BeanTagAttribute(name = "sortableColumns", type = BeanTagAttribute.AttributeType.SETVALUE)
     public Set<String> getSortableColumns() {
         if (richTable != null) {
             return richTable.getSortableColumns();
@@ -154,7 +154,7 @@ public class DataTable extends ContentElementBase {
         DataTable dataTableCopy = (DataTable) component;
 
         if (this.richTable != null) {
-            dataTableCopy.setRichTable((RichTable)this.richTable.copy());
+            dataTableCopy.setRichTable((RichTable) this.richTable.copy());
         }
     }
 }

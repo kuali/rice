@@ -128,8 +128,10 @@ public class ViewHeader extends Header {
     }
 
     /**
-     * The supportTitleText represents the sub-area of this view that explains what the page is displaying.
-     * This title appears below the view title and will be automatically set to the page title if not set.
+     * The supportTitleText represents the sub-area of this view that explains what the page is displaying; this is
+     * the text used in supportTitleMessage
+     *
+     * <p>This title appears below the view title and will be automatically set to the page title if not set.</p>
      *
      * @return the supportTitle text
      */
@@ -148,9 +150,11 @@ public class ViewHeader extends Header {
     }
 
     /**
-     * The supportTitleMessage represents the sub-area of this view that supports what the page is displaying.
-     * This title appears below the view title and will be automatically set to the page title if not messageText is
-     * not set.
+     * The supportTitleMessage represents the sub-area of this view that supports what the page is displaying, this is
+     * the Message component
+     *
+     * <p>This title appears below the view title and will be automatically set to the page title if not messageText is
+     * not set.</p>
      *
      * @return the supportTitle Message object
      */
@@ -235,18 +239,18 @@ public class ViewHeader extends Header {
         super.copyProperties(component);
         ViewHeader viewHeaderCopy = (ViewHeader) component;
 
-        if(this.areaTitleMessage != null) {
-            viewHeaderCopy.setAreaTitleMessage((Message)this.getAreaTitleMessage().copy());
+        if (this.areaTitleMessage != null) {
+            viewHeaderCopy.setAreaTitleMessage((Message) this.areaTitleMessage.copy());
         }
 
-        if(this.supportTitleMessage != null) {
-            viewHeaderCopy.setSupportTitleMessage((Message)this.getSupportTitleMessage().copy());
+        if (this.supportTitleMessage != null) {
+            viewHeaderCopy.setSupportTitleMessage((Message) this.supportTitleMessage.copy());
         }
 
-        if(this.metadataMessage != null)  {
-            viewHeaderCopy.setMetadataMessage((Message)this.getMetadataMessage().copy());
+        if (this.metadataMessage != null) {
+            viewHeaderCopy.setMetadataMessage((Message) this.metadataMessage.copy());
         }
 
-        viewHeaderCopy.setSticky(this.isSticky());
+        viewHeaderCopy.setSticky(this.sticky);
     }
 }

@@ -213,7 +213,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         // if options not configured on the control, invoke configured options finder
         if (fieldOptions.isEmpty() && (optionsFinder != null)) {
             if (optionsFinder instanceof UifKeyValuesFinder) {
-                fieldOptions = ((UifKeyValuesFinder) optionsFinder).getKeyValues((ViewModel) model);
+                fieldOptions = ((UifKeyValuesFinder) optionsFinder).getKeyValues((ViewModel) model, this);
 
                 // check if blank option should be added
                 if (((UifKeyValuesFinder) optionsFinder).isAddBlankOption()) {
@@ -1318,8 +1318,8 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         InputField inputFieldCopy = (InputField) component;
 
         inputFieldCopy.setCustomValidatorClass(this.customValidatorClass);
-        inputFieldCopy.setValidCharactersConstraint(CloneUtils.deepClone(this.getValidCharactersConstraint()));
-        inputFieldCopy.setCaseConstraint(CloneUtils.deepClone(this.getCaseConstraint()));
+        inputFieldCopy.setValidCharactersConstraint(CloneUtils.deepClone(this.validCharactersConstraint));
+        inputFieldCopy.setCaseConstraint(CloneUtils.deepClone(this.caseConstraint));
 
         if (dependencyConstraints != null) {
             List<PrerequisiteConstraint> dependencyConstraintsCopy = Lists.newArrayListWithExpectedSize(
@@ -1343,46 +1343,52 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
             inputFieldCopy.setMustOccurConstraints(mustOccurConstraintsCopy);
         }
 
-        inputFieldCopy.setSimpleConstraint(CloneUtils.deepClone(this.getSimpleConstraint()));
-        inputFieldCopy.setDataType(this.getDataType());
+        inputFieldCopy.setSimpleConstraint(CloneUtils.deepClone(this.simpleConstraint));
+        inputFieldCopy.setDataType(this.dataType);
 
         // display props
-        if (this.getControl() != null) {
-            inputFieldCopy.setControl((Control) this.getControl().copy());
+        if (this.control != null) {
+            inputFieldCopy.setControl((Control) this.control.copy());
         }
 
-        inputFieldCopy.setOptionsFinder(this.getOptionsFinder());
-        inputFieldCopy.setUppercaseValue(this.isUppercaseValue());
-        inputFieldCopy.setDisableNativeAutocomplete(this.isDisableNativeAutocomplete());
+        inputFieldCopy.setOptionsFinder(this.optionsFinder);
+        inputFieldCopy.setUppercaseValue(this.uppercaseValue);
+        inputFieldCopy.setDisableNativeAutocomplete(this.disableNativeAutocomplete);
 
-        if (this.getValidationMessages() != null) {
-            inputFieldCopy.setValidationMessages((ValidationMessages) this.getValidationMessages().copy());
+        if (this.validationMessages != null) {
+            inputFieldCopy.setValidationMessages((ValidationMessages) this.validationMessages.copy());
         }
 
         // messages
-        inputFieldCopy.setConstraintText(this.getConstraintText());
-        inputFieldCopy.setInstructionalText(this.getInstructionalText());
+        inputFieldCopy.setConstraintText(this.constraintText);
+        inputFieldCopy.setInstructionalText(this.instructionalText);
 
-        if (this.getConstraintMessage() != null) {
-            inputFieldCopy.setConstraintMessage((Message) this.getConstraintMessage().copy());
+        if (this.constraintMessage != null) {
+            inputFieldCopy.setConstraintMessage((Message) this.constraintMessage.copy());
         }
 
-        if (this.getInstructionalMessage() != null) {
-            inputFieldCopy.setInstructionalMessage((Message) this.getInstructionalMessage().copy());
+        if (this.instructionalMessage != null) {
+            inputFieldCopy.setInstructionalMessage((Message) this.instructionalMessage.copy());
         }
 
-        if (this.getAttributeQuery() != null) {
-            inputFieldCopy.setAttributeQuery((AttributeQuery) this.getAttributeQuery().copy());
+        if (this.attributeQuery != null) {
+            inputFieldCopy.setAttributeQuery((AttributeQuery) this.attributeQuery.copy());
         }
+
+        inputFieldCopy.setEnableAutoDirectInquiry(this.enableAutoDirectInquiry);
 
         // widgets
-        if (this.getQuickfinder() != null) {
-            inputFieldCopy.setQuickfinder((QuickFinder) this.getQuickfinder().copy());
+        if (this.quickfinder != null) {
+            inputFieldCopy.setQuickfinder((QuickFinder) this.quickfinder.copy());
         }
 
-        if (this.getSuggest() != null) {
-            inputFieldCopy.setSuggest((Suggest) this.getSuggest().copy());
+        inputFieldCopy.setEnableAutoQuickfinder(this.enableAutoQuickfinder);
+
+        if (this.suggest != null) {
+            inputFieldCopy.setSuggest((Suggest) this.suggest.copy());
         }
+
+        inputFieldCopy.setWidgetInputOnly(this.widgetInputOnly);
     }
 
     /**

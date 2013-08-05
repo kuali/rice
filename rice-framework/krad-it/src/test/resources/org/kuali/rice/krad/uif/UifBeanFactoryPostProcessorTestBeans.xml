@@ -32,6 +32,7 @@
   </bean>
 
   <bean id="testNestedExpressionOverride3" parent="testNestedExpressionOverride2">
+    <property name="inquiry.render" value="true"/>
   </bean>
 
   <bean id="testNestedExpressionOverride4" class="org.kuali.rice.krad.test.TestDictionaryBean">

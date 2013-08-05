@@ -221,7 +221,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      *
      * @return data object class name
      */
-    @BeanTagAttribute(name="dataObjectClassName")
+    @BeanTagAttribute(name = "dataObjectClassName")
     public String getDataObjectClassName() {
         return dataObjectClassName;
     }
@@ -248,7 +248,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      *
      * @return mapping of query parameters
      */
-    @BeanTagAttribute(name="queryFieldMapping",type= BeanTagAttribute.AttributeType.MAPVALUE)
+    @BeanTagAttribute(name = "queryFieldMapping", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getQueryFieldMapping() {
         return queryFieldMapping;
     }
@@ -275,7 +275,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      *
      * @return return field mapping
      */
-    @BeanTagAttribute(name="returnFieldMapping",type= BeanTagAttribute.AttributeType.MAPVALUE)
+    @BeanTagAttribute(name = "returnFieldMapping", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getReturnFieldMapping() {
         return returnFieldMapping;
     }
@@ -297,7 +297,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      *
      * @return field name/value pairs for query criteria
      */
-    @BeanTagAttribute(name="additionalCriteria",type= BeanTagAttribute.AttributeType.MAPVALUE)
+    @BeanTagAttribute(name = "additionalCriteria", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getAdditionalCriteria() {
         return additionalCriteria;
     }
@@ -319,7 +319,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      *
      * @return property names
      */
-    @BeanTagAttribute(name="sortPropertyNames",type= BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute(name = "sortPropertyNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getSortPropertyNames() {
         return sortPropertyNames;
     }
@@ -339,7 +339,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      *
      * @return true if not found message should be added, false otherwise
      */
-    @BeanTagAttribute(name="renderNotFoundMessage")
+    @BeanTagAttribute(name = "renderNotFoundMessage")
     public boolean isRenderNotFoundMessage() {
         return renderNotFoundMessage;
     }
@@ -358,7 +358,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      *
      * @return literal message text
      */
-    @BeanTagAttribute(name="returnMessageText")
+    @BeanTagAttribute(name = "returnMessageText")
     public String getReturnMessageText() {
         return returnMessageText;
     }
@@ -378,7 +378,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      *
      * @return style classes
      */
-    @BeanTagAttribute(name="returnMessageStyleClasses")
+    @BeanTagAttribute(name = "returnMessageStyleClasses")
     public String getReturnMessageStyleClasses() {
         return returnMessageStyleClasses;
     }
@@ -404,7 +404,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      *
      * @return query method name
      */
-    @BeanTagAttribute(name="queryMethodToCall")
+    @BeanTagAttribute(name = "queryMethodToCall")
     public String getQueryMethodToCall() {
         return queryMethodToCall;
     }
@@ -429,7 +429,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      *
      * @return query method argument list
      */
-    @BeanTagAttribute(name="queryMethodArgumentFieldList",type= BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute(name = "queryMethodArgumentFieldList", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getQueryMethodArgumentFieldList() {
         return queryMethodArgumentFieldList;
     }
@@ -456,7 +456,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      *
      * @return query method config
      */
-    @BeanTagAttribute(name="queryMethodInvokerConfig",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "queryMethodInvokerConfig", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public MethodInvokerConfig getQueryMethodInvokerConfig() {
         return queryMethodInvokerConfig;
     }
@@ -473,13 +473,19 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
     /**
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
-    public void completeValidation(ValidationTrace tracer){
+    public void completeValidation(ValidationTrace tracer) {
         tracer.addBean("AttributeQuery", ValidationTrace.NO_BEAN_ID);
 
         // Checks that at least one aspect is set
-        if(getDataObjectClassName()==null && getQueryMethodToCall()==null && getQueryMethodInvokerConfig()==null){
-            String currentValues [] = {"dataObjectClassName = "+getDataObjectClassName(),"queryMethodToCall = "+getQueryMethodToCall(),"queryMethodInvokerConfig = "+getQueryMethodInvokerConfig()};
-            tracer.createWarning("At least 1 should be set: dataObjectClass, queryMethodToCall or queryMethodInvokerConfig",currentValues);
+        if (getDataObjectClassName() == null
+                && getQueryMethodToCall() == null
+                && getQueryMethodInvokerConfig() == null) {
+            String currentValues[] = {"dataObjectClassName = " + getDataObjectClassName(),
+                    "queryMethodToCall = " + getQueryMethodToCall(),
+                    "queryMethodInvokerConfig = " + getQueryMethodInvokerConfig()};
+            tracer.createWarning(
+                    "At least 1 should be set: dataObjectClass, queryMethodToCall or queryMethodInvokerConfig",
+                    currentValues);
         }
     }
 
@@ -491,9 +497,8 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
     public <T> T copy() {
         T copiedClass = null;
         try {
-            copiedClass = (T)this.getClass().newInstance();
-        }
-        catch(Exception exception) {
+            copiedClass = (T) this.getClass().newInstance();
+        } catch (Exception exception) {
             throw new RuntimeException();
         }
 
@@ -508,6 +513,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      * @param attributeQuery The AttributeQuery to copy
      */
     protected <T> void copyProperties(T attributeQuery) {
+        super.copyProperties(attributeQuery);
         AttributeQuery attributeQueryCopy = (AttributeQuery) attributeQuery;
 
         if (this.additionalCriteria != null) {
@@ -521,7 +527,8 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
         }
 
         if (this.queryMethodArgumentFieldList != null) {
-            attributeQueryCopy.setQueryMethodArgumentFieldList(new ArrayList<String>(this.queryMethodArgumentFieldList));
+            attributeQueryCopy.setQueryMethodArgumentFieldList(new ArrayList<String>(
+                    this.queryMethodArgumentFieldList));
         }
 
         attributeQueryCopy.setQueryMethodToCall(this.queryMethodToCall);
@@ -539,7 +546,8 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
         }
 
         if (this.queryMethodInvokerConfig != null) {
-            ((AttributeQuery) attributeQuery).setQueryMethodInvokerConfig((MethodInvokerConfig)this.queryMethodInvokerConfig.copy());
+            ((AttributeQuery) attributeQuery).setQueryMethodInvokerConfig(
+                    (MethodInvokerConfig) this.queryMethodInvokerConfig.copy());
         }
     }
 }

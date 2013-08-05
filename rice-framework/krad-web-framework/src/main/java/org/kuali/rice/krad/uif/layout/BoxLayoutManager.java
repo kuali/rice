@@ -215,17 +215,17 @@ public class BoxLayoutManager extends LayoutManagerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.LayoutManagerBase#copy()
+     * @see org.kuali.rice.krad.uif.layout.LayoutManagerBase#copy()
      */
     @Override
     protected <T> void copyProperties(T layout) {
         super.copyProperties(layout);
         BoxLayoutManager boxLayoutManagerCopy = (BoxLayoutManager) layout;
-        boxLayoutManagerCopy.setPadding(this.getPadding());
-        boxLayoutManagerCopy.setItemStyle(this.getItemStyle());
-        boxLayoutManagerCopy.setOrientation(this.getOrientation());
+        boxLayoutManagerCopy.setPadding(this.padding);
+        boxLayoutManagerCopy.setItemStyle(this.itemStyle);
+        boxLayoutManagerCopy.setOrientation(this.orientation);
 
-        if(itemStyleClasses != null) {
+        if (itemStyleClasses != null) {
             boxLayoutManagerCopy.setItemStyleClasses(new ArrayList<String>(itemStyleClasses));
         }
     }

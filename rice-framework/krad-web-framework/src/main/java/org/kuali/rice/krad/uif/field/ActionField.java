@@ -218,13 +218,6 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setComponentSecurity(org.kuali.rice.krad.uif.component.ComponentSecurity)
-     */
-    public void setComponentSecurity(ComponentSecurity componentSecurity) {
-        action.setComponentSecurity(componentSecurity);
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.element.Action#getJumpToIdAfterSubmit()
      */
     @BeanTagAttribute(name = "jumpToIdAfterSubmit")

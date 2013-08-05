@@ -114,13 +114,15 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
             formedBindingPath += bindByNamePrefix;
         }
 
-        if (bindToMap) {
-            formedBindingPath += "[" + bindingName + "]";
-        } else {
-            if (StringUtils.isNotBlank(formedBindingPath)) {
-                formedBindingPath += ".";
+        if (StringUtils.isNotBlank(bindingName)) {
+            if (bindToMap) {
+                formedBindingPath += "[" + bindingName + "]";
+            } else {
+                if (StringUtils.isNotBlank(formedBindingPath)) {
+                    formedBindingPath += ".";
+                }
+                formedBindingPath += bindingName;
             }
-            formedBindingPath += bindingName;
         }
 
         return formedBindingPath;

@@ -336,7 +336,7 @@ function runHiddenScripts(id, isSelector, skipValidationBubbling) {
 
         evaluateScripts(selector);
 
-        if(!isSelector){
+        if (!isSelector) {
             runScriptsForId(id);
         }
 
@@ -423,7 +423,7 @@ function runScriptsForId(id) {
  * @param jqueryObj - a jquery object representing a hidden input element with a script in its value attribute
  */
 function evalHiddenScript(jqueryObj) {
-    if (jqueryObj.attr("name") === undefined || jqueryObj.closest("div[data-open='false']").length){
+    if (jqueryObj.attr("name") === undefined || jqueryObj.closest("div[data-open='false']").length) {
         return;
     }
     jqueryObj.attr("script", "first_run");
@@ -535,6 +535,15 @@ function coerceValue(name) {
         value = "";
     }
 
+    // boolean matching
+    if (value && !jQuery.isArray(value)) {
+        if (value.toUpperCase() == "TRUE") {
+            value = true;
+        } else if (value.toUpperCase() == "FALSE") {
+            value = false;
+        }
+    }
+
     return value;
 }
 
@@ -546,7 +555,16 @@ function coerceValue(name) {
  */
 function setValue(name, value) {
     var nameSelect = "[name='" + escapeName(name) + "']";
-    jQuery(nameSelect).val(value);
+    var control = jQuery(nameSelect);
+
+    if (value != undefined && !jQuery.isArray(value)
+            && (control.is(":radio") || control.is("select") || control.is(":checkbox"))) {
+        var valueArray = [value];
+        control.val(valueArray);
+    }
+    else {
+        control.val(value);
+    }
 }
 
 //returns true if the field with name of name1 occurs before field with name2
@@ -569,8 +587,6 @@ function occursBefore(name1, name2) {
         return false;
     }
 }
-
-
 
 /**
  * Gets the actual attribute id to use element manipulation related to this attribute.
@@ -1182,7 +1198,7 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
  *  Wrap the div to display in the light box in a form and setup form for validation and dirty checks
  */
 function setupLightboxForm() {
-    jQuery(".fancybox-inner").children().wrap("<form id='kualiLightboxForm' class='uif-lightbox'>");
+    jQuery(".fancybox-inner").children().wrap("<form style='margin:0; padding:0; overflow:auto;' id='kualiLightboxForm' class='uif-lightbox'>");
 
     var kualiLightboxForm = jQuery('#kualiLightboxForm');
     setupValidator(kualiLightboxForm);
@@ -1379,10 +1395,10 @@ function initializeTotalsFooter(nRow, aaData, iStart, iEnd, aiDisplay, columns) 
                                 if (groupingValue != undefined &&
                                         normalizeGroupString(groupingValue).toLowerCase() == groupValue) {
 
-                                    if (isRowObject){
+                                    if (isRowObject) {
                                         groupCellsToTotal.push(currentRow['c' + columns[c]]);
                                     }
-                                    else{
+                                    else {
                                         groupCellsToTotal.push(currentRow[columns[c]]);
                                     }
 
@@ -1449,7 +1465,7 @@ function calculateGroupTotal(cellsToTotal, totalTd, groupTotalDiv, rowIndex, col
         if (isCellObject) {
             value = currentCell.val;
 
-            if(value == null){
+            if (value == null) {
                 value = "";
             }
         }
@@ -1461,7 +1477,7 @@ function calculateGroupTotal(cellsToTotal, totalTd, groupTotalDiv, rowIndex, col
         if (!isAddLine) {
             value = coerceTableCellValue(currentCell, true);
         }
-        else{
+        else {
             continue;
         }
 
@@ -1554,7 +1570,7 @@ function calculateTotal(totalDiv, start, end, currentColumn, aaData, aiDisplay) 
             if (currentRow != null && typeof currentRow === 'object' && !jQuery.isArray(currentRow)) {
                 value = currentRow['c' + dataIndex].val;
 
-                if(value == null){
+                if (value == null) {
                     value = "";
                 }
             }
@@ -1618,15 +1634,15 @@ function calculateTotal(totalDiv, start, end, currentColumn, aaData, aiDisplay) 
  * @param value the numeric value to convert
  * @return {*} the value without symbols that do not allow for calculations to occur
  */
-function convertComplexNumericValue(value){
+function convertComplexNumericValue(value) {
     //TODO support this functionality with client formatters
     if (!value) {
         return value;
     }
 
     return value.replace("$", "").replace(",", "").replace("&yen;", "").replace("&euro;",
-            "").replace("&pound;", "").replace("&curren;", "").replace("%", "").replace("&#8355;",
-            "").replace("&#8356;", "").replace("&#8359;", "").replace("&cent;", "");
+                    "").replace("&pound;", "").replace("&curren;", "").replace("%", "").replace("&#8355;",
+                    "").replace("&#8356;", "").replace("&#8359;", "").replace("&cent;", "");
 }
 
 /**
@@ -1779,20 +1795,20 @@ function coerceTableCellValue(element) {
  * @return {*} the value requested or nothing during a set
  * @private
  */
-function _handleColData(rowObject, type, colName, newVal){
+function _handleColData(rowObject, type, colName, newVal) {
     var colObj = rowObject[colName];
 
-    if(!colObj){
+    if (!colObj) {
         return "";
     }
 
-    if (type === "set" && newVal && newVal != colObj.val){
+    if (type === "set" && newVal && newVal != colObj.val) {
         colObj.render = jQuery(newVal).html();
         colObj.val = coerceTableCellValue(newVal);
         return;
-    } else if(type === "display"){
+    } else if (type === "display") {
         return colObj.render;
-    } else if (type === "sort" && colObj.val == null){
+    } else if (type === "sort" && colObj.val == null) {
         return colObj.render;
     }
 
@@ -1956,11 +1972,11 @@ function removeFromSession(key) {
  * Makes a get request to the server so that the form with the specified formKey will
  * be cleared server side
  *
- * @param formKey key for the form to clear
+ * @param formKeyToClear key for the form to clear
  */
-function clearServerSideForm(formKey) {
+function clearServerSideForm(formKeyToClear) {
     var params = {};
-    params.formKey = formKey;
+    params.formKeyToClear = formKeyToClear;
 
     invokeServerListener(kradVariables.CLEAR_FORM_METHOD_TO_CALL, params);
 }
@@ -2195,7 +2211,7 @@ function containsAll(subArray, parentArray) {
  */
 function generateQuickGuid() {
     return Math.random().toString(36).substring(2, 15) +
-        Math.random().toString(36).substring(2, 15);
+            Math.random().toString(36).substring(2, 15);
 }
 
 /**
@@ -2235,13 +2251,13 @@ function stopEvent(e) {
  *
  * @param currentScroll the current scroll
  */
-function initStickyContent(currentScroll){
+function initStickyContent(currentScroll) {
     //early return if no sticky content
-    if(stickyContent == undefined || stickyContent.length == 0 ){
+    if (stickyContent == undefined || stickyContent.length == 0) {
         return;
     }
 
-    if(!currentScroll){
+    if (!currentScroll) {
         currentScroll = jQuery(window).scrollTop();
     }
 
@@ -2259,20 +2275,20 @@ function initStickyContent(currentScroll){
         var thisOffset = jQuery(this).data("offset");
         jQuery(this).addClass(kradVariables.STICKY_CLASS);
 
-        if(thisOffset.top < 1){
+        if (thisOffset.top < 1) {
             automateMargin = true;
         }
 
         //scroll content with the scroll
-        if(currentScroll > 0){
+        if (currentScroll > 0) {
             jQuery(this).attr("style", "position:fixed; left: 0; top: " + (thisOffset.top - currentScroll) + "px;");
         }
-        else{
+        else {
             jQuery(this).attr("style", "position:fixed; left: 0; top: " + thisOffset.top + "px;");
         }
 
         //this means there is inner non-sticky content in the header
-        if(thisOffset.top > topOffset){
+        if (thisOffset.top > topOffset) {
             margin = margin + totalHeight;
             innerNonStickyCount++;
             topOffset = thisOffset.top;
@@ -2287,7 +2303,7 @@ function initStickyContent(currentScroll){
     //Only adjust the margin if a sticky area exists in the top most area, and there is inner-non-sticky content
     // this allows for customization of
     //non-sticky, sticky, non-sticky, sticky pattern through explicit css setting (non-calculated, complex)
-    if(automateMargin && innerNonStickyCount == 1){
+    if (automateMargin && innerNonStickyCount == 1) {
         //change the margin to account for content in the header that collapses (scrolls away)
         jQuery("#" + kradVariables.APP_ID).css("marginTop", (margin) + "px");
     }
@@ -2295,8 +2311,8 @@ function initStickyContent(currentScroll){
     var navigation = jQuery("#" + kradVariables.NAVIGATION_ID);
     var navigationHeightAdjust = 0;
 
-    if(navigation.length){
-        if(navigation.is(".tab-navigation-block")){
+    if (navigation.length) {
+        if (navigation.is(".tab-navigation-block")) {
             navigationHeightAdjust = navigation.height();
         }
 
@@ -2318,7 +2334,7 @@ function initStickyContent(currentScroll){
  */
 function handleStickyContent() {
     //early return if no sticky content
-    if(stickyContent == undefined || stickyContent.length == 0 ){
+    if (stickyContent == undefined || stickyContent.length == 0) {
         return;
     }
 
@@ -2332,13 +2348,13 @@ function handleStickyContent() {
 
             var thisOffset = jQuery(this).data("offset");
             //content exist between this sticky and last sticky
-            if(thisOffset && thisOffset.top - jQuery(window).scrollTop() > topOffset){
+            if (thisOffset && thisOffset.top - jQuery(window).scrollTop() > topOffset) {
                 var diff = thisOffset.top - jQuery(window).scrollTop();
                 jQuery(this).attr("style", "position:fixed; left: 0; top: " + diff + "px;");
                 navAdjust = diff + height;
             }
             //sticky content is adjacent to each other
-            else{
+            else {
                 jQuery(this).attr("style", "position:fixed; left: 0; top: " + topOffset + "px;");
                 navAdjust = topOffset + height;
             }
@@ -2362,21 +2378,21 @@ function handleStickyContent() {
  * Initialize all footers that should be sticky with the appropriate classes, fixed position, and calculated offset
  * to make them always appear at the bottom of the screen
  */
-function initStickyFooterContent(){
+function initStickyFooterContent() {
     //no sticky footers, return
-    if (!stickyFooterContent || stickyFooterContent.length == 0){
+    if (!stickyFooterContent || stickyFooterContent.length == 0) {
         return;
     }
 
     var bottomOffset = 0;
 
     //calculate bottom offset in reverse order (bottom up)
-    jQuery(stickyFooterContent.get().reverse()).each(function(){
+    jQuery(stickyFooterContent.get().reverse()).each(function () {
         var height = jQuery(this).outerHeight();
         jQuery(this).addClass("uif-stickyFooter");
 
         //special style for footers that are not the application footer
-        if(!jQuery(this).is(applicationFooter)){
+        if (!jQuery(this).is(applicationFooter)) {
             jQuery(this).addClass("uif-stickyButtonFooter");
         }
 
@@ -2385,10 +2401,10 @@ function initStickyFooterContent(){
     });
     currentFooterHeight = bottomOffset;
 
-    var contentWindowDiff = jQuery(window).height()-jQuery("#Uif-Application").height();
-    if (bottomOffset > contentWindowDiff){
+    var contentWindowDiff = jQuery(window).height() - jQuery("#" + kradVariables.APP_ID).height();
+    if (bottomOffset > contentWindowDiff) {
         jQuery("#" + kradVariables.APP_ID).css("paddingBottom", bottomOffset + "px");
-    }else{
+    } else {
         jQuery("#" + kradVariables.APP_ID).css("paddingBottom", contentWindowDiff + "px");
     }
 }
@@ -2397,11 +2413,11 @@ function initStickyFooterContent(){
  * Handles the calculation and positioning of sticky footer elements on the screen when the user scrolls.  This
  * function should be called on a scroll event.
  */
-function handleStickyFooterContent(){
+function handleStickyFooterContent() {
     //early return when no footer content or no application footer or application footer is sticky itself
     //(no need for adjustment)
     if (!stickyFooterContent || stickyFooterContent.length == 0 || !applicationFooter || applicationFooter.length == 0
-            || stickyFooterContent.filter(applicationFooter).length){
+            || stickyFooterContent.filter(applicationFooter).length) {
         return;
     }
 
@@ -2409,11 +2425,11 @@ function handleStickyFooterContent(){
     var windowHeight = jQuery(window).height();
     var scrollTop = jQuery(window).scrollTop();
 
-   //reposition elements when the scroll exceeds the footer's top (and footer content exists)
-    if (windowHeight + scrollTop >= appFooterOffset.top && scrollTop != 0 && applicationFooter.height() > 0){
+    //reposition elements when the scroll exceeds the footer's top (and footer content exists)
+    if (windowHeight + scrollTop >= appFooterOffset.top && scrollTop != 0 && applicationFooter.height() > 0) {
         var bottomOffset = (windowHeight + scrollTop) - appFooterOffset.top;
 
-        jQuery(stickyFooterContent.get().reverse()).each(function(){
+        jQuery(stickyFooterContent.get().reverse()).each(function () {
             var height = jQuery(this).outerHeight();
             jQuery(this).attr("style", "position:fixed; left: 0; bottom: " + bottomOffset + "px;");
             bottomOffset = bottomOffset + height;
@@ -2421,7 +2437,7 @@ function handleStickyFooterContent(){
         currentFooterHeight = bottomOffset;
 
     }
-    else{
+    else {
         initStickyFooterContent();
     }
 
@@ -2433,12 +2449,12 @@ function handleStickyFooterContent(){
  */
 function hideEmptyCells() {
     // get all the td elements
-    jQuery('td.' + kradVariables.GRID_LAYOUT_CELL_CLASS).each( function() {
+    jQuery('td.' + kradVariables.GRID_LAYOUT_CELL_CLASS).each(function () {
         // check if the children is hidden (progressive) or if there is no content(render=false)
         var cellEmpty = jQuery(this).children().is(".uif-placeholder") || jQuery(this).is(":empty");
 
         // hide the header only if the cell and the header is empty
-        if(cellEmpty) {
+        if (cellEmpty) {
             var hd = jQuery(this).siblings("th");
 
             var headerEmpty = jQuery(hd).children().is(":hidden") || jQuery(hd).is(":empty");
@@ -2490,7 +2506,7 @@ function setMultivalueLookupReturnButton(selectControl) {
     var oTable = getDataTableHandle(getParentRichTableId(selectControl));
 
     var checked = false;
-    jQuery.each(getDataTablesColumnData(0, oTable), function(index, value) {
+    jQuery.each(getDataTablesColumnData(0, oTable), function (index, value) {
         if (jQuery(':input:checked', value).length) {
             checked = true;
         }
@@ -2526,7 +2542,7 @@ function getDataTablesColumnData(columnIndex, oTable) {
     var allDataObject = oTable.fnGetData();
     var colData = [];
 
-    jQuery.each(allDataObject, function(index, value) {
+    jQuery.each(allDataObject, function (index, value) {
         colData.push(value[columnIndex]);
     });
 

@@ -98,7 +98,7 @@ public class GridLayoutManager extends LayoutManagerBase {
     /**
      * Moves the width, align, and valign settings of the component to the corresponding cell properties (if not
      * already configured)
-     * 
+     *
      * @param component instance to adjust settings for
      */
     protected void setCellAttributes(Component component) {
@@ -356,15 +356,15 @@ public class GridLayoutManager extends LayoutManagerBase {
     protected <T> void copyProperties(T layoutManager) {
         super.copyProperties(layoutManager);
         GridLayoutManager gridLayoutManagerCopy = (GridLayoutManager) layoutManager;
-        gridLayoutManagerCopy.setNumberOfColumns(this.getNumberOfColumns());
-        gridLayoutManagerCopy.setSuppressLineWrapping(this.isSuppressLineWrapping());
-        gridLayoutManagerCopy.setApplyAlternatingRowStyles(this.isApplyAlternatingRowStyles());
-        gridLayoutManagerCopy.setApplyDefaultCellWidths(this.isApplyDefaultCellWidths());
-        gridLayoutManagerCopy.setRenderFirstRowHeader(this.isRenderFirstRowHeader());
-        gridLayoutManagerCopy.setRenderAlternatingHeaderColumns(this.isRenderAlternatingHeaderColumns());
-        gridLayoutManagerCopy.setRenderRowFirstCellHeader(this.isRenderRowFirstCellHeader());
+        gridLayoutManagerCopy.setNumberOfColumns(this.numberOfColumns);
+        gridLayoutManagerCopy.setSuppressLineWrapping(this.suppressLineWrapping);
+        gridLayoutManagerCopy.setApplyAlternatingRowStyles(this.applyAlternatingRowStyles);
+        gridLayoutManagerCopy.setApplyDefaultCellWidths(this.applyDefaultCellWidths);
+        gridLayoutManagerCopy.setRenderFirstRowHeader(this.renderFirstRowHeader);
+        gridLayoutManagerCopy.setRenderAlternatingHeaderColumns(this.renderAlternatingHeaderColumns);
+        gridLayoutManagerCopy.setRenderRowFirstCellHeader(this.renderRowFirstCellHeader);
 
-        if(rowCssClasses != null) {
+        if (rowCssClasses != null) {
             gridLayoutManagerCopy.setRowCssClasses(new ArrayList<String>(rowCssClasses));
         }
     }

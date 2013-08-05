@@ -303,17 +303,21 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
      * When true, this component will render as a placeholder component instead of rendering normally because the
      * content will be later retrieved through manually ajax retrieval calls in the js
      *
-     * <p>Placeholder components are used for ajax retrievals.  In particular, this flag is useful for use in
-     * combination with the showLightboxComponent js function which will automatically retrieve the real content of
-     * a component through ajax if a placeholder component is detected.  This allows for the full content to only
-     * be retrieved when the lightbox is first opened.  When this flag is set to true, the forceSessionPersistence
+     * <p>This flag does not imply any automation, there must be a js call invoked for the content to be retrieved
+     * by the server, but this does mark it with a placeholder component which KRAD js uses during these calls.
+     * This placeholder component is used for ajax retrievals.  In particular, this flag is useful for use in
+     * combination with the <b>showLightboxComponent</b> js function which will automatically retrieve the
+     * real content of a component through ajax if a placeholder component is detected.  This allows for the full
+     * content to only be retrieved when the lightbox is first opened.
+     * When this flag is set to true, the forceSessionPersistence
      * flag is set to true AUTOMATICALLY because it is implied that this component will be retrieved by an ajax call
-     * in the future.  This may also be useful for direct custom calls to retrieveComponent function, as well.</p>
+     * in the future.  This may also be useful for direct custom calls to <b>retrieveComponent</b> function,
+     * as well, which also relies on the placeholder being present.</p>
      *
      * @return true if this component is being rendered as a placeholder for use in replacement during and ajax call,
-     * false otherwise
+     *         false otherwise
      */
-    public boolean isUseAjaxCallForContent();
+    public boolean isRetrieveViaAjax();
 
     /**
      * When true, this component will render as a placeholder component instead of rendering normally because the
@@ -321,7 +325,7 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
      *
      * @param useAjaxCallForContent
      */
-    public void setUseAjaxCallForContent(boolean useAjaxCallForContent);
+    public void setRetrieveViaAjax(boolean useAjaxCallForContent);
 
     /**
      * Indicates whether the component should be hidden in the UI

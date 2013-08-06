@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.data.platform;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataAccessResourceFailureException;
@@ -24,6 +25,7 @@ import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.jdbc.support.incrementer.AbstractColumnMaxValueIncrementer;
+import org.springframework.jdbc.support.incrementer.AbstractSequenceMaxValueIncrementer;
 import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer;
 import org.springframework.jdbc.support.incrementer.OracleSequenceMaxValueIncrementer;
 
@@ -32,6 +34,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -100,9 +103,12 @@ public final class MaxValueIncrementerFactory {
     }
 
     private static DataFieldMaxValueIncrementer createIncrementer(DataSource dataSource, String incrementerName) {
-        // TODO - make this easier to customize/configure externally...
         DatabasePlatformInfo platformInfo = DatabasePlatforms.detectPlatform(dataSource);
-        DataFieldMaxValueIncrementer incrementer = null;
+        DataFieldMaxValueIncrementer incrementer = getCustomizedIncrementer(platformInfo, dataSource,incrementerName,ID_COLUMN_NAME);
+        if(incrementer != null){
+            return incrementer;
+        }
+
         if (DatabasePlatforms.ORACLE.equalsIgnoreCase(platformInfo.getName())) {
             incrementer = new OracleSequenceMaxValueIncrementer(dataSource, incrementerName);
         } else if (DatabasePlatforms.MYSQL.equalsIgnoreCase(platformInfo.getName())) {
@@ -123,6 +129,61 @@ public final class MaxValueIncrementerFactory {
             }
         }
         return incrementer;
+    }
+
+    /**
+     * Checks the config file for any references to rice.krad.data.platform.incrementer.(DATASOURCE, ex mysql, oracle).(VERSION optional)
+     * If matching one found attempts to instantiate it to return back to factory for use
+     * @param platformInfo
+     * @param dataSource
+     * @param incrementerName
+     * @param columnName
+     * @return a config set customized incrementer that matches and can be used to generate the next incremented value for the given incrementer against
+     *         the specified DataSource
+     * @throws InstantiationError - if cannot instantiate passed in class
+     */
+    private static DataFieldMaxValueIncrementer getCustomizedIncrementer(DatabasePlatformInfo platformInfo, DataSource dataSource, String incrementerName, String columnName){
+        if(platformInfo == null){
+            throw new  IllegalArgumentException("DataSource platform must not be null");
+        }
+        if(ConfigContext.getCurrentContextConfig() == null){
+            return null;
+        }
+        Map<String,String> incrementerPropToIncrementer = ConfigContext.getCurrentContextConfig().
+                                getPropertiesWithPrefix("rice.krad.data.platform.incrementer.",true);
+        String platformNameVersion = platformInfo.getName().toLowerCase() + "." + platformInfo.getMajorVersion();
+        String incrementerClassName = "";
+
+         if(incrementerPropToIncrementer.containsKey(platformNameVersion)){
+            incrementerClassName = incrementerPropToIncrementer.get(platformNameVersion);
+         } else if(incrementerPropToIncrementer.containsKey(platformInfo.getName().toLowerCase())){
+             incrementerClassName = incrementerPropToIncrementer.get(platformInfo.getName().toLowerCase());
+         }
+
+        if(StringUtils.isNotBlank(incrementerClassName)){
+            try {
+                Class incrementerClass = Class.forName(incrementerClassName);
+                if(AbstractSequenceMaxValueIncrementer.class.isAssignableFrom(incrementerClass)){
+                    AbstractSequenceMaxValueIncrementer abstractSequenceMaxValueIncrementer = (AbstractSequenceMaxValueIncrementer)incrementerClass.newInstance();
+                    abstractSequenceMaxValueIncrementer.setDataSource(dataSource);
+                    abstractSequenceMaxValueIncrementer.setIncrementerName(incrementerName);
+                    return abstractSequenceMaxValueIncrementer;
+
+                } else if(AbstractColumnMaxValueIncrementer.class.isAssignableFrom(incrementerClass)){
+                    AbstractColumnMaxValueIncrementer abstractColumnMaxValueIncrementer = (AbstractColumnMaxValueIncrementer)incrementerClass.newInstance();
+                    abstractColumnMaxValueIncrementer.setDataSource(dataSource);
+                    abstractColumnMaxValueIncrementer.setIncrementerName(incrementerName);
+                    abstractColumnMaxValueIncrementer.setColumnName(columnName);
+                    return abstractColumnMaxValueIncrementer;
+                } else {
+                    throw new InstantiationError("Cannot create incrementer class "+incrementerClassName +" it has to extend "
+                            + "AbstractSequenceMaxValueIncrementer or AbstractColumnMaxValueIncrementer");
+                }
+            } catch (Exception e){
+                throw new InstantiationError("Could not instantiate custom incrementer "+incrementerClassName);
+            }
+        }
+        return null;
     }
 
     static final class EnhancedMySQLMaxValueIncrementer extends AbstractColumnMaxValueIncrementer {

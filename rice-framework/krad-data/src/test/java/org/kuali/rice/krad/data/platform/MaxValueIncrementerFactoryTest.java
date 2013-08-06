@@ -15,18 +15,30 @@
  */
 package org.kuali.rice.krad.data.platform;
 
+import org.apache.commons.lang.StringUtils;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kuali.rice.core.api.config.property.Config;
+import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.framework.config.property.SimpleConfig;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.support.incrementer.AbstractColumnMaxValueIncrementer;
+import org.springframework.jdbc.support.incrementer.AbstractDataFieldMaxValueIncrementer;
+import org.springframework.jdbc.support.incrementer.AbstractSequenceMaxValueIncrementer;
 import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer;
 import org.springframework.jdbc.support.incrementer.OracleSequenceMaxValueIncrementer;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
+import java.util.Map;
+import java.util.Properties;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -127,4 +139,55 @@ public class MaxValueIncrementerFactoryTest {
         MaxValueIncrementerFactory.getIncrementer(mysql, "");
     }
 
+    @Test
+    public void testCustomIncrementerDatasourceVersion() throws Exception {
+        SimpleConfig config = new SimpleConfig();
+        config.putProperty("rice.krad.data.platform.incrementer.mysql.5",
+                "org.kuali.rice.krad.data.platform.testincrementers.CustomIncrementerMySQLVersion5");
+        config.putProperty("rice.krad.data.platform.incrementer.oracle.11",
+                "org.kuali.rice.krad.data.platform.testincrementers.CustomIncrementerOracleVersion11");
+        ConfigContext.init(config);
+
+        DataFieldMaxValueIncrementer mySQLMaxVal = MaxValueIncrementerFactory.getIncrementer(mysql,"test_mySQL");
+        assertTrue("Found MySQL custom incrementer",mySQLMaxVal != null);
+        assertTrue("Custom incrementer for MySQL should be mySQL5 for String val",
+                        StringUtils.equals(mySQLMaxVal.nextStringValue(),"mySQL5"));
+
+        DataFieldMaxValueIncrementer oracleMaxVal = MaxValueIncrementerFactory.getIncrementer(oracle,"test_oracle");
+        assertTrue("Found Oracle custom incrementer", oracleMaxVal != null);
+    }
+
+    @Test
+    public void testCustomIncrementerDatasourceNoVersion() throws Exception {
+        SimpleConfig config = new SimpleConfig();
+        config.putProperty("rice.krad.data.platform.incrementer.mysql",
+                "org.kuali.rice.krad.data.platform.testincrementers.CustomIncrementerMySQLVersion5");
+        config.putProperty("rice.krad.data.platform.incrementer.oracle",
+                "org.kuali.rice.krad.data.platform.testincrementers.CustomIncrementerOracleVersion11");
+        ConfigContext.init(config);
+
+        DataFieldMaxValueIncrementer mySQLMaxVal = MaxValueIncrementerFactory.getIncrementer(mysql,"test_mySQL");
+        assertTrue("Found MySQL custom incrementer",mySQLMaxVal != null);
+        assertTrue("Custom incrementer for MySQL should be mySQL5 for String val",
+                StringUtils.equals(mySQLMaxVal.nextStringValue(),"mySQL5"));
+
+        DataFieldMaxValueIncrementer oracleMaxVal = MaxValueIncrementerFactory.getIncrementer(oracle,"test_oracle");
+        assertTrue("Found Oracle custom incrementer", oracleMaxVal != null);
+    }
+
+    @Test(expected = InstantiationError.class)
+    public void testCustomIncrementerDatasourceInvalidClass() throws Exception {
+        SimpleConfig config = new SimpleConfig();
+        config.putProperty("rice.krad.data.platform.incrementer.mysql",
+                "org.kuali.rice.krad.data.platform.testincrementers.NonExistent");
+        ConfigContext.init(config);
+
+        DataFieldMaxValueIncrementer mySQLMaxVal = MaxValueIncrementerFactory.getIncrementer(mysql,"test_mySQL");
+        assertTrue("Cannot create incrementer", mySQLMaxVal == null);
+    }
+
+    @After
+    public void clearContext(){
+        ConfigContext.destroy();
+    }
 }

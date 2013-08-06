@@ -48,7 +48,7 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface ComponentModifier extends UifDictionaryBean, Serializable, Ordered, Cloneable {
+public interface ComponentModifier extends UifDictionaryBean, Serializable, Ordered {
 
     /**
      * Should be called to initialize the ComponentModifier

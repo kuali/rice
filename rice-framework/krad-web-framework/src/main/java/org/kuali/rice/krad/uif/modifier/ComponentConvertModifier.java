@@ -190,7 +190,7 @@ public class ComponentConvertModifier extends ComponentModifierBase {
     protected <T> void copyProperties(T componentModifier) {
         super.copyProperties(componentModifier);
         ComponentConvertModifier componentConvertModifierCopy = (ComponentConvertModifier) componentModifier;
-        componentConvertModifierCopy.setComponentReplacementPrototype(this.componentReplacementPrototype);
+        componentConvertModifierCopy.setComponentReplacementPrototype((Component)this.componentReplacementPrototype.copy());
         componentConvertModifierCopy.setComponentTypeToReplace(this.componentTypeToReplace);
     }
 }

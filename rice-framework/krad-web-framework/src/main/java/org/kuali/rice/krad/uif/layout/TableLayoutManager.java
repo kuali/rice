@@ -2126,6 +2126,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             tableLayoutManagerCopy.setAddLineGroup((Group) this.getAddLineGroup().copy());
         }
 
+        tableLayoutManagerCopy.setNumberOfDataColumns(this.numberOfDataColumns);
+
         if (this.headerLabels != null) {
             List<Label> headerLabelsCopy = Lists.newArrayListWithExpectedSize(this.headerLabels.size());
             for (Label headerLabel : headerLabels) {
@@ -2186,7 +2188,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         tableLayoutManagerCopy.setGroupingColumnIndex(this.getGroupingColumnIndex());
 
         if (this.groupingPropertyNames != null) {
-            tableLayoutManagerCopy.setGroupingPropertyNames(new ArrayList(groupingPropertyNames));
+            tableLayoutManagerCopy.setGroupingPropertyNames(new ArrayList<String>(groupingPropertyNames));
         }
 
         tableLayoutManagerCopy.setRenderOnlyLeftTotalLabels(this.isRenderOnlyLeftTotalLabels());
@@ -2225,9 +2227,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                     footerCalculationComponents.size());
             for (Component footerCalculationComponent : footerCalculationComponents) {
                 if (footerCalculationComponent != null) {
-                    if (footerCalculationComponent != null) {
-                        footerCalculationComponentsCopy.add((Component) footerCalculationComponent.copy());
-                    }
+                    footerCalculationComponentsCopy.add((Component) footerCalculationComponent.copy());
                 }
             }
             tableLayoutManagerCopy.setFooterCalculationComponents(footerCalculationComponentsCopy);

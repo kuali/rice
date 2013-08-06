@@ -441,6 +441,27 @@ public class ComponentUtils {
     }
 
     /**
+     * Sets a property on the given component and removes any expressions for that property so the value is not
+     * overridden
+     *
+     * @param component component instance to set property on
+     * @param propertyName name of property to set
+     * @param propertyValue value to set property to
+     */
+    public static void setComponentPropertyFinal(Component component, String propertyName, Object propertyValue) {
+        if (component == null) {
+            return;
+        }
+
+        ObjectPropertyUtils.setPropertyValue(component, propertyName, propertyValue);
+
+        if ((component.getPropertyExpressions() != null) && component.getPropertyExpressions().containsKey(
+                propertyName)) {
+            component.getPropertyExpressions().remove(propertyName);
+        }
+    }
+
+    /**
      * places a key, value pair in each context map of a list of components
      *
      * @param components the list components

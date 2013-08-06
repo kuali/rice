@@ -317,6 +317,7 @@
       <bean parent="Uif-ExpandDetailsImageAction"/>
     </property>
     <property name="layoutManager.applyDefaultCellWidths" value="false"/>
+    <property name="layoutManager.ajaxDetailsRetrieval" value="true"/>
     <property name="layoutManager.richTable">
       <bean parent="Uif-PagedRichTable">
         <property name="templateOptions">
@@ -358,6 +359,7 @@
     <property name="readOnly" value="true"/>
     <property name="layoutManager.richTable.nestedLevel" value="1"/>
     <property name="layoutManager.renderSequenceField" value="false"/>
+    <property name="layoutManager.ajaxDetailsRetrieval" value="true"/>
     <property name="layoutManager.rowDetailsGroup">
       <bean parent="Uif-VerticalBoxGroup">
         <property name="items">

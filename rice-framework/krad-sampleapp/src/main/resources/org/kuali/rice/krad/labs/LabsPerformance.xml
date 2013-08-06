@@ -137,6 +137,7 @@
         <bean parent="Uif-Disclosure-TableCollectionSection" p:headerText="Collection 1">
           <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
           <property name="propertyName" value="mediumCollection1"/>
+          <property name="layoutManager.ajaxDetailsRetrieval" value="true"/>
           <property name="layoutManager.generateAutoSequence" value="true"/>
           <property name="layoutManager.richTable.forceLocalJsonData" value="true"/>
           <property name="items">

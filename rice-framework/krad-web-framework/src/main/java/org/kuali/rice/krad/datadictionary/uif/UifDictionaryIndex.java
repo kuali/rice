@@ -31,14 +31,12 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.service.ViewTypeService;
-import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.util.StopWatch;
 
 /**
  * Indexes {@code View} bean entries for retrieval
@@ -119,13 +117,7 @@ public class UifDictionaryIndex implements Runnable {
             }
         }
 
-        StopWatch timer = new StopWatch();
-        timer.start();
-
         View clonedView = ComponentUtils.copy(cachedView);
-
-        timer.stop();
-        LOG.info("View loaded in : " + timer.toString());
 
         return clonedView;
     }

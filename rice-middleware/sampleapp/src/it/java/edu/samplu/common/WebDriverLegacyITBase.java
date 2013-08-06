@@ -1155,6 +1155,12 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         fail(message); // Failable.fail
     }
 
+    protected WebElement findElement(By by, WebElement elementToFindOn) {
+        WebElement found = elementToFindOn.findElement(by);
+        WebDriverUtil.highlightElement(driver, found);
+        return found;
+    }
+
     protected List<WebElement> findVisibleElements(By by) {
         List<WebElement> webElements = driver.findElements(by);
         List<WebElement> visibleWebElements = new LinkedList<WebElement>();

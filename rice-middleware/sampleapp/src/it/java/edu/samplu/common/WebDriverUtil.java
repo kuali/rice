@@ -80,6 +80,9 @@ public class WebDriverUtil {
      */
     public static final int JS_HIGHLIGHT_MS = 400;
 
+
+    public static final String JS_HIGHLIGHT_MS_PROPERTY = "remote.driver.highlight.ms";
+
     /**
      * -Dremote.driver.highlight=true to enable highlighting of elements as selenium runs
      */
@@ -303,7 +306,7 @@ public class WebDriverUtil {
                         + JS_HIGHLIGHT_BACKGROUND + "; border: 2px solid " + JS_HIGHLIGHT_BOARDER + ";\");\n"
                         + "setTimeout(function(){\n"
                         + "    element.setAttribute('style', originalStyle);\n"
-                        + "}, " + JS_HIGHLIGHT_MS + ");", webElement);
+                        + "}, " + System.getProperty(JS_HIGHLIGHT_MS_PROPERTY, JS_HIGHLIGHT_MS + "") + ");", webElement);
             } catch (Throwable t) {
                 System.out.println("Throwable during javascript highlight element");
                 t.printStackTrace();

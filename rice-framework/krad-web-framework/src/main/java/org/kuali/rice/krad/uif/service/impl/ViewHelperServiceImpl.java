@@ -336,6 +336,13 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         performComponentApplyModel(view, component, model, new HashMap<String, Integer>());
         view.getViewIndex().indexComponent(component);
 
+        // adjust nestedLevel property on some specific collection cases
+        if (component instanceof Container) {
+            ComponentUtils.adjustNestedLevelsForTableCollections((Container) component, 0);
+        } else if (component instanceof FieldGroup) {
+            ComponentUtils.adjustNestedLevelsForTableCollections(((FieldGroup) component).getGroup(), 0);
+        }
+
         // if disclosed by action and request was made, make sure the component will display
         if (component.isDisclosedByAction()) {
             component.setRender(true);
@@ -383,8 +390,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#spawnSubLifecyle(org.kuali.rice.krad.uif.view.View,
-     * java.lang.Object, org.kuali.rice.krad.uif.component.Component, org.kuali.rice.krad.uif.component.Component,
-     * java.lang.String, java.lang.String)
+     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component, org.kuali.rice.krad.uif.component.Component,
+     *      java.lang.String, java.lang.String)
      */
     @Override
     public void spawnSubLifecyle(View view, Object model, Component component, Component parent, String startPhase,
@@ -410,8 +417,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         if (StringUtils.isBlank(endPhase)) {
             endPhase = UifConstants.ViewPhases.FINALIZE;
-        } else if (!UifConstants.ViewPhases.INITIALIZE.equals(endPhase) && !UifConstants.ViewPhases.APPLY_MODEL
-                .equals(endPhase) && !UifConstants.ViewPhases.FINALIZE.equals(endPhase)) {
+        } else if (!UifConstants.ViewPhases.INITIALIZE.equals(endPhase) && !UifConstants.ViewPhases.APPLY_MODEL.equals(
+                endPhase) && !UifConstants.ViewPhases.FINALIZE.equals(endPhase)) {
             throw new RuntimeException("Invalid end phase given: " + endPhase);
         }
 

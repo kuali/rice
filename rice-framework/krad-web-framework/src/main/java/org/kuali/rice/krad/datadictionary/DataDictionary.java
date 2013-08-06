@@ -15,6 +15,18 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import java.beans.PropertyDescriptor;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.ArrayUtils;
@@ -39,24 +51,11 @@ import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
-import org.springframework.beans.factory.support.KualiDefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.expression.StandardBeanExpressionResolver;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
-
-import java.beans.PropertyDescriptor;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 
 /**
  * Encapsulates a bean factory and indexes to the beans within the factory for providing
@@ -69,7 +68,7 @@ public class DataDictionary {
 
     protected static boolean validateEBOs = true;
 
-    protected KualiDefaultListableBeanFactory ddBeans = new KualiDefaultListableBeanFactory();
+    protected DefaultListableBeanFactory ddBeans = new DefaultListableBeanFactory();
     protected XmlBeanDefinitionReader xmlReader = new XmlBeanDefinitionReader(ddBeans);
 
     protected DataDictionaryIndex ddIndex = new DataDictionaryIndex(ddBeans);
@@ -102,7 +101,7 @@ public class DataDictionary {
      *
      * @param beans - The bean factory for the the dictionary beans
      */
-    public static void setupProcessor(KualiDefaultListableBeanFactory beans) {
+    public static void setupProcessor(DefaultListableBeanFactory beans) {
         try {
             // UIF post processor that sets component ids
             BeanPostProcessor idPostProcessor = ComponentBeanPostProcessor.class.newInstance();
@@ -129,7 +128,7 @@ public class DataDictionary {
      * @param index - Index of the data dictionary beans
      * @param validationFiles - The List of bean xml files loaded into the bean file
      */
-    public void loadDictionaryBeans(KualiDefaultListableBeanFactory beans,
+    public void loadDictionaryBeans(DefaultListableBeanFactory beans,
             Map<String, List<String>> moduleDictionaryFiles, DataDictionaryIndex index,
             ArrayList<String> validationFiles) {
         // expand configuration locations into files

@@ -39,16 +39,16 @@ import java.util.Set;
 public class ViewIndex implements Serializable {
     private static final long serialVersionUID = 4700818801272201371L;
 
-    private Map<String, Component> index;
-    private Map<String, DataField> dataFieldIndex;
-    private Map<String, CollectionGroup> collectionsIndex;
+    protected Map<String, Component> index;
+    protected Map<String, DataField> dataFieldIndex;
+    protected Map<String, CollectionGroup> collectionsIndex;
 
-    private Map<String, Component> initialComponentStates;
+    protected Map<String, Component> initialComponentStates;
 
-    private Map<String, PropertyEditor> fieldPropertyEditors;
-    private Map<String, PropertyEditor> secureFieldPropertyEditors;
-    private Map<String, Integer> idSequenceSnapshot;
-    private Map<String, Map<String, String>> componentExpressionGraphs;
+    protected Map<String, PropertyEditor> fieldPropertyEditors;
+    protected Map<String, PropertyEditor> secureFieldPropertyEditors;
+    protected Map<String, Integer> idSequenceSnapshot;
+    protected Map<String, Map<String, String>> componentExpressionGraphs;
 
     /**
      * Constructs new instance
@@ -414,6 +414,71 @@ public class ViewIndex implements Serializable {
      */
     public Map<String, Map<String, String>> getComponentExpressionGraphs() {
         return componentExpressionGraphs;
+    }
+
+    /**
+     * Returns a clone of the view index.
+     *
+     * @return ViewIndex clone
+     */
+    public ViewIndex copy() {
+        ViewIndex viewIndexCopy = new ViewIndex();
+
+        if (this.index != null) {
+            Map<String, Component> indexCopy = new HashMap<String, Component>();
+            for (Map.Entry<String, Component> indexEntry : this.index.entrySet()) {
+                indexCopy.put(indexEntry.getKey(), (Component) indexEntry.getValue().copy());
+            }
+
+            viewIndexCopy.index = indexCopy;
+        }
+
+        if (this.dataFieldIndex != null) {
+            Map<String, DataField> dataFieldIndexCopy = new HashMap<String, DataField>();
+            for (Map.Entry<String, DataField> indexEntry : this.dataFieldIndex.entrySet()) {
+                dataFieldIndexCopy.put(indexEntry.getKey(), (DataField) indexEntry.getValue().copy());
+            }
+
+            viewIndexCopy.dataFieldIndex = dataFieldIndexCopy;
+        }
+
+        if (this.collectionsIndex != null) {
+            Map<String, CollectionGroup> collectionsIndexCopy = new HashMap<String, CollectionGroup>();
+            for (Map.Entry<String, CollectionGroup> indexEntry : this.collectionsIndex.entrySet()) {
+                collectionsIndexCopy.put(indexEntry.getKey(), (CollectionGroup) indexEntry.getValue().copy());
+            }
+
+            viewIndexCopy.collectionsIndex = collectionsIndexCopy;
+        }
+
+        if (this.initialComponentStates != null) {
+            Map<String, Component> initialComponentStatesCopy = new HashMap<String, Component>();
+            for (Map.Entry<String, Component> indexEntry : this.initialComponentStates.entrySet()) {
+                initialComponentStatesCopy.put(indexEntry.getKey(), (Component) indexEntry.getValue().copy());
+            }
+
+            viewIndexCopy.initialComponentStates = initialComponentStatesCopy;
+        }
+
+        if (this.fieldPropertyEditors != null) {
+            viewIndexCopy.fieldPropertyEditors = new HashMap<String, PropertyEditor>(this.fieldPropertyEditors);
+        }
+
+        if (this.secureFieldPropertyEditors != null) {
+            viewIndexCopy.secureFieldPropertyEditors = new HashMap<String, PropertyEditor>(
+                    this.secureFieldPropertyEditors);
+        }
+
+        if (this.idSequenceSnapshot != null) {
+            viewIndexCopy.idSequenceSnapshot = new HashMap<String, Integer>(this.idSequenceSnapshot);
+        }
+
+        if (this.componentExpressionGraphs != null) {
+            viewIndexCopy.componentExpressionGraphs = new HashMap<String, Map<String, String>>(
+                    this.componentExpressionGraphs);
+        }
+
+        return viewIndexCopy;
     }
 
 }

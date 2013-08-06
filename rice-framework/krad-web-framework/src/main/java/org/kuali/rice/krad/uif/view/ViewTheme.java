@@ -564,4 +564,58 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
     public ConfigurationService getConfigurationService() {
         return CoreApiServiceLocator.getKualiConfigurationService();
     }
+
+    /**
+     * Returns a clone of the View Theme.
+     *
+     * @return ViewTheme instance
+     */
+    public <T> T copy() {
+        T copiedClass = null;
+        try {
+            copiedClass = (T) this.getClass().newInstance();
+        } catch (Exception exception) {
+            throw new RuntimeException();
+        }
+
+        copyProperties(copiedClass);
+
+        return copiedClass;
+    }
+
+    /**
+     * Copies the properties over for the copy method.
+     *
+     * @param viewTheme ViewTheme instance to copy properties to
+     */
+    protected <T> void copyProperties(T viewTheme) {
+        super.copyProperties(viewTheme);
+
+        ViewTheme viewThemeCopy = (ViewTheme) viewTheme;
+
+        viewThemeCopy.setName(this.name);
+        viewThemeCopy.setDirectory(this.directory);
+        viewThemeCopy.setImageDirectory(this.imageDirectory);
+        viewThemeCopy.setMinVersionSuffix(this.minVersionSuffix);
+        viewThemeCopy.setMinFileName(this.minFileName);
+        viewThemeCopy.setIncludeMinFiles(this.includeMinFiles);
+
+        if (this.minCssSourceFiles != null) {
+            viewThemeCopy.setMinCssSourceFiles(new ArrayList<String>(this.minCssSourceFiles));
+        }
+
+        if (this.minScriptSourceFiles != null) {
+            viewThemeCopy.setMinScriptSourceFiles(new ArrayList<String>(this.minScriptSourceFiles));
+        }
+
+        if (this.cssFiles != null) {
+            viewThemeCopy.setCssFiles(new ArrayList<String>(this.cssFiles));
+        }
+
+        if (this.scriptFiles != null) {
+            viewThemeCopy.setScriptFiles(new ArrayList<String>(this.scriptFiles));
+        }
+
+        viewThemeCopy.setUsesThemeBuilder(this.usesThemeBuilder);
+    }
 }

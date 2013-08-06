@@ -16,6 +16,7 @@
 package edu.samplu.krad.demo.uif.library;
 
 import edu.samplu.common.SmokeTestBase;
+import edu.samplu.common.WebDriverUtil;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -57,6 +58,7 @@ public abstract class DemoLibraryBase extends SmokeTestBase {
         if(isElementPresentById("ComponentLibrary-TabGroup_tabList")
                 && isElementPresentByDataAttributeValue(UifConstants.DataAttributes.TAB_FOR, exampleId)){
             WebElement menuItem = getElementByDataAttributeValue(UifConstants.DataAttributes.TAB_FOR, exampleId);
+            WebDriverUtil.highlightElement(driver, menuItem.findElement(By.cssSelector("a")));
             menuItem.findElement(By.cssSelector("a")).click();
 
             waitForElementPresent(tabId);

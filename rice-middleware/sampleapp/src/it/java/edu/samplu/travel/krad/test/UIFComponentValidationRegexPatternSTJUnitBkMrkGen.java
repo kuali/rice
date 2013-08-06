@@ -15,6 +15,7 @@
  */
 package edu.samplu.travel.krad.test;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -27,6 +28,7 @@ public class UIFComponentValidationRegexPatternSTJUnitBkMrkGen extends UIFCompon
         return BOOKMARK_URL;
     }
 
+    @Ignore // lots of selector updates needed.
     @Test
     public void testValidCharacterConstraintBookmark() throws Exception {
         testValidCharacterConstraintBookmark(this);

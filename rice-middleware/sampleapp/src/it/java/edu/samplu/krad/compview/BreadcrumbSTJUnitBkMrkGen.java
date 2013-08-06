@@ -15,6 +15,7 @@
  */
 package edu.samplu.krad.compview;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -31,11 +32,13 @@ public class BreadcrumbSTJUnitBkMrkGen extends BreadcrumbSTJUnitBase {
         return BOOKMARK_URL;
     }
 
+    @Ignore // TODO fix
     @Test
     public void testBreadcrumbBookmark() throws Exception {
         testBreadcrumbBookmark(this);
     }
 
+    @Ignore // TODO fix
     @Test
     public void testBreadcrumbShuffledBookmark() throws Exception {
         testBreadcrumbShuffledBookmark(this);

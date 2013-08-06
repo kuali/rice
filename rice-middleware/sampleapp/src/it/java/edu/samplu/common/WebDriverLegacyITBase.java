@@ -2131,7 +2131,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
             waitAndTypeByXpath(DOC_CODE_XPATH, twoUpperCaseLetters.substring(0, 1) + Character.toString((char) ('A' + attemptCount++)));
             blanketApproveCheck();
         }
-        blanketApproveTest();
+        blanketApproveAssert();
         assertDocFinal(docId);
     }
 
@@ -3353,7 +3353,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
             waitAndTypeByXpath(DOC_CODE_XPATH, Character.toString((char) ('A' + attemptCount++)));
             blanketApproveCheck();
         }
-        blanketApproveTest();
+        blanketApproveAssert();
         assertDocFinal(docId);
     }
 
@@ -3368,7 +3368,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndClickByXpath("//button[contains(.,'Get Error Messages')]");
         waitForPageToLoad();
         Thread.sleep(5000);
-        assertElementPresent("div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-errorMessageItem");
+        assertElementPresent("div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-errorMessageItem-field");
         waitIsVisibleByXpath("//div[@data-header_for='Demo-ValidationLayout-Section1']");
         assertElementPresentByXpath("//*[@data-messageitemfor='Demo-ValidationLayout-Section1' and @class='uif-errorMessageItem']");
         assertElementPresent("div[data-role=\"InputField\"] img[alt=\"Error\"]");
@@ -4263,6 +4263,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void waitForElementPresentById(String id, String message) throws InterruptedException {
         jiraAwareWaitFor(By.id(id), message);
+    }
+
+    protected void waitForElementsPresentById(String id, String message) throws InterruptedException {
+        jiraAwareWaitFors(By.id(id), message);
     }
 
     protected void waitForElementPresentByName(String name) throws InterruptedException {

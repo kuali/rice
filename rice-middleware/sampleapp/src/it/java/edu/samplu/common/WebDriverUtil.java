@@ -15,6 +15,7 @@
  */
 package edu.samplu.common;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.openqa.selenium.By;
@@ -34,9 +35,14 @@ import org.openqa.selenium.safari.SafariDriver;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -68,25 +74,32 @@ public class WebDriverUtil {
     /**
      * green
      */
-    public static final String JS_HIGHLIGHT_BACKGROUND = "green";
+    public static final String JS_HIGHLIGHT_BACKGROUND = "#66FF33";
 
     /**
      * green
      */
-    public static final String JS_HIGHLIGHT_BOARDER = "green";
+    public static final String JS_HIGHLIGHT_BOARDER = "#66FF33";
 
     /**
      * 400 milliseconds
      */
     public static final int JS_HIGHLIGHT_MS = 400;
 
-
+    /**
+     * -Dremote.driver.highlight.ms=
+     */
     public static final String JS_HIGHLIGHT_MS_PROPERTY = "remote.driver.highlight.ms";
 
     /**
      * -Dremote.driver.highlight=true to enable highlighting of elements as selenium runs
      */
     public static final String JS_HIGHLIGHT_PROPERTY = "remote.driver.highlight";
+
+    /**
+     * -Dremote.driver.highlight.input=
+     */
+    public static final String JS_HIGHLIGHT_INPUT_PROPERTY = "remote.driver.highlight.input";
 
     /**
      * TODO introduce SHORT_IMPLICIT_WAIT_TIME with param in WebDriverITBase
@@ -163,6 +176,15 @@ public class WebDriverUtil {
 
         if ("true".equals(System.getProperty(JS_HIGHLIGHT_PROPERTY, "false"))) {
             jsHighlightEnabled = true;
+            if (System.getProperty(JS_HIGHLIGHT_INPUT_PROPERTY) != null) {
+                InputStream in = WebDriverUtil.class.getResourceAsStream(System.getProperty(JS_HIGHLIGHT_INPUT_PROPERTY));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                String line = null;
+                List<String> lines = new LinkedList<String>();
+                while ((line = reader.readLine()) != null) {
+                    lines.add(line);
+                }
+            }
         }
 
         WebDriver driver = null;
@@ -299,6 +321,7 @@ public class WebDriverUtil {
     public static void highlightElement(WebDriver webDriver, WebElement webElement) {
         if (jsHighlightEnabled) {
             try {
+//                System.out.println("highlighting " + webElement.toString() + " on url " + webDriver.getCurrentUrl());
                 JavascriptExecutor js = (JavascriptExecutor) webDriver;
                 js.executeScript("element = arguments[0];\n"
                         + "originalStyle = element.getAttribute('style');\n"

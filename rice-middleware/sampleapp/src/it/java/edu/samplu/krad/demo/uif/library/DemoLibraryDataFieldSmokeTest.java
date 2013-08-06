@@ -156,6 +156,7 @@ public class DemoLibraryDataFieldSmokeTest extends DemoLibraryBase {
         testDataFieldLabelTop();
         testDataFieldLabelRight();
         testDataFieldDefaultValue();
+        testDataFieldAppendProperty();
         testDataFieldReplaceProperty();
         testDataFieldReplacePropertyWithField();
         testDataFieldAppendPropertyWithField();

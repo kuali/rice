@@ -15,6 +15,7 @@
  */
 package edu.samplu.travel.krad.test;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -24,6 +25,7 @@ import org.junit.Test;
  */
 public class UIFComponentValidationRegexPatternSTJUnitNavGen extends UIFComponentValidationRegexPatternSTJUnitBase {
 
+    @Ignore // lots of selector updates needed.
     @Test
     public void testValidCharacterConstraintNav() throws Exception {
         testValidCharacterConstraintNav(this);

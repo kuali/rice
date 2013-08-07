@@ -405,13 +405,14 @@
                   p:required="true"/>
             <bean parent="Uif-ActionLink" p:actionLabel="Click to show a dialog"
                   p:actionScript="showLightboxComponent('Demo-RowDetails-LightBoxContent@{#lineSuffix}')"/>
-            <bean id="Demo-RowDetails-LightBoxContent" parent="Uif-VerticalBoxGroup"
+            <bean id="Demo-RowDetails-LightBoxContent" parent="Uif-GridGroup"
                   p:retrieveViaAjax="true">
               <property name="items">
                 <list>
-                  <bean parent="Uif-Message" p:messageText="This is my content"/>
-                  <bean parent="Uif-InputField-LabelTop" p:propertyName="field3" p:label="Field 3"
+                  <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"
                         p:required="true"/>
+                  <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"
+                        p:required="true" p:render="false"/>
                 </list>
               </property>
             </bean>

@@ -988,10 +988,10 @@ public abstract class UifControllerBase {
     /**
      * Generates exportable table data as CSV based on the rich table selected
      *
-     * @param form
-     * @param result
-     * @param request
-     * @param response
+     * @param form - current form
+     * @param result - binding result
+     * @param request - http request
+     * @param response - http response
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, params = "methodToCall=" + UifConstants.MethodToCallNames.TABLE_CSV,
@@ -1007,10 +1007,10 @@ public abstract class UifControllerBase {
     /**
      * Generates exportable table data in xsl based on the rich table selected
      *
-     * @param form
-     * @param result
-     * @param request
-     * @param response
+     * @param form - current form
+     * @param result - binding result
+     * @param request - http request
+     * @param response - http response
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, params = "methodToCall=" + UifConstants.MethodToCallNames.TABLE_XLS,
@@ -1026,10 +1026,10 @@ public abstract class UifControllerBase {
     /**
      * Generates exportable table data based on the rich table selected
      *
-     * @param form
-     * @param result
-     * @param request
-     * @param response
+     * @param form - current form
+     * @param result - binding result
+     * @param request - http request
+     * @param response - http response
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, params = "methodToCall=" + UifConstants.MethodToCallNames.TABLE_XML,
@@ -1045,11 +1045,6 @@ public abstract class UifControllerBase {
     /**
      * Generates exportable table data based on the rich table selected
      *
-     * @param form
-     * @param result
-     * @param request
-     * @param response
-     * @return
      */
     private String retrieveTableData(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {

@@ -986,6 +986,44 @@ public abstract class UifControllerBase {
     }
 
     /**
+     * Generates exportable table data as CSV based on the rich table selected
+     *
+     * @param form
+     * @param result
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=" + UifConstants.MethodToCallNames.TABLE_CSV,
+            produces = {"text/csv"})
+    @ResponseBody
+    public String tableCsvRetrieval(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        LOG.debug("processing csv table data request");
+
+        return retrieveTableData(form, result, request, response);
+    }
+
+    /**
+     * Generates exportable table data in xsl based on the rich table selected
+     *
+     * @param form
+     * @param result
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=" + UifConstants.MethodToCallNames.TABLE_XLS,
+            produces = {"application/vnd.ms-excel"})
+    @ResponseBody
+    public String tableXlsRetrieval(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        LOG.debug("processing xls table data request");
+
+        return retrieveTableData(form, result, request, response);
+    }
+
+    /**
      * Generates exportable table data based on the rich table selected
      *
      * @param form
@@ -994,10 +1032,26 @@ public abstract class UifControllerBase {
      * @param response
      * @return
      */
-    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=" + UifConstants.MethodToCallNames.TABLE_DATA,
-            produces = {"text/csv", "application/xml", "application/vnd.ms-excel"})
+    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=" + UifConstants.MethodToCallNames.TABLE_XML,
+            produces = {"application/xml"})
     @ResponseBody
-    public String retrieveTableData(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+    public String tableXmlRetrieval(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        LOG.debug("processing xml table data request");
+
+        return retrieveTableData(form, result, request, response);
+    }
+
+    /**
+     * Generates exportable table data based on the rich table selected
+     *
+     * @param form
+     * @param result
+     * @param request
+     * @param response
+     * @return
+     */
+    private String retrieveTableData(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         LOG.debug("processing table data request");
 

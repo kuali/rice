@@ -733,21 +733,21 @@ function createTable(tableId, additionalOptions, groupingOptions) {
                         "sExtends": "text",
                         "sButtonText": "csv",
                         "fnClick": function (nButton, oConfig) {
-                            window.location.href = additionalOptions.sDownloadSource + "&formatType=csv";
+                            window.location.href = additionalOptions.sDownloadSource + "&methodToCall=tableCsvRetrieval&formatType=csv";
                         },
                     },
                     {
                         "sExtends": "text",
                         "sButtonText": "xml",
                         "fnClick": function (nButton, oConfig) {
-                            window.location.href = additionalOptions.sDownloadSource + "&formatType=xml";
+                            window.location.href = additionalOptions.sDownloadSource + "&methodToCall=tableXmlRetrieval&formatType=xml";
                         },
                     },
                     {
                         "sExtends": "text",
                         "sButtonText": "xls",
                         "fnClick": function (nButton, oConfig) {
-                            window.location.href = additionalOptions.sDownloadSource + "&formatType=xls";
+                            window.location.href = additionalOptions.sDownloadSource + "&methodToCall=tableXlsRetrieval&formatType=xls";
                         },
                     }
                 ]

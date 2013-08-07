@@ -138,15 +138,15 @@ public class CollectionGroupBuilder implements Serializable {
      *
      * <p>The items in the returned collection contain
      * <ul>
-     *     <li>an <b>index</b> property which refers to the original position within the unfiltered model collection</li>
-     *     <li>an <b>element</b> property which is a reference to the element in the model collection</li>
+     * <li>an <b>index</b> property which refers to the original position within the unfiltered model collection</li>
+     * <li>an <b>element</b> property which is a reference to the element in the model collection</li>
      * </ul>
      * </p>
      *
-     * @see IndexedElement
      * @param showIndexes A List of indexes to model collection elements that were not filtered out
      * @param modelCollection the model collection
      * @return a filtered and indexed version of the model collection
+     * @see IndexedElement
      */
     private List<IndexedElement> buildFilteredIndexedCollection(List<Integer> showIndexes,
             List<Object> modelCollection) {// apply the filtering in a way that preserves the original indices for binding path use
@@ -175,16 +175,17 @@ public class CollectionGroupBuilder implements Serializable {
 
         final int displayStart = (collectionGroup.getDisplayStart() != -1) ? collectionGroup.getDisplayStart() : 0;
 
-        final int displayLength = (collectionGroup.getDisplayLength() != -1) ?
-                        collectionGroup.getDisplayLength() : filteredIndexedElements.size() - displayStart;
+        final int displayLength = (collectionGroup.getDisplayLength() != -1) ? collectionGroup.getDisplayLength() :
+                filteredIndexedElements.size() - displayStart;
 
         // make sure we don't exceed the size of our collection
-        final int displayEndExclusive = (displayStart+displayLength > filteredIndexedElements.size()) ?
-                filteredIndexedElements.size() : displayStart+displayLength;
+        final int displayEndExclusive =
+                (displayStart + displayLength > filteredIndexedElements.size()) ? filteredIndexedElements.size() :
+                        displayStart + displayLength;
 
         // get a view of the elements that will be displayed on the page (if paging is enabled)
-        final List<IndexedElement> renderedIndexedElements =
-                filteredIndexedElements.subList(displayStart, displayEndExclusive);
+        final List<IndexedElement> renderedIndexedElements = filteredIndexedElements.subList(displayStart,
+                displayEndExclusive);
 
         // for each unfiltered collection row to be rendered, build the line fields
         for (IndexedElement indexedElement : renderedIndexedElements) {
@@ -194,14 +195,14 @@ public class CollectionGroupBuilder implements Serializable {
                     collectionGroup.getBindingInfo().getBindingName() + "[" + indexedElement.index + "]";
 
             if (StringUtils.isNotBlank(collectionGroup.getBindingInfo().getBindByNamePrefix())) {
-                bindingPathPrefix =
-                        collectionGroup.getBindingInfo().getBindByNamePrefix() + "." + bindingPathPrefix;
+                bindingPathPrefix = collectionGroup.getBindingInfo().getBindByNamePrefix() + "." + bindingPathPrefix;
             }
 
             List<Action> lineActions = initializeLineActions(collectionGroup.getLineActions(), view, model,
                     collectionGroup, currentLine, indexedElement.index);
 
-            buildLine(view, model, collectionGroup, bindingPathPrefix, lineActions, false, currentLine, indexedElement.index);
+            buildLine(view, model, collectionGroup, bindingPathPrefix, lineActions, false, currentLine,
+                    indexedElement.index);
         }
     }
 
@@ -333,9 +334,10 @@ public class CollectionGroupBuilder implements Serializable {
         ComponentUtils.updateContextsForLine(lineFields, currentLine, lineIndex, lineSuffix);
 
         for (Action action : actions) {
-            if(action !=null && StringUtils.isNotBlank(action.getFocusOnIdAfterSubmit()) &&
-                    action.getFocusOnIdAfterSubmit().equalsIgnoreCase(UifConstants.Order.LINE_FIRST.toString())
-                    && (lineFields.size() > 0)){
+            if (action != null && StringUtils.isNotBlank(action.getFocusOnIdAfterSubmit()) &&
+                    action.getFocusOnIdAfterSubmit().equalsIgnoreCase(UifConstants.Order.LINE_FIRST.toString()) && (
+                    lineFields.size()
+                            > 0)) {
                 action.setFocusOnIdAfterSubmit(lineFields.get(0).getId() + UifConstants.IdSuffixes.CONTROL);
             }
         }
@@ -366,8 +368,8 @@ public class CollectionGroupBuilder implements Serializable {
                             ControlBase control = (ControlBase) ((InputField) f).getControl();
                             control.setOnChangeScript(control.getOnChangeScript() == null ?
                                     ";collectionLineChanged(this, 'uif-newCollectionItem');" :
-                                    control.getOnChangeScript() +
-                                    ";collectionLineChanged(this, 'uif-newCollectionItem');");
+                                    control.getOnChangeScript()
+                                            + ";collectionLineChanged(this, 'uif-newCollectionItem');");
                         }
                     }
                 }
@@ -512,8 +514,7 @@ public class CollectionGroupBuilder implements Serializable {
             List<Field> lineFields, Object currentLine, int lineIndex) {
         List<Field> fields = new ArrayList<Field>();
 
-        ExpressionEvaluator expressionEvaluator =
-                view.getViewHelperService().getExpressionEvaluator();
+        ExpressionEvaluator expressionEvaluator = view.getViewHelperService().getExpressionEvaluator();
 
         for (Field lineField : lineFields) {
             String conditionalRender = lineField.getPropertyExpression("render");
@@ -524,8 +525,7 @@ public class CollectionGroupBuilder implements Serializable {
 
                 // Adjust the condition as ExpressionUtils.adjustPropertyExpressions will only be
                 // executed after the collection is built.
-                conditionalRender = expressionEvaluator.replaceBindingPrefixes(view, lineField,
-                        conditionalRender);
+                conditionalRender = expressionEvaluator.replaceBindingPrefixes(view, lineField, conditionalRender);
 
                 Boolean render = (Boolean) expressionEvaluator.evaluateExpression(context, conditionalRender);
                 lineField.setRender(render);
@@ -621,8 +621,7 @@ public class CollectionGroupBuilder implements Serializable {
 
         Person user = GlobalVariables.getUserSession().getPerson();
 
-        ExpressionEvaluator expressionEvaluator =
-                view.getViewHelperService().getExpressionEvaluator();
+        ExpressionEvaluator expressionEvaluator = view.getViewHelperService().getExpressionEvaluator();
 
         for (Field lineField : lineFields) {
             String propertyName = null;
@@ -724,8 +723,8 @@ public class CollectionGroupBuilder implements Serializable {
             context.put(UifConstants.ContextVariableNames.PARENT, collectionGroup);
             context.put(UifConstants.ContextVariableNames.COMPONENT, subCollectionGroup);
 
-            Boolean render = (Boolean) view.getViewHelperService().getExpressionEvaluator().evaluateExpression(
-                    context, conditionalRender);
+            Boolean render = (Boolean) view.getViewHelperService().getExpressionEvaluator().evaluateExpression(context,
+                    conditionalRender);
             subCollectionGroup.setRender(render);
         }
 
@@ -771,24 +770,24 @@ public class CollectionGroupBuilder implements Serializable {
                         collectionGroup.getBindingInfo().getBindingPath());
                 action.addActionParameter(UifParameters.SELECTED_LINE_INDEX, Integer.toString(lineIndex));
             }
-            
+
             action.setJumpToIdAfterSubmit(collectionGroup.getId());
             action.setRefreshId(collectionGroup.getId());
 
             // if marked for validation, add call to validate the line and set validation flag to false
             // so the entire form will not be validated
             if (action.isPerformClientSideValidation()) {
-                String preSubmitScript = "valid=valid && validateLine('" +
+                String preSubmitScript = "var valid=validateLine('" +
                         collectionGroup.getBindingInfo().getBindingPath() + "'," + Integer.toString(lineIndex) +
-                        ");return valid;";
+                        ");";
 
                 // prepend custom presubmit script which should evaluate to a boolean
                 if (StringUtils.isNotBlank(action.getPreSubmitCall())) {
-                    preSubmitScript = ScriptUtils.appendScript("var valid=true;valid=" + action.getPreSubmitCall(),
-                            preSubmitScript);
-                } else {
-                    preSubmitScript = "var valid=true;" + preSubmitScript;
+                    preSubmitScript = ScriptUtils.appendScript(preSubmitScript,
+                            "if(valid){valid=function(){" + action.getPreSubmitCall() + "}();}");
                 }
+
+                preSubmitScript += " return valid;";
 
                 action.setPreSubmitCall(preSubmitScript);
                 action.setPerformClientSideValidation(false);
@@ -831,23 +830,28 @@ public class CollectionGroupBuilder implements Serializable {
                 baseId += collectionGroup.getSubCollectionSuffix();
             }
 
-            String preSubmitScript = "valid=valid && ";
-            if (collectionGroup.isAddViaLightBox()) {
-                preSubmitScript += "validateAddLine('" + collectionGroup.getId() + "', true); if (valid) {closeLightbox();}";
-            }  else {
-                preSubmitScript += "validateAddLine('" + collectionGroup.getId() + "');";
-            }
-            preSubmitScript += "return valid;";
+            if (action.isPerformClientSideValidation()) {
+                String preSubmitScript = "var valid=";
+                if (collectionGroup.isAddViaLightBox()) {
+                    preSubmitScript += "validateAddLine('" + collectionGroup.getId() + "', true);";
+                } else {
+                    preSubmitScript += "validateAddLine('" + collectionGroup.getId() + "');";
+                }
 
-            // prepend custom presubmit script which should evaluate to a boolean
-            if (StringUtils.isNotBlank(action.getPreSubmitCall())) {
-                preSubmitScript = ScriptUtils.appendScript("var valid=true;valid=" + action.getPreSubmitCall(),
-                        preSubmitScript);
-            } else {
-                preSubmitScript = "var valid=true;" + preSubmitScript;
-            }
+                // prepend custom presubmit script which should evaluate to a boolean
+                if (StringUtils.isNotBlank(action.getPreSubmitCall())) {
+                    preSubmitScript = ScriptUtils.appendScript(preSubmitScript,
+                            "if(valid){valid=function(){" + action.getPreSubmitCall() + "}();}");
+                }
 
-            action.setPreSubmitCall(preSubmitScript);
+                if (collectionGroup.isAddViaLightBox()) {
+                    preSubmitScript += " if(valid){closeLightbox();}";
+                }
+                preSubmitScript += "return valid;";
+
+                action.setPreSubmitCall(preSubmitScript);
+                action.setPerformClientSideValidation(false);
+            }
         }
 
         // get add line for context

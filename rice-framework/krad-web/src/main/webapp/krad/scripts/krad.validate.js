@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+var prevPageMessageTotal = 0;
+var groupValidationDefaults = jQuery("div[data-role='view']").data(kradVariables.GROUP_VALIDATION_DEFAULTS);
+var fieldValidationDefaults = jQuery("div[data-role='view']").data(kradVariables.FIELD_VALIDATION_DEFAULTS);
+
 /**
  * Get validation data for the component element by merging custom settings with defaults
  *
@@ -27,10 +31,10 @@ function getValidationData(jqComponent, isGroup) {
     // determine defaults
     var defaults;
     if (isGroup) {
-        defaults = jQuery("div[data-role='view']").data(kradVariables.GROUP_VALIDATION_DEFAULTS);
+        defaults = groupValidationDefaults;
     }
     else {
-        defaults = jQuery("div[data-role='view']").data(kradVariables.FIELD_VALIDATION_DEFAULTS);
+        defaults = fieldValidationDefaults;
     }
 
     if (!defaults) {
@@ -49,7 +53,6 @@ function getValidationData(jqComponent, isGroup) {
 
     return data;
 }
-
 
 /**
  * Hide the message tooltip associated with the field by id
@@ -98,8 +101,8 @@ function getHoverElement(fieldId) {
         elementInfo.type = "";
         if (elementInfo.element.is("input:checkbox")) {
             elementInfo.themeMargins = {
-                total:'13px',
-                difference:'2px'
+                total: '13px',
+                difference: '2px'
             };
         }
     }
@@ -110,8 +113,8 @@ function getHoverElement(fieldId) {
                 + "fieldset > span > input:checkbox, fieldset > span > label, .uif-tooltip");
         elementInfo.type = "fieldset";
         elementInfo.themeMargins = {
-            total:'13px',
-            difference:'2px'
+            total: '13px',
+            difference: '2px'
         };
     }
     else {
@@ -540,9 +543,9 @@ function handleMessagesAtGroup(id, fieldId, fieldData, pageSetupPhase) {
  *
  * @param id id of the group
  * @param data validationData for the group
- * @param forces the group write to be processed
+ * @param forceWrite forces the group write to be processed
  */
-function writeMessagesForGroup(id, data, forceWrite) {
+function writeMessagesForGroup(id, data, forceWrite, skipCalculateTotals) {
     var parent = jQuery("#" + id).data("parent");
 
     if (data) {
@@ -585,7 +588,9 @@ function writeMessagesForGroup(id, data, forceWrite) {
             data.info = [];
         }
 
-        data = calculateMessageTotals(id, data);
+        if (!skipCalculateTotals) {
+            data = calculateMessageTotals(id, data);
+        }
 
         if (showMessages) {
 
@@ -743,6 +748,13 @@ function writeMessagesForPage() {
     var pageId = page.attr("id");
     var data = getValidationData(page, true);
 
+    calculateMessageTotals(pageId, data);
+    if (prevPageMessageTotal === 0 && data.messageTotal == 0) {
+        return;
+    }
+
+    prevPageMessageTotal = data.messageTotal;
+
     if (data) {
         var messageMap = data.messageMap;
         if (!messageMap) {
@@ -752,7 +764,7 @@ function writeMessagesForPage() {
     }
 
     writeMessagesForChildGroups(pageId);
-    writeMessagesForGroup(pageId, data);
+    writeMessagesForGroup(pageId, data, false, true);
     displayHeaderMessageCount(pageId, data);
     jQuery(".uif-errorMessageItem > div").show();
 }
@@ -884,9 +896,9 @@ function calculateMessageTotals(id, data) {
  */
 function recursiveGroupMessageCount(parentId) {
     var data = {
-        errorTotal:0,
-        warningTotal:0,
-        infoTotal:0
+        errorTotal: 0,
+        warningTotal: 0,
+        infoTotal: 0
     };
 
     if (!parentId) {
@@ -1124,7 +1136,7 @@ function generateSummaries(id, messageMap, sections, order, newList) {
             if (!(value.indexOf("s$") == 0) && !(value.indexOf("f$") == 0)) {
                 currentFields.push(value);
             }
-            else if (value.indexOf("c$") == 0){
+            else if (value.indexOf("c$") == 0) {
                 var collectionId = value.substring(2);
                 var collectionData = getValidationData(jquery("#" + collectionId), true);
                 for (var key in collectionData.messageMap) {
@@ -1604,10 +1616,10 @@ function generateSummaryLink(sectionId) {
         var countMessage = generateCountString(sectionData.errorTotal, sectionData.warningTotal, sectionData.infoTotal);
         //remove newline characters
         sectionTitle = sectionTitle.replace(/\r?\n/g, "");
-        if (sectionTitle){
+        if (sectionTitle) {
             summaryMessage = sectionTitle + ": " + countMessage;
         }
-        else{
+        else {
             summaryMessage = countMessage;
         }
     }

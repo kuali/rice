@@ -136,8 +136,8 @@
         <!-- ex:Demo-Disclosure-Example5 start-->
         <bean parent="Uif-Disclosure-VerticalBoxSection" p:headerText="Section Header">
           <!-- default triangle disclosure image will not be shown -->
-          <property name="disclosure.collapseImageSrc" value="@{#ConfigProperties['application.url']}/images/krad/collapse-black.png"/>
-          <property name="disclosure.expandImageSrc" value="@{#ConfigProperties['application.url']}/images/krad/expand-black.png"/>
+          <property name="disclosure.collapseImageSrc" value="@{#ConfigProperties['application.url']}/images/collapse-black.png"/>
+          <property name="disclosure.expandImageSrc" value="@{#ConfigProperties['application.url']}/images/expand-black.png"/>
 
           <property name="items">
             <list>

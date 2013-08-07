@@ -59,6 +59,11 @@ public class DemoLibraryDataFieldSmokeTest extends DemoLibraryBase {
         assertIsVisible("#" + controlId);
 
         assertTextPresent("1001", "#" + controlId, "DataField value not correct");
+
+        WebElement afterFieldElement = field.findElement(By.cssSelector("span[data-label_for='" + fieldId + "'] + span"));
+        if (!(afterFieldElement.getText().contains("1001"))) {
+            fail("Ordering of DataField (label, value) is incorrect");
+        }
     }
 
     protected void testDataFieldLabelTop() throws Exception {
@@ -84,9 +89,92 @@ public class DemoLibraryDataFieldSmokeTest extends DemoLibraryBase {
         assertIsVisible("#" + controlId);
     }
 
+    protected void testDataFieldRight() throws Exception {
+        WebElement exampleDiv = navigateToExample("Demo-DataField-Example3");
+        WebElement field = exampleDiv.findElement(By.cssSelector("div[data-label='DataField 1']"));
+
+        String fieldId = field.getAttribute("id");
+        String controlId = fieldId + UifConstants.IdSuffixes.CONTROL;
+
+        assertIsVisible("#" + fieldId);
+        assertIsVisible("label[for='" + controlId + "']");
+
+        WebElement label = field.findElement(By.cssSelector("label[for='" + controlId + "']"));
+        if(!label.getText().contains("DataField 1")){
+            fail("Label text does not match");
+        }
+
+        assertTextPresent("1001", "#" + controlId, "DataField value not correct");
+
+        assertIsVisible("#" + controlId);
+
+        WebElement afterControlElementLabel = field.findElement(By.cssSelector("span#" + controlId + " + span > label"));
+        if (!(afterControlElementLabel.getText().contains("DataField 1"))) {
+            fail("Ordering of DataField (value, label) is incorrect");
+        }
+    }
+
+    protected void testDataFieldDefaultValue() throws Exception {
+        WebElement exampleDiv = navigateToExample("Demo-DataField-Example4");
+        WebElement field = exampleDiv.findElement(By.cssSelector("div[data-label='DataField 2']"));
+
+        String fieldId = field.getAttribute("id");
+        String controlId = fieldId + UifConstants.IdSuffixes.CONTROL;
+
+        assertTextPresent("2012", "#" + controlId, "DataField default value not correct");
+    }
+
+    protected void testDataFieldAppendProperty() throws Exception {
+        WebElement exampleDiv = navigateToExample("Demo-DataField-Example5");
+        WebElement field = exampleDiv.findElement(By.cssSelector("div[data-label='DataField 1']"));
+
+        String fieldId = field.getAttribute("id");
+        String controlId = fieldId + UifConstants.IdSuffixes.CONTROL;
+
+        assertTextPresent("1001 *-* ID Val", "#" + controlId, "DataField appended property not correct");
+    }
+
+    protected void testDataFieldReplaceProperty() throws Exception {
+        WebElement exampleDiv = navigateToExample("Demo-DataField-Example6");
+        WebElement field = exampleDiv.findElement(By.cssSelector("div[data-label='DataField 1']"));
+
+        String fieldId = field.getAttribute("id");
+        String controlId = fieldId + UifConstants.IdSuffixes.CONTROL;
+
+        assertTextNotPresent("1001 *-*", "DataField property not replaced correctly");
+        assertTextPresent("ID Val", "#" + controlId, "DataField replaced property not correct");
+    }
+
+    protected void testDataFieldReplacePropertyWithField() throws Exception {
+        WebElement exampleDiv = navigateToExample("Demo-DataField-Example7");
+        WebElement field = exampleDiv.findElement(By.cssSelector("div[data-label='DataField 1']"));
+
+        String fieldId = field.getAttribute("id");
+        String controlId = fieldId + UifConstants.IdSuffixes.CONTROL;
+
+        assertTextNotPresent("1001 *-*", "DataField property not replaced correctly");
+        assertTextPresent("My Book Title", "#" + controlId, "DataField replaced property not correct");
+    }
+
+    protected void testDataFieldAppendPropertyWithField() throws Exception {
+        WebElement exampleDiv = navigateToExample("Demo-DataField-Example8");
+        WebElement field = exampleDiv.findElement(By.cssSelector("div[data-label='DataField 1']"));
+
+        String fieldId = field.getAttribute("id");
+        String controlId = fieldId + UifConstants.IdSuffixes.CONTROL;
+
+        assertTextPresent("1001 *-* My Book Title", "#" + controlId, "DataField appended property not correct");
+    }
+
     protected void testDataFieldExamples() throws Exception{
         testDataFieldDefault();
         testDataFieldLabelTop();
+        testDataFieldRight();
+        testDataFieldDefaultValue();
+        testDataFieldAppendProperty();
+        testDataFieldReplaceProperty();
+        testDataFieldReplacePropertyWithField();
+        testDataFieldAppendPropertyWithField();
     }
 
     public void testDataFieldNav(Failable failable) throws Exception{

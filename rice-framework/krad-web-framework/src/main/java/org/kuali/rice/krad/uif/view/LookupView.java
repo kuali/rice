@@ -839,10 +839,12 @@ public class LookupView extends FormView {
         lookupViewCopy.setHideReturnLinks(this.hideReturnLinks);
         lookupViewCopy.setSuppressActions(this.suppressActions);
         lookupViewCopy.setShowMaintenanceLinks(this.showMaintenanceLinks);
+        lookupViewCopy.setMaintenanceUrlMapping(this.maintenanceUrlMapping);
         lookupViewCopy.setMultipleValuesSelect(this.multipleValuesSelect);
         lookupViewCopy.setRenderLookupCriteria(this.renderLookupCriteria);
         lookupViewCopy.setRenderSearchButtons(this.renderSearchButtons);
         lookupViewCopy.setRenderHeader(this.renderHeader);
+        lookupViewCopy.setResultSetLimit(this.resultSetLimit);
         lookupViewCopy.setReturnTarget(this.returnTarget);
         lookupViewCopy.setTriggerOnChange(this.triggerOnChange);
         lookupViewCopy.setResultSetLimit(this.resultSetLimit);

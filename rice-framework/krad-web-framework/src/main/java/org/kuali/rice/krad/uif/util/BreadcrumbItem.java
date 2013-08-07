@@ -164,7 +164,6 @@ public class BreadcrumbItem extends ContentElementBase {
         super.copyProperties(component);
         BreadcrumbItem breadcrumbItemCopy = (BreadcrumbItem) component;
         breadcrumbItemCopy.setLabel(this.label);
-        breadcrumbItemCopy.setRenderAsLink(this.renderAsLink);
 
         if (this.siblingBreadcrumbComponent != null) {
             breadcrumbItemCopy.setSiblingBreadcrumbComponent((Component)this.siblingBreadcrumbComponent.copy());

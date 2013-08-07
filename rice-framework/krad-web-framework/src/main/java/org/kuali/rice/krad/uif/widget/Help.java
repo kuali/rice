@@ -300,6 +300,7 @@ public class Help extends WidgetBase {
         }
 
         helpCopy.setHelpDefinition(this.getHelpDefinition());
+        helpCopy.setTooltipHelpContent(this.tooltipHelpContent);
     }
 
 }

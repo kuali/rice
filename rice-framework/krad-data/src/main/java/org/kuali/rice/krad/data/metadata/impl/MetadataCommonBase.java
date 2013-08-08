@@ -41,7 +41,6 @@ public abstract class MetadataCommonBase implements MetadataCommonInternal {
 	protected String name;
 	protected String label;
 	protected String shortLabel;
-	protected String summary;
 	protected String description;
 	protected Boolean readOnly = false;
 
@@ -61,7 +60,7 @@ public abstract class MetadataCommonBase implements MetadataCommonInternal {
 		if (embeddedCommonMetadata != null) {
 			return embeddedCommonMetadata.getBackingObjectName();
 		}
-		return "";
+		return getName();
 	}
 
 	public void setBackingObjectName(String backingObjectName) {
@@ -110,21 +109,6 @@ public abstract class MetadataCommonBase implements MetadataCommonInternal {
 
 	public void setShortLabel(String shortLabel) {
 		this.shortLabel = shortLabel;
-	}
-
-	@Override
-	public String getSummary() {
-		if (summary != null) {
-			return summary;
-		}
-		if (embeddedCommonMetadata != null) {
-			return embeddedCommonMetadata.getSummary();
-		}
-		return "";
-	}
-
-	public void setSummary(String summary) {
-		this.summary = summary;
 	}
 
 	@Override
@@ -216,12 +200,20 @@ public abstract class MetadataCommonBase implements MetadataCommonInternal {
 		// Go through the local list (which can override the embedded list and add to a map by name)
 		Map<Object, T> localObjectMap = new HashMap<Object, T>(localList.size());
 		for (T item : localList) {
-			localObjectMap.put(item.getUniqueKeyForMerging(), item);
+			if (item instanceof MetadataCommonInternal) {
+				localObjectMap.put(((MetadataCommonInternal) item).getUniqueKeyForMerging(), item);
+			} else {
+				localObjectMap.put(item.getName(), item);
+			}
 		}
 		// Go through Master (to be embedded) list - add to merged list
 		for (T item : embeddedList) {
+			Object mergeKey = item.getName();
+			if (item instanceof MetadataCommonInternal) {
+				mergeKey = ((MetadataCommonInternal) item).getUniqueKeyForMerging();
+			}
 			// check for key match in local list
-			T localItem = localObjectMap.get(item.getUniqueKeyForMerging());
+			T localItem = localObjectMap.get(mergeKey);
 			// if no match, add to list
 			if (localItem == null) {
 				mergedList.add(item);
@@ -252,7 +244,7 @@ public abstract class MetadataCommonBase implements MetadataCommonInternal {
 					LOG.warn("Unsupported MetadataMergeAction: " + localItem.getMergeAction() + " on " + localItem);
 				}
 				// remove the item from the map since it's been merged
-				localObjectMap.remove(item.getUniqueKeyForMerging());
+				localObjectMap.remove(mergeKey);
 			}
 		}
 		// now, the map only has the remaining items - add them to the end of the list

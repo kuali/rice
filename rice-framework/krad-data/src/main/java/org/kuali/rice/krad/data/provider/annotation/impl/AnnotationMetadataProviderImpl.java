@@ -31,12 +31,14 @@ import javax.validation.constraints.Size;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.data.DataType;
+import org.kuali.rice.krad.data.jpa.JpaMetadataProvider;
 import org.kuali.rice.krad.data.metadata.DataObjectAttribute;
 import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
 import org.kuali.rice.krad.data.metadata.DataObjectCollection;
 import org.kuali.rice.krad.data.metadata.DataObjectCollectionSortAttribute;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
+import org.kuali.rice.krad.data.metadata.MetadataConfigurationException;
 import org.kuali.rice.krad.data.metadata.MetadataMergeAction;
 import org.kuali.rice.krad.data.metadata.impl.DataObjectAttributeImpl;
 import org.kuali.rice.krad.data.metadata.impl.DataObjectAttributeRelationshipImpl;
@@ -64,11 +66,8 @@ import org.kuali.rice.krad.data.provider.annotation.Relationship;
 import org.kuali.rice.krad.data.provider.annotation.Security;
 import org.kuali.rice.krad.data.provider.annotation.Security.NullMaskFormatter;
 import org.kuali.rice.krad.data.provider.annotation.ShortLabel;
-import org.kuali.rice.krad.data.provider.annotation.Summary;
 import org.kuali.rice.krad.data.provider.annotation.ValidCharactersConstraintBeanName;
-import org.kuali.rice.krad.data.metadata.MetadataConfigurationException;
 import org.kuali.rice.krad.data.provider.impl.MetadataProviderBase;
-import org.kuali.rice.krad.data.jpa.JpaMetadataProvider;
 
 /**
  * Parses custom krad-data annotations for additional metadata to layer on top of that provided by the persistence
@@ -354,10 +353,6 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 		}
 		if (a instanceof Description) {
 			metadata.setDescription(((Description) a).value());
-			return true;
-		}
-		if (a instanceof Summary) {
-			metadata.setSummary(((Summary) a).value());
 			return true;
 		}
 		return false;

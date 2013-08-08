@@ -32,4 +32,15 @@ public interface MetadataCommonInternal extends MetadataCommon {
 	MetadataCommon getEmbeddedCommonMetadata();
 
 	void setEmbeddedCommonMetadata(MetadataCommon embeddedCommonMetadata);
+
+	/**
+	 * An object representing the object for purposes of merging. This should return an attribute name or a unique data
+	 * type object.
+	 * 
+	 * Whatever the class, it must have proper hashCode() and equals() semantics and not rely on object identity.
+	 * 
+	 * This method must not return null;
+	 */
+	Object getUniqueKeyForMerging();
+
 }

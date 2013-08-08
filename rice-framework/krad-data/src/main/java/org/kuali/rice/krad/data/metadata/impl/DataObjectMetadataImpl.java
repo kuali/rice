@@ -403,15 +403,23 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		// Look locally
 		if (attributeToRelationshipMap != null && attributeToRelationshipMap.containsKey(attributeName)) {
 			for (DataObjectRelationship rel : attributeToRelationshipMap.get(attributeName)) {
-				relationships.put(rel.getUniqueKeyForMerging(), rel);
+				Object mergeKey = rel.getName();
+				if (rel instanceof MetadataCommonInternal) {
+					mergeKey = ((MetadataCommonInternal) rel).getUniqueKeyForMerging();
+				}
+				relationships.put(mergeKey, rel);
 			}
 		}
 		// now, if we have an embedded object, look for matching ones, but exclude if the relationship is the same
 		// as that means it was overridden by this bean
 		if (embedded != null) {
 			for (DataObjectRelationship rel : embedded.getRelationshipsInvolvingAttribute(attributeName)) {
-				if (!relationships.containsKey(rel.getUniqueKeyForMerging())) {
-					relationships.put(rel.getUniqueKeyForMerging(), rel);
+				Object mergeKey = rel.getName();
+				if (rel instanceof MetadataCommonInternal) {
+					mergeKey = ((MetadataCommonInternal) rel).getUniqueKeyForMerging();
+				}
+				if (!relationships.containsKey(mergeKey)) {
+					relationships.put(mergeKey, rel);
 				}
 			}
 		}

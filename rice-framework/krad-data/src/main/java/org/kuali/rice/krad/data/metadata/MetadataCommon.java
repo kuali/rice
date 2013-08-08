@@ -36,19 +36,11 @@ public interface MetadataCommon extends Serializable {
 	MetadataMergeAction getMergeAction();
 
 	/**
-	 * An object representing the object for purposes of merging. This should return an attribute name or a unique data
-	 * type object.
-	 * 
-	 * Whatever the class, it must have proper hashCode() and equals() semantics and not rely on object identity.
-	 * 
-	 * This method must not return null;
-	 */
-	Object getUniqueKeyForMerging();
-
-	/**
 	 * Provider specific name of the persistent storage behind this object type. For a data object, this would likely be
 	 * the table name. For an attribute, this would be the table column name. It is to be used for reference purposes
 	 * only.
+	 * 
+	 * The default implementation will return the name property if none is provided by the metadata providers.
 	 * 
 	 * @return String representing the backing object. Must not return null.
 	 */
@@ -72,14 +64,10 @@ public interface MetadataCommon extends Serializable {
 	/**
 	 * A longer description of the object.
 	 * 
-	 * TODO: what is this used for?
+	 * This can be used to provide a more complete description of the data object and its purpose. This information can
+	 * be used when displaying help information to the end-user.
 	 */
 	String getDescription();
-
-	/**
-	 * An even longer description of the object?
-	 */
-	String getSummary();
 
 	/**
 	 * Whether this metadata object should be considered read-only by calling code.

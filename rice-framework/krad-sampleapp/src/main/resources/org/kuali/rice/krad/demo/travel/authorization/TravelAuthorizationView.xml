@@ -65,7 +65,12 @@
         p:layoutManager.numberOfColumns="4">
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:label="Traveler Lookup" p:colSpan="3" p:propertyName="travelerDetailId">
+        <!--
+          Disabled the traveler lookup for 2.3.0 release.  Remove the data field when you re-enable the input field.
+          See KULRICE-10101: KRAD Demo Travel Account Authorization Traveler Lookup Search throws SQL Exception
+        -->
+        <bean parent="Uif-DataField" p:propertyName="travelerDetailId" p:colSpan="3"/>
+        <!-- bean parent="Uif-InputField" p:label="Traveler Lookup" p:colSpan="3" p:propertyName="travelerDetailId">
           <property name="id" value="quickfinder"/>
           <property name="quickfinder">
             <bean parent="Uif-QuickFinder"
@@ -93,7 +98,8 @@
           <property name="control">
             <bean parent="Uif-TextControl" p:readOnly="true" p:size="21"/>
           </property>
-        </bean>
+        </bean -->
+
         <bean parent="Uif-DataField" p:propertyName="travelerDetail.principalId"/>
         <bean parent="Uif-MessageField" p:label="Principal Name" p:messageText=""/>
         <bean parent="Uif-DataField" p:propertyName="travelerDetail.firstName"/>

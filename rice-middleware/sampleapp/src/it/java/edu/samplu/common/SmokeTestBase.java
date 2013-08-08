@@ -55,6 +55,8 @@ public abstract class SmokeTestBase extends WebDriverLegacyITBase {
         String classString = this.getClass().toString();
         if (classString.contains("krad.demo")) {
             this.testUrl = ITUtil.KRAD_PORTAL;
+        } else if (classString.contains("krad.library")) {
+            this.testUrl = ITUtil.KRAD_PORTAL;
         } else if (classString.contains("krad.labs")) {
             this.testUrl = ITUtil.LABS;
         } else {

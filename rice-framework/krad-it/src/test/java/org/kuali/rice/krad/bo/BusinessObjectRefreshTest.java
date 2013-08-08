@@ -16,22 +16,18 @@
 package org.kuali.rice.krad.bo;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.krad.test.document.bo.Account;
 import org.kuali.rice.krad.test.document.bo.AccountManager;
 import org.kuali.rice.location.impl.county.CountyBo;
-import org.kuali.rice.location.impl.county.CountyId;
 import org.kuali.rice.location.impl.state.StateBo;
-import org.kuali.rice.location.impl.state.StateId;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.data.PerTestUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestFile;
 import org.kuali.rice.test.data.UnitTestSql;
-import org.kuali.rice.krad.test.KRADTestCase;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,6 +58,7 @@ import java.util.Map;
        )
 )
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
+@KRADTestCase.Legacy
 public class BusinessObjectRefreshTest extends KRADTestCase {
 
 	@Test
@@ -79,7 +76,6 @@ public class BusinessObjectRefreshTest extends KRADTestCase {
 		account.refreshReferenceObject("accountManager");
 		
 		Assert.assertEquals("Account Manager should now have user name of fo-102", "fo-102", account.getAccountManager().getUserName());
-		
 	}
 	
 	@Test
@@ -99,7 +95,6 @@ public class BusinessObjectRefreshTest extends KRADTestCase {
 		Assert.assertEquals("Account Manager should now have user name of fo-102", "fo-102", account.getAccountManager().getUserName());
 	}
 	
-	@Ignore("until BO extensions work with JPA")
 	@Test
 	public void testLazyCollectionRefresh() {
 		final Long fredManagerId = 101L;

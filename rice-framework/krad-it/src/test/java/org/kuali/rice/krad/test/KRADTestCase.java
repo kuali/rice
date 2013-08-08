@@ -52,6 +52,8 @@ public abstract class KRADTestCase extends BaselineTestCase {
 
     protected static SpringResourceLoader kradTestHarnessSpringResourceLoader;
 
+    private boolean legacyContext = false;
+
     public KRADTestCase() {
         super(KRAD_MODULE_NAME);
     }
@@ -87,12 +89,16 @@ public abstract class KRADTestCase extends BaselineTestCase {
     protected void setUpLegacyContext() {
         if (getTestMethod().getAnnotation(Legacy.class) != null || getClass().getAnnotation(Legacy.class) != null) {
             LegacyUtils.beginLegacyContext();
+            legacyContext = true;
         }
     }
 
     protected void tearDownLegacyContext() {
         if (getTestMethod().getAnnotation(Legacy.class) != null || getClass().getAnnotation(Legacy.class) != null) {
-            LegacyUtils.endLegacyContext();
+            if (legacyContext) {
+                LegacyUtils.endLegacyContext();
+                legacyContext = false;
+            }
         }
     }
 

@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.framework.resourceloader.SpringResourceLoader;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
+import org.kuali.rice.krad.util.LegacyUtils;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.SQLDataLoader;
 import org.kuali.rice.test.TestUtilities;
@@ -27,8 +28,14 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.xml.namespace.QName;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 import java.util.HashSet;
 import java.util.List;
+
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * Default test base for a full KRAD enabled integration test
@@ -59,6 +66,34 @@ public abstract class KRADTestCase extends BaselineTestCase {
 
     protected ConfigurableApplicationContext getKRADTestHarnessContext() {
         return kradTestHarnessSpringResourceLoader.getContext();
+    }
+
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        setUpLegacyContext();
+
+    }
+
+    @Override
+    public void tearDown() throws Exception {
+        try {
+            tearDownLegacyContext();
+        } finally {
+            super.tearDown();    //To change body of overridden methods use File | Settings | File Templates.
+        }
+    }
+
+    protected void setUpLegacyContext() {
+        if (getTestMethod().getAnnotation(Legacy.class) != null || getClass().getAnnotation(Legacy.class) != null) {
+            LegacyUtils.beginLegacyContext();
+        }
+    }
+
+    protected void tearDownLegacyContext() {
+        if (getTestMethod().getAnnotation(Legacy.class) != null || getClass().getAnnotation(Legacy.class) != null) {
+            LegacyUtils.endLegacyContext();
+        }
     }
 
     @Override
@@ -136,4 +171,15 @@ public abstract class KRADTestCase extends BaselineTestCase {
         }
         return kradTestHarnessSpringResourceLoader;
     }
+
+    /**
+     * Annotation which indicates that a Legacy Context should be used for this individual test method or for all tests
+     * in an annotated class.
+     *
+     * @see org.kuali.rice.krad.util.LegacyUtils#doInLegacyContext(java.util.concurrent.Callable)
+     */
+    @Target({TYPE, METHOD})
+    @Retention(RUNTIME)
+    public @interface Legacy {}
+
 }

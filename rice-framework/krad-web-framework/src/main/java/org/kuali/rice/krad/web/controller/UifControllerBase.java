@@ -1121,12 +1121,26 @@ public abstract class UifControllerBase {
 
         DataTablesPagingHelper.DataTablesInputs dataTablesInputs = new DataTablesPagingHelper.DataTablesInputs(request);
 
-        DataTablesPagingHelper pagingHelper = new DataTablesPagingHelper();
+        DataTablesPagingHelper pagingHelper = createDataTablesPagingHelperInstance(form, request);
         pagingHelper.processPagingRequest(form.getPostedView(), tableId, form, dataTablesInputs);
 
         Map<String, Object> additionalViewAttributes = new HashMap<String, Object>();
         additionalViewAttributes.put(UifParameters.DATA_TABLES_PAGING_HELPER, pagingHelper);
 
         return getUIFModelAndView(form, additionalViewAttributes);
+    }
+
+    /**
+     * Creates a DataTablesPagingHelper which is used within {@link #tableJsonRetrieval(org.kuali.rice.krad.web.form.UifFormBase, org.springframework.validation.BindingResult, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)}
+     * for rendering pages of data in JSON form.
+     *
+     * <p>This template method can be overridden to supply a custom extension of DataTablesPagingHelper e.g. for paging
+     * and sorting at the data layer.</p>
+     *
+     * @return the DataTablesPagingHelper instance
+     */
+    protected DataTablesPagingHelper createDataTablesPagingHelperInstance(UifFormBase form,
+            HttpServletRequest request) {
+        return new DataTablesPagingHelper();
     }
 }

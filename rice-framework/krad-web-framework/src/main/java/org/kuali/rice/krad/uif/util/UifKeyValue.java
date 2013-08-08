@@ -28,6 +28,14 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 public class UifKeyValue extends AbstractKeyValue {
     private static final long serialVersionUID = 1176799455504861488L;
 
+    public UifKeyValue() {
+        super();
+    }
+
+    public UifKeyValue(String key, String value) {
+        super(key, value);
+    }
+
     @Override
     @BeanTagAttribute(name = "key")
     public String getKey() {

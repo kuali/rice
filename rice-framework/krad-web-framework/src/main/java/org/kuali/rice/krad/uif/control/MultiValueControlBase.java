@@ -23,6 +23,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
@@ -88,8 +89,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
 
-        ExpressionEvaluator expressionEvaluator =
-                view.getViewHelperService().getExpressionEvaluator();
+        ExpressionEvaluator expressionEvaluator = view.getViewHelperService().getExpressionEvaluator();
 
         if (options != null && !options.isEmpty()) {
             for (KeyValue option : options) {
@@ -222,29 +222,44 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
         super.copyProperties(component);
         MultiValueControlBase multiValueControlBaseCopy = (MultiValueControlBase) component;
 
-        if(options != null) {
-            List<KeyValue> optionsCopy = new ArrayList<KeyValue>();
-            for(KeyValue option : options)   {
-                KeyValue keyValue = null;
-                keyValue = new ConcreteKeyValue(option.getKey(), option.getValue());
-                optionsCopy.add(keyValue);
+        try {
+            if (options != null) {
+                List<KeyValue> optionsCopy = new ArrayList<KeyValue>();
+                for (KeyValue option : options) {
+
+                    KeyValue keyValue = null;
+                    if (option != null) {
+                        Class<? extends KeyValue> optionClass = option.getClass();
+                        keyValue = optionClass.getDeclaredConstructor(String.class, String.class).newInstance(
+                                option.getKey(), option.getValue());
+                        if (keyValue instanceof UifKeyValueLocation) {
+                            ((UifKeyValueLocation) keyValue).setLocation(
+                                    (UrlInfo) ((UifKeyValueLocation) option).getLocation().copy());
+                        }
+                    }
+
+                    optionsCopy.add(keyValue);
+                }
+                multiValueControlBaseCopy.setOptions(optionsCopy);
             }
-            multiValueControlBaseCopy.setOptions(optionsCopy);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to copy options in MultiValueControlBase", e);
         }
 
-        if(richOptions != null) {
+        if (richOptions != null) {
             List<KeyMessage> richOptionsCopy = new ArrayList<KeyMessage>();
-            for(KeyMessage richOption : richOptions)   {
-                KeyMessage keyMessage = new KeyMessage(richOption.getKey(),richOption.getValue(),richOption.getMessage());
+            for (KeyMessage richOption : richOptions) {
+                KeyMessage keyMessage = new KeyMessage(richOption.getKey(), richOption.getValue(),
+                        richOption.getMessage());
                 richOptionsCopy.add(keyMessage);
             }
             multiValueControlBaseCopy.setRichOptions(richOptionsCopy);
         }
 
-        if(inlineComponents != null) {
+        if (inlineComponents != null) {
             List<Component> inlineComponentsCopy = new ArrayList<Component>();
-            for(Component inlineComponent : inlineComponents)   {
-                inlineComponentsCopy.add((Component)inlineComponent.copy());
+            for (Component inlineComponent : inlineComponents) {
+                inlineComponentsCopy.add((Component) inlineComponent.copy());
             }
             multiValueControlBaseCopy.setInlineComponents(inlineComponentsCopy);
         }

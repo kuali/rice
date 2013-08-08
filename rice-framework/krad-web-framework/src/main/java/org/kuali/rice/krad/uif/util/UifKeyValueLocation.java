@@ -30,7 +30,13 @@ public class UifKeyValueLocation extends UifKeyValue {
     /**
      * Base constructor
      */
-    public UifKeyValueLocation(){}
+    public UifKeyValueLocation() {
+        super();
+    }
+
+    public UifKeyValueLocation(String key, String value) {
+        super(key, value);
+    }
 
     /**
      * KeyValueLocation constructor
@@ -39,7 +45,7 @@ public class UifKeyValueLocation extends UifKeyValue {
      * @param value the value
      * @param location the url location object
      */
-    public UifKeyValueLocation(String key, String value, UrlInfo location){
+    public UifKeyValueLocation(String key, String value, UrlInfo location) {
         this.key = key;
         this.value = value;
         this.location = location;
@@ -50,7 +56,7 @@ public class UifKeyValueLocation extends UifKeyValue {
      *
      * @return the url location object
      */
-    @BeanTagAttribute(name = "location", type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "location", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public UrlInfo getLocation() {
         return location;
     }

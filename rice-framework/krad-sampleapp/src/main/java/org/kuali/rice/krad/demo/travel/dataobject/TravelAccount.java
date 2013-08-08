@@ -35,12 +35,12 @@ import org.kuali.rice.core.api.util.type.KualiPercent;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.bo.VersionedAndGloballyUniqueBase;
+import org.kuali.rice.krad.data.provider.annotation.Description;
 import org.kuali.rice.krad.data.provider.annotation.InheritProperties;
 import org.kuali.rice.krad.data.provider.annotation.InheritProperty;
 import org.kuali.rice.krad.data.provider.annotation.Label;
 import org.kuali.rice.krad.data.provider.annotation.OptionsFinderClass;
 import org.kuali.rice.krad.data.provider.annotation.Relationship;
-import org.kuali.rice.krad.data.provider.annotation.Summary;
 import org.kuali.rice.krad.data.provider.annotation.ValidCharactersConstraintBeanName;
 import org.kuali.rice.krad.demo.travel.options.AccountTypeKeyValues;
 
@@ -52,7 +52,7 @@ public class TravelAccount extends VersionedAndGloballyUniqueBase implements Ser
 	@Id
 	@Column(name="ACCT_NUM",length=10)
 	@Label("Travel Account Number")
-	@Summary("Unique identifier for account")
+	@Description("Unique identifier for account")
 	//@ConstraintText("Must not be more than 10 characters")
 	@ValidCharactersConstraintBeanName("AlphaNumericPatternConstraint")
 	private String number;
@@ -90,7 +90,7 @@ public class TravelAccount extends VersionedAndGloballyUniqueBase implements Ser
 
 	@Column(name="ACCT_TYPE",length=3)
 	@Label("Travel Account Type Code")
-	@Summary("Type code grouping for account")
+	@Description("Type code grouping for account")
 	@OptionsFinderClass(AccountTypeKeyValues.class)
     protected String accountTypeCode;
 

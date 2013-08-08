@@ -76,7 +76,6 @@
     <rice.version>${project.version}</rice.version>
     <jaxb-impl.version>${jaxb-impl.version}</jaxb-impl.version>
     <servlet-api.version>${servlet-api.version}</servlet-api.version>
-    <jaxb-impl.version>${jaxb-impl.version}</jaxb-impl.version>
 
     <!--plugin versions -->
     <!--
@@ -559,12 +558,6 @@
       <artifactId>junit</artifactId>
       <version>\${junit.version}</version>
       <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>com.sun.xml.bind</groupId>
-      <artifactId>jaxb-impl</artifactId>
-      <version>\${jaxb-impl.version}</version>
     </dependency>
 
   </dependencies>

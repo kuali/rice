@@ -147,6 +147,7 @@ class QuickStartTest {
                 "archetypeGroupId":"org.kuali.rice",
                 "archetypeArtifactId": "rice-archetype-quickstart",
                 "archetypeVersion": getArchetypeVersion(),
+                "archetypeCatalog": "local,remote",
                 "groupId": "org.kuali.rice",
                 "artifactId": "qstest",
                 "version": "1.0-SNAPSHOT",

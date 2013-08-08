@@ -46,6 +46,7 @@ public class AccountRequestDocumentWithCyclicalReference extends TransactionalDo
 	@OneToOne(fetch=FetchType.LAZY,cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
 	@JoinColumn(name="fdoc_nbr",insertable=false,updatable=false)
     private AccountRequestDocumentWithCyclicalReference child;
+
 	@OneToOne(fetch=FetchType.LAZY,cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
 	@JoinColumn(name="fdoc_nbr",insertable=false,updatable=false)
     private AccountRequestDocumentWithCyclicalReference parent;

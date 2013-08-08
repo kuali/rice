@@ -654,20 +654,20 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
 						MetadataReaderFactory readerFactory = new CachingMetadataReaderFactory(
 								this.resourcePatternResolver);
 						for (Resource resource : resources) {
-							if (resource.isReadable()) {
+							if (!resource.isReadable()) {
+								continue;
+							}
+							if (LOG.isDebugEnabled()) {
+								LOG.debug(getPersistenceUnitName() + ": Found Matching Resource: " + resource);
+							}
+							MetadataReader reader = readerFactory.getMetadataReader(resource);
+							String className = reader.getClassMetadata().getClassName();
+							if (!pui.getManagedClassNames().contains(className)
+									&& converterAnnotationTypeFilter.match(reader, readerFactory)) {
+								pui.addManagedClassName(className);
 								if (LOG.isDebugEnabled()) {
-									LOG.debug(getPersistenceUnitName() + ": Found Matching Resource: " + resource);
-								}
-								MetadataReader reader = readerFactory.getMetadataReader(resource);
-								String className = reader.getClassMetadata().getClassName();
-								if (!pui.getManagedClassNames().contains(className)) {
-									if (converterAnnotationTypeFilter.match(reader, readerFactory)) {
-										pui.addManagedClassName(className);
-										if (LOG.isDebugEnabled()) {
-											LOG.debug(getPersistenceUnitName()
-													+ ": Registering Converter in JPA Persistence Unit: " + className);
-										}
-									}
+									LOG.debug(getPersistenceUnitName()
+											+ ": Registering Converter in JPA Persistence Unit: " + className);
 								}
 							}
 						}

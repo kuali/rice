@@ -752,7 +752,7 @@ public class Car {
                 demonstrations. </para>
         </note><para>JDK – In order to support compilation of the application source code a JDK must be installed.
             Note that this must be the JDK and not a Java Runtime Environment – JRE. Rice requires a
-            JDK version of 1.6.x. Additionally, Rice has only been tested with the Sun JDK
+            JDK version of 1.6.x or 1.7.x. Additionally, Rice has only been tested with the Sun JDK
             implementation. Therefore use of other implementations such as OpenJDK may have
             problems.  </para><para>For machines running Windows, JDK 6 can
             be downloaded at the following URL:</para><para><link
@@ -765,15 +765,11 @@ public class Car {
             it is not, you will want to include JAVA_HOME/bin in your PATH environment
             variable.</para><para> In order to verify that your JDK has been installed successfully,
             open a command prompt and type the following:
-            </para><programlisting linenumbering = "numbered">
-java -version
-        </programlisting><para>You should see
+            </para><programlisting linenumbering="numbered">java -version     </programlisting><para>You should see
             output similar to the
-            following:</para><programlisting linenumbering = "numbered">
-java version "1.6.0_37"
-    Java(TM) SE Runtime Environment (build 1.6.0_37-b06)
-    Java HotSpot(TM) 64-Bit Server VM (build 20.12-b01, mixed mode)
-        </programlisting><para>If
+            following:</para><programlisting linenumbering="numbered">java version "1.7.0_10"
+Java(TM) SE Runtime Environment (build 1.7.0_10-b18)
+Java HotSpot(TM) Client VM (build 23.6-b04, mixed mode)     </programlisting><para>If
             you receive an error indicating that the "java" command could not be found, please
             ensure that the java command is on your machine's PATH environment
             variable.</para><para>Maven - Maven is the primary build tool used by the Kuali Rice

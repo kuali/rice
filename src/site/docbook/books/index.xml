@@ -45,10 +45,6 @@
                     <para><emphasis role="bold">Release Notes</emphasis> (<link xlink:show="new"
                             xlink:href="release-notes.html">HTML</link> / <link xlink:show="new"
                             xlink:href="../pdf/release-notes.pdf">PDF</link> ) - List of changes </para>
-                    <itemizedlist><listitem><para><link xlink:show="new"
-                                    xlink:href="https://wiki.kuali.org/display/KULRICE/Post-2.0+impacting+changes"
-                                    >Impacting Changes</link> - List of major impacting changes post
-                                2.0 release</para></listitem></itemizedlist>
                 </listitem>
                 <listitem>
                     <para><emphasis role="bold">Installation Guide</emphasis> (<link
@@ -78,11 +74,12 @@
                                 xlink:href="../pdf/eDocLite_Guide.pdf">PDF</link> ) - Manual on how
                             to get started and use eDocLite.</para>
                     </listitem>
-                    <listitem>
-                        <para>KNS - See the <link xlink:show="new" xlink:href="http://site.kuali.org/rice/2.2.1/reference/html/index.html">2.2.1 documentation</link> for reference information on the deprecated, older development framework. KNS is
-                            expected to be removed in Rice 3.0.</para><para>KNS to KRAD Conversion Guide ( <link xlink:show="new"
-                                xlink:href="KNS2KRAD_ConvGuide.html">HTML</link> / <link xlink:show="new"
-                                    xlink:href="../pdf/KNS2KRAD_ConvGuide.pdf">PDF</link> )</para>
+                   <listitem>
+                        <para>KNS - See the <link xlink:show="new"
+                                    xlink:href="http://site.kuali.org/rice/2.2.5/reference/html/portal.html"
+                                    >2.2.5 documentation</link> for reference information on the
+                                deprecated, older development framework. KNS is expected to be
+                                removed in Rice 3.0.</para>
                     </listitem>
                 </itemizedlist>
                 </listitem>
@@ -139,15 +136,7 @@
                                     Help</link></emphasis></para>
                     </listitem>
                 </itemizedlist>
-                </listitem>
-                <!--            TODO: Flesh out this guide    
-                <listitem>
-                    <para><emphasis role="bold">Client Developer Guide</emphasis> (<link xlink:show="new" xlink:href="CDG.html"
-                        >HTML</link> / <link xlink:show="new" xlink:href="../pdf/CDG.pdf">PDF</link> ) -
-                        How to build client applications that take advantage of the feature
-                        programmatically (for application programmers)</para>
-                </listitem>
--->             
+                </listitem>       
             </orderedlist>
         </para>
     </section>

@@ -15,7 +15,10 @@
  */
 package edu.samplu.krad.demo.travel.account;
 
+import edu.samplu.common.ITUtil;
 import edu.samplu.common.SmokeTestBase;
+
+import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
 
 /**
@@ -39,11 +42,12 @@ public class DemoTravelAccountMaintenanceEditSmokeTest extends SmokeTestBase {
     }
 
     protected void testTravelAccountMaintenanceEdit() throws Exception {
-        if(!isTextPresent("Stacktrace (only in dev mode)")) {
-            //code goes here
-        } else {
-            fail("Development Exception (Error) on page. Test cannot be executed.");
-        }
+        waitAndTypeByName("document.documentHeader.documentDescription","Travel Account Edit"+RandomStringUtils.randomAlphabetic(2));
+        waitAndTypeByName("document.newMaintainableObject.dataObject.subAccount","a1");
+        waitAndTypeByName("document.newMaintainableObject.dataObject.subAccountName","Sub Account 1"+RandomStringUtils.randomAlphabetic(2));
+        waitAndClickButtonByText("submit");
+        Thread.sleep(10000);
+        assertTextPresent("Document was successfully submitted.");
     }
 
     @Test

@@ -64,6 +64,7 @@ public class ProcessLoggingFilter implements Filter {
         if (httpRequest.getPathInfo() != null) {
             requestPath += httpRequest.getPathInfo();
         }
+        
         try {
             ProcessLogger.follow("request", "Servlet Request " + requestPath, new Callable<Void>() {
                 @Override

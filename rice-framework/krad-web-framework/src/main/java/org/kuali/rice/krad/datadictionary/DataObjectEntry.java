@@ -23,6 +23,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validation.capability.MustOccurConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstraint;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 /**
  * Generic dictionary entry for an object that does not have to implement BusinessObject. It provides support
@@ -142,7 +143,7 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
         if ( getDataObjectMetadata() != null ) {
             return getDataObjectMetadata().getLabel();
         }
-        return getLabelFromCamelCasedName( dataObjectClass.getSimpleName() );
+        return KRADServiceLocatorWeb.getUifDefaultingService().deriveHumanFriendlyNameFromPropertyName( dataObjectClass.getSimpleName() );
     }
 
     /**

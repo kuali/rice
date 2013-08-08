@@ -36,14 +36,13 @@ import org.kuali.rice.krad.datadictionary.state.StateMapping;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.InitializingBean;
 
 /**
  * Contains common properties and methods for data dictionary entries
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-abstract public class DataDictionaryEntryBase extends DictionaryBeanBase implements DataDictionaryEntry, Serializable, InitializingBean {
+abstract public class DataDictionaryEntryBase extends DictionaryBeanBase implements DataDictionaryEntry, Serializable {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DataDictionaryEntryBase.class);
     private static final long serialVersionUID = 5133059101016080533L;
 
@@ -586,13 +585,6 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
 
     public Set<String> getRelationshipNames() {
         return relationshipMap.keySet();
-    }
-
-    /**
-     * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
-     */
-    @Override
-    public void afterPropertiesSet() throws Exception {
     }
 
     /**

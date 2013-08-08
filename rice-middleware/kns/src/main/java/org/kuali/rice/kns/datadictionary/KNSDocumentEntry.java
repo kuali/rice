@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.kns.datadictionary;
 
+import java.io.Serializable;
+import java.util.List;
+
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
@@ -26,16 +29,12 @@ import org.kuali.rice.krad.datadictionary.WorkflowProperties;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.rules.rule.BusinessRule;
-import org.springframework.beans.factory.InitializingBean;
-
-import java.io.Serializable;
-import java.util.List;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Deprecated
-public interface KNSDocumentEntry extends DataDictionaryEntry, Serializable, InitializingBean {
+public interface KNSDocumentEntry extends DataDictionaryEntry, Serializable {
 
     public Class<? extends Document> getDocumentClass();
 

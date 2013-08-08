@@ -15,25 +15,27 @@
  */
 package org.kuali.rice.kns.datadictionary;
 
-import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
-import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
-import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase;
-import org.kuali.rice.kns.document.authorization.MaintenanceDocumentPresentationControllerBase;
-import org.kuali.rice.kns.rule.PromptBeforeValidation;
-import org.kuali.rice.kns.web.derivedvaluesetter.DerivedValuesSetter;
-import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.datadictionary.DataDictionaryException;
-import org.kuali.rice.krad.datadictionary.exception.DuplicateEntryException;
-import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.kns.document.MaintenanceDocumentBase;
-import org.kuali.rice.kns.maintenance.Maintainable;
-import org.kuali.rice.kns.rules.MaintenanceDocumentRule;
-import org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.kuali.rice.kew.api.doctype.DocumentTypeService;
+import org.kuali.rice.kns.document.MaintenanceDocumentBase;
+import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
+import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
+import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase;
+import org.kuali.rice.kns.document.authorization.MaintenanceDocumentPresentationControllerBase;
+import org.kuali.rice.kns.maintenance.Maintainable;
+import org.kuali.rice.kns.rule.PromptBeforeValidation;
+import org.kuali.rice.kns.rules.MaintenanceDocumentRule;
+import org.kuali.rice.kns.web.derivedvaluesetter.DerivedValuesSetter;
+import org.kuali.rice.kns.web.struts.action.KualiDocumentActionBase;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.datadictionary.DataDictionaryException;
+import org.kuali.rice.krad.datadictionary.exception.DuplicateEntryException;
+import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -74,7 +76,8 @@ public class MaintenanceDocumentEntry extends org.kuali.rice.krad.datadictionary
      /**
      * @return Returns the preRulesCheckClass.
      */
-    public Class<? extends PromptBeforeValidation> getPromptBeforeValidationClass() {
+    @Override
+	public Class<? extends PromptBeforeValidation> getPromptBeforeValidationClass() {
         return promptBeforeValidationClass;
     }
 
@@ -86,7 +89,8 @@ public class MaintenanceDocumentEntry extends org.kuali.rice.krad.datadictionary
      *      org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest,
      *      javax.servlet.http.HttpServletResponse, String)
      */
-    public void setPromptBeforeValidationClass(Class<? extends PromptBeforeValidation> preRulesCheckClass) {
+    @Override
+	public void setPromptBeforeValidationClass(Class<? extends PromptBeforeValidation> preRulesCheckClass) {
         this.promptBeforeValidationClass = preRulesCheckClass;
     }
 
@@ -120,7 +124,8 @@ public class MaintenanceDocumentEntry extends org.kuali.rice.krad.datadictionary
         return getDataObjectClass();
     }
 
-    public Class<? extends Maintainable> getMaintainableClass() {
+    @Override
+	public Class<? extends Maintainable> getMaintainableClass() {
         return (Class<? extends Maintainable>) super.getMaintainableClass();
     }
 
@@ -135,7 +140,8 @@ public class MaintenanceDocumentEntry extends org.kuali.rice.krad.datadictionary
      * @return List of all lockingKey fieldNames associated with this LookupDefinition, in the order in which they were
      *         added
      */
-    public List<String> getLockingKeyFieldNames() {
+    @Override
+	public List<String> getLockingKeyFieldNames() {
         return lockingKeys;
     }
 
@@ -144,7 +150,8 @@ public class MaintenanceDocumentEntry extends org.kuali.rice.krad.datadictionary
      *
      * @return Returns the allowsNewOrCopy.
      */
-    public boolean getAllowsNewOrCopy() {
+    @Override
+	public boolean getAllowsNewOrCopy() {
         return allowsNewOrCopy;
     }
 
@@ -153,7 +160,8 @@ public class MaintenanceDocumentEntry extends org.kuali.rice.krad.datadictionary
      * If true, this indicates the maintainable should allow the
      * new and/or copy maintenance actions.
      */
-    public void setAllowsNewOrCopy(boolean allowsNewOrCopy) {
+    @Override
+	public void setAllowsNewOrCopy(boolean allowsNewOrCopy) {
         this.allowsNewOrCopy = allowsNewOrCopy;
     }
 
@@ -162,7 +170,8 @@ public class MaintenanceDocumentEntry extends org.kuali.rice.krad.datadictionary
      *
      * @see org.kuali.rice.krad.datadictionary.DocumentEntry#completeValidation()
      */
-    public void completeValidation() {
+    @Override
+	public void completeValidation() {
         if ( !MaintenanceDocumentRule.class.isAssignableFrom( getBusinessRulesClass() ) ) {
            throw new DataDictionaryException( "ERROR: Business rules class for KNS Maintenance document entry " +
                    getBusinessRulesClass().getName() + " does not implement the expected " +
@@ -178,7 +187,8 @@ public class MaintenanceDocumentEntry extends org.kuali.rice.krad.datadictionary
     /**
      * @see java.lang.Object#toString()
      */
-    public String toString() {
+    @Override
+	public String toString() {
         return "MaintenanceDocumentEntry for documentType " + getDocumentTypeName();
     }
 
@@ -198,7 +208,8 @@ public class MaintenanceDocumentEntry extends org.kuali.rice.krad.datadictionary
         this.additionalSectionsFile = additionalSectionsFile;
     }
 
-    public List<String> getLockingKeys() {
+    @Override
+	public List<String> getLockingKeys() {
         return lockingKeys;
     }
 
@@ -207,7 +218,8 @@ public class MaintenanceDocumentEntry extends org.kuali.rice.krad.datadictionary
            that comprise a unique key.  This is used for record locking
            during the file maintenance process.
     */
-    public void setLockingKeys(List<String> lockingKeys) {
+    @Override
+	public void setLockingKeys(List<String> lockingKeys) {
         for (String lockingKey : lockingKeys) {
             if (lockingKey == null) {
                 throw new IllegalArgumentException("invalid (null) lockingKey");
@@ -252,28 +264,32 @@ public class MaintenanceDocumentEntry extends org.kuali.rice.krad.datadictionary
     /**
      * @return the preserveLockingKeysOnCopy
      */
-    public boolean getPreserveLockingKeysOnCopy() {
+    @Override
+	public boolean getPreserveLockingKeysOnCopy() {
         return this.preserveLockingKeysOnCopy;
     }
 
     /**
      * @param preserveLockingKeysOnCopy the preserveLockingKeysOnCopy to set
      */
-    public void setPreserveLockingKeysOnCopy(boolean preserveLockingKeysOnCopy) {
+    @Override
+	public void setPreserveLockingKeysOnCopy(boolean preserveLockingKeysOnCopy) {
         this.preserveLockingKeysOnCopy = preserveLockingKeysOnCopy;
     }
 
     /**
      * @return the allowRecordDeletion
      */
-    public boolean getAllowsRecordDeletion() {
+    @Override
+	public boolean getAllowsRecordDeletion() {
         return this.allowsRecordDeletion;
     }
 
     /**
      * @param allowsRecordDeletion the allowRecordDeletion to set
      */
-    public void setAllowsRecordDeletion(boolean allowsRecordDeletion) {
+    @Override
+	public void setAllowsRecordDeletion(boolean allowsRecordDeletion) {
         this.allowsRecordDeletion = allowsRecordDeletion;
     }
 
@@ -314,11 +330,13 @@ public class MaintenanceDocumentEntry extends org.kuali.rice.krad.datadictionary
         return (Class<? extends DocumentPresentationController>)  super.getDocumentPresentationControllerClass();
     }
 
-    public List<HeaderNavigation> getHeaderNavigationList() {
+    @Override
+	public List<HeaderNavigation> getHeaderNavigationList() {
         return headerNavigationList;
     }
 
-    public List<String> getWebScriptFiles() {
+    @Override
+	public List<String> getWebScriptFiles() {
         return webScriptFiles;
     }
 
@@ -327,7 +345,8 @@ public class MaintenanceDocumentEntry extends org.kuali.rice.krad.datadictionary
      * that are necessary for processing the document.  The specified
      * javascript files will be included in the generated html.
      */
-    public void setWebScriptFiles(List<String> webScriptFiles) {
+    @Override
+	public void setWebScriptFiles(List<String> webScriptFiles) {
         this.webScriptFiles = webScriptFiles;
     }
 
@@ -335,36 +354,42 @@ public class MaintenanceDocumentEntry extends org.kuali.rice.krad.datadictionary
      * The headerNavigation element defines a set of additional
      * tabs which will appear on the document.
      */
-    public void setHeaderNavigationList(List<HeaderNavigation> headerNavigationList) {
+    @Override
+	public void setHeaderNavigationList(List<HeaderNavigation> headerNavigationList) {
         this.headerNavigationList = headerNavigationList;
     }
 
-    public boolean isSessionDocument() {
+    @Override
+	public boolean isSessionDocument() {
         return this.sessionDocument;
     }
 
-    public void setSessionDocument(boolean sessionDocument) {
+    @Override
+	public void setSessionDocument(boolean sessionDocument) {
         this.sessionDocument = sessionDocument;
     }
 
     /**
      * @return the derivedValuesSetter
      */
-    public Class<? extends DerivedValuesSetter> getDerivedValuesSetterClass() {
+    @Override
+	public Class<? extends DerivedValuesSetter> getDerivedValuesSetterClass() {
         return this.derivedValuesSetterClass;
     }
 
     /**
      * @param derivedValuesSetter the derivedValuesSetter to set
      */
-    public void setDerivedValuesSetterClass(Class<? extends DerivedValuesSetter> derivedValuesSetter) {
+    @Override
+	public void setDerivedValuesSetterClass(Class<? extends DerivedValuesSetter> derivedValuesSetter) {
         this.derivedValuesSetterClass = derivedValuesSetter;
     }
 
-    public void afterPropertiesSet() throws Exception {
+    @Override
+    public void dataDictionaryPostProcessing() {
+    	super.dataDictionaryPostProcessing();
         if ( getBusinessRulesClass() == null || getBusinessRulesClass().equals(MaintenanceDocumentRuleBase.class) ) {
             setBusinessRulesClass(org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase.class);
         }
-        super.afterPropertiesSet();
     }
 }

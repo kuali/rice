@@ -539,7 +539,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
             return controlField;
         }
         if ( cachedDerivedControl == null ) {
-            cachedDerivedControl = KRADServiceLocatorWeb.getUifControlDefaultingService().deriveControlAttributeFromMetadata(this);
+            cachedDerivedControl = KRADServiceLocatorWeb.getUifDefaultingService().deriveControlAttributeFromMetadata(this);
         }
         return cachedDerivedControl;
     }
@@ -630,29 +630,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     public ValidCharactersConstraint getValidCharactersConstraint() {
         if ( validCharactersConstraint == null ) {
             // If there is no constraint set, attempt to derive one
-            // First - see if one was defined in the metadata
-            if ( getDataObjectAttribute() != null ) {
-                if ( StringUtils.isNotBlank( getDataObjectAttribute().getValidCharactersConstraintBeanName() ) ) {
-                    Object consObj = KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(getDataObjectAttribute().getValidCharactersConstraintBeanName());
-                    if ( consObj != null && consObj instanceof ValidCharactersConstraint ) {
-                        validCharactersConstraint = (ValidCharactersConstraint) consObj;
-                    }
-                }
-            }
-            // if not, make an intelligent guess from the data type
-            if ( validCharactersConstraint == null ) {
-                if ( getDataType() != null ) {
-                    if ( getDataType().isNumeric() ) {
-                        validCharactersConstraint = (ValidCharactersConstraint) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject("FloatingPointPatternConstraintTemplate");
-                    } else if ( getDataType().isTemporal() ) {
-                        validCharactersConstraint = (ValidCharactersConstraint) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject("BasicDatePatternConstraint");
-                    }
-                }
-            }
-            // default to UTF8
-            if ( validCharactersConstraint == null ) {
-                validCharactersConstraint = (ValidCharactersConstraint) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject("UTF8AnyCharacterPatternConstraint" );
-            }
+            validCharactersConstraint = KRADServiceLocatorWeb.getUifDefaultingService().deriveValidCharactersConstraint( this );
         }
         return validCharactersConstraint;
     }

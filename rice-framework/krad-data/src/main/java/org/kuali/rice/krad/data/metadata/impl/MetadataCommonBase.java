@@ -180,7 +180,7 @@ public abstract class MetadataCommonBase implements MetadataCommonInternal {
 		label.replace(0, 1, label.substring(0, 1).toUpperCase());
 		// loop through, inserting spaces when cap
 		for (int i = 0; i < label.length(); i++) {
-			if (Character.isUpperCase(label.charAt(i))) {
+			if (Character.isUpperCase(label.charAt(i)) || Character.isDigit(label.charAt(i))) {
 				label.insert(i, ' ');
 				i++;
 			}

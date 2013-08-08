@@ -750,7 +750,7 @@
     </property>
   </bean>
 
-  <bean id="uifControlDefaultingService" class="org.kuali.rice.krad.uif.service.impl.UifControlDefaultingServiceImpl" />
+  <bean id="uifDefaultingService" class="org.kuali.rice.krad.uif.service.impl.UifDefaultingServiceImpl" />
 
   <bean id="attributeQueryService" class="org.kuali.rice.krad.uif.service.impl.AttributeQueryServiceImpl">
     <property name="lookupService">

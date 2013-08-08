@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 
 /**
  * A single BusinessObject entry in the DataDictionary, which contains information relating to the display, validation,
@@ -30,6 +31,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
  */
 @BeanTag(name = "businessObjectEntry-bean")
 public class BusinessObjectEntry extends DataObjectEntry {
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BusinessObjectEntry.class);
 
     protected Class<? extends BusinessObject> baseBusinessObjectClass;
 
@@ -71,30 +73,29 @@ public class BusinessObjectEntry extends DataObjectEntry {
      */
     @Override
     public void completeValidation() {
+        completeValidation(new ValidationTrace());
+    }
+
+    @Override
+    public void completeValidation(ValidationTrace tracer) {
+        super.completeValidation(tracer);
         try {
-
-            super.completeValidation();
-
             if (inactivationBlockingDefinitions != null && !inactivationBlockingDefinitions.isEmpty()) {
                 for (InactivationBlockingDefinition inactivationBlockingDefinition : inactivationBlockingDefinitions) {
-                    inactivationBlockingDefinition.completeValidation(getDataObjectClass(), null);
+                    inactivationBlockingDefinition.completeValidation(getDataObjectClass(), null, tracer.getCopy());
                 }
             }
-        } catch (DataDictionaryException ex) {
-            // just rethrow
-            throw ex;
         } catch (Exception ex) {
-            throw new DataDictionaryException("Exception validating " + this, ex);
+            String currentValues[] =
+                {"BO Class = " + getBusinessObjectClass(), "Exception = " + ex.getMessage()};
+            tracer.createError("Unable to validate BO Entry", currentValues);
+            LOG.error("Exception while validating BusinessObjectEntry: " + getBusinessObjectClass(), ex );
         }
     }
 
-    /**
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntryBase#afterPropertiesSet()
-     */
-    @SuppressWarnings("unchecked")
     @Override
-    public void afterPropertiesSet() throws Exception {
-        super.afterPropertiesSet();
+    public void dataDictionaryPostProcessing() {
+        super.dataDictionaryPostProcessing();
         if (inactivationBlockingDefinitions != null) {
             for (InactivationBlockingDefinition ibd : inactivationBlockingDefinitions) {
                 ibd.setBusinessObjectClass(getBusinessObjectClass());
@@ -108,5 +109,4 @@ public class BusinessObjectEntry extends DataObjectEntry {
             }
         }
     }
-
 }

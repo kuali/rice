@@ -22,6 +22,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validation.capability.ExistenceConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.capability.SimpleConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 /**
  * Common class for attribute definitions in the DataDictionary, which contains
@@ -92,7 +93,7 @@ public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBa
         if ( getDataObjectAttribute() != null ) {
             return getDataObjectAttribute().getLabel();
         }
-        return getLabelFromCamelCasedName( getName() );
+        return KRADServiceLocatorWeb.getUifDefaultingService().deriveHumanFriendlyNameFromPropertyName( getName() );
     }
 
     /**

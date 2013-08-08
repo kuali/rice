@@ -27,26 +27,6 @@
       <ref bean="Account-lookupDefinition"/>
     </property>
     <property name="titleAttribute" value="Travel Account"/>
-    <property name="relationships">
-      <list>
-        <bean parent="RelationshipDefinition">
-          <property name="objectAttributeName" value="extension"/>
-          <property name="primitiveAttributes">
-            <list>
-              <bean parent="PrimitiveAttributeDefinition" p:sourceName="number" p:targetName="number"/>
-            </list>
-          </property>
-        </bean>
-        <bean parent="RelationshipDefinition">
-          <property name="objectAttributeName" value="extension.accountType"/>
-          <property name="primitiveAttributes">
-            <list>
-              <bean parent="PrimitiveAttributeDefinition" p:sourceName="extension.accountTypeCode" p:targetName="accountTypeCode"/>
-            </list>
-          </property>
-        </bean>
-      </list>
-    </property>
     <property name="attributes">
       <list>
         <ref bean="Account-number"/>

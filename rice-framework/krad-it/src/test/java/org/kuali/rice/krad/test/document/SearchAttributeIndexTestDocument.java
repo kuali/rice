@@ -74,8 +74,12 @@ public class SearchAttributeIndexTestDocument extends TransactionalDocumentBase 
 	public String getRoutedString() {
 		return routedString;
 	}
-	
-	/**
+
+    public String getHeldRoutedString() {
+        return heldRoutedString;
+    }
+
+    /**
 	 * @return the readAccessCount
 	 */
 	public int getReadAccessCount() {

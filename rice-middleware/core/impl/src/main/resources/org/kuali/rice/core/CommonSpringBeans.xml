@@ -28,11 +28,8 @@
   <!--
   ${monitoring.spring.service}
   -->
-  
-  <util:list id="coreJpaPackagesToScan">
-  </util:list>
 
-	<!-- JHK : No, this should not be here - we need a "KradCommonSpringBeans.xml file which we auto-include" -->
+  <!-- JHK : No, this should not be here - we need a "KradCommonSpringBeans.xml file which we auto-include" -->
   <util:list id="kradJpaPackagesToScan">
     <value>org.kuali.rice.krad.data</value>
     <value>org.kuali.rice.krad.bo</value>

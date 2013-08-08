@@ -1,28 +1,343 @@
 package org.kuali.rice.krad.data.jpa;
 
+import org.apache.commons.lang.RandomStringUtils;
+import org.junit.Before;
 import org.junit.Test;
+import org.kuali.rice.core.api.criteria.Predicate;
+import org.kuali.rice.core.api.criteria.PredicateFactory;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
+import org.kuali.rice.krad.data.CompoundKey;
+import org.kuali.rice.krad.data.DataObjectWrapper;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
+import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krad.data.provider.PersistenceProvider;
-import org.kuali.rice.krad.data.provider.PersistenceProviderAccountTestBase;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.test.KRADTestCase;
+import org.kuali.rice.krad.test.document.bo.AccountExtension;
+import org.kuali.rice.krad.test.document.bo.AccountType;
+import org.kuali.rice.krad.test.document.bo.SimpleAccount;
 import org.kuali.rice.test.BaselineTestCase;
 import org.springframework.transaction.UnexpectedRollbackException;
+
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests JPAPersistenceProvider
  */
 // avoid wrapping test in rollback since JPA requires transaction boundary to flush
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
-public class JpaPersistenceProviderTest extends PersistenceProviderAccountTestBase {
-    protected PersistenceProvider getPersistenceProvider() {
-        return getKRADTestHarnessContext().getBean("kradJpaPersistenceProvider", PersistenceProvider.class);
+public class JpaPersistenceProviderTest extends KRADTestCase {
+
+    /**
+     * The PersistenceProvider being tested
+     */
+    protected PersistenceProvider provider;
+
+    /**
+     * Obtains PersistenceProvider.
+     */
+    @Before
+    public void setup() {
+        provider = getPersistenceProvider();
+    }
+
+    /**
+     * Derives a QueryByCriteria for a test object
+     */
+    protected QueryByCriteria queryFor(Object a) {
+        return QueryByCriteria.Builder.forAttributes(a, Arrays.asList(getPropertiesForQuery()));
+    }
+
+    /**
+     * Creates an unsaved test object
+     */
+    protected Object createLinkedTestObject() {
+        Object a = createTopLevelObject();
+        Object saved = getPersistenceProvider().save(a);
+
+        addLinkedReferences(saved);
+
+        return saved;
+    }
+
+    /**
+     * Creates an unsaved, unlinked test object
+     */
+    protected Object createUnlinkedTestObject() {
+        Object a = createTopLevelObject();
+        Object saved = getPersistenceProvider().save(a);
+
+        addUnlinkedReferences(saved);
+
+        return saved;
+    }
+
+    /**
+     * Assigns the next generated primary key value to the test object
+     */
+    protected void assignPK(Object a) {
+        setTestObjectPK(a, getNextTestObjectId());
+    }
+
+    /**
+     * Creates a test object and generates a matching query for it
+     */
+    protected Map.Entry<Object, QueryByCriteria> createForQuery() {
+        Object a = createLinkedTestObject();
+        QueryByCriteria qbc = queryFor(a);
+        return new AbstractMap.SimpleImmutableEntry<Object, QueryByCriteria>(a, qbc);
+    }
+
+    /**
+     * Generates a batch of test objects and returns a single query that will select them all.
+     * The order of the returned list of test objects should match the order of the results returned
+     * by the underlying platform (i.e., if they are returned in a sorted order, then the test object
+     * list should be sorted).
+     */
+    protected Map.Entry<List<Object>, QueryByCriteria.Builder> createForQuery(int count) {
+        List<Object> objects = new ArrayList<Object>();
+        List<Predicate> predicates = new ArrayList<Predicate>(count);
+        for (int i = 0; i < count; i++) {
+            Object a = createLinkedTestObject();
+            objects.add(a);
+            predicates.add(queryFor(a).getPredicate());
+        }
+        QueryByCriteria.Builder qbc = QueryByCriteria.Builder.create();
+        qbc.setPredicates(PredicateFactory.or(predicates.toArray(new Predicate[count])));
+        return new AbstractMap.SimpleImmutableEntry<List<Object>, QueryByCriteria.Builder>(objects, qbc);
+    }
+
+    @Test
+    public void testSimpleSave() {
+        Object a = createTopLevelObject();
+        assertNull(getIdForLookup(a));
+
+        Object saved = provider.save(a);
+        assertNotNull(getIdForLookup(saved));
+        assertTestObjectEquals(a, saved);
+    }
+
+    @Test
+    public void testSaveLinkedSkipLinking() {
+        Object a = createLinkedTestObject();
+        Object id = getIdForLookup(a);
+
+        Object saved = provider.save(a, PersistenceOption.SKIP_LINKING);
+        assertTestObjectIdentityEquals(a, saved);
+
+        Object found = provider.find((Class<Object>)a.getClass(), id);
+        assertTestObjectIdentityEquals(a, found);
+        assertTestObjectIdentityEquals(saved, found);
     }
 
     // EclipseLink consumes the underlying exception itself and explicitly rolls back the transaction
     // resulting in just an opaque UnexpectedRollbackException coming out of Spring
     // (underlying exception is never translated by the PersistenceExceptionTranslator)
     // Internal Exception: com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Column 'ACCT_TYPE' cannot be null
-    @Override
     @Test(expected=UnexpectedRollbackException.class)
     public void testSaveUnlinkedSkipLinking() {
-        super.testSaveUnlinkedSkipLinking();
+        Object a = createUnlinkedTestObject();
+
+        provider.save(a, PersistenceOption.SKIP_LINKING);
+
+        fail("save should have resulted in an exception as references have not been linked correctly");
     }
+
+
+    @Test
+    public void testFindMatching() {
+        Map.Entry<Object, QueryByCriteria> pair = createForQuery();
+
+        Object a = pair.getKey();
+        QueryByCriteria qbc = pair.getValue();
+
+        Object saved = provider.save(a);
+        assertTestObjectEquals(a, saved);
+
+        QueryResults<Object> found = provider.findMatching((Class<Object>)a.getClass(), qbc);
+        assertEquals(1, found.getResults().size());
+        assertTestObjectIdentityEquals(a, found.getResults().get(0));
+
+        provider.delete(found.getResults().get(0));
+
+        found = provider.findMatching((Class<Object>)a.getClass(), qbc);
+        assertEquals(0, found.getResults().size());
+    }
+
+    @Test
+    public void testFindBySingleKey() {
+        Object a = createLinkedTestObject();
+
+        Object saved = provider.save(a);
+        assertTestObjectEquals(a, saved);
+        Object id = getIdForLookup(saved);
+
+        Object found = provider.find((Class<Object>)a.getClass(), id);
+        assertTestObjectIdentityEquals(a, found);
+
+        provider.delete(found);
+
+        assertNull(provider.find((Class<Object>)a.getClass(), id));
+    }
+
+    @Test
+    public void testFindByCompoundKey() {
+        Object a = createLinkedTestObject();
+
+        Object saved = provider.save(a);
+        assertTestObjectEquals(a, saved);
+
+        Map<String, Object> keys = new TreeMap<String, Object>();
+        DataObjectWrapper<Object> wrap = KradDataServiceLocator.getDataObjectService().wrap(saved);
+        for (String propertyName : getPropertiesForQuery()) {
+            keys.put(propertyName, wrap.getPropertyValue(propertyName));
+        }
+        CompoundKey id = new CompoundKey(keys);
+
+        Object found = provider.find((Class<Object>)a.getClass(), id);
+        assertTestObjectIdentityEquals(a, found);
+
+        provider.delete(found);
+
+        assertNull(provider.find((Class<Object>)a.getClass(), id));
+    }
+
+    @Test
+    public void testFindWithResultsWindow() {
+        Map.Entry<List<Object>, QueryByCriteria.Builder> fixture = createForQuery(10);
+        List<Object> objects = fixture.getKey();
+        for (Object a: objects) {
+            provider.save(a);
+        }
+
+        QueryByCriteria.Builder query = fixture.getValue();
+        query.setStartAtIndex(2);
+        query.setMaxResults(5);
+        QueryResults<Object> results = provider.findMatching((Class<Object>) objects.get(0).getClass(), query.build());
+
+        assertEquals(5, results.getResults().size());
+        assertTestObjectIdentityEquals(objects.get(2), results.getResults().get(0));
+        assertTestObjectIdentityEquals(objects.get(3), results.getResults().get(1));
+        assertTestObjectIdentityEquals(objects.get(4), results.getResults().get(2));
+        assertTestObjectIdentityEquals(objects.get(5), results.getResults().get(3));
+        assertTestObjectIdentityEquals(objects.get(6), results.getResults().get(4));
+    }
+
+    /**
+     * Tests that deletion of a non-existent detached object does not result in a save of the object
+     * via merge.
+     */
+    @Test
+    public void testDeleteNonExistentEntity() {
+        Object a = createTopLevelObject();
+        assignPK(a);
+        Object id = getIdForLookup(a);
+
+        assertNull(provider.find((Class<Object>)a.getClass(), id));
+
+        provider.delete(a);
+
+        assertNull(provider.find((Class<Object>)a.getClass(), id));
+    }
+
+    @Test
+    public void testHandles() {
+        Object a = createTopLevelObject();
+        assertTrue(provider.handles((Class<Object>)a.getClass()));
+        Class guaranteedNotToBeMappedClass = this.getClass();
+        //  assertFalse(provider.handles(guaranteedNotToBeMappedClass));
+    }
+
+    protected Object createTopLevelObject() {
+        SimpleAccount a = new SimpleAccount();
+        //Long number = KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("trvl_id_seq");
+        //Long amId = 1l; //RandomUtils.nextLong();
+        String name = RandomStringUtils.randomAlphanumeric(10);
+        //a.setNumber(number.toString());
+        //a.setAmId(amId);
+        a.setName(name);
+        return a;
+    }
+
+    protected void addLinkedReferences(Object o) {
+        SimpleAccount a = (SimpleAccount)o;
+        addUnlinkedReferences(a);
+        //a.getAccountManager().setAmId(Long.parseLong(a.getNumber()));
+        AccountExtension e = (AccountExtension) a.getExtension();
+        e.setAccountTypeCode(e.getAccountType().getAccountTypeCode());
+        e.setNumber(a.getNumber());
+    }
+
+    protected void addUnlinkedReferences(Object o) {
+        SimpleAccount a = (SimpleAccount)o;
+        //AccountManager am = new AccountManager();
+        //am.setUserName(RandomStringUtils.randomAlphanumeric(10));
+        //a.setAccountManager(am);
+        AccountExtension extension = new AccountExtension();
+        //extension.setNumber(KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("trvl_id_seq").toString());
+        AccountType at = new AccountType();
+        at.setName(RandomStringUtils.randomAlphanumeric(10));
+        at.setAccountTypeCode(RandomStringUtils.randomAlphanumeric(2));
+        extension.setAccountType(at);
+        a.setExtension(extension);
+    }
+
+    protected String[] getPropertiesForQuery() {
+        return new String[] { "number", "name" };
+    }
+
+    protected Object getIdForLookup(Object o) {
+        SimpleAccount a = (SimpleAccount)o;
+        return a.getNumber();
+    }
+
+    protected Object getNextTestObjectId() {
+        return KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("trvl_id_seq").toString();
+    }
+
+    protected void setTestObjectPK(Object o, Object key) {
+        SimpleAccount a = (SimpleAccount)o;
+        a.setNumber((String) key);
+    }
+
+    protected void assertTestObjectIdentityEquals(Object oExpected, Object oActual) {
+        SimpleAccount expected = (SimpleAccount)oExpected;
+        SimpleAccount actual = (SimpleAccount)oActual;
+        assertTestObjectEquals(expected, actual);
+        assertEquals(expected.getNumber(), actual.getNumber());
+    }
+
+    protected void assertTestObjectEquals(Object oExpected, Object oActual) {
+        SimpleAccount expected = (SimpleAccount)oExpected;
+        SimpleAccount actual = (SimpleAccount)oActual;
+        assertEquals(expected.getAmId(), actual.getAmId());
+        assertEquals(expected.getName(), actual.getName());
+        if (expected.getExtension() != null) {
+            AccountExtension e1 = (AccountExtension) expected.getExtension();
+            AccountExtension e2 = (AccountExtension) actual.getExtension();
+            assertEquals(e1.getNumber(), e2.getNumber());
+            assertEquals(e1.getAccountTypeCode(), e2.getAccountTypeCode());
+
+            if (e1.getAccountType() != null) {
+                AccountType at1 = e1.getAccountType();
+                AccountType at2 = e2.getAccountType();
+                assertEquals(at1.getName(), at2.getName());
+                assertEquals(at1.getAccountTypeCode(), at2.getAccountTypeCode());
+            }
+        }
+
+    }
+
+    protected PersistenceProvider getPersistenceProvider() {
+        return getKRADTestHarnessContext().getBean("kradTestJpaPersistenceProvider", PersistenceProvider.class);
+    }
+
 }

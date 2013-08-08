@@ -31,28 +31,13 @@
   <!-- Enables Load-Time Weaving -->
   <context:load-time-weaver/>
 
-  <util:list id="kradJpaPackagesToScan">
+  <util:list id="jpaPackagesToScan">
     <value>org.kuali.rice.krad.data</value>
     <value>org.kuali.rice.krad.bo</value>
     <value>org.kuali.rice.krad.document</value>
     <value>org.kuali.rice.krad.maintenance</value>
     <value>org.kuali.rice.krad.messages</value>
-    <value>org.kuali.rice.kns.lookup</value>
   </util:list>
-
-  <util:list id="moduleJpaPackagesToScan">
-  </util:list>
-
-  <bean id="jpaPackagesToScan" 
-  		class="org.kuali.rice.core.framework.util.spring.ListMergeBeanFactory">
-  		<constructor-arg>
-  			<list>
-  				<ref bean="coreJpaPackagesToScan"/>
-  				<ref bean="kradJpaPackagesToScan"/>
-  				<ref bean="moduleJpaPackagesToScan"/>
-  			</list>
-  		</constructor-arg>
-  </bean>
 
   <bean id="kradEntityManagerFactory"
         class="org.kuali.rice.krad.data.jpa.eclipselink.KradEclipseLinkEntityManagerFactoryBean"

@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.reflect.FieldUtils;
+import org.eclipse.persistence.indirection.ValueHolder;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.api.uif.RemotableQuickFinder;
@@ -40,6 +42,7 @@ import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.LegacyUtils;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -49,6 +52,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * LegacyDataAdapter implementation.
@@ -57,6 +64,12 @@ import java.util.TreeMap;
  */
 @Deprecated
 public class LegacyDataAdapterImpl implements LegacyDataAdapter {
+
+    private static final Pattern VALUE_HOLDER_FIELD_PATTERN = Pattern.compile("^_persistence_(.*)_vh$");
+
+    private final ConcurrentMap<Class<?>, List<ValueHolderFieldPair>> valueHolderFieldCache =
+            new ConcurrentHashMap<Class<?>, List<ValueHolderFieldPair>>(8, 0.9f, 1);
+
     private LegacyDataAdapter kradLegacyDataAdapter;
 
     private DataDictionaryService dataDictionaryService;
@@ -172,6 +185,7 @@ public class LegacyDataAdapterImpl implements LegacyDataAdapter {
     public void retrieveNonKeyFields(Object persistableObject) {
         if (isKNSLoaded() && LegacyUtils.useLegacyForObject(persistableObject)) {
             getKnsLegacyDataAdapter().retrieveNonKeyFields(persistableObject);
+            synchronizeEclipseLinkWeavings(persistableObject);
         } else {
             throw new UnsupportedOperationException("retrieveNonKeyFields not supported in KRAD");
         }
@@ -181,6 +195,7 @@ public class LegacyDataAdapterImpl implements LegacyDataAdapter {
     public void retrieveReferenceObject(Object persistableObject, String referenceObjectName) {
         if (isKNSLoaded() && LegacyUtils.useLegacyForObject(persistableObject)) {
             getKnsLegacyDataAdapter().retrieveReferenceObject(persistableObject,referenceObjectName);
+            synchronizeEclipseLinkWeavings(persistableObject, referenceObjectName);
         } else {
             throw new UnsupportedOperationException("retrieveReferenceObject not supported in KRAD");
         }
@@ -190,9 +205,69 @@ public class LegacyDataAdapterImpl implements LegacyDataAdapter {
     public void refreshAllNonUpdatingReferences(Object persistableObject) {
         if (isKNSLoaded() && LegacyUtils.useLegacyForObject(persistableObject)) {
             getKnsLegacyDataAdapter().refreshAllNonUpdatingReferences(persistableObject);
+            synchronizeEclipseLinkWeavings(persistableObject);
         } else {
             throw new UnsupportedOperationException("refreshAllNonUpdatingReferences not supported in KRAD");
         }
+    }
+
+    /**
+     * @see ValueHolderFieldPair for information on why we need to do field sychronization related to weaving
+     */
+    protected void synchronizeEclipseLinkWeavings(Object persistableObject, String propertyName) {
+        if (LegacyUtils.isKradDataManaged(persistableObject.getClass())) {
+            List<ValueHolderFieldPair> fieldPairs = loadValueHolderFieldPairs(persistableObject.getClass());
+            for (ValueHolderFieldPair fieldPair : fieldPairs) {
+                if (fieldPair.field.getName().equals(propertyName)) {
+                    fieldPair.synchronizeValueHolder(persistableObject);
+                }
+            }
+        }
+    }
+
+    /**
+     * @see ValueHolderFieldPair for information on why we need to do field sychronization related to weaving
+     */
+    protected void synchronizeEclipseLinkWeavings(Object persistableObject) {
+        if (LegacyUtils.isKradDataManaged(persistableObject.getClass())) {
+            List<ValueHolderFieldPair> fieldPairs = loadValueHolderFieldPairs(persistableObject.getClass());
+            for (ValueHolderFieldPair fieldPair : fieldPairs) {
+                fieldPair.synchronizeValueHolder(persistableObject);
+            }
+        }
+    }
+
+    /**
+     * @see ValueHolderFieldPair for information on why we need to do field sychronization related to weaving
+     */
+    private List<ValueHolderFieldPair> loadValueHolderFieldPairs(Class<?> type) {
+        if (valueHolderFieldCache.get(type) == null) {
+            List<ValueHolderFieldPair> pairs = new ArrayList<ValueHolderFieldPair>();
+            searchValueHolderFieldPairs(type, pairs);
+            valueHolderFieldCache.putIfAbsent(type, pairs);
+        }
+        return valueHolderFieldCache.get(type);
+    }
+
+    /**
+     * @see ValueHolderFieldPair for information on why we need to do field sychronization related to weaving
+     */
+    private void searchValueHolderFieldPairs(Class<?> type, List<ValueHolderFieldPair> pairs) {
+        if (type.equals(Object.class)) {
+            return;
+        }
+        for (Field valueHolderField : type.getDeclaredFields()) {
+            Matcher matcher = VALUE_HOLDER_FIELD_PATTERN.matcher(valueHolderField.getName());
+            if (matcher.matches()) {
+                valueHolderField.setAccessible(true);
+                String fieldName = matcher.group(1);
+                Field valueField = FieldUtils.getDeclaredField(type, fieldName, true);
+                if (valueField != null) {
+                    pairs.add(new ValueHolderFieldPair(valueField, valueHolderField));
+                }
+            }
+        }
+        searchValueHolderFieldPairs(type.getSuperclass(), pairs);
     }
 
     @Override
@@ -388,9 +463,9 @@ public class LegacyDataAdapterImpl implements LegacyDataAdapter {
     @Override
     public Class<?> determineCollectionObjectType(Class<?> containingType, String collectionPropertyName) {
         if (isKNSLoaded() && LegacyUtils.useLegacy(containingType)) {
-            return getKnsLegacyDataAdapter().determineCollectionObjectType(containingType,collectionPropertyName);
+            return getKnsLegacyDataAdapter().determineCollectionObjectType(containingType, collectionPropertyName);
         } else {
-            return kradLegacyDataAdapter.determineCollectionObjectType(containingType,collectionPropertyName);
+            return kradLegacyDataAdapter.determineCollectionObjectType(containingType, collectionPropertyName);
         }
     }
 
@@ -407,7 +482,7 @@ public class LegacyDataAdapterImpl implements LegacyDataAdapter {
         if (isKNSLoaded() && LegacyUtils.useLegacyForObject(do1)) {
             return getKnsLegacyDataAdapter().equalsByPrimaryKeys(do1, do2);
         }
-        return kradLegacyDataAdapter.equalsByPrimaryKeys(do1,do2);
+        return kradLegacyDataAdapter.equalsByPrimaryKeys(do1, do2);
     }
 
     @Override
@@ -468,7 +543,7 @@ public class LegacyDataAdapterImpl implements LegacyDataAdapter {
         if (isKNSLoaded() && LegacyUtils.useLegacy(type)) {
             return getKnsLegacyDataAdapter().isReferenceUpdatable(type,referenceName);
         } else {
-            return kradLegacyDataAdapter.isReferenceUpdatable(type,referenceName);
+            return kradLegacyDataAdapter.isReferenceUpdatable(type, referenceName);
         }
     }
 
@@ -485,9 +560,9 @@ public class LegacyDataAdapterImpl implements LegacyDataAdapter {
     @Override
     public boolean isCollectionUpdatable(Class<?> type, String collectionName) {
         if (isKNSLoaded() && LegacyUtils.useLegacy(type)) {
-            return getKnsLegacyDataAdapter().isCollectionUpdatable(type,collectionName);
+            return getKnsLegacyDataAdapter().isCollectionUpdatable(type, collectionName);
         } else {
-            return kradLegacyDataAdapter.isCollectionUpdatable(type,collectionName);
+            return kradLegacyDataAdapter.isCollectionUpdatable(type, collectionName);
         }
 
     }
@@ -504,7 +579,7 @@ public class LegacyDataAdapterImpl implements LegacyDataAdapter {
     @Override
     public BusinessObject getReferenceIfExists(BusinessObject bo, String referenceName) {
         if (isKNSLoaded() && LegacyUtils.useLegacyForObject(bo)) {
-            return getKnsLegacyDataAdapter().getReferenceIfExists(bo,referenceName);
+            return getKnsLegacyDataAdapter().getReferenceIfExists(bo, referenceName);
         }
         // TODO: Determine if we need to implement this...
         throw new UnsupportedOperationException("This function has not been implemented for JPA/krad-data objects.");
@@ -513,7 +588,7 @@ public class LegacyDataAdapterImpl implements LegacyDataAdapter {
     @Override
     public boolean allForeignKeyValuesPopulatedForReference(PersistableBusinessObject bo, String referenceName) {
         if (isKNSLoaded() && LegacyUtils.useLegacyForObject(bo)) {
-            return getKnsLegacyDataAdapter().allForeignKeyValuesPopulatedForReference(bo,referenceName);
+            return getKnsLegacyDataAdapter().allForeignKeyValuesPopulatedForReference(bo, referenceName);
         }
         throw new UnsupportedOperationException("This function has not been implemented for JPA/krad-data objects.");
     }
@@ -652,18 +727,18 @@ public class LegacyDataAdapterImpl implements LegacyDataAdapter {
     @Override
     public Class<?> getInquiryObjectClassIfNotTitle(Object dataObject, String propertyName) {
         if (isKNSLoaded() && LegacyUtils.useLegacyForObject(dataObject)) {
-            return getKnsLegacyDataAdapter().getInquiryObjectClassIfNotTitle(dataObject,propertyName);
+            return getKnsLegacyDataAdapter().getInquiryObjectClassIfNotTitle(dataObject, propertyName);
         } else {
-            return kradLegacyDataAdapter.getInquiryObjectClassIfNotTitle(dataObject,propertyName);
+            return kradLegacyDataAdapter.getInquiryObjectClassIfNotTitle(dataObject, propertyName);
         }
     }
 
     @Override
     public Map<String, String> getInquiryParameters(Object dataObject, List<String> keys, String propertyName) {
         if (isKNSLoaded() && LegacyUtils.useLegacyForObject(dataObject)) {
-            return getKnsLegacyDataAdapter().getInquiryParameters(dataObject,keys,propertyName);
+            return getKnsLegacyDataAdapter().getInquiryParameters(dataObject, keys, propertyName);
         } else {
-            return kradLegacyDataAdapter.getInquiryParameters(dataObject,keys,propertyName);
+            return kradLegacyDataAdapter.getInquiryParameters(dataObject, keys, propertyName);
         }
     }
 
@@ -691,8 +766,8 @@ public class LegacyDataAdapterImpl implements LegacyDataAdapter {
             return getKnsLegacyDataAdapter().getDataObjectRelationship(dataObject,dataObjectClass,
                     attributeName,attributePrefix,keysOnly,supportsLookup,supportsInquiry);
         } else {
-            return kradLegacyDataAdapter.getDataObjectRelationship(dataObject,dataObjectClass,
-                    attributeName,attributePrefix,keysOnly,supportsLookup,supportsInquiry);
+            return kradLegacyDataAdapter.getDataObjectRelationship(dataObject, dataObjectClass, attributeName,
+                    attributePrefix, keysOnly, supportsLookup, supportsInquiry);
         }
 
     }
@@ -709,18 +784,18 @@ public class LegacyDataAdapterImpl implements LegacyDataAdapter {
     @Override
     public ForeignKeyFieldsPopulationState getForeignKeyFieldsPopulationState(Object dataObject, String referenceName) {
         if (isKNSLoaded() && LegacyUtils.useLegacyForObject(dataObject)) {
-            return getKnsLegacyDataAdapter().getForeignKeyFieldsPopulationState(dataObject,referenceName);
+            return getKnsLegacyDataAdapter().getForeignKeyFieldsPopulationState(dataObject, referenceName);
         } else {
-            return kradLegacyDataAdapter.getForeignKeyFieldsPopulationState(dataObject,referenceName);
+            return kradLegacyDataAdapter.getForeignKeyFieldsPopulationState(dataObject, referenceName);
         }
     }
 
     @Override
     public Map<String, String> getForeignKeysForReference(Class<?> clazz, String attributeName) {
         if (isKNSLoaded() && LegacyUtils.useLegacy(clazz)) {
-            return getKnsLegacyDataAdapter().getForeignKeysForReference(clazz,attributeName);
+            return getKnsLegacyDataAdapter().getForeignKeysForReference(clazz, attributeName);
         } else {
-            return kradLegacyDataAdapter.getForeignKeysForReference(clazz,attributeName);
+            return kradLegacyDataAdapter.getForeignKeysForReference(clazz, attributeName);
         }
     }
 
@@ -754,9 +829,9 @@ public class LegacyDataAdapterImpl implements LegacyDataAdapter {
 
     public Object getNestedValue(Object bo, String fieldName){
         if(isKNSLoaded() && LegacyUtils.useLegacyForObject(bo)){
-            return getKnsLegacyDataAdapter().getNestedValue(bo,fieldName);
+            return getKnsLegacyDataAdapter().getNestedValue(bo, fieldName);
         } else {
-            return kradLegacyDataAdapter.getNestedValue(bo,fieldName);
+            return kradLegacyDataAdapter.getNestedValue(bo, fieldName);
         }
     }
 
@@ -805,6 +880,41 @@ public class LegacyDataAdapterImpl implements LegacyDataAdapter {
 
     public boolean isKNSLoaded(){
         return GlobalResourceLoader.getService("knsLegacyDataAdapter") != null;
+    }
+
+    /**
+     * Holds a reference to a property Field on a JPA entity and the associated EclipseLink {@link ValueHolder} field.
+     *
+     * <p>This exists to support the issue of using a data object with both OJB and JPA. EclipseLink will "instrument"
+     * the entity class using load-time or static weaving (depending on what's been configured). For fields which are
+     * FetchType.LAZY, EclipseLink will weave a private internal field with a name like "_persistence_propertyName_vh"
+     * where "propertyName" is the name of the property which is lazy. This type of this field is {@link ValueHolder}.
+     * In this case, if you call getPropertyName for the property, the internal code will pull the value from the
+     * ValueHolder instead of the actual property field. Oftentimes this will be ok because the two fields will be in
+     * sync, but when using methods like OJB's retrieveReference and retrieveAllReferences, after the "retrieve" these
+     * values will be out of sync. So the {@link #synchronizeValueHolder(Object)} method on this class can be used to
+     * synchronize these values and ensure that the local field has a value which matches the ValueHolder.</p>
+     */
+    private static final class ValueHolderFieldPair {
+
+        final Field field;
+        final Field valueHolderField;
+
+        ValueHolderFieldPair(Field field, Field valueHolderField) {
+            this.field = field;
+            this.valueHolderField = valueHolderField;
+        }
+
+        void synchronizeValueHolder(Object object) {
+            try {
+                ValueHolder valueHolder = (ValueHolder)valueHolderField.get(object);
+                Object value = field.get(object);
+                valueHolder.setValue(value);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
     }
 }
 

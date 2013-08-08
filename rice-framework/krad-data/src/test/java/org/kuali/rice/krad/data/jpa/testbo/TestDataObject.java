@@ -109,11 +109,16 @@ public class TestDataObject implements Serializable {
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@OrderBy("collectionKeyProperty ASC")
+    @JoinColumn(name = "STR_PROP", referencedColumnName = "PK_PROP")
 	List<CollectionDataObject> collectionProperty;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	@OrderBy("collectionKeyProperty ASC")
+    @JoinColumn(name = "STR_PROP", referencedColumnName = "PK_PROP")
 	List<CollectionDataObjectTwo> collectionPropertyTwo;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "testDataObject")
+    List<CollectionDataObjectThree> collectionPropertyThree;
 
 	@CollectionRelationship(
 			attributeRelationships = @AttributeRelationship(

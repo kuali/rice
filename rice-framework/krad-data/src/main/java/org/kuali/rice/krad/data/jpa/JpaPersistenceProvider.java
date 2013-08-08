@@ -146,6 +146,9 @@ public class JpaPersistenceProvider implements PersistenceProvider, Initializing
 
     protected void verifyDataObjectWritable(Object dataObject) {
         DataObjectMetadata metaData = dataObjectService.getMetadataRepository().getMetadata(dataObject.getClass());
+        if (metaData == null) {
+            throw new IllegalArgumentException("Given data object class is not loaded into the MetadataRepository: " + dataObject.getClass());
+        }
         if (metaData.isReadOnly()) {
             throw new UnsupportedOperationException(dataObject.getClass() + " is read-only");
         }

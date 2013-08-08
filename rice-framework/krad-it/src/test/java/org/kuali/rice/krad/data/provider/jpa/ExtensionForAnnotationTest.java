@@ -17,7 +17,7 @@ import java.util.List;
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class ExtensionForAnnotationTest extends KRADTestCase {
     protected PersistenceProvider getPersistenceProvider() {
-        return getKRADTestHarnessContext().getBean("jpaPersistenceProvider", PersistenceProvider.class);
+        return getKRADTestHarnessContext().getBean("kradTestJpaPersistenceProvider", PersistenceProvider.class);
     }
 
     @Override
@@ -29,7 +29,7 @@ public class ExtensionForAnnotationTest extends KRADTestCase {
         return tables;
     }
 
-    protected TestDataObject createTestDataObject(String key) {
+    protected Object createTestDataObject(String key) {
         TestDataObject dataObject = new TestDataObject();
         dataObject.setPrimaryKeyProperty(key);
         dataObject.setStringProperty("aString");
@@ -47,11 +47,11 @@ public class ExtensionForAnnotationTest extends KRADTestCase {
 
     @Test
     public void testCreateDataObjectWithExtension() {
-        TestDataObject dataObject = createTestDataObject("1");
+        TestDataObject dataObject = (TestDataObject)createTestDataObject("1");
 
         getPersistenceProvider().save(dataObject);
 
-        getKRADTestHarnessContext().getBean("kradApplicationEntityManagerFactory", EntityManagerFactory.class).getCache().evictAll();
+        getKRADTestHarnessContext().getBean("kradTestEntityManagerFactory", EntityManagerFactory.class).getCache().evictAll();
 
         dataObject = getPersistenceProvider().find(TestDataObject.class, "1");
         TestDataObjectExtension extension = getPersistenceProvider().find(TestDataObjectExtension.class, "1");
@@ -64,11 +64,11 @@ public class ExtensionForAnnotationTest extends KRADTestCase {
 
     @Test
     public void testRetrieveDataObjectWithExtension() {
-        TestDataObject dataObject = createTestDataObject("2");
+        TestDataObject dataObject = (TestDataObject)createTestDataObject("2");
 
         getPersistenceProvider().save(dataObject);
 
-        getKRADTestHarnessContext().getBean("kradApplicationEntityManagerFactory", EntityManagerFactory.class).getCache().evictAll();
+        getKRADTestHarnessContext().getBean("kradTestEntityManagerFactory", EntityManagerFactory.class).getCache().evictAll();
 
         dataObject = getPersistenceProvider().find(TestDataObject.class, "2");
         YetAnotherReferencedDataObject yardo = dataObject.getYetAnotherReferencedObject();

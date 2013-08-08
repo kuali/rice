@@ -29,40 +29,26 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
- * TODO kellerj don't forget to fill this in.
+ * Integration test for the JpaMetadataProvider.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class JpaMetadataProviderTest extends KRADTestCase {
 
-    /**
-     * This method ...
-     *
-     * @throws java.lang.Exception
-     */
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception {}
-
-    /**
-     * This overridden method ...
-     *
-     * @see org.kuali.rice.test.BaselineTestCase#setUp()
-     */
-    @Override
-    @Before
-    public void setUp() throws Exception {
-        super.setUp();
-    }
 
     @Test
     public void verifyInRegistry() {
         assertNotNull( "Unable to obtain the registry", KradDataServiceLocator.getProviderRegistry() );
         List<MetadataProvider> metadataProviders = KradDataServiceLocator.getProviderRegistry().getMetadataProviders();
-        assertNotNull( "metadata provider list was null", metadataProviders );
-        Assert.assertEquals( "There should be only one metadata provider defined", 1, metadataProviders.size() );
-        Assert.assertTrue( "entry should be the CompositeMetadataProviderImpl: " + metadataProviders.get(0), metadataProviders.get(0) instanceof CompositeMetadataProviderImpl );
+        assertNotNull("metadata provider list was null", metadataProviders);
+        assertTrue("There should be at least one metadata provider.", metadataProviders.size() > 1);
+        for (MetadataProvider provider : metadataProviders) {
+            assertTrue("All entries should be the CompositeMetadataProviderImpl: " + provider,
+                provider instanceof CompositeMetadataProviderImpl);
+        }
     }
 
     @Test

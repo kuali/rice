@@ -40,31 +40,25 @@
   <!-- Enables Load-Time Weaving -->
   <context:load-time-weaver/>
 
-  <util:list id="moduleJpaPackagesToScan">
+  <util:list id="jpaPackagesToScan">
     <!-- add packages here -->
+    <value>org.kuali.rice.krad.data.jpa.converters</value>
     <value>org.kuali.rice.kim.impl.common.attribute</value>
     <value>org.kuali.rice.kim.impl.membership</value>
     <value>org.kuali.rice.kim.impl.common.active</value>
     <value>org.kuali.rice.kim.impl.group</value>
   </util:list>
-  
-  <!-- JHK: Should be defined centrally -->
-  <bean id="jpaPackagesToScan" 
-  		class="org.kuali.rice.core.framework.util.spring.ListMergeBeanFactory">
-  		<constructor-arg>
-  			<list>
-  				<ref bean="coreJpaPackagesToScan"/>
-  				<ref bean="kradJpaPackagesToScan"/>
-  				<ref bean="moduleJpaPackagesToScan"/>
-  			</list>
-  		</constructor-arg>
-  </bean> 
+
+  <util:list id="managedClassNames">
+    <value>org.kuali.rice.krad.bo.PersistableBusinessObjectBase</value>
+  </util:list>
 
   <bean id="kimEntityManagerFactory"
         class="org.kuali.rice.krad.data.jpa.eclipselink.KradEclipseLinkEntityManagerFactoryBean"
         p:jtaDataSource-ref="kimDataSource"
         p:persistenceUnitName="kim"
-        p:packagesToScan-ref="jpaPackagesToScan"/>
+        p:packagesToScan-ref="jpaPackagesToScan"
+        p:managedClassNames-ref="managedClassNames"/>
 
   <bean id="kimSharedEntityManager"
         class="org.springframework.orm.jpa.support.SharedEntityManagerBean"

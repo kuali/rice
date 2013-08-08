@@ -32,6 +32,7 @@
     <class>org.kuali.rice.krad.data.jpa.testbo.IndirectlyLinkedCollectionDataObject</class>
     <class>org.kuali.rice.krad.data.jpa.testbo.CollectionDataObject</class>
     <class>org.kuali.rice.krad.data.jpa.testbo.CollectionDataObjectTwo</class>
+    <class>org.kuali.rice.krad.data.jpa.testbo.CollectionDataObjectThree</class>
     <class>org.kuali.rice.krad.data.jpa.testbo.ReferencedDataObject</class>
     <class>org.kuali.rice.krad.data.jpa.testbo.AnotherReferencedDataObject</class>
     <class>org.kuali.rice.krad.data.jpa.testbo.YetAnotherReferencedDataObject</class>
@@ -49,7 +50,7 @@
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
     	<property name="eclipselink.target-database" value="HSQL" />
-		  <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver"/>
+		  <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbc.JDBCDriver"/>
 		  <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:mem:testdb"/>
 		  <property name="javax.persistence.jdbc.user" value="sa"/>
 		  <property name="javax.persistence.jdbc.password" value=""/>

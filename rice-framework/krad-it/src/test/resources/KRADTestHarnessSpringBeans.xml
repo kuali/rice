@@ -148,11 +148,11 @@
         <value>TestModuleResources</value>
       </list>
     </property>
-    <property name="entityManager" ref="kradSharedEntityManager"/>
+    <property name="entityManager" ref="kradTestSharedEntityManager"/>
     <property name="providers">
         <list>
-            <ref bean="kradJpaPersistenceProvider"/>
-            <ref bean="kradMetadataProvider"/>
+            <ref bean="kradTestJpaPersistenceProvider"/>
+            <ref bean="kradTestMetadataProvider"/>
         </list>
     </property>
   </bean>
@@ -183,7 +183,6 @@
   <!-- JPA/KRAD config -->
 
   <import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
-  <import resource="classpath:org/kuali/rice/krad/config/KRADSpringBeans-jpa.xml"/>
 
   <bean id="kd-providerRegistry"
         class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
@@ -196,29 +195,72 @@
   <!-- Enables Load-Time Weaving -->
   <context:load-time-weaver/>
 
-  <bean id="jpaPackagesToScan" 
-  		class="org.kuali.rice.core.framework.util.spring.ListMergeBeanFactory">
-  		<constructor-arg>
-  			<list>
-  				<ref bean="coreJpaPackagesToScan"/>
-  				<ref bean="kradJpaPackagesToScan"/>
-  				<ref bean="moduleJpaPackagesToScan"/>
-  			</list>
-  		</constructor-arg>
-  </bean>
+  <util:list id="managedClassNames">
+    <value>org.kuali.rice.krad.bo.PersistableBusinessObjectBase</value>
+    <value>org.kuali.rice.krad.document.DocumentBase</value>
+    <value>org.kuali.rice.krad.document.TransactionalDocumentBase</value>
+    <value>org.kuali.rice.krad.document.authorization.PessimisticLock</value>
+  </util:list>
 
-  <util:list id="moduleJpaPackagesToScan">
+
+  <util:list id="jpaPackagesToScan">
+    <value>org.kuali.rice.krad.data.jpa.converters</value>
     <!-- include test entities -->
     <value>org.kuali.rice.krad.test.document</value>
-    <value>org.kuali.rice.krad.data.provider.jpa.testbo</value>
+    <value>org.kuali.rice.krad.data.jpa.testbo</value>
   </util:list>
 
   <!-- Override the EntityManagerFactory -->
-  <bean id="kradEntityManagerFactory"
+  <bean id="kradTestEntityManagerFactory"
         class="org.kuali.rice.krad.data.jpa.eclipselink.KradEclipseLinkEntityManagerFactoryBean"
         p:jtaDataSource-ref="riceDataSource"
-        p:persistenceUnitName="krad-application"
-        p:packagesToScan-ref="jpaPackagesToScan"/>
+        p:persistenceUnitName="krad-test"
+        p:packagesToScan-ref="jpaPackagesToScan"
+        p:managedClassNames-ref="managedClassNames"/>
         <!-- p:mappingResources="META-INF/krad-test-orm.xml" -->
+
+  <bean id="kradTestSharedEntityManager"
+        class="org.springframework.orm.jpa.support.SharedEntityManagerBean"
+        p:entityManagerFactory-ref="kradTestEntityManagerFactory"/>
+
+  <!-- Persistence Provider -->
+
+  <bean id="kradTestJpaPersistenceProvider"
+        class="org.kuali.rice.krad.data.jpa.JpaPersistenceProvider"
+        p:providerRegistry-ref="kd-providerRegistry"
+        p:dataObjectService-ref="kd-dataObjectService"
+        p:sharedEntityManager-ref="kradTestSharedEntityManager"/>
+
+  <!-- Metadata Providers -->
+
+  <bean id="kradTestSpringMetadataFileLocations-parentBean"
+        class="org.springframework.beans.factory.config.ListFactoryBean"
+        p:sourceList="classpath:org/kuali/rice/krad/data/provider/spring/krad-metadata-parent-beans.xml"/>
+
+  <bean id="kradTestSpringMetadataFileLocations" parent="kradTestSpringMetadataFileLocations-parentBean"/>
+
+  <bean id="kradTestMetadataProviderSpring"
+        class="org.kuali.rice.krad.data.provider.spring.SpringMetadataProviderImpl"
+        p:resourceLocations-ref="kradTestSpringMetadataFileLocations" />
+
+  <bean id="kradTestMetadataProviderJpa"
+        class="org.kuali.rice.krad.data.jpa.eclipselink.EclipseLinkJpaMetadataProviderImpl"
+        p:entityManager-ref="kradTestSharedEntityManager" />
+
+  <bean id="kradTestMetadataProviderAnnotation"
+        class="org.kuali.rice.krad.data.provider.annotation.impl.AnnotationMetadataProviderImpl"
+        p:jpaMetadataProvider-ref="kradTestMetadataProviderJpa" />
+
+  <bean id="kradTestMetadataProvider"
+        class="org.kuali.rice.krad.data.provider.impl.CompositeMetadataProviderImpl">
+    <property name="providers">
+      <list>
+        <ref bean="kradTestMetadataProviderJpa" />
+        <ref bean="kradTestMetadataProviderAnnotation" />
+        <ref bean="kradTestMetadataProviderSpring" />
+      </list>
+    </property>
+  </bean>
+
 
 </beans>

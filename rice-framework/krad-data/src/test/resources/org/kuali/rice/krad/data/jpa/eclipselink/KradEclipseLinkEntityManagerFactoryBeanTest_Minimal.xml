@@ -24,7 +24,7 @@
   <bean id="testDataSource"
         class="org.apache.commons.dbcp.BasicDataSource"
         destroy-method="close"
-        p:driverClassName="org.hsqldb.jdbcDriver"
+        p:driverClassName="org.hsqldb.jdbc.JDBCDriver"
         p:url="jdbc:hsqldb:mem:testdb"
         p:username="sa"
         p:password=""/>

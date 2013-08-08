@@ -152,9 +152,11 @@ public class JpaMetadataProviderTest {
 		DataObjectMetadata metadata = metadataProvider
 				.getMetadataForType(TestDataObject.class);
 		List<DataObjectCollection> collections = metadata.getCollections();
-		System.err.println(collections);
+
+        // TestDataObject has 4 collections
 		Assert.assertNotNull("Collections object should not be null", collections);
-		Assert.assertEquals("Collections size incorrect", 3, collections.size());
+		Assert.assertEquals("Collections size incorrect", 4, collections.size());
+
 		DataObjectCollection collection = collections.get(0);
 		Assert.assertEquals("property name incorrect", "collectionProperty", collection.getName());
 		Assert.assertEquals("collection backing object incorrect", "KRTST_TEST_COLL_T",

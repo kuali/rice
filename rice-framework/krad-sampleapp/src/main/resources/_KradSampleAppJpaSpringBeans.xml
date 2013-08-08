@@ -36,7 +36,6 @@
   		class="org.kuali.rice.core.framework.util.spring.ListMergeBeanFactory">
   		<constructor-arg>
   			<list>
-  				<ref bean="coreJpaPackagesToScan"/>
   				<ref bean="kradJpaPackagesToScan"/>
   				<ref bean="moduleJpaPackagesToScan"/>
   			</list>

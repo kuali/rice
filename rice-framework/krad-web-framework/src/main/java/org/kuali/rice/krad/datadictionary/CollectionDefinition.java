@@ -179,9 +179,6 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
         if ( summary != null ) {
             return summary;
         }
-        if ( getDataObjectCollection() != null ) {
-            return getDataObjectCollection().getSummary();
-        }
         return "";
     }
 
@@ -264,6 +261,7 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
      *
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation(org.kuali.rice.krad.datadictionary.validator.ValidationTrace)
      */
+    @Override
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass,
             ValidationTrace tracer) {
         tracer.addBean(this.getClass().getSimpleName(), "Attribute: " + getName());

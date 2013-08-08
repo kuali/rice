@@ -200,9 +200,6 @@ public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBa
         if ( summary != null ) {
             return summary;
         }
-        if ( getDataObjectAttribute() != null ) {
-            return getDataObjectAttribute().getSummary();
-        }
         return "";
     }
 

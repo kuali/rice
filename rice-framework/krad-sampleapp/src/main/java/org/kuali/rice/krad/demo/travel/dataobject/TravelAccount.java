@@ -39,7 +39,7 @@ import org.kuali.rice.krad.data.provider.annotation.Description;
 import org.kuali.rice.krad.data.provider.annotation.InheritProperties;
 import org.kuali.rice.krad.data.provider.annotation.InheritProperty;
 import org.kuali.rice.krad.data.provider.annotation.Label;
-import org.kuali.rice.krad.data.provider.annotation.OptionsFinderClass;
+import org.kuali.rice.krad.data.provider.annotation.KeyValuesFinderClass;
 import org.kuali.rice.krad.data.provider.annotation.Relationship;
 import org.kuali.rice.krad.data.provider.annotation.ValidCharactersConstraintBeanName;
 import org.kuali.rice.krad.demo.travel.options.AccountTypeKeyValues;
@@ -91,7 +91,7 @@ public class TravelAccount extends VersionedAndGloballyUniqueBase implements Ser
 	@Column(name="ACCT_TYPE",length=3)
 	@Label("Travel Account Type Code")
 	@Description("Type code grouping for account")
-	@OptionsFinderClass(AccountTypeKeyValues.class)
+	@KeyValuesFinderClass(AccountTypeKeyValues.class)
     protected String accountTypeCode;
 
     @ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.REFRESH})

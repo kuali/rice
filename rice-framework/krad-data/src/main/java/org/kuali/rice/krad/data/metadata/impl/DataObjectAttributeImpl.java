@@ -59,7 +59,7 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 
 	protected PropertyEditor propertyEditor;
 	protected DataObjectAttributeSecurity attributeSecurity;
-	protected KeyValuesFinder optionsFinder;
+	protected KeyValuesFinder validValues;
 	protected DataType dataType = DataType.STRING;
 	protected Class<?> type = String.class;
 	
@@ -123,17 +123,18 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		this.attributeSecurity = attributeSecurity;
 	}
 	@Override
-	public KeyValuesFinder getOptionsFinder() {
-		if (optionsFinder != null) {
-			return optionsFinder;
+	public KeyValuesFinder getValidValues() {
+		if (validValues != null) {
+			return validValues;
 		}
 		if (embeddedAttribute != null) {
-			return embeddedAttribute.getOptionsFinder();
+			return embeddedAttribute.getValidValues();
 		}
 		return null;
 	}
-	public void setOptionsFinder(KeyValuesFinder optionsFinder) {
-		this.optionsFinder = optionsFinder;
+
+	public void setValidValues(KeyValuesFinder validValues) {
+		this.validValues = validValues;
 	}
 	@Override
 	public DataType getDataType() {
@@ -175,8 +176,8 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		if (attributeSecurity != null) {
 			builder.append(", ").append("attributeSecurity=").append(attributeSecurity);
 		}
-		if (optionsFinder != null) {
-			builder.append(", ").append("optionsFinder=").append(optionsFinder);
+		if (validValues != null) {
+			builder.append(", ").append("validValues=").append(validValues);
 		}
 		if (inheritedFromType != null) {
 			builder.append(", ").append("inheritedFromType=").append(inheritedFromType);

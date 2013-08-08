@@ -78,7 +78,7 @@ public interface DataObjectAttribute extends MetadataCommon {
 	/**
 	 * If this field should be rendered using a drop-down list, specify the instance on this property.
 	 */
-	KeyValuesFinder getOptionsFinder();
+	KeyValuesFinder getValidValues();
 
 	/**
 	 * The derived krad-data data type used by the UIF to help generate the appropriate control and perform default

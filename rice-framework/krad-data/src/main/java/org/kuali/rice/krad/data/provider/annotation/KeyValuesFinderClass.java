@@ -29,6 +29,6 @@ import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface OptionsFinderClass {
+public @interface KeyValuesFinderClass {
 	Class<? extends KeyValuesFinder> value();
 }

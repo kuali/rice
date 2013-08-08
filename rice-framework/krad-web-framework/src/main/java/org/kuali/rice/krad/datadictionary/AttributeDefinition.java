@@ -745,8 +745,8 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     @BeanTagAttribute(name = "optionFinder", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public KeyValuesFinder getOptionsFinder() {
         if ( optionsFinder == null ) {
-            if ( getDataObjectAttribute() != null && getDataObjectAttribute().getOptionsFinder() != null ) {
-                return getDataObjectAttribute().getOptionsFinder();
+            if ( getDataObjectAttribute() != null && getDataObjectAttribute().getValidValues() != null ) {
+                return getDataObjectAttribute().getValidValues();
             }
         }
         return optionsFinder;

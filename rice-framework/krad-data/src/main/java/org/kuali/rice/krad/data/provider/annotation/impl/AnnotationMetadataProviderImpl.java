@@ -56,10 +56,10 @@ import org.kuali.rice.krad.data.provider.annotation.Description;
 import org.kuali.rice.krad.data.provider.annotation.ExtensionFor;
 import org.kuali.rice.krad.data.provider.annotation.InheritProperties;
 import org.kuali.rice.krad.data.provider.annotation.InheritProperty;
+import org.kuali.rice.krad.data.provider.annotation.KeyValuesFinderClass;
 import org.kuali.rice.krad.data.provider.annotation.Label;
 import org.kuali.rice.krad.data.provider.annotation.MergeAction;
 import org.kuali.rice.krad.data.provider.annotation.NonPersistentProperty;
-import org.kuali.rice.krad.data.provider.annotation.OptionsFinderClass;
 import org.kuali.rice.krad.data.provider.annotation.PropertyEditorClass;
 import org.kuali.rice.krad.data.provider.annotation.ReadOnly;
 import org.kuali.rice.krad.data.provider.annotation.Relationship;
@@ -381,12 +381,12 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 			attr.setValidCharactersConstraintBeanName(((ValidCharactersConstraintBeanName) a).value());
 			return true;
 		}
-		if (a instanceof OptionsFinderClass) {
+		if (a instanceof KeyValuesFinderClass) {
 			try {
-				attr.setOptionsFinder(((OptionsFinderClass) a).value().newInstance());
+				attr.setValidValues(((KeyValuesFinderClass) a).value().newInstance());
 				return true;
 			} catch (Exception ex) {
-				LOG.error("Unable to instantiate options finder: " + ((OptionsFinderClass) a).value(), ex);
+				LOG.error("Unable to instantiate options finder: " + ((KeyValuesFinderClass) a).value(), ex);
 			}
 		}
 		if (a instanceof NotNull) {

@@ -17,6 +17,7 @@ package org.kuali.rice.scripts
 
 import groovy.text.GStringTemplateEngine
 import groovy.util.logging.Log
+import org.apache.commons.io.FileExistsException
 import org.apache.commons.io.FilenameUtils
 import org.codehaus.plexus.util.StringUtils
 
@@ -88,6 +89,38 @@ class ConversionUtils {
         return objName
     }
 
+    /**
+     * Provides a non-existent filename based on path and filename info
+     *
+     * @param path
+     * @param baseName
+     * @param extension
+
+     * @return
+     */
+    public static String getUnusedFilename(String path, String baseName, String extension) {
+        String filename = baseName + '.' + extension;
+        File file = new File(path, filename);
+        int attemptCount = 0;
+        int numberAttempts = 3;
+        // if directory contains file name, try timestamp based suffix
+        if (file.exists()) {
+            while (file.exists() && attemptCount < numberAttempts) {
+                filename = baseName + System.currentTimeMillis() + "." + extension;
+                file = new File(path, filename);
+                attemptCount++;
+            }
+        }
+
+        if (file.exists()) {
+            throw new FileExistsException("failed to generate file " + baseName + "." + extension + "");
+        } else if (attemptCount > 0) {
+            log.info("generating alt filename for " + baseName + " [" + filename + "]");
+        }
+
+        return filename;
+    }
+
     public static def findFilesByName(searchDirPath, fileName) {
         def filePattern = ~/${fileName}$/
         return findFilesByPattern(searchDirPath, filePattern)
@@ -141,6 +174,7 @@ class ConversionUtils {
     public static def getConfig(defaultConfigFilePath, projectConfigFilePath) {
         def defaultConfigFile = new File(defaultConfigFilePath)
         def config = new ConfigSlurper().parse(defaultConfigFile.toURL())
+
         if (projectConfigFilePath != null && projectConfigFilePath != "") {
             File altConfigFile = new File(projectConfigFilePath)
             if (altConfigFile.exists()) {
@@ -148,6 +182,7 @@ class ConversionUtils {
                 config.merge(altConfig)
             }
         }
+
         return config
     }
 

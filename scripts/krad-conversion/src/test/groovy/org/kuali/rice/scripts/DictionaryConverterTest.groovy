@@ -36,144 +36,303 @@ class DictionaryConverterTest {
 
     @Before
     void setUp() {
-        def config_file_path = testResourceDir + "test.config.properties"
-        config = new ConfigSlurper().parse(new File(config_file_path).toURL())
+        def configFilePath = testResourceDir + "test.config.properties"
+        config = new ConfigSlurper().parse(new File(configFilePath).toURL())
         dictionaryConverter = new DictionaryConverter(config)
     }
 
+    // Utilities
+
+    @Test
+    void testCopyProperties() {
+        def rootBean = new XmlParser().parseText("<beans><bean parent='SampleAppBean'>" + "<property name='title' value='test' /><property name='title2' value='value2' />" + "</bean></beans>");
+        def copyNode = new XmlParser().parseText("<beans><bean parent='SampleAppBean'></bean></beans>");
+        def beanNode = rootBean.bean[0];
+
+        copyNode.bean[0].replaceNode {
+            bean() {
+                dictionaryConverter.copyProperties(delegate, beanNode, ["title"]);
+            }
+        }
+
+        Assert.assertTrue(copyNode.bean[0].property.findAll { it.@name == "title" }.size() > 0);
+        Assert.assertTrue(copyNode.bean[0].property.findAll { it.@name == "title2" }.size() == 0);
+    }
+
+    @Test
+    void testRenameProperties() {
+        def rootBean = new XmlParser().parseText("<beans><bean parent='SampleAppBean'>" + "<property name='title' value='value1' /><property name='title2' value='value2' />" + "</bean></beans>");
+        def copyNode = new XmlParser().parseText("<beans><bean parent='SampleAppBean'></bean></beans>");
+        def beanNode = rootBean.bean[0];
+
+        copyNode.bean[0].replaceNode {
+            bean() {
+                dictionaryConverter.renameProperties(delegate, beanNode, ["title": "title3"]);
+            }
+        }
+
+        Assert.assertTrue(copyNode.bean[0].property.findAll { it.@name == "title3" }.size() > 0);
+        Assert.assertTrue(copyNode.bean[0].property.findAll { it.@name == "title2" }.size() == 0);
+    }
+
+    @Test
+    void testRemoveProperties() {
+        def rootBean = new XmlParser().parseText("<beans><bean parent='SampleAppBean'>" + "<property name='title' value='value1' /><property name='title2' value='value2' />" + "</bean></beans>");
+
+        rootBean.bean.each { beanNode -> dictionaryConverter.removeProperties(beanNode, ["title"]); }
+
+        Assert.assertTrue(rootBean.bean[0].property.findAll { it.@name == "title" }.size() == 0);
+        Assert.assertTrue(rootBean.bean[0].property.findAll { it.@name == "title2" }.size() > 0);
+    }
 
     @Test
     void testFixNamespaceProperties() {
-        def maint_def_file_path = dictTestDir + "AttributePropertySample.xml"
-        def maint_def_file = new File(maint_def_file_path)
-        def dd_root_node = new XmlParser().parse(maint_def_file)
-        dd_root_node.bean.each { bean -> dictionaryConverter.fixNamespaceProperties(bean) }
-        Assert.assertEquals("bean properties size does not match", 5, dd_root_node.bean.property.size())
+        def maintDefFilePath = dictTestDir + "AttributePropertySample.xml"
+        def ddRootNode = getFileRootNode(maintDefFilePath)
+        ddRootNode.bean.each { bean -> dictionaryConverter.fixNamespaceProperties(bean) }
+        Assert.assertEquals("bean properties size does not match", 5, ddRootNode.bean.property.size())
     }
 
     @Test
-    void testGetRelativePath() {
-        checkRelativePath("/opt/rice/", "/opt/rice/org/kuali/rice/test.java", "org/kuali/rice/") // unix
-        checkRelativePath("/opt/rice/", "/opt/rice/test.java", "") // unix with file dir matching base
-        checkRelativePath("C:\\windows\\rice\\", "C:\\windows\\rice\\org\\kuali\\krad\\test.java", "org/kuali/krad/") // windows
-    }
-
-    void checkRelativePath(base_path, file_path, relative_path) {
-        def result_path = ConversionUtils.getRelativePath(base_path, file_path)
-        Assert.assertEquals("relative path does not match", relative_path, result_path)
-    }
-
-    @Test
-    void testMapBusinessObjectsAndDefinitions() {
-        log.finer 'start map bo definition test'
-        log.finer 'loading inquiry definition sample'
-        def inq_def_file_path = dictTestDir + "InquiryDefinitionSample.xml"
-        def inq_def_file = new File(inq_def_file_path)
-        def dd_root_node = new XmlParser().parse(inq_def_file)
-        log.finer "Before " + dd_root_node.toString()
+    void testTransformBusinessObjectEntryBean() {
+        String xmlFilePath = dictTestDir + "InquiryDefinitionSample.xml"
+        def rootNode = getFileRootNode(xmlFilePath)
+        def beanNode = rootNode.bean.find { "BusinessObjectEntry" == it.@parent }
+        Node resultNode = null;
         try {
-            dictionaryConverter.transformBusinessObjectsAndDefinitions(dd_root_node, "TravelDetails")
-        } catch (Exception e) {
-            e.printStackTrace()
-            Assert.fail("exception occurred in testing")
-        }
-        // generate assertion tests to validate inquiry definition properly converted
-        Assert.assertEquals("dictionary attribute count", 17, dd_root_node.bean.findAll { it.@parent == "AttributeDefinition" }.size())
-    }
-
-    @Test
-    void testTransformInquiryDefinitions() {
-        log.finer 'start map inquiry definition test'
-        log.finer 'loading inquiry definition sample'
-        def inq_def_file_path = dictTestDir + "InquiryDefinitionSample.xml"
-        def inq_def_file = new File(inq_def_file_path)
-        def dd_root_node = new XmlParser().parse(inq_def_file)
-        log.finer "Before " + dd_root_node.toString()
-        def bean_node
-        try {
-            bean_node = dd_root_node.bean.find { it.@parent == "InquiryDefinition" }
-            dictionaryConverter.transformInquiryDefinition(dd_root_node, bean_node, "TravelerDetail", "org.kuali.rice.krad.demo.travel.authorization.dataobject.TravelerDetail")
+            resultNode = dictionaryConverter.transformBusinessObjectEntryBean(beanNode)
         } catch (Exception e) {
             e.printStackTrace()
             Assert.fail("exception occurred in testing")
         }
 
-        def writer = new StringWriter()
-        // generate assertion tests to validate inquiry definition properly converted
-        XmlUtil.serialize(dd_root_node, writer)
-        log.finer "After  " + writer.toString()
-        // confirm a uif inquiry view was generated and has the correct elements
-        Assert.assertEquals("uif inquiry view count", 1, dd_root_node.bean.findAll { it.@parent == "Uif-InquiryView" }.size())
+        log.finer "result for transforming business object entry - " + getNodeString(resultNode);
+        def expectedProperties = [];
+        Assert.assertEquals("properties copied or renamed properly", beanNode.findAll { expectedProperties.contains(it.@name) }.size(), expectedProperties.size())
     }
 
     @Test
-    void testMapControlField() {
-        log.finer 'start map control field test'
-        log.finer 'loading control field sample'
-        def inq_def_file_path = dictTestDir + "ControlFieldSample.xml"
-        def inq_def_file = new File(inq_def_file_path)
-        def dd_root_node = new XmlParser().parse(inq_def_file)
-        log.finer "Before " + dd_root_node.toString()
+    void testTransformAttributeDefinitionBeanUsingTransformBusinessObjectEntryBean() {
+        String xmlFilePath = dictTestDir + "InquiryDefinitionSample.xml"
+        def rootNode = getFileRootNode(xmlFilePath)
+        def beanNode = rootNode.bean.find { "AttributeDefinition" == it.@parent }
+        Node resultNode = null;
         try {
-            dictionaryConverter.transformControlField(dd_root_node.bean, config.map.convert.dd_bean_control)
+            resultNode = dictionaryConverter.transformBusinessObjectEntryBean(beanNode)
         } catch (Exception e) {
             e.printStackTrace()
             Assert.fail("exception occurred in testing")
         }
-        def writer = new StringWriter()
-        XmlUtil.serialize(dd_root_node, writer)
-        log.finer "map control field - After  " + writer.toString()
+
+        log.info "result for transforming attribute definition entry - " + getNodeString(resultNode);
+        checkBeanPropertyExists(resultNode, "validCharactersConstraint");
+    }
+
+
+    @Test
+    void testTransformControlProperty() {
+        def inqDefFilePath = dictTestDir + "ControlFieldSample.xml"
+        def ddRootNode = getFileRootNode(inqDefFilePath)
+        try {
+            dictionaryConverter.transformControlProperty(ddRootNode.bean, config.map.convert.dd_bean_control)
+        } catch (Exception e) {
+            e.printStackTrace()
+            Assert.fail("exception occurred in testing")
+        }
 
         // validate a control field and options finder were generated
-        Assert.assertEquals("control field count", 1, dd_root_node.bean.property.findAll { it.@name == "controlField" }.size())
-        Assert.assertEquals("options finder count", 1, dd_root_node.bean.property.findAll { it.@name == "optionsFinder" }.size())
+        Assert.assertEquals("control field count", 1, ddRootNode.bean.property.findAll { it.@name == "controlField" }.size())
+        Assert.assertEquals("options finder count", 1, ddRootNode.bean.property.findAll { it.@name == "optionsFinder" }.size())
+        Assert.assertEquals("control count", 0, ddRootNode.bean.property.findAll { it.@name == "control" }.size())
 
     }
 
     @Test
-    void testTransformMaintenanceDocument() {
-        log.finer 'start map bo definition test'
-        log.finer 'loading inquiry definition sample'
-        def inq_def_file_path = dictTestDir + "MaintenanceDefinitionSample.xml"
-        def inq_def_file = new File(inq_def_file_path)
-        def dd_root_node = new XmlParser().parse(inq_def_file)
-        log.finer "Before " + dd_root_node.toString()
+    public void testTransformSpringBeans() {
+        def rootBean = new XmlParser().parseText("<beans><bean parent='BusinessObjectEntry'>" + "<property name='title' value='test' /><property name='title2' value='value2' />" + "</bean></beans>");
         try {
-            dictionaryConverter.transformMaintenanceDocument(dd_root_node, "TravelDetails")
+            dictionaryConverter.transformSpringBeans(rootBean);
+        } catch (Exception e) {
+            e.printStackTrace()
+            Assert.fail("exception occurred in testing")
+        }
+        checkBeanParentExists(rootBean, "DataObjectEntry");
+    }
+
+    /**
+     * Removes any children beans that exists from the xml file
+     *
+     */
+    @Test
+    public void testRemoveChildrenBeans() {
+        String lookupDefFilePath = dictTestDir + "LookupDefinitionSample.xml"
+        def lookupDefFile = new File(lookupDefFilePath)
+        def ddRootNode = new XmlParser().parse(lookupDefFile);
+        def beanNode = ddRootNode.bean.find { "BusinessObjectEntry".equals(it.@parent) };
+        String parentName = beanNode.@parent;
+
+        dictionaryConverter.removeChildrenBeans(beanNode);
+        Assert.assertEquals("child bean still exists", ddRootNode.findAll { parentName.equals(it.@name) }.size(), 0);
+    }
+
+    /**
+     * Converts lookup fields properties into criteria fields and handles all children bean nodes properly
+     *
+     * Success Criteria
+     *  - property is renamed as criteria fields
+     *  - all 'field definitions' that are attributeNames are turned into LookupCriteriaInputField
+     */
+    @Test
+    public void testTransformLookupFieldsProperties() {
+        String lookupDefFilePath = dictTestDir + "LookupDefinitionSample.xml"
+        def ddRootNode = getFileRootNode(lookupDefFilePath);
+        def beanNode = ddRootNode.bean.find { "LookupDefinition".equals(it.@parent) };
+        String parentName = beanNode.@parent;
+        beanNode.replaceNode {
+            bean(parent: "Uif-LookupView") {
+                dictionaryConverter.transformLookupFieldsProperty(delegate, beanNode);
+            }
+        }
+
+
+        // confirm lookup fields has been replaced with criteria fields
+        Assert.assertEquals("lookupFields not longer exists", 0, ddRootNode.findAll { parentName.equals(it.@name) }.size());
+        Assert.assertEquals("criteriaFields exists", 1, ddRootNode.bean.property.findAll { "criteriaFields".equals(it.@name) }.size());
+    }
+
+    /**
+     * Tests conversion of lookup definition's result fields into appropriate property
+     *
+     */
+    @Test
+    public void testTransformResultFieldsProperties() {
+        String lookupDefFilePath = dictTestDir + "LookupDefinitionSample.xml"
+        def ddRootNode = getFileRootNode(lookupDefFilePath);
+        log.info "processing " + getNodeString(ddRootNode);
+        def beanNode = ddRootNode.bean.find { "LookupDefinition".equals(it.@parent) };
+        String parentName = beanNode.@parent;
+        beanNode = beanNode.replaceNode {
+            bean(parent: "Uif-LookupView") {
+                dictionaryConverter.transformResultFieldsProperty(delegate, beanNode);
+            }
+        }
+
+        // confirm lookup fields has been replaced with criteria fields
+        checkBeanPropertyExists(beanNode, "resultFields");
+        beanNode = ddRootNode.bean.find { "Uif-LookupView".equals(it.@parent) };
+        def resultsFieldProperty = beanNode.property.find { "resultFields".equals(it.@name) };
+        def dataFieldSize = resultsFieldProperty.list.bean.findAll { "Uif-DataField".equals(it.@parent) }.size();
+        Assert.assertEquals("number of converted data fields did not match", 11, dataFieldSize);
+    }
+
+
+    @Test
+    public void testIsBeanTransformable() {
+        // test lookup definition bean
+        Assert.assertTrue("bean method not found", dictionaryConverter.isBeanTransformable("LookupDefinition"));
+        Assert.assertTrue("bean method not found but returned true", !dictionaryConverter.isBeanTransformable("LookupDefinition2"));
+    }
+
+    @Test
+    public void testIsPropertyTransformable() {
+        // test control property
+        Assert.assertTrue("property method not found", dictionaryConverter.isPropertyTransformable("control"));
+        Assert.assertTrue("property method not found but returned true", !dictionaryConverter.isPropertyTransformable("controls"));
+    }
+
+    /**
+     * Tests that inquiry conversion generates a inquiry view including
+     * title, viewname, data object, processes through inquiry fields and collections
+     *
+     */
+    @Test
+    public void testTransformInquiryDefinitionBean() {
+        String inquiryDefPath = dictTestDir + "InquiryDefinitionSample.xml"
+        def ddRootNode = getFileRootNode(inquiryDefPath);
+        def beanNode = ddRootNode.bean.find { "InquiryDefinition".equals(it.@parent) };
+        String parentName = beanNode.@parent;
+        dictionaryConverter.definitionDataObjects.put("TravelerDetail-lookupDefinition", "org.kuali.rice.krad.demo.travel.authorization.dataobject.TravelerDetail");
+        dictionaryConverter.transformInquiryDefinitionBean(beanNode);
+        checkBeanParentExists(ddRootNode, "Uif-InquiryView");
+
+    }
+
+    @Test
+    void testTransformMaintenanceDocumentEntryBean() {
+        String maintDefFilePath = dictTestDir + "MaintenanceDefinitionSample.xml"
+        def ddRootNode = getFileRootNode(maintDefFilePath)
+        def beanNode = ddRootNode.bean.find { "MaintenanceDocumentEntry".equals(it.@parent) }
+        try {
+            dictionaryConverter.transformMaintenanceDocumentEntryBean(beanNode)
         } catch (Exception e) {
             e.printStackTrace()
             Assert.fail("exception occurred in testing")
         }
 
-        def writer = new StringWriter()
-        // generate assertion tests to validate maintenance definition properly converted
-        XmlUtil.serialize(dd_root_node, writer)
-        log.finer "After  " + writer.toString()
-        Assert.assertEquals("dictionary attribute count", 1, dd_root_node.bean.findAll { it.@parent == "Uif-MaintenanceView" }.size())
-
+        checkBeanParentExists(ddRootNode, "Uif-MaintenanceView");
+        checkBeanParentExists(ddRootNode, "MaintenanceDocumentEntry");
     }
 
+    /**
+     * transform lookup definition is responsible for converting a lookup definition into
+     * a uif lookup view.  Verifies that
+     *
+     */
     @Test
-    void testTransformLookupDefinition() {
-        def inq_def_file_path = dictTestDir + "LookupDefinitionSample.xml"
-        def inq_def_file = new File(inq_def_file_path)
-        def dd_root_node = new XmlParser().parse(inq_def_file)
-        log.finer "Before " + dd_root_node.toString()
-        def bean_node
+    void testTransformLookupDefinitionBean() {
+        String lookupDefFilePath = dictTestDir + "LookupDefinitionSample.xml"
+        def ddRootNode = getFileRootNode(lookupDefFilePath)
+        log.finer "Before " + ddRootNode.toString()
+        def beanNode = ddRootNode.bean.find { it.@parent == "LookupDefinition" }
         try {
-            bean_node = dd_root_node.bean.find { it.@parent == "LookupDefinition" }
-            dictionaryConverter.transformLookupDefinition(dd_root_node, bean_node, "TravelerDetail", "org.kuali.rice.krad.demo.travel.authorization.dataobject.TravelerDetail")
+            dictionaryConverter.transformLookupDefinitionBean(beanNode)
         } catch (Exception e) {
             e.printStackTrace()
             Assert.fail("exception occurred in testing")
         }
 
-        def writer = new StringWriter()
-        // generate assertion tests to validate inquiry definition properly converted
-        XmlUtil.serialize(dd_root_node, writer)
-        log.finer "After  " + writer.toString()
+        log.finer "After  " + getNodeString(ddRootNode)
         // confirm a uif inquiry view was generated and has the correct elements
-        Assert.assertEquals("uif lookup view count", 1, dd_root_node.bean.findAll { it.@parent == "Uif-LookupView" }.size())
+        Assert.assertEquals("uif lookup view count", 1, ddRootNode.bean.findAll { it.@parent == "Uif-LookupView" }.size())
+    }
+
+
+
+    @Test
+    void testPreloadDefinitionDataObjects() {
+        String xmlFilePath = dictTestDir + "InquiryDefinitionSample.xml"
+        def rootNode = getFileRootNode(xmlFilePath)
+
+        try {
+            dictionaryConverter.preloadDefinitionDataObjects(rootNode);
+        } catch (Exception e) {
+            e.printStackTrace()
+            Assert.fail("exception occurred in testing")
+        }
+        Assert.assertTrue("lookup definition entry added", dictionaryConverter.definitionDataObjects.containsKey("TravelerDetail-lookupDefinition"));
+
+    }
+
+
+    // helper functions
+
+    public void checkBeanParentExists(def rootNode, String parentName) {
+        Assert.assertTrue("root should contains parent bean " + parentName, rootNode.bean.findAll { parentName.equals(it.@parent) }.size() > 0);
+    }
+
+    public void checkBeanPropertyExists(def beanNode, String propertyName) {
+        Assert.assertTrue("bean should contains property " + propertyName, beanNode.property.findAll { propertyName.equals(it.@name) }.size() > 0);
+    }
+
+    public Node getFileRootNode(String filepath) {
+        def file = new File(filepath);
+        return new XmlParser().parse(file);
+    }
+
+    public static String getNodeString(Node rootNode) {
+        def writer = new StringWriter()
+        XmlUtil.serialize(rootNode, writer)
+        return writer.toString()
     }
 
 }

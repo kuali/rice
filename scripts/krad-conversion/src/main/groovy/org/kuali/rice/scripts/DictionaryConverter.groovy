@@ -19,6 +19,10 @@ import groovy.util.logging.Log
 import groovy.xml.QName
 import groovy.xml.XmlUtil
 import org.apache.commons.io.FilenameUtils
+import org.apache.commons.lang.ClassUtils
+import org.apache.commons.lang.StringUtils
+
+import java.util.regex.Pattern
 
 /**
  * DictionaryConverter.groovy
@@ -30,6 +34,8 @@ import org.apache.commons.io.FilenameUtils
  */
 @Log
 class DictionaryConverter {
+
+    public static String OUTPUT_CONV_FILE_PREFIX = "KradConv";
 
     def config
 
@@ -53,6 +59,8 @@ class DictionaryConverter {
     def pNamespaceSchema
     def xsiNamespaceSchema
 
+    Map<String, String> definitionDataObjects = [:];
+    Map<String, String> parentBeans = [:];
 
     public DictionaryConverter(config) {
         init(config)
@@ -81,102 +89,146 @@ class DictionaryConverter {
         // Load Configurable Properties
         log.finer "finished loading config files"
 
-        def inputResourceDir = inputDir + inputPaths.src.resources
-        def outputResourceDir = outputDir + outputPaths.src.resources
+        def inputResourceDir = FilenameUtils.normalize(inputDir, true) + inputPaths.src.resources
+        def outputResourceDir = FilenameUtils.normalize(outputDir, true) + outputPaths.src.resources
 
         def xmlInclPattern = ~/.*\.xml$/
         def uifLibExclPattern = ~/uif\/library/
 
-        // find all spring resource files
-        def listBusObjFiles = locateSpringBeanFiles(inputResourceDir, xmlInclPattern, uifLibExclPattern, "", "businessObjectClass")
-
-        def listTransDocFiles = locateSpringBeanFiles(inputResourceDir, xmlInclPattern, uifLibExclPattern, "TransactionalDocumentEntry", "")
-
-        def listMaintDocFiles = locateSpringBeanFiles(inputResourceDir, xmlInclPattern, uifLibExclPattern, "MaintenanceDocumentEntry", "")
-        log.finer "BO " + listBusObjFiles.size() + " TR " + listTransDocFiles.size() + " MN " + listMaintDocFiles.size()
-
-        // load and parse data dictionary input
-        processBusObjFiles(listBusObjFiles, outputResourceDir, inputResourceDir)
-
-        // once complete with the business objects, proceed to the maintenance document
-        processMaintDocFiles(listMaintDocFiles, outputResourceDir, inputResourceDir)
-
-        // TODO: Get transactional documents working properly
-        /**listTransDocFiles.each { transDocFile ->
-
-         def tdocRootNode = null
-         def objName = null
-         def outputPath = null
-         def outputFile = null
-         outputFile = getFileName(transDocFile.path)
-         objName = ConversionUtils.getObjectName(transDocFile.path, "TransactionalDocument")
-         outputPath = outputResourceDir + ConversionUtils.getRelativePath(inputResourceDir, transDocFile.path)
-
-         tdocRootNode = new XmlParser().parse(transDocFile.path)
-         if (tdocRootNode != null) {transformTransactionalDocument(tdocRootNode, objName)
-         generateSpringBeanFile(tdocRootNode, outputPath, outputFile)}}**/
+        // locate all relevant spring bean files based on bean parent and properties
+        def springBeanFiles = locateSpringBeanFiles(inputResourceDir, xmlInclPattern,
+                uifLibExclPattern, ["MaintenanceDocumentEntry"], ["businessObjectClass"])
+        preloadSpringData(springBeanFiles);
+        processSpringBeanFiles(springBeanFiles, inputResourceDir, outputResourceDir)
 
     }
 
     /**
-     * takes each of the business object related xml files in the input directory and generate a krad
-     * compliant verison
+     * Used to gather information related to parent/child and data object relationships
+     * that may not exist in current file being processed
      *
-     * @param listBusObjFiles
-     * @param outputResourceDir
-     * @param inputResourceDir
+     * @param files
      */
-    private void processBusObjFiles(ArrayList listBusObjFiles, String outputResourceDir, String inputResourceDir) {
-        listBusObjFiles.each { busObjFile ->
+    private void preloadSpringData(List<File> files) {
+        files.each { File springFile ->
+            Node rootNode = parseSpringXml(springFile.text);
+            preloadParentBeans(rootNode);
+            preloadDefinitionDataObjects(rootNode);
+        }
+    }
 
-            try {
-                // generates objName, output path, and output file from existing path and input information
-                def ddRootNode = parseSpringXml(busObjFile.text)
-                def objName = ConversionUtils.getObjectName(busObjFile.path, "BO")
-                String path = outputResourceDir + ConversionUtils.getRelativePath(inputResourceDir, busObjFile.path)
-                String extension = FilenameUtils.getExtension(busObjFile.path);
-                String filename = objName + "KradBO." + extension;
+    private void preloadParentBeans(def rootNode) {
+        rootNode.bean.each { parentBeans.put(it.@id, it.@parent) }
+    }
 
-                // process data dictionary beans for any business objects and related attributes
-                if (ddRootNode != null) {
-                    transformBusinessObjectsAndDefinitions(ddRootNode, objName)
-                    generateSpringBeanFile(ddRootNode, path, filename)
+    /**
+     * Used to track business object classes and their relationship to
+     * lookup and inquiry definitions
+     *
+     * @param rootNode
+     */
+    private void preloadDefinitionDataObjects(def rootNode) {
+        rootNode.bean.findAll { "BusinessObjectEntry".equals(it.@parent) }.each {
+            def dataObjectName = "";
+            it.property.findAll { "businessObjectClass".equals(it.@name) }.each {
+                dataObjectName = it.@value;
+            }
+
+            it.property.findAll { ["inquiryDefinition", "lookupDefinition"].contains(it.@name) }.each {
+                if (it.bean?.@parent) {
+                    definitionDataObjects.put(it.bean?.@parent, dataObjectName);
+                } else if (it.ref?.@bean) {
+                    definitionDataObjects.put(it.ref.@bean[0], dataObjectName);
                 }
-            } catch (FileNotFoundException ex) {
-                log.error("Error - Missing Business Class File")
-                errorText()
+
+            }
+        }
+
+        log.finer "size at end of current file is " + definitionDataObjects.size();
+    }
+
+    /**
+     * process through all spring files and convert their beans into appropriate
+     * krad equivalent
+     *
+     * @param files
+     * @param inputBaseDir
+     * @param outputBaseDir
+     */
+    protected void processSpringBeanFiles(List<File> files, String inputBaseDir, String outputBaseDir) {
+        files.each { File springFile ->
+            Node rootNode = parseSpringXml(springFile.text);
+            if (rootNode != null) {
+                transformSpringBeans(rootNode);
+                generateSpringBeanFile(rootNode, FilenameUtils.normalize(outputBaseDir, true) + ConversionUtils.getRelativePath(inputBaseDir, springFile.path), OUTPUT_CONV_FILE_PREFIX + springFile.name)
             }
         }
     }
 
     /**
-     * processes a list of maintenance document files and generates the related krad files to an output directory
+     * If the parent is transformable based on existing methods and transforms the bean accordingly
      *
-     * @param listMaintDocFiles
-     * @param outputResourceDir - location the fi
-     * @param inputResourceDir - used to extract the relative directory of the xml files
+     * @param rootNode
      */
-    private void processMaintDocFiles(ArrayList listMaintDocFiles, String outputResourceDir, String inputResourceDir) {
-        listMaintDocFiles.each { maintDocFile ->
-            log.info "\n---\nprocessing maintenance document file " + maintDocFile.path
-            try {
-                def objName = ConversionUtils.getObjectName(maintDocFile.path, "MaintenanceDocument")
-                def path = outputResourceDir + ConversionUtils.getRelativePath(inputResourceDir, maintDocFile.path)
-                def basename = FilenameUtils.getBaseName(maintDocFile.path);
-                def extension = FilenameUtils.getExtension(maintDocFile.path);
-                String filename = objName + "KradMaintenanceDocument." + extension;
-                def mdocRootNode = parseSpringXml(maintDocFile.text)
-
-                if (mdocRootNode != null) {
-                    transformMaintenanceDocument(mdocRootNode, objName)
-                    generateSpringBeanFile(mdocRootNode, path, filename)
-                }
-
-            } catch (FileNotFoundException ex) {
-                log.error("Error - Missing Maintenance Document File")
-                errorText()
+    protected void transformSpringBeans(Node rootNode) {
+        rootNode.bean.each { beanNode ->
+            if (isBeanTransformable(beanNode.@parent)) {
+                delegate.invokeMethod("transform" + getTransformableBeanType(beanNode.@parent).capitalize() + "Bean", [beanNode]);
             }
         }
+    }
+
+    /**
+     * checks against mapping to confirm beanType can be converted into relevant krad counterpart
+     * If not found, returns empty string
+     *
+     * @param parentName
+     * @return
+     */
+    protected String getTransformableBeanType(String parentName) {
+        def relevantBeans = ["AttributeDefinition": "BusinessObjectEntry", "AttributeReferenceDummy-genericSystemId": "BusinessObjectEntry"];
+        if (relevantBeans.containsKey(parentName)) {
+            return relevantBeans.get(parentName);
+        }
+        return parentName;
+    }
+
+
+    /**
+     * Checks if parent has a transform bean method or is mapped to a relevant transform bean method
+     *
+     * @param parentName
+     * @return
+     */
+    protected boolean isBeanTransformable(String parentName) {
+        parentName = getTransformableBeanType(parentName);
+        if (DictionaryConverter.metaClass.methods.find { it.name == "transform" + parentName.capitalize() + "Bean" }) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * tests if transform property method exists for property name
+     *
+     * @param propertyName
+     * @return
+     */
+    protected boolean isPropertyTransformable(String propertyName) {
+        if (DictionaryConverter.metaClass.methods.find { it.name == "transform" + propertyName.capitalize() + "Property" }) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Used to find reusuable property types tranform methods
+     *
+     * @param propertyName
+     * @return
+     */
+    protected String getTransformablePropertyType(String propertyName) {
+        return propertyName;
     }
 
     /**
@@ -189,17 +241,16 @@ class DictionaryConverter {
      * @param inclPropType
      * @return
      */
-    def locateSpringBeanFiles(srcPath, inclPattern, exclPattern, inclBeanType, inclPropType) {
+    def locateSpringBeanFiles(String srcPath, Pattern includeFilePattern, Pattern excludeFilePattern, List<String> inclBeanTypes, List<String> inclPropTypes) {
         def fileList = []
         log.finer "lookup path for " + srcPath
         //  def patternResultList = new FileNameFinder().getFileNames(searchDirPath, inclPatterns[0], exclPatterns[0]).collect { new File(it) }
-        def patternResultList = ConversionUtils.findFilesByPattern(srcPath, inclPattern, exclPattern)
+        def patternResultList = ConversionUtils.findFilesByPattern(srcPath, includeFilePattern, excludeFilePattern)
         patternResultList.each { resultFile ->
             try {
                 def ddRootNode = parseSpringXml(resultFile.text)
-                //def objectClass = ddRootNode.bean.find { it.@parent == inclBeanType }
-                if (ddRootNode.bean.find { it.@parent == inclBeanType } || ddRootNode.bean.property.find { it.@name == inclPropType }) {
-                    log.finer "processing file path " + resultFile.path + " for IBT " + inclBeanType + " or IPT " + inclPropType
+                if (ddRootNode.bean.find { inclBeanTypes.contains(it.@parent) } || ddRootNode.bean.property.find { inclPropTypes.contains(it.@name) }) {
+                    log.finer "processing file path " + resultFile.path + " for IBT " + inclBeanTypes + " or IPT " + inclPropTypes
                     fileList << resultFile
                 }
             } catch (Exception e) { log.info "failed loading " + resultFile.path + "\n" + e.message + "\n---\n" + resultFile.text + "\n----\n" }
@@ -213,72 +264,28 @@ class DictionaryConverter {
      * @param inputText
      * @return
      */
-    def parseSpringXml(inputText) {
+    def parseSpringXml(String inputText) {
         inputText = inputText.replaceFirst(/(?ms)^(\<\!.*?--\>\s*)/, "")
         def springBeanRootNode = new XmlParser().parseText(inputText)
         return springBeanRootNode
     }
 
     /**
-     * traverses the spring beans and overwrites and replaces beans/properties with their krad equivalent
+     * Processes BusinessObjectEntry into DataObjectEntry and can be used on attribute definitions
      *
-     * @param ddRootNode
-     * @param objName
+     * @param beanNode
      * @return
      */
-    def transformBusinessObjectsAndDefinitions(ddRootNode, objName) {
-        // modify groceries: quality items please
-        def beans = ddRootNode.bean
-        log.finer("Total bean : " + beans.size())
-
-        // retrieve Business Object Class
-        def objClass = ddRootNode.bean.property.find { it.@name == "businessObjectClass" }
-        def objClassName
-        if (objClass != null) {
-            objClassName = objClass.@value
-        } else {
-            log.finer "no businessObjectClass beans found"
-            errorText()
+    def transformBusinessObjectEntryBean(Node beanNode) {
+        if (beanNode?.@parent == "BusinessObjectEntry") {
+            beanNode.@parent = "DataObjectEntry";
         }
+        transformControlProperty(beanNode, ddPropertiesMap);
+        this.removeProperties(beanNode, ddPropertiesRemoveList);
+        this.renameProperties(beanNode, ddPropertiesMap);
+        renamePropertyBeans(beanNode, ddPropertiesMap, true);
 
-        // Iterate through each bean
-        (0..<beans.size()).each {
-            def beanNode = beans[it]
-            log.finer("bean id : " + beanNode.@id)
-
-            // Changes specific to BusinessObjectEntry and AttributeDefinition
-            log.finer "bean node parent is " + beanNode.@parent
-            if (beanNode.@parent in ["BusinessObjectEntry", "AttributeDefinition", "AttributeReferenceDummy-genericSystemId"]) {
-                log.finer "process each bean"
-                def isBusObjEntry = false
-                if (beanNode.@parent in ["BusinessObjectEntry"]) {
-                    isBusObjEntry = true
-                }
-                //Verify Parent Change
-                log.finer "process parent bean"
-                if (ddPropertiesMap[beanNode.@parent.toString()] != null) {
-                    beanNode.@parent = ddPropertiesMap[beanNode.@parent.toString()]
-                }
-                log.finer "process bean properties"
-                def properties = beanNode.property
-                transformBusinessObjectProperties(properties, ddPropertiesMap, ddPropertiesRemoveList)
-
-                //Additional logic for Control field
-
-                transformControlField(beanNode, ddBeanControlMap)
-                if (isBusObjEntry) {
-                    // handles mapping title attributes and primary keys
-                    transformTitleAttribute(beanNode)
-                }
-                // Changes specific to Inquiry Definition
-            } else if (beanNode.@parent in ["InquiryDefinition"]) {
-                log.finer "mapping inquiry definition"
-                transformInquiryDefinition(ddRootNode, beanNode, objName, objClassName)
-                // Changes specific to Lookup Definition
-            } else if (beanNode.@parent in ["LookupDefinition"]) {
-                transformLookupDefinition(ddRootNode, beanNode, objName, objClassName)
-            }
-        }
+        return beanNode
     }
 
     private void transformTitleAttribute(beanNode) {
@@ -299,92 +306,59 @@ class DictionaryConverter {
      * Modifies control and controlField elements into Uif Control elements
      *
      * @param beanNode
-     * @param beanControlMap
+     * @param renamedControlBeans
      * @return
      */
-    def transformControlField(beanNode, beanControlMap) {
-
-        def controlProp = beanNode.property.find { it.@name == "control" }
-        def options = beanNode.property.find { it.@name == "optionsFinder" }
-        def controlFieldProp = beanNode.property.find { it.@name == "controlField" }
-        if (controlProp != null && controlFieldProp != null) {
-            controlProp.replaceNode({})
-        } else if (controlProp != null) {
-            controlProp.@name = controlProp.@name + "Field"
-            (0..<controlProp.bean.size()).each {
-                def beanProp = controlProp.bean[it]
-                if (beanControlMap[beanProp.@parent] != null && beanControlMap[beanProp.@parent] == "Uif-DropdownControl") {
-                    controlProp.plus({ property(name: "optionsFinder") { bean(class: "org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder") } })
-                    controlProp.bean.replaceNode({ bean(parent: "Uif-DropdownControl") })
-                } else if (beanControlMap[beanProp.@parent] != null && beanControlMap[beanProp.@parent] == "Uif-TextAreaControl") {
-                    controlProp.bean.replaceNode({ bean(parent: "Uif-TextAreaControl") })
-                }
-                if (beanControlMap[beanProp.@parent] != null) {
-                    beanProp.@parent = beanControlMap[beanProp.@parent]
+    def transformControlProperty(def beanNode, Map<String, String> renamedControlBeans) {
+        if (beanNode.property.findAll { "control".equals(it.@name) }.size() > 0) {
+            Node beanProperty = beanNode.property.find { "control".equals(it.@name) };
+            String controlDefParent = beanProperty.bean[0].@parent.toString();
+            if (beanProperty != null) {
+                if (beanNode.property.findAll { ["control", "controlField"].contains(it.@name) }.size() == 2) {
+                    this.removeProperties(beanNode, ["control"]);
                 } else {
-                    beanProp.@parent = "Uif-" + beanProp.@parent.replace("Definition", "")
-                }
-            }
-        }
-    }
+                    beanProperty.@parent = "controlField"; // rename property as control field
+                    beanProperty.replaceNode {
+                        if (renamedControlBeans.get(controlDefParent) != null) {
+                            property(name: "controlField") {
+                                transformControlDefinitionBean(delegate, beanProperty.bean[0], renamedControlBeans)
+                            }
+                        }
 
-    // TODO: Determine if its necessary to handle the properties inner beans recursively
-    private void transformBusinessObjectProperties(propertyNodes, Map<String, String> ddPropertiesMap, ddPropertiesRemoveList) {
-        // review each of the property node elements
-        (0..<propertyNodes.size()).each {
-            def propertyNode = propertyNodes[it]
-            // convert to new format if exists
-            if (ddPropertiesMap[propertyNode.@name.toString()] != null) {
-                def existingProperty = propertyNodes.find { it.@name == ddPropertiesMap[propertyNode.@name.toString()] }
-                //log.info("   -->New Property name : "+ddPropertiesMap[propertyNode.@name.toString()])
-                if (existingProperty != null) {
-                    return // bypass loop if contains existing replacement
-                }
-                propertyNode.@name = ddPropertiesMap[propertyNode.@name.toString()]
-            }
+                    }
 
-            // remove property element if necessary
-            if (ddPropertiesRemoveList.contains(propertyNode.@name)) {
-                //log.info("   -->Remove Property name : "+propertyNode.@name)
-                propertyNode.replaceNode({})
-            }
-
-            //Iterate through property beans to replace any necessary bean properties
-            // TODO: should this be split into a ddBeanMap?
-            def propertyBeans = propertyNode.bean
-            (0..<propertyBeans.size()).each {
-                def propBeanNode = propertyBeans[it]
-                if (ddPropertiesMap[propBeanNode.@parent.toString()] != null) {
-                    propBeanNode.@parent = ddPropertiesMap[propBeanNode.@parent.toString()]
+                    if ("Uif-DropdownControl".equals(renamedControlBeans.get(controlDefParent))) {
+                        beanProperty.plus {
+                            property(name: "optionsFinder") {
+                                bean(class: "org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder")
+                            }
+                        }
+                    }
                 }
             }
         }
     }
 
     /**
-     * handles maintenance document files and transforms beans into krad compliant
+     * Used for tranforming control definitions into control field properties
      *
-     * @param mdocRootNode
-     * @param objName
+     * @param builder
+     * @param controlDefBean
+     * @param controlDefReplacements
      * @return
      */
-    def transformMaintenanceDocument(mdocRootNode, objName) {
-        def beans = mdocRootNode.bean
-        log.finer("MD Total bean : " + beans.size())
-        // orphans any beans with parents in file (TODO: check if this is necessary)
-        (0..<beans.size()).each {
-            def beanNode = beans[it]
-            fixNamespaceProperties(beanNode)
-            log.finer("bean id : " + beanNode.@id)
-            def parentBeanNode = mdocRootNode.bean.find { it.@parent == beanNode.@id }
-            if (parentBeanNode != null) {
-                parentBeanNode.replaceNode({})
-            }
-            transformMaintenanceDocumentEntries(mdocRootNode, beanNode, objName)
+    def transformControlDefinitionBean(NodeBuilder builder, Node controlDefBean, Map<String, String> controlDefReplacements) {
+        String controlDefParent = controlDefBean.@parent.toString();
+        if (controlDefReplacements[controlDefParent] != null && controlDefReplacements[controlDefParent] == "Uif-DropdownControl") {
+            builder.bean(parent: "Uif-DropdownControl")
+        } else if (controlDefReplacements[controlDefParent] != null && controlDefReplacements[controlDefParent] == "Uif-TextAreaControl") {
+            //
+        } else if (controlDefReplacements[controlDefParent] != null) {
+            builder.bean(parent: controlDefReplacements[controlDefParent])
+        } else {
+            builder.bean(parent: "Uif-" + controlDefParent.replace("Definition", ""))
         }
     }
-
-
 
     /**
      * formats spring root node into xml and saves to file
@@ -397,11 +371,10 @@ class DictionaryConverter {
             def writer = new StringWriter()
             XmlUtil.serialize(rootBean, writer)
             def result = writer.toString()
-            log.finer "Result for " + filename + ": " + result + "\n\n"
-            //result = modifyBeanSchema(result)
+            result = result.replaceAll(/<meta key="comment" value="(.*?)"\/>/, '<!-- $1 -->');
             ConversionUtils.buildFile(path, filename, result)
         } catch (FileNotFoundException ex) {
-            log.finer "unable to generate output for " + outputFile.name
+            log.info "unable to generate output for " + outputFile.name
             errorText()
         }
     }
@@ -412,232 +385,103 @@ class DictionaryConverter {
      * @param fileText
      * @return
      */
-    def modifyBeanSchema(fileText) {
+    def modifyBeanSchema(String fileText) {
+        // replace and reinsert namespace spring property namespace
         fileText = fileText.replace("xmlns:p=" + "\"$pNamespaceSchema\"", "")
         fileText = fileText.replace(xsiNamespaceSchema, "$xsiNamespaceSchema xmlns:p=" + "\"$pNamespaceSchema\"")
         return fileText
     }
 
     /**
-     *
-     *
-     * @param ddRootNode
      * @param beanNode
-     * @param busObjName
-     * @param busObjClassQualName
      */
-    private void transformInquiryDefinition(ddRootNode, beanNode, busObjName, busObjClassQualName) {
-        // TODO: run through a duplicate analysis
-        def inquiryBeanNode = ddRootNode.bean.find { it.@parent == beanNode.@id }
-        if (inquiryBeanNode != null) {
-            inquiryBeanNode.replaceNode({})
-        }
+    private void transformInquiryDefinitionBean(Node beanNode) {
+        removeChildrenBeans(beanNode)
+        def busObjClassQualName = getObjectClassName(beanNode);
+        def busObjName = ClassUtils.getShortClassName(busObjClassQualName);
         def inquiryParentBeanNode = beanNode
         def titlePropNode = inquiryParentBeanNode.property.find { it.@name == "title" }
         def inquirySectionsPropertyNode = inquiryParentBeanNode.property.find { it.@name == "inquirySections" }
         log.finer "transform bean node for inquiry"
-        // TODO: Switch back to beanNode.replaceNode and find alt way to handle inq definition dependencies  (i.e. DataDictionaryOverrides)
-        beanNode.plus {
+        beanNode.replaceNode {
             addComment(delegate, "Inquiry View")
-            bean(id: inquiryBeanNode.@id, parent: inquiryBeanNode.@parent)
             bean(id: "$busObjName-InquiryView", parent: "Uif-InquiryView") {
                 transformTitleProperty(delegate, titlePropNode)
                 addViewNameProperty(delegate, titlePropNode.@value)
-                log.finer "transform bean node for inquiry 3"
                 property(name: "dataObjectClassName", value: busObjClassQualName)
-                if (inquirySectionsPropertyNode != null) {
-                    property(name: "Items") {
-                        list {
-                            (0..<inquirySectionsPropertyNode.list.bean.size()).each {
-                                def innerbeanNode = inquirySectionsPropertyNode.list.bean[it]
-                                // Checking whether the collection or not
-                                def collectionField = innerbeanNode.property.list.bean.find { it.@parent == "InquiryCollectionDefinition" };
-                                if (collectionField == null) {
-                                    log.finer "transform bean node for inquiry 5a"
-                                    def sectiontitlePropNode = innerbeanNode.property.find { it.@name == "title" }
-                                    def columnsPropertyNode = innerbeanNode.property.find { it.@name == "numberOfColumns" }
-                                    def inqFieldsPropNode = innerbeanNode.property.find { it.@name == "inquiryFields" }
-                                    bean(parent: 'Uif-Disclosure-GridSection') {
-                                        log.finer "transform bean node for inquiry 6"
-                                        if (sectiontitlePropNode != null) {
-                                            property(name: "title", value: sectiontitlePropNode.@value)
-                                            property(name: "headerText", value: sectiontitlePropNode.@value)
-                                        }
-                                        log.finer "transform bean node for inquiry 7"
-                                        if (columnsPropertyNode != null) {
-                                            property(name: "layoutManager.numberOfColumns", value: columnsPropertyNode.@value)
-                                        }
-                                        if (inqFieldsPropNode != null) {
-                                            log.finer "transform bean node for inquiry 8"
-                                            property(name: "items") {
-                                                list {
-                                                    (0..<inqFieldsPropNode.list.bean.size()).each {
-                                                        def innerInquiryFieldsbeanNode = inqFieldsPropNode.list.bean[it]
-                                                        def attributeValue
-                                                        innerInquiryFieldsbeanNode.attributes().each() { key, value ->
-                                                            if (key.toString().endsWith("attributeName")) {
-                                                                attributeValue = value
-                                                            }
-                                                        }
-                                                        bean('xmlns:p': pNamespaceSchema, parent: 'Uif-InputField', 'p:propertyName': attributeValue)
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                } else {
-                                    def sectiontitlePropNode = innerbeanNode.property.find { it.@name == "title" }
-                                    def inqFieldsPropNode = innerbeanNode.property.list.bean.property.find { it.@name == "inquiryFields" }
-                                    def businessObjectPropertyNode = innerbeanNode.property.list.bean.property.find { it.@name == "businessObjectClass" }
-                                    def attributeNamePropertyNode = innerbeanNode.property.list.bean.property.find { it.@name == "attributeName" }
-                                    def summarytitlePropNode = innerbeanNode.property.list.bean.property.find { it.@name == "summaryTitle" }
-                                    def summaryFieldsPropertyNode = innerbeanNode.property.list.bean.property.find { it.@name == "summaryFields" }
-                                    bean(parent: 'Uif-StackedCollectionSection') {
-                                        if (sectiontitlePropNode != null) {
-                                            property(name: "title", value: sectiontitlePropNode.@value)
-                                        }
-                                        if (businessObjectPropertyNode != null) {
-                                            property(name: "collectionObjectClass", value: businessObjectPropertyNode.@value)
-                                        }
-                                        if (attributeNamePropertyNode != null) {
-                                            property(name: "propertyName", value: attributeNamePropertyNode.@value)
-                                        }
-                                        if (inqFieldsPropNode != null) {
-                                            property(name: "items") {
-                                                list {
-                                                    (0..<inqFieldsPropNode.list.bean.size()).each {
-                                                        def innerInquiryFieldsbeanNode = inqFieldsPropNode.list.bean[it]
-                                                        def attributeValue
-                                                        innerInquiryFieldsbeanNode.attributes().each() { key, value ->
-                                                            if (key.toString().endsWith("attributeName")) {
-                                                                attributeValue = value
-                                                            }
-                                                        }
-                                                        bean('xmlns:p': pNamespaceSchema, parent: 'Uif-InputField', 'p:propertyName': attributeValue)
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        if (summarytitlePropNode != null) {
-                                            property(name: "layoutManager.summaryTitle", value: summarytitlePropNode.@value)
-                                        }
-                                        if (summaryFieldsPropertyNode != null) {
-                                            property(name: "layoutManager.summaryFields") {
-                                                list {
-                                                    (0..<summaryFieldsPropertyNode.list.bean.size()).each {
-                                                        def innerSummaryFieldsbeanNode = summaryFieldsPropertyNode.list.bean[it]
-                                                        def attributeValue
-                                                        innerSummaryFieldsbeanNode.attributes().each() { key, value ->
-                                                            if (key.toString().endsWith("attributeName")) {
-                                                                attributeValue = value
-                                                            }
-                                                        }
-                                                        value(attributeValue)
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                //log.info("Bean")
-                            }
-                            (0..<inquirySectionsPropertyNode.list.ref.size()).each {
-                                log.finer "transform bean node for inquiry 9"
-                                def referenceNode = inquirySectionsPropertyNode.list.ref[it]
-                                def referencebeanNode = ddRootNode.bean.find { it.@id == referenceNode.@bean }
-                                def innerbeanNode = referencebeanNode
-                                if (referencebeanNode != null) {
-                                    referencebeanNode.replaceNode({})
-                                }
-                                //log.info("Reference")
-                                // Checking whether the collection or not
-                                def collectionField = innerbeanNode?.property?.list?.bean?.find { it.@parent == "InquiryCollectionDefinition" };
-                                if (collectionField == null) {
-                                    def sectiontitlePropNode = innerbeanNode?.property?.find { it.@name == "title" }
-                                    def columnsPropertyNode = innerbeanNode?.property?.find { it.@name == "numberOfColumns" }
-                                    def inqFieldsPropNode = innerbeanNode?.property?.find { it.@name == "inquiryFields" }
-                                    bean(parent: 'GroupSectionGridLayout') {
-                                        if (sectiontitlePropNode != null) {
-                                            property(name: "title", value: sectiontitlePropNode.@value)
-                                        }
-                                        if (columnsPropertyNode != null) {
-                                            property(name: "layoutManager.numberOfColumns", value: columnsPropertyNode.@value)
-                                        }
-                                        if (inqFieldsPropNode != null) {
-                                            property(name: "items") {
-                                                list {
-                                                    (0..<inqFieldsPropNode.list.bean.size()).each {
-                                                        def innerInquiryFieldsbeanNode = inqFieldsPropNode.list.bean[it]
-                                                        def attributeValue
-                                                        innerInquiryFieldsbeanNode.attributes().each() { key, value ->
-                                                            if (key.toString().endsWith("attributeName")) {
-                                                                attributeValue = value
-                                                            }
-                                                        }
-                                                        bean('xmlns:p': pNamespaceSchema, parent: 'Uif-InputField', 'p:propertyName': attributeValue)
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                } else {
-                                    def sectiontitlePropNode = innerbeanNode.property.find { it.@name == "title" }
-                                    def inqFieldsPropNode = innerbeanNode.property.list.bean.property.find { it.@name == "inquiryFields" }
-                                    def businessObjectPropertyNode = innerbeanNode.property.list.bean.property.find { it.@name == "businessObjectClass" }
-                                    def attributeNamePropertyNode = innerbeanNode.property.list.bean.property.find { it.@name == "attributeName" }
-                                    def summarytitlePropNode = innerbeanNode.property.list.bean.property.find { it.@name == "summaryTitle" }
-                                    def summaryFieldsPropertyNode = innerbeanNode.property.list.bean.property.find { it.@name == "summaryFields" }
-                                    bean(parent: 'Uif-StackedCollectionSection') {
-                                        if (sectiontitlePropNode != null) {
-                                            property(name: "title", value: sectiontitlePropNode.@value)
-                                        }
-                                        if (businessObjectPropertyNode != null) {
-                                            property(name: "collectionObjectClass", value: businessObjectPropertyNode.@value)
-                                        }
-                                        if (attributeNamePropertyNode != null) {
-                                            property(name: "propertyName", value: attributeNamePropertyNode.@value)
-                                        }
-                                        if (inqFieldsPropNode != null) {
-                                            property(name: "items") {
-                                                list {
-                                                    (0..<inqFieldsPropNode.list.bean.size()).each {
-                                                        def innerInquiryFieldsbeanNode = inqFieldsPropNode.list.bean[it]
-                                                        def attributeValue
-                                                        innerInquiryFieldsbeanNode.attributes().each() { key, value ->
-                                                            if (key.toString().endsWith("attributeName")) {
-                                                                attributeValue = value
-                                                            }
-                                                        }
-                                                        bean('xmlns:p': pNamespaceSchema, parent: 'Uif-InputField', 'p:propertyName': attributeValue)
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        if (summarytitlePropNode != null) {
-                                            property(name: "layoutManager.summaryTitle", value: summarytitlePropNode.@value)
-                                        }
-                                        if (summaryFieldsPropertyNode != null) {
-                                            property(name: "layoutManager.summaryFields") {
-                                                list {
-                                                    (0..<summaryFieldsPropertyNode.list.bean.size()).each {
-                                                        def innerSummaryFieldsbeanNode = summaryFieldsPropertyNode.list.bean[it]
-                                                        def attributeValue
-                                                        innerSummaryFieldsbeanNode.attributes().each() { key, value ->
-                                                            if (key.toString().endsWith("attributeName")) {
-                                                                attributeValue = value
-                                                            }
-                                                        }
-                                                        value(attributeValue)
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                transformInquirySectionsProperty(delegate, beanNode)
+            }
+        }
+    }
+
+    /**
+     * to be used on inplace beans and refs
+     *
+     * @param builder
+     * @param beanNode
+     * @return
+     */
+    def transformInquirySectionDefinitionBean(NodeBuilder builder, Node beanNode) {
+        // if it contains a inquiry collection add a uif stack collection, else replace with a Uif-Disclosure-GridSection
+        if (beanNode.property.list.bean.find { it.@parent == "InquiryCollectionDefinition" }) {
+            builder.bean(parent: 'Uif-Disclosure-GridSection') {
+                // rename properties for title, # of columns
+                copyProperties(delegate, beanNode, ["title", "collectionObjectClass", "propertyName"]);
+                renameProperties(delegate, beanNode, ["title": "layoutManager.summaryTitle", "businessObjectClass": "collectionObjectClass"]);
+                transformInquiryFieldsProperty(delegate, beanNode);
+            }
+        } else {
+            builder.bean(parent: 'Uif-StackedCollectionSection') {
+                copyProperties(delegate, beanNode, ["title", "collectionObjectClass", "propertyName"])
+                renameProperties(delegate, beanNode, ["numberOfColumns": "layoutManager.numberOfColumns"]);
+                transformInquiryFieldsProperty(delegate, beanNode);
+                transformSummaryFieldsProperty(delegate, beanNode);
+            }
+        }
+    }
+
+    def transformInquirySectionDefinitionBean(Node beanNode) {
+        beanNode.replaceNode {
+            transformInquirySectionDefinitionBean(delegate, beanNode);
+        }
+    }
+
+    def void transformInquirySectionsProperty(NodeBuilder builder, Node beanNode) {
+        def inquirySectionsPropertyNode = beanNode.property.find { it.@name == "inquirySections" }
+        if (inquirySectionsPropertyNode != null) {
+            builder.property(name: "items") {
+                list {
+                    inquirySectionsPropertyNode.list.each {
+                        if ("bean".equals(it.name) && "InquirySectionDefinition".equals(it.@parent)) {
+                            transformInquirySectionDefinitionBean(delegate, it); // replace with grid or stack collection
+                        } else if ("ref".equals(it.name)) {
+                            it
+                        } // copy ref over; let it be converted in bean conversions
                     }
                 }
+            }
+        }
+    }
+
+    public void removeChildrenBeans(Node beanNode) {
+        removeChildrenBeans(beanNode, beanNode.@id);
+    }
+
+    /**
+     * removes children beans from xml
+     *
+     * @param beanNode
+     */
+    public void removeChildrenBeans(Node beanNode, String beanId) {
+        // loop through the nodes til you reach the root
+        def rootNode = beanNode;
+        while (rootNode instanceof Node && rootNode.parent() != null) {
+            rootNode = rootNode.parent();
+        }
+
+        rootNode.bean.findAll { it.@parent == beanNode.@id }.each { childNode ->
+            if (childNode != null) {
+                childNode.replaceNode({})
             }
         }
     }
@@ -645,63 +489,134 @@ class DictionaryConverter {
     /**
      * produces Uif-LookupView based on information in LookupDefinition
      *
-     * @param ddRootNode
      * @param beanNode
-     * @param objName
-     * @param objClassName
      */
-    protected void transformLookupDefinition(ddRootNode, beanNode, objName, objClassName) {
-        // TODO: run through duplicate analysis
-        def lookupBeanNode = ddRootNode.bean.find { it.@parent == beanNode.@id }
-        if (lookupBeanNode != null) {
-            lookupBeanNode.replaceNode({})
-        }
-        def lookupParentBeanNode = beanNode
-        def titlePropNode = lookupParentBeanNode.property.find { it.@name == "title" }
-        def menubarPropNode = lookupParentBeanNode.property.find { it.@name == "menubar"}
-        def lookupFieldsPropertyNode = lookupParentBeanNode.property.find { it.@name == "lookupFields" }
-        def resultFieldsPropertyNode = lookupParentBeanNode.property.find { it.@name == "resultFields" }
-        // TODO: switch back to beanNode.replaceNode and find way to handle extra lookupDefinition definitions (i.e. DataDictionaryOverrides)
-        beanNode.plus {
+    def transformLookupDefinitionBean(Node beanNode) {
+        removeChildrenBeans(beanNode);
+        def lookupDefParentBeanNode = beanNode
+        def lookupTitle = lookupDefParentBeanNode.property.find { it.@name == "title" }.@value;
+
+        def objClassName = getObjectClassName(lookupDefParentBeanNode);
+        def objName = ClassUtils.getShortClassName(objClassName);
+        beanNode.replaceNode {
             addComment(delegate, "Lookup View")
-            bean(id: lookupBeanNode.@id, parent: lookupBeanNode.@parent)
             bean(id: "$objName-LookupView", parent: "Uif-LookupView") {
-                transformTitleProperty(delegate, titlePropNode)
-                addViewNameProperty(delegate, titlePropNode.@value)
-                //if (titlePropNode != null) {
-                //property(name: "title", value: titlePropNode.@value)
-                //property(name: "headerText", value: titlePropNode.@value)
-                //}
+                property(name: "headerText", value: lookupTitle)
+                addViewNameProperty(delegate, lookupTitle)
                 property(name: "dataObjectClassName", value: objClassName)
-                transformMenubarProperty(delegate, menubarPropNode)
-                if (lookupFieldsPropertyNode != null) {
-                    property(name: "criteriaFields") {
-                        list {
-                            (0..<lookupFieldsPropertyNode.list.bean.size()).each {
-                                def innerbeanNode = lookupFieldsPropertyNode.list.bean[it]
-                                def attributeValue
-                                innerbeanNode.attributes().each() { key, value ->
-                                    if (key.toString().endsWith("attributeName")) {
-                                        attributeValue = value
-                                    }
-                                }
-                                bean('xmlns:p': pNamespaceSchema, parent: 'Uif-LookupCriteriaInputField', 'p:propertyName': attributeValue)
-                            }
+                transformMenubarProperty(delegate, beanNode)
+                transformLookupFieldsProperty(delegate, beanNode)
+                transformResultFieldsProperty(delegate, beanNode)
+            }
+        }
+    }
+
+    private String getObjectClassName(Node beanNode) {
+        String definitionName = beanNode.@id;
+        String definitionChildName = StringUtils.removeEnd(definitionName, "-parentBean");
+        String objClassName = "";
+        if (definitionDataObjects.get(definitionName)) {
+            objClassName = definitionDataObjects.get(definitionName);
+        } else if (definitionDataObjects.get(definitionChildName)) {
+            objClassName = definitionDataObjects.get(definitionChildName);
+        } else if (beanNode.property.find { it.@name == "businessObjectClass" }) {
+            objClassName = beanNode.property.find { it.@name == "businessObjectClass" }?.@value;
+        }
+        return objClassName;
+    }
+
+    /**
+     * transform lookup field properties into criteria fields
+     *
+     * @param builder
+     * @param beanNode
+     */
+    def transformLookupFieldsProperty(NodeBuilder builder, Node beanNode) {
+        def lookupFieldsPropertyNode = beanNode.property.find { "lookupFields".equals(it.@name) };
+
+        builder.property(name: "criteriaFields") {
+            list {
+                (0..<lookupFieldsPropertyNode.list.bean.size()).each {
+                    def innerbeanNode = lookupFieldsPropertyNode.list.bean[it]
+                    def attributeValue
+                    innerbeanNode.attributes().each() { key, value ->
+                        if (key.toString().endsWith("attributeName")) {
+                            attributeValue = value
                         }
                     }
+                    bean('xmlns:p': pNamespaceSchema, parent: 'Uif-LookupCriteriaInputField', 'p:propertyName': attributeValue)
                 }
-                if (resultFieldsPropertyNode != null) {
-                    property(name: "resultFields") {
-                        list {
-                            (0..<resultFieldsPropertyNode.list.bean.size()).each {
-                                def innerbeanNode = resultFieldsPropertyNode.list.bean[it]
-                                def attributeValue
-                                innerbeanNode.attributes().each() { key, value ->
-                                    if (key.toString().endsWith("attributeName")) {
-                                        attributeValue = value
-                                    }
-                                }
-                                bean('xmlns:p': pNamespaceSchema, parent: 'Uif-DataField', 'p:propertyName': attributeValue)
+            }
+        }
+    }
+
+    /**
+     * transform inquiry field properties into input fields
+     *
+     * @param builder
+     * @param beanNode
+     */
+    def transformInquiryFieldsProperty(NodeBuilder builder, Node beanNode) {
+        def inquiryFieldsPropertyNode = beanNode.property.find { "inquiryFields".equals(it.@name) };
+
+        builder.property(name: "items") {
+            list {
+                (0..<inquiryFieldsPropertyNode.list.bean.size()).each {
+                    def innerbeanNode = inquiryFieldsPropertyNode.list.bean[it]
+                    def attributeValue
+                    innerbeanNode.attributes().each() { key, value ->
+                        if (key.toString().endsWith("attributeName")) {
+                            attributeValue = value
+                        }
+                    }
+                    bean('xmlns:p': pNamespaceSchema, parent: 'Uif-InputField', 'p:propertyName': attributeValue)
+                }
+            }
+        }
+    }
+
+    /**
+     * transform summary field properties into values
+     *
+     * @param builder
+     * @param beanNode
+     */
+    def transformSummaryFieldsProperty(NodeBuilder builder, Node beanNode) {
+        def summaryFieldsPropertyNode = beanNode.property.find { "summaryFields".equals(it.@name) };
+        if (summaryFieldsPropertyNode != null) {
+            builder.property(name: "layoutManager.summaryFields") {
+                list {
+                    (0..<summaryFieldsPropertyNode.list.bean.size()).each {
+                        def innerbeanNode = summaryFieldsPropertyNode.list.bean[it]
+                        def attributeValue
+                        innerbeanNode.attributes().each() { key, value ->
+                            if (key.toString().endsWith("name")) {
+                                attributeValue = value
+                            }
+                        }
+                        value(attributeValue)
+                    }
+                }
+            }
+        }
+
+    }
+
+
+    /**
+     * transform result field properties into data fields
+     *
+     * @param builder
+     * @param beanNode
+     */
+    def transformResultFieldsProperty(NodeBuilder builder, Node beanNode) {
+        beanNode.property.find { "resultFields" == it.@name }.each { resultFieldsProperty ->
+            builder.property(name: "resultFields") {
+                list {
+                    resultFieldsProperty.bean.each { resultFieldBean ->
+                        resultFieldBean.attributes().each() { key, value ->
+                            if (key.toString().endsWith("attributeName")) {
+                                bean('xmlns:p': pNamespaceSchema, parent: 'Uif-DataField', 'p:propertyName': value)
                             }
                         }
                     }
@@ -736,71 +651,92 @@ class DictionaryConverter {
         log.finer "finishing fix properties: " + beanNode
     }
 
-    private void transformMaintenanceDocumentEntries(mdocRootNode, beanNode, objName) {
+    def transformMaintenanceDocumentEntryBean(Node beanNode) {
+        String objName = "";
         if (beanNode.@parent == "MaintenanceDocumentEntry") {
             def maintDocParentBeanNode = beanNode
             def titlePropNode = maintDocParentBeanNode.property.find { it.@name == "title" }
-            def busObjPropNode = maintDocParentBeanNode.property.find { it.@name == "businessObjectClass" }
             def maintSectPropNode = maintDocParentBeanNode.property.find { it.@name == "maintainableSections" }
-            def maintClassPropNode = maintDocParentBeanNode.property.find { it.@name == "maintainableClass" }
-            def lockingKeysPropertyNode = maintDocParentBeanNode.property.find { it.@name == "lockingKeys" }
-            def docTypePropertyNode = maintDocParentBeanNode.property.find { it.@name == "documentTypeName" }
-            def docClassPropertyNode = maintDocParentBeanNode.property.find { it.@name == "documentAuthorizerClass" }
+            beanNode.replaceNode {
+                bean(id: objName + "MaintenanceDocument", parent: "MaintenanceDocumentEntry") {
+                    copyProperties(delegate, beanNode, ["businessObjectClass", "maintainableClass", "documentTypeName", "documentAuthorizerClass", "lockingKeys"])
+                }
+            }
+
             beanNode.replaceNode {
                 addComment(delegate, "Maintenance View")
                 bean(id: "$objName-MaintenanceView", parent: "Uif-MaintenanceView") {
                     transformTitleProperty(delegate, titlePropNode)
                     addViewNameProperty(delegate, titlePropNode?.@value)
-
-                    if (busObjPropNode != null) {
-                        property(name: "dataObjectClassName", value: busObjPropNode.@value)
-                    }
-                    if (maintSectPropNode != null) {
-                        transformMaintainableSection(delegate, mdocRootNode, maintSectPropNode)
-                    }
+                    renameProperties(delegate, maintDocParentBeanNode, ["businessObjectClass": "dataObjectClassName"])
+                    transformMaintainableSectionsProperty(delegate, maintDocParentBeanNode)
                 }
             }
 
-            beanNode.replaceNode {
-                bean(id: objName + "MaintenanceDocument", parent: "MaintenanceDocumentEntry") {
-                    if (busObjPropNode != null) {
-                        property(name: "businessObjectClass", value: busObjPropNode.@value)
-                    }
-                    if (maintClassPropNode != null) {
-                        property(name: "maintainableClass", value: maintClassPropNode.@value)
-                    }
-                    if (docTypePropertyNode != null) {
-                        property(name: "documentTypeName", value: docTypePropertyNode.@value)
-                    }
-                    if (docClassPropertyNode != null) {
-                        property(name: "documentAuthorizerClass", value: docClassPropertyNode.@value)
-                    }
-                    if (lockingKeysPropertyNode != null) {
-                        property(name: "lockingKeys") {
-                            list {
-                                (0..<lockingKeysPropertyNode.list.value.size()).each {
-                                    value(lockingKeysPropertyNode.list.value[it].value())
-                                }
-                            }
-                        }
-                    }
+        }
+    }
+
+    public void copyProperties(NodeBuilder builderDelegate, Node beanNode, List<String> propertyNames) {
+        beanNode.property.findAll { propertyNames.contains(it.@name) }.each { beanProperty -> builderDelegate.property(name: beanProperty.@name, value: beanProperty.@value) }
+    }
+
+
+    public void renameProperties(Node beanNode, Map<String, String> renamedPropertyNames) {
+        beanNode.property.findAll { renamedPropertyNames.containsKey(it.@name) }.each { beanProperty -> beanProperty.@name = renamedPropertyNames.get(beanProperty.@name) }
+    }
+
+    public void renameProperties(NodeBuilder builderDelegate, Node beanNode, Map<String, String> renamedPropertyNames) {
+        beanNode.property.each { beanProperty ->
+            if (renamedPropertyNames.containsKey(beanProperty.@name)) {
+                builderDelegate.property(name: renamedPropertyNames.get(beanProperty.@name), value: beanProperty.@value)
+            }
+        }
+    }
+
+    public void removeProperties(Node beanNode, List<String> propertyNames) {
+        beanNode.property.findAll { propertyNames.contains(it.@name) }.each { Node beanProperty -> beanProperty.replaceNode {} }
+    }
+
+    public void renamePropertyBeans(NodeBuilder builderDelegate, Node beanNode, Map<String, String> renamedBeanNames) {
+        beanNode.property.each { beanProperty ->
+            beanProperty.beans.each { propertyBeans ->
+                if (renamedBeanNames.containsKey(propertyBeans.@parent)) {
+                    propertyBeans.@parent = renamedBeanNames.get(propertyBeans.@parent)
                 }
             }
         }
     }
 
-    def transformMaintainableSection(rootNode, mdocRootNode, maintSectPropNode) {
+    public void renamePropertyBeans(Node beanNode, Map<String, String> renamedBeanNames, boolean useStub) {
+        beanNode.property.each { beanProperty ->
+            beanProperty.beans.findAll { renamedBeanNames.containsKey(propertyBeans.@parent) }
+            .each { propertyBean ->
+                if (useStub) {
+                    propertyBean.replaceNode {
+                        bean(parent: renamedBeanNames.get(propertyBean.@parent))
+                    }
+                } else {
+                    propertyBean.@parent = renamedBeanNames.get(propertyBean.@parent)
+                }
+
+            }
+        }
+    }
+
+    def transformMaintainableSectionsProperty(NodeBuilder builder, Node beanNode) {
+        def maintSectPropNode = beanNode.property.find { "maintainableSections".equals(it.@name) };
+
         if (maintSectPropNode != null) {
             log.finer "bean size " + maintSectPropNode
-            rootNode.property(name: "items") {
+            builder.property(name: "items") {
                 list(merge: "true") {
                     (0..<maintSectPropNode.list.ref.size()).each {
                         def referenceNode = maintSectPropNode.list.ref[it]
                         log.finer "reference node  " + referenceNode
 
-                        def referencebeanNode = mdocRootNode.bean.find { it.@id == referenceNode.@bean }
+                        def referencebeanNode = beanNode.bean.find { it.@id == referenceNode.@bean }
                         if (referencebeanNode != null && referencebeanNode.@parent != "MaintainableSectionDefinition") {
-                            referencebeanNode = mdocRootNode.bean.find { it.@id == referencebeanNode.@parent }
+                            referencebeanNode = beanNode.bean.find { it.@id == referencebeanNode.@parent }
                         }
                         def innerbeanNode = referencebeanNode
                         if (referencebeanNode != null) {
@@ -898,19 +834,24 @@ class DictionaryConverter {
         }
     }
 
-    def transformTitleProperty(builder, node) {
+    def transformTitleProperty(NodeBuilder builder, Node node) {
         if (node != null) {
             builder.property(name: "headerText", value: node.@value)
         }
     }
 
-    def addViewNameProperty(builder, viewName) {
-        if (viewName != null) {
-            builder.property(name: "viewName", value: viewName?.replaceAll(~/\s/, '-'))
+    def addViewNameProperty(NodeBuilder builder, String viewName) {
+        createProperty(builder, "viewName", viewName?.replaceAll(~/\s/, '-'))
+    }
+
+    protected void createProperty(NodeBuilder builder, String name, String value) {
+        if (value != null) {
+            builder.property(name: name, value: value);
         }
     }
 
-    def transformMenubarProperty(builder, node) {
+    def transformMenubarProperty(NodeBuilder builder, Node node) {
+        def menubarPropNode = node.property.find { it.@name == "menubar" };
         if (node != null) {
             builder.property(name: "page.header.lowerGroup.items") {
                 list(merge: "true") {
@@ -930,7 +871,7 @@ class DictionaryConverter {
      * @param comment
      * @return
      */
-    def addComment(builder, comment) {
+    def addComment(NodeBuilder builder, String comment) {
         if (comment != null) {
             builder.meta(key: "comment", value: comment)
         }

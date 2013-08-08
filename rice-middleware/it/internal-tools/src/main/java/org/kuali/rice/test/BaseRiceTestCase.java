@@ -116,6 +116,10 @@ public abstract class BaseRiceTestCase implements MethodAware {
 
         perTestDataLoaderLifecycle = new PerTestDataLoaderLifecycle(method);
     }
+
+    public Method getTestMethod() {
+        return this.method;
+    }
 	
     protected PerTestDataLoaderLifecycle getPerTestDataLoaderLifecycle() {
 		return this.perTestDataLoaderLifecycle;

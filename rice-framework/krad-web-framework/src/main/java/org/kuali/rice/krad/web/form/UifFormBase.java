@@ -15,6 +15,17 @@
  */
 package org.kuali.rice.krad.web.form;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -30,16 +41,6 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.UUID;
 
 /**
  * Base form class for views within the KRAD User Interface Framework
@@ -722,6 +723,7 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#getUpdateComponentId()
      */
+    @Override
     public String getUpdateComponentId() {
         return updateComponentId;
     }
@@ -729,6 +731,7 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#setUpdateComponentId(java.lang.String)
      */
+    @Override
     public void setUpdateComponentId(String updateComponentId) {
         this.updateComponentId = updateComponentId;
     }
@@ -913,6 +916,7 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#getState()
      */
+    @Override
     public String getState() {
         return state;
     }
@@ -920,6 +924,7 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#setState(String)
      */
+    @Override
     public void setState(String state) {
         this.state = state;
     }
@@ -1031,6 +1036,7 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#isJsonRequest()
      */
+    @Override
     public boolean isJsonRequest() {
         return StringUtils.isNotBlank(getRequestJsonTemplate());
     }
@@ -1038,6 +1044,7 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#getRequestJsonTemplate()
      */
+    @Override
     public String getRequestJsonTemplate() {
         return requestJsonTemplate;
     }
@@ -1045,6 +1052,7 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#setRequestJsonTemplate
      */
+    @Override
     public void setRequestJsonTemplate(String requestJsonTemplate) {
         this.requestJsonTemplate = requestJsonTemplate;
     }
@@ -1119,6 +1127,7 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#getExtensionData()
      */
+    @Override
     public Map<String, Object> getExtensionData() {
         return extensionData;
     }
@@ -1126,6 +1135,7 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#setExtensionData(java.util.Map<String,Object>)
      */
+    @Override
     public void setExtensionData(Map<String, Object> extensionData) {
         this.extensionData = extensionData;
     }
@@ -1167,4 +1177,13 @@ public class UifFormBase implements ViewModel {
         return addedCollectionItems.contains(item);
     }
 
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append( getClass().getSimpleName() ).append(" [viewId=").append(this.viewId).append(", viewName=").append(this.viewName)
+                .append(", viewTypeName=").append(this.viewTypeName).append(", pageId=").append(this.pageId)
+                .append(", methodToCall=").append(this.methodToCall).append(", formKey=").append(this.formKey)
+                .append(", requestedFormKey=").append(this.requestedFormKey).append("]");
+        return builder.toString();
+    }
 }

@@ -15,26 +15,27 @@
  */
 package org.kuali.rice.krad.web.controller;
 
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krad.web.form.UifFormManager;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
 
 /**
  * Provides helper methods that will be used during the request lifecycle
@@ -206,17 +207,20 @@ public class UifControllerHelper {
         } else {
             // full view build
             View view = form.getView();
+            if ( view != null ) {
+                // set view page to page requested on form
+                if (StringUtils.isNotBlank(form.getPageId())) {
+                    view.setCurrentPageId(form.getPageId());
+                }
 
-            // set view page to page requested on form
-            if (StringUtils.isNotBlank(form.getPageId())) {
-                view.setCurrentPageId(form.getPageId());
+                Map<String, String> parameterMap = KRADUtils.translateRequestParameterMap(request.getParameterMap());
+                parameterMap.putAll(form.getViewRequestParameters());
+
+                // build view which will prepare for rendering
+                getViewService().buildView(view, form, parameterMap);
+            } else {
+                LOG.warn( "View in form was null: " + form);
             }
-
-            Map<String, String> parameterMap = KRADUtils.translateRequestParameterMap(request.getParameterMap());
-            parameterMap.putAll(form.getViewRequestParameters());
-
-            // build view which will prepare for rendering
-            getViewService().buildView(view, form, parameterMap);
         }
     }
 

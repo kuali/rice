@@ -19,6 +19,12 @@ import java.util.Collection;
 import java.util.List;
 
 
+/**
+ * Metadata for a given data object type. References the data object class and contains lists of all the attributes,
+ * collections, and relationships within the class.
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public interface DataObjectMetadata extends MetadataCommon {
 
 	/**

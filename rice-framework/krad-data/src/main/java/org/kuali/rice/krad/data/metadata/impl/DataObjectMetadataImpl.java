@@ -401,7 +401,7 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		}
 		Map<Object, DataObjectRelationship> relationships = new HashMap<Object, DataObjectRelationship>();
 		// Look locally
-		if (attributeToRelationshipMap != null) {
+		if (attributeToRelationshipMap != null && attributeToRelationshipMap.containsKey(attributeName)) {
 			for (DataObjectRelationship rel : attributeToRelationshipMap.get(attributeName)) {
 				relationships.put(rel.getUniqueKeyForMerging(), rel);
 			}

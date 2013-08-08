@@ -176,8 +176,19 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
 		collection.setDefaultCollectionOrderingAttributeNames(sortAttributes);
 	}
 
+    /**
+     * Returns the property name on the given entity type which the given database column is mapped to. If no field on
+     * the given type is mapped to this field (which is common in cases of a JPA relationship without an actual @Column
+     * annotated field to represent the foreign key) then this method will return null.
+     *
+     * @param entityType the entity type on which to search for a property that is mapped to the given column
+     * @param databaseColumnName the name of the database column
+     *
+     * @return the name of the property on the given entity type which maps to the given column, or null if no such
+     *         mapping exists
+     */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	protected String getPropertyNameFromDatabaseColumnName(ManagedType entityType, String databaseColumnName) {
+        protected String getPropertyNameFromDatabaseColumnName(ManagedType entityType, String databaseColumnName) {
 		for (SingularAttributeImpl attr : (Set<SingularAttributeImpl>) entityType.getSingularAttributes()) {
 			if (!attr.isAssociation()) {
 				if (attr.getMapping().getField().getName().equals(databaseColumnName)) {
@@ -185,13 +196,13 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
 				}
 			}
 		}
-		return databaseColumnName;
+		return null;
 	}
 
 	@Override
 	protected void populateImplementationSpecificRelationshipLevelMetadata(DataObjectRelationshipImpl relationship,
 			SingularAttribute<?, ?> rd) {
-		// OJB stores the related class object name. We need to go into the repository and grab the table name.
+		// We need to go into the repository and grab the table name.
 		Class<?> referencedClass = rd.getBindableJavaType();
 		EntityType<?> referencedEntityType = entityManager.getMetamodel().entity(referencedClass);
 		if (referencedEntityType instanceof EntityTypeImpl) {
@@ -216,20 +227,23 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
 			for (DatabaseField parentField : relationshipMapping.getForeignKeyFields()) {
 				String parentFieldName = getPropertyNameFromDatabaseColumnName(rd.getDeclaringType(),
 						parentField.getName());
-				DatabaseField childField = relationshipMapping.getSourceToTargetKeyFields().get(parentField);
-				if (childField != null) {
-					// the target field is always done by column name. So, we need to get into the target entity and
-					// find the associated field :-(
-					// If the lookup fails, we will at least have the column name
-					String childFieldName = getPropertyNameFromDatabaseColumnName(referencedEntityType,
-							childField.getName());
-
-					attributeRelationships
-							.add(new DataObjectAttributeRelationshipImpl(parentFieldName, childFieldName));
-				} else {
-					LOG.warn("Unable to find child field reference.  There may be a JPA mapping problem on "
-							+ rd.getDeclaringType().getJavaType() + ": " + relationship);
-				}
+                if (parentFieldName != null) {
+				    DatabaseField childField = relationshipMapping.getSourceToTargetKeyFields().get(parentField);
+				    if (childField != null) {
+					    // the target field is always done by column name. So, we need to get into the target entity and
+					    // find the associated field :-(
+					    // If the lookup fails, we will at least have the column name
+					    String childFieldName = getPropertyNameFromDatabaseColumnName(referencedEntityType,
+                                childField.getName());
+                        if (childFieldName != null) {
+					        attributeRelationships
+                                    .add(new DataObjectAttributeRelationshipImpl(parentFieldName, childFieldName));
+                        }
+				    } else {
+					    LOG.warn("Unable to find child field reference.  There may be a JPA mapping problem on "
+						    	+ rd.getDeclaringType().getJavaType() + ": " + relationship);
+				    }
+                }
 			}
 			relationship.setAttributeRelationships(attributeRelationships);
 

@@ -104,6 +104,11 @@ public class ProcessLogger {
     private static class ProcessStatus {
 
         /**
+         * The name of this process trace.
+         */
+        private final String name;
+
+        /**
          * The start time the process started.
          */
         private final long startTime;
@@ -209,7 +214,8 @@ public class ProcessLogger {
          * 
          * @param name The name of the process.
          */
-        private ProcessStatus() {
+        private ProcessStatus(String name) {
+            this.name = name;
             this.startTime = System.currentTimeMillis();
             this.startFree = Runtime.getRuntime().freeMemory();
             this.startTot = Runtime.getRuntime().totalMemory();
@@ -280,13 +286,170 @@ public class ProcessLogger {
             if (elapsed < pc.min || pc.min == 0L) {
                 pc.min = elapsed;
             }
+
             if (elapsed > pc.max) {
                 pc.max = elapsed;
                 pc.longest = detail;
             }
+
             pc.avg = (pc.avg * (pc.count - 1) + elapsed) / pc.count;
+
             return pc;
         }
+
+        /**
+         * Write a trace header on the process trace.
+         * 
+         * @param name The name of the process trace.
+         * @param processDescription A description of the process trace.
+         */
+        private void appendTraceHeader(String name, String processDescription) {
+            // Write a description of the process to the trace buffer.
+            traceBuffer.append("KRAD Process Trace (");
+            traceBuffer.append(name);
+            traceBuffer.append("): ");
+            traceBuffer.append(processDescription);
+
+            // Write stack information related to method controlling the callable process.
+            StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+            String callerClassName = stackTrace[3].getClassName();
+            int indexOfPeriod = callerClassName.lastIndexOf('.');
+            String callerPackageName = "";
+            if (indexOfPeriod != -1) {
+                callerPackageName = callerClassName.substring(0, indexOfPeriod);
+            }
+            int stackTraceIndex = 3;
+            while (stackTraceIndex < stackTrace.length - 1
+                    && (stackTrace[stackTraceIndex].getClassName().startsWith("sun.")
+                            || stackTrace[stackTraceIndex].getClassName().startsWith("java.")
+                            || stackTrace[stackTraceIndex].getClassName().startsWith(
+                                    ProcessLogger.class.getPackage().getName()) || stackTrace[stackTraceIndex]
+                            .getClassName().startsWith(callerPackageName))) {
+                if (!ProcessLogger.class.getName().equals(stackTrace[stackTraceIndex].getClassName())) {
+                    traceBuffer.append("\n  at ").append(stackTrace[stackTraceIndex]);
+                }
+                stackTraceIndex++;
+            }
+            traceBuffer.append("\n  at ").append(stackTrace[stackTraceIndex]);
+
+            // Write initial heap state and start time.
+            traceBuffer.append("\nInitial Memory Usage: ");
+            traceBuffer.append(memoryToString(startFree, startTot,
+                    startMax));
+
+            if (LOG.isInfoEnabled() && verbose) {
+                LOG.debug("Processing Started\n" + traceBuffer.toString());
+            }
+        }
+
+        /**
+         * Write a log message on this process trace.
+         * 
+         * @param message The message to write.
+         */
+        public void appendTraceMessage(String message) {
+            if (LOG.isDebugEnabled() && verbose) {
+                LOG.debug(message
+                        + " ("
+                        + name
+                        + ")\nElapsed Time: "
+                        + intervalToString(diffTime)
+                        + "\nMemory Usage: "
+                        + memoryToString(lastFree, lastTot,
+                                lastMax)
+                        + "\nMemory Delta: "
+                        + memoryToString(diffFree, lastTot,
+                                lastMax) + " - tot delta: "
+                        + sizeToString(diffTot));
+            }
+
+            if (LOG.isInfoEnabled() && (verbose || diffTime > 0L)) {
+                traceBuffer.append('\n');
+
+                if (message.length() < 40) {
+                    traceBuffer.append(message);
+                    for (int i = message.length(); i < 40; i++) {
+                        traceBuffer.append('.');
+                    }
+                } else {
+                    traceBuffer.append(message.substring(0, 40));
+                }
+
+                traceBuffer.append(intervalToString(diffTime));
+                traceBuffer.append(' ');
+                traceBuffer.append(intervalToString(lastTime
+                        - startTime));
+                traceBuffer.append(' ');
+                traceBuffer.append(sizeToString(lastFree));
+                traceBuffer.append(' ');
+                traceBuffer.append(sizeToString(diffFree));
+            }
+        }
+
+        /**
+         * Write a trace footer on the process trace.
+         */
+        public void appendTraceFooter() {
+            traceBuffer.append('\n');
+            String message = "Processing Complete";
+            traceBuffer.append(message);
+            for (int i = message.length(); i < 40; i++) {
+                traceBuffer.append('.');
+            }
+            traceBuffer.append(intervalToString(diffTime));
+            traceBuffer.append(' ');
+            traceBuffer.append(intervalToString(lastTime
+                    - startTime));
+            traceBuffer.append(' ');
+            traceBuffer.append(sizeToString(lastFree));
+            traceBuffer.append(' ');
+            traceBuffer.append(sizeToString(diffFree));
+            if (!ntraceCount.isEmpty()) {
+                traceBuffer.append("\nMonitors:");
+                for (Entry<String, Long> ce : ntraceCount.entrySet()) {
+                    traceBuffer.append("\n  ");
+                    StringBuilder sb = new StringBuilder(ce.getKey());
+                    int iocc = sb.indexOf("::");
+                    if (iocc == -1)
+                        sb.append(":" + ce.getValue());
+                    else
+                        sb.insert(iocc + 1, ce.getValue());
+                    traceBuffer.append(sb);
+                }
+            }
+            if (!counters.isEmpty()) {
+                traceBuffer.append("\nCounters:");
+                for (ProcessCounter pc : counters.values()) {
+                    traceBuffer.append("\n  ");
+                    traceBuffer.append(pc.name);
+                    traceBuffer.append(": ");
+                    traceBuffer.append(pc.count);
+                    traceBuffer.append(" (");
+                    traceBuffer.append(intervalToString(pc.min));
+                    traceBuffer.append("/");
+                    traceBuffer.append(intervalToString(pc.max));
+                    traceBuffer.append("/");
+                    traceBuffer.append(intervalToString(pc.avg));
+                    traceBuffer.append(")");
+                    if (pc.longest != null && !"".equals(pc.longest)) {
+                        traceBuffer.append("\n    longest : ");
+                        traceBuffer.append(pc.longest);
+                    }
+                }
+            }
+            traceBuffer.append("\nElapsed Time: ");
+            traceBuffer.append(intervalToString(lastTime
+                    - startTime));
+            traceBuffer.append("\nMemory Usage: ");
+            traceBuffer.append(memoryToString(lastFree, lastTot,
+                    lastMax));
+            traceBuffer.append("\nMemory Delta: ");
+            traceBuffer.append(memoryToString(lastFree
+                    - startFree, lastTot, lastMax));
+            traceBuffer.append(" - tot delta: ");
+            traceBuffer.append(sizeToString(lastTot - startTot));
+        }
+
     }
 
     /**
@@ -316,6 +479,7 @@ public class ProcessLogger {
             sb.insert(0, " days, ");
             sb.insert(0, days);
         }
+
         return sb.toString();
     }
 
@@ -336,23 +500,28 @@ public class ProcessLogger {
         StringBuilder sb = new StringBuilder();
         int i = -1;
         int mod = 0;
+
         if (bytes < 0) {
             sb.append('-');
             bytes = Math.abs(bytes);
         }
+
         while (bytes / 1024 > 0 && i < SIZE_INTERVALS.length) {
             i++;
             mod = (int) (bytes % 1024);
             bytes /= 1024;
         }
         sb.append(bytes);
+
         if (mod > 0) {
             sb.append('.');
             sb.append(df.format(mod * 1000 / 1024));
         }
+
         if (i >= 0) {
             sb.append(SIZE_INTERVALS[i]);
         }
+
         return sb.toString();
     }
 
@@ -455,8 +624,9 @@ public class ProcessLogger {
         if (TL_STAT.get() == null) {
             TL_STAT.set(new java.util.HashMap<String, ProcessStatus>());
         }
+
         // Create a new status tracker for monitoring this process.
-        ProcessStatus processStatus = new ProcessStatus();
+        ProcessStatus processStatus = new ProcessStatus(name);
         if (verbose != null) {
             processStatus.verbose = verbose;
         }
@@ -465,40 +635,7 @@ public class ProcessLogger {
             // Bind the status tracker to the current thread.
             TL_STAT.get().put(name, processStatus);
 
-            // Write a description of the process to the trace buffer.
-            processStatus.traceBuffer.append("KRAD Process Trace (");
-            processStatus.traceBuffer.append(name);
-            processStatus.traceBuffer.append("): ");
-            processStatus.traceBuffer.append(processDescription);
-
-            // Write stack information related to method controlling the callable process.
-            StackTraceElement[] st = Thread.currentThread().getStackTrace();
-            String cn = st[2].getClassName();
-            int iod = cn.lastIndexOf('.');
-            String pn = "";
-            if (iod != -1)
-                pn = cn.substring(0, iod);
-            int i = 2;
-            while (i < st.length - 1
-                    && (st[i].getClassName().startsWith("sun.")
-                            || st[i].getClassName().startsWith("java.")
-                            || st[i].getClassName().startsWith(
-                                    ProcessLogger.class.getPackage().getName()) || st[i]
-                            .getClassName().startsWith(pn))) {
-                if (!ProcessLogger.class.getName().equals(st[i].getClassName())) {
-                    processStatus.traceBuffer.append("\n  at ").append(st[i]);
-                }
-                i++;
-            }
-            processStatus.traceBuffer.append("\n  at ").append(st[i]);
-
-            // Write initial heap state and start time.
-            processStatus.traceBuffer.append("\nInitial Memory Usage: ");
-            processStatus.traceBuffer.append(memoryToString(processStatus.startFree, processStatus.startTot,
-                    processStatus.startMax));
-            if (LOG.isInfoEnabled() && processStatus.verbose) {
-                LOG.debug("Processing Started\n" + processStatus.traceBuffer.toString());
-            }
+            processStatus.appendTraceHeader(name, processDescription);
 
             // Call the process.
             return callableProcess.call();
@@ -513,68 +650,10 @@ public class ProcessLogger {
 
             // Calculate time and heap utilization since the last trace message.
             processStatus.elapse();
+            processStatus.appendTraceFooter();
 
-            // Write final processing complete statistics.
-            processStatus.traceBuffer.append('\n');
-            String message = "Processing Complete";
-            processStatus.traceBuffer.append(message);
-            for (int i = message.length(); i < 40; i++) {
-                processStatus.traceBuffer.append('.');
-            }
-            processStatus.traceBuffer.append(intervalToString(processStatus.diffTime));
-            processStatus.traceBuffer.append(' ');
-            processStatus.traceBuffer.append(intervalToString(processStatus.lastTime
-                    - processStatus.startTime));
-            processStatus.traceBuffer.append(' ');
-            processStatus.traceBuffer.append(sizeToString(processStatus.lastFree));
-            processStatus.traceBuffer.append(' ');
-            processStatus.traceBuffer.append(sizeToString(processStatus.diffFree));
-            if (!processStatus.ntraceCount.isEmpty()) {
-                processStatus.traceBuffer.append("\nMonitors:");
-                for (Entry<String, Long> ce : processStatus.ntraceCount.entrySet()) {
-                    processStatus.traceBuffer.append("\n  ");
-                    StringBuilder sb = new StringBuilder(ce.getKey());
-                    int iocc = sb.indexOf("::");
-                    if (iocc == -1)
-                        sb.append(":" + ce.getValue());
-                    else
-                        sb.insert(iocc + 1, ce.getValue());
-                    processStatus.traceBuffer.append(sb);
-                }
-            }
-            if (!processStatus.counters.isEmpty()) {
-                processStatus.traceBuffer.append("\nCounters:");
-                for (ProcessCounter pc : processStatus.counters.values()) {
-                    processStatus.traceBuffer.append("\n  ");
-                    processStatus.traceBuffer.append(pc.name);
-                    processStatus.traceBuffer.append(": ");
-                    processStatus.traceBuffer.append(pc.count);
-                    processStatus.traceBuffer.append(" (");
-                    processStatus.traceBuffer.append(intervalToString(pc.min));
-                    processStatus.traceBuffer.append("/");
-                    processStatus.traceBuffer.append(intervalToString(pc.max));
-                    processStatus.traceBuffer.append("/");
-                    processStatus.traceBuffer.append(intervalToString(pc.avg));
-                    processStatus.traceBuffer.append(")");
-                    if (pc.longest != null && !"".equals(pc.longest)) {
-                        processStatus.traceBuffer.append("\n    longest : ");
-                        processStatus.traceBuffer.append(pc.longest);
-                    }
-                }
-            }
-            processStatus.traceBuffer.append("\nElapsed Time: ");
-            processStatus.traceBuffer.append(intervalToString(processStatus.lastTime
-                    - processStatus.startTime));
-            processStatus.traceBuffer.append("\nMemory Usage: ");
-            processStatus.traceBuffer.append(memoryToString(processStatus.lastFree, processStatus.lastTot,
-                    processStatus.lastMax));
-            processStatus.traceBuffer.append("\nMemory Delta: ");
-            processStatus.traceBuffer.append(memoryToString(processStatus.lastFree
-                    - processStatus.startFree, processStatus.lastTot, processStatus.lastMax));
-            processStatus.traceBuffer.append(" - tot delta: ");
-            processStatus.traceBuffer.append(sizeToString(processStatus.lastTot - processStatus.startTot));
-            String rpt = processStatus.traceBuffer.toString();
-            LOG.info(rpt);
+            // Write process trace at INFO level
+            LOG.info(processStatus.traceBuffer.toString());
         }
     }
 
@@ -673,40 +752,7 @@ public class ProcessLogger {
                 name);
         if (processStatus != null) {
             processStatus.elapse();
-            if (LOG.isDebugEnabled() && processStatus.verbose) {
-                LOG.debug(message
-                        + " ("
-                        + name
-                        + ")\nElapsed Time: "
-                        + intervalToString(processStatus.diffTime)
-                        + "\nMemory Usage: "
-                        + memoryToString(processStatus.lastFree, processStatus.lastTot,
-                                processStatus.lastMax)
-                        + "\nMemory Delta: "
-                        + memoryToString(processStatus.diffFree, processStatus.lastTot,
-                                processStatus.lastMax) + " - tot delta: "
-                        + sizeToString(processStatus.diffTot));
-            }
-
-            if (LOG.isInfoEnabled() && (processStatus.verbose || processStatus.diffTime > 0L)) {
-                processStatus.traceBuffer.append('\n');
-                if (message.length() < 40) {
-                    processStatus.traceBuffer.append(message);
-                    for (int i = message.length(); i < 40; i++) {
-                        processStatus.traceBuffer.append('.');
-                    }
-                } else {
-                    processStatus.traceBuffer.append(message.substring(0, 40));
-                }
-                processStatus.traceBuffer.append(intervalToString(processStatus.diffTime));
-                processStatus.traceBuffer.append(' ');
-                processStatus.traceBuffer.append(intervalToString(processStatus.lastTime
-                        - processStatus.startTime));
-                processStatus.traceBuffer.append(' ');
-                processStatus.traceBuffer.append(sizeToString(processStatus.lastFree));
-                processStatus.traceBuffer.append(' ');
-                processStatus.traceBuffer.append(sizeToString(processStatus.diffFree));
-            }
+            processStatus.appendTraceMessage(message);
         }
     }
 
@@ -731,6 +777,7 @@ public class ProcessLogger {
                 rv = Math.max(rv, ntrace(k, prefix, suffix, interval));
             }
         }
+
         return rv;
     }
 
@@ -755,12 +802,17 @@ public class ProcessLogger {
                 name);
         String nTraceCountKey = prefix + suffix;
         Long nTraceCount = processStatus.ntraceCount.get(nTraceCountKey);
+        
         if (nTraceCount == null) {
             nTraceCount = 0L;
         }
+        
         processStatus.ntraceCount.put(nTraceCountKey, ++nTraceCount);
-        if (nTraceCount % interval == 0)
+        
+        if (nTraceCount % interval == 0) {
             trace(prefix + nTraceCount + suffix);
+        }
+
         return nTraceCount;
     }
 

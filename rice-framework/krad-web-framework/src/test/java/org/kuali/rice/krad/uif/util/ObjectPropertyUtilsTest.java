@@ -324,18 +324,23 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
 
         @Override
         public String parse(String node, String next, boolean inherit) {
-            if (next == null)
+            if (next == null) {
                 return "";
+            }
             StringBuilder rv = new StringBuilder();
-            if (node != null && node.length() > 0)
+            if (node != null && node.length() > 0) {
                 rv.append(node);
-            if (inherit)
+            }
+            if (inherit) {
                 rv.append('<');
-            else if (rv.length() > 0)
+            } else if (rv.length() > 0) {
                 rv.append('+');
+            }
             rv.append(next);
-            if (inherit)
+            if (inherit) {
                 rv.append('>');
+            }
+
             return rv.toString();
         }
 

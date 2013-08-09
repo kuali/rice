@@ -28,10 +28,10 @@
         <section>
             <title>Release Highlights</title>
             <para>This version of Rice includes many improvements to the Kuali Rapid Application
-                Development (KRAD) Framework. Below is a summary of the larger new features and you
-                can learn more about them in the <link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/KRAD_Guide.html">KRAD Guide</link> which is also now publicly
-                available with this release. Also review the Jira list at the end of this document to
-                see the smaller items.</para>
+        Development (KRAD) Framework. Below is a summary of the larger changes, impacting and
+        non-impacting changes are described later in the document in more detail and you can review
+        the Jira list at the end of this document to see a list of all items addressed in this
+        release.</para>
             <para>
                 <itemizedlist>
                     <title>Highlights of this release include:</title>
@@ -769,7 +769,7 @@ converts to:
     </section>
     <section xml:id="items_addressed_in_rice">
         <title>Items Addressed in Rice ${project.version}</title>
-        
+
 <section>
   <title>Bug Fix</title>
     <para>
@@ -1071,6 +1071,9 @@ converts to:
         <listitem>
           <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10078'>KULRICE-10078</link>] - Required indicator wraps below label when field is displayed in a dialog</para>
         </listitem>
+        <listitem>
+          <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10123'>KULRICE-10123</link>] - Editing a KRMS rule results in an error screen</para>
+        </listitem>
       </itemizedlist>
     </para>
 </section>
@@ -1151,6 +1154,9 @@ converts to:
         </listitem>
         <listitem>
           <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9261'>KULRICE-9261</link>] - All request using multi-part encoding and should not</para>
+        </listitem>
+        <listitem>
+          <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9282'>KULRICE-9282</link>] - Upgrade selenium-java webdriver to latest version</para>
         </listitem>
         <listitem>
           <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9594'>KULRICE-9594</link>] - Global handler for disclosure content</para>
@@ -1435,6 +1441,15 @@ converts to:
           <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9318'>KULRICE-9318</link>] - Update KRMS Guide: Add/Update Sections For Completeness</para>
         </listitem>
         <listitem>
+          <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9327'>KULRICE-9327</link>] - Create or Generate JUnit and TestNG Smoke Tests for WorkFlowDocTypeNavIT from Method Template Bases</para>
+        </listitem>
+        <listitem>
+          <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9328'>KULRICE-9328</link>] - CLONE - Create or Generate JUnit and TestNG Smoke Tests for ConfigNameSpaceBlanketAppNavIT from Method Template Bases</para>
+        </listitem>
+        <listitem>
+          <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9354'>KULRICE-9354</link>] - CLONE - Create or Generate JUnit and TestNG Smoke Tests for CreateDocTypeNavIT from Method Template Bases</para>
+        </listitem>
+        <listitem>
           <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9379'>KULRICE-9379</link>] - Add support for rendering views in KRAD without requiring a session to be established</para>
         </listitem>
         <listitem>
@@ -1519,6 +1534,9 @@ converts to:
           <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10060'>KULRICE-10060</link>] - Remove FFS css files for Fluid and Infusion</para>
         </listitem>
         <listitem>
+          <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10066'>KULRICE-10066</link>] - Subcollections in details are broken when useServerPaging=true</para>
+        </listitem>
+        <listitem>
           <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10073'>KULRICE-10073</link>] - Subcollections when direct descendants of details group do not display correctly</para>
         </listitem>
         <listitem>
@@ -1539,6 +1557,7 @@ converts to:
       </itemizedlist>
     </para>
 </section>
+
 
 
         

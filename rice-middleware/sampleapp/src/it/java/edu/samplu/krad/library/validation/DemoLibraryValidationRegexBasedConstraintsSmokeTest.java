@@ -38,13 +38,15 @@ public class DemoLibraryValidationRegexBasedConstraintsSmokeTest extends SmokeTe
     protected void navigate() throws Exception {
         waitAndClickById("Demo-LibraryLink", "");
         waitAndClickByLinkText("Validation");
-        waitAndClickByLinkText("Fixed Point Constraint");
+        waitAndClickByLinkText("Regex Based Constraints");
     }
 
     protected void testValidationRegexBasedConstraintsPhone() throws Exception {
        //Scenario-1
        waitAndTypeByName("inputField1","1234567890");
        waitAndClickByLinkText("Usage");
+       fireEvent("inputField1", "focus");
+       Thread.sleep(200);
        assertElementPresentByXpath("//input[@name='inputField1' and @class='uif-textControl validChar-inputField10 dirty error']");
     }
     
@@ -188,6 +190,12 @@ public class DemoLibraryValidationRegexBasedConstraintsSmokeTest extends SmokeTe
         testValidationRegexBasedConstraintsZipcode();
         testValidationRegexBasedConstraintsJavaclassname();
         testValidationRegexBasedConstraintsCustom();
+        passed();
+    }
+
+    @Test
+    public void testValidationRegexBasedConstraintsEmailNav() throws Exception {
+        testValidationRegexBasedConstraintsEmail();
         passed();
     }
 }

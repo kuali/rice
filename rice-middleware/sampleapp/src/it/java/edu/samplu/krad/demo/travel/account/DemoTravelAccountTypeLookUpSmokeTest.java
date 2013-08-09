@@ -52,13 +52,13 @@ public class DemoTravelAccountTypeLookUpSmokeTest extends SmokeTestBase {
     protected void testTravelAccountTypeLookUp() throws Exception {
         waitAndTypeByName("lookupCriteria[accountTypeCode]","CAT");
         waitAndClickButtonByText(SEARCH);
-        assertElementPresentByXpath("//input[@value='CAT' and @name='lookupResults[0].accountTypeCode']");
+        assertElementPresentByXpath("//span[contains(text(),'CAT')]");
         waitAndClickButtonByText(CLEAR_VALUES);
         waitAndClickButtonByText(SEARCH);
-        waitForElementsPresentByXpath("//input[@value='IAT' and @name='lookupResults[2].accountTypeCode']");
-        assertElementPresentByXpath("//input[@value='CAT' and @name='lookupResults[0].accountTypeCode']");
-        assertElementPresentByXpath("//input[@value='EAT' and @name='lookupResults[1].accountTypeCode']");
-        assertElementPresentByXpath("//input[@value='IAT' and @name='lookupResults[2].accountTypeCode']");
+        waitForElementsPresentByXpath("//span[contains(text(),'IAT')]");
+        assertElementPresentByXpath("//span[contains(text(),'CAT')]");
+        assertElementPresentByXpath("//span[contains(text(),'EAT')]");
+        assertElementPresentByXpath("//span[contains(text(),'IAT')]");
     }
 
     @Test

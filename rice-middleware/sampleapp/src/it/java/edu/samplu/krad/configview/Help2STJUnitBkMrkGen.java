@@ -16,6 +16,7 @@
 
 package edu.samplu.krad.configview;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -28,6 +29,7 @@ public class Help2STJUnitBkMrkGen extends Help2STJUnitBase {
         return BOOKMARK_URL;
     }
 
+    @Ignore // TODO fix
     @Test
     public void testHelp2Bookmark() throws Exception {
         testHelp2Bookmark(this);

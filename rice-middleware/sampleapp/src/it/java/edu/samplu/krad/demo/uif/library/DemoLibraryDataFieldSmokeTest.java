@@ -15,7 +15,7 @@
  */
 package edu.samplu.krad.demo.uif.library;
 
-import edu.samplu.common.Failable;
+import org.junit.Assert;
 import org.junit.Test;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.openqa.selenium.By;
@@ -59,11 +59,6 @@ public class DemoLibraryDataFieldSmokeTest extends DemoLibraryBase {
         assertIsVisible("#" + controlId);
 
         assertTextPresent("1001", "#" + controlId, "DataField value not correct");
-
-        WebElement afterFieldElement = field.findElement(By.cssSelector("span[data-label_for='" + fieldId + "'] + span"));
-        if (!(afterFieldElement.getText().contains("1001"))) {
-            fail("Ordering of DataField (label, value) is incorrect");
-        }
     }
 
     protected void testDataFieldLabelTop() throws Exception {
@@ -82,6 +77,7 @@ public class DemoLibraryDataFieldSmokeTest extends DemoLibraryBase {
         }
 
         WebElement labelspan = field.findElement(By.cssSelector("span[data-label_for='" + fieldId + "']"));
+        // top and bottom add the uif-labelBlock class
         if(!labelspan.getAttribute("class").contains("uif-labelBlock")){
             fail("Label span does not contain the appropriate class expected");
         }
@@ -89,9 +85,9 @@ public class DemoLibraryDataFieldSmokeTest extends DemoLibraryBase {
         assertIsVisible("#" + controlId);
     }
 
-    protected void testDataFieldRight() throws Exception {
+    protected void testDataFieldLabelRight() throws Exception {
         WebElement exampleDiv = navigateToExample("Demo-DataField-Example3");
-        WebElement field = exampleDiv.findElement(By.cssSelector("div[data-label='DataField 1']"));
+        WebElement field = findElement(By.cssSelector("div[data-label='DataField 1']"), exampleDiv);
 
         String fieldId = field.getAttribute("id");
         String controlId = fieldId + UifConstants.IdSuffixes.CONTROL;
@@ -99,77 +95,66 @@ public class DemoLibraryDataFieldSmokeTest extends DemoLibraryBase {
         assertIsVisible("#" + fieldId);
         assertIsVisible("label[for='" + controlId + "']");
 
-        WebElement label = field.findElement(By.cssSelector("label[for='" + controlId + "']"));
+        WebElement label = findElement(By.cssSelector("[for='" + controlId + "']"), field);
         if(!label.getText().contains("DataField 1")){
             fail("Label text does not match");
         }
 
-        assertTextPresent("1001", "#" + controlId, "DataField value not correct");
-
         assertIsVisible("#" + controlId);
 
-        WebElement afterControlElementLabel = field.findElement(By.cssSelector("span#" + controlId + " + span > label"));
-        if (!(afterControlElementLabel.getText().contains("DataField 1"))) {
-            fail("Ordering of DataField (value, label) is incorrect");
-        }
+        // validate that the label comes after the value
+        findElement(By.cssSelector("span[id='" + controlId + "'] + span[data-label_for='" + fieldId + "']"), exampleDiv);
     }
 
     protected void testDataFieldDefaultValue() throws Exception {
-        WebElement exampleDiv = navigateToExample("Demo-DataField-Example4");
-        WebElement field = exampleDiv.findElement(By.cssSelector("div[data-label='DataField 2']"));
-
-        String fieldId = field.getAttribute("id");
-        String controlId = fieldId + UifConstants.IdSuffixes.CONTROL;
-
-        assertTextPresent("2012", "#" + controlId, "DataField default value not correct");
+        String valueText = textValueUnderTest("Demo-DataField-Example4", "DataField 2");
+        Assert.assertEquals("2012", valueText);
     }
 
     protected void testDataFieldAppendProperty() throws Exception {
-        WebElement exampleDiv = navigateToExample("Demo-DataField-Example5");
-        WebElement field = exampleDiv.findElement(By.cssSelector("div[data-label='DataField 1']"));
-
-        String fieldId = field.getAttribute("id");
-        String controlId = fieldId + UifConstants.IdSuffixes.CONTROL;
-
-        assertTextPresent("1001 *-* ID Val", "#" + controlId, "DataField appended property not correct");
+        String valueText = textValueUnderTest("Demo-DataField-Example5", "DataField 1");
+        Assert.assertTrue(valueText.endsWith("ID Val"));
     }
 
     protected void testDataFieldReplaceProperty() throws Exception {
-        WebElement exampleDiv = navigateToExample("Demo-DataField-Example6");
-        WebElement field = exampleDiv.findElement(By.cssSelector("div[data-label='DataField 1']"));
-
-        String fieldId = field.getAttribute("id");
-        String controlId = fieldId + UifConstants.IdSuffixes.CONTROL;
-
-        assertTextNotPresent("1001 *-*", "DataField property not replaced correctly");
-        assertTextPresent("ID Val", "#" + controlId, "DataField replaced property not correct");
+        String valueText = textValueUnderTest("Demo-DataField-Example6", "DataField 1");
+        Assert.assertEquals("ID Val", valueText);
     }
 
     protected void testDataFieldReplacePropertyWithField() throws Exception {
-        WebElement exampleDiv = navigateToExample("Demo-DataField-Example7");
-        WebElement field = exampleDiv.findElement(By.cssSelector("div[data-label='DataField 1']"));
-
-        String fieldId = field.getAttribute("id");
-        String controlId = fieldId + UifConstants.IdSuffixes.CONTROL;
-
-        assertTextNotPresent("1001 *-*", "DataField property not replaced correctly");
-        assertTextPresent("My Book Title", "#" + controlId, "DataField replaced property not correct");
+        String valueText = textValueUnderTest("Demo-DataField-Example7", "DataField 1");
+        Assert.assertEquals("My Book Title", valueText);
     }
 
     protected void testDataFieldAppendPropertyWithField() throws Exception {
-        WebElement exampleDiv = navigateToExample("Demo-DataField-Example8");
-        WebElement field = exampleDiv.findElement(By.cssSelector("div[data-label='DataField 1']"));
+        String valueText = textValueUnderTest("Demo-DataField-Example8", "DataField 1");
+        Assert.assertEquals("1001 *-* My Book Title", valueText);
+    }
+
+    private String textValueUnderTest(String example, String testLabel) throws Exception {
+        WebElement exampleDiv = navigateToExample(example);
+        WebElement field = findElement(By.cssSelector("div[data-label='" + testLabel + "']"), exampleDiv);
 
         String fieldId = field.getAttribute("id");
         String controlId = fieldId + UifConstants.IdSuffixes.CONTROL;
 
-        assertTextPresent("1001 *-* My Book Title", "#" + controlId, "DataField appended property not correct");
+        assertIsVisible("#" + fieldId);
+        assertIsVisible("label[for='" + controlId + "']");
+
+        WebElement label = findElement(By.cssSelector("[for='" + controlId + "']"), field);
+        if(!label.getText().contains(testLabel)){
+            fail("Label text does not match");
+        }
+
+        assertIsVisible("#" + controlId);
+
+        return findElement(By.id(controlId), field).getText();
     }
 
     protected void testDataFieldExamples() throws Exception{
         testDataFieldDefault();
         testDataFieldLabelTop();
-        testDataFieldRight();
+        testDataFieldLabelRight();
         testDataFieldDefaultValue();
         testDataFieldAppendProperty();
         testDataFieldReplaceProperty();
@@ -177,23 +162,111 @@ public class DemoLibraryDataFieldSmokeTest extends DemoLibraryBase {
         testDataFieldAppendPropertyWithField();
     }
 
-    public void testDataFieldNav(Failable failable) throws Exception{
-        testDataFieldExamples();
-        passed();
-    }
-
-    public void testDataFieldBookmark(Failable failable) throws Exception{
+    @Test
+    public void testDataFieldExamplesBookmark() throws Exception {
         testDataFieldExamples();
         passed();
     }
 
     @Test
-    public void testDataFieldBookmark() throws Exception {
-        testDataFieldBookmark(this);
+    public void testDataFieldExamplesNav() throws Exception {
+        testDataFieldExamples();
+        passed();
     }
 
     @Test
-    public void testDataFieldNav() throws Exception {
-        testDataFieldNav(this);
+    public void testDataFieldDefaultBookmark() throws Exception {
+        testDataFieldDefault();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldDefaultNav() throws Exception {
+        testDataFieldDefault();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldLabelTopBookmark() throws Exception {
+        testDataFieldLabelTop();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldLabelTopNav() throws Exception {
+        testDataFieldLabelTop();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldLabelRightBookmark() throws Exception {
+        testDataFieldLabelRight();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldLabelRightNav() throws Exception {
+        testDataFieldLabelRight();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldDefaultValueBookmark() throws Exception {
+        testDataFieldDefaultValue();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldDefaultValueNav() throws Exception {
+        testDataFieldDefaultValue();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldAppendPropertyBookmark() throws Exception {
+        testDataFieldAppendProperty();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldAppendPropertyNav() throws Exception {
+        testDataFieldAppendProperty();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldReplacePropertyBookmark() throws Exception {
+        testDataFieldReplaceProperty();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldReplacePropertyNav() throws Exception {
+        testDataFieldReplaceProperty();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldReplacePropertyWithFieldBookmark() throws Exception {
+        testDataFieldReplacePropertyWithField();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldReplacePropertyWithFieldNav() throws Exception {
+        testDataFieldReplacePropertyWithField();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldAppendPropertyWithFieldBookmark() throws Exception {
+        testDataFieldAppendPropertyWithField();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldAppendPropertyWithFieldNav() throws Exception {
+        testDataFieldAppendPropertyWithField();
+        passed();
     }
 }

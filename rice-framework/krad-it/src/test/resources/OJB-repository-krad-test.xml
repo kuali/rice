@@ -78,8 +78,11 @@
 	<class-descriptor class="org.kuali.rice.krad.test.document.bo.AccountManager" table="TRV_ACCT_FO">
 		<field-descriptor name="amId" column="acct_fo_id" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="TRV_FO_ID_S" />
 		<field-descriptor name="userName" column="acct_fo_user_name" jdbc-type="VARCHAR" />
-
-		<collection-descriptor name="accounts" element-class-ref="org.kuali.rice.krad.test.document.bo.Account">
+		<collection-descriptor name="accounts"
+            element-class-ref="org.kuali.rice.krad.test.document.bo.Account"
+            auto-retrieve="true"
+            auto-update="false"
+            auto-delete="false">
 			<inverse-foreignkey field-ref="amId" />
 		</collection-descriptor>
 	</class-descriptor>

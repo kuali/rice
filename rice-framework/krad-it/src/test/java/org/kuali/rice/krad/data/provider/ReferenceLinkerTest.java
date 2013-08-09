@@ -84,7 +84,7 @@ import org.kuali.rice.test.data.UnitTestSql;
 public class ReferenceLinkerTest extends KRADTestCase {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ReferenceLinkerTest.class);
     protected JpaPersistenceProvider getPersistenceProvider() {
-        return getKRADTestHarnessContext().getBean("kradJpaPersistenceProvider", JpaPersistenceProvider.class);
+        return getKRADTestHarnessContext().getBean("kradTestJpaPersistenceProvider", JpaPersistenceProvider.class);
     }
 
     protected DataObjectService getDOS() {
@@ -105,7 +105,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
     
     @Before
     public void evictAll() {
-        getKRADTestHarnessContext().getBean("kradEntityManagerFactory", EntityManagerFactory.class).getCache().evictAll();
+        getKRADTestHarnessContext().getBean("kradTestEntityManagerFactory", EntityManagerFactory.class).getCache().evictAll();
     }
 
     @Test

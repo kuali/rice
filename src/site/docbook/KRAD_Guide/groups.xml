@@ -1315,6 +1315,149 @@
         </tip>
       </section>
     </section>
+    <section>
+      <title>Css Grid Layout</title>
+      <para>There exists one more group layout called the CssGridLayoutManager. This layout attempts
+        to mimic the look and field of the GridLayoutManager using divs. The layout will appear to
+        be table-based without being backed by the table, tr, and td elements in the DOM. This
+        functionality is achieved by leveraging the bootstrap css framework in KRAD.
+      </para>
+      <para>To use css grid layout, set the colSpan property of components contained in the items of
+        the group. The layout will use this to add a the necessary css class for that item in the
+        layout. Each "row" in the CssGridLayout has a maximum size of 9, if colSpan is not defined
+        for an item, that item will automatically take up a full row. When a row contains items
+        which equal 9 total, the next item in the group will be placed on the next row. When an item
+        exceeds the max size for a row, that item will become an item of the next row.
+      </para>
+      <para>The following figure shows what a CssGridLayout backed group may look like:
+        <figure>
+          <title>Fixed Css Grid Layout</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="../images/KRAD_Guide/cssGridLayout.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+      </para>
+      <para>In this example, the group will have 2 rows, the first row will contain the first 3
+        fields, and the second row will contain the last 2
+        fields:
+        <programlisting>        &lt;bean parent="Uif-FixedCssGridGroup">
+          &lt;property name="items">
+          &lt;list>
+          &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:colSpan="3" p:instructionalText="This is
+          instructions"
+          p:propertyName="inputField1"/>
+          &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:colSpan="3" p:propertyName="inputField2"/>
+          &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 3" p:colSpan="3" p:propertyName="inputField3"/>
+          &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 4" p:colSpan="4" p:propertyName="inputField4"/>
+          &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 5" p:colSpan="5" p:propertyName="inputField5"/>
+          &lt;/list>
+          &lt;/property>
+          &lt;/bean>
+        </programlisting>
+      </para>
+      <para>In this example, the group will have 2 rows, the first field will take the entire row
+        (because no colSpan is supplied), and the second row will contain the last 2
+        fields:
+        <programlisting>        &lt;bean parent="Uif-FixedCssGridGroup">
+          &lt;property name="items">
+          &lt;list>
+          &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField6"/>
+          &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:colSpan="6" p:propertyName="inputField7"/>
+          &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 3" p:colSpan="3" p:propertyName="inputField8"/>
+          &lt;/list>
+          &lt;/property>
+          &lt;/bean>
+        </programlisting>
+      </para>
+      <para>The CssGridLayoutManager can either be fluid (items expand and retract with page size)
+        or fixed (items do not move or change when page size changes). This is defined by the beans
+        available in the framework as follows (and appropriate group and section beans which have
+        these predefined):
+        <itemizedlist>
+          <listitem>
+            <para>Uif-FixedCssGridLayout - fixed layout for items - used by Uif-FixedCssGridGroup,
+              Uif-FixedCssGridSection, etc.
+            </para>
+          </listitem>
+          <listitem>
+            <para>Uif-FluidCssGridLayout - fluid layout for items - used by Uif-FluidCssGridGroup,
+              Uif-FluidCssGridSection, etc.
+            </para>
+          </listitem>
+        </itemizedlist>
+      </para>
+      <para>
+        <emphasis role="bold">Imporant Note:</emphasis>
+        do not set the
+        <emphasis role="bold">
+          rowLayoutCssClass
+        </emphasis>
+        property for CssGridLayoutManagers as this is handled by the
+        framework's beans explicitly and will break expected functionality, if set.
+      </para>
+      <section>
+        <title>Other Css Grid Layout Options</title>
+        <para>The CssGridLayoutManager contains a property called<emphasis role="bold"
+                >defaultItemColSpan</emphasis>. As mentioned above, if an item of a group which uses
+          CssGridLayoutManager does not define colSpan, normally this item would take up the entire
+          row (default is 9). This property allows you define what the default fallback is for
+          items which do not define colSpan. This makes it easy to make a css grid layout that has
+          a consistent size for all of its items.
+        </para>
+        <para>The following example shows a group that would have two rows of three items because
+          the defaultItemColSpan is set to 3, and each item automatically gets a colspan of 3 if
+          they do not define their own
+          colSpan:
+          <programlisting>        &lt;bean parent="Uif-FixedCssGridGroup">
+            &lt;property name="layoutManager.defaultItemColSpan" value="3"/>
+            &lt;property name="items">
+            &lt;list>
+            &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField22"/>
+            &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField23"/>
+            &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 3" p:propertyName="inputField24"/>
+            &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 4" p:propertyName="inputField25"/>
+            &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 5" p:propertyName="inputField26"/>
+            &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 6" p:propertyName="inputField27"/>
+            &lt;/list>
+            &lt;/property>
+            &lt;/bean>
+          </programlisting>
+        </para>
+        <para>Like TableLayoutManager, the CssGridLayoutManager has a property called<emphasis
+                role="bold">conditionalRowCssClasses</emphasis>. It supports all the following
+          conditions in its keys (note that SpringEL is not supported as a condition in this
+          scenario as there is no concept of a line object in this layout):
+          <itemizedlist>
+            <listitem>
+              <para>all - put a class on every row</para>
+            </listitem>
+            <listitem>
+              <para>even - put a class on even rows</para>
+            </listitem>
+            <listitem>
+              <para>odd - put a class on odd rows</para>
+            </listitem>
+            <listitem>
+              <para>index - one-based index is used to put a css class on a single row (this should
+                only be used on tables which never change)
+              </para>
+            </listitem>
+          </itemizedlist>
+        </para>
+        <programlisting>        &lt;bean parent="Uif-FixedCssGridGroup">
+          &lt;property name="layoutManager.conditionalRowCssClasses">
+          &lt;map>
+          &lt;entry key="all" value="demo-border"/>
+          &lt;entry key="odd" value="demo-odd"/>
+          &lt;entry key="even" value="demo-even"/>
+          &lt;/map>
+          &lt;/property>
+          ...
+        </programlisting>
+      </section>
+    </section>
     <section role="NotInToc">
       <title>Recap</title>
       <itemizedlist>
@@ -1449,6 +1592,24 @@
             and<emphasis role="keyword"
                     >itemStyleClasses</emphasis>. The layout manager will then apply them to each item for
             us
+          </para>
+        </listitem>
+        <listitem>
+          <para>Css grid layout is a layout that looks similar to grid layout, but is backed by divs
+            instead of a table
+          </para>
+        </listitem>
+        <listitem>
+          <para>The items of groups backed by CssGridLayoutManager must define colSpan or the item
+            will take up the entire row, unless defaultItemColSpan is set
+          </para>
+        </listitem>
+        <listitem>
+          <para>Css grid layout rows have a max size of 9 columns across</para>
+        </listitem>
+        <listitem>
+          <para>The beans of css grid layout comes in two varieties: fluid for automatic resizing
+            during page resize, and fixed to not be affected by page resize
           </para>
         </listitem>
       </itemizedlist>
@@ -2159,6 +2320,11 @@
         fields (assumed to be on the collection item). We can continue adding other sub collections
         to the list as needed.
       </para>
+      <para>Note that if your collection is using a TableLayoutManager, you should place your
+        sub-collections in a rowDetailsGroup, as the subcollection property is not officially
+        supported by TableLayoutManager. It is recommended that the subcollections property only be
+        used for collections which use a StackedLayoutManager (or other).
+      </para>
       <para>As you might have guessed, the sub-collection could in turn have sub-collections
         and further down the line. The framework does not restrict how many levels the
         nesting can go (in practical terms of screen real estate three levels is usually the
@@ -2304,6 +2470,30 @@
       <para>The appearance of this table will be exactly the same as if a CollectionGroup with a
         TableCollectionLayout was being used (though it is limited by the types of components and
         advanced functionality allowed).
+      </para>
+      <para>Like TableLayoutManager, the LightTable has a property called<emphasis role="bold"
+              >conditionalRowCssClasses</emphasis>. It supports all the following conditions in its keys:
+        <itemizedlist>
+          <listitem>
+            <para>all - put a class on every row</para>
+          </listitem>
+          <listitem>
+            <para>even - put a class on even rows</para>
+          </listitem>
+          <listitem>
+            <para>odd - put a class on odd rows</para>
+          </listitem>
+          <listitem>
+            <para>index - one-based index is used to put a css class on a single row (this should
+              only be used on tables which never change)
+            </para>
+          </listitem>
+          <listitem>
+            <para>SpringEL - create a condition that returns true/false based on the fields and
+              context of the row itself. When true, that row will have the class specified.
+            </para>
+          </listitem>
+        </itemizedlist>
       </para>
     </section>
     <section role="NotInToc">
@@ -2587,13 +2777,68 @@
         property generateAutoSequence to true.
       </para>
       <section>
+        <title>Conditional Row Css Classes</title>
+        <para>Row css classes can be set per a row conditional based on a variety of conditions for
+          that row in your table layout. There is a property on TableLayoutManager called
+          <emphasis
+                  role="bold">conditionalRowCssClasses
+          </emphasis>
+          which takes a "condition" as a key and a
+          css class (or classes separated by spaces) as a value. The class will be placed on the tr
+          element in the DOM for that row. The options available for the condition are:
+          <itemizedlist>
+            <listitem>
+              <para>all - put a class on every row</para>
+            </listitem>
+            <listitem>
+              <para>even - put a class on even rows</para>
+            </listitem>
+            <listitem>
+              <para>odd - put a class on odd rows</para>
+            </listitem>
+            <listitem>
+              <para>index - one-based index is used to put a css class on a single row (this should
+                only be used on tables which never change)
+              </para>
+            </listitem>
+            <listitem>
+              <para>SpringEL - create a condition that returns true/false based on the fields and
+                context of the row itself. When true, that row will have the class
+                specified.
+              </para>
+            </listitem>
+          </itemizedlist>
+        </para>
+        <para>DO NOT use the rowCssClass property to set your css classes, but use this property
+          instead. The rowCssClasses property is used by the framework internally (however it can
+          be used with GridLayoutManagers).
+        </para>
+        <para>This is an example of setting each type of condition, the SpringEL condition here puts
+          the "demo-rowCondition" class on the row when field1 of the line equals
+          "B":
+          <programlisting>  &lt;property name="layoutManager.conditionalRowCssClasses">
+            &lt;map>
+            &lt;entry key="all" value="demo-all"/>
+            &lt;entry key="odd" value="demo-odd"/>
+            &lt;entry key="even" value="demo-even"/>
+            &lt;entry key="2" value="demo-index2"/>
+            &lt;entry key="@{#line.field1 eq 'B'}" value="demo-rowCondition"/>
+            &lt;/map>
+            &lt;/property>
+          </programlisting>
+        </para>
+      </section>
+      <section>
         <title>Row Details Group option</title>
         <para>Table collections can now display additional details on a row. When using this
           functionality, an additional column with a "Details" link will be available, and when the
           user clicks on it, the configured group to display for that row will be revealed/disclosed
           below that row. The intended uses of this functionality is for the user to be able to
           discover additional information about that collection item without having to leave the
-          page, or hide content that can become large, such as descriptions.
+          page, or hide content that can become large, such as descriptions. Using row details for
+          subcollections is the ONLY officially supported way to display subcollections for
+          table-based (TableLayoutManager) collections; do not use the subcollections property on
+          CollectionGroup.
         </para>
         <para>To use a row details group with a Uif-TableCollectionSection (or variation of) you setup the following
           properties on its
@@ -2609,6 +2854,54 @@
           content you would like to use for the content of details. The input and data fields used
           in this group will automatically inherit the necessary collection binding path just like
           items of the collection itself
+        </para>
+        <para>RowDetailsGroup which contains fields (note that both fields, field3 and field4 are
+          part of line's object since the path is automatically
+          adjusted):
+          <programlisting>&lt;property name="layoutManager.rowDetailsGroup">
+            &lt;bean parent="Uif-VerticalBoxGroup">
+            &lt;property name="items">
+            &lt;list>
+            &lt;bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"
+            p:required="true"/>
+            &lt;bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4" p:progressiveRender="false"
+            p:required="true"/>
+            &lt;/list>
+            &lt;/property>
+            &lt;/bean>
+            &lt;/property>
+          </programlisting>
+        </para>
+        <para>RowDetailsGroup which contains an input field and a subcollection (again no need to
+          adjust the binding path, this subcollection is a subcollection of the line's
+          object):
+          <programlisting>&lt;property name="layoutManager.rowDetailsGroup">
+            &lt;bean parent="Uif-VerticalBoxGroup">
+            &lt;property name="items">
+            &lt;list>
+            &lt;bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"
+            p:required="true"/>
+            &lt;bean parent="Uif-StackedSubCollection-WithinSection">
+            &lt;property name="propertyName" value="subList"/>
+            &lt;property name="headerText" value="SubCollection"/>
+            &lt;property name="collectionObjectClass"
+            value="edu.sampleu.demo.kitchensink.UITestObject"/>
+            &lt;property name="readOnly" value="true"/>
+            &lt;property name="items">
+            &lt;list>
+            &lt;bean parent="Uif-InputField" p:propertyName="field1" p:label="SubField 1"
+            p:required="true"/>
+            &lt;bean parent="Uif-InputField" p:propertyName="field2" p:label="SubField 2"
+            p:required="true">
+            &lt;/bean>
+            &lt;/list>
+            &lt;/property>
+            &lt;/bean>
+            &lt;/list>
+            &lt;/property>
+            &lt;/bean>
+            &lt;/property>
+          </programlisting>
         </para>
         <para>
           <emphasis role="bold">A note on column width:</emphasis>

@@ -277,6 +277,68 @@ class DictionaryConverterTest {
     }
 
     @Test
+    public void testTransformMaintainableSectionsProperty() {
+        String inquiryDefPath = dictTestDir + "MaintenanceDefinitionSample.xml"
+        def ddRootNode = getFileRootNode(inquiryDefPath);
+        def beanNode = ddRootNode.bean.find { "MaintenanceDocumentEntry".equals(it.@parent) };
+        Node resultNode = beanNode.replaceNode {
+            bean(parent: "Uif-MaintenanceView") {
+                dictionaryConverter.transformMaintainableSectionsProperty(delegate, beanNode)
+            }
+        }
+
+        checkBeanPropertyExists(resultNode, "items");
+        def refSize = resultNode.property.list.ref.size();
+        Assert.assertEquals("number of copied references", 1, refSize)
+        def sectionSize = resultNode.property.list.bean.findAll { ["Uif-MaintenanceGridSection", "Uif-MaintenanceStackedCollectionSection"].contains(it.@parent) }.size();
+        Assert.assertEquals("number of converted section definitions", 1, sectionSize);
+        ;
+    }
+
+    /**
+     * Tests conversion of lookup definition's result fields into appropriate property
+     *
+     */
+    @Test
+    public void testTransformMaintainableItemsProperty() {
+        String lookupDefFilePath = dictTestDir + "MaintenanceDefinitionSample.xml"
+        def ddRootNode = getFileRootNode(lookupDefFilePath);
+        def beanNode = ddRootNode.bean.find { "MaintainableSectionDefinition".equals(it.@parent) };
+
+        beanNode = beanNode.replaceNode {
+            bean(parent: "Uif-MaintenanceGridSection") {
+                dictionaryConverter.transformMaintainableItemsProperty(delegate, beanNode);
+            }
+        }
+
+        // confirm lookup fields has been replaced with criteria fields
+        checkBeanPropertyExists(beanNode, "layoutManager.summaryFields");
+        def resultsFieldProperty = beanNode.property.find { "layoutManager.summaryFields".equals(it.@name) };
+        def attrFieldSize = resultsFieldProperty.list.bean.findAll { "AttributeField".equals(it.@parent) }.size();
+        Assert.assertEquals("number of converted data fields did not match", 3, attrFieldSize);
+    }
+
+    /**
+     * Tests conversion of lookup definition's result fields into appropriate property
+     *
+     */
+    @Test
+    public void testTransformMaintainableFieldsProperty() {
+        String lookupDefFilePath = dictTestDir + "MaintenanceDefinitionSample.xml"
+        def ddRootNode = getFileRootNode(lookupDefFilePath);
+        def beanNode = ddRootNode.bean.property.list.bean.find { "MaintainableSectionDefinition".equals(it.@parent) };
+        beanNode = beanNode.replaceNode {
+            bean(parent: "Uif-MaintenanceGridSection") {
+                dictionaryConverter.transformMaintainableFieldsProperty(delegate, beanNode);
+            }
+        }
+
+        def resultsFieldProperty = beanNode.property.find { "items".equals(it.@name) };
+        def attrFieldSize = resultsFieldProperty.list.bean.findAll { "AttributeField".equals(it.@parent) }.size();
+        Assert.assertEquals("number of converted attribute fields", 2, attrFieldSize);
+    }
+
+    @Test
     void testTransformMaintenanceDocumentEntryBean() {
         String maintDefFilePath = dictTestDir + "MaintenanceDefinitionSample.xml"
         def ddRootNode = getFileRootNode(maintDefFilePath)

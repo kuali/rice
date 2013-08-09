@@ -25,6 +25,7 @@ import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
+import org.kuali.rice.krad.datadictionary.mask.MaskFormatterLiteral;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validation.ValidationPattern;
@@ -417,8 +418,8 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     @Override
     public void dataDictionaryPostProcessing() {
         super.dataDictionaryPostProcessing();
-        if ( attributeSecurity != null ) {
-            attributeSecurity.dataDictionaryPostProcessing();
+        if ( getAttributeSecurity() != null ) {
+            getAttributeSecurity().dataDictionaryPostProcessing();
         }
     }
 
@@ -491,23 +492,30 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
         }
     }
 
-    /**
-     * @return the attributeSecurity
-     */
     @BeanTagAttribute(name = "attributeSecurity", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public AttributeSecurity getAttributeSecurity() {
-        return this.attributeSecurity;
+        if ( attributeSecurity != null ) {
+            return attributeSecurity;
+        }
+        // If we have an embedded attribute definition and this attribute is
+        // listed as "sensitive", then set the field to be masked by default on the UI
+        if ( getDataObjectAttribute() != null ) {
+            if ( getDataObjectAttribute().isSensitive() ) {
+                AttributeSecurity attrSec = new AttributeSecurity();
+                attrSec.setMask(true);
+                attrSec.setMaskFormatter(new MaskFormatterLiteral());
+                attributeSecurity = attrSec;
+            }
+        }
+        return attributeSecurity;
     }
 
-    /**
-     * @param attributeSecurity the attributeSecurity to set
-     */
     public void setAttributeSecurity(AttributeSecurity attributeSecurity) {
         this.attributeSecurity = attributeSecurity;
     }
 
     public boolean hasAttributeSecurity() {
-        return (attributeSecurity != null);
+        return (getAttributeSecurity() != null);
     }
 
     /**

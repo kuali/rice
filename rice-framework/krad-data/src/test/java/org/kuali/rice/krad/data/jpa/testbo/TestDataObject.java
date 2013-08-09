@@ -52,7 +52,7 @@ import org.kuali.rice.krad.data.provider.annotation.InheritProperties;
 import org.kuali.rice.krad.data.provider.annotation.InheritProperty;
 import org.kuali.rice.krad.data.provider.annotation.Label;
 import org.kuali.rice.krad.data.provider.annotation.NonPersistentProperty;
-import org.kuali.rice.krad.data.provider.annotation.Security;
+import org.kuali.rice.krad.data.provider.annotation.ReadOnly;
 
 @Entity
 @Table(name = "KRTST_TEST_TABLE_T")
@@ -103,8 +103,7 @@ public class TestDataObject implements Serializable {
 
 	@Column(
 			name = "RO_PROP")
-	@Security(
-			readOnly = true)
+	@ReadOnly
 	String readOnlyProperty;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

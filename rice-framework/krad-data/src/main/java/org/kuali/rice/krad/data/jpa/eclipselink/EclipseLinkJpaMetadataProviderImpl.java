@@ -43,6 +43,7 @@ import org.eclipse.persistence.mappings.OneToOneMapping;
 import org.eclipse.persistence.mappings.converters.Converter;
 import org.eclipse.persistence.mappings.converters.ConverterClass;
 import org.eclipse.persistence.queries.ObjectLevelReadQuery;
+import org.kuali.rice.krad.data.jpa.JpaMetadataProviderImpl;
 import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
 import org.kuali.rice.krad.data.metadata.DataObjectCollectionSortAttribute;
 import org.kuali.rice.krad.data.metadata.SortDirection;
@@ -52,9 +53,6 @@ import org.kuali.rice.krad.data.metadata.impl.DataObjectCollectionImpl;
 import org.kuali.rice.krad.data.metadata.impl.DataObjectCollectionSortAttributeImpl;
 import org.kuali.rice.krad.data.metadata.impl.DataObjectMetadataImpl;
 import org.kuali.rice.krad.data.metadata.impl.DataObjectRelationshipImpl;
-import org.kuali.rice.krad.data.metadata.impl.security.DataObjectAttributeMaskFormatterLiteral;
-import org.kuali.rice.krad.data.metadata.impl.security.DataObjectAttributeSecurityImpl;
-import org.kuali.rice.krad.data.jpa.JpaMetadataProviderImpl;
 
 public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
@@ -95,10 +93,7 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
 							f.setAccessible(true);
 							String attributeConverterClassName = (String) f.get(converter);
 							if (StringUtils.containsIgnoreCase(attributeConverterClassName, "encrypt")) {
-								DataObjectAttributeSecurityImpl attributeSecurity = new DataObjectAttributeSecurityImpl();
-								attributeSecurity.setMask(true);
-								attributeSecurity.setMaskFormatter(new DataObjectAttributeMaskFormatterLiteral());
-								attribute.setAttributeSecurity(attributeSecurity);
+								attribute.setSensitive(true);
 							}
 						} catch (Exception e) {
 							LOG.warn("Unable to access the converter name for attribute: "

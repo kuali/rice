@@ -33,6 +33,11 @@ import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.kuali.rice.krad.data.jpa.eclipselink.EclipseLinkJpaMetadataProviderImpl;
+import org.kuali.rice.krad.data.jpa.testbo.ReferencedDataObject;
+import org.kuali.rice.krad.data.jpa.testbo.SomeOtherCollection;
+import org.kuali.rice.krad.data.jpa.testbo.TestDataObject;
+import org.kuali.rice.krad.data.jpa.testbo.TestDataObjectExtension;
 import org.kuali.rice.krad.data.metadata.DataObjectAttribute;
 import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
 import org.kuali.rice.krad.data.metadata.DataObjectCollection;
@@ -40,11 +45,6 @@ import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
 import org.kuali.rice.krad.data.provider.MetadataProvider;
 import org.kuali.rice.krad.data.provider.impl.CompositeMetadataProviderImpl;
-import org.kuali.rice.krad.data.jpa.eclipselink.EclipseLinkJpaMetadataProviderImpl;
-import org.kuali.rice.krad.data.jpa.testbo.ReferencedDataObject;
-import org.kuali.rice.krad.data.jpa.testbo.SomeOtherCollection;
-import org.kuali.rice.krad.data.jpa.testbo.TestDataObject;
-import org.kuali.rice.krad.data.jpa.testbo.TestDataObjectExtension;
 
 public class AnnotationMetadataProviderImplTest {
 
@@ -197,8 +197,7 @@ public class AnnotationMetadataProviderImplTest {
 		DataObjectAttribute attr = metadata.getAttribute(propName);
 		assertNotNull("getAttribute(" + propName + ") should not have returned null", attr);
 		assertTrue("Attribute should have isInherited", attr.isInherited());
-		assertEquals("Inherited data object type not set", ReferencedDataObject.class,
- attr.getInheritedFromType());
+		assertEquals("Inherited data object type not set", ReferencedDataObject.class, attr.getInheritedFromType());
 		assertEquals("Inherited data object attribute not set", "someOtherStringProperty",
 				attr.getInheritedFromAttributeName());
 		assertEquals("Label incorrect", "RDOs Business Key", attr.getLabel());
@@ -217,16 +216,13 @@ public class AnnotationMetadataProviderImplTest {
 	}
 
 	@Test
-	public void testSecurityAnnotation() {
+	public void testReadOnlyAnnotation() {
 		DataObjectMetadata metadata = compositeProvider.provideMetadata().get(
 				TestDataObject.class);
 		assertNotNull("Metadata should have been retrieved for TestDataObject", metadata);
 		assertNotNull("getAttribute(readOnlyProperty) should not have returned null",
 				metadata.getAttribute("readOnlyProperty"));
-		assertNotNull("missing AttributeSecurity", metadata.getAttribute("readOnlyProperty")
-				.getAttributeSecurity());
-		assertEquals("readonly flag not set", true, metadata.getAttribute("readOnlyProperty")
-				.getAttributeSecurity().isReadOnly() );
+		assertEquals("readonly flag not set", true, metadata.getAttribute("readOnlyProperty").isReadOnly());
 	}
 
 	@Test

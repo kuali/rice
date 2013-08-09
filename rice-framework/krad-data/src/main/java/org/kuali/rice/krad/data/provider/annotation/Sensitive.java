@@ -13,23 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.data.metadata.impl.security;
+package org.kuali.rice.krad.data.provider.annotation;
 
-import java.io.Serializable;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Defines interface for a class that mask data values
- *
- * @author Kuali Rice Team (rice.collab@kuali.org)
+ * Indicates that the attribute contents could be sensitive and should be protected (masked) by default when included in
+ * user interfaces.
  */
-public interface DataObjectAttributeMaskFormatter extends Serializable {
-
-    /**
-     * Takes in the real data value and returns a masked string.
-     *
-     * @param value - data value
-     * @return String - masked value
-     */
-    public String maskValue(Object value);
-
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface Sensitive {
 }

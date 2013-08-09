@@ -47,7 +47,6 @@ import org.kuali.rice.krad.data.metadata.impl.DataObjectCollectionSortAttributeI
 import org.kuali.rice.krad.data.metadata.impl.DataObjectMetadataImpl;
 import org.kuali.rice.krad.data.metadata.impl.DataObjectRelationshipImpl;
 import org.kuali.rice.krad.data.metadata.impl.MetadataCommonBase;
-import org.kuali.rice.krad.data.metadata.impl.security.DataObjectAttributeSecurityImpl;
 import org.kuali.rice.krad.data.provider.annotation.AttributeRelationship;
 import org.kuali.rice.krad.data.provider.annotation.BusinessKey;
 import org.kuali.rice.krad.data.provider.annotation.CollectionRelationship;
@@ -61,10 +60,9 @@ import org.kuali.rice.krad.data.provider.annotation.Label;
 import org.kuali.rice.krad.data.provider.annotation.MergeAction;
 import org.kuali.rice.krad.data.provider.annotation.NonPersistentProperty;
 import org.kuali.rice.krad.data.provider.annotation.PropertyEditorClass;
+import org.kuali.rice.krad.data.provider.annotation.Sensitive;
 import org.kuali.rice.krad.data.provider.annotation.ReadOnly;
 import org.kuali.rice.krad.data.provider.annotation.Relationship;
-import org.kuali.rice.krad.data.provider.annotation.Security;
-import org.kuali.rice.krad.data.provider.annotation.Security.NullMaskFormatter;
 import org.kuali.rice.krad.data.provider.annotation.ShortLabel;
 import org.kuali.rice.krad.data.provider.annotation.ValidCharactersConstraintBeanName;
 import org.kuali.rice.krad.data.provider.impl.MetadataProviderBase;
@@ -411,32 +409,8 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 				return true;
 			}
 		}
-		if (a instanceof Security) {
-			DataObjectAttributeSecurityImpl security = new DataObjectAttributeSecurityImpl();
-			security.setReadOnly(((Security) a).readOnly());
-			security.setMask(((Security) a).mask());
-			security.setPartialMask(((Security) a).partialMask());
-			security.setHide(((Security) a).hidden());
-			try {
-				if (((Security) a).maskFormatter() != null
-						&& !((Security) a).maskFormatter().equals(NullMaskFormatter.class)) {
-					security.setMaskFormatter(((Security) a).maskFormatter().newInstance());
-				}
-			} catch (Exception ex) {
-				LOG.warn("Unable to instantiate mask formatter class for " + metadata.getTypeClassName()
-						+ "." + attr.getName() + " : " + ((Security) a).maskFormatter());
-			}
-			try {
-				if (((Security) a).partialMaskFormatter() != null
-						&& !((Security) a).partialMaskFormatter().equals(NullMaskFormatter.class)) {
-					security.setPartialMaskFormatter(((Security) a).partialMaskFormatter().newInstance());
-				}
-			} catch (Exception ex) {
-				LOG.warn("Unable to instantiate mask formatter class for " + metadata.getTypeClassName()
-						+ "." + attr.getName() + " : " + ((Security) a).partialMaskFormatter());
-			}
-			attr.setAttributeSecurity(security);
-			return true;
+		if (a instanceof Sensitive) {
+			attr.setSensitive(true);
 		}
 		if (a instanceof MergeAction) {
 			MetadataMergeAction mma = ((MergeAction) a).value();

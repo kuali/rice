@@ -71,9 +71,10 @@ public interface DataObjectAttribute extends MetadataCommon {
 	PropertyEditor getPropertyEditor();
 
 	/**
-	 * Specify any security attributes which should apply to this attribute. (hidden/read only/masked)
+	 * Whether this attribute is protected at the persistence level and should be protected by default when included on
+	 * user interfaces.
 	 */
-	DataObjectAttributeSecurity getAttributeSecurity();
+	boolean isSensitive();
 
 	/**
 	 * If this field should be rendered using a drop-down list, specify the instance on this property.

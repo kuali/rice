@@ -15,27 +15,27 @@
  */
 package org.kuali.rice.krad.data.jpa;
 
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kuali.rice.core.api.data.DataType;
-import org.kuali.rice.krad.data.metadata.DataObjectAttribute;
-import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
-import org.kuali.rice.krad.data.metadata.DataObjectCollection;
-import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
-import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
-import org.kuali.rice.krad.data.metadata.impl.security.DataObjectAttributeMaskFormatterLiteral;
 import org.kuali.rice.krad.data.jpa.eclipselink.EclipseLinkJpaMetadataProviderImpl;
 import org.kuali.rice.krad.data.jpa.testbo.CollectionDataObject;
 import org.kuali.rice.krad.data.jpa.testbo.TestDataObject;
 import org.kuali.rice.krad.data.jpa.testbo.TestDataObjectTwoPkFields;
 import org.kuali.rice.krad.data.jpa.testbo.TestNonPersistableObject;
-
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import java.util.List;
-import java.util.Map;
+import org.kuali.rice.krad.data.metadata.DataObjectAttribute;
+import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
+import org.kuali.rice.krad.data.metadata.DataObjectCollection;
+import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
+import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
 
 public class JpaMetadataProviderTest {
 	static EclipseLinkJpaMetadataProviderImpl metadataProvider;
@@ -454,13 +454,6 @@ public class JpaMetadataProviderTest {
 		DataObjectAttribute attribute = metadata.getAttribute("encryptedProperty");
 
 		Assert.assertNotNull("encryptedProperty Missing", attribute);
-		Assert.assertNotNull("attribute security missing on encryptedProperty", attribute.getAttributeSecurity());
-		System.err.println(attribute.getAttributeSecurity());
-		Assert.assertEquals("attribute security not indicating a full mask", true, attribute.getAttributeSecurity()
-				.isMask());
-		Assert.assertNotNull("attribute security does not have a mask formatter", attribute.getAttributeSecurity()
-				.getMaskFormatter());
-		Assert.assertEquals("attribute security mask formatter should have been a MaskFormatterLiteral",
-				DataObjectAttributeMaskFormatterLiteral.class, attribute.getAttributeSecurity().getMaskFormatter().getClass());
+		Assert.assertTrue("sensitive property not set on encryptedProperty", attribute.isSensitive());
 	}
 }

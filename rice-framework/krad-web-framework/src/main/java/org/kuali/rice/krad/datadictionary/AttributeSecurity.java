@@ -189,7 +189,7 @@ public class AttributeSecurity extends UifDictionaryBeanBase {
             copiedClass = (T)this.getClass().newInstance();
         }
         catch(Exception exception) {
-            throw new RuntimeException();
+            throw new RuntimeException(exception);
         }
 
         copyProperties(copiedClass);
@@ -211,5 +211,20 @@ public class AttributeSecurity extends UifDictionaryBeanBase {
         attributeSecurityCopy.setReadOnly(this.readOnly);
         attributeSecurityCopy.setMaskFormatter(this.maskFormatter);
         attributeSecurityCopy.setPartialMaskFormatter(this.partialMaskFormatter);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("DataObjectAttributeSecurityBase [readOnly=").append(readOnly).append(", hide=").append(hide)
+                .append(", mask=").append(mask).append(", partialMask=").append(partialMask).append(", ");
+        if (maskFormatter != null) {
+            builder.append("maskFormatter=").append(maskFormatter).append(", ");
+        }
+        if (partialMaskFormatter != null) {
+            builder.append("partialMaskFormatter=").append(partialMaskFormatter);
+        }
+        builder.append("]");
+        return builder.toString();
     }
 }

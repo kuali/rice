@@ -20,7 +20,6 @@ import java.beans.PropertyEditor;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.krad.data.metadata.DataObjectAttribute;
-import org.kuali.rice.krad.data.metadata.DataObjectAttributeSecurity;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 
 /**
@@ -53,12 +52,12 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 	protected Boolean caseInsensitive;
 	protected Boolean required;
 	protected Boolean persisted;
+	protected Boolean sensitive;
 	protected Long maxLength;
 	protected Long minLength;
 	protected String validCharactersConstraintBeanName;
 
 	protected PropertyEditor propertyEditor;
-	protected DataObjectAttributeSecurity attributeSecurity;
 	protected KeyValuesFinder validValues;
 	protected DataType dataType = DataType.STRING;
 	protected Class<?> type = String.class;
@@ -108,19 +107,6 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 
 	public void setPropertyEditor(PropertyEditor propertyEditor) {
 		this.propertyEditor = propertyEditor;
-	}
-	@Override
-	public DataObjectAttributeSecurity getAttributeSecurity() {
-		if (attributeSecurity != null) {
-			return attributeSecurity;
-		}
-		if (embeddedAttribute != null) {
-			return embeddedAttribute.getAttributeSecurity();
-		}
-		return null;
-	}
-	public void setAttributeSecurity(DataObjectAttributeSecurity attributeSecurity) {
-		this.attributeSecurity = attributeSecurity;
 	}
 	@Override
 	public KeyValuesFinder getValidValues() {
@@ -173,8 +159,8 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		if (propertyEditor != null) {
 			builder.append(", ").append("propertyEditor=").append(propertyEditor);
 		}
-		if (attributeSecurity != null) {
-			builder.append(", ").append("attributeSecurity=").append(attributeSecurity);
+		if (sensitive) {
+			builder.append(", ").append("sensitive=").append(sensitive);
 		}
 		if (validValues != null) {
 			builder.append(", ").append("validValues=").append(validValues);
@@ -347,5 +333,20 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 
 	public void setMinLength(Long minLength) {
 		this.minLength = minLength;
+	}
+
+	@Override
+	public boolean isSensitive() {
+		if (sensitive != null) {
+			return sensitive;
+		}
+		if (sensitive != null) {
+			return embeddedAttribute.isSensitive();
+		}
+		return false;
+	}
+
+	public void setSensitive(boolean sensitive) {
+		this.sensitive = sensitive;
 	}
 }

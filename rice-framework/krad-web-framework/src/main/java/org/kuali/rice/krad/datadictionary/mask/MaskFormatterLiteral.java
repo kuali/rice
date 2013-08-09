@@ -29,8 +29,9 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 public class MaskFormatterLiteral implements MaskFormatter {
     private static final long serialVersionUID = 3368293409242411693L;
 
-    protected String literal;
+    protected String literal = "********";
 
+    @Override
     public String maskValue(Object value) {
         return literal;
     }
@@ -50,6 +51,17 @@ public class MaskFormatterLiteral implements MaskFormatter {
      */
     public void setLiteral(String literal) {
         this.literal = literal;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("MaskFormatterLiteral [");
+        if (literal != null) {
+            builder.append("literal=").append(literal);
+        }
+        builder.append("]");
+        return builder.toString();
     }
 
 }

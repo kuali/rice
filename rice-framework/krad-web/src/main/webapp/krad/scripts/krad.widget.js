@@ -1061,9 +1061,11 @@ function createCopyToClipboard(componentId, copyTriggerId, contentElementId, sho
         // Do not add flash to hidden syntax highlighters as this causes exception
         if (jQuery("#" + componentId).is(':visible')) {
 
-            // setup new client for this component
+            // setup new client for this
+            //KULRICE-10007 swf file needs to be unique in order to avoid caching.
+            var d = new Date();
             ZeroClipboard.setMoviePath(getConfigParam(kradVariables.APPLICATION_URL)
-                    + '/plugins/datatables/copy_cvs_xls_pdf.swf');
+                    + '/plugins/datatables/copy_cvs_xls_pdf.swf?bogus=' + d.getTime());
             var clip = new ZeroClipboard.Client();
 
             // copy text on mousedown

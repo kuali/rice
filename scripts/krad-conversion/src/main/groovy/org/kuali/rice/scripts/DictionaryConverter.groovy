@@ -522,14 +522,14 @@ class DictionaryConverter {
             builder.bean(parent: 'Uif-StackedCollectionSection') {
                 copyProperties(delegate, beanNode, ["title", "collectionObjectClass", "propertyName"])
                 renameProperties(delegate, beanNode, ["numberOfColumns": "layoutManager.numberOfColumns"]);
-                transformMaintainableElementsProperty(delegate, innerbeanNode, "maintainableItems")
+                transformMaintainableElementsProperty(delegate, beanNode, "maintainableItems")
             }
         } else {
             builder.bean(parent: 'Uif-MaintenanceStackedCollectionSection') {
                 // rename properties for title, # of columns
                 copyProperties(delegate, beanNode, ["title", "collectionObjectClass", "propertyName"]);
                 renameProperties(delegate, beanNode, ["title": "headerText", "businessObjectClass": "collectionObjectClass"]);
-                transformMaintainableElementsProperty(delegate, innerbeanNode, "maintainableFields")
+                transformMaintainableElementsProperty(delegate, beanNode, "maintainableFields")
 
             }
         }

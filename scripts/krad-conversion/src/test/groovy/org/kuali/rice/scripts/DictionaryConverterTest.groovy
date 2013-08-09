@@ -17,6 +17,7 @@ package org.kuali.rice.scripts
 
 import groovy.util.logging.Log
 import groovy.xml.XmlUtil
+import org.apache.commons.lang.StringUtils
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -124,8 +125,10 @@ class DictionaryConverterTest {
             Assert.fail("exception occurred in testing")
         }
 
-        log.info "result for transforming attribute definition entry - " + getNodeString(resultNode);
+
         checkBeanPropertyExists(resultNode, "validCharactersConstraint");
+        def constraintProperty = resultNode.property.find { "validCharactersConstraint".equals(it.@name) };
+        Assert.assertTrue("constraint bean not converted", "NumericPatternConstraint".equals(constraintProperty.bean[0].@parent));
     }
 
 
@@ -208,7 +211,6 @@ class DictionaryConverterTest {
     public void testTransformResultFieldsProperties() {
         String lookupDefFilePath = dictTestDir + "LookupDefinitionSample.xml"
         def ddRootNode = getFileRootNode(lookupDefFilePath);
-        log.info "processing " + getNodeString(ddRootNode);
         def beanNode = ddRootNode.bean.find { "LookupDefinition".equals(it.@parent) };
         String parentName = beanNode.@parent;
         beanNode = beanNode.replaceNode {
@@ -229,8 +231,9 @@ class DictionaryConverterTest {
     @Test
     public void testIsBeanTransformable() {
         // test lookup definition bean
-        Assert.assertTrue("bean method not found", dictionaryConverter.isBeanTransformable("LookupDefinition"));
-        Assert.assertTrue("bean method not found but returned true", !dictionaryConverter.isBeanTransformable("LookupDefinition2"));
+        Assert.assertTrue("inquiry definition should be transformable", dictionaryConverter.isBeanTransformable("InquiryDefinition"));
+        Assert.assertTrue("lookup definition should be transformable", dictionaryConverter.isBeanTransformable("LookupDefinition"));
+        Assert.assertTrue("inquiry definition should not be transformable", !dictionaryConverter.isBeanTransformable("LookupDefinition2"));
     }
 
     @Test
@@ -254,6 +257,22 @@ class DictionaryConverterTest {
         dictionaryConverter.definitionDataObjects.put("TravelerDetail-lookupDefinition", "org.kuali.rice.krad.demo.travel.authorization.dataobject.TravelerDetail");
         dictionaryConverter.transformInquiryDefinitionBean(beanNode);
         checkBeanParentExists(ddRootNode, "Uif-InquiryView");
+
+    }
+
+    @Test
+    public void testTransformInquirySectionsProperty() {
+        String inquiryDefPath = dictTestDir + "InquiryDefinitionSample.xml"
+        def ddRootNode = getFileRootNode(inquiryDefPath);
+        def beanNode = ddRootNode.bean.find { "InquiryDefinition".equals(it.@parent) };
+        String parentName = beanNode.@parent;
+        dictionaryConverter.definitionDataObjects.put("TravelerDetail-lookupDefinition", "org.kuali.rice.krad.demo.travel.authorization.dataobject.TravelerDetail");
+        Node resultNode = beanNode.replaceNode {
+            bean(parent: "Uif-InquiryView") {
+                dictionaryConverter.transformInquirySectionsProperty(delegate, beanNode)
+            }
+        };
+        checkBeanPropertyExists(resultNode, "items");
 
     }
 

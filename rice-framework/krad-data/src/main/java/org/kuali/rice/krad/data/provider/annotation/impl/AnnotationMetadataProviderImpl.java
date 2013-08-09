@@ -111,6 +111,7 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 			}
 			boolean annotationsFound = false;
 			DataObjectMetadataImpl metadata = new DataObjectMetadataImpl();
+			metadata.setProviderName(this.getClass().getSimpleName());
 			metadata.setType(type);
 			// check for class level annotations
 			annotationsFound |= processClassLevelAnnotations(type, metadata);

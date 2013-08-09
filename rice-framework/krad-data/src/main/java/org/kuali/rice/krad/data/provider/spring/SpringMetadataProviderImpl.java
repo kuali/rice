@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.krad.data.provider.spring;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.metadata.impl.DataObjectMetadataImpl;
@@ -22,10 +26,6 @@ import org.kuali.rice.krad.data.provider.impl.MetadataProviderBase;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.DefaultResourceLoader;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Metadata provider which can be configured via the standard spring mechanisms. The bean locations are listed as part
@@ -72,7 +72,7 @@ public class SpringMetadataProviderImpl extends MetadataProviderBase {
 		for (DataObjectMetadata metadata : metadataObjects.values()) {
 			if (metadata.getType() != null) {
 				if (metadata instanceof DataObjectMetadataImpl) {
-					((DataObjectMetadataImpl) metadata).setProvider(this);
+					((DataObjectMetadataImpl) metadata).setProviderName(this.getClass().getSimpleName());
 				}
 				masterMetadataMap.put(metadata.getType(), metadata);
 			} else {

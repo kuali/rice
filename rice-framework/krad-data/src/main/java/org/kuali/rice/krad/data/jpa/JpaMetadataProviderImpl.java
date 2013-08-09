@@ -128,7 +128,7 @@ public abstract class JpaMetadataProviderImpl extends MetadataProviderBase imple
 	public DataObjectMetadata getMetadataForClass(Class<?> persistableClass) {
 		DataObjectMetadataImpl metadata = new DataObjectMetadataImpl();
 		EntityType<?> entityType = entityManager.getMetamodel().entity(persistableClass);
-		metadata.setProvider(this);
+		metadata.setProviderName(this.getClass().getSimpleName());
 		metadata.setType(persistableClass);
 		metadata.setName(persistableClass.getSimpleName());
 		metadata.setReadOnly(false);

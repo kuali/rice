@@ -27,7 +27,6 @@ import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
 import org.kuali.rice.krad.data.metadata.DataObjectCollection;
 import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
 import org.kuali.rice.krad.data.metadata.MetadataMergeAction;
-import org.kuali.rice.krad.data.provider.MetadataProvider;
 
 /**
  * Base implementation class for the metadata related to the data object as a whole.
@@ -45,7 +44,7 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 	 * 
 	 * It is used in the toString() method so you can determine from which provider this metadata was extracted.
 	 */
-	protected transient MetadataProvider provider;
+	protected String providerName;
 
 	protected Class<?> type;
 
@@ -423,7 +422,7 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 				}
 			}
 		}
-		return new ArrayList(relationships.values());
+		return new ArrayList<DataObjectRelationship>(relationships.values());
 	}
 
 	@Override
@@ -459,12 +458,12 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 	 * Helper property to allow identification of the source of metadata. Value is transient, so it will not survive
 	 * serialization.
 	 */
-	public MetadataProvider getProvider() {
-		return provider;
+	public String getProviderName() {
+		return providerName;
 	}
 
-	public void setProvider(MetadataProvider provider) {
-		this.provider = provider;
+	public void setProviderName(String providerName) {
+		this.providerName = providerName;
 	}
 
 	@Override
@@ -492,8 +491,8 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		if (!getRelationships().isEmpty()) {
 			builder.append(", ").append("relationships=").append(relationships);
 		}
-		if (provider != null) {
-			builder.append(", ").append("provider=").append(provider.getClass().getName());
+		if (providerName != null) {
+			builder.append(", ").append("providerName=").append(providerName);
 		}
 		if (embedded != null) {
 			builder.append(", ").append("mergeAction=").append(mergeAction);

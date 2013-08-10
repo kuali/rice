@@ -1988,7 +1988,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @param headerLabels
      */
-    public void setHeaderLabels(List<Label> headerLabels) {
+    protected void setHeaderLabels(List<Label> headerLabels) {
         this.headerLabels = headerLabels;
     }
 
@@ -1997,7 +1997,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @param allRowFields
      */
-    public void setAllRowFields(List<Field> allRowFields) {
+    protected void setAllRowFields(List<Field> allRowFields) {
         this.allRowFields = allRowFields;
     }
 
@@ -2006,7 +2006,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @param firstRowFields
      */
-    public void setFirstRowFields(List<Field> firstRowFields) {
+    protected void setFirstRowFields(List<Field> firstRowFields) {
         this.firstRowFields = firstRowFields;
     }
 
@@ -2015,7 +2015,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @param headerAdded
      */
-    public void setHeaderAdded(boolean headerAdded) {
+    protected void setHeaderAdded(boolean headerAdded) {
         this.headerAdded = headerAdded;
     }
 
@@ -2024,7 +2024,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @param actionColumnIndex
      */
-    public void setActionColumnIndex(int actionColumnIndex) {
+    protected void setActionColumnIndex(int actionColumnIndex) {
         this.actionColumnIndex = actionColumnIndex;
     }
 
@@ -2033,7 +2033,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @param groupingColumnIndex
      */
-    public void setGroupingColumnIndex(int groupingColumnIndex) {
+    protected void setGroupingColumnIndex(int groupingColumnIndex) {
         this.groupingColumnIndex = groupingColumnIndex;
     }
 
@@ -2042,7 +2042,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @param generateGroupTotalRows
      */
-    public void setGenerateGroupTotalRows(boolean generateGroupTotalRows) {
+    protected void setGenerateGroupTotalRows(boolean generateGroupTotalRows) {
         this.generateGroupTotalRows = generateGroupTotalRows;
     }
 
@@ -2051,7 +2051,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @param columnsToCalculate
      */
-    public void setColumnsToCalculate(List<String> columnsToCalculate) {
+    protected void setColumnsToCalculate(List<String> columnsToCalculate) {
         this.columnsToCalculate = columnsToCalculate;
     }
 
@@ -2060,7 +2060,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @param footerCalculationComponents
      */
-    public void setFooterCalculationComponents(List<Component> footerCalculationComponents) {
+    protected void setFooterCalculationComponents(List<Component> footerCalculationComponents) {
         this.footerCalculationComponents = footerCalculationComponents;
     }
 
@@ -2096,37 +2096,37 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     protected <T> void copyProperties(T layoutManager) {
         super.copyProperties(layoutManager);
         TableLayoutManager tableLayoutManagerCopy = (TableLayoutManager) layoutManager;
-        tableLayoutManagerCopy.setUseShortLabels(this.isUseShortLabels());
-        tableLayoutManagerCopy.setRepeatHeader(this.isRepeatHeader());
+        tableLayoutManagerCopy.setUseShortLabels(this.useShortLabels);
+        tableLayoutManagerCopy.setRepeatHeader(this.repeatHeader);
 
         if (this.headerLabelPrototype != null) {
-            tableLayoutManagerCopy.setHeaderLabelPrototype((Label) this.getHeaderLabelPrototype().copy());
+            tableLayoutManagerCopy.setHeaderLabelPrototype((Label) this.headerLabelPrototype.copy());
         }
 
-        tableLayoutManagerCopy.setRenderSequenceField(this.isRenderSequenceField());
-        tableLayoutManagerCopy.setGenerateAutoSequence(this.isGenerateAutoSequence());
+        tableLayoutManagerCopy.setRenderSequenceField(this.renderSequenceField);
+        tableLayoutManagerCopy.setGenerateAutoSequence(this.generateAutoSequence);
 
         if (this.sequenceFieldPrototype != null) {
-            tableLayoutManagerCopy.setSequenceFieldPrototype((Field) this.getSequenceFieldPrototype().copy());
+            tableLayoutManagerCopy.setSequenceFieldPrototype((Field) this.sequenceFieldPrototype.copy());
         }
 
         if (this.actionFieldPrototype != null) {
-            tableLayoutManagerCopy.setActionFieldPrototype((FieldGroup) this.getActionFieldPrototype().copy());
+            tableLayoutManagerCopy.setActionFieldPrototype((FieldGroup) this.actionFieldPrototype.copy());
         }
 
         if (this.subCollectionFieldGroupPrototype != null) {
             tableLayoutManagerCopy.setSubCollectionFieldGroupPrototype(
-                    (FieldGroup) this.getSubCollectionFieldGroupPrototype().copy());
+                    (FieldGroup) this.subCollectionFieldGroupPrototype.copy());
         }
 
         if (this.selectFieldPrototype != null) {
-            tableLayoutManagerCopy.setSelectFieldPrototype((Field) this.getSelectFieldPrototype().copy());
+            tableLayoutManagerCopy.setSelectFieldPrototype((Field) this.selectFieldPrototype.copy());
         }
 
-        tableLayoutManagerCopy.setSeparateAddLine(this.isSeparateAddLine());
+        tableLayoutManagerCopy.setSeparateAddLine(this.separateAddLine);
 
         if (this.addLineGroup != null) {
-            tableLayoutManagerCopy.setAddLineGroup((Group) this.getAddLineGroup().copy());
+            tableLayoutManagerCopy.setAddLineGroup((Group) this.addLineGroup.copy());
         }
 
         if (this.headerLabels != null) {
@@ -2160,54 +2160,53 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         }
 
         if (this.richTable != null) {
-            tableLayoutManagerCopy.setRichTable((RichTable) this.getRichTable().copy());
+            tableLayoutManagerCopy.setRichTable((RichTable) this.richTable.copy());
         }
 
         tableLayoutManagerCopy.setHeaderAdded(this.headerAdded);
-        tableLayoutManagerCopy.setActionColumnIndex(this.getActionColumnIndex());
+        tableLayoutManagerCopy.setActionColumnIndex(this.actionColumnIndex);
 
         if (this.rowDetailsGroup != null) {
-            tableLayoutManagerCopy.setRowDetailsGroup((Group) this.getRowDetailsGroup().copy());
+            tableLayoutManagerCopy.setRowDetailsGroup((Group) this.rowDetailsGroup.copy());
         }
 
-        tableLayoutManagerCopy.setRowDetailsOpen(this.isRowDetailsOpen());
-        tableLayoutManagerCopy.setShowToggleAllDetails(this.isShowToggleAllDetails());
+        tableLayoutManagerCopy.setRowDetailsOpen(this.rowDetailsOpen);
+        tableLayoutManagerCopy.setShowToggleAllDetails(this.showToggleAllDetails);
 
         if (this.toggleAllDetailsAction != null) {
-            tableLayoutManagerCopy.setToggleAllDetailsAction((Action) this.getToggleAllDetailsAction().copy());
+            tableLayoutManagerCopy.setToggleAllDetailsAction((Action) this.toggleAllDetailsAction.copy());
         }
 
-        tableLayoutManagerCopy.setAjaxDetailsRetrieval(this.isAjaxDetailsRetrieval());
+        tableLayoutManagerCopy.setAjaxDetailsRetrieval(this.ajaxDetailsRetrieval);
 
         if (this.expandDetailsActionPrototype != null) {
-            tableLayoutManagerCopy.setExpandDetailsActionPrototype(
-                    (Action) this.getExpandDetailsActionPrototype().copy());
+            tableLayoutManagerCopy.setExpandDetailsActionPrototype((Action) this.expandDetailsActionPrototype.copy());
         }
 
-        tableLayoutManagerCopy.setGroupingTitle(this.getGroupingTitle());
-        tableLayoutManagerCopy.setGroupingPrefix(this.getGroupingPrefix());
-        tableLayoutManagerCopy.setGroupingColumnIndex(this.getGroupingColumnIndex());
+        tableLayoutManagerCopy.setGroupingTitle(this.groupingTitle);
+        tableLayoutManagerCopy.setGroupingPrefix(this.groupingPrefix);
+        tableLayoutManagerCopy.setGroupingColumnIndex(this.groupingColumnIndex);
 
         if (this.groupingPropertyNames != null) {
             tableLayoutManagerCopy.setGroupingPropertyNames(new ArrayList(groupingPropertyNames));
         }
 
-        tableLayoutManagerCopy.setRenderOnlyLeftTotalLabels(this.isRenderOnlyLeftTotalLabels());
-        tableLayoutManagerCopy.setShowTotal(this.isShowTotal());
-        tableLayoutManagerCopy.setShowPageTotal(this.isShowPageTotal());
-        tableLayoutManagerCopy.setShowGroupTotal(this.isShowGroupTotal());
+        tableLayoutManagerCopy.setRenderOnlyLeftTotalLabels(this.renderOnlyLeftTotalLabels);
+        tableLayoutManagerCopy.setShowTotal(this.showTotal);
+        tableLayoutManagerCopy.setShowPageTotal(this.showPageTotal);
+        tableLayoutManagerCopy.setShowGroupTotal(this.showGroupTotal);
         tableLayoutManagerCopy.setGenerateGroupTotalRows(this.generateGroupTotalRows);
 
         if (this.totalLabel != null) {
-            tableLayoutManagerCopy.setTotalLabel((Label) this.getTotalLabel().copy());
+            tableLayoutManagerCopy.setTotalLabel((Label) this.totalLabel.copy());
         }
 
         if (this.pageTotalLabel != null) {
-            tableLayoutManagerCopy.setPageTotalLabel((Label) this.getPageTotalLabel().copy());
+            tableLayoutManagerCopy.setPageTotalLabel((Label) this.pageTotalLabel.copy());
         }
 
         if (this.groupTotalLabelPrototype != null) {
-            tableLayoutManagerCopy.setGroupTotalLabelPrototype((Label) this.getGroupTotalLabelPrototype().copy());
+            tableLayoutManagerCopy.setGroupTotalLabelPrototype((Label) this.groupTotalLabelPrototype.copy());
         }
 
         if (this.columnsToCalculate != null) {
@@ -2238,4 +2237,3 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         }
     }
 }
-

@@ -57,8 +57,10 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTags({@BeanTag(name = "stackedCollectionLayout-bean", parent = "Uif-StackedCollectionLayoutBase"),
-        @BeanTag(name = "stackedCollectionLayout-withGridItems-bean", parent = "Uif-StackedCollectionLayout-WithGridItems"),
-        @BeanTag(name = "stackedCollectionLayout-withBoxItems-bean", parent = "Uif-StackedCollectionLayout-WithBoxItems"),
+        @BeanTag(name = "stackedCollectionLayout-withGridItems-bean",
+                parent = "Uif-StackedCollectionLayout-WithGridItems"),
+        @BeanTag(name = "stackedCollectionLayout-withBoxItems-bean",
+                parent = "Uif-StackedCollectionLayout-WithBoxItems"),
         @BeanTag(name = "stackedCollectionLayout-list-bean", parent = "Uif-StackedCollectionLayout-List")})
 public class StackedLayoutManager extends LayoutManagerBase implements CollectionLayoutManager {
     private static final long serialVersionUID = 4602368505430238846L;
@@ -509,31 +511,31 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
 
         StackedLayoutManager stackedLayoutManagerCopy = (StackedLayoutManager) layoutManager;
 
-        stackedLayoutManagerCopy.setSummaryTitle(this.getSummaryTitle());
+        stackedLayoutManagerCopy.setSummaryTitle(this.summaryTitle);
 
         if (summaryFields != null) {
             stackedLayoutManagerCopy.setSummaryFields(new ArrayList<String>(summaryFields));
         }
 
         if (this.addLineGroup != null) {
-            stackedLayoutManagerCopy.setAddLineGroup((Group) this.getAddLineGroup().copy());
+            stackedLayoutManagerCopy.setAddLineGroup((Group) this.addLineGroup.copy());
         }
 
         if (this.lineGroupPrototype != null) {
-            stackedLayoutManagerCopy.setLineGroupPrototype((Group) this.getLineGroupPrototype().copy());
+            stackedLayoutManagerCopy.setLineGroupPrototype((Group) this.lineGroupPrototype.copy());
         }
 
         if (this.wrapperGroup != null) {
-            stackedLayoutManagerCopy.setWrapperGroup((Group) this.getWrapperGroup().copy());
+            stackedLayoutManagerCopy.setWrapperGroup((Group) this.wrapperGroup.copy());
         }
 
         if (this.subCollectionFieldGroupPrototype != null) {
             stackedLayoutManagerCopy.setSubCollectionFieldGroupPrototype(
-                    (FieldGroup) this.getSubCollectionFieldGroupPrototype().copy());
+                    (FieldGroup) this.subCollectionFieldGroupPrototype.copy());
         }
 
         if (this.selectFieldPrototype != null) {
-            stackedLayoutManagerCopy.setSelectFieldPrototype((Field) this.getSelectFieldPrototype().copy());
+            stackedLayoutManagerCopy.setSelectFieldPrototype((Field) this.selectFieldPrototype.copy());
         }
 
         if (this.stackedGroups != null) {
@@ -544,6 +546,6 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
             stackedLayoutManagerCopy.setStackedGroups(stackedGroupsCopy);
         }
 
-        stackedLayoutManagerCopy.setActionsInLineGroup(this.isActionsInLineGroup());
+        stackedLayoutManagerCopy.setActionsInLineGroup(this.actionsInLineGroup);
     }
 }

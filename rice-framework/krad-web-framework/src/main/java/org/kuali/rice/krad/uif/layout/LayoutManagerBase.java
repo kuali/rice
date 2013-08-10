@@ -386,7 +386,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
             layoutManagerBaseCopy.setAdditionalCssClasses(new ArrayList<String>(additionalCssClasses));
         }
 
-        if (propertyReplacers != null) {
+        if (getPropertyReplacers() != null) {
             List<PropertyReplacer> propertyReplacersCopy = new ArrayList<PropertyReplacer>();
             for (PropertyReplacer propertyReplacer : propertyReplacers) {
                 propertyReplacersCopy.add((PropertyReplacer) propertyReplacer.copy());

@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif.field;
 
-import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
@@ -1322,8 +1321,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         inputFieldCopy.setCaseConstraint(CloneUtils.deepClone(this.caseConstraint));
 
         if (dependencyConstraints != null) {
-            List<PrerequisiteConstraint> dependencyConstraintsCopy = Lists.newArrayListWithExpectedSize(
-                    dependencyConstraints.size());
+            List<PrerequisiteConstraint> dependencyConstraintsCopy = new ArrayList<PrerequisiteConstraint>();
 
             for (PrerequisiteConstraint dependencyConstraint : dependencyConstraints) {
                 dependencyConstraintsCopy.add(CloneUtils.deepClone(dependencyConstraint));
@@ -1333,8 +1331,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         }
 
         if (mustOccurConstraints != null) {
-            List<MustOccurConstraint> mustOccurConstraintsCopy = Lists.newArrayListWithExpectedSize(
-                    mustOccurConstraints.size());
+            List<MustOccurConstraint> mustOccurConstraintsCopy = new ArrayList<MustOccurConstraint>();
 
             for (MustOccurConstraint mustOccurConstraint : mustOccurConstraints) {
                 mustOccurConstraintsCopy.add(CloneUtils.deepClone(mustOccurConstraint));

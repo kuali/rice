@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif.view;
 
-import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
@@ -815,7 +814,7 @@ public class LookupView extends FormView {
         }
 
         if(this.criteriaFields != null) {
-            List<Component> criteriaFieldsCopy = Lists.newArrayListWithExpectedSize(criteriaFields.size());
+            List<Component> criteriaFieldsCopy = new ArrayList<Component>();
             for(Component criteriaField : criteriaFields)   {
                 criteriaFieldsCopy.add((Component)criteriaField.copy());
             }
@@ -823,7 +822,7 @@ public class LookupView extends FormView {
         }
 
         if(this.resultFields != null) {
-            List<Component> resultFieldsCopy = Lists.newArrayListWithExpectedSize(resultFields.size());
+            List<Component> resultFieldsCopy = new ArrayList<Component>();
             for(Component resultField : resultFields)   {
                 resultFieldsCopy.add((Component)resultField.copy());
             }

@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif.layout;
 
-import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -2131,7 +2130,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         }
 
         if (this.headerLabels != null) {
-            List<Label> headerLabelsCopy = Lists.newArrayListWithExpectedSize(this.headerLabels.size());
+            List<Label> headerLabelsCopy = new ArrayList<Label>();
             for (Label headerLabel : headerLabels) {
                 if (headerLabel != null) {
                     headerLabelsCopy.add((Label) headerLabel.copy());
@@ -2141,7 +2140,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         }
 
         if (this.allRowFields != null) {
-            List<Field> allRowFieldsCopy = Lists.newArrayListWithExpectedSize(allRowFields.size());
+            List<Field> allRowFieldsCopy = new ArrayList<Field>();
             for (Field allRowField : allRowFields) {
                 if (allRowField != null) {
                     allRowFieldsCopy.add((Field) allRowField.copy());
@@ -2151,7 +2150,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         }
 
         if (this.firstRowFields != null) {
-            List<Field> firstRowFieldsCopy = Lists.newArrayListWithExpectedSize(firstRowFields.size());
+            List<Field> firstRowFieldsCopy = new ArrayList<Field>();
             for (Field firstRowField : firstRowFields) {
                 if (firstRowField != null) {
                     firstRowFieldsCopy.add((Field) firstRowField.copy());
@@ -2216,8 +2215,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         }
 
         if (this.columnCalculations != null) {
-            List<ColumnCalculationInfo> columnCalculationsCopy = Lists.newArrayListWithExpectedSize(
-                    columnCalculations.size());
+            List<ColumnCalculationInfo> columnCalculationsCopy = new ArrayList<ColumnCalculationInfo>();
             for (ColumnCalculationInfo columnCalculation : columnCalculations) {
                 columnCalculationsCopy.add((ColumnCalculationInfo) columnCalculation.copy());
             }
@@ -2225,13 +2223,10 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         }
 
         if (this.footerCalculationComponents != null) {
-            List<Component> footerCalculationComponentsCopy = Lists.newArrayListWithExpectedSize(
-                    footerCalculationComponents.size());
+            List<Component> footerCalculationComponentsCopy = new ArrayList<Component>();
             for (Component footerCalculationComponent : footerCalculationComponents) {
                 if (footerCalculationComponent != null) {
-                    if (footerCalculationComponent != null) {
-                        footerCalculationComponentsCopy.add((Component) footerCalculationComponent.copy());
-                    }
+                    footerCalculationComponentsCopy.add((Component) footerCalculationComponent.copy());
                 }
             }
             tableLayoutManagerCopy.setFooterCalculationComponents(footerCalculationComponentsCopy);

@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
-import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -854,19 +853,11 @@ public class QuickFinder extends WidgetBase {
         quickFinderCopy.setReferencesToRefresh(this.getReferencesToRefresh());
 
         if(fieldConversions != null) {
-            Map<String, String> fieldConversionsCopy = Maps.newHashMapWithExpectedSize(fieldConversions.size());
-            for(Map.Entry fieldConversion : fieldConversions.entrySet()) {
-                fieldConversionsCopy.put(fieldConversion.getKey().toString(),fieldConversion.getValue().toString());
-            }
-            quickFinderCopy.setFieldConversions(fieldConversionsCopy);
+            quickFinderCopy.setFieldConversions(new HashMap<String, String>(this.fieldConversions));
         }
 
         if(lookupParameters != null) {
-            Map<String, String> lookupParametersCopy = Maps.newHashMapWithExpectedSize(lookupParameters.size());
-            for(Map.Entry lookupParameter : lookupParameters.entrySet()) {
-                lookupParametersCopy.put(lookupParameter.getKey().toString(),lookupParameter.getValue().toString());
-            }
-            quickFinderCopy.setLookupParameters(lookupParametersCopy);
+            quickFinderCopy.setLookupParameters(new HashMap<String, String>(this.lookupParameters));
         }
 
         quickFinderCopy.setReadOnlySearchFields(this.getReadOnlySearchFields());

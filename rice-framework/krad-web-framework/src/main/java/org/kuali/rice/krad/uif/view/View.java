@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif.view;
 
-import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
@@ -2131,7 +2130,7 @@ public class View extends ContainerBase {
         viewCopy.setDefaultBindingObjectPath(this.defaultBindingObjectPath);
 
         if (this.dialogs != null) {
-            List<Group> dialogsCopy = Lists.newArrayListWithExpectedSize(this.dialogs.size());
+            List<Group> dialogsCopy = new ArrayList<Group>();
             for (Group dialog : this.dialogs) {
                 dialogsCopy.add((Group) dialog.copy());
             }
@@ -2179,8 +2178,7 @@ public class View extends ContainerBase {
         }
 
         if (this.pathBasedBreadcrumbs != null) {
-            List<BreadcrumbItem> pathBasedBreadcrumbsCopy = Lists.newArrayListWithExpectedSize(
-                    this.pathBasedBreadcrumbs.size());
+            List<BreadcrumbItem> pathBasedBreadcrumbsCopy = new ArrayList<BreadcrumbItem>();
             for (BreadcrumbItem pathBasedBreadcrumb : this.pathBasedBreadcrumbs) {
                 pathBasedBreadcrumbs.add((BreadcrumbItem) pathBasedBreadcrumb.copy());
             }

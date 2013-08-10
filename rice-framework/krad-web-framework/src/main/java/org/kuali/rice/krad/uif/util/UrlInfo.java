@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif.util;
 
-import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -372,12 +371,7 @@ public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
         urlInfoCopy.setMethodToCall(this.methodToCall);
 
         if (this.requestParameters != null) {
-            Map<String, String> requestParametersCopy = Maps.newHashMapWithExpectedSize(this.requestParameters.size());
-            for (Map.Entry requestParameter : requestParameters.entrySet()) {
-                requestParametersCopy.put(requestParameter.getKey().toString(), requestParameter.getValue().toString());
-            }
-
-            urlInfoCopy.setExpressionGraph(requestParametersCopy);
+            urlInfoCopy.setExpressionGraph(new HashMap<String, String>(this.requestParameters));
         }
     }
 }

@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif.util;
 
-import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -296,8 +295,7 @@ public class BreadcrumbOptions implements Serializable {
         BreadcrumbOptions breadcrumbOptionsCopy = (BreadcrumbOptions) breadcrumbOptions;
 
         if (breadcrumbOverrides != null) {
-            List<BreadcrumbItem> breadcrumbOverrides = Lists.newArrayListWithExpectedSize(
-                    getBreadcrumbOverrides().size());
+            List<BreadcrumbItem> breadcrumbOverrides = new ArrayList<BreadcrumbItem>();
             for (BreadcrumbItem breadcrumbOverride : this.breadcrumbOverrides) {
                 breadcrumbOverrides.add((BreadcrumbItem) breadcrumbOverride.copy());
             }
@@ -306,8 +304,7 @@ public class BreadcrumbOptions implements Serializable {
         }
 
         if (homewardPathBreadcrumbs != null) {
-            List<BreadcrumbItem> homewardPathBreadcrumbs = Lists.newArrayListWithExpectedSize(
-                    getHomewardPathBreadcrumbs().size());
+            List<BreadcrumbItem> homewardPathBreadcrumbs = new ArrayList<BreadcrumbItem>();
             for (BreadcrumbItem homewardPathBreadcrumb : this.homewardPathBreadcrumbs) {
                 homewardPathBreadcrumbs.add((BreadcrumbItem) homewardPathBreadcrumb.copy());
             }
@@ -316,8 +313,7 @@ public class BreadcrumbOptions implements Serializable {
         }
 
         if (prePageBreadcrumbs != null) {
-            List<BreadcrumbItem> prePageBreadcrumbs = Lists.newArrayListWithExpectedSize(
-                    getPrePageBreadcrumbs().size());
+            List<BreadcrumbItem> prePageBreadcrumbs = new ArrayList<BreadcrumbItem>();
             for (BreadcrumbItem prePageBreadcrumb : this.prePageBreadcrumbs) {
                 prePageBreadcrumbs.add((BreadcrumbItem) prePageBreadcrumb.copy());
             }
@@ -326,8 +322,7 @@ public class BreadcrumbOptions implements Serializable {
         }
 
         if (preViewBreadcrumbs != null) {
-            List<BreadcrumbItem> preViewBreadcrumbs = Lists.newArrayListWithExpectedSize(
-                    getPreViewBreadcrumbs().size());
+            List<BreadcrumbItem> preViewBreadcrumbs = new ArrayList<BreadcrumbItem>();
             for (BreadcrumbItem preViewBreadcrumb : this.preViewBreadcrumbs) {
                 preViewBreadcrumbs.add((BreadcrumbItem) preViewBreadcrumb.copy());
             }

@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
-import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.web.format.Formatter;
@@ -603,11 +602,7 @@ public class Inquiry extends WidgetBase {
         inquiryCopy.setParentReadOnly(this.isParentReadOnly());
 
         if (inquiryParameters != null) {
-            Map<String, String> inquiryParametersCopy = Maps.newHashMapWithExpectedSize(inquiryParameters.size());
-            for (Map.Entry inquiryParameter : inquiryParameters.entrySet()) {
-                inquiryParametersCopy.put(inquiryParameter.getKey().toString(), inquiryParameter.getValue().toString());
-            }
-            inquiryCopy.setInquiryParameters(inquiryParametersCopy);
+            inquiryCopy.setInquiryParameters(new HashMap<String, String>(this.inquiryParameters));
         }
 
         if (fieldBindingInfo != null) {

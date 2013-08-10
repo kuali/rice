@@ -20,6 +20,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
+import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.util.xml.XmlException;
 import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.kim.api.identity.CodedAttribute;
@@ -30,11 +31,12 @@ import org.kuali.rice.kim.impl.identity.entity.EntityBo;
 import org.kuali.rice.kim.impl.identity.name.EntityNameBo;
 import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
 import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo;
+import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.service.SequenceAccessorService;
+import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
 import org.xml.sax.SAXException;
 
+import javax.sql.DataSource;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -69,7 +71,9 @@ public class UserXmlParser {
     private static final String GIVEN_NAME_ELEMENT = "givenName";
     private static final String LAST_NAME_ELEMENT = "lastName";    
     private static final String TYPE_ELEMENT = "type";
-    
+
+    private DataSource kimDataSource;
+
     public void parseUsers(InputStream input) throws IOException, XmlException {
         try {
             Document doc = XmlHelper.trimSAXXml(input);
@@ -96,8 +100,6 @@ public class UserXmlParser {
     }
     
     protected EntityBo constructEntity(Element userElement) {
-        SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
-    	
     	String firstName = userElement.getChildTextTrim(GIVEN_NAME_ELEMENT, NAMESPACE);
         String lastName = userElement.getChildTextTrim(LAST_NAME_ELEMENT, NAMESPACE);
         String emplId = userElement.getChildTextTrim(EMPL_ID_ELEMENT, NAMESPACE);
@@ -105,10 +107,10 @@ public class UserXmlParser {
         if (StringUtils.isBlank(entityTypeCode)) {
         	entityTypeCode = "PERSON";
         }
-    	
-        Long entityId = sas.getNextAvailableSequenceNumber("KRIM_ENTITY_ID_S", 
-        		EntityEmploymentBo.class);
-        
+
+        Long entityId = new Long(MaxValueIncrementerFactory.getIncrementer(getKimDataSource(), "KRIM_ENTITY_ID_S")
+                .nextLongValue());
+
         // if they define an empl id, let's set that up
         EntityEmploymentBo emplInfo = null;
         if (!StringUtils.isBlank(emplId)) {
@@ -139,8 +141,9 @@ public class UserXmlParser {
 		entityType.setVersionNumber(new Long(1));
 		String emailAddress = userElement.getChildTextTrim(EMAIL_ELEMENT, NAMESPACE);
 		if (!StringUtils.isBlank(emailAddress)) {
-			Long emailId = sas.getNextAvailableSequenceNumber(
-					"KRIM_ENTITY_EMAIL_ID_S", EntityEmailBo.class);
+            Long emailId = new Long(MaxValueIncrementerFactory.getIncrementer(getKimDataSource(),
+                    "KRIM_ENTITY_EMAIL_ID_S").nextLongValue());
+
 			EntityEmail.Builder email = EntityEmail.Builder.create();
 			email.setActive(true);
 			email.setId("" + emailId);
@@ -161,9 +164,9 @@ public class UserXmlParser {
 		entity.setEntityTypeContactInfos(entityTypes);
 		
 		if (!StringUtils.isBlank(firstName) || !StringUtils.isBlank(lastName)) {
-			Long entityNameId = sas.getNextAvailableSequenceNumber(
-					"KRIM_ENTITY_NM_ID_S", EntityNameBo.class);
-			EntityNameBo name = new EntityNameBo();
+            Long entityNameId = MaxValueIncrementerFactory.getIncrementer(getKimDataSource(), "KRIM_ENTITY_NM_ID_S")
+                    .nextLongValue();
+            EntityNameBo name = new EntityNameBo();
 			name.setActive(true);
 			name.setId("" + entityNameId);
 			name.setEntityId(entity.getId());
@@ -202,4 +205,19 @@ public class UserXmlParser {
 		return principal;
     }
 
+    public DataSource getKimDataSource() {
+        if (kimDataSource == null) {
+            // TODO - nasty, nasty, nasty - in general the problem here is the fact that UserXmlParser is even using
+            // KIM sequences in the first place
+            kimDataSource = KimImplServiceLocator.getDataSource();
+            if (kimDataSource == null) {
+                throw new ConfigurationException("Failed to locate 'kimDataSource'");
+            }
+        }
+        return kimDataSource;
+    }
+
+    public void setKimDataSource(DataSource kimDataSource) {
+        this.kimDataSource = kimDataSource;
+    }
 }

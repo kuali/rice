@@ -31,9 +31,7 @@ import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.test.BaselineTestCase;
 import org.springframework.util.AutoPopulatingList;
 
@@ -59,7 +57,7 @@ public class PersonServiceImplTest extends KIMTestCase {
 
 	public void setUp() throws Exception {
 		super.setUp();
-		personService = (PersonServiceImpl) GlobalResourceLoader.getService(new QName("personService"));
+		personService = GlobalResourceLoader.getService(new QName("personService"));
 		
 	}
 
@@ -70,10 +68,8 @@ public class PersonServiceImplTest extends KIMTestCase {
 	public void testGetPersonByExternalIdentifier() {
 		//insert external identifier
 		Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal("p1");
-		
-		SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
-		Long externalIdentifierId = sas.getNextAvailableSequenceNumber("KRIM_ENTITY_EXT_ID_ID_S", EntityExternalIdentifierBo.class);
-		EntityExternalIdentifierBo externalIdentifier = new EntityExternalIdentifierBo();
+
+        EntityExternalIdentifierBo externalIdentifier = new EntityExternalIdentifierBo();
 		externalIdentifier.setId("externalIdentifierId");
 		externalIdentifier.setEntityId(principal.getEntityId());
 		externalIdentifier.setExternalId("000-00-0000");

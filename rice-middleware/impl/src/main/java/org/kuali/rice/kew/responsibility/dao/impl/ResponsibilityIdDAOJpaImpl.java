@@ -15,33 +15,27 @@
  */
 package org.kuali.rice.kew.responsibility.dao.impl;
 
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.util.RiceConstants;
-import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 import org.kuali.rice.kew.responsibility.dao.ResponsibilityIdDAO;
+import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.sql.DataSource;
 
 public class ResponsibilityIdDAOJpaImpl implements ResponsibilityIdDAO {
-    @PersistenceContext(unitName = "kew-unit")
-    private EntityManager entityManager;
 
+    private static final String SEQUENCE_NAME = "KREW_RSP_S";
 
+    private DataSource dataSource;
+
+    @Override
 	public String getNewResponsibilityId() {
-	    return String.valueOf(getPlatform().getNextValSQL("KREW_RSP_S", entityManager));
+        return MaxValueIncrementerFactory.getIncrementer(dataSource, SEQUENCE_NAME).nextStringValue();
     }
 
-	protected DatabasePlatform getPlatform() {
-    	return (DatabasePlatform) GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
+    public DataSource getDataSource() {
+        return dataSource;
     }
 
-    public EntityManager getEntityManager() {
-        return this.entityManager;
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
-
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
-
 }

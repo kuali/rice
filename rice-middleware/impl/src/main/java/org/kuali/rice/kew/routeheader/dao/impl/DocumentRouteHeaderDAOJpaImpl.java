@@ -24,16 +24,18 @@ import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
-import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.api.exception.LockingException;
+import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
 import org.kuali.rice.kew.routeheader.dao.DocumentRouteHeaderDAO;
+import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,24 +46,13 @@ import java.util.Set;
 
 public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
 
-	@PersistenceContext(unitName="kew-unit")
-	private EntityManager entityManager;
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentRouteHeaderDAOJpaImpl.class);
 
-    
-    /**
-	 * @return the entityManager
-	 */
-	public EntityManager getEntityManager() {
-		return this.entityManager;
-	}
+    private static final String SEQUENCE_NAME = "KREW_DOC_HDR_S";
 
-	/**
-	 * @param entityManager the entityManager to set
-	 */
-	public void setEntityManager(EntityManager entityManager) {
-		this.entityManager = entityManager;
-	}
+	@PersistenceContext(unitName="kew-unit")
+	private EntityManager entityManager;
+    private DataSource dataSource;
 
 	public void saveRouteHeader(DocumentRouteHeaderValue routeHeader) {   	
     	DocumentRouteHeaderValueContent documentContent = routeHeader.getDocumentContent();    	
@@ -177,8 +168,7 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
     }
 
     public String getNextDocumentId() {
-    	Long nextDocumentId = getPlatform().getNextValSQL("KREW_DOC_HDR_S", entityManager);
-        return nextDocumentId.toString();
+        return MaxValueIncrementerFactory.getIncrementer(dataSource, SEQUENCE_NAME).nextStringValue();
     }
     
     protected DatabasePlatform getPlatform() {
@@ -315,5 +305,26 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
 		}
 	}
 
+    /**
+     * @return the entityManager
+     */
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+
+    /**
+     * @param entityManager the entityManager to set
+     */
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
 }

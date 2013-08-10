@@ -113,40 +113,5 @@ public abstract class KIMTestCase extends BaselineTestCase {
 	protected String getModuleName() {
 		return KIM_MODULE_NAME;
 	}
-	
-	protected KimType getDefaultKimType() {
-		KimType type = KimApiServiceLocator.getKimTypeInfoService().getKimType("1");
-		if (type == null) {
-			fail("Failed to locate the default Kim Type.");
-		}
-		return type;
-	}
-	
-	protected PermissionTemplateBo getDefaultPermissionTemplate() {
-		Map<String, Object> fieldValues = new HashMap<String, Object>();
-		fieldValues.put("namespaceCode", "KUALI");
-		fieldValues.put("name", "Default");
-		PermissionTemplateBo template = KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(PermissionTemplateBo.class, fieldValues);
-		if (template == null) {
-			fail("Failed to locate the default Permission Template.");
-		}
-		return template;
-	}
-	
-	protected String getNewRoleId() {
-		return getIdFromSequence("KRIM_ROLE_ID_S");
-	}
-	
-	protected String getNewRoleMemberId() {
-		return getIdFromSequence("KRIM_ROLE_MBR_ID_S");
-	}
-	
-	protected String getNewRolePermissionId() {
-		return getIdFromSequence("KRIM_ROLE_ID_S");
-	}
-	
-	protected String getIdFromSequence(String sequenceName) {
-		Long sequenceId = KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(sequenceName);
-		return "" + sequenceId;
-    }
+
 }

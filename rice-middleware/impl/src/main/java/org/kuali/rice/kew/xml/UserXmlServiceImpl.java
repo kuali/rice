@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.kew.xml;
 
-import java.io.InputStream;
-
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.framework.impex.xml.XmlLoader;
 
+import java.io.InputStream;
+
 public class UserXmlServiceImpl implements XmlLoader {
-	
+
     public void loadXml(InputStream inputStream, String principalId) {
         UserXmlParser parser = new UserXmlParser();
         try {

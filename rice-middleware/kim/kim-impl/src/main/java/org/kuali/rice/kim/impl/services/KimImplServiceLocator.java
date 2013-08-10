@@ -27,6 +27,7 @@ import org.kuali.rice.kim.impl.role.RoleDao;
 import org.kuali.rice.kim.impl.role.RoleInternalService;
 import org.springframework.cache.CacheManager;
 
+import javax.sql.DataSource;
 import javax.xml.namespace.QName;
 
 public class KimImplServiceLocator {
@@ -40,6 +41,7 @@ public class KimImplServiceLocator {
     public static final String DEFAULT_ROLE_TYPE_SERVICE = "kimRoleTypeService";
 
     public static final String KIM_ROLE_DAO = "kimRoleDao";
+    public static final String KIM_DATA_SOURCE = "kimDataSource";
 
     public static Object getService(String serviceName) {
         return getBean(serviceName);
@@ -79,5 +81,9 @@ public class KimImplServiceLocator {
 
     public static RoleDao getRoleDao() {
         return (RoleDao) getService(KIM_ROLE_DAO);
+    }
+
+    public static DataSource getDataSource() {
+        return (DataSource)getService(KIM_DATA_SOURCE);
     }
 }

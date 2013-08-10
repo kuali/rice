@@ -15,18 +15,16 @@
  */
 package org.kuali.rice.kew.useroptions.dao.impl;
 
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.util.RiceConstants;
-import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.dao.UserOptionsDAO;
-
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
+import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -34,15 +32,14 @@ import java.util.List;
 
 public class UserOptionsDaoJpaImpl implements UserOptionsDAO {
 
+    private static final String SEQUENCE_NAME = "KREW_ACTN_LIST_OPTN_S";
+
     @PersistenceContext
     private EntityManager entityManager;
+    private DataSource dataSource;
 
 	public Long getNewOptionIdForActionList() {
-        return getPlatform().getNextValSQL("KREW_ACTN_LIST_OPTN_S", entityManager);
-    }
-
-	protected DatabasePlatform getPlatform() {
-    	return (DatabasePlatform) GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
+        return new Long(MaxValueIncrementerFactory.getIncrementer(dataSource, SEQUENCE_NAME).nextLongValue());
     }
 
     public List findByUserQualified(String principalId, String likeString) {
@@ -103,5 +100,13 @@ public class UserOptionsDaoJpaImpl implements UserOptionsDAO {
 
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
+    }
+
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 }

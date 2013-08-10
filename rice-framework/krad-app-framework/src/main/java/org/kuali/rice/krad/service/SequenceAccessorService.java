@@ -29,6 +29,8 @@ public interface SequenceAccessorService {
      * dataSource that is associated with the specified BusinessObject class.
      * 
      * @return next available sequence number
+     *
+     * @deprecated use {@link org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory} instead
      */
     @Deprecated
 	Long getNextAvailableSequenceNumber(String sequenceName, Class<?> clazz);
@@ -37,6 +39,8 @@ public interface SequenceAccessorService {
      * This method retrieves the next available sequence number
      * 
      * @return next available sequence number
+     *
+     * @deprecated use {@link org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory} instead
      */
     @Deprecated
     Long getNextAvailableSequenceNumber(String sequenceName);

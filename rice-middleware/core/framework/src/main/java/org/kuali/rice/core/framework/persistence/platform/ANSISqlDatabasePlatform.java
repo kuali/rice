@@ -102,8 +102,13 @@ public abstract class ANSISqlDatabasePlatform implements DatabasePlatform
         throw new IllegalArgumentException("No next value strategy found for given nextValSource: " + nextValSource);
     }
 
+    @Deprecated
     protected abstract Long getNextValSqlOjb(String sequenceName, PersistenceBroker persistenceBroker);
+
+    @Deprecated
     protected abstract Long getNextValSqlJpa(String sequenceName, EntityManager entityManager);
+
+    @Deprecated
     protected abstract Long getNextValSqlJdbc(String sequenceName, Connection connection);
 
 }

@@ -16,25 +16,28 @@
 package org.kuali.rice.kew.rule.dao.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
-import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.rule.dao.RuleTemplateDAO;
+import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.sql.DataSource;
 import java.util.List;
 
 
 
 public class RuleTemplateDAOJpaImpl implements RuleTemplateDAO {
 
+    private static final String SEQUENCE_NAME = "KREW_RTE_TMPL_S";
+
 	@PersistenceContext(unitName="kew-unit")
 	private EntityManager entityManager;
+
+    private DataSource dataSource;
 	
     public List<RuleTemplateBo> findAll() {
         return entityManager.createNamedQuery("findAllOrderedByName").getResultList();
@@ -85,11 +88,7 @@ public class RuleTemplateDAOJpaImpl implements RuleTemplateDAO {
     }
 
     public String getNextRuleTemplateId() {
-       return String.valueOf(getPlatform().getNextValSQL("KREW_RTE_TMPL_S", entityManager));
-    }
-
-    protected DatabasePlatform getPlatform() {
-    	return (DatabasePlatform)GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
+        return MaxValueIncrementerFactory.getIncrementer(dataSource, SEQUENCE_NAME).nextStringValue();
     }
 
     public EntityManager getEntityManager() {
@@ -100,5 +99,11 @@ public class RuleTemplateDAOJpaImpl implements RuleTemplateDAO {
         this.entityManager = entityManager;
     }
 
+    public DataSource getDataSource() {
+        return dataSource;
+    }
 
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 }

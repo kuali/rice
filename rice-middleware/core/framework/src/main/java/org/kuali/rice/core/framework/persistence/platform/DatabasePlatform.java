@@ -43,7 +43,10 @@ public interface DatabasePlatform {
      * platform recognizes, such as a JDBC Connection or one of the ORM apis (like PersistenceBroker from OJB or
      * EntityManager from JPA)
      * @return the next available value from the sequence
+     *
+     * @deprecated use {@link org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory} instead
      */
+    @Deprecated
     Long getNextValSQL(String sequenceName, Object nextValSource);
     
     /**

@@ -55,7 +55,7 @@ import org.kuali.rice.kim.impl.common.delegate.DelegateMemberAttributeDataBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
-import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.support.NoOpCacheManager;
@@ -63,6 +63,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import javax.jws.WebParam;
+import javax.sql.DataSource;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -2289,12 +2290,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
         RolePermissionBo newRolePermission = new RolePermissionBo();
 
-        Long nextSeq = KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_ROLE_PERM_ID_S, RolePermissionBo.class);
-
-        if (nextSeq == null) {
-            LOG.error("Unable to get new role permission id from sequence " + KimConstants.SequenceNames.KRIM_ROLE_PERM_ID_S);
-            throw new RuntimeException("Unable to get new role permission id from sequence " + KimConstants.SequenceNames.KRIM_ROLE_PERM_ID_S);
-        }
+        Long nextSeq = new Long(MaxValueIncrementerFactory.getIncrementer(getDataSource(),
+                KimConstants.SequenceNames.KRIM_ROLE_PERM_ID_S).nextLongValue());
 
         newRolePermission.setId(nextSeq.toString());
         newRolePermission.setRoleId(roleId);
@@ -2472,5 +2469,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             throw new IllegalArgumentException("cacheManager must not be null");
         }
         this.cacheManager = cacheManager;
+    }
+
+    protected DataSource getDataSource() {
+        return KimImplServiceLocator.getDataSource();
     }
 }

@@ -195,19 +195,12 @@
   <!-- Enables Load-Time Weaving -->
   <context:load-time-weaver/>
 
-  <util:list id="managedClassNames">
-    <value>org.kuali.rice.krad.bo.PersistableBusinessObjectBase</value>
-    <value>org.kuali.rice.krad.document.DocumentBase</value>
-    <value>org.kuali.rice.krad.document.TransactionalDocumentBase</value>
-    <value>org.kuali.rice.krad.document.authorization.PessimisticLock</value>
-  </util:list>
-
-
   <util:list id="jpaPackagesToScan">
-    <value>org.kuali.rice.krad.data.jpa.converters</value>
-    <!-- include test entities -->
-    <value>org.kuali.rice.krad.test.document</value>
-    <value>org.kuali.rice.krad.data.jpa.testbo</value>
+    <value>org.kuali.rice.krad.data</value>
+    <value>org.kuali.rice.krad.bo</value>
+    <value>org.kuali.rice.krad.document</value>
+    <value>org.kuali.rice.krad.maintenance</value>
+    <value>org.kuali.rice.krad.messages</value>
   </util:list>
 
   <!-- Override the EntityManagerFactory -->
@@ -215,9 +208,7 @@
         class="org.kuali.rice.krad.data.jpa.eclipselink.KradEclipseLinkEntityManagerFactoryBean"
         p:jtaDataSource-ref="riceDataSource"
         p:persistenceUnitName="krad-test"
-        p:packagesToScan-ref="jpaPackagesToScan"
-        p:managedClassNames-ref="managedClassNames"/>
-        <!-- p:mappingResources="META-INF/krad-test-orm.xml" -->
+        p:packagesToScan-ref="jpaPackagesToScan"/>
 
   <bean id="kradTestSharedEntityManager"
         class="org.springframework.orm.jpa.support.SharedEntityManagerBean"

@@ -20,6 +20,7 @@ import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -49,6 +50,7 @@ public class PessimisticLock extends PersistableBusinessObjectBase {
     // id is sequence number and primary key
     @Id
     @GeneratedValue(generator="KRNS_LOCK_S")
+    @PortableSequenceGenerator(name="TKRNS_LOCK_S")
 	@Column(name="PESSIMISTIC_LOCK_ID")
     private Long id;
     

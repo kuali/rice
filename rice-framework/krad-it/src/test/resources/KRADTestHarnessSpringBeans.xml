@@ -196,11 +196,15 @@
   <context:load-time-weaver/>
 
   <util:list id="jpaPackagesToScan">
+    <!-- krad jpa packages -->
     <value>org.kuali.rice.krad.data</value>
     <value>org.kuali.rice.krad.bo</value>
     <value>org.kuali.rice.krad.document</value>
     <value>org.kuali.rice.krad.maintenance</value>
     <value>org.kuali.rice.krad.messages</value>
+    <!-- test jpa packages -->
+    <value>org.kuali.rice.krad.test.document</value>
+    <value>org.kuali.rice.krad.data.provider.jpa.testbo</value>
   </util:list>
 
   <!-- Override the EntityManagerFactory -->

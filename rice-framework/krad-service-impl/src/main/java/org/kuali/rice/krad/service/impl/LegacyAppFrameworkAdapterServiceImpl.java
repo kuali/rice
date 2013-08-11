@@ -17,6 +17,7 @@ package org.kuali.rice.krad.service.impl;
 
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.krad.service.LegacyAppFrameworkAdapterService;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
 
@@ -53,6 +54,17 @@ public class LegacyAppFrameworkAdapterServiceImpl implements LegacyAppFrameworkA
     @Override
     public boolean isPersistable(Class<?> objectClass) {
         return getLegacyDataAdapter().isPersistable(objectClass);
+    }
+
+    @Override
+    public PersistableBusinessObjectExtension getExtension(
+            Class<? extends PersistableBusinessObject> businessObjectClass) throws InstantiationException, IllegalAccessException {
+        return getLegacyDataAdapter().getExtension(businessObjectClass);
+    }
+
+    @Override
+    public void refreshReferenceObject(PersistableBusinessObject businessObject, String referenceObjectName) {
+        getLegacyDataAdapter().refreshReferenceObject(businessObject, referenceObjectName);
     }
 
 }

@@ -27,6 +27,7 @@ import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.InactivatableFromTo;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.krad.datadictionary.DataObjectEntry;
 import org.kuali.rice.krad.datadictionary.PrimitiveAttributeDefinition;
@@ -510,6 +511,23 @@ public class LegacyDataAdapterImpl implements LegacyDataAdapter {
             return getKnsLegacyDataAdapter().getPropertyType(object,propertyName);
         }
         return kradLegacyDataAdapter.getPropertyType(object,propertyName);
+    }
+
+    @Override
+    public PersistableBusinessObjectExtension getExtension(
+            Class<? extends PersistableBusinessObject> businessObjectClass) throws InstantiationException, IllegalAccessException {
+        if (isKNSLoaded() && LegacyUtils.useLegacy(businessObjectClass)) {
+            return getKnsLegacyDataAdapter().getExtension(businessObjectClass);
+        }
+        return kradLegacyDataAdapter.getExtension(businessObjectClass);
+    }
+
+    public void refreshReferenceObject(PersistableBusinessObject businessObject, String referenceObjectName) {
+        if (isKNSLoaded() && LegacyUtils.useLegacyForObject(businessObject)) {
+            getKnsLegacyDataAdapter().refreshReferenceObject(businessObject, referenceObjectName);
+        } else {
+            kradLegacyDataAdapter.refreshReferenceObject(businessObject, referenceObjectName);
+        }
     }
 
     @Override

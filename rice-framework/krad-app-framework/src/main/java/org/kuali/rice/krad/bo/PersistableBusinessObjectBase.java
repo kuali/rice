@@ -334,14 +334,7 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
 
 	@Override
     public void refreshReferenceObject(String referenceObjectName) {
-		if ( StringUtils.isNotBlank(referenceObjectName) && !StringUtils.equals(referenceObjectName, "extension")) {
-			final PersistenceStructureService pss = getPersistenceStructureService();
-			if ( pss.hasReference(this.getClass(), referenceObjectName) || pss.hasCollection(this.getClass(), referenceObjectName)) {
-            	getLegacyDataAdapter().retrieveReferenceObject( this, referenceObjectName);
-			} else {
-                LOG.warn( "refreshReferenceObject() called with non-reference property: " + referenceObjectName );
-			}
-		}
+        getLegacyDataAdapter().refreshReferenceObject(this, referenceObjectName);
 	}
 
     /**
@@ -362,10 +355,7 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
 		if ( extension == null
                 && getLegacyDataAdapter().isPersistable(this.getClass())) {
 			try {
-				Class<? extends PersistableBusinessObjectExtension> extensionClass = getPersistenceStructureService().getBusinessObjectAttributeClass( getClass(), "extension" );
-				if ( extensionClass != null ) {
-					extension = extensionClass.newInstance();
-				}
+                extension = getLegacyDataAdapter().getExtension(this.getClass());
 			} catch ( Exception ex ) {
 				LOG.error( "unable to create extension object", ex );
 			}

@@ -15,13 +15,7 @@
  */
 package org.kuali.rice.krad.service;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
 import org.kuali.rice.core.api.uif.RemotableQuickFinder;
-import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.krad.bo.Attachment;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
@@ -31,6 +25,11 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
 import org.kuali.rice.krad.maintenance.MaintenanceLock;
 import org.kuali.rice.krad.util.ForeignKeyFieldsPopulationState;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Adapter that supports "legacy" KNS/KRAD persistence, metadata, and object utility frameworks via runtime
@@ -374,6 +373,19 @@ public interface LegacyDataAdapter {
      *         depending on whether the underlying implementation is calling legacy code or not
      */
     Class<?> getPropertyType(Object object, String propertyName);
+
+    // PersistableBusinessObjectBase
+
+    /**
+     * Creates an instance of the extension for the given business object class.
+     */
+    PersistableBusinessObjectExtension getExtension(Class<? extends PersistableBusinessObject> businessObjectClass)
+            throws InstantiationException, IllegalAccessException;
+
+    /**
+     * Refreshes the specified reference object on the given business object.
+     */
+    void refreshReferenceObject(PersistableBusinessObject businessObject, String referenceObjectName);
 
     // Misc...
 

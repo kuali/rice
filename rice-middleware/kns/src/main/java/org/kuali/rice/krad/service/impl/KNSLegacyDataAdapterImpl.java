@@ -31,6 +31,7 @@ import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.InactivatableFromTo;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.krad.dao.DocumentDao;
 import org.kuali.rice.krad.dao.DocumentHeaderDao;
 import org.kuali.rice.krad.dao.LookupDao;
@@ -432,6 +433,27 @@ public class KNSLegacyDataAdapterImpl implements LegacyDataAdapter{
     public Class<?> getPropertyType(Object object, String propertyName) {
         return ObjectUtils.getPropertyType(object, propertyName,
                     KRADServiceLocator.getPersistenceStructureService());
+    }
+
+    @Override
+    public PersistableBusinessObjectExtension getExtension(
+            Class<? extends PersistableBusinessObject> businessObjectClass) throws InstantiationException, IllegalAccessException {
+        Class<? extends PersistableBusinessObjectExtension> extensionClass =
+                persistenceStructureService.getBusinessObjectAttributeClass(businessObjectClass, "extension");
+        if (extensionClass != null) {
+            return extensionClass.newInstance();
+        }
+        return null;
+    }
+
+    @Override
+    public void refreshReferenceObject(PersistableBusinessObject businessObject, String referenceObjectName) {
+        if (StringUtils.isNotBlank(referenceObjectName) && !StringUtils.equals(referenceObjectName, "extension")) {
+            if (persistenceStructureService.hasReference(businessObject.getClass(), referenceObjectName)
+                    || persistenceStructureService.hasCollection(businessObject.getClass(), referenceObjectName)) {
+                retrieveReferenceObject(businessObject, referenceObjectName);
+            }
+        }
     }
 
     @Override

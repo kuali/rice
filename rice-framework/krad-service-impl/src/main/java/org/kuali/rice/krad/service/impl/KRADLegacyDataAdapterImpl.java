@@ -44,6 +44,7 @@ import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.InactivatableFromTo;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.krad.data.CompoundKey;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.DataObjectUtils;
@@ -473,6 +474,17 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
     @Override
     public Class<?> getPropertyType(Object object, String propertyName) {
         return dataObjectService.wrap(object).getPropertyType(propertyName);
+    }
+
+    @Override
+    public PersistableBusinessObjectExtension getExtension(
+            Class<? extends PersistableBusinessObject> businessObjectClass) throws InstantiationException, IllegalAccessException {
+        throw new UnsupportedOperationException("getExtension not supported in KRAD");
+    }
+
+    @Override
+    public void refreshReferenceObject(PersistableBusinessObject businessObject, String referenceObjectName) {
+        throw new UnsupportedOperationException("refreshReferenceObject not supported in KRAD");
     }
 
     @Override

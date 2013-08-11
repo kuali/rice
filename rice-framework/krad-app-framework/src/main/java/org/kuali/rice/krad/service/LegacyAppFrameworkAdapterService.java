@@ -17,37 +17,51 @@ package org.kuali.rice.krad.service;
 
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 
 @Deprecated
 /**
  *  Provides an interface to the legacy adapter for continued use in PersistableBusinessObject
+ *
+ *  @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface LegacyAppFrameworkAdapterService {
+
     /**
      * Refresh persistableBusinessObject
      * @param persistableBusinessObjectBase
      */
-    public void refresh(PersistableBusinessObjectBase persistableBusinessObjectBase);
+    void refresh(PersistableBusinessObjectBase persistableBusinessObjectBase);
 
     /**
      * Refresh Nonupdateable references
      * @param persistableBusinessObjectBase
      */
-    public void refreshNonUpdateableReferences(PersistableBusinessObjectBase persistableBusinessObjectBase);
+    void refreshNonUpdateableReferences(PersistableBusinessObjectBase persistableBusinessObjectBase);
 
     /**
      * Retrieve reference object for persistable business object
      * @param persistableBusinessObject
      * @param referenceObjectName
      */
-    public void retrieveReferenceObject(PersistableBusinessObject persistableBusinessObject, String referenceObjectName);
+    void retrieveReferenceObject(PersistableBusinessObject persistableBusinessObject, String referenceObjectName);
 
     /**
      * Returns if the class is persistable or not
      * @param objectClass
      * @return
      */
-    public boolean isPersistable(Class<?> objectClass);
+    boolean isPersistable(Class<?> objectClass);
 
+    /**
+     * Creates an instance of the extension for the given business object class.
+     */
+    PersistableBusinessObjectExtension getExtension(Class<? extends PersistableBusinessObject> businessObjectClass)
+            throws InstantiationException, IllegalAccessException;
+
+    /**
+     * Refreshes the specified reference object on the given business object.
+     */
+    void refreshReferenceObject(PersistableBusinessObject businessObject, String referenceObjectName);
 
 }

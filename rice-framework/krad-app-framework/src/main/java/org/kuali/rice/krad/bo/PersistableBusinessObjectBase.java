@@ -15,10 +15,15 @@
  */
 package org.kuali.rice.krad.bo;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import org.apache.commons.lang.StringUtils;
+import org.apache.ojb.broker.PersistenceBroker;
+import org.apache.ojb.broker.PersistenceBrokerAware;
+import org.apache.ojb.broker.PersistenceBrokerException;
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
+import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.LegacyAppFrameworkAdapterService;
+import org.kuali.rice.krad.util.LegacyDataFramework;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -31,17 +36,10 @@ import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 import javax.persistence.Transient;
 import javax.persistence.Version;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.ojb.broker.PersistenceBroker;
-import org.apache.ojb.broker.PersistenceBrokerAware;
-import org.apache.ojb.broker.PersistenceBrokerException;
-import org.kuali.rice.core.api.mo.common.GloballyUnique;
-import org.kuali.rice.core.api.mo.common.Versioned;
-import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.service.LegacyAppFrameworkAdapterService;
-import org.kuali.rice.krad.service.PersistenceStructureService;
-import org.kuali.rice.krad.util.LegacyDataFramework;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -66,8 +64,6 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
     protected PersistableBusinessObjectExtension extension;
 
     private static transient LegacyAppFrameworkAdapterService legacyDataAdapter;
-    @Deprecated
-    private static transient PersistenceStructureService persistenceStructureService;
 
     /**
      * @see PersistableBusinessObject#getVersionNumber()
@@ -378,13 +374,5 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
     protected static LegacyAppFrameworkAdapterService getLegacyDataAdapter() {
         return KRADServiceLocator.getLegacyAppFrameworkAdapterService();
     }
-
-	@Deprecated
-	protected static PersistenceStructureService getPersistenceStructureService() {
-		if ( persistenceStructureService == null ) {
-			persistenceStructureService = KRADServiceLocator.getPersistenceStructureService();
-		}
-		return persistenceStructureService;
-	}
 
 }

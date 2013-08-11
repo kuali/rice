@@ -82,7 +82,9 @@ import org.kuali.rice.test.data.UnitTestSql;
 )
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class ReferenceLinkerTest extends KRADTestCase {
+
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ReferenceLinkerTest.class);
+
     protected JpaPersistenceProvider getPersistenceProvider() {
         return getKRADTestHarnessContext().getBean("kradTestJpaPersistenceProvider", JpaPersistenceProvider.class);
     }
@@ -144,7 +146,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
 
     @Test
     public void persistenceWhenObjectSet_existingParentObject_changeChildValue() {
-        AccountExtension acct = getExAccount();
+        AccountExtension acct = (AccountExtension)getExAccount();
 
         acct.setAccountTypeCode("IN");
 
@@ -159,7 +161,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
 
     @Test
     public void persistenceWhenObjectSet_existingParentObject_changeChildObject() {
-        AccountExtension acct = getExAccount();
+        AccountExtension acct = (AccountExtension)getExAccount();
 
         enableJotmLogging();
         AccountType acctType = getDOS().find(AccountType.class, "IN");
@@ -173,7 +175,10 @@ public class ReferenceLinkerTest extends KRADTestCase {
         disableJotmLogging();
     }
 
-    protected AccountExtension getExAccount() {
+    /**
+     * Have to return Object because of Load-Time Weaving
+     */
+    protected Object getExAccount() {
         AccountExtension acct = getDOS().find(AccountExtension.class, "EX_TYPE");
         assertNotNull("unable to retrieve EX_TYPE from database", acct);
         assertEquals( "Incorrect acct type on EX_TYPE database record", acct.getAccountTypeCode(), "EX" );
@@ -184,7 +189,10 @@ public class ReferenceLinkerTest extends KRADTestCase {
         return acct;
     }
 
-    protected AccountExtension getNullAccount() {
+    /**
+     * Have to return Object because of Load-Time Weaving
+     */
+    protected Object getNullAccount() {
         AccountExtension acct = getDOS().find(AccountExtension.class, "NULL_TYPE");
         assertNotNull("unable to retrieve NULL_TYPE from database", acct);
         assertNull( "Incorrect acct type on NULL_TYPE database record.", acct.getAccountTypeCode() );
@@ -196,7 +204,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
     
     @Test
     public void persistenceWhenObjectSet_existingParentObject_setChildValue() {
-        AccountExtension acct = getNullAccount();
+        AccountExtension acct = (AccountExtension)getNullAccount();
                
         acct.setAccountTypeCode("IN");
 
@@ -211,7 +219,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
 
     @Test
     public void persistenceWhenObjectSet_existingParentObject_setChildObject() {
-        AccountExtension acct = getNullAccount();
+        AccountExtension acct = (AccountExtension)getNullAccount();
         
         enableJotmLogging();
         AccountType acctType = getDOS().find(AccountType.class, "IN");

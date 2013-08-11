@@ -31,7 +31,7 @@ public class TransactionForm extends UifFormBase {
     private String testField;
 
     public TransactionForm(){
-        for (int i = 0; i < 100; i++){
+        for (int i = 0; i < 50; i++){
             rollupTransactions.add(new TransactionModel(5));
         }
     }

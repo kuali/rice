@@ -22,12 +22,14 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.component.Ordered;
+import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
+import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.OrderComparator;
 
@@ -180,7 +182,7 @@ public class ComponentUtils {
 
     /**
      * Returns components of the given type that are direct children of the given component (only checks
-     * one level)
+     * one level) including itself
      *
      * @param component instance to get children for
      * @param componentType type for component to return
@@ -198,6 +200,33 @@ public class ComponentUtils {
 
         if (componentType.isAssignableFrom(component.getClass())) {
             typeComponents.add((T) component);
+        }
+
+        for (Component nested : component.getComponentsForLifecycle()) {
+            if ((nested != null) && componentType.isAssignableFrom(nested.getClass())) {
+                typeComponents.add((T) nested);
+            }
+
+        }
+
+        return typeComponents;
+    }
+
+    /**
+     * Get nested components of the type specified one layer deep; this defers from getComponentsOfTypeShallow
+     * because it does NOT include itself as a match if it also matches the type being requested
+     *
+     * @param component instance to get children for
+     * @param componentType type for component to return
+     * @param <T> type of component that will be returned
+     * @return list of child components with the given type
+     */
+    public static <T extends Component> List<T> getNestedComponentsOfTypeShallow(Component component,
+            Class<T> componentType) {
+        List<T> typeComponents = new ArrayList<T>();
+
+        if (component == null) {
+            return typeComponents;
         }
 
         for (Component nested : component.getComponentsForLifecycle()) {
@@ -350,14 +379,14 @@ public class ComponentUtils {
 
         for (Component nested : component.getPropertyReplacerComponents()) {
             if (nested != null) {
-               clearIds(nested);
+                clearIds(nested);
             }
         }
     }
 
     public static void clearIds(List<? extends Component> components) {
         for (Component component : components) {
-            if (component != null){
+            if (component != null) {
                 clearIds(component);
             }
         }
@@ -411,6 +440,27 @@ public class ComponentUtils {
         }
 
         return componentProperties;
+    }
+
+    /**
+     * Sets a property on the given component and removes any expressions for that property so the value is not
+     * overridden
+     *
+     * @param component component instance to set property on
+     * @param propertyName name of property to set
+     * @param propertyValue value to set property to
+     */
+    public static void setComponentPropertyFinal(Component component, String propertyName, Object propertyValue) {
+        if (component == null) {
+            return;
+        }
+
+        ObjectPropertyUtils.setPropertyValue(component, propertyName, propertyValue);
+
+        if ((component.getPropertyExpressions() != null) && component.getPropertyExpressions().containsKey(
+                propertyName)) {
+            component.getPropertyExpressions().remove(propertyName);
+        }
     }
 
     /**
@@ -617,6 +667,41 @@ public class ComponentUtils {
         }
 
         return hasExpression;
+    }
+
+    /**
+     * Adjust nestingLevel properties for collections which use RichTable with forceLocalJsonData on and for all of its
+     * potentially additional nested subcollections
+     *
+     * @param container container to traverse and update nested levels in
+     * @param currentLevel the current nesting level, the initial call to this method should be 0
+     */
+    public static void adjustNestedLevelsForTableCollections(Container container, int currentLevel) {
+        if (container != null
+                && container instanceof CollectionGroup
+                && container.getLayoutManager() != null
+                && container.getLayoutManager() instanceof TableLayoutManager
+                && ((TableLayoutManager) container.getLayoutManager()).getRichTable() != null
+                && ((TableLayoutManager) container.getLayoutManager()).getRichTable().isRender()
+                && ((TableLayoutManager) container.getLayoutManager()).getRichTable().isForceLocalJsonData()) {
+            ((TableLayoutManager) container.getLayoutManager()).getRichTable().setNestedLevel(currentLevel);
+            currentLevel++;
+        }
+
+        if (container != null) {
+            List<Container> subContainers = ComponentUtils.getNestedComponentsOfTypeShallow(container, Container.class);
+            for (Container subContainer : subContainers) {
+                adjustNestedLevelsForTableCollections(subContainer, currentLevel);
+            }
+
+            List<FieldGroup> subFieldGroups = ComponentUtils.getNestedComponentsOfTypeShallow(container,
+                    FieldGroup.class);
+            for (FieldGroup fieldGroup : subFieldGroups) {
+                if (fieldGroup != null) {
+                    adjustNestedLevelsForTableCollections(fieldGroup.getGroup(), currentLevel);
+                }
+            }
+        }
     }
 
 }

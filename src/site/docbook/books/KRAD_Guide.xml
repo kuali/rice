@@ -18,20 +18,21 @@
 -->
 <book xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
   <info>
-    <title> Kuali Rice ${project.version} KRAD Guide</title>
+    <title>Kuali Rice ${project.version} KRAD Guide</title>
   </info>
-   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/about_krad.xml"/>
-   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/getting_started.xml"/>
-   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/data_objects.xml"/>
-   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/data_dictionary.xml"/>
-   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/intro_to_uif.xml"/>
-   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/fields_and_content_elements.xml"/>
-   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/groups.xml"/>
-   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/widgets.xml"/>
-   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/the_view.xml"/>
-   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/conditional_logic.xml"/>
-   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/client_side_features.xml"/>
-   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/controllers.xml"/>
-   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/view_types.xml"/>
-   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/testing_and_tooling.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/about_krad.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/getting_started.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/data_objects.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/data_dictionary.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/intro_to_uif.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/fields_and_content_elements.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/groups.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/widgets.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/the_view.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/conditional_logic.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/client_side_features.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/controllers.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/view_types.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/performance.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/testing_and_tooling.xml"/>
 </book>

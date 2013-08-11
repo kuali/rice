@@ -25,14 +25,16 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.krad.datadictionary.DataDictionaryException;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.service.ViewTypeService;
-import org.kuali.rice.krad.uif.util.CloneUtils;
+import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -87,27 +89,37 @@ public class UifDictionaryIndex implements Runnable {
      * @return View instance with the given id
      * @throws org.kuali.rice.krad.datadictionary.DataDictionaryException if view doesn't exist for id
      */
-    public View getViewById(final String viewId) {
+    public View getViewById(String viewId) {
         View cachedView = viewCache.get(viewId);
         if ( cachedView == null ) {
             if ( LOG.isDebugEnabled() ) {
                 LOG.debug( "View " + viewId + " not in cache - creating and storing to cache");
             }
+
             String beanName = viewBeanEntriesById.get(viewId);
             if (StringUtils.isBlank(beanName)) {
                 throw new DataDictionaryException("Unable to find View with id: " + viewId);
             }
+
             View newView = ddBeans.getBean(beanName, View.class);
-            synchronized ( viewCache ) {
-                viewCache.put(viewId, newView);
+
+            boolean inDevMode = ConfigContext.getCurrentContextConfig().getBooleanProperty(
+                    KRADConstants.ConfigParameters.KRAD_DEV_MODE);
+
+            if (!inDevMode) {
+                synchronized (viewCache) {
+                    viewCache.put(viewId, newView);
+                }
             }
+
             cachedView = newView;
         } else {
             if ( LOG.isDebugEnabled() ) {
                 LOG.debug("Pulled view " + viewId + " from Cache.  Cloning..." );
             }
         }
-        View clonedView = CloneUtils.deepClone(cachedView);
+
+        View clonedView = ComponentUtils.copy(cachedView);
 
         return clonedView;
     }
@@ -277,11 +289,8 @@ public class UifDictionaryIndex implements Runnable {
         viewBeanEntriesById = new HashMap<String, String>();
         viewEntriesByType = new HashMap<String, ViewTypeDictionaryIndex>();
 
-        boolean preloadUifViews = CoreApiServiceLocator.getKualiConfigurationService()
-                .getPropertyValueAsBoolean("rice.krad.preload.uif.view.definitions");
-
         String[] beanNames = ddBeans.getBeanNamesForType(View.class);
-        for (String beanName : beanNames) {
+        for (final String beanName : beanNames) {
             BeanDefinition beanDefinition = ddBeans.getMergedBeanDefinition(beanName);
             PropertyValues propertyValues = beanDefinition.getPropertyValues();
 
@@ -293,27 +302,13 @@ public class UifDictionaryIndex implements Runnable {
             if (viewBeanEntriesById.containsKey(id)) {
                 throw new DataDictionaryException("Two views must not share the same id. Found duplicate id: " + id);
             }
+
             viewBeanEntriesById.put(id, beanName);
 
             indexViewForType(propertyValues, id);
-
-            // pre-load views if necessary
-            if ( preloadUifViews ) {
-                String poolSizeStr = ViewModelUtils.getStringValFromPVs(propertyValues, "preloadPoolSize");
-                if (StringUtils.isNotBlank(poolSizeStr)) {
-                    try {
-                        int poolSize = Integer.parseInt(poolSizeStr);
-                        if (poolSize >= 1) {
-                            getViewById(id);
-                        }
-                    } catch ( NumberFormatException ex ) {
-                        LOG.warn( "preloadPoolSize on View " + id + " could not be parsed as an integer: " + poolSizeStr);
-                    }
-                }
-            }
         }
         timer.stop();
-        LOG.info("Completed View Index Building. Time: " + timer.toString() );
+        LOG.info("Completed View Index Building. Time: " + timer.toString());
     }
 
     /**

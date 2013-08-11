@@ -187,8 +187,7 @@ public class ComponentFactory {
         } else {
             component = (Component) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
                     origComponent.getBaseId());
-            LOG.debug("getNewInstanceForRefresh: id '"
-                    + id
+            LOG.debug("getNewInstanceForRefresh: id '" + id
                     + "' was NOT found in initialStates. New one fetched from DD");
         }
 

@@ -799,40 +799,66 @@ public class LookupView extends FormView {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         LookupView lookupViewCopy = (LookupView) component;
 
-        if(this.dataObjectClassName != null) {
+        if (this.dataObjectClassName != null) {
             lookupViewCopy.setDataObjectClassName(this.getDataObjectClassName());
         }
 
-        if(this.criteriaGroup != null) {
-            lookupViewCopy.setCriteriaGroup((Group)this.getCriteriaGroup().copy());
+        if (this.criteriaGroup != null) {
+            lookupViewCopy.setCriteriaGroup((Group) this.getCriteriaGroup().copy());
         }
 
-        if(this.resultsGroup != null) {
-            lookupViewCopy.setResultsGroup((CollectionGroup)this.getResultsGroup().copy());
+        if (this.resultsGroup != null) {
+            lookupViewCopy.setResultsGroup((CollectionGroup) this.getResultsGroup().copy());
         }
 
-        if(this.criteriaFields != null) {
+        if (this.criteriaFields != null) {
             List<Component> criteriaFieldsCopy = new ArrayList<Component>();
-            for(Component criteriaField : criteriaFields)   {
-                criteriaFieldsCopy.add((Component)criteriaField.copy());
+            for (Component criteriaField : criteriaFields) {
+                criteriaFieldsCopy.add((Component) criteriaField.copy());
             }
             lookupViewCopy.setCriteriaFields(criteriaFieldsCopy);
         }
 
-        if(this.resultFields != null) {
+        if (this.resultFields != null) {
             List<Component> resultFieldsCopy = new ArrayList<Component>();
-            for(Component resultField : resultFields)   {
-                resultFieldsCopy.add((Component)resultField.copy());
+            for (Component resultField : resultFields) {
+                resultFieldsCopy.add((Component) resultField.copy());
             }
             lookupViewCopy.setResultFields(resultFieldsCopy);
         }
 
-        if(this.defaultSortAttributeNames != null) {
+        if (this.defaultSortAttributeNames != null) {
             lookupViewCopy.setDefaultSortAttributeNames(new ArrayList<String>(defaultSortAttributeNames));
         }
 
         lookupViewCopy.setDefaultSortAscending(this.isDefaultSortAscending());
+        lookupViewCopy.setHideReturnLinks(this.hideReturnLinks);
+        lookupViewCopy.setSuppressActions(this.suppressActions);
+        lookupViewCopy.setShowMaintenanceLinks(this.showMaintenanceLinks);
+        lookupViewCopy.setMaintenanceUrlMapping(this.maintenanceUrlMapping);
+        lookupViewCopy.setMultipleValuesSelect(this.multipleValuesSelect);
+        lookupViewCopy.setRenderLookupCriteria(this.renderLookupCriteria);
+        lookupViewCopy.setRenderSearchButtons(this.renderSearchButtons);
+        lookupViewCopy.setRenderHeader(this.renderHeader);
+        lookupViewCopy.setResultSetLimit(this.resultSetLimit);
+        lookupViewCopy.setReturnTarget(this.returnTarget);
+        lookupViewCopy.setTriggerOnChange(this.triggerOnChange);
+        lookupViewCopy.setResultSetLimit(this.resultSetLimit);
+        lookupViewCopy.setMultipleValuesSelectResultSetLimit(this.multipleValuesSelectResultSetLimit);
+        lookupViewCopy.setMaintenanceUrlMapping(this.maintenanceUrlMapping);
+
+        if (this.rangeFieldGroupPrototype != null) {
+            lookupViewCopy.setRangeFieldGroupPrototype((FieldGroup) this.rangeFieldGroupPrototype.copy());
+        }
+
+        if (this.rangedToMessage != null) {
+            lookupViewCopy.setRangedToMessage((Message) this.rangedToMessage.copy());
+        }
+
+        lookupViewCopy.setAutoAddActiveCriteria(this.autoAddActiveCriteria);
     }
+
 }

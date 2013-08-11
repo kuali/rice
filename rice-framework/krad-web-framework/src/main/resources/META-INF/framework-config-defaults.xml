@@ -26,7 +26,7 @@
   <param name="krad.externalizable.images.url" override="false">${application.url}/krad/images/</param>
 
   <!-- Indicates whether KRAD should run in dev mode, impacts things like using full script/css files instead of minified -->
-  <param name="krad.dev.mode" override="false">false</param>
+  <param name="rice.krad.dev.mode" override="false">false</param>
 
   <param name="attachments.directory" override="false">${java.io.tmpdir}/${environment}/attachments</param>
   <param name="attachments.pending.directory" override="false">${attachments.directory}/pending</param>

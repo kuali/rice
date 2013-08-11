@@ -119,7 +119,7 @@
               <filtered>false</filtered>
             </overlay>
           </overlays>
-                    <useCache>true</useCache>
+          <useCache>true</useCache>
         </configuration>
         <dependencies>
 			<dependency>

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.view;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
@@ -44,6 +45,7 @@ import org.kuali.rice.krad.uif.util.BooleanMap;
 import org.kuali.rice.krad.uif.util.BreadcrumbItem;
 import org.kuali.rice.krad.uif.util.BreadcrumbOptions;
 import org.kuali.rice.krad.uif.util.ClientValidationUtils;
+import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ParentLocation;
@@ -154,7 +156,7 @@ public class View extends ContainerBase {
     private ViewType viewTypeName;
 
     private String viewStatus;
-    private ViewIndex viewIndex;
+    protected ViewIndex viewIndex;
     private Map<String, String> viewRequestParameters;
 
     private boolean persistFormToSession;
@@ -186,8 +188,6 @@ public class View extends ContainerBase {
 
     private String preLoadScript;
 
-    private int preloadPoolSize;
-
     private List<String> viewTemplates;
 
     private Class<? extends ViewHelperService> viewHelperServiceClass;
@@ -209,7 +209,6 @@ public class View extends ContainerBase {
 
         idSequence = 0;
         this.viewIndex = new ViewIndex();
-        preloadPoolSize = 0;
 
         additionalScriptFiles = new ArrayList<String>();
         additionalCssFiles = new ArrayList<String>();
@@ -1111,32 +1110,6 @@ public class View extends ContainerBase {
      */
     public void setUseLibraryCssClasses(boolean useLibraryCssClasses) {
         this.useLibraryCssClasses = useLibraryCssClasses;
-    }
-
-    /**
-     * Specifies the size of the pool that will contain pre-loaded views
-     *
-     * <p>
-     * The spring loading of some views can take a few seconds which hurts performance. The framework supports
-     * pre-loading of view instances so they are available right away when a request is made. This property configures
-     * how many view instances will be pre-loaded. A value of 0 (the default) means no view instances will be
-     * pre-loaded
-     * </p>
-     *
-     * @return number of view instances to pre-load
-     */
-    @BeanTagAttribute(name = "preloadPoolSize")
-    public int getPreloadPoolSize() {
-        return preloadPoolSize;
-    }
-
-    /**
-     * Setter for the preloaded view pool size
-     *
-     * @param preloadPoolSize
-     */
-    public void setPreloadPoolSize(int preloadPoolSize) {
-        this.preloadPoolSize = preloadPoolSize;
     }
 
     /**
@@ -2093,26 +2066,43 @@ public class View extends ContainerBase {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         View viewCopy = (View) component;
-        viewCopy.setActionFlags(this.actionFlags);
 
-        if (this.additionalCssFiles != null) {
-            viewCopy.setAdditionalCssFiles(new ArrayList<String>(this.additionalCssFiles));
+        viewCopy.setNamespaceCode(this.namespaceCode);
+        viewCopy.setViewName(this.viewName);
+
+        if (this.theme != null) {
+            viewCopy.setTheme((ViewTheme) this.theme.copy());
         }
 
-        if (this.additionalScriptFiles != null) {
-            viewCopy.setAdditionalScriptFiles(new ArrayList<String>(this.additionalScriptFiles));
+        viewCopy.setIdSequence(this.idSequence);
+        viewCopy.setStateObjectBindingPath(this.stateObjectBindingPath);
+
+        if (this.stateMapping != null) {
+            viewCopy.setStateMapping(CloneUtils.deepClone(this.stateMapping));
         }
 
-        if (this.applicationFooter != null) {
-            viewCopy.setApplicationFooter((Group) this.applicationFooter.copy());
+        viewCopy.setUnifiedHeader(this.unifiedHeader);
+
+        if (this.topGroup != null) {
+            viewCopy.setTopGroup((Group) this.topGroup.copy());
         }
 
         if (this.applicationHeader != null) {
             viewCopy.setApplicationHeader((Header) this.applicationHeader.copy());
         }
 
-        viewCopy.setApplyDirtyCheck(this.applyDirtyCheck);
+        if (this.applicationFooter != null) {
+            viewCopy.setApplicationFooter((Group) this.applicationFooter.copy());
+        }
+
+        viewCopy.setStickyApplicationFooter(this.stickyApplicationFooter);
+        viewCopy.setStickyApplicationHeader(this.stickyApplicationHeader);
+        viewCopy.setStickyBreadcrumbs(this.stickyBreadcrumbs);
+        viewCopy.setStickyFooter(this.stickyFooter);
+        viewCopy.setStickyHeader(this.stickyHeader);
+        viewCopy.setStickyTopGroup(this.stickyTopGroup);
 
         if (this.breadcrumbItem != null) {
             viewCopy.setBreadcrumbItem((BreadcrumbItem) this.breadcrumbItem.copy());
@@ -2126,28 +2116,17 @@ public class View extends ContainerBase {
             viewCopy.setBreadcrumbOptions((BreadcrumbOptions) this.breadcrumbOptions.copy());
         }
 
-        viewCopy.setCurrentPageId(this.currentPageId);
-        viewCopy.setDefaultBindingObjectPath(this.defaultBindingObjectPath);
+        if (this.parentLocation != null) {
+            viewCopy.setParentLocation((ParentLocation) this.parentLocation.copy());
+        }
 
-        if (this.dialogs != null) {
-            List<Group> dialogsCopy = new ArrayList<Group>();
-            for (Group dialog : this.dialogs) {
-                dialogsCopy.add((Group) dialog.copy());
+        if (this.pathBasedBreadcrumbs != null) {
+            List<BreadcrumbItem> pathBasedBreadcrumbsCopy = Lists.newArrayListWithExpectedSize(
+                    this.pathBasedBreadcrumbs.size());
+            for (BreadcrumbItem pathBasedBreadcrumb : this.pathBasedBreadcrumbs) {
+                pathBasedBreadcrumbs.add((BreadcrumbItem) pathBasedBreadcrumb.copy());
             }
-            viewCopy.setDialogs(dialogsCopy);
-        }
-
-        viewCopy.setDisableBrowserCache(this.disableBrowserCache);
-        viewCopy.setDisableNativeAutocomplete(this.disableNativeAutocomplete);
-        viewCopy.setEditModes(this.editModes);
-        viewCopy.setEntryPageId(this.entryPageId);
-
-        if (this.expressionVariables != null) {
-            viewCopy.setExpressionVariables(new HashMap<String, String>(this.expressionVariables));
-        }
-
-        if (this.formClass != null) {
-            viewCopy.setFormClass(this.formClass);
+            viewCopy.setPathBasedBreadcrumbs(pathBasedBreadcrumbsCopy);
         }
 
         viewCopy.setGrowlMessagingEnabled(this.growlMessagingEnabled);
@@ -2156,75 +2135,110 @@ public class View extends ContainerBase {
             viewCopy.setGrowls((Growls) this.growls.copy());
         }
 
-        viewCopy.setIdSequence(this.idSequence);
-
-        viewCopy.setMergeWithPageItems(this.mergeWithPageItems);
-        viewCopy.setNamespaceCode(this.namespaceCode);
-
-        if (this.navigation != null) {
-            viewCopy.setNavigation((Group) this.navigation.copy());
+        if (this.refreshBlockUI != null) {
+            viewCopy.setRefreshBlockUI((BlockUI) this.refreshBlockUI.copy());
         }
 
         if (this.navigationBlockUI != null) {
             viewCopy.setNavigationBlockUI((BlockUI) this.navigationBlockUI.copy());
         }
 
-        if (this.page != null) {
-            viewCopy.setPage((PageGroup) this.page.copy());
+        viewCopy.setEntryPageId(this.entryPageId);
+        viewCopy.setCurrentPageId(this.currentPageId);
+
+        if (this.navigation != null) {
+            viewCopy.setNavigation((Group) this.navigation.copy());
         }
 
-        if (this.parentLocation != null) {
-            viewCopy.setParentLocation((ParentLocation) this.parentLocation.copy());
+        viewCopy.setFormClass(this.formClass);
+        viewCopy.setDefaultBindingObjectPath(this.defaultBindingObjectPath);
+
+        if (this.objectPathToConcreteClassMapping != null) {
+            viewCopy.setObjectPathToConcreteClassMapping(new HashMap<String, Class<?>>(this.objectPathToConcreteClassMapping));
         }
 
-        if (this.pathBasedBreadcrumbs != null) {
-            List<BreadcrumbItem> pathBasedBreadcrumbsCopy = new ArrayList<BreadcrumbItem>();
-            for (BreadcrumbItem pathBasedBreadcrumb : this.pathBasedBreadcrumbs) {
-                pathBasedBreadcrumbs.add((BreadcrumbItem) pathBasedBreadcrumb.copy());
-            }
-            viewCopy.setPathBasedBreadcrumbs(pathBasedBreadcrumbsCopy);
+        if (this.additionalCssFiles != null) {
+            viewCopy.setAdditionalCssFiles(new ArrayList<String>(this.additionalCssFiles));
         }
 
-        viewCopy.setPersistFormToSession(this.persistFormToSession);
-        viewCopy.setPreloadPoolSize(this.preloadPoolSize);
-        viewCopy.setPreLoadScript(this.preLoadScript);
-
-        if (this.refreshBlockUI != null) {
-            viewCopy.setRefreshBlockUI((BlockUI) this.refreshBlockUI.copy());
+        if (this.additionalScriptFiles != null) {
+            viewCopy.setAdditionalScriptFiles(new ArrayList<String>(this.additionalScriptFiles));
         }
 
-        viewCopy.setSinglePageView(this.singlePageView);
-        viewCopy.setStateObjectBindingPath(this.stateObjectBindingPath);
-        viewCopy.setStickyApplicationFooter(this.stickyApplicationFooter);
-        viewCopy.setStickyApplicationHeader(this.stickyApplicationHeader);
-        viewCopy.setStickyBreadcrumbs(this.stickyBreadcrumbs);
-        viewCopy.setStickyFooter(this.stickyFooter);
-        viewCopy.setStickyHeader(this.stickyHeader);
-        viewCopy.setStickyTopGroup(this.stickyTopGroup);
-
-        if (this.topGroup != null) {
-            viewCopy.setTopGroup((Group) this.topGroup.copy());
-        }
-
-        viewCopy.setTranslateCodesOnReadOnlyDisplay(this.translateCodesOnReadOnlyDisplay);
-        viewCopy.setUnifiedHeader(this.unifiedHeader);
         viewCopy.setUseLibraryCssClasses(this.useLibraryCssClasses);
-        viewCopy.setViewMenuGroupName(this.viewMenuGroupName);
+        viewCopy.setViewTypeName(this.viewTypeName);
+        viewCopy.setViewStatus(this.viewStatus);
 
-        if (this.viewMenuLink != null) {
-            viewCopy.setViewMenuLink((Link) this.viewMenuLink.copy());
+        if (this.viewIndex != null) {
+            viewCopy.viewIndex = this.viewIndex.copy();
         }
-
-        viewCopy.setViewName(this.viewName);
 
         if (this.viewRequestParameters != null) {
             viewCopy.setViewRequestParameters(new HashMap<String, String>(this.viewRequestParameters));
         }
 
-        viewCopy.setViewStatus(this.viewStatus);
+        viewCopy.setPersistFormToSession(this.persistFormToSession);
+
+        if (this.sessionPolicy != null) {
+            viewCopy.setSessionPolicy(CloneUtils.deepClone(this.sessionPolicy));
+        }
+
+        if (this.presentationController != null) {
+            viewCopy.setPresentationController(this.presentationController);
+        }
+
+        if (this.authorizer != null) {
+            viewCopy.setAuthorizer(this.authorizer);
+        }
+
+        if (this.actionFlags != null) {
+            viewCopy.setActionFlags(new BooleanMap(this.actionFlags));
+        }
+
+        if (this.editModes != null) {
+            viewCopy.setEditModes(new BooleanMap(this.editModes));
+        }
+
+        if (this.expressionVariables != null) {
+            viewCopy.setExpressionVariables(new HashMap<String, String>(this.expressionVariables));
+        }
+
+        viewCopy.setSinglePageView(this.singlePageView);
+        viewCopy.setMergeWithPageItems(this.mergeWithPageItems);
+
+        if (this.page != null) {
+            viewCopy.setPage((PageGroup) this.page.copy());
+        }
+
+        if (this.dialogs != null) {
+            List<Group> dialogsCopy = Lists.newArrayListWithExpectedSize(this.dialogs.size());
+            for (Group dialog : this.dialogs) {
+                dialogsCopy.add((Group) dialog.copy());
+            }
+            viewCopy.setDialogs(dialogsCopy);
+        }
+
+        if (this.viewMenuLink != null) {
+            viewCopy.setViewMenuLink((Link) this.viewMenuLink.copy());
+        }
+
+        viewCopy.setViewMenuGroupName(this.viewMenuGroupName);
+        viewCopy.setApplyDirtyCheck(this.applyDirtyCheck);
+        viewCopy.setTranslateCodesOnReadOnlyDisplay(this.translateCodesOnReadOnlyDisplay);
+        viewCopy.setSupportsRequestOverrideOfReadOnlyFields(this.supportsRequestOverrideOfReadOnlyFields);
+        viewCopy.setDisableBrowserCache(this.disableBrowserCache);
+        viewCopy.setDisableNativeAutocomplete(this.disableNativeAutocomplete);
+        viewCopy.setPreLoadScript(this.preLoadScript);
 
         if (this.viewTemplates != null) {
             viewCopy.setViewTemplates(new ArrayList<String>(this.viewTemplates));
+        }
+
+        if (this.viewHelperServiceClass != null) {
+            viewCopy.setViewHelperServiceClass(this.viewHelperServiceClass);
+        }
+        else if (this.viewHelperService != null) {
+            viewCopy.setViewHelperService(CloneUtils.deepClone(this.viewHelperService));
         }
     }
 

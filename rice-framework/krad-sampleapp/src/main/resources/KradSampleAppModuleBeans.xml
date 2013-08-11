@@ -93,6 +93,7 @@
         <!--<value>org.kuali.rice.krad.demo.uif.library.resources.DemoBlockUIResources</value>-->
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoGrowlsResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCollectionSequenceResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCollectionServerPagingResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTableLayoutRowCssResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTableLayoutDetailsResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTableLayoutTotalingResources</value>

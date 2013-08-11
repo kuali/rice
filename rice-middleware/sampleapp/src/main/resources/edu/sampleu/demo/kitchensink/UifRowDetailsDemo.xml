@@ -77,7 +77,7 @@
           <list>
             <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"
                   p:required="true"/>
-            <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4"  p:progressiveRender="false"
+            <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4" p:progressiveRender="false"
                   p:required="true"/>
           </list>
         </property>
@@ -200,7 +200,7 @@
     <property name="collectionObjectClass"
               value="edu.sampleu.demo.kitchensink.UITestObject"/>
     <property name="layoutManager.sequencePropertyName" value="field1"/>
-    <property name="layoutManager.generateAutoSequence" value ="false"/>
+    <property name="layoutManager.generateAutoSequence" value="false"/>
     <property name="layoutManager.richTable.nestedLevel" value="1"/>
     <property name="layoutManager.sequenceFieldPrototype">
       <bean parent="Uif-InputField" p:propertyName="field1" p:readOnly="true"/>
@@ -219,7 +219,7 @@
         <bean parent="Uif-InputField" p:propertyName="field3" p:label="SubField 3"
               p:required="true"/>
         <bean parent="Uif-InputField" p:propertyName="innerObject.field1" p:label="SubField 1"
-                      p:required="true"/>
+              p:required="true"/>
         <bean parent="Uif-InputField" p:propertyName="field4" p:label="SubField 4"
               p:required="true"/>
       </list>
@@ -317,6 +317,7 @@
       <bean parent="Uif-ExpandDetailsImageAction"/>
     </property>
     <property name="layoutManager.applyDefaultCellWidths" value="false"/>
+    <property name="layoutManager.ajaxDetailsRetrieval" value="true"/>
     <property name="layoutManager.richTable">
       <bean parent="Uif-PagedRichTable">
         <property name="templateOptions">
@@ -358,6 +359,8 @@
     <property name="readOnly" value="true"/>
     <property name="layoutManager.richTable.nestedLevel" value="1"/>
     <property name="layoutManager.renderSequenceField" value="false"/>
+    <property name="layoutManager.ajaxDetailsRetrieval" value="true"/>
+    <property name="useServerPaging" value="true"/>
     <property name="layoutManager.rowDetailsGroup">
       <bean parent="Uif-VerticalBoxGroup">
         <property name="items">
@@ -403,13 +406,14 @@
                   p:required="true"/>
             <bean parent="Uif-ActionLink" p:actionLabel="Click to show a dialog"
                   p:actionScript="showLightboxComponent('Demo-RowDetails-LightBoxContent@{#lineSuffix}')"/>
-            <bean id="Demo-RowDetails-LightBoxContent" parent="Uif-VerticalBoxGroup"
-                  p:useAjaxCallForContent="true">
+            <bean id="Demo-RowDetails-LightBoxContent" parent="Uif-GridGroup"
+                  p:retrieveViaAjax="true">
               <property name="items">
                 <list>
-                  <bean parent="Uif-Message" p:messageText="This is my content"/>
-                  <bean parent="Uif-InputField-LabelTop" p:propertyName="field3" p:label="Field 3"
-                                p:required="true"/>
+                  <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"
+                        p:required="true"/>
+                  <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"
+                        p:required="true" p:render="false"/>
                 </list>
               </property>
             </bean>

@@ -20,6 +20,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -45,7 +48,7 @@ public class Validator {
     private static final Log LOG = LogFactory.getLog(Validator.class);
 
     private static ArrayList<ErrorReport> errorReports = new ArrayList<ErrorReport>();
-    ;
+
     private ValidationTrace tracerTemp;
     private int numberOfErrors;
     private int numberOfWarnings;

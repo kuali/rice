@@ -346,7 +346,9 @@
     <property name="persistenceService" ref="rice.kew.import.persistenceServiceOjb"/>
     <property name="dataDictionaryPackages">
       <list>
+        <!-- Disabling KRAD Action List conversion until we can get UX feedback and iterate on it
         <value>classpath:org/kuali/rice/kew/actionlist/UifActionListView.xml</value>
+        -->
         <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleAttribute.xml</value>
         <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleTemplate.xml</value>
         <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleTemplateAttribute.xml</value>

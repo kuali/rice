@@ -117,7 +117,7 @@ jQuery(document).ready(function () {
 
     time(false, "viewSetup-phase-1");
     // show the page
-        jQuery("#" + kradVariables.APP_ID).show();
+    jQuery("#" + kradVariables.APP_ID).show();
 
     //run all the scripts
     runHiddenScripts("");
@@ -139,7 +139,7 @@ jQuery(document).ready(function () {
     hideEmptyCells();
 
     // focus on first field
-    jQuery(document).on(kradVariables.PAGE_LOAD_EVENT, function(){
+    jQuery(document).on(kradVariables.PAGE_LOAD_EVENT, function () {
         initialViewLoad = false;
         performFocus("FIRST");
     });
@@ -150,7 +150,7 @@ jQuery(document).ready(function () {
 /**
  * Sets up and initializes the handlers for sticky header and footer content
  */
-function setupStickyHeaderAndFooter(){
+function setupStickyHeaderAndFooter() {
 
     //sticky(header) content variables must be initialized here to retain sticky location across page request
     stickyContent = jQuery("[data-sticky='true']:visible");
@@ -203,12 +203,12 @@ function initFieldHandlers() {
 
     //add global action handler
     jQuery(document).on("click", "a[data-onclick], button[data-onclick], img[data-onclick], input[data-onclick]",
-            function(e){
-        var functionData = jQuery(this).data("onclick");
-        eval("var actionFunction = function(e) {" + functionData + "};");
+            function (e) {
+                var functionData = jQuery(this).data("onclick");
+                eval("var actionFunction = function(e) {" + functionData + "};");
 
-        return actionFunction.call(this, e);
-    });
+                return actionFunction.call(this, e);
+            });
 
     //add a focus handler for scroll manipulation when there is a sticky header or footer, so content stays in view
     jQuery("#" + kradVariables.PAGE_CONTENT_WRAPPER).on("focus", "a[href], area[href], input:not([disabled]), "
@@ -218,7 +218,7 @@ function initFieldHandlers() {
                 var element = jQuery(this);
                 var buffer = 10;
                 var elementHeight = element.outerHeight();
-                if(!elementHeight){
+                if (!elementHeight) {
                     elementHeight = 24;
                 }
 
@@ -228,7 +228,7 @@ function initFieldHandlers() {
                     if (element.offset().top + elementHeight > footerOffset) {
                         var visibleContentSize = jQuery(window).height() - currentHeaderHeight - currentFooterHeight;
                         jQuery(document).scrollTo(element.offset().top + elementHeight + buffer
-                                - currentHeaderHeight - visibleContentSize );
+                                - currentHeaderHeight - visibleContentSize);
                         return true;
                     }
                 }
@@ -544,44 +544,44 @@ function initFieldHandlers() {
 /**
  * Setup a global disclosure handler which will handle click events on disclosure links to toggle them open and closed
  */
-function setupDisclosureHandler(){
+function setupDisclosureHandler() {
     jQuery(document).on("click",
-            "a[data-role='" + kradVariables.DATA_ROLES.DISCLOSURE_LINK + "']", function(event){
-        event.preventDefault();
+            "a[data-role='" + kradVariables.DATA_ROLES.DISCLOSURE_LINK + "']", function (event) {
+                event.preventDefault();
 
-        var link = jQuery(this);
+                var link = jQuery(this);
 
-        var disclosureContent = jQuery("#" + link.data("linkfor"));
+                var disclosureContent = jQuery("#" + link.data("linkfor"));
 
-        var isOpen = disclosureContent.attr(kradVariables.ATTRIBUTES.DATA_OPEN);
-        var animationSpeed = link.data("speed");
-        var linkId = link.attr("id");
-        var widgetId = link.data("widgetid");
+                var isOpen = disclosureContent.attr(kradVariables.ATTRIBUTES.DATA_OPEN);
+                var animationSpeed = link.data("speed");
+                var linkId = link.attr("id");
+                var widgetId = link.data("widgetid");
 
-        if(isOpen == "true"){
-            disclosureContent.attr(kradVariables.ATTRIBUTES.DATA_OPEN, false);
+                if (isOpen == "true") {
+                    disclosureContent.attr(kradVariables.ATTRIBUTES.DATA_OPEN, false);
 
-            disclosureContent.slideUp(animationSpeed);
+                    disclosureContent.slideUp(animationSpeed);
 
-            jQuery(this).find("#" + linkId + "_exp").hide();
-            jQuery(this).find("#" + linkId + "_col").show();
+                    jQuery(this).find("#" + linkId + "_exp").hide();
+                    jQuery(this).find("#" + linkId + "_col").show();
 
-            setComponentState(widgetId, 'open', false);
-        }
-        else{
-            disclosureContent.attr(kradVariables.ATTRIBUTES.DATA_OPEN, true);
+                    setComponentState(widgetId, 'open', false);
+                }
+                else {
+                    disclosureContent.attr(kradVariables.ATTRIBUTES.DATA_OPEN, true);
 
-            //run scripts for previously hidden content
-            runHiddenScripts(disclosureContent, true, true);
+                    //run scripts for previously hidden content
+                    runHiddenScripts(disclosureContent, true, true);
 
-            disclosureContent.slideDown(animationSpeed);
+                    disclosureContent.slideDown(animationSpeed);
 
-            jQuery(this).find("#" + linkId + "_exp").show();
-            jQuery(this).find("#" + linkId + "_col").hide();
+                    jQuery(this).find("#" + linkId + "_exp").show();
+                    jQuery(this).find("#" + linkId + "_col").hide();
 
-            setComponentState(widgetId, 'open', true);
-        }
-    });
+                    setComponentState(widgetId, 'open', true);
+                }
+            });
 }
 
 /**
@@ -633,13 +633,13 @@ function setupPage(validate) {
 
     // update the top group per page
     var topGroupUpdate = jQuery("#" + kradVariables.TOP_GROUP_UPDATE).find("> div").detach();
-    if (topGroupUpdate.length && !initialViewLoad){
+    if (topGroupUpdate.length && !initialViewLoad) {
         jQuery("#Uif-TopGroupWrapper > div").replaceWith(topGroupUpdate);
     }
 
     // update the view header per page
     var viewHeaderUpdate = jQuery("#" + kradVariables.VIEW_HEADER_UPDATE).find(".uif-viewHeader").detach();
-    if (viewHeaderUpdate.length && !initialViewLoad){
+    if (viewHeaderUpdate.length && !initialViewLoad) {
         jQuery(".uif-viewHeader").replaceWith(viewHeaderUpdate);
     }
 
@@ -669,6 +669,7 @@ function setupPage(validate) {
     // update URL to reflect the current page
     updateRequestUrl(pageId);
 
+    prevPageMessageTotal = 0;
     //skip input field iteration and validation message writing, if no server messages
     var hasServerMessagesData = jQuery("[data-type='Page']").data(kradVariables.SERVER_MESSAGES);
     if (hasServerMessagesData) {
@@ -756,7 +757,7 @@ jQuery.validator.setDefaults({
             //if this field previously had errors validate on key up
             if (data && data.focusedErrors && data.focusedErrors.length) {
                 var valid = validateFieldValue(element);
-                if (!valid){
+                if (!valid) {
                     showMessageTooltip(id, false, true);
                 }
             }
@@ -847,7 +848,6 @@ jQuery.validator.setDefaults({
 
         var field = jQuery("#" + id);
         var data = getValidationData(field);
-
 
         if (data && data.errors && data.errors.length) {
             data.errors = [];
@@ -1046,7 +1046,7 @@ jQuery.fn.dataTableExt.afnSortData['dom-text'] = function (oSettings, iColumn, i
         } else {
             // check for linkField
             var linkField = jQuery(td).find('.uif-linkField');
-            if(linkField.length !=0) {
+            if (linkField.length != 0) {
                 value = linkField.text().trim();
             } else {
                 // find span for the data or input field and get its text
@@ -1060,7 +1060,7 @@ jQuery.fn.dataTableExt.afnSortData['dom-text'] = function (oSettings, iColumn, i
             }
         }
         var additionalDisplaySeparatorIndex = value.indexOf("*-*");
-        if (additionalDisplaySeparatorIndex != -1){
+        if (additionalDisplaySeparatorIndex != -1) {
             value = value.substring(0, additionalDisplaySeparatorIndex).trim();
         }
         aData.push(value);
@@ -1192,8 +1192,8 @@ function errorHandler(msg, url, lno) {
 
 // script that should execute when the page unloads
 //jQuery(window).bind('beforeunload', function (evt) {
-    // clear server form if closing the browser tab/window or going back
-    // TODO: work out back button problem so we can add this clearing
+// clear server form if closing the browser tab/window or going back
+// TODO: work out back button problem so we can add this clearing
 //    if (!event.pageY || (event.pageY < 0)) {
 //        clearServerSideForm();
 //    }

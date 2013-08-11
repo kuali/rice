@@ -187,5 +187,6 @@ public class MaintenanceDocumentView extends DocumentView {
         }
 
         maintenanceDocumentViewCopy.setOldObjectBindingPath(this.getOldObjectBindingPath());
+        maintenanceDocumentViewCopy.setMaintenanceAction(this.maintenanceAction);
     }
 }

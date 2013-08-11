@@ -314,23 +314,9 @@ public class ColumnCalculationInfo extends UifDictionaryBeanBase implements Seri
     }
 
     /**
-     * Returns a copy of the column calculation info.
-     *
-     * @return ColumnCalculationInfo copy of the component
+     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copy()
      */
-    public <T> T copy() {
-        T copiedClass = null;
-        try {
-            copiedClass = (T) this.getClass().newInstance();
-        } catch (Exception exception) {
-            throw new RuntimeException();
-        }
-
-        copyProperties(copiedClass);
-
-        return copiedClass;
-    }
-
+    @Override
     protected <T> void copyProperties(T columnCalculationInfo) {
         ColumnCalculationInfo columnCalculationInfoCopy = (ColumnCalculationInfo) columnCalculationInfo;
         columnCalculationInfoCopy.setCalculateOnKeyUp(this.calculateOnKeyUp);

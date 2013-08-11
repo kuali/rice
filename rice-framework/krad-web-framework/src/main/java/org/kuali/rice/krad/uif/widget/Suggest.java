@@ -382,6 +382,15 @@ public class Suggest extends WidgetBase {
     }
 
     /**
+     * Sets suggest options javascript string
+     *
+     * @param suggestOptionsJsString
+     */
+    public void setSuggestOptionsJsString(String suggestOptionsJsString) {
+        this.suggestOptionsJsString = suggestOptionsJsString;
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
      */
     @Override
@@ -403,5 +412,6 @@ public class Suggest extends WidgetBase {
         }
 
         suggestCopy.setSuggestOptions(this.getSuggestOptions());
+        suggestCopy.setSuggestOptionsJsString(this.suggestOptionsJsString);
     }
 }

@@ -151,8 +151,13 @@ public class SyntaxHighlighter extends WidgetBase {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         SyntaxHighlighter syntaxHighlighterCopy = (SyntaxHighlighter) component;
-        syntaxHighlighterCopy.setHeader(this.getHeader());
+
+        if (this.header != null) {
+            syntaxHighlighterCopy.setHeader((Header) this.header.copy());
+        }
+
         syntaxHighlighterCopy.setSourceCode(this.getSourceCode());
         syntaxHighlighterCopy.setPluginCssClass(this.getPluginCssClass());
         syntaxHighlighterCopy.setAllowCopy(this.isAllowCopy());

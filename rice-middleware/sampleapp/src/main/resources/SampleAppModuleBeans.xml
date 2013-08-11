@@ -215,6 +215,8 @@
         p:localServiceName="sampleAppPeopleFlowTypeService"
         p:serviceInterface="org.kuali.rice.kew.framework.peopleflow.PeopleFlowTypeService"/>
 
+  <bean id="testActionTypeService" class="org.kuali.rice.krms.impl.type.ActionTypeServiceBase"/>
+
   <bean id="dataTableRestServiceTest" class="edu.sampleu.demo.kitchensink.DataTableRestServiceTestImpl"/>
 
   <bean id="DataTableRestServiceTest" class="org.kuali.rice.ksb.api.bus.support.RestServiceDefinition">

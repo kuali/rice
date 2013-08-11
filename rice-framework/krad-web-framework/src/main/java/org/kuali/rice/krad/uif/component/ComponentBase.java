@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.uif.component;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -64,7 +63,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     private String title;
 
     private boolean render;
-    private boolean useAjaxCallForContent;
+    private boolean retrieveViaAjax;
 
     @KeepExpression
     private String progressiveRender;
@@ -198,7 +197,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * <li></li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.Component#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
+     * @see org.kuali.rice.krad.uif.component.Component#performInitialization(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object)
      */
     public void performInitialization(View view, Object model) {
 
@@ -212,14 +212,14 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * render status</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.Component#performApplyModel(org.kuali.rice.krad.uif.view.View, java.lang.Object,
+     * @see org.kuali.rice.krad.uif.component.Component#performApplyModel(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object,
      *      org.kuali.rice.krad.uif.component.Component)
      */
     public void performApplyModel(View view, Object model, Component parent) {
         if (this.render && StringUtils.isNotEmpty(progressiveRender)) {
             // progressive anded with render, will not render at least one of the two are false
-            ExpressionEvaluator expressionEvaluator =
-                    view.getViewHelperService().getExpressionEvaluator();
+            ExpressionEvaluator expressionEvaluator = view.getViewHelperService().getExpressionEvaluator();
 
             String adjustedProgressiveRender = expressionEvaluator.replaceBindingPrefixes(view, this,
                     progressiveRender);
@@ -241,12 +241,12 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * <li>Set the skipInTabOrder flag for nested components</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.Component#performFinalize(org.kuali.rice.krad.uif.view.View, java.lang.Object,
+     * @see org.kuali.rice.krad.uif.component.Component#performFinalize(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object,
      *      org.kuali.rice.krad.uif.component.Component)
      */
     public void performFinalize(View view, Object model, Component parent) {
-        ExpressionEvaluator expressionEvaluator =
-                view.getViewHelperService().getExpressionEvaluator();
+        ExpressionEvaluator expressionEvaluator = view.getViewHelperService().getExpressionEvaluator();
 
         // progressiveRender expression setup
         if (StringUtils.isNotEmpty(progressiveRender)) {
@@ -266,15 +266,15 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
         List<String> adjustedRefreshPropertyNames = new ArrayList<String>();
         for (String refreshPropertyName : refreshWhenChangedPropertyNames) {
-            adjustedRefreshPropertyNames.add(
-                    expressionEvaluator.replaceBindingPrefixes(view, this, refreshPropertyName));
+            adjustedRefreshPropertyNames.add(expressionEvaluator.replaceBindingPrefixes(view, this,
+                    refreshPropertyName));
         }
 
         refreshWhenChangedPropertyNames = adjustedRefreshPropertyNames;
 
-        // useAjaxCallForContent forces session persistence because it assumes that this component will be retrieved by
+        // retrieveViaAjax forces session persistence because it assumes that this component will be retrieved by
         // some ajax retrieval call
-        if (useAjaxCallForContent){
+        if (retrieveViaAjax) {
             forceSessionPersistence = true;
         }
 
@@ -335,8 +335,14 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
             }
 
             timerScript = (null == timerScript) ? "" : timerScript;
-            timerScript = "refreshComponentUsingTimer('" + this.id + "','"
-                    + this.methodToCallOnRefresh + "'," + refreshTimer + ");" + timerScript;
+            timerScript = "refreshComponentUsingTimer('"
+                    + this.id
+                    + "','"
+                    + this.methodToCallOnRefresh
+                    + "',"
+                    + refreshTimer
+                    + ");"
+                    + timerScript;
 
             setOnDocumentReadyScript(timerScript);
         }
@@ -344,15 +350,15 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         // put together all css class names for this component, in order
         List<String> finalCssClasses = new ArrayList<String>();
 
-        if(this.libraryCssClasses != null && view.isUseLibraryCssClasses()){
+        if (this.libraryCssClasses != null && view.isUseLibraryCssClasses()) {
             finalCssClasses.addAll(libraryCssClasses);
         }
 
-        if(this.cssClasses != null){
+        if (this.cssClasses != null) {
             finalCssClasses.addAll(cssClasses);
         }
 
-        if(this.additionalCssClasses != null){
+        if (this.additionalCssClasses != null) {
             finalCssClasses.addAll(additionalCssClasses);
         }
 
@@ -534,18 +540,18 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#isUseAjaxCallForContent()
+     * @see org.kuali.rice.krad.uif.component.Component#isRetrieveViaAjax()
      */
-    @BeanTagAttribute(name = "useAjaxCallForContent")
-    public boolean isUseAjaxCallForContent() {
-        return useAjaxCallForContent;
+    @BeanTagAttribute(name = "retrieveViaAjax")
+    public boolean isRetrieveViaAjax() {
+        return retrieveViaAjax;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#setUseAjaxCallForContent(boolean)
+     * @see org.kuali.rice.krad.uif.component.Component#setRetrieveViaAjax(boolean)
      */
-    public void setUseAjaxCallForContent(boolean useAjaxCallForContent) {
-        this.useAjaxCallForContent = useAjaxCallForContent;
+    public void setRetrieveViaAjax(boolean retrieveViaAjax) {
+        this.retrieveViaAjax = retrieveViaAjax;
     }
 
     /**
@@ -596,11 +602,11 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#addCellCssClass(String)
      */
     public void addCellCssClass(String cssClass) {
-        if (this.cellCssClasses == null){
+        if (this.cellCssClasses == null) {
             this.cellCssClasses = new ArrayList<String>();
         }
 
-        if(cssClass != null){
+        if (cssClass != null) {
             this.cellCssClasses.add(cssClass);
         }
     }
@@ -1650,7 +1656,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see  org.kuali.rice.krad.uif.component.Component#isResetDataOnRefresh()
+     * @see org.kuali.rice.krad.uif.component.Component#isResetDataOnRefresh()
      */
     @BeanTagAttribute(name = "resetDataOnRefresh")
     public boolean isResetDataOnRefresh() {
@@ -1998,6 +2004,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         }
 
         componentCopy.setRender(this.render);
+        componentCopy.setRetrieveViaAjax(this.retrieveViaAjax);
         componentCopy.setRenderedHtmlOutput(this.renderedHtmlOutput);
         componentCopy.setRequired(this.required);
         componentCopy.setResetDataOnRefresh(this.resetDataOnRefresh);

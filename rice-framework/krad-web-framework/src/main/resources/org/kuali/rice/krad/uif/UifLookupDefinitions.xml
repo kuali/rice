@@ -35,7 +35,6 @@
     <property name="authorizerClass" value="org.kuali.rice.krad.lookup.LookupViewAuthorizerBase"/>
     <property name="formClass" value="org.kuali.rice.krad.web.form.LookupForm"/>
     <property name="singlePageView" value="true"/>
-    <property name="preloadPoolSize" value="0"/>
     <property name="maintenanceUrlMapping" value="maintenance"/>
     <property name="page">
       <bean parent="Uif-LookupPage"/>

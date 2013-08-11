@@ -118,26 +118,6 @@ public abstract class ComponentModifierBase extends UifDictionaryBeanBase implem
 	}
 
     /**
-     * Returns a clone of the component.
-     *
-     * @return ComponentBase clone of the component
-     */
-    public <T> T copy() {
-        T copiedClass = null;
-
-        try {
-            copiedClass = (T)this.getClass().newInstance();
-        }
-        catch(Exception exception) {
-            throw new RuntimeException();
-        }
-
-        copyProperties(copiedClass);
-
-        return copiedClass;
-    }
-
-    /**
      * Copies the properties over for the copy method
      *
      */

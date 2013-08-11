@@ -34,6 +34,19 @@ import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.service.PersistenceService;
 import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifPropertyPaths;
+import org.kuali.rice.krad.uif.component.ComponentSecurity;
+import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.element.Action;
+import org.kuali.rice.krad.uif.element.Label;
+import org.kuali.rice.krad.uif.field.ActionField;
+import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.layout.TableLayoutManager;
+import org.kuali.rice.krad.uif.util.ViewCleaner;
+import org.kuali.rice.krad.uif.view.DefaultExpressionEvaluator;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
+import org.kuali.rice.krad.uif.view.ViewAuthorizer;
+import org.kuali.rice.krad.uif.view.ViewPresentationController;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.ClientSideState;
 import org.kuali.rice.krad.uif.component.Component;
@@ -240,11 +253,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         // on existing components
         view.setIdSequence(currentSequenceVal);
 
-        String suffix = StringUtils.replaceOnce(origComponent.getId(), origComponent.getBaseId(), "");
-        if (StringUtils.isNotBlank(suffix)) {
-            ComponentUtils.updateIdWithSuffix(component, suffix);
-        }
-
         Component parent = (Component) origComponent.getContext().get(UifConstants.ContextVariableNames.PARENT);
 
         // update context on all components within the refresh component to catch context set by parent
@@ -278,11 +286,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         // copy properties that are set by parent components in the full view lifecycle
         if (component instanceof Field) {
             ((Field) component).setLabelRendered(((Field) origComponent).isLabelRendered());
-        } else if (component instanceof CollectionGroup) {
-            String subCollectionSuffix = ((CollectionGroup) origComponent).getSubCollectionSuffix();
-            ((CollectionGroup) component).setSubCollectionSuffix(subCollectionSuffix);
-
-            suffix = StringUtils.removeStart(suffix, subCollectionSuffix);
         }
 
         if (origComponent.isRefreshedByAction()) {
@@ -302,10 +305,11 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         }
 
         performComponentInitialization(view, model, component);
-        view.getViewIndex().indexComponent(component);
 
         // adjust IDs for suffixes that might have been added by a parent component during the full view lifecycle
+        String suffix = StringUtils.replaceOnce(origComponent.getId(), origComponent.getBaseId(), "");
         if (StringUtils.isNotBlank(suffix)) {
+            ComponentUtils.updateIdWithSuffix(component, suffix);
             ComponentUtils.updateChildIdsWithSuffixNested(component, suffix);
         }
 
@@ -333,13 +337,20 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             }
         }
 
+        // if disclosed by action and request was made, make sure the component will display
+        if (component.isDisclosedByAction()) {
+            ComponentUtils.setComponentPropertyFinal(component, UifPropertyPaths.RENDER, true);
+            ComponentUtils.setComponentPropertyFinal(component, UifPropertyPaths.HIDDEN, false);
+        }
+
         performComponentApplyModel(view, component, model, new HashMap<String, Integer>());
         view.getViewIndex().indexComponent(component);
 
-        // if disclosed by action and request was made, make sure the component will display
-        if (component.isDisclosedByAction()) {
-            component.setRender(true);
-            component.setHidden(false);
+        // adjust nestedLevel property on some specific collection cases
+        if (component instanceof Container) {
+            ComponentUtils.adjustNestedLevelsForTableCollections((Container) component, 0);
+        } else if (component instanceof FieldGroup) {
+            ComponentUtils.adjustNestedLevelsForTableCollections(((FieldGroup) component).getGroup(), 0);
         }
 
         performComponentFinalize(view, component, model, parent);
@@ -383,8 +394,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#spawnSubLifecyle(org.kuali.rice.krad.uif.view.View,
-     * java.lang.Object, org.kuali.rice.krad.uif.component.Component, org.kuali.rice.krad.uif.component.Component,
-     * java.lang.String, java.lang.String)
+     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component, org.kuali.rice.krad.uif.component.Component,
+     *      java.lang.String, java.lang.String)
      */
     @Override
     public void spawnSubLifecyle(View view, Object model, Component component, Component parent, String startPhase,
@@ -410,8 +421,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         if (StringUtils.isBlank(endPhase)) {
             endPhase = UifConstants.ViewPhases.FINALIZE;
-        } else if (!UifConstants.ViewPhases.INITIALIZE.equals(endPhase) && !UifConstants.ViewPhases.APPLY_MODEL
-                .equals(endPhase) && !UifConstants.ViewPhases.FINALIZE.equals(endPhase)) {
+        } else if (!UifConstants.ViewPhases.INITIALIZE.equals(endPhase) && !UifConstants.ViewPhases.APPLY_MODEL.equals(
+                endPhase) && !UifConstants.ViewPhases.FINALIZE.equals(endPhase)) {
             throw new RuntimeException("Invalid end phase given: " + endPhase);
         }
 

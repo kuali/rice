@@ -209,4 +209,55 @@ public class ComponentExhibit extends ContentElementBase {
     public void setAdditionalSourceCodeViewer2(SyntaxHighlighter additionalSourceCodeViewer2) {
         this.additionalSourceCodeViewer2 = additionalSourceCodeViewer2;
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+
+        ComponentExhibit exhibitCopy = (ComponentExhibit) component;
+
+        if (this.demoGroups != null) {
+            List<Group> demoGroupsCopy = new ArrayList<Group>();
+
+            for (Group demoGroup : this.demoGroups) {
+                demoGroupsCopy.add((Group) demoGroup.copy());
+            }
+            exhibitCopy.setDemoGroups(demoGroupsCopy);
+        }
+
+        if (this.demoSourceCode != null) {
+            exhibitCopy.setDemoSourceCode(new ArrayList<String>(this.demoSourceCode));
+        }
+
+        if (this.additionalDemoSourceCode1 != null) {
+            exhibitCopy.setAdditionalDemoSourceCode1(new ArrayList<String>(this.additionalDemoSourceCode1));
+        }
+
+        if (this.additionalDemoSourceCode2 != null) {
+            exhibitCopy.setAdditionalDemoSourceCode2(new ArrayList<String>(this.additionalDemoSourceCode2));
+        }
+
+        if (this.sourceCodeViewer != null) {
+            exhibitCopy.setSourceCodeViewer((SyntaxHighlighter) this.sourceCodeViewer.copy());
+        }
+
+        if (this.additionalSourceCodeViewer1 != null) {
+            exhibitCopy.setAdditionalSourceCodeViewer1((SyntaxHighlighter) this.additionalSourceCodeViewer1.copy());
+        }
+
+        if (this.additionalSourceCodeViewer2 != null) {
+            exhibitCopy.setAdditionalSourceCodeViewer2((SyntaxHighlighter) this.additionalSourceCodeViewer2.copy());
+        }
+
+        if (this.docLinkFields != null) {
+            exhibitCopy.setDocLinkFields((FieldGroup) this.docLinkFields.copy());
+        }
+
+        if (this.tabGroup != null) {
+            exhibitCopy.setTabGroup((TabGroup) this.tabGroup.copy());
+        }
+    }
 }

@@ -437,7 +437,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
         if(comparables != null) {
             List<ComparableInfo> comparables = new ArrayList<ComparableInfo>();
             for (ComparableInfo comparable : this.comparables) {
-                comparables.add(comparable.clone());
+                comparables.add((ComparableInfo)comparable.copy());
             }
             compareFieldCreateModifierCopy.setComparables(comparables);
         }

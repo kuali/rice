@@ -350,7 +350,8 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     protected void buildAutomaticQuickfinder(View view, Object model) {
         QuickFinder autoQuickfinder = ComponentFactory.getQuickFinder();
 
-        view.getViewHelperService().spawnSubLifecyle(view, model, autoQuickfinder, this, null, null);
+        view.getViewHelperService().spawnSubLifecyle(view, model, autoQuickfinder, this,
+                UifConstants.ViewPhases.INITIALIZE, UifConstants.ViewPhases.APPLY_MODEL);
 
         // if render flag is true, that means the quickfinder was able to find a relationship
         if (autoQuickfinder.isRender()) {

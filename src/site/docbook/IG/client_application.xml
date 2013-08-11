@@ -160,11 +160,11 @@
 
         <section>
             <title>JDK</title>
-            <para>In order to support compilation of the application source
-                code a JDK must be installed (Note this must be the JDK and not a Java Runtime Environment –
-                JRE). Rice requires a JDK version of 1.6.x. Additionally, Rice has only been tested with the
-                Sun JDK implementation. Therefore use of other implementations such as OpenJDK may have
-                problems.</para>
+            <para>In order to support compilation of the application source code a JDK must be
+        installed (Note this must be the JDK and not a Java Runtime Environment – JRE). Rice
+        requires a JDK version of 1.6.x or 1.7.x. Additionally, Rice has only been tested with the
+        Sun JDK implementation. Therefore use of other implementations such as OpenJDK may have
+        problems.</para>
 
             <para>For machines running Windows, JDK 6 can be downloaded at the
                 following URL:</para>
@@ -188,9 +188,9 @@
 
             <programlisting>java -version</programlisting>
             <para>You should see output similar to the following:</para>
-            <programlisting>java version "1.6.0_26"
-Java(TM) SE Runtime Environment (build 1.6.0_26-b03-383-11A511)
-Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-383, mixed mode)</programlisting>
+            <programlisting>java version "1.7.0_10"
+Java(TM) SE Runtime Environment (build 1.7.0_10-b18)
+Java HotSpot(TM) Client VM (build 23.6-b04, mixed mode)</programlisting>
             <para>If you receive an error indicating that the "java" command could not be found,
                 please ensure that the java command is on your machine's <emphasis role="bold"
                     >PATH</emphasis> environment variable.</para>

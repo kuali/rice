@@ -19,6 +19,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.util.ColumnSort;
@@ -70,12 +71,17 @@ public class DataTablesPagingHelper {
                 newColumnSorts = buildColumnSorts(dataTablesInputs, oldCollectionGroup);
 
                 // get a new instance of the collection group component that we'll run the lifecycle on
-                newCollectionGroup =
-                        (CollectionGroup) ComponentFactory.getNewInstanceForRefresh(form.getPostedView(), tableId);
+                newCollectionGroup = (CollectionGroup) ComponentFactory.getNewInstanceForRefresh(form.getPostedView(),
+                        tableId);
+
+                // copy over bindingInfo
+                BindingInfo originalBindingInfo = newCollectionGroup.getBindingInfo();
+                newCollectionGroup.setBindingInfo(oldCollectionGroup.getBindingInfo());
 
                 // get the collection for this group from the model
-                modelCollection = ObjectPropertyUtils.getPropertyValue(form, newCollectionGroup.getBindingInfo()
-                        .getPropertyAdjustedBindingPath(newCollectionGroup.getPropertyName()));
+                modelCollection = ObjectPropertyUtils.getPropertyValue(form,
+                        newCollectionGroup.getBindingInfo().getPropertyAdjustedBindingPath(
+                                newCollectionGroup.getPropertyName()));
 
                 applyTableJsonSort(modelCollection, oldColumnSorts, newColumnSorts, oldCollectionGroup, view);
 
@@ -85,9 +91,12 @@ public class DataTablesPagingHelper {
                 newCollectionGroup.setDisplayStart(dataTablesInputs.iDisplayStart);
                 newCollectionGroup.setDisplayLength(dataTablesInputs.iDisplayLength);
 
+                // set back original binding info
+                newCollectionGroup.setBindingInfo(originalBindingInfo);
+
                 // run lifecycle on the table component and update in view
-                view.getViewHelperService()
-                        .performComponentLifecycle(view, form, newCollectionGroup, oldCollectionGroup.getId());
+                view.getViewHelperService().performComponentLifecycle(view, form, newCollectionGroup,
+                        oldCollectionGroup.getId());
             }
 
             this.tableLayoutManager = (TableLayoutManager) newCollectionGroup.getLayoutManager();
@@ -107,13 +116,14 @@ public class DataTablesPagingHelper {
      * @return the List of ColumnSort elements representing the requested sort columns, types, and directions
      */
     private List<ColumnSort> buildColumnSorts(DataTablesInputs dataTablesInputs, CollectionGroup collectionGroup) {
-        int [] sortCols = dataTablesInputs.iSortCol_; // cols being sorted on (for multi-col sort)
-        boolean [] sortable = dataTablesInputs.bSortable_; // which columns are sortable
-        String [] sortDir = dataTablesInputs.sSortDir_; // direction to sort
+        int[] sortCols = dataTablesInputs.iSortCol_; // cols being sorted on (for multi-col sort)
+        boolean[] sortable = dataTablesInputs.bSortable_; // which columns are sortable
+        String[] sortDir = dataTablesInputs.sSortDir_; // direction to sort
 
         // parse table options to gather the sort types
-        String aoColumnDefsValue = ((TableLayoutManager)collectionGroup.getLayoutManager())
-                .getRichTable().getTemplateOptions().get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
+        String aoColumnDefsValue =
+                ((TableLayoutManager) collectionGroup.getLayoutManager()).getRichTable().getTemplateOptions().get(
+                        UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
         JsonArray jsonColumnDefs = null;
 
         if (!StringUtils.isEmpty(aoColumnDefsValue)) { // we'll parse this using a JSON library to make things simpler
@@ -144,7 +154,8 @@ public class DataTablesPagingHelper {
      * @param jsonColumnDefs the JsonArray representation of the aoColumnDefs property from the RichTable template
      * options
      * @param sortCol the index of the column to get the sort type for
-     * @return the name of the sort type specified in the template options, or the default of "string" if none is found.
+     * @return the name of the sort type specified in the template options, or the default of "string" if none is
+     *         found.
      */
     private String getSortType(JsonArray jsonColumnDefs, int sortCol) {
         String sortType = "string"; // default to string if nothing is spec'd
@@ -254,8 +265,7 @@ public class DataTablesPagingHelper {
         private static final String DATA_PROP_PREFIX = "mDataProp_";
         private static final String ECHO = "sEcho";
 
-        private final int iDisplayStart, iDisplayLength, iColumns,
-                iSortingCols, sEcho;
+        private final int iDisplayStart, iDisplayLength, iColumns, iSortingCols, sEcho;
 
         // TODO: All search related options are commented out of this class.
         // If we implement search for datatables we'll want to re-activate that code to capture the configuration
@@ -263,7 +273,7 @@ public class DataTablesPagingHelper {
 
         //        private final String sSearch;
         //        private final Pattern patSearch;
-        
+
         private final boolean bRegex;
         private final boolean[] /*bSearchable_,*/ bRegex_, bSortable_;
         private final String[] /*sSearch_,*/ sSortDir_, mDataProp_;
@@ -274,14 +284,10 @@ public class DataTablesPagingHelper {
 
         public DataTablesInputs(HttpServletRequest request) {
             String s;
-            iDisplayStart = (s = request.getParameter(DISPLAY_START)) == null ? 0
-                    : Integer.parseInt(s);
-            iDisplayLength = (s = request.getParameter(DISPLAY_LENGTH)) == null ? 0
-                    : Integer.parseInt(s);
-            iColumns = (s = request.getParameter(COLUMNS)) == null ? 0
-                    : Integer.parseInt(s);
-            bRegex = (s = request.getParameter(REGEX)) == null ? false
-                    : new Boolean(s);
+            iDisplayStart = (s = request.getParameter(DISPLAY_START)) == null ? 0 : Integer.parseInt(s);
+            iDisplayLength = (s = request.getParameter(DISPLAY_LENGTH)) == null ? 0 : Integer.parseInt(s);
+            iColumns = (s = request.getParameter(COLUMNS)) == null ? 0 : Integer.parseInt(s);
+            bRegex = (s = request.getParameter(REGEX)) == null ? false : new Boolean(s);
 
             //            patSearch = (sSearch = request.getParameter("sSearch")) == null
             //                    || !bRegex ? null : Pattern.compile(sSearch);
@@ -297,25 +303,21 @@ public class DataTablesPagingHelper {
                 //                bSearchable_[i] = (s = request.getParameter("bSearchable_" + i)) == null ? false
                 //                        : new Boolean(s);
 
-                bRegex_[i] = (s = request.getParameter(REGEX_PREFIX + i)) == null ? false
-                        : new Boolean(s);
+                bRegex_[i] = (s = request.getParameter(REGEX_PREFIX + i)) == null ? false : new Boolean(s);
 
                 //                patSearch_[i] = (sSearch_[i] = request.getParameter("sSearch_"
                 //                        + i)) == null
                 //                        || !bRegex_[i] ? null : Pattern.compile(sSearch_[i]);
 
-                bSortable_[i] = (s = request.getParameter(SORTABLE_PREFIX + i)) == null ? false
-                        : new Boolean(s);
+                bSortable_[i] = (s = request.getParameter(SORTABLE_PREFIX + i)) == null ? false : new Boolean(s);
             }
 
-            iSortingCols = (s = request.getParameter(SORTING_COLS)) == null ? 0
-                    : Integer.parseInt(s);
+            iSortingCols = (s = request.getParameter(SORTING_COLS)) == null ? 0 : Integer.parseInt(s);
             iSortCol_ = new int[iSortingCols];
             sSortDir_ = new String[iSortingCols];
 
             for (int i = 0; i < iSortingCols; i++) {
-                iSortCol_[i] = (s = request.getParameter(SORT_COL_PREFIX + i)) == null ? 0
-                        : Integer.parseInt(s);
+                iSortCol_[i] = (s = request.getParameter(SORT_COL_PREFIX + i)) == null ? 0 : Integer.parseInt(s);
                 sSortDir_[i] = request.getParameter(SORT_DIR_PREFIX + i);
             }
 
@@ -325,8 +327,7 @@ public class DataTablesPagingHelper {
                 mDataProp_[i] = request.getParameter(DATA_PROP_PREFIX + i);
             }
 
-            sEcho = (s = request.getParameter(ECHO)) == null ? 0 : Integer
-                    .parseInt(s);
+            sEcho = (s = request.getParameter(ECHO)) == null ? 0 : Integer.parseInt(s);
         }
 
         @Override

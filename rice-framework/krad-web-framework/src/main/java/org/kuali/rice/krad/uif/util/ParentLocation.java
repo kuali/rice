@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -52,7 +53,7 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
 
     private BreadcrumbItem viewBreadcrumbItem;
     private BreadcrumbItem pageBreadcrumbItem;
-    private List<BreadcrumbItem> resolvedBreadcrumbItems = new ArrayList<BreadcrumbItem>();
+    protected List<BreadcrumbItem> resolvedBreadcrumbItems = new ArrayList<BreadcrumbItem>();
 
     /**
      * Construct the parent location breadcrumbItems that represent all the parent views/pages configured through
@@ -504,5 +505,41 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
      */
     public List<BreadcrumbItem> getResolvedBreadcrumbItems() {
         return resolvedBreadcrumbItems;
+    }
+
+    /**
+     * Copies properties for parent location
+     *
+     * @param parentLocation to copy properties to
+     */
+    protected <T> void copyProperties(T parentLocation) {
+        ParentLocation parentLocationCopy = (ParentLocation) parentLocation;
+
+        if (this.parentViewUrl != null) {
+            parentLocationCopy.setParentViewUrl((UrlInfo) this.parentViewUrl.copy());
+        }
+
+        if (this.parentPageUrl != null) {
+            parentLocationCopy.setParentPageUrl((UrlInfo) this.parentPageUrl.copy());
+        }
+
+        parentLocationCopy.setParentViewLabel(this.parentViewLabel);
+        parentLocationCopy.setParentPageLabel(this.parentPageLabel);
+
+        if (this.viewBreadcrumbItem != null) {
+            parentLocationCopy.setViewBreadcrumbItem((BreadcrumbItem) this.viewBreadcrumbItem.copy());
+        }
+
+        if (this.pageBreadcrumbItem != null) {
+            parentLocationCopy.setPageBreadcrumbItem((BreadcrumbItem) this.pageBreadcrumbItem.copy());
+        }
+
+        if (this.resolvedBreadcrumbItems != null) {
+            List<BreadcrumbItem> resolvedBreadcrumbItemsCopy = new ArrayList<BreadcrumbItem>();
+            for (BreadcrumbItem resolvedBreadcrumb : this.resolvedBreadcrumbItems) {
+                resolvedBreadcrumbItemsCopy.add((BreadcrumbItem) resolvedBreadcrumb.copy());
+            }
+            parentLocationCopy.resolvedBreadcrumbItems = resolvedBreadcrumbItemsCopy;
+        }
     }
 }

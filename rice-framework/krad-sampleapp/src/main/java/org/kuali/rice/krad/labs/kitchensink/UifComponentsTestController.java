@@ -396,6 +396,26 @@ public class UifComponentsTestController extends UifControllerBase {
     }
 
     /**
+     * Performs custom line action for collection 4 in kitchen sink collection demo.
+     * Just puts out a growl message and returns.
+     * @param uifForm
+     * @param result
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=updateOfficial")
+    public ModelAndView updateOfficial(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        String actionParm1 = uifForm.getActionParamaterValue("field1");
+
+        GlobalVariables.getMessageMap().addGrowlMessage("Action Parameters", "customLineAction.message", actionParm1);
+
+        return getUIFModelAndView(uifForm);
+    }
+
+    /**
      * Changes the view to readOnly and returns.
      *
      * @param uifForm

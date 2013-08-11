@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.util;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -27,6 +28,10 @@ import java.util.Set;
  */
 public class BooleanMap extends HashMap<String, Boolean> {
     private static final long serialVersionUID = 4042557657401395547L;
+
+    public BooleanMap(Map<? extends String, ? extends Boolean> m) {
+        super(m);
+    }
 
     public BooleanMap(Set<String> keys) {
         super();

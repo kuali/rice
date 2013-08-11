@@ -200,10 +200,6 @@ public class RichTable extends WidgetBase {
         getTemplateOptions().put(UifConstants.TableToolsKeys.SDOWNLOAD_SOURCE, kradUrl
                 + ((UifFormBase) model).getControllerMapping()
                 + "?"
-                + UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME
-                + "="
-                + UifConstants.MethodToCallNames.TABLE_DATA
-                + "&"
                 + UifParameters.TABLE_ID
                 + "="
                 + component.getId()

@@ -31,17 +31,11 @@
     </tip>
     <para>
         <orderedlist>
-            <!-- https://wiki.kuali.org/display/KULRICE/Schema+Spy+Publish+to+site.kuali.org -->
-            <!-- TODO: regenerate and add back in
-                    <listitem>
-                        <para><link xlink:show="new" xlink:href="../html/schema-spy/index.html">Schema Spy</link></para>
-                    </listitem>
-
-
-                    <listitem>
-                        <para><link xlink:show="new" xlink:href="../db_diagrams/schema.html">Schema</link></para>
-                    </listitem>
--->
+            <listitem>
+                <para><link
+                    xlink:href="http://site.kuali.org/rice/2.3.0/reference/html/schema-spy/index.html"
+                    >Schema Spy</link></para>
+            </listitem>
             <listitem>
                 <para>Rice KRAD (KRAD): <link xlink:show="new"
                     xlink:href="../db_diagrams/rice-krad.png">png*</link> / <link

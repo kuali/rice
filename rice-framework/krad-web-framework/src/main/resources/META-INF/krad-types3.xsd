@@ -7659,7 +7659,7 @@
               </xsd:complexContent>
             </xsd:complexType>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="useAjaxCallForContent" type="xsd:string">
+          <xsd:element maxOccurs="1" minOccurs="0" name="retrieveViaAjax" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.container.DialogGroup" xml:lang="en"><![CDATA[Indicates which approach is used to fill the lightbox content for this dialog.
 
@@ -8114,7 +8114,7 @@
               <![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
-        <xsd:attribute name="useAjaxCallForContent">
+        <xsd:attribute name="retrieveViaAjax">
           <xsd:annotation>
             <xsd:documentation source="org.kuali.rice.krad.uif.container.DialogGroup" xml:lang="en"><![CDATA[Indicates which approach is used to fill the lightbox content for this dialog.
 

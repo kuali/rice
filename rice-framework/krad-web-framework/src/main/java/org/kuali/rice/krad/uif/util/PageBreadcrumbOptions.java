@@ -246,4 +246,20 @@ public class PageBreadcrumbOptions extends BreadcrumbOptions {
     public void setRenderParentLocations(boolean renderParentLocations) {
         this.renderParentLocations = renderParentLocations;
     }
+
+    /**
+     * Copies the properties over for the copy method.
+     *
+     * @param breadcrumbOptions The BreadcrumbOptions to copy
+     */
+    protected <T> void copyProperties(T breadcrumbOptions) {
+        super.copyProperties(breadcrumbOptions);
+        PageBreadcrumbOptions breadcrumbOptionsCopy = (PageBreadcrumbOptions) breadcrumbOptions;
+
+        breadcrumbOptionsCopy.setRenderViewBreadcrumb(this.renderViewBreadcrumb);
+        breadcrumbOptionsCopy.setRenderHomewardPathBreadcrumbs(this.renderHomewardPathBreadcrumbs);
+        breadcrumbOptionsCopy.setRenderPreViewBreadcrumbs(this.renderPreViewBreadcrumbs);
+        breadcrumbOptionsCopy.setRenderPrePageBreadcrumbs(this.renderPrePageBreadcrumbs);
+        breadcrumbOptionsCopy.setRenderParentLocations(this.renderParentLocations);
+    }
 }

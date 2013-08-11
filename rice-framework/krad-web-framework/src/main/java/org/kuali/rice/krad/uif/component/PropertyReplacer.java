@@ -21,6 +21,8 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
+import org.kuali.rice.krad.uif.layout.LayoutManager;
+import org.kuali.rice.krad.uif.util.CloneUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -252,6 +254,18 @@ public class PropertyReplacer extends UifDictionaryBeanBase implements Serializa
 
         propertyReplacerCopy.setCondition(this.condition);
         propertyReplacerCopy.setPropertyName(this.propertyName);
-        propertyReplacerCopy.setReplacement(this.replacement);
+
+        if (this.replacement != null) {
+            Object replacementCopy = null;
+            if (this.replacement instanceof Component) {
+                replacementCopy = ((Component) this.replacement).copy();
+            } else if (this.replacement instanceof LayoutManager) {
+                replacementCopy = ((LayoutManager) this.replacement).copy();
+            } else {
+                replacementCopy = CloneUtils.deepClone(this.replacement);
+            }
+
+            propertyReplacerCopy.setReplacement(replacementCopy);
+        }
     }
 }

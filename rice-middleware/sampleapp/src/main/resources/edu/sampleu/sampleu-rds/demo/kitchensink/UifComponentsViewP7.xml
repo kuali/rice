@@ -135,7 +135,8 @@
       <inputField-bean propertyName="field4" required="true"/>
     </items>
     <lineActions>
-      <primaryActionButton-bean disabled="@{#line.field1 eq '1'}" id="collection4-action1"/>
+      <primaryActionButton-bean p:methodToCall="updateOfficial" id="collection4-action1"
+                                p:actionParameters="field1:@{#line.field1}"/>
       <navigationActionLink-bean id="collection4-action2" methodToCall="deleteLine" onClickScript="alert('foo');"/>
     </lineActions>
     <subCollections>

@@ -2129,6 +2129,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             tableLayoutManagerCopy.setAddLineGroup((Group) this.addLineGroup.copy());
         }
 
+        tableLayoutManagerCopy.setNumberOfDataColumns(this.numberOfDataColumns);
+
         if (this.headerLabels != null) {
             List<Label> headerLabelsCopy = new ArrayList<Label>();
             for (Label headerLabel : headerLabels) {
@@ -2188,7 +2190,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         tableLayoutManagerCopy.setGroupingColumnIndex(this.groupingColumnIndex);
 
         if (this.groupingPropertyNames != null) {
-            tableLayoutManagerCopy.setGroupingPropertyNames(new ArrayList(groupingPropertyNames));
+            tableLayoutManagerCopy.setGroupingPropertyNames(new ArrayList<String>(groupingPropertyNames));
         }
 
         tableLayoutManagerCopy.setRenderOnlyLeftTotalLabels(this.renderOnlyLeftTotalLabels);

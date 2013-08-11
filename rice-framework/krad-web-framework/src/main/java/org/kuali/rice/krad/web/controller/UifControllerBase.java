@@ -986,18 +986,67 @@ public abstract class UifControllerBase {
     }
 
     /**
-     * Generates exportable table data based on the rich table selected
+     * Generates exportable table data as CSV based on the rich table selected
      *
-     * @param form
-     * @param result
-     * @param request
-     * @param response
+     * @param form - current form
+     * @param result - binding result
+     * @param request - http request
+     * @param response - http response
      * @return
      */
-    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=" + UifConstants.MethodToCallNames.TABLE_DATA,
-            produces = {"text/csv", "application/xml", "application/vnd.ms-excel"})
+    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=" + UifConstants.MethodToCallNames.TABLE_CSV,
+            produces = {"text/csv"})
     @ResponseBody
-    public String retrieveTableData(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+    public String tableCsvRetrieval(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        LOG.debug("processing csv table data request");
+
+        return retrieveTableData(form, result, request, response);
+    }
+
+    /**
+     * Generates exportable table data in xsl based on the rich table selected
+     *
+     * @param form - current form
+     * @param result - binding result
+     * @param request - http request
+     * @param response - http response
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=" + UifConstants.MethodToCallNames.TABLE_XLS,
+            produces = {"application/vnd.ms-excel"})
+    @ResponseBody
+    public String tableXlsRetrieval(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        LOG.debug("processing xls table data request");
+
+        return retrieveTableData(form, result, request, response);
+    }
+
+    /**
+     * Generates exportable table data based on the rich table selected
+     *
+     * @param form - current form
+     * @param result - binding result
+     * @param request - http request
+     * @param response - http response
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=" + UifConstants.MethodToCallNames.TABLE_XML,
+            produces = {"application/xml"})
+    @ResponseBody
+    public String tableXmlRetrieval(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        LOG.debug("processing xml table data request");
+
+        return retrieveTableData(form, result, request, response);
+    }
+
+    /**
+     * Generates exportable table data based on the rich table selected
+     *
+     */
+    private String retrieveTableData(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         LOG.debug("processing table data request");
 
@@ -1072,12 +1121,26 @@ public abstract class UifControllerBase {
 
         DataTablesPagingHelper.DataTablesInputs dataTablesInputs = new DataTablesPagingHelper.DataTablesInputs(request);
 
-        DataTablesPagingHelper pagingHelper = new DataTablesPagingHelper();
+        DataTablesPagingHelper pagingHelper = createDataTablesPagingHelperInstance(form, request);
         pagingHelper.processPagingRequest(form.getPostedView(), tableId, form, dataTablesInputs);
 
         Map<String, Object> additionalViewAttributes = new HashMap<String, Object>();
         additionalViewAttributes.put(UifParameters.DATA_TABLES_PAGING_HELPER, pagingHelper);
 
         return getUIFModelAndView(form, additionalViewAttributes);
+    }
+
+    /**
+     * Creates a DataTablesPagingHelper which is used within {@link #tableJsonRetrieval(org.kuali.rice.krad.web.form.UifFormBase, org.springframework.validation.BindingResult, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)}
+     * for rendering pages of data in JSON form.
+     *
+     * <p>This template method can be overridden to supply a custom extension of DataTablesPagingHelper e.g. for paging
+     * and sorting at the data layer.</p>
+     *
+     * @return the DataTablesPagingHelper instance
+     */
+    protected DataTablesPagingHelper createDataTablesPagingHelperInstance(UifFormBase form,
+            HttpServletRequest request) {
+        return new DataTablesPagingHelper();
     }
 }

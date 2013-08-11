@@ -205,7 +205,8 @@
      </property>
      <property name="lineActions">
        <list>
-         <bean id="collection4-action1" parent="Uif-PrimaryActionButton" p:disabled="@{#line.field1 eq '1'}"/>
+         <bean id="collection4-action1" parent="Uif-PrimaryActionButton" p:methodToCall="updateOfficial"
+               p:actionParameters="field1:@{#line.field1}"/>
          <bean id="collection4-action2" parent="Uif-NavigationActionLink" p:onClickScript="alert('foo');" p:methodToCall="deleteLine"/>
        </list>
      </property>

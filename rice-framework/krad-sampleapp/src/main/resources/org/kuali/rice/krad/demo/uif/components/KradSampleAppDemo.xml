@@ -703,7 +703,6 @@
     <property name="items">
       <list>
         <bean id="KradSampleAppTravelDemo-Row3-Demo1" parent="KradSampleAppDemo-DemoGroup"/>
-        <bean id="KradSampleAppTravelDemo-Row3-Demo2" parent="KradSampleAppDemo-DemoGroup"/>
         <bean id="KradSampleAppTravelDemo-Row3-Demo3" parent="KradSampleAppDemo-DemoGroup"/>
       </list>
     </property>
@@ -713,7 +712,6 @@
     <property name="items">
       <list>
         <ref bean="KradSampleAppLookupsDemo-Row1"/>
-        <ref bean="KradSampleAppLookupsDemo-Row2"/>
       </list>
     </property>
   </bean>
@@ -729,19 +727,6 @@
         <bean id="KradSampleAppLookupsDemo-Row1-Demo1" parent="KradSampleAppDemo-DemoGroup"/>
         <bean id="KradSampleAppLookupsDemo-Row1-Demo2" parent="KradSampleAppDemo-DemoGroup"/>
         <bean id="KradSampleAppLookupsDemo-Row1-Demo3" parent="KradSampleAppDemo-DemoGroup"/>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="KradSampleAppLookupsDemo-Row2" parent="Uif-HorizontalBoxGroup">
-    <property name="cssClasses">
-      <list merge="true">
-        <value>demo-demoRow</value>
-      </list>
-    </property>
-    <property name="items">
-      <list>
-        <bean id="KradSampleAppLookupsDemo-Row2-Demo1" parent="KradSampleAppDemo-DemoGroup"/>
       </list>
     </property>
   </bean>

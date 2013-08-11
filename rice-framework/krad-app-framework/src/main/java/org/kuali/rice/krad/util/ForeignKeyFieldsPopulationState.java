@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krad.util;
 
+import org.kuali.rice.krad.data.DataObjectWrapper;
+
 import java.io.Serializable;
 import java.util.List;
-
-import org.kuali.rice.krad.data.DataObjectWrapper;
 
 /**
  * This class is a token-style class, that is write-once, then read-only for all consumers of the class. It is often used as a
@@ -71,9 +71,6 @@ public class ForeignKeyFieldsPopulationState implements Serializable {
         return unpopulatedFieldNames;
     }
 
-    /**
-     * @see org.kuali.rice.krad.service.PersistenceStructureService.ForeignKeyFieldsPopulation#hasUnpopulatedFieldName(java.lang.String)
-     */
     public boolean hasUnpopulatedFieldName(String fieldName) {
         if (this.unpopulatedFieldNames.contains(fieldName)) {
             return true;

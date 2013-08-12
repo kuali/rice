@@ -300,7 +300,7 @@ class DictionaryConverter {
         if (beanNode?.@parent == "BusinessObjectEntry") {
             beanNode.@parent = "DataObjectEntry";
         }
-        transformControlProperty(beanNode, ddPropertiesMap);
+        transformControlProperty(beanNode, ddBeanControlMap);
         this.removeProperties(beanNode, ddPropertiesRemoveList);
         this.renameProperties(beanNode, ddPropertiesMap);
         renamePropertyBeans(beanNode, ddPropertiesMap, true);
@@ -425,15 +425,14 @@ class DictionaryConverter {
         // if it contains a inquiry collection add a uif stack collection, else replace with a Uif-Disclosure-GridSection
         if (!beanNode.property.list.bean.find { it.@parent == "InquiryCollectionDefinition" }) {
             builder.bean(parent: 'Uif-Disclosure-GridSection') {
-                copyProperties(delegate, beanNode, ["title", "collectionObjectClass", "propertyName"]);
-                def renameProps = ["title": "layoutManager.summaryTitle", "businessObjectClass": "collectionObjectClass"];
-                renameProperties(delegate, beanNode, renameProps);
+                copyProperties(delegate, beanNode, ["title"]);
+                renameProperties(delegate, beanNode, ["numberOfColumns": "layoutManager.numberOfColumns"]);
                 transformInquiryFieldsProperty(delegate, beanNode);
             }
         } else {
             builder.bean(parent: 'Uif-StackedCollectionSection') {
-                copyProperties(delegate, beanNode, ["title", "collectionObjectClass", "propertyName"])
-                renameProperties(delegate, beanNode, ["numberOfColumns": "layoutManager.numberOfColumns"]);
+                copyProperties(delegate, beanNode, ["title", "collectionObjectClass", "propertyName"]);
+                renameProperties(delegate, beanNode, ["title": "layoutManager.summaryTitle"]);
                 transformInquiryFieldsProperty(delegate, beanNode);
                 transformSummaryFieldsProperty(delegate, beanNode);
             }
@@ -582,7 +581,7 @@ class DictionaryConverter {
 
 
     def transformMaintainableItemsProperty(NodeBuilder builder, Node beanNode) {
-        transformPropertyBeanList(builder, beanNode, ["maintainableItems": "layoutManager.summaryFields"], nameAttrCondition, attributeFieldBeanTransform);
+        transformPropertyBeanList(builder, beanNode, ["maintainableItems": "items"], nameAttrCondition, inputFieldBeanTransform);
     }
 
     def transformMaintainableFieldsProperty(NodeBuilder builder, Node beanNode) {
@@ -730,21 +729,29 @@ class DictionaryConverter {
 
     // helper closures
 
-    def attributeNameAttrCondition = { key, value -> key.toString().endsWith("name") }
+    def attributeNameAttrCondition = {
+        key, value -> key.toString().endsWith("attributeName") }
 
-    def nameAttrCondition = { key, value -> key.toString().endsWith("name") }
+    def nameAttrCondition = {
+        key, value -> key.toString().endsWith("name") }
 
-    def genericBeanTransform = { builderDelegate, beanParent, attrValue -> builderDelegate.bean('xmlns:p': pNamespaceSchema, parent: beanParent, 'p:propertyName': attrValue) }
+    def genericBeanTransform = {
+        builderDelegate, beanParent, attrValue -> builderDelegate.bean('xmlns:p': pNamespaceSchema, parent: beanParent, 'p:propertyName': attrValue) }
 
-    def inputFieldBeanTransform = { builderDelegate, attrValue -> genericBeanTransform(builderDelegate, 'Uif-InputField', attrValue) }
+    def inputFieldBeanTransform = {
+        builderDelegate, attrValue -> genericBeanTransform(builderDelegate, 'Uif-InputField', attrValue) }
 
-    def attributeFieldBeanTransform = { builderDelegate, attrValue -> genericBeanTransform(builderDelegate, 'AttributeField', attrValue) }
+    def attributeFieldBeanTransform = {
+        builderDelegate, attrValue -> genericBeanTransform(builderDelegate, 'AttributeField', attrValue) }
 
-    def dataFieldBeanTransform = { builderDelegate, attrValue -> genericBeanTransform(builderDelegate, 'Uif-DataField', attrValue) }
+    def dataFieldBeanTransform = {
+        builderDelegate, attrValue -> genericBeanTransform(builderDelegate, 'Uif-DataField', attrValue) }
 
-    def lookupCriteriaFieldBeanTransform = { builderDelegate, attrValue -> genericBeanTransform(builderDelegate, 'Uif-LookupCriteriaInputField', attrValue) }
+    def lookupCriteriaFieldBeanTransform = {
+        builderDelegate, attrValue -> genericBeanTransform(builderDelegate, 'Uif-LookupCriteriaInputField', attrValue) }
 
-    def valueFieldTransform = { builderDelegate, attrValue -> builderDelegate.value(attrValue) }
+    def valueFieldTransform = {
+        builderDelegate, attrValue -> builderDelegate.value(attrValue) }
 
     // property utilities
 

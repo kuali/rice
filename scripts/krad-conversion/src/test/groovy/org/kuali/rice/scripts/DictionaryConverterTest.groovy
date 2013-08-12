@@ -116,7 +116,7 @@ class DictionaryConverterTest {
     void testTransformAttributeDefinitionBeanUsingTransformBusinessObjectEntryBean() {
         String xmlFilePath = dictTestDir + "InquiryDefinitionSample.xml"
         def rootNode = getFileRootNode(xmlFilePath)
-        def beanNode = rootNode.bean.find { "AttributeDefinition" == it.@parent }
+        def beanNode = rootNode.bean.find { "TravelerDetail-id-parentBean" == it.@id }
         Node resultNode = null;
         try {
             resultNode = dictionaryConverter.transformBusinessObjectEntryBean(beanNode)
@@ -129,6 +129,7 @@ class DictionaryConverterTest {
         checkBeanPropertyExists(resultNode, "validCharactersConstraint");
         def constraintProperty = resultNode.property.find { "validCharactersConstraint".equals(it.@name) };
         Assert.assertTrue("constraint bean not converted", "NumericPatternConstraint".equals(constraintProperty.bean[0].@parent));
+        checkBeanPropertyExists(resultNode, "controlField");
     }
 
 
@@ -272,8 +273,24 @@ class DictionaryConverterTest {
                 dictionaryConverter.transformInquirySectionsProperty(delegate, beanNode)
             }
         };
+
         checkBeanPropertyExists(resultNode, "items");
 
+    }
+
+    @Test
+    public void testTransformInquirySectionDefinitionBean() {
+        String inquiryDefPath = dictTestDir + "InquiryDefinitionSample.xml"
+        def ddRootNode = getFileRootNode(inquiryDefPath);
+        def beanNode = ddRootNode.bean.find { "InquiryDefinition".equals(it.@parent) }.property.list.bean.find { "InquirySectionDefinition".equals(it.@parent) };
+        dictionaryConverter.definitionDataObjects.put("TravelerDetail-inquiryDefinition", "org.kuali.rice.krad.demo.travel.authorization.dataobject.TravelerDetail");
+        Node resultNode = beanNode.replaceNode {
+            dictionaryConverter.transformInquirySectionDefinitionBean(delegate, beanNode)
+        };
+
+        Assert.assertTrue("results contains grid section", "Uif-Disclosure-GridSection".equals(resultNode.@parent));
+        checkBeanPropertyExists(resultNode, "layoutManager.numberOfColumns");
+        checkBeanPropertyExists(resultNode, "items");
     }
 
     @Test
@@ -312,9 +329,9 @@ class DictionaryConverterTest {
         }
 
         // confirm lookup fields has been replaced with criteria fields
-        checkBeanPropertyExists(beanNode, "layoutManager.summaryFields");
-        def resultsFieldProperty = beanNode.property.find { "layoutManager.summaryFields".equals(it.@name) };
-        def attrFieldSize = resultsFieldProperty.list.bean.findAll { "AttributeField".equals(it.@parent) }.size();
+        checkBeanPropertyExists(beanNode, "items");
+        def resultsFieldProperty = beanNode.property.find { "items".equals(it.@name) };
+        def attrFieldSize = resultsFieldProperty.list.bean.findAll { "Uif-InputField".equals(it.@parent) }.size();
         Assert.assertEquals("number of converted data fields did not match", 3, attrFieldSize);
     }
 

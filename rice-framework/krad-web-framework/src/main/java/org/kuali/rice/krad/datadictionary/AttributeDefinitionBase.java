@@ -94,7 +94,7 @@ public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBa
         if ( getDataObjectAttribute() != null ) {
             return getDataObjectAttribute().getLabel();
         }
-        if ( GlobalResourceLoader.isInitialized() ) {
+        if ( GlobalResourceLoader.isInitialized() && KRADServiceLocatorWeb.getUifDefaultingService() != null ) {
             return KRADServiceLocatorWeb.getUifDefaultingService().deriveHumanFriendlyNameFromPropertyName( getName() );
         }
         return getName();

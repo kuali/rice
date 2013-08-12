@@ -20,20 +20,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import java.util.ArrayList;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.krad.datadictionary.DataDictionaryException;
+import org.kuali.rice.krad.datadictionary.DefaultListableBeanFactory;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.UifBeanFactoryPostProcessor;
 import org.kuali.rice.krad.uif.view.View;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;

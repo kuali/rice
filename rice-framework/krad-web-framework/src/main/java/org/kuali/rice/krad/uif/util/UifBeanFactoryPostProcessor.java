@@ -205,7 +205,10 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
             if (StringUtils.isNotBlank(nestedPropertyName)) {
                 expressionPath = nestedPropertyName + "." + expressionPath;
             }
-            expressionGraph.put(expressionPath, parentExpression.getValue());
+
+            if (!expressionGraph.containsKey(expressionPath)) {
+                expressionGraph.put(expressionPath, parentExpression.getValue());
+            }
         }
 
         // if bean name is given and factory does not have it registered we need to add it (inner beans that

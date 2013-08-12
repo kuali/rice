@@ -24,9 +24,9 @@ import java.util.Map.Entry;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.krad.datadictionary.DataDictionaryException;
+import org.kuali.rice.krad.datadictionary.DefaultListableBeanFactory;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
@@ -37,8 +37,6 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import org.springframework.util.StopWatch;
 
 /**
  * Indexes {@code View} bean entries for retrieval
@@ -283,9 +281,8 @@ public class UifDictionaryIndex implements Runnable {
      * index
      */
     protected void buildViewIndicies() {
-        StopWatch timer = new StopWatch();
-        timer.start();
         LOG.info("Starting View Index Building");
+
         viewBeanEntriesById = new HashMap<String, String>();
         viewEntriesByType = new HashMap<String, ViewTypeDictionaryIndex>();
 
@@ -307,8 +304,8 @@ public class UifDictionaryIndex implements Runnable {
 
             indexViewForType(propertyValues, id);
         }
-        timer.stop();
-        LOG.info("Completed View Index Building. Time: " + timer.toString());
+
+        LOG.info("Completed View Index Building");
     }
 
     /**

@@ -21,8 +21,8 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 import org.apache.commons.logging.Log;
+import org.kuali.rice.krad.datadictionary.DefaultListableBeanFactory;
 import org.kuali.rice.krad.uif.component.Component;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.core.io.ResourceLoader;
 
 /**

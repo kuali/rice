@@ -44,12 +44,7 @@ import org.kuali.rice.krad.datadictionary.uif.UifDictionaryIndex;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
-import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
-import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.PersistenceStructureService;
@@ -60,13 +55,11 @@ import org.kuali.rice.krad.uif.view.View;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.expression.StandardBeanExpressionResolver;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
-import org.springframework.util.StopWatch;
 import org.springframework.util.StopWatch;
 
 /**

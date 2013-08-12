@@ -17,6 +17,7 @@ package org.kuali.rice.krad.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.data.DataType;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.krad.data.metadata.DataObjectAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validation.capability.ExistenceConstrainable;
@@ -93,7 +94,10 @@ public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBa
         if ( getDataObjectAttribute() != null ) {
             return getDataObjectAttribute().getLabel();
         }
-        return KRADServiceLocatorWeb.getUifDefaultingService().deriveHumanFriendlyNameFromPropertyName( getName() );
+        if ( GlobalResourceLoader.isInitialized() ) {
+            return KRADServiceLocatorWeb.getUifDefaultingService().deriveHumanFriendlyNameFromPropertyName( getName() );
+        }
+        return getName();
     }
 
     /**

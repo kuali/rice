@@ -43,46 +43,45 @@ public class DemoLibraryDataFieldSmokeTest extends DemoLibraryBase {
 
     protected void testDataFieldDefault() throws Exception {
         WebElement exampleDiv = navigateToExample("Demo-DataField-Example1");
-        WebElement field = exampleDiv.findElement(By.cssSelector("div[data-label='DataField 1']"));
+        WebElement field = findElement(By.cssSelector("div[data-label='DataField 1']"), exampleDiv);
 
         String fieldId = field.getAttribute("id");
         String controlId = fieldId + UifConstants.IdSuffixes.CONTROL;
 
         assertIsVisible("#" + fieldId);
         assertIsVisible("label[for='" + controlId + "']");
-
-        WebElement label = field.findElement(By.cssSelector("label[for='" + controlId + "']"));
-        if(!label.getText().contains("DataField 1:")){
+        WebElement label = findElement(By.cssSelector("label[for='" + controlId + "']"), field);
+        if (!label.getText().contains("DataField 1:")) {
             fail("Label text does not match");
         }
 
         assertIsVisible("#" + controlId);
-
         assertTextPresent("1001", "#" + controlId, "DataField value not correct");
+
+        // validate that the value comes after the label
+        findElement(By.cssSelector("span[data-label_for='" + fieldId + "'] + span[id='" + controlId + "']"),
+                exampleDiv);
     }
 
     protected void testDataFieldLabelTop() throws Exception {
         WebElement exampleDiv = navigateToExample("Demo-DataField-Example2");
-        WebElement field = exampleDiv.findElement(By.cssSelector("div[data-label='DataField 1']"));
+        WebElement field = findElement(By.cssSelector("div[data-label='DataField 1']"), exampleDiv);
 
         String fieldId = field.getAttribute("id");
         String controlId = fieldId + UifConstants.IdSuffixes.CONTROL;
 
         assertIsVisible("#" + fieldId);
         assertIsVisible("label[for='" + controlId + "']");
-
-        WebElement label = field.findElement(By.cssSelector("label[for='" + controlId + "']"));
-        if(!label.getText().contains("DataField 1:")){
+        WebElement label = findElement(By.cssSelector("label[for='" + controlId + "']"), field);
+        if (!label.getText().contains("DataField 1:")) {
             fail("Label text does not match");
         }
 
-        WebElement labelspan = field.findElement(By.cssSelector("span[data-label_for='" + fieldId + "']"));
+        WebElement labelSpan = findElement(By.cssSelector("span[data-label_for='" + fieldId + "']"), field);
         // top and bottom add the uif-labelBlock class
-        if(!labelspan.getAttribute("class").contains("uif-labelBlock")){
+        if (!labelSpan.getAttribute("class").contains("uif-labelBlock")) {
             fail("Label span does not contain the appropriate class expected");
         }
-
-        assertIsVisible("#" + controlId);
     }
 
     protected void testDataFieldLabelRight() throws Exception {
@@ -92,18 +91,19 @@ public class DemoLibraryDataFieldSmokeTest extends DemoLibraryBase {
         String fieldId = field.getAttribute("id");
         String controlId = fieldId + UifConstants.IdSuffixes.CONTROL;
 
+        assertIsVisible("#" + controlId);
+        assertTextPresent("1001", "#" + controlId, "DataField value not correct");
+
         assertIsVisible("#" + fieldId);
         assertIsVisible("label[for='" + controlId + "']");
-
         WebElement label = findElement(By.cssSelector("[for='" + controlId + "']"), field);
-        if(!label.getText().contains("DataField 1")){
+        if (!label.getText().contains("DataField 1")) {
             fail("Label text does not match");
         }
 
-        assertIsVisible("#" + controlId);
-
         // validate that the label comes after the value
-        findElement(By.cssSelector("span[id='" + controlId + "'] + span[data-label_for='" + fieldId + "']"), exampleDiv);
+        findElement(By.cssSelector("span[id='" + controlId + "'] + span[data-label_for='" + fieldId + "']"),
+                exampleDiv);
     }
 
     protected void testDataFieldDefaultValue() throws Exception {
@@ -140,9 +140,8 @@ public class DemoLibraryDataFieldSmokeTest extends DemoLibraryBase {
 
         assertIsVisible("#" + fieldId);
         assertIsVisible("label[for='" + controlId + "']");
-
         WebElement label = findElement(By.cssSelector("[for='" + controlId + "']"), field);
-        if(!label.getText().contains(testLabel)){
+        if (!label.getText().contains(testLabel)) {
             fail("Label text does not match");
         }
 
@@ -151,7 +150,7 @@ public class DemoLibraryDataFieldSmokeTest extends DemoLibraryBase {
         return findElement(By.id(controlId), field).getText();
     }
 
-    protected void testDataFieldExamples() throws Exception{
+    protected void testDataFieldExamples() throws Exception {
         testDataFieldDefault();
         testDataFieldLabelTop();
         testDataFieldLabelRight();

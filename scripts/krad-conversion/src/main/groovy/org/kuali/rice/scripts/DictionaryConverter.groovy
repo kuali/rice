@@ -282,6 +282,7 @@ class DictionaryConverter {
             def writer = new StringWriter();
             XmlUtil.serialize(rootBean, writer);
             def result = writer.toString();
+            result = addBlankLinesBetweenMajorBeans(result);
             result = fixComments(result);
             ConversionUtils.buildFile(path, filename, result);
         } catch (FileNotFoundException ex) {
@@ -481,6 +482,7 @@ class DictionaryConverter {
                 addViewNameProperty(delegate, lookupTitle)
                 property(name: "dataObjectClassName", value: objClassName)
                 transformMenubarProperty(delegate, beanNode)
+                transformDefaultSortProperty(delegate, beanNode)
                 transformLookupFieldsProperty(delegate, beanNode)
                 transformResultFieldsProperty(delegate, beanNode)
             }
@@ -642,14 +644,27 @@ class DictionaryConverter {
     }
 
     def transformMenubarProperty(NodeBuilder builder, Node node) {
-        def menubarPropNode = node.property.find { it.@name == "menubar" };
-        if (node != null) {
+        def menubarPropertyNode = node.property.find { it.@name == "menubar" };
+        if (menubarPropertyNode != null) {
             builder.property(name: "page.header.lowerGroup.items") {
                 list(merge: "true") {
                     bean(parent: "Uif-Message") {
-                        property(name: "messageText", value: "[" + node.@value + "]")
+                        property(name: "messageText", value: "[" + menubarPropertyNode.@value + "]");
                     }
                 }
+            }
+        }
+    }
+
+    def transformDefaultSortProperty(NodeBuilder builder, Node node) {
+        def defaultSortPropertyNode = node.property.find { it.@name == "defaultSort" };
+        if (defaultSortPropertyNode) {
+            defaultSortPropertyNode.bean.each { sortDefinitionBean ->
+                def sortAscendingPropertyNode = sortDefinitionBean.find {it.@name == "sortAscending"};
+                if (sortAscendingPropertyNode != null) {
+                    builder.property(name: "defaultSortAscending", value: sortAscendingPropertyNode.@value);
+                }
+                transformPropertyValueList(builder, sortDefinitionBean, ["attributeNames": "defaultSortAttributeNames"], valueFieldTransform);
             }
         }
     }
@@ -721,6 +736,18 @@ class DictionaryConverter {
                         }
 
                         beanTransform(builder, attributeValue)
+                    }
+                }
+            }
+        }
+    }
+
+    def transformPropertyValueList (NodeBuilder builder, Node beanNode, Map<String, String> replaceProperties, Closure beanTransform) {
+        beanNode.property.findAll { replaceProperties.keySet().contains(it.@name) }.each { propertyNode ->
+            builder.property(name: replaceProperties.get(propertyNode.@name)) {
+                list {
+                    propertyNode.list.value.each { value ->
+                        beanTransform(builder, value.text())
                     }
                 }
             }
@@ -841,8 +868,12 @@ class DictionaryConverter {
         }
     }
 
+    protected String addBlankLinesBetweenMajorBeans(String fileText) {
+        return fileText.replaceAll('  </bean>', '  </bean>\r\n');
+    }
+
     protected String fixComments(String fileText) {
-        return fileText.replaceAll(/<meta key="comment" value="(.*?)"\/>/, '<!-- $1 -->');
+        return fileText.replaceAll(/<meta key="comment" value="(.*?)"\/>/, '<!-- $1 -->\r\n');
     }
 
     /**

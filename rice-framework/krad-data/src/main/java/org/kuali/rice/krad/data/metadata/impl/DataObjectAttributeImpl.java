@@ -159,7 +159,7 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		if (propertyEditor != null) {
 			builder.append(", ").append("propertyEditor=").append(propertyEditor);
 		}
-		if (sensitive) {
+		if (sensitive != null && sensitive) {
 			builder.append(", ").append("sensitive=").append(sensitive);
 		}
 		if (validValues != null) {

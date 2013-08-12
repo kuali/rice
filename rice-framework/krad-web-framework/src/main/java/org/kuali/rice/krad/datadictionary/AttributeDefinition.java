@@ -21,6 +21,7 @@ import java.util.List;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.data.DataType;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.krad.data.DataObjectUtils;
@@ -547,7 +548,9 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
             return controlField;
         }
         if ( cachedDerivedControl == null ) {
-            cachedDerivedControl = KRADServiceLocatorWeb.getUifDefaultingService().deriveControlAttributeFromMetadata(this);
+            if ( GlobalResourceLoader.isInitialized() ) {
+                cachedDerivedControl = KRADServiceLocatorWeb.getUifDefaultingService().deriveControlAttributeFromMetadata(this);
+            }
         }
         return cachedDerivedControl;
     }
@@ -638,7 +641,9 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     public ValidCharactersConstraint getValidCharactersConstraint() {
         if ( validCharactersConstraint == null ) {
             // If there is no constraint set, attempt to derive one
-            validCharactersConstraint = KRADServiceLocatorWeb.getUifDefaultingService().deriveValidCharactersConstraint( this );
+            if ( GlobalResourceLoader.isInitialized() ) {
+                validCharactersConstraint = KRADServiceLocatorWeb.getUifDefaultingService().deriveValidCharactersConstraint( this );
+            }
         }
         return validCharactersConstraint;
     }

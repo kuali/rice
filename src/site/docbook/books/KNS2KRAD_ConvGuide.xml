@@ -169,8 +169,8 @@
                                 </imageobject>
                             </inlinemediaobject></para></listitem>
                     <listitem><para>Criteria fields changed from <emphasis role="keyword">FieldDefinition</emphasis> to <emphasis
-                                role="keyword">Uif-LookupCriteriaInput</emphasis>. [KNS line: 11-13,
-                            KRAD line: 24-26] <inlinemediaobject>
+                                role="keyword">Uif-LookupCriteriaInputField</emphasis>. [KNS line:
+                            11-13, KRAD line: 24-26] <inlinemediaobject>
                                 <imageobject>
                                     <imagedata fileref="../images/badge-scriptconv.png"
                                         contentdepth="9"/>

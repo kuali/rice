@@ -36,18 +36,18 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class ComponentModifierBase extends UifDictionaryBeanBase implements ComponentModifier {
-	private static final long serialVersionUID = -8284332412469942130L;
+    private static final long serialVersionUID = -8284332412469942130L;
 
-	private String runPhase;
-	private String runCondition;
-	private int order;
+    private String runPhase;
+    private String runCondition;
+    private int order;
 
-	public ComponentModifierBase() {
+    public ComponentModifierBase() {
         super();
 
-		runPhase = UifConstants.ViewPhases.INITIALIZE;
-		order = 0;
-	}
+        runPhase = UifConstants.ViewPhases.INITIALIZE;
+        order = 0;
+    }
 
     /**
      * Default performInitialization impl (does nothing)
@@ -69,59 +69,60 @@ public abstract class ComponentModifierBase extends UifDictionaryBeanBase implem
     }
 
     /**
-	 * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#getRunPhase()
-	 */
-    @BeanTagAttribute(name="runPhase")
-	public String getRunPhase() {
-		return this.runPhase;
-	}
-
-	/**
-	 * Setter for the component initializer run phase
-	 *
-	 * @param runPhase
-	 */
-	public void setRunPhase(String runPhase) {
-		this.runPhase = runPhase;
-	}
-
-	/**
-	 * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#getRunCondition()
-	 */
-    @BeanTagAttribute(name="runCondition")
-	public String getRunCondition() {
-		return this.runCondition;
-	}
-
-	/**
-	 * Setter for the component modifiers run condition
-	 *
-	 * @param runCondition
-	 */
-	public void setRunCondition(String runCondition) {
-		this.runCondition = runCondition;
-	}
-
-	/**
-	 * @see org.springframework.core.Ordered#getOrder()
-	 */
-    @BeanTagAttribute(name="order")
-	public int getOrder() {
-		return this.order;
-	}
-
-	/**
-	 * @see org.kuali.rice.krad.uif.component.Ordered#setOrder(int)
-	 */
-	public void setOrder(int order) {
-		this.order = order;
-	}
+     * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#getRunPhase()
+     */
+    @BeanTagAttribute(name = "runPhase")
+    public String getRunPhase() {
+        return this.runPhase;
+    }
 
     /**
-     * Copies the properties over for the copy method
+     * Setter for the component initializer run phase
      *
+     * @param runPhase
      */
+    public void setRunPhase(String runPhase) {
+        this.runPhase = runPhase;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#getRunCondition()
+     */
+    @BeanTagAttribute(name = "runCondition")
+    public String getRunCondition() {
+        return this.runCondition;
+    }
+
+    /**
+     * Setter for the component modifiers run condition
+     *
+     * @param runCondition
+     */
+    public void setRunCondition(String runCondition) {
+        this.runCondition = runCondition;
+    }
+
+    /**
+     * @see org.springframework.core.Ordered#getOrder()
+     */
+    @BeanTagAttribute(name = "order")
+    public int getOrder() {
+        return this.order;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Ordered#setOrder(int)
+     */
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copy()
+     */
+    @Override
     protected <T> void copyProperties(T componentModifier) {
+        super.copyProperties(componentModifier);
         ComponentModifierBase componentModifierBase = (ComponentModifierBase) componentModifier;
         componentModifierBase.setOrder(this.order);
         componentModifierBase.setRunCondition(this.runCondition);

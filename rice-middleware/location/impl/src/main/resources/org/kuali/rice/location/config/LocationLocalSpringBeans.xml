@@ -28,6 +28,7 @@
   <import resource="classpath:org/kuali/rice/location/config/_LocationCommonSpringBeans.xml" />
   <import resource="classpath:org/kuali/rice/location/config/_LocationOjbSpringBeans.xml" />
   <import resource="classpath:org/kuali/rice/location/config/_LocationLocalServiceBusSpringBeans.xml" />
+  <import resource="classpath:org/kuali/rice/location/config/_LocationJpaSpringBeans.xml"/>
 
   <!-- the distributed cache manager that calls into the locationCacheAdminService on the ksb -->
   <bean id="locationDistributedCacheManager" class="org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator">

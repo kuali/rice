@@ -31,6 +31,8 @@ import org.kuali.rice.location.framework.postalcode.PostalCodeEbo
 import org.kuali.rice.location.impl.country.CountryBo
 import org.kuali.rice.location.impl.county.CountyBo
 import org.kuali.rice.location.impl.state.StateBo
+import javax.persistence.JoinColumns
+import javax.persistence.ManyToMany
 
 @IdClass(PostalCodeId.class)
 @Entity
@@ -48,10 +50,10 @@ class PostalCodeBo extends PersistableBusinessObjectBase implements PostalCodeEb
     @Column(name = "POSTAL_CITY_NM")
     def String cityName;
 
-    @Column(name = "POSTAL_STATE_NM")
+    @Column(name = "POSTAL_STATE_CD")
     def String stateCode;
 
-    @Column(name = "COUNTY_NM")
+    @Column(name = "COUNTY_CD")
     def String countyCode;
 
     //@Type(type="yes_no")(type = "yes_no")
@@ -62,13 +64,16 @@ class PostalCodeBo extends PersistableBusinessObjectBase implements PostalCodeEb
     @JoinColumn(name = "POSTAL_CNTRY_CD", insertable = false, updatable = false)
     def CountryBo country;
 
-    @ManyToOne(targetEntity = CountryBo.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "POSTAL_STATE_NM", insertable = false, updatable = false)
+    @ManyToOne(targetEntity = StateBo.class, fetch = FetchType.EAGER)
+    @JoinColumns(value = [@JoinColumn(name = "POSTAL_STATE_CD", referencedColumnName="POSTAL_STATE_CD", insertable = false, updatable = false),
+                @JoinColumn(name = "POSTAL_CNTRY_CD", referencedColumnName="POSTAL_CNTRY_CD",insertable = false, updatable = false)])
     def StateBo state;
 
 
     @ManyToOne(targetEntity = CountyBo.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "COUNTY_NM", insertable = false, updatable = false)
+    @JoinColumns(value=[@JoinColumn(name = "COUNTY_CD", referencedColumnName="COUNTY_CD", insertable = false, updatable = false),
+                        @JoinColumn(name="POSTAL_STATE_CD", referencedColumnName="STATE_CD", insertable = false, updatable = false),
+                        @JoinColumn(name="POSTAL_CNTRY_CD", referencedColumnName="POSTAL_CNTRY_CD", insertable = false, updatable = false)])
     def CountyBo county;
 
     /**

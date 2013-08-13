@@ -61,7 +61,8 @@ class CountyBo extends PersistableBusinessObjectBase implements CountyEbo {
     def CountryBo country;
 
     @ManyToOne(targetEntity = StateBo.class, fetch = FetchType.EAGER)
-    @JoinColumns(value = [ @JoinColumn(name = "STATE_CD", insertable = false, updatable = false), @JoinColumn(name = "POSTAL_CNTRY_CD", insertable = false, updatable = false) ])
+    @JoinColumns(value = [ @JoinColumn(name = "STATE_CD", referencedColumnName = "POSTAL_STATE_CD", insertable = false, updatable = false),
+                            @JoinColumn(name = "POSTAL_CNTRY_CD", referencedColumnName = "POSTAL_CNTRY_CD", insertable = false, updatable = false) ])
     def StateBo state;
 
     /**

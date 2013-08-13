@@ -1,0 +1,100 @@
+<!--
+
+    Copyright 2005-2013 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                           http://www.springframework.org/schema/util
+                           http://www.springframework.org/schema/util/spring-util-3.2.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+  <bean id="providerRegistry"
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
+        p:serviceName="kd-providerRegistry"/>
+
+  <bean id="dataObjectService"
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
+        p:serviceName="kd-dataObjectService"/>
+
+  <!-- JPA Configuration -->
+
+  <!-- Enables Load-Time Weaving -->
+  <context:load-time-weaver/>
+
+  <util:list id="jpaPackagesToScan">
+    <!-- add packages here -->
+    <value>org.kuali.rice.krad.data.jpa.converters</value>
+    <!-- add packages here -->
+     <value>org.kuali.rice.location.impl</value>
+  </util:list>
+
+
+  <bean id="locationEntityManagerFactory"
+        class="org.kuali.rice.krad.data.jpa.eclipselink.KradEclipseLinkEntityManagerFactoryBean"
+        p:jtaDataSource-ref="locationDataSource"
+        p:persistenceUnitName="kim"
+        p:packagesToScan-ref="jpaPackagesToScan"/>
+
+  <bean id="locationSharedEntityManager"
+        class="org.springframework.orm.jpa.support.SharedEntityManagerBean"
+        p:entityManagerFactory-ref="locationEntityManagerFactory"/>
+
+  <!-- Persistence Provider -->
+
+  <bean id="locationJpaPersistenceProvider"
+        class="org.kuali.rice.krad.data.jpa.JpaPersistenceProvider"
+        p:providerRegistry-ref="providerRegistry"
+        p:dataObjectService-ref="dataObjectService"
+        p:sharedEntityManager-ref="locationSharedEntityManager"/>
+
+  <!-- Metadata Providers -->
+
+  <bean id="locationSpringMetadataFileLocations-parentBean"
+        class="org.springframework.beans.factory.config.ListFactoryBean"
+        p:sourceList="classpath:org/kuali/rice/krad/data/provider/spring/krad-metadata-parent-beans.xml"/>
+
+  <bean id="locationSpringMetadataFileLocations" parent="locationSpringMetadataFileLocations-parentBean"/>
+
+  <bean id="locationMetadataProviderSpring"
+        class="org.kuali.rice.krad.data.provider.spring.SpringMetadataProviderImpl"
+        p:resourceLocations-ref="locationSpringMetadataFileLocations" />
+
+  <bean id="locationMetadataProviderJpa"
+        class="org.kuali.rice.krad.data.jpa.eclipselink.EclipseLinkJpaMetadataProviderImpl"
+        p:entityManager-ref="locationSharedEntityManager" />
+
+  <bean id="locationMetadataProviderAnnotation"
+        class="org.kuali.rice.krad.data.provider.annotation.impl.AnnotationMetadataProviderImpl"
+        p:jpaMetadataProvider-ref="locationMetadataProviderJpa" />
+
+  <bean id="locationMetadataProvider"
+        class="org.kuali.rice.krad.data.provider.impl.CompositeMetadataProviderImpl">
+    <property name="providers">
+      <list>
+        <ref bean="locationMetadataProviderJpa" />
+        <ref bean="locationMetadataProviderAnnotation" />
+        <ref bean="locationMetadataProviderSpring" />
+      </list>
+    </property>
+  </bean>
+
+</beans>

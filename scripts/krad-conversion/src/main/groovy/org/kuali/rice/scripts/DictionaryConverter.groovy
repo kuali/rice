@@ -478,11 +478,12 @@ class DictionaryConverter {
         beanNode.replaceNode {
             addComment(delegate, "Lookup View")
             bean(id: "$objName-LookupView", parent: "Uif-LookupView") {
-                property(name: "headerText", value: lookupTitle)
                 addViewNameProperty(delegate, lookupTitle)
+                property(name: "headerText", value: lookupTitle)
                 property(name: "dataObjectClassName", value: objClassName)
                 transformMenubarProperty(delegate, beanNode)
                 transformDefaultSortProperty(delegate, beanNode)
+                transformNumOfColumns(delegate, beanNode)
                 transformLookupFieldsProperty(delegate, beanNode)
                 transformResultFieldsProperty(delegate, beanNode)
             }
@@ -669,7 +670,31 @@ class DictionaryConverter {
         }
     }
 
+    def transformNumOfColumns(NodeBuilder builder, Node node) {
+        def numOfColumnsPropertyText = getPropertyValue(node, "numOfColumns");
+        if (numOfColumnsPropertyText != null && numOfColumnsPropertyText.isNumber()) {
+            def numOfColumns = Integer.parseInt(numOfColumnsPropertyText);
+            if (numOfColumns > 1) {
+                builder.property(name: "criteriaGroup.layoutManager.numberOfColumns", value: numOfColumns * 2)
+            }
+        }
+    }
+
     // bean utilities
+
+    /**
+     * returns the property value of a bean, null if property is not found
+     */
+    public Object getPropertyValue(Object bean, String propertyName) {
+        def propertyValue = null;
+
+        def property = bean.property.find {it.@name == propertyName};
+        if (property != null) {
+            propertyValue = property.@value;
+        }
+
+        return propertyValue;
+    }
 
     public void renamePropertyBeans(NodeBuilder builderDelegate, Node beanNode, Map<String, String> renamedBeanNames) {
         beanNode.property.each { beanProperty ->
@@ -869,7 +894,7 @@ class DictionaryConverter {
     }
 
     protected String addBlankLinesBetweenMajorBeans(String fileText) {
-        return fileText.replaceAll('  </bean>', '  </bean>\r\n');
+         return fileText.replaceAll('(?m)^  </bean>', '  </bean>\r\n');
     }
 
     protected String fixComments(String fileText) {

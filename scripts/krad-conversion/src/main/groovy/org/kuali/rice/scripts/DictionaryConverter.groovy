@@ -337,13 +337,14 @@ class DictionaryConverter {
         }
     }
 
-
     protected String addBlankLinesBetweenMajorBeans(String fileText) {
+        // (?m) tells Java to accept the anchors ^ and $ to match at the start and end
+        // of each line (otherwise they only match at the start/end of the entire string).
         return fileText.replaceAll('(?m)^  </bean>', '  </bean>\r\n');
     }
 
     protected String fixComments(String fileText) {
-        return fileText.replaceAll(/<meta key="comment" value="(.*?)"\/>/, '<!-- $1 -->');
+        return fileText.replaceAll(/<meta key="comment" value="(.*?)"\/>/, '<!-- $1 -->\r\n');
     }
 
     /**

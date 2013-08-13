@@ -60,6 +60,24 @@ class SpringBeanTransformer {
     // bean utilities
 
     /**
+     * returns the property value of a bean, null if property is not found
+     *
+     * @param bean
+     * @param propertyName
+     * @return
+     */
+    public Object getPropertyValue(Object bean, String propertyName) {
+        def propertyValue = null;
+
+        def property = bean.property.find {it.@name == propertyName};
+        if (property != null) {
+            propertyValue = property.@value;
+        }
+
+        return propertyValue;
+    }
+
+    /**
      *
      * @param builderDelegate
      * @param beanNode
@@ -148,6 +166,27 @@ class SpringBeanTransformer {
                         }
 
                         beanTransform(builder, attributeValue)
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Transform property value list into a new property
+     *
+     * @param builder
+     * @param beanNode
+     * @param replaceProperties
+     * @param beanTransform
+     * @return
+     */
+    def transformPropertyValueList (NodeBuilder builder, Node beanNode, Map<String, String> replaceProperties, Closure beanTransform) {
+        beanNode.property.findAll { replaceProperties.keySet().contains(it.@name) }.each { propertyNode ->
+            builder.property(name: replaceProperties.get(propertyNode.@name)) {
+                list {
+                    propertyNode.list.value.each { value ->
+                        beanTransform(builder, value.text())
                     }
                 }
             }
@@ -336,10 +375,6 @@ class SpringBeanTransformer {
         if (comment != null) {
             builder.meta(key: "comment", value: comment)
         }
-    }
-
-    protected String fixComments(String fileText) {
-        return fileText.replaceAll(/<meta key="comment" value="(.*?)"\/>/, '<!-- $1 -->');
     }
 
     /**

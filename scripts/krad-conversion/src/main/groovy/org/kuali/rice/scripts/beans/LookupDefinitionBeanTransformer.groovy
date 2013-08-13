@@ -42,10 +42,12 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
         beanNode.replaceNode {
             addComment(delegate, "Lookup View")
             bean(id: "$objName-LookupView", parent: "Uif-LookupView") {
-                property(name: "headerText", value: lookupTitle)
                 addViewNameProperty(delegate, lookupTitle)
+                property(name: "headerText", value: lookupTitle)
                 property(name: "dataObjectClassName", value: objClassName)
                 transformMenubarProperty(delegate, beanNode)
+                transformDefaultSortProperty(delegate, beanNode)
+                transformNumOfColumns(delegate, beanNode)
                 transformLookupFieldsProperty(delegate, beanNode)
                 transformResultFieldsProperty(delegate, beanNode)
             }
@@ -81,16 +83,54 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
      * @return
      */
     def transformMenubarProperty(NodeBuilder builder, Node node) {
-        def menubarPropNode = node.property.find { it.@name == "menubar" };
-        if (node != null) {
+        def menubarPropertyNode = node.property.find { it.@name == "menubar" };
+        if (menubarPropertyNode != null) {
             builder.property(name: "page.header.lowerGroup.items") {
                 list(merge: "true") {
                     bean(parent: "Uif-Message") {
-                        property(name: "messageText", value: "[" + node.@value + "]")
+                        property(name: "messageText", value: "[" + menubarPropertyNode.@value + "]");
                     }
                 }
             }
         }
     }
+
+    /**
+     * Replaces defaultSort with defaultSortAscending and defaultSortAttributeNames
+     *
+     * @param builder
+     * @param node
+     * @return
+     */
+    def transformDefaultSortProperty(NodeBuilder builder, Node node) {
+        def defaultSortPropertyNode = node.property.find { it.@name == "defaultSort" };
+        if (defaultSortPropertyNode) {
+            defaultSortPropertyNode.bean.each { sortDefinitionBean ->
+                def sortAscendingPropertyNode = sortDefinitionBean.find {it.@name == "sortAscending"};
+                if (sortAscendingPropertyNode != null) {
+                    builder.property(name: "defaultSortAscending", value: sortAscendingPropertyNode.@value);
+                }
+                transformPropertyValueList(builder, sortDefinitionBean, ["attributeNames": "defaultSortAttributeNames"], valueFieldTransform);
+            }
+        }
+    }
+
+    /**
+     * Replaces numOfColumns with criteriaGroup.layoutManager.numberOfColumns
+     *
+     * @param builder
+     * @param node
+     * @return
+     */
+    def transformNumOfColumns(NodeBuilder builder, Node node) {
+        def numOfColumnsPropertyText = getPropertyValue(node, "numOfColumns");
+        if (numOfColumnsPropertyText != null && numOfColumnsPropertyText.isNumber()) {
+            def numOfColumns = Integer.parseInt(numOfColumnsPropertyText);
+            if (numOfColumns > 1) {
+                builder.property(name: "criteriaGroup.layoutManager.numberOfColumns", value: numOfColumns * 2)
+            }
+        }
+    }
+
 
 }

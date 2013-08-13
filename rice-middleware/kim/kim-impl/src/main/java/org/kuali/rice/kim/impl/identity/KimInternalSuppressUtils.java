@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.kim.impl.identity;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.KimConstants;
@@ -25,9 +28,6 @@ import org.kuali.rice.kim.api.permission.PermissionService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
-
-import java.util.Collections;
-import java.util.List;
 
 class KimInternalSuppressUtils {
 
@@ -41,7 +41,7 @@ class KimInternalSuppressUtils {
     public static boolean isSuppressName(String entityId) {
         EntityPrivacyPreferences privacy = getIdentityService().getEntityPrivacyPreferences(entityId);
         if (privacy == null) {
-            return true;
+            return false; // no privacy preferences, assume unset
         }
         UserSession userSession = GlobalVariables.getUserSession();
 
@@ -56,7 +56,7 @@ class KimInternalSuppressUtils {
     public static boolean isSuppressEmail(String entityId) {
         EntityPrivacyPreferences privacy = getIdentityService().getEntityPrivacyPreferences(entityId);
         if (privacy == null) {
-            return true;
+            return false; // no privacy preferences, assume unset
         }
         UserSession userSession = GlobalVariables.getUserSession();
 
@@ -70,7 +70,7 @@ class KimInternalSuppressUtils {
     public static boolean isSuppressAddress(String entityId) {
         EntityPrivacyPreferences privacy = getIdentityService().getEntityPrivacyPreferences(entityId);
         if (privacy == null) {
-            return true;
+            return false; // no privacy preferences, assume unset
         }
         UserSession userSession = GlobalVariables.getUserSession();
 
@@ -84,7 +84,7 @@ class KimInternalSuppressUtils {
     public static boolean isSuppressPhone(String entityId) {
         EntityPrivacyPreferences privacy = getIdentityService().getEntityPrivacyPreferences(entityId);
         if (privacy == null) {
-            return true;
+            return false; // no privacy preferences, assume unset
         }
         UserSession userSession = GlobalVariables.getUserSession();
 
@@ -98,7 +98,7 @@ class KimInternalSuppressUtils {
     public static boolean isSuppressPersonal(String entityId) {
         EntityPrivacyPreferences privacy = getIdentityService().getEntityPrivacyPreferences(entityId);
         if (privacy == null) {
-            return true;
+            return false; // no privacy preferences, assume unset
         }
         UserSession userSession = GlobalVariables.getUserSession();
 

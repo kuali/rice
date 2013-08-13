@@ -15,7 +15,11 @@
  */
 package org.kuali.rice.kim.impl.identity;
 
-import org.apache.commons.lang.StringUtils;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.IdentityService;
@@ -37,21 +41,16 @@ import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo;
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo;
 import org.kuali.rice.krad.bo.TransientBusinessObjectBase;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public class PersonImpl extends TransientBusinessObjectBase implements Person {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	protected static PersonService personService;
 	protected static IdentityService identityService;
 
 	private String lookupRoleNamespaceCode;
 	private String lookupRoleName;
-	
+
 	// principal data
 	protected String principalId;
 	protected String principalName;
@@ -84,7 +83,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	protected boolean suppressEmail = false;
 	// affiliation data
 	protected List<? extends EntityAffiliationContract> affiliations;
-	
+
 	protected String campusCode = "";
 	//protected Campus campus;
 	// external identifier data
@@ -96,12 +95,12 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	protected EntityEmploymentTypeBo employeeType;
 	protected String primaryDepartmentCode = "";
 	protected String employeeId = "";
-	
+
 	protected KualiDecimal baseSalaryAmount = KualiDecimal.ZERO;
 	protected boolean active = true;
-	
+
 	public PersonImpl() {}
-	
+
 	public PersonImpl( Principal principal, String personEntityTypeCode ) {
 		this( principal, null, personEntityTypeCode );
 	}
@@ -109,11 +108,11 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	public PersonImpl( Principal principal, EntityDefault entity, String personEntityTypeCode ) {
 		setPrincipal( principal, entity, personEntityTypeCode );
 	}
-	
+
 	public PersonImpl( String principalId, String personEntityTypeCode ) {
 		this( getIdentityService().getPrincipal(principalId), personEntityTypeCode );
 	}
-	
+
 	public PersonImpl( EntityDefaultInfoCacheBo p ) {
 		entityId = p.getEntityId();
 		principalId = p.getPrincipalId();
@@ -131,7 +130,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	}
 
 	/**
-	 * Sets the principal object and populates the person object from that. 
+	 * Sets the principal object and populates the person object from that.
 	 */
 	public void setPrincipal(Principal principal, EntityDefault entity, String personEntityTypeCode) {
 		populatePrincipalInfo( principal );
@@ -141,14 +140,14 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		populateEntityInfo( entity, principal, personEntityTypeCode );
 	}
 
-	
+
 	protected void populatePrincipalInfo( Principal principal ) {
 		entityId = principal.getEntityId();
 		principalId = principal.getPrincipalId();
 		principalName = principal.getPrincipalName();
 		active = principal.isActive();
 	}
-	
+
 	protected void populateEntityInfo( EntityDefault entity, Principal principal, String personEntityTypeCode ) {
 		if(entity!=null){
 		    populatePrivacyInfo (entity );
@@ -163,7 +162,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 			populateExternalIdentifiers( entity );
 		}
 	}
-	
+
 	protected void populateNameInfo( String entityTypeCode, EntityDefault entity, Principal principal ) {
 		if(entity!=null){
 			EntityName entityName = entity.getName();
@@ -176,7 +175,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 				} else {
 					name = unNullify( entityName.getCompositeName() );
 					if(name.equals("") || name == null){
-						name = lastName + ", " + firstName;					
+						name = lastName + ", " + firstName;
 					}
 				}
 			} else {
@@ -192,7 +191,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 			}
 		}
 	}
-	
+
 	protected void populatePrivacyInfo (EntityDefault entity) {
 	    if(entity!=null) {
     	    if (entity.getPrivacyPreferences() != null) {
@@ -204,7 +203,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
     	    }
 	    }
 	}
-	
+
 	protected void populateAddressInfo( EntityTypeContactInfoDefault contactInfoDefault ) {
 		if(contactInfoDefault!=null){
 			EntityAddress defaultAddress = contactInfoDefault.getDefaultAddress();
@@ -225,7 +224,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 			}
 		}
 	}
-	
+
 	protected void populateEmailInfo( EntityTypeContactInfoDefault contactInfoDefault ) {
 		if(contactInfoDefault!=null){
 			EntityEmailContract entityEmail = contactInfoDefault.getDefaultEmailAddress();
@@ -236,7 +235,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 			}
 		}
 	}
-	
+
 	protected void populatePhoneInfo( EntityTypeContactInfoDefault contactInfoDefault ) {
 		if(contactInfoDefault!=null){
 			EntityPhoneContract entityPhone = contactInfoDefault.getDefaultPhoneNumber();
@@ -247,7 +246,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 			}
 		}
 	}
-	
+
 	protected void populateAffiliationInfo(EntityDefault entity ) {
 		if(entity!=null){
 			affiliations = entity.getAffiliations();
@@ -259,7 +258,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 			}
 		}
 	}
-	
+
 	protected void populateEmploymentInfo( EntityDefault entity ) {
 		if(entity!=null){
 			EntityEmployment employmentInformation = entity.getEmployment();
@@ -282,7 +281,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 			}
 		}
 	}
-	
+
 	protected void populateExternalIdentifiers( EntityDefault entity ) {
 		if(entity!=null){
 			List<? extends EntityExternalIdentifier> externalIds = entity.getExternalIdentifiers();
@@ -292,7 +291,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 			}
 		}
 	}
-	
+
 	/** So users of this class don't need to program around nulls. */
 	private String unNullify( String str ) {
 		if ( str == null ) {
@@ -300,43 +299,48 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		}
 		return str;
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.kim.api.identity.Person#getEntityId()
 	 */
-	public String getEntityId() {
+	@Override
+    public String getEntityId() {
 		return entityId;
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.kim.api.identity.Person#getPrincipalId()
 	 */
-	public String getPrincipalId() {
+	@Override
+    public String getPrincipalId() {
 		return principalId;
 	}
-	
+
 	/**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.rice.kim.api.identity.Person#getPrincipalName()
 	 */
-	public String getPrincipalName() {
+	@Override
+    public String getPrincipalName() {
 		return principalName;
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.kim.api.identity.Person#getFirstName()
 	 */
-	public String getFirstName() {
-	    if (KimInternalSuppressUtils.isSuppressName(getEntityId())){
+	@Override
+    public String getFirstName() {
+	    if (suppressName){
 	        return KimConstants.RESTRICTED_DATA_MASK;
 	    }
 		return firstName;
 	}
-	
+
 	/**
      * @see org.kuali.rice.kim.api.identity.Person#getFirstNameUnmasked()
      */
+    @Override
     public String getFirstNameUnmasked() {
         return firstName;
     }
@@ -344,64 +348,72 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	/**
 	 * @see org.kuali.rice.kim.api.identity.Person#getMiddleName()
 	 */
-	public String getMiddleName() {
-	    if (KimInternalSuppressUtils.isSuppressName(getEntityId())){
+	@Override
+    public String getMiddleName() {
+	    if (suppressName){
             return KimConstants.RESTRICTED_DATA_MASK;
         }
 		return middleName;
 	}
-	
+
 	/**
      * @see org.kuali.rice.kim.api.identity.Person#getMiddleNameUnmasked()
      */
-	public String getMiddleNameUnmasked() {
+	@Override
+    public String getMiddleNameUnmasked() {
 	    return middleName;
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.kim.api.identity.Person#getLastName()
 	 */
-	public String getLastName() {
-	    if (KimInternalSuppressUtils.isSuppressName(getEntityId())){
+	@Override
+    public String getLastName() {
+	    if (suppressName){
             return KimConstants.RESTRICTED_DATA_MASK;
         }
 		return lastName;
 	}
-	
+
 	/**
      * @see org.kuali.rice.kim.api.identity.Person#getLastNameUnmasked()
      */
+    @Override
     public String getLastNameUnmasked() {
         return lastName;
     }
-	
+
 	/**
 	 * @see org.kuali.rice.kim.api.identity.Person#getName()
 	 */
-	public String getName() {
-        if (StringUtils.isNotBlank(getEntityId()) && KimInternalSuppressUtils.isSuppressName(getEntityId())) {
+	@Override
+    public String getName() {
+        if (suppressName) {
             return KimConstants.RESTRICTED_DATA_MASK;
         }
         return name;
     }
-	
-	public String getNameUnmasked() {
+
+	@Override
+    public String getNameUnmasked() {
 	    return this.name;
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.kim.api.identity.Person#getPhoneNumber()
 	 */
-	public String getPhoneNumber() {
-	    if (KimInternalSuppressUtils.isSuppressPhone(getEntityId())){
+	@Override
+    public String getPhoneNumber() {
+	    if (suppressPhone){
             return KimConstants.RESTRICTED_DATA_MASK;
         }
 		return phoneNumber;
 	}
-	
+
 	   /**
      * @see org.kuali.rice.kim.api.identity.Person#getPhoneNumberUnmasked()
      */
+    @Override
     public String getPhoneNumberUnmasked() {
         return phoneNumber;
     }
@@ -409,32 +421,36 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	/**
 	 * @see org.kuali.rice.kim.api.identity.Person#getEmailAddress()
 	 */
-	public String getEmailAddress() {
-	    if (KimInternalSuppressUtils.isSuppressEmail(getEntityId())){
+	@Override
+    public String getEmailAddress() {
+	    if (suppressEmail){
             return KimConstants.RESTRICTED_DATA_MASK;
         }
 		return emailAddress;
 	}
-	
-	public String getEmailAddressUnmasked() {
+
+	@Override
+    public String getEmailAddressUnmasked() {
 	    return emailAddress;
 	}
-	
+
 	public List<? extends EntityAffiliationContract> getAffiliations() {
 		return affiliations;
 	}
-	
+
 	/**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.rice.kim.api.identity.Person#hasAffiliationOfType(java.lang.String)
 	 */
-	public boolean hasAffiliationOfType(String affiliationTypeCode) {
+	@Override
+    public boolean hasAffiliationOfType(String affiliationTypeCode) {
 		return getCampusCodesForAffiliationOfType(affiliationTypeCode).size() > 0;
 	}
-	
-	
-	public List<String> getCampusCodesForAffiliationOfType(String affiliationTypeCode) {
+
+
+	@Override
+    public List<String> getCampusCodesForAffiliationOfType(String affiliationTypeCode) {
 		ArrayList<String> campusCodes = new ArrayList<String>( 3 );
 		if ( affiliationTypeCode == null ) {
 			return campusCodes;
@@ -446,20 +462,22 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		}
 		return campusCodes;
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.kim.api.identity.Person#getExternalId(java.lang.String)
 	 */
-	public String getExternalId(String externalIdentifierTypeCode) {
+	@Override
+    public String getExternalId(String externalIdentifierTypeCode) {
 		return externalIdentifiers.get( externalIdentifierTypeCode );
 	}
-	
+
 	/**
 	 * Pulls the campus code from the default affiliation for the identity.
 	 * Returns null if no default affiliation is set.
 	 * @see org.kuali.rice.kim.api.identity.Person#getCampusCode()
 	 */
-	public String getCampusCode() {
+	@Override
+    public String getCampusCode() {
 		return campusCode;
 	}
 
@@ -487,91 +505,113 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	/**
 	 * @see org.kuali.rice.kim.api.identity.Person#getExternalIdentifiers()
 	 */
-	public Map<String,String> getExternalIdentifiers() {
+	@Override
+    public Map<String,String> getExternalIdentifiers() {
 		return externalIdentifiers;
 	}
 
-	public String getAddressLine1() {
+	@Override
+    public String getAddressLine1() {
 	    return address.getLine1();
 	}
-	
-	public String getAddressLine1Unmasked() {
+
+	@Override
+    public String getAddressLine1Unmasked() {
 	    return address.getLine1Unmasked();
 	}
 
-	public String getAddressLine2() {
+	@Override
+    public String getAddressLine2() {
 	    return address.getLine2();
 	}
-	
-	public String getAddressLine2Unmasked() {
+
+	@Override
+    public String getAddressLine2Unmasked() {
         return address.getLine2Unmasked();
     }
 
-	public String getAddressLine3() {
+	@Override
+    public String getAddressLine3() {
 	    return address.getLine3();
 	}
-	
-	public String getAddressLine3Unmasked() {
+
+	@Override
+    public String getAddressLine3Unmasked() {
         return address.getLine3Unmasked();
     }
 
-	public String getAddressCity() {
+	@Override
+    public String getAddressCity() {
 	    return address.getCity();
 	}
-	
-	public String getAddressCityUnmasked() {
+
+	@Override
+    public String getAddressCityUnmasked() {
         return address.getCityUnmasked();
     }
 
-	public String getAddressStateProvinceCode() {
+	@Override
+    public String getAddressStateProvinceCode() {
 	    return address.getStateProvinceCode();
 	}
-	
-	public String getAddressStateProvinceCodeUnmasked() {
+
+	@Override
+    public String getAddressStateProvinceCodeUnmasked() {
         return address.getStateProvinceCodeUnmasked();
     }
 
-	public String getAddressPostalCode() {
+	@Override
+    public String getAddressPostalCode() {
 	    return address.getPostalCode();
 	}
-	
-	public String getAddressPostalCodeUnmasked() {
+
+	@Override
+    public String getAddressPostalCodeUnmasked() {
         return address.getPostalCodeUnmasked();
     }
 
-	public String getAddressCountryCode() {
+	@Override
+    public String getAddressCountryCode() {
 	    return address.getCountryCode();
 	}
-	
-	public String getAddressCountryCodeUnmasked() {
+
+	@Override
+    public String getAddressCountryCodeUnmasked() {
         return address.getCountryCodeUnmasked();
     }
 
-	public String getEmployeeStatusCode() {
+	@Override
+    public String getEmployeeStatusCode() {
 		return this.employeeStatusCode;
 	}
 
-	public String getEmployeeTypeCode() {
+	@Override
+    public String getEmployeeTypeCode() {
 		return this.employeeTypeCode;
 	}
 
-	public KualiDecimal getBaseSalaryAmount() {
+	@Override
+    public KualiDecimal getBaseSalaryAmount() {
 		return this.baseSalaryAmount;
 	}
 
-	public String getEmployeeId() {
+	@Override
+    public String getEmployeeId() {
 		return this.employeeId;
 	}
 
-	public String getPrimaryDepartmentCode() {
+	@Override
+    public String getPrimaryDepartmentCode() {
 		return this.primaryDepartmentCode;
 	}
 
-	public String getEntityTypeCode() {
+	@Override
+    public String getEntityTypeCode() {
 		return this.entityTypeCode;
 	}
 
-	public boolean isActive() {
+	@Override
+    public boolean isActive() {
 		return this.active;
 	}
 

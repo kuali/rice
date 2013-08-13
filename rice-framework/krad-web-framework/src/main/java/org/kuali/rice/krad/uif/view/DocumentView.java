@@ -220,15 +220,15 @@ public class DocumentView extends FormView {
         DocumentView documentViewCopy = (DocumentView) component;
 
         if(this.documentClass != null) {
-            documentViewCopy.setDocumentClass(this.getDocumentClass());
+            documentViewCopy.setDocumentClass(this.documentClass);
         }
 
         if(this.attachmentTypesValuesFinderClass != null) {
-            documentViewCopy.setAttachmentTypesValuesFinderClass(this.getAttachmentTypesValuesFinderClass());
+            documentViewCopy.setAttachmentTypesValuesFinderClass(this.attachmentTypesValuesFinderClass);
         }
 
-        documentViewCopy.setAllowsNoteAttachments(this.isAllowsNoteAttachments());
-        documentViewCopy.setAllowsNoteFYI(this.isAllowsNoteFYI());
-        documentViewCopy.setDisplayTopicFieldInNotes(this.isDisplayTopicFieldInNotes());
+        documentViewCopy.setAllowsNoteAttachments(this.allowsNoteAttachments);
+        documentViewCopy.setAllowsNoteFYI(this.allowsNoteFYI);
+        documentViewCopy.setDisplayTopicFieldInNotes(this.displayTopicFieldInNotes);
     }
 }

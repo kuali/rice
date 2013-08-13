@@ -104,7 +104,7 @@ public class InquiryView extends FormView {
         InquiryView inquiryViewCopy = (InquiryView) component;
 
         if(this.dataObjectClassName != null) {
-            inquiryViewCopy.setDataObjectClassName(this.getDataObjectClassName());
+            inquiryViewCopy.setDataObjectClassName(this.dataObjectClassName);
         }
 
     }

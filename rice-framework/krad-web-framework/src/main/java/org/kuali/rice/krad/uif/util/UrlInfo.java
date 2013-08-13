@@ -350,7 +350,7 @@ public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
      *
      * @return original href value
      */
-    public void setOriginalHref(String originalHref) {
+    protected void setOriginalHref(String originalHref) {
         this.originalHref = originalHref;
     }
 

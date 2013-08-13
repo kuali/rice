@@ -143,9 +143,9 @@ public class FormView extends View {
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         FormView formViewCopy = (FormView) component;
-        formViewCopy.setRenderForm(this.isRenderForm());
-        formViewCopy.setValidateServerSide(this.isValidateServerSide());
-        formViewCopy.setValidateClientSide(this.isValidateClientSide());
-        formViewCopy.setFormPostUrl(this.getFormPostUrl());
+        formViewCopy.setRenderForm(this.renderForm);
+        formViewCopy.setValidateServerSide(this.validateServerSide);
+        formViewCopy.setValidateClientSide(this.validateClientSide);
+        formViewCopy.setFormPostUrl(this.formPostUrl);
     }
 }

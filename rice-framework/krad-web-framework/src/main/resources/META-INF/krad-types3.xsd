@@ -2597,7 +2597,7 @@
           <xsd:element maxOccurs="1" minOccurs="0" name="navigateToPageId" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.field.ActionField" xml:lang="en"><![CDATA[For an Action that is part of a
- NavigationGroup</code, the navigate to page id can be set to
+ NavigationGroup</code>, the navigate to page id can be set to
  configure the page that should be navigated to when the action is
  selected
 
@@ -3262,7 +3262,7 @@
         <xsd:attribute name="navigateToPageId">
           <xsd:annotation>
             <xsd:documentation source="org.kuali.rice.krad.uif.field.ActionField" xml:lang="en"><![CDATA[For an Action that is part of a
- NavigationGroup</code, the navigate to page id can be set to
+ NavigationGroup</code>, the navigate to page id can be set to
  configure the page that should be navigated to when the action is
  selected
 

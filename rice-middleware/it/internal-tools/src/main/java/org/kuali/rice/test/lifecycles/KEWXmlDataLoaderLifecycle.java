@@ -42,7 +42,7 @@ public class KEWXmlDataLoaderLifecycle extends BaseLifecycle {
     }
 
     public void start() throws Exception {
-        String useKewXmlDataLoaderLifecycle = "false";//ConfigContext.getCurrentContextConfig().getProperty("use.kewXmlmlDataLoaderLifecycle");
+        String useKewXmlDataLoaderLifecycle = ConfigContext.getCurrentContextConfig().getProperty("use.kewXmlmlDataLoaderLifecycle");
 
         if (useKewXmlDataLoaderLifecycle != null && !Boolean.valueOf(useKewXmlDataLoaderLifecycle)) {
             LOG.debug("Skipping KEWXmlDataLoaderLifecycle due to property: use.kewXmlmlDataLoaderLifecycle=" + useKewXmlDataLoaderLifecycle);

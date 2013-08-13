@@ -803,15 +803,15 @@ public class LookupView extends FormView {
         LookupView lookupViewCopy = (LookupView) component;
 
         if (this.dataObjectClassName != null) {
-            lookupViewCopy.setDataObjectClassName(this.getDataObjectClassName());
+            lookupViewCopy.setDataObjectClassName(this.dataObjectClassName);
         }
 
         if (this.criteriaGroup != null) {
-            lookupViewCopy.setCriteriaGroup((Group) this.getCriteriaGroup().copy());
+            lookupViewCopy.setCriteriaGroup((Group) this.criteriaGroup.copy());
         }
 
         if (this.resultsGroup != null) {
-            lookupViewCopy.setResultsGroup((CollectionGroup) this.getResultsGroup().copy());
+            lookupViewCopy.setResultsGroup((CollectionGroup) this.resultsGroup.copy());
         }
 
         if (this.criteriaFields != null) {
@@ -834,7 +834,7 @@ public class LookupView extends FormView {
             lookupViewCopy.setDefaultSortAttributeNames(new ArrayList<String>(defaultSortAttributeNames));
         }
 
-        lookupViewCopy.setDefaultSortAscending(this.isDefaultSortAscending());
+        lookupViewCopy.setDefaultSortAscending(this.defaultSortAscending);
         lookupViewCopy.setHideReturnLinks(this.hideReturnLinks);
         lookupViewCopy.setSuppressActions(this.suppressActions);
         lookupViewCopy.setShowMaintenanceLinks(this.showMaintenanceLinks);

@@ -183,10 +183,10 @@ public class MaintenanceDocumentView extends DocumentView {
         MaintenanceDocumentView maintenanceDocumentViewCopy = (MaintenanceDocumentView) component;
 
         if(this.dataObjectClassName != null) {
-            maintenanceDocumentViewCopy.setDataObjectClassName(this.getDataObjectClassName());
+            maintenanceDocumentViewCopy.setDataObjectClassName(this.dataObjectClassName);
         }
 
-        maintenanceDocumentViewCopy.setOldObjectBindingPath(this.getOldObjectBindingPath());
+        maintenanceDocumentViewCopy.setOldObjectBindingPath(this.oldObjectBindingPath);
         maintenanceDocumentViewCopy.setMaintenanceAction(this.maintenanceAction);
     }
 }

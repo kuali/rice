@@ -106,7 +106,7 @@ public class MessageView extends FormView {
         MessageView messageViewCopy = (MessageView) component;
 
         if(this.message != null) {
-            messageViewCopy.setMessage((Message)this.getMessage().copy());
+            messageViewCopy.setMessage((Message)this.message.copy());
         }
     }
 }

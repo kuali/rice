@@ -197,24 +197,25 @@ public class RichTable extends WidgetBase {
         }
 
         //build sAjaxSource url to call
-        getTemplateOptions().put(UifConstants.TableToolsKeys.SDOWNLOAD_SOURCE, kradUrl
-                + ((UifFormBase) model).getControllerMapping()
-                + "?"
-                + UifParameters.TABLE_ID
-                + "="
-                + component.getId()
-                + "&"
-                + UifParameters.FORM_KEY
-                + "="
-                + ((UifFormBase) model).getFormKey()
-                + "&"
-                + UifParameters.AJAX_RETURN_TYPE
-                + "="
-                + UifConstants.AjaxReturnTypes.UPDATENONE.getKey()
-                + "&"
-                + UifParameters.AJAX_REQUEST
-                + "="
-                + "true");
+        getTemplateOptions().put(UifConstants.TableToolsKeys.SDOWNLOAD_SOURCE,
+                kradUrl
+                        + ((UifFormBase) model).getControllerMapping()
+                        + "?"
+                        + UifParameters.TABLE_ID
+                        + "="
+                        + component.getId()
+                        + "&"
+                        + UifParameters.FORM_KEY
+                        + "="
+                        + ((UifFormBase) model).getFormKey()
+                        + "&"
+                        + UifParameters.AJAX_RETURN_TYPE
+                        + "="
+                        + UifConstants.AjaxReturnTypes.UPDATENONE.getKey()
+                        + "&"
+                        + UifParameters.AJAX_REQUEST
+                        + "="
+                        + "true");
 
     }
 
@@ -284,7 +285,7 @@ public class RichTable extends WidgetBase {
                         "[" + UifConstants.TableToolsValues.ADD_ROW_DEFAULT_INDEX + "]");
             }
 
-            StringBuffer tableToolsColumnOptions = new StringBuffer("[");
+            StringBuilder tableToolsColumnOptions = new StringBuilder("[");
 
             int columnIndex = 0;
             int actionIndex = UifConstants.TableLayoutValues.ACTIONS_COLUMN_RIGHT_INDEX;
@@ -360,8 +361,8 @@ public class RichTable extends WidgetBase {
                             null);
                     tableToolsColumnOptions.append(actionColOptions);
                 } else {
-                    tableToolsColumnOptions = new StringBuffer(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
-                            ", "));
+                    tableToolsColumnOptions = new StringBuilder(StringUtils.removeEnd(
+                            tableToolsColumnOptions.toString(), ", "));
                 }
 
                 tableToolsColumnOptions.append("]");
@@ -378,8 +379,8 @@ public class RichTable extends WidgetBase {
                             null);
                     tableToolsColumnOptions.append(actionColOptions);
                 } else {
-                    tableToolsColumnOptions = new StringBuffer(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
-                            ", "));
+                    tableToolsColumnOptions = new StringBuilder(StringUtils.removeEnd(
+                            tableToolsColumnOptions.toString(), ", "));
                 }
 
                 tableToolsColumnOptions.append("]");
@@ -489,8 +490,8 @@ public class RichTable extends WidgetBase {
                             null);
                     tableToolsColumnOptions.append(actionColOptions);
                 } else {
-                    tableToolsColumnOptions = new StringBuffer(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
-                            ", "));
+                    tableToolsColumnOptions = new StringBuilder(StringUtils.removeEnd(
+                            tableToolsColumnOptions.toString(), ", "));
                 }
 
                 //merge the aoColumnDefs passed in

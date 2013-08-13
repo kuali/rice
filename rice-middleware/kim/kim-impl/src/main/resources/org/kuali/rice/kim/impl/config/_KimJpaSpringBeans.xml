@@ -27,80 +27,40 @@
                            http://www.springframework.org/schema/context
                            http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
-  <bean id="providerRegistry"
-        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
-        p:serviceName="kd-providerRegistry"/>
+	<alias
+		alias="kradApplicationDataSource"
+		name="kimDataSource" />
+	<bean
+		id="jpaPersistenceUnitName"
+		class="java.lang.String">
+		<constructor-arg value="kim" />
+	</bean>
 
-  <bean id="dataObjectService"
-        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
-        p:serviceName="kd-dataObjectService"/>
+	<util:list id="jpaPackagesToScan">
+	    <value>org.kuali.rice.krad.data.jpa.converters</value>
+	    <value>org.kuali.rice.kim.impl.common.attribute</value>
+	    <value>org.kuali.rice.kim.impl.membership</value>
+	    <value>org.kuali.rice.kim.impl.common.active</value>
+	    <value>org.kuali.rice.kim.impl.group</value>
+	</util:list>
 
-  <!-- JPA Configuration -->
+	<util:list id="managedClassNames">
+		<value>org.kuali.rice.krad.bo.PersistableBusinessObjectBase</value>
+	</util:list>
 
-  <!-- Enables Load-Time Weaving -->
-  <context:load-time-weaver/>
+	<util:list id="additionalMetadataProviders" />
+	<util:list id="springMetadataFileLocations" />
 
-  <util:list id="jpaPackagesToScan">
-    <!-- add packages here -->
-    <value>org.kuali.rice.krad.data.jpa.converters</value>
-    <value>org.kuali.rice.kim.impl.common.attribute</value>
-    <value>org.kuali.rice.kim.impl.membership</value>
-    <value>org.kuali.rice.kim.impl.common.active</value>
-    <value>org.kuali.rice.kim.impl.group</value>
-  </util:list>
+	<bean
+		id="providerRegistry"
+		class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
+		p:serviceName="kd-providerRegistry" />
 
-  <util:list id="managedClassNames">
-    <value>org.kuali.rice.krad.bo.PersistableBusinessObjectBase</value>
-  </util:list>
+	<bean
+		id="dataObjectService"
+		class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
+		p:serviceName="kd-dataObjectService" />
 
-  <bean id="kimEntityManagerFactory"
-        class="org.kuali.rice.krad.data.jpa.eclipselink.KradEclipseLinkEntityManagerFactoryBean"
-        p:jtaDataSource-ref="kimDataSource"
-        p:persistenceUnitName="kim"
-        p:packagesToScan-ref="jpaPackagesToScan"
-        p:managedClassNames-ref="managedClassNames"/>
-
-  <bean id="kimSharedEntityManager"
-        class="org.springframework.orm.jpa.support.SharedEntityManagerBean"
-        p:entityManagerFactory-ref="kimEntityManagerFactory"/>
-
-  <!-- Persistence Provider -->
-
-  <bean id="kimJpaPersistenceProvider"
-        class="org.kuali.rice.krad.data.jpa.JpaPersistenceProvider"
-        p:providerRegistry-ref="providerRegistry"
-        p:dataObjectService-ref="dataObjectService"
-        p:sharedEntityManager-ref="kimSharedEntityManager"/>
-
-  <!-- Metadata Providers -->
-
-  <bean id="kimSpringMetadataFileLocations-parentBean"
-        class="org.springframework.beans.factory.config.ListFactoryBean"
-        p:sourceList="classpath:org/kuali/rice/krad/data/provider/spring/krad-metadata-parent-beans.xml"/>
-
-  <bean id="kimSpringMetadataFileLocations" parent="kimSpringMetadataFileLocations-parentBean"/>
-
-  <bean id="kimMetadataProviderSpring"
-        class="org.kuali.rice.krad.data.provider.spring.SpringMetadataProviderImpl"
-        p:resourceLocations-ref="kimSpringMetadataFileLocations" />
-
-  <bean id="kimMetadataProviderJpa"
-        class="org.kuali.rice.krad.data.jpa.eclipselink.EclipseLinkJpaMetadataProviderImpl"
-        p:entityManager-ref="kimSharedEntityManager" />
-
-  <bean id="kimMetadataProviderAnnotation"
-        class="org.kuali.rice.krad.data.provider.annotation.impl.AnnotationMetadataProviderImpl"
-        p:jpaMetadataProvider-ref="kimMetadataProviderJpa" />
-
-  <bean id="kimMetadataProvider"
-        class="org.kuali.rice.krad.data.provider.impl.CompositeMetadataProviderImpl">
-    <property name="providers">
-      <list>
-        <ref bean="kimMetadataProviderJpa" />
-        <ref bean="kimMetadataProviderAnnotation" />
-        <ref bean="kimMetadataProviderSpring" />
-      </list>
-    </property>
-  </bean>
+	<import resource="classpath:org/kuali/rice/krad/config/KRADSpringBeans-jpa-common.xml" />
 
 </beans>

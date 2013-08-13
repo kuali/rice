@@ -289,11 +289,11 @@
                value="org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo"/>
       </map>
     </property>
-    <property name="entityManager" ref="kimSharedEntityManager" />
+    <property name="entityManager" ref="sharedEntityManager" />
     <property name="providers">
       <list>
-        <ref bean="kimJpaPersistenceProvider"/>
-        <ref bean="kimMetadataProvider"/>
+        <ref bean="jpaPersistenceProvider"/>
+        <ref bean="metadataProvider"/>
       </list>
     </property>
   </bean>
@@ -323,5 +323,3 @@
         p:kualiModuleService-ref="rice.kim.import.kualiModuleService"/>
 
 </beans>
-
-

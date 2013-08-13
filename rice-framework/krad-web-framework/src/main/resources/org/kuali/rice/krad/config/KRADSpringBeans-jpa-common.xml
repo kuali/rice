@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2005-2013 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                           http://www.springframework.org/schema/util
+                           http://www.springframework.org/schema/util/spring-util-3.2.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+	<!-- Enables Load-Time Weaving -->
+	<context:load-time-weaver />
+
+	<!-- List of all the base packages which we must scan as part of any module. -->
+	<util:list id="kradJpaPackagesToScan">
+		<value>org.kuali.rice.krad.data</value>
+		<value>org.kuali.rice.krad.bo</value>
+		<value>org.kuali.rice.krad.document</value>
+		<value>org.kuali.rice.krad.maintenance</value>
+		<value>org.kuali.rice.krad.messages</value>
+	</util:list>
+
+	<!-- Placeholder list we expect each module to override to contain the needed packages for its persistent classes -->
+	<!-- <util:list id="jpaPackagesToScan" /> -->
+
+	<!-- Bean to merge the base and module-specific packages -->
+	<bean
+		id="allJpaPackagesToScan"
+		class="org.kuali.rice.core.framework.util.spring.ListMergeBeanFactory">
+		<constructor-arg>
+			<list>
+				<ref bean="kradJpaPackagesToScan" />
+				<ref bean="jpaPackagesToScan" />
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<bean
+		id="entityManagerFactory"
+		class="org.kuali.rice.krad.data.jpa.eclipselink.KradEclipseLinkEntityManagerFactoryBean"
+		p:jtaDataSource-ref="kradApplicationDataSource"
+		p:persistenceUnitName-ref="jpaPersistenceUnitName"
+		p:packagesToScan-ref="allJpaPackagesToScan" 
+		p:managedClassNames-ref="managedClassNames" />
+
+	<bean
+		id="sharedEntityManager"
+		class="org.springframework.orm.jpa.support.SharedEntityManagerBean"
+		p:entityManagerFactory-ref="entityManagerFactory" />
+
+	<bean
+		id="jpaPersistenceProvider"
+		class="org.kuali.rice.krad.data.jpa.JpaPersistenceProvider"
+		p:providerRegistry-ref="providerRegistry"
+		p:dataObjectService-ref="dataObjectService"
+		p:sharedEntityManager-ref="sharedEntityManager" />
+	
+	<bean
+		id="metadataProviderJpa"
+		class="org.kuali.rice.krad.data.jpa.eclipselink.EclipseLinkJpaMetadataProviderImpl"
+		p:entityManager-ref="sharedEntityManager" />
+
+	<bean
+		id="metadataProviderAnnotation"
+		class="org.kuali.rice.krad.data.provider.annotation.impl.AnnotationMetadataProviderImpl"
+		p:jpaMetadataProvider-ref="metadataProviderJpa" />
+
+	<util:list id="springMetadataParentBeanFiles">
+		<value>classpath:org/kuali/rice/krad/data/provider/spring/krad-metadata-parent-beans.xml</value>
+	</util:list>
+
+	<bean
+		id="allSpringMetadataFileLocations"
+		class="org.kuali.rice.core.framework.util.spring.ListMergeBeanFactory">
+		<constructor-arg>
+			<list>
+				<ref bean="springMetadataParentBeanFiles" />
+				<ref bean="springMetadataFileLocations" />
+			</list>
+		</constructor-arg>
+	</bean>
+	
+	<bean
+		id="metadataProviderSpring"
+		class="org.kuali.rice.krad.data.provider.spring.SpringMetadataProviderImpl"
+		p:resourceLocations-ref="allSpringMetadataFileLocations" />
+
+	<!-- List of the metadata providers provided by the base system. -->
+	<util:list id="coreMetadataProviders">
+		<ref bean="metadataProviderJpa" />
+		<ref bean="metadataProviderAnnotation" />
+		<ref bean="metadataProviderSpring" />
+	</util:list>
+
+	<!-- Placeholder for a module or application's additional metadata providers to be processed after the base providers. -->
+	<!-- <util:list id="additionalMetadataProviders" /> -->
+
+	<bean
+		id="metadataProviderList"
+		class="org.kuali.rice.core.framework.util.spring.ListMergeBeanFactory">
+		<constructor-arg>
+			<list>
+				<ref bean="coreMetadataProviders" />
+				<ref bean="additionalMetadataProviders" />
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<bean
+		id="metadataProvider"
+		class="org.kuali.rice.krad.data.provider.impl.CompositeMetadataProviderImpl">
+		<property name="providers" ref="metadataProviderList" />
+	</bean>
+
+</beans>

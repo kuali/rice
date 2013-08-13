@@ -127,11 +127,11 @@
         <value>org.kuali.rice.krad.</value>
       </list>
     </property>
-    <property name="entityManager" ref="kradSharedEntityManager"/>
+    <property name="entityManager" ref="sharedEntityManager"/>
     <property name="providers">
       <list>
-        <ref bean="kradJpaPersistenceProvider"/>
-        <ref bean="kradMetadataProvider"/>
+        <ref bean="jpaPersistenceProvider"/>
+        <ref bean="metadataProvider"/>
       </list>
     </property>
 

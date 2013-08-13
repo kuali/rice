@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
     <wb-module deploy-name="rice-krad-sampleapp">
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
@@ -10,28 +11,13 @@
         <dependent-module archiveName="rice-kim-api-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-kim-api/rice-kim-api">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="rice-kew-api-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-kew-api/rice-kew-api">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="rice-location-api-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-location-api/rice-location-api">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="rice-krad-data-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-krad-data/rice-krad-data">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="rice-krad-web-framework-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-krad-web-framework/rice-krad-web-framework">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="rice-core-service-framework-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-core-service-framework/rice-core-service-framework">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="rice-kew-framework-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-kew-framework/rice-kew-framework">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="rice-kim-framework-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-kim-framework/rice-kim-framework">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="rice-krad-development-tools-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-krad-development-tools/rice-krad-development-tools">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="rice-core-impl-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-core-impl/rice-core-impl">
@@ -46,31 +32,25 @@
         <dependent-module archiveName="rice-impl-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-impl/rice-impl">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="rice-core-service-impl-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-core-service-impl/rice-core-service-impl">
+        <dependent-module archiveName="rice-kim-impl-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-kim-impl/rice-kim-impl">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="rice-core-service-web-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-core-service-web/rice-core-service-web">
+        <dependent-module archiveName="rice-core-service-impl-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-core-service-impl/rice-core-service-impl">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="rice-core-web-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-core-web/rice-core-web">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="rice-ksb-api-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-ksb-api/rice-ksb-api">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="rice-krad-service-impl-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-krad-service-impl/rice-krad-service-impl">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="rice-core-service-api-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-core-service-api/rice-core-service-api">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="rice-kns-2.4.0-M1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-kns/rice-kns">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module deploy-path="/" handle="module:/overlay/prj/rice-krad-web?includes=**/**&amp;excludes=META-INF/MANIFEST.MF">
+        <dependent-module deploy-path="/" handle="module:/overlay/var/M2_REPO/org/kuali/rice/rice-krad-web/2.4.0-M1-SNAPSHOT/rice-krad-web-2.4.0-M1-SNAPSHOT.war?unpackFolder=target/m2e-wtp/overlays&amp;includes=**/**&amp;excludes=META-INF/MANIFEST.MF">
             <dependency-type>consumes</dependency-type>
         </dependent-module>
-        <dependent-module deploy-path="/" handle="module:/overlay/var/M2_REPO/org/kuali/rice/rice-web/2.4.0-M1-SNAPSHOT/rice-web-2.4.0-M1-SNAPSHOT.war?unpackFolder=target/m2e-wtp/overlays&amp;includes=**/**&amp;excludes=DO_NOT_MATCH_ANYTHING_PATTERN">
+        <dependent-module deploy-path="/" handle="module:/overlay/prj/rice-web?includes=**/**&amp;excludes=DO_NOT_MATCH_ANYTHING_PATTERN">
             <dependency-type>consumes</dependency-type>
         </dependent-module>
         <dependent-module deploy-path="/" handle="module:/overlay/slf/?includes=**/**&amp;excludes=META-INF/MANIFEST.MF">

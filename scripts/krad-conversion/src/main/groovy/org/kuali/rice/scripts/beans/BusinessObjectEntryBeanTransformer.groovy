@@ -18,7 +18,7 @@ package org.kuali.rice.scripts.beans
 import groovy.util.logging.Log
 
 /**
- * This class //TODO ...
+ * This class converts business object entries into data object entries
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

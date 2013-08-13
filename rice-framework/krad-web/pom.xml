@@ -87,6 +87,25 @@
     								<ignore />
     							</action>
     						</pluginExecution>
+    						<pluginExecution>
+    							<pluginExecutionFilter>
+    								<groupId>
+    									org.kuali.maven.plugins
+    								</groupId>
+    								<artifactId>
+    									spring-maven-plugin
+    								</artifactId>
+    								<versionRange>
+    									[2.0.14,)
+    								</versionRange>
+    								<goals>
+    									<goal>loadxml</goal>
+    								</goals>
+    							</pluginExecutionFilter>
+    							<action>
+    								<ignore></ignore>
+    							</action>
+    						</pluginExecution>
     					</pluginExecutions>
     				</lifecycleMappingMetadata>
     			</configuration>

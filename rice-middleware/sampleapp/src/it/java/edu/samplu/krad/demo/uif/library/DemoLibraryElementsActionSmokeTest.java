@@ -86,14 +86,14 @@ public class DemoLibraryElementsActionSmokeTest extends DemoLibraryBase {
         waitForElementPresentByClassName("uif-headerText-span");
         assertTextPresent("Action Field with client side validation");
         assertTextPresent("InputField 1");
-        assertTextNotPresent("InputField 1: Required"); // no validation error yet
+        assertIsNotVisibleByXpath("//a[contains(text(),'Required')]");
 
         waitAndClickByLinkText("Action Link with clientside validation");
-        assertTextPresent("InputField 1: Required"); // now we have a validation error
+        assertIsVisibleByXpath("//a[contains(text(),'Required')]", "");
 
         waitAndTypeByName("inputField1", "some text");
         waitAndClickByLinkText("Action Link with clientside validation");
-        assertTextNotPresent("InputField 1: Required"); // now the error goes away
+        assertIsNotVisibleByXpath("//a[contains(text(),'Required')]");
     }
 
     protected void testActionImages() throws Exception {

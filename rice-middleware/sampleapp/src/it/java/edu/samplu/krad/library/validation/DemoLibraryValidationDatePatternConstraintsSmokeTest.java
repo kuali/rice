@@ -18,6 +18,7 @@ package edu.samplu.krad.library.validation;
 import org.junit.Test;
 
 import edu.samplu.common.SmokeTestBase;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -54,9 +55,9 @@ public class DemoLibraryValidationDatePatternConstraintsSmokeTest extends SmokeT
         //Scenario-1
         waitAndTypeByName("inputField3","07/2/13");
         waitAndTypeByName("inputField2","2 July 2013");
-        assertElementPresentByXpath("//input[@name='inputField3' and @class='uif-dateControl validChar-inputField30 hasDatepicker dirty error']");
+        isNotVisible(By.xpath("//div[@class='uif-clientMessageItems uif-clientErrorDiv']"));
         waitAndTypeByName("inputField2","");
-        assertElementPresentByXpath("//input[@name='inputField2' and @class='uif-textControl validChar-inputField20 dirty error']");
+        isVisible(By.xpath("//div[@class='uif-clientMessageItems uif-clientErrorDiv']"));
     }
     
     protected void testValidationDatePatternCustomize() throws Exception {
@@ -65,7 +66,7 @@ public class DemoLibraryValidationDatePatternConstraintsSmokeTest extends SmokeT
        //Scenario-1
        waitAndTypeByName("inputField4","23/12/13");
        waitAndClickByLinkText("Usage");
-       assertElementPresentByXpath("//input[@name='inputField4' and @class='uif-textControl validChar-inputField40 dirty error']");
+        isVisible(By.xpath("//div[@class='uif-clientMessageItems uif-clientErrorDiv']"));
     }
     
     @Test

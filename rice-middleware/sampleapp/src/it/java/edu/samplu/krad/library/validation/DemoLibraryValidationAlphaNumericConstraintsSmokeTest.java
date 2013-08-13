@@ -15,9 +15,9 @@
  */
 package edu.samplu.krad.library.validation;
 
-import org.junit.Test;
-
 import edu.samplu.common.SmokeTestBase;
+import org.junit.Test;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -50,7 +50,8 @@ public class DemoLibraryValidationAlphaNumericConstraintsSmokeTest extends Smoke
        //Scenario-1
        waitAndTypeByName("inputField1","_as");
        waitAndClickByLinkText("Usage");
-       assertElementPresentByXpath("//input[@name='inputField1' and @class='uif-textControl validChar-inputField10 dirty error']");
+       fireMouseOverEventByName("inputField1");
+       isVisible(By.xpath("//div[@class='uif-clientMessageItems uif-clientErrorDiv']"));
     }
     
     protected void testValidationAlphaNumericConstraintsFlags() throws Exception {
@@ -59,9 +60,9 @@ public class DemoLibraryValidationAlphaNumericConstraintsSmokeTest extends Smoke
         //Scenario-1
         waitAndTypeByName("inputField2","as 1_4");
         waitAndTypeByName("inputField3","a_s");
-        assertElementPresentByXpath("//input[@name='inputField2' and @class='uif-textControl validChar-inputField20 dirty error']");
+        isVisible(By.xpath("//li[@class='uif-errorMessageItem-field']"));
         waitAndTypeByName("inputField2","");
-        assertElementPresentByXpath("//input[@name='inputField3' and @class='uif-textControl validChar-inputField30 error']");
+        isNotVisible(By.xpath("//li[@class='uif-errorMessageItem-field']"));
     }
     
     protected void testValidationAlphaNumericConstraintsPreconfiguredBeans() throws Exception {
@@ -71,7 +72,7 @@ public class DemoLibraryValidationAlphaNumericConstraintsSmokeTest extends Smoke
         waitAndTypeByName("inputField4","as#");
         waitAndClickByLinkText("Usage");
         fireMouseOverEventByName("inputField4");
-        assertTextPresent(ERROR_MSG);
+        isVisible(By.xpath("//li[@class='uif-errorMessageItem-field']"));
      }
     
     @Test

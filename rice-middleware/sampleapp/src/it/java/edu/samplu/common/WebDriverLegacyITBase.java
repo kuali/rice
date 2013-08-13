@@ -1432,6 +1432,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * @throws InterruptedException
      */
     protected void select(By by, String selectText) throws InterruptedException {
+        checkForIncidentReport(by.toString(), "trying to select text " + selectText);
         WebElement select1 = driver.findElement(by);
         List<WebElement> options = select1.findElements(By.tagName("option"));
 
@@ -3992,6 +3993,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void waitAndCancelConfirmation() throws InterruptedException {
         waitAndClickCancel();
+        checkForIncidentReport("methodToCall.processAnswer.button0");
         waitAndClickByName("methodToCall.processAnswer.button0");
     }
 

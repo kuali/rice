@@ -568,7 +568,7 @@ public class Inquiry extends WidgetBase {
      *
      * @param adjustInquiryParameters
      */
-    public void setAdjustInquiryParameters(boolean adjustInquiryParameters) {
+    protected void setAdjustInquiryParameters(boolean adjustInquiryParameters) {
         this.adjustInquiryParameters = adjustInquiryParameters;
     }
 
@@ -581,7 +581,7 @@ public class Inquiry extends WidgetBase {
      *
      * @param fieldBindingInfo
      */
-    public void setFieldBindingInfo(BindingInfo fieldBindingInfo) {
+    protected void setFieldBindingInfo(BindingInfo fieldBindingInfo) {
         this.fieldBindingInfo = fieldBindingInfo;
     }
 
@@ -592,14 +592,14 @@ public class Inquiry extends WidgetBase {
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         Inquiry inquiryCopy = (Inquiry) component;
-        inquiryCopy.setBaseInquiryUrl(this.getBaseInquiryUrl());
-        inquiryCopy.setDataObjectClassName(this.getDataObjectClassName());
-        inquiryCopy.setViewName(this.getViewName());
-        inquiryCopy.setInquiryLink((Link) this.getInquiryLink().copy());
-        inquiryCopy.setDirectInquiryAction((Action) this.getDirectInquiryAction().copy());
-        inquiryCopy.setEnableDirectInquiry(this.isEnableDirectInquiry());
-        inquiryCopy.setAdjustInquiryParameters(this.isAdjustInquiryParameters());
-        inquiryCopy.setParentReadOnly(this.isParentReadOnly());
+        inquiryCopy.setBaseInquiryUrl(this.baseInquiryUrl);
+        inquiryCopy.setDataObjectClassName(this.dataObjectClassName);
+        inquiryCopy.setViewName(this.viewName);
+        inquiryCopy.setInquiryLink((Link) this.inquiryLink.copy());
+        inquiryCopy.setDirectInquiryAction((Action) this.directInquiryAction.copy());
+        inquiryCopy.setEnableDirectInquiry(this.enableDirectInquiry);
+        inquiryCopy.setAdjustInquiryParameters(this.adjustInquiryParameters);
+        inquiryCopy.setParentReadOnly(this.parentReadOnly);
 
         if (inquiryParameters != null) {
             inquiryCopy.setInquiryParameters(new HashMap<String, String>(this.inquiryParameters));

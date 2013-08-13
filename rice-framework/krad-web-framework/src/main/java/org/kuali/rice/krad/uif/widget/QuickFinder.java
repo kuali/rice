@@ -847,10 +847,10 @@ public class QuickFinder extends WidgetBase {
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         QuickFinder quickFinderCopy = (QuickFinder) component;
-        quickFinderCopy.setBaseLookupUrl(this.getBaseLookupUrl());
-        quickFinderCopy.setDataObjectClassName(this.getDataObjectClassName());
-        quickFinderCopy.setViewName(this.getViewName());
-        quickFinderCopy.setReferencesToRefresh(this.getReferencesToRefresh());
+        quickFinderCopy.setBaseLookupUrl(this.baseLookupUrl);
+        quickFinderCopy.setDataObjectClassName(this.dataObjectClassName);
+        quickFinderCopy.setViewName(this.viewName);
+        quickFinderCopy.setReferencesToRefresh(this.referencesToRefresh);
 
         if(fieldConversions != null) {
             quickFinderCopy.setFieldConversions(new HashMap<String, String>(this.fieldConversions));
@@ -860,20 +860,20 @@ public class QuickFinder extends WidgetBase {
             quickFinderCopy.setLookupParameters(new HashMap<String, String>(this.lookupParameters));
         }
 
-        quickFinderCopy.setReadOnlySearchFields(this.getReadOnlySearchFields());
-        quickFinderCopy.setHideReturnLink(this.getHideReturnLink());
-        quickFinderCopy.setSuppressActions(this.getSuppressActions());
-        quickFinderCopy.setAutoSearch(this.getAutoSearch());
-        quickFinderCopy.setRenderLookupCriteria(this.getRenderLookupCriteria());
-        quickFinderCopy.setSupplementalActionsEnabled(this.getSupplementalActionsEnabled());
-        quickFinderCopy.setRenderSearchButtons(this.getRenderSearchButtons());
-        quickFinderCopy.setRenderHeader(this.getRenderHeader());
-        quickFinderCopy.setShowMaintenanceLinks(this.getShowMaintenanceLinks());
-        quickFinderCopy.setMultipleValuesSelect(this.getMultipleValuesSelect());
-        quickFinderCopy.setLookupCollectionName(this.getLookupCollectionName());
+        quickFinderCopy.setReadOnlySearchFields(this.readOnlySearchFields);
+        quickFinderCopy.setHideReturnLink(this.hideReturnLink);
+        quickFinderCopy.setSuppressActions(this.suppressActions);
+        quickFinderCopy.setAutoSearch(this.autoSearch);
+        quickFinderCopy.setRenderLookupCriteria(this.renderLookupCriteria);
+        quickFinderCopy.setSupplementalActionsEnabled(this.supplementalActionsEnabled);
+        quickFinderCopy.setRenderSearchButtons(this.renderSearchButtons);
+        quickFinderCopy.setRenderHeader(this.renderHeader);
+        quickFinderCopy.setShowMaintenanceLinks(this.showMaintenanceLinks);
+        quickFinderCopy.setMultipleValuesSelect(this.multipleValuesSelect);
+        quickFinderCopy.setLookupCollectionName(this.lookupCollectionName);
 
         if(lightBoxLookup != null) {
-            quickFinderCopy.setLightBoxLookup((LightBox)this.getLightBoxLookup().copy());
+            quickFinderCopy.setLightBoxLookup((LightBox)this.lightBoxLookup.copy());
         }
 
         if (this.quickfinderAction != null) {

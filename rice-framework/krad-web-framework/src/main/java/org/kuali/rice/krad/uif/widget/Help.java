@@ -293,13 +293,13 @@ public class Help extends WidgetBase {
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         Help helpCopy = (Help) component;
-        helpCopy.setExternalHelpUrl(this.getExternalHelpUrl());
+        helpCopy.setExternalHelpUrl(this.externalHelpUrl);
 
         if (this.helpAction != null) {
             helpCopy.setHelpAction((Action)this.helpAction.copy());
         }
 
-        helpCopy.setHelpDefinition(this.getHelpDefinition());
+        helpCopy.setHelpDefinition(this.helpDefinition);
         helpCopy.setTooltipHelpContent(this.tooltipHelpContent);
     }
 

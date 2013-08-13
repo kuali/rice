@@ -417,7 +417,10 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
         }
 
         // security
-        if (getDataFieldSecurity().getAttributeSecurity() == null) {
+        if ((attributeDefinition.getAttributeSecurity() != null) && (getDataFieldSecurity().getAttributeSecurity()
+                == null)) {
+            initializeComponentSecurity();
+
             getDataFieldSecurity().setAttributeSecurity(attributeDefinition.getAttributeSecurity());
         }
 
@@ -723,7 +726,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      */
     @Override
     public void setComponentSecurity(ComponentSecurity componentSecurity) {
-        if (!(componentSecurity instanceof DataFieldSecurity)) {
+        if ((componentSecurity != null) && !(componentSecurity instanceof DataFieldSecurity)) {
             throw new RiceRuntimeException("Component security for DataField should be instance of DataFieldSecurity");
         }
 
@@ -731,11 +734,13 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentSecurityClass()
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#initializeComponentSecurity()
      */
     @Override
-    protected Class<? extends ComponentSecurity> getComponentSecurityClass() {
-        return DataFieldSecurity.class;
+    protected void initializeComponentSecurity() {
+        if (getComponentSecurity() == null) {
+            setComponentSecurity(DataObjectUtils.newInstance(DataFieldSecurity.class));
+        }
     }
 
     /**
@@ -1145,10 +1150,15 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * @return true if value is secure, false if not
      */
     public boolean hasSecureValue() {
-        return isApplyMask() || ((getComponentSecurity().isViewAuthz()
-                || getDataFieldSecurity().isViewInLineAuthz()
-                || ((getDataFieldSecurity().getAttributeSecurity() != null) && getDataFieldSecurity()
-                .getAttributeSecurity().isHide())) && isHidden());
+        boolean hasHideAuthz = false;
+
+        if (getDataFieldSecurity() != null) {
+            hasHideAuthz = getDataFieldSecurity().isViewAuthz() || getDataFieldSecurity().isViewInLineAuthz() || (
+                    (getDataFieldSecurity().getAttributeSecurity() != null) && getDataFieldSecurity()
+                            .getAttributeSecurity().isHide());
+        }
+
+        return isApplyMask() || (hasHideAuthz && isHidden());
     }
 
     public boolean isRenderFieldset() {

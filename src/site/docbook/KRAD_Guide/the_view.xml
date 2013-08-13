@@ -1011,103 +1011,103 @@
                     <itemizedlist>
                             <listitem>
                             <para>Open View – Template Name 'Open View': Details viewId: Enabled by
-                                setting componentSecurity.viewAuthz to true on the view
+                                setting viewAuthz to true on the view
                                 component</para>
                         </listitem>
                         <listitem>
                             <para>Edit View – Template Name 'Edit View': Details viewId: Enabled by
-                                setting componentSecurity.editAuthz to true on the view
+                                setting editAuthz to true on the view
                                 component</para>
                         </listitem>
                         <listitem>
                             <para>View Field – Template Name 'View Field': Details viewId and
                                 fieldId or viewId and propertyName (for data fields): Enabled by
-                                setting componentSecurity.viewAuthz to true on the field
+                                setting viewAuthz to true on the field
                                 component</para>
                         </listitem>
                         <listitem>
                             <para>Edit Field – Template Name 'Edit Field': Details viewId and
                                 fieldId or viewId and propertyName (for data fields): Enabled by
-                                setting componentSecurity.editAuthz to true on the field
+                                setting editAuthz to true on the field
                                 component</para>
                         </listitem>
                         <listitem>
                             <para>View Group (applies to any group including page, section, and
                                 subsection levels) – Template Name 'View Group': Details viewId and
                                 groupId or viewId and propertyName (for collection groups): Enabled
-                                by setting componentSecurity.viewAuthz to true on the group
+                                by setting viewAuthz to true on the group
                                 component</para>
                         </listitem>
                         <listitem>
                             <para>Edit Group (applies to any group including page, section, and
                                 subsection levels) – Template Name 'Edit Group': Details viewId and
                                 groupId or viewId and propertyName (for collection groups): Enabled
-                                by setting componentSecurity.editAuthz to true on the group
+                                by setting editAuthz to true on the group
                                 component</para>
                         </listitem>
                         <listitem>
                             <para>View Widget – Template Name 'View Widget': Details viewId and
-                                widgetId: Enabled by setting componentSecurity.viewAuthz to true on
+                                widgetId: Enabled by setting viewAuthz to true on
                                 the widget component</para>
                         </listitem>
                         <listitem>
                             <para>Edit Widget – Template Name 'Edit Widget': Details viewId and
-                                widgetId: Enabled by setting componentSecurity.editAuthz to true on
+                                widgetId: Enabled by setting editAuthz to true on
                                 the widget component</para>
                         </listitem>
                         <listitem>
                             <para>Perform Action – Template Name 'Perform Action': Details viewId
                                 and actionId or viewId and actionEvent: Enabled by setting
-                                componentSecurity. performActionAuthz to true on the action
+                                performActionAuthz to true on the action
                                 component</para>
                         </listitem>
                         <listitem>
                             <para>View Line – Template Name 'View Line': Details viewId and groupId
                                 or viewId and collectionPropertyName: Enabled by setting
-                                componentSecurity.viewLineAuthz to true on the collection group
+                                viewLineAuthz to true on the collection group
                                 component</para>
                         </listitem>
                         <listitem>
                             <para>Edit Line – Template Name 'Edit Line': Details viewId and groupId
                                 or viewId and collectionPropertyName: Enabled by setting
-                                componentSecurity.editLineAuthz to true on the collection group
+                                editLineAuthz to true on the collection group
                                 component</para>
                         </listitem>
                         <listitem>
                             <para>View Line Field – Template Name 'View Line Field': Details viewId,
                                 groupId or collectionPropertyName, and fieldId or propertyName:
-                                Enabled by setting componentSecurity.viewInLineAuthz to true on the
+                                Enabled by setting viewInLineAuthz to true on the
                                 field component</para>
                         </listitem>
                         <listitem>
                             <para>Perform Line Action – Template Name 'Perform Line Action': Details
                                 viewId, groupId or collectionPropertyName, and actionId or
                                 actionEvent: Enabled by setting
-                                componentSecurity.performLineActionAuthz to true on the action
+                                performLineActionAuthz to true on the action
                                 component</para>
                         </listitem>
                         <listitem>
                             <para>Full Unmask Attribute – Template Name 'Full Unmask Field': Details
                                 namespaceCode, componentCode, and propertyName. Enabled by setting
-                                componentSecurity.attributeSecurity.mask to true on the data
+                                attributeSecurity.mask to true on the data field security object of the data
                                 field</para>
                         </listitem>
                         <listitem>
                             <para>Partial Unmask Attribute – Template Name 'Partial Unmask Field':
                                 Details namespaceCode, componentCode, and propertyName. Enabled by
-                                setting componentSecurity.attributeSecurity.partialMask to true on
+                                setting attributeSecurity.partialMask to true on the data field security object of
                                 the data field</para>
                         </listitem>
                         <listitem>
                             <para>View Attribute – Template Name 'View Attribute': Details
                                 namespaceCode, componentCode, and propertyName. Enabled by setting
-                                componentSecurity.attributeSecurity.hide to true on the data
+                                attributeSecurity.hide to true on the data field security object of the data
                                 field</para>
                         </listitem>
                         <listitem>
                             <para>Edit Attribute – Template Name 'Edit Attribute': Details
                                 namespaceCode, componentCode, and propertyName. Enabled by setting
-                                componentSecurity.attributeSecurity.readOnly to true on the data
+                                attributeSecurity.readOnly to true on the data field security object of the data
                                 field</para>
                         </listitem>
                         </itemizedlist>

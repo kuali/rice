@@ -144,6 +144,10 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
      * org.kuali.rice.krad.uif.field.DataField, java.lang.String, org.kuali.rice.kim.api.identity.Person)
      */
     public boolean canUnmaskField(View view, ViewModel model, DataField field, String propertyName, Person user) {
+        if (field.getDataFieldSecurity() == null) {
+            return true;
+        }
+
         // check mask authz flag is set
         AttributeSecurity attributeSecurity = field.getDataFieldSecurity().getAttributeSecurity();
         if (attributeSecurity == null || !attributeSecurity.isMask()) {
@@ -182,6 +186,10 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
      */
     public boolean canPartialUnmaskField(View view, ViewModel model, DataField field, String propertyName,
             Person user) {
+        if (field.getDataFieldSecurity() == null) {
+            return true;
+        }
+
         // check partial mask authz flag is set
         AttributeSecurity attributeSecurity = field.getDataFieldSecurity().getAttributeSecurity();
         if (attributeSecurity == null || !attributeSecurity.isPartialMask()) {
@@ -220,7 +228,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
      */
     public boolean canEditField(View view, ViewModel model, Field field, String propertyName, Person user) {
         // check edit authz flag is set
-        if (!field.getComponentSecurity().isEditAuthz()) {
+        if ((field.getComponentSecurity() == null) || !field.getComponentSecurity().isEditAuthz()) {
             return true;
         }
 
@@ -234,7 +242,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
      */
     public boolean canViewField(View view, ViewModel model, Field field, String propertyName, Person user) {
         // check view authz flag is set
-        if (!field.getComponentSecurity().isViewAuthz()) {
+        if ((field.getComponentSecurity() == null) || !field.getComponentSecurity().isViewAuthz()) {
             return true;
         }
 
@@ -248,7 +256,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
      */
     public boolean canEditGroup(View view, ViewModel model, Group group, String groupId, Person user) {
         // check edit group authz flag is set
-        if (!group.getComponentSecurity().isEditAuthz()) {
+        if ((group.getComponentSecurity() == null) || !group.getComponentSecurity().isEditAuthz()) {
             return true;
         }
 
@@ -262,7 +270,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
      */
     public boolean canViewGroup(View view, ViewModel model, Group group, String groupId, Person user) {
         // check view group authz flag is set
-        if (!group.getComponentSecurity().isViewAuthz()) {
+        if ((group.getComponentSecurity() == null) || !group.getComponentSecurity().isViewAuthz()) {
             return true;
         }
 
@@ -276,7 +284,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
      */
     public boolean canEditWidget(View view, ViewModel model, Widget widget, String widgetId, Person user) {
         // check edit widget authz flag is set
-        if (!widget.getComponentSecurity().isViewAuthz()) {
+        if ((widget.getComponentSecurity() == null) || !widget.getComponentSecurity().isViewAuthz()) {
             return true;
         }
 
@@ -290,7 +298,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
      */
     public boolean canViewWidget(View view, ViewModel model, Widget widget, String widgetId, Person user) {
         // check view widget authz flag is set
-        if (!widget.getComponentSecurity().isViewAuthz()) {
+        if ((widget.getComponentSecurity() == null) || !widget.getComponentSecurity().isViewAuthz()) {
             return true;
         }
 
@@ -305,7 +313,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
     public boolean canPerformAction(View view, ViewModel model, Action action, String actionEvent,
             String actionId, Person user) {
         // check action authz flag is set
-        if (!action.getActionSecurity().isPerformActionAuthz()) {
+        if ((action.getActionSecurity() == null) || !action.getActionSecurity().isPerformActionAuthz()) {
             return true;
         }
 
@@ -321,7 +329,8 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
     public boolean canEditLine(View view, ViewModel model, CollectionGroup collectionGroup,
             String collectionPropertyName, Object line, Person user) {
         // check edit line authz flag is set
-        if (!collectionGroup.getCollectionGroupSecurity().isEditLineAuthz()) {
+        if ((collectionGroup.getCollectionGroupSecurity() == null) || !collectionGroup.getCollectionGroupSecurity()
+                .isEditLineAuthz()) {
             return true;
         }
 
@@ -332,7 +341,8 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
     public boolean canViewLine(View view, ViewModel model, CollectionGroup collectionGroup,
             String collectionPropertyName, Object line, Person user) {
         // check view line authz flag is set
-        if (!collectionGroup.getCollectionGroupSecurity().isViewLineAuthz()) {
+        if ((collectionGroup.getCollectionGroupSecurity() == null) || !collectionGroup.getCollectionGroupSecurity()
+                .isViewLineAuthz()) {
             return true;
         }
 
@@ -343,7 +353,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
     public boolean canEditLineField(View view, ViewModel model, CollectionGroup collectionGroup,
             String collectionPropertyName, Object line, Field field, String propertyName, Person user) {
         // check edit line field authz flag is set
-        if (!field.getFieldSecurity().isEditInLineAuthz()) {
+        if ((field.getFieldSecurity() == null) || !field.getFieldSecurity().isEditInLineAuthz()) {
             return true;
         }
 
@@ -359,7 +369,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
     public boolean canViewLineField(View view, ViewModel model, CollectionGroup collectionGroup,
             String collectionPropertyName, Object line, Field field, String propertyName, Person user) {
         // check view line field authz flag is set
-        if (!field.getFieldSecurity().isViewInLineAuthz()) {
+        if ((field.getFieldSecurity() == null) || !field.getFieldSecurity().isViewInLineAuthz()) {
             return true;
         }
 
@@ -376,7 +386,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
             String collectionPropertyName, Object line, Action action, String actionEvent, String actionId,
             Person user) {
         // check perform line action authz flag is set
-        if (!action.getActionSecurity().isPerformLineActionAuthz()) {
+        if ((action.getActionSecurity() == null) || !action.getActionSecurity().isPerformLineActionAuthz()) {
             return true;
         }
 
@@ -556,30 +566,35 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
         ComponentSecurity componentSecurity = component.getComponentSecurity();
 
         // add configured overrides
-        if (StringUtils.isNotBlank(componentSecurity.getNamespaceAttribute())) {
-            permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE,
-                    componentSecurity.getNamespaceAttribute());
-        }
-        if (StringUtils.isNotBlank(componentSecurity.getComponentAttribute())) {
-            permissionDetails.put(KimConstants.AttributeConstants.COMPONENT_NAME,
-                    componentSecurity.getComponentAttribute());
-        }
-        if (StringUtils.isNotBlank(componentSecurity.getIdAttribute())) {
-            if (component instanceof Field) {
-                permissionDetails.put(KimConstants.AttributeConstants.FIELD_ID, componentSecurity.getIdAttribute());
-            } else if (component instanceof Group) {
-                permissionDetails.put(KimConstants.AttributeConstants.GROUP_ID, componentSecurity.getIdAttribute());
-            } else if (component instanceof Widget) {
-                permissionDetails.put(KimConstants.AttributeConstants.WIDGET_ID, componentSecurity.getIdAttribute());
+        if (componentSecurity != null) {
+            if (StringUtils.isNotBlank(componentSecurity.getNamespaceAttribute())) {
+                permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE,
+                        componentSecurity.getNamespaceAttribute());
             }
-        }
 
-        if (componentSecurity.getAdditionalPermissionDetails() != null) {
-            permissionDetails.putAll(componentSecurity.getAdditionalPermissionDetails());
-        }
+            if (StringUtils.isNotBlank(componentSecurity.getComponentAttribute())) {
+                permissionDetails.put(KimConstants.AttributeConstants.COMPONENT_NAME,
+                        componentSecurity.getComponentAttribute());
+            }
 
-        if (componentSecurity.getAdditionalRoleQualifiers() != null) {
-            roleQualifications.putAll(componentSecurity.getAdditionalRoleQualifiers());
+            if (StringUtils.isNotBlank(componentSecurity.getIdAttribute())) {
+                if (component instanceof Field) {
+                    permissionDetails.put(KimConstants.AttributeConstants.FIELD_ID, componentSecurity.getIdAttribute());
+                } else if (component instanceof Group) {
+                    permissionDetails.put(KimConstants.AttributeConstants.GROUP_ID, componentSecurity.getIdAttribute());
+                } else if (component instanceof Widget) {
+                    permissionDetails.put(KimConstants.AttributeConstants.WIDGET_ID,
+                            componentSecurity.getIdAttribute());
+                }
+            }
+
+            if (componentSecurity.getAdditionalPermissionDetails() != null) {
+                permissionDetails.putAll(componentSecurity.getAdditionalPermissionDetails());
+            }
+
+            if (componentSecurity.getAdditionalRoleQualifiers() != null) {
+                roleQualifications.putAll(componentSecurity.getAdditionalRoleQualifiers());
+            }
         }
 
         boolean result = true;

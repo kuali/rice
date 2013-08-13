@@ -26,6 +26,28 @@
   <bean id="Uif-ComponentBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.component.ComponentBase"
         scope="prototype"/>
 
+  <!-- Component Security -->
+
+  <bean id="Uif-ComponentSecurity" parent="Uif-ComponentSecurity-parentBean"/>
+  <bean id="Uif-ComponentSecurity-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.component.ComponentSecurity" scope="prototype"/>
+
+  <bean id="Uif-FieldSecurity" parent="Uif-FieldSecurity-parentBean"/>
+  <bean id="Uif-FieldSecurity-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.field.FieldSecurity" scope="prototype"/>
+
+  <bean id="Uif-DataFieldSecurity" parent="Uif-DataFieldSecurity-parentBean"/>
+  <bean id="Uif-DataFieldSecurity-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.field.DataFieldSecurity" scope="prototype"/>
+
+  <bean id="Uif-CollectionGroupSecurity" parent="Uif-CollectionGroupSecurity-parentBean"/>
+  <bean id="Uif-CollectionGroupSecurity-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.container.CollectionGroupSecurity" scope="prototype"/>
+
+  <bean id="Uif-ActionSecurity" parent="Uif-ActionSecurity-parentBean"/>
+  <bean id="Uif-ActionSecurity-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.element.ActionSecurity" scope="prototype"/>
+
   <!-- Modifiers -->
 
   <bean id="Uif-CompareFieldCreate-Modifier" parent="Uif-CompareFieldCreate-Modifier-parentBean"/>
@@ -186,7 +208,6 @@
   </bean>
 
   <bean id="Uif-ParentLocation" class="org.kuali.rice.krad.uif.util.ParentLocation" scope="prototype">
-
     <property name="parentViewUrl">
       <bean parent="Uif-Url"/>
     </property>
@@ -200,6 +221,5 @@
       <bean parent="Uif-BreadcrumbItem"/>
     </property>
   </bean>
-
 
 </beans>

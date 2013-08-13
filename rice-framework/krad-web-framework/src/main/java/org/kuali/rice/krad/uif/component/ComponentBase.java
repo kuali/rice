@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif.component;
 
-import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -175,8 +174,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         resetDataOnRefresh = false;
         disableSessionPersistence = false;
         forceSessionPersistence = false;
-
-        componentSecurity = DataObjectUtils.newInstance(getComponentSecurityClass());
 
         refreshWhenChangedPropertyNames = new ArrayList<String>();
         additionalComponentsToRefresh = new ArrayList<String>();
@@ -924,12 +921,48 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Returns the security class that is associated with the component (used for initialization and validation)
-     *
-     * @return Class<? extends ComponentSecurity>
+     * Initializes (if necessary) the component security instance for the component type
      */
-    protected Class<? extends ComponentSecurity> getComponentSecurityClass() {
-        return ComponentSecurity.class;
+    protected void initializeComponentSecurity() {
+        if (this.componentSecurity == null) {
+            this.componentSecurity = DataObjectUtils.newInstance(ComponentSecurity.class);
+        }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentSecurity#isEditAuthz()
+     */
+    public boolean isEditAuthz() {
+        initializeComponentSecurity();
+
+        return this.componentSecurity.isEditAuthz();
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentSecurity#setEditAuthz(boolean)
+     */
+    public void setEditAuthz(boolean editAuthz) {
+        initializeComponentSecurity();
+
+        this.componentSecurity.setEditAuthz(editAuthz);
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentSecurity#isViewAuthz()
+     */
+    public boolean isViewAuthz() {
+        initializeComponentSecurity();
+
+        return this.componentSecurity.isViewAuthz();
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentSecurity#setViewAuthz(boolean)
+     */
+    public void setViewAuthz(boolean viewAuthz) {
+        initializeComponentSecurity();
+
+        this.componentSecurity.setViewAuthz(viewAuthz);
     }
 
     /**

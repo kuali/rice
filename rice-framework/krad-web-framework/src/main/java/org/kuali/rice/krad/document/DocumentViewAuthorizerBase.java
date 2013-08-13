@@ -187,6 +187,10 @@ public class DocumentViewAuthorizerBase extends ViewAuthorizerBase implements Do
      * org.kuali.rice.krad.uif.field.DataField, java.lang.String, org.kuali.rice.kim.api.identity.Person)
      */
     public boolean canUnmaskField(View view, ViewModel model, DataField field, String propertyName, Person user) {
+        if (field.getDataFieldSecurity() == null) {
+            return true;
+        }
+
         // check mask authz flag is set
         AttributeSecurity attributeSecurity = field.getDataFieldSecurity().getAttributeSecurity();
         if (attributeSecurity == null || !attributeSecurity.isMask()) {

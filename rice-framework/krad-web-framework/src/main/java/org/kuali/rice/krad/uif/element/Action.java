@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
@@ -616,16 +617,57 @@ public class Action extends ContentElementBase {
      */
     @Override
     public void setComponentSecurity(ComponentSecurity componentSecurity) {
-        if (!(componentSecurity instanceof ActionSecurity)) {
+        if ((componentSecurity != null) && !(componentSecurity instanceof ActionSecurity)) {
             throw new RiceRuntimeException("Component security for Action should be instance of ActionSecurity");
         }
 
         super.setComponentSecurity(componentSecurity);
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#initializeComponentSecurity()
+     */
     @Override
-    protected Class<? extends ComponentSecurity> getComponentSecurityClass() {
-        return ActionSecurity.class;
+    protected void initializeComponentSecurity() {
+        if (getComponentSecurity() == null) {
+            setComponentSecurity(DataObjectUtils.newInstance(ActionSecurity.class));
+        }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.element.ActionSecurity#isPerformActionAuthz()
+     */
+    public boolean isPerformActionAuthz() {
+        initializeComponentSecurity();
+
+        return getActionSecurity().isPerformActionAuthz();
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.element.ActionSecurity#setPerformActionAuthz(boolean)
+     */
+    public void setPerformActionAuthz(boolean performActionAuthz) {
+        initializeComponentSecurity();
+
+        getActionSecurity().setPerformActionAuthz(performActionAuthz);
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.element.ActionSecurity#isPerformLineActionAuthz()
+     */
+    public boolean isPerformLineActionAuthz() {
+        initializeComponentSecurity();
+
+        return getActionSecurity().isPerformLineActionAuthz();
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.element.ActionSecurity#setPerformLineActionAuthz(boolean)
+     */
+    public void setPerformLineActionAuthz(boolean performLineActionAuthz) {
+        initializeComponentSecurity();
+
+        getActionSecurity().setPerformLineActionAuthz(performLineActionAuthz);
     }
 
     /**

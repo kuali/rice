@@ -113,7 +113,7 @@
           <spring:ref bean="Demo-HeaderGroups"/>
         </items>
       </page-bean>
-      <page-bean componentSecurity.viewAuthz="true" id="UifCompView-Page9" parent="UifCompViewPageWithFooter">
+      <page-bean viewAuthz="true" id="UifCompView-Page9" parent="UifCompViewPageWithFooter">
         <items>
           <spring:ref bean="UifCompView-SecureGroupView"/>
           <spring:ref bean="UifCompView-SecureGroupEdit"/>

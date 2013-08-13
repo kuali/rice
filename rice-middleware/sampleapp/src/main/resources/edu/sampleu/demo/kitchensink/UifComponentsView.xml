@@ -254,7 +254,7 @@ color:#FFF;">
               <bean parent="Uif-JumpToTopLink" id="TopLink9"/>
             </list>
           </property>
-          <property name="componentSecurity.viewAuthz" value="true"/>
+          <property name="viewAuthz" value="true"/>
         </bean>
 
         <bean id="UifCompView-Page10" parent="UifCompViewPageWithFooter">

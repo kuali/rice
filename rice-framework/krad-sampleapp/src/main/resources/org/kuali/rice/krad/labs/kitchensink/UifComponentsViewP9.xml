@@ -37,7 +37,7 @@
         </bean>
       </list>
     </property>
-    <property name="componentSecurity.viewAuthz" value="true"/>
+    <property name="viewAuthz" value="true"/>
   </bean>
 
   <bean id="UifCompView-SecureGroupEdit" parent="Uif-VerticalBoxSection">
@@ -56,7 +56,7 @@
         </bean>
       </list>
     </property>
-    <property name="componentSecurity.editAuthz" value="true"/>
+    <property name="editAuthz" value="true"/>
   </bean>
 
   <bean id="UifCompView-SecureFields" parent="Uif-VerticalBoxSection">
@@ -72,14 +72,14 @@
           <property name="control">
             <bean parent="Uif-TextControl" p:size="21"/>
           </property>
-          <property name="componentSecurity.viewAuthz" value="true"/>
+          <property name="viewAuthz" value="true"/>
         </bean>
 
         <bean parent="Uif-InputField" p:propertyName="field7">
           <property name="control">
             <bean parent="Uif-TextControl" p:size="21"/>
           </property>
-          <property name="componentSecurity.editAuthz" value="true"/>
+          <property name="editAuthz" value="true"/>
         </bean>
       </list>
     </property>
@@ -104,6 +104,7 @@
               </bean>
             </list>
           </property>
+          <property name="viewAuthz" value="true"/>
         </bean>
 
         <bean id="UifCompView-SecureFieldGroup2" parent="Uif-HorizontalFieldGroup">
@@ -122,26 +123,7 @@
               </bean>
             </list>
           </property>
-          <property name="componentSecurity.viewAuthz" value="true"/>
-        </bean>
-
-        <bean id="UifCompView-SecureFieldGroup3" parent="Uif-HorizontalFieldGroup">
-          <property name="items">
-            <list>
-              <bean parent="Uif-InputField" p:propertyName="field12">
-                <property name="control">
-                  <bean parent="Uif-TextControl" p:size="5"/>
-                </property>
-              </bean>
-
-              <bean parent="Uif-InputField" p:propertyName="field13">
-                <property name="control">
-                  <bean parent="Uif-TextControl" p:size="5"/>
-                </property>
-              </bean>
-            </list>
-          </property>
-          <property name="componentSecurity.editAuthz" value="true"/>
+          <property name="editAuthz" value="true"/>
         </bean>
       </list>
     </property>
@@ -152,7 +134,7 @@
       <list>
         <bean id="UifCompView-SecureAction1" parent="Uif-PrimaryActionButton" p:methodToCall="cancel"/>
         <bean id="UifCompView-SecureAction2" parent="Uif-PrimaryActionButton" p:methodToCall="save" p:actionEvent="save">
-          <property name="componentSecurity.performActionAuthz" value="true"/>
+          <property name="performActionAuthz" value="true"/>
         </bean>
       </list>
     </property>
@@ -165,7 +147,7 @@
           <property name="quickfinder">
             <bean parent="Uif-QuickFinder" p:id="UifCompView-SecureWidget"
                   p:dataObjectClassName="edu.sampleu.travel.bo.TravelAccount" p:fieldConversions="number:field60"
-                  p:componentSecurity.viewAuthz="true"/>
+                  p:viewAuthz="true"/>
           </property>
         </bean>
       </list>
@@ -185,7 +167,7 @@
         <bean parent="Uif-InputField" p:propertyName="field4" p:required="true"/>
       </list>
     </property>
-    <property name="componentSecurity.viewLineAuthz" value="true"/>
+    <property name="viewLineAuthz" value="true"/>
   </bean>
 
   <bean id="UifCompView-SecureLineEdit" parent="Uif-TableCollectionSection">
@@ -201,7 +183,7 @@
         <bean parent="Uif-InputField" p:propertyName="field4" p:required="true"/>
       </list>
     </property>
-    <property name="componentSecurity.editLineAuthz" value="true"/>
+    <property name="editLineAuthz" value="true"/>
   </bean>
 
   <bean id="UifCompView-SecureLineFields" parent="Uif-TableCollectionSection">
@@ -212,8 +194,8 @@
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="field1" p:required="true"/>
-        <bean parent="Uif-InputField" p:propertyName="field2" p:required="true" p:componentSecurity.viewInLineAuthz="true"/>
-        <bean parent="Uif-InputField" p:propertyName="field3" p:required="true" p:componentSecurity.editInLineAuthz="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field2" p:required="true" p:viewInLineAuthz="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field3" p:required="true" p:editInLineAuthz="true"/>
         <bean parent="Uif-InputField" p:propertyName="field4" p:required="true"/>
       </list>
     </property>
@@ -235,7 +217,7 @@
     <property name="lineActions">
       <list>
         <bean id="UifCompView-DeleteAction" parent="Uif-SecondaryActionButton-Small" p:methodToCall="deleteLine"
-              p:actionEvent="delete" p:componentSecurity.performLineActionAuthz="true"/>
+              p:actionEvent="delete" p:performLineActionAuthz="true"/>
       </list>
     </property>
   </bean>

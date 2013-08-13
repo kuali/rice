@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
@@ -868,7 +868,7 @@ public class CollectionGroup extends Group implements DataBinding {
      */
     @Override
     public void setComponentSecurity(ComponentSecurity componentSecurity) {
-        if (!(componentSecurity instanceof CollectionGroupSecurity)) {
+        if ((componentSecurity != null) && !(componentSecurity instanceof CollectionGroupSecurity)) {
             throw new RiceRuntimeException(
                     "Component security for CollectionGroup should be instance of CollectionGroupSecurity");
         }
@@ -876,9 +876,50 @@ public class CollectionGroup extends Group implements DataBinding {
         super.setComponentSecurity(componentSecurity);
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#initializeComponentSecurity()
+     */
     @Override
-    protected Class<? extends ComponentSecurity> getComponentSecurityClass() {
-        return CollectionGroupSecurity.class;
+    protected void initializeComponentSecurity() {
+        if (getComponentSecurity() == null) {
+            setComponentSecurity(DataObjectUtils.newInstance(CollectionGroupSecurity.class));
+        }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.container.CollectionGroupSecurity#isEditLineAuthz()
+     */
+    public boolean isEditLineAuthz() {
+        initializeComponentSecurity();
+
+        return getCollectionGroupSecurity().isEditLineAuthz();
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.container.CollectionGroupSecurity#setEditLineAuthz(boolean)
+     */
+    public void setEditLineAuthz(boolean editLineAuthz) {
+        initializeComponentSecurity();
+
+        getCollectionGroupSecurity().setEditLineAuthz(editLineAuthz);
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.container.CollectionGroupSecurity#isViewLineAuthz()
+     */
+    public boolean isViewLineAuthz() {
+        initializeComponentSecurity();
+
+        return getCollectionGroupSecurity().isViewLineAuthz();
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.container.CollectionGroupSecurity#setViewLineAuthz(boolean)
+     */
+    public void setViewLineAuthz(boolean viewLineAuthz) {
+        initializeComponentSecurity();
+
+        getCollectionGroupSecurity().setViewLineAuthz(viewLineAuthz);
     }
 
     /**

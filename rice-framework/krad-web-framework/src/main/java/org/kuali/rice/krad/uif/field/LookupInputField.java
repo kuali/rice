@@ -109,6 +109,8 @@ public class LookupInputField extends InputField {
      */
     @Override
     public void copyFromAttributeDefinition(View view, AttributeDefinition attributeDefinition) {
+        // TODO: why am I not calling super? why am I duplicating code from super?
+
         // label
         if (StringUtils.isEmpty(getLabel())) {
             setLabel(attributeDefinition.getLabel());
@@ -120,7 +122,10 @@ public class LookupInputField extends InputField {
         }
 
         // security
-        if (getDataFieldSecurity().getAttributeSecurity() == null) {
+        if ((attributeDefinition.getAttributeSecurity() != null) && (getDataFieldSecurity().getAttributeSecurity()
+                == null)) {
+            initializeComponentSecurity();
+
             getDataFieldSecurity().setAttributeSecurity(attributeDefinition.getAttributeSecurity());
         }
 

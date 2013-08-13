@@ -383,6 +383,10 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
      */
     protected void evaluatePropertyExpressions(View view, UifDictionaryBean expressionConfigurable,
             Map<String, Object> evaluationParameters) {
+        if (expressionConfigurable == null) {
+            return;
+        }
+
         Map<String, String> propertyExpressions = expressionConfigurable.getPropertyExpressions();
         for (String propertyName : propertyExpressions.keySet()) {
             evaluatePropertyExpression(view, evaluationParameters, expressionConfigurable, propertyName, false);

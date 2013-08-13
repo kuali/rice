@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
@@ -336,7 +337,7 @@ public class FieldBase extends ComponentBase implements Field {
      */
     @Override
     public void setComponentSecurity(ComponentSecurity componentSecurity) {
-        if (!(componentSecurity instanceof FieldSecurity)) {
+        if ((componentSecurity != null) && !(componentSecurity instanceof FieldSecurity)) {
             throw new RiceRuntimeException("Component security for Field should be instance of FieldSecurity");
         }
 
@@ -344,11 +345,49 @@ public class FieldBase extends ComponentBase implements Field {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentSecurityClass()
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#initializeComponentSecurity()
      */
     @Override
-    protected Class<? extends ComponentSecurity> getComponentSecurityClass() {
-        return FieldSecurity.class;
+    protected void initializeComponentSecurity() {
+        if (getComponentSecurity() == null) {
+            setComponentSecurity(DataObjectUtils.newInstance(FieldSecurity.class));
+        }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.field.FieldSecurity#isEditInLineAuthz()
+     */
+    public boolean isEditInLineAuthz() {
+        initializeComponentSecurity();
+
+        return getFieldSecurity().isEditInLineAuthz();
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.field.FieldSecurity#setEditInLineAuthz(boolean)
+     */
+    public void setEditInLineAuthz(boolean editInLineAuthz) {
+        initializeComponentSecurity();
+
+        getFieldSecurity().setEditInLineAuthz(editInLineAuthz);
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.field.FieldSecurity#isViewInLineAuthz()
+     */
+    public boolean isViewInLineAuthz() {
+        initializeComponentSecurity();
+
+        return getFieldSecurity().isViewInLineAuthz();
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.field.FieldSecurity#setViewInLineAuthz(boolean)
+     */
+    public void setViewInLineAuthz(boolean viewInLineAuthz) {
+        initializeComponentSecurity();
+
+        getFieldSecurity().setViewInLineAuthz(viewInLineAuthz);
     }
 
     /**

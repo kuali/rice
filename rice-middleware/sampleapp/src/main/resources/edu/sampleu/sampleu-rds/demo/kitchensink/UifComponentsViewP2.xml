@@ -78,22 +78,31 @@
   <verticalBoxSection-bean id="UifCompView-AttributeSecurity">
     <items>
       <inputField-bean parent="GenericTextField" propertyName="mField1">
-        <spring:property name="componentSecurity.attributeSecurity">
-          <attributeSecurity-bean mask="true" parent="AttributeSecurity">
-            <maskFormatter>
-              <maskFormatterLiteral-bean literal="*********" parent="MaskFormatterLiteral"/>
-            </maskFormatter>
-          </attributeSecurity-bean>
-        </spring:property>
+        <componentSecurity>
+          <dataFieldSecurity-bean>
+            <attributeSecurity>
+              <attributeSecurity-bean mask="true" parent="AttributeSecurity">
+                <maskFormatter>
+                  <maskFormatterLiteral-bean literal="*********" parent="MaskFormatterLiteral"/>
+                </maskFormatter>
+              </attributeSecurity-bean>
+            </attributeSecurity>
+          </dataFieldSecurity-bean>
+        </componentSecurity>
       </inputField-bean>
+
       <inputField-bean parent="GenericTextField" propertyName="mField2">
-        <spring:property name="componentSecurity.attributeSecurity">
-          <attributeSecurity-bean parent="AttributeSecurity" partialMask="true">
-            <partialMaskFormatter>
-              <maskFormatteSubString-bean maskLength="5" parent="MaskFormatterSubString"/>
-            </partialMaskFormatter>
-          </attributeSecurity-bean>
-        </spring:property>
+        <componentSecurity>
+          <dataFieldSecurity-bean>
+            <attributeSecurity>
+              <attributeSecurity-bean parent="AttributeSecurity" partialMask="true">
+                <partialMaskFormatter>
+                  <maskFormatteSubString-bean maskLength="5" parent="MaskFormatterSubString"/>
+                </partialMaskFormatter>
+              </attributeSecurity-bean>
+            </attributeSecurity>
+          </dataFieldSecurity-bean>
+        </componentSecurity>
       </inputField-bean>
     </items>
   </verticalBoxSection-bean>

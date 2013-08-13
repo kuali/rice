@@ -214,7 +214,11 @@ public class ITUtil {
         }
 
         if (contents.contains("HTTP Status 404")) {
-            failable.fail("\nHTTP Status 404 " + linkLocator + " " + message + " " + "\ncontents:" + contents);
+            failable.fail("\nHTTP Status 404 " + linkLocator + " " + message + " " + "\ncontents: " + contents);
+        }
+
+        if (contents.contains("HTTP Status 500")) {
+            failable.fail("\nHTTP Status 500 " + linkLocator + " " + message + " " + "\nstacktrace: " + extract500Exception(contents));
         }
 
         if (contents.contains("Java backtrace for programmers:")) { // freemarker exception
@@ -418,6 +422,11 @@ public class ITUtil {
         }
 
         return baseUrl;
+    }
+
+    private static String extract500Exception(String contents) {
+        return contents.substring(contents.indexOf("<b>exception</b> </p><pre>") +26,
+                                  contents.indexOf("</pre><p></p><p><b>note</b>"));
     }
 
     private static void processFreemarkerException(String contents, String linkLocator, Failable failable, String message) {

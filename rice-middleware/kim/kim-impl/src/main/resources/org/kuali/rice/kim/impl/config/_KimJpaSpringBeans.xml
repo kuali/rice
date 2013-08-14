@@ -37,7 +37,6 @@
 	</bean>
 
 	<util:list id="jpaPackagesToScan">
-	    <value>org.kuali.rice.krad.data.jpa.converters</value>
 	    <value>org.kuali.rice.kim.impl.common.attribute</value>
 	    <value>org.kuali.rice.kim.impl.membership</value>
 	    <value>org.kuali.rice.kim.impl.common.active</value>
@@ -50,16 +49,6 @@
 
 	<util:list id="additionalMetadataProviders" />
 	<util:list id="springMetadataFileLocations" />
-
-	<bean
-		id="providerRegistry"
-		class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
-		p:serviceName="kd-providerRegistry" />
-
-	<bean
-		id="dataObjectService"
-		class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
-		p:serviceName="kd-dataObjectService" />
 
 	<import resource="classpath:org/kuali/rice/krad/config/KRADSpringBeans-jpa-common.xml" />
 

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!--
 
     Copyright 2005-2013 The Kuali Foundation
@@ -29,24 +28,14 @@
                            http://www.springframework.org/schema/context
                            http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
-	<alias
-		alias="kradApplicationDataSource"
-		name="riceDataSource" />
-	<bean
-		id="jpaPersistenceUnitName"
-		class="java.lang.String">
-		<constructor-arg value="krad-sample-app" />
-	</bean>
+	<!--  This file is intended to have beans commonly used by all modules which use the common KRAD services.
+	The beans in this file should be imports from the GRL. -->
 
-	<util:list id="jpaPackagesToScan">
-		<value>org.kuali.rice.krad.demo.travel.dataobject</value>
-		<value>org.kuali.rice.krad.demo.travel.authorization</value>
-	</util:list>
-	
-	<util:list id="managedClassNames" />
-	<util:list id="additionalMetadataProviders" />
-	<util:list id="springMetadataFileLocations" />
+	<bean id="grlBeanImporter" abstract="true" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean" p:singleton="true" p:mustExist="true" />
 
-	<import resource="classpath:org/kuali/rice/krad/config/KRADSpringBeans-jpa-common.xml" />
+	<bean id="configurationService" p:serviceName="kualiConfigurationService" parent="grlBeanImporter" />
+	<bean id="rice.ksb.serviceBus" p:serviceName="rice.ksb.serviceBus" parent="grlBeanImporter" />
+	<bean id="providerRegistry" p:serviceName="kd-providerRegistry" parent="grlBeanImporter" />
+	<bean id="dataObjectService" p:serviceName="kd-dataObjectService" parent="grlBeanImporter" />
 
 </beans>

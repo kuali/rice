@@ -27,74 +27,24 @@
                            http://www.springframework.org/schema/context
                            http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
-  <bean id="providerRegistry"
-        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
-        p:serviceName="kd-providerRegistry"/>
+	<alias
+		alias="kradApplicationDataSource"
+		name="locationDataSource" />
+	<bean
+		id="jpaPersistenceUnitName"
+		class="java.lang.String">
+		<constructor-arg value="location" />
+	</bean>
 
-  <bean id="dataObjectService"
-        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
-        p:serviceName="kd-dataObjectService"/>
+	<util:list id="jpaPackagesToScan">
+    	<value>org.kuali.rice.location.impl</value>
+	</util:list>
 
-  <!-- JPA Configuration -->
+	<util:list id="managedClassNames" />
 
-  <!-- Enables Load-Time Weaving -->
-  <context:load-time-weaver/>
+	<util:list id="additionalMetadataProviders" />
+	<util:list id="springMetadataFileLocations" />
 
-  <util:list id="jpaPackagesToScan">
-    <!-- add packages here -->
-    <value>org.kuali.rice.krad.data.jpa.converters</value>
-    <!-- add packages here -->
-     <value>org.kuali.rice.location.impl</value>
-  </util:list>
-
-
-  <bean id="locationEntityManagerFactory"
-        class="org.kuali.rice.krad.data.jpa.eclipselink.KradEclipseLinkEntityManagerFactoryBean"
-        p:jtaDataSource-ref="locationDataSource"
-        p:persistenceUnitName="kim"
-        p:packagesToScan-ref="jpaPackagesToScan"/>
-
-  <bean id="locationSharedEntityManager"
-        class="org.springframework.orm.jpa.support.SharedEntityManagerBean"
-        p:entityManagerFactory-ref="locationEntityManagerFactory"/>
-
-  <!-- Persistence Provider -->
-
-  <bean id="locationJpaPersistenceProvider"
-        class="org.kuali.rice.krad.data.jpa.JpaPersistenceProvider"
-        p:providerRegistry-ref="providerRegistry"
-        p:dataObjectService-ref="dataObjectService"
-        p:sharedEntityManager-ref="locationSharedEntityManager"/>
-
-  <!-- Metadata Providers -->
-
-  <bean id="locationSpringMetadataFileLocations-parentBean"
-        class="org.springframework.beans.factory.config.ListFactoryBean"
-        p:sourceList="classpath:org/kuali/rice/krad/data/provider/spring/krad-metadata-parent-beans.xml"/>
-
-  <bean id="locationSpringMetadataFileLocations" parent="locationSpringMetadataFileLocations-parentBean"/>
-
-  <bean id="locationMetadataProviderSpring"
-        class="org.kuali.rice.krad.data.provider.spring.SpringMetadataProviderImpl"
-        p:resourceLocations-ref="locationSpringMetadataFileLocations" />
-
-  <bean id="locationMetadataProviderJpa"
-        class="org.kuali.rice.krad.data.jpa.eclipselink.EclipseLinkJpaMetadataProviderImpl"
-        p:entityManager-ref="locationSharedEntityManager" />
-
-  <bean id="locationMetadataProviderAnnotation"
-        class="org.kuali.rice.krad.data.provider.annotation.impl.AnnotationMetadataProviderImpl"
-        p:jpaMetadataProvider-ref="locationMetadataProviderJpa" />
-
-  <bean id="locationMetadataProvider"
-        class="org.kuali.rice.krad.data.provider.impl.CompositeMetadataProviderImpl">
-    <property name="providers">
-      <list>
-        <ref bean="locationMetadataProviderJpa" />
-        <ref bean="locationMetadataProviderAnnotation" />
-        <ref bean="locationMetadataProviderSpring" />
-      </list>
-    </property>
-  </bean>
+	<import resource="classpath:org/kuali/rice/krad/config/KRADSpringBeans-jpa-common.xml" />
 
 </beans>

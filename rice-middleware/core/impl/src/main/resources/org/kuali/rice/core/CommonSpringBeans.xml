@@ -29,17 +29,6 @@
   ${monitoring.spring.service}
   -->
 
-  <!-- JHK : No, this should not be here - we need a "KradCommonSpringBeans.xml file which we auto-include" -->
-  <util:list id="kradJpaPackagesToScan">
-    <value>org.kuali.rice.krad.data</value>
-    <value>org.kuali.rice.krad.bo</value>
-    <value>org.kuali.rice.krad.document</value>
-    <value>org.kuali.rice.krad.maintenance</value>
-    <value>org.kuali.rice.krad.messages</value>
-    <value>org.kuali.rice.kns.lookup</value>
-  </util:list>
-
-
   <bean id="rice.core.config.propertyPlaceholderConfigurer"
         class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
         p:properties="#{T(org.kuali.rice.core.api.config.property.ConfigContext).getCurrentContextConfig().getProperties()}"/>

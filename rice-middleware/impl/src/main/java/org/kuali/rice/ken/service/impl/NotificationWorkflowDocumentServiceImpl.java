@@ -33,16 +33,18 @@ import java.util.List;
 /**
  * This class is responsible for interacting with KEW - this is the default implementation that
  * leverages the KEW client API.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationWorkflowDocumentServiceImpl implements NotificationWorkflowDocumentService {
-    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger
-            .getLogger(NotificationWorkflowDocumentServiceImpl.class);
+    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(
+            NotificationWorkflowDocumentServiceImpl.class);
 
     private NotificationMessageContentService messageContentService;
 
     /**
      * Constructs a NotificationWorkflowDocumentServiceImpl instance.
+     *
      * @param messageContentService
      */
     public NotificationWorkflowDocumentServiceImpl(NotificationMessageContentService messageContentService) {
@@ -52,18 +54,23 @@ public class NotificationWorkflowDocumentServiceImpl implements NotificationWork
     /**
      * Implements by instantiating a NotificationWorkflowDocument, which in turn interacts with
      * Workflow to set it up with an initiator of the passed in user id.
+     *
      * @see org.kuali.rice.ken.service.NotificationWorkflowDocumentService#createAndAdHocRouteNotificationWorkflowDocument(org.kuali.rice.ken.bo.NotificationMessageDelivery,
      *      java.lang.String, java.lang.String, java.lang.String)
      */
     public String createAndAdHocRouteNotificationWorkflowDocument(NotificationMessageDelivery messageDelivery,
-            String initiatorUserId,
-            String recipientUserId, String annotation) {
+            String initiatorUserId, String recipientUserId, String annotation) {
         // obtain a workflow user object first
         //WorkflowIdDTO initiator = new WorkflowIdDTO(initiatorUserId);
 
         // now construct the workflow document, which will interact with workflow
-        WorkflowDocument document = NotificationWorkflowDocument.createNotificationDocument(initiatorUserId);
-
+        WorkflowDocument document;
+        if (StringUtils.isNotBlank(messageDelivery.getNotification().getDocTypeName())) {
+            document = NotificationWorkflowDocument.createNotificationDocument(initiatorUserId,
+                    messageDelivery.getNotification().getDocTypeName());
+        } else {
+            document = NotificationWorkflowDocument.createNotificationDocument(initiatorUserId);
+        }
         // this is our loose foreign key to our message delivery record in notification
         document.setApplicationDocumentId(messageDelivery.getId().toString());
         //document.setAppDocId(messageDelivery.getId().toString());
@@ -75,8 +82,10 @@ public class NotificationWorkflowDocumentServiceImpl implements NotificationWork
         if (!StringUtils.isBlank(messageDelivery.getNotification().getTitle())) {
             document.setTitle(messageDelivery.getNotification().getTitle());
         } else {
-            LOG.error("Encountered notification with no title set: Message Delivery #" + messageDelivery.getId()
-                    + ", Notification #" + messageDelivery.getNotification().getId());
+            LOG.error("Encountered notification with no title set: Message Delivery #"
+                    + messageDelivery.getId()
+                    + ", Notification #"
+                    + messageDelivery.getNotification().getId());
         }
 
         // now set up the ad hoc route
@@ -95,10 +104,10 @@ public class NotificationWorkflowDocumentServiceImpl implements NotificationWork
         // param 5 - this is the "force action" requests - if set to true, this will be delivered to the recipients list regardless of
         //           whether the recipient has already taken action on this request; in our case, this doesn't really apply at this point in time,
         //           so we'll set to true just to be safe
-        
+
         // recipientUserId will always be a principal ID due to code changes in NotificationMessageDeliveryResolverServiceImpl.buildCompleteRecipientList()
         Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal(recipientUserId);
-        
+
         document.adHocToPrincipal(ActionRequestType.fromCode(actionRequested), annotation, principal.getPrincipalId(),
                 messageDelivery.getNotification().getProducer().getName(), true);
 
@@ -111,6 +120,7 @@ public class NotificationWorkflowDocumentServiceImpl implements NotificationWork
     /**
      * This service method is implemented by constructing a NotificationWorkflowDocument using the
      * pre-existing document Id that is passed in.
+     *
      * @see org.kuali.rice.ken.service.NotificationWorkflowDocumentService#findNotificationWorkflowDocumentByDocumentId(java.lang.String,
      *      java.lang.String)
      */
@@ -146,11 +156,12 @@ public class NotificationWorkflowDocumentServiceImpl implements NotificationWork
         }
     }
 
-    /** 
+    /**
      * @see org.kuali.rice.ken.service.NotificationWorkflowDocumentService#terminateWorkflowDocument(org.kuali.rice.kew.api.WorkflowDocument)
      */
     public void terminateWorkflowDocument(WorkflowDocument document) {
-        document.superUserCancel("terminating document: documentId=" + document.getDocumentId() + ", appDocId="
-                + document.getApplicationDocumentId());
+        document.superUserCancel(
+                "terminating document: documentId=" + document.getDocumentId() + ", appDocId=" + document
+                        .getApplicationDocumentId());
     }
 }

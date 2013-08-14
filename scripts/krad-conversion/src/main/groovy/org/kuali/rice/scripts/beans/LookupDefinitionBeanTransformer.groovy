@@ -61,7 +61,7 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
      * @param beanNode
      */
     def transformLookupFieldsProperty(NodeBuilder builder, Node beanNode) {
-        transformPropertyBeanList(builder, beanNode, ["lookupFields": "criteriaFields"], attributeNameAttrCondition, lookupCriteriaFieldBeanTransform);
+        transformPropertyBeanList(builder, beanNode, ["lookupFields": "criteriaFields"], gatherAttributeNameAttribute, lookupCriteriaFieldBeanTransform);
     }
 
     /**
@@ -71,7 +71,7 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
      * @param beanNode
      */
     def transformResultFieldsProperty(NodeBuilder builder, Node beanNode) {
-        transformPropertyBeanList(builder, beanNode, ["resultFields": "resultFields"], attributeNameAttrCondition, dataFieldBeanTransform);
+        transformPropertyBeanList(builder, beanNode, ["resultFields": "resultFields"], gatherAttributeNameAttribute, dataFieldBeanTransform);
     }
 
 
@@ -106,7 +106,7 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
         def defaultSortPropertyNode = node.property.find { it.@name == "defaultSort" };
         if (defaultSortPropertyNode) {
             defaultSortPropertyNode.bean.each { sortDefinitionBean ->
-                def sortAscendingPropertyNode = sortDefinitionBean.find {it.@name == "sortAscending"};
+                def sortAscendingPropertyNode = sortDefinitionBean.find { it.@name == "sortAscending" };
                 if (sortAscendingPropertyNode != null) {
                     builder.property(name: "defaultSortAscending", value: sortAscendingPropertyNode.@value);
                 }
@@ -131,6 +131,5 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
             }
         }
     }
-
 
 }

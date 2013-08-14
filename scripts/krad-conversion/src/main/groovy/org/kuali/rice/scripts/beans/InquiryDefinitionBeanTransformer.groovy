@@ -109,7 +109,7 @@ class InquiryDefinitionBeanTransformer extends SpringBeanTransformer {
      * @param beanNode
      */
     def transformInquiryFieldsProperty(NodeBuilder builder, Node beanNode) {
-        transformPropertyBeanList(builder, beanNode, ["inquiryFields": "items"], attributeNameAttrCondition, inputFieldBeanTransform);
+        transformPropertyBeanList(builder, beanNode, ["inquiryFields": "items"], gatherAttributeNameAttribute, inputFieldBeanTransform);
     }
 
 }

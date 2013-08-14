@@ -15,12 +15,14 @@
  */
 package org.kuali.rice.scripts.beans
 
+import groovy.util.logging.Log
+
 /**
  * This class transforms maintenance document entry beans and its properties/children beans into their uif equivalent
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
+@Log
 class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
 
     /**
@@ -112,7 +114,7 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
     }
 
     def transformMaintainableItemsProperty(NodeBuilder builder, Node beanNode) {
-        transformPropertyBeanList(builder, beanNode, ["maintainableItems": "items"], nameAttrCondition, inputFieldBeanTransform);
+        transformPropertyBeanList(builder, beanNode, ["maintainableItems": "items"], gatherNameAttribute, inputFieldBeanTransform);
     }
 
     def transformMaintainableFieldsProperty(NodeBuilder builder, Node beanNode) {
@@ -123,13 +125,7 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
                 list {
                     if ("MaintainableCollectionDefinition".equals(maintItemBean.@parent)) {
                         def maintFields = maintItemBean.property.find { "maintainableFields".equals(it.@name) };
-                        maintFields.list.bean.each { fieldBean ->
-                            fieldBean.attributes().each { key, value ->
-                                if (nameAttrCondition(key, value)) {
-                                    attributeFieldBeanTransform(builder, value);
-                                }
-                            }
-                        }
+                        maintFields.list.bean.each { fieldBean -> attributeFieldBeanTransform(builder, gatherNameAttribute(fieldBean)); }
                     }
                 }
             }
@@ -143,7 +139,7 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
      * @param beanNode
      */
     def transformSummaryFieldsProperty(NodeBuilder builder, Node beanNode) {
-        transformPropertyBeanList(builder, beanNode, ["summaryFields": "layoutManager.summaryFields"], attributeNameAttrCondition, valueFieldTransform);
+        transformPropertyBeanList(builder, beanNode, ["summaryFields": "layoutManager.summaryFields"], gatherAttributeNameAttribute, valueFieldTransform);
     }
 
 }

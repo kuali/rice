@@ -204,11 +204,11 @@ class SpringBeanTransformer {
      * @param beanTransform
      * @return
      */
-    def transformPropertyValueList(NodeBuilder builder, Node beanNode, Map<String, String> replaceProperties, Closure beanTransform) {
+    def transformPropertyValueList(NodeBuilder builder, Node beanNode, Map<String, String> replaceProperties, Closure nodeTransform) {
         beanNode.property.findAll { replaceProperties.keySet().contains(it.@name) }.each { propertyNode ->
             builder.property(name: replaceProperties.get(propertyNode.@name)) {
                 list {
-                    propertyNode.list.value.each { value -> builder.createNode("value", [:], value) }
+                    propertyNode.list.value.each { value -> nodeTransform(builder, ["value": value]) }
                 }
             }
         }
@@ -250,7 +250,10 @@ class SpringBeanTransformer {
         genericBeanTransform(builderDelegate, attributes);
     }
 
-    def valueFieldTransform = { NodeBuilder builderDelegate, Map attributes -> builderDelegate.createNode("value", [:], attributes["value"]); }
+    def valueFieldTransform = { NodeBuilder builderDelegate, Map attributes ->
+        def value = attributes["value"];
+        builderDelegate.createNode("value", [:], value);
+    }
 
     // Property utilities
 

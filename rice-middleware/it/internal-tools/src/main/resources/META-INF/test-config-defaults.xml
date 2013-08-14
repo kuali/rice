@@ -71,7 +71,7 @@
   <param name="krms.mode">LOCAL</param>
 
   <!-- enable kim history for testing -->
-  <param name="kim.enable.history">true</param>
+  <param name="kim.enable.history">false</param>
 
   <param name="wsdl.test.previous.version">2.1.2</param>
   <param name="wsdl.test.previous.url">http://maven.kuali.org.s3.amazonaws.com/release/org/kuali/rice/</param>

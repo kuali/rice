@@ -55,7 +55,7 @@ public class KNSServiceLocator {
     public static final String BUSINESS_OBJECT_SERVICE = "businessObjectService";
     public static final String DATA_OBJECT_METADATA_SERVICE = "dataObjectMetaDataService";
     public static final String KEY_VALUES_SERVICE = "keyValuesService";
-    public static final String SESSION_DOCUMENT_SERVICE = "sessionDocumentService";
+    public static final String SESSION_DOCUMENT_SERVICE = "knsSessionDocumentService";
     public static final String OJB_COLLECTION_HELPER = "ojbCollectionHelper";
 
     public static <T extends Object> T getService(String serviceName) {

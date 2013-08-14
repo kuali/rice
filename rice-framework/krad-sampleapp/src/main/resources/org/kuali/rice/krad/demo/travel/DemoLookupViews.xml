@@ -74,6 +74,7 @@
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subAccount"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" p:ranged="true"
+              p:refreshWhenChangedPropertyNames="lookupCriteria[number]"
               p:required="@{#dp.lookupCriteria['number'] == 'a1'}"
               p:readOnly="@{#dp.lookupCriteria['number'] == 'a2'}"
               p:render="@{#dp.lookupCriteria['number'] != 'a3'}"/>

@@ -52,9 +52,12 @@ class DictionaryConverter {
     def pNamespaceSchema
     def xsiNamespaceSchema
 
+    // spring bean maps (id: dataObject, id, parent) preloaded before conversion
     Map<String, String> definitionDataObjects = [:];
     Map<String, String> parentBeans = [:];
 
+
+    // contains 'transform*Bean' and 'transform*Property' methods
     @Delegate LookupDefinitionBeanTransformer lookupDefinitionBeanTransformer = new LookupDefinitionBeanTransformer();
     @Delegate InquiryDefinitionBeanTransformer inquiryDefinitionBeanTransformer = new InquiryDefinitionBeanTransformer();
     @Delegate MaintenanceDocumentEntryBeanTransformer maintenanceDocumentEntryBeanTransformer = new MaintenanceDocumentEntryBeanTransformer();
@@ -108,17 +111,25 @@ class DictionaryConverter {
      * Used to gather information related to parent/child and data object relationships
      * that may not exist in current file being processed
      *
-     * @param files
+     * @param files - spring xml files to be processed
      */
     private void preloadSpringData(List<File> files) {
         files.each { File springFile ->
             Node rootNode = parseSpringXml(springFile.text);
             preloadParentBeans(rootNode);
             preloadDefinitionDataObjects(rootNode);
+            lookupDefinitionBeanTransformer.definitionDataObjects = definitionDataObjects;
+            inquiryDefinitionBeanTransformer.definitionDataObjects = definitionDataObjects;
+            maintenanceDocumentEntryBeanTransformer.definitionDataObjects = definitionDataObjects;
         }
     }
 
-    private void preloadParentBeans(def rootNode) {
+    /**
+     *
+     *
+     * @param rootNode
+     */
+    protected void preloadParentBeans(def rootNode) {
         rootNode.bean.each { parentBeans.put(it.@id, it.@parent) }
     }
 

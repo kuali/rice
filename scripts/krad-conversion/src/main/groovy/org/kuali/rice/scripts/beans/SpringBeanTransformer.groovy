@@ -69,7 +69,7 @@ class SpringBeanTransformer {
     public Object getPropertyValue(Object bean, String propertyName) {
         def propertyValue = null;
 
-        def property = bean.property.find {it.@name == propertyName};
+        def property = bean.property.find { it.@name == propertyName };
         if (property != null) {
             propertyValue = property.@value;
         }
@@ -153,23 +153,46 @@ class SpringBeanTransformer {
      * @param builder
      * @param beanNode
      */
-    def transformPropertyBeanList(NodeBuilder builder, Node beanNode, Map<String, String> replaceProperties, Closure attrCondition, Closure beanTransform) {
-        beanNode.property.findAll { replaceProperties.keySet().contains(it.@name) }.each { propertyNode ->
-            builder.property(name: replaceProperties.get(propertyNode.@name)) {
+    def transformPropertyBeanList(NodeBuilder builder, Node parentBean, Map<String, String> properties,
+            Closure gatherAttributes, Closure transformNode) {
+        def relevantProperties = parentBean.property.findAll { properties.keySet().contains(it.@name) };
+        relevantProperties.each { propertyNode ->
+            builder.property(name: properties.get(propertyNode.@name)) {
                 list {
-                    propertyNode.list.bean.each { innerBean ->
-                        def attributeValue;
-                        innerBean.attributes().each { key, value ->
-                            if (attrCondition(key, value)) {
-                                attributeValue = value
-                            }
-                        }
-
-                        beanTransform(builder, attributeValue)
-                    }
+                    propertyNode.list.bean.each { innerBean -> transformNode(builder, gatherAttributes(innerBean)); }
                 }
             }
         }
+    }
+
+    def genericGatherAttributes = { Node beanNode, Map searchAttrs ->
+        def attributes = [:];
+        if (beanNode.@id) {
+            attributes.put("id", beanNode.@id);
+        }
+
+        // locate attributes and special cases (i.e. '*name')
+        beanNode.attributes().each { key, value ->
+            if (searchAttrs.any { matchesAttr(it.key, key.toString()) }) {
+                attributes.put(searchAttrs.find { matchesAttr(it.key, key.toString()) }.value, value);
+            }
+        }
+
+        return attributes;
+    }
+
+    /**
+     * Provides a case insensitive check if a pattern matches. Search Patterns may be plain text
+     * or contain a '*' prefix for wildcard prefix.
+     *
+     * */
+    def matchesAttr(String searchPattern, String value) {
+        if (searchPattern.startsWith("*")) {
+            return value.toLowerCase().endsWith(searchPattern.toLowerCase().replaceFirst(/^\*/, ""));
+        } else {
+            return searchPattern.equalsIgnoreCase(value);
+        }
+
     }
 
     /**
@@ -181,13 +204,11 @@ class SpringBeanTransformer {
      * @param beanTransform
      * @return
      */
-    def transformPropertyValueList (NodeBuilder builder, Node beanNode, Map<String, String> replaceProperties, Closure beanTransform) {
+    def transformPropertyValueList(NodeBuilder builder, Node beanNode, Map<String, String> replaceProperties, Closure beanTransform) {
         beanNode.property.findAll { replaceProperties.keySet().contains(it.@name) }.each { propertyNode ->
             builder.property(name: replaceProperties.get(propertyNode.@name)) {
                 list {
-                    propertyNode.list.value.each { value ->
-                        beanTransform(builder, value.text())
-                    }
+                    propertyNode.list.value.each { value -> beanTransform(builder, value.text()) }
                 }
             }
         }
@@ -195,31 +216,44 @@ class SpringBeanTransformer {
 
     // helper closures - attribute conditional checks
 
-    def attributeNameAttrCondition = {
-        key, value -> key.toString().endsWith("attributeName") }
+    def gatherAttributeNameAttribute = { Node beanNode -> return genericGatherAttributes(beanNode, ["*attributeName": "p:propertyName"]); }
 
-    def nameAttrCondition = {
-        key, value -> key.toString().endsWith("name") }
+    def gatherNameAttribute = { Node beanNode -> return genericGatherAttributes(beanNode, ["*name": "p:propertyName"]); }
 
     // helper closures - bean transforms
+    def genericNodeTransform = { NodeBuilder builderDelegate, String nodeType, Map<String, String> attributes, String value -> builderDelegate.createNode(nodeType, attributes, value); }
 
-    def genericBeanTransform = {
-        builderDelegate, beanParent, attrValue -> builderDelegate.bean('xmlns:p': pNamespaceSchema, parent: beanParent, 'p:propertyName': attrValue) }
+    def genericBeanTransform = { NodeBuilder builderDelegate, Map<String, String> attributes ->
+        if (!attributes['xmlns:p']) {
+            attributes.put('xmlns:p', pNamespaceSchema);
+        }
+        genericNodeTransform(builderDelegate, 'bean', attributes, "");
+    }
 
-    def inputFieldBeanTransform = {
-        builderDelegate, attrValue -> genericBeanTransform(builderDelegate, 'Uif-InputField', attrValue) }
+    def inputFieldBeanTransform = { NodeBuilder builderDelegate, Map attributes ->
+        attributes.put("parent", "Uif-InputField");
+        genericBeanTransform(builderDelegate, attributes);
+    }
 
-    def attributeFieldBeanTransform = {
-        builderDelegate, attrValue -> genericBeanTransform(builderDelegate, 'AttributeField', attrValue) }
+    def attributeFieldBeanTransform = { NodeBuilder builderDelegate, Map attributes ->
+        attributes.put("parent", "Uif-InputField");
+        genericBeanTransform(builderDelegate, attributes);
+    }
 
-    def dataFieldBeanTransform = {
-        builderDelegate, attrValue -> genericBeanTransform(builderDelegate, 'Uif-DataField', attrValue) }
+    def dataFieldBeanTransform = { NodeBuilder builderDelegate, Map attributes ->
+        attributes.put("parent", "Uif-DataField");
+        genericBeanTransform(builderDelegate, attributes);
+    }
 
-    def lookupCriteriaFieldBeanTransform = {
-        builderDelegate, attrValue -> genericBeanTransform(builderDelegate, 'Uif-LookupCriteriaInputField', attrValue) }
+    def lookupCriteriaFieldBeanTransform = { NodeBuilder builderDelegate, Map attributes ->
+        attributes.put("parent", "Uif-LookupCriteriaInputField");
+        genericBeanTransform(builderDelegate, attributes);
+    }
 
-    def valueFieldTransform = {
-        builderDelegate, attrValue -> builderDelegate.value(attrValue) }
+    def valueFieldTransform = { NodeBuilder builderDelegate, Map attributes ->
+        attributes.put("parent", "Uif-LookupCriteriaInputField");
+        builderDelegate.createNode("value", [:], attributes["value"]);
+    }
 
     // Property utilities
 

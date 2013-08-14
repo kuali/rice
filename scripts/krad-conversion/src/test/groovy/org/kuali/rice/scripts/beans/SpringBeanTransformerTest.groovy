@@ -38,7 +38,6 @@ class SpringBeanTransformerTest {
     void setUp() {
         def configFilePath = testResourceDir + "test.config.properties";
         config = new ConfigSlurper().parse(new File(configFilePath).toURL());
-        log.info "loading spring transformer"
         springBeanTransformer = new SpringBeanTransformer();
         springBeanTransformer.init(config);
     }
@@ -47,7 +46,6 @@ class SpringBeanTransformerTest {
 
     @Test
     void testCopyProperties() {
-        log.info "processing"
         def rootBean = new XmlParser().parseText("<beans><bean parent='SampleAppBean'>" + "<property name='title' value='test' /><property name='title2' value='value2' />" + "<property name='title3'><list><value>1</value><value>2</value></list></property>" + "</bean></beans>");
         def copyNode = new XmlParser().parseText("<beans><bean parent='SampleAppBean'></bean></beans>");
         def beanNode = rootBean.bean[0];
@@ -114,6 +112,27 @@ class SpringBeanTransformerTest {
 
     }
 
+    @Test
+    void testGenericNodeTransform() {
+        def rootBean = getSimpleSpringXmlNode();
+        def searchAttrs = ["*name": "p:propertyName"];
+        def attributes = springBeanTransformer.genericGatherAttributes(rootBean.bean[0], searchAttrs);
+        log.info " attributes is " + attributes.size() + " and contains " + attributes.toString();
+        Assert.assertTrue("attribute list should contain id", attributes["id"] != null);
+        Assert.assertTrue("attribute list should contain propertyName", attributes["p:propertyName"] != null);
+
+        rootBean.bean[0].replaceNode {
+            list {
+                springBeanTransformer.genericNodeTransform(delegate, "bean", ["id": "helloworld"], "");
+                springBeanTransformer.genericNodeTransform(delegate, "value", [:], "1");
+            }
+
+        }
+        Assert.assertTrue("bean count should be 1", rootBean.list.bean.size() == 1);
+        Assert.assertTrue("value count should be 1", rootBean.list.value.size() == 1);
+
+    }
+
     /**
      * Removes any children beans that exists from the xml file
      *
@@ -149,6 +168,11 @@ class SpringBeanTransformerTest {
         def writer = new StringWriter()
         XmlUtil.serialize(rootNode, writer)
         return writer.toString()
+    }
+
+    public static Node getSimpleSpringXmlNode() {
+        def rootBean = new XmlParser().parseText("<beans>" + "<bean id='SimpleBean' parent='SpringBean' attributeName='test'>" + "<property name='simpleProperty' value='test' />" + "<property name='propertyWithRef' value='value2' />" + "<property name='propertyList'>" + "<list><value>1</value><value>2</value></list>" + "</property>" + "<property name='propertyListWithBeans'>" + "<list><bean id='test' parent='FieldDefinition' attributeName='builder'/></list>" + "</property>" + "</bean>" + "</beans>");
+        return rootBean;
     }
 
 }

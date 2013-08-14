@@ -46,7 +46,7 @@ class DictionaryConverterTest {
 
     @Test
     void testCopyProperties() {
-        def rootBean = new XmlParser().parseText("<beans><bean parent='SampleAppBean'>" + "<property name='title' value='test' /><property name='title2' value='value2' />" + "</bean></beans>");
+        def rootBean = new XmlParser().parseText("<beans><bean parent='SampleAppBean'>" + "<property name='title' value='test' /><property name='title2' value='value2' />" + "<property name='title3'><list><value>1</value><value>2</value></list></property>" + "</bean></beans>");
         def copyNode = new XmlParser().parseText("<beans><bean parent='SampleAppBean'></bean></beans>");
         def beanNode = rootBean.bean[0];
 
@@ -351,8 +351,8 @@ class DictionaryConverterTest {
         }
 
         def resultsFieldProperty = beanNode.property.find { "items".equals(it.@name) };
-        def attrFieldSize = resultsFieldProperty.list.bean.findAll { "AttributeField".equals(it.@parent) }.size();
-        Assert.assertEquals("number of converted attribute fields", 2, attrFieldSize);
+        def attrFieldSize = resultsFieldProperty.list.bean.findAll { "Uif-InputField".equals(it.@parent) }.size();
+        Assert.assertEquals("number of converted input fields", 2, attrFieldSize);
     }
 
     @Test

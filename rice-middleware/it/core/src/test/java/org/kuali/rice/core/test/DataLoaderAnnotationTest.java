@@ -25,9 +25,11 @@ import org.kuali.rice.test.data.UnitTestData;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+// value 5 is to communicate to later tests that this test has proceeded them in a dirty db.
 @PerSuiteUnitTestData({
         @UnitTestData("insert into " + AnnotationTestParent.TEST_TABLE_NAME + " (COL) values ('3')"),
-        @UnitTestData(filename = "classpath:org/kuali/rice/test/DataLoaderAnnotationTestData.sql")
+        @UnitTestData(filename = "classpath:org/kuali/rice/test/DataLoaderAnnotationTestData.sql"),
+        @UnitTestData("insert into " + AnnotationTestParent.TEST_TABLE_NAME + " (COL) values ('5')")
 })
 public class DataLoaderAnnotationTest extends AnnotationTestParent {
     

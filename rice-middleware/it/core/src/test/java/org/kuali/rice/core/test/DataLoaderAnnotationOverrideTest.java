@@ -50,19 +50,31 @@ public class DataLoaderAnnotationOverrideTest extends AnnotationTestParent {
     }
     
     @Test public void testParentAndSubClassImplementation() throws Exception {
-        // verify that the sql only ran once...
+        //verify that the PerSuiteUnitTestData is correct
+        int rowsWith1 = 0;
+        int rowsWith2 = 0;
+        int rowsWith3 = 1;
+        int rowsWith4 = 1;
+
+        if (countTableResults("5") > 0 ) {
+            // Previous DataLoaderAnnotationTest left db dirty
+            rowsWith1 = 1;
+            rowsWith2 = 1;
+            rowsWith3 = 2;
+            rowsWith4 = 2;
+        }
 
         // check sql statement from this class
-        verifyCount("3", 1, "https://jira.kuali.org/browse/KULRICE-9283");
-        
+        verifyCount("3", rowsWith3, "https://jira.kuali.org/browse/KULRICE-9283");
+
         // check sql file from this class
-        verifyCount("4", 1);
-        
+        verifyCount("4", rowsWith4);
+
         // check sql statement from parent class
-        verifyNonExistent("1");
-        
+        verifyCount("1", rowsWith1);
+
         // check sql file from parent class
-        verifyNonExistent("2");
+        verifyCount("2", rowsWith2);
     }
-    
+
 }

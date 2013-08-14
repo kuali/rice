@@ -417,8 +417,8 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
         }
 
         // security
-        if ((attributeDefinition.getAttributeSecurity() != null) && (getDataFieldSecurity().getAttributeSecurity()
-                == null)) {
+        if ((attributeDefinition.getAttributeSecurity() != null) && ((getDataFieldSecurity() == null) || (
+                getDataFieldSecurity().getAttributeSecurity() == null))) {
             initializeComponentSecurity();
 
             getDataFieldSecurity().setAttributeSecurity(attributeDefinition.getAttributeSecurity());

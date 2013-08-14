@@ -56,6 +56,7 @@ public class JiraAwareFailureUtil {
 
         jiraMatches.put("after clicking Expand All", "KULRICE-3833 KRAD Sampleapp (Travel) Account Inquiry Collapse all toggles all and Expand all does nothing");
 
+        jiraMatches.put("$Proxy105 cannot be cast to org.kuali.rice.kns.service.SessionDocumentService", "https://jira.kuali.org/browse/KULRICE-10164");
         //jiraMatches.put("", "");
     }
 

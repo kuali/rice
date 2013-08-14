@@ -208,7 +208,7 @@ class SpringBeanTransformer {
         beanNode.property.findAll { replaceProperties.keySet().contains(it.@name) }.each { propertyNode ->
             builder.property(name: replaceProperties.get(propertyNode.@name)) {
                 list {
-                    propertyNode.list.value.each { value -> nodeTransform(builder, ["value": value]) }
+                    propertyNode.list.value.each { valueNode -> nodeTransform(builder, ["value": valueNode.value()]) }
                 }
             }
         }
@@ -252,7 +252,7 @@ class SpringBeanTransformer {
 
     def valueFieldTransform = { NodeBuilder builderDelegate, Map attributes ->
         def value = attributes["value"];
-        builderDelegate.createNode("value", [:], value);
+        builderDelegate.createNode("value", null, value);
     }
 
     // Property utilities

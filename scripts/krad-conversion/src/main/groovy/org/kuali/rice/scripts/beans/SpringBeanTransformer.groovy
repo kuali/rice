@@ -208,7 +208,7 @@ class SpringBeanTransformer {
         beanNode.property.findAll { replaceProperties.keySet().contains(it.@name) }.each { propertyNode ->
             builder.property(name: replaceProperties.get(propertyNode.@name)) {
                 list {
-                    propertyNode.list.value.each { value -> beanTransform(builder, value.text()) }
+                    propertyNode.list.value.each { value -> builder.createNode("value", [:], value) }
                 }
             }
         }
@@ -250,10 +250,7 @@ class SpringBeanTransformer {
         genericBeanTransform(builderDelegate, attributes);
     }
 
-    def valueFieldTransform = { NodeBuilder builderDelegate, Map attributes ->
-        attributes.put("parent", "Uif-LookupCriteriaInputField");
-        builderDelegate.createNode("value", [:], attributes["value"]);
-    }
+    def valueFieldTransform = { NodeBuilder builderDelegate, Map attributes -> builderDelegate.createNode("value", [:], attributes["value"]); }
 
     // Property utilities
 

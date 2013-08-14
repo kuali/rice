@@ -75,6 +75,9 @@
     <maven.failsafe.skip>true</maven.failsafe.skip>
     <maven.failsafe.includes>**/*Test.java</maven.failsafe.includes>
     <maven.failsafe.excludes>NOT_NULL</maven.failsafe.excludes>
+    <maven.jmeter.server>localhost</maven.jmeter.server>
+    <maven.jmeter.port>8080</maven.jmeter.port>
+
     <readme.date.format>MMMM d, yyyy</readme.date.format>
 
     <!-- must provide an explicit pattern - surefire default does not work

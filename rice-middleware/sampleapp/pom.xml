@@ -260,8 +260,13 @@
             <configuration>
               <testResultsTimestamp>false</testResultsTimestamp>
               <testFilesExcluded>
+                <!-- JMeter.csv based puts all results in one log (graph) -->
                 <excludeJmeterTestFile>KRAD.jmx</excludeJmeterTestFile>
               </testFilesExcluded>
+              <propertiesUser>
+                <server>${maven.jmeter.server}</server>
+                <port>${maven.jmeter.port}</port>
+              </propertiesUser>
             </configuration>
           </plugin>
         </plugins>

@@ -75,6 +75,12 @@
     <maven.failsafe.skip>true</maven.failsafe.skip>
     <maven.failsafe.includes>**/*Test.java</maven.failsafe.includes>
     <maven.failsafe.excludes>NOT_NULL</maven.failsafe.excludes>
+    <maven.jmeter.phase>verify</maven.jmeter.phase>
+    <maven.jmeter.goal>jmeter</maven.jmeter.goal>
+    <maven.jmeter.testFilesDirectory>${basedir}/src/test/jmeter</maven.jmeter.testFilesDirectory>
+    <maven.jmeter.jMeterTestFile>**/*.jmx</maven.jmeter.jMeterTestFile>
+    <maven.jmeter.excludeJmeterTestFile>NOT_NULL</maven.jmeter.excludeJmeterTestFile>
+    <maven.jmeter.testResultsTimestamp>false</maven.jmeter.testResultsTimestamp>
     <maven.jmeter.server>localhost</maven.jmeter.server>
     <maven.jmeter.port>8080</maven.jmeter.port>
 

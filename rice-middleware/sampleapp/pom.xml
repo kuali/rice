@@ -239,7 +239,6 @@
         <bootstrap.spring.file>classpath:SampleAppStandaloneBeans.xml</bootstrap.spring.file>
       </properties>
     </profile>
-
     <profile>
       <id>jmeter</id>
       <build>
@@ -251,19 +250,30 @@
             <executions>
               <execution>
                 <id>jmeter-tests</id>
-                <phase>verify</phase>
+                <phase>${maven.jmeter.phase}</phase>
                 <goals>
-                  <goal>jmeter</goal>
+                  <goal>${maven.jmeter.goal}</goal>
                 </goals>
               </execution>
             </executions>
             <configuration>
-              <testResultsTimestamp>false</testResultsTimestamp>
+              <testFilesDirectory>${maven.jmeter.testFilesDirectory}</testFilesDirectory>
+              <testFilesIncluded>
+                <jMeterTestFile>${maven.jmeter.jMeterTestFile}</jMeterTestFile>
+              </testFilesIncluded>
               <testFilesExcluded>
-                <!-- JMeter.csv based puts all results in one log (graph) -->
                 <excludeJmeterTestFile>KRAD.jmx</excludeJmeterTestFile>
               </testFilesExcluded>
+              <testResultsTimestamp>${maven.jmeter.testResultsTimestamp}</testResultsTimestamp>
               <propertiesUser>
+                <!-- server and port must be defined (and used) in the JMeter jmx file as User Defined Variables
+                      ${__P(server,localhost)}
+                      ${__P(port,80)}
+                     See http://jmeter.apache.org/usermanual/component_reference.html#User_Defined_Variables
+                         http://jmeter.apache.org/usermanual/test_plan.html#using_variables
+                         http://jmeter.apache.org/usermanual/functions.html#__P
+                         http://jmeter.apache.org/usermanual/best-practices.html#parameterising_tests
+                -->
                 <server>${maven.jmeter.server}</server>
                 <port>${maven.jmeter.port}</port>
               </propertiesUser>
@@ -272,6 +282,7 @@
         </plugins>
       </build>
     </profile>
+
   </profiles>
 
   <dependencies>

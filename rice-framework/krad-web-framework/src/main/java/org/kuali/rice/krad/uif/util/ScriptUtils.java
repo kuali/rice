@@ -218,7 +218,7 @@ public class ScriptUtils {
         // need to be the base boolean value "false" is true in js - a non
         // empty string
         else if (value.equalsIgnoreCase("false") || value.equalsIgnoreCase("true")) {
-            return originalValue;
+            return originalValue.toLowerCase();
         }
         // if it is a call back function, do not add the quotes
         else if (StringUtils.startsWith(value, "function") && StringUtils.endsWith(value, "}")) {

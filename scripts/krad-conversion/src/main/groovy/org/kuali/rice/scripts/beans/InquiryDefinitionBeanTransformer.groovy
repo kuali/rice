@@ -36,12 +36,20 @@ class InquiryDefinitionBeanTransformer extends SpringBeanTransformer {
         def inquiryParentBeanNode = beanNode
         def titlePropNode = inquiryParentBeanNode.property.find { it.@name == "title" }
         def inquirySectionsPropertyNode = inquiryParentBeanNode.property.find { it.@name == "inquirySections" }
+
+        def originalBeanType = "InquiryDefinition";
+        def transformBeanType = "Uif-InquiryView";
+        def translatedBeanId = getTranslatedBeanId(beanNode.@id, originalBeanType, transformBeanType);
+        def translatedParentId = getTranslatedBeanId(beanNode.@parent, originalBeanType, transformBeanType);
+
         log.finer "transform bean node for inquiry"
         beanNode.replaceNode {
             addComment(delegate, "Inquiry View")
-            bean(id: "$busObjName-InquiryView", parent: "Uif-InquiryView") {
+            bean(id: translatedBeanId, parent: translatedParentId) {
                 renameProperties(delegate, beanNode, ["title": "headerText"])
-                addViewNameProperty(delegate, titlePropNode.@value)
+                if (titlePropNode?.@value) {
+                    addViewNameProperty(delegate, titlePropNode.@value)
+                }
                 property(name: "dataObjectClassName", value: busObjClassQualName)
                 transformInquirySectionsProperty(delegate, beanNode)
             }

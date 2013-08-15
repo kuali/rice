@@ -35,16 +35,23 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
     def transformLookupDefinitionBean(Node beanNode) {
         removeChildrenBeans(beanNode);
         def lookupDefParentBeanNode = beanNode
-        def lookupTitle = lookupDefParentBeanNode.property.find { it.@name == "title" }.@value;
+        def lookupTitle = lookupDefParentBeanNode.property.find { it.@name == "title" }?.@value;
 
         def objClassName = getObjectClassName(lookupDefParentBeanNode);
         def objName = ClassUtils.getShortClassName(objClassName);
+        def originalBeanType = "LookupDefinition";
+        def transformBeanType = "Uif-LookupView";
+        def translatedBeanId = getTranslatedBeanId(beanNode.@id, originalBeanType, transformBeanType);
+        def translatedParentId = getTranslatedBeanId(beanNode.@parent, originalBeanType, transformBeanType);
+
         beanNode.replaceNode {
             addComment(delegate, "Lookup View")
-            bean(id: "$objName-LookupView", parent: "Uif-LookupView") {
+            bean(id: translatedBeanId, parent: translatedParentId) {
                 addViewNameProperty(delegate, lookupTitle)
                 property(name: "headerText", value: lookupTitle)
-                property(name: "dataObjectClassName", value: objClassName)
+                if (objClassName) {
+                    property(name: "dataObjectClassName", value: objClassName)
+                }
                 transformMenubarProperty(delegate, beanNode)
                 transformDefaultSortProperty(delegate, beanNode)
                 transformNumOfColumns(delegate, beanNode)

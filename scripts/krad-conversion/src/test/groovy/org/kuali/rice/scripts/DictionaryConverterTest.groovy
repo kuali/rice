@@ -232,9 +232,12 @@ class DictionaryConverterTest {
     @Test
     public void testIsBeanTransformable() {
         // test lookup definition bean
-        Assert.assertTrue("inquiry definition should be transformable", dictionaryConverter.isBeanTransformable("InquiryDefinition"));
-        Assert.assertTrue("lookup definition should be transformable", dictionaryConverter.isBeanTransformable("LookupDefinition"));
-        Assert.assertTrue("inquiry definition should not be transformable", !dictionaryConverter.isBeanTransformable("LookupDefinition2"));
+        def inquiryDefNode = getSimpleBean(["parent": "InquiryDefinition"], "");
+        def lookupDefNode = getSimpleBean(["parent": "InquiryDefinition"], "");
+        def nonTransformNode = getSimpleBean(["parent": "LookupDefinition2"], "");
+        Assert.assertTrue("inquiry definition should be transformable", dictionaryConverter.isBeanTransformable(inquiryDefNode));
+        Assert.assertTrue("lookup definition should be transformable", dictionaryConverter.isBeanTransformable(lookupDefNode));
+        Assert.assertTrue("inquiry definition should not be transformable", !dictionaryConverter.isBeanTransformable(nonTransformNode));
     }
 
     @Test
@@ -431,6 +434,19 @@ class DictionaryConverterTest {
         def writer = new StringWriter()
         XmlUtil.serialize(rootNode, writer)
         return writer.toString()
+    }
+
+    public static getSimpleBean(Map attributes, String value) {
+        return getSimpleNode("bean", attributes, value);
+    }
+
+    public static getSimpleProperty(Map attributes, String value) {
+        return getSimpleNode("property", attributes, value);
+    }
+
+    public static getSimpleNode(String nodeType, Map attributes, String value) {
+        Node node = new Node(null, nodeType, attributes, value);
+        return node;
     }
 
 }

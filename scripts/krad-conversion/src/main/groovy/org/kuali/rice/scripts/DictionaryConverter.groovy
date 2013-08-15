@@ -121,6 +121,9 @@ class DictionaryConverter {
             lookupDefinitionBeanTransformer.definitionDataObjects = definitionDataObjects;
             inquiryDefinitionBeanTransformer.definitionDataObjects = definitionDataObjects;
             maintenanceDocumentEntryBeanTransformer.definitionDataObjects = definitionDataObjects;
+            lookupDefinitionBeanTransformer.parentBeans = parentBeans;
+            inquiryDefinitionBeanTransformer.parentBeans = parentBeans;
+            maintenanceDocumentEntryBeanTransformer.parentBeans = parentBeans;
         }
     }
 
@@ -183,8 +186,8 @@ class DictionaryConverter {
      */
     protected void transformSpringBeans(Node rootNode) {
         rootNode.bean.each { beanNode ->
-            if (isBeanTransformable(beanNode.@parent)) {
-                delegate.invokeMethod("transform" + getTransformableBeanType(beanNode.@parent).capitalize() + "Bean", [beanNode]);
+            if (isBeanTransformable(beanNode)) {
+                delegate.invokeMethod("transform" + getTransformableBeanType(beanNode).capitalize() + "Bean", [beanNode]);
             }
         }
     }
@@ -196,7 +199,7 @@ class DictionaryConverter {
      * @param parentName
      * @return
      */
-    protected String getTransformableBeanType(String parentName) {
+    protected String getAlternateTransformableBeanType(String parentName) {
         def relevantBeans = ["AttributeDefinition": "BusinessObjectEntry", "AttributeReferenceDummy-genericSystemId": "BusinessObjectEntry"];
         if (relevantBeans.containsKey(parentName)) {
             return relevantBeans.get(parentName);
@@ -204,20 +207,35 @@ class DictionaryConverter {
         return parentName;
     }
 
-
-    /**
-     * Checks if parent has a transform bean method or is mapped to a relevant transform bean method
-     *
-     * @param parentName
-     * @return
-     */
-    protected boolean isBeanTransformable(String parentName) {
-        parentName = getTransformableBeanType(parentName);
-        if (DictionaryConverter.metaClass.methods.find { it.name == "transform" + parentName.capitalize() + "Bean" }) {
+    protected boolean isBeanTransformable(Node beanNode) {
+        def transformType = getTransformableBeanType(beanNode);
+        if (DictionaryConverter.metaClass.methods.find { it.name == "transform" + transformType.capitalize() + "Bean" }) {
             return true;
+        } else {
+            return false;
         }
-        return false;
     }
+
+    protected String getTransformableBeanType(Node beanNode) {
+        def parentName = beanNode.@parent;
+        def transformType = parentName;
+        boolean isTransformable = false;
+        while (parentName != null && !isTransformable) {
+            transformType = getAlternateTransformableBeanType(parentName);
+            if (DictionaryConverter.metaClass.methods.find { it.name == "transform" + transformType.capitalize() + "Bean" }) {
+                isTransformable = true;
+            } else {
+                parentName = parentBeans[parentName];
+            }
+        }
+
+        if (isTransformable) {
+            return transformType
+        } else {
+            return beanNode.@parent
+        };
+    }
+
 
     /**
      * tests if transform property method exists for property name

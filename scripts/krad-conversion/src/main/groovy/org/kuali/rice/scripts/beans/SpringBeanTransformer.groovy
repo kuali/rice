@@ -57,6 +57,45 @@ class SpringBeanTransformer {
         xsiNamespaceSchema = config.msg_xml_schema_legacy
     }
 
+    public String getTranslatedBeanId(String beanId, String originalBeanType, String transformBeanType) {
+        if (originalBeanType.equals(beanId)) {
+            return transformBeanType;
+        }
+
+        String prefix = beanId.split('-')[0];
+        transformBeanType = transformBeanType.replaceFirst("Uif-", "");
+        String suffix = beanId.contains("-parentBean") ? "-parentBean" : "";
+        return prefix + "-" + transformBeanType + suffix;
+    }
+
+    public String getTransformableBeanType(Node beanNode) {
+        def parentName = beanNode.@parent;
+        def transformType = parentName;
+        boolean isTransformable = false;
+        while (parentName != null && !isTransformable) {
+            transformType = getAlternateTransformableBeanType(parentName);
+            if (DictionaryConverter.metaClass.methods.find { it.name == "transform" + transformType.capitalize() + "Bean" }) {
+                isTransformable = true;
+            } else {
+                parentName = parentBeans[parentName];
+            }
+        }
+
+        if (isTransformable) {
+            return transformType
+        } else {
+            return beanNode.@parent
+        };
+    }
+
+    protected String getAlternateTransformableBeanType(String parentName) {
+        def relevantBeans = ["AttributeDefinition": "BusinessObjectEntry", "AttributeReferenceDummy-genericSystemId": "BusinessObjectEntry"];
+        if (relevantBeans.containsKey(parentName)) {
+            return relevantBeans.get(parentName);
+        }
+        return parentName;
+    }
+
     // bean utilities
 
     /**
@@ -353,7 +392,7 @@ class SpringBeanTransformer {
      */
     def getTitleFromBeanId(String beanId) {
         // TODO: review whether camel case check is necessary
-        return beanId?.replaceAll(~/\s/, '-');
+        return beanId?.replaceAll(~/\s/, '-')?.replaceAll(/-+/, '-');
     }
 
     /**

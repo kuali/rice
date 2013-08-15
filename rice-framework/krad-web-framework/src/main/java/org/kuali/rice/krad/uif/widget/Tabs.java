@@ -128,7 +128,7 @@ public class Tabs extends WidgetBase {
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         Tabs tabsCopy = (Tabs) component;
-        tabsCopy.setDefaultActiveTabId(this.getDefaultActiveTabId());
-        tabsCopy.setPosition(this.getPosition());
+        tabsCopy.setDefaultActiveTabId(this.defaultActiveTabId);
+        tabsCopy.setPosition(this.position);
     }
 }

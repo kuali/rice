@@ -122,8 +122,8 @@ public class Tooltip extends WidgetBase {
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         Tooltip tooltipCopy = (Tooltip) component;
-        tooltipCopy.setTooltipContent(this.getTooltipContent());
-        tooltipCopy.setOnFocus(this.isOnFocus());
-        tooltipCopy.setOnMouseHover(this.isOnMouseHover());
+        tooltipCopy.setTooltipContent(this.tooltipContent);
+        tooltipCopy.setOnFocus(this.onFocus);
+        tooltipCopy.setOnMouseHover(this.onMouseHover);
     }
 }

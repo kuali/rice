@@ -158,9 +158,9 @@ public class SyntaxHighlighter extends WidgetBase {
             syntaxHighlighterCopy.setHeader((Header) this.header.copy());
         }
 
-        syntaxHighlighterCopy.setSourceCode(this.getSourceCode());
-        syntaxHighlighterCopy.setPluginCssClass(this.getPluginCssClass());
-        syntaxHighlighterCopy.setAllowCopy(this.isAllowCopy());
-        syntaxHighlighterCopy.setShowCopyConfirmation(this.isShowCopyConfirmation());
+        syntaxHighlighterCopy.setSourceCode(this.sourceCode);
+        syntaxHighlighterCopy.setPluginCssClass(this.pluginCssClass);
+        syntaxHighlighterCopy.setAllowCopy(this.allowCopy);
+        syntaxHighlighterCopy.setShowCopyConfirmation(this.showCopyConfirmation);
     }
 }

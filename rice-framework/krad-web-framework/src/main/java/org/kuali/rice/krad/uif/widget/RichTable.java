@@ -888,7 +888,7 @@ public class RichTable extends WidgetBase {
      *
      * @return the generated aaData
      */
-    public void setAaData(String aaData) {
+    protected void setAaData(String aaData) {
         this.aaData = aaData;
     }
 
@@ -971,12 +971,12 @@ public class RichTable extends WidgetBase {
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         RichTable richTableCopy = (RichTable) component;
-        richTableCopy.setEmptyTableMessage(this.getEmptyTableMessage());
-        richTableCopy.setDisableTableSort(this.isDisableTableSort());
-        richTableCopy.setForceAoColumnDefsOverride(this.isForceAoColumnDefsOverride());
-        richTableCopy.setForceLocalJsonData(this.isForceLocalJsonData());
-        richTableCopy.setNestedLevel(this.getNestedLevel());
-        richTableCopy.setAaData(this.getAaData());
+        richTableCopy.setEmptyTableMessage(this.emptyTableMessage);
+        richTableCopy.setDisableTableSort(this.disableTableSort);
+        richTableCopy.setForceAoColumnDefsOverride(this.forceAoColumnDefsOverride);
+        richTableCopy.setForceLocalJsonData(this.forceLocalJsonData);
+        richTableCopy.setNestedLevel(this.nestedLevel);
+        richTableCopy.setAaData(this.aaData);
 
         if (hiddenColumns != null) {
             richTableCopy.setHiddenColumns(new HashSet<String>(hiddenColumns));
@@ -990,10 +990,10 @@ public class RichTable extends WidgetBase {
             richTableCopy.setCssClasses(new ArrayList<String>(this.cellCssClasses));
         }
 
-        richTableCopy.setAjaxSource(this.getAjaxSource());
-        richTableCopy.setShowSearchAndExportOptions(this.isShowSearchAndExportOptions());
-        richTableCopy.setShowSearchOption(this.isShowSearchOption());
-        richTableCopy.setShowExportOption(this.isShowExportOption());
-        richTableCopy.setGroupingOptionsJSString(this.getGroupingOptionsJSString());
+        richTableCopy.setAjaxSource(this.ajaxSource);
+        richTableCopy.setShowSearchAndExportOptions(this.showSearchAndExportOptions);
+        richTableCopy.setShowSearchOption(this.showSearchOption);
+        richTableCopy.setShowExportOption(this.showExportOption);
+        richTableCopy.setGroupingOptionsJSString(this.groupingOptionsJSString);
     }
 }

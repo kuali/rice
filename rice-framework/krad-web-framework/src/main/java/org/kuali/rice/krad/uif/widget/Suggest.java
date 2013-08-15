@@ -397,21 +397,21 @@ public class Suggest extends WidgetBase {
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
         Suggest suggestCopy = (Suggest) component;
-        suggestCopy.setValuePropertyName(this.getValuePropertyName());
-        suggestCopy.setLabelPropertyName(this.getLabelPropertyName());
+        suggestCopy.setValuePropertyName(this.valuePropertyName);
+        suggestCopy.setLabelPropertyName(this.labelPropertyName);
 
         if(additionalPropertiesToReturn != null) {
             suggestCopy.setAdditionalPropertiesToReturn(new ArrayList<String> (additionalPropertiesToReturn));
         }
 
-        suggestCopy.setReturnFullQueryObject(this.isReturnFullQueryObject());
-        suggestCopy.setRetrieveAllSuggestions(this.isRetrieveAllSuggestions());
+        suggestCopy.setReturnFullQueryObject(this.returnFullQueryObject);
+        suggestCopy.setRetrieveAllSuggestions(this.retrieveAllSuggestions);
 
         if (this.suggestQuery != null) {
             suggestCopy.setSuggestQuery((AttributeQuery)this.suggestQuery.copy());
         }
 
-        suggestCopy.setSuggestOptions(this.getSuggestOptions());
+        suggestCopy.setSuggestOptions(this.suggestOptions);
         suggestCopy.setSuggestOptionsJsString(this.suggestOptionsJsString);
     }
 }

@@ -1,3 +1,18 @@
+/**
+ * Copyright 2005-2013 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.kuali.rice.ken.services.impl;
 
 import org.junit.Test;
@@ -24,6 +39,12 @@ public class NotificationWorkflowDocumentServiceImplTest extends KENTestCase {
 
     private static final String CUSTOM_NOTIFICATION_DOC_TYPE = "CustomNotification";
 
+    /**
+     * Tests whether the default KEW document type {@code KualiNotification} is used when set in this
+     * {@code Notification}.
+     *
+     * @throws WorkflowException when KEW cannot find the document
+     */
     @Test
     public void createAndAdHocRouteNotificationWorkflowDocument_defaultKEW() throws WorkflowException {
         NotificationBo notification = services.getNotificationService().getNotification(TestConstants.NOTIFICATION_1);
@@ -34,6 +55,12 @@ public class NotificationWorkflowDocumentServiceImplTest extends KENTestCase {
         assertEquals(NotificationConstants.KEW_CONSTANTS.NOTIFICATION_DOC_TYPE, document.getDocumentTypeName());
     }
 
+    /**
+     * Tests whether the default KEW document type {@code KualiNotification} is used when nothing is set in this
+     * {@code Notification}.
+     *
+     * @throws WorkflowException when KEW cannot find the document
+     */
     @Test
     public void createAndAdHocRouteNotificationWorkflowDocument_undefinedKEW() throws WorkflowException {
         NotificationBo notification = services.getNotificationService().getNotification(TestConstants.NOTIFICATION_1);
@@ -43,6 +70,12 @@ public class NotificationWorkflowDocumentServiceImplTest extends KENTestCase {
         assertEquals(NotificationConstants.KEW_CONSTANTS.NOTIFICATION_DOC_TYPE, document.getDocumentTypeName());
     }
 
+    /**
+     * Tests whether the custom KEW document type {@code CustomNotification} is used when set in this
+     * {@code Notification}.
+     *
+     * @throws WorkflowException when KEW cannot find the document
+     */
     @Test
     public void createAndAdHocRouteNotificationWorkflowDocument_customKEW() throws WorkflowException {
         NotificationBo notification = services.getNotificationService().getNotification(TestConstants.NOTIFICATION_1);
@@ -53,6 +86,13 @@ public class NotificationWorkflowDocumentServiceImplTest extends KENTestCase {
         assertEquals(CUSTOM_NOTIFICATION_DOC_TYPE, document.getDocumentTypeName());
     }
 
+    /**
+     * Helper method for creating a {@code Notification} workflow document.
+     *
+     * @param notification the {@code Notification} to include in the workflow document
+     *
+     * @return a KEW workflow document
+     */
     protected Document createNotificationWorkflowDocument(NotificationBo notification) {
         NotificationMessageDelivery messageDelivery = new NotificationMessageDelivery();
         messageDelivery.setId(0L);

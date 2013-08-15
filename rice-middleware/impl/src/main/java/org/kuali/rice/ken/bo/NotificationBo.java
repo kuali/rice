@@ -452,10 +452,11 @@ public class NotificationBo extends PersistableBusinessObjectBase implements Not
     }
 
     /**
-     * Sets the custom document type name
+     * Sets the custom document type name.
      *
      * <p>
-     * If null, the system will use the default {@code KualiNotification} document type when routing the notification
+     * If null, the system will use the default {@code KualiNotification} document type when routing the notification.
+     * If the document type does not match any document type name in the system, the system behavior is undefined.
      * </p>
      *
      * @param docTypeName document type name of this notification

@@ -54,10 +54,10 @@ import org.w3c.dom.Element;
         Notification.Elements.LOCKED_DATE,
         Notification.Elements.TITLE,
         Notification.Elements.CONTENT_MESSAGE,
-        Notification.Elements.DOC_TYPE_NAME,
         Notification.Elements.ID,
         CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.OBJECT_ID,
+        Notification.Elements.DOC_TYPE_NAME,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class Notification
@@ -170,10 +170,10 @@ public final class Notification
         this.lockedDate = builder.getLockedDate();
         this.title = builder.getTitle();
         this.contentMessage = builder.getContentMessage();
-        this.docTypeName = builder.getDocTypeName();
         this.id = builder.getId();
         this.versionNumber = builder.getVersionNumber();
         this.objectId = builder.getObjectId();
+        this.docTypeName = builder.getDocTypeName();
     }
 
     @Override
@@ -252,11 +252,6 @@ public final class Notification
     }
 
     @Override
-    public String getDocTypeName() {
-        return this.docTypeName;
-    }
-
-    @Override
     public Long getId() {
         return this.id;
     }
@@ -269,6 +264,11 @@ public final class Notification
     @Override
     public String getObjectId() {
         return this.objectId;
+    }
+
+    @Override
+    public String getDocTypeName() {
+        return this.docTypeName;
     }
 
 
@@ -295,10 +295,10 @@ public final class Notification
         private DateTime lockedDate;
         private String title;
         private String contentMessage;
-        private String docTypeName;
         private Long id;
         private Long versionNumber;
         private String objectId;
+        private String docTypeName;
 
         private Builder() {
             // TODO modify this constructor as needed to pass any required values and invoke the appropriate 'setter' methods
@@ -342,10 +342,10 @@ public final class Notification
             builder.setLockedDate(contract.getLockedDate());
             builder.setTitle(contract.getTitle());
             builder.setContentMessage(contract.getContentMessage());
-            builder.setDocTypeName(contract.getDocTypeName());
             builder.setId(contract.getId());
             builder.setVersionNumber(contract.getVersionNumber());
             builder.setObjectId(contract.getObjectId());
+            builder.setDocTypeName(contract.getDocTypeName());
             return builder;
         }
 
@@ -429,11 +429,6 @@ public final class Notification
         }
 
         @Override
-        public String getDocTypeName() {
-            return this.docTypeName;
-        }
-
-        @Override
         public Long getId() {
             return this.id;
         }
@@ -446,6 +441,11 @@ public final class Notification
         @Override
         public String getObjectId() {
             return this.objectId;
+        }
+
+        @Override
+        public String getDocTypeName() {
+            return this.docTypeName;
         }
 
         public void setPriority(NotificationPriority.Builder priority) {
@@ -508,10 +508,6 @@ public final class Notification
             this.contentMessage = contentMessage;
         }
 
-        public void setDocTypeName(String docTypeName) {
-            this.docTypeName = docTypeName;
-        }
-
         public void setId(Long id) {
             this.id = id;
         }
@@ -524,6 +520,20 @@ public final class Notification
             this.objectId = objectId;
         }
 
+        /**
+         * Sets the custom document type name.
+         *
+         * <p>
+         * If null, the system will use the default {@code KualiNotification} document type when routing the notification.
+         * If the document type does not match any document type name in the system, the system behavior is undefined.
+         * </p>
+         *
+         * @param docTypeName document type name of this notification
+         * @since 2.3.1
+         */
+        public void setDocTypeName(String docTypeName) {
+            this.docTypeName = docTypeName;
+        }
     }
 
 
@@ -563,8 +573,8 @@ public final class Notification
         final static String LOCKED_DATE = "lockedDate";
         final static String TITLE = "title";
         final static String CONTENT_MESSAGE = "contentMessage";
-        final static String DOC_TYPE_NAME = "docTypeName";
         final static String ID = "id";
+        final static String DOC_TYPE_NAME = "docTypeName";
 
     }
 

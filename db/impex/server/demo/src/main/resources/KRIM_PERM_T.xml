@@ -139,11 +139,6 @@
         PERM_TMPL_ID="1" VER_NBR="1"/>
     <KRIM_PERM_T ACTV_IND="Y"
         DESC_TXT="Allows users to edit Kuali documents that are in ENROUTE status."
-        NM="Edit Kuali ENROUTE Document Node Name PreRoute"
-        NMSPC_CD="KUALI" OBJ_ID="5B4F0974496CEF33E0404F8189D84F24"
-        PERM_ID="180" PERM_TMPL_ID="16" VER_NBR="1"/>
-    <KRIM_PERM_T ACTV_IND="Y"
-        DESC_TXT="Allows users to edit Kuali documents that are in ENROUTE status."
         NM="Edit Kuali ENROUTE Document Route Status Code R"
         NMSPC_CD="KUALI" OBJ_ID="5B4F0974496DEF33E0404F8189D84F24"
         PERM_ID="181" PERM_TMPL_ID="16" VER_NBR="1"/>
@@ -362,6 +357,16 @@
         NM="Take Requested Complete Action" NMSPC_CD="KUALI"
         OBJ_ID="D0C2892F47EB9142E0406E0AC31D23D6" PERM_ID="KR1000"
         PERM_TMPL_ID="8" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to edit Kuali documents that are in INITIATED status."
+        NM="Edit Kuali ENROUTE Document Route Status Code I"
+        NMSPC_CD="KUALI" OBJ_ID="E3EF4C83B4BB5C9EE0406E0AC31D4562"
+        PERM_ID="KR1001" PERM_TMPL_ID="16" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to edit Kuali documents that are in SAVED status."
+        NM="Edit Kuali ENROUTE Document Route Status Code S"
+        NMSPC_CD="KUALI" OBJ_ID="E3EF4C83B4BF5C9EE0406E0AC31D4562"
+        PERM_ID="KR1002" PERM_TMPL_ID="16" VER_NBR="1"/>
     <KRIM_PERM_T ACTV_IND="Y"
         DESC_TXT="Allows users to view the group in kitchen sink page 9."
         NM="View Kitchen Sink Group" NMSPC_CD="KR-SAP"

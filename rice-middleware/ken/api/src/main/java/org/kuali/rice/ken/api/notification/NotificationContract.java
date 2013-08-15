@@ -28,8 +28,7 @@ public interface NotificationContract extends KenIdentifiable, Versioned, Global
      * This is the namespace code for the Group.
      *
      * <p>
-     * This is a namespace code assigned to a Group.  Together with name, it makes up another unique identifier for
-     * Group
+     * This is a namespace code assigned to a Group.  Together with name, it makes up another unique identifier for Group
      * </p>
      *
      * @return namespaceCode
@@ -53,7 +52,7 @@ public interface NotificationContract extends KenIdentifiable, Versioned, Global
     NotificationPriorityContract getPriority();
 
     NotificationProducerContract getProducer();
-
+    
     DateTime getSendDateTime();
 
     String getProcessingFlag();
@@ -65,7 +64,13 @@ public interface NotificationContract extends KenIdentifiable, Versioned, Global
     String getContentMessage();
 
     /**
-     * @return the custom document type name for this Notification
+     * Gets the custom document type name
+     *
+     * <p>
+     * If null, the system will use the default {@code KualiNotification} document type when routing the notification
+     * </p>
+     *
+     * @return the custom document type name for this Notification, or null if undefined
      * @since 2.3.1
      */
     String getDocTypeName();

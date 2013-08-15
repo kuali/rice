@@ -23,7 +23,9 @@ import org.joda.time.DateTime;
 import org.kuali.rice.ken.api.notification.Notification;
 import org.kuali.rice.ken.api.notification.NotificationContract;
 import org.kuali.rice.ken.api.notification.NotificationRecipient;
+import org.kuali.rice.ken.api.notification.NotificationRecipientContract;
 import org.kuali.rice.ken.api.notification.NotificationSender;
+import org.kuali.rice.ken.api.notification.NotificationSenderContract;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
@@ -45,67 +47,73 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class represents an instace of a notification message that is received by the overall
+ * This class represents an instace of a notification message that is received by the overall 
  * system.
- *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
-@Table(name = "KREN_NTFCTN_T")
+@Table(name="KREN_NTFCTN_T")
 public class NotificationBo extends PersistableBusinessObjectBase implements NotificationContract, Lockable {
-
-    @Id @GeneratedValue(generator = "KREN_NTFCTN_S") @GenericGenerator(name = "KREN_NTFCTN_S",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {@Parameter(name = "sequence_name", value = "KREN_NTFCTN_S"),
-                    @Parameter(name = "value_column", value = "id")}) @Column(name = "NTFCTN_ID")
-    private Long id;
-    @Column(name = "DELIV_TYP", nullable = false)
-    private String deliveryType;
-    @Column(name = "CRTE_DTTM", nullable = false)
-    private Timestamp creationDateTimeValue;
-    @Column(name = "SND_DTTM", nullable = true)
-    private Timestamp sendDateTimeValue;
-    @Column(name = "AUTO_RMV_DTTM", nullable = true)
-    private Timestamp autoRemoveDateTimeValue;
-    @Column(name = "TTL", nullable = true)
-    private String title;
-    @Lob @Basic(fetch = FetchType.LAZY) @Column(name = "CNTNT", nullable = false)
-    private String content;
-    @Column(name = "PROCESSING_FLAG", nullable = false)
-    private String processingFlag;
-    @Column(name = "LOCKD_DTTM", nullable = true)
-    private Timestamp lockedDateValue;
+   
+    @Id
+    @GeneratedValue(generator="KREN_NTFCTN_S")
+	@GenericGenerator(name="KREN_NTFCTN_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREN_NTFCTN_S"),
+			@Parameter(name="value_column",value="id")
+	})
+	@Column(name="NTFCTN_ID")
+	private Long id;
+    @Column(name="DELIV_TYP", nullable=false)
+	private String deliveryType;
+	@Column(name="CRTE_DTTM", nullable=false)
+	private Timestamp creationDateTimeValue;
+	@Column(name="SND_DTTM", nullable=true)
+	private Timestamp sendDateTimeValue;
+	@Column(name="AUTO_RMV_DTTM", nullable=true)
+	private Timestamp autoRemoveDateTimeValue;
+    @Column(name="TTL", nullable=true)
+	private String title;
+    @Lob
+	@Basic(fetch=FetchType.LAZY)
+	@Column(name="CNTNT", nullable=false)
+	private String content;
+    @Column(name="PROCESSING_FLAG", nullable=false)
+	private String processingFlag;
+	@Column(name="LOCKD_DTTM", nullable=true)
+	private Timestamp lockedDateValue;
     @Column(name = "DOC_TYP_NM", nullable = true)
     private String docTypeName;
     /**
      * Lock column for OJB optimistic locking
      */
-    //    @Version
-    //	@Column(name="VER_NBR")
-    //	private Integer lockVerNbr;
-
+//    @Version
+//	@Column(name="VER_NBR")
+//	private Integer lockVerNbr;
+    
     // object references
-    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH, CascadeType.DETACH}) @JoinColumn(
-            name = "PRIO_ID")
-    private NotificationPriorityBo priority;
-    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH, CascadeType.DETACH}) @JoinColumn(
-            name = "CNTNT_TYP_ID")
-    private NotificationContentTypeBo contentType;
-    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH, CascadeType.DETACH}) @JoinColumn(
-            name = "CHNL_ID")
-    private NotificationChannelBo channel;
-    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH, CascadeType.DETACH}) @JoinColumn(
-            name = "PRODCR_ID")
-    private NotificationProducerBo producer;
-
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.REFRESH, CascadeType.DETACH})
+	@JoinColumn(name="PRIO_ID")
+	private NotificationPriorityBo priority;
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.REFRESH, CascadeType.DETACH})
+	@JoinColumn(name="CNTNT_TYP_ID")
+	private NotificationContentTypeBo contentType;
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.REFRESH, CascadeType.DETACH})
+	@JoinColumn(name="CHNL_ID")
+	private NotificationChannelBo channel;
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.REFRESH, CascadeType.DETACH})
+	@JoinColumn(name="PRODCR_ID")
+	private NotificationProducerBo producer;
+    
     // lists
-    @OneToMany(cascade = {CascadeType.ALL},
-            targetEntity = NotificationRecipientBo.class, mappedBy = "notification") @OrderBy("id ASC")
-    private List<NotificationRecipientBo> recipients;
-    @OneToMany(cascade = {CascadeType.ALL},
-            targetEntity = NotificationSenderBo.class, mappedBy = "notification") @OrderBy("id ASC")
+    @OneToMany(cascade={CascadeType.ALL},
+           targetEntity=NotificationRecipientBo.class, mappedBy="notification")
+    @OrderBy("id ASC")
+	private List<NotificationRecipientBo> recipients;
+    @OneToMany(cascade={CascadeType.ALL},
+           targetEntity=NotificationSenderBo.class, mappedBy="notification")
+	@OrderBy("id ASC")
     private List<NotificationSenderBo> senders;
-
+    
     /**
      * Constructs a Notification instance.
      */
@@ -116,8 +124,7 @@ public class NotificationBo extends PersistableBusinessObjectBase implements Not
     }
 
     /**
-     * Returns when this Notification entry was created
-     *
+     * Returns when this Notification entry was created 
      * @return when this Notification entry was created
      */
     public Timestamp getCreationDateTimeValue() {
@@ -131,7 +138,6 @@ public class NotificationBo extends PersistableBusinessObjectBase implements Not
 
     /**
      * Sets the creation date of this Notification entry
-     *
      * @param created the creation date of this Notification entry
      */
     public void setCreationDateTimeValue(Timestamp created) {
@@ -140,27 +146,24 @@ public class NotificationBo extends PersistableBusinessObjectBase implements Not
 
     /**
      * Return value of lock column for OJB optimistic locking
-     *
      * @return value of lock column for OJB optimistic locking
      */
-    // should discard this method and call super directly
+ // should discard this method and call super directly
     public Integer getLockVerNbr() {
-        return Integer.valueOf(super.getVersionNumber().intValue());
+    	return Integer.valueOf(super.getVersionNumber().intValue());
     }
 
     /**
      * Set value of lock column for OJB optimistic locking
-     *
      * @param lockVerNbr value of lock column for OJB optimistic locking
      */
-    // should discard this method and call super directly
+ // should discard this method and call super directly
     public void setLockVerNbr(Integer lockVerNbr) {
-        super.setVersionNumber(lockVerNbr.longValue());
+    	super.setVersionNumber(lockVerNbr.longValue());
     }
 
     /**
-     * Gets the recipients attribute.
-     *
+     * Gets the recipients attribute. 
      * @return Returns the recipients.
      */
     public List<NotificationRecipientBo> getRecipients() {
@@ -169,7 +172,6 @@ public class NotificationBo extends PersistableBusinessObjectBase implements Not
 
     /**
      * Sets the recipients attribute value.
-     *
      * @param recipients The recipients to set.
      */
     public void setRecipients(List<NotificationRecipientBo> recipients) {
@@ -178,17 +180,15 @@ public class NotificationBo extends PersistableBusinessObjectBase implements Not
 
     /**
      * Retrieves a recipient at the specified index
-     *
      * @param index the index in the recipients collection
      * @return the recipient if found or null
      */
     public NotificationRecipientBo getRecipient(int index) {
         return (NotificationRecipientBo) recipients.get(index);
     }
-
+    
     /**
      * Adds a recipient
-     *
      * @param recipient The recipient to add
      */
     public void addRecipient(NotificationRecipientBo recipient) {
@@ -196,8 +196,7 @@ public class NotificationBo extends PersistableBusinessObjectBase implements Not
     }
 
     /**
-     * Gets the senders attribute.
-     *
+     * Gets the senders attribute. 
      * @return Returns the senders.
      */
     public List<NotificationSenderBo> getSenders() {
@@ -206,7 +205,6 @@ public class NotificationBo extends PersistableBusinessObjectBase implements Not
 
     /**
      * Sets the senders attribute value.
-     *
      * @param senders The senders to set.
      */
     public void setSenders(List<NotificationSenderBo> senders) {
@@ -215,17 +213,14 @@ public class NotificationBo extends PersistableBusinessObjectBase implements Not
 
     /**
      * Retrieves a sender at the specified index
-     *
      * @param index the index in the senders collection
      * @return the sender if found or null
      */
     public NotificationSenderBo getSender(int index) {
         return (NotificationSenderBo) senders.get(index);
     }
-
     /**
      * Adds a sender
-     *
      * @param sender The sender to add
      */
     public void addSender(NotificationSenderBo sender) {
@@ -233,12 +228,11 @@ public class NotificationBo extends PersistableBusinessObjectBase implements Not
     }
 
     /**
-     * Gets the autoRemoveDateTime attribute.
-     *
+     * Gets the autoRemoveDateTime attribute. 
      * @return Returns the autoRemoveDateTime.
      */
     public Timestamp getAutoRemoveDateTimeValue() {
-        return this.autoRemoveDateTimeValue;
+	    return this.autoRemoveDateTimeValue;
     }
 
     @Override
@@ -248,146 +242,130 @@ public class NotificationBo extends PersistableBusinessObjectBase implements Not
 
     /**
      * Sets the autoRemoveDateTime attribute value.
-     *
      * @param autoRemoveDateTimeValue The autoRemoveDateTime to set.
      */
     public void setAutoRemoveDateTimeValue(Timestamp autoRemoveDateTimeValue) {
-        this.autoRemoveDateTimeValue = autoRemoveDateTimeValue;
+	    this.autoRemoveDateTimeValue = autoRemoveDateTimeValue;
     }
 
     /**
-     * Gets the channel attribute.
-     *
+     * Gets the channel attribute. 
      * @return Returns the channel.
      */
     public NotificationChannelBo getChannel() {
-        return channel;
+	    return channel;
     }
 
     /**
      * Sets the channel attribute value.
-     *
      * @param channel The channel to set.
      */
     public void setChannel(NotificationChannelBo channel) {
-        this.channel = channel;
+	    this.channel = channel;
     }
 
     /**
-     * Gets the content attribute.
-     *
+     * Gets the content attribute. 
      * @return Returns the content.
      */
     public String getContent() {
-        return content;
+	    return content;
     }
 
     /**
      * Sets the content attribute value.
-     *
      * @param content The content to set.
      */
     public void setContent(String content) {
-        this.content = content;
+	    this.content = content;
     }
 
     /**
-     * Gets the contentType attribute.
-     *
+     * Gets the contentType attribute. 
      * @return Returns the contentType.
      */
     public NotificationContentTypeBo getContentType() {
-        return contentType;
+	    return contentType;
     }
 
     /**
      * Sets the contentType attribute value.
-     *
      * @param contentType The contentType to set.
      */
     public void setContentType(NotificationContentTypeBo contentType) {
-        this.contentType = contentType;
+	    this.contentType = contentType;
     }
 
     /**
-     * Gets the deliveryType attribute.
-     *
+     * Gets the deliveryType attribute. 
      * @return Returns the deliveryType.
      */
     public String getDeliveryType() {
-        return deliveryType;
+	    return deliveryType;
     }
 
     /**
      * Sets the deliveryType attribute value.
-     *
      * @param deliveryType The deliveryType to set.
      */
     public void setDeliveryType(String deliveryType) {
-        this.deliveryType = deliveryType.toUpperCase();
+	    this.deliveryType = deliveryType.toUpperCase();
     }
 
     /**
-     * Gets the id attribute.
-     *
+     * Gets the id attribute. 
      * @return Returns the id.
      */
     public Long getId() {
-        return id;
+	    return id;
     }
 
     /**
      * Sets the id attribute value.
-     *
      * @param id The id to set.
      */
     public void setId(Long id) {
-        this.id = id;
+	    this.id = id;
     }
 
     /**
-     * Gets the priority attribute.
-     *
+     * Gets the priority attribute. 
      * @return Returns the priority.
      */
     public NotificationPriorityBo getPriority() {
-        return priority;
+	    return priority;
     }
 
     /**
      * Sets the priority attribute value.
-     *
      * @param priority The priority to set.
      */
     public void setPriority(NotificationPriorityBo priority) {
-        this.priority = priority;
+	    this.priority = priority;
     }
 
     /**
-     * Gets the producer attribute.
-     *
+     * Gets the producer attribute. 
      * @return Returns the producer.
      */
     public NotificationProducerBo getProducer() {
-        return producer;
+	    return producer;
     }
 
     /**
      * Sets the producer attribute value.
-     *
      * @param producer The producer to set.
      */
     public void setProducer(NotificationProducerBo producer) {
-        this.producer = producer;
+	    this.producer = producer;
     }
 
     /**
-     * Gets the sendDateTime attribute.
-     *
+     * Gets the sendDateTime attribute. 
      * @return Returns the sendDateTime.
      */
     public Timestamp getSendDateTimeValue() {
-        return this.sendDateTimeValue;
+	    return this.sendDateTimeValue;
     }
 
     @Override
@@ -397,16 +375,14 @@ public class NotificationBo extends PersistableBusinessObjectBase implements Not
 
     /**
      * Sets the sendDateTime attribute value.
-     *
      * @param sendDateTimeValue The sendDateTime to set.
      */
     public void setSendDateTimeValue(Timestamp sendDateTimeValue) {
-        this.sendDateTimeValue = sendDateTimeValue;
+	    this.sendDateTimeValue = sendDateTimeValue;
     }
 
     /**
-     * Gets the processingFlag attribute.
-     *
+     * Gets the processingFlag attribute. 
      * @return Returns the processingFlag.
      */
     public String getProcessingFlag() {
@@ -415,16 +391,14 @@ public class NotificationBo extends PersistableBusinessObjectBase implements Not
 
     /**
      * Sets the processingFlag attribute value.
-     *
      * @param processingFlag The processingFlag to set.
      */
     public void setProcessingFlag(String processingFlag) {
         this.processingFlag = processingFlag;
     }
-
+    
     /**
-     * Gets the lockedDate attribute.
-     *
+     * Gets the lockedDate attribute. 
      * @return Returns the lockedDate.
      */
     public Timestamp getLockedDateValue() {
@@ -435,10 +409,9 @@ public class NotificationBo extends PersistableBusinessObjectBase implements Not
     public DateTime getLockedDate() {
         return this.lockedDateValue == null ? null : new DateTime(this.lockedDateValue);
     }
-
+    
     /**
      * Sets the lockedDate attribute value.
-     *
      * @param lockedDateValue The lockedDate to set.
      */
     public void setLockedDateValue(Timestamp lockedDateValue) {
@@ -447,7 +420,6 @@ public class NotificationBo extends PersistableBusinessObjectBase implements Not
 
     /**
      * Gets the title
-     *
      * @return the title of this notification
      */
     public String getTitle() {
@@ -456,7 +428,6 @@ public class NotificationBo extends PersistableBusinessObjectBase implements Not
 
     /**
      * Sets the title
-     *
      * @param title the title of this notification
      */
     public void setTitle(String title) {
@@ -464,27 +435,28 @@ public class NotificationBo extends PersistableBusinessObjectBase implements Not
     }
 
     /**
-     * This method just uses StringUtils to get at the content of the <message> tag
+     * This method just uses StringUtils to get at the content of the <message> tag 
      * that exists in the notification content.
-     *
      * @return String
      */
     public String getContentMessage() {
-        return StringUtils.substringBetween(content, NotificationConstants.XML_MESSAGE_CONSTANTS.MESSAGE_OPEN,
-                NotificationConstants.XML_MESSAGE_CONSTANTS.MESSAGE_CLOSE);
+	    return StringUtils.substringBetween(content, NotificationConstants.XML_MESSAGE_CONSTANTS.MESSAGE_OPEN, NotificationConstants.XML_MESSAGE_CONSTANTS.MESSAGE_CLOSE);	
     }
 
     /**
-     * Gets the document type name
-     *
-     * @return the document type name of this notification
+     * {@inheritDoc}
      */
+    @Override
     public String getDocTypeName() {
         return docTypeName;
     }
 
     /**
-     * Sets the document type name
+     * Sets the custom document type name
+     *
+     * <p>
+     * If null, the system will use the default {@code KualiNotification} document type when routing the notification
+     * </p>
      *
      * @param docTypeName document type name of this notification
      */
@@ -494,7 +466,6 @@ public class NotificationBo extends PersistableBusinessObjectBase implements Not
 
     /**
      * Converts a mutable bo to its immutable counterpart
-     *
      * @param bo the mutable business object
      * @return the immutable object
      */
@@ -508,7 +479,6 @@ public class NotificationBo extends PersistableBusinessObjectBase implements Not
 
     /**
      * Converts a immutable object to its mutable counterpart
-     *
      * @param im immutable object
      * @return the mutable bo
      */
@@ -522,11 +492,9 @@ public class NotificationBo extends PersistableBusinessObjectBase implements Not
         bo.setVersionNumber(im.getVersionNumber());
         bo.setObjectId(im.getObjectId());
         bo.setDeliveryType(im.getDeliveryType());
-        bo.setCreationDateTimeValue(im.getCreationDateTime() == null ? null : new Timestamp(
-                im.getCreationDateTime().getMillis()));
+        bo.setCreationDateTimeValue(im.getCreationDateTime() == null ? null : new Timestamp(im.getCreationDateTime().getMillis()));
         bo.setSendDateTimeValue(im.getSendDateTime() == null ? null : new Timestamp(im.getSendDateTime().getMillis()));
-        bo.setAutoRemoveDateTimeValue(im.getAutoRemoveDateTime() == null ? null : new Timestamp(
-                im.getAutoRemoveDateTime().getMillis()));
+        bo.setAutoRemoveDateTimeValue(im.getAutoRemoveDateTime() == null ? null : new Timestamp(im.getAutoRemoveDateTime().getMillis()));
         bo.setTitle(im.getTitle());
         bo.setContent(im.getContent());
         bo.setLockedDateValue(im.getLockedDate() == null ? null : new Timestamp(im.getLockedDate().getMillis()));

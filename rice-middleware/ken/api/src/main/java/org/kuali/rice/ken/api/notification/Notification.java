@@ -15,14 +15,10 @@
  */
 package org.kuali.rice.ken.api.notification;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.joda.time.DateTime;
-import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
-import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
-import org.w3c.dom.Element;
-
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
@@ -31,24 +27,43 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.joda.time.DateTime;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
+import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
+import org.w3c.dom.Element;
 
 @XmlRootElement(name = Notification.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = Notification.Constants.TYPE_NAME,
-        propOrder = {Notification.Elements.PRIORITY, Notification.Elements.CONTENT, Notification.Elements.CHANNEL,
-                Notification.Elements.CONTENT_TYPE, Notification.Elements.CREATION_DATE_TIME,
-                Notification.Elements.RECIPIENTS, Notification.Elements.SENDERS,
-                Notification.Elements.AUTO_REMOVE_DATE_TIME, Notification.Elements.DELIVERY_TYPE,
-                Notification.Elements.PRODUCER, Notification.Elements.SEND_DATE_TIME,
-                Notification.Elements.PROCESSING_FLAG, Notification.Elements.LOCKED_DATE, Notification.Elements.TITLE,
-                Notification.Elements.CONTENT_MESSAGE, Notification.Elements.ID,
-                CoreConstants.CommonElements.VERSION_NUMBER, CoreConstants.CommonElements.OBJECT_ID,
-                Notification.Elements.DOC_TYPE_NAME, CoreConstants.CommonElements.FUTURE_ELEMENTS})
-public final class Notification extends AbstractDataTransferObject implements NotificationContract {
+@XmlType(name = Notification.Constants.TYPE_NAME, propOrder = {
+        Notification.Elements.PRIORITY,
+        Notification.Elements.CONTENT,
+        Notification.Elements.CHANNEL,
+        Notification.Elements.CONTENT_TYPE,
+        Notification.Elements.CREATION_DATE_TIME,
+        Notification.Elements.RECIPIENTS,
+        Notification.Elements.SENDERS,
+        Notification.Elements.AUTO_REMOVE_DATE_TIME,
+        Notification.Elements.DELIVERY_TYPE,
+        Notification.Elements.PRODUCER,
+        Notification.Elements.SEND_DATE_TIME,
+        Notification.Elements.PROCESSING_FLAG,
+        Notification.Elements.LOCKED_DATE,
+        Notification.Elements.TITLE,
+        Notification.Elements.CONTENT_MESSAGE,
+        Notification.Elements.DOC_TYPE_NAME,
+        Notification.Elements.ID,
+        CoreConstants.CommonElements.VERSION_NUMBER,
+        CoreConstants.CommonElements.OBJECT_ID,
+        CoreConstants.CommonElements.FUTURE_ELEMENTS
+})
+public final class Notification
+        extends AbstractDataTransferObject
+        implements NotificationContract
+{
 
     @XmlElement(name = Elements.PRIORITY, required = false)
     private final NotificationPriority priority;
@@ -58,24 +73,29 @@ public final class Notification extends AbstractDataTransferObject implements No
     private final NotificationChannel channel;
     @XmlElement(name = Elements.CONTENT_TYPE, required = false)
     private final NotificationContentType contentType;
-    @XmlElement(name = Elements.CREATION_DATE_TIME, required = false) @XmlJavaTypeAdapter(DateTimeAdapter.class)
+    @XmlElement(name = Elements.CREATION_DATE_TIME, required = false)
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
     private final DateTime creationDateTime;
-    @XmlElementWrapper(name = Elements.RECIPIENTS, required = false) @XmlElement(name = Elements.RECIPIENT,
-            required = false)
+    @XmlElementWrapper(name = Elements.RECIPIENTS, required = false)
+    @XmlElement(name = Elements.RECIPIENT, required = false)
     private final List<NotificationRecipient> recipients;
-    @XmlElementWrapper(name = Elements.SENDERS, required = false) @XmlElement(name = Elements.SENDER, required = false)
+    @XmlElementWrapper(name = Elements.SENDERS, required = false)
+    @XmlElement(name = Elements.SENDER, required = false)
     private final List<NotificationSender> senders;
-    @XmlElement(name = Elements.AUTO_REMOVE_DATE_TIME, required = false) @XmlJavaTypeAdapter(DateTimeAdapter.class)
+    @XmlElement(name = Elements.AUTO_REMOVE_DATE_TIME, required = false)
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
     private final DateTime autoRemoveDateTime;
     @XmlElement(name = Elements.DELIVERY_TYPE, required = false)
     private final String deliveryType;
     @XmlElement(name = Elements.PRODUCER, required = false)
     private final NotificationProducer producer;
-    @XmlElement(name = Elements.SEND_DATE_TIME, required = false) @XmlJavaTypeAdapter(DateTimeAdapter.class)
+    @XmlElement(name = Elements.SEND_DATE_TIME, required = false)
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
     private final DateTime sendDateTime;
     @XmlElement(name = Elements.PROCESSING_FLAG, required = false)
     private final String processingFlag;
-    @XmlElement(name = Elements.LOCKED_DATE, required = false) @XmlJavaTypeAdapter(DateTimeAdapter.class)
+    @XmlElement(name = Elements.LOCKED_DATE, required = false)
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
     private final DateTime lockedDate;
     @XmlElement(name = Elements.TITLE, required = false)
     private final String title;
@@ -94,11 +114,13 @@ public final class Notification extends AbstractDataTransferObject implements No
     @XmlElement(name = Elements.DOC_TYPE_NAME, required = false)
     private final String docTypeName;
 
-    @SuppressWarnings("unused") @XmlAnyElement
+    @SuppressWarnings("unused")
+    @XmlAnyElement
     private final Collection<Element> _futureElements = null;
 
     /**
      * Private constructor used only by JAXB.
+     *
      */
     private Notification() {
         this.priority = null;
@@ -249,11 +271,14 @@ public final class Notification extends AbstractDataTransferObject implements No
         return this.objectId;
     }
 
+
     /**
-     * A builder which can be used to construct {@link Notification} instances.  Enforces the constraints of the {@link
-     * NotificationContract}.
+     * A builder which can be used to construct {@link Notification} instances.  Enforces the constraints of the {@link NotificationContract}.
+     *
      */
-    public final static class Builder implements Serializable, ModelBuilder, NotificationContract {
+    public final static class Builder
+            implements Serializable, ModelBuilder, NotificationContract
+    {
 
         private NotificationPriority.Builder priority;
         private String content;
@@ -290,13 +315,10 @@ public final class Notification extends AbstractDataTransferObject implements No
             }
             // TODO if create() is modified to accept required parameters, this will need to be modified
             Builder builder = create();
-            builder.setPriority(contract.getPriority() == null ? null : NotificationPriority.Builder.create(
-                    contract.getPriority()));
+            builder.setPriority(contract.getPriority() == null ? null : NotificationPriority.Builder.create(contract.getPriority()));
             builder.setContent(contract.getContent());
-            builder.setChannel(contract.getChannel() == null ? null : NotificationChannel.Builder.create(
-                    contract.getChannel()));
-            builder.setContentType(contract.getContentType() == null ? null : NotificationContentType.Builder.create(
-                    contract.getContentType()));
+            builder.setChannel(contract.getChannel() == null ? null : NotificationChannel.Builder.create(contract.getChannel()));
+            builder.setContentType(contract.getContentType() == null ? null : NotificationContentType.Builder.create(contract.getContentType()));
             builder.setCreationDateTime(contract.getCreationDateTime());
             if (contract.getRecipients() != null) {
                 List<NotificationRecipient.Builder> tempRecipients = new ArrayList<NotificationRecipient.Builder>();
@@ -314,8 +336,7 @@ public final class Notification extends AbstractDataTransferObject implements No
             }
             builder.setAutoRemoveDateTime(contract.getAutoRemoveDateTime());
             builder.setDeliveryType(contract.getDeliveryType());
-            builder.setProducer(contract.getProducer() == null ? null : NotificationProducer.Builder.create(
-                    contract.getProducer()));
+            builder.setProducer(contract.getProducer() == null ? null : NotificationProducer.Builder.create(contract.getProducer()));
             builder.setSendDateTime(contract.getSendDateTime());
             builder.setProcessingFlag(contract.getProcessingFlag());
             builder.setLockedDate(contract.getLockedDate());
@@ -505,8 +526,10 @@ public final class Notification extends AbstractDataTransferObject implements No
 
     }
 
+
     /**
      * Defines some internal constants used on this class.
+     *
      */
     static class Constants {
 
@@ -515,9 +538,10 @@ public final class Notification extends AbstractDataTransferObject implements No
 
     }
 
+
     /**
-     * A private class which exposes constants which define the XML element names to use when this object is marshalled
-     * to XML.
+     * A private class which exposes constants which define the XML element names to use when this object is marshalled to XML.
+     *
      */
     static class Elements {
 

@@ -15,6 +15,14 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.UUID;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
@@ -37,15 +45,6 @@ import org.kuali.rice.krad.uif.service.ViewDictionaryService;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.LegacyDataFramework;
-import org.springframework.beans.BeanWrapper;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.UUID;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -100,11 +99,9 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
             keyValueMap = new HashMap<String, Object>();
         }
 
-        BeanWrapper wrapper = ObjectPropertyUtils.wrapObject(dataObject);
-
         List<String> fields = listPrimaryKeyFieldNames(dataObject.getClass());
         for (String fieldName : fields) {
-            keyValueMap.put(fieldName, wrapper.getPropertyValue(fieldName));
+            keyValueMap.put(fieldName, ObjectPropertyUtils.getPropertyValue(dataObject, fieldName));
         }
 
         return keyValueMap;

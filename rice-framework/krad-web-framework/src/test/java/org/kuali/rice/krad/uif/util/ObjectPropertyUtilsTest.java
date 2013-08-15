@@ -16,8 +16,10 @@
 package org.kuali.rice.krad.uif.util;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -32,10 +34,38 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
-import org.kuali.rice.krad.uif.util.ObjectPropertyUtils.PathEntry;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.krad.uif.component.BindingInfo;
+import org.kuali.rice.krad.uif.container.CollectionGroup;
+import org.kuali.rice.krad.uif.container.CollectionGroupBuilder;
+import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.element.Action;
+import org.kuali.rice.krad.uif.element.Message;
+import org.kuali.rice.krad.uif.element.ViewHeader;
+import org.kuali.rice.krad.uif.layout.StackedLayoutManager;
+import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
+import org.kuali.rice.krad.uif.view.FormView;
+import org.kuali.rice.krad.uif.view.ViewPresentationControllerBase;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.web.form.UifFormBase;
 
 public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
+
+    @BeforeClass
+    public static void setupMockUserSession() {
+        UifUnitTestUtils.establishMockConfig(ObjectPropertyUtilsTest.class.getSimpleName());
+        UifUnitTestUtils.establishMockUserSession("testuser");
+    }
+    
+    @AfterClass
+    public static void teardownMockUserSession() throws Exception {
+        GlobalVariables.setUserSession(null);
+        GlobalVariables.clear();
+        GlobalResourceLoader.stop();
+    }
 
     @Retention(RetentionPolicy.RUNTIME)
     public @interface TestAnnotation {
@@ -309,73 +339,171 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
     }
 
     @Test
-    public void testIndexOfClose() {
-        assertEquals(7, ObjectPropertyUtils.indexOfExt("foo(bar)", ')', new char[]{'\"'}, '\\', 3));
-        assertEquals(8, ObjectPropertyUtils.indexOfExt("foo(ba(r))", ')', new char[]{'\"'}, '\\', 6));
-        assertEquals(9, ObjectPropertyUtils.indexOfExt("foo(ba(r))", ')', new char[]{'\"'}, '\\', 3));
-        assertEquals(7, ObjectPropertyUtils.indexOfExt("foo'bar'", '\'', new char[]{'\"'}, '\\', 3));
-        assertEquals(8, ObjectPropertyUtils.indexOfExt("foo'ba'r''", '\'', new char[]{'\"'}, '\\', 6));
-        assertEquals(6, ObjectPropertyUtils.indexOfExt("foo'ba'r''", '\'', new char[]{'\"'}, '\\', 3));
-        assertEquals(-1, ObjectPropertyUtils.indexOfExt("\"foo(bar)\"", '('));
-        assertEquals(5, ObjectPropertyUtils.indexOfExt("foo\\((bar)", '('));
+    public void testReadWriteCheck() {
+        TestBean tb = new TestBean();
+        assertTrue(ObjectPropertyUtils.isReadableProperty(tb, "rwProp"));
+        assertTrue(ObjectPropertyUtils.isWritableProperty(tb, "rwProp"));
+        assertTrue(ObjectPropertyUtils.isReadableProperty(tb, "roProp"));
+        assertFalse(ObjectPropertyUtils.isWritableProperty(tb, "roProp"));
+        assertFalse(ObjectPropertyUtils.isReadableProperty(tb, "woProp"));
+        assertTrue(ObjectPropertyUtils.isWritableProperty(tb, "woProp"));
     }
 
-    public static class DoIt implements PathEntry<String, String> {
+    @Test
+    public void testKradUifTemplateHeaderMetadata() {
+        FormView formView = new FormView();
+        ViewHeader viewHeader = new ViewHeader();
+        formView.setHeader(viewHeader);
+        Message headerMetadataMessage = new Message();
+        viewHeader.setMetadataMessage(headerMetadataMessage);
+        assertSame(headerMetadataMessage, ObjectPropertyUtils.getPropertyValue(formView, "header.metadataMessage"));
+    }
 
-        @Override
-        public String parse(String node, String next, boolean inherit) {
-            if (next == null) {
-                return "";
-            }
-            StringBuilder rv = new StringBuilder();
-            if (node != null && node.length() > 0) {
-                rv.append(node);
-            }
-            if (inherit) {
-                rv.append('<');
-            } else if (rv.length() > 0) {
-                rv.append('+');
-            }
-            rv.append(next);
-            if (inherit) {
-                rv.append('>');
-            }
+    /**
+     * Collection list item type, for testing UIF interaction with ObjectPropertyUtils.
+     */
+    public static class CollectionTestItem {
 
-            return rv.toString();
+        /**
+         * A string property, called foobar.
+         */
+        String foobar;
+
+        /**
+         * @return the foobar
+         */
+        public String getFoobar() {
+            return this.foobar;
         }
 
-        @Override
-        public String prepare(String prev) {
-            return prev;
+        /**
+         * @param foobar the foobar to set
+         */
+        public void setFoobar(String foobar) {
+            this.foobar = foobar;
         }
 
-        @Override
-        public String dereference(String prev) {
-            return prev;
+    }
+
+    /**
+     * Reference to a collection, for testing UIF interaction with ObjectPropertyUtils.
+     */
+    public static class CollectionTestListRef {
+
+        /**
+         * The collection.
+         */
+        List<CollectionTestItem> bar;
+
+        /**
+         * Mapping of new line items.
+         */
+        Map<String, CollectionTestItem> baz;
+
+        /**
+         * @return the bar
+         */
+        public List<CollectionTestItem> getBar() {
+            return this.bar;
+        }
+
+        /**
+         * @param bar the bar to set
+         */
+        public void setBar(List<CollectionTestItem> bar) {
+            this.bar = bar;
+        }
+
+        /**
+         * @return the baz
+         */
+        public Map<String, CollectionTestItem> getBaz() {
+            return this.baz;
+        }
+
+        /**
+         * @param baz the baz to set
+         */
+        public void setBaz(Map<String, CollectionTestItem> baz) {
+            this.baz = baz;
+        }
+
+    }
+
+    /**
+     * Mock collection form for UIF interaction with ObjectPropertyUtils.
+     */
+    public static class CollectionTestForm extends UifFormBase {
+
+        private static final long serialVersionUID = 1798800132492441253L;
+
+        /**
+         * Reference to a data object that has a collection.
+         */
+        CollectionTestListRef foo;
+
+        /**
+         * @return the foo
+         */
+        public CollectionTestListRef getFoo() {
+            return this.foo;
+        }
+
+        /**
+         * @param foo the foo to set
+         */
+        public void setFoo(CollectionTestListRef foo) {
+            this.foo = foo;
         }
 
     }
 
     @Test
-    public void testParsePathExpression() {
-        assertEquals("foo+bar",
-                ObjectPropertyUtils.parsePathExpression(null, "foo.bar", new DoIt())
-                        .toString());
-        assertEquals("foo<bar>",
-                ObjectPropertyUtils.parsePathExpression(null, "foo[bar]", new DoIt())
-                        .toString());
-        assertEquals("foo<bar>+baz",
-                ObjectPropertyUtils
-                        .parsePathExpression(null, "foo[bar].baz", new DoIt())
-                        .toString());
-        assertEquals(
-                "foo<bar<baz>>",
-                ObjectPropertyUtils.parsePathExpression(null, "foo[bar[baz]]",
-                        new DoIt()).toString());
-        assertEquals(
-                "foo+bar-bar.baz+fez",
-                ObjectPropertyUtils.parsePathExpression(null, "foo(bar-bar.baz)+fez",
-                        new DoIt()).toString());
+    public void testKradUifCollectionGroupBuilder() {
+        // Performance medium generates this property path:
+        // newCollectionLines['newCollectionLines_'mediumCollection1'_.subList']
+
+        // Below recreates the stack trace that ensued due to poorly escaped quotes,
+        // and proves that the parser works around bad quoting in a manner similar to BeanWrapper 
+
+        CollectionGroupBuilder collectionGroupBuilder = new CollectionGroupBuilder();
+        CollectionTestForm form = new CollectionTestForm();
+        CollectionTestItem item = new CollectionTestItem();
+        item.setFoobar("barfoo");
+        ObjectPropertyUtils.setPropertyValue(form, "foo.baz['foo_bar_'badquotes'_.foobar']", item);
+        assertEquals("barfoo", form.foo.baz.get("foo_bar_'badquotes'_.foobar").foobar);
+
+        FormView view = new FormView();
+        view.setFormClass(CollectionTestForm.class);
+        view.setViewHelperService(new ViewHelperServiceImpl());
+        view.setPresentationController(new ViewPresentationControllerBase());
+        view.setAuthorizer(UifUnitTestUtils.getAllowMostViewAuthorizer());
+
+        CollectionGroup collectionGroup = new CollectionGroup();
+        collectionGroup.setCollectionObjectClass(CollectionTestItem.class);
+        collectionGroup.setAddLinePropertyName("addLineFoo");
+
+        StackedLayoutManager layoutManager = new StackedLayoutManager();
+        Group lineGroupPrototype = new Group();
+        layoutManager.setLineGroupPrototype(lineGroupPrototype);
+        collectionGroup.setLayoutManager(layoutManager);
+
+        BindingInfo addLineBindingInfo = new BindingInfo();
+        addLineBindingInfo.setBindingPath("foo.baz['foo_bar_'badquotes'_.foobar']");
+        collectionGroup.setAddLineBindingInfo(addLineBindingInfo);
+
+        BindingInfo collectionBindingInfo = new BindingInfo();
+        collectionBindingInfo.setBindingPath("foo.bar");
+        collectionGroup.setBindingInfo(collectionBindingInfo);
+
+        collectionGroupBuilder.build(view, form, collectionGroup);
+    }
+    
+    @Test
+    public void testSetStringMapFromInt() {
+        Action action = new Action();
+        ObjectPropertyUtils.setPropertyValue(action, "actionParameters['lineIndex']", 34);
+        assertEquals("34", action.getActionParameter("lineIndex"));
     }
 
 }

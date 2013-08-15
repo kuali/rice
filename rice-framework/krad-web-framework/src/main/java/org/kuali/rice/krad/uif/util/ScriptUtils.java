@@ -29,20 +29,19 @@ import java.util.Set;
 
 /**
  * Utility class for generating JavaScript
- *
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ScriptUtils {
 
     /**
-     * Translates an Object to a String for representing the given Object as
-     * a JavaScript value
-     *
+     * Translates an Object to a String for representing the given Object as a JavaScript value
+     * 
      * <p>
-     * Handles null, List, Map, and Set collections, along with non quoting for numeric and
-     * boolean types. Complex types are treated as a String value using toString
+     * Handles null, List, Map, and Set collections, along with non quoting for numeric and boolean
+     * types. Complex types are treated as a String value using toString
      * </p>
-     *
+     * 
      * @param value Object instance to translate
      * @return JS value
      */
@@ -112,9 +111,11 @@ public class ScriptUtils {
             } else {
                 // treat as data object
                 jsValue = "{";
-                Map<String, PropertyDescriptor> propertyDescriptors = ObjectPropertyUtils.getPropertyDescriptors(valueClass);
+                Map<String, PropertyDescriptor> propertyDescriptors = ObjectPropertyUtils
+                        .getPropertyDescriptors(valueClass);
                 for (String propertyName : propertyDescriptors.keySet()) {
-                    if (ObjectPropertyUtils.canRead(valueClass, propertyName) && !"class".equals(propertyName)) {
+                    if (ObjectPropertyUtils.isReadableProperty(valueClass, propertyName)
+                            && !"class".equals(propertyName)) {
                         Object propertyValue = ObjectPropertyUtils.getPropertyValue(value, propertyName);
                         jsValue += propertyName + ":";
                         jsValue += translateValue(propertyValue);
@@ -132,7 +133,7 @@ public class ScriptUtils {
 
     /**
      * Builds a JSON string form the given map
-     *
+     * 
      * @param map map to translate
      * @return String in JSON format
      */
@@ -156,7 +157,7 @@ public class ScriptUtils {
 
     /**
      * Escapes double quotes present in the given string
-     *
+     * 
      * @param jsonString string to escape
      * @return escaped string
      */
@@ -169,20 +170,20 @@ public class ScriptUtils {
     }
 
     /**
-     * Converts a map of string values to a json equivalent by converting the string values through the
-     * convertToJsValue(String) method; this will output a string representation of the map
-     * in json format
-     *
+     * Converts a map of string values to a json equivalent by converting the string values through
+     * the convertToJsValue(String) method; this will output a string representation of the map in
+     * json format
+     * 
      * @param stringMap the map of String values to convert to a simple json object representation
      * @return the json object as a string (for use in js)
      */
-    public static String convertToJsValue(Map<String,String> stringMap){
-        if (stringMap == null || stringMap.isEmpty()){
+    public static String convertToJsValue(Map<String, String> stringMap) {
+        if (stringMap == null || stringMap.isEmpty()) {
             return "{}";
         }
 
         String convertedValue = "{";
-        for (String key: stringMap.keySet()){
+        for (String key : stringMap.keySet()) {
             convertedValue = convertedValue + "\"" + key + "\":" + convertToJsValue(stringMap.get(key)) + ",";
         }
 
@@ -193,9 +194,9 @@ public class ScriptUtils {
     }
 
     /**
-     * Convert a string to a javascript value - especially for use for options used to initialize widgets such as the
-     * tree and rich table
-     *
+     * Convert a string to a javascript value - especially for use for options used to initialize
+     * widgets such as the tree and rich table
+     * 
      * @param value the string to be converted
      * @return the converted value
      */
@@ -233,9 +234,9 @@ public class ScriptUtils {
     }
 
     /**
-     * Escapes the ' character present in collection names so it can be properly used in js without causing
-     * javascript errors due to an early completion of a ' string.
-     *
+     * Escapes the ' character present in collection names so it can be properly used in js without
+     * causing javascript errors due to an early completion of a ' string.
+     * 
      * @param name
      * @return
      */
@@ -246,7 +247,7 @@ public class ScriptUtils {
 
     /**
      * Converts a list of string to a valid js string array
-     *
+     * 
      * @param list list of Strings to be converted
      * @return String representing the js array
      */
@@ -266,10 +267,12 @@ public class ScriptUtils {
 
     /**
      * escapes a string using {@link org.apache.commons.lang.StringEscapeUtils#escapeHtml(String)}
-     *
-     * <p>The apostrophe character is included as <code>StringEscapeUtils#escapeHtml(String)</code>
-     * does not consider it a legal entity. </p>
-     *
+     * 
+     * <p>
+     * The apostrophe character is included as <code>StringEscapeUtils#escapeHtml(String)</code>
+     * does not consider it a legal entity.
+     * </p>
+     * 
      * @param string the string to be escaped
      * @return the escaped string - useful for embedding in server side generated JS scripts
      */
@@ -283,7 +286,7 @@ public class ScriptUtils {
 
     /**
      * escape an array of strings
-     *
+     * 
      * @param strings an array of strings to escape
      * @return the array, with the strings escaped
      */
@@ -302,9 +305,9 @@ public class ScriptUtils {
     }
 
     /**
-     * Will append the second script parameter to the first if the first is not empty, also checks to see if the
-     * first script needs an end semi-colon added
-     *
+     * Will append the second script parameter to the first if the first is not empty, also checks
+     * to see if the first script needs an end semi-colon added
+     * 
      * @param script script that will be added to (null is allowed and converted to empty string)
      * @param appendScript script to append
      * @return String result of appending the two script parameters
@@ -323,10 +326,12 @@ public class ScriptUtils {
     }
 
     /**
-     * Helper method to build a JS string that will invoke the given function with the given arguments
+     * Helper method to build a JS string that will invoke the given function with the given
+     * arguments
      * 
      * @param functionName name of the JS function to invoke
-     * @param arguments zero or more arguments to pass, each will be converted to the corresponding JS type
+     * @param arguments zero or more arguments to pass, each will be converted to the corresponding
+     *        JS type
      * @return JS String for invoking the function
      */
     public static String buildFunctionCall(String functionName, Object... arguments) {
@@ -349,11 +354,11 @@ public class ScriptUtils {
     /**
      * Builds the JavaScript string for binding the given script to the component with the given id
      * for the given event name (using jQuery)
-     *
+     * 
      * @param id id of the element to handle the event for
      * @param eventName name of the event the script will handle
-     * @param eventScript script to be executed when the event is thrown, if blank an empty string will
-     * be returned
+     * @param eventScript script to be executed when the event is thrown, if blank an empty string
+     *        will be returned
      * @return JS event handler script
      */
     public static String buildEventHandlerScript(String id, String eventName, String eventScript) {

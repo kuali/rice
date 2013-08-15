@@ -229,8 +229,11 @@ public class ObjectPropertyUtils {
             // ProcessLogger.ntrace(object.getClass().getSimpleName() + ":r:" + propertyPath, "", 1000);
             ProcessLogger.countBegin("bean-property-read");
         }
+
         try {
+        
             return (T) ObjectPropertyReference.resolvePath(object, object.getClass(), propertyPath, false).get();
+        
         } catch (RuntimeException e) {
             throw new RuntimeException("Error getting property '" + propertyPath + "' from " + object, e);
         } finally {
@@ -238,6 +241,7 @@ public class ObjectPropertyUtils {
                 ProcessLogger.countEnd("bean-property-read", object.getClass().getSimpleName() + ":" + propertyPath);
             }
         }
+        
     }
 
     /**
@@ -290,8 +294,11 @@ public class ObjectPropertyUtils {
             // ProcessLogger.ntrace(object.getClass().getSimpleName() + ":w:" + propertyPath + ":", "", 1000);
             ProcessLogger.countBegin("bean-property-write");
         }
+        
         try {
+
             ObjectPropertyReference.resolvePath(object, object.getClass(), propertyPath, true).set(propertyValue);
+        
         } catch (RuntimeException e) {
             throw new RuntimeException("Error setting property '" + propertyPath + "' on " + object + " with "
                     + propertyValue, e);
@@ -300,6 +307,7 @@ public class ObjectPropertyUtils {
                 ProcessLogger.countEnd("bean-property-write", object.getClass().getSimpleName() + ":" + propertyPath);
             }
         }
+        
     }
 
     /**

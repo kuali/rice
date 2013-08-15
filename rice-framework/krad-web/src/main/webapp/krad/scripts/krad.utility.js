@@ -428,8 +428,16 @@ function evalHiddenScript(jqueryObj) {
     }
     jqueryObj.attr("script", "first_run");
     jqueryObj.removeAttr("name");
-    eval(jqueryObj.val());
-
+    var js = jqueryObj.val();
+    try {
+        eval(js);
+    } catch (err) {
+        if (err instanceof ReferenceError) {
+            throw new ReferenceError(err.message + " -> offending code: " + js, err.fileName, err.lineNumber);
+        } else {
+            throw err;
+        }
+    }
 }
 
 /**

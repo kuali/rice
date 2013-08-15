@@ -22,10 +22,17 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.kuali.rice.test.BaselineTestCase;
+import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.data.PerSuiteUnitTestData;
 import org.kuali.rice.test.data.PerTestUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
+
+import static org.junit.Assert.assertNotNull;
 
 /**
  * DataLoaderAnnotationOverrideTest is used to test the annotation data entry provided by {@link UnitTestData}, {@link PerTestUnitTestData}, and {@link PerSuiteUnitTestData}
@@ -38,6 +45,7 @@ import org.kuali.rice.test.data.UnitTestData;
         value = {@UnitTestData("insert into " + AnnotationTestParent.TEST_TABLE_NAME + " (COL) values ('3')"),
         @UnitTestData(filename = "classpath:org/kuali/rice/test/DataLoaderAnnotationTestData.sql")
 })
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 @DataLoaderAnnotationOverrideTest.Nothing
 public class DataLoaderAnnotationOverrideTest extends AnnotationTestParent {
     // a dummy annotation to test that data loading annotations work in presence of
@@ -48,33 +56,30 @@ public class DataLoaderAnnotationOverrideTest extends AnnotationTestParent {
     @Inherited
     public static @interface Nothing {
     }
-    
-    @Test public void testParentAndSubClassImplementation() throws Exception {
-        //verify that the PerSuiteUnitTestData is correct
-        int rowsWith1 = 0;
-        int rowsWith2 = 0;
-        int rowsWith3 = 1;
-        int rowsWith4 = 1;
 
-        if (countTableResults("5") > 0 ) {
-            // Previous DataLoaderAnnotationTest left db dirty
-            rowsWith1 = 1;
-            rowsWith2 = 1;
-            rowsWith3 = 2;
-            rowsWith4 = 2;
-        }
+
+    @After
+    public void clearDb() throws Exception {
+        // cleanup database from @PerSuiteUnitTestData
+        ClearDatabaseLifecycle clearDatabaseLifeCycle = new ClearDatabaseLifecycle();
+        clearDatabaseLifeCycle.start();
+    }
+
+    @Test public void testParentAndSubClassImplementation() throws Exception {
+        // verify that the sql only ran once...
 
         // check sql statement from this class
-        verifyCount("3", rowsWith3, "https://jira.kuali.org/browse/KULRICE-9283");
+        verifyCount("3", 1, "https://jira.kuali.org/browse/KULRICE-9283");
 
         // check sql file from this class
-        verifyCount("4", rowsWith4);
+        verifyCount("4", 1);
 
         // check sql statement from parent class
-        verifyCount("1", rowsWith1);
+        verifyNonExistent("1");
 
         // check sql file from parent class
-        verifyCount("2", rowsWith2);
+        verifyNonExistent("2");
+
     }
 
 }

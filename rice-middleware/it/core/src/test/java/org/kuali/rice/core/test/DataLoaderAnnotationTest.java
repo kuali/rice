@@ -15,7 +15,10 @@
  */
 package org.kuali.rice.core.test;
 
+import org.junit.After;
 import org.junit.Test;
+import org.kuali.rice.test.BaselineTestCase;
+import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.data.PerSuiteUnitTestData;
 import org.kuali.rice.test.data.PerTestUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
@@ -25,28 +28,37 @@ import org.kuali.rice.test.data.UnitTestData;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-// value 5 is to communicate to later tests that this test has proceeded them in a dirty db.
 @PerSuiteUnitTestData({
         @UnitTestData("insert into " + AnnotationTestParent.TEST_TABLE_NAME + " (COL) values ('3')"),
-        @UnitTestData(filename = "classpath:org/kuali/rice/test/DataLoaderAnnotationTestData.sql"),
-        @UnitTestData("insert into " + AnnotationTestParent.TEST_TABLE_NAME + " (COL) values ('5')")
+        @UnitTestData(filename = "classpath:org/kuali/rice/test/DataLoaderAnnotationTestData.sql")
 })
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class DataLoaderAnnotationTest extends AnnotationTestParent {
     
     public DataLoaderAnnotationTest() {}
 
+    @After
+    public void clearDb() throws Exception {
+        // cleanup database from @PerSuiteUnitTestData
+        ClearDatabaseLifecycle clearDatabaseLifeCycle = new ClearDatabaseLifecycle();
+        clearDatabaseLifeCycle.start();
+    }
+
     @Test public void testParentAndSubClassImplementation() throws Exception {
         // check sql statement from this class
         verifyExistence("3");
+        verifyCount("3", 1);
         
         // check sql file from this class
         verifyExistence("4");
+        verifyCount("4", 1);
         
         // check sql statement from parent class
         verifyExistence("1");
+        verifyCount("1", 1);
         
         // check sql file from parent class
         verifyExistence("2");
+        verifyCount("2", 1);
     }
-    
 }

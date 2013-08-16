@@ -39,14 +39,19 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
             def titlePropNode = maintDocParentBeanNode.property.find { it.@name == "title" }
             def maintSectPropNode = maintDocParentBeanNode.property.find { it.@name == "maintainableSections" }
             beanNode.replaceNode {
-                bean(id: objName + "MaintenanceDocument", parent: "MaintenanceDocumentEntry") {
+                bean(id: beanNode.@id, parent: beanNode.@parent) {
                     copyProperties(delegate, beanNode, copyProps)
                 }
             }
 
+            def originalBeanType = "MaintenanceDocumentEntry";
+            def transformBeanType = "Uif-MaintenanceView";
+            def translatedBeanId = getTranslatedBeanId(beanNode.@id, originalBeanType, transformBeanType);
+            def translatedParentId = getTranslatedBeanId(beanNode.@parent, originalBeanType, transformBeanType);
+
             beanNode.replaceNode {
                 addComment(delegate, "Maintenance View")
-                bean(id: "$objName-MaintenanceView", parent: "Uif-MaintenanceView") {
+                bean(id: translatedBeanId, parent: translatedParentId) {
                     renameProperties(delegate, maintDocParentBeanNode, ["title": "headerText", "businessObjectClass": "dataObjectClassName"])
                     addViewNameProperty(delegate, titlePropNode?.@value)
                     transformMaintainableSectionsProperty(delegate, maintDocParentBeanNode)

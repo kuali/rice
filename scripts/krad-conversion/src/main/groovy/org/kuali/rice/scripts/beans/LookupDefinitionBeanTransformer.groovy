@@ -48,7 +48,9 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
             addComment(delegate, "Lookup View")
             bean(id: translatedBeanId, parent: translatedParentId) {
                 addViewNameProperty(delegate, lookupTitle)
-                property(name: "headerText", value: lookupTitle)
+                if (lookupTitle) {
+                    property(name: "headerText", value: lookupTitle)
+                }
                 if (objClassName) {
                     property(name: "dataObjectClassName", value: objClassName)
                 }

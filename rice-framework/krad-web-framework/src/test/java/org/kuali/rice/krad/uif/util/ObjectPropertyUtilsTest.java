@@ -259,8 +259,16 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
         Map<String, Object> tm = new java.util.HashMap<String, Object>();
         tb.setMapProp(tm);
         tm.put("barbaz", "hooray!");
+        tm.put("bar.baz", "hoorah!");
+        tm.put("bar.[baz]", "foobah!");
+        tm.put("b'('r.[\"ain)\"s]", "zombie!");
+        assertEquals("hooray!", ObjectPropertyUtils.getPropertyValue(tb, "mapProp[barbaz]"));
         assertEquals("hooray!", ObjectPropertyUtils.getPropertyValue(tb, "mapProp['barbaz']"));
         assertEquals("hooray!", ObjectPropertyUtils.getPropertyValue(tb, "mapProp[\"barbaz\"]"));
+        assertEquals("hoorah!", ObjectPropertyUtils.getPropertyValue(tb, "mapProp[bar.baz]"));
+        assertEquals("foobah!", ObjectPropertyUtils.getPropertyValue(tb, "mapProp[bar.[baz]]"));
+        assertEquals("zombie!", ObjectPropertyUtils.getPropertyValue(tb, "mapProp['b'('r.[\"ain)\"s]']"));
+        assertEquals("zombie!", ObjectPropertyUtils.getPropertyValue(tb, "mapProp[b'('r.[\"ain)\"s]]"));
 
         TestBean tb2 = new TestBean();
         tb2.setRwProp("foodbar");

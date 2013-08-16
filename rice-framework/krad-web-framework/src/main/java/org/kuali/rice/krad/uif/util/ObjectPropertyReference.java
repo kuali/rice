@@ -371,7 +371,7 @@ public class ObjectPropertyReference {
             ObjectPropertyReference resolved = (ObjectPropertyReference) ObjectPathExpressionParser
                     .parsePathExpression(
                             reference,
-                            propertyPath,
+                            propertyPath, true,
                             grow ? MUTATE_REF_PATH_ENTRY : LOOKUP_REF_PATH_ENTRY);
 
             reference.bean = resolved.bean;

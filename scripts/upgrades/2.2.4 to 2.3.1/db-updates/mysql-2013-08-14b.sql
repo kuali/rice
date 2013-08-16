@@ -18,6 +18,10 @@
 -- KULRICE-9034: KR-KRAD - RESULTS_LIMIT parameter should be added and the code should be changed to use it
 --
 
+INSERT INTO krcr_cmpnt_t (nmspc_cd, cmpnt_cd, obj_id, ver_nbr, nm, actv_ind)
+  VALUES ('KR-KRAD', 'Lookup', uuid(), 1, 'Lookup', 'Y')
+;
+
 INSERT INTO KRCR_PARM_T
   (NMSPC_CD, CMPNT_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, VAL, PARM_DESC_TXT, EVAL_OPRTR_CD, APPL_ID)
   VALUES ('KR-KRAD', 'Lookup', 'RESULTS_LIMIT', uuid(), 1, 'CONFG', '200',

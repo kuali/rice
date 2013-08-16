@@ -970,6 +970,14 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setAjaxReturnType(String)
+     */
+    @Override
+    public void setAjaxReturnType(String ajaxReturnType) {
+        this.ajaxReturnType = ajaxReturnType;
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#isUpdateComponentRequest()
      */
     @Override
@@ -1012,25 +1020,6 @@ public class UifFormBase implements ViewModel {
     public boolean isBuildViewRequest() {
         return !isAjaxRequest() || (StringUtils.isNotBlank(getAjaxReturnType()) && (getAjaxReturnType().equals(
                 UifConstants.AjaxReturnTypes.UPDATEVIEW.getKey()) || isUpdatePageRequest()));
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#isUpdateViewRequest()
-     */
-    @Override
-    public boolean isUpdateViewRequest() {
-        return isAjaxRequest() &&
-                StringUtils.isNotBlank(getAjaxReturnType()) &&
-                (isUpdateComponentRequest() || getAjaxReturnType().equals(
-                        UifConstants.AjaxReturnTypes.DISPLAYLIGHTBOX.getKey()));
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setAjaxReturnType(String)
-     */
-    @Override
-    public void setAjaxReturnType(String ajaxReturnType) {
-        this.ajaxReturnType = ajaxReturnType;
     }
 
     /**

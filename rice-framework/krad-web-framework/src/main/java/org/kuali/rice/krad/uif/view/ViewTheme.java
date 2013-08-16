@@ -183,7 +183,7 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
         try {
             themeProperties = getThemeProperties();
         } catch (IOException e) {
-            throw new RuntimeException("Unable to retrieve theme properties for theme: " + this.name);
+            throw new RuntimeException("Unable to retrieve theme properties for theme: " + this.name, e);
         }
 
         if (themeProperties == null) {

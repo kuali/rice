@@ -1211,8 +1211,6 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
      */
     void addDataAttribute(String key, String value);
 
-    Map<String, String> getDataAttributes();
-
     /**
      * The DataAttributes that will be written to the html and/or through script to be consumed by jQuery
      *
@@ -1220,6 +1218,14 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
      * The attributes that are simple (contain no objects) will be written directly to the html of the
      * component using standard data-.</p>
      * <p>Either way they can be access through .data() call in jQuery.</p>
+     *
+     * @return map of data attributes, where key is data attribute name and the map value is the data
+     * attribute value
+     */
+    Map<String, String> getDataAttributes();
+
+    /**
+     * Setter for data attributes to include for the component
      *
      * @param dataAttributes
      */

@@ -411,9 +411,12 @@ public interface ViewModel extends Serializable {
      */
     public boolean isUpdateNoneRequest();
 
+    /**
+     * Indicates whether the request will result in building an entire view
+     *
+     * @return boolean true if the full view will be built, false if not
+     */
     public boolean isBuildViewRequest();
-
-    public boolean isUpdateViewRequest();
 
     /**
      * Setter for the type of ajax return

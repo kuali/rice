@@ -104,8 +104,7 @@ public class UifConstants {
      */
     public enum AjaxReturnTypes {
         UPDATEPAGE("update-page"), UPDATECOMPONENT("update-component"), REDIRECT("redirect"),
-        UPDATEVIEW("update-view"), UPDATECOLLECTION("update-collection"),
-        UPDATENONE("update-none"), DISPLAYLIGHTBOX("display-lightbox"),
+        UPDATEVIEW("update-view"), UPDATENONE("update-none"), DISPLAYLIGHTBOX("display-lightbox"),
         UPDATEDIALOG("update-dialog");
 
         private String key;

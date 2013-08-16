@@ -27,10 +27,12 @@ import java.util.UUID;
 /**
  * HistoryManager stores the map of the most recentFlows and a map of flows stored by flowId concatenated with formId.
  * HistoryManager is used in session.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class HistoryManager implements Serializable {
-
     private static final long serialVersionUID = 7612500634309569727L;
+
     private Map<String, HistoryFlow> historyFlowMap = new HashMap<String, HistoryFlow>();
     private Map<String, HistoryFlow> recentFlows = new HashMap<String, HistoryFlow>();
 

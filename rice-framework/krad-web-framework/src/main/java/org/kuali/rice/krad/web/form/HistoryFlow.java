@@ -26,6 +26,8 @@ import java.util.Stack;
 /**
  * HistoryFlow represents the a flow of urls.  When the flow is continued, the flow inherits the urls/breadcrumbs from
  * a previous flow.  Using a flow key it is possible to jump back to previous flows.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class HistoryFlow implements Serializable {
     protected Stack<UrlInfo> flowUrls = new Stack<UrlInfo>();

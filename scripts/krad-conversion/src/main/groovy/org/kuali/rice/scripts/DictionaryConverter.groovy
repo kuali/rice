@@ -52,6 +52,14 @@ class DictionaryConverter {
     def pNamespaceSchema
     def xsiNamespaceSchema
 
+    // conversion related patterns
+    // process xml pattern used for which spring xml files to process
+    def processInclPattern
+
+    // spring xml include pattern and uif lib exclude pattern used for files for pre-processing
+    def preprocessInclPattern
+    def preprocessExclPattern
+
     // spring bean maps (id: dataObject, id, parent) preloaded before conversion
     Map<String, String> definitionDataObjects = [:];
     Map<String, String> parentBeans = [:];
@@ -82,6 +90,10 @@ class DictionaryConverter {
 
         pNamespaceSchema = config.msg_bean_schema
         xsiNamespaceSchema = config.msg_xml_schema_legacy
+
+        preprocessInclPattern = config.pattern.dictionaryconversion.preProcessInclude;
+        preprocessExclPattern = config.pattern.dictionaryconversion.preProcessExclude;
+        processInclPattern = config.pattern.dictionaryconversion.processInclude;
     }
 
 
@@ -96,12 +108,9 @@ class DictionaryConverter {
         def inputResourceDir = FilenameUtils.normalize(inputDir, true) + inputPaths.src.resources;
         def outputResourceDir = FilenameUtils.normalize(outputDir, true) + outputPaths.src.resources;
 
-        def xmlInclPattern = ~/.*\.xml$/;
-        def uifLibExclPattern = ~/uif\/library/;
-
         // locate all relevant spring bean files based on bean parent and properties
-        def springBeanFiles = locateSpringBeanFiles(inputResourceDir, xmlInclPattern,
-                uifLibExclPattern, ["MaintenanceDocumentEntry"], ["businessObjectClass"]);
+        def springBeanFiles = locateSpringBeanFiles(inputResourceDir, preprocessInclPattern,
+                preprocessExclPattern, ["MaintenanceDocumentEntry"], ["businessObjectClass"]);
         preloadSpringData(springBeanFiles);
         processSpringBeanFiles(springBeanFiles, inputResourceDir, outputResourceDir);
 
@@ -169,7 +178,7 @@ class DictionaryConverter {
      * @param outputBaseDir
      */
     protected void processSpringBeanFiles(List<File> files, String inputBaseDir, String outputBaseDir) {
-        files.each { File springFile ->
+        files.findAll { it.path =~ processInclPattern }.each { File springFile ->
             Node rootNode = parseSpringXml(springFile.text);
             if (rootNode != null) {
                 transformSpringBeans(rootNode);

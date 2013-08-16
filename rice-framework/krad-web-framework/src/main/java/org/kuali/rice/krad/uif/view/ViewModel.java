@@ -418,6 +418,8 @@ public interface ViewModel extends Serializable {
      */
     public boolean isBuildViewRequest();
 
+    public boolean isUpdateViewRequest();
+
     /**
      * Setter for the type of ajax return
      *

@@ -218,7 +218,7 @@ class DictionaryConverter {
 
     protected boolean isBeanTransformable(Node beanNode) {
         def transformType = getTransformableBeanType(beanNode);
-        if (DictionaryConverter.metaClass.methods.find { it.name == "transform" + transformType.capitalize() + "Bean" }) {
+        if (transformType != null && DictionaryConverter.metaClass.methods.find { it.name == "transform" + transformType?.capitalize() + "Bean" }) {
             return true;
         } else {
             return false;

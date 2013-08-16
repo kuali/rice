@@ -137,14 +137,4 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
         }
     }
 
-    /**
-     * transform summary field properties into values
-     *
-     * @param builder
-     * @param beanNode
-     */
-    def transformSummaryFieldsProperty(NodeBuilder builder, Node beanNode) {
-        transformPropertyBeanList(builder, beanNode, ["summaryFields": "layoutManager.summaryFields"], gatherAttributeNameAttribute, valueFieldTransform);
-    }
-
 }

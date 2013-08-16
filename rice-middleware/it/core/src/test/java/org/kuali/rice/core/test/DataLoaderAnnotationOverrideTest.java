@@ -26,6 +26,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.data.PerSuiteUnitTestData;
@@ -33,6 +34,7 @@ import org.kuali.rice.test.data.PerTestUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 /**
  * DataLoaderAnnotationOverrideTest is used to test the annotation data entry provided by {@link UnitTestData}, {@link PerTestUnitTestData}, and {@link PerSuiteUnitTestData}
@@ -45,7 +47,7 @@ import static org.junit.Assert.assertNotNull;
         value = {@UnitTestData("insert into " + AnnotationTestParent.TEST_TABLE_NAME + " (COL) values ('3')"),
         @UnitTestData(filename = "classpath:org/kuali/rice/test/DataLoaderAnnotationTestData.sql")
 })
-@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
+//@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 @DataLoaderAnnotationOverrideTest.Nothing
 public class DataLoaderAnnotationOverrideTest extends AnnotationTestParent {
     // a dummy annotation to test that data loading annotations work in presence of
@@ -57,12 +59,14 @@ public class DataLoaderAnnotationOverrideTest extends AnnotationTestParent {
     public static @interface Nothing {
     }
 
-
-    @After
-    public void clearDb() throws Exception {
-        // cleanup database from @PerSuiteUnitTestData
-        ClearDatabaseLifecycle clearDatabaseLifeCycle = new ClearDatabaseLifecycle();
-        clearDatabaseLifeCycle.start();
+    @Override
+    protected void setUpInternal() throws Exception {
+        try{
+            resetDb();
+        } catch (Exception e) {
+           // Will error of db not previously loaded, ignore reset error
+        }
+        super.setUpInternal();
     }
 
     @Test public void testParentAndSubClassImplementation() throws Exception {

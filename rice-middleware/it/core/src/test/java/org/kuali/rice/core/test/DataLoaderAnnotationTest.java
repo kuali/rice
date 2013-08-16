@@ -15,10 +15,7 @@
  */
 package org.kuali.rice.core.test;
 
-import org.junit.After;
 import org.junit.Test;
-import org.kuali.rice.test.BaselineTestCase;
-import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.data.PerSuiteUnitTestData;
 import org.kuali.rice.test.data.PerTestUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
@@ -32,16 +29,18 @@ import org.kuali.rice.test.data.UnitTestData;
         @UnitTestData("insert into " + AnnotationTestParent.TEST_TABLE_NAME + " (COL) values ('3')"),
         @UnitTestData(filename = "classpath:org/kuali/rice/test/DataLoaderAnnotationTestData.sql")
 })
-@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class DataLoaderAnnotationTest extends AnnotationTestParent {
     
     public DataLoaderAnnotationTest() {}
 
-    @After
-    public void clearDb() throws Exception {
-        // cleanup database from @PerSuiteUnitTestData
-        ClearDatabaseLifecycle clearDatabaseLifeCycle = new ClearDatabaseLifecycle();
-        clearDatabaseLifeCycle.start();
+    @Override
+    protected void setUpInternal() throws Exception {
+        try{
+            resetDb();
+        } catch (Exception e) {
+            // Will error of db not previously loaded, ignore reset error
+        }
+        super.setUpInternal();
     }
 
     @Test public void testParentAndSubClassImplementation() throws Exception {

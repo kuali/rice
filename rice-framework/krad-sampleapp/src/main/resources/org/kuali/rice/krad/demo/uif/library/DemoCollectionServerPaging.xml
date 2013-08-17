@@ -30,25 +30,26 @@
     <property name="demoGroups">
       <list>
         <ref bean="Demo-CollectionServerPaging-Example1"/>
+        <ref bean="Demo-CollectionServerPaging-Example2"/>
       </list>
     </property>
   </bean>
 
-  <bean id="Demo-CollectionServerPaging-Example1"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-CollectionServerPaging-Example1" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
 
         <!-- ex:Demo-CollectionServerPaging-Example1 start-->
-        <bean parent="Uif-Disclosure-TableCollectionSection"	p:layoutManager.numberOfColumns="4"
+        <bean parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4"
               p:refreshWhenChangedPropertyNames="collection1Size">
-          <property name="headerText" value="Server Paging" />
+          <property name="headerText" value="Server Paging"/>
           <property name="collectionObjectClass"
-                    value="org.kuali.rice.krad.demo.uif.form.ServerPagingTestObject" />
-          <property name="propertyName" value="collection1" />
+                    value="org.kuali.rice.krad.demo.uif.form.ServerPagingTestObject"/>
+          <property name="propertyName" value="collection1"/>
 
           <!-- enable DataTables and server paging -->
-          <property name="layoutManager.richTable.render" value="true" />
-          <property name="useServerPaging" value="true" />
+          <property name="layoutManager.richTable.render" value="true"/>
+          <property name="useServerPaging" value="true"/>
 
           <property name="items">
             <list>
@@ -63,6 +64,28 @@
         </bean>
         <!-- ex:Demo-CollectionServerPaging-Example1 end-->
 
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-CollectionServerPaging-Example2" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-CollectionServerPaging-Example2 start-->
+        <bean parent="Uif-StackedCollectionSection">
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="propertyName" value="collection2"/>
+          <property name="useServerPaging" value="true"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1" p:required="true"/>
+              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2" p:required="true"/>
+              <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3" p:required="true"/>
+              <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4" p:required="true"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-CollectionServerPaging-Example2 end-->
       </list>
     </property>
   </bean>

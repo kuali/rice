@@ -173,10 +173,11 @@ public class CollectionGroupBuilder implements Serializable {
             collectionGroup.setDisplayLength(1);
         }
 
-        final int displayStart = (collectionGroup.getDisplayStart() != -1) ? collectionGroup.getDisplayStart() : 0;
+        final int displayStart = (collectionGroup.getDisplayStart() != -1 && collectionGroup.isUseServerPaging()) ?
+                collectionGroup.getDisplayStart() : 0;
 
-        final int displayLength = (collectionGroup.getDisplayLength() != -1) ? collectionGroup.getDisplayLength() :
-                filteredIndexedElements.size() - displayStart;
+        final int displayLength = (collectionGroup.getDisplayLength() != -1 && collectionGroup.isUseServerPaging()) ?
+                collectionGroup.getDisplayLength() : filteredIndexedElements.size() - displayStart;
 
         // make sure we don't exceed the size of our collection
         final int displayEndExclusive =

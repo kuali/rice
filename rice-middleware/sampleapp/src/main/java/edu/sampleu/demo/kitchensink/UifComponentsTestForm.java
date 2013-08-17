@@ -247,29 +247,30 @@ public class UifComponentsTestForm extends UifFormBase {
 
         uiTestObject = new UITestObject("Foo", "FooBar", "FooBear", "FooRacket");
 
-        sourceCodeField = "&lt;bean parent=\"Uif-PrimaryActionButton\" p:actionLabel=\"Save\" p:methodToCall=\"performSave\"&gt;\n"
-                + "&#32;&#32;&lt;property name=\"actionImage\"&gt;\n"
-                + "&#32;&#32;&#32;&#32;&lt;bean parent=\"Uif-Image\"\n"
-                + "&#32;&#32;&#32;&#32;&#32;&#32;p:source=\"@{#ConfigProperties['krad.externalizable.images.url']}searchicon.png\"\n"
-                + "&#32;&#32;&#32;&#32;&#32;&#32;p:actionImageLocation=\"RIGHT\"/&gt;\n"
-                + "&#32;&#32;&lt;/property&gt;\n"
-                + "&lt;/bean&gt;";
+        sourceCodeField =
+                "&lt;bean parent=\"Uif-PrimaryActionButton\" p:actionLabel=\"Save\" p:methodToCall=\"performSave\"&gt;\n"
+                        + "&#32;&#32;&lt;property name=\"actionImage\"&gt;\n"
+                        + "&#32;&#32;&#32;&#32;&lt;bean parent=\"Uif-Image\"\n"
+                        + "&#32;&#32;&#32;&#32;&#32;&#32;p:source=\"@{#ConfigProperties['krad.externalizable.images.url']}searchicon.png\"\n"
+                        + "&#32;&#32;&#32;&#32;&#32;&#32;p:actionImageLocation=\"RIGHT\"/&gt;\n"
+                        + "&#32;&#32;&lt;/property&gt;\n"
+                        + "&lt;/bean&gt;";
 
-        list1.add(new UITestObject("5", "6", "7", "8", new UITestObject("1","1","1","1")));
-        UITestObject obj1 = new UITestObject("1", "2", "3", "4", new UITestObject("1","1","1","1"));
+        list1.add(new UITestObject("5", "6", "7", "8", new UITestObject("1", "1", "1", "1")));
+        UITestObject obj1 = new UITestObject("1", "2", "3", "4", new UITestObject("1", "1", "1", "1"));
         obj1.setStringList(null);
         list1.add(obj1);
-        UITestObject obj2 = new UITestObject("9", "10", "11", "12", new UITestObject("1","1","1","1"));
+        UITestObject obj2 = new UITestObject("9", "10", "11", "12", new UITestObject("1", "1", "1", "1"));
         obj2.setStringList(new ArrayList<String>());
         list1.add(obj2);
-        list1.add(new UITestObject("13", "14", "15", "16", new UITestObject("1","1","1","1")));
-        list1.add(new UITestObject("17", "18", "19", "20", new UITestObject("1","1","1","1")));
-        list1.add(new UITestObject("5", "6", "7", "8", new UITestObject("1","1","1","1")));
-        list1.add(new UITestObject("1", "2", "3", "4", new UITestObject("1","1","1","1")));
-        list1.add(new UITestObject("9", "10", "11", "12", new UITestObject("1","1","1","1")));
-        list1.add(new UITestObject("13", "14", "15", "16", new UITestObject("1","1","1","1")));
-        list1.add(new UITestObject("213", "143", "151", "126", new UITestObject("1","1","1","1")));
-        list1.add(new UITestObject("133", "144", "155", "156", new UITestObject("1","1","1","1")));
+        list1.add(new UITestObject("13", "14", "15", "16", new UITestObject("1", "1", "1", "1")));
+        list1.add(new UITestObject("17", "18", "19", "20", new UITestObject("1", "1", "1", "1")));
+        list1.add(new UITestObject("52", "6", "7", "8", new UITestObject("1", "1", "1", "1")));
+        list1.add(new UITestObject("12", "2", "3", "4", new UITestObject("1", "1", "1", "1")));
+        list1.add(new UITestObject("92", "10", "11", "12", new UITestObject("1", "1", "1", "1")));
+        list1.add(new UITestObject("132", "14", "15", "16", new UITestObject("1", "1", "1", "1")));
+        list1.add(new UITestObject("2132", "143", "151", "126", new UITestObject("1", "1", "1", "1")));
+        list1.add(new UITestObject("1332", "144", "155", "156", new UITestObject("1", "1", "1", "1")));
 
         list2.add(new UITestObject("A", "B", "C", "D"));
         list2.add(new UITestObject("1", "2", "3", "4"));
@@ -288,11 +289,11 @@ public class UifComponentsTestForm extends UifFormBase {
         list3.get(2).getSubList().add(new UITestObject("W", "X", "Y", "Z"));
 
         list4.add(new UITestObject("A", "B", "C", "D"));
-        list4.get(0).getSubList().add(new UITestObject("1", "B", "C", "D", new UITestObject("1","1","1","1")));
-        list4.get(0).getSubList().add(new UITestObject("2", "2", "3", "4", new UITestObject("1","1","1","1")));
-        list4.get(0).getSubList().add(new UITestObject("3", "X", "Y", "Z", new UITestObject("1","1","1","1")));
+        list4.get(0).getSubList().add(new UITestObject("1", "B", "C", "D", new UITestObject("1", "1", "1", "1")));
+        list4.get(0).getSubList().add(new UITestObject("2", "2", "3", "4", new UITestObject("1", "1", "1", "1")));
+        list4.get(0).getSubList().add(new UITestObject("3", "X", "Y", "Z", new UITestObject("1", "1", "1", "1")));
         list4.add(new UITestObject("1", "2", "3", "4"));
-        list4.get(1).getSubList().add(new UITestObject("4", "b", "C", "D", new UITestObject("$50.00","1","1","1")));
+        list4.get(1).getSubList().add(new UITestObject("4", "b", "C", "D", new UITestObject("$50.00", "1", "1", "1")));
         /*list4.get(1).getSubList().add(new UITestObject("5", "s", "D", "F", new UITestObject("1","1","1","1")));*/
 
         //triple nesting
@@ -311,7 +312,7 @@ public class UifComponentsTestForm extends UifFormBase {
         list5.get(1).getSubList().add(new UITestObject("a", "s", "D", "F"));
         list5.get(1).getSubList().get(1).getSubList().add(new UITestObject("b23", "3", "3", "3"));
         list5.get(1).getSubList().get(1).getSubList().add(new UITestObject("b23", "3", "3", "3"));
-        
+
         groupedList1.add(new UITestObject("A", "100", "200", "300"));
         groupedList1.add(new UITestObject("A", "101", "200", "300"));
         groupedList1.add(new UITestObject("A", "102", "200", "300"));
@@ -351,10 +352,10 @@ public class UifComponentsTestForm extends UifFormBase {
         groupedList1.add(new UITestObject("D", "101", "200", "300"));
         groupedList1.add(new UITestObject("D", "102", "200", "300"));
         groupedList1.add(new UITestObject("D", "103", "200", "300"));
-        
+
         groupedList2.addAll(groupedList1);
         groupedList3.addAll(groupedList1);
-        
+
         doubleGroupedList.add(new UITestObject("Fall", "2001", "AAA123", "2"));
         doubleGroupedList.add(new UITestObject("Fall", "2001", "BBB123", "3"));
         doubleGroupedList.add(new UITestObject("Fall", "2001", "CCC123", "4"));
@@ -381,9 +382,10 @@ public class UifComponentsTestForm extends UifFormBase {
         doubleGroupedList.add(new UITestObject("Spring", "2003", "DDD123", "2"));
 
         for (int i = 0; i < 22; i++) {
-            UITestObject newObj = new UITestObject(RandomStringUtils.randomAlphanumeric(6), RandomStringUtils.randomAlphanumeric(6),
-                                RandomStringUtils.randomAlphanumeric(6), RandomStringUtils.randomNumeric(1));
-            if(i%2 == 0){
+            UITestObject newObj = new UITestObject(RandomStringUtils.randomAlphanumeric(6),
+                    RandomStringUtils.randomAlphanumeric(6), RandomStringUtils.randomAlphanumeric(6),
+                    RandomStringUtils.randomNumeric(1));
+            if (i % 2 == 0) {
                 newObj.setBfield(true);
             }
             list6.add(newObj);
@@ -474,13 +476,12 @@ public class UifComponentsTestForm extends UifFormBase {
 
         DateFormat dateFormat = SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT);
         dateList = new ArrayList<Date>();
-        try{
+        try {
             dateList.add(dateFormat.parse("01/01/1990"));
             dateList.add(dateFormat.parse("10/31/2001"));
             dateList.add(dateFormat.parse("11/05/2005"));
             dateList.add(dateFormat.parse("02/13/2011"));
-        }
-        catch(Exception e){
+        } catch (Exception e) {
 
         }
 

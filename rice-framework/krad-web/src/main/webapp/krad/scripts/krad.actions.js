@@ -229,7 +229,7 @@ function retrieveComponent(id, methodToCall, successCallback, additionalData, di
     kradRequest.additionalData = additionalData;
     kradRequest.refreshId = id;
 
-    if(disableBlocking){
+    if (disableBlocking) {
         kradRequest.disableBlocking = disableBlocking;
     }
 
@@ -350,7 +350,7 @@ function validateLineFields(controlsToValidate) {
     // Message summaries are going to be shown
     messageSummariesShown = tempMessagesSummariesShown;
 
-    if (messageSummariesShown){
+    if (messageSummariesShown) {
         // Finally, write the result of the validation messages
         writeMessagesForPage();
     }
@@ -358,6 +358,27 @@ function validateLineFields(controlsToValidate) {
     jQuery.watermark.showAll();
 
     return valid;
+}
+
+/**
+ * Retrieves a page for the collection by id specified, the linkElement supplied must have "num" data to retrieve
+ * the page; this method refreshes the collection with new page showing
+ *
+ * @param linkElement the link clicked with "num" data specifying the page to retrieve
+ * @param collectionId the collection by id to retrieve the new page from
+ */
+function retrieveStackedPage(linkElement, collectionId) {
+    var link = jQuery(linkElement);
+    var parentLI = link.parent();
+
+    // Skip processing if the link supplied is disabled or active
+    if (parentLI.is(kradVariables.DISABLED_CLASS) || parentLI.is(kradVariables.ACTIVE_CLASS)) {
+        return;
+    }
+
+    var pageNumber = jQuery(linkElement).data(kradVariables.PAGE_NUMBER_DATA);
+    retrieveComponent(collectionId, kradVariables.RETRIEVE_STACKED_PAGE_METHOD_TO_CALL,
+            null, {pageNumber: pageNumber}, true);
 }
 
 /**
@@ -572,8 +593,8 @@ function hiddenInputValidationToggle(id) {
  */
 function storeOriginalDisabledProperty(element) {
     //capture original disabled property value
-    if(element.data('original-disabled') === undefined) {
-        element.data("original-disabled",element.prop("disabled"));
+    if (element.data('original-disabled') === undefined) {
+        element.data("original-disabled", element.prop("disabled"));
     }
 }
 

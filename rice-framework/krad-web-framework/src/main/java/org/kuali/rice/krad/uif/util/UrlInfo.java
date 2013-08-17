@@ -62,14 +62,14 @@ public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
     /**
      * Base constructor
      */
-    public UrlInfo(){}
+    public UrlInfo() {}
 
     /**
      * Constructor that initializes an href value
      *
      * @param href the href value
      */
-    public UrlInfo(String href){
+    public UrlInfo(String href) {
         this.href = href;
         this.originalHref = href;
     }
@@ -312,7 +312,7 @@ public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
      *
      * @return the requestParameters map
      */
-    @BeanTagAttribute(name = "requestParameters", type= BeanTagAttribute.AttributeType.MAPVALUE)
+    @BeanTagAttribute(name = "requestParameters", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getRequestParameters() {
         return requestParameters;
     }
@@ -342,7 +342,7 @@ public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
      * @return href value
      */
     @Override
-    public String toString(){
+    public String toString() {
         return this.getHref();
     }
 
@@ -377,7 +377,7 @@ public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
                 requestParametersCopy.put(requestParameter.getKey().toString(), requestParameter.getValue().toString());
             }
 
-            urlInfoCopy.setExpressionGraph(requestParametersCopy);
+            urlInfoCopy.setRequestParameters(requestParametersCopy);
         }
     }
 }

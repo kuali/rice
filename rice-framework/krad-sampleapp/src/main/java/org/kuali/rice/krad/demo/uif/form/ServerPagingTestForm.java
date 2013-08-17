@@ -38,6 +38,7 @@ public class ServerPagingTestForm extends UifFormBase {
     private String currentExampleIndex;
 
     List<ServerPagingTestObject> collection1;
+    private List<UITestObject> collection2 = new ArrayList<UITestObject>();
 
     public ServerPagingTestForm() {
         int collection1Size = 1000;
@@ -73,6 +74,49 @@ public class ServerPagingTestForm extends UifFormBase {
 
             collection1.add(listItem);
         }
+
+        collection2.add(new UITestObject("A", "100", "200", "300"));
+        collection2.add(new UITestObject("A", "101", "200", "300"));
+        collection2.add(new UITestObject("A", "102", "200", "300"));
+        collection2.add(new UITestObject("A", "103", "200", "300"));
+        collection2.add(new UITestObject("A", "104", "200", "300"));
+
+        collection2.add(new UITestObject("B", "100", "200", "300"));
+        collection2.add(new UITestObject("B", "101", "200", "300"));
+        collection2.add(new UITestObject("B", "102", "200", "300"));
+
+        collection2.add(new UITestObject("C", "100", "200", "300"));
+        collection2.add(new UITestObject("C", "101", "200", "300"));
+        collection2.add(new UITestObject("C", "102", "200", "300"));
+        collection2.add(new UITestObject("C", "103", "200", "300"));
+
+        collection2.add(new UITestObject("D", "100", "200", "300"));
+        collection2.add(new UITestObject("D", "101", "200", "300"));
+        collection2.add(new UITestObject("D", "102", "200", "300"));
+
+        collection2.add(new UITestObject("E", "100", "200", "300"));
+        collection2.add(new UITestObject("E", "101", "200", "300"));
+        collection2.add(new UITestObject("E", "102", "200", "300"));
+
+        collection2.add(new UITestObject("F", "100", "200", "300"));
+        collection2.add(new UITestObject("F", "101", "200", "300"));
+        collection2.add(new UITestObject("F", "102", "200", "300"));
+
+        collection2.add(new UITestObject("G", "100", "200", "300"));
+        collection2.add(new UITestObject("G", "101", "200", "300"));
+        collection2.add(new UITestObject("G", "102", "200", "300"));
+
+        collection2.add(new UITestObject("H", "100", "200", "300"));
+        collection2.add(new UITestObject("H", "101", "200", "300"));
+        collection2.add(new UITestObject("H", "102", "200", "300"));
+        collection2.add(new UITestObject("H", "103", "200", "300"));
+        collection2.add(new UITestObject("H", "104", "200", "300"));
+
+        collection2.add(new UITestObject("I", "100", "200", "300"));
+        collection2.add(new UITestObject("I", "101", "200", "300"));
+        collection2.add(new UITestObject("I", "102", "200", "300"));
+        collection2.add(new UITestObject("I", "103", "200", "300"));
+        collection2.add(new UITestObject("I", "104", "200", "300"));
     }
 
     public String getThemeName() {
@@ -107,4 +151,11 @@ public class ServerPagingTestForm extends UifFormBase {
         this.collection1 = collection1;
     }
 
+    public List<UITestObject> getCollection2() {
+        return collection2;
+    }
+
+    public void setCollection2(List<UITestObject> collection2) {
+        this.collection2 = collection2;
+    }
 }

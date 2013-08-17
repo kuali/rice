@@ -224,4 +224,29 @@ public class LocationSuggest extends Suggest {
             return "";
         }
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T locationSuggest) {
+        super.copyProperties(locationSuggest);
+
+        LocationSuggest locationSuggestCopy = (LocationSuggest) locationSuggest;
+
+        locationSuggestCopy.setBaseUrl(this.baseUrl);
+        locationSuggestCopy.setAdditionalUrlPathPropertyName(this.additionalUrlPathPropertyName);
+        locationSuggestCopy.setHrefPropertyName(this.hrefPropertyName);
+        locationSuggestCopy.setObjectIdPropertyName(this.objectIdPropertyName);
+
+        if (this.requestParameterPropertyNames != null) {
+            locationSuggestCopy.setRequestParameterPropertyNames(new HashMap<String, String>(
+                    this.requestParameterPropertyNames));
+        }
+
+        if (this.additionalRequestParameters != null) {
+            locationSuggestCopy.setAdditionalRequestParameters(new HashMap<String, String>(
+                    this.additionalRequestParameters));
+        }
+    }
 }

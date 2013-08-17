@@ -295,4 +295,18 @@ public class GroupValidationMessages extends ValidationMessages {
     public void setDisplayHeaderMessageSummary(boolean displayHeaderMessageSummary) {
         this.displayHeaderMessageSummary = displayHeaderMessageSummary;
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T groupValidationMessages) {
+        super.copyProperties(groupValidationMessages);
+
+        GroupValidationMessages groupValidationMessagesCopy = (GroupValidationMessages) groupValidationMessages;
+
+        groupValidationMessagesCopy.setDisplayFieldLabelWithMessages(this.displayFieldLabelWithMessages);
+        groupValidationMessagesCopy.setCollapseAdditionalFieldLinkMessages(this.collapseAdditionalFieldLinkMessages);
+        groupValidationMessagesCopy.setDisplayHeaderMessageSummary(this.displayHeaderMessageSummary);
+    }
 }

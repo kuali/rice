@@ -48,4 +48,16 @@ public class ListLayoutManager extends LayoutManagerBase {
     public void setOrderedList(boolean orderedList) {
         this.orderedList = orderedList;
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     */
+    @Override
+    protected <T> void copyProperties(T listLayoutManager) {
+        super.copyProperties(listLayoutManager);
+
+        ListLayoutManager listLayoutManagerCopy = (ListLayoutManager) listLayoutManager;
+
+        listLayoutManagerCopy.setOrderedList(this.orderedList);
+    }
 }

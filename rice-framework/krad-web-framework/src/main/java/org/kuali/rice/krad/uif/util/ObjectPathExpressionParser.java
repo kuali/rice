@@ -356,33 +356,32 @@ public class ObjectPathExpressionParser {
                             currentContinuation = pathEntry.parse(pathEntry.prepare(currentContinuation),
                                     path.substring(0, nextTokenIndex), false);
                             return path.substring(nextTokenIndex); // Keep the right bracket
+                        }
 
-                        } else {
-                            // Crossing a right bracket.
+                        // Crossing a right bracket.
 
-                            // Use the current continuation as the parameter for resolving
-                            // the top continuation on the stack, then make the result the
-                            // current continuation.
-                            currentContinuation = pathEntry.parse(pathEntry.prepare(stack.pop()),
-                                    pathEntry.dereference(currentContinuation), true);
-                            if (nextTokenIndex + 1 < path.length()) {
-                                // short-circuit the next step, as an optimization for
-                                // handling dot resolution without permitting double-dots
-                                switch (path.charAt(nextTokenIndex + 1)) {
-                                    case '.':
-                                        // crossing a dot, skip it
-                                        return path.substring(nextTokenIndex + 2);
-                                    case '[':
-                                    case ']':
-                                        // crossing to another subexpression, don't skip it.
-                                        return path.substring(nextTokenIndex + 1);
-                                    default:
-                                        throw new IllegalArgumentException(
-                                                "Expected '.', '[', or ']': " + path);
-                                }
-                            } else {
-                                return null;
-                            }
+                        // Use the current continuation as the parameter for resolving
+                        // the top continuation on the stack, then make the result the
+                        // current continuation.
+                        currentContinuation = pathEntry.parse(pathEntry.prepare(stack.pop()),
+                                pathEntry.dereference(currentContinuation), true);
+                        if (nextTokenIndex + 1 >= path.length()) {
+                            return null;
+                        }
+
+                        // short-circuit the next step, as an optimization for
+                        // handling dot resolution without permitting double-dots
+                        switch (path.charAt(nextTokenIndex + 1)) {
+                            case '.':
+                                // crossing a dot, skip it
+                                return path.substring(nextTokenIndex + 2);
+                            case '[':
+                            case ']':
+                                // crossing to another subexpression, don't skip it.
+                                return path.substring(nextTokenIndex + 1);
+                            default:
+                                throw new IllegalArgumentException(
+                                        "Expected '.', '[', or ']': " + path);
                         }
                     }
                     // else fall through

@@ -714,6 +714,14 @@ converts to:
                         convenience property should be used instead of merging the cssClasses
                         list</para>
                 </listitem>
+                <listitem>
+                    <para>The NotificationContract implementing classes now have a new field called
+                      "docTypeName" which allows implementers to specify custom document types for
+                      different notifications. This field is not required, and if it is left blank,
+                      it will default to the document type "KualiNotification". Current notifications
+                      already in the system will default to this as well and not be affected.
+                    </para>
+                </listitem>
             </itemizedlist>
         </section>
     </section>

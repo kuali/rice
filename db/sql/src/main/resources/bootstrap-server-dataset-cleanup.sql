@@ -195,7 +195,7 @@ delete from krew_rule_t where rule_tmpl_id is not null and rule_tmpl_id not in (
 delete from krew_rule_t where doc_typ_nm is not null and doc_typ_nm not in (select doc_typ_nm from krew_doc_typ_t)
 /
 delete from KREW_RULE_TMPL_ATTR_T where rule_tmpl_id is not null and rule_tmpl_id not in (select rule_tmpl_id from krew_rule_tmpl_t)
-
+/
 
 -- EDL
 

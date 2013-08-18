@@ -25,12 +25,14 @@ import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.metadata.ClassNotPersistenceCapableException;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.uif.RemotableTextInput;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.maintenance.Maintainable;
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
@@ -43,8 +45,19 @@ import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
+import org.kuali.rice.krms.api.KrmsConstants;
+import org.kuali.rice.krms.api.repository.action.ActionDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaTreeDefinition;
+import org.kuali.rice.krms.api.repository.context.ContextDefinition;
+import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
+import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
+import org.kuali.rice.krms.api.repository.term.TermDefinition;
 import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
+import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.impl.repository.ActionBo;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.AgendaItemBo;
@@ -322,8 +335,29 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         primaryKeys.put("id", agendaBo.getId());
         AgendaBo blah = getLegacyDataAdapter().findByPrimaryKey(AgendaBo.class, primaryKeys);
         getLegacyDataAdapter().delete(blah);
+            flushCacheBeforeSave();
 
         getLegacyDataAdapter().linkAndSave(agendaBo);
+    }
+
+    private void flushCacheBeforeSave(){
+        //flush krms caches
+        DistributedCacheManagerDecorator distributedCacheManagerDecorator =
+                GlobalResourceLoader.getService(KrmsConstants.KRMS_DISTRIBUTED_CACHE);
+
+        distributedCacheManagerDecorator.getCache(ActionDefinition.Cache.NAME).clear();
+        distributedCacheManagerDecorator.getCache(AgendaItemDefinition.Cache.NAME).clear();
+        distributedCacheManagerDecorator.getCache(AgendaTreeDefinition.Cache.NAME).clear();
+        distributedCacheManagerDecorator.getCache(AgendaDefinition.Cache.NAME).clear();
+        distributedCacheManagerDecorator.getCache(ContextDefinition.Cache.NAME).clear();
+        distributedCacheManagerDecorator.getCache(KrmsAttributeDefinition.Cache.NAME).clear();
+        distributedCacheManagerDecorator.getCache(KrmsTypeDefinition.Cache.NAME).clear();
+        distributedCacheManagerDecorator.getCache(RuleDefinition.Cache.NAME).clear();
+        distributedCacheManagerDecorator.getCache(PropositionDefinition.Cache.NAME).clear();
+        distributedCacheManagerDecorator.getCache(RuleDefinition.Cache.NAME).clear();
+        distributedCacheManagerDecorator.getCache(TermDefinition.Cache.NAME).clear();
+        distributedCacheManagerDecorator.getCache(TermResolverDefinition.Cache.NAME).clear();
+        distributedCacheManagerDecorator.getCache(TermSpecificationDefinition.Cache.NAME).clear();
     }
 
     /**

@@ -701,6 +701,12 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         }
     }
 
+    protected void assertIsNotVisibleByXpath(String xpath) {
+        if (isVisible(By.xpath(xpath))) {
+            jiraAwareFail(xpath + " is visible and should not be");
+        }
+    }
+
     protected void assertLabelFor(String forElementId, String labelText) {
         SeleneseTestBase.assertEquals(labelText, getForLabelText(forElementId));
     }
@@ -764,7 +770,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      */
     protected void assertTextNotPresent(String text, String message) {
         if (driver.getPageSource().contains(text)) {
-            failableFail(text + " is present and shouldn't be " + message);
+            failableFail(text + " is present and should not be " + message);
         }
     }
 
@@ -1295,6 +1301,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected boolean isElementPresentByDataAttributeValue(String dataAttributeName, String dataAttributeValue) {
         return isElementPresent(By.cssSelector("[data-" + dataAttributeName +"='"+ dataAttributeValue +"']"));
+    }
+
+    protected boolean isNotVisible(By by) {
+        return !(isVisible(by));
     }
 
     protected Boolean isTextPresent(String text) {

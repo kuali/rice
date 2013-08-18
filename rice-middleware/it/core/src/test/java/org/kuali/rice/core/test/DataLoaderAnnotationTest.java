@@ -33,18 +33,31 @@ public class DataLoaderAnnotationTest extends AnnotationTestParent {
     
     public DataLoaderAnnotationTest() {}
 
+    @Override
+    protected void setUpInternal() throws Exception {
+        try{
+            resetDb();
+        } catch (Exception e) {
+            // Will error of db not previously loaded, ignore reset error
+        }
+        super.setUpInternal();
+    }
+
     @Test public void testParentAndSubClassImplementation() throws Exception {
         // check sql statement from this class
         verifyExistence("3");
+        verifyCount("3", 1);
         
         // check sql file from this class
         verifyExistence("4");
+        verifyCount("4", 1);
         
         // check sql statement from parent class
         verifyExistence("1");
+        verifyCount("1", 1);
         
         // check sql file from parent class
         verifyExistence("2");
+        verifyCount("2", 1);
     }
-    
 }

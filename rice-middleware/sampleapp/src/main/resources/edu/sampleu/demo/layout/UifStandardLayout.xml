@@ -232,6 +232,7 @@
   <bean id="Demo-StandardLayout-CollectionSection1" parent="Uif-StackedCollectionSection">
     <property name="headerText"
               value="Section 1 Title"/>
+    <property name="useServerPaging" value="true"/>
     <property name="instructionalText"
               value="Uif-StackedCollectionSection with an overridden layout manager (Uif-StackedCollectionLayout-WithBoxItems)
                that uses box instead of grid"/>
@@ -265,6 +266,7 @@
               value="Uif-StackedCollectionSection with Uif-Disclosure-TableSubCollection-WithinSection (note the postfix)"/>
     <property name="collectionObjectClass"
               value="edu.sampleu.demo.kitchensink.UITestObject"/>
+    <property name="useServerPaging" value="true"/>
     <property name="addLineActions">
       <list>
         <bean parent="Uif-AddLineAction" p:focusOnIdAfterSubmit="NEXT_INPUT"/>

@@ -378,4 +378,15 @@
     </property>
   </bean>
 
+  <bean id="Uif-Pager" parent="Uif-Pager-parentBean"/>
+  <bean id="Uif-Pager-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Pager" scope="prototype">
+    <property name="libraryCssClasses" value="pagination"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/widget/pager.ftl"/>
+    <property name="templateName" value="uif_pager"/>
+    <property name="currentPage" value="1"/>
+    <property name="maxNumberedLinksShown" value="5"/>
+    <property name="renderPrevNext" value="true"/>
+    <property name="renderFirstLast" value="true"/>
+  </bean>
+
 </beans>

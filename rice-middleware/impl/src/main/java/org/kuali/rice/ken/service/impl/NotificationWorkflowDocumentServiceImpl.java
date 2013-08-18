@@ -62,7 +62,13 @@ public class NotificationWorkflowDocumentServiceImpl implements NotificationWork
         //WorkflowIdDTO initiator = new WorkflowIdDTO(initiatorUserId);
 
         // now construct the workflow document, which will interact with workflow
-        WorkflowDocument document = NotificationWorkflowDocument.createNotificationDocument(initiatorUserId);
+        WorkflowDocument document;
+        if (StringUtils.isNotBlank(messageDelivery.getNotification().getDocTypeName())) {
+            document = NotificationWorkflowDocument.createNotificationDocument(initiatorUserId,
+                    messageDelivery.getNotification().getDocTypeName());
+        } else {
+            document = NotificationWorkflowDocument.createNotificationDocument(initiatorUserId);
+        }
 
         // this is our loose foreign key to our message delivery record in notification
         document.setApplicationDocumentId(messageDelivery.getId().toString());

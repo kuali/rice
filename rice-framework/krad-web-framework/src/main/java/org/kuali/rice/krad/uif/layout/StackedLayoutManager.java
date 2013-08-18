@@ -32,6 +32,7 @@ import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.widget.Pager;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
@@ -74,6 +75,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
     private FieldGroup subCollectionFieldGroupPrototype;
     private Field selectFieldPrototype;
     private Group wrapperGroup;
+    private Pager pagerWidget;
 
     private List<Group> stackedGroups;
 
@@ -119,6 +121,43 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
 
         if (wrapperGroup != null) {
             wrapperGroup.setItems(stackedGroups);
+        }
+    }
+
+    /**
+     * Calculates the values that must be pased into the pagerWidget if using paging
+     *
+     * @see BoxLayoutManager#performFinalize(org.kuali.rice.krad.uif.view.View, Object,
+     *      org.kuali.rice.krad.uif.container.Container)
+     */
+    @Override
+    public void performFinalize(View view, Object model, Container container) {
+        super.performFinalize(view, model, container);
+
+        // Calculate the number of pages for the pager widget if we are using server paging
+        if (container instanceof CollectionGroup
+                && ((CollectionGroup) container).isUseServerPaging()
+                && this.getPagerWidget() != null) {
+            CollectionGroup collectionGroup = (CollectionGroup) container;
+            List<Object> modelCollection = ObjectPropertyUtils.getPropertyValue(model,
+                    collectionGroup.getBindingInfo().getBindingPath());
+
+            // The size of the collection divided by the pageLength is used to determine the number of pages for
+            // the pager component (ceiling is used if there is not a full page left over in the division)
+            if (modelCollection != null) {
+                double pages = (double) modelCollection.size() / (double) collectionGroup.getDisplayLength();
+                pagerWidget.setNumberOfPages((int) Math.ceil(pages));
+            } else {
+                pagerWidget.setNumberOfPages(1);
+            }
+
+            // By using displayStart, currentPage can be determined, the displayLength is added here before division,
+            // because the pager is 1-based
+            int currentPage = (collectionGroup.getDisplayStart() + collectionGroup.getDisplayLength()) / collectionGroup
+                    .getDisplayLength();
+            pagerWidget.setCurrentPage(currentPage);
+
+            pagerWidget.setLinkScript("retrieveStackedPage(this, '" + collectionGroup.getId() + "');");
         }
     }
 
@@ -278,6 +317,10 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
             components.add(wrapperGroup);
         } else {
             components.addAll(stackedGroups);
+        }
+
+        if (pagerWidget != null) {
+            components.add(pagerWidget);
         }
 
         return components;
@@ -465,6 +508,24 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
     }
 
     /**
+     * The pagerWidget used for paging when the StackedLayout is using paging
+     *
+     * @return the pagerWidget
+     */
+    public Pager getPagerWidget() {
+        return pagerWidget;
+    }
+
+    /**
+     * Set the pagerWidget used for paging StackedLayouts
+     *
+     * @param pagerWidget
+     */
+    public void setPagerWidget(Pager pagerWidget) {
+        this.pagerWidget = pagerWidget;
+    }
+
+    /**
      * Final {@code List} of Groups to render for the collection
      *
      * @return collection groups
@@ -546,6 +607,8 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
             stackedLayoutManagerCopy.setStackedGroups(stackedGroupsCopy);
         }
 
-        stackedLayoutManagerCopy.setActionsInLineGroup(this.actionsInLineGroup);
+        stackedLayoutManagerCopy.setPagerWidget((Pager) this.getPagerWidget().copy());
+
+        stackedLayoutManagerCopy.setActionsInLineGroup(this.isActionsInLineGroup());
     }
 }

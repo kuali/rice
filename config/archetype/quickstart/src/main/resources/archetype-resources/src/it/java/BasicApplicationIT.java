@@ -36,9 +36,19 @@ import static org.junit.Assert.*;
 public class BasicApplicationIT {
     @Test
     public void testBasicApplicationStartup() throws Exception {
-        URL url = new URL("http://localhost:" + getPort() + "/${artifactId}");
+        URL url = new URL("http://localhost:" + getPort() + "/qstest/");
+        HttpURLConnection.setFollowRedirects(false);
+
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        assertEquals(url.toString(), 200, connection.getResponseCode());
+
+        assertEquals(url.toString(), 302, connection.getResponseCode());
+
+        String redirectUrl = connection.getHeaderField("Location");
+        assertNotNull("Invalid response from qstest application: "
+                + connection.getResponseCode() , redirectUrl);
+
+        boolean validRedirection = redirectUrl.endsWith("qstest/portal.do");
+        assertTrue("Invalid response from qstest application: " + redirectUrl, validRedirection);
     }
 
     private String getPort() {

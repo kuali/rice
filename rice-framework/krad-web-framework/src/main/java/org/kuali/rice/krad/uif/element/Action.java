@@ -466,7 +466,7 @@ public class Action extends ContentElementBase {
 
     /**
      * For an <code>Action</code> that is part of a
-     * <code>NavigationGroup</code, the navigate to page id can be set to
+     * <code>NavigationGroup</code>, the navigate to page id can be set to
      * configure the page that should be navigated to when the action is
      * selected
      *

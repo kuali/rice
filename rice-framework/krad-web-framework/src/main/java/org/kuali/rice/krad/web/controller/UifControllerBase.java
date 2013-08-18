@@ -36,6 +36,7 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.krad.web.controller.helper.DataTablesPagingHelper;
+import org.kuali.rice.krad.web.controller.helper.StackedPagingHelper;
 import org.kuali.rice.krad.web.form.HistoryFlow;
 import org.kuali.rice.krad.web.form.HistoryManager;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -1044,7 +1045,6 @@ public abstract class UifControllerBase {
 
     /**
      * Generates exportable table data based on the rich table selected
-     *
      */
     private String retrieveTableData(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
@@ -1076,6 +1076,30 @@ public abstract class UifControllerBase {
         response.setHeader("Pragma", "public");
 
         return tableData;
+    }
+
+    /**
+     * Retrieve a page defined by the page number parameter for a stacked collection
+     *
+     * @param form -  Holds properties necessary to determine the <code>View</code> instance that will be used to
+     * render
+     * the UI
+     * @param result -   represents binding results
+     * @param request - http servlet request data
+     * @param response - http servlet response object
+     * @return the  ModelAndView object
+     * @throws Exception
+     */
+    @RequestMapping(params = "methodToCall=retrieveStackedPage")
+    public ModelAndView retrieveStackedPage(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String collectionId = request.getParameter(UifParameters.UPDATE_COMPONENT_ID);
+        String pageNumber = request.getParameter(UifConstants.PageRequest.PAGE_NUMBER);
+
+        StackedPagingHelper pagingHelper = new StackedPagingHelper();
+        pagingHelper.processPagingRequest(form.getPostedView(), collectionId, form, pageNumber);
+
+        return getUIFModelAndView(form);
     }
 
     /**
@@ -1131,7 +1155,9 @@ public abstract class UifControllerBase {
     }
 
     /**
-     * Creates a DataTablesPagingHelper which is used within {@link #tableJsonRetrieval(org.kuali.rice.krad.web.form.UifFormBase, org.springframework.validation.BindingResult, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)}
+     * Creates a DataTablesPagingHelper which is used within {@link #tableJsonRetrieval(org.kuali.rice.krad.web.form.UifFormBase,
+     * org.springframework.validation.BindingResult, javax.servlet.http.HttpServletRequest,
+     * javax.servlet.http.HttpServletResponse)}
      * for rendering pages of data in JSON form.
      *
      * <p>This template method can be overridden to supply a custom extension of DataTablesPagingHelper e.g. for paging

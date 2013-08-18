@@ -158,6 +158,10 @@
         PARM_NM="IS_LAST_APPROVER_ACTIVATE_FIRST_IND"
         PARM_TYP_CD="CONFG" VER_NBR="1"/>
     <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="Lookup" EVAL_OPRTR_CD="A"
+        NMSPC_CD="KR-KRAD" OBJ_ID="E3F2146BBD179481E0406E0AC31D69DB"
+        PARM_DESC_TXT="Maximum number of results returned in a look-up query."
+        PARM_NM="RESULTS_LIMIT" PARM_TYP_CD="CONFG" VAL="200" VER_NBR="1"/>
+    <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="Lookup" EVAL_OPRTR_CD="A"
         NMSPC_CD="KR-NS" OBJ_ID="53680C68F5A3AD9BE0404F8189D80A6C"
         PARM_DESC_TXT="Lookup results may continue to be persisted in the DB long after they are needed. This parameter represents the maximum amount of time, in seconds, that the results will be allowed to persist in the DB before they are deleted from the DB."
         PARM_NM="MULTIPLE_VALUE_RESULTS_EXPIRATION_SECONDS"

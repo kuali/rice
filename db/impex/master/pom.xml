@@ -58,6 +58,35 @@
       </properties>
     </profile>
     <profile>
+      <id>commitmaster</id>
+      <properties>
+        <impex.invalid.phase>process-resources</impex.invalid.phase>
+        <scm.phase>process-resources</scm.phase>
+      </properties>
+    </profile>
+    <profile>
+      <id>exportmaster</id>
+      <properties>
+        <impex.username>${export.db.username}</impex.username>
+        <impex.password>${export.db.password}</impex.password>
+        <impex.database>${export.db.username}</impex.database>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.kuali.maven.plugins</groupId>
+            <artifactId>maven-impex-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>export</id>
+                <phase>generate-resources</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>dataset</id>
       <properties>
         <impex.username>RICE${dataset.schema.prefix}${dataset.schema.suffix}</impex.username>

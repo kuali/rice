@@ -53,6 +53,7 @@ import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DictionaryValidationService;
 import org.kuali.rice.krad.service.DocumentDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
@@ -263,7 +264,12 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
      */
     public boolean isNoteValid(Note note) {
         // add the error path keys on the stack
-        GlobalVariables.getMessageMap().addToErrorPath(KRADConstants.NEW_DOCUMENT_NOTE_PROPERTY_NAME);
+        GlobalVariables.getMessageMap().addToErrorPath(UifPropertyPaths.NEW_COLLECTION_LINES
+                + "['"
+                + KRADConstants.DOCUMENT_PROPERTY_NAME
+                + "."
+                + KRADConstants.NOTES_PROPERTY_NAME
+                + "']");
 
         // check the document header for fields like the description
         getDictionaryValidationService().validateBusinessObject(note);
@@ -272,7 +278,12 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
                 getDataDictionaryService().getAttributeLabel(Note.class, KRADConstants.NOTE_TEXT_PROPERTY_NAME));
 
         // drop the error path keys off now
-        GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.NEW_DOCUMENT_NOTE_PROPERTY_NAME);
+        GlobalVariables.getMessageMap().removeFromErrorPath(UifPropertyPaths.NEW_COLLECTION_LINES
+                + "['"
+                + KRADConstants.DOCUMENT_PROPERTY_NAME
+                + "."
+                + KRADConstants.NOTES_PROPERTY_NAME
+                + "']");
 
         return GlobalVariables.getMessageMap().hasNoErrors();
     }

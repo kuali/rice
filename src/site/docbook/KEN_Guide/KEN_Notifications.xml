@@ -143,6 +143,16 @@
                                 <entry>The actual content </entry>
                                 <entry>see below</entry>
                             </row>
+                            <row>
+                                <entry>docTypeName</entry>
+                                <entry>string</entry>
+                                <entry>no</entry>
+                                <entry>The name of a custom KEW document type to be used to route this
+                                        Notification with different security parameters. Typically
+                                        different than the default "KualiNotification" and can be left
+                                        blank if the default is desired.</entry>
+                                <entry>KualiNotification</entry>
+                            </row>
                         </tbody>
                     </tgroup>
                 </table>

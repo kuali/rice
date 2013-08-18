@@ -260,6 +260,10 @@ public final class KRADConstants {
 
     // **************** Begin Note & Attachments defines
     /**
+     * Property name for notes collection
+     */
+    public static final String NOTES_PROPERTY_NAME = "notes";
+    /**
      * Property name for new document - Value is "newNote"
      */
     public static final String NEW_DOCUMENT_NOTE_PROPERTY_NAME = "newNote";

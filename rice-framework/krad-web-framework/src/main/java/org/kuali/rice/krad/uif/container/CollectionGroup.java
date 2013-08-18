@@ -38,6 +38,7 @@ import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
+import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +68,8 @@ import java.util.List;
         @BeanTag(name = "stackedCollectionSection-bean", parent = "Uif-StackedCollectionSection"),
         @BeanTag(name = "stackedCollectionSubSection-bean", parent = "Uif-StackedCollectionSubSection"),
         @BeanTag(name = "stackedSubCollection-withinSection-bean", parent = "Uif-StackedSubCollection-WithinSection"),
-        @BeanTag(name = "stackedSubCollection-withinSubSection-bean", parent = "Uif-StackedSubCollection-WithinSubSection"),
+        @BeanTag(name = "stackedSubCollection-withinSubSection-bean",
+                parent = "Uif-StackedSubCollection-WithinSubSection"),
         @BeanTag(name = "disclosure-stackedCollectionSection-bean", parent = "Uif-Disclosure-StackedCollectionSection"),
         @BeanTag(name = "disclosure-stackedCollectionSubSection-bean",
                 parent = "Uif-Disclosure-StackedCollectionSubSection"),
@@ -81,7 +83,8 @@ import java.util.List;
         @BeanTag(name = "tableSubCollection-withinSection-bean", parent = "Uif-TableSubCollection-WithinSection"),
         @BeanTag(name = "tableSubCollection-withinSubSection-bean", parent = "Uif-TableSubCollection-WithinSubSection"),
         @BeanTag(name = "disclosure-tableCollectionSection-bean", parent = "Uif-Disclosure-TableCollectionSection"),
-        @BeanTag(name = "disclosure-tableCollectionSubSection-bean", parent = "Uif-Disclosure-TableCollectionSubSection"),
+        @BeanTag(name = "disclosure-tableCollectionSubSection-bean",
+                parent = "Uif-Disclosure-TableCollectionSubSection"),
         @BeanTag(name = "disclosure-tableSubCollection-withinSection-bean",
                 parent = "Uif-Disclosure-TableSubCollection-WithinSection"),
         @BeanTag(name = "disclosure-tableSubCollection-withinSubSection-bean",
@@ -148,6 +151,7 @@ public class CollectionGroup extends Group implements DataBinding {
     private Action addViaLightBoxAction;
 
     private boolean useServerPaging = false;
+    private int pageSize;
     private int displayStart = -1;
     private int displayLength = -1;
     private int filteredCollectionSize = -1;
@@ -277,6 +281,17 @@ public class CollectionGroup extends Group implements DataBinding {
     @Override
     public void performApplyModel(View view, Object model, Component parent) {
         super.performApplyModel(view, model, parent);
+
+        // If we are using server paging, determine if a displayStart value has been set for this collection
+        // and used that value as the displayStart
+        if (model instanceof UifFormBase && this.isUseServerPaging()) {
+            Object displayStart = ((UifFormBase) model).getExtensionData().get(
+                    this.getId() + UifConstants.PageRequest.DISPLAY_START_PROP);
+
+            if (displayStart != null) {
+                this.setDisplayStart(((Integer) displayStart).intValue());
+            }
+        }
 
         // adds the script to the add line buttons to keep collection on the same page
         if (this.renderAddBlankLineButton) {
@@ -1199,6 +1214,14 @@ public class CollectionGroup extends Group implements DataBinding {
         this.useServerPaging = useServerPaging;
     }
 
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
     /**
      * Gets the displayStart, the index of the first item to display on the page (assuming useServerPaging is enabled).
      *
@@ -1262,7 +1285,6 @@ public class CollectionGroup extends Group implements DataBinding {
     }
 
     /**
-     *
      * @return list of total columns
      */
     @BeanTagAttribute(name = "addTotalColumns")
@@ -1366,6 +1388,9 @@ public class CollectionGroup extends Group implements DataBinding {
         collectionGroupCopy.setHighlightNewItems(this.highlightNewItems);
         collectionGroupCopy.setIncludeLineSelectionField(this.includeLineSelectionField);
         collectionGroupCopy.setUseServerPaging(this.useServerPaging);
+        collectionGroupCopy.setPageSize(this.pageSize);
+        collectionGroupCopy.setDisplayStart(this.displayStart);
+        collectionGroupCopy.setDisplayLength(this.displayLength);
 
         if (lineActions != null) {
             List<Action> lineActions = new ArrayList<Action>();

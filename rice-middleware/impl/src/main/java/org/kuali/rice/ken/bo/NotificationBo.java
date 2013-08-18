@@ -73,6 +73,8 @@ public class NotificationBo extends PersistableBusinessObjectBase implements Not
 	private String processingFlag;
 	@Column(name="LOCKD_DTTM", nullable=true)
 	private Timestamp lockedDateValue;
+    @Column(name = "DOC_TYP_NM", nullable = true)
+    private String docTypeName;
     /**
      * Lock column for OJB optimistic locking
      */
@@ -433,6 +435,27 @@ public class NotificationBo extends PersistableBusinessObjectBase implements Not
 	    return StringUtils.substringBetween(content, NotificationConstants.XML_MESSAGE_CONSTANTS.MESSAGE_OPEN, NotificationConstants.XML_MESSAGE_CONSTANTS.MESSAGE_CLOSE);	
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getDocTypeName() {
+        return docTypeName;
+    }
+
+    /**
+     * Sets the custom document type name.
+     *
+     * <p>
+     * If null, the system will use the default {@code KualiNotification} document type when routing the notification.
+     * If the document type does not match any document type name in the system, the system behavior is undefined.
+     * </p>
+     *
+     * @param docTypeName document type name of this notification
+     */
+    public void setDocTypeName(String docTypeName) {
+        this.docTypeName = docTypeName;
+    }
 
     /**
      * Converts a mutable bo to its immutable counterpart
@@ -468,6 +491,7 @@ public class NotificationBo extends PersistableBusinessObjectBase implements Not
         bo.setTitle(im.getTitle());
         bo.setContent(im.getContent());
         bo.setLockedDateValue(im.getLockedDate() == null ? null : new Timestamp(im.getLockedDate().getMillis()));
+        bo.setDocTypeName(im.getDocTypeName());
 
         // object references
         bo.setPriority(NotificationPriorityBo.from(im.getPriority()));

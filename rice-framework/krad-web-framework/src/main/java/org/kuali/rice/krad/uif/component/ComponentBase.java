@@ -1988,6 +1988,10 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         componentCopy.setColSpan(this.colSpan);
         componentCopy.setConditionalRefresh(this.conditionalRefresh);
 
+        if (this.libraryCssClasses != null) {
+            componentCopy.setLibraryCssClasses(new ArrayList<String>(this.libraryCssClasses));
+        }
+
         if (this.cssClasses != null) {
             componentCopy.setCssClasses(new ArrayList<String>(this.cssClasses));
         }

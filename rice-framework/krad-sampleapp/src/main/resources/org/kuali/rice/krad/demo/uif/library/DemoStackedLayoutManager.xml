@@ -26,30 +26,32 @@
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoStackedLayoutManager.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.layout.StackedLayoutManager"/>
     <property name="docBookAnchor" value="d6813e6638"/>
+    <property name="exampleSize" value="XLARGE"/>
     <property name="demoGroups">
       <list>
         <ref bean="Demo-StackedLayoutManager-Example1"/>
         <ref bean="Demo-StackedLayoutManager-Example2"/>
         <ref bean="Demo-StackedLayoutManager-Example3"/>
+        <ref bean="Demo-StackedLayoutManager-Example4"/>
       </list>
     </property>
   </bean>
 
-  <bean id="Demo-StackedLayoutManager-Example1"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-StackedLayoutManager-Example1" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!-- ex:Demo-StackedLayoutManager-Example1 start-->
         <bean id="Demo-StackedLayoutManager-Collection1" parent="Uif-Disclosure-StackedCollectionSection">
-          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="groupedCollection2" />
-          <property name="layoutManager.summaryFields" value="field1" />
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="propertyName" value="groupedCollection2"/>
+          <property name="layoutManager.summaryFields" value="field1"/>
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="field1" p:required="true"/>
               <bean parent="Uif-InputField" p:propertyName="field2" p:required="true">
                 <property name="caseConstraint">
                   <bean parent="CaseConstraint">
-                    <property name="propertyName" value="field1" />
+                    <property name="propertyName" value="field1"/>
                     <property name="whenConstraint">
                       <list>
                         <bean parent="WhenConstraint">
@@ -60,7 +62,7 @@
                             </list>
                           </property>
                           <property name="constraint">
-                            <bean parent="AlphaPatternConstraint" />
+                            <bean parent="AlphaPatternConstraint"/>
                           </property>
                         </bean>
                         <bean parent="WhenConstraint">
@@ -72,22 +74,22 @@
                           </property>
                           <property name="constraint">
                             <bean parent="SimpleConstraint">
-                              <property name="maxLength" value="5" />
+                              <property name="maxLength" value="5"/>
                             </bean>
                           </property>
                         </bean>
                         <bean parent="WhenConstraint">
-                          <property name="value" value="1" />
+                          <property name="value" value="1"/>
                           <property name="constraint">
-                            <bean parent="NumericPatternConstraint" />
+                            <bean parent="NumericPatternConstraint"/>
                           </property>
                         </bean>
                         <bean parent="WhenConstraint">
-                          <property name="value" value="1" />
+                          <property name="value" value="1"/>
                           <property name="constraint">
                             <bean parent="SimpleConstraint">
-                              <property name="exclusiveMin" value="0" />
-                              <property name="inclusiveMax" value="50" />
+                              <property name="exclusiveMin" value="0"/>
+                              <property name="inclusiveMax" value="50"/>
                             </bean>
                           </property>
                         </bean>
@@ -96,8 +98,8 @@
                   </bean>
                 </property>
               </bean>
-              <bean parent="Uif-InputField" p:propertyName="field3" p:required="true" />
-              <bean parent="Uif-InputField" p:propertyName="field4" p:required="true" />
+              <bean parent="Uif-InputField" p:propertyName="field3" p:required="true"/>
+              <bean parent="Uif-InputField" p:propertyName="field4" p:required="true"/>
             </list>
           </property>
         </bean>
@@ -106,13 +108,13 @@
     </property>
   </bean>
 
-  <bean id="Demo-StackedLayoutManager-Example2"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-StackedLayoutManager-Example2" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!-- ex:Demo-StackedLayoutManager-Example2 start-->
         <bean id="Demo-StackedLayoutManager-Collection2" parent="Uif-Disclosure-StackedCollectionSection">
-          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="collection4" />
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="propertyName" value="collection4"/>
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="field1" p:required="true">
@@ -120,41 +122,43 @@
                   <bean parent="Uif-TextControl" p:disabled="@{#line.field1 eq '1'}"/>
                 </property>
               </bean>
-              <bean parent="Uif-InputField" p:propertyName="field2" p:required="true" />
-              <bean parent="Uif-InputField" p:propertyName="field3" p:required="true" />
-              <bean parent="Uif-InputField" p:propertyName="field4" p:required="true" />
+              <bean parent="Uif-InputField" p:propertyName="field2" p:required="true"/>
+              <bean parent="Uif-InputField" p:propertyName="field3" p:required="true"/>
+              <bean parent="Uif-InputField" p:propertyName="field4" p:required="true"/>
             </list>
           </property>
           <property name="lineActions">
             <list>
-              <bean id="Demo-StackedLayoutManager-Collection2-Action1" parent="Uif-PrimaryActionButton" p:disabled="@{#line.field1 eq '1'}"/>
-              <bean id="Demo-StackedLayoutManager-Collection2-Action2" parent="Uif-NavigationActionLink" p:onClickScript="alert('foo');" p:methodToCall="deleteLine"/>
+              <bean id="Demo-StackedLayoutManager-Collection2-Action1" parent="Uif-PrimaryActionButton"
+                    p:disabled="@{#line.field1 eq '1'}"/>
+              <bean id="Demo-StackedLayoutManager-Collection2-Action2" parent="Uif-NavigationActionLink"
+                    p:onClickScript="alert('foo');" p:methodToCall="deleteLine"/>
             </list>
           </property>
           <property name="subCollections">
             <list>
-              <ref bean="Demo-StackedLayoutManager-SubCollection1" />
+              <ref bean="Demo-StackedLayoutManager-SubCollection1"/>
             </list>
           </property>
         </bean>
 
         <bean id="Demo-StackedLayoutManager-SubCollection1" parent="Uif-Disclosure-TableSubCollection-WithinSection"
               p:layoutManager.numberOfColumns="4">
-          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="subList" />
-          <property name="layoutManager.sequencePropertyName" value="field1" />
-          <property name="layoutManager.generateAutoSequence" value ="false"/>
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="propertyName" value="subList"/>
+          <property name="layoutManager.sequencePropertyName" value="field1"/>
+          <property name="layoutManager.generateAutoSequence" value="false"/>
           <property name="layoutManager.sequenceFieldPrototype">
             <bean parent="Uif-InputField" p:propertyName="field1" p:readOnly="true"/>
           </property>
-          <property name="layoutManager.richTable.render" value="true" />
+          <property name="layoutManager.richTable.render" value="true"/>
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="field1" p:required="true"/>
               <bean parent="Uif-InputField" p:propertyName="field2" p:required="true">
                 <property name="caseConstraint">
                   <bean parent="CaseConstraint">
-                    <property name="propertyName" value="field1" />
+                    <property name="propertyName" value="field1"/>
                     <property name="whenConstraint">
                       <list>
                         <bean parent="WhenConstraint">
@@ -165,7 +169,7 @@
                             </list>
                           </property>
                           <property name="constraint">
-                            <bean parent="AlphaPatternConstraint" />
+                            <bean parent="AlphaPatternConstraint"/>
                           </property>
                         </bean>
                         <bean parent="WhenConstraint">
@@ -177,22 +181,22 @@
                           </property>
                           <property name="constraint">
                             <bean parent="SimpleConstraint">
-                              <property name="maxLength" value="5" />
+                              <property name="maxLength" value="5"/>
                             </bean>
                           </property>
                         </bean>
                         <bean parent="WhenConstraint">
-                          <property name="value" value="1" />
+                          <property name="value" value="1"/>
                           <property name="constraint">
-                            <bean parent="NumericPatternConstraint" />
+                            <bean parent="NumericPatternConstraint"/>
                           </property>
                         </bean>
                         <bean parent="WhenConstraint">
-                          <property name="value" value="1" />
+                          <property name="value" value="1"/>
                           <property name="constraint">
                             <bean parent="SimpleConstraint">
-                              <property name="exclusiveMin" value="0" />
-                              <property name="inclusiveMax" value="50" />
+                              <property name="exclusiveMin" value="0"/>
+                              <property name="inclusiveMax" value="50"/>
                             </bean>
                           </property>
                         </bean>
@@ -201,8 +205,8 @@
                   </bean>
                 </property>
               </bean>
-              <bean parent="Uif-InputField" p:propertyName="field3" p:required="true" />
-              <bean parent="Uif-InputField" p:propertyName="field4" p:required="true" />
+              <bean parent="Uif-InputField" p:propertyName="field3" p:required="true"/>
+              <bean parent="Uif-InputField" p:propertyName="field4" p:required="true"/>
             </list>
           </property>
         </bean>
@@ -211,43 +215,65 @@
     </property>
   </bean>
 
-  <bean id="Demo-StackedLayoutManager-Example3"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-StackedLayoutManager-Example3" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!-- ex:Demo-StackedLayoutManager-Example3 start-->
         <bean id="Demo-StackedLayoutManager-Collection3" parent="Uif-Disclosure-StackedCollectionSection">
-          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="collection5" />
-          <property name="layoutManager.summaryFields" value="field1" />
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="propertyName" value="collection5"/>
+          <property name="layoutManager.summaryFields" value="field1"/>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:propertyName="field1" p:required="true" />
-              <bean parent="Uif-InputField" p:propertyName="field2" p:required="true" />
-              <bean parent="Uif-InputField" p:propertyName="field3" p:required="true" />
-              <bean parent="Uif-InputField" p:propertyName="field4" p:required="true" />
+              <bean parent="Uif-InputField" p:propertyName="field1" p:required="true"/>
+              <bean parent="Uif-InputField" p:propertyName="field2" p:required="true"/>
+              <bean parent="Uif-InputField" p:propertyName="field3" p:required="true"/>
+              <bean parent="Uif-InputField" p:propertyName="field4" p:required="true"/>
             </list>
           </property>
           <property name="subCollections">
             <list>
-              <ref bean="Demo-StackedLayoutManager-SubCollection2" />
+              <ref bean="Demo-StackedLayoutManager-SubCollection2"/>
             </list>
           </property>
         </bean>
         <bean id="Demo-StackedLayoutManager-SubCollection2" parent="Uif-StackedSubCollection-WithinSection">
-          <property name="disclosure.render" value="false" />
-          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="subList" />
-          <property name="layoutManager.summaryFields" value="field1" />
+          <property name="disclosure.render" value="false"/>
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="propertyName" value="subList"/>
+          <property name="layoutManager.summaryFields" value="field1"/>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:propertyName="field1" p:required="true" />
-              <bean parent="Uif-InputField" p:propertyName="field2" p:required="true" />
-              <bean parent="Uif-InputField" p:propertyName="field3" p:required="true" />
-              <bean parent="Uif-InputField" p:propertyName="field4" p:required="true" />
+              <bean parent="Uif-InputField" p:propertyName="field1" p:required="true"/>
+              <bean parent="Uif-InputField" p:propertyName="field2" p:required="true"/>
+              <bean parent="Uif-InputField" p:propertyName="field3" p:required="true"/>
+              <bean parent="Uif-InputField" p:propertyName="field4" p:required="true"/>
             </list>
           </property>
         </bean>
         <!-- ex:Demo-StackedLayoutManager-Example3 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-StackedLayoutManager-Example4" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-StackedLayoutManager-Example4 start-->
+        <bean parent="Uif-StackedCollectionSection">
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="propertyName" value="groupedCollection1"/>
+          <property name="useServerPaging" value="true"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1" p:required="true"/>
+              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2" p:required="true"/>
+              <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3" p:required="true"/>
+              <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4" p:required="true"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-StackedLayoutManager-Example4 end-->
       </list>
     </property>
   </bean>

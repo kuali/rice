@@ -270,6 +270,55 @@
                 </requests>
             </routeNodes>
         </documentType>
+
+        <!-- Custom Notification Document Type -->
+        <documentType>
+            <name>CustomNotification</name>
+            <description>This is a custom notification document type that can be used for custom permissions with KEW.</description>
+            <label>CustomNotification</label>
+            <postProcessorName>org.kuali.rice.ken.postprocessor.kew.NotificationPostProcessor</postProcessorName>
+            <superUserGroupName namespace="KR-WKFLW">NotificationAdmin</superUserGroupName>
+            <blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
+            <defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
+            <docHandler>${ken.url}/DetailView.form</docHandler>
+            <active>true</active>
+            <attributes>
+                <attribute>
+                    <name>NotificationCustomActionListAttribute</name>
+                </attribute>
+                <attribute>
+                    <name>NotificationContentTypeSearchableAttribute</name>
+                </attribute>
+                <attribute>
+                    <name>NotificationChannelSearchableAttribute</name>
+                </attribute>
+                <attribute>
+                    <name>NotificationProducerSearchableAttribute</name>
+                </attribute>
+                <attribute>
+                    <name>NotificationPrioritySearchableAttribute</name>
+                </attribute>
+                <attribute>
+                    <name>NotificationRecipientsSearchableAttribute</name>
+                </attribute>
+                <attribute>
+                    <name>NotificationSendersSearchableAttribute</name>
+                </attribute>
+            </attributes>
+            <routingVersion>1</routingVersion>
+            <routePaths>
+                <routePath>
+                    <start name="Adhoc Routing"/>
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="Adhoc Routing">
+                    <activationType>S</activationType>
+                    <mandatoryRoute>false</mandatoryRoute>
+                    <finalApproval>true</finalApproval>
+                </start>
+            </routeNodes>
+        </documentType>
     </documentTypes>
 
     <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">

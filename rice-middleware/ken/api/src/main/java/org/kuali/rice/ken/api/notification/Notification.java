@@ -57,6 +57,7 @@ import org.w3c.dom.Element;
         Notification.Elements.ID,
         CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.OBJECT_ID,
+        Notification.Elements.DOC_TYPE_NAME,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class Notification
@@ -106,6 +107,13 @@ public final class Notification
     private final Long versionNumber;
     @XmlElement(name = CoreConstants.CommonElements.OBJECT_ID, required = false)
     private final String objectId;
+
+    /**
+     * @since 2.3.1
+     */
+    @XmlElement(name = Elements.DOC_TYPE_NAME, required = false)
+    private final String docTypeName;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -133,6 +141,7 @@ public final class Notification
         this.id = null;
         this.versionNumber = null;
         this.objectId = null;
+        this.docTypeName = null;
     }
 
     private Notification(Builder builder) {
@@ -164,6 +173,7 @@ public final class Notification
         this.id = builder.getId();
         this.versionNumber = builder.getVersionNumber();
         this.objectId = builder.getObjectId();
+        this.docTypeName = builder.getDocTypeName();
     }
 
     @Override
@@ -256,6 +266,11 @@ public final class Notification
         return this.objectId;
     }
 
+    @Override
+    public String getDocTypeName() {
+        return this.docTypeName;
+    }
+
 
     /**
      * A builder which can be used to construct {@link Notification} instances.  Enforces the constraints of the {@link NotificationContract}.
@@ -283,6 +298,7 @@ public final class Notification
         private Long id;
         private Long versionNumber;
         private String objectId;
+        private String docTypeName;
 
         private Builder() {
             // TODO modify this constructor as needed to pass any required values and invoke the appropriate 'setter' methods
@@ -329,6 +345,7 @@ public final class Notification
             builder.setId(contract.getId());
             builder.setVersionNumber(contract.getVersionNumber());
             builder.setObjectId(contract.getObjectId());
+            builder.setDocTypeName(contract.getDocTypeName());
             return builder;
         }
 
@@ -426,6 +443,11 @@ public final class Notification
             return this.objectId;
         }
 
+        @Override
+        public String getDocTypeName() {
+            return this.docTypeName;
+        }
+
         public void setPriority(NotificationPriority.Builder priority) {
             this.priority = priority;
         }
@@ -498,6 +520,20 @@ public final class Notification
             this.objectId = objectId;
         }
 
+        /**
+         * Sets the custom document type name.
+         *
+         * <p>
+         * If null, the system will use the default {@code KualiNotification} document type when routing the notification.
+         * If the document type does not match any document type name in the system, the system behavior is undefined.
+         * </p>
+         *
+         * @param docTypeName document type name of this notification
+         * @since 2.3.1
+         */
+        public void setDocTypeName(String docTypeName) {
+            this.docTypeName = docTypeName;
+        }
     }
 
 
@@ -538,6 +574,7 @@ public final class Notification
         final static String TITLE = "title";
         final static String CONTENT_MESSAGE = "contentMessage";
         final static String ID = "id";
+        final static String DOC_TYPE_NAME = "docTypeName";
 
     }
 

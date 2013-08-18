@@ -207,7 +207,7 @@
       <bean parent="Uif-FixedCssGridLayout"/>
     </property>
   </bean>
-  
+
   <bean id="Uif-FixedCssGridSection" parent="Uif-FixedCssGridSection-parentBean"/>
   <bean id="Uif-FixedCssGridSection-parentBean" abstract="true" parent="Uif-FixedCssGridGroup" scope="prototype">
     <property name="header">
@@ -219,7 +219,7 @@
       </list>
     </property>
   </bean>
-  
+
   <bean id="Uif-FixedCssGridSubSection" parent="Uif-FixedCssGridSubSection-parentBean"/>
   <bean id="Uif-FixedCssGridSubSection-parentBean" abstract="true" parent="Uif-FixedCssGridGroup" scope="prototype">
     <property name="header">
@@ -243,7 +243,7 @@
       <bean parent="Uif-FluidCssGridLayout"/>
     </property>
   </bean>
-  
+
   <bean id="Uif-FluidCssGridSection" parent="Uif-FluidCssGridSection-parentBean"/>
   <bean id="Uif-FluidCssGridSection-parentBean" abstract="true" parent="Uif-FluidCssGridGroup" scope="prototype">
     <property name="header">
@@ -255,7 +255,7 @@
       </list>
     </property>
   </bean>
-  
+
   <bean id="Uif-FluidCssGridSubSection" parent="Uif-FluidCssGridSubSection-parentBean"/>
   <bean id="Uif-FluidCssGridSubSection-parentBean" abstract="true" parent="Uif-FluidCssGridGroup" scope="prototype">
     <property name="header">
@@ -716,6 +716,8 @@
     <property name="layoutManager">
       <bean parent="Uif-StackedCollectionLayout-WithGridItems"/>
     </property>
+    <property name="displayLength" value="5"/>
+    <property name="displayStart" value="0"/>
   </bean>
 
   <bean id="Uif-StackedCollectionSection" parent="Uif-StackedCollectionSection-parentBean"/>
@@ -1277,7 +1279,8 @@
     <property name="promptText">
       <value>
         [b]Due to inactivity, you will be logged out in [div id="UifTimeoutCountdown"]60[/div] minute(s).[/b][br]
-        For your security, work sessions are automatically logged out after @{sessionTimeoutInterval / 60000.00} minutes of inactivity.
+        For your security, work sessions are automatically logged out after @{sessionTimeoutInterval / 60000.00} minutes
+        of inactivity.
       </value>
     </property>
     <property name="availableResponses">
@@ -1296,7 +1299,8 @@
     <property name="promptText">
       <value>
         [b]You have been logged out due to inactivity.[/b][br]
-        For your security, work sessions are automatically logged out after @{sessionTimeoutInterval / 60000.00} minutes of inactivity.
+        For your security, work sessions are automatically logged out after @{sessionTimeoutInterval / 60000.00} minutes
+        of inactivity.
         Return to the&amp;nbsp;[0].
       </value>
     </property>

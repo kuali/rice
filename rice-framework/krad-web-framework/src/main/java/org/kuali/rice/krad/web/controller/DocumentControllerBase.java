@@ -545,7 +545,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
         boolean rulePassed = KRADServiceLocatorWeb.getKualiRuleService().applyRules(new AddNoteEvent(document,
                 newNote));
 
-        // if the rule evaluation passed, let's add the note
+        // if the rule evaluation passed, let's add the note; otherwise, return with an error
         if (rulePassed) {
             newNote.refresh();
 
@@ -565,9 +565,10 @@ public abstract class DocumentControllerBase extends UifControllerBase {
                 getNoteService().save(newNote);
             }
 
+            return addLine(uifForm, result, request, response);
+        } else {
+            return getUIFModelAndView(uifForm);
         }
-
-        return addLine(uifForm, result, request, response);
     }
 
     /**

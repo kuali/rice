@@ -327,6 +327,7 @@
         <column name="LOCKD_DTTM" type="DATE"/>
         <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="OBJ_ID" size="36" type="VARCHAR"/>
+        <column name="DOC_TYP_NM" size="64" type="VARCHAR"/>
         <foreign-key foreignTable="KREN_PRODCR_T" name="KREN_NTFCTN_FK4">
             <reference foreign="PRODCR_ID" local="PRODCR_ID"/>
         </foreign-key>

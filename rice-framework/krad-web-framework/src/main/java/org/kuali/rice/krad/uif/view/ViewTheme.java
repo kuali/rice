@@ -140,10 +140,10 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
             String themeDirectory = getThemeDirectory();
 
             this.cssFiles.add(0,
-                    themeDirectory + UifConstants.DEFAULT_STYLESHEETS_DIRECTORY + "/" + this.minFileName
+                    themeDirectory + "/" + UifConstants.DEFAULT_STYLESHEETS_DIRECTORY + "/" + this.minFileName
                             + UifConstants.FileExtensions.CSS);
             this.scriptFiles.add(0,
-                    themeDirectory + UifConstants.DEFAULT_SCRIPTS_DIRECTORY + "/" + this.minFileName
+                    themeDirectory + "/" + UifConstants.DEFAULT_SCRIPTS_DIRECTORY + "/" + this.minFileName
                             + UifConstants.FileExtensions.JS);
         }
     }
@@ -168,7 +168,7 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
 
             themeDirectory = this.directory;
         } else {
-            themeDirectory = UifConstants.DEFAULT_THEMES_DIRECTORY.substring(1) + "/" + this.name + "/";
+            themeDirectory = UifConstants.DEFAULT_THEMES_DIRECTORY.substring(1) + "/" + this.name ;
         }
 
         return themeDirectory;
@@ -332,7 +332,7 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
         if (StringUtils.isBlank(this.imageDirectory)) {
             String appUrl = getConfigurationService().getPropertyValueAsString(KRADConstants.ConfigParameters.APPLICATION_URL);
 
-            this.imageDirectory = appUrl + "/" + getThemeDirectory() + UifConstants.DEFAULT_IMAGES_DIRECTORY + "/";
+            this.imageDirectory = appUrl + "/" + getThemeDirectory() + "/" + UifConstants.DEFAULT_IMAGES_DIRECTORY + "/";
         }
 
         return imageDirectory;

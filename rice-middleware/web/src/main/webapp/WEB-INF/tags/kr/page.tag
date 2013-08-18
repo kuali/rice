@@ -190,7 +190,7 @@ jQuery(function(){
 </c:if>
 
 <html:form styleId="kualiForm" action="/${htmlFormAction}.do"
-	method="post" enctype="${encoding}"
+	method="post" enctype="${encoding}" acceptCharset="utf-8"
 	onsubmit="return hasFormAlreadyBeenSubmitted();">
 <c:choose>
 	<c:when test="${lookup}" >

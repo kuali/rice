@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.core.test;
 
+import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
+import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.TestHarnessServiceLocator;
 import org.kuali.rice.test.data.PerSuiteUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
@@ -84,6 +86,22 @@ public abstract class AnnotationTestParent extends CORETestCase {
                 }
             }
         });
+    }
+
+    protected void resetDb() throws Exception {
+        // cleanup database from previous @PerSuiteUnitTestData
+        ClearDatabaseLifecycle clearDatabaseLifeCycle = new ClearDatabaseLifecycle();
+        clearDatabaseLifeCycle.start();
+
+        // Re-Loads Suite Test Data - Needed after adhoc cleanout
+        BaseLifecycle baseLifecycle = new BaseLifecycle() {
+            @Override
+            public void start() throws Exception {
+                loadSuiteTestData();
+                super.start();
+            }
+        };
+        baseLifecycle.start();
     }
 
 }

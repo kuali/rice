@@ -62,4 +62,16 @@ public interface NotificationContract extends KenIdentifiable, Versioned, Global
     String getTitle();
 
     String getContentMessage();
+
+    /**
+     * Gets the custom document type name
+     *
+     * <p>
+     * If null, the system will use the default {@code KualiNotification} document type when routing the notification
+     * </p>
+     *
+     * @return the custom document type name for this Notification, or null if undefined
+     * @since 2.3.1
+     */
+    String getDocTypeName();
 }

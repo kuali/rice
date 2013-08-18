@@ -266,6 +266,15 @@ public class UifConstants {
         public static final int ACTIONS_COLUMN_RIGHT_INDEX = -1;
     }
 
+    public static class PageRequest {
+        public static final String PREV = "prev";
+        public static final String NEXT = "next";
+        public static final String FIRST = "first";
+        public static final String LAST = "last";
+        public static final String PAGE_NUMBER = "pageNumber";
+        public static final String DISPLAY_START_PROP = "#displayStart";
+    }
+
     public static class TabOptionKeys {
         public static final String ACTIVE = "active";
     }

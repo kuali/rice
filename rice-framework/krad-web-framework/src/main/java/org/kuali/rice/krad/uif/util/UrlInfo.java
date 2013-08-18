@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -61,14 +62,14 @@ public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
     /**
      * Base constructor
      */
-    public UrlInfo(){}
+    public UrlInfo() {}
 
     /**
      * Constructor that initializes an href value
      *
      * @param href the href value
      */
-    public UrlInfo(String href){
+    public UrlInfo(String href) {
         this.href = href;
         this.originalHref = href;
     }
@@ -311,7 +312,7 @@ public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
      *
      * @return the requestParameters map
      */
-    @BeanTagAttribute(name = "requestParameters", type= BeanTagAttribute.AttributeType.MAPVALUE)
+    @BeanTagAttribute(name = "requestParameters", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getRequestParameters() {
         return requestParameters;
     }
@@ -341,7 +342,7 @@ public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
      * @return href value
      */
     @Override
-    public String toString(){
+    public String toString() {
         return this.getHref();
     }
 
@@ -371,7 +372,12 @@ public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
         urlInfoCopy.setMethodToCall(this.methodToCall);
 
         if (this.requestParameters != null) {
-            urlInfoCopy.setExpressionGraph(new HashMap<String, String>(this.requestParameters));
+            Map<String, String> requestParametersCopy = Maps.newHashMapWithExpectedSize(this.requestParameters.size());
+            for (Map.Entry requestParameter : requestParameters.entrySet()) {
+                requestParametersCopy.put(requestParameter.getKey().toString(), requestParameter.getValue().toString());
+            }
+
+            urlInfoCopy.setRequestParameters(requestParametersCopy);
         }
     }
 }

@@ -18,6 +18,7 @@ package edu.samplu.krad.library.validation;
 import org.junit.Test;
 
 import edu.samplu.common.SmokeTestBase;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -46,21 +47,21 @@ public class DemoLibraryValidationCaseConstraintsSmokeTest extends SmokeTestBase
        waitAndClickByXpath("//input[@type='radio' and @value='case1']");
        waitAndTypeByName("inputField1","");
        waitAndTypeByName("inputField2","");
-       assertElementPresentByXpath("//input[@name='inputField1' and @class='uif-textControl dependsOn-inputField10 error']");
+       isVisible(By.xpath("//li[@class='uif-errorMessageItem-field']"));
       
        //Scenario-2
        waitAndClickByXpath("//input[@type='radio' and @value='case2']");
        waitAndTypeByName("inputField1","a_+");
        waitAndTypeByName("inputField2","");
        fireMouseOverEventByName("inputField1");
-       assertTextPresent("  Can only be alphanumeric characters ");
+       isVisible(By.xpath("//li[@class='uif-errorMessageItem-field']"));
        
        //Scenario-3
        waitAndClickByXpath("//input[@type='radio' and @value='case3']");
        waitAndTypeByName("inputField2","567823");
        waitAndTypeByName("inputField1","");
        fireMouseOverEventByName("inputField2");
-       assertTextPresent("  Must be at most 3 characters");
+        isVisible(By.xpath("//li[@class='uif-errorMessageItem-field']"));
        
        //Scenario-4
        waitAndClickByXpath("//input[@type='radio' and @value='case4']");
@@ -68,7 +69,7 @@ public class DemoLibraryValidationCaseConstraintsSmokeTest extends SmokeTestBase
        waitAndTypeByName("inputField4","");
        waitAndTypeByName("inputField3","");
        fireMouseOverEventByName("inputField4");
-       assertTextPresent("  Required by Field 3");
+       isVisible(By.xpath("//li[@class='uif-errorMessageItem-field']"));
     }
     
     protected void testValidationCaseConstraintsNested() throws Exception {

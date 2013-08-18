@@ -24,7 +24,7 @@ import org.kuali.rice.test.data.UnitTestDataUtils;
 import java.lang.reflect.Method;
 
 /**
- * A lifecycle for loading SQL datasets based on the PerSuiteUnitTestData annotation. The individual SQL statements are
+ * A lifecycle for loading SQL datasets based on the PerTestUnitTestData annotation. The individual SQL statements are
  * loaded first, followed by the statements inside the files (files are loaded sequentially in the order listed in the
  * annotation).
  * 

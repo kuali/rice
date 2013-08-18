@@ -284,7 +284,7 @@ public class RichTable extends WidgetBase {
                         "[" + UifConstants.TableToolsValues.ADD_ROW_DEFAULT_INDEX + "]");
             }
 
-            StringBuffer tableToolsColumnOptions = new StringBuffer("[");
+            StringBuilder tableToolsColumnOptions = new StringBuilder("[");
 
             int columnIndex = 0;
             int actionIndex = UifConstants.TableLayoutValues.ACTIONS_COLUMN_RIGHT_INDEX;
@@ -360,7 +360,7 @@ public class RichTable extends WidgetBase {
                             null);
                     tableToolsColumnOptions.append(actionColOptions);
                 } else {
-                    tableToolsColumnOptions = new StringBuffer(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
+                    tableToolsColumnOptions = new StringBuilder(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
                             ", "));
                 }
 
@@ -378,7 +378,7 @@ public class RichTable extends WidgetBase {
                             null);
                     tableToolsColumnOptions.append(actionColOptions);
                 } else {
-                    tableToolsColumnOptions = new StringBuffer(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
+                    tableToolsColumnOptions = new StringBuilder(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
                             ", "));
                 }
 
@@ -489,7 +489,7 @@ public class RichTable extends WidgetBase {
                             null);
                     tableToolsColumnOptions.append(actionColOptions);
                 } else {
-                    tableToolsColumnOptions = new StringBuffer(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
+                    tableToolsColumnOptions = new StringBuilder(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
                             ", "));
                 }
 

@@ -871,12 +871,6 @@
         </section>
     </section>
     <section>
-        <title>ID Generation </title>
-        <para>Coming Soon!</para>
-        <!-- TODO: Add content here.
-            -->
-    </section>
-    <section>
         <title>Application Header and Footer </title>
         <para>Coming Soon!</para>
         <!-- TODO: Add content here.
@@ -979,12 +973,585 @@
                 View.</para>
         </section>
     </section>
-    <section>
-        <title>Building Application Menus </title>
-        <para>Coming Soon!</para>
-        <!-- TODO: Add content here.
-            -->
-    </section>
+
+        <section xml:id="viewthemes">
+            <title>View Themes</title>
+            <para>The view and its contained components provide the structure for the page, or in
+                other words they dictate the HTML that will be rendered. But we all know the same
+                HTML can appear in many different ways, or with the use of script our view can even
+                behave in many different ways. This is where the <emphasis role="keyword">View Theme</emphasis> comes into
+                play. The view theme provides a base set of CSS and JS files that will be sourced in
+                when the view is rendered. In addition it can manage a group of images. We generally
+                call this the 'look and feel'.</para>
+            <para>An application may have more than one view theme that is used, but generally there
+            will be just one. In fact, KRAD ships with a default theme based on the <link
+                xlink:href="http://getbootstrap.com/">Bootstrap/</link> library that you can use as
+            is or modify. A new view theme can be configured manually within the UIF XML, or use
+            automatic configuration by convention. Both of these methods are described below.</para>
+        <section>
+            <title>Manual Theme Configuration</title>
+            <para>We can configure a new theme by creating a bean with parent <emphasis
+                    role="keyword">Uif-ViewTheme</emphasis>:</para>
+            <programlisting linenumbering="numbered"> &lt;bean id="MyAppViewTheme" parent="Uif-ViewTheme"/></programlisting>
+            <para>Now let's add some CSS files to the theme. To do so we use the <emphasis
+                    role="keyword">cssFiles</emphasis> property which can contain one or more URLs
+                (relative or full) to a CSS file location. Also, since we wish to configure our
+                theme manually, we must set the flag <emphasis role="keyword">usesThemeBuilder</emphasis> to
+                false:</para>
+            <programlisting linenumbering="numbered">&lt;bean id="MyAppViewTheme" parent="Uif-ViewTheme" p:usesThemeBuilder="false">
+  &lt;property name="cssFiles">
+    &lt;list>
+      &lt;value>/myapp/stylesheets/base.css&lt;/value>
+      &lt;value>/myapp/stylesheets/fonts.css&lt;/value>
+    &lt;/list>
+  &lt;/property>
+&lt;/bean></programlisting>
+            <para>Likewise we can add JavaScript files using the <emphasis role="keyword">scriptFiles</emphasis>
+                property. Again one or more URLs can be given that point to a script file
+                location:</para>
+            <programlisting linenumbering="numbered">&lt;bean id="MyAppViewTheme" parent="Uif-ViewTheme">
+  &lt;property name="cssFiles">
+    &lt;list>
+      &lt;value>/myapp/stylesheets/base.css&lt;/value>
+      &lt;value>/myapp/stylesheets/fonts.css&lt;/value>
+    &lt;/list>
+  &lt;/property>
+  &lt;property name="scriptFiles">
+    &lt;list>
+      &lt;value>/myapp/scripts/common.js&lt;/value>
+      &lt;value>/myapp/scripts/widgets.js&lt;/value>
+    &lt;/list>
+  &lt;/property>
+&lt;/bean></programlisting>
+            <para>At this point we have a theme that includes CSS and JS files, and we can begin
+                using it with our views. See <xref linkend="themelinking"/> for more information.</para>
+            <para>KRAD also provides support for using a minified CSS and JS file in test and
+                production, while using full source files for development. To determine which files
+                to source in, the Rice configuration parameter <emphasis role="keyword">rice.krad.dev.mode</emphasis> is
+                used. When this is true, full source files will be sourced for debugging purposes.
+                Conversely, when this parameter is false, the minified files will be sourced in. </para>
+            <para>When using manual configuration the path for the minified files, and the path for
+                the source files must be specified. First we can configure the source paths using
+                the properties <emphasis role="keyword">minCssSourceFiles</emphasis> and
+                <emphasis role="keyword">minScriptSourceFiles</emphasis>. These properties behave like the
+                cssFiles and scriptFiles properties described above.</para>
+            <programlisting linenumbering="numbered">&lt;bean id="MyAppViewTheme" parent="Uif-ViewTheme">
+  &lt;property name="minCssSourceFiles">
+    &lt;list>
+      &lt;value>/myapp/stylesheets/base.css&lt;/value>
+      &lt;value>/myapp/stylesheets/fonts.css&lt;/value>
+    &lt;/list>
+  &lt;/property>
+  &lt;property name="minScriptSourceFiles">
+    &lt;list>
+      &lt;value>/myapp/scripts/common.js&lt;/value>
+      &lt;value>/myapp/scripts/widgets.js&lt;/value>
+    &lt;/list>
+  &lt;/property>
+&lt;/bean></programlisting>
+            <para>Now we must also specify the path for the min CSS and Script file. We can do this
+                using the properties <emphasis role="keyword">minCssFile</emphasis> and
+                <emphasis role="keyword">minScriptFile</emphasis>:</para>
+            <programlisting linenumbering="numbered">&lt;bean id="MyAppViewTheme" parent="Uif-ViewTheme">
+  &lt;property name="minCssSourceFiles">
+    &lt;list>
+      &lt;value>/myapp/stylesheets/base.css&lt;/value>
+      &lt;value>/myapp/stylesheets/fonts.css&lt;/value>
+    &lt;/list>
+  &lt;/property>
+  &lt;property name="minScriptSourceFiles">
+    &lt;list>
+      &lt;value>/myapp/scripts/common.js&lt;/value>
+      &lt;value>/myapp/scripts/widgets.js&lt;/value>
+    &lt;/list>
+  &lt;/property>
+  &lt;property name="minCssFile" value="/myapp/stylesheets/myAppTheme.min.css"/>
+  &lt;property name="minScriptFile" value="/myapp/scripts/myAppTheme.min.js"/>
+&lt;/bean></programlisting>
+            <para>Note the view theme will automatically adjust the cssFiles and scriptFiles
+                properties to include either the minified source files, or the minified file itself.
+                If we have also configured items in these lists, the minified file(s) will be added
+                before our configured items (pushed to the top of the list).</para>
+            <note>
+                <title>Disabling Minified Sourcing</title>
+                <para>You may disable the behavior of sourcing in minified files (or their source
+                    files) by setting the view theme property <emphasis role="keyword">includeMinFiles</emphasis>
+                    to false. When this property is false the cssFiles and scriptFiles properties
+                    will not be modified.</para>
+            </note>
+        </section>
+        <section>
+         <title>Theme Configuration by Convention</title>
+            <para>Now let's look at creating a view theme that is configured by convention. This is
+                the recommended way of using view themes because it allows a UX designer to work
+                with the theme directory without modifying the UIF XML. It also will save time with
+                theme maintenance.</para>
+            <para>As the name states, in order to take advantage of this feature we must follow a
+                convention with our theme assets. Let's take a look at that convention.</para>
+            <para>First, when you overlay (or copy) the KRAD web war, it provides a starting web
+                directory structure. This initial structure is as follows:</para>
+            <figure xml:id="kradweb">
+                <title>KRAD Web Structure</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/KRAD_Guide/kradweb.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+            <para>As you can see one of the directories that is included is named 'themes'. Under
+                this is assumed to be directories that correspond to a view theme. Therefore to
+                create a new theme, we start by creating a directory within themes, with the
+                directory name equal to the name we want for our theme. </para>
+            <para>Within each theme directory, there is also a convention for where stylesheets,
+                scripts, and images should be placed. In fact, the convention is to put these files
+                under the directory with those names. Here is the structure for bootstrap:</para>
+            <figure xml:id="bootstraptheme">
+                <title>Theme Directory Structure</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/KRAD_Guide/bootstraptheme.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+            <para>Let's create a new theme named 'myapp'. First we'll create a new directory under
+                'themes' with the name 'myapp'. Then within mysapp, we need to create an images,
+                scripts, and stylesheets directory. Our themes directory will now look like:</para>
+            <figure xml:id="myapptheme">
+                <title>MyApp Theme Directory</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/KRAD_Guide/myapptheme.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+            <para>From here we can add files to their respective directories as necessary.</para>
+            <para>Now in order to use the new theme we created, we must create a view theme bean
+                within the UIF XML. Like was done for manual configuration, we create a bean with
+                parent <emphasis role="keyword">Uif-ViewTheme</emphasis>.</para>
+            <programlisting> &lt;bean id="MyAppViewTheme" parent="Uif-ViewTheme"/></programlisting>
+            <para>Now here's the cool part. Instead of listing all the files like we had to for
+                manual configuration, we simply need to set the <emphasis role="keyword">name</emphasis> property.
+                This is the name for our theme and should correspond to the name of the directory we
+                created under themes:</para>
+            <programlisting>&lt;bean id="MyAppViewTheme" parent="Uif-ViewTheme" p:name="myapp"/></programlisting>
+            <para>That's it! All other view theme properties will be derived from the directory. We
+                can now set this as our global theme, or use for one or more views as described in <xref linkend="themelinking"/>.
+                </para>
+            <para>So how does this work? First, all files that end with the '.css' extension that
+                exist in the theme's stylesheets directory are used for minCssSourceFiles
+                (development mode). Likewise, all files that end with the '.js' extension in the
+                theme's scripts directory are used for minJsSourceFiles. To create the minCssFile
+                and minScriptFile path for non-development modes, it is assumed the min files exists
+                in the scripts and stylesheets directories, and is formed with the convention
+                '{themeName}.{applicationVersion}.min.{fileExtension}'. For example, with for theme
+                name 'myapp' and application version '1.0', the min file names will be
+                'myapp.1.0.min.css' and 'myapp.1.0.min.js'. </para>
+            <para>The version number used to generate the min file names is given by the theme
+                property <emphasis role="keyword">minVersionSuffix</emphasis>. Note in the base bean definition
+                (Uif-ViewTheme), this defaults to the Rice configuration parameter
+                <emphasis role="keyword">application.version</emphasis>.</para>
+            <para>When configuring our themes by convention, it might be necessary to have more
+                control over what theme's assets are included. For example we might need to exclude
+                some files, or define an order files must be included in. This is done by defining a
+                properties files within the theme directory. For more information, see <xref linkend="themeproperties"/>.
+                </para>
+            <note>
+                <title>Configuration by Convention and the Theme Builder</title>
+                <para>It is assumed when using theme configuration by convention that the Theme
+                    Builder is also being used. The Theme Builder writes out a
+                    <emphasis role="keyword">theme-derived.properties</emphasis> file in the theme's directory,
+                    which is then read by the view theme during the view lifecycle. If you are not
+                    using the theme builder, you can write out this file manually.</para>
+            </note>
+        </section>
+            <section>
+                <title>The Theme Builder</title>
+            <para>Included in KRAD is a maven plugin called the Theme Builder which performs utility
+                functions on a theme's assets. These functions include:</para>
+            <itemizedlist>
+                <listitem>
+                    <para>Application of configured pre-processors. Currently the only pre-processor
+                        implemented is the LessPreProcessor. This compiles Less files to CSS files.
+                        To learn more about Less, see 
+                            <link xlink:href="http://lesscss.org/">http://lesscss.org/</link>
+                        </para>
+                </listitem>
+                <listitem>
+                    <para>Inheritance of assets from a parent theme. A theme can be configured to
+                        inherit from another theme, in which case assets from the parent them will
+                        be overlaid to the child</para>
+                </listitem>
+                <listitem>
+                    <para>Merging and minification of CSS and JS files. All CSS files, and all JS
+                        files are each combined into one minified file (merged and optimized).
+                        Currently for CSS minification the theme builder uses the YUI Compressor,
+                        and for JS uses the Google Closure compiler</para>
+                </listitem>
+                <listitem>
+                    <para>Tagging of minified files. To support automatic downloads on resources
+                        when a new version of the application is released, the minified files are
+                        tagged with a version number</para>
+                </listitem>
+            </itemizedlist>
+            <section>
+                <title>Configuring and Running the Theme Builder</title>
+                <para>The theme builder runs as part of the maven build process. To include the
+                    theme builder we just need to include the plugin in our pom.xml (of your
+                    application's web module). The following plugin configuration can be copied
+                    without modification:</para>
+                <programlisting linenumbering="numbered">  &lt;build>
+    &lt;plugins>
+      &lt;plugin>
+        &lt;groupId>org.kuali.maven.plugins&lt;/groupId>
+        &lt;artifactId>spring-maven-plugin&lt;/artifactId>
+        &lt;executions>
+          &lt;execution>
+            &lt;id>buildthemes&lt;/id>
+            &lt;phase>process-resources&lt;/phase>
+            &lt;goals>
+              &lt;goal>loadxml&lt;/goal>
+            &lt;/goals>
+            &lt;configuration>
+              &lt;location>classpath:org/kuali/rice/krad/theme/themebuilder-context.xml&lt;/location>
+            &lt;/configuration>
+          &lt;/execution>
+        &lt;/executions>
+        &lt;dependencies>
+          &lt;dependency>
+            &lt;groupId>${project.groupId}&lt;/groupId>
+            &lt;artifactId>rice-krad-theme-builder&lt;/artifactId>
+            &lt;version>${project.version}&lt;/version>
+          &lt;/dependency>
+        &lt;/dependencies>
+      &lt;/plugin>
+    &lt;/plugins>
+  &lt;/build></programlisting>
+                <para>The plugin is configured through maven properties. In addition to the plugin,
+                    copy the following properties to the properties section of the pom.xml:</para>
+                <programlisting linenumbering="numbered">  &lt;properties>
+    &lt;webapp.source.dir>${basedir}/src/main/webapp&lt;/webapp.source.dir>
+    &lt;theme.builder.output.dir>${project.build.directory}/${project.artifactId}-${project.version}&lt;/theme.builder.output.dir>
+    &lt;theme.builder.excludes />
+    &lt;theme.builder.theme.adddirs />
+    &lt;theme.builder.plugin.adddirs />
+    &lt;theme.skip.theme.processing>false&lt;/theme.skip.theme.processing>
+  &lt;/properties></programlisting>
+                <para>Note these property values can be used as is, or modified as necessary. The
+                    following table describes their usage.</para>
+                <table>
+                    <title>Theme Builder Configuration Properties</title>
+                    <tgroup cols="2">
+                        <thead>
+                            <row>
+                                <entry>Property Name</entry>
+                                <entry>Property Description</entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row>
+                                <entry>webapp.source.dir</entry>
+                                <entry>Directory containing the web app source. Assets will pulled from here to the output directory</entry>
+                            </row>
+                            <row>
+                                <entry>theme.builder.output.dir</entry>
+                                <entry>Directory where the theme builders output should be placed. This can be the actual war directory or a temporary directory that gets copied over in a later phase</entry>
+                            </row>
+                            <row>
+                                <entry>theme.builder.excludes</entry>
+                                <entry>One or more themes to exclude from the build. The theme is identified by its directory name. Separate
+                                    each theme with a comma. All directories in the default themes directory or additional directories will be
+                                    copied, but only the ones not excluded here will be processed</entry>
+                            </row>
+                            <row>
+                                <entry>theme.builder.theme.adddirs</entry>
+                                <entry>One or more additional directories (outside the 'themes' parent directory) to process as themes. This should contain the full path to the theme
+                                    directory. Separate each directory with a comma</entry>
+                            </row>
+                            <row>
+                                <entry>theme.builder.plugin.adddirs</entry>
+                                <entry>One or more additional directories (outside the 'plugins' parent directory) to process as plugins. This should contain the full path to the plugin
+                                    directory. Separate each directory with a comma</entry>
+                            </row>
+                            <row>
+                                <entry>theme.skip.theme.processing</entry>
+                                <entry>Indicates whether theme processing should be disabled, in which case the builder will only perform
+                                    copying of assets to the output directory and overlays</entry>
+                            </row>
+                        </tbody>
+                    </tgroup>
+                </table>
+                <para>The default plugin configuration configures the theme builder to run during
+                    the <emphasis role="keyword">process-resources</emphasis> phase. Therefore each time a these
+                    phase is run (through maven) on the corresponding module the theme builder will
+                    be invoked. This can be done through the maven command line, or using IDE maven
+                    integration.</para>
+                <tip>
+                    <title>Theme Builder and Manual Theme Configuration</title>
+                    <para>As previously stated, the theme builder and automatic theme configuration go hand and hand. However, if using manual theme configuration you can still take advantage of the
+                        theme builder. For example, you might want to use Less files and use the theme builder to perform the compiling. Or use the theme builder to perform minification.</para>
+                </tip>
+            </section>
+                <section xml:id="themeproperties">
+                    <title>
+                        Theme Properties
+                    </title>
+                <para>We can control how assets are collected for a theme through a properties file.
+                    First, we create a file named <emphasis role="keyword">theme.properties</emphasis> in the root
+                    of our theme directory. For example if our theme name is 'myapp', the path for
+                    the properties file will be '/themes/myapp/theme.properties'. Within the
+                    properties file we can define any of the following properties to customize the
+                    theme:</para>
+                    <table>
+                        <title>Theme Property Listing</title>
+                        <tgroup cols="2">
+                            <thead>
+                                <row>
+                                    <entry>Property Name</entry>
+                                    <entry>Property Description</entry>
+                                </row>
+                            </thead>
+                            <tbody>
+                                <row>
+                                    <entry>parent</entry>
+                                    <entry>Name of the theme to inherit from, this should correspond to the theme directory.
+                                        For example, if the theme directory is '/themes/bootstrap', the parent would be 'bootstrap'.
+                                        All assets from the parent will be copied to the theme directory, except those excluded by 'parentExcludes',
+                                        and those assets which already exist in the theme (same name and path)</entry>
+                                </row>
+                                <row>
+                                    <entry>parentExcludes</entry>
+                                    <entry>When a parent is set, one or more files to exclude from the asset copy. More than one file can be given
+                                        using a comma delimiter. An exclude can be an exact file (name and path relative to the parent theme directory),
+                                        or an Ant pattern
+                                        ex. 'scripts/bootstrap.js,scripts/k**,stylesheets/**'</entry>
+                                </row>
+                                <row>
+                                    <entry>cssExcludes</entry>
+                                    <entry>One or more files to exclude from the final CSS list. This is relative to the 'stylesheets' directory of the
+                                        theme, and should not contain the file extension. This is processed after all overlays. Ant patterns can
+                                        be used as well. CSS files that come from a plugin directory can also be excluded from the final list by filtering
+                                        based on the file base name
+                                        ex. 'myTest,example*'</entry>
+                                </row>
+                                <row>
+                                    <entry>jsExcludes</entry>
+                                    <entry>One or more files to exclude from the final JS list. This is relative to the 'scripts' directory of the
+                                        theme, and should not contain the file extension. This is processed after all overlays. Ant patterns can
+                                        be used as well. JS files that come from a plugin directory can also be excluded from the final list by filtering
+                                        based on the file base name
+                                        ex. 'myScript,scriptA*'</entry>
+                                </row>
+                                <row>
+                                    <entry>pluginIncludes</entry>
+                                    <entry>One or more plugin names that should be included with the theme. Plugins are named by their directory (for
+                                        example, the plugin at '/plugins/jstree' has name 'jstree'). By default all plugins in the '/plugins' directory
+                                        are included, and can be filtered using pluginExcludes
+                                        ex. 'jquery,jqueryui,datatables,blockui'</entry>
+                                </row>
+                                <row>
+                                    <entry>pluginExcludes</entry>
+                                    <entry>One or more plugin names to exclude from the theme. Plugins are named by their directory (for
+                                        example, the plugin at '/plugins/jstree' has name 'jstree'). By default all plugins in the '/plugins' directory
+                                        are included
+                                        ex. 'globalize,postmsg'</entry>
+                                </row>
+                                <row>
+                                    <entry>pluginFileExcludes</entry>
+                                    <entry>One or more files to exclude from the plugin directories that are included in the theme. File excludes should
+                                        be relative to the plugin directory parent (most of the time this will be '/plugins'). Ant patterns may be used
+                                        as well
+                                        ex. 'fancybox/helpers/**,jstree/themes/**'</entry>
+                                </row>
+                                <row>
+                                    <entry>additionalOverlays</entry>
+                                    <entry>One or more mappings of directories to overlay (copy). Each mapping is delimited by a comma. Within each mapping
+                                        the from directory is listed, then the to directory within parenthesis ('fromDir(toDir)'). Both are relative to
+                                        themes directory, unless the path starts with '/', in which case it is taken from the web root. This configuration
+                                        is useful because some plugins/scripts look for assets (such as images) in the plugin directory. When the script
+                                        is minified, it is essentially moved, therefore those relative paths are broken. This can be used to copy the
+                                        needed content to the theme directory
+                                        ex. '/plugins/jstree/themes(scripts/themes),/plugins/tooltip/jquerybubblepopup-theme(scripts/jquerybubblepopup-theme)'</entry>
+                                </row>
+                                <row>
+                                    <entry>lessIncludes</entry>
+                                    <entry>When the Less pre processor is used, provides the list of less files to compile. Ant patterns are allowed.
+                                        By default all files in the theme's directory named 'stylesheets' and with .less extension are included,
+                                        with the exception of those in the 'stylesheets/includes' directory.
+                                        ex. 'bootstrap.less,**/less/*.less'</entry>
+                                </row>
+                                <row>
+                                    <entry>lessExcludes</entry>
+                                    <entry>When the Less pre processor is used, provides the list of less files to exclude from the compile process.
+                                        Ant patterns are allowed.
+                                        ex. 'reset.less,include*.less'</entry>
+                                </row>
+                                <row>
+                                    <entry>cssLoadFirst</entry>
+                                    <entry>The remaining configuration properties customize the order CSS and JS files are sourced. In development
+                                        mode this is the order they are sourced in. When merging and minifying this is the order in which the
+                                        contents are included
+                                        There is a global ordering of the following: plugin assets, krad assets, theme specific asset
+                                        One or more CSS files that should be ordered first. Ant patterns are allowed and the .css extension
+                                        should not be included. Each file/pattern is tested against the list of all included CSS files, and matches
+                                        are placed into the final list in that position. Note only the file base name (not including any path or
+                                        extension) is tested (therefore it doesn't matter whether the file originally came from a plugin or theme
+                                        directory). If this property is not specified then plugin assets will be first to load
+                                        ex. 'reset,bootstrap'</entry>
+                                </row>
+                                <row>
+                                    <entry>cssLoadLast</entry>
+                                    <entry>One or more CSS files that should be ordered last. The file/pattern given first will be last in the list,
+                                        second file/pattern will be second to last, and so on. Ant patterns are allowed and the .css extension
+                                        should not be included. Each file/pattern is tested against the list of all included CSS files, and matches
+                                        are placed into the final list in that position. Note only the file base name (not including any path or
+                                        extension) is tested (therefore it doesn't matter whether the file originally came from a plugin or theme directory).
+                                        ex. 'override,colors'</entry>
+                                </row>
+                                <row>
+                                    <entry>pluginCssLoadOrder</entry>
+                                    <entry>Order that CSS files that are included from plugins should be loaded. These will load after any CSS files
+                                        given in cssLoadFirst. Ant patterns are allowed and the .css extension should not be included. Each file/pattern
+                                        is tested against the list of CSS files that come from the included plugin directories. Any matches are loaded
+                                        in that position. Any plugin CSS files not matched will be loaded afterwards in no set order.
+                                        ex. 'jquery-ui*,jquery.fancybox'</entry>
+                                </row>
+                                <row>
+                                    <entry>themeCssLoadOrder</entry>
+                                    <entry>Order that CSS files that are present in the themes 'stylesheets' directory (or inherited from a parent's
+                                        'stylesheets' directory) should be loaded. These will load after plugin CSS files. Ant patterns are allowed
+                                        and the .css extension should not be included. Each file/pattern is tested against the list of CSS files that
+                                        come from the stylesheets directory. Any matches are loaded in that position. Any theme CSS files not matched
+                                        will be loaded afterwards in no set order.
+                                        ex. 'base,fonts'</entry>
+                                </row>
+                                <row>
+                                    <entry>jsLoadFirst</entry>
+                                    <entry>One or more JS files that should be ordered first. Ant patterns are allowed and the .js extension
+                                        should not be included. Each file/pattern is tested against the list of all included JS files, and matches
+                                        are placed into the final list in that position. Note only the file base name (not including any path or
+                                        extension) is tested (therefore it doesn't matter whether the file originally came from a plugin or theme
+                                        directory). If this property is not specified then plugin assets will be first to load
+                                        ex. 'jquery-1.8.3,jquery.validate'</entry>
+                                </row>
+                                <row>
+                                    <entry>jsLoadLast</entry>
+                                    <entry>One or more JS files that should be ordered last. The file/pattern given first will be last in the list,
+                                        second file/pattern will be second to last, and so on. Ant patterns are allowed and the .js extension
+                                        should not be included. Each file/pattern is tested against the list of all included JS files, and matches
+                                        are placed into the final list in that position. Note only the file base name (not including any path or
+                                        extension) is tested (therefore it doesn't matter whether the file originally came from a plugin or theme directory).
+                                        ex. 'jquery.easing-1.3.pack'</entry>
+                                </row>
+                                <row>
+                                    <entry>pluginJsLoadOrder</entry>
+                                    <entry>Order that JS files that are included from plugins should be loaded. These will load after any JS files
+                                        given in jsLoadFirst. Ant patterns are allowed and the .js extension should not be included. Each file/pattern
+                                        is tested against the list of JS files that come from the included plugin directories. Any matches are loaded
+                                        in that position. Any plugin JS files not matched will be loaded afterwards in no set order.
+                                        ex. 'jquery-ui*,jquery.fancybox'</entry>
+                                </row>
+                                <row>
+                                    <entry>themeJsLoadOrder</entry>
+                                    <entry>Order that JS files that are present in the themes 'scripts' directory (or inherited from a parent's
+                                        'scripts' directory) should be loaded. These will load after plugin JS files. Ant patterns are allowed
+                                        and the .js extension should not be included. Each file/pattern is tested against the list of JS files that
+                                        come from the scripts directory. Any matches are loaded in that position. Any theme JS files not matched
+                                        will be loaded afterwards in no set order.
+                                        ex. 'helpers,global*'</entry>
+                                </row>
+                            </tbody>
+                        </tgroup>   
+                    </table>
+                    <tip>
+                        <title>Sample Theme Properties</title>
+                        <para>For a sample theme properties, see rice-framework\krad-theme-builder\src\main\resources\org\kuali\rice\krad\theme\theme-sample.properties within the Rice distribution.</para>
+                    </tip>
+                </section>
+                <section>
+                    <title>Parent Themes</title>
+                    <para>One very powerful feature of the theme builder is the ability to inherit
+                    from an existing theme. This gives you the ability to create a theme starting
+                    with an existing theme, and performing any necessary overrides (e.g. changing an
+                    image, changing a color, adding styles, adding scripts). Let's take an example.
+                    First suppose we have the following two theme directories:</para>
+                    <figure xml:id="themeparents">
+                        <title>Parent/Child Theme Directories</title>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="../images/KRAD_Guide/parentchildthemes.png"/>
+                            </imageobject>
+                        </mediaobject>
+                    </figure>
+                    <para>We want the theme 'kcust' to extend the theme 'kboot'. To do so we add the
+                    following property to the theme.properties located in kcust:</para>
+                <programlisting>parent=kboot</programlisting>
+                <para>When the theme builder runs, it will overlay all assets from the kboot theme
+                    to the kcust theme, unless that file already exists. That is the files
+                    arrow-col.png, one.js, and one.css will be copied from the parent. However the
+                    file two.css will not be because it already exists in the child. This means we
+                    can customize a theme by copying any of its files to a child theme directory,
+                    and then making modifications.</para>
+                <para>This becomes even more powerful when combined with Less. Less gives us the
+                    ability to place our CSS values into variables (colors, sizes, fonts, etc).
+                    These variables can be placed in their own file (for example bootstrap keeps
+                    these in a file named 'variables.less'). Therefore when extending from a theme
+                    that uses Less, we can copy the variables.less file to our child directory, and
+                    change values as necessary. When the Less compilation is performed in the child
+                    theme, the overridden variables file will be used.</para>
+                <tip>
+                    <title>Less Includes</title>
+                    <para>If you don't want to copy the entire variables.less file, Less also has a
+                        facility for doing includes. This means you could create a variables.less
+                        file that is initially blank. Next add an include to the variables.less file
+                        from the parent theme ('../kboot/stylesheets/variables.less'), then simply
+                        refine just the variables you wish to change. The last definition of a
+                        variable will win!</para>
+                </tip>
+                    <para>Finally note that we can also exclude files that we don't want to inherit
+                    from a parent theme using the property
+                    <emphasis role="keyword">parentExcludes</emphasis>.</para>
+                <tip>
+                    <title>Multiple Parents</title>
+                    <para>Theme inheritance can go multiple levels, so when inheriting from a theme
+                        looking for its theme.properties and check whether it is also inheriting
+                        from a theme. If so you will get those files as well (by default).</para>
+                </tip>
+                </section>
+            </section>
+            <section xml:id="themelinking">
+            <title>Linking Themes To Views</title>
+            <para>As mentioned previously, a view theme can be used for all the application's views,
+                a subset, or an individual view.</para>
+            <para>KRAD provides a bean that determines the 'global' view theme. This is a theme that
+                will be used for all views, unless the view explicitly overrides the theme. To set
+                the global theme, create a bean with id <emphasis role="keyword">GlobalTheme</emphasis> and point
+                to the desired them with the parent attribute:</para>
+            <programlisting>&lt;bean id="GlobalTheme" parent="MyAppViewTheme"/></programlisting>
+            <para>All views that do not have a view them explicity sit will now use the theme
+                "MyAppViewTheme".</para>
+            <para>The theme can be sit (or overridden) for a particular view using the property
+                <emphasis role="keyword">theme</emphasis>. For example, to specify a view should use the theme
+                with id "MyAppViewTheme2", we can do the following:</para>
+            <programlisting linenumbering="numbered">&lt;bean id="SalesTransactionView" parent="Uif-FormView" p:headerText="Sales Transaction">
+  &lt;property name="theme">
+    &lt;bean parent="MyAppViewTheme2"/>
+  &lt;/property>
+  ...
+&lt;/bean> </programlisting>
+            <para>Finally, to use a theme for a subset of the applications view, we can simply
+                create an abstract bean for the view base that points to the theme, then extend that
+                bean for all views that should use the theme:</para>
+            <programlisting linenumbering="numbered">&lt;bean id="BlueTheme-Base" abstract="true" parent="Uif-FormView">
+  &lt;property name="theme">
+    &lt;bean parent="BlueTheme"/>
+  &lt;/property>
+  ...
+&lt;/bean> 
+
+&lt;bean id="TransferView" parent="BlueTheme-Base" headerText="Transfer with Blue Theme"> ... &lt;/bean>
+&lt;bean id="AccountView" parent="BlueTheme-Base" headerText="Account with Blue Theme"> ... &lt;/bean></programlisting>
+        </section>
+        </section>
     <section>
         <title>KIM Authorization </title>
         <para>Coming Soon!</para>

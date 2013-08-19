@@ -38,9 +38,7 @@
     <property name="initializeDataDictionary" value="true"/>
     <property name="dataDictionaryPackages">
       <list>
-        <value>classpath:org/kuali/rice/krad/demo/travel</value>
-        <value>classpath:org/kuali/rice/krad/demo/uif/components</value>
-        <value>classpath:org/kuali/rice/krad/demo/uif/library</value>
+        <value>classpath:org/kuali/rice/krad/demo</value>
         <value>classpath:org/kuali/rice/krad/labs</value>
       </list>
     </property>

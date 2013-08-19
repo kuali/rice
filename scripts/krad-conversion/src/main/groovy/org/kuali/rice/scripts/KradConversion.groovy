@@ -46,6 +46,8 @@ def templateDir = config.script.path.template
 def groupId = config.project.artifact.groupId
 def artifactId = config.project.artifact.artifactId
 def version = config.project.artifact.version
+def artifact = config.project.parent
+def dependencies = config.project.dependencies
 
 def strutsSearchDirPath = config.input.dir + config.input.path.src.webapp
 
@@ -55,32 +57,32 @@ StrutsConverter struts = new StrutsConverter(config)
 DictionaryConverter dictionary = new DictionaryConverter(config)
 
 if (StringUtils.isBlank(inputDir) || StringUtils.isBlank(outputDir)) {
-    println "Error:\nplease configure your input and output directories before continuing\n\n"
+    log.info "Error:\nplease configure your input and output directories before continuing\n\n"
 }
 
 // experimental - checkout svn directory instead of using input base dir.
 if (config.project.use.svn == "true") {
-    println "loading project from svn"
+    log.info "loading project from svn"
     def command = [config.project.svn.bin, "checkout", config.project.svn.path, config.project.src.dir]
     print command.toString()
     def proc = command.execute()
     proc.waitFor()
-    println "finished loading project from svn"
+    log.info "finished loading project from svn"
 }
 
 
 def strutsConfigFiles = ConversionUtils.findFilesByName(strutsSearchDirPath, "struts-config.xml")
-println "Load struts-config.xml files for processing - dir: " + strutsSearchDirPath + " " + strutsConfigFiles?.size()
+log.info "Load struts-config.xml files for processing - dir: " + strutsSearchDirPath + " " + strutsConfigFiles?.size()
 if (strutsConfigFiles.size > 0) {
     ConversionUtils.buildDirectoryStructure(outputDir, outputPathList, true)
     ScaffoldGenerator.copyWebXml(inputDir, outputDir)
     ScaffoldGenerator.copyPortalTags(inputDir, outputDir, projectApp)
-    ScaffoldGenerator.buildWarOverlayPom(outputDir, projectApp, groupId, artifactId, version, [])
+    ScaffoldGenerator.buildWarOverlayPom(outputDir, projectApp, artifact, dependencies, [])
     dictionary.convertDataDictionaryFiles()
 }
 
 // assuming there should only be one struts-config.xml
-print "Generating all necessary spring components (controllers, forms, views) from struts information"
+log.info "Generating all necessary spring components (controllers, forms, views) from struts information"
 if (strutsConfigFiles != null && strutsConfigFiles.size() > 0) {
     def strutsConfig = StrutsConverter.parseStrutsConfig(strutsConfigFiles[0].path)
     struts.generateSpringComponents(strutsConfig)
@@ -88,16 +90,16 @@ if (strutsConfigFiles != null && strutsConfigFiles.size() > 0) {
 }
 
 // find all spring files and add to a rice validation test (good precursor test)
-def springBeansFileList = ConversionUtils.findFilesByPattern(outputResourceDir, ~/\.xml$/)
+def springBeansFileList = ConversionUtils.findFilesByPattern(outputResourceDir, ~/\.xml$/, ~/META-INF/)
 def springBeansFilePathList = []
 springBeansFileList.each { file -> springBeansFilePathList << file.path }
 
 // includes a spring validation test to allow for testing before running the server application
-print "Generating spring validation test based on resulting output from conversion"
+log.info "Generating spring validation test based on resulting output from conversion"
 scaffold.buildSpringBeansValidationTest(outputDir, springBeansFilePathList);
 
-println " -- Script Complete"
-println " -- open directory " + outputDir
-println " -- prep project -- mvn eclipse:clean eclipse:eclipse generate-resources "
-println " -- if using eclipse add target/generate-resources directory as a referenced library (Configure -> Build Path -> Library -> Add Class Folder "
+log.info " -- Script Complete"
+log.info " -- open directory " + outputDir
+log.info " -- prep project -- mvn eclipse:clean eclipse:eclipse generate-resources "
+log.info " -- if using eclipse add target/generate-resources directory as a referenced library (Configure -> Build Path -> Library -> Add Class Folder "
 // end of script

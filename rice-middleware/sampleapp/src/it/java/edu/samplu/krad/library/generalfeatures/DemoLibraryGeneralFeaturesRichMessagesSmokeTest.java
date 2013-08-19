@@ -25,7 +25,7 @@ import edu.samplu.common.WebDriverLegacyITBase;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LibraryGeneralFeaturesRichMessagesSmokeTest extends SmokeTestBase {
+public class DemoLibraryGeneralFeaturesRichMessagesSmokeTest extends SmokeTestBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-RichMessages-View&methodToCall=start

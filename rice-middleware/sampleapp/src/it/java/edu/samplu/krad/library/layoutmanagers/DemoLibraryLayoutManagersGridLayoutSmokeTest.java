@@ -25,7 +25,7 @@ import edu.samplu.common.WebDriverLegacyITBase;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LibraryLayoutManagersGridLayoutSmokeTest extends SmokeTestBase {
+public class DemoLibraryLayoutManagersGridLayoutSmokeTest extends SmokeTestBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-GridLayoutManager-View&methodToCall=start

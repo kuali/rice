@@ -25,7 +25,7 @@ import edu.samplu.common.WebDriverLegacyITBase;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LibraryGeneralFeaturesUnifiedViewHeaderSmokeTest extends SmokeTestBase {
+public class DemoLibraryGeneralFeaturesUnifiedViewHeaderSmokeTest extends SmokeTestBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-UnifiedHeader-View&methodToCall=start

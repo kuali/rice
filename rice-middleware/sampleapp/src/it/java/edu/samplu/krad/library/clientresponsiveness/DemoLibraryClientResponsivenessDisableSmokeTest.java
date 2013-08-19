@@ -25,7 +25,7 @@ import edu.samplu.common.WebDriverLegacyITBase;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LibraryClientResponsivenessDisableSmokeTest extends SmokeTestBase {
+public class DemoLibraryClientResponsivenessDisableSmokeTest extends SmokeTestBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-Disable-View&methodToCall=start

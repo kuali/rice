@@ -25,7 +25,7 @@ import edu.samplu.common.WebDriverLegacyITBase;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LibraryClientResponsivenessConditionalRefreshSmokeTest extends SmokeTestBase {
+public class DemoLibraryClientResponsivenessConditionalRefreshSmokeTest extends SmokeTestBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-ConditionalRefresh-View&methodToCall=start

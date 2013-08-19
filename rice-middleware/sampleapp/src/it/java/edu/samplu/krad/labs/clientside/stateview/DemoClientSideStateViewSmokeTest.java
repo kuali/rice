@@ -22,7 +22,7 @@ import edu.samplu.common.SmokeTestBase;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ClientSideStateViewSmokeTest extends SmokeTestBase {
+public class DemoClientSideStateViewSmokeTest extends SmokeTestBase {
 
     /**
      * /kr-krad/labs?viewId=Lab-ClientSideState&formKey=ff000d97-13e9-4130-81a3-bc0217e8e0eb&

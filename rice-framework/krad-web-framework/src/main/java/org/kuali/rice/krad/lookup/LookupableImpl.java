@@ -144,7 +144,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      * @return the list of result objects, possibly bounded
      */
     protected List<?> getSearchResults(LookupForm form, Map<String, String> searchCriteria, boolean unbounded) {
-        Collection<?> searchResults;
+        List<?> searchResults;
 
         // removed blank search values and decrypt any encrypted search values
         Map<String, String> nonBlankSearchCriteria = processSearchCriteria(form, searchCriteria);
@@ -177,12 +177,12 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                 }
 
                 // add those results as criteria run the normal search (but with the EBO criteria added)
-                searchResults = getLookupService().findCollectionBySearchHelper(getDataObjectClass(), eboSearchCriteria,
-                        unbounded, searchResultsLimit);
+                searchResults = new ArrayList(getLookupService().findCollectionBySearchHelper(getDataObjectClass(),
+                                              eboSearchCriteria, unbounded, searchResultsLimit));
                 generateLookupResultsMessages(form, eboSearchCriteria, searchResults, unbounded);
             } else {
-                searchResults = getLookupService().findCollectionBySearchHelper(getDataObjectClass(),
-                        nonBlankSearchCriteria, unbounded, searchResultsLimit);
+                searchResults = new ArrayList(getLookupService().findCollectionBySearchHelper(getDataObjectClass(),
+                                              nonBlankSearchCriteria, unbounded, searchResultsLimit));
                 generateLookupResultsMessages(form, nonBlankSearchCriteria, searchResults, unbounded);
             }
 
@@ -195,10 +195,10 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         if (searchResults == null) {
             searchResults = new ArrayList<Object>();
         } else {
-            sortSearchResults(form, (List<?>) searchResults);
+            sortSearchResults(form, searchResults);
         }
 
-        return (List<?>) searchResults;
+        return searchResults;
     }
 
     /**

@@ -35,6 +35,8 @@
     <war.overlay.exclude.2>DO_NOT_MATCH_ANYTHING_PATTERN</war.overlay.exclude.2>
     <kuali.testjar.phase>none</kuali.testjar.phase>
     <kuali.generate.reports>false</kuali.generate.reports>
+    <!-- csv based JMeter tests result in one graph in Jenkins, we want a graph per test -->
+    <maven.jmeter.excludeJmeterTestFile>**/KRAD.jmx</maven.jmeter.excludeJmeterTestFile>
   </properties>
 
   <build>
@@ -239,50 +241,26 @@
         <bootstrap.spring.file>classpath:SampleAppStandaloneBeans.xml</bootstrap.spring.file>
       </properties>
     </profile>
+
     <profile>
       <id>jmeter</id>
+      <activation><activeByDefault>false</activeByDefault></activation>
       <build>
         <plugins>
           <plugin>
             <groupId>com.lazerycode.jmeter</groupId>
             <artifactId>jmeter-maven-plugin</artifactId>
-            <version>${jmeter.version}</version>
-            <executions>
-              <execution>
-                <id>jmeter-tests</id>
-                <phase>${maven.jmeter.phase}</phase>
-                <goals>
-                  <goal>${maven.jmeter.goal}</goal>
-                </goals>
-              </execution>
-            </executions>
             <configuration>
-              <testFilesDirectory>${maven.jmeter.testFilesDirectory}</testFilesDirectory>
-              <testFilesIncluded>
-                <jMeterTestFile>${maven.jmeter.jMeterTestFile}</jMeterTestFile>
-              </testFilesIncluded>
+              <testFilesDirectory>${maven.jmeter.jMeterTestFile}</testFilesDirectory>
               <testFilesExcluded>
-                <excludeJmeterTestFile>KRAD.jmx</excludeJmeterTestFile>
+                <excludeJmeterTestFile>${maven.jmeter.excludeJmeterTestFile}</excludeJmeterTestFile>
               </testFilesExcluded>
-              <testResultsTimestamp>${maven.jmeter.testResultsTimestamp}</testResultsTimestamp>
-              <propertiesUser>
-                <!-- server and port must be defined (and used) in the JMeter jmx file as User Defined Variables
-                      ${__P(server,localhost)}
-                      ${__P(port,80)}
-                     See http://jmeter.apache.org/usermanual/component_reference.html#User_Defined_Variables
-                         http://jmeter.apache.org/usermanual/test_plan.html#using_variables
-                         http://jmeter.apache.org/usermanual/functions.html#__P
-                         http://jmeter.apache.org/usermanual/best-practices.html#parameterising_tests
-                -->
-                <server>${maven.jmeter.server}</server>
-                <port>${maven.jmeter.port}</port>
-              </propertiesUser>
             </configuration>
           </plugin>
         </plugins>
       </build>
     </profile>
-
+ 
   </profiles>
 
   <dependencies>

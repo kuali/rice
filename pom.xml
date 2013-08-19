@@ -414,6 +414,53 @@
         </plugins>
       </build>
     </profile>
+
+    <profile>
+      <id>jmeter</id>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>com.lazerycode.jmeter</groupId>
+              <artifactId>jmeter-maven-plugin</artifactId>
+              <version>${jmeter.version}</version>
+              <executions>
+                <execution>
+                  <id>jmeter-tests</id>
+                  <phase>${maven.jmeter.phase}</phase>
+                  <goals>
+                    <goal>${maven.jmeter.goal}</goal>
+                  </goals>
+                  <configuration>
+                    <testFilesDirectory>${maven.jmeter.testFilesDirectory}</testFilesDirectory>
+                    <testFilesIncluded>
+                      <jMeterTestFile>${maven.jmeter.jMeterTestFile}</jMeterTestFile>
+                    </testFilesIncluded>
+                    <testFilesExcluded>
+                      <excludeJmeterTestFile>${maven.jmeter.excludeJmeterTestFile}</excludeJmeterTestFile>
+                    </testFilesExcluded>
+                    <testResultsTimestamp>${maven.jmeter.testResultsTimestamp}</testResultsTimestamp>
+                    <propertiesUser>
+                      <!-- server and port must be defined (and used) in the JMeter jmx file as User Defined Variables
+                            ${__P(server,localhost)}
+                            ${__P(port,80)}
+                           See http://jmeter.apache.org/usermanual/component_reference.html#User_Defined_Variables
+                               http://jmeter.apache.org/usermanual/test_plan.html#using_variables
+                               http://jmeter.apache.org/usermanual/functions.html#__P
+                               http://jmeter.apache.org/usermanual/best-practices.html#parameterising_tests
+                      -->
+                      <server>${maven.jmeter.server}</server>
+                      <port>${maven.jmeter.port}</port>
+                    </propertiesUser>
+                  </configuration>
+                </execution>
+              </executions>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+
   </profiles>
 
   <build>

@@ -37,6 +37,20 @@
                 <inlinemediaobject><imageobject><imagedata fileref="../images/badge-manualconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject>
             </para>
         </section>
+        <section><title>ModuleService / RemoteModuleServiceBase / ModuleServiceBase</title>
+            <para>KRAD has both added and deprecated methods in this interface and its base classes.</para>
+            <itemizedlist>
+                <listitem><para><emphasis role="keyword">getExternalizableBusinessObjectInquiryUrl</emphasis> has been
+                    moved to <emphasis role="keyword">getExternalizableDataObjectInquiryUrl</emphasis>.  Helper methods
+                    of <emphasis role="keyword">getExternalizableBusinessObjectInquiryUrl</emphasis> (such as
+                    <emphasis role="keyword">getInquiryUrl</emphasis> and
+                    <emphasis role="keyword">getUrlParameters</emphasis>) have also been deprecated.  Any custom
+                    implementer configuration in these methods should be folded directly into
+                    <emphasis role="keyword">getExternalizableDataObjectInquiryUrl</emphasis>.
+                    <inlinemediaobject><imageobject><imagedata fileref="../images/badge-manualconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject>
+                </para></listitem>
+            </itemizedlist>
+        </section>
     </section>
     <section><title>Lookup</title><para></para>
         <section><title>LookupDefinition in KNS Data Dictionary to LookupView in KRAD</title>

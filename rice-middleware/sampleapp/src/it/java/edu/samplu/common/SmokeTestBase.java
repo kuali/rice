@@ -53,9 +53,7 @@ public abstract class SmokeTestBase extends WebDriverLegacyITBase {
     protected void enableNavigationMode() {
         this.shouldNavigate = true;
         String classString = this.getClass().toString();
-        if (classString.contains("krad.demo") || classString.contains("library")) {
-            this.testUrl = ITUtil.KRAD_PORTAL;
-        } else if (classString.contains("krad.library")) {
+        if (classString.contains("krad.demo") || classString.contains("krad.library")) {
             this.testUrl = ITUtil.KRAD_PORTAL;
         } else if (classString.contains("krad.labs")) {
             this.testUrl = ITUtil.LABS;

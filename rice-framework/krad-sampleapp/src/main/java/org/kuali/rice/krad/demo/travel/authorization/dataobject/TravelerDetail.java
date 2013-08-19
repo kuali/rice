@@ -15,9 +15,7 @@
  */
 package org.kuali.rice.krad.demo.travel.authorization.dataobject;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -123,25 +121,6 @@ public class TravelerDetail extends VersionedAndGloballyUniqueBase {
     protected Boolean nonResidentAlien = Boolean.FALSE;
     @Transient
     protected Boolean motorVehicleRecordCheck = Boolean.FALSE;
-
-//    @OneToMany(mappedBy = "id")
-    @Transient
-    private List<TravelerDetailEmergencyContact> emergencyContacts = new ArrayList<TravelerDetailEmergencyContact>();
-
-    /**
-     * Reset emergency contact lists when switching the traveler/tem profile
-     */
-    public void resetEmergencyContacts(){
-        emergencyContacts = new ArrayList<TravelerDetailEmergencyContact>();
-    }
-
-    public List<TravelerDetailEmergencyContact> getEmergencyContacts() {
-        return emergencyContacts;
-    }
-
-    public void setEmergencyContacts(List<TravelerDetailEmergencyContact> emergencyContacts) {
-        this.emergencyContacts = emergencyContacts;
-    }
 
     /**
      * This method returns the document number this TravelerDetail object is associated with

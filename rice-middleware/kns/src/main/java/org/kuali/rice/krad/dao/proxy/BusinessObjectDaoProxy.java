@@ -16,12 +16,12 @@
 package org.kuali.rice.krad.dao.proxy;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.ModuleConfiguration;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.dao.BusinessObjectDao;
 import org.kuali.rice.krad.dao.impl.BusinessObjectDaoOjb;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.service.ModuleService;
@@ -65,7 +65,7 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
                 	} else {
                 	    //using OJB
                         BusinessObjectDaoOjb boDaoOjb = new BusinessObjectDaoOjb(
-                                KRADServiceLocator.getPersistenceStructureService());
+                                KNSServiceLocator.getPersistenceStructureService());
                         boDaoOjb.setJcdAlias(dataSourceName);
                         // add to our cache of bo daos
                         boDaoValues.put(dataSourceName, boDaoOjb);

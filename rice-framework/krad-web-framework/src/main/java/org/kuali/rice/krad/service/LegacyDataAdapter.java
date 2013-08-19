@@ -23,6 +23,7 @@ import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
+import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.maintenance.MaintenanceLock;
 import org.kuali.rice.krad.util.ForeignKeyFieldsPopulationState;
 
@@ -319,6 +320,34 @@ public interface LegacyDataAdapter {
      */
     boolean hasPrimaryKeyFieldValues(Object persistableObject);
 
+    /**
+     * Returns whether there is a reference defined in the persistence layer with the given name.
+     * Depending on the type of underlying persistence mechanism, this method may or may not return true
+     * when the referenceName really refers to a collection type.
+     *
+     * To determine whether a reference is a collection, use the hasCollection method instead.
+     *
+     * In OJB, this method will return false for collection references.
+     *
+     * @param boClass
+     * @param referenceName
+     * @return
+     */
+    boolean hasReference(Class<?> boClass, String referenceName);
+
+    /**
+     * Returns whether BOs of the given class have a collection defined within them with the given collection name.
+     *
+     * @param boClass
+     * @param collectionName
+     * @return
+     */
+    boolean hasCollection(Class<?> boClass, String collectionName);
+
+    boolean isExtensionAttribute(Class<?> boClass, String attributePropertyName, Class<?> propertyType);
+
+    Class<?> getExtensionAttributeClass(Class<?> boClass, String attributePropertyName);
+
     // DataObjectMetadataService
 
     /**
@@ -466,28 +495,28 @@ public interface LegacyDataAdapter {
      */
     boolean allForeignKeyValuesPopulatedForReference(PersistableBusinessObject bo, String referenceName);
 
-	public RelationshipDefinition getDictionaryRelationship(Class<?> c, String attributeName);
+	RelationshipDefinition getDictionaryRelationship(Class<?> c, String attributeName);
 
     /**
      * This method gets the title attribute from the datadictionary for the given data object class
      * @param dataObjectClass
      * @return title if available, otherwise null
      */
-    public String getTitleAttribute(Class<?> dataObjectClass);
+    String getTitleAttribute(Class<?> dataObjectClass);
 
     /**
      *
      * @param dataObjectClass
      * @return  true is supported, otherwise false
      */
-    public boolean areNotesSupported(Class<?> dataObjectClass);
+    boolean areNotesSupported(Class<?> dataObjectClass);
 
     /**
      *
      * @param dataObject
      * @return
      */
-    public String getDataObjectIdentifierString(Object dataObject);
+    String getDataObjectIdentifierString(Object dataObject);
 
     /**
      * Get Inquiry class if not the title attribute
@@ -495,7 +524,7 @@ public interface LegacyDataAdapter {
      * @param propertyName
      * @return class that represents the inquiry object class, null otherwise
      */
-    public Class<?> getInquiryObjectClassIfNotTitle(Object dataObject, String propertyName);
+    Class<?> getInquiryObjectClassIfNotTitle(Object dataObject, String propertyName);
 
     /**
      * Get Inquiry parameters for given keys for data object/property name
@@ -504,7 +533,7 @@ public interface LegacyDataAdapter {
      * @param propertyName
      * @return map of key value pairs, empty map otherwise
      */
-    public Map<String,String> getInquiryParameters(Object dataObject, List<String> keys, String propertyName);
+    Map<String,String> getInquiryParameters(Object dataObject, List<String> keys, String propertyName);
 
 
     /**
@@ -514,8 +543,7 @@ public interface LegacyDataAdapter {
      * @param dataObjectClass data object class to find lookup for
      * @return boolean true if a lookup exists for the data object class, false if not
      */
-    @Deprecated
-    public boolean hasLocalLookup(Class<?> dataObjectClass);
+    boolean hasLocalLookup(Class<?> dataObjectClass);
 
     /**
      * Determines whether the given data object class has an associated inquiry in the local
@@ -524,8 +552,7 @@ public interface LegacyDataAdapter {
      * @param dataObjectClass data object class to find inquiry for
      * @return boolean true if a inquiry exists for the data object class, false if not
      */
-    @Deprecated
-    public boolean hasLocalInquiry(Class<?> dataObjectClass);
+    boolean hasLocalInquiry(Class<?> dataObjectClass);
 
     /**
      * Attempts to find a relationship for the given attribute within the given
@@ -552,8 +579,7 @@ public interface LegacyDataAdapter {
      * @return BusinessObjectRelationship for the attribute, or null if not
      *         found
      */
-    @Deprecated
-    public DataObjectRelationship getDataObjectRelationship(Object dataObject, Class<?> dataObjectClass,
+    DataObjectRelationship getDataObjectRelationship(Object dataObject, Class<?> dataObjectClass,
             String attributeName, String attributePrefix, boolean keysOnly, boolean supportsLookup,
             boolean supportsInquiry);
 
@@ -564,7 +590,7 @@ public interface LegacyDataAdapter {
      * @param dataObjectClass - data object instance that contains the attribute
      * @return true if the given Class is persistable (is known to OJB or JPA)
      */
-    public boolean isPersistable( Class<?> dataObjectClass);
+    boolean isPersistable(Class<?> dataObjectClass);
 
     /**
      * Recursive; sets all occurences of the property in the object, its nested objects and its object lists with the
@@ -578,7 +604,7 @@ public interface LegacyDataAdapter {
      * @throws java.lang.reflect.InvocationTargetException
      * @throws IllegalAccessException
      */
-    public void setObjectPropertyDeep(Object bo, String propertyName, Class type,
+    void setObjectPropertyDeep(Object bo, String propertyName, Class<?> type,
             Object propertyValue) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException;
 
     /**
@@ -587,7 +613,7 @@ public interface LegacyDataAdapter {
      * @param object the potentially proxied object to find the Class of
      * @return the best Class which could be found for the given object
      */
-    public Class materializeClassForProxiedObject(Object object);
+    Class<?> materializeClassForProxiedObject(Object object);
 
     /**
      * This method safely extracts either simple values OR nested values. For example, if the bo is SubAccount, and the
@@ -602,7 +628,7 @@ public interface LegacyDataAdapter {
      * @param fieldName
      * @return The field value if it exists. If it doesnt, and the name is invalid, and
      */
-    public Object getNestedValue(Object bo, String fieldName);
+    Object getNestedValue(Object bo, String fieldName);
 
     /**
      * This method safely creates a object from a class
@@ -614,7 +640,7 @@ public interface LegacyDataAdapter {
      * @param clazz
      * @return a newInstance() of clazz
      */
-    public Object createNewObjectFromClass(Class clazz);
+    Object createNewObjectFromClass(Class clazz);
 
     /**
      * This method is a OJB Proxy-safe way to test for null on a proxied object that may or may not be materialized yet.
@@ -626,7 +652,7 @@ public interface LegacyDataAdapter {
      * @param object - any object, proxied or not, materialized or not
      * @return true if the object (or underlying materialized object) is null, false otherwise
      */
-    public boolean isNull(Object object);
+    boolean isNull(Object object);
 
     /**
      * Sets the property of an object with the given value. Converts using the formatter of the given type if one is
@@ -640,7 +666,19 @@ public interface LegacyDataAdapter {
      * @throws InvocationTargetException
      * @throws IllegalAccessException
      */
-    public void setObjectProperty(Object bo, String propertyName, Class propertyType,
+    void setObjectProperty(Object bo, String propertyName, Class propertyType,
             Object propertyValue) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException;
+
+    // DocumentService
+
+    /**
+     * Finds the Document for the specified class with the given id.
+     */
+    <T extends Document> T findByDocumentHeaderId(Class<T> documentClass, String id);
+
+    /**
+     * Finds the Documents for the specified class with the given list of ids.
+     */
+    <T extends Document> List<T> findByDocumentHeaderIds(Class<T> documentClass, List<String> ids);
 
 }

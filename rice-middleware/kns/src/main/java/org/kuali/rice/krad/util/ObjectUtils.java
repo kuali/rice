@@ -15,6 +15,30 @@
  */
 package org.kuali.rice.krad.util;
 
+import org.apache.commons.beanutils.NestedNullException;
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.apache.ojb.broker.core.proxy.ProxyHelper;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.encryption.EncryptionService;
+import org.kuali.rice.core.api.search.SearchOperator;
+import org.kuali.rice.core.api.util.cache.CopiedObject;
+import org.kuali.rice.core.web.format.CollectionFormatter;
+import org.kuali.rice.core.web.format.FormatException;
+import org.kuali.rice.core.web.format.Formatter;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
+import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
+import org.kuali.rice.krad.exception.ClassNotPersistableException;
+import org.kuali.rice.krad.maintenance.MaintenanceUtils;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.ModuleService;
+import org.kuali.rice.krad.service.PersistenceStructureService;
+
+import javax.persistence.EntityNotFoundException;
 import java.beans.PropertyDescriptor;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -29,31 +53,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import javax.persistence.EntityNotFoundException;
-
-import org.apache.commons.beanutils.NestedNullException;
-import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.apache.ojb.broker.core.proxy.ProxyHelper;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.core.api.encryption.EncryptionService;
-import org.kuali.rice.core.api.search.SearchOperator;
-import org.kuali.rice.core.api.util.cache.CopiedObject;
-import org.kuali.rice.core.web.format.CollectionFormatter;
-import org.kuali.rice.core.web.format.FormatException;
-import org.kuali.rice.core.web.format.Formatter;
-import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
-import org.kuali.rice.krad.exception.ClassNotPersistableException;
-import org.kuali.rice.krad.maintenance.MaintenanceUtils;
-import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.service.ModuleService;
-import org.kuali.rice.krad.service.PersistenceStructureService;
 
 /**
  * Contains various Object, Proxy, and serialization utilities
@@ -530,7 +529,7 @@ public final class ObjectUtils {
         if (formatterClass == null) {
             try {
                 formatterClass = Formatter.findFormatter(getPropertyType(boClass.newInstance(), boPropertyName,
-                        KRADServiceLocator.getPersistenceStructureService()));
+                        KNSServiceLocator.getPersistenceStructureService()));
             } catch (InstantiationException e) {
                 LOG.warn("Unable to find a formater for bo class " + boClass + " and property " + boPropertyName);
                 // just swallow the exception and let formatter be null
@@ -698,8 +697,8 @@ public final class ObjectUtils {
         if (isNotNull(bo)) {
             PropertyDescriptor[] propertyDescriptors = PropertyUtils.getPropertyDescriptors(bo.getClass());
             for (int i = 0; i < propertyDescriptors.length; i++) {
-                if (KRADServiceLocator.getPersistenceStructureService().hasCollection(bo.getClass(),
-                        propertyDescriptors[i].getName()) && KRADServiceLocator.getPersistenceStructureService()
+                if (KNSServiceLocator.getPersistenceStructureService().hasCollection(bo.getClass(),
+                        propertyDescriptors[i].getName()) && KNSServiceLocator.getPersistenceStructureService()
                         .isCollectionUpdatable(bo.getClass(), propertyDescriptors[i].getName())) {
                     Collection updateableCollection = (Collection) getPropertyValue(bo,
                             propertyDescriptors[i].getName());
@@ -744,8 +743,8 @@ public final class ObjectUtils {
         } else if (!bo1.getClass().getName().equals(bo2.getClass().getName())) {
             equal = false;
         } else {
-            Map bo1Keys = KRADServiceLocator.getPersistenceService().getPrimaryKeyFieldValues(bo1);
-            Map bo2Keys = KRADServiceLocator.getPersistenceService().getPrimaryKeyFieldValues(bo2);
+            Map bo1Keys = KNSServiceLocator.getPersistenceService().getPrimaryKeyFieldValues(bo1);
+            Map bo2Keys = KNSServiceLocator.getPersistenceService().getPrimaryKeyFieldValues(bo2);
             for (Iterator iter = bo1Keys.keySet().iterator(); iter.hasNext(); ) {
                 String keyName = (String) iter.next();
                 if (bo1Keys.get(keyName) != null && bo2Keys.get(keyName) != null) {
@@ -1026,7 +1025,7 @@ public final class ObjectUtils {
         // get the list of reference objects hanging off the parent BO
         if (KRADServiceLocatorWeb.getLegacyDataAdapter().isPersistable(bo.getClass())) {
             Map<String, Class> references =
-                    KRADServiceLocator.getPersistenceStructureService().listReferenceObjectFields(bo);
+                    KNSServiceLocator.getPersistenceStructureService().listReferenceObjectFields(bo);
 
             // initialize our in-loop objects
             String referenceName = "";

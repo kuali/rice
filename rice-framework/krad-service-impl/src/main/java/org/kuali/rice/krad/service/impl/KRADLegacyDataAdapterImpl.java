@@ -55,15 +55,18 @@ import org.kuali.rice.krad.data.metadata.DataObjectCollection;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
 import org.kuali.rice.krad.data.metadata.MetadataRepository;
+import org.kuali.rice.krad.data.provider.annotation.ExtensionFor;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.krad.datadictionary.DataObjectEntry;
 import org.kuali.rice.krad.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
 import org.kuali.rice.krad.datadictionary.SupportAttributeDefinition;
+import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.lookup.LookupUtils;
 import org.kuali.rice.krad.maintenance.MaintenanceLock;
 import org.kuali.rice.krad.service.DataDictionaryService;
+import org.kuali.rice.krad.service.DocumentAdHocService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
@@ -450,6 +453,47 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
     }
 
     @Override
+    public boolean hasReference(Class<?> boClass, String referenceName) {
+        throw new UnsupportedOperationException("hasReference not valid for KRAD data operation");
+    }
+
+    @Override
+    public boolean hasCollection(Class<?> boClass, String collectionName) {
+        throw new UnsupportedOperationException("hasCollection not valid for KRAD data operation");
+    }
+
+    @Override
+    public boolean isExtensionAttribute(Class<?> boClass, String attributePropertyName, Class<?> propertyType) {
+        DataObjectMetadata metadata = metadataRepository.getMetadata(boClass);
+        if (metadata != null) {
+            DataObjectRelationship relationship = metadata.getRelationship(attributePropertyName);
+            if (relationship != null) {
+                Class<?> relatedType = relationship.getRelatedType();
+                // right now, the only way to tell if an attribute is an extension is to check this annotation, the
+                // metadata repository does not currently store any such info that we can glom onto
+                ExtensionFor annotation = relatedType.getAnnotation(ExtensionFor.class);
+                if (annotation != null) {
+                    return annotation.value().equals(boClass);
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public Class<?> getExtensionAttributeClass(Class<?> boClass, String attributePropertyName) {
+        DataObjectMetadata metadata = metadataRepository.getMetadata(boClass);
+        if (metadata != null) {
+            DataObjectRelationship relationship = metadata.getRelationship(attributePropertyName);
+            if (relationship != null) {
+                return relationship.getRelatedType();
+            }
+        }
+        return null;
+    }
+
+
+    @Override
     public Map<String, ?> getPrimaryKeyFieldValuesDOMDS(Object dataObject) {
         return dataObjectService.wrap(dataObject).getPrimaryKeyValues();
     }
@@ -466,7 +510,6 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
 
     @Override
     public void materializeAllSubObjects(Object object) {
-        throw new UnsupportedOperationException("Materializing not valid for KRAD data operation");
         // for now, do nothing if this is not a legacy object, we'll eliminate the concept of materializing
         // sub objects in this fashion in the new data layer, will enter a jira to re-examine this
     }
@@ -495,36 +538,42 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
     @Override
     public void verifyVersionNumber(Object dataObject) {
         DataObjectMetadata metadata = metadataRepository.getMetadata(dataObject.getClass());
-
+        if (metadata == null) {
+            throw new IllegalArgumentException("Given data object class could not be loaded from metadata repository: "
+                + dataObject.getClass());
+        }
         if (metadata.isSupportsOptimisticLocking()) {
             if (dataObject instanceof Versioned) {
                 Map<String, ?> keyPropertyValues = dataObjectService.wrap(dataObject).getPrimaryKeyValues();
                 Object persistableDataObject = dataObjectService.find(dataObject.getClass(), new CompoundKey(
                         keyPropertyValues));
-                Long databaseVersionNumber = ((Versioned) persistableDataObject).getVersionNumber();
-                Long documentVersionNumber = ((Versioned) dataObject).getVersionNumber();
-                if (databaseVersionNumber != null && !(databaseVersionNumber.equals(documentVersionNumber))) {
-                    GlobalVariables.getMessageMap().putError(KRADConstants.GLOBAL_ERRORS,
-                            RiceKeyConstants.ERROR_VERSION_MISMATCH);
-                    throw new ValidationException(
-                            "Version mismatch between the local business object and the database business object");
+                // if it's null that means that this is an insert, not an update
+                if (persistableDataObject != null) {
+                        Long databaseVersionNumber = ((Versioned) persistableDataObject).getVersionNumber();
+                        Long documentVersionNumber = ((Versioned) dataObject).getVersionNumber();
+                        if (databaseVersionNumber != null && !(databaseVersionNumber.equals(documentVersionNumber))) {
+                            GlobalVariables.getMessageMap().putError(KRADConstants.GLOBAL_ERRORS,
+                                    RiceKeyConstants.ERROR_VERSION_MISMATCH);
+                            throw new ValidationException(
+                                    "Version mismatch between the local business object and the database business object");
+                        }
+                    }
                 }
             }
         }
-    }
 
-    @Override
-    public RemotableQuickFinder.Builder createQuickFinder(Class<?> containingClass, String attributeName) {
-        return createQuickFinderNew(containingClass, attributeName);
-    }
+        @Override
+        public RemotableQuickFinder.Builder createQuickFinder(Class<?> containingClass, String attributeName) {
+            return createQuickFinderNew(containingClass, attributeName);
+        }
 
-    /**
-     * New implementation of createQuickFinder which uses the new MetadataRepository.
-     */
-    protected RemotableQuickFinder.Builder createQuickFinderNew(Class<?> containingClass, String attributeName) {
-        if (metadataRepository.contains(containingClass)) {
+        /**
+         * New implementation of createQuickFinder which uses the new MetadataRepository.
+         */
+        protected RemotableQuickFinder.Builder createQuickFinderNew(Class<?> containingClass, String attributeName) {
+            if (metadataRepository.contains(containingClass)) {
 
-            String lookupClassName = null;
+                String lookupClassName = null;
             Map<String, String> fieldConversions = new HashMap<String, String>();
             Map<String, String> lookupParameters = new HashMap<String, String>();
 
@@ -1135,6 +1184,22 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
 	public void setObjectProperty(Object bo, String propertyName, Class propertyType,
             Object propertyValue) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException{
         DataObjectUtils.setObjectValue(bo,propertyName,propertyValue);
+    }
+
+    @Override
+    public <T extends Document> T findByDocumentHeaderId(Class<T> documentClass, String id) {
+        T document = KRADServiceLocator.getDataObjectService().find(documentClass, id);
+        // original KNS code always did this addAdHocs nonsense, so we'll do the same to preserve behavior
+        ((DocumentAdHocService) KRADServiceLocatorWeb.getService("documentAdHocService")).addAdHocs(document);
+        return document;
+    }
+
+    public <T extends Document> List<T> findByDocumentHeaderIds(Class<T> documentClass, List<String> ids) {
+        List<T> documents = new ArrayList<T>();
+        for (String id : ids) {
+            documents.add(findByDocumentHeaderId(documentClass, id));
+        }
+        return documents;
     }
 
     @Required

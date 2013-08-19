@@ -53,12 +53,7 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
 	 */
 	public static Map<Class, Class> referenceConversionMap = new HashMap<Class, Class>();
 
-	private PersistenceStructureService persistenceStructureServiceJpa;
 	private PersistenceStructureService persistenceStructureServiceOjb;
-
-	public void setPersistenceStructureServiceJpa(PersistenceStructureService persistenceStructureServiceJpa) {
-		this.persistenceStructureServiceJpa = persistenceStructureServiceJpa;
-	}
 
 	public void setPersistenceStructureServiceOjb(PersistenceStructureService persistenceStructureServiceOjb) {
 		this.persistenceStructureServiceOjb = persistenceStructureServiceOjb;

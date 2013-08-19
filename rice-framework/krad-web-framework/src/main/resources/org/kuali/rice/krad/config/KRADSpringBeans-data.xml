@@ -90,19 +90,6 @@
 			ref="dbPlatform" />
 	</bean>
 
-	<bean
-		id="sequenceAccessorDao"
-		parent="platformAwareDaoJdbc"
-		class="org.kuali.rice.krad.dao.jdbc.SequenceAccessorDaoJdbc" />
-
-	<bean
-		id="sequenceAccessorService"
-		class="org.kuali.rice.krad.service.impl.SequenceAccessorServiceImpl">
-		<property
-			name="sequenceAccessorDao"
-			ref="sequenceAccessorDao" />
-	</bean>
-
 	<import resource="KRADSpringBeans-jpa.xml" />
 
 	<import resource="classpath:org/kuali/rice/krad/data/config/KRADDataSpringBeans.xml" />

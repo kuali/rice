@@ -49,9 +49,4 @@
 
 	<import resource="classpath:org/kuali/rice/krad/config/KRADSpringBeans-jpa-common.xml" />
 
-	<!-- JPA beans -->
-	<bean
-		id="persistenceStructureServiceJpa"
-		class="org.kuali.rice.krad.service.impl.PersistenceStructureServiceJpaImpl" />
-
 </beans>

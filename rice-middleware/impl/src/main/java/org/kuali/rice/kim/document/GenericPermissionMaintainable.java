@@ -27,7 +27,6 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 
 import java.util.Map;
@@ -143,7 +142,7 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 
     protected SequenceAccessorService getSequenceAccessorService(){
         if(this.sequenceAccessorService==null){
-            this.sequenceAccessorService = KRADServiceLocator.getSequenceAccessorService();
+            this.sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
         }
         return this.sequenceAccessorService;
     }

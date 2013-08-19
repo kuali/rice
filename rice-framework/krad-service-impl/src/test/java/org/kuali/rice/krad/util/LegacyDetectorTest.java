@@ -96,20 +96,20 @@ public class LegacyDetectorTest {
     }
 
     @Test
-    public void testKNSDisabledByDefault() {
-        assertFalse(detector.isKNSEnabled());
+    public void testKnsDisabledByDefault() {
+        assertFalse(detector.isKnsEnabled());
     }
 
     @Test
-    public void testKNSEnabledByConfig() {
+    public void testKnsEnabledByConfig() {
         ConfigContext.getCurrentContextConfig().putProperty(KRADConstants.Config.KNS_ENABLED, "true");
-        assertTrue(detector.isKNSEnabled());
+        assertTrue(detector.isKnsEnabled());
     }
 
     @Test
-    public void testKNSDisabledByConfig() {
+    public void testKnsDisabledByConfig() {
         ConfigContext.getCurrentContextConfig().putProperty(KRADConstants.Config.KNS_ENABLED, "false");
-        assertFalse(detector.isKNSEnabled());
+        assertFalse(detector.isKnsEnabled());
     }
 
     @Test
@@ -118,13 +118,13 @@ public class LegacyDetectorTest {
     }
 
     @Test
-    public void testLegacyDataFrameworkEnabledByKNSByDefault() {
+    public void testLegacyDataFrameworkEnabledByKnsByDefault() {
         ConfigContext.getCurrentContextConfig().putProperty(KRADConstants.Config.KNS_ENABLED, "true");
         assertTrue(detector.isLegacyDataFrameworkEnabled());
     }
 
     @Test
-    public void testLegacyDataFrameworkDisabledByKNSByDefault() {
+    public void testLegacyDataFrameworkDisabledByKnsByDefault() {
         ConfigContext.getCurrentContextConfig().putProperty(KRADConstants.Config.KNS_ENABLED, "false");
         assertFalse(detector.isLegacyDataFrameworkEnabled());
     }

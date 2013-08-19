@@ -75,14 +75,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyMap;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 /**
@@ -133,13 +125,14 @@ public class LegacyDataAdapterLegacyDetectionTest {
         testBf.addBean("knsLegacyDataAdapter", knsLegacyDataAdapter);
         testBf.addBean("kradLegacyDataAdapter",kradLegacyDataAdapter);
         lda.setKradLegacyDataAdapter(kradLegacyDataAdapter);
+        lda.setKnsLegacyDataAdapter(knsLegacyDataAdapter);
 
         ResourceLoader rl = new BeanFactoryResourceLoader(new QName(TEST_ID), testBf);
         GlobalResourceLoader.addResourceLoader(rl);
         GlobalResourceLoader.start();
 
-        // load up the OJB meta data
-        Resource resource = new ClasspathOrFileResourceLoader().getResource("classpath:org/kuali/rice/krad/config/OJB-repository-krad.xml");
+        // load up some OJB meta data
+        Resource resource = new ClasspathOrFileResourceLoader().getResource("classpath:org/kuali/rice/krad/service/impl/OJB-repository-LegacyDataAdapterLegacyDetectionTest.xml");
         InputStream is = resource.getInputStream();
         MetadataManager mm = MetadataManager.getInstance();
         DescriptorRepository dr = mm.readDescriptorRepository(is);
@@ -157,6 +150,7 @@ public class LegacyDataAdapterLegacyDetectionTest {
 
     protected void enableLegacyFramework() {
         ConfigContext.getCurrentContextConfig().putProperty(KRADConstants.Config.ENABLE_LEGACY_DATA_FRAMEWORK, "true");
+        ConfigContext.getCurrentContextConfig().putProperty(KRADConstants.Config.KNS_ENABLED, "true");
     }
 
     protected Serializable newDataObject() {

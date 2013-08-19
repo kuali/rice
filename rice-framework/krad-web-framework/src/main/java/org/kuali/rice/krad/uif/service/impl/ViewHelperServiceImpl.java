@@ -27,12 +27,9 @@ import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.inquiry.Inquirable;
 import org.kuali.rice.krad.messages.MessageService;
 import org.kuali.rice.krad.service.DataDictionaryService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.ModuleService;
-import org.kuali.rice.krad.service.PersistenceService;
-import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
@@ -118,9 +115,9 @@ import java.util.Set;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
+
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ViewHelperServiceImpl.class);
-    private transient PersistenceService persistenceService;
-    private transient PersistenceStructureService persistenceStructureService;
+
     private transient DataDictionaryService dataDictionaryService;
     private transient ExpressionEvaluator expressionEvaluator;
     private transient ViewDictionaryService viewDictionaryService;
@@ -1673,10 +1670,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             return;
         }
 
-        if (getPersistenceStructureService().hasReference(parentObject.getClass(), referenceObjectName)
-                || getPersistenceStructureService().hasCollection(parentObject.getClass(), referenceObjectName)) {
+        if (getLegacyDataAdapter().hasReference(parentObject.getClass(), referenceObjectName)
+                || getLegacyDataAdapter().hasCollection(parentObject.getClass(), referenceObjectName)) {
             // refresh via database mapping
-            getPersistenceService().retrieveReferenceObject(parentObject, referenceObjectName);
+            getLegacyDataAdapter().retrieveReferenceObject(parentObject, referenceObjectName);
         } else if (getDataDictionaryService().hasRelationship(parentObject.getClass().getName(), referenceObjectName)) {
             // refresh via data dictionary mapping
             Object referenceObject = DataObjectUtils.getPropertyValue(parentObject, referenceObjectName);
@@ -2245,50 +2242,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     public void setLegacyDataAdapter(LegacyDataAdapter legacyDataAdapter) {
         this.legacyDataAdapter = legacyDataAdapter;
-    }
-
-
-    /**
-     * Gets the persistence service
-     *
-     * @return persistence service
-     */
-    public PersistenceService getPersistenceService() {
-        if (this.persistenceService == null) {
-            this.persistenceService = KRADServiceLocator.getPersistenceService();
-        }
-
-        return this.persistenceService;
-    }
-
-    /**
-     * Set the persistence service
-     *
-     * @param persistenceService
-     */
-    public void setPersistenceService(PersistenceService persistenceService) {
-        this.persistenceService = persistenceService;
-    }
-
-    /**
-     * Get the persistence structure service
-     *
-     * @return persistence structure service
-     */
-    public PersistenceStructureService getPersistenceStructureService() {
-        if (this.persistenceStructureService == null) {
-            this.persistenceStructureService = KRADServiceLocator.getPersistenceStructureService();
-        }
-        return this.persistenceStructureService;
-    }
-
-    /**
-     * Set the persistence structure service
-     *
-     * @param persistenceStructureService
-     */
-    public void setPersistenceStructureService(PersistenceStructureService persistenceStructureService) {
-        this.persistenceStructureService = persistenceStructureService;
     }
 
     /**

@@ -17,6 +17,7 @@ package org.kuali.rice.krad.dao.proxy;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.ModuleConfiguration;
 import org.kuali.rice.krad.dao.LookupDao;
 import org.kuali.rice.krad.dao.impl.LookupDaoOjb;
@@ -62,7 +63,7 @@ public class LookupDaoProxy implements LookupDao {
 						LookupDaoOjb classSpecificLookupDaoOjb = new LookupDaoOjb();
                         classSpecificLookupDaoOjb.setJcdAlias(dataSourceName);
                         classSpecificLookupDaoOjb.setPersistenceStructureService(
-                                KRADServiceLocator.getPersistenceStructureService());
+                                KNSServiceLocator.getPersistenceStructureService());
                         classSpecificLookupDaoOjb.setDateTimeService(CoreApiServiceLocator.getDateTimeService());
                         classSpecificLookupDaoOjb.setDataDictionaryService(
                                 KRADServiceLocatorWeb.getDataDictionaryService());

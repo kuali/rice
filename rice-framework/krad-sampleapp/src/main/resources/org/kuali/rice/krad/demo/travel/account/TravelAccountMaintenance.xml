@@ -55,10 +55,10 @@
               <bean parent="Uif-InputField" p:propertyName="subAccount">
                 <property name="id" value="quickfinder2"/> <!-- changing this will break tests -->
                 <property name="quickfinder">
-                  <bean parent="Uif-QuickFinderByScript" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+                  <bean parent="Uif-QuickFinderByScript" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
                           p:fieldConversions="number:subAccount,name:subAccountName" p:lookupParameters="subAccountName:name"/>
                 </property>
-                <property name="quickfinder.dataObjectClassName" value="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
+                <property name="quickfinder.dataObjectClassName" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
                 <property name="quickfinder.fieldConversions">
                   <map>
                     <entry key="number" value="subAccount"/>

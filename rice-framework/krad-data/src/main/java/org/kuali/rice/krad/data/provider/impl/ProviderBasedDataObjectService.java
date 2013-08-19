@@ -18,6 +18,7 @@ package org.kuali.rice.krad.data.provider.impl;
 import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
+import org.kuali.rice.krad.data.CompoundKey;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.DataObjectWrapper;
 import org.kuali.rice.krad.data.PersistenceOption;
@@ -39,7 +40,25 @@ public class ProviderBasedDataObjectService implements DataObjectService {
 
     @Override
     public <T> T find(Class<T> type, Object id) {
-        return persistenceProviderForType(type).find(type, id);
+        return persistenceProviderForType(type).find(type, reduceCompoundKey(id));
+    }
+
+    /**
+     * If the given id object is an instance of CompoundKey but there is only one entry in the key map, then just grab
+     * that single value and treat it as a single id.
+     *
+     * @param id the potentially CompoundKey to reduce
+     * @return the single value from the CompoundKey map if the given id is a CompoundKey with a single entry, otherwise
+     *         the original id that was passed in is returned
+     */
+    protected Object reduceCompoundKey(Object id) {
+        if (id instanceof CompoundKey) {
+            CompoundKey compoundKey = (CompoundKey)id;
+            if (compoundKey.getKeys().size() == 1) {
+                id = compoundKey.getKeys().values().iterator().next();
+            }
+        }
+        return id;
     }
 
     @Override

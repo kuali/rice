@@ -56,20 +56,6 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-  <bean id="kradOjbConfigurer" class="org.kuali.rice.core.framework.persistence.ojb.BaseOjbConfigurer">
-    <property name="jcdAliases">
-      <list>
-        <value>kradApplicationDataSource</value>
-      </list>
-    </property>
-    <property name="metadataLocation" value="classpath:org/kuali/rice/krad/config/OJB-repository-krad.xml"/>
-    <property name="additionalMetadataLocations">
-      <list>
-        <value>classpath:org/kuali/rice/kns/config/OJB-repository-kns.xml</value>
-      </list>
-    </property>
-  </bean>
-
   <bean id="kradApplicationModuleConfiguration" parent="kradApplicationModuleConfiguration-parentBean">
     <property name="dataDictionaryPackages">
       <list merge="true">
@@ -349,6 +335,32 @@
     </property>
   </bean>
 
+  <bean id="persistenceStructureService" class="org.kuali.rice.krad.service.impl.PersistenceStructureServiceImpl">
+    <property name="persistenceStructureServiceOjb" ref="persistenceStructureServiceOjb"/>
+  </bean>
+
+  <bean id="persistenceService" class="org.kuali.rice.krad.service.impl.PersistenceServiceImpl">
+    <property name="persistenceServiceOjb" ref="persistenceServiceOjb"/>
+    <property name="kualiModuleService" ref="kualiModuleService"/>
+  </bean>
+
+  <bean id="persistenceDao" class="org.kuali.rice.krad.dao.proxy.PersistenceDaoProxy">
+    <property name="persistenceDaoOjb" ref="persistenceDaoOjb"/>
+  </bean>
+
+  <bean id="businessObjectAuthorizationService"
+        class="org.kuali.rice.kns.service.impl.BusinessObjectAuthorizationServiceImpl"/>
+
+  <bean id="businessObjectDictionaryService"
+        class="org.kuali.rice.kns.service.impl.BusinessObjectDictionaryServiceImpl">
+    <property name="dataDictionaryService">
+      <ref bean="dataDictionaryService"/>
+    </property>
+    <property name="persistenceStructureService">
+      <ref bean="persistenceStructureService"/>
+    </property>
+  </bean>
+
   <bean id="knsLegacyDataAdapter" class="org.kuali.rice.krad.service.impl.KNSLegacyDataAdapterImpl"
         p:dataObjectService-ref="kd-dataObjectService"
         p:businessObjectService-ref="businessObjectService"
@@ -377,6 +389,128 @@
     </property>
   </bean>
 
+  <bean id="criteriaLookupService" class="org.kuali.rice.krad.criteria.CriteriaLookupServiceImpl">
+    <property name="criteriaLookupDao">
+      <ref bean="criterialookupDao"/>
+    </property>
+  </bean>
+
+  <bean id="sequenceAccessorService" class="org.kuali.rice.krad.service.impl.SequenceAccessorServiceImpl">
+    <property name="sequenceAccessorDao" ref="sequenceAccessorDao"/>
+  </bean>
+
+  <!-- DAO's and OJB Stuff -->
+
+  <bean id="ojbConfigurer" class="org.kuali.rice.core.framework.persistence.ojb.JtaOjbConfigurer">
+    <property name="transactionManager" ref="jtaTransactionManager" />
+  </bean>
+
+  <bean id="kradOjbConfigurer" class="org.kuali.rice.core.framework.persistence.ojb.BaseOjbConfigurer">
+    <property name="jcdAliases">
+      <list>
+        <value>kradApplicationDataSource</value>
+      </list>
+    </property>
+    <property name="metadataLocation" value="classpath:org/kuali/rice/kns/config/OJB-repository-kns.xml"/>
+  </bean>
+
   <bean id="ojbCollectionHelper" class="org.kuali.rice.krad.service.util.OjbCollectionHelper"/>
+
+  <bean id="platformAwareDao" abstract="true"
+        class="org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb">
+    <property name="jcdAlias" value="kradApplicationDataSource"/>
+    <property name="dbPlatform" ref="dbPlatform"/>
+  </bean>
+
+  <bean id="platformAwareDaoJdbc" abstract="true"
+        class="org.kuali.rice.core.framework.persistence.jdbc.dao.PlatformAwareDaoBaseJdbc">
+    <property name="dataSource" ref="kradApplicationDataSource"/>
+    <property name="dbPlatform" ref="dbPlatform"/>
+  </bean>
+
+  <bean id="persistenceStructureServiceOjb"
+        class="org.kuali.rice.krad.service.impl.PersistenceStructureServiceOjbImpl"/>
+
+  <bean id="persistenceServiceOjb" class="org.kuali.rice.krad.service.impl.PersistenceServiceOjbImpl">
+    <property name="persistenceDao" ref="persistenceDaoOjb"/>
+  </bean>
+
+  <bean id="persistenceDaoOjb" parent="platformAwareDao" class="org.kuali.rice.krad.dao.impl.PersistenceDaoOjb">
+    <property name="jcdAlias" value="kradApplicationDataSource"/>
+    <property name="dbPlatform" ref="dbPlatform"/>
+  </bean>
+
+  <bean id="documentDaoOjb" parent="platformAwareDao" class="org.kuali.rice.krad.dao.impl.DocumentDaoOjb">
+    <!-- Constructor injection only please to help enforce completeness of instances -->
+    <constructor-arg ref="businessObjectDao"/>
+    <constructor-arg ref="documentAdHocService"/>
+  </bean>
+
+  <bean id="documentDao" class="org.kuali.rice.krad.dao.proxy.DocumentDaoProxy">
+    <property name="documentDaoOjb" ref="documentDaoOjb"/>
+  </bean>
+
+  <bean id="documentHeaderDaoOjb" parent="platformAwareDao" class="org.kuali.rice.krad.dao.impl.DocumentHeaderDaoOjb"/>
+
+  <bean id="businessObjectDaoOjb" parent="platformAwareDao" class="org.kuali.rice.krad.dao.impl.BusinessObjectDaoOjb">
+    <!-- Constructor injection only please to help enforce completeness of instances -->
+    <constructor-arg ref="persistenceStructureService"/>
+  </bean>
+
+  <bean id="lookupDaoOjb" parent="platformAwareDao" class="org.kuali.rice.krad.dao.impl.LookupDaoOjb">
+    <property name="persistenceStructureService" ref="persistenceStructureService"/>
+    <property name="dateTimeService" ref="dateTimeService"/>
+    <property name="dataDictionaryService" ref="dataDictionaryService"/>
+  </bean>
+
+  <bean id="lookupDao" class="org.kuali.rice.krad.dao.proxy.LookupDaoProxy">
+    <property name="lookupDaoOjb" ref="lookupDaoOjb"/>
+  </bean>
+
+  <bean id="criterialookupDaoOjb" parent="platformAwareDao" class="org.kuali.rice.krad.criteria.CriteriaLookupDaoOjb" />
+
+  <bean id="maintenanceDocumentDaoOjb" parent="platformAwareDao"
+        class="org.kuali.rice.krad.dao.impl.MaintenanceDocumentDaoOjb"/>
+
+  <bean id="sessionDocumentDaoOjb" parent="platformAwareDao"
+        class="org.kuali.rice.krad.dao.impl.SessionDocumentDaoOjb"/>
+
+  <bean id="criterialookupDao" class="org.kuali.rice.krad.criteria.CriteriaLookupDaoProxy">
+    <property name="criteriaLookupDaoOjb" ref="criterialookupDaoOjb"/>
+  </bean>
+
+  <bean id="businessObjectDao" class="org.kuali.rice.krad.dao.proxy.BusinessObjectDaoProxy">
+    <!-- Constructor injection only please to help enforce completeness of instances -->
+    <property name="businessObjectDaoOjb" ref="businessObjectDaoOjb"/>
+  </bean>
+
+  <bean id="documentHeaderService"
+        class="org.kuali.rice.krad.service.impl.DocumentHeaderServiceImpl"
+        p:legacyDataAdapter-ref="legacyDataAdapter"/>
+
+  <bean id="sequenceAccessorDao" parent="platformAwareDaoJdbc"
+        class="org.kuali.rice.krad.dao.jdbc.SequenceAccessorDaoJdbc"/>
+
+  <!-- Some other random stuff -->
+
+  <bean id="confirmationQuestion"
+        class="org.kuali.rice.kns.question.ConfirmationQuestion"
+        scope="prototype"/>
+
+  <bean id="recallQuestion"
+        class="org.kuali.rice.kns.question.RecallQuestion"
+        scope="prototype" />
+
+  <bean id="AuthorizationConstants"
+        class="org.kuali.rice.core.api.util.collect.ConstantsMap"
+        p:constantClass="org.kuali.rice.kns.authorization.AuthorizationConstants"/>
+
+  <bean class="org.springframework.web.context.support.ServletContextAttributeExporter">
+    <property name="attributes">
+      <map>
+        <entry key="AuthorizationConstants" value-ref="AuthorizationConstants" />
+      </map>
+    </property>
+  </bean>
 
 </beans>

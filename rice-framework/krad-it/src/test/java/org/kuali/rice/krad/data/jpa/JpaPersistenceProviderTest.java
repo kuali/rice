@@ -7,12 +7,12 @@ import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.PredicateFactory;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.data.CompoundKey;
 import org.kuali.rice.krad.data.DataObjectWrapper;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krad.data.provider.PersistenceProvider;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.krad.test.document.bo.AccountExtension;
 import org.kuali.rice.krad.test.document.bo.AccountType;
@@ -258,11 +258,7 @@ public class JpaPersistenceProviderTest extends KRADTestCase {
 
     protected Object createTopLevelObject() {
         SimpleAccount a = new SimpleAccount();
-        //Long number = KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("trvl_id_seq");
-        //Long amId = 1l; //RandomUtils.nextLong();
         String name = RandomStringUtils.randomAlphanumeric(10);
-        //a.setNumber(number.toString());
-        //a.setAmId(amId);
         a.setName(name);
         return a;
     }
@@ -282,7 +278,6 @@ public class JpaPersistenceProviderTest extends KRADTestCase {
         //am.setUserName(RandomStringUtils.randomAlphanumeric(10));
         //a.setAccountManager(am);
         AccountExtension extension = new AccountExtension();
-        //extension.setNumber(KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("trvl_id_seq").toString());
         AccountType at = new AccountType();
         at.setName(RandomStringUtils.randomAlphanumeric(10));
         at.setAccountTypeCode(RandomStringUtils.randomAlphanumeric(2));
@@ -300,7 +295,7 @@ public class JpaPersistenceProviderTest extends KRADTestCase {
     }
 
     protected Object getNextTestObjectId() {
-        return KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("trvl_id_seq").toString();
+        return KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("trvl_id_seq").toString();
     }
 
     protected void setTestObjectPK(Object o, Object key) {

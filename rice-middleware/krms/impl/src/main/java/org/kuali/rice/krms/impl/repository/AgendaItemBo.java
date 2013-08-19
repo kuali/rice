@@ -18,8 +18,8 @@ package org.kuali.rice.krms.impl.repository;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.io.SerializationUtils;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
@@ -424,7 +424,7 @@ public class AgendaItemBo extends PersistableBusinessObjectBase implements Agend
     private static String getNewId() {
         if (sequenceAccessorService == null) {
             // we don't assign to sequenceAccessorService to preserve existing behavior
-            return KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(KRMS_AGENDA_ITM_S, AgendaItemBo.class) + "";
+            return KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(KRMS_AGENDA_ITM_S, AgendaItemBo.class) + "";
         }
         Long id = sequenceAccessorService.getNextAvailableSequenceNumber(KRMS_AGENDA_ITM_S, AgendaItemBo.class);
         return id.toString();

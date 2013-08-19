@@ -27,8 +27,8 @@ import org.apache.commons.beanutils.WrapDynaBean;
 import org.apache.commons.collections.FastHashMap;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.web.format.Formatter;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.util.ObjectUtils;
 
@@ -68,7 +68,7 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
         protected static PersistenceStructureService persistenceStructureService = null;
         protected static PersistenceStructureService getPersistenceStructureService() {
             if (persistenceStructureService == null) {
-                persistenceStructureService = KRADServiceLocator.getPersistenceStructureService();
+                persistenceStructureService = KNSServiceLocator.getPersistenceStructureService();
             }
             return persistenceStructureService;
         }

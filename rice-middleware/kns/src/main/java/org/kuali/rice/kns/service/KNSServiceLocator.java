@@ -22,7 +22,11 @@ import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.question.Question;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataObjectMetaDataService;
+import org.kuali.rice.krad.service.DocumentHeaderService;
 import org.kuali.rice.krad.service.KeyValuesService;
+import org.kuali.rice.krad.service.PersistenceService;
+import org.kuali.rice.krad.service.PersistenceStructureService;
+import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krad.service.util.OjbCollectionHelper;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -57,100 +61,149 @@ public class KNSServiceLocator {
     public static final String KEY_VALUES_SERVICE = "keyValuesService";
     public static final String SESSION_DOCUMENT_SERVICE = "knsSessionDocumentService";
     public static final String OJB_COLLECTION_HELPER = "ojbCollectionHelper";
+    public static final String PERSISTENCE_SERVICE = "persistenceService";
+    public static final String PERSISTENCE_STRUCTURE_SERVICE = "persistenceStructureService";
+    public static final String SEQUENCE_ACCESSOR_SERVICE = "sequenceAccessorService";
+    public static final String DOCUMENT_HEADER_SERVICE = "documentHeaderService";
 
+    @Deprecated
     public static <T extends Object> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
     }
 
+    @Deprecated
     public static BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
         return getService(BUSINESS_OBJECT_AUTHORIZATION_SERVICE);
     }
 
+    @Deprecated
     public static BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
         return getService(BUSINESS_OBJECT_METADATA_SERVICE);
     }
 
+    @Deprecated
     public static DictionaryValidationService getKNSDictionaryValidationService() {
-	return (DictionaryValidationService) getService(DICTIONARY_VALIDATION_SERVICE);
+	    return (DictionaryValidationService) getService(DICTIONARY_VALIDATION_SERVICE);
     }
 
+    @Deprecated
     public static LookupResultsService getLookupResultsService() {
         return (LookupResultsService) getService(LOOKUP_RESULTS_SERVICE);
     }
 
+    @Deprecated
     public static Inquirable getKualiInquirable() {
         return getService(KUALI_INQUIRABLE);
     }
 
+    @Deprecated
     public static Lookupable getKualiLookupable() {
         return getService(KUALI_LOOKUPABLE);
     }
 
+    @Deprecated
     public static MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
         return getService(MAINTENANCE_DOCUMENT_DICTIONARY_SERVICE);
     }
 
+    @Deprecated
     public static TransactionalDocumentDictionaryService getTransactionalDocumentDictionaryService() {
         return (TransactionalDocumentDictionaryService) getService(TRANSACTIONAL_DOCUMENT_DICTIONARY_SERVICE);
     }
 
+    @Deprecated
     public static org.kuali.rice.kns.service.SessionDocumentService getKNSSessionDocumentService() {
         return  getService(KNS_SESSION_DOCUMENT_SERVICE);
     }
 
+    @Deprecated
     public static Lookupable getLookupable(String lookupableName) {
         return getService(lookupableName);
     }
 
+    @Deprecated
     public static DataDictionaryService getDataDictionaryService() {
         return getService(DATA_DICTIONARY_SERVICE);
     }
 
+    @Deprecated
     public static BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
         return getService(BUSINESS_OBJECT_DICTIONARY_SERVICE);
     }
 
+    @Deprecated
     public static DocumentHelperService getDocumentHelperService() {
         return getService(DOCUMENT_HELPER_SERVICE);
     }
 
+    @Deprecated
     public static Question getQuestion(String questionName) {
         return (Question) getService(questionName);
     }
 
+    @Deprecated
     public static WorkflowAttributePropertyResolutionService getWorkflowAttributePropertyResolutionService() {
     	return (WorkflowAttributePropertyResolutionService) getService(WORKFLOW_ATTRIBUTE_PROPERTY_RESOLUTION_SERVICE);
     }
 
+    @Deprecated
     public static PlatformTransactionManager getTransactionManager() {
-	return (PlatformTransactionManager) getService(TRANSACTION_MANAGER);
+	    return (PlatformTransactionManager) getService(TRANSACTION_MANAGER);
     }
 
+    @Deprecated
     public static TransactionTemplate getTransactionTemplate() {
-	return (TransactionTemplate) getService(TRANSACTION_TEMPLATE);
+	    return (TransactionTemplate) getService(TRANSACTION_TEMPLATE);
     }
 
+    @Deprecated
     public static BusinessObjectAuthorizationService getMaintenanceDocumentAuthorizationService() {
     	return (BusinessObjectAuthorizationService) getService(MAINTENANCE_DOCUMENT_AUTHORIZATION_SERVICE);
     }
 
+    @Deprecated
     public static BusinessObjectService getBusinessObjectService(){
         return (BusinessObjectService) getService(BUSINESS_OBJECT_SERVICE);
     }
 
+    @Deprecated
     public static DataObjectMetaDataService getDataObjectMetaDataService() {
         return (DataObjectMetaDataService) getService(DATA_OBJECT_METADATA_SERVICE);
     }
 
+    @Deprecated
     public static KeyValuesService getKeyValuesService() {
         return getService(KEY_VALUES_SERVICE);
     }
 
+    @Deprecated
     public static SessionDocumentService getSessionDocumentService() {
         return getService(SESSION_DOCUMENT_SERVICE);
     }
 
+    @Deprecated
     public static OjbCollectionHelper getOjbCollectionHelper() {
         return (OjbCollectionHelper) getService(OJB_COLLECTION_HELPER);
     }
+    @Deprecated
+    public static DocumentHeaderService getDocumentHeaderService() {
+        return getService(DOCUMENT_HEADER_SERVICE);
+    }
+
+
+    @Deprecated
+    public static PersistenceService getPersistenceService() {
+        return getService(PERSISTENCE_SERVICE);
+    }
+
+    @Deprecated
+    public static PersistenceStructureService getPersistenceStructureService() {
+        return getService(PERSISTENCE_STRUCTURE_SERVICE);
+    }
+
+    @Deprecated
+    public static SequenceAccessorService getSequenceAccessorService() {
+        return getService(SEQUENCE_ACCESSOR_SERVICE);
+    }
+
 }

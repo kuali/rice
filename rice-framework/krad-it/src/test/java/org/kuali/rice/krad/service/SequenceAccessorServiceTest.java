@@ -2,6 +2,7 @@ package org.kuali.rice.krad.service;
 
 import org.junit.Test;
 import org.kuali.rice.core.api.config.ConfigurationException;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.document.authorization.PessimisticLock;
 import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.krad.test.document.OjbOnly;
@@ -26,13 +27,13 @@ public class SequenceAccessorServiceTest extends KRADTestCase {
      */
     @Test(expected = ConfigurationException.class)
     public void testExceptionForKradData() {
-        KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(ARBITRARY_SEQUENCE, JPADataObject.class);
+        KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(ARBITRARY_SEQUENCE, JPADataObject.class);
     }
 
     @Test
     public void testOjbOnlyWorks() {
         Long nextAvailableSequenceNumber =
-                KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(ARBITRARY_SEQUENCE, OjbOnly.class);
+                KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(ARBITRARY_SEQUENCE, OjbOnly.class);
         assertNotNull(nextAvailableSequenceNumber);
         assertTrue(nextAvailableSequenceNumber.longValue() > 0);
 
@@ -42,14 +43,14 @@ public class SequenceAccessorServiceTest extends KRADTestCase {
     @Legacy
     public void testNoExceptionForBothKradDataAndOjb_InLegacyContext() {
         Long nextAvailableSequenceNumber =
-                KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(ARBITRARY_SEQUENCE, PessimisticLock.class);
+                KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(ARBITRARY_SEQUENCE, PessimisticLock.class);
         assertNotNull(nextAvailableSequenceNumber);
         assertTrue(nextAvailableSequenceNumber.longValue() > 0);
     }
 
     @Test(expected = ConfigurationException.class)
     public void testExceptionForBothKradDataAndOjb_NotInLegacyContext() {
-        KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(ARBITRARY_SEQUENCE, PessimisticLock.class);
+        KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(ARBITRARY_SEQUENCE, PessimisticLock.class);
     }
 
 }

@@ -21,8 +21,8 @@ import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.document.TransactionalDocumentBase;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.springframework.util.AutoPopulatingList;
 
@@ -144,7 +144,7 @@ public class IdentityManagementKimDocument extends TransactionalDocumentBase {
 	
 	protected SequenceAccessorService getSequenceAccessorService(){
 		if(this.sequenceAccessorService==null){
-	    	this.sequenceAccessorService = KRADServiceLocator.getSequenceAccessorService();
+	    	this.sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
 		}
 		return this.sequenceAccessorService;
 	}

@@ -19,15 +19,27 @@ import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.service.SequenceAccessorService;
+import org.kuali.rice.krms.api.repository.NaturalLanguageTree;
 import org.kuali.rice.krms.api.repository.RuleManagementService;
+import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
+import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.api.repository.language.NaturalLanguageTemplate;
+import org.kuali.rice.krms.api.repository.language.NaturalLanguageTemplaterContract;
 import org.kuali.rice.krms.api.repository.language.NaturalLanguageUsage;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
+import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
+import org.kuali.rice.krms.api.repository.proposition.PropositionParameterType;
+import org.kuali.rice.krms.api.repository.proposition.PropositionType;
 import org.kuali.rice.krms.api.repository.reference.ReferenceObjectBinding;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
+import org.kuali.rice.krms.api.repository.term.TermDefinition;
+import org.kuali.rice.krms.api.repository.term.TermRepositoryService;
+import org.kuali.rice.krms.impl.repository.language.SimpleNaturalLanguageTemplater;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,18 +50,6 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.kuali.rice.core.api.criteria.PredicateFactory.in;
-import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.service.SequenceAccessorService;
-import org.kuali.rice.krms.api.repository.NaturalLanguageTree;
-import org.kuali.rice.krms.api.repository.action.ActionDefinition;
-import org.kuali.rice.krms.api.repository.context.ContextDefinition;
-import org.kuali.rice.krms.api.repository.language.NaturalLanguageTemplaterContract;
-import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
-import org.kuali.rice.krms.api.repository.proposition.PropositionParameterType;
-import org.kuali.rice.krms.api.repository.proposition.PropositionType;
-import org.kuali.rice.krms.api.repository.term.TermDefinition;
-import org.kuali.rice.krms.api.repository.term.TermRepositoryService;
-import org.kuali.rice.krms.impl.repository.language.SimpleNaturalLanguageTemplater;
 
 /**
  * The implementation of {@link RuleManagementService} operations facilitate management of rules and
@@ -237,7 +237,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
      */
     public SequenceAccessorService getSequenceAccessorService() {
         if (this.sequenceAccessorService == null) {
-            this.sequenceAccessorService = KRADServiceLocator.getSequenceAccessorService();
+            this.sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
         }
         return sequenceAccessorService;
     }

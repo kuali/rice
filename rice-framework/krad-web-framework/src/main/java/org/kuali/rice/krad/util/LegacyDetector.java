@@ -111,13 +111,6 @@ class LegacyDetector {
         }
     }
 
-    /**
-     * @return true if the KNS_ENABLED flag has been set in the Config by the KRADConfigurer, false otherwise
-     */
-    public boolean isKNSEnabled() {
-        return ConfigContext.getCurrentContextConfig().getBooleanProperty(KRADConstants.Config.KNS_ENABLED, false);
-    }
-
     public boolean isLegacyManaged(Class<?> type) {
         BusinessObjectEntry businessObjectEntry =
                 dataDictionaryService.getDataDictionary().getBusinessObjectEntry(type.getName());
@@ -132,22 +125,35 @@ class LegacyDetector {
     }
 
     /**
+     * Returns whether or not the KNS module of Rice has been loaded. This is based on whether or not the KNS_ENABLED
+     * flag has been set in the Config by the KRADConfigurer.
+     *
+     * @return true if the KNS module has been loaded, false otherwsie
+     */
+    public boolean isKnsEnabled() {
+        return ConfigContext.getCurrentContextConfig().getBooleanProperty(KRADConstants.Config.KNS_ENABLED, false);
+    }
+
+    /**
      * Return whether the legacy data framework is enabled.
      *
      * @return true if the legacy data framework has been enabled, false otherwise
      */
     public boolean isLegacyDataFrameworkEnabled() {
-        return ConfigContext.getCurrentContextConfig().getBooleanProperty(KRADConstants.Config.ENABLE_LEGACY_DATA_FRAMEWORK, isKNSEnabled());
+        return ConfigContext.getCurrentContextConfig().getBooleanProperty(KRADConstants.Config.ENABLE_LEGACY_DATA_FRAMEWORK, isKnsEnabled());
     }
 
     /**
      * Determines whether the given class is loaded into OJB. Accesses the OJB metadata manager via reflection to avoid
-     * compile-time dependency.
+     * compile-time dependency. If null is passed to this method, it will always return false.
      *
      * @param dataObjectClass the data object class which may be loaded by the legacy framework
      * @return true if the legacy data framework is present and has loaded the specified class, false otherwise
      */
     public boolean isOjbLoadedClass(Class<?> dataObjectClass) {
+        if (dataObjectClass == null) {
+            return false;
+        }
         Boolean isLegacyLoaded = legacyLoadedCache.get(dataObjectClass);
         if (isLegacyLoaded == null) {
             try {

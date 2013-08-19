@@ -16,8 +16,8 @@
 package org.kuali.rice.krms.impl.repository;
 
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krms.api.repository.language.NaturalLanguageTemplate;
 import org.kuali.rice.krms.api.repository.language.NaturalLanguageTemplateContract;
@@ -229,7 +229,7 @@ public class NaturalLanguageTemplateBo
      */
     private String getNewId(String table, Class clazz) {
         if (sequenceAccessorService == null) {
-            sequenceAccessorService = KRADServiceLocator.getSequenceAccessorService();
+            sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
         }
         Long id = sequenceAccessorService.getNextAvailableSequenceNumber(table, clazz);
         return id.toString();

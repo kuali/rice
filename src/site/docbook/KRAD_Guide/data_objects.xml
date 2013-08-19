@@ -331,7 +331,7 @@
                 jdbc-connection-descriptor. With the class descriptor, we must specify the fully
                 qualified java class for mapping with the class attribute and the database table
                 name with the table attribute:
-                <programlisting linenumbering = "numbered">&lt;class-descriptor class="org.kuali.rice.krad.demo.travel.account.TravelAccount" table="TRV_ACCT">
+                <programlisting linenumbering = "numbered">&lt;class-descriptor class="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount" table="TRV_ACCT">
     ... 
 &lt;/class-descriptor>      </programlisting></para>
         </section>

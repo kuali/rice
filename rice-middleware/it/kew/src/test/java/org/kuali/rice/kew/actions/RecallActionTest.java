@@ -44,7 +44,6 @@ import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.Collection;
@@ -534,7 +533,7 @@ public class RecallActionTest extends KEWTestCase {
         Role customRole = KimApiServiceLocator.getRoleService().createRole(role.build());
 
         // create a custom attribute for role qualification
-        Long chartAttributeId = KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ATTR_DEFN_ID_S");
+        Long chartAttributeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ATTR_DEFN_ID_S");
         KimAttributeBo chartAttribute = new KimAttributeBo();
         chartAttribute.setId("" + chartAttributeId);
         chartAttribute.setAttributeName(roleQualifierName);

@@ -442,7 +442,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 
     protected SequenceAccessorService getSequenceAccessorService() {
         if ( sequenceAccessorService == null ) {
-            sequenceAccessorService = KRADServiceLocator.getSequenceAccessorService();
+            sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
         }
         return sequenceAccessorService;
     }

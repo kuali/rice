@@ -1551,4 +1551,8 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
         this.dataObjectMetaDataService = dataObjectMetaDataService;
     }
 
+    public PersistenceStructureService getPersistenceStructureService() {
+        return KNSServiceLocator.getPersistenceStructureService();
+    }
+
 }

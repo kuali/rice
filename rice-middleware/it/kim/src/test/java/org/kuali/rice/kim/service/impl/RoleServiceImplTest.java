@@ -110,7 +110,7 @@ public class RoleServiceImplTest extends KIMTestCase {
         String kimTypeId = "1";
 
         //Create delegation
-        String id = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_DLGN_MBR_ID_S");
+        String id = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_DLGN_MBR_ID_S");
         DelegateTypeBo delegate = new DelegateTypeBo();
         delegate.setDelegationId(id);
         delegate.setDelegationType(DelegationType.PRIMARY);
@@ -317,7 +317,7 @@ public class RoleServiceImplTest extends KIMTestCase {
         String kimTypeId = "1";
 
         //Create delegation
-        String id = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_DLGN_MBR_ID_S");
+        String id = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_DLGN_MBR_ID_S");
         DelegateTypeBo delegate = new DelegateTypeBo();
         delegate.setDelegationId(id);
         delegate.setDelegationType(DelegationType.PRIMARY);

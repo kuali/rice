@@ -230,7 +230,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      * @return Returns the persistenceStructureService.
      */
     protected PersistenceStructureService getPersistenceStructureService() {
-        return persistenceStructureService != null ? persistenceStructureService : KRADServiceLocator
+        return persistenceStructureService != null ? persistenceStructureService : KNSServiceLocator
                 .getPersistenceStructureService();
     }
 
@@ -1262,7 +1262,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     }
 
     protected SequenceAccessorService getSequenceAccessorService() {
-        return sequenceAccessorService != null ? sequenceAccessorService : KRADServiceLocator
+        return sequenceAccessorService != null ? sequenceAccessorService : KNSServiceLocator
                 .getSequenceAccessorService();
     }
 

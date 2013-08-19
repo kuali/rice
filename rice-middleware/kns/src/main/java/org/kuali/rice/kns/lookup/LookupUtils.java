@@ -836,7 +836,7 @@ public class LookupUtils {
     }
 
     public static PersistenceStructureService getPersistenceStructureService() {
-        return KRADServiceLocator.getPersistenceStructureService();
+        return KNSServiceLocator.getPersistenceStructureService();
     }
 
     public static BusinessObjectDictionaryService getBusinessObjectDictionaryService() {

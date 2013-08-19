@@ -1033,7 +1033,7 @@ public class Test2Object {
             definition:</para>
     <programlisting linenumbering = "numbered">            
 &lt;bean id=&quot;TravelAccount&quot; parent=&quot;DataObjectEntry&quot;&gt;
-    &lt;property name=&quot;dataObjectClass&quot; value=&quot;org.kuali.rice.krad.demo.travel.account.TravelAccount&quot;/&gt;
+    &lt;property name=&quot;dataObjectClass&quot; value=&quot;org.kuali.rice.krad.demo.travel.dataobject.TravelAccount&quot;/&gt;
         &lt;property name=&quot;attributes&quot;&gt;
             &lt;list&gt;
                 &lt;ref bean=&quot;TravelAccount-number&quot;/&gt;

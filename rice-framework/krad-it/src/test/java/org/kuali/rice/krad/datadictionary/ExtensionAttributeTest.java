@@ -31,7 +31,6 @@ import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.rules.rule.event.RouteDocumentEvent;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.krad.test.document.bo.Account;
@@ -137,11 +136,11 @@ public class ExtensionAttributeTest extends KRADTestCase {
 	assertEquals("physical property type mismatch", PersistableBusinessObjectExtension.class, PropertyUtils
 		.getPropertyType(ta, "extension"));
 	assertEquals("DD property type mismatch", AccountExtension.class, ObjectUtils.getPropertyType(ta, "extension",
-		KRADServiceLocator.getPersistenceStructureService()));
+            KNSServiceLocator.getPersistenceStructureService()));
 	assertEquals("extension.accountType attribute class mismatch", AccountType.class, ObjectUtils.getPropertyType(
-		ta, "extension.accountType", KRADServiceLocator.getPersistenceStructureService()));
+		ta, "extension.accountType", KNSServiceLocator.getPersistenceStructureService()));
 	assertEquals("extension.accountType.codeAndDescription attribute class mismatch", String.class, ObjectUtils
-		.getPropertyType(ta, "extension.accountType.codeAndDescription", KRADServiceLocator
+		.getPropertyType(ta, "extension.accountType.codeAndDescription", KNSServiceLocator
 			.getPersistenceStructureService()));
 	}
 

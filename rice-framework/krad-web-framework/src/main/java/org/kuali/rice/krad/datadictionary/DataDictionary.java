@@ -15,18 +15,6 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
-import java.beans.PropertyDescriptor;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.ArrayUtils;
@@ -35,7 +23,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.exception.CompletionException;
 import org.kuali.rice.krad.datadictionary.parse.StringListConverter;
@@ -44,10 +31,8 @@ import org.kuali.rice.krad.datadictionary.uif.UifDictionaryIndex;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
-import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.util.ComponentBeanPostProcessor;
 import org.kuali.rice.krad.uif.util.UifBeanFactoryPostProcessor;
@@ -61,6 +46,18 @@ import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.util.StopWatch;
+
+import java.beans.PropertyDescriptor;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * Encapsulates a bean factory and indexes to the beans within the factory for providing
@@ -85,6 +82,8 @@ public class DataDictionary {
     protected List<String> moduleLoadOrder = new ArrayList<String>();
 
     protected ArrayList<String> beanValidationFiles = new ArrayList<String>();
+
+    public static LegacyDataAdapter legacyDataAdapter;
 
     /**
      * Populates and processes the dictionary bean factory based on the configured files and
@@ -723,20 +722,6 @@ public class DataDictionary {
         return isCollectionPropertyOf;
     }
 
-    public static PersistenceStructureService persistenceStructureService;
-
-    /**
-     * @return the persistenceStructureService
-     */
-    public static PersistenceStructureService getPersistenceStructureService() {
-        if (persistenceStructureService == null) {
-            persistenceStructureService = KRADServiceLocator.getPersistenceStructureService();
-        }
-        return persistenceStructureService;
-    }
-
-    public static LegacyDataAdapter legacyDataAdapter;
-
     public static LegacyDataAdapter getLegacyDataAdapter() {
         if (legacyDataAdapter == null) {
             legacyDataAdapter = KRADServiceLocatorWeb.getLegacyDataAdapter();
@@ -827,9 +812,8 @@ public class DataDictionary {
             if (propertyDescriptor != null) {
 
                 Class propertyType = propertyDescriptor.getPropertyType();
-                if (propertyType.equals(PersistableBusinessObjectExtension.class)) {
-                    propertyType = getPersistenceStructureService().getBusinessObjectAttributeClass(currentClass,
-                            currentPropertyName);
+                if (getLegacyDataAdapter().isExtensionAttribute(currentClass, currentPropertyName, propertyType)) {
+                    propertyType = getLegacyDataAdapter().getExtensionAttributeClass(currentClass, currentPropertyName);
                 }
                 if (Collection.class.isAssignableFrom(propertyType)) {
                     // TODO: determine property type using generics type definition
@@ -917,8 +901,8 @@ public class DataDictionary {
                 if (propertyDescriptor != null) {
 
                     Class propertyType = propertyDescriptor.getPropertyType();
-                    if (propertyType.equals(PersistableBusinessObjectExtension.class)) {
-                        propertyType = getPersistenceStructureService().getBusinessObjectAttributeClass(currentClass,
+                    if (getLegacyDataAdapter().isExtensionAttribute(currentClass, currentPropertyName, propertyType)) {
+                        propertyType = getLegacyDataAdapter().getExtensionAttributeClass(currentClass,
                                 currentPropertyName);
                     }
                     if (Collection.class.isAssignableFrom(propertyType)) {

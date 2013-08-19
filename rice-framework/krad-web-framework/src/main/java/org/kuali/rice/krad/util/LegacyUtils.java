@@ -69,6 +69,10 @@ public final class LegacyUtils {
         return "org.kuali.rice.kns.datadictionary".equals(documentEntry.getClass().getPackage().getName());
     }
 
+    public static boolean isKnsEnabled() {
+        return ld.isKnsEnabled();
+    }
+
     /**
      * Return whether the legacy data framework is enabled
      * @return whether the legacy data framework is enabled

@@ -19,12 +19,14 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.util.GlobalVariables;
 
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -214,7 +216,8 @@ public class ExpressionFunctions {
      * @return next sequence value
      */
     public static Long sequence(String sequenceName) {
-        return KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(sequenceName);
+        DataSource dataSource = KRADServiceLocator.getKradApplicationDataSource();
+        return Long.valueOf(MaxValueIncrementerFactory.getIncrementer(dataSource, sequenceName).nextLongValue());
     }
 
     /**

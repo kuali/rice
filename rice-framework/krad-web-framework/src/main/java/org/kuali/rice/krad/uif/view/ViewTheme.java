@@ -574,8 +574,10 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
         T copiedClass = null;
         try {
             copiedClass = (T) this.getClass().newInstance();
-        } catch (Exception exception) {
-            throw new RuntimeException();
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
 
         copyProperties(copiedClass);

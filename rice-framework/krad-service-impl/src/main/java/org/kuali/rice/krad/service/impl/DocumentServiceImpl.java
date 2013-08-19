@@ -15,14 +15,6 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.StopWatch;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -45,7 +37,6 @@ import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.dao.DocumentDao;
 import org.kuali.rice.krad.datadictionary.exception.UnknownDocumentTypeException;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.DocumentAuthorizer;
@@ -63,9 +54,7 @@ import org.kuali.rice.krad.rules.rule.event.RouteDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.SaveDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.SaveEvent;
 import org.kuali.rice.krad.service.DataDictionaryService;
-import org.kuali.rice.krad.service.DocumentAdHocService;
 import org.kuali.rice.krad.service.DocumentDictionaryService;
-import org.kuali.rice.krad.service.DocumentHeaderService;
 import org.kuali.rice.krad.service.DocumentService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -74,10 +63,17 @@ import org.kuali.rice.krad.service.NoteService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
-import org.kuali.rice.krad.util.LegacyUtils;
 import org.kuali.rice.krad.util.NoteType;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
 import org.springframework.dao.OptimisticLockingFailureException;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -91,14 +87,11 @@ import org.springframework.dao.OptimisticLockingFailureException;
 public class DocumentServiceImpl implements DocumentService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentServiceImpl.class);
 
-    private DocumentDao documentDao;
-
     private DateTimeService dateTimeService;
     private NoteService noteService;
     private WorkflowDocumentService workflowDocumentService;
     private LegacyDataAdapter legacyDataAdapter;
     private DataDictionaryService dataDictionaryService;
-    private DocumentHeaderService documentHeaderService;
     private DocumentDictionaryService documentDictionaryService;
     private PersonService personService;
     private ConfigurationService kualiConfigurationService;
@@ -494,7 +487,7 @@ public class DocumentServiceImpl implements DocumentService {
             // look for workflowDocumentHeader, since that supposedly won't break the transaction
             if (getWorkflowDocumentService().workflowDocumentExists(documentHeaderId)) {
                 // look for docHeaderId, since that fails without breaking the transaction
-                return getDocumentHeaderService().getDocumentHeaderById(documentHeaderId) != null;
+                return getLegacyDataAdapter().getByDocumentHeaderId(documentHeaderId) != null;
             }
 
             return false;
@@ -679,15 +672,7 @@ public class DocumentServiceImpl implements DocumentService {
 	        Class<? extends Document> documentClass = getDocumentClassByTypeName(workflowDocument.getDocumentTypeName());
 
             // retrieve the Document
-//	        getLegacyDataAdapter().
-	        Document document = null;
-	        if (LegacyUtils.useLegacy(documentClass)) {
-	        	document = getDocumentDao().findByDocumentHeaderId(documentClass, documentHeaderId);
-	        } else {
-	        	document = KRADServiceLocator.getDataObjectService().find(documentClass, documentHeaderId);
-        		((DocumentAdHocService) KRADServiceLocatorWeb.getService("documentAdHocService")).addAdHocs(document);
-	        }
-
+	        Document document = getLegacyDataAdapter().findByDocumentHeaderId(documentClass, documentHeaderId);
             return postProcessDocument(documentHeaderId, workflowDocument, document);
         } finally {
             // if a user session was established for this call, clear it out
@@ -719,13 +704,7 @@ public class DocumentServiceImpl implements DocumentService {
         Class<? extends Document> documentClass = getDocumentClassByTypeName(workflowDocument.getDocumentTypeName());
 
         // retrieve the Document
-        Document document = null;
-        if (LegacyUtils.useLegacy(documentClass)) {
-        	document = getDocumentDao().findByDocumentHeaderId(documentClass, documentHeaderId);
-        } else {
-        	document = KRADServiceLocator.getDataObjectService().find(documentClass, documentHeaderId);
-        	((DocumentAdHocService) KRADServiceLocatorWeb.getService("documentAdHocService")).addAdHocs(document);
-        }
+        Document document = getLegacyDataAdapter().findByDocumentHeaderId(documentClass, documentHeaderId);
 
         return postProcessDocument(documentHeaderId, workflowDocument, document);
     }
@@ -826,8 +805,8 @@ public class DocumentServiceImpl implements DocumentService {
             }
 
             // retrieve all documents that match the document header ids
-            List<? extends Document> rawDocuments =
-                    getDocumentDao().findByDocumentHeaderIds(documentClass, documentHeaderIds);
+            List<? extends Document> rawDocuments = getLegacyDataAdapter().findByDocumentHeaderIds(documentClass,
+                    documentHeaderIds);
 
 	        // post-process them
 	        List<Document> documents = new ArrayList<Document>();
@@ -1117,14 +1096,6 @@ public class DocumentServiceImpl implements DocumentService {
         return this.workflowDocumentService;
     }
 
-    public void setDocumentDao(DocumentDao documentDao) {
-        this.documentDao = documentDao;
-    }
-
-    protected DocumentDao getDocumentDao() {
-        return documentDao;
-    }
-
     public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
         this.dataDictionaryService = dataDictionaryService;
     }
@@ -1134,17 +1105,6 @@ public class DocumentServiceImpl implements DocumentService {
             this.dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
         }
         return this.dataDictionaryService;
-    }
-
-    public void setDocumentHeaderService(DocumentHeaderService documentHeaderService) {
-        this.documentHeaderService = documentHeaderService;
-    }
-
-    protected DocumentHeaderService getDocumentHeaderService() {
-        if (this.documentHeaderService == null) {
-            this.documentHeaderService = KRADServiceLocatorWeb.getDocumentHeaderService();
-        }
-        return this.documentHeaderService;
     }
 
     protected DocumentDictionaryService getDocumentDictionaryService() {

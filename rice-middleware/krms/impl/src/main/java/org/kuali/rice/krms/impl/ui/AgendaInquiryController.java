@@ -17,7 +17,7 @@ package org.kuali.rice.krms.impl.ui;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.io.SerializationUtils;
-import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.web.controller.InquiryController;
@@ -244,7 +244,7 @@ public class AgendaInquiryController  extends InquiryController {
      *  return the sequenceAssessorService
      */
     private SequenceAccessorService getSequenceAccessorService() {
-        return KRADServiceLocator.getSequenceAccessorService();
+        return KNSServiceLocator.getSequenceAccessorService();
     }
 
     /**

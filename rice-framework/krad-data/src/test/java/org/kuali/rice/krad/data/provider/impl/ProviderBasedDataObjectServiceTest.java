@@ -13,19 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.data.provider;
+package org.kuali.rice.krad.data.provider.impl;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
+import org.kuali.rice.krad.data.CompoundKey;
 import org.kuali.rice.krad.data.metadata.MetadataRepository;
-import org.kuali.rice.krad.data.provider.impl.ProviderBasedDataObjectService;
+import org.kuali.rice.krad.data.provider.PersistenceProvider;
+import org.kuali.rice.krad.data.provider.ProviderRegistry;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -64,6 +68,34 @@ public class ProviderBasedDataObjectServiceTest {
         assertSame(findResult, service.find(Object.class, "id"));
 
         verify(mockProvider).find(any(Class.class), eq("id"));
+    }
+
+    @Test
+    public void testReduceCompoundKey_Null() {
+        // test null, should just return null
+        assertNull(service.reduceCompoundKey(null));
+    }
+
+    @Test
+    public void testReduceCompoundKey_NonCompoundKey() {
+        assertEquals("1234", service.reduceCompoundKey("1234"));
+    }
+
+    @Test
+    public void testReduceCompoundKey_CompoundKeyOneValue() {
+        Map<String, Object> singleKeyMap = new HashMap<String, Object>();
+        singleKeyMap.put("myAwesomeId", 123456L);
+        CompoundKey singleKey = new CompoundKey(singleKeyMap);
+        assertEquals(123456L, service.reduceCompoundKey(singleKey));
+    }
+
+    @Test
+    public void testReduceCompoundKey_CompoutKeyMultiValue() {
+        Map<String, Object> multiKeyMap = new HashMap<String, Object>();
+        multiKeyMap.put("myAwesomeId", 123456L);
+        multiKeyMap.put("myOtherAwesomeId", "abcdefg");
+        CompoundKey multiKey = new CompoundKey(multiKeyMap);
+        assertEquals(multiKey, service.reduceCompoundKey(multiKey));
     }
 
     @Test

@@ -389,7 +389,7 @@
 converts to:
  
 &lt;property name="quickfinder">
-    &lt;bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+    &lt;bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
           p:fieldConversions="number:field3"/>
 &lt;/property></programlisting>
             </para>

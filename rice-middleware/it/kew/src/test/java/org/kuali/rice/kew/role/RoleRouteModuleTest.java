@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.membership.MemberType;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
@@ -28,7 +29,6 @@ import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
@@ -36,8 +36,8 @@ import org.kuali.rice.kim.api.role.RoleResponsibilityAction;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
-import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
+import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityAttributeBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityTemplateBo;
@@ -98,7 +98,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
          */
 
         // create "chart" KimAttribute
-        Long chartAttributeId = KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ATTR_DEFN_ID_S");
+        Long chartAttributeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ATTR_DEFN_ID_S");
         KimAttributeBo chartAttribute = new KimAttributeBo();
         chartAttribute.setId("" + chartAttributeId);
         chartAttribute.setAttributeName("chart");
@@ -109,7 +109,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         chartAttribute = (KimAttributeBo) KNSServiceLocator.getBusinessObjectService().save(chartAttribute);
 
         // create "org" KimAttribute
-        Long orgAttributeId = KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ATTR_DEFN_ID_S");
+        Long orgAttributeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ATTR_DEFN_ID_S");
         KimAttributeBo orgAttribute = new KimAttributeBo();
         orgAttribute.setId("" + orgAttributeId);
         orgAttribute.setComponentName("org.kuali.rice.kim.bo.impl.KimAttributes");
@@ -120,7 +120,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         orgAttribute = (KimAttributeBo) KNSServiceLocator.getBusinessObjectService().save(orgAttribute);
 
         // create KimType
-        Long kimTypeId = KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_TYP_ID_S");
+        Long kimTypeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_TYP_ID_S");
         KimTypeBo kimType = new KimTypeBo();
         kimType.setId("" + kimTypeId);
         kimType.setName("ChartOrg");
@@ -130,7 +130,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         kimType = (KimTypeBo) KNSServiceLocator.getBusinessObjectService().save(kimType);
 
         // create chart KimTypeAttribute
-        Long chartTypeAttributeId = KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_TYP_ATTR_ID_S");
+        Long chartTypeAttributeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_TYP_ATTR_ID_S");
         KimTypeAttributeBo chartTypeAttribute = new KimTypeAttributeBo();
         chartTypeAttribute.setId("" + chartTypeAttributeId);
         chartTypeAttribute.setActive(true);
@@ -139,7 +139,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         chartTypeAttribute = (KimTypeAttributeBo) KNSServiceLocator.getBusinessObjectService().save(chartTypeAttribute);
 
         // create org KimTypeAttribute
-        Long orgTypeAttributeId = KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_TYP_ATTR_ID_S");
+        Long orgTypeAttributeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_TYP_ATTR_ID_S");
         KimTypeAttributeBo orgTypeAttribute = new KimTypeAttributeBo();
         orgTypeAttribute.setId("" + orgTypeAttributeId);
         orgTypeAttribute.setActive(true);
@@ -151,7 +151,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
          * New let's create the Role
          */
 
-        String roleId = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S");
+        String roleId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S");
         RoleBo role = new RoleBo();
         role.setId(roleId);
         role.setNamespaceCode(NAMESPACE);
@@ -160,7 +160,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         role.setActive(true);
         role.setKimTypeId(kimType.getId());
 
-        String roleMemberId1 = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S");
+        String roleMemberId1 = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S");
         RoleMemberBo adminRolePrincipal = new RoleMemberBo();
         adminRolePrincipal.setId(roleMemberId1);
         adminRolePrincipal.setRoleId(roleId);
@@ -169,7 +169,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         adminRolePrincipal.setMemberId(adminPrincipal.getPrincipalId());
         adminRolePrincipal.setType( MemberType.PRINCIPAL );
 
-        String roleMemberId2 = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S");
+        String roleMemberId2 = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S");
         RoleMemberBo user2RolePrincipal = new RoleMemberBo();
         user2RolePrincipal.setId(roleMemberId2);
         user2RolePrincipal.setRoleId(roleId);
@@ -178,7 +178,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         user2RolePrincipal.setMemberId(user2Principal.getPrincipalId());
         user2RolePrincipal.setType( MemberType.PRINCIPAL );
 
-        String roleMemberId3 = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S");
+        String roleMemberId3 = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S");
         RoleMemberBo user1RolePrincipal = new RoleMemberBo();
         user1RolePrincipal.setId(roleMemberId3);
         user1RolePrincipal.setRoleId(roleId);
@@ -198,7 +198,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
          * Let's create qualifiers for chart and org for our role members
          */
 
-        String dataId = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
+        String dataId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
         RoleMemberAttributeDataBo chartDataBL = new RoleMemberAttributeDataBo();
         chartDataBL.setId(dataId);
         chartDataBL.setAttributeValue("BL");
@@ -207,7 +207,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         chartDataBL.setKimTypeId(kimType.getId());
         chartDataBL.setAssignedToId(adminRolePrincipal.getId());
 
-        dataId = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
+        dataId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
         RoleMemberAttributeDataBo chartDataBL2 = new RoleMemberAttributeDataBo();
         chartDataBL2.setId(dataId);
         chartDataBL2.setAttributeValue("BL");
@@ -216,7 +216,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         chartDataBL2.setKimTypeId(kimType.getId());
         chartDataBL2.setAssignedToId(user2RolePrincipal.getId());
 
-        dataId = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
+        dataId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
         RoleMemberAttributeDataBo orgDataBUS = new RoleMemberAttributeDataBo();
         orgDataBUS.setId(dataId);
         orgDataBUS.setAttributeValue("BUS");
@@ -225,7 +225,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         orgDataBUS.setKimTypeId(kimType.getId());
         orgDataBUS.setAssignedToId(adminRolePrincipal.getId());
 
-        dataId = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
+        dataId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
         RoleMemberAttributeDataBo orgDataBUS2 = new RoleMemberAttributeDataBo();
         orgDataBUS2.setId(dataId);
         orgDataBUS2.setAttributeValue("BUS");
@@ -235,7 +235,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         orgDataBUS2.setAssignedToId(user2RolePrincipal.getId());
 
 
-        dataId = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
+        dataId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
         RoleMemberAttributeDataBo chartDataIN = new RoleMemberAttributeDataBo();
         chartDataIN.setId(dataId);
         chartDataIN.setAttributeValue("IN");
@@ -244,7 +244,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         chartDataIN.setKimTypeId(kimType.getId());
         chartDataIN.setAssignedToId(user1RolePrincipal.getId());
 
-        dataId = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
+        dataId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
         RoleMemberAttributeDataBo orgDataMED = new RoleMemberAttributeDataBo();
         orgDataMED.setId(dataId);
         orgDataMED.setAttributeValue("MED");
@@ -281,7 +281,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
          */
 
         // create "documentType" KimAttribute
-        Long documentTypeAttributeId = KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ATTR_DEFN_ID_S");
+        Long documentTypeAttributeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ATTR_DEFN_ID_S");
         KimAttributeBo documentTypeAttribute = new KimAttributeBo();
         documentTypeAttribute.setId("" + documentTypeAttributeId);
         documentTypeAttribute.setAttributeName(KewApiConstants.DOCUMENT_TYPE_NAME_DETAIL);
@@ -291,7 +291,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         documentTypeAttribute = (KimAttributeBo) KNSServiceLocator.getBusinessObjectService().save(documentTypeAttribute);
 
         // create "node name" KimAttribute
-        Long nodeNameAttributeId = KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ATTR_DEFN_ID_S");
+        Long nodeNameAttributeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ATTR_DEFN_ID_S");
         KimAttributeBo nodeNameAttribute = new KimAttributeBo();
         nodeNameAttribute.setId("" + nodeNameAttributeId);
         nodeNameAttribute.setAttributeName(KewApiConstants.ROUTE_NODE_NAME_DETAIL);
@@ -301,7 +301,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         nodeNameAttribute = (KimAttributeBo) KNSServiceLocator.getBusinessObjectService().save(nodeNameAttribute);
 
         // create KimType for responsibility details
-        Long kimRespTypeId = KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_TYP_ID_S");
+        Long kimRespTypeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_TYP_ID_S");
         KimTypeBo kimRespType = new KimTypeBo();
         kimRespType.setId("" + kimRespTypeId);
         kimRespType.setName("RespDetails");
@@ -311,7 +311,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         kimRespType = (KimTypeBo) KNSServiceLocator.getBusinessObjectService().save(kimRespType);
 
         // create document type KimTypeAttribute
-        Long documentTypeTypeAttributeId = KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_TYP_ATTR_ID_S");
+        Long documentTypeTypeAttributeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_TYP_ATTR_ID_S");
         KimTypeAttributeBo documentTypeTypeAttribute = new KimTypeAttributeBo();
         documentTypeTypeAttribute.setId("" + documentTypeTypeAttributeId);
         documentTypeTypeAttribute.setActive(true);
@@ -321,7 +321,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         documentTypeTypeAttribute = KNSServiceLocator.getBusinessObjectService().save(documentTypeTypeAttribute);
 
         // create nodeNameType KimTypeAttribute
-        Long nodeNameTypeAttributeId = KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_TYP_ATTR_ID_S");
+        Long nodeNameTypeAttributeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_TYP_ATTR_ID_S");
         KimTypeAttributeBo nodeNameTypeAttribute = new KimTypeAttributeBo();
         nodeNameTypeAttribute.setId("" + nodeNameTypeAttributeId);
         nodeNameTypeAttribute.setActive(true);
@@ -347,7 +347,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
          * Create the responsibility template
          */
 
-        String templateId = String.valueOf(KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_RSP_TMPL_ID_S"));
+        String templateId = String.valueOf(KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_RSP_TMPL_ID_S"));
         ResponsibilityTemplateBo template = new ResponsibilityTemplateBo();
         template.setId(templateId);
         template.setNamespaceCode(NAMESPACE);
@@ -363,9 +363,9 @@ public class RoleRouteModuleTest extends KEWTestCase {
          * Create the responsibility details for RoleRouteModuleTest1
          */
 
-        String responsibilityId = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_RSP_ID_S");
+        String responsibilityId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_RSP_ID_S");
 
-        String dataId = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
+        String dataId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
         ResponsibilityAttributeBo documentTypeDetail = new ResponsibilityAttributeBo();
         documentTypeDetail.setId(dataId);
         documentTypeDetail.setAttributeValue(docTypeDetailValue);
@@ -374,7 +374,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         documentTypeDetail.setKimTypeId(kimRespType.getId());
         documentTypeDetail.setAssignedToId(responsibilityId);
 
-        dataId = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
+        dataId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
         ResponsibilityAttributeBo nodeNameDetail = new ResponsibilityAttributeBo();
         nodeNameDetail.setId(dataId);
         nodeNameDetail.setAttributeValue("Role1");
@@ -409,7 +409,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
          * Create the RoleResponsibility
          */
 
-        String roleResponsibilityId = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_RSP_ID_S");
+        String roleResponsibilityId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_RSP_ID_S");
         RoleResponsibilityBo roleResponsibility = new RoleResponsibilityBo();
         roleResponsibility.setRoleResponsibilityId(roleResponsibilityId);
         roleResponsibility.setActive(true);
@@ -421,7 +421,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         /**
          * Create the various responsibility actions
          */
-        String roleResponsibilityActionId = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_RSP_ACTN_ID_S");
+        String roleResponsibilityActionId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_RSP_ACTN_ID_S");
         RoleResponsibilityActionBo roleResponsibilityAction1 = new RoleResponsibilityActionBo();
         roleResponsibilityAction1.setId(roleResponsibilityActionId);
         roleResponsibilityAction1.setRoleResponsibilityId(roleResponsibilityId);
@@ -432,7 +432,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityAction1.setForceAction(true);
         roleResponsibilityAction1 = KNSServiceLocator.getBusinessObjectService().save(roleResponsibilityAction1);
 
-        roleResponsibilityActionId = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_RSP_ACTN_ID_S");
+        roleResponsibilityActionId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_RSP_ACTN_ID_S");
         RoleResponsibilityActionBo roleResponsibilityAction2 = new RoleResponsibilityActionBo();
         roleResponsibilityAction2.setId(roleResponsibilityActionId);
         roleResponsibilityAction2.setRoleResponsibilityId(roleResponsibilityId);
@@ -443,7 +443,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityAction2.setForceAction(true);
         roleResponsibilityAction2 = KNSServiceLocator.getBusinessObjectService().save(roleResponsibilityAction2);
 
-        roleResponsibilityActionId = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_RSP_ACTN_ID_S");
+        roleResponsibilityActionId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_RSP_ACTN_ID_S");
         RoleResponsibilityActionBo roleResponsibilityAction3 = new RoleResponsibilityActionBo();
         roleResponsibilityAction3.setId(roleResponsibilityActionId);
         roleResponsibilityAction3.setRoleResponsibilityId(roleResponsibilityId);
@@ -463,7 +463,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         }
 
         // create delegation KimType
-        Long kimDlgnTypeId = KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_TYP_ID_S");
+        Long kimDlgnTypeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_TYP_ID_S");
         KimTypeBo kimDlgnType = new KimTypeBo();
         kimDlgnType.setId("" + kimDlgnTypeId);
         kimDlgnType.setName("TestBaseDelegationType");
@@ -475,7 +475,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         /*
          * Manually create a delegate
          */
-        String id = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_DLGN_MBR_ID_S");
+        String id = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_DLGN_MBR_ID_S");
         DelegateTypeBo delegate = new DelegateTypeBo();
 
         delegate.setDelegationId(id);
@@ -492,7 +492,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         delegate = KNSServiceLocator.getBusinessObjectService().save(delegate);
 
         // BC of the way the jpa is handled we have to create the delagate, then the members
-        String delgMemberId = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_DLGN_MBR_ID_S");
+        String delgMemberId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_DLGN_MBR_ID_S");
         DelegateMemberBo user1RoleDelegate = new DelegateMemberBo();
         user1RoleDelegate.setDelegationMemberId(delgMemberId);
         // This is the user the delegation requests should be sent to.

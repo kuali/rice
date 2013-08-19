@@ -21,7 +21,6 @@ import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -1513,7 +1512,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      */
     private SequenceAccessorService getSequenceAccessorService() {
         if ( sequenceAccessorService == null ) {
-            sequenceAccessorService = KRADServiceLocator.getSequenceAccessorService();
+            sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
         }
         return sequenceAccessorService;
     }

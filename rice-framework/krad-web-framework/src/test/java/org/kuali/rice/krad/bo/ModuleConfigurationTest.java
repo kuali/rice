@@ -32,7 +32,6 @@ import org.kuali.rice.krad.data.provider.Provider;
 import org.kuali.rice.krad.data.provider.ProviderRegistry;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.service.PersistenceService;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.support.StaticListableBeanFactory;
@@ -43,9 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests ModuleConfiguration base class
@@ -57,12 +54,9 @@ public class ModuleConfigurationTest {
     @Mock
     private DataDictionaryService ddsMock;
     @Mock
-    private PersistenceService psMock;
-    @Mock
     private ProviderRegistry prMock;
 
     private List<String> ddPackages = Arrays.asList(new String[]{"package1", "package2"});
-    private List<String> repoPaths = Arrays.asList(new String[]{"path1", "path2"});
     private List<Provider> providers = Arrays.asList(new Provider[] { mock(Provider.class), mock(Provider.class) });
 
 
@@ -82,14 +76,12 @@ public class ModuleConfigurationTest {
     @Before
     public void setup() {
         config.setDataDictionaryService(ddsMock);
-        config.setPersistenceService(psMock);
     }
 
     protected void initModuleConfiguration() {
         config.setNamespaceCode("moduleconfiguration-unittest");
         config.setDataDictionaryPackages(ddPackages);
         config.setProviders(providers);
-        config.setDatabaseRepositoryFilePaths(repoPaths);
     }
 
     @Test
@@ -105,8 +97,6 @@ public class ModuleConfigurationTest {
         config.setInitializeDataDictionary(true);
         config.afterPropertiesSet();
         verify(ddsMock).addDataDictionaryLocations(config.getNamespaceCode(), ddPackages);
-        verify(psMock).loadRepositoryDescriptor(repoPaths.get(0).trim());
-        verify(psMock).loadRepositoryDescriptor(repoPaths.get(1).trim());
         verify(prMock).registerProvider(providers.get(0));
         verify(prMock).registerProvider(providers.get(1));
     }

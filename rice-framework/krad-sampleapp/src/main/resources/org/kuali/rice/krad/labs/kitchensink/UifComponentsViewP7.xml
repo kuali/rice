@@ -67,7 +67,7 @@
      <property name="layoutManager.actionColumnPlacement" value="LEFT" />
      <property name="collectionLookup">
        <bean parent="Uif-CollectionQuickFinder"
-             p:dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+             p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
              p:fieldConversions="number:field1,name:field2,subAccount:field3,subAccountName:field4"/>
      </property>
      <property name="lineActions">

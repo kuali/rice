@@ -127,7 +127,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         // When this happens, just remove these calls to the setters with
         // SpringServiceLocator, and configure the bean defs for spring.
         try {
-            this.setPersistenceStructureService(KRADServiceLocator.getPersistenceStructureService());
+            this.setPersistenceStructureService(KNSServiceLocator.getPersistenceStructureService());
             this.setDdService(KRADServiceLocatorWeb.getDataDictionaryService());
             this.setBusinessObjectMetaDataService(KNSServiceLocator.getBusinessObjectMetaDataService());
             this.setBoService(KNSServiceLocator.getBusinessObjectService());

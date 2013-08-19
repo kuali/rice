@@ -576,7 +576,7 @@ public class FieldBridge {
 
 	public static PersistenceStructureService getPersistenceStructureService() {
     	if (persistenceStructureService == null) {
-    		persistenceStructureService = KRADServiceLocator.getPersistenceStructureService();
+    		persistenceStructureService = KNSServiceLocator.getPersistenceStructureService();
     	}
 		return persistenceStructureService;
 	}

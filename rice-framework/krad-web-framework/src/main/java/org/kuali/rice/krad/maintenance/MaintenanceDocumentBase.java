@@ -42,7 +42,6 @@ import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.SaveDocumentEvent;
 import org.kuali.rice.krad.service.DocumentDictionaryService;
-import org.kuali.rice.krad.service.DocumentHeaderService;
 import org.kuali.rice.krad.service.DocumentService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -111,8 +110,6 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     private static transient DocumentDictionaryService documentDictionaryService;
     @Transient
     private static transient MaintenanceDocumentService maintenanceDocumentService;
-    @Transient
-    private static transient DocumentHeaderService documentHeaderService;
     @Transient
     private static transient DocumentService documentService;
 
@@ -1144,14 +1141,6 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
             maintenanceDocumentService = KRADServiceLocatorWeb.getMaintenanceDocumentService();
         }
         return maintenanceDocumentService;
-    }
-
-    @Deprecated
-    protected DocumentHeaderService getDocumentHeaderService() {
-        if (documentHeaderService == null) {
-            documentHeaderService = KRADServiceLocatorWeb.getDocumentHeaderService();
-        }
-        return documentHeaderService;
     }
 
     protected DocumentService getDocumentService() {

@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.ojb.broker.metadata.ClassDescriptor;
 import org.apache.ojb.broker.metadata.ClassNotPersistenceCapableException;
 import org.apache.ojb.broker.metadata.DescriptorRepository;
@@ -28,11 +25,11 @@ import org.kuali.rice.core.framework.persistence.ojb.BaseOjbConfigurer;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.krad.exception.ClassNotPersistableException;
-import org.kuali.rice.krad.metadata.EntityDescriptor;
-import org.kuali.rice.krad.metadata.MetadataManager;
-import org.kuali.rice.krad.metadata.ObjectDescriptor;
 import org.kuali.rice.krad.util.LegacyDataFramework;
 import org.kuali.rice.krad.util.LegacyUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Deprecated
 @LegacyDataFramework
@@ -77,26 +74,16 @@ public class PersistenceServiceStructureImplBase {
 	 * @return unmodifiableList of field names.  Any attempt to alter list will result in an UnsupportedOperationException
 	 */
 	public List listPrimaryKeyFieldNames(Class clazz) {
-    	// Rice JPA MetadataManager
-		if (isJpaEnabledForKradClass(clazz)) {
-			List fieldNames = new ArrayList();
-	    	EntityDescriptor descriptor = MetadataManager.getEntityDescriptor(clazz);
-	    	for (org.kuali.rice.krad.metadata.FieldDescriptor field : descriptor.getPrimaryKeys()) {
-	    		fieldNames.add(field.getName());
-	    	}
-	    	return fieldNames;
-		} else {
-	    	// Legacy OJB
-			List fieldNamesLegacy = new ArrayList();
-			ClassDescriptor classDescriptor = getClassDescriptor(clazz);
-			FieldDescriptor keyDescriptors[] = classDescriptor.getPkFields();
+        // Legacy OJB
+        List fieldNamesLegacy = new ArrayList();
+        ClassDescriptor classDescriptor = getClassDescriptor(clazz);
+        FieldDescriptor keyDescriptors[] = classDescriptor.getPkFields();
 
-			for (int i = 0; i < keyDescriptors.length; ++i) {
-				FieldDescriptor keyDescriptor = keyDescriptors[i];
-				fieldNamesLegacy.add(keyDescriptor.getAttributeName());
-			}
-			return fieldNamesLegacy;
-		}
+        for (int i = 0; i < keyDescriptors.length; ++i) {
+            FieldDescriptor keyDescriptor = keyDescriptors[i];
+            fieldNamesLegacy.add(keyDescriptor.getAttributeName());
+        }
+        return fieldNamesLegacy;
 	}
 
 	/* Not used anywhere... need to check KFS and batch stuff */
@@ -170,47 +157,30 @@ public class PersistenceServiceStructureImplBase {
 			subAttributeString = attributeName.substring(attributeName.indexOf('.') + 1);
 		}
 
-    	// Rice JPA MetadataManager
-		if (isJpaEnabledForKradClass(clazz)) {
-			Class attributeClass = null;
-	    	EntityDescriptor descriptor = MetadataManager.getEntityDescriptor(clazz);
-	    	ObjectDescriptor objectDescriptor = descriptor.getObjectDescriptorByName(baseAttributeName);
-			if (objectDescriptor != null) {
-				attributeClass = objectDescriptor.getTargetEntity();
-			}
+        // Legacy OJB
+        Class attributeClassLegacy = null;
+        ClassDescriptor classDescriptor = null;
+        try{
+            classDescriptor = this.getClassDescriptor(clazz);
+        }catch (ClassNotPersistableException e){
+            LOG.warn("Class descriptor for "+ clazz.getName() +"was not found");
+        }
 
-			// recurse if necessary
-			if (subAttributeString != null) {
-				attributeClass = getBusinessObjectAttributeClass(attributeClass, subAttributeString);
-			}
+        ObjectReferenceDescriptor refDescriptor = null;
+        if(classDescriptor != null){
+            refDescriptor = classDescriptor.getObjectReferenceDescriptorByName(baseAttributeName);
+        }
 
-			return attributeClass;
-		} else {
-	    	// Legacy OJB
-			Class attributeClassLegacy = null;
-            ClassDescriptor classDescriptor = null;
-            try{
-			    classDescriptor = this.getClassDescriptor(clazz);
-            }catch (ClassNotPersistableException e){
-                LOG.warn("Class descriptor for "+ clazz.getName() +"was not found");
-            }
+        if (refDescriptor != null) {
+            attributeClassLegacy = refDescriptor.getItemClass();
+        }
 
-			ObjectReferenceDescriptor refDescriptor = null;
-            if(classDescriptor != null){
-                refDescriptor = classDescriptor.getObjectReferenceDescriptorByName(baseAttributeName);
-            }
+        // recurse if necessary
+        if (subAttributeString != null) {
+            attributeClassLegacy = getBusinessObjectAttributeClass(attributeClassLegacy, subAttributeString);
+        }
 
-			if (refDescriptor != null) {
-				attributeClassLegacy = refDescriptor.getItemClass();
-			}
-
-			// recurse if necessary
-			if (subAttributeString != null) {
-				attributeClassLegacy = getBusinessObjectAttributeClass(attributeClassLegacy, subAttributeString);
-			}
-
-			return attributeClassLegacy;
-		}
+        return attributeClassLegacy;
 	}
 
 }

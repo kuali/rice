@@ -15,24 +15,24 @@
  */
 package org.kuali.rice.krad.bo;
 
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.EntityManager;
-
+import org.apache.commons.beanutils.MethodUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.data.config.BasicModuleConfiguration;
 import org.kuali.rice.krad.data.provider.Provider;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.service.PersistenceService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+
+import javax.persistence.EntityManager;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This class contains various configuration properties for a Rice module.
@@ -101,7 +101,7 @@ public class ModuleConfiguration extends BasicModuleConfiguration implements Ini
 
 	protected boolean initializeDataDictionary;
 
-	protected PersistenceService persistenceService;
+	protected Object persistenceService;
 
     /**
      * the implementation of the data dictionary service to use for this module.
@@ -151,20 +151,8 @@ public class ModuleConfiguration extends BasicModuleConfiguration implements Ini
             }
         }
 
-        if (getDatabaseRepositoryFilePaths() != null) {
-            for (String repositoryLocation : getDatabaseRepositoryFilePaths()) {
-                // Need the OJB persistence service because it is the only one ever using the database repository files
-                if (getPersistenceService() == null) {
-                    setPersistenceService(KRADServiceLocatorWeb.getPersistenceServiceOjb());
-                }
-                if (persistenceService == null) {
-                    setPersistenceService((PersistenceService) applicationContext.getBean(
-                            KRADServiceLocatorWeb.PERSISTENCE_SERVICE_OJB));
-                }
-                LOG.warn( "Loading OJB Configuration in " + getNamespaceCode() + " module.  OJB is deprecated as of Rice 2.4: " + repositoryLocation);
-                getPersistenceService().loadRepositoryDescriptor(repositoryLocation);
-            }
-        }
+        loadOjbRepositoryFiles();
+
         if ( getProviders() != null ) {
             if ( KradDataServiceLocator.getProviderRegistry() != null ) {
                 for ( Provider provider : getProviders() ) {
@@ -177,6 +165,38 @@ public class ModuleConfiguration extends BasicModuleConfiguration implements Ini
         }
     }
 
+    /**
+     * This method is deprecated and won't do anything if the database repository file paths are null or empty.
+     *
+     * We use reflection here to avoid having to reference PersistenceService directly since it may or may not be on
+     * our classpath depending on whether or not KSB is in use.
+     */
+    @Deprecated
+    protected void loadOjbRepositoryFiles() {
+        String persistenceServiceOjbName = "persistenceServiceOjb";
+        if (getDatabaseRepositoryFilePaths() != null) {
+            for (String repositoryLocation : getDatabaseRepositoryFilePaths()) {
+                // Need the OJB persistence service because it is the only one ever using the database repository files
+                if (getPersistenceService() == null) {
+                    setPersistenceService(GlobalResourceLoader.getService(persistenceServiceOjbName));
+                }
+                if (persistenceService == null) {
+                    setPersistenceService(applicationContext.getBean(persistenceServiceOjbName));
+                }
+                LOG.warn("Loading OJB Configuration in "
+                        + getNamespaceCode()
+                        + " module.  OJB is deprecated as of Rice 2.4: "
+                        + repositoryLocation);
+                try {
+                    MethodUtils.invokeExactMethod(persistenceService, "loadRepositoryDescriptor", repositoryLocation);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+    }
+
 	/**
      * Retrieves the database repository file paths to be used by the persistence service configured for this module.
      *
@@ -187,7 +207,10 @@ public class ModuleConfiguration extends BasicModuleConfiguration implements Ini
      * </p>
      *
 	 * @return a List containing the databaseRepositoryFilePaths
+     *
+     * @deprecated OJB is deprecated
 	 */
+    @Deprecated
 	public List<String> getDatabaseRepositoryFilePaths() {
 		return this.databaseRepositoryFilePaths;
 	}
@@ -201,7 +224,10 @@ public class ModuleConfiguration extends BasicModuleConfiguration implements Ini
      * </p>
      *
 	 * @param databaseRepositoryFilePaths the List of entity descriptor files to load.
-	 */
+     *
+     * @deprecated OJB is deprecated
+     */
+    @Deprecated
 	public void setDatabaseRepositoryFilePaths(
 			List<String> databaseRepositoryFilePaths) {
 		this.trimList(databaseRepositoryFilePaths);
@@ -357,14 +383,16 @@ public class ModuleConfiguration extends BasicModuleConfiguration implements Ini
 	/**
 	 * @return the persistenceService
 	 */
-	public PersistenceService getPersistenceService() {
+    @Deprecated
+	public Object getPersistenceService() {
 		return this.persistenceService;
 	}
 
 	/**
 	 * @param persistenceService the persistenceService to set
 	 */
-	public void setPersistenceService(PersistenceService persistenceService) {
+    @Deprecated
+	public void setPersistenceService(Object persistenceService) {
 		this.persistenceService = persistenceService;
 	}
 

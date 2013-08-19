@@ -28,20 +28,20 @@
         <list>
           <bean parent="GenericTextField" p:readOnly="true" p:propertyName="field59" p:defaultValue="a2">
             <property name="inquiry">
-              <bean parent="Uif-Inquiry" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+              <bean parent="Uif-Inquiry" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
                     p:inquiryParameters="field59:number"/>
             </property>
           </bean>
           <bean parent="GenericTextField" p:propertyName="field70">
             <property name="inquiry">
-              <bean parent="Uif-Inquiry" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+              <bean parent="Uif-Inquiry" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
                     p:inquiryParameters="field70:number"/>
             </property>
           </bean>
           <bean parent="GenericTextField" p:propertyName="field72">
             <property name="propertyNamesForAdditionalDisplay" value="field73,field74" />
             <property name="attributeQuery">
-              <bean parent="Uif-AttributeQueryConfig" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+              <bean parent="Uif-AttributeQueryConfig" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
                 p:queryFieldMapping="field72:number" p:returnFieldMapping="name:field73,subAccountName:field74" />
             </property>
           </bean>
@@ -73,26 +73,26 @@
 
           <bean parent="GenericTextField" p:propertyName="field60">
             <property name="quickfinder">
-              <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+              <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
                     p:fieldConversions="number:field60"/>
             </property>
           </bean>
           <bean parent="GenericTextField" p:propertyName="field90">
             <property name="quickfinder">
-              <bean parent="Uif-QuickFinderByScript" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+              <bean parent="Uif-QuickFinderByScript" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
                       p:fieldConversions="number:field60"/>
             </property>
           </bean>
           <bean parent="GenericTextField" p:propertyName="field87">
             <property name="quickfinder">
-              <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+              <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
                     p:fieldConversions="number:field87"/>
             </property>
           </bean>
           <bean parent="GenericTextField" p:propertyName="field61">
             <property name="suggest">
                 <bean parent="Uif-Suggest" p:render="true" p:valuePropertyName="accountTypeCode"
-                      p:suggestQuery.dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"/>
+                      p:suggestQuery.dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
             </property>
           </bean>
         </list>

@@ -152,7 +152,7 @@
               <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3">
                 <property name="quickfinder">
                   <bean parent="Uif-QuickFinder"
-                        p:dataObjectClassName="org.kuali.rice.krad.demo.travel.account.TravelAccount"
+                        p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
                         p:fieldConversions="number:field3"/>
                 </property>
               </bean>

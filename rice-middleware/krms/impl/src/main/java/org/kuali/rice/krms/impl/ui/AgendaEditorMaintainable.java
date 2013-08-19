@@ -15,13 +15,6 @@
  */
 package org.kuali.rice.krms.impl.ui;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.metadata.ClassNotPersistenceCapableException;
@@ -38,7 +31,6 @@ import org.kuali.rice.krad.maintenance.Maintainable;
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
@@ -71,6 +63,13 @@ import org.kuali.rice.krms.impl.repository.TermBo;
 import org.kuali.rice.krms.impl.repository.TermParameterBo;
 import org.kuali.rice.krms.impl.util.KrmsImplConstants;
 import org.kuali.rice.krms.impl.util.KrmsRetriever;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * {@link Maintainable} for the {@link AgendaEditor}
@@ -292,7 +291,7 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
      */
     private SequenceAccessorService getSequenceAccessorService() {
         if (sequenceAccessorService == null) {
-            sequenceAccessorService = KRADServiceLocator.getSequenceAccessorService();
+            sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
         }
         return sequenceAccessorService;
     }
@@ -376,7 +375,7 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
                 TermBo newTerm = new TermBo();
                 newTerm.setDescription(propositionBo.getNewTermDescription());
                 newTerm.setSpecificationId(termSpecId);
-                newTerm.setId(KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(
+                newTerm.setId(KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(
                         KrmsMaintenanceConstants.Sequences.TERM_SPECIFICATION, TermBo.class).toString());
 
                 List<TermParameterBo> params = new ArrayList<TermParameterBo>();
@@ -385,7 +384,7 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
                     param.setTermId(newTerm.getId());
                     param.setName(entry.getKey());
                     param.setValue(entry.getValue());
-                    param.setId(KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(
+                    param.setId(KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(
                             KrmsMaintenanceConstants.Sequences.TERM_PARAMETER, TermParameterBo.class).toString());
 
                     params.add(param);

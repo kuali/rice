@@ -104,19 +104,14 @@ class StrutsConverter {
         formConverter.generateUifForms(formBeans, javaClassSearchDirPath)
 
         // for each action
-        log.info "generating action related components (" + actionBeans.size() + ")"
-        (0..<actionBeans.size()).each {
-            // extracts relevant data from form bean
-            def actionBean = actionBeans[it]
+        log.finer "generating action related components"
+        actionBeans.each { actionBean ->
             def actionClassName = ClassUtils.getShortClassName(actionBean.@type)
-            def actionClassFiles = []
-            if (!StringUtils.isBlank(actionClassName)) {
-                actionClassFiles = ConversionUtils.findFilesByName(javaClassSearchDirPath, actionClassName + ".java")
-            }
-
-            if (actionClassFiles.size() > 0) {
+            def actionClassFiles = getActionClassFiles(javaClassSearchDirPath, actionClassName);
+            if (actionClassFiles?.size() > 0) {
                 // gather relevant data to build controller
-                def actionClassData = ClassParserUtils.parseClassFile(actionClassFiles[0].text, true)
+                def baseActionClass = actionClassFiles.sort[0]
+                def actionClassData = ClassParserUtils.parseClassFile(baseActionClass.text, true)
 
                 // gathering form data for action form
                 def actionBeanData = actionConverter.getActionBeanData(actionBean)
@@ -124,11 +119,13 @@ class StrutsConverter {
 
                 log.finer "build controller binding"
                 def controllerBinding = actionConverter.buildControllerBinding(formBeanData, actionBeanData, actionClassData)
+                controllerBinding.className = controllerBinding.className.replaceAll("\\{1\\}", "");
                 prefixes.add(controllerBinding.package)
                 def controllerText = buildController(controllerBinding)
 
                 // build controller file
                 def controllerFileName = ClassUtils.getShortClassName(controllerBinding.className) + ".java"
+                controllerFileName = controllerFileName.replaceAll("\\{1\\}", "");
                 def controllerFilePath = javaClassOutputDirPath + ConversionUtils.getRelativePathFromPackage(controllerBinding.package)
                 ConversionUtils.buildFile(controllerFilePath, controllerFileName, controllerText)
                 log.finer "generating new controller file: " + controllerFileName
@@ -153,6 +150,20 @@ class StrutsConverter {
         // build module spring beans.xml
         buildModuleSpringBeansFiles(classpaths, prefixes, bundles)
 
+    }
+
+    def getActionClassFiles(String javaClassSearchDirPath, String actionClassName) {
+        def actionClassFiles = [];
+        if (!StringUtils.isBlank(actionClassName)) {
+            if (actionClassName =~ /\{1\}/) {
+                String actionClassNameString = actionClassName.replaceAll("\\.", "\\\\.").replaceAll("\\{1\\}", ".*?") + "\\.java\$";
+                def actionClassNamePattern = ~"${actionClassNameString}"
+                actionClassFiles = ConversionUtils.findFilesByPattern(javaClassSearchDirPath, actionClassNamePattern);
+            } else {
+                actionClassFiles = ConversionUtils.findFilesByName(javaClassSearchDirPath, actionClassName + ".java")
+            }
+        }
+        return actionClassFiles;
     }
 
     /**

@@ -17,18 +17,19 @@
   <dependencies>
     <!-- war dependency for war overlay -->
     <dependency>
-      <artifactId>${artifactId}</artifactId>
-      <groupId>${groupId}</groupId>
-      <version>${version}</version>
-      <type>war</type>
+      <artifactId>${artifact.artifactId}</artifactId>
+      <groupId>${artifact.groupId}</groupId>
+      <version>${artifact.version}</version>
+      <type>${artifact.type}</type>
     </dependency>
     <!-- pom dependency included for any class-related dependencies -->
-    <dependency>
-      <artifactId>${artifactId}</artifactId>
-      <groupId>${groupId}</groupId>
-      <version>${version}</version>
-      <type>pom</type>
-    </dependency>
+    <% for(dependency in dependencies) { %><dependency>
+      <artifactId>${dependency.artifactId}</artifactId>
+      <groupId>${dependency.groupId}</groupId>
+      <version>${dependency.version}</version><% if(dependency.type) { %>
+      <type>${dependency.type}</type><% } %><% if(dependency.classifier) { %>
+      <classifier>${dependency.classifier}</classifier><% } %>
+    </dependency><% } %>
     <% for(systemlib in systemlibs) { %>
     <dependency>
       <artifactId>${systemlib.artifactId}</artifactId>
@@ -103,8 +104,8 @@
         <configuration>
           <overlays>
             <overlay>
-              <groupId>${groupId}</groupId>
-              <artifactId>${artifactId}</artifactId>
+              <groupId>${artifact.groupId}</groupId>
+              <artifactId>${artifact.artifactId}</artifactId>
             </overlay>
           </overlays>
         </configuration>
@@ -125,8 +126,8 @@
             <configuration>
               <overlays>
                 <overlay>
-                  <groupId>${groupId}</groupId>
-                  <artifactId>${artifactId}</artifactId></overlay>
+                  <groupId>${artifact.groupId}</groupId>
+                  <artifactId>${artifact.artifactId}</artifactId></overlay>
                 <overlay>
                   <!-- empty groupId/artifactId represents the current build -->
                 </overlay>
@@ -134,7 +135,7 @@
               <outputDirectory>\${project.build.directory}</outputDirectory>
               <includeTypes>war</includeTypes>
               <includes>WEB-INF/classes/**/*.class</includes>
-              <includeArtifactIds>${artifactId}</includeArtifactIds>
+              <includeArtifactIds>${artifact.artifactId}</includeArtifactIds>
               <excludeTransitive>true</excludeTransitive>
               <!--use as much as needed to be specific...also scope,type,classifier etc-->
             </configuration>

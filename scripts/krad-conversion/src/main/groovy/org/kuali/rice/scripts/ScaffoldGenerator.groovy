@@ -57,9 +57,9 @@ class ScaffoldGenerator {
 
     def init(projectProps_, inputDir_, inputPaths_, outputDir_, outputPaths_, servletProps_) {
         projectProps = projectProps_
-        inputDir = FilenameUtils.normalize(inputDir_,true)
+        inputDir = FilenameUtils.normalize(inputDir_, true)
         inputPaths = inputPaths_
-        outputDir = FilenameUtils.normalize(outputDir_,true)
+        outputDir = FilenameUtils.normalize(outputDir_, true)
         outputPaths = outputPaths_
         servletProps = servletProps_
     }
@@ -116,8 +116,12 @@ class ScaffoldGenerator {
      * @return
      */
     def buildWebFragmentFile(templateDir) {
-        def webXmlBinding = ["servletapp": servletProps.app, "servletpath": servletProps.path, "count": servletProps.count]
-        ConversionUtils.buildTemplateFile(outputDir + outputPaths.src.resources + "/META-INF/", "web-fragment.xml", ConversionUtils.getTemplateDir(), "web-fragment.xml.tmpl", webXmlBinding)
+        String outputPath = outputDir + outputPaths.src.resources + "/META-INF/";
+        String outputFile = "web-fragment.xml";
+        String templatePath = ConversionUtils.getTemplateDir();
+        String templateFile = "web-fragment.xml.tmpl";
+        def binding = ["servletapp": servletProps.app, "servletpath": servletProps.path, "count": servletProps.count]
+        ConversionUtils.buildTemplateFile(outputPath, outputFile, templatePath, templateFile, binding)
     }
 
     /**
@@ -139,14 +143,14 @@ class ScaffoldGenerator {
     }
 
     def buildValidationTestBinding(targetPath, springXmlFilePathList) {
-        def resourcePath = FilenameUtils.normalize(FilenameUtils.concat(targetPath, outputPaths.src.resources),true)
+        def resourcePath = FilenameUtils.normalize(FilenameUtils.concat(targetPath, outputPaths.src.resources), true)
         def binding = ["springBeanFiles": []]
         def rdvSpringXmlPathList = []
         springXmlFilePathList.removeAll(springXmlFilePathList.findAll { path -> path =~ /META-INF/ })
         springXmlFilePathList.each { springFilePath ->
             if (springFilePath.find(~/${resourcePath}(.*?)$/)) {
                 log.finer "processing rdv file: " + resourcePath + " " + springFilePath
-                def rdvSpringXmlPath = "classpath\\:" + ConversionUtils.getRelativePath(resourcePath, springFilePath)
+                def rdvSpringXmlPath = "classpath\\:" + ConversionUtils.getRelativePath(resourcePath, springFilePath) + FilenameUtils.getName(springFilePath)
                 rdvSpringXmlPathList.add(rdvSpringXmlPath)
             }
         }
@@ -215,8 +219,8 @@ class ScaffoldGenerator {
      * @param version
      * @param systemlibs - for ant projects with no dependency management
      */
-    static def buildWarOverlayPom(targetPath, app, groupId, artifactId, version, systemlibs) {
-        def binding = ["app": app, "groupId": groupId, "artifactId": artifactId, "version": version, "systemlibs": systemlibs]
+    static def buildWarOverlayPom(targetPath, app, artifact, dependencies, systemlibs) {
+        def binding = ["app": app, "artifact": artifact, "dependencies": dependencies, "systemlibs": systemlibs]
         ConversionUtils.buildTemplateFile(targetPath, "pom.xml", ConversionUtils.getTemplateDir(), "pom.xml.tmpl", binding)
     }
 

@@ -28,8 +28,15 @@
     <section><title>Data Dictionary</title>
         <para></para>
     </section>
-    <section><title>Inquiry</title>
-        <para></para>
+    <section><title>Inquiry</title><para></para>
+        <section><title>Inquirable / KualiInquirableImpl</title>
+            <para>KRAD removes <emphasis role="keyword">KualiInquirableImpl</emphasis> and replaces it with
+                <emphasis role="keyword">InquirableImpl</emphasis>.  Normally, this class does not need to be extended
+                unless advanced customizations are required, but any implementer already extending this class will have
+                to make the switch manually.
+                <inlinemediaobject><imageobject><imagedata fileref="../images/badge-manualconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject>
+            </para>
+        </section>
     </section>
     <section><title>Lookup</title><para></para>
         <section><title>LookupDefinition in KNS Data Dictionary to LookupView in KRAD</title>

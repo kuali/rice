@@ -26,9 +26,30 @@
       <bean parent="NumericValidationPattern"/>
     </property>
     <property name="control">
-      <bean parent="SelectControlDefinition" p:businessObjectClass="edu.sampleu.bookstore.bo.Book" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="false" p:includeBlankRow="true" p:keyAttribute="id" p:labelAttribute="title"/>
+      <bean parent="SelectControlDefinition" p:businessObjectClass="edu.sampleu.bookstore.bo.Book"
+            p:valuesFinderClass="org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder"
+            p:includeKeyInLabel="false" p:includeBlankRow="true" p:keyAttribute="id" p:labelAttribute="title"/>
     </property>
     <property name="name" value="bookId"/>
     <property name="label" value="Book Id"/>
+  </bean>
+  <bean id="BookOrder-value" parent="BookOrder-value-parentBean"/>
+  <bean id="BookOrder-value-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="value"/>
+    <property name="forceUppercase" value="false"/>
+    <property name="label" value="Value"/>
+    <property name="shortLabel" value="Value"/>
+    <property name="maxLength" value="200"/>
+    <property name="validationPattern">
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true"/>
+    </property>
+    <property name="control">
+      <bean parent="TextareaControlDefinition"
+            p:rows="5"
+            p:cols="40"/>
+    </property>
+    <property name="summary" value="Value"/>
+    <property name="description" value="Value"/>
   </bean>
 </beans>

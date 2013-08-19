@@ -96,19 +96,28 @@ class SpringBeanTransformerTest {
 
     @Test
     void testTransformControlProperty() {
-        def inqDefFilePath = dictTestDir + "ControlFieldSample.xml"
-        def ddRootNode = getFileRootNode(inqDefFilePath)
+        String inqDefFilePath = dictTestDir + "ControlFieldSample.xml";
+        def ddRootNode = getFileRootNode(inqDefFilePath);
+        def renamedControlDefinitions = config.map.convert.dd_bean_control;
+        def selectBeanNode = ddRootNode.bean.find { "BookOrder-bookId-parentBean".equals(it.@id) };
+        def textAreaBeanNode = ddRootNode.bean.find { "BookOrder-value-parentBean".equals(it.@id) };
+
         try {
-            springBeanTransformer.transformControlProperty(ddRootNode.bean, config.map.convert.dd_bean_control)
+            springBeanTransformer.transformControlProperty(selectBeanNode, renamedControlDefinitions);
+            springBeanTransformer.transformControlProperty(textAreaBeanNode, renamedControlDefinitions);
         } catch (Exception e) {
             e.printStackTrace()
             Assert.fail("exception occurred in testing")
         }
 
         // validate a control field and options finder were generated
-        Assert.assertEquals("control field count", 1, ddRootNode.bean.property.findAll { it.@name == "controlField" }.size())
-        Assert.assertEquals("options finder count", 1, ddRootNode.bean.property.findAll { it.@name == "optionsFinder" }.size())
-        Assert.assertEquals("control count", 0, ddRootNode.bean.property.findAll { it.@name == "control" }.size())
+        Assert.assertEquals("control field count", 1, selectBeanNode.property.findAll { it.@name == "controlField" }.size());
+        Assert.assertEquals("options finder count", 1, selectBeanNode.property.findAll { it.@name == "optionsFinder" }.size());
+        Assert.assertEquals("control count", 0, selectBeanNode.property.findAll { it.@name == "control" }.size());
+
+        // testing text area control transform
+        def textAreaControlField = textAreaBeanNode.property.findAll { it.@name == "controlField" };
+        Assert.assertEquals("control field count", 1, textAreaControlField.size());
 
     }
 
@@ -117,7 +126,6 @@ class SpringBeanTransformerTest {
         def rootBean = getSimpleSpringXmlNode();
         def searchAttrs = ["*name": "p:propertyName"];
         def attributes = springBeanTransformer.genericGatherAttributes(rootBean.bean[0], searchAttrs);
-        log.info " attributes is " + attributes.size() + " and contains " + attributes.toString();
         Assert.assertTrue("attribute list should contain id", attributes["id"] != null);
         Assert.assertTrue("attribute list should contain propertyName", attributes["p:propertyName"] != null);
 

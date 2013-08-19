@@ -97,8 +97,7 @@ class JstlConverter {
      * @return
      */
     public static def transformPageElements(builder, bindingElements, page, jspMap, depth) {
-        depth++
-        log.info "processing page element children"
+        depth++;
         def pageChildren = page.children()
         if (pageChildren.size() > 0) {
             log.finer "page children exists : " + pageChildren.size()
@@ -117,9 +116,9 @@ class JstlConverter {
                     transformUnknownElement(builder, bindingElements, pageChildren[it], jspMap, depth)
                 }
             }
-
         }
-        depth--
+
+        depth--;
     }
 
     /**
@@ -237,7 +236,7 @@ class JstlConverter {
      * */
     public static def buildViewBindingJspData(uifViewBinding, jspData) {
         uifViewBinding.pages = jspData.pages
-        uifViewBinding.entryPageId = jspData.pages[0].id
+        uifViewBinding.entryPageId = jspData.pages[0]?.id
         uifViewBinding.beans = jspData.beans
         return uifViewBinding
     }

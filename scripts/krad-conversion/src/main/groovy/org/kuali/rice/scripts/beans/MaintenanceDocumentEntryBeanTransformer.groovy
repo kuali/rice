@@ -91,16 +91,52 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
                 transformMaintainableItemsProperty(delegate, beanNode);
             }
         } else {
-            builder.bean(parent: 'Uif-MaintenanceStackedCollectionSection') {
-                copyProperties(delegate, beanNode, ["title", "collectionObjectClass", "propertyName"]);
-                renameProperties(delegate, beanNode, ["title": "headerText", "businessObjectClass": "collectionObjectClass"]);
-                transformMaintainableFieldsProperty(delegate, beanNode);
-                transformSummaryFieldsProperty(delegate, beanNode);
-
-            }
+            transformMaintainableSectionDefinitionBeanWithCollection(builder, beanNode);
         }
     }
 
+    def transformMaintainableSectionDefinitionBeanWithCollection(NodeBuilder builder, Node beanNode) {
+        // used to build up the list as its processes through the non-collection items
+        def itemsList = [];
+        beanNode.property.find { it.@name == "maintainableItems" }.list.bean.each { beanItem ->
+            if (!"MaintainableCollectionDefinition".equals(beanItem.@parent)) {
+                itemsList.add(gatherNameAttribute(beanItem));
+            } else {
+                if (itemsList.size() > 0) {
+                    builder.bean(parent: 'Uif-MaintenanceGridSection') {
+                        copyProperties(delegate, beanNode, ["title", "collectionObjectClass", "propertyName"])
+                        renameProperties(delegate, beanNode, ["numberOfColumns": "layoutManager.numberOfColumns"]);
+                        property(name: "items") {
+                            list {
+                                itemsList.each { attributes ->
+                                    attributes.put("parent", "Uif-InputField");
+                                    genericBeanTransform(builder, attributes);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                itemsList = [];
+                builder.bean(parent: 'Uif-MaintenanceStackedCollectionSection') {
+                    copyProperties(delegate, beanNode, ["title", "collectionObjectClass", "propertyName"]);
+                    renameProperties(delegate, beanNode, ["title": "headerText", "businessObjectClass": "collectionObjectClass"]);
+                    transformMaintainableFieldsProperty(delegate, beanItem);
+                    transformSummaryFieldsProperty(delegate, beanNode);
+
+                }
+            }
+        }
+
+    }
+
+    /**
+     *
+     *
+     * @param builder
+     * @param beanNode
+     * @return
+     */
     def transformMaintainableSectionsProperty(NodeBuilder builder, Node beanNode) {
         def maintainableSectionsProperty = beanNode.property.find { it.@name == "maintainableSections" }
         if (maintainableSectionsProperty != null) {
@@ -122,16 +158,20 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
         transformPropertyBeanList(builder, beanNode, ["maintainableItems": "items"], gatherNameAttribute, inputFieldBeanTransform);
     }
 
+    /**
+     * Maintainable fields returned as an items property list
+     *
+     *
+     * @param builder - data output is appended to the builder
+     * @param beanNode - generally a collection definition bean
+     * @return
+     */
     def transformMaintainableFieldsProperty(NodeBuilder builder, Node beanNode) {
-        def maintainableItemsProperty = beanNode.property.find { "maintainableItems".equals(it.@name) };
-
-        maintainableItemsProperty.list.bean.each { maintItemBean ->
+        def maintainableFieldsProperty = beanNode.property.find { "maintainableFields".equals(it.@name) };
+        if (maintainableFieldsProperty) {
             builder.property(name: "items") {
                 list {
-                    if ("MaintainableCollectionDefinition".equals(maintItemBean.@parent)) {
-                        def maintFields = maintItemBean.property.find { "maintainableFields".equals(it.@name) };
-                        maintFields.list.bean.each { fieldBean -> attributeFieldBeanTransform(builder, gatherNameAttribute(fieldBean)); }
-                    }
+                    maintainableFieldsProperty?.list?.bean.each { maintainableItem -> inputFieldBeanTransform(builder, gatherNameAttribute(maintainableItem)); }
                 }
             }
         }

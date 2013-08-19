@@ -347,7 +347,7 @@ class SpringBeanTransformer {
         }
     }
 
-    def removeProperties(Node beanNode, List<String> propertyNames) {
+    def removeProperties(def beanNode, List<String> propertyNames) {
         beanNode.property.findAll { propertyNames.contains(it.@name) }.each { Node beanProperty -> beanProperty.replaceNode {} }
     }
 
@@ -458,27 +458,24 @@ class SpringBeanTransformer {
      * @return
      */
     def transformControlProperty(def beanNode, Map<String, String> renamedControlBeans) {
-        if (beanNode.property.findAll { "control".equals(it.@name) }.size() > 0) {
-            Node beanProperty = beanNode.property.find { "control".equals(it.@name) };
-            String controlDefParent = beanProperty.bean[0].@parent.toString();
-            if (beanProperty != null) {
-                if (beanNode.property.findAll { ["control", "controlField"].contains(it.@name) }.size() == 2) {
-                    this.removeProperties(beanNode, ["control"]);
-                } else {
-                    beanProperty.@parent = "controlField"; // rename property as control field
-                    beanProperty.replaceNode {
-                        if (renamedControlBeans.get(controlDefParent) != null) {
-                            property(name: "controlField") {
-                                transformControlDefinitionBean(delegate, beanProperty.bean[0], renamedControlBeans)
-                            }
-                        }
+        def controlProperty = beanNode?.property?.find { "control".equals(it.@name) };
+        def controlFieldProperty = beanNode?.property?.find { "controlField".equals(it.@name) };
+        if (controlProperty) {
+            def controlDefBean = controlProperty.bean.find { it.@parent?.endsWith("Definition") };
+            def controlDefParent = controlDefBean.@parent;
+            if (controlFieldProperty) {
+                this.removeProperties(beanNode, ["control"]);
+            } else if (renamedControlBeans.get(controlDefParent) != null) {
+                controlProperty.replaceNode {
+                    property(name: "controlField") {
+                        transformControlDefinitionBean(delegate, controlDefBean, renamedControlBeans)
                     }
+                }
 
-                    if ("Uif-DropdownControl".equals(renamedControlBeans.get(controlDefParent))) {
-                        beanProperty.plus {
-                            property(name: "optionsFinder") {
-                                bean(class: "org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder")
-                            }
+                if ("Uif-DropdownControl".equals(renamedControlBeans.get(controlDefParent))) {
+                    controlProperty.plus {
+                        property(name: "optionsFinder") {
+                            bean(class: "org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder")
                         }
                     }
                 }
@@ -509,7 +506,9 @@ class SpringBeanTransformer {
         if (controlDefReplacements[controlDefParent] != null && controlDefReplacements[controlDefParent] == "Uif-DropdownControl") {
             builder.bean(parent: "Uif-DropdownControl")
         } else if (controlDefReplacements[controlDefParent] != null && controlDefReplacements[controlDefParent] == "Uif-TextAreaControl") {
-            //
+            def attributes = genericGatherAttributes(controlDefBean, ["*rows": "p:rows", "*cols": "p:cols"]);
+            attributes.put("parent", "Uif-TextAreaControl");
+            genericBeanTransform(builder, attributes);
         } else if (controlDefReplacements[controlDefParent] != null) {
             builder.bean(parent: controlDefReplacements[controlDefParent])
         } else {

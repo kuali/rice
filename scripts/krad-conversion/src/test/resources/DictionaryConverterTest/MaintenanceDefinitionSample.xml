@@ -82,5 +82,59 @@
     </property>
   </bean>
 
+  <bean id="AttachmentSampleMaintenanceDocument-EditAttachment-parentBean" abstract="true"
+        parent="MaintainableSectionDefinition">
+    <property name="id" value="Edit attachment"/>
+    <property name="title" value="Edit attachment"/>
+    <property name="maintainableItems">
+      <list>
+        <bean parent="MaintainableFieldDefinition"
+              p:name="attachmentRefId"/>
+        <bean parent="MaintainableFieldDefinition"
+              p:name="attachmentId"/>
+        <bean parent="MaintainableFieldDefinition"
+              p:name="sequenceNumber"/>
+        <bean parent="MaintainableFieldDefinition"
+              p:name="attachment"
+              p:required="true"/>
+        <bean parent="MaintainableFieldDefinition"
+              p:name="status"
+              p:required="true"/>
+        <bean parent="MaintainableFieldDefinition"
+              p:name="categoryTypeCode"
+              p:required="true"/>
+        <bean parent="MaintainableFieldDefinition"
+              p:name="attachmentTypeId"
+              p:required="true"/>
+        <bean parent="MaintainableFieldDefinition"
+              p:name="lookupClass"/>
+        <bean parent="MaintainableFieldDefinition"
+              p:name="lookupReturn"/>
+        <bean parent="MaintainableFieldDefinition"
+              p:name="displayedAnswers"/>
+        <bean parent="MaintainableFieldDefinition"
+              p:name="maxAnswers"/>
+        <bean parent="MaintainableFieldDefinition"
+              p:name="answerMaxLength"/>
+        <bean parent="MaintainableCollectionDefinition">
+          <property name="name" value="attachmentExplanations"/>
+          <property name="sourceClassName" value="edu.sampleu.travel.bo.AttachmentSample"/>
+          <property name="businessObjectClass" value="edu.sampleu.travel.bo.AttachmentSample"/>
+          <property name="maintainableFields">
+            <list>
+              <bean parent="MaintainableFieldDefinition"
+                    p:name="attachmentRefIdFk"/>
+              <bean parent="MaintainableFieldDefinition"
+                    p:name="explanation"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="MaintainableFieldDefinition"
+              p:name="documentNumber"/>
+      </list>
+    </property>
+
+  </bean>
+
 
 </beans>

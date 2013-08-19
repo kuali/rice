@@ -132,25 +132,6 @@ class DictionaryConverterTest {
         checkBeanPropertyExists(resultNode, "controlField");
     }
 
-
-    @Test
-    void testTransformControlProperty() {
-        def inqDefFilePath = dictTestDir + "ControlFieldSample.xml"
-        def ddRootNode = getFileRootNode(inqDefFilePath)
-        try {
-            dictionaryConverter.transformControlProperty(ddRootNode.bean, config.map.convert.dd_bean_control)
-        } catch (Exception e) {
-            e.printStackTrace()
-            Assert.fail("exception occurred in testing")
-        }
-
-        // validate a control field and options finder were generated
-        Assert.assertEquals("control field count", 1, ddRootNode.bean.property.findAll { it.@name == "controlField" }.size())
-        Assert.assertEquals("options finder count", 1, ddRootNode.bean.property.findAll { it.@name == "optionsFinder" }.size())
-        Assert.assertEquals("control count", 0, ddRootNode.bean.property.findAll { it.@name == "control" }.size())
-
-    }
-
     @Test
     public void testTransformSpringBeans() {
         def rootBean = new XmlParser().parseText("<beans><bean parent='BusinessObjectEntry'>" + "<property name='title' value='test' /><property name='title2' value='value2' />" + "</bean></beans>");
@@ -312,7 +293,30 @@ class DictionaryConverterTest {
         Assert.assertEquals("number of copied references", 1, refSize)
         def sectionSize = resultNode.property.list.bean.findAll { ["Uif-MaintenanceGridSection", "Uif-MaintenanceStackedCollectionSection"].contains(it.@parent) }.size();
         Assert.assertEquals("number of converted section definitions", 1, sectionSize);
-        ;
+
+    }
+
+    @Test
+    public void testTransformMaintainableSectionDefinitionBean() {
+        String inquiryDefPath = dictTestDir + "MaintenanceDefinitionSample.xml"
+        def ddRootNode = getFileRootNode(inquiryDefPath);
+        def beanNode = ddRootNode.bean.find { "AttachmentSampleMaintenanceDocument-EditAttachment-parentBean".equals(it.@id) };
+        Node resultNode = beanNode.replaceNode {
+            bean(parent: "Uif-MaintenanceView") {
+                property(name: "items") {
+                    list {
+                        dictionaryConverter.transformMaintainableSectionDefinitionBean(delegate, beanNode)
+                    }
+                }
+            }
+        }
+
+        checkBeanPropertyExists(resultNode, "items");
+        def refSize = resultNode.property.find { "items".equals(it.@name) }.list.bean.size();
+        Assert.assertEquals("number of beans created", 2, refSize)
+        def sectionSize = resultNode.property.list.bean.findAll { ["Uif-MaintenanceGridSection", "Uif-MaintenanceStackedCollectionSection"].contains(it.@parent) }.size();
+        Assert.assertEquals("number of converted section definitions", 2, sectionSize);
+
     }
 
     /**
@@ -345,17 +349,27 @@ class DictionaryConverterTest {
     @Test
     public void testTransformMaintainableFieldsProperty() {
         String lookupDefFilePath = dictTestDir + "MaintenanceDefinitionSample.xml"
+        String parentBeanName = "AttachmentSampleMaintenanceDocument-parentBean";
+        String sectionDefName = "MultiAttachmentSampleMaintenanceDocument-AttachmentList";
         def ddRootNode = getFileRootNode(lookupDefFilePath);
-        def beanNode = ddRootNode.bean.property.list.bean.find { "MaintainableSectionDefinition".equals(it.@parent) };
-        beanNode = beanNode.replaceNode {
-            bean(parent: "Uif-MaintenanceGridSection") {
-                dictionaryConverter.transformMaintainableFieldsProperty(delegate, beanNode);
+        def collectionDefBean = getCollectionDefinitionBean(ddRootNode, parentBeanName, sectionDefName);
+        collectionDefBean = collectionDefBean.replaceNode {
+            bean(parent: "Uif-MaintenanceStackedCollectionSection") {
+                dictionaryConverter.transformMaintainableFieldsProperty(delegate, collectionDefBean);
             }
         }
 
-        def resultsFieldProperty = beanNode.property.find { "items".equals(it.@name) };
+        def resultsFieldProperty = collectionDefBean.property.find { "items".equals(it.@name) };
         def attrFieldSize = resultsFieldProperty.list.bean.findAll { "Uif-InputField".equals(it.@parent) }.size();
         Assert.assertEquals("number of converted input fields", 2, attrFieldSize);
+    }
+
+    def getCollectionDefinitionBean(def rootNode, String parentBeanName, String sectionDefBeanName) {
+        def beanNode = rootNode.bean.find { parentBeanName.equals(it.@id) };
+        def maintainableItemsList = beanNode.property.find { "maintainableSections".equals(it.@name) }.list;
+        def sectionDefBean = maintainableItemsList.bean.find { sectionDefBeanName.equals(it.@id) };
+        def collectionDefBean = sectionDefBean.property.list.bean.find { "MaintainableCollectionDefinition".equals(it.@parent) };
+        return collectionDefBean;
     }
 
     @Test

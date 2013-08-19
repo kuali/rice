@@ -323,6 +323,7 @@ class DictionaryConverter {
             def result = writer.toString();
             result = addBlankLinesBetweenMajorBeans(result);
             result = fixComments(result);
+            result = modifyBeanSchema(result);
             ConversionUtils.buildFile(path, filename, result);
         } catch (FileNotFoundException ex) {
             log.info "unable to generate output for " + outputFile.name;

@@ -95,39 +95,57 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
         }
     }
 
+    /**
+     * Generates a vertical box section with all collection and non-collection elements as items of the vertical box
+     *
+     *
+     * @param builder
+     * @param beanNode
+     * @return
+     */
     def transformMaintainableSectionDefinitionBeanWithCollection(NodeBuilder builder, Node beanNode) {
         // used to build up the list as its processes through the non-collection items
         def itemsList = [];
-        beanNode.property.find { it.@name == "maintainableItems" }.list.bean.each { beanItem ->
-            if (!"MaintainableCollectionDefinition".equals(beanItem.@parent)) {
-                itemsList.add(gatherNameAttribute(beanItem));
-            } else {
-                if (itemsList.size() > 0) {
-                    builder.bean(parent: 'Uif-MaintenanceGridSection') {
-                        copyProperties(delegate, beanNode, ["title", "collectionObjectClass", "propertyName"])
-                        renameProperties(delegate, beanNode, ["numberOfColumns": "layoutManager.numberOfColumns"]);
-                        property(name: "items") {
-                            list {
-                                itemsList.each { attributes ->
-                                    attributes.put("parent", "Uif-InputField");
-                                    genericBeanTransform(builder, attributes);
+        def beanAttrs = [parent: "Uif-VerticalBoxSection"];
+        if (beanNode.@id) {
+            beanAttrs.put("id", beanNode.@id);
+        }
+        builder.bean(beanAttrs) {
+            copyProperties(delegate, beanNode, ["title"]);
+            property(name: "items") {
+                list {
+                    beanNode.property.find { it.@name == "maintainableItems" }.list.bean.each { beanItem ->
+                        if (!"MaintainableCollectionDefinition".equals(beanItem.@parent)) {
+                            itemsList.add(gatherNameAttribute(beanItem));
+                        } else {
+                            if (itemsList.size() > 0) {
+                                builder.bean(parent: 'Uif-MaintenanceGridSection') {
+                                    copyProperties(delegate, beanNode, ["title", "collectionObjectClass", "propertyName"])
+                                    renameProperties(delegate, beanNode, ["numberOfColumns": "layoutManager.numberOfColumns"]);
+                                    property(name: "items") {
+                                        list {
+                                            itemsList.each { attributes ->
+                                                attributes.put("parent", "Uif-InputField");
+                                                genericBeanTransform(builder, attributes);
+                                            }
+                                        }
+                                    }
                                 }
+                            }
+
+                            itemsList = [];
+                            builder.bean(parent: 'Uif-MaintenanceStackedCollectionSection') {
+                                copyProperties(delegate, beanNode, ["title", "collectionObjectClass", "propertyName"]);
+                                renameProperties(delegate, beanNode, ["title": "headerText", "businessObjectClass": "collectionObjectClass"]);
+                                transformMaintainableFieldsProperty(delegate, beanItem);
+                                transformSummaryFieldsProperty(delegate, beanNode);
+
                             }
                         }
                     }
                 }
-
-                itemsList = [];
-                builder.bean(parent: 'Uif-MaintenanceStackedCollectionSection') {
-                    copyProperties(delegate, beanNode, ["title", "collectionObjectClass", "propertyName"]);
-                    renameProperties(delegate, beanNode, ["title": "headerText", "businessObjectClass": "collectionObjectClass"]);
-                    transformMaintainableFieldsProperty(delegate, beanItem);
-                    transformSummaryFieldsProperty(delegate, beanNode);
-
-                }
             }
         }
-
     }
 
     /**

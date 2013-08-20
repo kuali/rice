@@ -61,7 +61,7 @@
             <para><emphasis role="bold">KNS Code example:</emphasis></para>
             <para>
                 
-                <programlisting linenumbering = "numbered">   &lt;bean id="EntityType-lookupDefinition" parent="LookupDefinition">
+                <programlisting linenumbering="numbered">   &lt;bean id="EntityType-lookupDefinition" parent="LookupDefinition">
      &lt;property name="title" value="Entity Type Lookup"/>
      &lt;property name="menubar" value="&amp;lt;a href=&amp;quot;javascript:void(0)&amp;quot; 
          onclick=&amp;quot;alert('JavaScript triggered action.')&amp;quot;&amp;gt;Custom Button&amp;lt;/a&amp;gt;"/>
@@ -71,8 +71,9 @@
      &lt;property name="disableSearchButtons" value="true"/>
      &lt;property name="lookupFields">
       &lt;list>
-        &lt;bean parent="FieldDefinition" p:attributeName="code" p:treadWildcardsAndOperatorsAsLiteral="true"/>
-        &lt;bean parent="FieldDefinition" p:attributeName="name" p:noLookup="true" p:treadWildcardsAndOperatorsAsLiteral="true"/>
+        &lt;bean parent="FieldDefinition" p:attributeName="code"/>
+        &lt;bean parent="FieldDefinition" p:attributeName="name" p:noLookup="true"
+                                       p:treatWildcardsAndOperatorsAsLiteral="true"/>
         &lt;bean parent="FieldDefinition" p:attributeName="active" p:defaultValue="Y"/>
        &lt;/list>
     &lt;/property>

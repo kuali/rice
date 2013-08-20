@@ -27,6 +27,9 @@ import org.apache.commons.lang.ClassUtils
 @Log
 class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
 
+    boolean carryoverAttributes = true;
+    boolean carryoverProperties = true;
+
     /**
      * Produces Uif-LookupView based on information in LookupDefinition
      *
@@ -34,6 +37,9 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
      */
     def transformLookupDefinitionBean(Node beanNode) {
         removeChildrenBeans(beanNode);
+        Map beanAttributes;
+        List copiedProperties;
+
         def lookupDefParentBeanNode = beanNode
         def lookupTitle = lookupDefParentBeanNode.property.find { it.@name == "title" }?.@value;
 
@@ -43,10 +49,24 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
         def transformBeanType = "Uif-LookupView";
         def translatedBeanId = getTranslatedBeanId(beanNode.@id, originalBeanType, transformBeanType);
         def translatedParentId = getTranslatedBeanId(beanNode.@parent, originalBeanType, transformBeanType);
+        List transformProperties = ["menubar", "defaultSort", "numOfColumns", "extraButtonSource", "extraButtonParams", "disableSearchButtons", "lookupFields", "resultFields"]
+
+        if (carryoverAttributes) {
+            beanAttributes = beanNode.attributes() + [id: translatedBeanId, parent: translatedParentId];
+        } else {
+            beanAttributes = [id: translatedBeanId, parent: translatedParentId];
+        }
+
+        if (carryoverProperties) {
+            copiedProperties = beanNode.property.collect { it.@name };
+            copiedProperties.removeAll(transformProperties);
+        } else {
+            copiedProperties = [];
+        }
 
         beanNode.replaceNode {
             addComment(delegate, "Lookup View")
-            bean(id: translatedBeanId, parent: translatedParentId) {
+            bean(beanAttributes) {
                 addViewNameProperty(delegate, lookupTitle)
                 if (lookupTitle) {
                     property(name: "headerText", value: lookupTitle)
@@ -54,9 +74,12 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
                 if (objClassName) {
                     property(name: "dataObjectClassName", value: objClassName)
                 }
+                copyProperties(delegate, beanNode, copiedProperties);
                 transformMenubarProperty(delegate, beanNode)
                 transformDefaultSortProperty(delegate, beanNode)
                 transformNumOfColumns(delegate, beanNode)
+                transformExtraButtonParams(delegate, beanNode)
+                transformDisableSearchButtons(delegate, beanNode)
                 transformLookupFieldsProperty(delegate, beanNode)
                 transformResultFieldsProperty(delegate, beanNode)
             }
@@ -109,6 +132,35 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
     }
 
     /**
+     * Replaces extraButtonParams with criteriaGroup.footer. extraButtonSource is being dropped.
+     */
+    def transformExtraButtonParams(NodeBuilder builder, Node node) {
+        def extraButtonParams = getPropertyValue(node, "extraButtonParams");
+        if (extraButtonParams != null) {
+            builder.property(name: "criteriaGroup.footer") {
+                bean(parent: "Uif-LookupCriteriaFooter") {
+                    property(name: "items") {
+                        list(merge: "true") {
+                            bean(parent: "Uif-PrimaryActionButton", "xmlns:p": pNamespaceSchema, "p:methodToCall": extraButtonParams,
+                                    "p:actionLabel": extraButtonParams.replaceAll(/\B[A-Z]/) { ' ' + it}.toLowerCase())
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Convert the disableSearchButtons attribute to renderSearchButtons.  The boolean value needs to be inverted as well.
+     */
+    def transformDisableSearchButtons(NodeBuilder builder, Node node) {
+        def disableSearchButtons = getPropertyValue(node, "disableSearchButtons");
+        if (disableSearchButtons != null && disableSearchButtons == "true") {
+            builder.property(name: "renderSearchButtons", value: "false");
+        }
+    }
+
+    /**
      * Transforms lookup field properties into criteria fields
      */
     def transformLookupFieldsProperty(NodeBuilder builder, Node beanNode) {
@@ -122,6 +174,8 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
         return (gatherIdAttribute(beanNode)
             + gatherAttributeNameAttribute(beanNode)
             + gatherNoLookupAttribute(beanNode)
+            + genericGatherAttributes(beanNode, ["*treatWildcardsAndOperatorsAsLiteral": "p:disableWildcardsAndOperators"])
+            + copyGatherProperties(beanNode, ["readOnly"])
         );
     }
 

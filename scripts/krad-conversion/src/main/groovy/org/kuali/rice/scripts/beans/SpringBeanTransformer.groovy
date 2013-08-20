@@ -218,6 +218,15 @@ class SpringBeanTransformer {
     }
 
     /**
+     * For copying properties over if they exist without conversion.
+     * (may be replaced by the
+     */
+    def copyGatherProperties =  { Node beanNode, List copyAttrs ->
+        return genericGatherAttributes(beanNode, copyAttrs.collectEntries { ["*" + it, "p:" + it] });
+    }
+
+
+    /**
      * Provides a case insensitive check if a pattern matches. Search Patterns may be plain text
      * or contain a '*' prefix for wildcard prefix.
      *

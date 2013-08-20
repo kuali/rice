@@ -18,9 +18,22 @@ package org.kuali.rice.location.impl.data;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
+import org.kuali.rice.coreservice.impl.parameter.ParameterBo;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.test.KRADTestCase;
+import org.kuali.rice.location.api.campus.Campus;
+import org.kuali.rice.location.api.campus.CampusType;
+import org.kuali.rice.location.api.country.Country;
+import org.kuali.rice.location.api.county.County;
+import org.kuali.rice.location.api.county.CountyQueryResults;
+import org.kuali.rice.location.api.postalcode.PostalCode;
+import org.kuali.rice.location.api.services.LocationApiServiceLocator;
+import org.kuali.rice.location.api.state.State;
 import org.kuali.rice.location.impl.campus.CampusBo;
 import org.kuali.rice.location.impl.campus.CampusTypeBo;
 import org.kuali.rice.location.impl.country.CountryBo;
@@ -36,6 +49,7 @@ import static org.junit.Assert.*;
 
 import javax.persistence.EntityManagerFactory;
 import javax.validation.constraints.AssertTrue;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -123,6 +137,79 @@ public class LocationDataJPATest extends KRADTestCase {
         CampusTypeBo campusTypeBoFetched = KRADServiceLocator.getDataObjectService().find(CampusTypeBo.class,"C");
         assertTrue("Campus Type BO refetched after save", campusTypeBoFetched != null &&
                             campusTypeBoFetched.getName().equals("Commuter"));
+    }
+
+    @Test
+    public void testCampusServiceImplJPA() throws Exception{
+        setupCampusBoDataObjectAndSave();
+        Campus campusBo = LocationApiServiceLocator.getCampusService().getCampus("SE");
+        assertTrue("getCampusService retrieved correct call", campusBo != null
+                && StringUtils.equals(campusBo.getCode(),"SE"));
+        List<Campus> activeCampuses = LocationApiServiceLocator.getCampusService().findAllCampuses();
+        assertTrue("findAllCampuses returned result", activeCampuses.size() > 0);
+
+        setupCampusTypeBoDataObjectAndSave();
+        CampusType campusType = LocationApiServiceLocator.getCampusService().getCampusType("C");
+        assertTrue("getCampusType retrieved correctly",campusType != null
+                   && StringUtils.equals(campusType.getName(), "Commuter"));
+
+        List<CampusType> campusTypeList = LocationApiServiceLocator.getCampusService().findAllCampusTypes();
+        assertTrue("findAllCampusTypes retrieved correctly",campusTypeList.size() > 0);
+    }
+
+    @Test
+    public void testCountryServiceImplJPA() throws Exception{
+        setupCountryBoDataObjectAndSave();
+        Country countryBo = LocationApiServiceLocator.getCountryService().getCountry("US");
+        assertTrue("getCountry retrieved correct", countryBo != null &&
+                StringUtils.equals(countryBo.getAlternateCode(),"USA"));
+        Country country = LocationApiServiceLocator.getCountryService().getCountryByAlternateCode("USA");
+        assertTrue("getCountryByAlternateCode retrieved correctly", country != null &&
+                  StringUtils.equals(country.getCode(), "US"));
+        List<Country> countryList = LocationApiServiceLocator.getCountryService().findAllCountries();
+        assertTrue("findAllCountries retrieved correctly",countryList != null && countryList.size() == 1);
+
+        countryList = LocationApiServiceLocator.getCountryService().findAllCountriesNotRestricted();
+        assertTrue("findAllCountriesNotRestricted retrieved correctly",countryList != null && countryList.size() == 1);
+    }
+
+    @Test
+    public void testCountyServiceImplJPA() throws Exception{
+        setupCountyBoDataObjectAndSave();
+
+        County county = LocationApiServiceLocator.getCountyService().getCounty("US","IN","MON");
+        assertTrue("getCounty retrieved correctly",county != null && StringUtils.equals("MON", county.getCode()));
+
+        CountyQueryResults results = LocationApiServiceLocator.getCountyService().findCounties(QueryByCriteria.Builder.forAttribute("code","MON"));
+        assertTrue("findCounties retrieved correctly",results != null && results.getResults().size() == 1);
+
+        List<County> counties = LocationApiServiceLocator.getCountyService().
+                            findAllCountiesInCountryAndState("US","IN");
+        assertTrue("findAllCountiesInCountryAndState retrieved correctly",counties != null && counties.size() == 1);
+    }
+
+    @Test
+    public void testStateServiceImplJPA() throws Exception{
+        setupCountryBoDataObjectAndSave();
+        setupStateBoDataObjectAndSave();
+
+        State state = LocationApiServiceLocator.getStateService().getState("US","IN");
+        assertTrue("getState retrieved correctly", state != null && StringUtils.equals("IN",state.getCode()));
+        List<State> stateList = LocationApiServiceLocator.getStateService().findAllStatesInCountry("US");
+        assertTrue("findAllStatesInCountry retrieved correctly", stateList != null && stateList.size() == 1);
+        stateList = LocationApiServiceLocator.getStateService().findAllStatesInCountryByAltCode("USA");
+        assertTrue("findAllStatesInCountryByAltCode retrieved correctly", stateList != null && stateList.size() == 1);
+    }
+
+    @Test
+    public void testPostalCodeServiceImplJPA() throws Exception{
+        setupPostalCodeBoDataObjectAndSave();
+
+        PostalCode postalCode = LocationApiServiceLocator.getPostalCodeService().getPostalCode("US","47203");
+        assertTrue("getPostalCode retrieved correctly",postalCode != null &&
+                                StringUtils.equals(postalCode.getCode(),"47203"));
+        List<PostalCode> postalCodeList = LocationApiServiceLocator.getPostalCodeService().findAllPostalCodesInCountry("US");
+        assertTrue("findAllPostalCodesInCountry retrieved correctly", postalCodeList != null && postalCodeList.size() == 1);
     }
 
     private void setupPostalCodeBoDataObjectAndSave(){

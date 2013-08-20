@@ -132,6 +132,8 @@ public final class DataObjectUtils {
         return isNested;
     }
 
+
+
     /**
      * Returns the prefix of a nested attribute name, or the empty string if the attribute name is not nested.
      *
@@ -147,6 +149,7 @@ public final class DataObjectUtils {
 
         return prefix;
     }
+
 
     /**
      * Returns the primitive part of an attribute name string.

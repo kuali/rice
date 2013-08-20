@@ -25,6 +25,7 @@ import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter
 
 @Entity
 @Table(name="KRCR_NMSPC_T")
@@ -43,8 +44,8 @@ class NamespaceBo extends PersistableBusinessObjectBase implements NamespaceEbo 
     @Column(name="NM")
     def String name;
 
-    //@Type(type="yes_no")
     @Column(name="ACTV_IND")
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     def boolean active = true;
 
     /**
@@ -80,16 +81,5 @@ class NamespaceBo extends PersistableBusinessObjectBase implements NamespaceEbo 
 
         return bo
     }
-
-    // Using class level annotation instead
-//    @Override
-//    boolean equals(Object obj) {
-//        return EqualsBuilder.reflectionEquals(this, obj);
-//    }
-//
-//    @Override
-//    int hashCode() {
-//        return HashCodeBuilder.reflectionHashCode(this);
-//    }
 }
 

@@ -24,12 +24,16 @@ import org.kuali.rice.krad.service.BusinessObjectService
 import org.kuali.rice.location.api.campus.Campus
 import org.kuali.rice.location.api.campus.CampusService
 import org.kuali.rice.location.api.campus.CampusType
+import org.junit.Ignore
+import org.kuali.rice.krad.data.DataObjectService
+import org.kuali.rice.location.impl.country.CountryBo
+import org.kuali.rice.core.api.criteria.GenericQueryResults
 
 class CampusServiceImplTest {
     private final shouldFail = new GroovyTestCase().&shouldFail
 
-    private MockFor mockBoService
-    private BusinessObjectService boService
+    private MockFor dataObjectServiceMockFor
+    private DataObjectService dataObjectService
     CampusService campusService
     CampusServiceImpl campusServiceImpl;
 
@@ -51,19 +55,19 @@ class CampusServiceImplTest {
     }
 
     @Before
-    void setupBoServiceMockContext() {
-        mockBoService = new MockFor(BusinessObjectService)
-    }
-
-    @Before
     void setupServiceUnderTest() {
         campusServiceImpl = new CampusServiceImpl()
         campusService = campusServiceImpl
     }
 
-    void injectBusinessObjectServiceIntoCampusService() {
-        boService = mockBoService.proxyDelegateInstance()
-        campusServiceImpl.setBusinessObjectService(boService)
+    @Before
+    void setupDataObjectserviceMockContext(){
+        dataObjectServiceMockFor = new MockFor(DataObjectService)
+    }
+
+    void injectDataObjectService(){
+        dataObjectService = dataObjectServiceMockFor.proxyDelegateInstance()
+        campusServiceImpl.setDataObjectService(dataObjectService)
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -91,56 +95,59 @@ class CampusServiceImplTest {
 
     @Test
     public void testGetCampus() {
-        mockBoService.demand.findByPrimaryKey(1..sampleCampuses.size()) {
-            Class clazz, Map map -> return sampleCampuses.get(map.get("code"))
+        dataObjectServiceMockFor.demand.find(1..sampleCampuses.size()) {
+            clazz, id -> return sampleCampuses.get(id)
         }
-        injectBusinessObjectServiceIntoCampusService()
+        injectDataObjectService()
+
         for (CampusBo campusBo in sampleCampuses.values()) {
             Assert.assertEquals(CampusBo.to(campusBo), campusService.getCampus(campusBo.code))
         }
-        mockBoService.verify(boService)
+        dataObjectServiceMockFor.verify(dataObjectService)
     }
 
     @Test
     public void testGetCampusInvalidCode() {
-        mockBoService.demand.findByPrimaryKey(1..1) {
-            Class clazz, Map map -> return null
+        dataObjectServiceMockFor.demand.find(1..1){
+            clazz,id-> return null
         }
-        injectBusinessObjectServiceIntoCampusService()
+        injectDataObjectService()
 
         Assert.assertNull(campusService.getCampus("badcode"))
-        mockBoService.verify(boService)
+        dataObjectServiceMockFor.verify(dataObjectService)
     }
 
     @Test
     public void testGetCampusType() {
-        mockBoService.demand.findByPrimaryKey(1..sampleCampusTypes.size()) {
-            Class clazz, Map map -> return sampleCampusTypes.get(map.get("code"))
+        dataObjectServiceMockFor.demand.find(1..sampleCampusTypes.size()){
+            clazz,id -> sampleCampusTypes.get(id)
         }
-        injectBusinessObjectServiceIntoCampusService()
+        injectDataObjectService()
         for (CampusTypeBo campusTypeBo in sampleCampusTypes.values()) {
             Assert.assertEquals(CampusTypeBo.to(campusTypeBo), campusService.getCampusType(campusTypeBo.code))
         }
-        mockBoService.verify(boService)
+        dataObjectServiceMockFor.verify(dataObjectService)
     }
 
     @Test
     public void testGetCampusTypeInvalidCode() {
-        mockBoService.demand.findByPrimaryKey(1..1) {
-            Class clazz, Map map -> return null
-        }
-        injectBusinessObjectServiceIntoCampusService()
-
+        dataObjectServiceMockFor.demand.find(1..1) {clazz,id -> return null}
+        injectDataObjectService()
         Assert.assertNull(campusService.getCampusType("badcode"))
-        mockBoService.verify(boService)
+        dataObjectServiceMockFor.verify(dataObjectService)
     }
 
     @Test
     public void testGetAllCampuses() {
-        mockBoService.demand.findMatching(1..1) {
-            Class clazz, Map map -> return new ArrayList<Campus>(sampleCampuses.values())
+        List<CampusBo> campusBoList = new ArrayList<CampusBo>()
+        campusBoList.addAll(sampleCampuses.values())
+        GenericQueryResults.Builder<CountryBo> builder = GenericQueryResults.Builder.create()
+
+        builder.setResults(campusBoList)
+        dataObjectServiceMockFor.demand.findMatching(1..1) {
+            clazz, queryByCriteria -> builder.build()
         }
-        injectBusinessObjectServiceIntoCampusService()
+        injectDataObjectService()
 
         //create list of campuses
         List<Campus> campusList = new ArrayList<Campus>();
@@ -156,7 +163,7 @@ class CampusServiceImplTest {
         for (Campus campus in campusList) {
             Assert.assertTrue(returnedCampuses.contains(campus))
         }
-        mockBoService.verify(boService)
+        dataObjectServiceMockFor.verify(dataObjectService)
     }
 
     public void testGetAllCampusTypes() {

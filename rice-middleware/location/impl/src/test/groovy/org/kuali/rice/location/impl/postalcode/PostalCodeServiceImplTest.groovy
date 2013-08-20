@@ -22,6 +22,9 @@ import org.junit.BeforeClass
 import org.junit.Test
 import org.kuali.rice.krad.service.BusinessObjectService
 import org.kuali.rice.location.api.postalcode.PostalCodeService
+import org.kuali.rice.krad.data.DataObjectService
+import org.kuali.rice.location.impl.county.CountyBo
+import org.kuali.rice.core.api.criteria.GenericQueryResults
 
 class PostalCodeServiceImplTest {
 
@@ -30,10 +33,10 @@ class PostalCodeServiceImplTest {
     static samplePostalCodes = new HashMap<List<String>, PostalCodeBo>()
     static samplePostalCodesPerCountry = new HashMap<String, List<PostalCodeBo>>()
 
-    private def MockFor mockBoService
-    BusinessObjectService boService
     PostalCodeServiceImpl postalCodeServiceImpl
     PostalCodeService postalCodeService
+    MockFor dataObjectServiceMockFor
+    DataObjectService dataObjectService
 
     @BeforeClass
     static void createSamplePostalCodeBOs() {
@@ -50,9 +53,10 @@ class PostalCodeServiceImplTest {
         samplePostalCodesPerCountry["CA"] = [blubberBay]
     }
 
+
     @Before
-    void setupBoServiceMockContext() {
-        mockBoService = new MockFor(BusinessObjectService)
+    void setupDataObjectServiceMockContext(){
+        dataObjectServiceMockFor = new MockFor(DataObjectService)
     }
 
     @Before
@@ -61,58 +65,70 @@ class PostalCodeServiceImplTest {
         postalCodeService = postalCodeServiceImpl
     }
 
-    void injectBusinessObjectServiceIntoCountryService() {
-        boService = mockBoService.proxyDelegateInstance()
-        postalCodeServiceImpl.setBusinessObjectService(boService);
+    void injectDataObjectService(){
+        dataObjectService = dataObjectServiceMockFor.proxyDelegateInstance()
+        postalCodeServiceImpl.setDataObjectService(dataObjectService)
     }
 
     @Test
     void test_get_postal_code_null_countryCode() {
-        injectBusinessObjectServiceIntoCountryService()
+        injectDataObjectService()
         shouldFail(IllegalArgumentException) {
             postalCodeService.getPostalCode(null, "48848")
         }
-        mockBoService.verify(boService)
+        dataObjectServiceMockFor.verify(dataObjectService)
     }
 
     @Test
     void test_get_postal_code_null_code() {
-        injectBusinessObjectServiceIntoCountryService()
+        injectDataObjectService()
         shouldFail(IllegalArgumentException) {
             postalCodeService.getPostalCode("US", null)
         }
-        mockBoService.verify(boService)
+        dataObjectServiceMockFor.verify(dataObjectService)
     }
 
     @Test
     void test_get_postal_code_exists() {
-        mockBoService.demand.findByPrimaryKey(1..1) { clazz, map -> samplePostalCodes[map["countryCode"], [map["code"]]] }
-        injectBusinessObjectServiceIntoCountryService()
+        dataObjectServiceMockFor.demand.find(1..1) {
+            clazz, id -> samplePostalCodes[["US","48848"]]
+        }
+        injectDataObjectService()
         Assert.assertEquals(PostalCodeBo.to(samplePostalCodes[["US", "48848"]]), postalCodeService.getPostalCode("US", "48848"))
-        mockBoService.verify(boService)
+        dataObjectServiceMockFor.verify(dataObjectService)
     }
 
     @Test
     void test_get_postal_code_does_not_exist() {
-        mockBoService.demand.findByPrimaryKey(1..1) { clazz, map -> samplePostalCodes[map["countryCode"], [map["code"]]] }
-        injectBusinessObjectServiceIntoCountryService()
+        dataObjectServiceMockFor.demand.find(1..1) {
+            clazz, id -> null
+        }
+        injectDataObjectService()
         Assert.assertNull(postalCodeService.getPostalCode("FOO", "BAR"))
-        mockBoService.verify(boService)
+        dataObjectServiceMockFor.verify(dataObjectService)
     }
 
     @Test
     void test_find_all_postal_codes_in_country_null_countryCode() {
-        injectBusinessObjectServiceIntoCountryService()
+        injectDataObjectService()
         shouldFail(IllegalArgumentException) {
             postalCodeService.findAllPostalCodesInCountry(null)
         }
-        mockBoService.verify(boService)
+        dataObjectServiceMockFor.verify(dataObjectService)
     }
 
     @Test
     void test_find_all_postal_codes_in_country_exists() {
-        mockBoService.demand.findMatching(1..1) { clazz, map -> samplePostalCodesPerCountry[map["countryCode"]] }
-        injectBusinessObjectServiceIntoCountryService()
+        Collection<PostalCodeBo> postalCodeBo = samplePostalCodesPerCountry["US"]
+        List<PostalCodeBo> postalCodeBoList = new ArrayList<PostalCodeBo>()
+        postalCodeBoList.addAll(postalCodeBo)
+        GenericQueryResults.Builder<PostalCodeBo> builder = GenericQueryResults.Builder.create()
+
+        builder.setResults(postalCodeBoList)
+        dataObjectServiceMockFor.demand.findMatching(1..1){
+            clazz,queryByCriteria -> builder.build()
+        }
+        injectDataObjectService()
         def values = postalCodeService.findAllPostalCodesInCountry("US")
         Assert.assertEquals(samplePostalCodesPerCountry["US"].collect { PostalCodeBo.to(it) }, values)
 
@@ -120,13 +136,15 @@ class PostalCodeServiceImplTest {
         shouldFail(UnsupportedOperationException) {
             values.add(PostalCodeBo.to(samplePostalCodes[["CA", "604"]]))
         }
-        mockBoService.verify(boService)
+        dataObjectServiceMockFor.verify(dataObjectService)
     }
 
     @Test
     void test_find_all_postal_codes_in_country_does_not_exist() {
-        mockBoService.demand.findMatching(1..1) { clazz, map -> samplePostalCodesPerCountry[map["countryCode"]] }
-        injectBusinessObjectServiceIntoCountryService()
+        dataObjectServiceMockFor.demand.findMatching(1..1){
+            clazz,queryByCriteria -> null
+        }
+        injectDataObjectService()
         def values = postalCodeService.findAllPostalCodesInCountry("FOO")
         Assert.assertEquals([], values)
 
@@ -135,6 +153,6 @@ class PostalCodeServiceImplTest {
             values.add(PostalCodeBo.to(samplePostalCodes[["CA", "604"]]))
         }
 
-        mockBoService.verify(boService)
+        dataObjectServiceMockFor.verify(dataObjectService)
     }
 }

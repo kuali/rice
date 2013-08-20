@@ -515,8 +515,15 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
     }
 
     @Override
+    /**
+     * Recursively calls getPropertyTypeChild if nested property to allow it to properly look it up
+     */
     public Class<?> getPropertyType(Object object, String propertyName) {
-        return dataObjectService.wrap(object).getPropertyType(propertyName);
+        DataObjectWrapper wrappedObject = dataObjectService.wrap(object);
+        if(DataObjectUtils.isNestedAttribute(propertyName)){
+           return wrappedObject.getPropertyTypeNullSafe(wrappedObject.getWrappedClass(),propertyName);
+        }
+        return wrappedObject.getPropertyType(propertyName);
     }
 
     @Override

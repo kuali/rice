@@ -317,11 +317,45 @@ public final class QueryByCriteria extends AbstractDataTransferObject {
             List<Predicate> predicates = new ArrayList<Predicate>(attributes.size());
             if (attributes != null) {
                 for (Map.Entry<String, ?> entry: attributes.entrySet()) {
-                    predicates.add(PredicateFactory.equal(entry.getKey(), entry.getValue()));
+                    if(entry.getValue() instanceof Collection<?>){
+                        for(Object entryVal : (Collection<?>)entry.getValue()) {
+                            predicates.add(buildPredicate(entry.getKey(),entryVal));
+                        }
+                    } else {
+                        predicates.add(buildPredicate(entry.getKey(),entry.getValue()));
+
+                    }
                 }
             }
             QueryByCriteria.Builder qbc = QueryByCriteria.Builder.create();
             qbc.setPredicates(PredicateFactory.or(predicates.toArray(new Predicate[predicates.size()])));
+            return qbc.build();
+        }
+
+        private static Predicate buildPredicate(String attributeKey, Object attributeValue){
+            if(attributeValue == null){
+                return PredicateFactory.isNull(attributeKey);
+            } else {
+                return PredicateFactory.equal(attributeKey,attributeValue);
+            }
+
+        }
+
+        /**
+         * Static helper for generating a QueryByCriteria from a Map<String, ?> of attributes using 'and' as
+         * predicate operation
+         * @param attributes key/value map of attributes
+         * @return a QueryByCriteria which selects the given attributes (if map is non-null and non-empty)
+         */
+        public static QueryByCriteria forAttributesAnd(Map<String,?> attributes){
+            List<Predicate> predicates = new ArrayList<Predicate>(attributes.size());
+            if (attributes != null) {
+                for (Map.Entry<String, ?> entry: attributes.entrySet()) {
+                    predicates.add(PredicateFactory.equal(entry.getKey(), entry.getValue()));
+                }
+            }
+            QueryByCriteria.Builder qbc = QueryByCriteria.Builder.create();
+            qbc.setPredicates(PredicateFactory.and(predicates.toArray(new Predicate[predicates.size()])));
             return qbc.build();
         }
 

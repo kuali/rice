@@ -29,17 +29,17 @@ public class ComponentId implements Serializable {
     def final String namespaceCode;
 
     @Column(name="CMPNT_CD")
-    def final String componentCode;
+    def final String code;
 
     /** this ctor should never be called.  It is only present for hibernate */
     private ComponentId() {
         namespaceCode = null
-        componentCode = null
+        code = null
     }
     
-    public ComponentId(String namespaceCode, String componentCode) {
+    public ComponentId(String namespaceCode, String code) {
     	this.namespaceCode = namespaceCode
-    	this.componentCode = componentCode
+    	this.code = code
     }
 	
 	@Override

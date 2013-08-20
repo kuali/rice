@@ -20,15 +20,20 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.location.api.country.Country;
 import org.kuali.rice.location.api.country.CountryQueryResults;
 import org.kuali.rice.location.api.country.CountryService;
+import org.kuali.rice.location.impl.campus.CampusBo;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,20 +43,16 @@ import java.util.List;
 import java.util.Map;
 
 public final class CountryServiceImpl implements CountryService {
-
-    private BusinessObjectService businessObjectService;
     private ParameterService parameterService;
     private CriteriaLookupService criteriaLookupService;
+    private DataObjectService dataObjectService;
 
     @Override
     public Country getCountry(final String code) {
         if (StringUtils.isBlank(code)) {
             throw new RiceIllegalArgumentException("code is blank");
         }
-
-        CountryBo countryBo = businessObjectService.findByPrimaryKey(CountryBo.class, Collections.singletonMap(
-                KRADPropertyConstants.POSTAL_COUNTRY_CODE, code));
-
+        CountryBo countryBo = getDataObjectService().find(CountryBo.class,code);
         return CountryBo.to(countryBo);
     }
 
@@ -60,9 +61,9 @@ public final class CountryServiceImpl implements CountryService {
         if (StringUtils.isBlank(alternateCode)) {
             throw new RiceIllegalArgumentException("alt code is blank");
         }
-
-        Collection<CountryBo> countryList = businessObjectService.findMatching(CountryBo.class, Collections.singletonMap(
-                KRADPropertyConstants.ALTERNATE_POSTAL_COUNTRY_CODE, alternateCode));
+        QueryByCriteria qbc = QueryByCriteria.Builder.forAttribute(KRADPropertyConstants.ALTERNATE_POSTAL_COUNTRY_CODE, alternateCode);
+        QueryResults<CountryBo> countryBoQueryResults = getDataObjectService().findMatching(CountryBo.class,qbc);
+        List<CountryBo> countryList = countryBoQueryResults.getResults();
         if (countryList == null || countryList.isEmpty()) {
             return null;
         } else if (countryList.size() == 1) {
@@ -72,26 +73,25 @@ public final class CountryServiceImpl implements CountryService {
 
     @Override
     public List<Country> findAllCountriesNotRestricted() {
-        List<String> criteriaValues = new ArrayList<String>();
+        List<Boolean> criteriaValues = new ArrayList<Boolean>();
         criteriaValues.add(null);
-        criteriaValues.add("N");
+        criteriaValues.add(Boolean.FALSE);
 
         final Map<String, Object> map = new HashMap<String, Object>();
+
         map.put(KRADPropertyConstants.POSTAL_COUNTRY_RESTRICTED_INDICATOR, criteriaValues);
         map.put("active", Boolean.TRUE);
+        QueryResults<CountryBo> countryBos = dataObjectService.findMatching(CountryBo.class,QueryByCriteria.Builder.forAttributes(map));
 
-        Collection<CountryBo> countryBos = businessObjectService.findMatching(CountryBo.class, Collections.unmodifiableMap(map));
-
-        return convertListOfBosToImmutables(countryBos);
+        return convertListOfBosToImmutables(countryBos.getResults());
     }
 
     @Override
     public List<Country> findAllCountries() {
-        final Map<String, Object> map = new HashMap<String, Object>();
-        map.put("active", Boolean.TRUE);
-
-        Collection<CountryBo> countryBos = businessObjectService.findMatching(CountryBo.class, Collections.unmodifiableMap(map));
-        return convertListOfBosToImmutables(countryBos);
+        QueryResults<CountryBo> countryBoQueryResults = dataObjectService.findMatching(CountryBo.class,
+                QueryByCriteria.Builder.forAttribute("active",Boolean.TRUE));
+        //Collection<CountryBo> countryBos = businessObjectService.findMatching(CountryBo.class, Collections.unmodifiableMap(map));
+        return convertListOfBosToImmutables(countryBoQueryResults.getResults());
     }
 
     @Override
@@ -132,15 +132,6 @@ public final class CountryServiceImpl implements CountryService {
     }
 
     /**
-     * Sets the businessObjectServiceMockFor attribute value.
-     *
-     * @param businessObjectService The businessObjectServiceMockFor to set.
-     */
-    public void setBusinessObjectService(final BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
-    }
-
-    /**
      * Converts a List<CountryBo> to an Unmodifiable List<Country>
      *
      * @param countryBos a mutable List<CountryBo> to made completely immutable.
@@ -172,4 +163,14 @@ public final class CountryServiceImpl implements CountryService {
     public void setCriteriaLookupService(final CriteriaLookupService criteriaLookupService) {
         this.criteriaLookupService = criteriaLookupService;
     }
+
+
+    public DataObjectService getDataObjectService() {
+        return dataObjectService;
+    }
+    @Required
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
+    }
+
 }

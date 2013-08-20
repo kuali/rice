@@ -19,13 +19,17 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.location.api.campus.Campus;
 import org.kuali.rice.location.api.campus.CampusQueryResults;
 import org.kuali.rice.location.api.campus.CampusService;
 import org.kuali.rice.location.api.campus.CampusType;
 import org.kuali.rice.location.api.campus.CampusTypeQueryResults;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,9 +38,8 @@ import java.util.List;
 import static java.util.Collections.singletonMap;
 
 public class CampusServiceImpl implements CampusService {
-
-	private BusinessObjectService boService;
     private CriteriaLookupService criteriaLookupService;
+    private DataObjectService dataObjectService;
 	
 	/**
      * @see org.kuali.rice.location.api.campus.CampusService#getCampus(String code)
@@ -46,9 +49,7 @@ public class CampusServiceImpl implements CampusService {
 		if (StringUtils.isBlank(code)) {
             throw new RiceIllegalArgumentException("code is blank");
         }
-
-        CampusBo campusBo = boService.findByPrimaryKey(CampusBo.class, singletonMap("code", code));
-
+        CampusBo campusBo = getDataObjectService().find(CampusBo.class, code);
         return CampusBo.to(campusBo);
 	}
 
@@ -57,9 +58,9 @@ public class CampusServiceImpl implements CampusService {
      */
 	@Override
 	public List<Campus> findAllCampuses() {
-		List<CampusBo> campusBos = (List<CampusBo>) boService.findMatching(CampusBo.class, singletonMap("active", "true"));
-
-        return this.convertListOfCampusBosToImmutables(campusBos);
+        QueryByCriteria qbc = QueryByCriteria.Builder.forAttribute("active", true);
+        QueryResults<CampusBo> campusBos = getDataObjectService().findMatching(CampusBo.class,qbc);
+        return this.convertListOfCampusBosToImmutables(campusBos.getResults());
 	}
 
 	/**
@@ -70,9 +71,7 @@ public class CampusServiceImpl implements CampusService {
 		if (StringUtils.isBlank(code)) {
             throw new RiceIllegalArgumentException("code is blank");
         }
-
-		CampusTypeBo campusTypeBo = boService.findByPrimaryKey(CampusTypeBo.class, singletonMap("code", code));
-
+        CampusTypeBo campusTypeBo = dataObjectService.find(CampusTypeBo.class, code);
         return CampusTypeBo.to(campusTypeBo);
 	}
 
@@ -81,8 +80,9 @@ public class CampusServiceImpl implements CampusService {
      */
 	@Override
 	public List<CampusType> findAllCampusTypes() {
-		List<CampusTypeBo> campusTypeBos = (List<CampusTypeBo>)boService.findMatching(CampusTypeBo.class, singletonMap("active", "true"));
-		return this.convertListOfCampusTypesBosToImmutables(campusTypeBos);
+        QueryByCriteria qbc = QueryByCriteria.Builder.forAttribute("active", true);
+        QueryResults<CampusTypeBo> campusTypeBos = dataObjectService.findMatching(CampusTypeBo.class,qbc);
+		return this.convertListOfCampusTypesBosToImmutables(campusTypeBos.getResults());
 	}
 
     @Override
@@ -123,10 +123,6 @@ public class CampusServiceImpl implements CampusService {
         return builder.build();
     }
 
-    public void setBusinessObjectService(BusinessObjectService boService) {
-        this.boService = boService;
-    }
-
     private List<Campus> convertListOfCampusBosToImmutables(List<CampusBo> campusBos) {
         ArrayList<Campus> campuses = new ArrayList<Campus>();
         for (CampusBo bo : campusBos) {
@@ -161,5 +157,15 @@ public class CampusServiceImpl implements CampusService {
      */
     public void setCriteriaLookupService(final CriteriaLookupService criteriaLookupService) {
         this.criteriaLookupService = criteriaLookupService;
+    }
+
+
+    public DataObjectService getDataObjectService() {
+        return dataObjectService;
+    }
+
+    @Required
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 }

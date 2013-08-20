@@ -22,6 +22,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -76,12 +77,14 @@ public class ParameterBo extends PersistableBusinessObjectBase implements Parame
     @JoinColumn(name = "PARM_TYP_CD", insertable = false, updatable = false)
     private ParameterTypeBo parameterType;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PARM_TYP_CD", insertable = false, updatable = false)
+    @OneToOne(targetEntity = ComponentBo.class, fetch = FetchType.LAZY)
+    @JoinColumns({@JoinColumn(name = "NMSPC_CD", referencedColumnName="NMSPC_CD", insertable = false, updatable = false),
+            @JoinColumn(name = "CMPNT_CD", referencedColumnName="CMPNT_CD",insertable = false, updatable = false)})
     private ComponentBo component;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PARM_TYP_CD", insertable = false, updatable = false)
+    @JoinColumns({@JoinColumn(name = "NMSPC_CD", referencedColumnName="NMSPC_CD", insertable = false, updatable = false),
+            @JoinColumn(name = "CMPNT_CD", referencedColumnName="CMPNT_CD",insertable = false, updatable = false)})
     private DerivedComponentBo derivedComponent;
 
     /**

@@ -23,7 +23,10 @@ import org.kuali.rice.coreservice.api.component.Component;
 import org.kuali.rice.coreservice.api.component.ComponentService;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.util.ChecksumUtils;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
@@ -47,6 +50,7 @@ public class ComponentServiceImpl implements ComponentService {
 
     private BusinessObjectService businessObjectService;
     private ComponentSetDao componentSetDao;
+    private DataObjectService dataObjectService;
 
     @Override
     public Component getComponentByCode(String namespaceCode, String componentCode) {
@@ -119,7 +123,7 @@ public class ComponentServiceImpl implements ComponentService {
         }
         components = validateAndNormalizeComponents(componentSetId, components);
         LOG.info("Requesting to publish " + components.size() + " derived components for componentSetId=" + componentSetId);
-        ComponentSetBo componentSet = getComponentSetDao().getComponentSet(componentSetId);
+        ComponentSetBo componentSet = getDataObjectService().find(ComponentSetBo.class,componentSetId);
         if (componentSet == null) {
             componentSet = new ComponentSetBo();
             componentSet.setComponentSetId(componentSetId);
@@ -222,6 +226,15 @@ public class ComponentServiceImpl implements ComponentService {
 
     public void setComponentSetDao(ComponentSetDao componentSetDao) {
         this.componentSetDao = componentSetDao;
+    }
+
+
+    public DataObjectService getDataObjectService() {
+        return dataObjectService;
+    }
+    @Required
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
     
 }

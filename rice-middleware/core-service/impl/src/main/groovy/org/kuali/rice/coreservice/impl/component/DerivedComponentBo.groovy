@@ -25,10 +25,15 @@ import org.kuali.rice.coreservice.api.component.Component
 import org.kuali.rice.coreservice.api.component.ComponentContract
 
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
+import javax.persistence.Transient
+import javax.persistence.AttributeOverride
+import javax.persistence.AttributeOverrides
 
 @IdClass(ComponentId.class)
 @Entity
 @Table(name="KRCR_DRVD_CMPNT_T")
+@AttributeOverrides(value = [@AttributeOverride(name="objectId", column=@Column(name="NM", updatable=false, insertable=false)),
+@AttributeOverride(name="versionNumber", column=@Column(name="NM", updatable=false, insertable=false))])
 public class DerivedComponentBo extends PersistableBusinessObjectBase implements ComponentContract {
 
 	@Id
@@ -45,9 +50,18 @@ public class DerivedComponentBo extends PersistableBusinessObjectBase implements
     @Column(name="CMPNT_SET_ID")
     String componentSetId
 
+    String versionNumber
+
     @Override
+    @Transient
     String getObjectId() {
         return null
+    }
+
+    @Override
+    @Transient
+    void setObjectId(String objectId){
+
     }
 
     @Override
@@ -58,6 +72,11 @@ public class DerivedComponentBo extends PersistableBusinessObjectBase implements
     @Override
     Long getVersionNumber() {
         return null
+    }
+
+
+    void setVersionNumber(String versionNumber){
+
     }
     
     /**

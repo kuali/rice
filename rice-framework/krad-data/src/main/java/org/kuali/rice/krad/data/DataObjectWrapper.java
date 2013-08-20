@@ -107,4 +107,13 @@ public interface DataObjectWrapper<T> extends BeanWrapper {
 	 * Returns the list of field of the primary key which have a null or blank value.
 	 */
 	List<String> getUnpopulatedPrimaryKeyAttributeNames();
+
+    /**
+     * Get property type for property name on object, this can be a nested property and method will
+     * recursively use the metadata to find type.
+     * @param objectType - Root object type
+     * @param propertyName - Property name
+     * @return Class of propertyName
+     */
+    Class<?> getPropertyTypeNullSafe(Class<?> objectType, String propertyName);
 }

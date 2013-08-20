@@ -101,6 +101,13 @@
                value="org.kuali.rice.location.impl.campus.CampusTypeBo"/>
       </map>
     </property>
+    <property name="entityManager" ref="sharedEntityManager" />
+    <property name="providers">
+      <list>
+        <ref bean="jpaPersistenceProvider"/>
+        <ref bean="metadataProvider"/>
+      </list>
+    </property>
   </bean>
 
   <bean id="locationServerModule" class="org.kuali.rice.location.service.impl.LocationModuleService">
@@ -118,29 +125,29 @@
   </bean>
 
   <bean id="postalCodeService" class="org.kuali.rice.location.impl.postalcode.PostalCodeServiceImpl">
-    <property name="businessObjectService" ref="businessObjectService"/>
     <property name="criteriaLookupService" ref="rice.location.import.criteriaLookupService"/>
+    <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 
   <bean id="countyService" class="org.kuali.rice.location.impl.county.CountyServiceImpl">
-    <property name="businessObjectService" ref="businessObjectService"/>
     <property name="criteriaLookupService" ref="rice.location.import.criteriaLookupService"/>
+    <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 
   <bean id="stateService" class="org.kuali.rice.location.impl.state.StateServiceImpl">
-    <property name="businessObjectService" ref="businessObjectService"/>
     <property name="criteriaLookupService" ref="rice.location.import.criteriaLookupService"/>
+    <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 
   <bean id="countryService" class="org.kuali.rice.location.impl.country.CountryServiceImpl">
-    <property name="businessObjectService" ref="businessObjectService"/>
     <property name="parameterService" ref="rice.location.import.parameterService"/>
     <property name="criteriaLookupService" ref="rice.location.import.criteriaLookupService"/>
+    <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 
   <bean id="campusService" class="org.kuali.rice.location.impl.campus.CampusServiceImpl">
-    <property name="businessObjectService" ref="businessObjectService"/>
     <property name="criteriaLookupService" ref="rice.location.import.criteriaLookupService"/>
+    <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 
   <bean id="campusGroupTypeService" class="org.kuali.rice.location.impl.campus.CampusGroupTypeServiceImpl"/>

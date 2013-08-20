@@ -26,6 +26,7 @@ import javax.persistence.Table
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.location.api.country.Country
 import org.kuali.rice.location.framework.country.CountryEbo
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter
 
 @Entity
 @Table(name="KRLC_CNTRY_T")
@@ -47,6 +48,7 @@ class CountryBo extends PersistableBusinessObjectBase implements CountryEbo {
 
   //@Type(type="yes_no")(type = "yes_no")
   @Column(name = "ACTV_IND")
+  @javax.persistence.Convert(converter=BooleanYNConverter.class)
   def boolean active;
 
   /**

@@ -19,23 +19,24 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.data.CompoundKey;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.location.api.county.County;
 import org.kuali.rice.location.api.county.CountyQueryResults;
 import org.kuali.rice.location.api.county.CountyService;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class CountyServiceImpl implements CountyService {
-
-    private BusinessObjectService businessObjectService;
     private CriteriaLookupService criteriaLookupService;
+    private DataObjectService dataObjectService;
 
     @Override
     public County getCounty(String countryCode, String stateCode, String code) {
@@ -56,7 +57,7 @@ public class CountyServiceImpl implements CountyService {
         map.put("stateCode", stateCode);
         map.put("code", code);
 
-        return CountyBo.to(businessObjectService.findByPrimaryKey(CountyBo.class, Collections.unmodifiableMap(map)));
+        return CountyBo.to(dataObjectService.find(CountyBo.class, new CompoundKey(map)));
     }
 
     @Override
@@ -74,17 +75,29 @@ public class CountyServiceImpl implements CountyService {
         map.put("stateCode", stateCode);
         map.put("active", Boolean.TRUE);
 
-        final Collection<CountyBo> bos = businessObjectService.findMatching(CountyBo.class, Collections.unmodifiableMap(map));
-        if (bos == null) {
+        QueryResults<CountyBo> countyBos = dataObjectService.findMatching(CountyBo.class,
+                QueryByCriteria.Builder.forAttributes(map));
+
+        if (countyBos == null) {
             return Collections.emptyList();
         }
 
         final List<County> toReturn = new ArrayList<County>();
-        for (CountyBo bo : bos) {
-            if (bo != null && bo.isActive()) {
-                toReturn.add(CountyBo.to(bo));
+
+        List<CountyBo> countyBoList = countyBos.getResults();
+
+
+        for(CountyBo countyBo : countyBoList){
+            if(countyBo != null && countyBo.isActive()){
+                toReturn.add(CountyBo.to(countyBo));
             }
         }
+
+//        for (CountyBo bo : countyBoList) {
+//            if (bo != null && bo.isActive()) {
+//                toReturn.add(CountyBo.to(bo));
+//            }
+//        }
 
         return Collections.unmodifiableList(toReturn);
     }
@@ -108,10 +121,6 @@ public class CountyServiceImpl implements CountyService {
         return builder.build();
     }
 
-    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
-    }
-
     private void incomingParamCheck(Object object, String name) {
         if (object == null) {
             throw new RiceIllegalArgumentException(name + " was null");
@@ -128,6 +137,16 @@ public class CountyServiceImpl implements CountyService {
      */
     public void setCriteriaLookupService(final CriteriaLookupService criteriaLookupService) {
         this.criteriaLookupService = criteriaLookupService;
+    }
+
+
+    public DataObjectService getDataObjectService() {
+        return dataObjectService;
+    }
+
+    @Required
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 
 }

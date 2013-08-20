@@ -17,8 +17,10 @@ package org.kuali.rice.krad.data.provider.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.data.DataObjectWrapper;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
+import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.InvalidPropertyException;
@@ -296,4 +298,33 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
         return true;
     }
 
+    @Override
+    public Class<?> getPropertyTypeNullSafe(Class<?> objectType, String propertyName) {
+        DataObjectMetadata objectMetadata = dataObjectService.getMetadataRepository().getMetadata(objectType);
+        return getPropertyTypeChild(objectMetadata,propertyName);
+    }
+
+    private Class<?> getPropertyTypeChild(DataObjectMetadata objectMetadata, String propertyName){
+        if(DataObjectUtils.isNestedAttribute(propertyName)){
+            String attributePrefix = StringUtils.substringBefore(propertyName,".");
+            String attributeName = StringUtils.substringAfter(propertyName,".");
+
+            if(StringUtils.isNotBlank(attributePrefix) && StringUtils.isNotBlank(attributeName) &&
+                    objectMetadata!= null){
+                DataObjectRelationship rd = objectMetadata.getRelationship(attributePrefix);
+                if(rd != null){
+                    DataObjectMetadata relatedObjectMetadata =
+                            dataObjectService.getMetadataRepository().getMetadata(rd.getRelatedType());
+                    if(relatedObjectMetadata != null){
+                        if(DataObjectUtils.isNestedAttribute(attributeName)){
+                            return getPropertyTypeChild(relatedObjectMetadata,attributeName);
+                        } else{
+                            return relatedObjectMetadata.getAttribute(attributeName).getDataType().getType();
+                        }
+                    }
+                }
+            }
+        }
+        return getPropertyType(propertyName);
+    }
 }

@@ -22,6 +22,9 @@ import org.junit.BeforeClass
 import org.junit.Test
 import org.kuali.rice.krad.service.BusinessObjectService
 import org.kuali.rice.location.api.county.CountyService
+import org.kuali.rice.krad.data.DataObjectService
+import org.kuali.rice.location.impl.country.CountryBo
+import org.kuali.rice.core.api.criteria.GenericQueryResults
 
 class CountyServiceImplTest {
     private final shouldFail = new GroovyTestCase().&shouldFail
@@ -29,8 +32,8 @@ class CountyServiceImplTest {
     static sampleCounties = new HashMap<List<String>, CountyBo>()
     static sampleCountiesPerCountryState = new HashMap<List<String>, List<CountyBo>>()
 
-    private MockFor businessObjectServiceMock
-    private BusinessObjectService boService
+    private MockFor dataObjectServiceMock
+    private DataObjectService dataObjectService
     CountyService countyService
     CountyServiceImpl countyServiceImpl
 
@@ -53,9 +56,8 @@ class CountyServiceImplTest {
     }
 
     @Before
-    void setupBoServiceMockContext() {
-        businessObjectServiceMock = new MockFor(BusinessObjectService)
-
+    void setupDataObjectServiceMockContext() {
+        dataObjectServiceMock = new MockFor(DataObjectService)
     }
 
     @Before
@@ -64,81 +66,90 @@ class CountyServiceImplTest {
         countyService = countyServiceImpl
     }
 
-    void injectBusinessObjectServiceIntoCountryService() {
-        boService = businessObjectServiceMock.proxyDelegateInstance()
-        countyServiceImpl.setBusinessObjectService(boService)
+    void injectDataObjectService(){
+        dataObjectService = dataObjectServiceMock.proxyDelegateInstance()
+        countyServiceImpl.setDataObjectService(dataObjectService)
     }
 
     @Test
     void test_getCounty_null_countryCode() {
-        injectBusinessObjectServiceIntoCountryService()
+        injectDataObjectService()
 
         shouldFail(IllegalArgumentException) {
             countyService.getCounty(null, "MI", "48848")
         }
-        businessObjectServiceMock.verify(boService)
+        dataObjectServiceMock.verify(dataObjectService)
     }
 
     @Test
     void test_getPostalCode_null_stateCode() {
-        injectBusinessObjectServiceIntoCountryService()
+        injectDataObjectService()
 
         shouldFail(IllegalArgumentException) {
             countyService.getCounty("US", null, "48848")
         }
-        businessObjectServiceMock.verify(boService)
+        dataObjectServiceMock.verify(dataObjectService)
     }
 
     @Test
     void test_getPostalCode_null_code() {
-        injectBusinessObjectServiceIntoCountryService()
+        injectDataObjectService()
 
         shouldFail(IllegalArgumentException) {
             countyService.getCounty("US", "MI", null)
         }
-        businessObjectServiceMock.verify(boService)
+        dataObjectServiceMock.verify(dataObjectService)
     }
 
     @Test
     void test_get_county_exists() {
-        businessObjectServiceMock.demand.findByPrimaryKey(1..1) { clazz, map -> sampleCounties[map["countryCode"], map["stateCode"], [map["code"]]] }
-        injectBusinessObjectServiceIntoCountryService()
+        dataObjectServiceMock.demand.find(1..1) {clazz, id -> sampleCounties[id.getKeys().get("countryCode"),
+                id.getKeys().get("stateCode"),id.getKeys().get("code")] }
+        injectDataObjectService()
         Assert.assertEquals(CountyBo.to(sampleCounties[["US", "48848"]]), countyService.getCounty("US", "MI", "shi"))
-        businessObjectServiceMock.verify(boService)
+        dataObjectServiceMock.verify(dataObjectService)
     }
 
     @Test
     void test_get_county_does_not_exist() {
-        businessObjectServiceMock.demand.findByPrimaryKey(1..1) { clazz, map -> sampleCounties[map["countryCode"], map["stateCode"], [map["code"]]] }
-        injectBusinessObjectServiceIntoCountryService()
+        dataObjectServiceMock.demand.find(1..1) {clazz, id -> sampleCounties[id.getKeys().get("countryCode"),
+                id.getKeys().get("stateCode"),id.getKeys().get("code")] }
+        injectDataObjectService()
+
         Assert.assertNull(countyService.getCounty("FOO", "BAR", "BAZ"))
-        businessObjectServiceMock.verify(boService)
+        dataObjectServiceMock.verify(dataObjectService)
     }
 
     @Test
     void test_getAllPostalCodesInCountryAndState_null_countryCode() {
-        injectBusinessObjectServiceIntoCountryService()
+        injectDataObjectService()
 
         shouldFail(IllegalArgumentException) {
             countyService.findAllCountiesInCountryAndState(null, "MI")
         }
-        businessObjectServiceMock.verify(boService)
+        dataObjectServiceMock.verify(dataObjectService)
     }
 
     @Test
     void test_getAllPostalCodesInCountryAndState_null_stateCode() {
-        injectBusinessObjectServiceIntoCountryService()
+        injectDataObjectService()
 
         shouldFail(IllegalArgumentException) {
             countyService.findAllCountiesInCountryAndState("US", null)
         }
-        businessObjectServiceMock.verify(boService)
+        dataObjectServiceMock.verify(dataObjectService)
     }
 
     @Test
     void test_find_all_county_in_country_state_exists() {
-        businessObjectServiceMock.demand.findMatching(1..1) { clazz, map -> sampleCountiesPerCountryState[map["countryCode"], map["stateCode"]] }
-        injectBusinessObjectServiceIntoCountryService()
+        Collection<CountyBo> countyBo = sampleCountiesPerCountryState["US","MI"]
+        List<CountyBo> countyBoList = new ArrayList<CountyBo>()
+        countyBoList.addAll(countyBo)
+        GenericQueryResults.Builder<CountyBo> builder = GenericQueryResults.Builder.create()
+
+        builder.setResults(countyBoList)
+        dataObjectServiceMock.demand.findMatching(1..1) {clazz, queryByCriteria -> builder.build()}
+        injectDataObjectService()
         def values = countyService.findAllCountiesInCountryAndState("US", "MI")
         Assert.assertEquals(sampleCountiesPerCountryState[["US", "MI"]].collect { CountyBo.to(it) }, values)
 
@@ -146,13 +157,18 @@ class CountyServiceImplTest {
         shouldFail(UnsupportedOperationException) {
             values.add(CountyBo.to(sampleCounties[["CA", "MI", "shi"]]))
         }
-        businessObjectServiceMock.verify(boService)
+        dataObjectServiceMock.verify(dataObjectService)
     }
 
     @Test
     void test_find_all_county_in_country_state_does_not_exist() {
-        businessObjectServiceMock.demand.findMatching(1..1) { clazz, map -> sampleCountiesPerCountryState[map["countryCode"], map["stateCode"]] }
-        injectBusinessObjectServiceIntoCountryService()
+        List<CountyBo> countyBoList = new ArrayList<CountyBo>()
+        GenericQueryResults.Builder<CountyBo> builder = GenericQueryResults.Builder.create()
+
+        builder.setResults(countyBoList)
+
+        dataObjectServiceMock.demand.findMatching(1..1) {clazz,queryByCriteria ->builder.build() }
+        injectDataObjectService()
         def values = countyService.findAllCountiesInCountryAndState("FOO", "BAR")
         Assert.assertEquals([], values)
 
@@ -161,6 +177,6 @@ class CountyServiceImplTest {
             values.add(CountyBo.to(sampleCounties[["CA", "MI", "shi"]]))
         }
 
-        businessObjectServiceMock.verify(boService)
+        dataObjectServiceMock.verify(dataObjectService)
     }
 }

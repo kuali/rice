@@ -31,6 +31,7 @@ import org.kuali.rice.location.framework.county.CountyEbo
 import org.kuali.rice.location.impl.country.CountryBo
 import org.kuali.rice.location.impl.state.StateBo
 import javax.persistence.JoinColumns
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter
 
 @IdClass(CountyId.class)
 @Entity
@@ -54,6 +55,7 @@ class CountyBo extends PersistableBusinessObjectBase implements CountyEbo {
 
     //@Type(type="yes_no")(type = "yes_no")
     @Column(name = "ACTV_IND")
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     def boolean active
 
     @ManyToOne(targetEntity = CountryBo.class, fetch = FetchType.EAGER)

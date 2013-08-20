@@ -25,6 +25,13 @@ import org.kuali.rice.krad.util.KRADPropertyConstants
 import org.kuali.rice.location.api.country.Country
 import org.kuali.rice.location.api.country.CountryService
 import org.kuali.rice.coreservice.framework.parameter.ParameterService
+import org.kuali.rice.krad.data.DataObjectService
+import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria
+import org.kuali.rice.core.api.criteria.QueryResults
+import org.kuali.rice.location.api.country.CountryQueryResults
+import org.junit.Ignore
+import org.kuali.rice.core.api.criteria.GenericQueryResults
+import org.kuali.rice.core.api.criteria.QueryByCriteria
 
 class CountryServiceImplTest {
 
@@ -33,8 +40,8 @@ class CountryServiceImplTest {
     static Map<String, CountryBo> sampleCountries = new HashMap<String, CountryBo>()
     static Map<String, CountryBo> sampleCountriesKeyedByAltCode = new HashMap<String, CountryBo>()
 
-    MockFor businessObjectServiceMockFor
-    BusinessObjectService bos
+    MockFor dataObjectServiceMockFor
+    DataObjectService dataObjectService
     MockFor parameterServiceMockFor
     ParameterService parameterService
     CountryServiceImpl countryServiceImpl
@@ -57,8 +64,8 @@ class CountryServiceImplTest {
 
     @Before
     void setupMockContext() {
-        businessObjectServiceMockFor = new MockFor(BusinessObjectService.class)
         parameterServiceMockFor = new MockFor(ParameterService.class)
+        dataObjectServiceMockFor = new MockFor(DataObjectService.class)
     }
 
     @Before
@@ -67,26 +74,24 @@ class CountryServiceImplTest {
         countryService = countryServiceImpl    //assign Interface type to implementation reference for unit test only
     }
 
-    void injectBusinessObjectServiceIntoCountryService() {
-        bos =  businessObjectServiceMockFor.proxyDelegateInstance()
-        countryServiceImpl.setBusinessObjectService(bos)
-    }
-
     void injectParameterService() {
         parameterService = parameterServiceMockFor.proxyDelegateInstance()
         countryServiceImpl.setParameterService(parameterService)
     }
 
+    void injectDataObjectService(){
+        dataObjectService = dataObjectServiceMockFor.proxyDelegateInstance()
+        countryServiceImpl.setDataObjectService(dataObjectService)
+    }
+
     @Test
     public void test_getCountry() {
-        businessObjectServiceMockFor.demand.findByPrimaryKey(1) {
-            Class clazz, Map map -> return sampleCountries.get(map.get(KRADPropertyConstants.POSTAL_COUNTRY_CODE))
-        }
-        injectBusinessObjectServiceIntoCountryService()
+        dataObjectServiceMockFor.demand.find(1) { Class clazz, Object id -> return sampleCountries.get("US")}
+        injectDataObjectService()
 
         Country country = countryService.getCountry("US")
         Assert.assertEquals(CountryBo.to(sampleCountries.get("US")), country)
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dataObjectService)
     }
 
     @Test
@@ -105,40 +110,51 @@ class CountryServiceImplTest {
 
     @Test
     public void testGetByAlternateCode() {
-        businessObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, Map map ->
-            [sampleCountriesKeyedByAltCode.get(
-                    map.get(KRADPropertyConstants.ALTERNATE_POSTAL_COUNTRY_CODE))]
+        CountryBo countryBo = sampleCountriesKeyedByAltCode.get("USA")
+        List<CountryBo> countryBoList = new ArrayList<CountryBo>()
+        countryBoList.add(countryBo)
+        GenericQueryResults.Builder<CountryBo> builder = GenericQueryResults.Builder.create()
+
+         builder.setResults(countryBoList)
+         dataObjectServiceMockFor.demand.findMatching(1){
+            clazz,queryByCriteria -> builder.build()
         }
-        injectBusinessObjectServiceIntoCountryService()
+        injectDataObjectService()
 
         Country country = countryService.getCountryByAlternateCode("USA")
         Assert.assertEquals(CountryBo.to(sampleCountriesKeyedByAltCode.get("USA")), country)
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dataObjectService)
     }
 
     @Test
     public void testGetByAlternateCodeWhenNoneFound() {
-        businessObjectServiceMockFor.demand.findMatching(1) {Class clazz, Map map -> []}
-        injectBusinessObjectServiceIntoCountryService()
+        dataObjectServiceMockFor.demand.findMatching(1) {clazz, queryByCriteria -> GenericQueryResults.Builder.create().build()}
+        injectDataObjectService()
 
         Country country = countryService.getCountryByAlternateCode("ZZ")
         Assert.assertNull(country)
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dataObjectService)
 
     }
 
     @Test
     public void testGetByAlternateCodeWhenMultipleFound() {
-        businessObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, Map map -> [sampleCountries.get("US"), sampleCountries.get("AU")]
-        }
-        injectBusinessObjectServiceIntoCountryService()
+        CountryBo countryBo = sampleCountriesKeyedByAltCode.get("USA")
+        List<CountryBo> countryBoList = new ArrayList<CountryBo>()
+        countryBoList.add(countryBo)
+        countryBo = sampleCountriesKeyedByAltCode.get("AU")
+        countryBoList.add(countryBo)
+        GenericQueryResults.Builder<CountryBo> builder = GenericQueryResults.Builder.create()
 
+        builder.setResults(countryBoList)
+        dataObjectServiceMockFor.demand.findMatching(1){
+            clazz, queryByCriteria -> builder.build()
+        }
+        injectDataObjectService()
         shouldFail(IllegalStateException) {
             countryService.getCountryByAlternateCode("US")
         }
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dataObjectService)
     }
 
     @Test
@@ -157,61 +173,96 @@ class CountryServiceImplTest {
 
     @Test
     public void findAllCountriesNotRestricted() {
-        businessObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, Map map -> [sampleCountries.get("US"), sampleCountries.get("AU")]
+        CountryBo countryBo = sampleCountries.get("USA")
+        List<CountryBo> countryBoList = new ArrayList<CountryBo>()
+        countryBoList.add(countryBo)
+        countryBo = sampleCountries.get("AU")
+        GenericQueryResults.Builder<CountryBo> builder = GenericQueryResults.Builder.create()
+        dataObjectServiceMockFor.demand.findMatching(1){
+            clazz, queryByCriteria -> builder.build()
         }
-        injectBusinessObjectServiceIntoCountryService()
 
+
+        injectDataObjectService()
         countryService.findAllCountriesNotRestricted()
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dataObjectService)
     }
 
     @Test
     public void findAllCountriesNotRestrictedReturnsImmutableList() {
-        businessObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, Map map -> [sampleCountries.get("US"), sampleCountries.get("AU")]
+        CountryBo countryBo = sampleCountries.get("USA")
+        List<CountryBo> countryBoList = new ArrayList<CountryBo>()
+        countryBoList.add(countryBo)
+        countryBo = sampleCountries.get("AU")
+        GenericQueryResults.Builder<CountryBo> builder = GenericQueryResults.Builder.create()
+
+
+        dataObjectServiceMockFor.demand.findMatching(1){
+            clazz,queryByCriteria -> builder.build()
         }
-        injectBusinessObjectServiceIntoCountryService()
+
+
+        injectDataObjectService()
 
         List<Country> countries = countryService.findAllCountriesNotRestricted()
         shouldFail(UnsupportedOperationException) {
             countries.add(null);
         }
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dataObjectService)
 
     }
 
     @Test
     public void testFindAllCountries() {
-        businessObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, Map map -> [sampleCountries.get("US"), sampleCountries.get("AU"), sampleCountries.get("ZZ")]
-        }
-        injectBusinessObjectServiceIntoCountryService()
+        CountryBo countryBo = sampleCountries.get("USA")
+        List<CountryBo> countryBoList = new ArrayList<CountryBo>()
+        countryBoList.add(countryBo)
+        countryBo = sampleCountries.get("AU")
+        countryBoList.add(countryBo)
+        countryBo = sampleCountries.get("ZZ")
+        GenericQueryResults.Builder<CountryBo> builder = GenericQueryResults.Builder.create()
 
+
+        dataObjectServiceMockFor.demand.findMatching(1){
+            clazz,queryByCriteria -> builder.build()
+        }
+
+
+        injectDataObjectService()
         countryService.findAllCountries()
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dataObjectService)
     }
 
     @Test
     public void testFindAllCountriesReturnsImmutableList() {
-        businessObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, Map map -> [sampleCountries.get("US"), sampleCountries.get("AU"), sampleCountries.get("ZZ")]
-        }
-        injectBusinessObjectServiceIntoCountryService()
+        CountryBo countryBo = sampleCountries.get("USA")
+        List<CountryBo> countryBoList = new ArrayList<CountryBo>()
+        countryBoList.add(countryBo)
+        countryBo = sampleCountries.get("AU")
+        countryBoList.add(countryBo)
+        countryBo = sampleCountries.get("ZZ")
+        GenericQueryResults.Builder<CountryBo> builder = GenericQueryResults.Builder.create()
 
+
+        dataObjectServiceMockFor.demand.findMatching(1){
+            clazz,queryByCriteria -> builder.build()
+        }
+
+
+        injectDataObjectService()
         List<Country> countries = countryService.findAllCountriesNotRestricted()
         shouldFail(UnsupportedOperationException) {
             countries.add(null)
         }
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dataObjectService)
     }
 
     @Test
     public void testGetDefaultCountry() {
-        businessObjectServiceMockFor.demand.findByPrimaryKey(1) {
-            Class clazz, Map map -> return sampleCountries.get(map.get(KRADPropertyConstants.POSTAL_COUNTRY_CODE))
-        }
-        injectBusinessObjectServiceIntoCountryService()
+        dataObjectServiceMockFor.demand.find(1) { Class clazz, Object id -> return sampleCountries.get("US")}
+
+
+        injectDataObjectService()
         parameterServiceMockFor.demand.getParameterValueAsString(1) {
             String namespaceCode, String componentCode, String parameterName -> "US"
         }
@@ -221,7 +272,7 @@ class CountryServiceImplTest {
         assert country != null
         assert country.code == "US"
 
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dataObjectService)
         parameterServiceMockFor.verify(parameterService)
     }
 
@@ -231,10 +282,9 @@ class CountryServiceImplTest {
      */
     @Test
     public void testGetDefaultCountry_invalidDefaultCountryCode() {
-        businessObjectServiceMockFor.demand.findByPrimaryKey(1) {
-            Class clazz, Map map -> return sampleCountries.get(map.get(KRADPropertyConstants.POSTAL_COUNTRY_CODE))
-        }
-        injectBusinessObjectServiceIntoCountryService()
+        dataObjectServiceMockFor.demand.find(1){Class clazz, String id -> return sampleCountries.get("XX")}
+
+        injectDataObjectService()
         parameterServiceMockFor.demand.getParameterValueAsString(1) {
             String namespaceCode, String componentCode, String parameterName -> "BLAH!!!"
         }
@@ -243,13 +293,13 @@ class CountryServiceImplTest {
         Country country = countryService.getDefaultCountry()
         assert country == null
 
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dataObjectService)
         parameterServiceMockFor.verify(parameterService)
     }
 
     @Test
     public void testGetDefaultCountry_nullDefaultCountryCode() {
-        injectBusinessObjectServiceIntoCountryService()
+        injectDataObjectService()
         parameterServiceMockFor.demand.getParameterValueAsString(1) {
             String namespaceCode, String componentCode, String parameterName -> null
         }
@@ -258,13 +308,13 @@ class CountryServiceImplTest {
         Country country = countryService.getDefaultCountry()
         assert country == null
 
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dataObjectService)
         parameterServiceMockFor.verify(parameterService)
     }
 
     @Test
     public void testGetDefaultCountry_emptyDefaultCountryCode() {
-        injectBusinessObjectServiceIntoCountryService()
+        injectDataObjectService()
         parameterServiceMockFor.demand.getParameterValueAsString(1) {
             String namespaceCode, String componentCode, String parameterName -> ""
         }
@@ -273,7 +323,7 @@ class CountryServiceImplTest {
         Country country = countryService.getDefaultCountry()
         assert country == null
 
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dataObjectService)
         parameterServiceMockFor.verify(parameterService)
     }
 

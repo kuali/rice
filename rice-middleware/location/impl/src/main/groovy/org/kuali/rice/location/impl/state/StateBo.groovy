@@ -29,6 +29,7 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.location.api.state.State
 import org.kuali.rice.location.framework.state.StateEbo
 import org.kuali.rice.location.impl.country.CountryBo
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter
 
 @IdClass(StateId.class)
 @Entity
@@ -48,6 +49,7 @@ class StateBo extends PersistableBusinessObjectBase implements StateEbo {
 
     //@Type(type="yes_no")(type = "yes_no")
     @Column(name = "ACTV_IND")
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     def boolean active;
 
     @ManyToOne(targetEntity = CountryBo.class, fetch = FetchType.EAGER)

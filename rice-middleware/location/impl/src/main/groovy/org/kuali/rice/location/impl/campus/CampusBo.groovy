@@ -26,6 +26,7 @@ import javax.persistence.Table
 
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.location.framework.campus.CampusEbo
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter
 
 @Entity
 @Table(name="KRLC_CMP_T")
@@ -46,6 +47,7 @@ public class CampusBo extends PersistableBusinessObjectBase implements CampusEbo
 	
 	//@Type(type="yes_no")(type="yes_no")
 	@Column(name="ACTV_IND")
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
 	def boolean active; 
 
 	@OneToOne(fetch=FetchType.EAGER)

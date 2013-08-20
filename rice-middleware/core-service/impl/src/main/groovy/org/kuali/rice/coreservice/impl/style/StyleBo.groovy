@@ -18,6 +18,11 @@ package org.kuali.rice.coreservice.impl.style
 import org.kuali.rice.coreservice.api.style.Style
 import org.kuali.rice.coreservice.api.style.StyleContract
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
+import javax.persistence.Entity
+import javax.persistence.Table
+import javax.persistence.Column
+import javax.persistence.Id
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter
 
 /**
  * A BusinessObject implementation of the StyleContract which is mapped to the
@@ -25,13 +30,21 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Entity
+@Table(name="KRCR_STYLE_T")
 class StyleBo extends PersistableBusinessObjectBase implements StyleContract {
 
 	private static final long serialVersionUID = 2020611019976731725L
 
+    @Id
+    @Column(name="STYLE_ID")
 	String id
+    @Column(name="NM")
 	String name
+    @Column(name="XML")
 	String xmlContent
+    @Column(name="ACTV_IND")
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
 	boolean active = true
     
     /**

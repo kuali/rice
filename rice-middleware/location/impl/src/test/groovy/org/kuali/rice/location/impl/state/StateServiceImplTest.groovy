@@ -26,6 +26,9 @@ import org.kuali.rice.krad.service.BusinessObjectService
 import org.kuali.rice.location.api.country.Country
 import org.kuali.rice.location.api.country.CountryService
 import org.kuali.rice.location.api.state.StateService
+import org.kuali.rice.krad.data.DataObjectService
+import org.kuali.rice.location.impl.county.CountyBo
+import org.kuali.rice.core.api.criteria.GenericQueryResults
 
 class StateServiceImplTest {
 
@@ -35,8 +38,8 @@ class StateServiceImplTest {
     static sampleStatesPerCountry = new HashMap<String, List<StateBo>>()
     
     private MockFor mockCountryService;
-    private MockFor mockBoService
-    private BusinessObjectService boService
+    private MockFor dataObjectServiceMockFor
+    private DataObjectService dataObjectService
     
     static Country uSCountry
     
@@ -61,10 +64,10 @@ class StateServiceImplTest {
         
         uSCountry = Country.Builder.create("US", "USA", "United States", false, true).build()
     }
-	
+
     @Before
-    void setupBoServiceMockContext() {
-        mockBoService = new MockFor(BusinessObjectService)        
+    void setupDataObjectServiceMockContext(){
+        dataObjectServiceMockFor = new MockFor(DataObjectService)
     }
     
     @Before
@@ -77,67 +80,82 @@ class StateServiceImplTest {
         stateServiceImpl = new StateServiceImpl()
         stateService = stateServiceImpl
     }
-
-    void injectBusinessObjectServiceIntoStateService() {
-        boService = mockBoService.proxyDelegateInstance()
-        stateServiceImpl.setBusinessObjectService(boService)
-    }
     
     void injectCountryServiceIntoStateService() {
         countryService = mockCountryService.proxyDelegateInstance();
         stateServiceImpl.setCountryService(countryService);
     }
 
+    void injectDataObjectService(){
+        dataObjectService = dataObjectServiceMockFor.proxyDelegateInstance()
+        stateServiceImpl.setDataObjectService(dataObjectService)
+    }
+
     @Test
     void test_get_state_null_countryCode() {
-        injectBusinessObjectServiceIntoStateService()
+        injectDataObjectService()
 
         shouldFail(IllegalArgumentException) {
             stateService.getState(null, "MI")
         }
-        mockBoService.verify(boService)
+        dataObjectServiceMockFor.verify(dataObjectService)
     }
 
     @Test
     void test_get_state_null_code() {
-        injectBusinessObjectServiceIntoStateService()
+        injectDataObjectService()
 
         shouldFail(IllegalArgumentException) {
             stateService.getState("US", null)
         }
-        mockBoService.verify(boService)
+        dataObjectServiceMockFor.verify(dataObjectService)
     }
 
     @Test
     void test_get_state_exists() {
-        mockBoService.demand.findByPrimaryKey(1..1) { clazz, map -> sampleStates[map["countryCode"], [map["code"]]] }
-        injectBusinessObjectServiceIntoStateService()
+        dataObjectServiceMockFor.demand.find(1..1) {
+            clazz, id -> sampleStates[["US","MI"]]
+        }
+        injectDataObjectService()
         Assert.assertEquals(StateBo.to(sampleStates[["US", "MI"]]), stateService.getState("US", "MI"))
-        mockBoService.verify(boService)
+        dataObjectServiceMockFor.verify(dataObjectService)
     }
 
     @Test
     void test_get_state_does_not_exist() {
-        mockBoService.demand.findByPrimaryKey(1..1) { clazz, map -> sampleStates[map["countryCode"], [map["code"]]] }
-        injectBusinessObjectServiceIntoStateService()
+        dataObjectServiceMockFor.demand.find(1..1){
+            clazz, id-> null
+        }
+        injectDataObjectService()
         Assert.assertNull(stateService.getState("FOO", "BAR"))
-        mockBoService.verify(boService)
+        dataObjectServiceMockFor.verify(dataObjectService)
     }
 
     @Test
     void test_find_all_states_in_country_null_countryCode() {
-        injectBusinessObjectServiceIntoStateService()
+        injectDataObjectService()
 
         shouldFail(IllegalArgumentException) {
             stateService.findAllStatesInCountry(null)
         }
-        mockBoService.verify(boService)
+        dataObjectServiceMockFor.verify(dataObjectService)
     }
 
     @Test
     void test_find_all_states_in_country_exists() {
-        mockBoService.demand.findMatching(1..1) { clazz, map -> sampleStatesPerCountry[map["countryCode"]] }
-        injectBusinessObjectServiceIntoStateService()
+//        mockBoService.demand.findMatching(1..1) { clazz, map -> sampleStatesPerCountry[map["countryCode"]] }
+//        injectBusinessObjectServiceIntoStateService()
+
+        Collection<StateBo> stateBo = sampleStatesPerCountry["US"]
+        List<StateBo> stateBoList = new ArrayList<StateBo>()
+        stateBoList.addAll(stateBo)
+        GenericQueryResults.Builder<StateBo> builder = GenericQueryResults.Builder.create()
+
+        builder.setResults(stateBoList)
+        dataObjectServiceMockFor.demand.findMatching(1..1){
+            clazz,queryByCriteria -> builder.build()
+        }
+        injectDataObjectService()
         def values = stateService.findAllStatesInCountry("US")
         Assert.assertEquals(sampleStatesPerCountry["US"].collect { StateBo.to(it) }, values)
 
@@ -145,13 +163,15 @@ class StateServiceImplTest {
         shouldFail(UnsupportedOperationException) {
             values.add(StateBo.to(sampleStates[["CA", "BC"]]))
         }
-        mockBoService.verify(boService)
+        dataObjectServiceMockFor.verify(dataObjectService)
     }
     
     @Test
     void test_find_all_states_in_country_does_not_exist() {
-        mockBoService.demand.findMatching(1..1) { clazz, map -> sampleStatesPerCountry[map["countryCode"]] }
-        injectBusinessObjectServiceIntoStateService()
+        dataObjectServiceMockFor.demand.findMatching(1..1){
+            clazz,queryByCriteria -> null
+        }
+        injectDataObjectService()
         def values = stateService.findAllStatesInCountry("FOO")
         Assert.assertEquals([], values)
 
@@ -160,28 +180,38 @@ class StateServiceImplTest {
             values.add(StateBo.to(sampleStates[["CA", "BC"]]))
         }
 
-        mockBoService.verify(boService)
+        dataObjectServiceMockFor.verify(dataObjectService)
     }
     
     @Test
     void test_find_all_states_in_country_by_alt_code_exists() {
+        Collection<StateBo> stateBo = sampleStatesPerCountry["US"]
+        List<StateBo> stateBoList = new ArrayList<StateBo>()
+        stateBoList.addAll(stateBo)
+        GenericQueryResults.Builder<StateBo> builder = GenericQueryResults.Builder.create()
 
-        mockBoService.demand.findMatching(1..1) { clazz, map -> sampleStatesPerCountry[map["countryCode"]] }
-        injectBusinessObjectServiceIntoStateService()
-        
+        builder.setResults(stateBoList)
+
+        dataObjectServiceMockFor.demand.findMatching(1..1){
+            clazz,queryByCriteria -> builder.build()
+        }
+        injectDataObjectService()
+
+
         mockCountryService.demand.getCountryByAlternateCode(1) {uSCountry}
         injectCountryServiceIntoStateService();
+
 
         def values = stateService.findAllStatesInCountryByAltCode("USA")
         Assert.assertEquals(sampleStatesPerCountry["US"].collect { StateBo.to(it) }, values)
 
-        mockBoService.verify(boService)
+        dataObjectServiceMockFor.verify(dataObjectService)
         mockCountryService.verify(countryService)
     }
 	
 	@Test
 	void test_find_all_states_in_country_by_alt_code_does_not_exist() {
-        injectBusinessObjectServiceIntoStateService()
+        injectDataObjectService()
         
         mockCountryService.demand.getCountryByAlternateCode(1) {null}     
         injectCountryServiceIntoStateService();
@@ -190,18 +220,18 @@ class StateServiceImplTest {
             def values = stateService.findAllStatesInCountryByAltCode("FOO")
         }
 
-        mockBoService.verify(boService)
+        dataObjectServiceMockFor.verify(dataObjectService)
         mockCountryService.verify(countryService)    }
   
 	@Test
 	public void test_find_all_states_in_country_by_alt_code_pass_null() {
-        injectBusinessObjectServiceIntoStateService()     
+        injectDataObjectService()
         injectCountryServiceIntoStateService();
         
         shouldFail(RiceIllegalArgumentException) {
             def values = stateService.findAllStatesInCountryByAltCode(null)
         }
 
-        mockBoService.verify(boService)
+        dataObjectServiceMockFor.verify(dataObjectService)
         mockCountryService.verify(countryService)	}
 }

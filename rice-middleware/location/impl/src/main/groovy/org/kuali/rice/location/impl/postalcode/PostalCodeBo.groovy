@@ -33,6 +33,7 @@ import org.kuali.rice.location.impl.county.CountyBo
 import org.kuali.rice.location.impl.state.StateBo
 import javax.persistence.JoinColumns
 import javax.persistence.ManyToMany
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter
 
 @IdClass(PostalCodeId.class)
 @Entity
@@ -58,6 +59,7 @@ class PostalCodeBo extends PersistableBusinessObjectBase implements PostalCodeEb
 
     //@Type(type="yes_no")(type = "yes_no")
     @Column(name = "ACTV_IND")
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     def boolean active;
 
     @ManyToOne(targetEntity = CountryBo.class, fetch = FetchType.EAGER)

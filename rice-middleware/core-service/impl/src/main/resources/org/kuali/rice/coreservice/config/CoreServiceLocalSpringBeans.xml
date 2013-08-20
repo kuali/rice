@@ -24,9 +24,11 @@
                            http://www.springframework.org/schema/cache/spring-cache-3.1.xsd">
 
   <import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
+  <import resource="classpath:org/kuali/rice/krad/config/KRADDependentModuleCommonImports.xml" />
   <import resource="classpath:org/kuali/rice/coreservice/config/_CoreServiceOjbSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/coreservice/config/_CoreServiceCommonSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/coreservice/config/_CoreServiceBusSpringBeans.xml"/>
+  <import resource="classpath:org/kuali/rice/coreservice/config/_CoreServiceJpaSpringBeans.xml"/>
 
   <bean id="rice.coreService.cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl">
     <property name="cacheManager" ref="coreServiceDistributedCacheManager" />
@@ -48,6 +50,7 @@
   <bean id="componentService" class="org.kuali.rice.coreservice.impl.component.ComponentServiceImpl">
     <property name="businessObjectService" ref="rice.coreService.import.businessObjectService"/>
     <property name="componentSetDao" ref="componentSetDao"/>
+    <property name="dataObjectService"  ref="dataObjectService"/>
   </bean>
 
   <bean id="parameterRepositoryService" class="org.kuali.rice.coreservice.impl.parameter.ParameterRepositoryServiceImpl">
@@ -142,6 +145,13 @@
         <entry key="org.kuali.rice.coreservice.framework.parameter.ParameterTypeEbo"
                value="org.kuali.rice.coreservice.impl.parameter.ParameterTypeBo"/>
       </map>
+    </property>
+    <property name="entityManager" ref="sharedEntityManager" />
+    <property name="providers">
+      <list>
+        <ref bean="jpaPersistenceProvider"/>
+        <ref bean="metadataProvider"/>
+      </list>
     </property>
   </bean>
 

@@ -27,6 +27,7 @@ import static org.junit.Assert.fail
 import java.sql.Timestamp
 import org.kuali.rice.coreservice.impl.namespace.NamespaceServiceImpl
 import org.kuali.rice.coreservice.api.namespace.Namespace
+import org.kuali.rice.krad.data.DataObjectService
 
 /**
  * Unit test for {@link org.kuali.rice.coreservice.impl.component.ComponentServiceImpl}.
@@ -37,6 +38,7 @@ class ComponentServiceImplTest {
 
     private MockFor boServiceMock
     private MockFor componentSetDaoMock
+    private MockFor dataObjectServiceMock
 
     //importing the should fail method since I don't want to extend
     //GroovyTestCase which is junit 3 style
@@ -45,6 +47,7 @@ class ComponentServiceImplTest {
     org.kuali.rice.coreservice.impl.component.ComponentServiceImpl serviceImpl
     ComponentService service
     BusinessObjectService boService
+    DataObjectService dataObjectService
     org.kuali.rice.coreservice.impl.component.ComponentSetDao componentSetDao
 
     static final Component component = createComponent()
@@ -62,6 +65,7 @@ class ComponentServiceImplTest {
     void setupBoServiceMockContext() {
         boServiceMock = new MockFor(BusinessObjectService)
         componentSetDaoMock = new MockFor(org.kuali.rice.coreservice.impl.component.ComponentSetDao)
+        dataObjectServiceMock = new MockFor(DataObjectService)
     }
 
     @After
@@ -79,6 +83,11 @@ class ComponentServiceImplTest {
         serviceImpl.setBusinessObjectService(boService)
     }
 
+    void injectDataObjectService() {
+        dataObjectService = dataObjectServiceMock.proxyDelegateInstance()
+        serviceImpl.setDataObjectService(dataObjectService)
+    }
+
     void injectComponentSetDao() {
         componentSetDao = componentSetDaoMock.proxyDelegateInstance()
         serviceImpl.setComponentSetDao(componentSetDao)
@@ -86,7 +95,7 @@ class ComponentServiceImplTest {
 
     @Test
     void test_getComponentByCode_null_namespaceCode() {
-        injectBusinessObjectService()
+        injectDataObjectService()
         shouldFail(IllegalArgumentException.class) {
             service.getComponentByCode(null, "myComponentCode")
         }
@@ -94,7 +103,7 @@ class ComponentServiceImplTest {
 
     @Test
     void test_getComponentByCode_empty_namespaceCode() {
-        injectBusinessObjectService()
+        injectDataObjectService()
         shouldFail(IllegalArgumentException.class) {
             service.getComponentByCode("", "myComponentCode")
         }
@@ -102,7 +111,7 @@ class ComponentServiceImplTest {
 
     @Test
     void test_getComponentByCode_blank_namespaceCode() {
-        injectBusinessObjectService()
+        injectDataObjectService()
         shouldFail(IllegalArgumentException.class) {
             service.getComponentByCode("  ", "myComponentCode")
         }
@@ -110,7 +119,7 @@ class ComponentServiceImplTest {
 
     @Test
     void test_getComponentByCode_null_componentCode() {
-        injectBusinessObjectService()
+        injectDataObjectService()
         shouldFail(IllegalArgumentException.class) {
             service.getComponentByCode("myNamespaceCode", null)
         }
@@ -118,7 +127,7 @@ class ComponentServiceImplTest {
 
     @Test
     void test_getComponentByCode_empty_componentCode() {
-        injectBusinessObjectService()
+        injectDataObjectService()
         shouldFail(IllegalArgumentException.class) {
             service.getComponentByCode("myNamespaceCode", "")
         }
@@ -126,7 +135,7 @@ class ComponentServiceImplTest {
 
     @Test
     void test_getComponentByCode_blank_componentCode() {
-        injectBusinessObjectService()
+        injectDataObjectService()
         shouldFail(IllegalArgumentException.class) {
             service.getComponentByCode("myNamespaceCode", "  ")
         }
@@ -136,13 +145,17 @@ class ComponentServiceImplTest {
     void test_getComponentByCode_exists() {
         boServiceMock.demand.findByPrimaryKey { clazz, map -> componentBo }
         injectBusinessObjectService()
+        dataObjectServiceMock.demand.find(2) { clazz, map -> null }
+        injectDataObjectService()
         assert component == service.getComponentByCode(NAMESPACE_CODE, CODE)
     }
 
     @Test
     void test_getComponentsByCode_not_exists() {
-        boServiceMock.demand.findByPrimaryKey(2) { clazz, map -> null }
+        boServiceMock.demand.findByPrimaryKey(2) {clazz, map -> null}
         injectBusinessObjectService()
+        dataObjectServiceMock.demand.find(2) { clazz, map -> null }
+        injectDataObjectService()
         assert null == service.getComponentByCode("blah", "blah")
     }
 
@@ -344,13 +357,14 @@ class ComponentServiceImplTest {
     void test_publishDerivedComponents_null_components() {
 
         org.kuali.rice.coreservice.impl.component.ComponentSetBo savedComponentSet = null;
-        componentSetDaoMock.demand.getComponentSet { id -> null }
+        dataObjectServiceMock.demand.find(1) {clazz, id -> savedComponentSet}
         componentSetDaoMock.demand.saveIgnoreLockingFailure { cs -> savedComponentSet = cs; return true }
         boServiceMock.demand.deleteMatching { clazz, crit -> assert crit.containsKey("componentSetId") }
         boServiceMock.demand.findMatching { clazz, crit -> []}
 
         injectBusinessObjectService()
         injectComponentSetDao()
+        injectDataObjectService()
 
         service.publishDerivedComponents("myComponentSet", null)
         assert service.getDerivedComponentSet("myComponentSet").isEmpty()
@@ -371,14 +385,15 @@ class ComponentServiceImplTest {
         org.kuali.rice.coreservice.impl.component.ComponentSetBo existingComponentSet = new org.kuali.rice.coreservice.impl.component.ComponentSetBo(componentSetId:"myComponentSet", checksum:"blah",
                 lastUpdateTimestamp:new Timestamp(System.currentTimeMillis()), versionNumber:500)
         org.kuali.rice.coreservice.impl.component.ComponentSetBo savedComponentSet = null;
-
-        componentSetDaoMock.demand.getComponentSet { id -> existingComponentSet }
+        dataObjectServiceMock.demand.find(1) {clazz, id -> existingComponentSet}
+        //componentSetDaoMock.demand.getComponentSet { id -> existingComponentSet }
         componentSetDaoMock.demand.saveIgnoreLockingFailure { cs -> cs.versionNumber++; savedComponentSet = cs; return true }
         boServiceMock.demand.deleteMatching { clazz, crit -> assert crit.containsKey("componentSetId") }
         boServiceMock.demand.findMatching { clazz, crit -> []}
 
         injectBusinessObjectService()
         injectComponentSetDao()
+        injectDataObjectService()
 
         service.publishDerivedComponents("myComponentSet", [])
         assert service.getDerivedComponentSet("myComponentSet").isEmpty()
@@ -395,14 +410,15 @@ class ComponentServiceImplTest {
         org.kuali.rice.coreservice.impl.component.ComponentSetBo componentSet = null;
         
         boServiceMock.demand.findMatching { clazz, crit -> publishedComponentBos }
+        dataObjectServiceMock.demand.find(2) {clazz, id -> componentSet }
+        componentSetDaoMock.demand.saveIgnoreLockingFailure { cs -> cs.versionNumber = 1; componentSet = cs; return true }
         boServiceMock.demand.deleteMatching { clazz, crit -> assert crit.containsKey("componentSetId") }
         boServiceMock.demand.save { bos -> publishedComponentBos = bos }
-        componentSetDaoMock.demand.getComponentSet { id -> componentSet }
-        componentSetDaoMock.demand.saveIgnoreLockingFailure { cs -> cs.versionNumber = 1; componentSet = cs; return true }
         boServiceMock.demand.findMatching { clazz, crit -> publishedComponentBos }
 
         injectBusinessObjectService()
         injectComponentSetDao()
+        injectDataObjectService()
         
         List<Component> components = service.getDerivedComponentSet("myComponentSet")
         assert components.isEmpty()

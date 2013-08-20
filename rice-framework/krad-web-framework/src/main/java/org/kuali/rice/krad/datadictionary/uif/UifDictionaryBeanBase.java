@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.datadictionary.uif;
 
-import com.google.common.collect.Maps;
 import org.kuali.rice.krad.datadictionary.DictionaryBeanBase;
 
 import java.util.HashMap;
@@ -99,38 +98,20 @@ public class UifDictionaryBeanBase extends DictionaryBeanBase implements UifDict
     @Override
     protected <T> void copyProperties(T dictionaryBaseBean) {
         super.copyProperties(dictionaryBaseBean);
+
         UifDictionaryBeanBase uifDictionaryBeanBaseCopy = (UifDictionaryBeanBase) dictionaryBaseBean;
 
         if (expressionGraph != null) {
-            Map<String, String> expressionGraphCopy = Maps.newHashMapWithExpectedSize(this.getExpressionGraph().size());
-            for (Map.Entry expressionGraphEntry : getExpressionGraph().entrySet()) {
-                expressionGraphCopy.put(expressionGraphEntry.getKey().toString(),
-                        expressionGraphEntry.getValue().toString());
-            }
-
-            uifDictionaryBeanBaseCopy.setExpressionGraph(expressionGraphCopy);
+            uifDictionaryBeanBaseCopy.setExpressionGraph(new HashMap<String, String>(this.expressionGraph));
         }
 
         if (refreshExpressionGraph != null) {
-            Map<String, String> refreshExpressionGraphCopy = Maps.newHashMapWithExpectedSize(
-                    this.getRefreshExpressionGraph().size());
-            for (Map.Entry refreshExpressionGraphEntry : getRefreshExpressionGraph().entrySet()) {
-                refreshExpressionGraphCopy.put(refreshExpressionGraphEntry.getKey().toString(),
-                        refreshExpressionGraphEntry.getValue().toString());
-            }
-
-            uifDictionaryBeanBaseCopy.setRefreshExpressionGraph(refreshExpressionGraphCopy);
+            uifDictionaryBeanBaseCopy.setRefreshExpressionGraph(new HashMap<String, String>(
+                    this.refreshExpressionGraph));
         }
 
         if (propertyExpressions != null) {
-            Map<String, String> propertyExpressionsCopy = Maps.newHashMapWithExpectedSize(
-                    this.getPropertyExpressions().size());
-            for (Map.Entry propertyExpressionsEntry : getPropertyExpressions().entrySet()) {
-                propertyExpressionsCopy.put(propertyExpressionsEntry.getKey().toString(),
-                        propertyExpressionsEntry.getValue().toString());
-            }
-
-            uifDictionaryBeanBaseCopy.setPropertyExpressions(propertyExpressionsCopy);
+            uifDictionaryBeanBaseCopy.setPropertyExpressions(new HashMap<String, String>(this.propertyExpressions));
         }
     }
 }

@@ -92,6 +92,7 @@ public abstract class DictionaryBeanBase implements DictionaryBean {
      */
     protected <T> void copyProperties(T dictionaryBeanBase) {
         DictionaryBeanBase dictionaryBeanBaseCopy = (DictionaryBeanBase) dictionaryBeanBase;
+
         dictionaryBeanBaseCopy.setComponentCode(this.componentCode);
         dictionaryBeanBaseCopy.setNamespaceCode(this.namespaceCode);
     }

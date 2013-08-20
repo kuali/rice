@@ -178,33 +178,15 @@ public class AttributeSecurity extends UifDictionaryBeanBase {
     }
 
     /**
-     * Returns a copy of the component.
-     *
-     * @return AttributeSecurity copy of the component
-     */
-    @Override
-    public <T> T copy() {
-        T copiedClass = null;
-        try {
-            copiedClass = (T)this.getClass().newInstance();
-        }
-        catch(Exception exception) {
-            throw new RuntimeException(exception);
-        }
-
-        copyProperties(copiedClass);
-
-        return copiedClass;
-    }
-
-    /**
      * Copies the properties over for the copy method
      *
      */
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         AttributeSecurity attributeSecurityCopy = ((AttributeSecurity)component);
+
         attributeSecurityCopy.setHide(this.hide);
         attributeSecurityCopy.setMask(this.mask);
         attributeSecurityCopy.setPartialMask(this.partialMask);

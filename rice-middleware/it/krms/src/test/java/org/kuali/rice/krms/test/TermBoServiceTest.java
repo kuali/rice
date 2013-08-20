@@ -17,6 +17,7 @@ package org.kuali.rice.krms.test;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
@@ -27,8 +28,7 @@ import org.kuali.rice.test.BaselineTestCase;
 import java.util.Arrays;
 import java.util.Collections;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class TermBoServiceTest extends AbstractBoTest {
@@ -42,9 +42,52 @@ public class TermBoServiceTest extends AbstractBoTest {
 		termBoService = KrmsRepositoryServiceLocator.getTermBoService();
 	}
 
+    /**
+     * Tests whether {@code getTermSpecificationById} correctly returns
+     * {@link org.kuali.rice.core.api.exception.RiceIllegalArgumentException} when given null or empty IDs.
+     */
+    @Test
+    public void testGetTermSpecificationById_nullOrBlank() {
+        for (String id : Arrays.asList(null, "", " ")) {
+            try {
+                termBoService.getTermSpecificationById(id);
+                fail("getTermSpecificationById should have thrown " + RiceIllegalArgumentException.class.getSimpleName()
+                        + " for invalid id=" + id + ".");
+            } catch (RiceIllegalArgumentException e) {
+                // correct behavior
+            }
+        }
+    }
+
+    /**
+     * Tests whether {@code getTermSpecificationById} correctly returns null with no error when given the ID of an
+     * object that does not exist in the database.
+     */
+    @Test
+    public void testGetTermSpecificationById_invalid() {
+        TermSpecificationDefinition termSpecificationDefinition = termBoService.getTermSpecificationById("1");
+        assertNull("getTermSpecificationById should have returned null with no error", termSpecificationDefinition);
+    }
+
+    /**
+     * Tests whether {@code getTermSpecificationById} correctly returns a non-null object when given the ID of an
+     * object that exists in the database.
+     */
+    @Test
+    public void testGetTermSpecificationById_valid() {
+        TermSpecificationDefinition.Builder termSpecBuilder =
+                TermSpecificationDefinition.Builder.create(null, "1", "testTermSpec", "java.lang.String");
+        TermSpecificationDefinition termSpecificationDefinition
+                = termBoService.createTermSpecification(termSpecBuilder.build());
+
+        TermSpecificationDefinition fetchedTermSpec
+                = termBoService.getTermSpecificationById(termSpecificationDefinition.getId());
+
+        assertNotNull("getTermSpecificationById should not have returned null", fetchedTermSpec);
+    }
+
 	@Test
 	public void testPersistTermSpecificationContextIds() {
-
         ContextDefinition context1 = createContextDefinition("KR-SAP", "TermBoServiceTest-Context1", Collections.<String,String>emptyMap());
         ContextDefinition context2 = createContextDefinition("KR-SAP", "TermBoServiceTest-Context2", Collections.<String,String>emptyMap());
 

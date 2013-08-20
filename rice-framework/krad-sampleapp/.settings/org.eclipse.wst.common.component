@@ -22,7 +22,31 @@
         <dependent-module archiveName="rice-kim-framework-2.4.0-M2-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-kim-framework/rice-kim-framework">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="rice-krms-impl-2.4.0-M2-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-krms-impl/rice-krms-impl">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="rice-krms-framework-2.4.0-M2-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-krms-framework/rice-krms-framework">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="rice-krms-api-2.4.0-M2-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-krms-api/rice-krms-api">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="rice-kim-impl-2.4.0-M2-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-kim-impl/rice-kim-impl">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="rice-ksb-client-impl-2.4.0-M2-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-ksb-client-impl/rice-ksb-client-impl">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="rice-ksb-server-impl-2.4.0-M2-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-ksb-server-impl/rice-ksb-server-impl">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="rice-location-framework-2.4.0-M2-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-location-framework/rice-location-framework">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="rice-location-impl-2.4.0-M2-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-location-impl/rice-location-impl">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="rice-location-web-2.4.0-M2-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-location-web/rice-location-web">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="rice-ksb-api-2.4.0-M2-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rice-ksb-api/rice-ksb-api">

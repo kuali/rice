@@ -26,7 +26,198 @@
         <para>Identify audience</para>
     </section>
     <section><title>Data Dictionary</title>
+        <para>The Data Dictionary is a repository of metadata primarily describing data objects and their properties.
+          Attribute Definitions provide the metadata about the attributes (i.e. fields) of a data object.
+          The KNS2KRAD Conversion Script will automate part of the conversion for your data dictionary files.
+          Some data dictionary attributes require no conversion, they are virtually identical between KNS and KRAD.
+          These items will be passed through by the conversion script. Some items will be converted from KNS to KRAD by the script.
+          Others will require manual conversion. </para>
+      <para>The subsections below identify the Business Object bean properties, Validation Patterns, and Control Definitions are converted by the script and those which require manual conversion</para>
+      <section><title>Business Object Entry Bean</title>
+        <para>
+          <itemizedlist>
+            <listitem><para>Parent bean for data dictionary beans in KRAD is  <emphasis role="keyword">DataObjectEntry</emphasis>
+              instead of the KNS <emphasis role="keyword">BusinessObjectEntry</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+            </listitem>
+            <listitem>
+              <para>The data object class is specified via the <emphasis role="keyword"
+                      >dataObjectClass</emphasis> property and is no longer specified
+                via the <emphasis role="keyword">businessObjectClass</emphasis>. A <emphasis role="keyword"
+                        >businessObject</emphasis> is no longer required and any object can
+                be used. [KNS line: n/a, KRAD line: 2] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+            </listitem>
+          </itemizedlist>
+        </para>
+      </section>
+      <section><title>Validation Patterns</title>
+        <para>The KNS validation patterns are supported in KRAD.</para>
+        <para>
+          <itemizedlist>
+            <listitem><para>The property <emphasis role="keyword">validCharactersConstraint</emphasis> is used in KRAD in place of the KNS property <emphasis role="keyword">validationPattern</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+            </listitem>
+            <listitem><para>The constraint <emphasis role="keyword">AnyCharacterPatternConstraint</emphasis> replaces the KNS pattern <emphasis role="keyword">AnyCharacterValidationPattern</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+            </listitem>
+            <listitem><para>The constraint <emphasis role="keyword">AlphaNumericPatternConstraint</emphasis> replaces the KNS pattern <emphasis role="keyword">AlphaNumericValidationPattern</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+            </listitem>
+            <listitem><para>The constraint <emphasis role="keyword">AlphaPatternConstraint</emphasis> replaces the KNS pattern <emphasis role="keyword">AlphaValidationPattern</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+            </listitem>
+            <listitem><para>The constraint <emphasis role="keyword">CharsetPatternConstraint</emphasis> replaces the KNS pattern <emphasis role="keyword">CharsetValidationPattern</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+            </listitem>
+            <listitem><para>The constraint <emphasis role="keyword">RegexPatternConstraint</emphasis> replaces the KNS pattern <emphasis role="keyword">RegexValidationPattern</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+            </listitem>
+            <listitem><para>The constraint <emphasis role="keyword">FixedPointPatternConstraint</emphasis> replaces the KNS pattern <emphasis role="keyword">FixedPointValidationPattern</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+            </listitem>
+            <listitem><para>The constraint <emphasis role="keyword">FloatingPointPatternConstraint</emphasis> replaces the KNS pattern <emphasis role="keyword">FloatingPointValidationPattern</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+            </listitem>
+            <listitem><para>The constraint <emphasis role="keyword">ZipcodePatternConstraint</emphasis> replaces the KNS pattern <emphasis role="keyword">ZipcodeValidationPattern</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+            </listitem>
+            <listitem><para>The constraint <emphasis role="keyword">YearPatternConstraint</emphasis> replaces the KNS pattern <emphasis role="keyword">YearValidationPattern</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+            </listitem>
+            <listitem><para>The constraint <emphasis role="keyword">TimestampPatternConstraint</emphasis> replaces the KNS pattern <emphasis role="keyword">TimestampValidationPattern</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+            </listitem>
+            <listitem><para>The constraint <emphasis role="keyword">PhoneUSPatternConstraint</emphasis> replaces the KNS pattern <emphasis role="keyword">PhoneNumberValidationPattern</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+            </listitem>
+            <listitem><para>The constraint <emphasis role="keyword">MonthPatternConstraint</emphasis> replaces the KNS pattern <emphasis role="keyword">MonthValidationPattern</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+            </listitem>
+            <listitem><para>The constraint <emphasis role="keyword">JavaClassPatternConstraint</emphasis> replaces the KNS pattern <emphasis role="keyword">JavaClassValidationPattern</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+            </listitem>
+            <listitem><para>The constraint <emphasis role="keyword">EmailPatternConstraint</emphasis> replaces the KNS pattern <emphasis role="keyword">EmailAddressValidationPattern</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+            </listitem>
+            <listitem><para>The constraint <emphasis role="keyword">DatePatternConstraint</emphasis> replaces the KNS pattern <emphasis role="keyword">DateValidationPattern</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+            </listitem>
+            <listitem><para>The constraint <emphasis role="keyword">DatePatternConstraint</emphasis> replaces the KNS pattern <emphasis role="keyword">UTF8AnyCharacterValidationPattern</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-manualconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+            </listitem>
+          </itemizedlist>
+        </para>
+      </section>
+      <section><title>Controls</title>
         <para></para>
+        <section><title>Base ControlDefinition bean</title>
+          <para>
+            <itemizedlist>
+              <listitem><para>The property <emphasis role="keyword">controlField</emphasis> replaces the KNS <emphasis role="keyword">control</emphasis> to define the control used to represent this field.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+              </listitem>
+              <listitem><para>The property <emphasis role="keyword">control</emphasis> replaces the KNS <emphasis role="keyword">control</emphasis> has a new meaning. It is used to control the display of the field value.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-manualconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+              </listitem>
+
+            </itemizedlist>
+          </para>
+        </section>
+        <section><title>Button Control</title>
+          <para>
+            <itemizedlist>
+              <listitem><para>The property <emphasis role="keyword">Uif-TextControl</emphasis> replaces the KNS <emphasis role="keyword">TextControlDefinition</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </section>
+        <section><title>Checkbox Control</title>
+          <para>
+            <itemizedlist>
+              <listitem><para>The property <emphasis role="keyword">Uif-CheckboxControl</emphasis> replaces the KNS <emphasis role="keyword">CheckboxControlDefinition</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </section>
+        <section><title>Currency Control</title>
+          <para>
+            <itemizedlist>
+              <listitem><para>No conversion support for Currency Control yet.</para>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </section>
+        <section><title>File Control</title>
+          <para>
+            <itemizedlist>
+              <listitem><para>The property <emphasis role="keyword">Uif-FileControl</emphasis> replaces the KNS <emphasis role="keyword">FileControlDefinition</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </section>
+        <section><title>Hidden Control</title>
+          <para>
+            <itemizedlist>
+              <listitem><para>The property <emphasis role="keyword">Uif-HiddenControl</emphasis> replaces the KNS <emphasis role="keyword">HiddenControlDefinition</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </section>
+        <section><title>Kuali User Control</title>
+          <para>
+            <itemizedlist>
+              <listitem><para>No conversion support for Kuali User Control yet.</para>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </section>
+        <section><title>Link Control</title>
+          <para>
+            <itemizedlist>
+              <listitem><para>No conversion support for Link Control yet.</para>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </section>
+        <section><title>Lookup Hidden Control</title>
+          <para>
+            <itemizedlist>
+              <listitem><para>No conversion for Lookup Hidden Control yet.</para>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </section>
+        <section><title>TextArea Control</title>
+          <para>
+            <itemizedlist>
+              <listitem><para>The property <emphasis role="keyword">Uif-TextAreaControl</emphasis> replaces the KNS <emphasis role="keyword">TextareaControlDefinition</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </section>
+        <section><title>Text Control</title>
+          <para>
+            <itemizedlist>
+              <listitem><para>The property <emphasis role="keyword">Uif-TextControl</emphasis> replaces the KNS <emphasis role="keyword">TextControlDefinition</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </section>
+        <section><title>Workflow Workgroup Control</title>
+          <para>
+            <itemizedlist>
+              <listitem><para>No conversion for Lookup Hidden Control yet.</para></listitem>
+            </itemizedlist>
+          </para>
+        </section>
+        <section><title>Radio Control</title>
+          <para>
+            <itemizedlist>
+              <listitem><para>TODO: Fill Me In!</para>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </section>
+        <section><title>Select Control</title>
+          <para>
+            <itemizedlist>
+              <listitem><para>The property <emphasis role="keyword">Uif-DropdownControl</emphasis> replaces the KNS <emphasis role="keyword">SelectControlDefinition</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+              </listitem>
+              <listitem><para>The property <emphasis role="keyword">Uif-DropdownControl</emphasis> also replaces the KNS <emphasis role="keyword">MultiselectControlDefinition</emphasis>
+                To specify multi value select capability, set <emphasis role="keyword"></emphasis> to ??.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </section>
+        <section><title>Date Control</title>
+          <para>
+            <itemizedlist>
+              <listitem><para>The property <emphasis role="keyword">Uif-DateControl</emphasis> replaces the KNS <emphasis role="keyword">DateControlDefinition</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </section>
+      </section>
     </section>
     <section><title>Inquiry</title><para></para>
         <section><title>Inquirable / KualiInquirableImpl</title>

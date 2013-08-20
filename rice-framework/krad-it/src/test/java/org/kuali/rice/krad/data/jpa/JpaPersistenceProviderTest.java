@@ -12,14 +12,17 @@ import org.kuali.rice.krad.data.CompoundKey;
 import org.kuali.rice.krad.data.DataObjectWrapper;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.data.PersistenceOption;
+import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
 import org.kuali.rice.krad.data.provider.PersistenceProvider;
 import org.kuali.rice.krad.test.KRADTestCase;
-import org.kuali.rice.krad.test.document.bo.AccountExtension;
 import org.kuali.rice.krad.test.document.bo.AccountType;
 import org.kuali.rice.krad.test.document.bo.SimpleAccount;
+import org.kuali.rice.krad.test.document.bo.SimpleAccountExtension;
 import org.kuali.rice.test.BaselineTestCase;
+import org.kuali.rice.test.TestHarnessServiceLocator;
 import org.springframework.transaction.UnexpectedRollbackException;
 
+import javax.sql.DataSource;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -267,7 +270,7 @@ public class JpaPersistenceProviderTest extends KRADTestCase {
         SimpleAccount a = (SimpleAccount)o;
         addUnlinkedReferences(a);
         //a.getAccountManager().setAmId(Long.parseLong(a.getNumber()));
-        AccountExtension e = (AccountExtension) a.getExtension();
+        SimpleAccountExtension e = (SimpleAccountExtension) a.getExtension();
         e.setAccountTypeCode(e.getAccountType().getAccountTypeCode());
         e.setNumber(a.getNumber());
     }
@@ -277,7 +280,7 @@ public class JpaPersistenceProviderTest extends KRADTestCase {
         //AccountManager am = new AccountManager();
         //am.setUserName(RandomStringUtils.randomAlphanumeric(10));
         //a.setAccountManager(am);
-        AccountExtension extension = new AccountExtension();
+        SimpleAccountExtension extension = new SimpleAccountExtension();
         AccountType at = new AccountType();
         at.setName(RandomStringUtils.randomAlphanumeric(10));
         at.setAccountTypeCode(RandomStringUtils.randomAlphanumeric(2));
@@ -294,8 +297,9 @@ public class JpaPersistenceProviderTest extends KRADTestCase {
         return a.getNumber();
     }
 
-    protected Object getNextTestObjectId() {
-        return KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("trvl_id_seq").toString();
+    protected String getNextTestObjectId() {
+        DataSource dataSource = TestHarnessServiceLocator.getDataSource();
+        return MaxValueIncrementerFactory.getIncrementer(dataSource, "trvl_id_seq").nextStringValue();
     }
 
     protected void setTestObjectPK(Object o, Object key) {
@@ -316,8 +320,8 @@ public class JpaPersistenceProviderTest extends KRADTestCase {
         assertEquals(expected.getAmId(), actual.getAmId());
         assertEquals(expected.getName(), actual.getName());
         if (expected.getExtension() != null) {
-            AccountExtension e1 = (AccountExtension) expected.getExtension();
-            AccountExtension e2 = (AccountExtension) actual.getExtension();
+            SimpleAccountExtension e1 = (SimpleAccountExtension) expected.getExtension();
+            SimpleAccountExtension e2 = (SimpleAccountExtension) actual.getExtension();
             assertEquals(e1.getNumber(), e2.getNumber());
             assertEquals(e1.getAccountTypeCode(), e2.getAccountTypeCode());
 

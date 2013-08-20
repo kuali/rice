@@ -206,9 +206,6 @@ class SpringBeanTransformer {
 
     def genericGatherAttributes = { Node beanNode, Map searchAttrs ->
         def attributes = [:];
-        if (beanNode.@id) {
-            attributes.put("id", beanNode.@id);
-        }
 
         // locate attributes and special cases (i.e. '*name')
         beanNode.attributes().each { key, value ->
@@ -255,9 +252,16 @@ class SpringBeanTransformer {
 
     // helper closures - attribute conditional checks
 
-    def gatherAttributeNameAttribute = { Node beanNode -> return genericGatherAttributes(beanNode, ["*attributeName": "p:propertyName"]); }
+    def gatherIdAttribute = {Node beanNode ->
+        return genericGatherAttributes(beanNode, ["*id": "id"]);
+    }
+    def gatherAttributeNameAttribute = { Node beanNode ->
+        return genericGatherAttributes(beanNode, ["*attributeName": "p:propertyName"]);
+    }
 
-    def gatherNameAttribute = { Node beanNode -> return genericGatherAttributes(beanNode, ["*name": "p:propertyName"]); }
+    def gatherNameAttribute = { Node beanNode ->
+        return genericGatherAttributes(beanNode, ["*name": "p:propertyName"]);
+    }
 
     // helper closures - bean transforms
     def genericNodeTransform = { NodeBuilder builderDelegate, String nodeType, Map<String, String> attributes, String value -> builderDelegate.createNode(nodeType, attributes, value); }

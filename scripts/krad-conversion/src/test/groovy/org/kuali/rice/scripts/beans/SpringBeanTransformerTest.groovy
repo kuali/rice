@@ -126,7 +126,6 @@ class SpringBeanTransformerTest {
         def rootBean = getSimpleSpringXmlNode();
         def searchAttrs = ["*name": "p:propertyName"];
         def attributes = springBeanTransformer.genericGatherAttributes(rootBean.bean[0], searchAttrs);
-        Assert.assertTrue("attribute list should contain id", attributes["id"] != null);
         Assert.assertTrue("attribute list should contain propertyName", attributes["p:propertyName"] != null);
 
         rootBean.bean[0].replaceNode {

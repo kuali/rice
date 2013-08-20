@@ -64,32 +64,7 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
     }
 
     /**
-     * Transforms lookup field properties into criteria fields
-     *
-     * @param builder
-     * @param beanNode
-     */
-    def transformLookupFieldsProperty(NodeBuilder builder, Node beanNode) {
-        transformPropertyBeanList(builder, beanNode, ["lookupFields": "criteriaFields"], gatherAttributeNameAttribute, lookupCriteriaFieldBeanTransform);
-    }
-
-    /**
-     * Transforms result field properties into data fields
-     *
-     * @param builder
-     * @param beanNode
-     */
-    def transformResultFieldsProperty(NodeBuilder builder, Node beanNode) {
-        transformPropertyBeanList(builder, beanNode, ["resultFields": "resultFields"], gatherAttributeNameAttribute, dataFieldBeanTransform);
-    }
-
-
-    /**
      * Replaces menubar property with uif message
-     *
-     * @param builder
-     * @param node
-     * @return
      */
     def transformMenubarProperty(NodeBuilder builder, Node node) {
         def menubarPropertyNode = node.property.find { it.@name == "menubar" };
@@ -106,10 +81,6 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
 
     /**
      * Replaces defaultSort with defaultSortAscending and defaultSortAttributeNames
-     *
-     * @param builder
-     * @param node
-     * @return
      */
     def transformDefaultSortProperty(NodeBuilder builder, Node node) {
         def defaultSortPropertyNode = node.property.find { it.@name == "defaultSort" };
@@ -126,10 +97,6 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
 
     /**
      * Replaces numOfColumns with criteriaGroup.layoutManager.numberOfColumns
-     *
-     * @param builder
-     * @param node
-     * @return
      */
     def transformNumOfColumns(NodeBuilder builder, Node node) {
         def numOfColumnsPropertyText = getPropertyValue(node, "numOfColumns");
@@ -139,6 +106,51 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
                 builder.property(name: "criteriaGroup.layoutManager.numberOfColumns", value: numOfColumns * 2)
             }
         }
+    }
+
+    /**
+     * Transforms lookup field properties into criteria fields
+     */
+    def transformLookupFieldsProperty(NodeBuilder builder, Node beanNode) {
+        transformPropertyBeanList(builder, beanNode, ["lookupFields": "criteriaFields"], gatherLookupFieldAttributes, lookupCriteriaFieldBeanTransform);
+    }
+
+    /**
+     *  Retrieve attributes of the criteriaField and translate them to their KRAD equivalent.
+     */
+    def gatherLookupFieldAttributes  = { Node beanNode ->
+        return (gatherIdAttribute(beanNode)
+            + gatherAttributeNameAttribute(beanNode)
+            + gatherNoLookupAttribute(beanNode)
+        );
+    }
+
+    /**
+     * Convert the noLookup attribute to quickfinder.render.  The boolean value needs to be inverted as well.
+     */
+    def gatherNoLookupAttribute = { Node beanNode ->
+        def noLookup = beanNode.attributes.find { it.@name == "noLookup"};
+        if (noLookup) {
+            return ["p:quickfinder.render" : "false"];
+        } else {
+            return [:];
+        }
+    }
+
+    /**
+     * Transforms result field properties into data fields
+     */
+    def transformResultFieldsProperty(NodeBuilder builder, Node beanNode) {
+        transformPropertyBeanList(builder, beanNode, ["resultFields": "resultFields"], gatherResultFieldAttributes, dataFieldBeanTransform);
+    }
+
+    /**
+     *  Retrieve attributes of the resultField and translate them to their KRAD equivalent.
+     */
+    def gatherResultFieldAttributes  = { Node beanNode ->
+        return (gatherIdAttribute(beanNode)
+                + gatherAttributeNameAttribute(beanNode)
+        );
     }
 
 }

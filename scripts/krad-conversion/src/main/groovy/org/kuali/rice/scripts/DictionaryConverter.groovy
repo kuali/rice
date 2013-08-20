@@ -339,7 +339,7 @@ class DictionaryConverter {
      */
     def modifyBeanSchema(String fileText) {
         // replace and reinsert namespace spring property namespace
-        fileText = fileText.replace("xmlns:p=" + "\"$pNamespaceSchema\"", "")
+        fileText = fileText.replace(" xmlns:p=" + "\"$pNamespaceSchema\"", "")
         fileText = fileText.replace(xsiNamespaceSchema, "$xsiNamespaceSchema xmlns:p=" + "\"$pNamespaceSchema\"")
         return fileText
     }

@@ -75,12 +75,32 @@
                             to get started and use eDocLite.</para>
                     </listitem>
                    <listitem>
-                        <para>KNS - See the <link xlink:show="new"
+                            <para>KNS - See the <link xlink:show="new"
                                     xlink:href="http://site.kuali.org/rice/2.2.5/reference/html/portal.html"
                                     >2.2.5 documentation</link> for reference information on the
                                 deprecated, older development framework. KNS is expected to be
                                 removed in Rice 3.0.</para>
-                    </listitem>
+                        </listitem>
+                        <listitem>
+                            <para><emphasis role="bold">KNS to KRAD Conversion Guide</emphasis>
+                                     (<link xlink:show="new" xlink:href="KNS2KRAD_ConvGuide.html"
+                                    >HTML</link> /<link xlink:show="new"
+                                    xlink:href="../pdf/KNS2KRAD_ConvGuide.pdf">PDF</link> ) - Guide
+                                on how to convert from the KNS framework to KRAD. This document
+                                consists of a few different parts:<itemizedlist>
+                                    <listitem>
+                                        <para>Conversion from KNS user interface and data dictionary
+                                            to KRAD UIF</para>
+                                    </listitem>
+                                    <listitem>
+                                        <para>Conversion from OJB to JPA</para>
+                                    </listitem>
+                                    <listitem>
+                                        <para>Running automated scripts to help perform the
+                                            conversion</para>
+                                    </listitem>
+                                </itemizedlist></para>
+                        </listitem>
                 </itemizedlist>
                 </listitem>
                 <listitem>

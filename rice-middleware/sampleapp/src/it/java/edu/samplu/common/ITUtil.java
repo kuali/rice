@@ -329,6 +329,7 @@ public class ITUtil {
 
     private static void failWithReportInfo(String contents, String linkLocator, Failable failable, String message) {
         final String incidentReportInformation = extractIncidentReportInfo(contents, linkLocator, message);
+        JiraAwareFailureUtil.failOnMatchedJira(contents, linkLocator, failable);
         failable.fail(incidentReportInformation);
     }
 

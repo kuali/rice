@@ -57,6 +57,9 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("after clicking Expand All", "KULRICE-3833 KRAD Sampleapp (Travel) Account Inquiry Collapse all toggles all and Expand all does nothing");
 
         jiraMatches.put("Breadcrumb number 6", "KULRICE-10206 KRAD Demo Kitchen Sink Lookup tab throws ClassNotFoundorg.kuali.rice.krad.demo.travel.account.TravelAccount");
+
+        jiraMatches.put("Lookupable is null", "KULRICE-10207 DemoTravelAccountMultivalueLookUpSmokeTest Lookupable is null.");
+
         //jiraMatches.put("", "");
     }
 

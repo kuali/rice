@@ -82,7 +82,7 @@ public class BreadcrumbSmokeTest extends SmokeTestBase {
         // The Second selection of the second ▼
         // you can't just click by link text as the same clickable text is on the left navigation.
         waitAndClickByXpath(SECOND_BREADCRUMB_NAV_XPATH +"/li[" + pageNumber + "]/a");
-        waitForElementPresentById("TopLink" + pageNumber); // bottom jump to top link
+        waitForElementPresentById("TopLink" + pageNumber, "Breadcrumb number " + pageNumber + " failure"); // bottom jump to top link
         driver.getCurrentUrl().contains("pageId=UifCompView-Page" + pageNumber);
     }
 

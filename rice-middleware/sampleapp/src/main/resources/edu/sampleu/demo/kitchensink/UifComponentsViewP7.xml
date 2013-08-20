@@ -29,6 +29,7 @@
      <property name="layoutManager.sequenceFieldPrototype">
        <bean parent="Uif-InputField" p:propertyName="field1" p:readOnly="true"/>
      </property>
+     <property name="useServerPaging" value="true"/>
      <property name="layoutManager.richTable.render" value="false"/>
      <property name="items">
        <list>

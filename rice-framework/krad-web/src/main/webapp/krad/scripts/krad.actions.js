@@ -367,7 +367,7 @@ function validateLineFields(controlsToValidate) {
  * @param linkElement the link clicked with "num" data specifying the page to retrieve
  * @param collectionId the collection by id to retrieve the new page from
  */
-function retrieveStackedPage(linkElement, collectionId) {
+function retrieveCollectionPage(linkElement, collectionId) {
     var link = jQuery(linkElement);
     var parentLI = link.parent();
 
@@ -377,7 +377,7 @@ function retrieveStackedPage(linkElement, collectionId) {
     }
 
     var pageNumber = jQuery(linkElement).data(kradVariables.PAGE_NUMBER_DATA);
-    retrieveComponent(collectionId, kradVariables.RETRIEVE_STACKED_PAGE_METHOD_TO_CALL,
+    retrieveComponent(collectionId, kradVariables.RETRIEVE_COLLECTION_PAGE_METHOD_TO_CALL,
             null, {pageNumber: pageNumber}, true);
 }
 

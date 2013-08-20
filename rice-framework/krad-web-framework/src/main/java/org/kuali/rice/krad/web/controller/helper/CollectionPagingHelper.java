@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2013 The Kuali Foundation
+/*
+ * Copyright 2006-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.krad.web.controller.helper;
 
 import org.kuali.rice.krad.uif.UifConstants;
@@ -28,7 +29,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class StackedPagingHelper {
+public class CollectionPagingHelper {
 
     /**
      * Process the paging request by determining the displayStart value based on the page requested
@@ -62,7 +63,12 @@ public class StackedPagingHelper {
                     displayStart = displayStart + displayLength;
                 } else if (page.equals(UifConstants.PageRequest.LAST)) {
                     int lastPageSize = modelCollection.size() % displayLength;
-                    displayStart = modelCollection.size() - lastPageSize;
+                    if (lastPageSize != 0){
+                        displayStart = modelCollection.size() - lastPageSize;
+                    }
+                    else{
+                        displayStart = modelCollection.size() - displayLength;
+                    }
                 } else {
                     displayStart = ((Integer.parseInt(page.trim()) - 1) * displayLength);
                 }

@@ -118,7 +118,7 @@ JavascriptKradVariables.prototype = {
     PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS: "uif-progressiveDisclosure-highlight",
     REFRESH_METHOD_TO_CALL: "refresh",
     RETRIEVE_MESSAGE_METHOD_TO_CALL: "retrieveMessage",
-    RETRIEVE_STACKED_PAGE_METHOD_TO_CALL: "retrieveStackedPage",
+    RETRIEVE_COLLECTION_PAGE_METHOD_TO_CALL: "retrieveCollectionPage",
     RETURN_TYPE_UPDATE_COMPONENT: "update-component",
     RETURN_FROM_LIGHTBOX_METHOD_TO_CALL: "returnFromLightbox",
     RETURN_SELECTED_ACTION_CLASS: "uif-returnSelectedAction",

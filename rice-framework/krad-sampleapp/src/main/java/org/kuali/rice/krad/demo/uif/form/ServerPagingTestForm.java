@@ -39,6 +39,7 @@ public class ServerPagingTestForm extends UifFormBase {
 
     List<ServerPagingTestObject> collection1;
     private List<UITestObject> collection2 = new ArrayList<UITestObject>();
+    List<ServerPagingTestObject> collection3;
 
     public ServerPagingTestForm() {
         int collection1Size = 1000;
@@ -117,6 +118,8 @@ public class ServerPagingTestForm extends UifFormBase {
         collection2.add(new UITestObject("I", "102", "200", "300"));
         collection2.add(new UITestObject("I", "103", "200", "300"));
         collection2.add(new UITestObject("I", "104", "200", "300"));
+
+        this.collection3 = new ArrayList<ServerPagingTestObject>(collection1);
     }
 
     public String getThemeName() {
@@ -157,5 +160,13 @@ public class ServerPagingTestForm extends UifFormBase {
 
     public void setCollection2(List<UITestObject> collection2) {
         this.collection2 = collection2;
+    }
+
+    public List<ServerPagingTestObject> getCollection3() {
+        return collection3;
+    }
+
+    public void setCollection3(List<ServerPagingTestObject> collection3) {
+        this.collection3 = collection3;
     }
 }

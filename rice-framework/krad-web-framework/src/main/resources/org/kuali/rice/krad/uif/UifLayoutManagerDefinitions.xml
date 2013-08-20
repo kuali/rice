@@ -206,6 +206,9 @@
     <property name="selectFieldPrototype">
       <bean parent="Uif-SelectCollectionItemField"/>
     </property>
+    <property name="pagerWidget">
+      <bean parent="Uif-Pager"/>
+    </property>
     <property name="richTable">
       <bean parent="Uif-PagedRichTable"/>
     </property>

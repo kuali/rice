@@ -41,8 +41,10 @@ import org.kuali.rice.krad.uif.util.ColumnCalculationInfo;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
+import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.widget.Pager;
 import org.kuali.rice.krad.uif.widget.RichTable;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -95,6 +97,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     private List<Field> allRowFields;
     private List<Field> firstRowFields;
 
+    private Pager pagerWidget;
     private RichTable richTable;
     private boolean headerAdded;
 
@@ -258,6 +261,15 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                     "")
                     + "}");
         }
+
+        // Calculate the number of pages for the pager widget if we are using server paging
+        if ((this.getRichTable() == null || !this.getRichTable().isRender())
+                && ((CollectionGroup) container).isUseServerPaging()
+                && this.getPagerWidget() != null) {
+            // Set the appropriate page, total pages, and link script into the Pager
+            CollectionLayoutUtils.setupPagerWidget(pagerWidget, collectionGroup, model);
+        }
+
     }
 
     /**
@@ -1020,6 +1032,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     public List<Component> getComponentsForLifecycle() {
         List<Component> components = super.getComponentsForLifecycle();
 
+        components.add(pagerWidget);
         components.add(richTable);
         components.add(addLineGroup);
         components.addAll(headerLabels);
@@ -1364,6 +1377,29 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      */
     public List<Field> getFirstRowFields() {
         return firstRowFields;
+    }
+
+    /**
+     * The Pager widget for this TableLayoutManager which defines settings for paging
+     *
+     * <p>The settings in this widget are only used by TableLayoutManagers which DO NOT take advantage of
+     * the RichTable option (this has its own paging implementation).  To turn off RichTable and use a basic
+     * table with server paging set richTable.render="false" and useServerPaging="true" on the CollectionGroup
+     * which uses this layout manager.</p>
+     *
+     * @return the Pager widget
+     */
+    public Pager getPagerWidget() {
+        return pagerWidget;
+    }
+
+    /**
+     * Set the Pager widget
+     *
+     * @param pagerWidget
+     */
+    public void setPagerWidget(Pager pagerWidget) {
+        this.pagerWidget = pagerWidget;
     }
 
     /**
@@ -2156,6 +2192,10 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                 }
             }
             tableLayoutManagerCopy.setFirstRowFields(firstRowFieldsCopy);
+        }
+
+        if (this.pagerWidget != null) {
+            tableLayoutManagerCopy.setPagerWidget((Pager)this.pagerWidget.copy());
         }
 
         if (this.richTable != null) {

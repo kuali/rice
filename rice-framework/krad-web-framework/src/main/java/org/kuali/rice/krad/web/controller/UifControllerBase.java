@@ -35,8 +35,8 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.UrlFactory;
+import org.kuali.rice.krad.web.controller.helper.CollectionPagingHelper;
 import org.kuali.rice.krad.web.controller.helper.DataTablesPagingHelper;
-import org.kuali.rice.krad.web.controller.helper.StackedPagingHelper;
 import org.kuali.rice.krad.web.form.HistoryFlow;
 import org.kuali.rice.krad.web.form.HistoryManager;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -1079,7 +1079,7 @@ public abstract class UifControllerBase {
     }
 
     /**
-     * Retrieve a page defined by the page number parameter for a stacked collection
+     * Retrieve a page defined by the page number parameter for a collection
      *
      * @param form -  Holds properties necessary to determine the <code>View</code> instance that will be used to
      * render
@@ -1090,13 +1090,13 @@ public abstract class UifControllerBase {
      * @return the  ModelAndView object
      * @throws Exception
      */
-    @RequestMapping(params = "methodToCall=retrieveStackedPage")
-    public ModelAndView retrieveStackedPage(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+    @RequestMapping(params = "methodToCall=retrieveCollectionPage")
+    public ModelAndView retrieveCollectionPage(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
         String collectionId = request.getParameter(UifParameters.UPDATE_COMPONENT_ID);
         String pageNumber = request.getParameter(UifConstants.PageRequest.PAGE_NUMBER);
 
-        StackedPagingHelper pagingHelper = new StackedPagingHelper();
+        CollectionPagingHelper pagingHelper = new CollectionPagingHelper();
         pagingHelper.processPagingRequest(form.getPostedView(), collectionId, form, pageNumber);
 
         return getUIFModelAndView(form);

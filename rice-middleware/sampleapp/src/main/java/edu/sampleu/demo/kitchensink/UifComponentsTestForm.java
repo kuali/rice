@@ -271,6 +271,8 @@ public class UifComponentsTestForm extends UifFormBase {
         list1.add(new UITestObject("132", "14", "15", "16", new UITestObject("1", "1", "1", "1")));
         list1.add(new UITestObject("2132", "143", "151", "126", new UITestObject("1", "1", "1", "1")));
         list1.add(new UITestObject("1332", "144", "155", "156", new UITestObject("1", "1", "1", "1")));
+        list1.add(new UITestObject("2132", "143", "151", "126", new UITestObject("1", "1", "1", "1")));
+        list1.add(new UITestObject("1332", "144", "155", "156", new UITestObject("1", "1", "1", "1")));
 
         list2.add(new UITestObject("A", "B", "C", "D"));
         list2.add(new UITestObject("1", "2", "3", "4"));

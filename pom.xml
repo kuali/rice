@@ -16,7 +16,8 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.kuali.pom</groupId>
@@ -199,8 +200,12 @@
 
     <!-- database drivers location -->
     <jdbc.drivers.location>${env.M2_REPO}</jdbc.drivers.location>
-    <mysql-connector-java.jar.location>${jdbc.drivers.location}/mysql/${mysql.jdbc.artifactId}/${mysql.jdbc.version}/${mysql.jdbc.artifactId}-${mysql.jdbc.version}.jar</mysql-connector-java.jar.location>
-    <ojdbc14.jar.location>${jdbc.drivers.location}/com/oracle/${oracle.jdbc.artifactId}/${oracle.jdbc.version}/${oracle.jdbc.artifactId}-${oracle.jdbc.version}.jar</ojdbc14.jar.location>
+    <mysql-connector-java.jar.location>
+      ${jdbc.drivers.location}/mysql/${mysql.jdbc.artifactId}/${mysql.jdbc.version}/${mysql.jdbc.artifactId}-${mysql.jdbc.version}.jar
+    </mysql-connector-java.jar.location>
+    <ojdbc14.jar.location>
+      ${jdbc.drivers.location}/com/oracle/${oracle.jdbc.artifactId}/${oracle.jdbc.version}/${oracle.jdbc.artifactId}-${oracle.jdbc.version}.jar
+    </ojdbc14.jar.location>
 
     <cobertura.maven.plugin.version>2.5.1</cobertura.maven.plugin.version>
     <web.launch.context.path>/kr-dev</web.launch.context.path>
@@ -231,7 +236,9 @@
     <plugin.http.version>1.0.5</plugin.http.version>
 
     <!-- Location where the spring instrumentation jar can be found -->
-    <spring.instrument.javaagent>-javaagent:${settings.localRepository}/org/springframework/spring-instrument/${spring.version}/spring-instrument-${spring.version}.jar</spring.instrument.javaagent>
+    <spring.instrument.javaagent>
+      -javaagent:${settings.localRepository}/org/springframework/spring-instrument/${spring.version}/spring-instrument-${spring.version}.jar
+    </spring.instrument.javaagent>
 
   </properties>
 
@@ -379,6 +386,7 @@
                 <exclude>LICENSE.txt</exclude>
                 <exclude>scripts/bean-rename/beanReplacements.txt</exclude>
                 <exclude>scripts/bean-rename/cssReplacements.txt</exclude>
+                <exclude>scripts/krad-conversion/**/*.conversion.properties</exclude>
                 <exclude>**/jquery.*</exclude>
                 <exclude>**/kew/scripts/cal2.js</exclude>
                 <exclude>**/kew/scripts/cal_conf2.js</exclude>
@@ -965,11 +973,13 @@
               <exclude>${maven.failsafe.excludes}</exclude>
             </excludes>
             <forkMode>${maven.failsafe.forkmode}</forkMode>
-            <forkedProcessTimeoutInSeconds>${maven.failsafe.forkedProcessTimeoutInSeconds}</forkedProcessTimeoutInSeconds>
+            <forkedProcessTimeoutInSeconds>${maven.failsafe.forkedProcessTimeoutInSeconds}
+            </forkedProcessTimeoutInSeconds>
             <reportFormat>plain</reportFormat>
             <argLine>-Dalt.config.location="${build.alt.config.location}" -Xmx1024m -XX:MaxPermSize=512m
               -XX:+UseConcMarkSweepGC
-              -XX:+CMSClassUnloadingEnabled ${spring.instrument.javaagent}</argLine>
+              -XX:+CMSClassUnloadingEnabled ${spring.instrument.javaagent}
+            </argLine>
           </configuration>
           <dependencies>
             <dependency>
@@ -1032,21 +1042,21 @@
                     </goals>
                   </pluginExecutionFilter>
                   <action>
-                    <ignore />
+                    <ignore/>
                   </action>
                 </pluginExecution>
                 <pluginExecution>
-                	<pluginExecutionFilter>
-                		<groupId>org.kuali.maven.plugins</groupId>
-                		<artifactId>spring-maven-plugin</artifactId>
-                		<versionRange>[2.0.6,)</versionRange>
-                		<goals>
-                			<goal>load</goal>
-                		</goals>
-                	</pluginExecutionFilter>
-                	<action>
-                		<ignore />
-                	</action>
+                  <pluginExecutionFilter>
+                    <groupId>org.kuali.maven.plugins</groupId>
+                    <artifactId>spring-maven-plugin</artifactId>
+                    <versionRange>[2.0.6,)</versionRange>
+                    <goals>
+                      <goal>load</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore/>
+                  </action>
                 </pluginExecution>
               </pluginExecutions>
             </lifecycleMappingMetadata>
@@ -1226,7 +1236,7 @@
             <configuration>
               <target>
                 <delete quiet="true">
-                  <fileset dir="${rice.docbook.dest}/pdf" includes="**/*.fo" />
+                  <fileset dir="${rice.docbook.dest}/pdf" includes="**/*.fo"/>
                 </delete>
               </target>
             </configuration>
@@ -1620,9 +1630,9 @@
             <artifactId>geronimo-javamail_1.4_spec</artifactId>
           </exclusion>
           <exclusion>
-              <groupId>org.apache.velocity</groupId>
-              <artifactId>velocity</artifactId>
-          </exclusion>          
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+          </exclusion>
         </exclusions>
       </dependency>
 
@@ -2228,50 +2238,50 @@
       </dependency>
 
       <dependency>
-          <groupId>com.google.javascript</groupId>
-         <artifactId>closure-compiler</artifactId>
-         <version>${closure.version}</version>
+        <groupId>com.google.javascript</groupId>
+        <artifactId>closure-compiler</artifactId>
+        <version>${closure.version}</version>
       </dependency>
 
       <dependency>
-          <groupId>org.apache.velocity</groupId>
-          <artifactId>velocity-tools</artifactId>
-          <version>${velocity.tools.version}</version>
-          <exclusions>
-              <exclusion>
-                  <groupId>commons-digester</groupId>
-                  <artifactId>commons-digester</artifactId>
-              </exclusion>
-              <exclusion>
-                  <groupId>commons-beanutils</groupId>
-                  <artifactId>commons-beanutils</artifactId>
-              </exclusion>
-              <exclusion>
-                  <groupId>org.apache.struts</groupId>
-                  <artifactId>struts-taglib</artifactId>
-              </exclusion>
-              <exclusion>
-                  <groupId>org.apache.struts</groupId>
-                  <artifactId>struts-tiles</artifactId>
-              </exclusion>
-              <exclusion>
-                  <groupId>org.apache.struts</groupId>
-                  <artifactId>struts-core</artifactId>
-              </exclusion>
-              <exclusion>
-                  <groupId>commons-logging</groupId>
-                  <artifactId>commons-logging</artifactId>
-              </exclusion>
-              <exclusion>
-                  <groupId>xml-apis</groupId>
-                  <artifactId>xml-apis</artifactId>
-              </exclusion>
-          </exclusions>
+        <groupId>org.apache.velocity</groupId>
+        <artifactId>velocity-tools</artifactId>
+        <version>${velocity.tools.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>commons-digester</groupId>
+            <artifactId>commons-digester</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.apache.struts</groupId>
+            <artifactId>struts-taglib</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.apache.struts</groupId>
+            <artifactId>struts-tiles</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.apache.struts</groupId>
+            <artifactId>struts-core</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
-          <groupId>org.apache.velocity</groupId>
-          <artifactId>velocity</artifactId>
-          <version>${velocity.version}</version>
+        <groupId>org.apache.velocity</groupId>
+        <artifactId>velocity</artifactId>
+        <version>${velocity.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

@@ -18,6 +18,13 @@
 -->
 <chapter xml:id="data_objects" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">    
     <title> Data Objects </title>
+    <note>
+        <para>This document outlines the KRAD Data Framework as of Kuali Rice 2.4+. If you are
+            working with older KRAD code and OJB, you will want to reference this document in pre
+            2.4 versions of the KRAD Guide. See <link xlink:show="new"
+                xlink:href="http://rice.kuali.org/docs">http://rice.kuali.org/docs</link> for links
+            to older versions of the Kuali Rice documentation.</para>
+    </note>
     <section>
         <title> Data Objects and Business Objects </title>
         <section>

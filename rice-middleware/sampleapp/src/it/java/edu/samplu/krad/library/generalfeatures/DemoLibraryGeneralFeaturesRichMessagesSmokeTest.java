@@ -118,7 +118,7 @@ public class DemoLibraryGeneralFeaturesRichMessagesSmokeTest extends SmokeTestBa
     
     protected void testGeneralFeaturesRichMessagesEscapeCheckboxRadio() throws Exception {
         waitAndClickByLinkText("Checkboxes/Radio");
-        assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example12']/fieldset/span/label/span[@style='color: blue;']ƒ");
+        assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example12']/fieldset/span/label/span[@style='color: blue;']");
     }
     
     @Test

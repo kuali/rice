@@ -58,6 +58,70 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                 </list>
               </property>
            </bean>
+
+           <bean id="TravelAccount-InquiryView-FO2" parent="Uif-Disclosure-TableCollectionSection">
+              <property name="headerText" value="Sub Accounts - Default (No Column Options set)"/>
+              <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.travel.dataobject.TravelSubAccount"/>
+              <property name="propertyName" value="subAccounts"/>
+              <property name="layoutManager.renderSequenceField" value="false"/>
+              <property name="items">
+                <list>
+                  <bean parent="Uif-DataField" p:propertyName="travelAccountNumber"/>
+                  <bean parent="Uif-DataField" p:propertyName="subAccount"/>
+                  <bean parent="Uif-DataField" p:propertyName="subAccountName"/>
+                 </list>
+              </property>
+           </bean>
+
+           <bean parent="Uif-Disclosure-TableCollectionSection">
+              <property name="headerText" value="Sub Accounts - using hiddenColumns and sortableColumns properties on rich table"/>
+              <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.travel.dataobject.TravelSubAccount"/>
+              <property name="propertyName" value="subAccounts"/>
+              <property name="layoutManager.renderSequenceField" value="false"/>
+              <property name="items">
+                <list>
+                  <bean parent="Uif-DataField" p:propertyName="travelAccountNumber"/>
+                  <bean parent="Uif-DataField" p:propertyName="subAccount"/>
+                  <bean parent="Uif-DataField" p:propertyName="subAccountName"/>
+                 </list>
+              </property>
+             <property name="layoutManager.richTable.hiddenColumns">
+               <set>
+                 <value>subAccountName</value>
+               </set>
+             </property>
+              <property name="layoutManager.richTable.sortableColumns">
+               <set>
+                 <value>travelAccountNumber</value>
+                 <value>subAccount</value>
+               </set>
+             </property>
+           </bean>
+
+           <bean parent="Uif-Disclosure-TableCollectionSection">
+              <property name="headerText" value="Sub Accounts - using hiddenColumns and sortableColumns properties on layout manager"/>
+              <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.travel.dataobject.TravelSubAccount"/>
+              <property name="propertyName" value="subAccounts"/>
+              <property name="layoutManager.renderSequenceField" value="false"/>
+              <property name="items">
+                <list>
+                  <bean parent="Uif-DataField" p:propertyName="travelAccountNumber"/>
+                  <bean parent="Uif-DataField" p:propertyName="subAccount"/>
+                  <bean parent="Uif-DataField" p:propertyName="subAccountName"/>
+                 </list>
+              </property>
+             <property name="layoutManager.hiddenColumns">
+               <set>
+                 <value>travelAccountNumber</value>
+                 <value>subAccountName</value>
+               </set>
+             </property>
+              <property name="layoutManager.sortableColumns">
+               <set>
+                 <value>subAccount</value>
+               </set>
+             </property>
+           </bean>
          </list>
      </property>
   </bean>

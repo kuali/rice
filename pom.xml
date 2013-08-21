@@ -402,7 +402,6 @@
                 <exclude>**/rice.keystore</exclude>
                 <exclude>**/ricekeystore</exclude>
                 <exclude>**/*.template</exclude>
-                <exclude>**/clover.license</exclude>
                 <exclude>**/*.psd</exclude>
                 <exclude>**/.springBeans</exclude>
                 <exclude>**/*.tag</exclude>

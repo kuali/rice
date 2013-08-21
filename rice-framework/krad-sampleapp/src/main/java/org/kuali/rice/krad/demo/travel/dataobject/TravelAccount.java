@@ -17,6 +17,7 @@ package org.kuali.rice.krad.demo.travel.dataobject;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -25,6 +26,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -38,8 +40,8 @@ import org.kuali.rice.krad.bo.VersionedAndGloballyUniqueBase;
 import org.kuali.rice.krad.data.provider.annotation.Description;
 import org.kuali.rice.krad.data.provider.annotation.InheritProperties;
 import org.kuali.rice.krad.data.provider.annotation.InheritProperty;
-import org.kuali.rice.krad.data.provider.annotation.Label;
 import org.kuali.rice.krad.data.provider.annotation.KeyValuesFinderClass;
+import org.kuali.rice.krad.data.provider.annotation.Label;
 import org.kuali.rice.krad.data.provider.annotation.Relationship;
 import org.kuali.rice.krad.data.provider.annotation.ValidCharactersConstraintBeanName;
 import org.kuali.rice.krad.demo.travel.options.AccountTypeKeyValues;
@@ -53,20 +55,12 @@ public class TravelAccount extends VersionedAndGloballyUniqueBase implements Ser
 	@Column(name="ACCT_NUM",length=10)
 	@Label("Travel Account Number")
 	@Description("Unique identifier for account")
-	//@ConstraintText("Must not be more than 10 characters")
 	@ValidCharactersConstraintBeanName("AlphaNumericPatternConstraint")
 	private String number;
 
-	@Column(name="SUB_ACCT",length=10)
-	@Label("Travel Sub Account Number")
-	private String subAccount;
-
-	@Column(name="ACCT_NAME",length=50)
+	@Column(name="ACCT_NAME",length=40)
 	@Label("Account Name")
 	private String name;
-
-	@Column(name="SUB_ACCT_NAME",length=50)
-	private String subAccountName;
 
 	@Column(name="SUBSIDIZED_PCT",length=5,precision=2)
 	private KualiPercent subsidizedPercent;
@@ -76,8 +70,8 @@ public class TravelAccount extends VersionedAndGloballyUniqueBase implements Ser
 	@Label("Date Created")
 	private Date createDate;
 
-    @Column(name="ACCT_FO_ID",length=14,precision=0)
-    @Size(max=5)
+    @Column(name="ACCT_FO_ID",length=40)
+    @Size(max=40)
 	private String foId;
 
     @Relationship(foreignKeyFields="foId")
@@ -98,6 +92,10 @@ public class TravelAccount extends VersionedAndGloballyUniqueBase implements Ser
 	@JoinColumn(name="ACCT_TYPE", insertable=false, updatable=false)
     @InheritProperty(name="codeAndDescription")
 	private TravelAccountType accountType;
+
+    @OneToMany(fetch=FetchType.EAGER, orphanRemoval=true, cascade= {CascadeType.ALL} )
+	@JoinColumn(name="ACCT_NUM", nullable=false, insertable=false, updatable=false)
+    protected List<TravelSubAccount> subAccounts;
 
     public String getName() {
         return name;
@@ -126,22 +124,6 @@ public class TravelAccount extends VersionedAndGloballyUniqueBase implements Ser
 
     public void setFoId(String foId) {
         this.foId = foId;
-    }
-
-    public String getSubAccount() {
-        return this.subAccount;
-    }
-
-    public void setSubAccount(String subAccount) {
-        this.subAccount = subAccount;
-    }
-
-    public String getSubAccountName() {
-        return this.subAccountName;
-    }
-
-    public void setSubAccountName(String subAccountName) {
-        this.subAccountName = subAccountName;
     }
 
     public KualiPercent getSubsidizedPercent() {
@@ -174,6 +156,14 @@ public class TravelAccount extends VersionedAndGloballyUniqueBase implements Ser
 
 	public void setAccountTypeCode(String accountTypeCode) {
 		this.accountTypeCode = accountTypeCode;
+	}
+
+	public List<TravelSubAccount> getSubAccounts() {
+		return subAccounts;
+	}
+
+	public void setSubAccounts(List<TravelSubAccount> subAccounts) {
+		this.subAccounts = subAccounts;
 	}
 
 }

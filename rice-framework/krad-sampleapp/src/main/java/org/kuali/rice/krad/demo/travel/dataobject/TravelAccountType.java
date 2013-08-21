@@ -41,7 +41,7 @@ public class TravelAccountType extends VersionedAndGloballyUniqueBase implements
 	@ValidCharactersConstraintBeanName("AnyCharacterPatternConstraint")
 	private String accountTypeCode;
 
-    @Column(name="ACCT_TYPE_NAME",length=30)
+    @Column(name="ACCT_TYPE_NAME",length=40)
 	@Label("Account Type Name")
     @ShortLabel("Name")
     @NotNull

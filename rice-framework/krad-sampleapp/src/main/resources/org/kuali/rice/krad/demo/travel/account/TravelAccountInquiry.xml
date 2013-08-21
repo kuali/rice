@@ -25,23 +25,38 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="TravelAccount-InquiryView" parent="Uif-InquiryView">
     <property name="headerText" value="Travel Account Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
-     <property name="Items">
+     <property name="items">
          <list>
            <bean id="TravelAccount-InquiryView-General" parent="Uif-Disclosure-GridSection">
+             <property name="headerText" value="Travel Account Information"/>
              <property name="items">
                <list>
                 <bean parent="Uif-DataField" p:propertyName="number"/>
                 <bean parent="Uif-DataField" p:propertyName="name"/>
                 <bean parent="Uif-DataField" p:propertyName="accountType.codeAndDescription"/>
-                <bean parent="Uif-DataField" p:propertyName="subAccount"/>
-                <bean parent="Uif-DataField" p:propertyName="subAccountName"/>
                 <bean parent="Uif-DataField" p:propertyName="createDate"/>
                 <bean parent="Uif-DataField" p:propertyName="subsidizedPercent"/>
                 <bean parent="Uif-DataField" p:propertyName="fiscalOfficer.principalName"/>
                 <bean parent="Uif-DataField" p:propertyName="fiscalOfficer.name"/>
                </list>
              </property>
-             <property name="headerText" value="Account Information"/>
+           </bean>
+			<bean id="TravelAccount-InquiryView-SubAccounts" parent="Uif-Disclosure-StackedCollectionSection">
+              <property name="headerText" value="Sub Accounts"/>
+              <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.travel.dataobject.TravelSubAccount"/>
+              <property name="propertyName" value="subAccounts"/>
+              <property name="items">
+                <list>
+                  <bean parent="Uif-DataField" p:propertyName="subAccount"/>
+                  <bean parent="Uif-DataField" p:propertyName="subAccountName"/>
+                </list>
+              </property>      
+              <property name="layoutManager.summaryTitle" value="Travel Sub Account"/> 
+              <property name="layoutManager.summaryFields">
+                <list>
+                  <value>subAccount</value>
+                </list>
+              </property>
            </bean>
          </list>
      </property>

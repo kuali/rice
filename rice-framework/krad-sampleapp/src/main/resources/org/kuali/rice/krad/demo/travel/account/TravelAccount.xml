@@ -26,10 +26,6 @@
     <property name="attributes">
       <list>
         <ref bean="TravelAccount-subsidizedPercent"/>
-        <!-- 
-        <ref bean="TravelAccount-foId"/>
-        <ref bean="TravelAccount-fiscalOfficer.principalName"/>
-         -->
       </list>
     </property>
   </bean>
@@ -42,27 +38,5 @@
       <bean parent="Uif-TextControl" p:size="6" p:watermarkText="##.##"/>
     </property>
   </bean>
-
-<!-- 
-  <bean id="TravelAccount-foId" parent="TravelAccount-foId-parentBean"/>
-  <bean id="TravelAccount-foId-parentBean" abstract="true" parent="PersonImpl-principalId">
-    <property name="name" value="foId"/>
-    <property name="controlField">
-      <bean parent="Uif-TextControl" p:size="5"/>
-    </property>
-    <property name="summary" value="Responsible for approving account expenses"/>
-  </bean>
- -->
- <!-- 
-  <bean id="TravelAccount-fiscalOfficer.principalName" parent="TravelAccount-fiscalOfficer.principalName-parentBean"/>
-  <bean id="TravelAccount-fiscalOfficer.principalName-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="name" value="fiscalOfficer.principalName"/>
-    <property name="label" value="Fiscal Officer User ID" />
- -->
-<!--     <property name="controlField">
-    	<bean parent="Uif-KimPersonControl" p:principalIdPropertyName="foId" p:personObjectPropertyName="fiscalOfficer" />
-    </property>
- -->
-  <!-- </bean> -->
 
 </beans>

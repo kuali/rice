@@ -32,9 +32,8 @@
   </bean>
 
   <bean id="TravelAccount-MaintenanceView" parent="Uif-MaintenanceView">
-    <property name="headerText" value="Travel Account Maintenance (JPA)"/>
+    <property name="headerText" value="Travel Account Maintenance"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
-<!--     <property name="documentTypeName" value="" /> -->
     <property name="items">
       <list merge="true">
         <bean parent="Uif-MaintenanceGridSection">
@@ -49,63 +48,29 @@
                   <bean parent="Uif-QuickFinderByScript"/>
                 </property>
               </bean>
-
               <bean parent="Uif-InputField" p:propertyName="fiscalOfficer.principalName" />
-
-              <bean parent="Uif-InputField" p:propertyName="subAccount">
-                <property name="id" value="quickfinder2"/> <!-- changing this will break tests -->
-                <property name="quickfinder">
-                  <bean parent="Uif-QuickFinderByScript" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
-                          p:fieldConversions="number:subAccount,name:subAccountName" p:lookupParameters="subAccountName:name"/>
-                </property>
-                <property name="quickfinder.dataObjectClassName" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
-                <property name="quickfinder.fieldConversions">
-                  <map>
-                    <entry key="number" value="subAccount"/>
-                    <entry key="name" value="subAccountName"/>
-                  </map>
-                </property>
-                <property name="quickfinder.lookupParameters" value="subAccountName:name"/>
-              </bean>
-              <bean parent="Uif-InputField" p:propertyName="subAccountName"/>
               <bean parent="Uif-InputField" p:propertyName="createDate"/>
               <bean parent="Uif-InputField" p:propertyName="subsidizedPercent"/>
             </list>
           </property>
         </bean>
-        <!-- 
         <bean parent="Uif-MaintenanceStackedCollectionSection">
-          <property name="headerText" value="Fiscal Officer Accounts"/>
-          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
-          <property name="propertyName" value="fiscalOfficer.accounts"/>
-          <property name="collectionLookup">
-            <bean parent="Uif-CollectionQuickFinder"/>
-          </property>
+          <property name="headerText" value="Sub Accounts"/>
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.travel.dataobject.TravelSubAccount"/>
+          <property name="propertyName" value="subAccounts"/>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:propertyName="number"/>
-              <bean parent="Uif-InputField" p:propertyName="name"/>
-              <bean parent="Uif-InputField" p:propertyName="foId">
-                <property name="id" value="quickfinder4"/> <!- changing this will break tests ->
-                <property name="quickfinder">
-                  <bean parent="Uif-QuickFinderByScript"/>
-                </property>
-                <property name="dependencyConstraints">
-                   <list>
-                     <bean parent="PrerequisiteConstraint" p:propertyName="number"/>
-                   </list>
-                 </property>
-              </bean>
+              <bean parent="Uif-InputField" p:propertyName="subAccount"/>
+              <bean parent="Uif-InputField" p:propertyName="subAccountName" />
             </list>
           </property>
-          <property name="layoutManager.summaryTitle" value="Travel Account"/>
+          <property name="layoutManager.summaryTitle" value="Sub Account"/>
           <property name="layoutManager.summaryFields">
             <list>
-              <value>number</value>
+              <value>subAccount</value>
             </list>
           </property>
         </bean>
-         -->
       </list>
     </property>
   </bean>

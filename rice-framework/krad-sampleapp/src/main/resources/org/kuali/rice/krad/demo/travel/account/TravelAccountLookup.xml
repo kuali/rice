@@ -28,20 +28,16 @@
       <list>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number" />
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" />
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subAccount" />
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subAccountName" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="accountTypeCode" />
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" />
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subsidizedPercent" />
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="fiscalOfficer.principalName" />
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="accountTypeCode" />
       </list>
     </property>
     <property name="resultFields">
       <list>
         <bean parent="Uif-DataField" p:propertyName="number" />
         <bean parent="Uif-DataField" p:propertyName="name" />
-        <bean parent="Uif-DataField" p:propertyName="subAccount" />
-        <bean parent="Uif-DataField" p:propertyName="subAccountName" />
         <bean parent="Uif-DataField" p:propertyName="accountTypeCode" />
         <bean parent="Uif-DataField" p:propertyName="subsidizedPercent" />
         <bean parent="Uif-DataField" p:propertyName="createDate" />

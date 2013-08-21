@@ -40,8 +40,8 @@ public class MaintenanceLock extends PersistableBusinessObjectBase {
     private static final long serialVersionUID = 7766326835852387301L;
 
 	@Id
-    @GeneratedValue(generator = "KRIM_ROLE_MBR_ID_S")
-    @PortableSequenceGenerator(name = "KRIM_ROLE_MBR_ID_S")
+    @GeneratedValue(generator = "KRNS_MAINT_LOCK_S")
+    @PortableSequenceGenerator(name = "KRNS_MAINT_LOCK_S")
     @Column(name="MAINT_LOCK_ID",length=14)
     private String lockId;
 

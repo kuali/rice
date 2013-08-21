@@ -17,10 +17,7 @@ package edu.samplu.krad.library.clientresponsiveness;
 
 import org.junit.Test;
 
-import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
 import edu.samplu.common.SmokeTestBase;
-import edu.samplu.common.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -57,8 +54,7 @@ public class DemoLibraryClientResponsivenessDisableSmokeTest extends SmokeTestBa
        //Scenario-2 - disabled
        waitAndClickByXpath("//input[@type='radio' and @value='disable']");
        if(isEnabledByName("inputField2") && isEnabledByName("inputField3") && isEnabledByName("inputField4") && isEnabledByName("inputField6") &&
-               isEnabledByName("inputField7") && isEnabledByName("multiSelectField1"))
-       {
+               isEnabledByName("inputField7") && isEnabledByName("multiSelectField1")) {
            fail("Field Not Disabled Properly.");
        }
     }
@@ -70,8 +66,7 @@ public class DemoLibraryClientResponsivenessDisableSmokeTest extends SmokeTestBa
         assertElementPresentByXpath("//button[@class='btn btn-primary uif-primaryActionButton uif-boxLayoutHorizontalItem disabled']");
         waitAndTypeByName("inputField10","a");
         waitAndTypeByName("inputField11","a");
-        if(isElementPresentByXpath("//button[@class='btn btn-primary uif-primaryActionButton uif-boxLayoutHorizontalItem disabled']"))
-        {
+        if(isElementPresentByXpath("//button[@class='btn btn-primary uif-primaryActionButton uif-boxLayoutHorizontalItem disabled']")) {
             fail("Constraint not working properly.");
         }
         waitAndTypeByName("inputField10", "");
@@ -119,7 +114,6 @@ public class DemoLibraryClientResponsivenessDisableSmokeTest extends SmokeTestBa
         testClientResponsivenessDisableOnKeyUp();
         testClientResponsivenessDisableInCollections();
         testClientResponsivenessDisableColl();
-        
         passed();
     }  
 }

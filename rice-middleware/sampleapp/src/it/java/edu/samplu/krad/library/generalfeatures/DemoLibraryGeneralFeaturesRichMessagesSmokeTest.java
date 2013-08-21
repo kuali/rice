@@ -17,10 +17,7 @@ package edu.samplu.krad.library.generalfeatures;
 
 import org.junit.Test;
 
-import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
 import edu.samplu.common.SmokeTestBase;
-import edu.samplu.common.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

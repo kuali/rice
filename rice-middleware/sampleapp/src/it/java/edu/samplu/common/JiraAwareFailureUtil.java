@@ -60,6 +60,7 @@ public class JiraAwareFailureUtil {
 
         jiraMatches.put("Lookupable is null", "KULRICE-10207 DemoTravelAccountMultivalueLookUpSmokeTest Lookupable is null.");
 
+        jiraMatches.put("Account Maintenance (Edit)", "KULRICE-10216 KRAD Demo Account Maintenance (Edit) Incident Report RiceRuntimeException: Exception trying to invoke action ROUTE");
         //jiraMatches.put("", "");
     }
 

@@ -15,7 +15,6 @@
  */
 package edu.samplu.krad.demo.lookupviews.lookup;
 
-import edu.samplu.common.Failable;
 import edu.samplu.common.SmokeTestBase;
 import org.junit.Test;
 
@@ -59,12 +58,12 @@ public class DemoLookUpSmokeTest extends SmokeTestBase {
         waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME,"a1");
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(3000);
-        assertElementPresentByXpath("//a[contains(text(), 'a1')]");
+        assertElementPresentByXpath("//span[contains(text(), 'a1')]");
         waitAndClickButtonByText(CLEAR_VALUES);
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(3000);
-        assertElementPresentByXpath("//a[contains(text(), 'a1')]");
-        assertElementPresentByXpath("//a[contains(text(), 'a2')]");
+        assertElementPresentByXpath("//span[contains(text(), 'a1')]");
+        assertElementPresentByXpath("//span[contains(text(), 'a2')]");
     }
 
     @Test

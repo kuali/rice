@@ -71,9 +71,7 @@ public class DemoClientSideStateViewSmokeTest extends SmokeTestBase {
         testClientSideStateView();
     }
 
-    public void testClientSideStateView() throws Exception
-    {
-        selectFrameIframePortlet();
+    public void testClientSideStateView() throws Exception {
         waitAndClickByName(ACTIVE_COMPONENT_NAME);
         waitAndClickByName(ACTIVE_COMPONENT2_NAME);
         waitAndClickByXpath(AJAX_BUTTON_XPATH);

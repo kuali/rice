@@ -15,7 +15,6 @@
  */
 package edu.samplu.krad.demo.travel.account;
 
-import edu.samplu.common.ITUtil;
 import edu.samplu.common.SmokeTestBase;
 
 import org.apache.commons.lang.RandomStringUtils;
@@ -47,6 +46,7 @@ public class DemoTravelAccountMaintenanceEditSmokeTest extends SmokeTestBase {
         waitAndTypeByName("document.newMaintainableObject.dataObject.subAccountName","Sub Account 1"+RandomStringUtils.randomAlphabetic(2));
         waitAndClickButtonByText("submit");
         Thread.sleep(10000);
+        checkForIncidentReport("Account Maintenance (Edit)");
         assertTextPresent("Document was successfully submitted.");
     }
 

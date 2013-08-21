@@ -16,6 +16,7 @@
 package edu.samplu.krad.demo.lookupviews.lookup.multivalue;
 
 import edu.samplu.common.SmokeTestBase;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -68,7 +69,7 @@ public class DemoLookUpMultiValueSmokeTest extends SmokeTestBase {
         waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME,"a1");
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(3000);
-        assertElementPresentByXpath("//a[contains(text(), 'a1')]");
+        assertElementPresentByXpath("//span[contains(text(), 'a1')]");
         waitAndClickButtonByText(CLEAR_VALUES);
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(3000);
@@ -83,6 +84,7 @@ public class DemoLookUpMultiValueSmokeTest extends SmokeTestBase {
         passed();
     }
 
+    @Ignore // Link removed
     @Test
     public void testLookUpMultiValueNav() throws Exception {
         testLookUpMultiValue();

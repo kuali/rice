@@ -82,6 +82,7 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
                 transformDisableSearchButtons(delegate, beanNode)
                 transformLookupFieldsProperty(delegate, beanNode)
                 transformResultFieldsProperty(delegate, beanNode)
+                transformResultColumnsTotalling(delegate, beanNode)
             }
         }
     }
@@ -204,7 +205,31 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
     def gatherResultFieldAttributes  = { Node beanNode ->
         return (gatherIdAttribute(beanNode)
                 + gatherAttributeNameAttribute(beanNode)
+                + copyGatherProperties(beanNode, ["readOnly"])
         );
+    }
+
+    def transformResultColumnsTotalling(NodeBuilder builder, Node beanNode) {
+        def columnsWithTotalling = [];
+        def resultFieldsProperty = beanNode.property.find {it.@name == "resultFields" }
+        if (resultFieldsProperty != null) {
+            resultFieldsProperty.list.bean.each { resultFieldsNode ->
+                def attributes = genericGatherAttributes(resultFieldsNode, ["*total": "total", "*attributeName": "attributeName"]);
+                if (attributes.containsKey("total") && attributes.get("total") == "true") {
+                    columnsWithTotalling.add(attributes.get("attributeName"));
+                }
+            }
+        }
+
+        if (columnsWithTotalling.size() > 0) {
+            builder.property(name: "resultsGroup.layoutManager.columnCalculations") {
+                list {
+                    columnsWithTotalling.each {propertyName ->
+                        bean(parent: "Uif-ColumnCalculationInfo-Sum", "xmlns:p": pNamespaceSchema, "p:propertyName": propertyName)
+                    }
+                }
+            }
+        }
     }
 
 }

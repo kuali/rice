@@ -18,11 +18,12 @@ package org.kuali.rice.coreservice.impl.style
 import org.kuali.rice.coreservice.api.style.Style
 import org.kuali.rice.coreservice.api.style.StyleContract
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
-import javax.persistence.Entity
-import javax.persistence.Table
+import org.kuali.rice.krad.data.jpa.converters.Boolean01BigDecimalConverter
+
 import javax.persistence.Column
+import javax.persistence.Entity
 import javax.persistence.Id
-import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter
+import javax.persistence.Table
 
 /**
  * A BusinessObject implementation of the StyleContract which is mapped to the
@@ -44,7 +45,7 @@ class StyleBo extends PersistableBusinessObjectBase implements StyleContract {
     @Column(name="XML")
 	String xmlContent
     @Column(name="ACTV_IND")
-    @javax.persistence.Convert(converter=BooleanYNConverter.class)
+    @javax.persistence.Convert(converter=Boolean01BigDecimalConverter.class)
 	boolean active = true
     
     /**

@@ -32,6 +32,8 @@ import javax.persistence.AttributeOverrides
 @IdClass(ComponentId.class)
 @Entity
 @Table(name="KRCR_DRVD_CMPNT_T")
+//Hack to make the object id and version number point to different columns
+//as they do not actually exist on this table
 @AttributeOverrides(value = [@AttributeOverride(name="objectId", column=@Column(name="NM", updatable=false, insertable=false)),
 @AttributeOverride(name="versionNumber", column=@Column(name="NM", updatable=false, insertable=false))])
 public class DerivedComponentBo extends PersistableBusinessObjectBase implements ComponentContract {

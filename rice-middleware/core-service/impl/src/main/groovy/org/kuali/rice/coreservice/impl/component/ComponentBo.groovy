@@ -29,6 +29,7 @@ import javax.persistence.IdClass
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.Table
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter
 
 @IdClass(ComponentId.class)
 @Entity
@@ -52,6 +53,7 @@ public class ComponentBo extends PersistableBusinessObjectBase implements Compon
 
 	//@Type(type="yes_no")
 	@Column(name="ACTV_IND")
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
 	boolean active = true;
 
 	@ManyToOne(fetch=FetchType.LAZY)

@@ -45,6 +45,7 @@
     <class>org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter</class>
     <class>org.kuali.rice.krad.data.jpa.converters.BooleanTFConverter</class>
     <class>org.kuali.rice.krad.data.jpa.converters.Boolean01Converter</class>
+    <class>org.kuali.rice.krad.data.jpa.converters.Boolean01BigDecimalConverter</class>
     <class>org.kuali.rice.krad.data.jpa.converters.HashConverter</class>
     
     <exclude-unlisted-classes>true</exclude-unlisted-classes>

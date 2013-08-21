@@ -145,11 +145,13 @@ public class LinkGroup extends Group {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         LinkGroup linkGroupCopy = (LinkGroup) component;
-        linkGroupCopy.setGroupBeginDelimiter(this.getGroupBeginDelimiter());
-        linkGroupCopy.setGroupEndDelimiter(this.getGroupEndDelimiter());
-        linkGroupCopy.setLinkSeparator(this.getLinkSeparator());
-        linkGroupCopy.setEmptyLinkGroupString(this.getEmptyLinkGroupString());
+
+        linkGroupCopy.setGroupBeginDelimiter(this.groupBeginDelimiter);
+        linkGroupCopy.setGroupEndDelimiter(this.groupEndDelimiter);
+        linkGroupCopy.setLinkSeparator(this.linkSeparator);
+        linkGroupCopy.setEmptyLinkGroupString(this.emptyLinkGroupString);
     }
 
 }

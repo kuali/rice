@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
@@ -455,7 +454,9 @@ public abstract class ContainerBase extends ComponentBase implements Container {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         ContainerBase containerBaseCopy = (ContainerBase) component;
+
         containerBaseCopy.setDefaultItemPosition(this.defaultItemPosition);
 
         if (this.footer != null) {
@@ -481,7 +482,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
         }
 
         if (getItems() != null) {
-            List<Component> itemsCopy = Lists.newArrayListWithExpectedSize(getItems().size());
+            List<Component> itemsCopy = new ArrayList<Component>();
 
             for (Component item : getItems()) {
                 itemsCopy.add((Component) item.copy());

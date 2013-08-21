@@ -102,6 +102,7 @@ public class AccordionGroup extends Group {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         AccordionGroup accordionGroupCopy = (AccordionGroup) component;
 
         if (this.accordionWidget != null) {

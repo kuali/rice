@@ -770,11 +770,13 @@ public class LightTable extends Group implements DataBinding {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         LightTable lightTableCopy = (LightTable) component;
-        lightTableCopy.setPropertyName(this.getPropertyName());
+
+        lightTableCopy.setPropertyName(this.propertyName);
 
         if (this.bindingInfo != null) {
-            lightTableCopy.setBindingInfo((BindingInfo) this.getBindingInfo().copy());
+            lightTableCopy.setBindingInfo((BindingInfo) this.bindingInfo.copy());
         }
 
         if (headerLabels != null) {
@@ -787,8 +789,8 @@ public class LightTable extends Group implements DataBinding {
             lightTableCopy.setHeaderLabels(headerLabelsCopy);
         }
 
-        if (this.getRichTable() != null) {
-            lightTableCopy.setRichTable((RichTable) this.getRichTable().copy());
+        if (this.richTable != null) {
+            lightTableCopy.setRichTable((RichTable) this.richTable.copy());
         }
 
         if (expressionConversionMap != null) {
@@ -817,7 +819,7 @@ public class LightTable extends Group implements DataBinding {
             lightTableCopy.setConditionalRowCssClasses(new HashMap<String, String>(this.conditionalRowCssClasses));
         }
 
-        lightTableCopy.setEmptyTable(this.isEmptyTable());
+        lightTableCopy.setEmptyTable(this.emptyTable);
         lightTableCopy.setCurrentColumnValue(this.currentColumnValue);
     }
 }

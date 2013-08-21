@@ -89,7 +89,9 @@ public class CollectionGroupSecurity extends ComponentSecurity {
     @Override
     protected <T> void copyProperties(T componentSecurity) {
         super.copyProperties(componentSecurity);
+
         CollectionGroupSecurity collectionGroupSecurityCopy = (CollectionGroupSecurity) componentSecurity;
+
         collectionGroupSecurityCopy.setEditLineAuthz(this.editLineAuthz);
         collectionGroupSecurityCopy.setViewLineAuthz(this.viewLineAuthz);
     }

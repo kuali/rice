@@ -114,6 +114,7 @@ public class ELCollectionFilter implements CollectionFilter {
 
     protected <T> void copyProperties(T eLCollectionFilter) {
         ELCollectionFilter eLCollectionFilterCopy = (ELCollectionFilter) eLCollectionFilter;
+
         eLCollectionFilterCopy.setExpression(this.getExpression());
     }
 

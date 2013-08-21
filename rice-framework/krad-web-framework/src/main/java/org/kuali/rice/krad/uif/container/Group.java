@@ -358,7 +358,9 @@ public class Group extends ContainerBase {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         Group groupCopy = (Group) component;
+
         groupCopy.setFieldBindByNamePrefix(this.fieldBindByNamePrefix);
         groupCopy.setFieldBindingObjectPath(this.fieldBindingObjectPath);
 

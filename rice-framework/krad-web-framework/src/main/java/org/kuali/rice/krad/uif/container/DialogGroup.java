@@ -443,6 +443,7 @@ public class DialogGroup extends Group {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         DialogGroup dialogGroupCopy = (DialogGroup) component;
 
         if (this.availableResponses != null) {

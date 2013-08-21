@@ -214,11 +214,11 @@ public class ITUtil {
         }
 
         if (contents.contains("HTTP Status 404")) {
-            failable.fail("\nHTTP Status 404 " + linkLocator + " " + message + " " + "\ncontents: " + contents);
+            failWithInfo("HTTP Status 404 contents: " + contents, linkLocator, failable, message);
         }
 
         if (contents.contains("HTTP Status 500")) {
-            failable.fail("\nHTTP Status 500 " + linkLocator + " " + message + " " + "\nstacktrace: " + extract500Exception(contents));
+            failWithInfo("\nHTTP Status 500 stacktrace: " + extract500Exception(contents), linkLocator, failable, message);
         }
 
         if (contents.contains("Java backtrace for programmers:")) { // freemarker exception
@@ -327,13 +327,17 @@ public class ITUtil {
     }
 */
 
-    private static void failWithReportInfo(String contents, String linkLocator, Failable failable, String message) {
-        final String incidentReportInformation = extractIncidentReportInfo(contents, linkLocator, message);
+    private static void failWithInfo(String contents, String linkLocator, Failable failable, String message) {
         JiraAwareFailureUtil.failOnMatchedJira(contents, linkLocator, failable);
-        failable.fail(incidentReportInformation);
+        failable.fail(contents);
     }
 
-/*
+    private static void failWithReportInfo(String contents, String linkLocator, Failable failable, String message) {
+        final String incidentReportInformation = extractIncidentReportInfo(contents, linkLocator, message);
+        failWithInfo(incidentReportInformation, linkLocator, failable, message);
+    }
+
+    /*
     private static void failWithReportInfoForKim(String contents, String linkLocator, String message) {
         final String kimIncidentReport = extractIncidentReportKim(contents, linkLocator, message);
         SeleneseTestBase.fail(kimIncidentReport);

@@ -174,7 +174,7 @@ public class TestDataObject implements Serializable {
 
 	@NonPersistentProperty
 	@Label("Test Data Object")
-	String getKeyAndString() {
+	public String getKeyAndString() {
 		return primaryKeyProperty + "-" + stringProperty;
 	}
 
@@ -290,7 +290,39 @@ public class TestDataObject implements Serializable {
 		this.booleanProperty = booleanProperty;
 	}
 
-	public Object getExtension() {
+    public String getEncryptedProperty() {
+        return encryptedProperty;
+    }
+
+    public void setEncryptedProperty(String encryptedProperty) {
+        this.encryptedProperty = encryptedProperty;
+    }
+
+    public String getReadOnlyProperty() {
+        return readOnlyProperty;
+    }
+
+    public void setReadOnlyProperty(String readOnlyProperty) {
+        this.readOnlyProperty = readOnlyProperty;
+    }
+
+    public List<SomeOtherCollection> getSomeOtherCollection() {
+        return someOtherCollection;
+    }
+
+    public void setSomeOtherCollection(List<SomeOtherCollection> someOtherCollection) {
+        this.someOtherCollection = someOtherCollection;
+    }
+
+    public List<CollectionDataObjectThree> getCollectionPropertyThree() {
+        return collectionPropertyThree;
+    }
+
+    public void setCollectionPropertyThree(List<CollectionDataObjectThree> collectionPropertyThree) {
+        this.collectionPropertyThree = collectionPropertyThree;
+    }
+
+    public Object getExtension() {
 		return extension;
 	}
 

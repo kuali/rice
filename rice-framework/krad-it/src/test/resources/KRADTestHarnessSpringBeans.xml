@@ -229,8 +229,14 @@
   <!-- Metadata Providers -->
 
   <bean id="kradTestSpringMetadataFileLocations-parentBean"
-        class="org.springframework.beans.factory.config.ListFactoryBean"
-        p:sourceList="classpath:org/kuali/rice/krad/data/provider/spring/krad-metadata-parent-beans.xml"/>
+        class="org.springframework.beans.factory.config.ListFactoryBean">
+    <property name="sourceList">
+      <list>
+        <value>classpath:org/kuali/rice/krad/data/provider/spring/krad-metadata-parent-beans.xml</value>
+        <value>classpath:org/kuali/rice/krad/data/provider/spring/test-spring-metadata.xml</value>
+      </list>
+    </property>
+  </bean>
 
   <bean id="kradTestSpringMetadataFileLocations" parent="kradTestSpringMetadataFileLocations-parentBean"/>
 

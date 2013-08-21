@@ -452,7 +452,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
             }
             if (!DataDictionary.isPropertyOf(rootObjectClass, getName())) {
                 String currentValues[] = {"property = " + getName(), "class = " + rootObjectClass.getName()};
-                tracer.createError("Property is not found in class", currentValues);
+                tracer.createError("Property is not found in class. Ensure that the property is defined on the class and that there is at least a public 'getter' for it.", currentValues);
             }
 
             if (getControl() == null && getControlField() == null) {

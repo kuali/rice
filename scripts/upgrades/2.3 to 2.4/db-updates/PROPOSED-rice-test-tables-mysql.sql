@@ -117,3 +117,22 @@ CREATE TABLE KRTST_TEST_YARDO_T  (
     OTHER_STR_PROP	varchar(40),
     PRIMARY KEY(ID)
 );
+
+CREATE TABLE TRV_DOC_2  ( 
+	FDOC_NBR        	varchar(14) NOT NULL,
+	OBJ_ID          	varchar(36) NOT NULL,
+	VER_NBR         	decimal(8,0) NOT NULL DEFAULT '1',
+	FDOC_EXPLAIN_TXT	varchar(400) NULL,
+	REQUEST_TRAV    	varchar(30) NOT NULL,
+	TRAVELER        	varchar(200) NULL,
+	ORG             	varchar(60) NULL,
+	DEST            	varchar(60) NULL,
+	PRIMARY KEY(FDOC_NBR)
+)
+/
+CREATE TABLE TRAV_DOC_2_ACCOUNTS  ( 
+	FDOC_NBR	varchar(14) NOT NULL,
+	ACCT_NUM	varchar(10) NOT NULL,
+	PRIMARY KEY(FDOC_NBR,ACCT_NUM)
+)
+/

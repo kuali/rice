@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
@@ -32,6 +31,7 @@ import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -323,7 +323,9 @@ public class TreeGroup extends Group implements DataBinding {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         TreeGroup treeGroupCopy = (TreeGroup) component;
+
         treeGroupCopy.setPropertyName(this.propertyName);
 
         if (this.bindingInfo != null) {
@@ -346,8 +348,7 @@ public class TreeGroup extends Group implements DataBinding {
         }
 
         if (this.nodePrototypeMap != null) {
-            Map<Class<?>, NodePrototype> nodePrototypeMapCopy = Maps.newHashMapWithExpectedSize(
-                    this.getNodePrototypeMap().size());
+            Map<Class<?>, NodePrototype> nodePrototypeMapCopy = new HashMap<Class<?>, NodePrototype>();
             for (Map.Entry<Class<?>, NodePrototype> nodePrototypeMapEntry : nodePrototypeMap.entrySet()) {
                 NodePrototype prototypeCopy = nodePrototypeMapEntry.getValue().copy();
                 nodePrototypeMapCopy.put(nodePrototypeMapEntry.getKey(), prototypeCopy);

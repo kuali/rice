@@ -254,15 +254,15 @@ public class PageGroup extends Group {
 
         PageGroup pageGroupCopy = (PageGroup) component;
 
-        pageGroupCopy.setAutoFocus(this.isAutoFocus());
-        pageGroupCopy.setStickyFooter(this.isStickyFooter());
+        pageGroupCopy.setAutoFocus(this.autoFocus);
+        pageGroupCopy.setStickyFooter(this.stickyFooter);
 
         if (breadcrumbOptions != null) {
-            pageGroupCopy.setBreadcrumbOptions((PageBreadcrumbOptions) this.getBreadcrumbOptions().copy());
+            pageGroupCopy.setBreadcrumbOptions((PageBreadcrumbOptions) this.breadcrumbOptions.copy());
         }
 
         if (breadcrumbItem != null) {
-            pageGroupCopy.setBreadcrumbItem((BreadcrumbItem) this.getBreadcrumbItem().copy());
+            pageGroupCopy.setBreadcrumbItem((BreadcrumbItem) this.breadcrumbItem.copy());
         }
     }
 

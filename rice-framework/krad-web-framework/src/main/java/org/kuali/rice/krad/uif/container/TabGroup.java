@@ -101,10 +101,11 @@ public class TabGroup extends Group {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         TabGroup tabGroupCopy = (TabGroup) component;
 
         if(tabsWidget != null) {
-            tabGroupCopy.setTabsWidget((Tabs)this.getTabsWidget().copy());
+            tabGroupCopy.setTabsWidget((Tabs)this.tabsWidget.copy());
         }
     }
 

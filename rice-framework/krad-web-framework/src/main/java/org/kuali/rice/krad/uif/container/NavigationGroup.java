@@ -86,7 +86,9 @@ public class NavigationGroup extends Group {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         NavigationGroup navigationGroupCopy = (NavigationGroup) component;
-        navigationGroupCopy.setNavigationType(this.getNavigationType());
+
+        navigationGroupCopy.setNavigationType(this.navigationType);
     }
 }

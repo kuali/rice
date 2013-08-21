@@ -124,6 +124,7 @@ public class MaintenanceActiveCollectionFilter implements CollectionFilter {
 
     protected <T> void copyProperties(T maintenanceActiveCollectionFilter) {
         MaintenanceActiveCollectionFilter maintenanceActiveCollectionFilterCopy = (MaintenanceActiveCollectionFilter) maintenanceActiveCollectionFilter;
-        maintenanceActiveCollectionFilterCopy.setOldBindingObjectPath(this.getOldBindingObjectPath());
+
+        maintenanceActiveCollectionFilterCopy.setOldBindingObjectPath(this.oldBindingObjectPath);
     }
 }

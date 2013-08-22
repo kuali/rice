@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.service;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.datetime.DateTimeService;
@@ -31,7 +30,11 @@ import org.kuali.rice.test.data.UnitTestSql;
 
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -229,11 +232,11 @@ public class InactivateableFromToServiceTest extends KRADTestCase {
 		InactivateableFromToService inactivateableFromToService = getInactivateableFromToService();
 
 		List<InactivatableFromTo> filterList = new ArrayList<InactivatableFromTo>();
-		filterList.add(constructUseRate("1", "a1", "01/01/2010", "01/01/2011"));
-		filterList.add(constructUseRate("2", "a1", "01/01/2012", "01/01/2013"));
-		filterList.add(constructUseRate("3", "a2", "01/01/2009", "01/01/2010"));
-		filterList.add(constructUseRate("4", "a3", "01/01/2010", "05/16/2010"));
-		filterList.add(constructUseRate("5", "a4", null, "01/01/2011"));
+		filterList.add((TravelAccountUseRate)constructUseRate("1", "a1", "01/01/2010", "01/01/2011"));
+		filterList.add((TravelAccountUseRate)constructUseRate("2", "a1", "01/01/2012", "01/01/2013"));
+		filterList.add((TravelAccountUseRate)constructUseRate("3", "a2", "01/01/2009", "01/01/2010"));
+		filterList.add((TravelAccountUseRate)constructUseRate("4", "a3", "01/01/2010", "05/16/2010"));
+		filterList.add((TravelAccountUseRate)constructUseRate("5", "a4", null, "01/01/2011"));
 
 		Date activeAsOfDate = CoreApiServiceLocator.getDateTimeService().convertToSqlDate("06/01/2010");
 		List<InactivatableFromTo> accessibleList = inactivateableFromToService.filterOutNonActive(filterList,
@@ -262,10 +265,18 @@ public class InactivateableFromToServiceTest extends KRADTestCase {
 
 		List<InactivatableFromTo> results = inactivateableFromToService.findMatchingCurrent(TravelAccountUseRate.class,
 				fieldValues);
-		assertEquals(1, results.size());
+		assertEquals(2, results.size());
+
+        fieldValues = new HashMap();
+        fieldValues.put(KRADPropertyConstants.ACTIVE_AS_OF_DATE, "02/01/2010");
+        fieldValues.put("number", "a2");
+
+        results = inactivateableFromToService.findMatchingCurrent(TravelAccountUseRate.class,
+                fieldValues);
+        assertEquals(1, results.size());
 
 		TravelAccountUseRate useRate = (TravelAccountUseRate) results.get(0);
-		assertTrue("Incorrect current record returned, does not match expected id", "3".equals(useRate.getId()));
+		assertTrue("Incorrect current record returned, does not match expected id", "2".equals(useRate.getId()));
 	}
 
     /**
@@ -323,12 +334,12 @@ public class InactivateableFromToServiceTest extends KRADTestCase {
 		InactivateableFromToService inactivateableFromToService = getInactivateableFromToService();
 
 		List<InactivatableFromTo> filterList = new ArrayList<InactivatableFromTo>();
-		filterList.add(constructUseRate("1", "a1", "01/01/2010", "01/01/2011"));
-		filterList.add(constructUseRate("2", "a1", "01/16/2010", "01/01/2011"));
-		filterList.add(constructUseRate("3", "a1", "01/01/2012", "01/01/2013"));
-		filterList.add(constructUseRate("4", "a2", "01/01/2009", "01/01/2010"));
-		filterList.add(constructUseRate("5", "a3", "01/01/2010", "05/16/2011"));
-		filterList.add(constructUseRate("6", "a3", "06/01/2010", "05/16/2011"));
+		filterList.add((TravelAccountUseRate)constructUseRate("1", "a1", "01/01/2010", "01/01/2011"));
+		filterList.add((TravelAccountUseRate)constructUseRate("2", "a1", "01/16/2010", "01/01/2011"));
+		filterList.add((TravelAccountUseRate)constructUseRate("3", "a1", "01/01/2012", "01/01/2013"));
+		filterList.add((TravelAccountUseRate)constructUseRate("4", "a2", "01/01/2009", "01/01/2010"));
+		filterList.add((TravelAccountUseRate)constructUseRate("5", "a3", "01/01/2010", "05/16/2011"));
+		filterList.add((TravelAccountUseRate)constructUseRate("6", "a3", "06/01/2010", "05/16/2011"));
 
 		Date activeAsOfDate = CoreApiServiceLocator.getDateTimeService().convertToSqlDate("06/10/2010");
 		List<InactivatableFromTo> accessibleList = inactivateableFromToService.filterOutNonCurrent(filterList,
@@ -344,7 +355,10 @@ public class InactivateableFromToServiceTest extends KRADTestCase {
 				"2".equals(useRate.getId()) || "6".equals(useRate.getId()));
 	}
 
-	protected TravelAccountUseRate constructUseRate(String id, String number, String fromDate, String toDate)
+    /**
+     * Have to return an Object to avoid class getting loaded before load-time weaving can occur.
+     */
+	protected Object constructUseRate(String id, String number, String fromDate, String toDate)
 			throws Exception {
 		TravelAccountUseRate useRate = new TravelAccountUseRate();
 

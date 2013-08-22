@@ -49,13 +49,11 @@ public class PersistableBusinessObjectValuesFinder <T extends PersistableBusines
      * Build the list of KeyValues using the key (keyAttributeName) and
      * label (labelAttributeName) of the list of all business objects found
      * for the BO class specified.
-     *
-     * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
      */
     @Override
 	public List<KeyValue> getKeyValues() {
     	try {
-            Collection<T> objects = KRADServiceLocatorWeb.getLegacyDataAdapter().findMatching(businessObjectClass, Collections.singletonMap(CoreConstants.CommonElements.ACTIVE, true) );
+            Collection<T> objects = KRADServiceLocatorWeb.getLegacyDataAdapter().findMatching(businessObjectClass, Collections.<String, String>emptyMap());
             List<KeyValue> labels = new ArrayList<KeyValue>(objects.size());
             if(includeBlankRow) {
             	labels.add(new ConcreteKeyValue("", ""));

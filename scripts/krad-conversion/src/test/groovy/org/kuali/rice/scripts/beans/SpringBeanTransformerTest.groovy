@@ -16,28 +16,24 @@
 package org.kuali.rice.scripts.beans
 
 import groovy.util.logging.Log
-import groovy.xml.XmlUtil
+import groovy.xml.QName
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
 /**
- * Tests for the {@link org.kuali.rice.scripts.SpringBeanTransformer} class.
+ * Tests for the {@link org.kuali.rice.scripts.beans.SpringBeanTransformer} class.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Log
-class SpringBeanTransformerTest {
-    static def testResourceDir = "./src/test/resources/"
-    static def dictTestDir = testResourceDir + "DictionaryConverterTest/"
+class SpringBeanTransformerTest extends BeanTransformerTestBase {
 
-    SpringBeanTransformer springBeanTransformer
-    def config
+    SpringBeanTransformer springBeanTransformer;
 
     @Before
     void setUp() {
-        def configFilePath = testResourceDir + "test.config.properties";
-        config = new ConfigSlurper().parse(new File(configFilePath).toURL());
+        super.setUp();
         springBeanTransformer = new SpringBeanTransformer();
         springBeanTransformer.init(config);
     }
@@ -88,7 +84,7 @@ class SpringBeanTransformerTest {
 
     @Test
     void testFixNamespaceProperties() {
-        def maintDefFilePath = dictTestDir + "AttributePropertySample.xml"
+        def maintDefFilePath = getDictionaryTestDir() + "AttributePropertySample.xml"
         def ddRootNode = getFileRootNode(maintDefFilePath)
         ddRootNode.bean.each { bean -> springBeanTransformer.fixNamespaceProperties(bean) }
         Assert.assertEquals("bean properties size does not match", 5, ddRootNode.bean.property.size())
@@ -96,7 +92,7 @@ class SpringBeanTransformerTest {
 
     @Test
     void testTransformControlProperty() {
-        String inqDefFilePath = dictTestDir + "ControlFieldSample.xml";
+        String inqDefFilePath = getDictionaryTestDir() + "ControlFieldSample.xml";
         def ddRootNode = getFileRootNode(inqDefFilePath);
         def renamedControlDefinitions = config.map.convert.dd_bean_control;
         def selectBeanNode = ddRootNode.bean.find { "BookOrder-bookId-parentBean".equals(it.@id) };
@@ -123,20 +119,20 @@ class SpringBeanTransformerTest {
 
     @Test
     void testGenericNodeTransform() {
-        def rootBean = getSimpleSpringXmlNode();
+        def ddRootNode = getSimpleSpringXmlNode();
         def searchAttrs = ["*name": "p:propertyName"];
-        def attributes = springBeanTransformer.genericGatherAttributes(rootBean.bean[0], searchAttrs);
+        def attributes = springBeanTransformer.genericGatherAttributes(ddRootNode.bean[0], searchAttrs);
         Assert.assertTrue("attribute list should contain propertyName", attributes["p:propertyName"] != null);
 
-        rootBean.bean[0].replaceNode {
+        ddRootNode.bean[0].replaceNode {
             list {
                 springBeanTransformer.genericNodeTransform(delegate, "bean", ["id": "helloworld"], "");
                 springBeanTransformer.genericNodeTransform(delegate, "value", [:], "1");
             }
 
         }
-        Assert.assertTrue("bean count should be 1", rootBean.list.bean.size() == 1);
-        Assert.assertTrue("value count should be 1", rootBean.list.value.size() == 1);
+        Assert.assertTrue("bean count should be 1", ddRootNode.list.bean.size() == 1);
+        Assert.assertTrue("value count should be 1", ddRootNode.list.value.size() == 1);
 
     }
 
@@ -146,7 +142,7 @@ class SpringBeanTransformerTest {
      */
     @Test
     public void testRemoveChildrenBeans() {
-        String lookupDefFilePath = dictTestDir + "LookupDefinitionSample.xml"
+        String lookupDefFilePath = getDictionaryTestDir() + "LookupDefinitionSample.xml"
         def lookupDefFile = new File(lookupDefFilePath)
         def ddRootNode = new XmlParser().parse(lookupDefFile);
         def beanNode = ddRootNode.bean.find { "BusinessObjectEntry".equals(it.@parent) };
@@ -154,32 +150,6 @@ class SpringBeanTransformerTest {
 
         springBeanTransformer.removeChildrenBeans(beanNode);
         Assert.assertEquals("child bean still exists", ddRootNode.findAll { parentName.equals(it.@name) }.size(), 0);
-    }
-
-    // helper functions
-
-    public void checkBeanParentExists(def rootNode, String parentName) {
-        Assert.assertTrue("root should contains parent bean " + parentName, rootNode.bean.findAll { parentName.equals(it.@parent) }.size() > 0);
-    }
-
-    public void checkBeanPropertyExists(def beanNode, String propertyName) {
-        Assert.assertTrue("bean should contains property " + propertyName, beanNode.property.findAll { propertyName.equals(it.@name) }.size() > 0);
-    }
-
-    public Node getFileRootNode(String filepath) {
-        def file = new File(filepath);
-        return new XmlParser().parse(file);
-    }
-
-    public static String getNodeString(Node rootNode) {
-        def writer = new StringWriter()
-        XmlUtil.serialize(rootNode, writer)
-        return writer.toString()
-    }
-
-    public static Node getSimpleSpringXmlNode() {
-        def rootBean = new XmlParser().parseText("<beans>" + "<bean id='SimpleBean' parent='SpringBean' attributeName='test'>" + "<property name='simpleProperty' value='test' />" + "<property name='propertyWithRef' value='value2' />" + "<property name='propertyList'>" + "<list><value>1</value><value>2</value></list>" + "</property>" + "<property name='propertyListWithBeans'>" + "<list><bean id='test' parent='FieldDefinition' attributeName='builder'/></list>" + "</property>" + "</bean>" + "</beans>");
-        return rootBean;
     }
 
 }

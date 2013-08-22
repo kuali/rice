@@ -387,6 +387,7 @@
                 <exclude>scripts/bean-rename/beanReplacements.txt</exclude>
                 <exclude>scripts/bean-rename/cssReplacements.txt</exclude>
                 <exclude>scripts/krad-conversion/**/*.conversion.properties</exclude>
+                <exclude>scripts/krad-conversion/**/*.config.properties</exclude>
                 <exclude>**/jquery.*</exclude>
                 <exclude>**/kew/scripts/cal2.js</exclude>
                 <exclude>**/kew/scripts/cal_conf2.js</exclude>

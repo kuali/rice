@@ -71,8 +71,8 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
 
         Template template = KimApiServiceLocator.getPermissionService().findPermTemplateByNamespaceCodeAndName("KR-NS",
                 "Use Screen");
-        permissionsList.add(createPermission(template, "Use All Screens", "KR-SYS", "namespaceCode=KR*"));
-        PermissionBo exactMatch = createPermission(template, "Use Ingester Screen", "KR-WKFLW", "actionClass=" + INGESTER_ACTION, "namespaceCode=KR-WKFLW");
+        permissionsList.add((PermissionBo)createPermission(template, "Use All Screens", "KR-SYS", "namespaceCode=KR*"));
+        PermissionBo exactMatch = (PermissionBo)createPermission(template, "Use Ingester Screen", "KR-WKFLW", "actionClass=" + INGESTER_ACTION, "namespaceCode=KR-WKFLW");
         permissionsList.add(exactMatch);
 
         List<Permission> immutablePermissionList = new ArrayList<Permission>();
@@ -95,8 +95,8 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
         List<PermissionBo> permissionsList = new ArrayList<PermissionBo>();
 
         Template template = KimApiServiceLocator.getPermissionService().findPermTemplateByNamespaceCodeAndName("KR-NS", "Use Screen");
-        permissionsList.add(createPermission(template, "Use Screen", "KR-SYS", "namespaceCode=KR*"));
-        PermissionBo exactMatch = createPermission(template, "Use Screen", "KR-WKFLW", "actionClass=" + INGESTER_ACTION);
+        permissionsList.add((PermissionBo)createPermission(template, "Use Screen", "KR-SYS", "namespaceCode=KR*"));
+        PermissionBo exactMatch = (PermissionBo)createPermission(template, "Use Screen", "KR-WKFLW", "actionClass=" + INGESTER_ACTION);
         permissionsList.add(exactMatch);
 
         List<Permission> immutablePermissionList = new ArrayList<Permission>();
@@ -119,7 +119,7 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
     }
 
     /**
-     * creates a test permission
+     * creates a test permission, returning an Object to avoid the class getting loaded before JPA load-time weaving has occurred
      *
      * @param permissionTemplate - the Template to use to create this permission
      * @param name - the permission name
@@ -128,7 +128,7 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
      *
      * @return a KimPermissionInfo object for the given name, namespace, and varargs "=" delimited attributes
      */
-    private PermissionBo createPermission(Template permissionTemplate, String name, String namespace, String ... attrs) {
+    private Object createPermission(Template permissionTemplate, String name, String namespace, String ... attrs) {
         PermissionBo perm = new PermissionBo();
 
         perm.setName(name);

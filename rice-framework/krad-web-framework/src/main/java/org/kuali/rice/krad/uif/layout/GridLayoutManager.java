@@ -355,7 +355,9 @@ public class GridLayoutManager extends LayoutManagerBase {
     @Override
     protected <T> void copyProperties(T layoutManager) {
         super.copyProperties(layoutManager);
+
         GridLayoutManager gridLayoutManagerCopy = (GridLayoutManager) layoutManager;
+
         gridLayoutManagerCopy.setNumberOfColumns(this.numberOfColumns);
         gridLayoutManagerCopy.setSuppressLineWrapping(this.suppressLineWrapping);
         gridLayoutManagerCopy.setApplyAlternatingRowStyles(this.applyAlternatingRowStyles);

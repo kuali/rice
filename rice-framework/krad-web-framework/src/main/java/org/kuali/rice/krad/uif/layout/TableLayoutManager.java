@@ -2095,7 +2095,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     @Override
     protected <T> void copyProperties(T layoutManager) {
         super.copyProperties(layoutManager);
+
         TableLayoutManager tableLayoutManagerCopy = (TableLayoutManager) layoutManager;
+
         tableLayoutManagerCopy.setUseShortLabels(this.useShortLabels);
         tableLayoutManagerCopy.setRepeatHeader(this.repeatHeader);
 

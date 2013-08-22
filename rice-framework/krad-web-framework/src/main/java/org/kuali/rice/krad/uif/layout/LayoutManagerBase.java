@@ -350,20 +350,10 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
         this.propertyReplacers = propertyReplacers;
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copyProperties()
+     */
     @Override
-    public <T> T copy() {
-        T copiedClass = null;
-        try {
-            copiedClass = (T) this.getClass().newInstance();
-        } catch (Exception exception) {
-            throw new RuntimeException();
-        }
-
-        copyProperties(copiedClass);
-
-        return copiedClass;
-    }
-
     protected <T> void copyProperties(T layoutManager) {
         super.copyProperties(layoutManager);
 

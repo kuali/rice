@@ -220,7 +220,9 @@ public class BoxLayoutManager extends LayoutManagerBase {
     @Override
     protected <T> void copyProperties(T layout) {
         super.copyProperties(layout);
+
         BoxLayoutManager boxLayoutManagerCopy = (BoxLayoutManager) layout;
+
         boxLayoutManagerCopy.setPadding(this.padding);
         boxLayoutManagerCopy.setItemStyle(this.itemStyle);
         boxLayoutManagerCopy.setOrientation(this.orientation);

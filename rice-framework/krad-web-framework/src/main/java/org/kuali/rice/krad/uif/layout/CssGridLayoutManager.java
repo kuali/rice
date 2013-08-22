@@ -249,6 +249,7 @@ public class CssGridLayoutManager extends LayoutManagerBase {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         CssGridLayoutManager cssGridLayoutManagerCopy = (CssGridLayoutManager) component;
 
         if (this.rowLayoutCssClass != null) {

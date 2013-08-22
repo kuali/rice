@@ -24,10 +24,10 @@ import org.junit.Test;
 public class DemoTravelAccountTypeLookUpSmokeTest extends SmokeTestBase {
 
     /**
-     * /kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccountType&hideReturnLink=true
+     * /kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.krad.demo.travel.account.TravelAccountType&hideReturnLink=true
      */
-    public static final String BOOKMARK_URL = "/kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccountType&hideReturnLink=true";
-    
+    public static final String BOOKMARK_URL = "/kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.krad.demo.travel.account.TravelAccountType&hideReturnLink=true";
+
     /**
      * Search
      */
@@ -59,9 +59,13 @@ public class DemoTravelAccountTypeLookUpSmokeTest extends SmokeTestBase {
         assertElementPresentByXpath("//span[contains(text(),'CAT')]");
         assertElementPresentByXpath("//span[contains(text(),'EAT')]");
         assertElementPresentByXpath("//span[contains(text(),'IAT')]");
+        waitAndClickButtonByText(CLEAR_VALUES);
+        waitAndTypeByName("lookupCriteria[name]","Clearing Account Type");
+        waitAndClickButtonByText(SEARCH);
+        waitForElementsPresentByXpath("//span[contains(text(),'Clearing Account Type')]");
     }
 
-    @Test
+//    @Test
     public void testTravelAccountTypeLookUpNav() throws Exception {
         testTravelAccountTypeLookUp();
         passed();

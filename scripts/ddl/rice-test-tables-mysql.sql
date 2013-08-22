@@ -41,6 +41,8 @@ CREATE TABLE TRV_ACCT_USE_RT_T  (
     RATE       	decimal(8,0),
     ACTV_FRM_DT	datetime,
     ACTV_TO_DT 	datetime,
+    OBJ_ID      varchar(36) NOT NULL,
+    VER_NBR    	decimal(8,0) DEFAULT 1 NOT NULL,
     PRIMARY KEY(ID)
 );
 

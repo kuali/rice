@@ -162,7 +162,9 @@ public class BreadcrumbItem extends ContentElementBase {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         BreadcrumbItem breadcrumbItemCopy = (BreadcrumbItem) component;
+
         breadcrumbItemCopy.setLabel(this.label);
 
         if (this.siblingBreadcrumbComponent != null) {

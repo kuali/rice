@@ -513,6 +513,8 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
      * @param parentLocation to copy properties to
      */
     protected <T> void copyProperties(T parentLocation) {
+        super.copyProperties(parentLocation);
+
         ParentLocation parentLocationCopy = (ParentLocation) parentLocation;
 
         if (this.parentViewUrl != null) {

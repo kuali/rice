@@ -318,7 +318,10 @@ public class ColumnCalculationInfo extends UifDictionaryBeanBase implements Seri
      */
     @Override
     protected <T> void copyProperties(T columnCalculationInfo) {
+        super.copyProperties(columnCalculationInfo);
+
         ColumnCalculationInfo columnCalculationInfoCopy = (ColumnCalculationInfo) columnCalculationInfo;
+
         columnCalculationInfoCopy.setCalculateOnKeyUp(this.calculateOnKeyUp);
         columnCalculationInfoCopy.setCalculationFunctionExtraData(this.calculationFunctionExtraData);
         columnCalculationInfoCopy.setCalculationFunctionName(this.calculationFunctionName);

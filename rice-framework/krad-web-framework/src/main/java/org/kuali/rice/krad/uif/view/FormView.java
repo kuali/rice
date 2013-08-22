@@ -142,7 +142,9 @@ public class FormView extends View {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         FormView formViewCopy = (FormView) component;
+
         formViewCopy.setRenderForm(this.renderForm);
         formViewCopy.setValidateServerSide(this.validateServerSide);
         formViewCopy.setValidateClientSide(this.validateClientSide);

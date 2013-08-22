@@ -430,7 +430,9 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
     @Override
     protected <T> void copyProperties(T componentModifier) {
         super.copyProperties(componentModifier);
+
         CompareFieldCreateModifier compareFieldCreateModifierCopy = (CompareFieldCreateModifier) componentModifier;
+
         compareFieldCreateModifierCopy.setDefaultOrderSequence(this.defaultOrderSequence);
         compareFieldCreateModifierCopy.setGenerateCompareHeaders(this.generateCompareHeaders);
 

@@ -217,16 +217,11 @@ public class DocumentView extends FormView {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         DocumentView documentViewCopy = (DocumentView) component;
 
-        if(this.documentClass != null) {
-            documentViewCopy.setDocumentClass(this.documentClass);
-        }
-
-        if(this.attachmentTypesValuesFinderClass != null) {
-            documentViewCopy.setAttachmentTypesValuesFinderClass(this.attachmentTypesValuesFinderClass);
-        }
-
+        documentViewCopy.setDocumentClass(this.documentClass);
+        documentViewCopy.setAttachmentTypesValuesFinderClass(this.attachmentTypesValuesFinderClass);
         documentViewCopy.setAllowsNoteAttachments(this.allowsNoteAttachments);
         documentViewCopy.setAllowsNoteFYI(this.allowsNoteFYI);
         documentViewCopy.setDisplayTopicFieldInNotes(this.displayTopicFieldInNotes);

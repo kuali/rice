@@ -254,6 +254,7 @@ public class PageBreadcrumbOptions extends BreadcrumbOptions {
      */
     protected <T> void copyProperties(T breadcrumbOptions) {
         super.copyProperties(breadcrumbOptions);
+
         PageBreadcrumbOptions breadcrumbOptionsCopy = (PageBreadcrumbOptions) breadcrumbOptions;
 
         breadcrumbOptionsCopy.setRenderViewBreadcrumb(this.renderViewBreadcrumb);

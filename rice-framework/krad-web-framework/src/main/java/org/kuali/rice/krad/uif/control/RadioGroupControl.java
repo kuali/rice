@@ -101,6 +101,7 @@ public class RadioGroupControl extends MultiValueControlBase {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         RadioGroupControl radioGroupControlCopy = (RadioGroupControl) component;
 
         if(fieldsetClasses != null) {

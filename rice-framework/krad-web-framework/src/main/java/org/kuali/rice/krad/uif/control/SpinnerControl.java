@@ -75,6 +75,7 @@ public class SpinnerControl extends TextControl {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         SpinnerControl spinnerControlCopy = (SpinnerControl) component;
 
         if(this.spinner != null) {

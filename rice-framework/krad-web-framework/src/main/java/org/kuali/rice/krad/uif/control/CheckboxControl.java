@@ -171,7 +171,9 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         CheckboxControl checkboxControlCopy = (CheckboxControl) component;
+
         checkboxControlCopy.setValue(this.value);
         checkboxControlCopy.setCheckboxLabel(this.checkboxLabel);
 

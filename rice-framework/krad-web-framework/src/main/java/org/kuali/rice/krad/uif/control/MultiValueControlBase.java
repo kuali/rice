@@ -220,6 +220,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         MultiValueControlBase multiValueControlBaseCopy = (MultiValueControlBase) component;
 
         try {

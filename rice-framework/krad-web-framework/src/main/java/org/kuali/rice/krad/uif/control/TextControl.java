@@ -225,7 +225,9 @@ public class TextControl extends ControlBase implements SizedControl {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         TextControl textControlCopy = (TextControl) component;
+
         textControlCopy.setSize(this.size);
         textControlCopy.setMaxLength(this.maxLength);
         textControlCopy.setMinLength(this.minLength);

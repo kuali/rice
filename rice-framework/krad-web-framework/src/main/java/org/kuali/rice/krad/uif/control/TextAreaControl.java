@@ -200,7 +200,9 @@ public class TextAreaControl extends ControlBase {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         TextAreaControl textAreaControlCopy = (TextAreaControl) component;
+
         textAreaControlCopy.setRows(this.rows);
         textAreaControlCopy.setCols(this.cols);
         textAreaControlCopy.setMaxLength(this.maxLength);

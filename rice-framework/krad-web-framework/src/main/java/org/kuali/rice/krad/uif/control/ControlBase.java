@@ -293,7 +293,9 @@ public abstract class ControlBase extends ContentElementBase implements Control 
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         ControlBase controlBaseCopy = (ControlBase) component;
+
         controlBaseCopy.setTabIndex(this.tabIndex);
         controlBaseCopy.setDisabled(this.disabled);
         controlBaseCopy.setDisabledExpression(this.disabledExpression);

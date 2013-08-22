@@ -55,7 +55,9 @@ public class FileControl extends ControlBase implements SizedControl {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         FileControl fileControlCopy = (FileControl) component;
+
         fileControlCopy.setSize(this.size);
     }
 }

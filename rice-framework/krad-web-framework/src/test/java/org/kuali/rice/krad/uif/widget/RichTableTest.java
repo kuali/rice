@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
+import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
@@ -22,10 +23,12 @@ import org.kuali.rice.krad.datadictionary.validation.Employee;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
+import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
-import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.view.LookupView;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
@@ -57,7 +60,7 @@ public class RichTableTest {
     
     private RichTable richTable;
     private CollectionGroup group;
-    private View mockView;
+    private LookupView mockView;
 
     //private
     @Before
@@ -95,7 +98,7 @@ public class RichTableTest {
 
         group.setItems(items);
 
-        mockView =  mock(View.class);
+        mockView =  mock(LookupView.class);
         ViewHelperService mockViewHelperService = mock(ViewHelperService.class);
         when(mockView.getViewHelperService()).thenReturn(mockViewHelperService);
     }
@@ -159,6 +162,130 @@ public class RichTableTest {
         expected = expected.replace(S_SORT_DATA_TARGETS_2 + " ,", S_SORT_DATA_TARGETS_2 + ",");
         expected = expected.replace(S_SORT_DATA_TARGETS_3, B_SORTABLE_FALSE_TARGETS_3);
         assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
+    }
+
+    @Test
+    /**
+     * test that the default sort options, when set on the view, sort in the correct order
+     */
+    public void testComponentOptionsDefaultSort() {
+        when(mockView.isDefaultSortAscending()).thenReturn(false);
+        when(mockView.getDefaultSortAttributeNames()).thenReturn(Lists.newArrayList("employeeId", "contactEmail"));
+
+        String expected = "[[1, 'desc'], [3, 'desc']]";
+        assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AASORTING);
+    }
+
+    @Test
+    /**
+     * test that the default sort options, when set on the view, sort in the correct order
+     */
+    public void testComponentOptionsDefaultSortReverse() {
+        when(mockView.isDefaultSortAscending()).thenReturn(false);
+        when(mockView.getDefaultSortAttributeNames()).thenReturn(Lists.newArrayList("contactEmail", "employeeId"));
+
+        String expected = "[[3, 'desc'], [1, 'desc']]";
+        assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AASORTING);
+    }
+
+    @Test
+    /**
+     * test that the default sort options, when set on the view, sort in the correct order and in the correct position
+     * when no sequence column is added
+     */
+    public void testComponentOptionsDefaultSortWithoutSequence() {
+        when(mockView.isDefaultSortAscending()).thenReturn(false);
+        when(mockView.getDefaultSortAttributeNames()).thenReturn(Lists.newArrayList("employeeId", "contactEmail"));
+
+        ((TableLayoutManager) group.getLayoutManager()).setRenderSequenceField(false);
+
+        String expected = "[[0, 'desc'], [2, 'desc']]";
+        assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AASORTING);
+    }
+
+    @Test
+    /**
+     * test that the default sort options, when set on the view, sort in the correct order and in the correct position
+     * relative to the details column
+     */
+    public void testComponentOptionsDefaultSortWithDetails() {
+        when(mockView.isDefaultSortAscending()).thenReturn(false);
+        when(mockView.getDefaultSortAttributeNames()).thenReturn(Lists.newArrayList("employeeId", "contactEmail"));
+
+        Group rowDetailsGroup = new Group();
+        rowDetailsGroup.setItems(Lists.newArrayList(new InputField()));
+        ((TableLayoutManager) group.getLayoutManager()).setRowDetailsGroup(rowDetailsGroup);
+
+        String expected = "[[2, 'desc'], [4, 'desc']]";
+        assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AASORTING);
+    }
+
+    @Test
+    /**
+     * test that the default sort options, when set on the view, sort in the correct order and in the correct position
+     * relative to the action column on the left
+     */
+    public void testComponentOptionsDefaultSortWithActionLeft() {
+        when(mockView.isDefaultSortAscending()).thenReturn(false);
+        when(mockView.getDefaultSortAttributeNames()).thenReturn(Lists.newArrayList("employeeId", "contactEmail"));
+
+        group.setRenderLineActions(true);
+        ((TableLayoutManager) group.getLayoutManager()).setActionColumnPlacement("LEFT");
+
+        String expected = "[[2, 'desc'], [4, 'desc']]";
+        assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AASORTING);
+    }
+
+    @Test
+    /**
+     * test that the default sort options, when set on the view, sort in the correct order and in the correct position
+     * relative to the action column on the right
+     */
+    public void testComponentOptionsDefaultSortWithActionRight() {
+        when(mockView.isDefaultSortAscending()).thenReturn(false);
+        when(mockView.getDefaultSortAttributeNames()).thenReturn(Lists.newArrayList("employeeId", "contactEmail"));
+
+        group.setRenderLineActions(true);
+        ((TableLayoutManager) group.getLayoutManager()).setActionColumnPlacement("RIGHT");
+
+        String expected = "[[1, 'desc'], [3, 'desc']]";
+        assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AASORTING);
+    }
+
+    @Test
+    /**
+     * test that the default sort options, when set on the view, sort in the correct order and in the correct position
+     * relative to the multiple columns on the left
+     */
+    public void testComponentOptionsDefaultSortWithMultipleColumns() {
+        when(mockView.isDefaultSortAscending()).thenReturn(false);
+        when(mockView.getDefaultSortAttributeNames()).thenReturn(Lists.newArrayList("employeeId", "contactEmail"));
+
+        Group rowDetailsGroup = new Group();
+        rowDetailsGroup.setItems(Lists.newArrayList(new InputField()));
+        ((TableLayoutManager) group.getLayoutManager()).setRowDetailsGroup(rowDetailsGroup);
+
+        group.setRenderLineActions(true);
+        ((TableLayoutManager) group.getLayoutManager()).setActionColumnPlacement("LEFT");
+
+        String expected = "[[3, 'desc'], [5, 'desc']]";
+        assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AASORTING);
+    }
+
+    @Test
+    /**
+     * test that the default sort options, when set on the view, sort in the correct order and in the correct position
+     * relative to the action column in the middle
+     */
+    public void testComponentOptionsDefaultSortWithActionMiddle() {
+        when(mockView.isDefaultSortAscending()).thenReturn(false);
+        when(mockView.getDefaultSortAttributeNames()).thenReturn(Lists.newArrayList("employeeId", "contactEmail"));
+
+        group.setRenderLineActions(true);
+        ((TableLayoutManager) group.getLayoutManager()).setActionColumnPlacement("4");
+
+        String expected = "[[1, 'desc'], [4, 'desc']]";
+        assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AASORTING);
     }
 
     /**

@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
@@ -45,11 +47,13 @@ import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.view.LookupView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
+import javax.annotation.Nullable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -157,6 +161,10 @@ public class RichTable extends WidgetBase {
 
             buildTableOptions(collectionGroup);
             setTotalOptions(collectionGroup);
+
+            if (view instanceof LookupView) {
+                buildSortOptions((LookupView) view, collectionGroup);
+            }
         }
 
         if (isDisableTableSort()) {
@@ -430,7 +438,7 @@ public class RichTable extends WidgetBase {
                                     + columnIndex
                                     + "]"
                                     + "}, ");
-                            // if sortableColumns is present and a field is marked as sortable or unspecified
+                            // if sortableColumns is present and a field is marked as sortable or unspecified             if (!isDisableTableSort()) {
                         } else if (getSortableColumns() != null && !getSortableColumns().isEmpty()) {
                             if (getSortableColumns().contains(field.getPropertyName())) {
                                 tableToolsColumnOptions.append(getDataFieldColumnOptions(columnIndex, collectionGroup,
@@ -504,6 +512,65 @@ public class RichTable extends WidgetBase {
                 tableToolsColumnOptions.append("]");
                 getTemplateOptions().put(UifConstants.TableToolsKeys.AO_COLUMN_DEFS,
                         tableToolsColumnOptions.toString());
+            }
+        }
+    }
+
+    /**
+     * Builds default sorting options.
+     *
+     * @param lookupView the view for the lookup
+     * @param collectionGroup the collection group for the table
+     */
+    protected void buildSortOptions(LookupView lookupView, CollectionGroup collectionGroup) {
+        if (!isDisableTableSort() && CollectionUtils.isNotEmpty(lookupView.getDefaultSortAttributeNames())) {
+            LayoutManager layoutManager = collectionGroup.getLayoutManager();
+
+            if (layoutManager instanceof TableLayoutManager) {
+                TableLayoutManager tableLayoutManager = (TableLayoutManager) layoutManager;
+
+                List<String> firstRowPropertyNames = Lists.transform(tableLayoutManager.getFirstRowFields(),
+                        new Function<Field, String>() {
+                            @Override
+                            public String apply(@Nullable Field field) {
+                                if (field != null && field instanceof DataField) {
+                                    return ((DataField) field).getPropertyName();
+                                } else {
+                                    return null;
+                                }
+                            }
+                        });
+                List<String> defaultSortAttributeNames = lookupView.getDefaultSortAttributeNames();
+                String sortDirection = lookupView.isDefaultSortAscending() ? "'asc'" : "'desc'";
+                boolean actionFieldVisible = collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly();
+                int actionIndex = ((TableLayoutManager) layoutManager).getActionColumnIndex();
+
+                int columnIndexPrefix = 0;
+                if (tableLayoutManager.isRenderSequenceField()) {
+                    columnIndexPrefix++;
+                }
+                if (tableLayoutManager.getRowDetailsGroup() != null
+                        && CollectionUtils.isNotEmpty(tableLayoutManager.getRowDetailsGroup().getItems())) {
+                    columnIndexPrefix++;
+                }
+
+                StringBuffer tableToolsSortOptions = new StringBuffer("[");
+                for (String defaultSortAttributeName : defaultSortAttributeNames) {
+                    int index = firstRowPropertyNames.indexOf(defaultSortAttributeName);
+                    if (index >= 0) {
+                        if (tableToolsSortOptions.length() > 1) {
+                            tableToolsSortOptions.append(", ");
+                        }
+                        int columnIndex = columnIndexPrefix + index;
+                        if (actionFieldVisible && actionIndex != -1 && actionIndex <= columnIndex + 1) {
+                            columnIndex++;
+                        }
+                        tableToolsSortOptions.append("[" + columnIndex + ", " + sortDirection + "]");
+                    }
+                }
+                tableToolsSortOptions.append("]");
+
+                getTemplateOptions().put(UifConstants.TableToolsKeys.AASORTING, tableToolsSortOptions.toString());
             }
         }
     }

@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.test.document.bo;
 
-import org.kuali.rice.krad.bo.VersionedAndGloballyUniqueBase;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.data.provider.annotation.ExtensionFor;
 
 import javax.persistence.Column;
@@ -25,12 +25,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.io.Serializable;
 
 @Entity
 @Table(name="TRV_ACCT_EXT")
 @ExtensionFor(Account.class)
-public class AccountExtension extends VersionedAndGloballyUniqueBase {
+public class AccountExtension extends PersistableBusinessObjectBase {
     
 	@Id
 	@Column(name="ACCT_NUM")

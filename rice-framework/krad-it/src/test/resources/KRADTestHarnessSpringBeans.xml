@@ -129,6 +129,7 @@
         <value>classpath:org/kuali/rice/krad/test/document/RiceTestTransactionalDocument2.xml</value>
         <value>classpath:org/kuali/rice/krad/test/document/RiceTestTransactionalDocumentDivergentType.xml</value>
         <value>classpath:org/kuali/rice/krad/test/document/SearchAttributeIndexTestDocument.xml</value>
+        <value>classpath:org/kuali/rice/krad/test/document/TravelAccountUseRate.xml</value>
         <!-- <value>org/kuali/rice/krad/test/datadictionary/TestDataObject.xml</value> -->
         <!--Due to maven dependencies, this entry will break the krad integrations tests
                       uncomment only to run sample app travel docs  tests-->

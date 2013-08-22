@@ -80,9 +80,9 @@ public class PopulateGroupPermissionTypeServiceImplTest extends KRADTestCase {
         permAttrsForSpecificGroupName.add("groupName=WorkflowAdmin");
         permAttrsForSpecificGroupName.add("namespaceCode=KR*");
 
-        permissionsList.add(createPermission(template, PERM_NM_POP_GROUP_NMSPC_KR, "KR-SYS", permAttrsGeneric));
-        permissionsList.add(createPermission(template, PERM_NM_POP_GROUP_TYPE_DEFAULT, "KR-SYS", permAttrsForSpecificKimTypeName));
-        permissionsList.add(createPermission(template, PERM_NM_POP_GROUP_GROUP_NM, "KR-SYS", permAttrsForSpecificGroupName));
+        permissionsList.add((PermissionBo)createPermission(template, PERM_NM_POP_GROUP_NMSPC_KR, "KR-SYS", permAttrsGeneric));
+        permissionsList.add((PermissionBo)createPermission(template, PERM_NM_POP_GROUP_TYPE_DEFAULT, "KR-SYS", permAttrsForSpecificKimTypeName));
+        permissionsList.add((PermissionBo)createPermission(template, PERM_NM_POP_GROUP_GROUP_NM, "KR-SYS", permAttrsForSpecificGroupName));
 
         List<Permission> immutablePermissionList = new ArrayList<Permission>();
         for (PermissionBo bo : permissionsList) {
@@ -113,9 +113,9 @@ public class PopulateGroupPermissionTypeServiceImplTest extends KRADTestCase {
         permAttrsForSpecificGroupName.add("groupName=NotTheGroupWeAreModifying");
         permAttrsForSpecificGroupName.add("namespaceCode=KR*");
 
-        permissionsList.add(createPermission(template, PERM_NM_POP_GROUP_NMSPC_KR, "KR-SYS", permAttrsGeneric));
-        permissionsList.add(createPermission(template, PERM_NM_POP_GROUP_TYPE_DEFAULT, "KR-SYS", permAttrsForSpecificKimTypeName));
-        permissionsList.add(createPermission(template, PERM_NM_POP_GROUP_GROUP_NM, "KR-SYS", permAttrsForSpecificGroupName));
+        permissionsList.add((PermissionBo)createPermission(template, PERM_NM_POP_GROUP_NMSPC_KR, "KR-SYS", permAttrsGeneric));
+        permissionsList.add((PermissionBo)createPermission(template, PERM_NM_POP_GROUP_TYPE_DEFAULT, "KR-SYS", permAttrsForSpecificKimTypeName));
+        permissionsList.add((PermissionBo)createPermission(template, PERM_NM_POP_GROUP_GROUP_NM, "KR-SYS", permAttrsForSpecificGroupName));
 
         List<Permission> immutablePermissionList = new ArrayList<Permission>();
         for (PermissionBo bo : permissionsList) {
@@ -152,10 +152,10 @@ public class PopulateGroupPermissionTypeServiceImplTest extends KRADTestCase {
         permAttrsForSpecificGroupName.add("groupName=NotTheGroupWeAreModifying");
         permAttrsForSpecificGroupName.add("namespaceCode=KR*");
 
-        permissionsList.add(createPermission(template, PERM_NM_POP_GROUP_NMSPC_KR, "KR-SYS", permAttrsGeneric));
-        permissionsList.add(createPermission(template, PERM_NM_POP_GROUP_TYPE_DEFAULT, "KR-SYS", permAttrsForSpecificKimTypeName));
-        permissionsList.add(createPermission(template, PERM_NM_POP_GROUP_TYPE_DEFAULT_KFS, "KFS-SYS", permAttrsForSpecificKimTypeName2));
-        permissionsList.add(createPermission(template, PERM_NM_POP_GROUP_GROUP_NM, "KR-SYS", permAttrsForSpecificGroupName));
+        permissionsList.add((PermissionBo)createPermission(template, PERM_NM_POP_GROUP_NMSPC_KR, "KR-SYS", permAttrsGeneric));
+        permissionsList.add((PermissionBo)createPermission(template, PERM_NM_POP_GROUP_TYPE_DEFAULT, "KR-SYS", permAttrsForSpecificKimTypeName));
+        permissionsList.add((PermissionBo)createPermission(template, PERM_NM_POP_GROUP_TYPE_DEFAULT_KFS, "KFS-SYS", permAttrsForSpecificKimTypeName2));
+        permissionsList.add((PermissionBo)createPermission(template, PERM_NM_POP_GROUP_GROUP_NM, "KR-SYS", permAttrsForSpecificGroupName));
 
         List<Permission> immutablePermissionList = new ArrayList<Permission>();
         for (PermissionBo bo : permissionsList) {
@@ -188,9 +188,9 @@ public class PopulateGroupPermissionTypeServiceImplTest extends KRADTestCase {
         permAttrsForSpecificGroupName.add("groupName=NotTheGroupWeAreModifying");
         permAttrsForSpecificGroupName.add("namespaceCode=KR*");
 
-        permissionsList.add(createPermission(template, PERM_NM_POP_GROUP_NMSPC_KR, "KR-SYS", permAttrsGeneric));
-        permissionsList.add(createPermission(template, PERM_NM_POP_GROUP_NOT_TYPE_DEFAULT, "KR-SYS", permAttrsForSpecificKimTypeName));
-        permissionsList.add(createPermission(template, PERM_NM_POP_GROUP_GROUP_NM, "KR-SYS", permAttrsForSpecificGroupName));
+        permissionsList.add((PermissionBo)createPermission(template, PERM_NM_POP_GROUP_NMSPC_KR, "KR-SYS", permAttrsGeneric));
+        permissionsList.add((PermissionBo)createPermission(template, PERM_NM_POP_GROUP_NOT_TYPE_DEFAULT, "KR-SYS", permAttrsForSpecificKimTypeName));
+        permissionsList.add((PermissionBo)createPermission(template, PERM_NM_POP_GROUP_GROUP_NM, "KR-SYS", permAttrsForSpecificGroupName));
 
         List<Permission> immutablePermissionList = new ArrayList<Permission>();
         for (PermissionBo bo : permissionsList) {
@@ -219,9 +219,9 @@ public class PopulateGroupPermissionTypeServiceImplTest extends KRADTestCase {
         List <String> permAttrsGeneric2 = new ArrayList<String>();
         permAttrsGeneric2.add("namespaceCode=KFS*");
 
-        permissionsList.add(createPermission(template, PERM_NM_POP_GROUP_NMSPC_KR, "KR-SYS", permAttrsGeneric));
-        permissionsList.add(createPermission(template, PERM_NM_POP_GROUP_NMSPC_KR_WKFLW, "KR-SYS", permAttrsSpecficNmspc));
-        permissionsList.add(createPermission(template, PERM_NM_POP_GROUP_NMSPC_KFS, "KR-SYS", permAttrsGeneric2));
+        permissionsList.add((PermissionBo)createPermission(template, PERM_NM_POP_GROUP_NMSPC_KR, "KR-SYS", permAttrsGeneric));
+        permissionsList.add((PermissionBo)createPermission(template, PERM_NM_POP_GROUP_NMSPC_KR_WKFLW, "KR-SYS", permAttrsSpecficNmspc));
+        permissionsList.add((PermissionBo)createPermission(template, PERM_NM_POP_GROUP_NMSPC_KFS, "KR-SYS", permAttrsGeneric2));
 
         List<Permission> immutablePermissionList = new ArrayList<Permission>();
         for (PermissionBo bo : permissionsList) {
@@ -250,9 +250,9 @@ public class PopulateGroupPermissionTypeServiceImplTest extends KRADTestCase {
         List <String> permAttrsGeneric2 = new ArrayList<String>();
         permAttrsGeneric2.add("namespaceCode=KFS*");
 
-        permissionsList.add(createPermission(template, PERM_NM_POP_GROUP_NMSPC_KR, "KR-SYS", permAttrsGeneric));
-        permissionsList.add(createPermission(template, PERM_NM_POP_GROUP_NMSPC_ALL, "KR-SYS", permAttrsAllNmspc));
-        permissionsList.add(createPermission(template, PERM_NM_POP_GROUP_NMSPC_KFS, "KR-SYS", permAttrsGeneric2));
+        permissionsList.add((PermissionBo)createPermission(template, PERM_NM_POP_GROUP_NMSPC_KR, "KR-SYS", permAttrsGeneric));
+        permissionsList.add((PermissionBo)createPermission(template, PERM_NM_POP_GROUP_NMSPC_ALL, "KR-SYS", permAttrsAllNmspc));
+        permissionsList.add((PermissionBo)createPermission(template, PERM_NM_POP_GROUP_NMSPC_KFS, "KR-SYS", permAttrsGeneric2));
 
         List<Permission> immutablePermissionList = new ArrayList<Permission>();
         for (PermissionBo bo : permissionsList) {
@@ -278,9 +278,11 @@ public class PopulateGroupPermissionTypeServiceImplTest extends KRADTestCase {
     }
 
     /**
+     * Returning Object to avoid PermissionBo getting loaded prior to JPA load-time weaving
+     *
      * @return a KimPermissionInfo object for the given name, namespace, and varargs "=" delimited attributes
      */
-    private PermissionBo createPermission(Template permissionTemplate, String name, String namespace, List<String> attrs) {
+    private Object createPermission(Template permissionTemplate, String name, String namespace, List<String> attrs) {
         PermissionBo perm = new PermissionBo();
 
         perm.setName(name);

@@ -1314,7 +1314,9 @@ public class Action extends ContentElementBase {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         Action actionCopy = (Action) component;
+
         actionCopy.setActionEvent(this.actionEvent);
 
         if (this.actionImage != null) {

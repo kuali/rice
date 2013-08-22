@@ -231,7 +231,9 @@ public class Link extends ContentElementBase {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         Link linkCopy = (Link) component;
+
         linkCopy.setHref(this.href);
 
         if (this.lightBox != null) {

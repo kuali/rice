@@ -462,7 +462,9 @@ public class Header extends ContentElementBase {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         Header headerCopy = (Header) component;
+
         headerCopy.setHeaderLevel(this.headerLevel);
 
         if (this.headerTagCssClasses != null) {

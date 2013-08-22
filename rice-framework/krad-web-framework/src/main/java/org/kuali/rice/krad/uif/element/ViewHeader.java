@@ -237,6 +237,7 @@ public class ViewHeader extends Header {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         ViewHeader viewHeaderCopy = (ViewHeader) component;
 
         if (this.areaTitleMessage != null) {

@@ -293,6 +293,7 @@ public class Label extends ContentElementBase {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         Label labelCopy = (Label) component;
 
         if (this.inlineComponents != null) {

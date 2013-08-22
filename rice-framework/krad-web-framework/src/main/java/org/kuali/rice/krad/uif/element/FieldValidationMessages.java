@@ -130,7 +130,9 @@ public class FieldValidationMessages extends ValidationMessages {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         FieldValidationMessages fieldValidationMessagesCopy = (FieldValidationMessages) component;
+
         fieldValidationMessagesCopy.setUseTooltip(this.useTooltip);
         fieldValidationMessagesCopy.setShowIcons(this.showIcons);
     }

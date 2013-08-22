@@ -369,7 +369,9 @@ public class Image extends ContentElementBase {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         Image imageCopy = (Image) component;
+
         imageCopy.setAltText(this.altText);
 
         if (this.captionHeader != null) {

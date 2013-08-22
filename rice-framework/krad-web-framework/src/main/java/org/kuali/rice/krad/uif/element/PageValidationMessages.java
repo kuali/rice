@@ -53,7 +53,9 @@ public class PageValidationMessages extends GroupValidationMessages {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         PageValidationMessages pageValidationMessagesCopy = (PageValidationMessages) component;
+
         pageValidationMessagesCopy.setShowPageSummaryHeader(this.showPageSummaryHeader);
     }
 }

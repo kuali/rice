@@ -151,6 +151,7 @@ public class DataTable extends ContentElementBase {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         DataTable dataTableCopy = (DataTable) component;
 
         if (this.richTable != null) {

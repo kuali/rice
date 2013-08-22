@@ -394,6 +394,7 @@ public class ValidationMessages extends ContentElementBase {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         ValidationMessages validationMessagesCopy = (ValidationMessages) component;
 
         if (additionalKeysToMatch != null) {

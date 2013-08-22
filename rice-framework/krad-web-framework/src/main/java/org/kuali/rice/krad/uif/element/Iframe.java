@@ -103,7 +103,9 @@ public class Iframe extends ContentElementBase {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         Iframe iframeCopy = (Iframe) component;
+
         iframeCopy.setSource(this.source);
         iframeCopy.setHeight(this.height);
         iframeCopy.setFrameborder(this.frameborder);

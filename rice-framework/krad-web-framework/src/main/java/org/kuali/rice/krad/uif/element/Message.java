@@ -285,7 +285,9 @@ public class Message extends ContentElementBase {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         Message messageCopy = (Message) component;
+
         messageCopy.setGenerateSpan(this.generateSpan);
 
         if (this.inlineComponents != null) {

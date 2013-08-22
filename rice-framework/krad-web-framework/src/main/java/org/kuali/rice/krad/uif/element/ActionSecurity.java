@@ -82,7 +82,9 @@ public class ActionSecurity extends FieldSecurity {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         ActionSecurity actionSecurityCopy = (ActionSecurity) component;
+
         actionSecurityCopy.setPerformActionAuthz(this.performActionAuthz);
         actionSecurityCopy.setPerformLineActionAuthz(this.performLineActionAuthz);
     }

@@ -114,7 +114,7 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
     private String cellPhoneNumber;
 	@Column(name="RGN_FAMIL",length=255)
     private String regionFamiliarity;
-	@Column(name="CTZN_CNTRY_CD",length=255)
+	@Column(name="CTZN_CNTRY_CD",length=2)
     private String citizenshipCountryCode;
 	@Transient
 	@NonPersistentProperty

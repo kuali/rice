@@ -20,8 +20,11 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.test.document.bo.Account;
 import org.kuali.rice.krad.test.document.bo.AccountManager;
 import org.kuali.rice.krad.test.KRADTestCase;
+import org.kuali.rice.location.api.state.State;
+import org.kuali.rice.location.impl.state.StateBo;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -33,6 +36,7 @@ import static org.junit.Assert.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@KRADTestCase.Legacy
 public class BusinessObjectServiceTest extends KRADTestCase {
 
     public BusinessObjectServiceTest() {}
@@ -107,27 +111,4 @@ public class BusinessObjectServiceTest extends KRADTestCase {
 
     }
 
-    /*
-    @Test
-    public void testFindMatchingByCriteria() {
-    	final BusinessObjectService boService = KRADServiceLocatorInternal.getBusinessObjectService();
-    	
-    	final Collection<? extends State> allStates = boService.findAll(StateImpl.class);
-    	
-    	org.kuali.rice.core.jpa.criteria.Criteria criteria = new org.kuali.rice.core.jpa.criteria.Criteria(StateImpl.class.getName());
-    	criteria.eq("code", "US");
-    	Collection<State> states = boService.findMatching(cr fiteria);
-    	Assert.assertEquals("There should be "+allStates.size()+" states with country code US", allStates.size(), states.size());
-    	
-    	criteria = new org.kuali.rice.core.jpa.criteria.Criteria(StateImpl.class.getName());
-    	criteria.eq("postalStateCode", "AZ");
-    	states = boService.findMatching(criteria);
-    	Assert.assertEquals("There should be 1 state with state code AZ", 1, states.size());
-    	
-    	criteria = new org.kuali.rice.core.jpa.criteria.Criteria(StateImpl.class.getName());
-    	criteria.eq("postalStateCode", "MZ");
-    	states = boService.findMatching(criteria);
-    	Assert.assertEquals("There should not be any states with state code MZ", 0, states.size());
-    }
-    */
 }

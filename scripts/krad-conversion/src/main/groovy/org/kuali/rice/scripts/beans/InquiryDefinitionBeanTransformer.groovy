@@ -26,34 +26,60 @@ import org.apache.commons.lang.ClassUtils
 @Log
 class InquiryDefinitionBeanTransformer extends SpringBeanTransformer {
 
+    String inquiryDefinitionBeanType = "InquiryDefinition";
+    String inquiryViewBeanType = "Uif-InquiryView";
     /**
      * @param beanNode
      */
     def transformInquiryDefinitionBean(Node beanNode) {
         removeChildrenBeans(beanNode)
         def busObjClassQualName = getObjectClassName(beanNode);
-        def busObjName = ClassUtils.getShortClassName(busObjClassQualName);
-        def inquiryParentBeanNode = beanNode
+        def inquiryParentBeanNode = beanNode;
         def titlePropNode = inquiryParentBeanNode.property.find { it.@name == "title" }
-        def inquirySectionsPropertyNode = inquiryParentBeanNode.property.find { it.@name == "inquirySections" }
 
-        def originalBeanType = "InquiryDefinition";
-        def transformBeanType = "Uif-InquiryView";
-        def translatedBeanId = getTranslatedBeanId(beanNode.@id, originalBeanType, transformBeanType);
-        def translatedParentId = getTranslatedBeanId(beanNode.@parent, originalBeanType, transformBeanType);
+        def translatedBeanId = getTranslatedBeanId(beanNode.@id, inquiryDefinitionBeanType, inquiryViewBeanType);
+        def translatedParentId = getTranslatedBeanId(beanNode.@parent, inquiryDefinitionBeanType, inquiryViewBeanType);
+        List ignoreOnCopyProperties = ["inquirySections"];
+
+        def baseAttributes = [id: translatedBeanId, parent: translatedParentId];
+        def beanAttributes = [:];
+        def ignoreAttributes = [];
+        if (carryoverAttributes) {
+            beanAttributes = beanNode.attributes();
+            if (ignoreAttributes.size() > 0) {
+                beanAttributes.keySet().removeAll(ignoreAttributes)
+            };
+        }
+        beanAttributes += baseAttributes;
+
+        List copiedProperties;
+        if (carryoverProperties) {
+            copiedProperties = beanNode.property.collect { it.@name };
+            copiedProperties.removeAll(ignoreOnCopyProperties);
+        } else {
+            copiedProperties = [];
+        }
+
 
         log.finer "transform bean node for inquiry"
-        beanNode.replaceNode {
-            addComment(delegate, "Inquiry View")
-            bean(id: translatedBeanId, parent: translatedParentId) {
-                renameProperties(delegate, beanNode, ["title": "headerText"])
-                if (titlePropNode?.@value) {
-                    addViewNameProperty(delegate, titlePropNode.@value)
+        if (isPlaceholder(beanNode)) {
+            beanNode.@id = translatedBeanId;
+            beanNode.@parent = translatedParentId;
+        } else {
+            beanNode.replaceNode {
+                addComment(delegate, "Inquiry View")
+                bean(beanAttributes) {
+                    copyProperties(delegate, beanNode, copiedProperties);
+                    renameProperties(delegate, beanNode, ["title": "headerText"])
+                    if (titlePropNode?.@value) {
+                        addViewNameProperty(delegate, titlePropNode.@value)
+                    }
+                    property(name: "dataObjectClassName", value: busObjClassQualName)
+                    transformInquirySectionsProperty(delegate, beanNode)
                 }
-                property(name: "dataObjectClassName", value: busObjClassQualName)
-                transformInquirySectionsProperty(delegate, beanNode)
             }
         }
+
     }
 
     /**

@@ -49,12 +49,17 @@ class SpringBeanTransformer {
     Map<String, String> definitionDataObjects = [:];
     Map<String, String> parentBeans = [:];
 
+    def carryoverAttributes;
+    def carryoverProperties;
+
     def init(config) {
         ddPropertiesMap = config.map.convert.dd_prop
         ddBeanControlMap = config.map.convert.dd_bean_control
         ddPropertiesRemoveList = config.list.remove.dd_beans
         pNamespaceSchema = config.msg_bean_schema
         xsiNamespaceSchema = config.msg_xml_schema_legacy
+        carryoverAttributes = config.bool.dictionaryconversion.carryoverAttributes;
+        carryoverProperties = config.bool.dictionaryconversion.carryoverProperties;
     }
 
     public String getTranslatedBeanId(String beanId, String originalBeanType, String transformBeanType) {
@@ -221,9 +226,7 @@ class SpringBeanTransformer {
      * For copying properties over if they exist without conversion.
      * (may be replaced by the
      */
-    def copyGatherProperties =  { Node beanNode, List copyAttrs ->
-        return genericGatherAttributes(beanNode, copyAttrs.collectEntries { ["*" + it, "p:" + it] });
-    }
+    def copyGatherProperties = { Node beanNode, List copyAttrs -> return genericGatherAttributes(beanNode, copyAttrs.collectEntries { ["*" + it, "p:" + it] }); }
 
 
     /**
@@ -261,16 +264,10 @@ class SpringBeanTransformer {
 
     // helper closures - attribute conditional checks
 
-    def gatherIdAttribute = {Node beanNode ->
-        return genericGatherAttributes(beanNode, ["*id": "id"]);
-    }
-    def gatherAttributeNameAttribute = { Node beanNode ->
-        return genericGatherAttributes(beanNode, ["*attributeName": "p:propertyName"]);
-    }
+    def gatherIdAttribute = { Node beanNode -> return genericGatherAttributes(beanNode, ["*id": "id"]); }
+    def gatherAttributeNameAttribute = { Node beanNode -> return genericGatherAttributes(beanNode, ["*attributeName": "p:propertyName"]); }
 
-    def gatherNameAttribute = { Node beanNode ->
-        return genericGatherAttributes(beanNode, ["*name": "p:propertyName"]);
-    }
+    def gatherNameAttribute = { Node beanNode -> return genericGatherAttributes(beanNode, ["*name": "p:propertyName"]); }
 
     // helper closures - bean transforms
     def genericNodeTransform = { NodeBuilder builderDelegate, String nodeType, Map<String, String> attributes, String value -> builderDelegate.createNode(nodeType, attributes, value); }
@@ -414,7 +411,26 @@ class SpringBeanTransformer {
      * @param viewName
      */
     def addViewNameProperty(NodeBuilder builder, String viewName) {
-        createProperty(builder, "viewName", getTitleFromBeanId(viewName))
+        def modifiedViewName = getTitleFromBeanId(viewName);
+        if (StringUtils.isNotBlank(modifiedViewName)) {
+            modifiedViewName = OUTPUT_CONV_FILE_PREFIX + modifiedViewName;
+        }
+
+        createProperty(builder, "viewName", modifiedViewName)
+    }
+
+
+    /**
+     * placeholder beans should not
+     *
+     * @param beanNode
+     */
+    def isPlaceholder(Node beanNode) {
+        if (beanNode.property.size() == 0) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

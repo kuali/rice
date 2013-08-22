@@ -36,8 +36,7 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
         def copyProps = ["businessObjectClass", "maintainableClass", "documentTypeName", "documentAuthorizerClass", "lockingKeys"];
         if (beanNode.@parent == "MaintenanceDocumentEntry") {
             def maintDocParentBeanNode = beanNode;
-            def titlePropNode = maintDocParentBeanNode.property.find { it.@name == "title" }
-            def maintSectPropNode = maintDocParentBeanNode.property.find { it.@name == "maintainableSections" }
+            def beanTitle = maintDocParentBeanNode.property.find { it.@name == "title" }?.@value;
             beanNode.replaceNode {
                 bean(id: beanNode.@id, parent: beanNode.@parent) {
                     copyProperties(delegate, beanNode, copyProps)
@@ -52,8 +51,8 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
             beanNode.replaceNode {
                 addComment(delegate, "Maintenance View")
                 bean(id: translatedBeanId, parent: translatedParentId) {
-                    renameProperties(delegate, maintDocParentBeanNode, ["title": "headerText", "businessObjectClass": "dataObjectClassName"])
-                    addViewNameProperty(delegate, titlePropNode?.@value)
+                    renameProperties(delegate, maintDocParentBeanNode, ["title": "headerText", "businessObjectClass": "dataObjectClassName", "dataObjectClass": "dataObjectClassName"])
+                    addViewNameProperty(delegate, beanTitle);
                     transformMaintainableSectionsProperty(delegate, maintDocParentBeanNode)
                 }
             }

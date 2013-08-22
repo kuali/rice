@@ -27,9 +27,6 @@ import org.apache.commons.lang.ClassUtils
 @Log
 class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
 
-    boolean carryoverAttributes = true;
-    boolean carryoverProperties = true;
-
     /**
      * Produces Uif-LookupView based on information in LookupDefinition
      *
@@ -37,7 +34,7 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
      */
     def transformLookupDefinitionBean(Node beanNode) {
         removeChildrenBeans(beanNode);
-        Map beanAttributes;
+
         List copiedProperties;
 
         def lookupDefParentBeanNode = beanNode
@@ -49,40 +46,50 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
         def transformBeanType = "Uif-LookupView";
         def translatedBeanId = getTranslatedBeanId(beanNode.@id, originalBeanType, transformBeanType);
         def translatedParentId = getTranslatedBeanId(beanNode.@parent, originalBeanType, transformBeanType);
-        List transformProperties = ["menubar", "defaultSort", "numOfColumns", "extraButtonSource", "extraButtonParams", "disableSearchButtons", "lookupFields", "resultFields"]
+        List ignoreOnCopyProperties = ["menubar", "defaultSort", "numOfColumns", "extraButtonSource", "extraButtonParams", "disableSearchButtons", "lookupFields", "resultFields"]
 
+        def baseAttributes = [id: translatedBeanId, parent: translatedParentId];
+        def beanAttributes = [:];
+        def ignoreAttributes = [];
         if (carryoverAttributes) {
-            beanAttributes = beanNode.attributes() + [id: translatedBeanId, parent: translatedParentId];
-        } else {
-            beanAttributes = [id: translatedBeanId, parent: translatedParentId];
+            beanAttributes = beanNode.attributes();
+            if (ignoreAttributes.size() > 0) {
+                beanAttributes.keySet().removeAll(ignoreAttributes)
+            };
         }
+        beanAttributes += baseAttributes;
+
 
         if (carryoverProperties) {
             copiedProperties = beanNode.property.collect { it.@name };
-            copiedProperties.removeAll(transformProperties);
+            copiedProperties.removeAll(ignoreOnCopyProperties);
         } else {
             copiedProperties = [];
         }
-
-        beanNode.replaceNode {
-            addComment(delegate, "Lookup View")
-            bean(beanAttributes) {
-                addViewNameProperty(delegate, lookupTitle)
-                if (lookupTitle) {
-                    property(name: "headerText", value: lookupTitle)
+        if (isPlaceholder(beanNode)) {
+            beanNode.@id = translatedBeanId;
+            beanNode.@parent = translatedParentId;
+        } else {
+            beanNode.replaceNode {
+                addComment(delegate, "Lookup View")
+                bean(beanAttributes) {
+                    addViewNameProperty(delegate, lookupTitle)
+                    if (lookupTitle) {
+                        property(name: "headerText", value: lookupTitle)
+                    }
+                    if (objClassName) {
+                        property(name: "dataObjectClassName", value: objClassName)
+                    }
+                    copyProperties(delegate, beanNode, copiedProperties);
+                    transformMenubarProperty(delegate, beanNode)
+                    transformDefaultSortProperty(delegate, beanNode)
+                    transformNumOfColumns(delegate, beanNode)
+                    transformExtraButtonParams(delegate, beanNode)
+                    transformDisableSearchButtons(delegate, beanNode)
+                    transformLookupFieldsProperty(delegate, beanNode)
+                    transformResultFieldsProperty(delegate, beanNode)
+                    transformResultColumnsTotalling(delegate, beanNode)
                 }
-                if (objClassName) {
-                    property(name: "dataObjectClassName", value: objClassName)
-                }
-                copyProperties(delegate, beanNode, copiedProperties);
-                transformMenubarProperty(delegate, beanNode)
-                transformDefaultSortProperty(delegate, beanNode)
-                transformNumOfColumns(delegate, beanNode)
-                transformExtraButtonParams(delegate, beanNode)
-                transformDisableSearchButtons(delegate, beanNode)
-                transformLookupFieldsProperty(delegate, beanNode)
-                transformResultFieldsProperty(delegate, beanNode)
-                transformResultColumnsTotalling(delegate, beanNode)
             }
         }
     }
@@ -143,7 +150,7 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
                     property(name: "items") {
                         list(merge: "true") {
                             bean(parent: "Uif-PrimaryActionButton", "xmlns:p": pNamespaceSchema, "p:methodToCall": extraButtonParams,
-                                    "p:actionLabel": extraButtonParams.replaceAll(/\B[A-Z]/) { ' ' + it}.toLowerCase())
+                                    "p:actionLabel": extraButtonParams.replaceAll(/\B[A-Z]/) { ' ' + it }.toLowerCase())
                         }
                     }
                 }
@@ -157,7 +164,7 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
     def transformDisableSearchButtons(NodeBuilder builder, Node node) {
         def disableSearchButtons = getPropertyValue(node, "disableSearchButtons");
         if (disableSearchButtons != null && disableSearchButtons == "true") {
-            builder.property(name: "renderSearchButtons", value: "false");
+            // builder.property(name: "renderSearchButtons", value: "false");
         }
     }
 
@@ -171,22 +178,15 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
     /**
      *  Retrieve attributes of the criteriaField and translate them to their KRAD equivalent.
      */
-    def gatherLookupFieldAttributes  = { Node beanNode ->
-        return (gatherIdAttribute(beanNode)
-            + gatherAttributeNameAttribute(beanNode)
-            + gatherNoLookupAttribute(beanNode)
-            + genericGatherAttributes(beanNode, ["*treatWildcardsAndOperatorsAsLiteral": "p:disableWildcardsAndOperators"])
-            + copyGatherProperties(beanNode, ["readOnly"])
-        );
-    }
+    def gatherLookupFieldAttributes = { Node beanNode -> return (gatherIdAttribute(beanNode) + gatherAttributeNameAttribute(beanNode) + gatherNoLookupAttribute(beanNode) + genericGatherAttributes(beanNode, ["*treatWildcardsAndOperatorsAsLiteral": "p:disableWildcardsAndOperators"]) + copyGatherProperties(beanNode, ["readOnly"])); }
 
     /**
      * Convert the noLookup attribute to quickfinder.render.  The boolean value needs to be inverted as well.
      */
     def gatherNoLookupAttribute = { Node beanNode ->
-        def noLookup = beanNode.attributes.find { it.@name == "noLookup"};
+        def noLookup = beanNode.attributes.find { it.@name == "noLookup" };
         if (noLookup) {
-            return ["p:quickfinder.render" : "false"];
+            return ["p:quickfinder.render": "false"];
         } else {
             return [:];
         }
@@ -202,16 +202,11 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
     /**
      *  Retrieve attributes of the resultField and translate them to their KRAD equivalent.
      */
-    def gatherResultFieldAttributes  = { Node beanNode ->
-        return (gatherIdAttribute(beanNode)
-                + gatherAttributeNameAttribute(beanNode)
-                + copyGatherProperties(beanNode, ["readOnly"])
-        );
-    }
+    def gatherResultFieldAttributes = { Node beanNode -> return (gatherIdAttribute(beanNode) + gatherAttributeNameAttribute(beanNode) + copyGatherProperties(beanNode, ["readOnly"])); }
 
     def transformResultColumnsTotalling(NodeBuilder builder, Node beanNode) {
         def columnsWithTotalling = [];
-        def resultFieldsProperty = beanNode.property.find {it.@name == "resultFields" }
+        def resultFieldsProperty = beanNode.property.find { it.@name == "resultFields" }
         if (resultFieldsProperty != null) {
             resultFieldsProperty.list.bean.each { resultFieldsNode ->
                 def attributes = genericGatherAttributes(resultFieldsNode, ["*total": "total", "*attributeName": "attributeName"]);
@@ -224,9 +219,7 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
         if (columnsWithTotalling.size() > 0) {
             builder.property(name: "resultsGroup.layoutManager.columnCalculations") {
                 list {
-                    columnsWithTotalling.each {propertyName ->
-                        bean(parent: "Uif-ColumnCalculationInfo-Sum", "xmlns:p": pNamespaceSchema, "p:propertyName": propertyName)
-                    }
+                    columnsWithTotalling.each { propertyName -> bean(parent: "Uif-ColumnCalculationInfo-Sum", "xmlns:p": pNamespaceSchema, "p:propertyName": propertyName) }
                 }
             }
         }

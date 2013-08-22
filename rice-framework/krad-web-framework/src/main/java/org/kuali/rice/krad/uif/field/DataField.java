@@ -1211,36 +1211,27 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         DataField dataFieldCopy = (DataField) component;
+
         dataFieldCopy.setAddHiddenWhenReadOnly(this.addHiddenWhenReadOnly);
         dataFieldCopy.setAdditionalHiddenPropertyNames(new ArrayList<String>(this.additionalHiddenPropertyNames));
         dataFieldCopy.setApplyMask(this.applyMask);
-
-        if (this.maskFormatter != null) {
-            dataFieldCopy.setMaskFormatter(this.maskFormatter);
-        }
+        dataFieldCopy.setMaskFormatter(this.maskFormatter);
 
         if (this.bindingInfo != null) {
             dataFieldCopy.setBindingInfo((BindingInfo) this.bindingInfo.copy());
         }
 
         dataFieldCopy.setDefaultValue(this.defaultValue);
-
-        if (this.defaultValues != null) {
-            dataFieldCopy.setDefaultValues(this.defaultValues);
-        }
-
+        dataFieldCopy.setDefaultValues(this.defaultValues);
         dataFieldCopy.setDictionaryAttributeName(this.dictionaryAttributeName);
         dataFieldCopy.setDictionaryObjectEntry(this.dictionaryObjectEntry);
         dataFieldCopy.setEnableAutoInquiry(this.enableAutoInquiry);
         dataFieldCopy.setEscapeHtmlInPropertyValue(this.escapeHtmlInPropertyValue);
         dataFieldCopy.setForcedValue(this.forcedValue);
         dataFieldCopy.setMultiLineReadOnlyDisplay(this.multiLineReadOnlyDisplay);
-
-        if (this.propertyEditor != null) {
-            dataFieldCopy.setPropertyEditor(this.propertyEditor);
-        }
-
+        dataFieldCopy.setPropertyEditor(this.propertyEditor);
         dataFieldCopy.setPropertyName(this.propertyName);
 
         if (this.propertyNamesForAdditionalDisplay != null) {

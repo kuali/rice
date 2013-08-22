@@ -478,6 +478,7 @@ public class ActionField extends FieldBase {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         ActionField actionFieldCopy = (ActionField) component;
 
         if (this.action != null) {

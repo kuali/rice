@@ -86,7 +86,9 @@ public class FieldSecurity extends ComponentSecurity {
     @Override
     protected <T> void copyProperties(T componentSecurity) {
         super.copyProperties(componentSecurity);
+
         FieldSecurity fieldSecurityCopy = (FieldSecurity) componentSecurity;
+
         fieldSecurityCopy.setEditInLineAuthz(this.editInLineAuthz);
         fieldSecurityCopy.setViewInLineAuthz(this.viewInLineAuthz);
     }

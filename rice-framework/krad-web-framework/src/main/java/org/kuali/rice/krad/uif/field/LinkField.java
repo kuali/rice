@@ -226,6 +226,7 @@ public class LinkField extends FieldBase {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         LinkField linkFieldCopy = (LinkField) component;
 
         if (this.link != null) {

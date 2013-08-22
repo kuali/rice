@@ -396,7 +396,9 @@ public class FieldBase extends ComponentBase implements Field {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         FieldBase fieldBaseCopy = (FieldBase) component;
+
         fieldBaseCopy.setShortLabel(this.shortLabel);
         fieldBaseCopy.setLabelRendered(this.labelRendered);
 

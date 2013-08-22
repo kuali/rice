@@ -514,6 +514,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      */
     protected <T> void copyProperties(T attributeQuery) {
         super.copyProperties(attributeQuery);
+
         AttributeQuery attributeQueryCopy = (AttributeQuery) attributeQuery;
 
         if (this.additionalCriteria != null) {

@@ -14,6 +14,21 @@
 -- limitations under the License.
 --
 
-insert into trv_acct_type (acct_type, acct_type_name, obj_id, ver_nbr) values ('CAT', 'Clearing Account Type', '', 0);
-insert into trv_acct_type (acct_type, acct_type_name, obj_id, ver_nbr) values ('EAT', 'Expense Account Type', '', 0);
-insert into trv_acct_type (acct_type, acct_type_name, obj_id, ver_nbr) values ('IAT', 'Income Account Type', '', 0);
+-- We need to clear these tables too - to ensure we don't have any RI issues
+DELETE FROM TRV_SUB_ACCT
+/
+DELETE FROM TRV_ACCT
+/
+DELETE FROM TRV_ACCT_TYPE
+/
+INSERT INTO TRV_ACCT_TYPE(ACCT_TYPE, ACCT_TYPE_NAME, OBJ_ID, VER_NBR)
+  VALUES('CAT', 'Clearing', 'CAT', 1)
+/
+INSERT INTO TRV_ACCT_TYPE(ACCT_TYPE, ACCT_TYPE_NAME, OBJ_ID, VER_NBR)
+  VALUES('EAT', 'Expense', 'EAT', 1)
+/
+INSERT INTO TRV_ACCT_TYPE(ACCT_TYPE, ACCT_TYPE_NAME, OBJ_ID, VER_NBR)
+  VALUES('IAT', 'Income', 'IAT', 1)
+/
+COMMIT
+/

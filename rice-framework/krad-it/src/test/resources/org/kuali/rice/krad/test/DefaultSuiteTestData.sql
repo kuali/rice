@@ -33,8 +33,3 @@ to ensure that org.kuali.rice.krad.service.NoteServiceTest.testNoteSave_LargePer
 INSERT INTO KRNS_NTE_TYP_T (ACTV_IND,NTE_TYP_CD,OBJ_ID,TYP_DESC_TXT,VER_NBR)
   VALUES ('Y','BO','53680C68F5A9AD9BE0404F8189D80A6C','DOCUMENT BUSINESS OBJECT',1)
 ;
-
-/* TODO: shoud not have sample app test data here */
-INSERT INTO TRV_ACCT_TYPE (ACCT_TYPE,ACCT_TYPE_NAME)
-  VALUES ('EAT','Expense Account Type')
-;

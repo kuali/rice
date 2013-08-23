@@ -529,32 +529,24 @@ public class RichTable extends WidgetBase {
             if (layoutManager instanceof TableLayoutManager) {
                 TableLayoutManager tableLayoutManager = (TableLayoutManager) layoutManager;
 
-                List<String> firstRowPropertyNames = Lists.transform(tableLayoutManager.getFirstRowFields(),
-                        new Function<Field, String>() {
-                            @Override
-                            public String apply(@Nullable Field field) {
-                                if (field != null && field instanceof DataField) {
-                                    return ((DataField) field).getPropertyName();
-                                } else {
-                                    return null;
-                                }
-                            }
-                        });
+                List<String> firstRowPropertyNames = getFirstRowPropertyNames(tableLayoutManager.getFirstRowFields());
                 List<String> defaultSortAttributeNames = lookupView.getDefaultSortAttributeNames();
                 String sortDirection = lookupView.isDefaultSortAscending() ? "'asc'" : "'desc'";
                 boolean actionFieldVisible = collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly();
                 int actionIndex = ((TableLayoutManager) layoutManager).getActionColumnIndex();
-
                 int columnIndexPrefix = 0;
+
                 if (tableLayoutManager.isRenderSequenceField()) {
                     columnIndexPrefix++;
                 }
+
                 if (tableLayoutManager.getRowDetailsGroup() != null
                         && CollectionUtils.isNotEmpty(tableLayoutManager.getRowDetailsGroup().getItems())) {
                     columnIndexPrefix++;
                 }
 
                 StringBuffer tableToolsSortOptions = new StringBuffer("[");
+
                 for (String defaultSortAttributeName : defaultSortAttributeNames) {
                     int index = firstRowPropertyNames.indexOf(defaultSortAttributeName);
                     if (index >= 0) {
@@ -568,11 +560,25 @@ public class RichTable extends WidgetBase {
                         tableToolsSortOptions.append("[" + columnIndex + ", " + sortDirection + "]");
                     }
                 }
+
                 tableToolsSortOptions.append("]");
 
                 getTemplateOptions().put(UifConstants.TableToolsKeys.AASORTING, tableToolsSortOptions.toString());
             }
         }
+    }
+
+    private List<String> getFirstRowPropertyNames(List<Field> firstRowFields) {
+        return Lists.transform(firstRowFields, new Function<Field, String>() {
+            @Override
+            public String apply(@Nullable Field field) {
+                if (field != null && field instanceof DataField) {
+                    return ((DataField) field).getPropertyName();
+                } else {
+                    return null;
+                }
+            }
+        });
     }
 
     /**

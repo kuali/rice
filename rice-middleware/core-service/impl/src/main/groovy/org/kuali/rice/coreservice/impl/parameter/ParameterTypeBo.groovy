@@ -24,6 +24,7 @@ import javax.persistence.Table
 import org.kuali.rice.coreservice.api.parameter.ParameterType
 import org.kuali.rice.coreservice.framework.parameter.ParameterTypeEbo
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter
 
 @Entity
 @Table(name="KRCR_PARM_TYP_T")
@@ -38,8 +39,8 @@ public class ParameterTypeBo extends PersistableBusinessObjectBase implements Pa
 	@Column(name="NM")
 	def String name;
 
-	//@Type(type="yes_no")
 	@Column(name="ACTV_IND")
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
 	def boolean active = true;
 
     /**

@@ -8,7 +8,7 @@
 	<bean parent="DataObjectMetadata"
 		p:typeClassName="org.kuali.rice.krad.data.jpa.testbo.TestDataObject"
 		p:label="A Spring-Provided Label"
-		p:summary="Summary from Spring Configuration"
+		p:description="Summary from Spring Configuration"
 		p:backingObjectName="ANOTHER_TABLE_NAME_T">
 		<property name="attributes">
 			<list>

@@ -34,23 +34,134 @@
           Others will require manual conversion. </para>
       <para>The subsections below identify the Business Object bean properties, Validation Patterns, and Control Definitions are converted by the script and those which require manual conversion</para>
       <section><title>Business Object Entry Bean</title>
+        <para><emphasis role="bold">KNS Code example:</emphasis></para>
+        <para>
+
+          <programlisting linenumbering="numbered">&lt;bean id="Book" parent="Book-parentBean"/>
+&lt;bean id="Book-parentBean" abstract="true" parent="BusinessObjectEntry">
+  &lt;property name="businessObjectClass" value="org.kuali.rice.knsapp.Book"/>
+  &lt;property name="inquiryDefinition">
+    &lt;ref bean="Book-inquiryDefinition"/>
+  &lt;/property>
+  &lt;property name="lookupDefinition">
+    &lt;ref bean="Book-lookupDefinition"/>
+  &lt;/property>
+  &lt;property name="titleAttribute" value="id"/>
+  &lt;property name="objectLabel" value="Book"/>
+  &lt;property name="attributes">
+    &lt;list>
+      &lt;ref bean="Book-id"/>
+      &lt;ref bean="Book-title"/>
+      &lt;ref bean="Book-price"/>
+    &lt;/list>
+  &lt;/property>
+&lt;/bean></programlisting>
+        </para>
+        <para>
+          <emphasis role="bold">KRAD code example:</emphasis>
+          <programlisting linenumbering = "numbered">&lt;bean id="Book" parent="Book-parentBean"/>
+&lt;bean id="Book-parentBean" abstract="true" parent="DataObjectEntry">
+  &lt;property name="dataObjectClass" value="org.kuali.rice.knsapp.Book"/>
+  &lt;property name="titleAttribute" value="id"/>
+  &lt;property name="objectLabel" value="Book"/>
+  &lt;property name="attributes">
+    &lt;list>
+      &lt;ref bean="Book-id"/>
+      &lt;ref bean="Book-title"/>
+      &lt;ref bean="Book-price"/>
+    &lt;/list>
+  &lt;/property>
+&lt;/bean></programlisting>
+        </para>
         <para>
           <itemizedlist>
             <listitem><para>Parent bean for data dictionary beans in KRAD is  <emphasis role="keyword">DataObjectEntry</emphasis>
-              instead of the KNS <emphasis role="keyword">BusinessObjectEntry</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+              instead of the KNS <emphasis role="keyword">BusinessObjectEntry</emphasis>. [KNS line: 2, KRAD line: 2] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
             </listitem>
             <listitem>
               <para>The data object class is specified via the <emphasis role="keyword"
                       >dataObjectClass</emphasis> property and is no longer specified
-                via the <emphasis role="keyword">businessObjectClass</emphasis>. A <emphasis role="keyword"
+                via the <emphasis role="keyword">businessObjectClass</emphasis> property. A <emphasis role="keyword"
                         >businessObject</emphasis> is no longer required and any object can
-                be used. [KNS line: n/a, KRAD line: 2] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+                be used. [KNS line: 3, KRAD line: 3] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+            </listitem>
+          </itemizedlist>
+        </para>
+      </section>
+      <section><title>Attribute Definitions</title>
+        <para>Attribute Definitions define the meta-data of an object. Many of the Attribute Definition properties remain the same between KNS and KRAD.
+          The major differences are in how validation constraints and controls are defined. The examples below demonstrate the differences for defining various validation and controls.</para>
+        <para></para>
+        <para>
+          <emphasis role="bold">KNS Attribute Definition code example:</emphasis>
+          <programlisting linenumbering = "numbered">&lt;bean id="Country-code" parent="Country-code-parentBean"/>
+&lt;bean id="Country-code-parentBean" abstract="true" parent="AttributeDefinition">
+  &lt;property name="name" value="code"/>
+  &lt;property name="forceUppercase" value="true"/>
+  &lt;property name="label" value="Country Code"/>
+  &lt;property name="shortLabel" value="Country Code"/>
+  &lt;property name="maxLength" value="2"/>
+  &lt;property name="required" value="true"/>
+  &lt;property name="summary" value="Postal Country Code"/>
+  &lt;property name="description" value="The code uniquely identify a country."/>
+  &lt;property name="validationPattern">
+    &lt;bean parent="AlphaNumericValidationPattern"/>
+  &lt;/property>
+  &lt;property name="control">
+    &lt;bean parent="TextControlDefinition" p:size="2"/>
+  &lt;/property>
+&lt;/bean></programlisting>
+        </para>
+        <para>
+          <emphasis role="bold">KRAD Attribute Definition code example:</emphasis>
+          <programlisting linenumbering = "numbered">&lt;bean id="Country-code" parent="Country-code-parentBean"/>
+&lt;bean id="Country-code-parentBean" abstract="true" parent="AttributeDefinition">
+  &lt;property name="name" value="code"/>
+  &lt;property name="forceUppercase" value="true"/>
+  &lt;property name="label" value="Country Code"/>
+  &lt;property name="shortLabel" value="Country Code"/>
+  &lt;property name="maxLength" value="2"/>
+  &lt;property name="required" value="true"/>
+  &lt;property name="summary" value="Postal Country Code"/>
+  &lt;property name="description" value="The code uniquely identify a country."/>
+  &lt;property name="validCharactersConstraint">
+    &lt;bean parent="AlphaNumericPatternConstraint"/>
+  &lt;/property>
+  &lt;property name="controlField">
+    &lt;bean parent="Uif-TextControl" p:size="2"/>
+  &lt;/property>
+&lt;/bean></programlisting>
+        </para>
+        <para>
+          <itemizedlist>
+            <listitem><para>The property <emphasis role="keyword">validCharactersConstraint</emphasis> is used in KRAD in place of the KNS property <emphasis role="keyword">validationPattern</emphasis>. [KNS line: 11, KRAD line: 11] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+            </listitem>
+            <listitem><para>The constraint <emphasis role="keyword">AnyCharacterPatternConstraint</emphasis> replaces the KNS pattern <emphasis role="keyword">AnyCharacterValidationPattern</emphasis>. [KNS line: 12, KRAD line: 12] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+            </listitem>
+            <listitem><para>The property <emphasis role="keyword">controlField</emphasis> replaces the KNS <emphasis role="keyword">control</emphasis> to define the control used to represent this field. [KNS line: 14, KRAD line: 14] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+            </listitem>
+            <listitem><para>The property <emphasis role="keyword">Uif-TextControl</emphasis> replaces the KNS <emphasis role="keyword">TextControlDefinition</emphasis>. [KNS line: 5, KRAD line: 15] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+            </listitem>
+            <listitem><para>The size property and similar properties of TextControl are not yet converted by the script and requires manual conversion. [KNS line: 15, KRAD line: 15] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-manualconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
             </listitem>
           </itemizedlist>
         </para>
       </section>
       <section><title>Validation Patterns</title>
-        <para>The KNS validation patterns are supported in KRAD.</para>
+        <para>The KNS validation patterns are supported in KRAD. The naming convention has changed for constraints and patterns, but the functionality is the same.
+          KRAD also has several other validations available. See the KRAD Guide for more detail. The example below demonstrate the differences in defining validation constraints using a single validation pattern. Several such patterns are available</para>
+        <para>
+          <emphasis role="bold">KRAD Attribute Definition code example:</emphasis>
+          <programlisting linenumbering = "numbered">&lt;property name="validationPattern">
+  &lt;bean parent="AlphaNumericValidationPattern"/>
+&lt;/property></programlisting>
+        </para>
+        <para>
+          <emphasis role="bold">KRAD Attribute Definition code example:</emphasis>
+          <programlisting linenumbering = "numbered">&lt;property name="validCharactersConstraint">
+  &lt;bean parent="AlphaNumericPatternConstraint"/>
+&lt;/property></programlisting>
+        </para>
         <para>
           <itemizedlist>
             <listitem><para>The property <emphasis role="keyword">validCharactersConstraint</emphasis> is used in KRAD in place of the KNS property <emphasis role="keyword">validationPattern</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
@@ -85,7 +196,7 @@
             </listitem>
             <listitem><para>The constraint <emphasis role="keyword">DatePatternConstraint</emphasis> replaces the KNS pattern <emphasis role="keyword">DateValidationPattern</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
             </listitem>
-            <listitem><para>The constraint <emphasis role="keyword">DatePatternConstraint</emphasis> replaces the KNS pattern <emphasis role="keyword">UTF8AnyCharacterValidationPattern</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-manualconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+            <listitem><para>The constraint <emphasis role="keyword">UTF8AnyCharacterValidationPattern</emphasis> replaces the KNS pattern <emphasis role="keyword">UTF8AnyCharacterValidationPattern</emphasis>.<inlinemediaobject><imageobject>. This pattern has not yet been added to the conversion script.<imagedata fileref="../images/badge-manualconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
             </listitem>
           </itemizedlist>
         </para>
@@ -99,7 +210,6 @@
               </listitem>
               <listitem><para>The property <emphasis role="keyword">control</emphasis> replaces the KNS <emphasis role="keyword">control</emphasis> has a new meaning. It is used to control the display of the field value.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-manualconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
               </listitem>
-
             </itemizedlist>
           </para>
         </section>
@@ -154,7 +264,7 @@
         <section><title>Link Control</title>
           <para>
             <itemizedlist>
-              <listitem><para>No conversion support for Link Control yet.</para>
+              <listitem><para>No conversion support for Link Control yet. The property <emphasis role="keyword">Uif-Link</emphasis> replaces the KNS <emphasis role="keyword">LinkControlDefinition</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-manualconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
               </listitem>
             </itemizedlist>
           </para>
@@ -199,12 +309,57 @@
           </para>
         </section>
         <section><title>Select Control</title>
+          <para></para>
+          <para>
+            <emphasis role="bold">KNS Select Control Attribute Definition code example:</emphasis>
+            <programlisting linenumbering = "numbered">&lt;bean id="BookOrder-bookId" parent="BookOrder-bookId-parentBean"/>
+&lt;bean id="BookOrder-bookId-parentBean" abstract="true" parent="AttributeDefinition">
+  &lt;property name="name" value="bookId"/>
+  &lt;property name="label" value="Book Id"/>
+  &lt;property name="shortLabel" value="Book Id"/>
+  &lt;property name="maxLength" value="19"/>
+  &lt;property name="validationPattern">
+    &lt;bean parent="NumericValidationPattern"/>
+  &lt;/property>
+  &lt;property name="control">
+    &lt;bean parent="SelectControlDefinition" p:businessObjectClass="edu.sampleu.bookstore.bo.Book"
+              p:valuesFinderClass="org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder"
+              p:includeKeyInLabel="false" p:includeBlankRow="true" p:keyAttribute="id" p:labelAttribute="title"/>
+  &lt;/property>
+&lt;/bean></programlisting>
+          </para>
+          <para>
+            <emphasis role="bold">KRAD SelectControlAttribute Definition code example:</emphasis>
+            <programlisting linenumbering = "numbered">&lt;bean id="BookOrder-bookId" parent="BookOrder-bookId-parentBean"/>
+&lt;bean id="BookOrder-bookId-parentBean" abstract="true" parent="AttributeDefinition">
+  &lt;property name="name" value="bookId"/>
+  &lt;property name="label" value="Book Id"/>
+  &lt;property name="shortLabel" value="Book Id"/>
+  &lt;property name="maxLength" value="19"/>
+  &lt;property name="validCharactersConstraint">
+    &lt;bean parent="NumericPatternConstraint"/>
+  &lt;/property>
+  &lt;property name="controlField">
+    &lt;bean parent="Uif-DropdownControl"/>
+  &lt;/property>
+  &lt;property name="optionsFinder">
+    &lt;bean class="org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder"/>
+  &lt;/property>
+&lt;/bean></programlisting>
+          </para>
           <para>
             <itemizedlist>
-              <listitem><para>The property <emphasis role="keyword">Uif-DropdownControl</emphasis> replaces the KNS <emphasis role="keyword">SelectControlDefinition</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+              <listitem><para>The property <emphasis role="keyword">Uif-DropdownControl</emphasis> replaces the KNS <emphasis role="keyword">SelectControlDefinition</emphasis>.
+                [KNS line: 11, KRAD line: 11] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
               </listitem>
-              <listitem><para>The property <emphasis role="keyword">Uif-DropdownControl</emphasis> also replaces the KNS <emphasis role="keyword">MultiselectControlDefinition</emphasis>
-                To specify multi value select capability, set <emphasis role="keyword"></emphasis> to ??.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+              <listitem><para>The property <emphasis role="keyword">optionsFinder</emphasis> replaces the KNS <emphasis role="keyword">valuesFinderClass</emphasis>.
+                [KNS line: 12, KRAD lines: 13-15] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+              </listitem>
+              <listitem><para>The sub-properties for the SelectControlDefinition in KNS ex: <emphasis role="keyword"> p:includeBlankRow="true"</emphasis> is not currently
+                handled by the script and therefore requires manual conversion. [KNS line: 13] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-manualconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+              </listitem>
+              <listitem><para>The property <emphasis role="keyword">Uif-MultiSelectControl</emphasis> also replaces the KNS <emphasis role="keyword">MultiselectControlDefinition</emphasis>
+                You may also specify multi value select capability from a Uif-DropdownContro, by setting property  <emphasis role="keyword">multiple</emphasis> to true.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
               </listitem>
             </itemizedlist>
           </para>
@@ -246,7 +401,7 @@
     <section><title>Lookup</title><para></para>
         <section><title>LookupDefinition in KNS Data Dictionary to LookupView in KRAD</title>
             <para><emphasis role="italic">Note that the code example is very inclusive to show the
-                    configurations that have changed.  As a result the lookups themselve have
+                    configurations that have changed.  As a result the lookups themselves have
                     conflicting settings (i.e. why have custom search buttons when hiding
                     them).</emphasis></para>
             <para><emphasis role="bold">KNS Code example:</emphasis></para>

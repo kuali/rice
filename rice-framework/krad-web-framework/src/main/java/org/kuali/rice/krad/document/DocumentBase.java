@@ -679,8 +679,9 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     @Deprecated
     public void refreshPessimisticLocks() {
         this.pessimisticLocks.clear();
-        this.pessimisticLocks = KRADServiceLocatorWeb.getPessimisticLockService().getPessimisticLocksForDocument(
-                this.documentNumber);
+        // need to copy the list because the lock service returns an immutable list here
+        this.pessimisticLocks = new ArrayList<PessimisticLock>(KRADServiceLocatorWeb.getPessimisticLockService().getPessimisticLocksForDocument(
+                this.documentNumber));
     }
 
     /**

@@ -50,7 +50,7 @@ public class PessimisticLock extends PersistableBusinessObjectBase {
     // id is sequence number and primary key
     @Id
     @GeneratedValue(generator="KRNS_LOCK_S")
-    @PortableSequenceGenerator(name="TKRNS_LOCK_S")
+    @PortableSequenceGenerator(name="KRNS_LOCK_S")
 	@Column(name="PESSIMISTIC_LOCK_ID")
     private Long id;
     

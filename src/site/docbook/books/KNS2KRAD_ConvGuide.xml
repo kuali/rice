@@ -32,11 +32,10 @@
           Some data dictionary attributes require no conversion, they are virtually identical between KNS and KRAD.
           These items will be passed through by the conversion script. Some items will be converted from KNS to KRAD by the script.
           Others will require manual conversion. </para>
-      <para>The subsections below identify the Business Object bean properties, Validation Patterns, and Control Definitions are converted by the script and those which require manual conversion</para>
-      <section><title>Business Object Entry Bean</title>
+      <para>The subsections below identify the Business Object bean properties, Validation Patterns, and Control Definitions which are converted by the script and those which require manual conversion.</para>
+      <section><title>BusinessObjectEntry bean replaced by DataObjectEntry bean</title>
         <para><emphasis role="bold">KNS Code example:</emphasis></para>
         <para>
-
           <programlisting linenumbering="numbered">&lt;bean id="Book" parent="Book-parentBean"/>
 &lt;bean id="Book-parentBean" abstract="true" parent="BusinessObjectEntry">
   &lt;property name="businessObjectClass" value="org.kuali.rice.knsapp.Book"/>
@@ -75,7 +74,7 @@
         </para>
         <para>
           <itemizedlist>
-            <listitem><para>Parent bean for data dictionary beans in KRAD is  <emphasis role="keyword">DataObjectEntry</emphasis>
+            <listitem><para>The parent bean for data dictionary beans in KRAD is  <emphasis role="keyword">DataObjectEntry</emphasis>
               instead of the KNS <emphasis role="keyword">BusinessObjectEntry</emphasis>. [KNS line: 2, KRAD line: 2] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
             </listitem>
             <listitem>
@@ -200,19 +199,48 @@
             </listitem>
           </itemizedlist>
         </para>
+        <para><emphasis role="bold">Other Constraints</emphasis></para>
+        <para>In addition to the <emphasis role="keyword">validCharactersConstraint</emphasis>, KRAD has several other constraints available, including:
+          <itemizedlist>
+            <listitem><para><emphasis role="keyword">AllowCharacterConstraint</emphasis></para></listitem>
+            <listitem><para><emphasis role="keyword">BaseConstraint</emphasis></para></listitem>
+            <listitem><para><emphasis role="keyword">CaseConstraint</emphasis></para></listitem>
+            <listitem><para><emphasis role="keyword">CollectionSizeConstraint</emphasis></para></listitem>
+            <listitem><para><emphasis role="keyword">DataTypeConstraint</emphasis></para></listitem>
+            <listitem><para><emphasis role="keyword">ExistenceConstraint</emphasis></para></listitem>
+            <listitem><para><emphasis role="keyword">LengthConstraint</emphasis></para></listitem>
+            <listitem><para><emphasis role="keyword">LookupConstraint</emphasis></para></listitem>
+            <listitem><para><emphasis role="keyword">MustOccurConstraint</emphasis></para></listitem>
+            <listitem><para><emphasis role="keyword">PrerequisiteConstraint</emphasis></para></listitem>
+            <listitem><para><emphasis role="keyword">RangeConstraint</emphasis></para></listitem>
+            <listitem><para><emphasis role="keyword">SimpleConstraint</emphasis></para></listitem>
+            <listitem><para><emphasis role="keyword">WhenConstraint</emphasis></para></listitem>
+          </itemizedlist>
+          See the KRAD User Guide for more detail.
+        </para>
+        <para><emphasis role="bold">Additional Constraint Patterns</emphasis></para>
+        <para>KRAD has additional constraint patterns too
+          <itemizedlist>
+            <listitem><para><emphasis role="keyword">ConfigurationBasedRegexPatternConstraint</emphasis></para></listitem>
+            <listitem><para><emphasis role="keyword">IntegerPatternConstraint</emphasis></para></listitem>
+            <listitem><para><emphasis role="keyword">ValidCharactersPatternConstraint</emphasis></para></listitem>
+            <listitem><para><emphasis role="keyword">ValidDataPatternConstraint</emphasis></para></listitem>
+          </itemizedlist>
+          See the KRAD User Guide for more detail.
+        </para>
       </section>
       <section><title>Controls</title>
-        <para></para>
-        <section><title>Base ControlDefinition bean</title>
+        <para>Control components are defined to determine which HTML Element(s) are rendered to represent the input field.
+          Here is an example of a Text control within an Attribute Definition.</para>
           <para>
-            <emphasis role="bold">KNS Control example:</emphasis>
+            KNS Control example:
             <programlisting linenumbering = "numbered">&lt;property name="control">
   &lt;bean parent="TextControlDefinition" p:size="10"/>
 &lt;/property>
             </programlisting>
           </para>
           <para>
-            <emphasis role="bold">KRAD Control example:</emphasis>
+            KRAD Control example:
             <programlisting linenumbering = "numbered">&lt;property name="controlField">
   &lt;bean parent="Uif-TextControl" p:size="10"/>
 &lt;/property></programlisting>
@@ -230,25 +258,45 @@
               </listitem>
             </itemizedlist>
           </para>
-        </section>
-        <section><title>Button Control</title>
+        <section><para><emphasis role="bold">Button Control</emphasis></para>
+          <para>KNS Button control example:
+            <programlisting linenumbering = "numbered">&lt;property name="control">
+  &lt;bean parent="ButtonControlDefinition"/>
+&lt;/property>
+            </programlisting>
+          </para>
+          <para>
+            KRAD Button control example:
+            <programlisting linenumbering = "numbered">&lt;property name="controlField">
+  &lt;bean parent="Uif-PrimaryActionButton" id="Submit" p:methodToCall="save"/>
+&lt;/property></programlisting>
+          </para>
           <para>
             <itemizedlist>
-              <listitem><para>The property <emphasis role="keyword">Uif-TextControl</emphasis> replaces the KNS <emphasis role="keyword">TextControlDefinition</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+              <listitem><para>The property <emphasis role="keyword">Uif-PrimaryActionButton</emphasis> replaces the KNS <emphasis role="keyword">ButtonControlDefinition</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-manualconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+              </listitem>
+              <listitem><para>There are actually several alternative action controls pre-configured with different styling. These include:
+                <itemizedlist>
+                  <listitem><emphasis role="keyword">Uif-PrimaryActionButton-Small</emphasis></listitem>
+                  <listitem><emphasis role="keyword">Uif-SecondaryActionButton</emphasis></listitem>
+                  <listitem><emphasis role="keyword">Uif-SecondaryActionButton-Small</emphasis></listitem>
+                  <listitem><emphasis role="keyword">Uif-ActionImage</emphasis></listitem>
+                  <listitem><emphasis role="keyword">Uif-ActionLink</emphasis></listitem>
+                </itemizedlist>
+                See the KRAD User Guide for more detail</para>
               </listitem>
             </itemizedlist>
           </para>
         </section>
-        <section><title>Checkbox Control</title>
-          <para>
-            <emphasis role="bold">KNS Checkbox Control example:</emphasis>
+        <section><para><emphasis role="bold">Checkbox Control</emphasis></para>
+          <para>KNS Checkbox control example:
             <programlisting linenumbering = "numbered">&lt;property name="control">
   &lt;bean parent="CheckboxControlDefinition"/>
 &lt;/property>
             </programlisting>
           </para>
           <para>
-            <emphasis role="bold">KRAD Checkbox Control example:</emphasis>
+            KRAD Checkbox control example:
             <programlisting linenumbering = "numbered">&lt;property name="controlField">
   &lt;bean parent="Uif-CheckboxControl"/>
 &lt;/property></programlisting>
@@ -257,19 +305,22 @@
             <itemizedlist>
               <listitem><para>The property <emphasis role="keyword">Uif-CheckboxControl</emphasis> replaces the KNS <emphasis role="keyword">CheckboxControlDefinition</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
               </listitem>
+              <listitem><para>Also available in KRAD are the Checkbox Group Controls: <emphasis role="keyword">Uif-VerticalCheckboxesControl</emphasis> and <emphasis role="keyword">Uif-HorizontalCheckboxesControl</emphasis>.
+                The CheckboxesGroup control is a multi-value control that presents each option as a checkbox. See the KRAD User Guide for more detail.</para>
+              </listitem>
             </itemizedlist>
           </para>
         </section>
-        <section><title>Currency Control</title>
+        <section><para><emphasis role="bold">Currency Control</emphasis></para>
           <para>
-            <emphasis role="bold">KNS Currency Control example:</emphasis>
+            KNS Currency control example:
             <programlisting linenumbering = "numbered">&lt;property name="control">
   &lt;bean parent="CurrencyControlDefinition"/>
 &lt;/property>
             </programlisting>
           </para>
           <para>
-            <emphasis role="bold">KRAD Currency Text Control example:</emphasis>
+            KRAD Currency Text control example:
             <programlisting linenumbering = "numbered">&lt;property name="controlField">
   &lt;bean parent="Uif-CurrencyTextControl"/>
 &lt;/property></programlisting>
@@ -281,16 +332,16 @@
             </itemizedlist>
           </para>
         </section>
-        <section><title>File Control</title>
+        <section><para><emphasis role="bold">File Control</emphasis></para>
           <para>
-            <emphasis role="bold">KNS File Control example:</emphasis>
+            KNS File control example:
             <programlisting linenumbering = "numbered">&lt;property name="control">
   &lt;bean parent="FileControlDefinition"/>
 &lt;/property>
             </programlisting>
           </para>
           <para>
-            <emphasis role="bold">KRAD File Control example:</emphasis>
+            KRAD File control example:
             <programlisting linenumbering = "numbered">&lt;property name="controlField">
   &lt;bean parent="Uif-FileControl"/>
 &lt;/property></programlisting>
@@ -302,16 +353,16 @@
             </itemizedlist>
           </para>
         </section>
-        <section><title>Hidden Control</title>
+        <section><para><emphasis role="bold">Hidden Control</emphasis></para>
           <para>
-            <emphasis role="bold">KNS Hidden Control example:</emphasis>
+            KNS Hidden control example:
             <programlisting linenumbering = "numbered">&lt;property name="control">
   &lt;bean parent="HiddenControlDefinition"/>
 &lt;/property>
             </programlisting>
           </para>
           <para>
-            <emphasis role="bold">KRAD Hidden Control example:</emphasis>
+            KRAD Hidden control example:
             <programlisting linenumbering = "numbered">&lt;property name="controlField">
   &lt;bean parent="Uif-HiddenControl"/>
 &lt;/property></programlisting>
@@ -323,16 +374,16 @@
             </itemizedlist>
           </para>
         </section>
-        <section><title>Kuali User Control</title>
+        <section><para><emphasis role="bold">Kuali User Control</emphasis></para>
           <para>
-            <emphasis role="bold">KNS Kuali User Control example:</emphasis>
+            KNS Kuali User control example:
             <programlisting linenumbering = "numbered">&lt;property name="control">
   &lt;bean parent="KualiUserControlDefinition"/>
 &lt;/property>
             </programlisting>
           </para>
           <para>
-            <emphasis role="bold">KRAD Kim Person Control example:</emphasis>
+            KRAD Kim Person control example:
             <programlisting linenumbering = "numbered">&lt;property name="controlField">
   &lt;bean parent="Uif-KimPersonControl"/>
 &lt;/property></programlisting>
@@ -344,16 +395,16 @@
             </itemizedlist>
           </para>
         </section>
-        <section><title>Link Control</title>
+        <section><para><emphasis role="bold">Link Control</emphasis></para>
           <para>
-            <emphasis role="bold">KNS Link Control example:</emphasis>
+            KNS Link control example:
             <programlisting linenumbering = "numbered">&lt;property name="control">
   &lt;bean parent="LinkControlDefinition"/>
 &lt;/property>
             </programlisting>
           </para>
           <para>
-            <emphasis role="bold">KRAD Link Control example:</emphasis>
+            KRAD Link control example:
             <programlisting linenumbering = "numbered">&lt;property name="controlField">
   &lt;bean parent="Uif-Link"/>
 &lt;/property></programlisting>
@@ -365,24 +416,16 @@
             </itemizedlist>
           </para>
         </section>
-        <section><title>Lookup Hidden Control</title>
+        <section><para><emphasis role="bold">TextArea Control</emphasis></para>
           <para>
-            <itemizedlist>
-              <listitem><para>No conversion for Lookup Hidden Control yet.</para>
-              </listitem>
-            </itemizedlist>
-          </para>
-        </section>
-        <section><title>TextArea Control</title>
-          <para>
-            <emphasis role="bold">KNS TextArea Control example:</emphasis>
+            KNS TextArea control example:
             <programlisting linenumbering = "numbered">&lt;property name="control">
   &lt;bean parent="TextareaControlDefinition"/>
 &lt;/property>
             </programlisting>
           </para>
           <para>
-            <emphasis role="bold">KRAD TextArea Control example:</emphasis>
+            KRAD TextArea control example:
             <programlisting linenumbering = "numbered">&lt;property name="controlField">
   &lt;bean parent="Uif-TextAreaControl"/>
 &lt;/property></programlisting>
@@ -394,16 +437,16 @@
             </itemizedlist>
           </para>
         </section>
-        <section><title>Text Control</title>
+        <section><para><emphasis role="bold">Text Control</emphasis></para>
           <para>
-            <emphasis role="bold">KNS Text Control example:</emphasis>
+            KNS Text control example:
             <programlisting linenumbering = "numbered">&lt;property name="control">
   &lt;bean parent="TextControlDefinition"/>
 &lt;/property>
             </programlisting>
           </para>
           <para>
-            <emphasis role="bold">KRAD Text Control example:</emphasis>
+            KRAD Text control example:
             <programlisting linenumbering = "numbered">&lt;property name="controlField">
   &lt;bean parent="Uif-TextControl"/>
 &lt;/property></programlisting>
@@ -431,22 +474,15 @@
             </itemizedlist>
           </para>
         </section>
-        <section><title>Workflow Workgroup Control</title>
+        <section><para><emphasis role="bold">Radio Control Group</emphasis></para>
           <para>
-            <itemizedlist>
-              <listitem><para>No conversion for Lookup Hidden Control yet.</para></listitem>
-            </itemizedlist>
-          </para>
-        </section>
-        <section><title>Radio Control Group</title>
-          <para>
-            <emphasis role="bold">KNS Text Control example:</emphasis>
+            KNS Radio Group control example:
             <programlisting linenumbering = "numbered">&lt;property name="control">
   &lt;bean parent="RadioControlDefinition" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.DelegateRuleValuesFinder"/>
 &lt;/property> </programlisting>
           </para>
           <para>
-            <emphasis role="bold">KRAD Radio Group example:</emphasis>
+            KRAD Radio Group control example:
             <programlisting linenumbering = "numbered">&lt;bean parent="Uif-InputField" p:propertyName="selectedOpt" p:label="Radio 1">
   &lt;property name="control">
     &lt;bean parent="Uif-VerticalRadioControl"/>
@@ -465,16 +501,18 @@
               <listitem><para>The property <emphasis role="keyword">optionsFinder</emphasis> replaces the KNS <emphasis role="keyword">valuesFinderClass</emphasis>.
                 [KNS line: 2, KRAD lines: 5-7] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-manualconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
               </listitem>
-              <listitem><para>Note: <emphasis role="keyword">options</emphasis> or <emphasis role="keyword">optionsFinder</emphasis> is used to define the choices in the Radio Group control.
+              <listitem><para><emphasis role="keyword">Uif-HorizontalRadioControl</emphasis> is also available, the options are displayed horizontally instead of vertically.</para>
+              </listitem>
+              <listitem><para>Note: <emphasis role="keyword">options</emphasis> or <emphasis role="keyword">optionsFinder</emphasis> may be used to define the choices in the Radio Group control.
                 This also applies to Select controls.</para>
               </listitem>
             </itemizedlist>
           </para>
         </section>
-        <section><title>Select Control</title>
+        <section><para><emphasis role="bold">Select Control</emphasis></para>
           <para></para>
           <para>
-            <emphasis role="bold">KNS Select Control Attribute Definition code example:</emphasis>
+            KNS Select control example:
             <programlisting linenumbering = "numbered">&lt;bean id="BookOrder-bookId" parent="BookOrder-bookId-parentBean"/>
 &lt;bean id="BookOrder-bookId-parentBean" abstract="true" parent="AttributeDefinition">
   &lt;property name="name" value="bookId"/>
@@ -487,12 +525,12 @@
   &lt;property name="control">
     &lt;bean parent="SelectControlDefinition" p:businessObjectClass="edu.sampleu.bookstore.bo.Book"
               p:valuesFinderClass="org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder"
-              p:includeKeyInLabel="false" p:includeBlankRow="true" p:keyAttribute="id" p:labelAttribute="title"/>
+              p:includeKeyInLabel="false" p:includeBlankRow="true" p:keyAttribute="id" p:labelAttribute="para"/>
   &lt;/property>
 &lt;/bean></programlisting>
           </para>
           <para>
-            <emphasis role="bold">KRAD SelectControlAttribute Definition code example:</emphasis>
+            KRAD Select control example:
             <programlisting linenumbering = "numbered">&lt;bean id="BookOrder-bookId" parent="BookOrder-bookId-parentBean"/>
 &lt;bean id="BookOrder-bookId-parentBean" abstract="true" parent="AttributeDefinition">
   &lt;property name="name" value="bookId"/>
@@ -527,11 +565,31 @@
             </itemizedlist>
           </para>
         </section>
-        <section><title>Date Control</title>
+        <section><para><emphasis role="bold">Date Control</emphasis></para>
+          <para>
+            KNS Date control example:
+            <programlisting linenumbering = "numbered">&lt;property name="control">
+  &lt;bean parent="TextareaControlDefinition"/>
+&lt;/property>
+            </programlisting>
+          </para>
+          <para>
+            KRAD TextArea control example:
+            <programlisting linenumbering = "numbered">&lt;property name="controlField">
+  &lt;bean parent="Uif-DateControl"/>
+&lt;/property></programlisting>
+          </para>
           <para>
             <itemizedlist>
               <listitem><para>The property <emphasis role="keyword">Uif-DateControl</emphasis> replaces the KNS <emphasis role="keyword">DateControlDefinition</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
               </listitem>
+            </itemizedlist>
+          </para>
+        </section>
+        <section><para><emphasis role="bold">Workflow Workgroup Control</emphasis></para>
+          <para>
+            <itemizedlist>
+              <listitem><para>No conversion for Workflow Workgroup Control yet. <inlinemediaobject><imageobject><imagedata fileref="../images/badge-manualconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para></listitem>
             </itemizedlist>
           </para>
         </section>

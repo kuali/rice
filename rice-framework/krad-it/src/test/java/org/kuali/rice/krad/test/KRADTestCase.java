@@ -15,6 +15,17 @@
  */
 package org.kuali.rice.krad.test;
 
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+import java.util.HashSet;
+import java.util.List;
+
+import javax.xml.namespace.QName;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.framework.resourceloader.SpringResourceLoader;
@@ -26,16 +37,6 @@ import org.kuali.rice.test.TestUtilities;
 import org.kuali.rice.test.lifecycles.KEWXmlDataLoaderLifecycle;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import javax.xml.namespace.QName;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-import java.util.HashSet;
-import java.util.List;
-
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * Default test base for a full KRAD enabled integration test
@@ -133,7 +134,8 @@ public abstract class KRADTestCase extends BaselineTestCase {
             }
 
             dd.parseDataDictionaryConfigurationFiles(false);
-            dd.validateDD(); // Validation performs some necessary post-processing of the beans - we need to run this each time we add new files
+            dd.validateDD(false); // Validation performs some necessary post-processing of the beans - we need to run this each time we add new files
+            dd.performBeanOverrides();
         }
     }
 

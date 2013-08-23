@@ -205,10 +205,28 @@
         <para></para>
         <section><title>Base ControlDefinition bean</title>
           <para>
+            <emphasis role="bold">KNS Control example:</emphasis>
+            <programlisting linenumbering = "numbered">&lt;property name="control">
+  &lt;bean parent="TextControlDefinition" p:size="10"/>
+&lt;/property>
+            </programlisting>
+          </para>
+          <para>
+            <emphasis role="bold">KRAD Control example:</emphasis>
+            <programlisting linenumbering = "numbered">&lt;property name="controlField">
+  &lt;bean parent="Uif-TextControl" p:size="10"/>
+&lt;/property></programlisting>
+          </para>
+          <para>
             <itemizedlist>
-              <listitem><para>The property <emphasis role="keyword">controlField</emphasis> replaces the KNS <emphasis role="keyword">control</emphasis> to define the control used to represent this field.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+              <listitem><para>The property <emphasis role="keyword">controlField</emphasis> replaces the KNS <emphasis role="keyword">control</emphasis> to define the control used to represent this field.  [KNS line: 1, KRAD line: 1]<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
               </listitem>
-              <listitem><para>The property <emphasis role="keyword">control</emphasis> replaces the KNS <emphasis role="keyword">control</emphasis> has a new meaning. It is used to control the display of the field value.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-manualconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+              <listitem><para>The property <emphasis role="keyword">control</emphasis> is currently deprecated.</para>
+              </listitem>
+              <listitem><para>The property names of the various controls have changed. In the above example, <emphasis role="keyword">Uif-TextControl</emphasis> replaces the KNS <emphasis role="keyword">TextControlDefinition</emphasis>.[KNS line: 2, KRAD line: 2]<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+              </listitem>
+              <listitem><para>The sub-properties for the various controls, ex: <emphasis role="keyword"> p:size="10"</emphasis> is not currently
+                handled by the script and therefore requires manual conversion. [KNS line: 2, KRAD line: 2]<inlinemediaobject><imageobject><imagedata fileref="../images/badge-manualconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
               </listitem>
             </itemizedlist>
           </para>
@@ -223,6 +241,19 @@
         </section>
         <section><title>Checkbox Control</title>
           <para>
+            <emphasis role="bold">KNS Checkbox Control example:</emphasis>
+            <programlisting linenumbering = "numbered">&lt;property name="control">
+  &lt;bean parent="CheckboxControlDefinition"/>
+&lt;/property>
+            </programlisting>
+          </para>
+          <para>
+            <emphasis role="bold">KRAD Checkbox Control example:</emphasis>
+            <programlisting linenumbering = "numbered">&lt;property name="controlField">
+  &lt;bean parent="Uif-CheckboxControl"/>
+&lt;/property></programlisting>
+          </para>
+          <para>
             <itemizedlist>
               <listitem><para>The property <emphasis role="keyword">Uif-CheckboxControl</emphasis> replaces the KNS <emphasis role="keyword">CheckboxControlDefinition</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
               </listitem>
@@ -231,13 +262,39 @@
         </section>
         <section><title>Currency Control</title>
           <para>
+            <emphasis role="bold">KNS Currency Control example:</emphasis>
+            <programlisting linenumbering = "numbered">&lt;property name="control">
+  &lt;bean parent="CurrencyControlDefinition"/>
+&lt;/property>
+            </programlisting>
+          </para>
+          <para>
+            <emphasis role="bold">KRAD Currency Text Control example:</emphasis>
+            <programlisting linenumbering = "numbered">&lt;property name="controlField">
+  &lt;bean parent="Uif-CurrencyTextControl"/>
+&lt;/property></programlisting>
+          </para>
+          <para>
             <itemizedlist>
-              <listitem><para>No conversion support for Currency Control yet.</para>
+              <listitem><para>The property <emphasis role="keyword">Uif-CurrencyTextControl</emphasis> replaces the KNS <emphasis role="keyword">CurrencyControlDefinition</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-manualconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
               </listitem>
             </itemizedlist>
           </para>
         </section>
         <section><title>File Control</title>
+          <para>
+            <emphasis role="bold">KNS File Control example:</emphasis>
+            <programlisting linenumbering = "numbered">&lt;property name="control">
+  &lt;bean parent="FileControlDefinition"/>
+&lt;/property>
+            </programlisting>
+          </para>
+          <para>
+            <emphasis role="bold">KRAD File Control example:</emphasis>
+            <programlisting linenumbering = "numbered">&lt;property name="controlField">
+  &lt;bean parent="Uif-FileControl"/>
+&lt;/property></programlisting>
+          </para>
           <para>
             <itemizedlist>
               <listitem><para>The property <emphasis role="keyword">Uif-FileControl</emphasis> replaces the KNS <emphasis role="keyword">FileControlDefinition</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
@@ -247,6 +304,19 @@
         </section>
         <section><title>Hidden Control</title>
           <para>
+            <emphasis role="bold">KNS Hidden Control example:</emphasis>
+            <programlisting linenumbering = "numbered">&lt;property name="control">
+  &lt;bean parent="HiddenControlDefinition"/>
+&lt;/property>
+            </programlisting>
+          </para>
+          <para>
+            <emphasis role="bold">KRAD Hidden Control example:</emphasis>
+            <programlisting linenumbering = "numbered">&lt;property name="controlField">
+  &lt;bean parent="Uif-HiddenControl"/>
+&lt;/property></programlisting>
+          </para>
+          <para>
             <itemizedlist>
               <listitem><para>The property <emphasis role="keyword">Uif-HiddenControl</emphasis> replaces the KNS <emphasis role="keyword">HiddenControlDefinition</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
               </listitem>
@@ -255,16 +325,42 @@
         </section>
         <section><title>Kuali User Control</title>
           <para>
+            <emphasis role="bold">KNS Kuali User Control example:</emphasis>
+            <programlisting linenumbering = "numbered">&lt;property name="control">
+  &lt;bean parent="KualiUserControlDefinition"/>
+&lt;/property>
+            </programlisting>
+          </para>
+          <para>
+            <emphasis role="bold">KRAD Kim Person Control example:</emphasis>
+            <programlisting linenumbering = "numbered">&lt;property name="controlField">
+  &lt;bean parent="Uif-KimPersonControl"/>
+&lt;/property></programlisting>
+          </para>
+          <para>
             <itemizedlist>
-              <listitem><para>No conversion support for Kuali User Control yet.</para>
+              <listitem><para>The property <emphasis role="keyword">Uif-KimPersonControl</emphasis> replaces the KNS <emphasis role="keyword">KualiUserControlDefinition</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-manualconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
               </listitem>
             </itemizedlist>
           </para>
         </section>
         <section><title>Link Control</title>
           <para>
+            <emphasis role="bold">KNS Link Control example:</emphasis>
+            <programlisting linenumbering = "numbered">&lt;property name="control">
+  &lt;bean parent="LinkControlDefinition"/>
+&lt;/property>
+            </programlisting>
+          </para>
+          <para>
+            <emphasis role="bold">KRAD Link Control example:</emphasis>
+            <programlisting linenumbering = "numbered">&lt;property name="controlField">
+  &lt;bean parent="Uif-Link"/>
+&lt;/property></programlisting>
+          </para>
+          <para>
             <itemizedlist>
-              <listitem><para>No conversion support for Link Control yet. The property <emphasis role="keyword">Uif-Link</emphasis> replaces the KNS <emphasis role="keyword">LinkControlDefinition</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-manualconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+              <listitem><para>The property <emphasis role="keyword">Uif-Link</emphasis> replaces the KNS <emphasis role="keyword">LinkControlDefinition</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-manualconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
               </listitem>
             </itemizedlist>
           </para>
@@ -279,6 +375,19 @@
         </section>
         <section><title>TextArea Control</title>
           <para>
+            <emphasis role="bold">KNS TextArea Control example:</emphasis>
+            <programlisting linenumbering = "numbered">&lt;property name="control">
+  &lt;bean parent="TextareaControlDefinition"/>
+&lt;/property>
+            </programlisting>
+          </para>
+          <para>
+            <emphasis role="bold">KRAD TextArea Control example:</emphasis>
+            <programlisting linenumbering = "numbered">&lt;property name="controlField">
+  &lt;bean parent="Uif-TextAreaControl"/>
+&lt;/property></programlisting>
+          </para>
+          <para>
             <itemizedlist>
               <listitem><para>The property <emphasis role="keyword">Uif-TextAreaControl</emphasis> replaces the KNS <emphasis role="keyword">TextareaControlDefinition</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
               </listitem>
@@ -287,9 +396,38 @@
         </section>
         <section><title>Text Control</title>
           <para>
+            <emphasis role="bold">KNS Text Control example:</emphasis>
+            <programlisting linenumbering = "numbered">&lt;property name="control">
+  &lt;bean parent="TextControlDefinition"/>
+&lt;/property>
+            </programlisting>
+          </para>
+          <para>
+            <emphasis role="bold">KRAD Text Control example:</emphasis>
+            <programlisting linenumbering = "numbered">&lt;property name="controlField">
+  &lt;bean parent="Uif-TextControl"/>
+&lt;/property></programlisting>
+          </para>
+          <para>
             <itemizedlist>
               <listitem><para>The property <emphasis role="keyword">Uif-TextControl</emphasis> replaces the KNS <emphasis role="keyword">TextControlDefinition</emphasis>.<inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
               </listitem>
+              <listitem><para>Note: There are several other text controls to choose from with different default styling. Including:
+                <itemizedlist>
+                  <listitem>
+                    <para><emphasis role="keyword">Uif-SmallTextControl</emphasis> – Similar to Uif-TextControl but
+                      sets the size to 10 and applies an additional style class of 'uif-smallTextControl'.</para>
+                  </listitem>
+                  <listitem>
+                    <para><emphasis role="keyword">Uif-MediumTextControl </emphasis>– The same as Uif-TextControl
+                      except adds a style class of 'uif-mediumTextControl'.</para>
+                 </listitem>
+                  <listitem>
+                    <para><emphasis role="keyword">Uif-LargeTextControl</emphasis> – Similar to Uif-TextControl but
+                      sets the size to 100 and applies an additional style class of 'uif-largeTextControl'.</para>
+                  </listitem>
+                </itemizedlist>
+                See the KRAD User Guide for more detail.</para></listitem>
             </itemizedlist>
           </para>
         </section>
@@ -300,10 +438,35 @@
             </itemizedlist>
           </para>
         </section>
-        <section><title>Radio Control</title>
+        <section><title>Radio Control Group</title>
+          <para>
+            <emphasis role="bold">KNS Text Control example:</emphasis>
+            <programlisting linenumbering = "numbered">&lt;property name="control">
+  &lt;bean parent="RadioControlDefinition" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.DelegateRuleValuesFinder"/>
+&lt;/property> </programlisting>
+          </para>
+          <para>
+            <emphasis role="bold">KRAD Radio Group example:</emphasis>
+            <programlisting linenumbering = "numbered">&lt;bean parent="Uif-InputField" p:propertyName="selectedOpt" p:label="Radio 1">
+  &lt;property name="control">
+    &lt;bean parent="Uif-VerticalRadioControl"/>
+  &lt;/property&gt;
+  &lt;property name="optionsFinder">
+    &lt;bean class="org.kuali.rice.krad.keyvalues.DelegateRuleValuesFinder"/>
+  &lt;/property>
+&lt;/bean&gt;</programlisting>
+          </para>
           <para>
             <itemizedlist>
-              <listitem><para>TODO: Fill Me In!</para>
+              <listitem><para>To define a Radio Control in KRAD, an <emphasis role="keyword">Uif-InputField</emphasis> 
+                with a <emphasis role="keyword">Uif-VerticalRadioControl</emphasis> control is used instead of the KNS <emphasis role="keyword">RadioControlDefinition</emphasis>
+                <inlinemediaobject><imageobject><imagedata fileref="../images/badge-manualconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+              </listitem>
+              <listitem><para>The property <emphasis role="keyword">optionsFinder</emphasis> replaces the KNS <emphasis role="keyword">valuesFinderClass</emphasis>.
+                [KNS line: 2, KRAD lines: 5-7] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-manualconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+              </listitem>
+              <listitem><para>Note: <emphasis role="keyword">options</emphasis> or <emphasis role="keyword">optionsFinder</emphasis> is used to define the choices in the Radio Group control.
+                This also applies to Select controls.</para>
               </listitem>
             </itemizedlist>
           </para>

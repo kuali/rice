@@ -55,6 +55,7 @@ public abstract class WidgetBase extends ComponentBase implements Widget {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         WidgetBase WidgetBaseCopy = (WidgetBase) component;
     }
 }

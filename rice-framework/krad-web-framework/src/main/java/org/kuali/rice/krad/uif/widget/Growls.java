@@ -129,7 +129,9 @@ public class Growls extends WidgetBase {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         Growls growlsCopy = (Growls) component;
+
         growlsCopy.setSticky(this.sticky);
         growlsCopy.setTimeShown(this.timeShown);
         growlsCopy.setPosition(this.position);

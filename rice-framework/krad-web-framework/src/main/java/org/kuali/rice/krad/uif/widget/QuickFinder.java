@@ -846,7 +846,9 @@ public class QuickFinder extends WidgetBase {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         QuickFinder quickFinderCopy = (QuickFinder) component;
+
         quickFinderCopy.setBaseLookupUrl(this.baseLookupUrl);
         quickFinderCopy.setDataObjectClassName(this.dataObjectClassName);
         quickFinderCopy.setViewName(this.viewName);

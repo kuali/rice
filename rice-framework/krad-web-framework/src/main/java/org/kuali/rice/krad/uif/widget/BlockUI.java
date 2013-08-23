@@ -91,7 +91,9 @@ public class BlockUI extends WidgetBase {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         BlockUI blockUICopy = (BlockUI) component;
+
         blockUICopy.setBlockingImageSource(this.blockingImageSource);
     }
 }

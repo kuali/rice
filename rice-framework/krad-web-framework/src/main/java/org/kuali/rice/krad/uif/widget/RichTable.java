@@ -1037,7 +1037,9 @@ public class RichTable extends WidgetBase {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         RichTable richTableCopy = (RichTable) component;
+
         richTableCopy.setEmptyTableMessage(this.emptyTableMessage);
         richTableCopy.setDisableTableSort(this.disableTableSort);
         richTableCopy.setForceAoColumnDefsOverride(this.forceAoColumnDefsOverride);

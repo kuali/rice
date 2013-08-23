@@ -149,7 +149,9 @@ public class Disclosure extends WidgetBase {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         Disclosure disclosureCopy = (Disclosure) component;
+
         disclosureCopy.setAnimationSpeed(this.animationSpeed);
         disclosureCopy.setCollapseImageSrc(this.collapseImageSrc);
         disclosureCopy.setDefaultOpen(this.defaultOpen);

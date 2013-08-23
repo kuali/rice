@@ -53,7 +53,9 @@ public class Accordion extends WidgetBase {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         Accordion accordionCopy = (Accordion) component;
+
         accordionCopy.setActive(this.active);
     }
 }

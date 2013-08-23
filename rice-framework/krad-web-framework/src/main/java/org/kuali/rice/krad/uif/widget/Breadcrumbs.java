@@ -104,7 +104,9 @@ public class Breadcrumbs extends WidgetBase {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         Breadcrumbs breadcrumbsCopy = (Breadcrumbs) component;
+
         breadcrumbsCopy.setDisplayBreadcrumbsWhenOne(this.displayBreadcrumbsWhenOne);
         breadcrumbsCopy.setUsePathBasedBreadcrumbs(this.usePathBasedBreadcrumbs);
     }

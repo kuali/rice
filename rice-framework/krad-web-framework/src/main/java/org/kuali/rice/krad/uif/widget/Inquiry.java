@@ -591,12 +591,21 @@ public class Inquiry extends WidgetBase {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         Inquiry inquiryCopy = (Inquiry) component;
+
         inquiryCopy.setBaseInquiryUrl(this.baseInquiryUrl);
         inquiryCopy.setDataObjectClassName(this.dataObjectClassName);
         inquiryCopy.setViewName(this.viewName);
-        inquiryCopy.setInquiryLink((Link) this.inquiryLink.copy());
-        inquiryCopy.setDirectInquiryAction((Action) this.directInquiryAction.copy());
+
+        if (this.inquiryLink != null) {
+            inquiryCopy.setInquiryLink((Link) this.inquiryLink.copy());
+        }
+
+        if (this.directInquiryAction != null) {
+            inquiryCopy.setDirectInquiryAction((Action) this.directInquiryAction.copy());
+        }
+
         inquiryCopy.setEnableDirectInquiry(this.enableDirectInquiry);
         inquiryCopy.setAdjustInquiryParameters(this.adjustInquiryParameters);
         inquiryCopy.setParentReadOnly(this.parentReadOnly);

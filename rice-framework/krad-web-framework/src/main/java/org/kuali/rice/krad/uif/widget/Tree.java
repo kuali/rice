@@ -37,6 +37,7 @@ public class Tree extends WidgetBase {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         Tree treeCopy = (Tree) component;
     }
 }

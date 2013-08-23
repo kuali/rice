@@ -229,13 +229,15 @@ public class Pager extends WidgetBase {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         Pager pagerCopy = (Pager) component;
-        pagerCopy.setLinkScript(this.getLinkScript());
-        pagerCopy.setMaxNumberedLinksShown(this.getMaxNumberedLinksShown());
-        pagerCopy.setNumberOfPages(this.getNumberOfPages());
-        pagerCopy.setCurrentPage(this.getCurrentPage());
-        pagerCopy.setRenderPrevNext(this.isRenderPrevNext());
-        pagerCopy.setRenderFirstLast(this.isRenderFirstLast());
+
+        pagerCopy.setLinkScript(this.linkScript);
+        pagerCopy.setMaxNumberedLinksShown(this.maxNumberedLinksShown);
+        pagerCopy.setNumberOfPages(this.numberOfPages);
+        pagerCopy.setCurrentPage(this.currentPage);
+        pagerCopy.setRenderPrevNext(this.renderPrevNext);
+        pagerCopy.setRenderFirstLast(this.renderFirstLast);
         pagerCopy.pagesStart = this.pagesStart;
         pagerCopy.pagesEnd = this.pagesEnd;
     }

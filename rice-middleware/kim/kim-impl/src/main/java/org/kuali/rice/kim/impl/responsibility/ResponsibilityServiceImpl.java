@@ -272,47 +272,43 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         for (RoleMembership rm : roleMembers) {
             // only add them to the list if the member ID has been populated
             if (StringUtils.isNotBlank(rm.getMemberId())) {
-                final ResponsibilityAction.Builder rai = ResponsibilityAction.Builder.create();
-                rai.setMemberRoleId((rm.getEmbeddedRoleId() == null) ? rm.getRoleId() : rm.getEmbeddedRoleId());
-                rai.setRoleId(rm.getRoleId());
-                rai.setQualifier(rm.getQualifier());
-                final List<DelegateType.Builder> bs = new ArrayList<DelegateType.Builder>();
-                for (DelegateType d : rm.getDelegates()) {
-                    bs.add(DelegateType.Builder.create(d));
-                }
-                rai.setDelegates(bs);
-                rai.setResponsibilityId(responsibility.getId());
-                rai.setResponsibilityName(responsibility.getName());
-                rai.setResponsibilityNamespaceCode(responsibility.getNamespaceCode());
+                List<RoleResponsibilityAction> roleResponsibilityActions
+                        = getResponsibilityActions(rm.getRoleId(), responsibility.getId(), rm.getId());
+                for (RoleResponsibilityAction roleResponsibilityAction : roleResponsibilityActions) {
+                    final ResponsibilityAction.Builder rai = ResponsibilityAction.Builder.create();
+                    rai.setMemberRoleId((rm.getEmbeddedRoleId() == null) ? rm.getRoleId() : rm.getEmbeddedRoleId());
+                    rai.setRoleId(rm.getRoleId());
+                    rai.setQualifier(rm.getQualifier());
+                    final List<DelegateType.Builder> bs = new ArrayList<DelegateType.Builder>();
+                    for (DelegateType d : rm.getDelegates()) {
+                        bs.add(DelegateType.Builder.create(d));
+                    }
+                    rai.setDelegates(bs);
+                    rai.setResponsibilityId(responsibility.getId());
+                    rai.setResponsibilityName(responsibility.getName());
+                    rai.setResponsibilityNamespaceCode(responsibility.getNamespaceCode());
 
-                if (MemberType.PRINCIPAL.equals(rm.getType())) {
-                    rai.setPrincipalId(rm.getMemberId());
-                } else {
-                    rai.setGroupId(rm.getMemberId());
+                    if (MemberType.PRINCIPAL.equals(rm.getType())) {
+                        rai.setPrincipalId(rm.getMemberId());
+                    } else {
+                        rai.setGroupId(rm.getMemberId());
+                    }
+                    // add the data to the ResponsibilityActionInfo objects
+                    rai.setActionTypeCode(roleResponsibilityAction.getActionTypeCode());
+                    rai.setActionPolicyCode(roleResponsibilityAction.getActionPolicyCode());
+                    rai.setPriorityNumber(roleResponsibilityAction.getPriorityNumber() == null ? DEFAULT_PRIORITY_NUMBER : roleResponsibilityAction.getPriorityNumber());
+                    rai.setForceAction(roleResponsibilityAction.isForceAction());
+                    rai.setParallelRoutingGroupingCode((rm.getRoleSortingCode() == null) ? "" : rm.getRoleSortingCode());
+                    rai.setRoleResponsibilityActionId(roleResponsibilityAction.getId());
+                    results.add(rai.build());
                 }
-                // get associated resp resolution objects
-                RoleResponsibilityAction action = getResponsibilityAction(rm.getRoleId(), responsibility.getId(), rm.getId());
-                if (action == null) {
-                    LOG.error("Unable to get responsibility action record for role/responsibility/roleMember: "
-                            + rm.getRoleId() + "/" + responsibility.getId() + "/" + rm.getId());
-                    LOG.error("Skipping this role member in getActionsForResponsibilityRoles()");
-                    continue;
-                }
-                // add the data to the ResponsibilityActionInfo objects
-                rai.setActionTypeCode(action.getActionTypeCode());
-                rai.setActionPolicyCode(action.getActionPolicyCode());
-                rai.setPriorityNumber(action.getPriorityNumber() == null ? DEFAULT_PRIORITY_NUMBER : action.getPriorityNumber());
-                rai.setForceAction(action.isForceAction());
-                rai.setParallelRoutingGroupingCode((rm.getRoleSortingCode() == null) ? "" : rm.getRoleSortingCode());
-                rai.setRoleResponsibilityActionId(action.getId());
-                results.add(rai.build());
             }
         }
         return Collections.unmodifiableList(results);
     }
 
-    private RoleResponsibilityAction getResponsibilityAction(String roleId, String responsibilityId, String roleMemberId) {
-        RoleResponsibilityAction result = null;
+    private List<RoleResponsibilityAction> getResponsibilityActions(String roleId, String responsibilityId, String roleMemberId) {
+        List<RoleResponsibilityAction> responsibilityActions = new ArrayList<RoleResponsibilityAction>();
 
         // KULRICE-7459: Requisition, PO and its subtype documents are going to final status where they should not.
         //
@@ -366,13 +362,12 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
                     );
 
             final List<RoleResponsibilityActionBo> roleResponsibilityActionBos = roleResponsibilityActionResults.getResults();
-            //seems a little dubious that we are just returning the first result...
-            if (!roleResponsibilityActionBos.isEmpty()) {
-                result = RoleResponsibilityActionBo.to(roleResponsibilityActionBos.get(0));
+            for (RoleResponsibilityActionBo roleResponsibilityActionBo : roleResponsibilityActionBos) {
+                responsibilityActions.add(RoleResponsibilityActionBo.to(roleResponsibilityActionBo));
             };
         }
 
-        return result;
+        return Collections.unmodifiableList(responsibilityActions);
     }
 
     @Override

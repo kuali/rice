@@ -233,6 +233,9 @@
     <property name="headerText"
               value="Section 1 Title"/>
     <property name="useServerPaging" value="true"/>
+    <property name="layoutManager.lineGroupPrototype.disclosure.render" value="true"/>
+    <property name="layoutManager.lineGroupPrototype.disclosure.defaultOpen" value="false"/>
+    <property name="layoutManager.lineGroupPrototype.disclosure.ajaxRetrievalWhenOpened" value="true"/>
     <property name="instructionalText"
               value="Uif-StackedCollectionSection with an overridden layout manager (Uif-StackedCollectionLayout-WithBoxItems)
                that uses box instead of grid"/>

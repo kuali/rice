@@ -14,11 +14,6 @@
 -- limitations under the License.
 --
 
--- We need to clear these tables too - to ensure we don't have any RI issues
-DELETE FROM TRV_SUB_ACCT
-/
-DELETE FROM TRV_ACCT
-/
 DELETE FROM TRV_ACCT_TYPE
 /
 INSERT INTO TRV_ACCT_TYPE(ACCT_TYPE, ACCT_TYPE_NAME, OBJ_ID, VER_NBR)

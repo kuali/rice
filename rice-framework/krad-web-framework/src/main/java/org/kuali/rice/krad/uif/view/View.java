@@ -2178,13 +2178,8 @@ public class View extends ContainerBase {
             viewCopy.setSessionPolicy(CloneUtils.deepClone(this.sessionPolicy));
         }
 
-        if (this.presentationController != null) {
-            viewCopy.setPresentationController(this.presentationController);
-        }
-
-        if (this.authorizer != null) {
-            viewCopy.setAuthorizer(this.authorizer);
-        }
+        viewCopy.setPresentationController(this.presentationController);
+        viewCopy.setAuthorizer(this.authorizer);
 
         if (this.actionFlags != null) {
             viewCopy.setActionFlags(new BooleanMap(this.actionFlags));

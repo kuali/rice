@@ -145,7 +145,9 @@ public class HistoryEntry extends UifDictionaryBeanBase implements Serializable 
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         HistoryEntry historyEntryCopy = (HistoryEntry) component;
+
         historyEntryCopy.setViewId(this.viewId);
         historyEntryCopy.setPageId(this.pageId);
         historyEntryCopy.setTitle(this.title);

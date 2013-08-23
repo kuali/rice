@@ -103,6 +103,7 @@ public class MessageView extends FormView {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         MessageView messageViewCopy = (MessageView) component;
 
         if(this.message != null) {

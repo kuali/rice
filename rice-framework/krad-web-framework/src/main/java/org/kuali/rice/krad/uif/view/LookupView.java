@@ -802,9 +802,7 @@ public class LookupView extends FormView {
 
         LookupView lookupViewCopy = (LookupView) component;
 
-        if (this.dataObjectClassName != null) {
-            lookupViewCopy.setDataObjectClassName(this.dataObjectClassName);
-        }
+        lookupViewCopy.setDataObjectClassName(this.dataObjectClassName);
 
         if (this.criteriaGroup != null) {
             lookupViewCopy.setCriteriaGroup((Group) this.criteriaGroup.copy());
@@ -860,5 +858,4 @@ public class LookupView extends FormView {
 
         lookupViewCopy.setAutoAddActiveCriteria(this.autoAddActiveCriteria);
     }
-
 }

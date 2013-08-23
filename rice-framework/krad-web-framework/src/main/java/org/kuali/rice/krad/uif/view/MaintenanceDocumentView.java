@@ -180,12 +180,10 @@ public class MaintenanceDocumentView extends DocumentView {
     @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
+
         MaintenanceDocumentView maintenanceDocumentViewCopy = (MaintenanceDocumentView) component;
 
-        if(this.dataObjectClassName != null) {
-            maintenanceDocumentViewCopy.setDataObjectClassName(this.dataObjectClassName);
-        }
-
+        maintenanceDocumentViewCopy.setDataObjectClassName(this.dataObjectClassName);
         maintenanceDocumentViewCopy.setOldObjectBindingPath(this.oldObjectBindingPath);
         maintenanceDocumentViewCopy.setMaintenanceAction(this.maintenanceAction);
     }

@@ -41,9 +41,9 @@ public class DataDictionaryMetadataDefaultingTest extends KRADTestCase {
     @Before
     public void setUp() throws Exception {
         setLogLevel("org.kuali.rice.krad.data.jpa.eclipselink.EclipseLinkJpaMetadataProviderImpl", Level.DEBUG);
-        setLogLevel("org.kuali.rice.krad.data.provider.jpa.JpaMetadataProviderImpl", Level.DEBUG);
-        setLogLevel("org.kuali.rice.krad.data.provider.SpringMetadataProviderImpl", Level.DEBUG);
-        setLogLevel("org.kuali.rice.krad.data.provider.CompositeMetadataProviderImpl", Level.DEBUG);
+        setLogLevel("org.kuali.rice.krad.data.jpa.JpaMetadataProviderImpl", Level.DEBUG);
+        setLogLevel("org.kuali.rice.krad.data.provider.spring.SpringMetadataProviderImpl", Level.DEBUG);
+        setLogLevel("org.kuali.rice.krad.data.provider.impl.CompositeMetadataProviderImpl", Level.DEBUG);
 
         setLogLevel("org.kuali.rice.krad.datadictionary.AttributeDefinition", Level.DEBUG);
         setLogLevel("org.kuali.rice.krad.datadictionary.DataObjectEntry", Level.DEBUG);
@@ -65,15 +65,22 @@ public class DataDictionaryMetadataDefaultingTest extends KRADTestCase {
     public void verifyLabelOverride() {
         DataObjectEntry dataObjectEntry = getDataObjectEntry(MAIN_DATA_OBJECT_FOR_TESTING);
 
-        Assert.assertEquals("Label not pulled from metadata", "A Spring-Provided Label", dataObjectEntry.getObjectLabel());
+        Assert.assertEquals("Label for DO not pulled from metadata: " + dataObjectEntry + "\n", "A Spring-Provided Label", dataObjectEntry.getObjectLabel());
+    }
+
+    @Test
+    public void verifyUifObjectDescriptionOverride() {
+        DataObjectEntry dataObjectEntry = getDataObjectEntry(MAIN_DATA_OBJECT_FOR_TESTING);
+
         Assert.assertEquals("Description not overridden", "UIF-Provided Description", dataObjectEntry.getObjectDescription());
     }
 
     @Test
-    public void verifySummaryOverrideFromSpringMetadata() {
+    public void verifyAttributeLabelOverrideFromSpringMetadata() {
         DataObjectEntry dataObjectEntry = getDataObjectEntry(MAIN_DATA_OBJECT_FOR_TESTING);
         AttributeDefinition attributeDefinition = dataObjectEntry.getAttributeDefinition("nonStandardDataType");
-        Assert.assertEquals("Label not pulled from Spring metadata", "Non Standard Label-Spring", attributeDefinition.getLabel());
+        Assert.assertNotNull("nonStandardDataType attribute did not exist",attributeDefinition);
+        Assert.assertEquals("Label on nonStandardDataType attribute not pulled from Spring metadata: " + attributeDefinition + "\n", "Non Standard Label-Spring", attributeDefinition.getLabel());
     }
 
     @Test

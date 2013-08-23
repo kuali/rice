@@ -37,6 +37,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@KRADTestCase.Legacy
 public class PopulateGroupPermissionTypeServiceImplTest extends KRADTestCase {
 
     PopulateGroupPermissionTypeServiceImpl permissionService;

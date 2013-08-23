@@ -17,6 +17,7 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@KRADTestCase.Legacy
 public class SequenceAccessorServiceTest extends KRADTestCase {
 
     private static final String ARBITRARY_SEQUENCE = "trvl_id_seq";

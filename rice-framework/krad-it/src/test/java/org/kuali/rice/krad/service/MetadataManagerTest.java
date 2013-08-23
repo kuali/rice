@@ -66,6 +66,7 @@ import static org.junit.Assert.*;
        )
 )
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
+@KRADTestCase.Legacy
 public class MetadataManagerTest extends KRADTestCase {
 	/**
 	 * Tests that MetadataManager can convert a primary key Map to a key object correctly

@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.test.document.bo;
 
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectExtensionBase;
 import org.kuali.rice.krad.data.provider.annotation.ExtensionFor;
 
 import javax.persistence.Column;
@@ -29,7 +29,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="TRV_ACCT_EXT")
 @ExtensionFor(Account.class)
-public class AccountExtension extends PersistableBusinessObjectBase {
+public class AccountExtension extends PersistableBusinessObjectExtensionBase {
     
 	@Id
 	@Column(name="ACCT_NUM")

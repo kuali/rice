@@ -63,7 +63,6 @@ import static org.junit.Assert.assertTrue;
                 }
        )
 )
-//@Ignore
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class InactivateableFromToServiceTest extends KRADTestCase {
     // Methods which can be overridden by subclasses to reuse test cases. Here we are just testing the LookupService
@@ -265,7 +264,11 @@ public class InactivateableFromToServiceTest extends KRADTestCase {
 
 		List<InactivatableFromTo> results = inactivateableFromToService.findMatchingCurrent(TravelAccountUseRate.class,
 				fieldValues);
-		assertEquals(2, results.size());
+		assertEquals(1, results.size());
+
+        // should find the record with the latest valid "from date"
+        TravelAccountUseRate result = (TravelAccountUseRate)results.get(0);
+        assertEquals("Incorrect current record returned, does not match expected id", "3", result.getId());
 
         fieldValues = new HashMap();
         fieldValues.put(KRADPropertyConstants.ACTIVE_AS_OF_DATE, "02/01/2010");
@@ -275,8 +278,9 @@ public class InactivateableFromToServiceTest extends KRADTestCase {
                 fieldValues);
         assertEquals(1, results.size());
 
-		TravelAccountUseRate useRate = (TravelAccountUseRate) results.get(0);
-		assertTrue("Incorrect current record returned, does not match expected id", "2".equals(useRate.getId()));
+        // since our record with id 3 has an active from date of 03/01/2010, it won't be returned so we should get the other one
+        result = (TravelAccountUseRate) results.get(0);
+		assertEquals("Incorrect current record returned, does not match expected id", "2", result.getId());
 	}
 
     /**

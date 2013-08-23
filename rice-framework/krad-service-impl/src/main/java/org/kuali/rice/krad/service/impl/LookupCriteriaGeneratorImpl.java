@@ -245,10 +245,6 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
      */
     protected boolean addCriteriaForPropertyValues(Object example, String propertyName, boolean caseInsensitive, boolean treatWildcardsAndOperatorsAsLiteral, Predicates criteria, Map formProps, String... searchValues) {
         for (String searchValue: searchValues) {
-            if (!caseInsensitive) {
-                // Verify that the searchValue is uppercased if caseInsensitive is false
-                searchValue = searchValue.toUpperCase();
-            }
             if (!createCriteria(example, searchValue, propertyName, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria, formProps)) {
                 return false;
             }

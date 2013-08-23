@@ -72,6 +72,7 @@ public class LegacyDataAdapterLookupTest extends LookupServiceTest {
     }
 
     @Test
+    @Legacy
     public void testJPADatabaseRelationshipLookup() throws Exception {
         KNSServiceLocator.getDataObjectMetaDataService().getDataObjectRelationship(new org.kuali.rice.krad.test.document.bo.Account(),org.kuali.rice.krad.test.document.bo.Account.class
                 ,"accountManager","",true,false,false);

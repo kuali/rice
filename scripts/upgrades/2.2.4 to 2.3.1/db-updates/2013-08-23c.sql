@@ -4,7 +4,7 @@
 --
 
 UPDATE krim_perm_attr_data_t SET attr_val='RiceDocument'
-WHERE perm_id =
+WHERE attr_val = '*' AND perm_id =
   (
     SELECT perm_id FROM krim_perm_t WHERE nm='Recall Document' AND nmspc_cd='KR-WKFLW'
   )

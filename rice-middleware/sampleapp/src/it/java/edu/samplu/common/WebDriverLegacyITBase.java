@@ -2305,6 +2305,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         Thread.sleep(3000);
 
         driver.findElement(By.cssSelector("div[data-parent='PeopleFlow-MaintenanceView'] > div.uif-footer button~button~button")).click();
+        checkForIncidentReport();
         jGrowl("Blanket Approve");
         Thread.sleep(5000);
         

@@ -2199,39 +2199,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
             section will explore the themes and how custom styling can be added. </para>
         <section>
             <title>View Theme </title>
-            <para>The UIF provides the class org.kuali.rice.krad.uif.view.ViewTheme which contains a
-                list of style sheet and script file paths. The ViewTheme is then set as a property
-                of the View and its corresponding properties are referenced when rendering the HTML
-                CSS and Script links. Thus, it provides the base theme (or 'Look and Feel') for our
-                page. </para>
-            <para> In XML, view themes can be created using the 'Uif-ViewTheme' bean:
-                <programlisting linenumbering = "numbered">&lt;bean id="Uif-MyTheme" parent="Uif-ViewTheme">
-    &lt;property name="stylesheets">
-        &lt;list>
-            &lt;value>/css/my.css&lt;/value> 
-            ...
-        &lt;/list>
-    &lt;/property>
-    &lt;property name="jsFiles">
-        &lt;list>
-            &lt;value>/script/my.js&lt;/value>
-              ...
-        &lt;/list>
-    &lt;/property>
-&lt;/bean>   </programlisting></para>
-            <para>The 2.0 version of KRAD comes with two themes that can be used. The first of these
-                is based on the previous KNS development framework and aims to achieve the same
-                look. The main reason for developing this theme is so that existing application
-                screens can be converted to KRAD while some remain in the KNS. The look and feel was
-                updated to not use images (including the buttons); it also has various other
-                improvements that allow for easier visual treatment (for instance changing the color
-                scheme). </para>
-            <para>The second theme is based on the Kuali Student open look with modifications for
-                KRAD. By default, this is the theme configured in the base view definition. Both
-                themes are defined in <emphasis role="keyword">UifViewPageDefinitions.xml</emphasis>. </para>
-            <tip><para><emphasis role="bold">Planned Feature: Dense Theme</emphasis> - For the 2.2 release, a new
-                    theme will be developed for KRAD that will be the replacement for the KNS
-                    (legacy) theme. </para></tip>
+            <para>See <xref linkend="viewthemes"/></para>
         </section>
         <section>
             <title>Modifying Themes </title>

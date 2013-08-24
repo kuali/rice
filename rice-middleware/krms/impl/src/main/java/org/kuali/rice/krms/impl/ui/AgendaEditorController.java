@@ -49,6 +49,7 @@ import org.kuali.rice.krms.impl.repository.RuleBo;
 import org.kuali.rice.krms.impl.repository.RuleBoService;
 import org.kuali.rice.krms.impl.repository.TermBo;
 import org.kuali.rice.krms.impl.rule.AgendaEditorBusRule;
+import org.kuali.rice.krms.impl.ui.RuleTreeNode;
 import org.kuali.rice.krms.impl.util.KRMSPropertyConstants;
 import org.kuali.rice.krms.impl.util.KrmsImplConstants;
 import org.springframework.stereotype.Controller;
@@ -1721,6 +1722,58 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return getUIFModelAndView(form);
     }
 
+    /**
+     * This method returns the last simple node in the topmost branch.
+     * @param grandChildren
+     * @return
+     */
+    protected Node<RuleTreeNode,String> getLastSimpleNode(List<Node<RuleTreeNode,String>> grandChildren) {
+        int lastIndex = grandChildren.size() - 1;
+        Node<RuleTreeNode,String> lastSimpleNode = grandChildren.get(lastIndex);
+
+        // search until you find the first simple proposition since some nodes are operators.
+        while (!(SimplePropositionNode.NODE_TYPE.equalsIgnoreCase(lastSimpleNode.getNodeType()) 
+                || SimplePropositionEditNode.NODE_TYPE.equalsIgnoreCase(lastSimpleNode.getNodeType())
+                ) && lastIndex >= 0) {
+            lastSimpleNode = grandChildren.get(lastIndex);
+            lastIndex--;
+        }
+        
+        return lastSimpleNode;
+    }
+    
+    /**
+    *
+    * This method gets the last propostion in the topmost branch.
+    *
+    * @param root
+    * @return
+    */
+    protected String getDefaultAddLocationPropositionId(Node<RuleTreeNode, String> root) {
+        List<Node<RuleTreeNode,String>> children = root.getChildren();
+        String selectedId = "";
+        
+        // The root usually has only one child. 
+        //This child either has multiple grandchildren when there is more than one proposition or 
+        //is a simple proposition with no grandchildren.
+        if (children.size() != 0) {
+            Node<RuleTreeNode,String> child = children.get(0);
+            List<Node<RuleTreeNode,String>> grandChildren = child.getChildren();
+
+            // if there are grandchildren it means multiple propositions have been added.
+            if (grandChildren.size() != 0) {
+                Node<RuleTreeNode,String> lastSimpleNode = getLastSimpleNode(grandChildren);
+                selectedId = lastSimpleNode.getData().getProposition().getId();
+            } else {
+                // if there are no grandchildren, it means only a single simpleProposition
+                // has been added.
+                selectedId = child.getData().getProposition().getId();
+            }    
+        }
+        
+        return selectedId;
+    }
+    
     @RequestMapping(params = "methodToCall=" + "addProposition")
     public ModelAndView addProposition(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1729,19 +1782,26 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         RuleBo rule = agendaEditor.getAgendaItemLine().getRule();
         String selectedPropId = agendaEditor.getSelectedPropositionId();
 
-
         // find parent
         Node<RuleTreeNode,String> root = agendaEditor.getAgendaItemLine().getRule().getPropositionTree().getRootElement();
+        
+        // if a proposition is not selected, get the last one in the topmost
+        // branch
+        if (StringUtils.isEmpty(selectedPropId)) {
+            selectedPropId = getDefaultAddLocationPropositionId(root);
+        }
+        
+        // parent is the proposition user selected
         Node<RuleTreeNode,String> parent = findParentPropositionNode( root, selectedPropId);
-
+        
         resetEditModeOnPropositionTree(root);
-
+          
         // add new child at appropriate spot
         if (parent != null){
             List<Node<RuleTreeNode,String>> children = parent.getChildren();
             for( int index=0; index< children.size(); index++){
                 Node<RuleTreeNode,String> child = children.get(index);
-
+               
                 // if our selected node is a simple proposition, add a new one after
                 if (propIdMatches(child, selectedPropId)){
                     // handle special case of adding to a lone simple proposition.

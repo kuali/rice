@@ -30,24 +30,24 @@
         <#local style="style=\"${manager.style}\""/>
     </#if>
 
-    <#if container.useServerPaging>
+    <#if manager.pagerWidget?has_content && container.useServerPaging>
         <@krad.template component=manager.pagerWidget parent=container/>
     </#if>
 
-<div id="${manager.id}" ${style!} ${styleClass!}>
+    <div id="${manager.id}" ${style!} ${styleClass!}>
 
-<#-- use wrapper group layout if defined, else default to vertical box -->
-        <#if manager.wrapperGroup??>
-    <@krad.template component=manager.wrapperGroup/>
-<#else>
-    <#list manager.stackedGroups as item>
-        <@krad.template component=item/>
-    </#list>
-</#if>
+    <#-- use wrapper group layout if defined, else default to vertical box -->
+            <#if manager.wrapperGroup??>
+        <@krad.template component=manager.wrapperGroup/>
+    <#else>
+        <#list manager.stackedGroups as item>
+            <@krad.template component=item/>
+        </#list>
+    </#if>
 
-</div>
+    </div>
 
-    <#if container.useServerPaging>
+    <#if manager.pagerWidget?has_content && container.useServerPaging>
         <@krad.template component=manager.pagerWidget parent=container/>
     </#if>
 

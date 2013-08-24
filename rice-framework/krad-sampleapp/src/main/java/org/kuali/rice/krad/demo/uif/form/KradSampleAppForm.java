@@ -233,33 +233,36 @@ public class KradSampleAppForm extends UifFormBase {
         groupedCollection1.add(new UITestObject("C", "102", "200", "300"));
         groupedCollection1.add(new UITestObject("C", "103", "200", "300"));
 
-        groupedCollection1.add(new UITestObject("D", "100", "200", "300"));
-        groupedCollection1.add(new UITestObject("D", "101", "200", "300"));
-        groupedCollection1.add(new UITestObject("D", "102", "200", "300"));
-        groupedCollection1.add(new UITestObject("D", "103", "200", "300"));
-        groupedCollection1.add(new UITestObject("D", "100", "200", "300"));
-        groupedCollection1.add(new UITestObject("D", "101", "200", "300"));
-        groupedCollection1.add(new UITestObject("D", "102", "200", "300"));
-        groupedCollection1.add(new UITestObject("D", "103", "200", "300"));
-        groupedCollection1.add(new UITestObject("D", "100", "200", "300"));
-        groupedCollection1.add(new UITestObject("D", "101", "200", "300"));
-        groupedCollection1.add(new UITestObject("D", "102", "200", "300"));
-        groupedCollection1.add(new UITestObject("D", "103", "200", "300"));
-        groupedCollection1.add(new UITestObject("D", "100", "200", "300"));
-        groupedCollection1.add(new UITestObject("D", "101", "200", "300"));
-        groupedCollection1.add(new UITestObject("D", "102", "200", "300"));
-        groupedCollection1.add(new UITestObject("D", "103", "200", "300"));
-        groupedCollection1.add(new UITestObject("D", "100", "200", "300"));
-        groupedCollection1.add(new UITestObject("D", "101", "200", "300"));
-        groupedCollection1.add(new UITestObject("D", "102", "200", "300"));
-        groupedCollection1.add(new UITestObject("D", "103", "200", "300"));
-        groupedCollection1.add(new UITestObject("D", "100", "200", "300"));
-        groupedCollection1.add(new UITestObject("D", "101", "200", "300"));
-        groupedCollection1.add(new UITestObject("D", "102", "200", "300"));
-        groupedCollection1.add(new UITestObject("D", "103", "200", "300"));
+        
 
         groupedCollection2.addAll(groupedCollection1);
-        groupedCollection3.addAll(groupedCollection1);
+        
+        groupedCollection2.add(new UITestObject("D", "100", "200", "300"));
+        groupedCollection2.add(new UITestObject("D", "101", "200", "300"));
+        groupedCollection2.add(new UITestObject("D", "102", "200", "300"));
+        groupedCollection2.add(new UITestObject("D", "103", "200", "300"));
+        groupedCollection2.add(new UITestObject("D", "100", "200", "300"));
+        groupedCollection2.add(new UITestObject("D", "101", "200", "300"));
+        groupedCollection2.add(new UITestObject("D", "102", "200", "300"));
+        groupedCollection2.add(new UITestObject("D", "103", "200", "300"));
+        groupedCollection2.add(new UITestObject("D", "100", "200", "300"));
+        groupedCollection2.add(new UITestObject("D", "101", "200", "300"));
+        groupedCollection2.add(new UITestObject("D", "102", "200", "300"));
+        groupedCollection2.add(new UITestObject("D", "103", "200", "300"));
+        groupedCollection2.add(new UITestObject("D", "100", "200", "300"));
+        groupedCollection2.add(new UITestObject("D", "101", "200", "300"));
+        groupedCollection2.add(new UITestObject("D", "102", "200", "300"));
+        groupedCollection2.add(new UITestObject("D", "103", "200", "300"));
+        groupedCollection2.add(new UITestObject("D", "100", "200", "300"));
+        groupedCollection2.add(new UITestObject("D", "101", "200", "300"));
+        groupedCollection2.add(new UITestObject("D", "102", "200", "300"));
+        groupedCollection2.add(new UITestObject("D", "103", "200", "300"));
+        groupedCollection2.add(new UITestObject("D", "100", "200", "300"));
+        groupedCollection2.add(new UITestObject("D", "101", "200", "300"));
+        groupedCollection2.add(new UITestObject("D", "102", "200", "300"));
+        groupedCollection2.add(new UITestObject("D", "103", "200", "300"));
+
+        groupedCollection3.addAll(groupedCollection2);
 
         doubleGroupedCollection.add(new UITestObject("Fall", "2001", "AAA123", "2"));
         doubleGroupedCollection.add(new UITestObject("Fall", "2001", "BBB123", "3"));

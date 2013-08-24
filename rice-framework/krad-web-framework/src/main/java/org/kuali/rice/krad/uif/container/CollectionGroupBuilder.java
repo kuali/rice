@@ -168,7 +168,8 @@ public class CollectionGroupBuilder implements Serializable {
     protected void buildLinesForDisplayedRows(List<IndexedElement> filteredIndexedElements, View view, Object model,
             CollectionGroup collectionGroup) {
 
-        // if we are doing server side paging, don't build the lines unless DataTables set the displayLength
+        // if we are doing server paging, but the display length wasn't set (which will be the case on the page render)
+        // then only render one line.  Needed to force the table to show up in the page.
         if (collectionGroup.isUseServerPaging() && collectionGroup.getDisplayLength() == -1) {
             collectionGroup.setDisplayLength(1);
         }

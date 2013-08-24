@@ -29,6 +29,7 @@ public class UifParameters {
 	public static final String AUTO_SEARCH = "autoSearch";
 	public static final String BASE_LOOKUP_URL = "baseLookupUrl";
 	public static final String METHOD_TO_CALL = "methodToCall";
+    public static final String CHANGE_PROPERTIES = "changeProperties";
     public static final String CLIENT_VIEW_STATE = "clientViewState";
     public static final String CONVERSION_FIELDS = "conversionFields";
     public static final String CONFIG_PROPERTIES = "ConfigProperties";

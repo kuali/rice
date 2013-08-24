@@ -557,14 +557,15 @@ function setupDisclosureHandler() {
                 var animationSpeed = link.data("speed");
                 var linkId = link.attr("id");
                 var widgetId = link.data("widgetid");
+                var ajax = link.data("ajax");
 
                 if (isOpen == "true") {
                     disclosureContent.attr(kradVariables.ATTRIBUTES.DATA_OPEN, false);
 
                     disclosureContent.slideUp(animationSpeed);
 
-                    jQuery(this).find("#" + linkId + "_exp").hide();
-                    jQuery(this).find("#" + linkId + "_col").show();
+                    link.find("#" + linkId + "_exp").hide();
+                    link.find("#" + linkId + "_col").show();
 
                     setComponentState(widgetId, 'open', false);
                 }
@@ -574,12 +575,28 @@ function setupDisclosureHandler() {
                     //run scripts for previously hidden content
                     runHiddenScripts(disclosureContent, true, true);
 
-                    disclosureContent.slideDown(animationSpeed);
-
-                    jQuery(this).find("#" + linkId + "_exp").show();
-                    jQuery(this).find("#" + linkId + "_col").hide();
+                    link.find("#" + linkId + "_exp").show();
+                    link.find("#" + linkId + "_col").hide();
 
                     setComponentState(widgetId, 'open', true);
+
+                    if (ajax && disclosureContent.data("role") == "placeholder") {
+                        // If there is a placeholder present, retrieve the new content
+                        showLoading("Loading...", disclosureContent, true);
+                        disclosureContent.show();
+
+                        // Add change to defaultOpen in change properties data
+                        var data = {};
+                        data[kradVariables.CHANGE_COMPONENT_PROPERTIES] = "{\"disclosure.defaultOpen\": true}";
+
+                        // This a specialized methodToCall passed in for retrieving the originally generated component
+                        retrieveComponent(linkId.replace("_toggle", ""),
+                                kradVariables.RETRIEVE_ORIGINAL_COMPONENT_METHOD_TO_CALL, null, data, true);
+                    }
+                    else{
+                        // If no ajax retrieval, slide down animationg
+                        disclosureContent.slideDown(animationSpeed);
+                    }
                 }
             });
 }

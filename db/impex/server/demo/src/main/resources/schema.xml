@@ -3952,10 +3952,12 @@
     </table>
     <table name="TRV_ACCT_USE_RT_T">
         <column name="ID" primaryKey="true" size="40" type="VARCHAR"/>
-        <column name="ACCT_NUM" required="true" size="10" type="VARCHAR"/>
-        <column name="RATE" required="true" size="8" type="DECIMAL"/>
+        <column name="ACCT_NUM" size="10" type="VARCHAR"/>
+        <column name="RATE" size="8" type="DECIMAL"/>
         <column name="ACTV_FRM_DT" type="DATE"/>
         <column name="ACTV_TO_DT" type="DATE"/>
+        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
     </table>
     <table name="TRV_ATT_SAMPLE">
         <column name="ATTACHMENT_ID" primaryKey="true" size="30" type="VARCHAR"/>

@@ -389,6 +389,8 @@ color:#FFF;">
   ********************************************************************************************************************
   -->
   <bean id="UifCompView-TextFields" parent="Uif-Disclosure-VerticalBoxSection">
+    <property name="disclosure.ajaxRetrievalWhenOpened" value="true"/>
+    <property name="disclosure.defaultOpen" value="false"/>
     <property name="items">
       <list>
         <bean parent="UifCompView-TextFields1"/>

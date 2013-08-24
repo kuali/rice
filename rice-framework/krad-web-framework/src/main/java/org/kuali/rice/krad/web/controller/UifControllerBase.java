@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.web.controller;
 
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kim.api.identity.Person;
@@ -25,9 +26,12 @@ import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.field.AttributeQueryResult;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
+import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.DialogManager;
 import org.kuali.rice.krad.uif.view.MessageView;
 import org.kuali.rice.krad.uif.view.View;
@@ -35,8 +39,8 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.UrlFactory;
+import org.kuali.rice.krad.web.controller.helper.CollectionPagingHelper;
 import org.kuali.rice.krad.web.controller.helper.DataTablesPagingHelper;
-import org.kuali.rice.krad.web.controller.helper.StackedPagingHelper;
 import org.kuali.rice.krad.web.form.HistoryFlow;
 import org.kuali.rice.krad.web.form.HistoryManager;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -1079,7 +1083,7 @@ public abstract class UifControllerBase {
     }
 
     /**
-     * Retrieve a page defined by the page number parameter for a stacked collection
+     * Retrieve a page defined by the page number parameter for a collection
      *
      * @param form -  Holds properties necessary to determine the <code>View</code> instance that will be used to
      * render
@@ -1090,14 +1094,44 @@ public abstract class UifControllerBase {
      * @return the  ModelAndView object
      * @throws Exception
      */
-    @RequestMapping(params = "methodToCall=retrieveStackedPage")
-    public ModelAndView retrieveStackedPage(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+    @RequestMapping(params = "methodToCall=retrieveCollectionPage")
+    public ModelAndView retrieveCollectionPage(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
         String collectionId = request.getParameter(UifParameters.UPDATE_COMPONENT_ID);
         String pageNumber = request.getParameter(UifConstants.PageRequest.PAGE_NUMBER);
 
-        StackedPagingHelper pagingHelper = new StackedPagingHelper();
+        CollectionPagingHelper pagingHelper = new CollectionPagingHelper();
         pagingHelper.processPagingRequest(form.getPostedView(), collectionId, form, pageNumber);
+
+        return getUIFModelAndView(form);
+    }
+
+    /**
+     * Retrieves the original component as it exists in postedView without attempting to refresh it; fast and
+     * consistent when this is all that is needed
+     *
+     * <p>By passing in the "changeProperties" parameter to this controller method, properties can be changed on
+     * the retrieved component.  However, keep in mind that since this method does not call the lifecycle on
+     * the returned component, properties which require a lifecycle to be run to affect the output of a component
+     * should not be set.  Main use case is to affect attributes which are only used by the ftl.  The
+     * "changeProperties" parameter must be in JSON in string from, ie "{\"propertyPath\": true}"; note the use
+     * of escaping, as this is required.  The propertyPath defines the property on the component that needs to be
+     * changed during this retrieval.  This call must be using the "update-component" return type.</p>
+     *
+     * @param form -  Holds properties necessary to determine the <code>View</code> instance that will be used to
+     * render
+     * the UI
+     * @param result -   represents binding results
+     * @param request - http servlet request data
+     * @param response - http servlet response object
+     * @return the  ModelAndView object
+     * @throws Exception
+     */
+    @RequestMapping(params = "methodToCall=retrieveOriginalComponent")
+    public ModelAndView retrieveOriginalComponent(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String componentId = request.getParameter(UifParameters.UPDATE_COMPONENT_ID);
+        form.setOriginalComponentRequest(true);
 
         return getUIFModelAndView(form);
     }

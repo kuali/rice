@@ -686,6 +686,8 @@
         <bean parent="Uif-SaveLineAction"/>
       </list>
     </property>
+    <property name="displayStart" value="0"/>
+    <property name="displayLength" value="10"/>
   </bean>
 
   <bean id="Uif-CollectionQuickFinder" parent="Uif-QuickFinder" p:multipleValuesSelect="true">

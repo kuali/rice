@@ -54,21 +54,31 @@ public class TermBoServiceImpl implements TermBoService {
      */
     @Override
     public TermSpecificationDefinition getTermSpecificationById(String id) {
+        TermSpecificationDefinition result = null;
+
+        if (StringUtils.isBlank(id)) {
+            throw new RiceIllegalArgumentException("id must not be blank or null");
+        }
+
         TermSpecificationBo termSpecificationBo = businessObjectService.findBySinglePrimaryKey(
                 TermSpecificationBo.class, id);
 
-        if (termSpecificationBo.getContextIds() != null
-                && termSpecificationBo.getContextIds().isEmpty()
-                && termSpecificationBo.getContexts() != null
-                && !termSpecificationBo.getContexts().isEmpty()) {
-            List<String> contextIds = new ArrayList<String>();
-            for (ContextBo context : termSpecificationBo.getContexts()) {
-                contextIds.add(context.getId());
+        if (termSpecificationBo != null) {
+            if (termSpecificationBo.getContextIds() != null
+                    && termSpecificationBo.getContextIds().isEmpty()
+                    && termSpecificationBo.getContexts() != null
+                    && !termSpecificationBo.getContexts().isEmpty()) {
+                List<String> contextIds = new ArrayList<String>();
+                for (ContextBo context : termSpecificationBo.getContexts()) {
+                    contextIds.add(context.getId());
+                }
+                termSpecificationBo.setContextIds(contextIds);
             }
-            termSpecificationBo.setContextIds(contextIds);
+
+            result = TermSpecificationDefinition.Builder.create(termSpecificationBo).build();
         }
 
-        return TermSpecificationDefinition.Builder.create(termSpecificationBo).build();
+        return result;
     }
 
     /**

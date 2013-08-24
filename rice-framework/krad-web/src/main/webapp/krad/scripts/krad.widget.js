@@ -618,8 +618,11 @@ function createDatePicker(controlId, options) {
  *          speed at which the group should be expanded or collapsed
  * @param renderImage -
  *          boolean that indicates whether the expanded or collapsed image should be rendered
+ * @param ajaxRetrieval -
+  *          boolean that indicates whether the disclosure group should be retrieved when open
  */
-function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgSrc, expandImgSrc, animationSpeed, renderImage) {
+function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgSrc, expandImgSrc, animationSpeed,
+                          renderImage, ajaxRetrieval) {
     jQuery(document).ready(function () {
         var groupToggleLinkId = groupId + kradVariables.ID_SUFFIX.DISCLOSURE_TOGGLE;
 
@@ -661,6 +664,7 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgS
                 + "data-open='" + defaultOpen + "' "
                 + "data-widgetid='" + widgetId + "' "
                 + "data-speed='" + animationSpeed + "' "
+                + "data-ajax='" + ajaxRetrieval + "'"
                 + "></a>");
     });
 }

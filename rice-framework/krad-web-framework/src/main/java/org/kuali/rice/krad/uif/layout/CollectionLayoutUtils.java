@@ -25,7 +25,11 @@ import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.ValueConfiguredControl;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.Field;
+import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.widget.Pager;
 import org.kuali.rice.krad.util.KRADUtils;
+
+import java.util.List;
 
 /**
  * Utilities for collection layout managers
@@ -74,6 +78,38 @@ public class CollectionLayoutUtils {
                         KRADServiceLocatorWeb.getLegacyDataAdapter().getDataObjectIdentifierString(line);
                 ((ValueConfiguredControl) selectControl).setValue(lineIdentifier);
             }
+        }
+    }
+
+    /**
+     * Setup a pagerWidget's values for numberOfPages and currentPage, based on the collection size, displayStart,
+     * and displayLength
+     *
+     * @param pagerWidget the Pager to setup
+     * @param collectionGroup  the collectionGroup which uses this Pager
+     * @param model the current model
+     */
+    protected static void setupPagerWidget(Pager pagerWidget, CollectionGroup collectionGroup, Object model){
+        List<Object> modelCollection = ObjectPropertyUtils.getPropertyValue(model,
+                        collectionGroup.getBindingInfo().getBindingPath());
+
+        // The size of the collection divided by the pageLength is used to determine the number of pages for
+        // the pager component (ceiling is used if there is not a full page left over in the division)
+        if (modelCollection != null) {
+            double pages = (double) modelCollection.size() / (double) collectionGroup.getDisplayLength();
+            pagerWidget.setNumberOfPages((int) Math.ceil(pages));
+        } else {
+            pagerWidget.setNumberOfPages(1);
+        }
+
+        // By using displayStart, currentPage can be determined, the displayLength is added here before division,
+        // because the pager is 1-based
+        int currentPage = (collectionGroup.getDisplayStart() + collectionGroup.getDisplayLength()) / collectionGroup
+                .getDisplayLength();
+        pagerWidget.setCurrentPage(currentPage);
+
+        if (StringUtils.isBlank(pagerWidget.getLinkScript())){
+            pagerWidget.setLinkScript("retrieveCollectionPage(this, '" + collectionGroup.getId() + "');");
         }
     }
 }

@@ -21,20 +21,30 @@
 
         <@template component=group.header/>
 
-        <#if group.disclosure.render>
-            <div id="${group.id}_disclosureContent" data-role="disclosureContent"
-                 data-open="${group.disclosure.defaultOpen?string}" class="uif-disclosureContent">
+        <#if !group.disclosure?has_content || !group.disclosure.ajaxRetrievalWhenOpened
+            || (group.disclosure.render && group.disclosure.ajaxRetrievalWhenOpened && group.disclosure.defaultOpen)>
+
+            <#if group.disclosure?has_content && group.disclosure.render>
+                <div id="${group.id}_disclosureContent" data-role="disclosureContent"
+                     data-open="${group.disclosure.defaultOpen?string}" class="uif-disclosureContent">
+            </#if>
+
+            <@template component=group.validationMessages/>
+            <@template component=group.instructionalMessage/>
+
+            <#nested/>
+
+            <@template component=group.footer/>
+
+            <#if group.disclosure?has_content && group.disclosure.render>
+                </div>
+            </#if>
+
+        <#else>
+            <div id="${group.id}_disclosureContent" data-role="placeholder"> Loading... </div>
         </#if>
 
-        <@template component=group.validationMessages/>
-        <@template component=group.instructionalMessage/>
-
-        <#nested/>
-
-        <@template component=group.footer/>
-
-        <#if group.disclosure.render>
-            </div>
+        <#if group.disclosure?has_content && group.disclosure.render>
             <@template component=group.disclosure parent=group/>
         </#if>
 

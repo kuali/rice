@@ -18,6 +18,8 @@ package org.kuali.rice.krad.uif.widget;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.component.ClientSideState;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.view.View;
 
 /**
  * Decorates a group with collapse/expand functionality
@@ -35,6 +37,7 @@ public class Disclosure extends WidgetBase {
 
     @ClientSideState(variableName = "open")
     private boolean defaultOpen;
+    private boolean ajaxRetrievalWhenOpened;
 
     private boolean renderImage;
 
@@ -43,6 +46,21 @@ public class Disclosure extends WidgetBase {
 
         defaultOpen = true;
         renderImage = true;
+
+    }
+
+    /**
+     * Sets forceSessionPersistence when using the ajax retrieval option
+     *
+     * @see Component#performApplyModel(org.kuali.rice.krad.uif.view.View, Object, org.kuali.rice.krad.uif.component.Component)
+     */
+    @Override
+    public void performApplyModel(View view, Object model, Component parent) {
+        super.performFinalize(view, model, parent);
+
+        if(ajaxRetrievalWhenOpened){
+            parent.setForceSessionPersistence(true);
+        }
     }
 
     /**
@@ -124,6 +142,26 @@ public class Disclosure extends WidgetBase {
     }
 
     /**
+     * When true, the group content will be retrieved when the disclosure is opened
+     *
+     * <p>This only works if by default, the disclosure is closed.</p>
+     *
+     * @return true if use ajax retrieval when disclosure opens, false otherwise
+     */
+    public boolean isAjaxRetrievalWhenOpened() {
+        return ajaxRetrievalWhenOpened;
+    }
+
+    /**
+     * Set ajaxRetrievalWhenOpened
+     *
+     * @param ajaxRetrievalWhenOpened
+     */
+    public void setAjaxRetrievalWhenOpened(boolean ajaxRetrievalWhenOpened) {
+        this.ajaxRetrievalWhenOpened = ajaxRetrievalWhenOpened;
+    }
+
+    /**
      * Indicates whether the expand/collapse image should be rendered for the closure, if set to false only
      * the group title will be clickable
      *
@@ -155,6 +193,7 @@ public class Disclosure extends WidgetBase {
         disclosureCopy.setAnimationSpeed(this.animationSpeed);
         disclosureCopy.setCollapseImageSrc(this.collapseImageSrc);
         disclosureCopy.setDefaultOpen(this.defaultOpen);
+        disclosureCopy.setAjaxRetrievalWhenOpened(this.ajaxRetrievalWhenOpened);
         disclosureCopy.setExpandImageSrc(this.expandImageSrc);
         disclosureCopy.setRenderImage(this.renderImage);
     }

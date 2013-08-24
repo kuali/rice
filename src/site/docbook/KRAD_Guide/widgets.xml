@@ -1540,6 +1540,86 @@ public class Orange extends Fruit { /*...*/ }    </programlisting>
                 </para>
             </section>
         </section>
+        <section>
+            <title>Pager</title>
+            <para>The Pager widget is used to output a page selection interface for the user to
+                select pages.  This widget is used by TableLayoutManager when the RichTable option
+                is NOT being used and useServerPaging is set to true on the CollectionGroup.  This
+                widget is also used when a CollectionGroup which uses StackedLayoutManager has its
+                useServerPaging property set to true.</para>
+            <para>The Pager widget itself contains a few options that can modify the what is
+                displayed.</para>
+            <programlisting linenumbering="numbered">    &lt;property name="pagerWidget">
+      &lt;bean parent="Uif-Pager" p:maxNumberedLinksShown="8"/>
+    &lt;/property></programlisting>
+            <section>
+                <title>Properties</title>
+                <para>
+                    <table frame="all" pgwide="1" tabstyle="striped">
+                        <title>Tooltip Properties</title>
+                        <tgroup cols="3">
+                            <colspec colname="c1" colnum="1" colwidth="1.4*"/>
+                            <colspec colname="c2" colnum="2" colwidth="1*"/>
+                            <colspec colname="c3" colnum="3" colwidth="6.97*"/>
+                            <thead>
+                                <row>
+                                    <entry>Property</entry>
+                                    <entry>Default</entry>
+                                    <entry>Description</entry>
+                                </row>
+                            </thead>
+                            <tbody>
+                                <row>
+                                    <entry>maxNumberedLinksShown</entry>
+                                    <entry> 5</entry>
+                                    <entry>The max number of numbered page links to show, pages
+                                        beyond this range are not shown and when pages are
+                                        navigated, the pager "carousels" through the pages which are
+                                        in the current range.</entry>
+                                </row>
+                                <row>
+                                    <entry>renderPrevNext</entry>
+                                    <entry>true</entry>
+                                    <entry>If true, render the previous and next links on the Pager
+                                        widget</entry>
+                                </row>
+                                <row>
+                                    <entry>renderFirstLast</entry>
+                                    <entry>true</entry>
+                                    <entry>If true, render the first and last links on the Pager
+                                        widget</entry>
+                                </row>
+                                <row>
+                                    <entry>linkScript</entry>
+                                    <entry/>
+                                    <entry>The javascript function that is called when a link is
+                                        clicked. This is automatically set by the framework and
+                                            <emphasis role="bold">should not be set normally, but
+                                            can be to accomadate rare circumstances.</emphasis>  By
+                                        default if not set, it is set to:
+                                        "retrieveCollectionPage(this, '" + collectionGroup.getId() +
+                                        "');"</entry>
+                                </row>
+                                <row>
+                                    <entry>numberOfPages</entry>
+                                    <entry/>
+                                    <entry>The total number of pages for this Pager, this must be
+                                        set by the framework and <emphasis role="bold">should not be
+                                            set normally</emphasis></entry>
+                                </row>
+                                <row>
+                                    <entry>currentPage</entry>
+                                    <entry/>
+                                    <entry>The current page the Pager is on, this must be set by the
+                                        framework and <emphasis role="bold">should not be set
+                                            normally</emphasis></entry>
+                                </row>
+                            </tbody>
+                        </tgroup>
+                    </table>
+                </para>
+            </section>
+        </section>
     </section>
     <section>
         <title>Creating a New Widget </title>

@@ -32,6 +32,7 @@ JavascriptKradVariables.prototype = {
 
     CACHE_KEY: "cacheKey",
     CHANGED_HEADER_ICON_CLASS: "uif-changedHeaderIcon",
+    CHANGE_COMPONENT_PROPERTIES: "changeProperties",
     CLEAR_FORM_METHOD_TO_CALL: "clearForm",
     CLIENT_MESSAGE_ITEMS_CLASS: "uif-clientMessageItems",
     CLIENT_WARNING_DIV_CLASS: "uif-clientWarningDiv",
@@ -118,7 +119,8 @@ JavascriptKradVariables.prototype = {
     PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS: "uif-progressiveDisclosure-highlight",
     REFRESH_METHOD_TO_CALL: "refresh",
     RETRIEVE_MESSAGE_METHOD_TO_CALL: "retrieveMessage",
-    RETRIEVE_STACKED_PAGE_METHOD_TO_CALL: "retrieveStackedPage",
+    RETRIEVE_COLLECTION_PAGE_METHOD_TO_CALL: "retrieveCollectionPage",
+    RETRIEVE_ORIGINAL_COMPONENT_METHOD_TO_CALL: "retrieveOriginalComponent",
     RETURN_TYPE_UPDATE_COMPONENT: "update-component",
     RETURN_FROM_LIGHTBOX_METHOD_TO_CALL: "returnFromLightbox",
     RETURN_SELECTED_ACTION_CLASS: "uif-returnSelectedAction",

@@ -25,6 +25,7 @@ import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krms.api.repository.NaturalLanguageTree;
 import org.kuali.rice.krms.api.repository.RuleManagementService;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
+import org.kuali.rice.krms.api.repository.TranslateBusinessMethods;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
@@ -70,6 +71,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
     private NaturalLanguageTemplaterContract templater = new SimpleNaturalLanguageTemplater ();
     private TermRepositoryService termRepositoryService = new TermBoServiceImpl ();
     private SequenceAccessorService sequenceAccessorService = null;
+    private TranslateBusinessMethods translationBusinessMethods = null;
 
     /**
      * get the {@link ReferenceObjectBindingBoService}
@@ -250,7 +252,25 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
         this.sequenceAccessorService = sequenceAccessorService;
     }
 
-    
+    /**
+     * get the {@link TranslateBusinessMethods}
+     * @return the current {@link TranslateBusinessMethods}
+     */
+    public TranslateBusinessMethods getTranslateBusinessMethods() {
+        if(translationBusinessMethods  == null) {
+            this.translationBusinessMethods  = new TranslationUtility (this, this.templater);
+        }
+        return this.translationBusinessMethods ;
+    }
+
+    /**
+     * set the {@link TranslateBusinessMethods}
+     * @param translationBusinessMethods the {@link TranslateBusinessMethods} to set
+     */
+    public void setTranslationBusinessMethods (TranslateBusinessMethods  translationBusinessMethods) {
+        this.translationBusinessMethods  = translationBusinessMethods;
+    }
+
     ////
     //// reference object binding methods
     ////
@@ -537,12 +557,12 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
         }
     }
 
-    private void crossCheckWhenTrueId(AgendaItemDefinition agendatemDefinition)
+    private void crossCheckWhenTrueId(AgendaItemDefinition agendaItemDefinition)
             throws RiceIllegalArgumentException {
         // if both are set they better match
-        if (agendatemDefinition.getWhenTrueId()!= null && agendatemDefinition.getWhenTrue() != null) {
-            if (!agendatemDefinition.getWhenTrueId().equals(agendatemDefinition.getWhenTrue().getId())) {
-                throw new RiceIllegalArgumentException("when true id does not match " + agendatemDefinition.getWhenTrueId() + " " + agendatemDefinition.getWhenTrue().getId());
+        if (agendaItemDefinition.getWhenTrueId()!= null && agendaItemDefinition.getWhenTrue() != null) {
+            if (!agendaItemDefinition.getWhenTrueId().equals(agendaItemDefinition.getWhenTrue().getId())) {
+                throw new RiceIllegalArgumentException("when true id does not match " + agendaItemDefinition.getWhenTrueId() + " " + agendaItemDefinition.getWhenTrue().getId());
             }
         }
     }
@@ -864,7 +884,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
 
     @Override
     public List<ActionDefinition> getActions(List<String> actionIds) {
-        // TODO: implement this more efficiently by adding the builk op to the bo service and calling it
+        // TODO: implement this more efficiently by adding the bulk op to the bo service and calling it
         List<ActionDefinition> list = new ArrayList<ActionDefinition>();
 
         for (String id : actionIds) {
@@ -1191,27 +1211,24 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
             String krmsObjectId,
             String languageCode)
             throws RiceIllegalArgumentException {
-        TranslationUtility util = new TranslationUtility (this, this.templater);
 
-        return util.translateNaturalLanguageForObject(naturalLanguageUsageId, typeId, krmsObjectId, languageCode);
+        return this.getTranslateBusinessMethods().translateNaturalLanguageForObject(naturalLanguageUsageId, typeId, krmsObjectId, languageCode);
     }
 
     @Override
     public String translateNaturalLanguageForProposition(String naturalLanguageUsageId,
             PropositionDefinition proposition, String languageCode)
             throws RiceIllegalArgumentException {
-        TranslationUtility util = new TranslationUtility (this, this.templater);
 
-        return util.translateNaturalLanguageForProposition(naturalLanguageUsageId, proposition, languageCode);
+        return this.getTranslateBusinessMethods().translateNaturalLanguageForProposition(naturalLanguageUsageId, proposition, languageCode);
     }
 
     @Override
     public NaturalLanguageTree translateNaturalLanguageTreeForProposition(String naturalLanguageUsageId, 
     PropositionDefinition propositionDefinintion, 
     String languageCode) throws RiceIllegalArgumentException {
-        TranslationUtility util = new TranslationUtility (this, this.templater);
 
-        return util.translateNaturalLanguageTreeForProposition(naturalLanguageUsageId, propositionDefinintion, languageCode);
+        return this.getTranslateBusinessMethods().translateNaturalLanguageTreeForProposition(naturalLanguageUsageId, propositionDefinintion, languageCode);
     }
     
     

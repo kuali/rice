@@ -33,6 +33,7 @@
         <ref bean="Demo-Disclosure-Example3"/>
         <ref bean="Demo-Disclosure-Example4"/>
         <ref bean="Demo-Disclosure-Example5"/>
+        <ref bean="Demo-Disclosure-Example6"/>
       </list>
     </property>
   </bean>
@@ -147,6 +148,28 @@
           </property>
         </bean>
         <!-- ex:Demo-Disclosure-Example5 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- Default -->
+  <bean id="Demo-Disclosure-Example6" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Disclosure-Example6 start-->
+        <bean parent="Uif-VerticalBoxSection" p:headerText="Disclosure Section (ajax retrieval)">
+          <!-- property to activate disclosure -->
+          <property name="disclosure.render" value="true"/>
+          <property name="disclosure.defaultOpen" value="false"/>
+          <property name="disclosure.ajaxRetrievalWhenOpened" value="true"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField15"/>
+              <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField16"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-Disclosure-Example6 end-->
       </list>
     </property>
   </bean>

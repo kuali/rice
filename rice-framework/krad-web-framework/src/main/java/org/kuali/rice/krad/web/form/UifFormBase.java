@@ -129,6 +129,8 @@ public class UifFormBase implements ViewModel {
     protected String ajaxReturnType;
     @SessionTransient
     private String requestJsonTemplate;
+    @SessionTransient
+    private boolean originalComponentRequest;
 
     // dialog fields
     @SessionTransient
@@ -1055,6 +1057,25 @@ public class UifFormBase implements ViewModel {
     @Override
     public void setRequestJsonTemplate(String requestJsonTemplate) {
         this.requestJsonTemplate = requestJsonTemplate;
+    }
+
+    /**
+     * True if the current request is attempting to retrieve the originally generated component; the request
+     * must be an update-component request for this to be taken into account
+     *
+     * @return true if retrieving the original component
+     */
+    public boolean isOriginalComponentRequest() {
+        return originalComponentRequest;
+    }
+
+    /**
+     * Set the originalComponentRequest flag
+     *
+     * @param originalComponentRequest
+     */
+    public void setOriginalComponentRequest(boolean originalComponentRequest) {
+        this.originalComponentRequest = originalComponentRequest;
     }
 
     /**

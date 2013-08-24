@@ -28,7 +28,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class StackedPagingHelper {
+public class CollectionPagingHelper {
 
     /**
      * Process the paging request by determining the displayStart value based on the page requested
@@ -62,7 +62,12 @@ public class StackedPagingHelper {
                     displayStart = displayStart + displayLength;
                 } else if (page.equals(UifConstants.PageRequest.LAST)) {
                     int lastPageSize = modelCollection.size() % displayLength;
-                    displayStart = modelCollection.size() - lastPageSize;
+                    if (lastPageSize != 0){
+                        displayStart = modelCollection.size() - lastPageSize;
+                    }
+                    else{
+                        displayStart = modelCollection.size() - displayLength;
+                    }
                 } else {
                     displayStart = ((Integer.parseInt(page.trim()) - 1) * displayLength);
                 }

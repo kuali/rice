@@ -20,6 +20,7 @@ import org.kuali.rice.kim.api.responsibility.ResponsibilityService
 import org.kuali.rice.kim.api.responsibility.Responsibility
 import org.junit.Before
 import groovy.mock.interceptor.MockFor
+import org.kuali.rice.kim.impl.role.RoleMemberBo
 import org.kuali.rice.krad.service.BusinessObjectService
 import org.junit.BeforeClass
 import org.kuali.rice.core.api.exception.RiceIllegalStateException
@@ -65,17 +66,23 @@ class ResponsibilityServiceImplTest {
 
     @BeforeClass
     static void createSampleBOs() {
-        ResponsibilityTemplateBo firstResponsibilityTemplate = new ResponsibilityTemplateBo(id: "resptemplateidone", name: "resptemplateone", namespaceCode: "respnamespacecodeone", versionNumber: 1, kimTypeId: "a");
+        ResponsibilityTemplateBo firstResponsibilityTemplate = new ResponsibilityTemplateBo(id: "resptemplateidone", name: "resptemplateone", namespaceCode: "templnamespacecodeone", versionNumber: 1, kimTypeId: "a");
         ResponsibilityBo firstResponsibilityBo = new ResponsibilityBo(id: "respidone", namespaceCode: "namespacecodeone", name: "respnameone", template: firstResponsibilityTemplate, versionNumber: 1, active: true);
         KimTypeBo firstKimTypeBo = new KimTypeBo(id: "kimtypeidone");
         RoleResponsibilityBo firstRoleResponsibilityBo = new RoleResponsibilityBo(roleResponsibilityId: "rolerespidone", roleId: "roleidone");
-        RoleResponsibilityActionBo firstRoleResponsibilityActionBo = new RoleResponsibilityActionBo(id: "rolerespactionidone", versionNumber: 1);
+        RoleResponsibilityActionBo firstMbrRoleResponsibilityActionBo = new RoleResponsibilityActionBo(id: "rolerespactionidoneone", roleResponsibilityId: "*", roleMemberId: "rolememberidone", versionNumber: 1);
+        RoleResponsibilityActionBo firstRespMbrRoleResponsibilityActionBo = new RoleResponsibilityActionBo(id: "rolerespactionidonetwo", roleResponsibilityId: "rolerespidone", roleMemberId: "rolememberidone", versionNumber: 1);
+        RoleResponsibilityActionBo firstRespRoleResponsibilityActionBo = new RoleResponsibilityActionBo(id: "rolerespactionidonethree", roleResponsibilityId: "rolerespidone", roleMemberId: "*", versionNumber: 1);
 
-        ResponsibilityTemplateBo secondResponsibilityTemplate = new ResponsibilityTemplateBo(id: "resptemplateidtwo", name: "resptemplatetwo", namespaceCode: "respnamespacecodetwo", versionNumber: 1, kimTypeId: "a");
+        ResponsibilityTemplateBo secondResponsibilityTemplate = new ResponsibilityTemplateBo(id: "resptemplateidtwo", name: "resptemplatetwo", namespaceCode: "templnamespacecodetwo", versionNumber: 1, kimTypeId: "a");
         ResponsibilityBo secondResponsibilityBo = new ResponsibilityBo(id: "respidtwo", namespaceCode: "namespacecodetwo", name: "respnametwo", template: secondResponsibilityTemplate, versionNumber: 1, active: true);
         KimTypeBo secondKimTypeBo = new KimTypeBo(id: "kimtypeidtwo");
         RoleResponsibilityBo secondRoleResponsibilityBo = new RoleResponsibilityBo(roleResponsibilityId: "rolerespidtwo", roleId: "roleidtwo");
-        RoleResponsibilityActionBo secondRoleResponsibilityActionBo = new RoleResponsibilityActionBo(id: "rolerespactionidtwo", versionNumber: 1);
+        RoleResponsibilityActionBo secondMbrRoleResponsibilityActionBo = new RoleResponsibilityActionBo(id: "rolerespactionidtwoone", roleResponsibilityId: "*", roleMemberId: "rolememberidtwo", versionNumber: 1);
+        RoleResponsibilityActionBo secondRespMbrRoleResponsibilityActionBo = new RoleResponsibilityActionBo(id: "rolerespactionidtwotwo", roleResponsibilityId: "rolerespidtwo", roleMemberId: "rolememberidtwo", versionNumber: 1);
+        RoleResponsibilityActionBo secondRespRoleResponsibilityActionBo = new RoleResponsibilityActionBo(id: "rolerespactionidtwothree", roleResponsibilityId: "rolerespidtwo", roleMemberId: "*", versionNumber: 1);
+
+        RoleResponsibilityActionBo allRoleResponsibilityActionBo = new RoleResponsibilityActionBo(id: "rolerespactionid", roleResponsibilityId: "*", roleMemberId: "*", versionNumber: 1);
 
         for (bo in [firstResponsibilityBo, secondResponsibilityBo]) {
             sampleResponsibilities.put(bo.id, bo)
@@ -93,7 +100,15 @@ class ResponsibilityServiceImplTest {
             sampleRoleResponsibilities.put(bo.roleResponsibilityId, bo)
         }
 
-        for (bo in [firstRoleResponsibilityActionBo, secondRoleResponsibilityActionBo]) {
+        for (bo in [firstRespRoleResponsibilityActionBo, firstMbrRoleResponsibilityActionBo, firstRespMbrRoleResponsibilityActionBo]) {
+            sampleRoleResponsibilityActions.put(bo.id, bo)
+        }
+
+        for (bo in [secondRespRoleResponsibilityActionBo, secondMbrRoleResponsibilityActionBo, secondRespMbrRoleResponsibilityActionBo]) {
+            sampleRoleResponsibilityActions.put(bo.id, bo)
+        }
+
+        for (bo in [allRoleResponsibilityActionBo, firstMbrRoleResponsibilityActionBo, secondMbrRoleResponsibilityActionBo]) {
             sampleRoleResponsibilityActions.put(bo.id, bo)
         }
     }
@@ -156,14 +171,14 @@ class ResponsibilityServiceImplTest {
 
         injectBusinessObjectServiceIntoResponsibilityService();
 
-        ResponsibilityTemplateBo firstResponsibilityTemplate = new ResponsibilityTemplateBo(id: "resptemplateidone", name: "resptemplateone", namespaceCode: "respnamespacecodeone", versionNumber: 1, kimTypeId: "a");
+        ResponsibilityTemplateBo firstResponsibilityTemplate = new ResponsibilityTemplateBo(id: "resptemplateidone", name: "resptemplateone", namespaceCode: "templnamespacecodeone", versionNumber: 1, kimTypeId: "a");
         ResponsibilityBo responsibilityBo = new ResponsibilityBo(id: "respidone", namespaceCode: "namespacecodeone", name: "respnameone", template: firstResponsibilityTemplate, versionNumber: 1);
         responsibilityService.createResponsibility(ResponsibilityBo.to(responsibilityBo));
     }
 
     @Test
     public void testCreateResponsibilitySucceeds() {
-        ResponsibilityTemplateBo firstResponsibilityTemplate = new ResponsibilityTemplateBo(id: "resptemplateidone", name: "resptemplateone", namespaceCode: "respnamespacecodeone", versionNumber: 1, kimTypeId: "a");
+        ResponsibilityTemplateBo firstResponsibilityTemplate = new ResponsibilityTemplateBo(id: "resptemplateidone", name: "resptemplateone", namespaceCode: "templnamespacecodeone", versionNumber: 1, kimTypeId: "a");
         ResponsibilityBo newResponsibilityBo = new ResponsibilityBo(id: "respidthree", namespaceCode: "namespacecodethree", name: "respnamethree", template: firstResponsibilityTemplate, versionNumber: 1);
 
         mockBoService.demand.findBySinglePrimaryKey(1..1) {
@@ -199,14 +214,14 @@ class ResponsibilityServiceImplTest {
 
         injectBusinessObjectServiceIntoResponsibilityService();
 
-        ResponsibilityTemplateBo firstResponsibilityTemplate = new ResponsibilityTemplateBo(id: "resptemplateidone", name: "resptemplateone", namespaceCode: "respnamespacecodeone", versionNumber: 1, kimTypeId: "a");
+        ResponsibilityTemplateBo firstResponsibilityTemplate = new ResponsibilityTemplateBo(id: "resptemplateidone", name: "resptemplateone", namespaceCode: "templnamespacecodeone", versionNumber: 1, kimTypeId: "a");
         ResponsibilityBo newResponsibilityBo = new ResponsibilityBo(id: "respidthree", namespaceCode: "namespacecodethree", name: "respnamethree", template: firstResponsibilityTemplate, versionNumber: 1);
         Responsibility responsibility = responsibilityService.updateResponsibility(ResponsibilityBo.to(newResponsibilityBo));
     }
 
     @Test
     public void testUpdateResponsibilitySucceeds() {
-        ResponsibilityTemplateBo firstResponsibilityTemplate = new ResponsibilityTemplateBo(id: "resptemplateidone", name: "resptemplateone", namespaceCode: "respnamespacecodeone", versionNumber: 1, kimTypeId: "a");
+        ResponsibilityTemplateBo firstResponsibilityTemplate = new ResponsibilityTemplateBo(id: "resptemplateidone", name: "resptemplateone", namespaceCode: "templnamespacecodeone", versionNumber: 1, kimTypeId: "a");
         ResponsibilityBo existingResponsibilityBo = new ResponsibilityBo(id: "respidone", namespaceCode: "namespacecodeone", name: "respnameone", template: firstResponsibilityTemplate, versionNumber: 1, active: true);
 
         mockBoService.demand.findBySinglePrimaryKey(1..1) {
@@ -410,7 +425,6 @@ class ResponsibilityServiceImplTest {
         boolean hasResponsibility = responsibilityService.hasResponsibility("test", "test", "test", null);
     }
 
-
     @Test
     public void testHasResponsibilitySucceeds() {
         mockBoService.demand.findMatching(1..1) {
@@ -554,7 +568,7 @@ class ResponsibilityServiceImplTest {
 
         Map<String, String> responsibilityDetails = new HashMap<String, String>();
         responsibilityDetails.put("test", "test");
-        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplate("principalid", "respnamespacecodeone", "resptemplateone", new HashMap<String, String>(), responsibilityDetails);
+        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplate("principalid", "templnamespacecodeone", "resptemplateone", new HashMap<String, String>(), responsibilityDetails);
 
         Assert.assertEquals(true, hasResponsibility);
     }
@@ -585,65 +599,226 @@ class ResponsibilityServiceImplTest {
     }
 
     @Test
-    public void testGetResponsibilityActionsSucceeds() {
+    public void testGetResponsibilityActions_Responsibility1RoleMember1() {
+        List<RoleMembership> roleMemberships = new ArrayList<RoleMembership>();
+        RoleMembership.Builder builder = RoleMembership.Builder.create(
+                "roleidone", "rolememberidone", "memberidone", MemberType.PRINCIPAL, new HashMap<>());
+        builder.embeddedRoleId = "embeddedroleidone";
+        builder.qualifier = new HashMap<>();
+        roleMemberships.add(builder.build());
+
+        List<RoleResponsibilityBo> roleResponsibilities = new ArrayList<RoleResponsibilityBo>();
+        roleResponsibilities.add(sampleRoleResponsibilities.get("rolerespidone"));
+
+        List<RoleResponsibilityActionBo> roleResponsibilityActions = new ArrayList<RoleResponsibilityActionBo>();
+        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionid"));
+        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionidoneone"));
+        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionidonetwo"));
+        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionidonethree"));
+
+        List<ResponsibilityAction> responsibilityActions = getResponsibilityActions(
+                "namespacecodeone", "respnameone", roleMemberships, roleResponsibilities, roleResponsibilityActions);
+
+        Assert.assertEquals(4, responsibilityActions.size());
+
+        Assert.assertEquals("memberidone", responsibilityActions[0].principalId);
+        Assert.assertEquals("rolerespactionid", responsibilityActions[0].roleResponsibilityActionId);
+        Assert.assertEquals("embeddedroleidone", responsibilityActions[0].memberRoleId);
+        Assert.assertEquals("respidone", responsibilityActions[0].responsibilityId);
+        Assert.assertEquals("roleidone", responsibilityActions[0].roleId);
+
+        Assert.assertEquals("memberidone", responsibilityActions[1].principalId);
+        Assert.assertEquals("rolerespactionidoneone", responsibilityActions[1].roleResponsibilityActionId);
+        Assert.assertEquals("embeddedroleidone", responsibilityActions[1].memberRoleId);
+        Assert.assertEquals("respidone", responsibilityActions[1].responsibilityId);
+        Assert.assertEquals("roleidone", responsibilityActions[1].roleId);
+
+        Assert.assertEquals("memberidone", responsibilityActions[2].principalId);
+        Assert.assertEquals("rolerespactionidonetwo", responsibilityActions[2].roleResponsibilityActionId);
+        Assert.assertEquals("embeddedroleidone", responsibilityActions[2].memberRoleId);
+        Assert.assertEquals("respidone", responsibilityActions[2].responsibilityId);
+        Assert.assertEquals("roleidone", responsibilityActions[2].roleId);
+
+        Assert.assertEquals("memberidone", responsibilityActions[3].principalId);
+        Assert.assertEquals("rolerespactionidonethree", responsibilityActions[3].roleResponsibilityActionId);
+        Assert.assertEquals("embeddedroleidone", responsibilityActions[3].memberRoleId);
+        Assert.assertEquals("respidone", responsibilityActions[3].responsibilityId);
+        Assert.assertEquals("roleidone", responsibilityActions[3].roleId);
+    }
+
+    @Test
+    public void testGetResponsibilityActions_Responsibility1RoleMember2() {
+        List<RoleMembership> roleMemberships = new ArrayList<RoleMembership>();
+        RoleMembership.Builder builder = RoleMembership.Builder.create(
+                "roleidtwo", "rolememberidtwo", "memberidtwo", MemberType.PRINCIPAL, new HashMap<>());
+        builder.embeddedRoleId = "embeddedroleidtwo";
+        builder.qualifier = new HashMap<>();
+        roleMemberships.add(builder.build());
+
+        List<RoleResponsibilityBo> roleResponsibilities = new ArrayList<RoleResponsibilityBo>();
+        roleResponsibilities.add(sampleRoleResponsibilities.get("rolerespidone"));
+
+        List<RoleResponsibilityActionBo> roleResponsibilityActions = new ArrayList<RoleResponsibilityActionBo>();
+        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionid"));
+        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionidonethree"));
+        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionidtwoone"));
+
+        List<ResponsibilityAction> responsibilityActions = getResponsibilityActions(
+                "namespacecodeone", "respnameone", roleMemberships, roleResponsibilities, roleResponsibilityActions);
+
+        Assert.assertEquals(3, responsibilityActions.size());
+
+        Assert.assertEquals("memberidtwo", responsibilityActions[0].principalId);
+        Assert.assertEquals("rolerespactionid", responsibilityActions[0].roleResponsibilityActionId);
+        Assert.assertEquals("embeddedroleidtwo", responsibilityActions[0].memberRoleId);
+        Assert.assertEquals("respidone", responsibilityActions[0].responsibilityId);
+        Assert.assertEquals("roleidtwo", responsibilityActions[0].roleId);
+
+        Assert.assertEquals("memberidtwo", responsibilityActions[1].principalId);
+        Assert.assertEquals("rolerespactionidonethree", responsibilityActions[1].roleResponsibilityActionId);
+        Assert.assertEquals("embeddedroleidtwo", responsibilityActions[1].memberRoleId);
+        Assert.assertEquals("respidone", responsibilityActions[1].responsibilityId);
+        Assert.assertEquals("roleidtwo", responsibilityActions[1].roleId);
+
+        Assert.assertEquals("memberidtwo", responsibilityActions[2].principalId);
+        Assert.assertEquals("rolerespactionidtwoone", responsibilityActions[2].roleResponsibilityActionId);
+        Assert.assertEquals("embeddedroleidtwo", responsibilityActions[2].memberRoleId);
+        Assert.assertEquals("respidone", responsibilityActions[2].responsibilityId);
+        Assert.assertEquals("roleidtwo", responsibilityActions[2].roleId);
+    }
+
+    @Test
+    public void testGetResponsibilityActions_Responsibility2RoleMember1() {
+        List<RoleMembership> roleMemberships = new ArrayList<RoleMembership>();
+        RoleMembership.Builder builder = RoleMembership.Builder.create(
+                "roleidone", "rolememberidone", "memberidone", MemberType.PRINCIPAL, new HashMap<>());
+        builder.embeddedRoleId = "embeddedroleidone";
+        builder.qualifier = new HashMap<>();
+        roleMemberships.add(builder.build());
+
+        List<RoleResponsibilityBo> roleResponsibilities = new ArrayList<RoleResponsibilityBo>();
+        roleResponsibilities.add(sampleRoleResponsibilities.get("rolerespidtwo"));
+
+        List<RoleResponsibilityActionBo> roleResponsibilityActions = new ArrayList<RoleResponsibilityActionBo>();
+        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionid"));
+        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionidoneone"));
+        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionidtwothree"));
+
+        List<ResponsibilityAction> responsibilityActions = getResponsibilityActions(
+                "namespacecodetwo", "respnametwo", roleMemberships, roleResponsibilities, roleResponsibilityActions);
+
+        Assert.assertEquals(3, responsibilityActions.size());
+
+        Assert.assertEquals("memberidone", responsibilityActions[0].principalId);
+        Assert.assertEquals("rolerespactionid", responsibilityActions[0].roleResponsibilityActionId);
+        Assert.assertEquals("embeddedroleidone", responsibilityActions[0].memberRoleId);
+        Assert.assertEquals("respidtwo", responsibilityActions[0].responsibilityId);
+        Assert.assertEquals("roleidone", responsibilityActions[0].roleId);
+
+        Assert.assertEquals("memberidone", responsibilityActions[1].principalId);
+        Assert.assertEquals("rolerespactionidoneone", responsibilityActions[1].roleResponsibilityActionId);
+        Assert.assertEquals("embeddedroleidone", responsibilityActions[1].memberRoleId);
+        Assert.assertEquals("respidtwo", responsibilityActions[1].responsibilityId);
+        Assert.assertEquals("roleidone", responsibilityActions[1].roleId);
+
+        Assert.assertEquals("memberidone", responsibilityActions[2].principalId);
+        Assert.assertEquals("rolerespactionidtwothree", responsibilityActions[2].roleResponsibilityActionId);
+        Assert.assertEquals("embeddedroleidone", responsibilityActions[2].memberRoleId);
+        Assert.assertEquals("respidtwo", responsibilityActions[2].responsibilityId);
+        Assert.assertEquals("roleidone", responsibilityActions[2].roleId);
+    }
+
+    @Test
+    public void testGetResponsibilityActions_Responsibility2RoleMember2() {
+        List<RoleMembership> roleMemberships = new ArrayList<RoleMembership>();
+        RoleMembership.Builder builder = RoleMembership.Builder.create(
+                "roleidtwo", "rolememberidtwo", "memberidtwo", MemberType.PRINCIPAL, new HashMap<>());
+        builder.embeddedRoleId = "embeddedroleidtwo";
+        builder.qualifier = new HashMap<>();
+        roleMemberships.add(builder.build());
+
+        List<RoleResponsibilityBo> roleResponsibilities = new ArrayList<RoleResponsibilityBo>();
+        roleResponsibilities.add(sampleRoleResponsibilities.get("rolerespidtwo"));
+
+        List<RoleResponsibilityActionBo> roleResponsibilityActions = new ArrayList<RoleResponsibilityActionBo>();
+        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionid"));
+        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionidtwoone"));
+        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionidtwotwo"));
+        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionidtwothree"));
+
+        List<ResponsibilityAction> responsibilityActions = getResponsibilityActions(
+                "namespacecodetwo", "respnametwo", roleMemberships, roleResponsibilities, roleResponsibilityActions);
+
+        Assert.assertEquals(4, responsibilityActions.size());
+
+        Assert.assertEquals("memberidtwo", responsibilityActions[0].principalId);
+        Assert.assertEquals("rolerespactionid", responsibilityActions[0].roleResponsibilityActionId);
+        Assert.assertEquals("embeddedroleidtwo", responsibilityActions[0].memberRoleId);
+        Assert.assertEquals("respidtwo", responsibilityActions[0].responsibilityId);
+        Assert.assertEquals("roleidtwo", responsibilityActions[0].roleId);
+
+        Assert.assertEquals("memberidtwo", responsibilityActions[1].principalId);
+        Assert.assertEquals("rolerespactionidtwoone", responsibilityActions[1].roleResponsibilityActionId);
+        Assert.assertEquals("embeddedroleidtwo", responsibilityActions[1].memberRoleId);
+        Assert.assertEquals("respidtwo", responsibilityActions[1].responsibilityId);
+        Assert.assertEquals("roleidtwo", responsibilityActions[1].roleId);
+
+        Assert.assertEquals("memberidtwo", responsibilityActions[2].principalId);
+        Assert.assertEquals("rolerespactionidtwotwo", responsibilityActions[2].roleResponsibilityActionId);
+        Assert.assertEquals("embeddedroleidtwo", responsibilityActions[2].memberRoleId);
+        Assert.assertEquals("respidtwo", responsibilityActions[2].responsibilityId);
+        Assert.assertEquals("roleidtwo", responsibilityActions[2].roleId);
+
+        Assert.assertEquals("memberidtwo", responsibilityActions[3].principalId);
+        Assert.assertEquals("rolerespactionidtwothree", responsibilityActions[3].roleResponsibilityActionId);
+        Assert.assertEquals("embeddedroleidtwo", responsibilityActions[3].memberRoleId);
+        Assert.assertEquals("respidtwo", responsibilityActions[3].responsibilityId);
+        Assert.assertEquals("roleidtwo", responsibilityActions[3].roleId);
+    }
+
+    private List<ResponsibilityAction> getResponsibilityActions(String responsibilityNamespace,
+            String responsibilityName, List<RoleMembership> roleMemberships,
+            List<RoleResponsibilityBo> roleResponsibilities,
+            List<RoleResponsibilityActionBo> roleResponsibilityActions) {
         mockBoService.demand.findMatching(1..1) {
             Class clazz, Map map -> for (ResponsibilityBo responsibilityBo in sampleResponsibilities.values()) {
-                if (responsibilityBo.namespaceCode.equals(map.get("namespaceCode"))
-                    && responsibilityBo.name.equals(map.get("name")))
-                {
-                    Collection<ResponsibilityBo> responsibilities = new ArrayList<ResponsibilityBo>();
-                    responsibilities.add(responsibilityBo);
-                    return responsibilities;
+                    if (responsibilityBo.namespaceCode.equals(map.get("namespaceCode"))
+                        && responsibilityBo.name.equals(map.get("name")))
+                    {
+                        Collection<ResponsibilityBo> responsibilities = new ArrayList<ResponsibilityBo>();
+                        responsibilities.add(responsibilityBo);
+                        return responsibilities;
+                    }
                 }
-            }
         }
+
+        mockRoleService.demand.getRoleMembers(1..1) {
+            List<String> roleIds, Map<String, String> qualification -> return roleMemberships; }
 
         GenericQueryResults.Builder<RoleResponsibilityBo> genericQueryResults = new GenericQueryResults.Builder<RoleResponsibilityBo>();
         genericQueryResults.totalRowCount = 1;
         genericQueryResults.moreResultsAvailable = false;
-        List<RoleResponsibilityBo> roleResponsibilities = new ArrayList<RoleResponsibilityBo>();
-        roleResponsibilities.add(sampleRoleResponsibilities.get("rolerespidone"));
         genericQueryResults.results = roleResponsibilities;
         GenericQueryResults<RoleResponsibilityBo> results = genericQueryResults.build();
 
         mockCriteriaLookupService.demand.lookup(1..2) {
-            Class<RoleResponsibilityBo> queryClass, QueryByCriteria criteria -> return results;
-        }
-
-        mockRoleService.demand.getRoleMembers(1..1) {
-            List<String> roleIds, Map<String, String> qualification ->
-                List<RoleMembership> roleMemberships = new ArrayList<RoleMembership>();
-                RoleMembership.Builder builder = RoleMembership.Builder.create(
-                        "roleidone", "id", "memberidone", MemberType.PRINCIPAL, new HashMap<>());
-                builder.embeddedRoleId = "embeddedroleidone";
-                builder.qualifier = new HashMap<>();
-                roleMemberships.add(builder.build());
-                return roleMemberships;
-        }
+            Class<RoleResponsibilityBo> queryClass, QueryByCriteria criteria -> return results; }
 
         GenericQueryResults.Builder<RoleResponsibilityActionBo> actionGenericQueryResults = new GenericQueryResults.Builder<RoleResponsibilityBo>();
         actionGenericQueryResults.totalRowCount = 1;
         actionGenericQueryResults.moreResultsAvailable = false;
-        List<RoleResponsibilityActionBo> roleResponsibilityActions = new ArrayList<RoleResponsibilityActionBo>();
-        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionidone"));
         actionGenericQueryResults.results = roleResponsibilityActions;
         GenericQueryResults<RoleResponsibilityActionBo> actionResults = actionGenericQueryResults.build();
 
         mockCriteriaLookupService.demand.lookup(1..2) {
-            Class<RoleResponsibilityActionBo> queryClass, QueryByCriteria criteria -> return actionResults;
-        }
+            Class<RoleResponsibilityActionBo> queryClass, QueryByCriteria criteria -> return actionResults; }
 
         injectBusinessObjectServiceIntoResponsibilityService();
         injectCriteriaLookupServiceIntoResponsibilityService();
         injectRoleServiceIntoResponsibilityService();
 
-        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActions("namespacecodeone", "respnameone", new HashMap<String, String>());
-
-        Assert.assertEquals("memberidone", responsibilityActions[0].principalId);
-        Assert.assertEquals("rolerespactionidone", responsibilityActions[0].roleResponsibilityActionId);
-        Assert.assertEquals("embeddedroleidone", responsibilityActions[0].memberRoleId);
-        Assert.assertEquals("respidone", responsibilityActions[0].responsibilityId);
-        Assert.assertEquals("roleidone", responsibilityActions[0].roleId);
+        return responsibilityService.getResponsibilityActions(
+                responsibilityNamespace, responsibilityName, new HashMap<String, String>());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -672,11 +847,195 @@ class ResponsibilityServiceImplTest {
     }
 
     @Test
-    public void testGetResponsibilityActionsByTemplateNameSucceeds() {
+    public void testGetResponsibilityActionsByTemplate_Responsibility1RoleMember1() {
+        List<RoleMembership> roleMemberships = new ArrayList<RoleMembership>();
+        RoleMembership.Builder builder = RoleMembership.Builder.create(
+                "roleidone", "rolememberidone", "memberidone", MemberType.PRINCIPAL, new HashMap<>());
+        builder.embeddedRoleId = "embeddedroleidone";
+        builder.qualifier = new HashMap<>();
+        roleMemberships.add(builder.build());
+
+        List<RoleResponsibilityBo> roleResponsibilities = new ArrayList<RoleResponsibilityBo>();
+        roleResponsibilities.add(sampleRoleResponsibilities.get("rolerespidone"));
+
+        List<RoleResponsibilityActionBo> roleResponsibilityActions = new ArrayList<RoleResponsibilityActionBo>();
+        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionid"));
+        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionidoneone"));
+        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionidonetwo"));
+        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionidonethree"));
+
+        List<ResponsibilityAction> responsibilityActions = getResponsibilityActionsByTemplate(
+                "templnamespacecodeone", "resptemplateone", roleMemberships, roleResponsibilities,
+                roleResponsibilityActions);
+
+        Assert.assertEquals(4, responsibilityActions.size());
+
+        Assert.assertEquals("memberidone", responsibilityActions[0].principalId);
+        Assert.assertEquals("rolerespactionid", responsibilityActions[0].roleResponsibilityActionId);
+        Assert.assertEquals("embeddedroleidone", responsibilityActions[0].memberRoleId);
+        Assert.assertEquals("respidone", responsibilityActions[0].responsibilityId);
+        Assert.assertEquals("roleidone", responsibilityActions[0].roleId);
+
+        Assert.assertEquals("memberidone", responsibilityActions[1].principalId);
+        Assert.assertEquals("rolerespactionidoneone", responsibilityActions[1].roleResponsibilityActionId);
+        Assert.assertEquals("embeddedroleidone", responsibilityActions[1].memberRoleId);
+        Assert.assertEquals("respidone", responsibilityActions[1].responsibilityId);
+        Assert.assertEquals("roleidone", responsibilityActions[1].roleId);
+
+        Assert.assertEquals("memberidone", responsibilityActions[2].principalId);
+        Assert.assertEquals("rolerespactionidonetwo", responsibilityActions[2].roleResponsibilityActionId);
+        Assert.assertEquals("embeddedroleidone", responsibilityActions[2].memberRoleId);
+        Assert.assertEquals("respidone", responsibilityActions[2].responsibilityId);
+        Assert.assertEquals("roleidone", responsibilityActions[2].roleId);
+
+        Assert.assertEquals("memberidone", responsibilityActions[3].principalId);
+        Assert.assertEquals("rolerespactionidonethree", responsibilityActions[3].roleResponsibilityActionId);
+        Assert.assertEquals("embeddedroleidone", responsibilityActions[3].memberRoleId);
+        Assert.assertEquals("respidone", responsibilityActions[3].responsibilityId);
+        Assert.assertEquals("roleidone", responsibilityActions[3].roleId);
+    }
+
+    @Test
+    public void testGetResponsibilityActionsByTemplate_Responsibility1RoleMember2() {
+        List<RoleMembership> roleMemberships = new ArrayList<RoleMembership>();
+        RoleMembership.Builder builder = RoleMembership.Builder.create(
+                "roleidtwo", "rolememberidtwo", "memberidtwo", MemberType.PRINCIPAL, new HashMap<>());
+        builder.embeddedRoleId = "embeddedroleidtwo";
+        builder.qualifier = new HashMap<>();
+        roleMemberships.add(builder.build());
+
+        List<RoleResponsibilityBo> roleResponsibilities = new ArrayList<RoleResponsibilityBo>();
+        roleResponsibilities.add(sampleRoleResponsibilities.get("rolerespidone"));
+
+        List<RoleResponsibilityActionBo> roleResponsibilityActions = new ArrayList<RoleResponsibilityActionBo>();
+        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionid"));
+        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionidonethree"));
+        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionidtwoone"));
+
+        List<ResponsibilityAction> responsibilityActions = getResponsibilityActionsByTemplate(
+                "templnamespacecodeone", "resptemplateone", roleMemberships, roleResponsibilities,
+                roleResponsibilityActions);
+
+        Assert.assertEquals(3, responsibilityActions.size());
+
+        Assert.assertEquals("memberidtwo", responsibilityActions[0].principalId);
+        Assert.assertEquals("rolerespactionid", responsibilityActions[0].roleResponsibilityActionId);
+        Assert.assertEquals("embeddedroleidtwo", responsibilityActions[0].memberRoleId);
+        Assert.assertEquals("respidone", responsibilityActions[0].responsibilityId);
+        Assert.assertEquals("roleidtwo", responsibilityActions[0].roleId);
+
+        Assert.assertEquals("memberidtwo", responsibilityActions[1].principalId);
+        Assert.assertEquals("rolerespactionidonethree", responsibilityActions[1].roleResponsibilityActionId);
+        Assert.assertEquals("embeddedroleidtwo", responsibilityActions[1].memberRoleId);
+        Assert.assertEquals("respidone", responsibilityActions[1].responsibilityId);
+        Assert.assertEquals("roleidtwo", responsibilityActions[1].roleId);
+
+        Assert.assertEquals("memberidtwo", responsibilityActions[2].principalId);
+        Assert.assertEquals("rolerespactionidtwoone", responsibilityActions[2].roleResponsibilityActionId);
+        Assert.assertEquals("embeddedroleidtwo", responsibilityActions[2].memberRoleId);
+        Assert.assertEquals("respidone", responsibilityActions[2].responsibilityId);
+        Assert.assertEquals("roleidtwo", responsibilityActions[2].roleId);
+    }
+
+    @Test
+    public void testGetResponsibilityActionsByTemplate_Responsibility2RoleMember1() {
+        List<RoleMembership> roleMemberships = new ArrayList<RoleMembership>();
+        RoleMembership.Builder builder = RoleMembership.Builder.create(
+                "roleidone", "rolememberidone", "memberidone", MemberType.PRINCIPAL, new HashMap<>());
+        builder.embeddedRoleId = "embeddedroleidone";
+        builder.qualifier = new HashMap<>();
+        roleMemberships.add(builder.build());
+
+        List<RoleResponsibilityBo> roleResponsibilities = new ArrayList<RoleResponsibilityBo>();
+        roleResponsibilities.add(sampleRoleResponsibilities.get("rolerespidtwo"));
+
+        List<RoleResponsibilityActionBo> roleResponsibilityActions = new ArrayList<RoleResponsibilityActionBo>();
+        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionid"));
+        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionidoneone"));
+        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionidtwothree"));
+
+        List<ResponsibilityAction> responsibilityActions = getResponsibilityActionsByTemplate(
+                "templnamespacecodetwo", "resptemplatetwo", roleMemberships, roleResponsibilities,
+                roleResponsibilityActions);
+
+        Assert.assertEquals(3, responsibilityActions.size());
+
+        Assert.assertEquals("memberidone", responsibilityActions[0].principalId);
+        Assert.assertEquals("rolerespactionid", responsibilityActions[0].roleResponsibilityActionId);
+        Assert.assertEquals("embeddedroleidone", responsibilityActions[0].memberRoleId);
+        Assert.assertEquals("respidtwo", responsibilityActions[0].responsibilityId);
+        Assert.assertEquals("roleidone", responsibilityActions[0].roleId);
+
+        Assert.assertEquals("memberidone", responsibilityActions[1].principalId);
+        Assert.assertEquals("rolerespactionidoneone", responsibilityActions[1].roleResponsibilityActionId);
+        Assert.assertEquals("embeddedroleidone", responsibilityActions[1].memberRoleId);
+        Assert.assertEquals("respidtwo", responsibilityActions[1].responsibilityId);
+        Assert.assertEquals("roleidone", responsibilityActions[1].roleId);
+
+        Assert.assertEquals("memberidone", responsibilityActions[2].principalId);
+        Assert.assertEquals("rolerespactionidtwothree", responsibilityActions[2].roleResponsibilityActionId);
+        Assert.assertEquals("embeddedroleidone", responsibilityActions[2].memberRoleId);
+        Assert.assertEquals("respidtwo", responsibilityActions[2].responsibilityId);
+        Assert.assertEquals("roleidone", responsibilityActions[2].roleId);
+    }
+
+    @Test
+    public void testGetResponsibilityActionsByTemplate_Responsibility2RoleMember2() {
+        List<RoleMembership> roleMemberships = new ArrayList<RoleMembership>();
+        RoleMembership.Builder builder = RoleMembership.Builder.create(
+                "roleidtwo", "rolememberidtwo", "memberidtwo", MemberType.PRINCIPAL, new HashMap<>());
+        builder.embeddedRoleId = "embeddedroleidtwo";
+        builder.qualifier = new HashMap<>();
+        roleMemberships.add(builder.build());
+
+        List<RoleResponsibilityBo> roleResponsibilities = new ArrayList<RoleResponsibilityBo>();
+        roleResponsibilities.add(sampleRoleResponsibilities.get("rolerespidtwo"));
+
+        List<RoleResponsibilityActionBo> roleResponsibilityActions = new ArrayList<RoleResponsibilityActionBo>();
+        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionid"));
+        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionidtwoone"));
+        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionidtwotwo"));
+        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionidtwothree"));
+
+        List<ResponsibilityAction> responsibilityActions = getResponsibilityActionsByTemplate(
+                "templnamespacecodetwo", "resptemplatetwo", roleMemberships, roleResponsibilities,
+                roleResponsibilityActions);
+
+        Assert.assertEquals(4, responsibilityActions.size());
+
+        Assert.assertEquals("memberidtwo", responsibilityActions[0].principalId);
+        Assert.assertEquals("rolerespactionid", responsibilityActions[0].roleResponsibilityActionId);
+        Assert.assertEquals("embeddedroleidtwo", responsibilityActions[0].memberRoleId);
+        Assert.assertEquals("respidtwo", responsibilityActions[0].responsibilityId);
+        Assert.assertEquals("roleidtwo", responsibilityActions[0].roleId);
+
+        Assert.assertEquals("memberidtwo", responsibilityActions[1].principalId);
+        Assert.assertEquals("rolerespactionidtwoone", responsibilityActions[1].roleResponsibilityActionId);
+        Assert.assertEquals("embeddedroleidtwo", responsibilityActions[1].memberRoleId);
+        Assert.assertEquals("respidtwo", responsibilityActions[1].responsibilityId);
+        Assert.assertEquals("roleidtwo", responsibilityActions[1].roleId);
+
+        Assert.assertEquals("memberidtwo", responsibilityActions[2].principalId);
+        Assert.assertEquals("rolerespactionidtwotwo", responsibilityActions[2].roleResponsibilityActionId);
+        Assert.assertEquals("embeddedroleidtwo", responsibilityActions[2].memberRoleId);
+        Assert.assertEquals("respidtwo", responsibilityActions[2].responsibilityId);
+        Assert.assertEquals("roleidtwo", responsibilityActions[2].roleId);
+
+        Assert.assertEquals("memberidtwo", responsibilityActions[3].principalId);
+        Assert.assertEquals("rolerespactionidtwothree", responsibilityActions[3].roleResponsibilityActionId);
+        Assert.assertEquals("embeddedroleidtwo", responsibilityActions[3].memberRoleId);
+        Assert.assertEquals("respidtwo", responsibilityActions[3].responsibilityId);
+        Assert.assertEquals("roleidtwo", responsibilityActions[3].roleId);
+    }
+
+    private List<ResponsibilityAction> getResponsibilityActionsByTemplate(String responsibilityTemplateNamespace,
+            String responsibilityTemplateName, List<RoleMembership> roleMemberships,
+            List<RoleResponsibilityBo> roleResponsibilities,
+            List<RoleResponsibilityActionBo> roleResponsibilityActions) {
         mockBoService.demand.findMatching(1..1) {
             Class clazz, Map map -> for (ResponsibilityBo responsibilityBo in sampleResponsibilities.values()) {
                 if (responsibilityBo.template.namespaceCode.equals(map.get("template.namespaceCode"))
-                    && responsibilityBo.template.name.equals(map.get("template.name")))
+                        && responsibilityBo.template.name.equals(map.get("template.name")))
                 {
                     Collection<ResponsibilityBo> responsibilities = new ArrayList<ResponsibilityBo>();
                     responsibilities.add(responsibilityBo);
@@ -685,52 +1044,34 @@ class ResponsibilityServiceImplTest {
             }
         }
 
+        mockRoleService.demand.getRoleMembers(1..1) {
+            List<String> roleIds, Map<String, String> qualification -> return roleMemberships; }
+
         GenericQueryResults.Builder<RoleResponsibilityBo> genericQueryResults = new GenericQueryResults.Builder<RoleResponsibilityBo>();
         genericQueryResults.totalRowCount = 1;
         genericQueryResults.moreResultsAvailable = false;
-        List<RoleResponsibilityBo> roleResponsibilities = new ArrayList<RoleResponsibilityBo>();
-        roleResponsibilities.add(sampleRoleResponsibilities.get("rolerespidone"));
         genericQueryResults.results = roleResponsibilities;
         GenericQueryResults<RoleResponsibilityBo> results = genericQueryResults.build();
 
         mockCriteriaLookupService.demand.lookup(1..2) {
-            Class<RoleResponsibilityBo> queryClass, QueryByCriteria criteria -> return results;
-        }
-
-        mockRoleService.demand.getRoleMembers(1..1) {
-            List<String> roleIds, Map<String, String> qualification ->
-                List<RoleMembership> roleMemberships = new ArrayList<RoleMembership>();
-                RoleMembership.Builder builder = new RoleMembership.Builder("roleidone", "memberidone", MemberType.PRINCIPAL);
-                builder.embeddedRoleId = "embeddedroleidone";
-                builder.qualifier = new HashMap<>();
-                builder.id = "rolememberidone";
-                roleMemberships.add(builder.build());
-                return roleMemberships;
-        }
+            Class<RoleResponsibilityBo> queryClass, QueryByCriteria criteria -> return results; }
 
         GenericQueryResults.Builder<RoleResponsibilityActionBo> actionGenericQueryResults = new GenericQueryResults.Builder<RoleResponsibilityBo>();
         actionGenericQueryResults.totalRowCount = 1;
         actionGenericQueryResults.moreResultsAvailable = false;
-        List<RoleResponsibilityActionBo> roleResponsibilityActions = new ArrayList<RoleResponsibilityActionBo>();
-        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionidone"));
         actionGenericQueryResults.results = roleResponsibilityActions;
         GenericQueryResults<RoleResponsibilityActionBo> actionResults = actionGenericQueryResults.build();
 
         mockCriteriaLookupService.demand.lookup(1..2) {
-            Class<RoleResponsibilityActionBo> queryClass, QueryByCriteria criteria -> return actionResults;
-        }
+            Class<RoleResponsibilityActionBo> queryClass, QueryByCriteria criteria -> return actionResults; }
 
         injectBusinessObjectServiceIntoResponsibilityService();
         injectCriteriaLookupServiceIntoResponsibilityService();
         injectRoleServiceIntoResponsibilityService();
 
-        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActionsByTemplate("respnamespacecodeone", "resptemplateone", new HashMap<String, String>(), new HashMap<String, String>());
-
-        Assert.assertEquals("memberidone", responsibilityActions[0].principalId);
-        Assert.assertEquals("rolerespactionidone", responsibilityActions[0].roleResponsibilityActionId);
-        Assert.assertEquals("embeddedroleidone", responsibilityActions[0].memberRoleId);
-        Assert.assertEquals("respidone", responsibilityActions[0].responsibilityId);
-        Assert.assertEquals("roleidone", responsibilityActions[0].roleId);
+        return responsibilityService.getResponsibilityActionsByTemplate(
+                responsibilityTemplateNamespace, responsibilityTemplateName, new HashMap<String, String>(),
+                new HashMap<String, String>());
     }
 
     @Test(expected = IllegalArgumentException.class)

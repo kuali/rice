@@ -139,25 +139,9 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
                 && ((CollectionGroup) container).isUseServerPaging()
                 && this.getPagerWidget() != null) {
             CollectionGroup collectionGroup = (CollectionGroup) container;
-            List<Object> modelCollection = ObjectPropertyUtils.getPropertyValue(model,
-                    collectionGroup.getBindingInfo().getBindingPath());
 
-            // The size of the collection divided by the pageLength is used to determine the number of pages for
-            // the pager component (ceiling is used if there is not a full page left over in the division)
-            if (modelCollection != null) {
-                double pages = (double) modelCollection.size() / (double) collectionGroup.getDisplayLength();
-                pagerWidget.setNumberOfPages((int) Math.ceil(pages));
-            } else {
-                pagerWidget.setNumberOfPages(1);
-            }
-
-            // By using displayStart, currentPage can be determined, the displayLength is added here before division,
-            // because the pager is 1-based
-            int currentPage = (collectionGroup.getDisplayStart() + collectionGroup.getDisplayLength()) / collectionGroup
-                    .getDisplayLength();
-            pagerWidget.setCurrentPage(currentPage);
-
-            pagerWidget.setLinkScript("retrieveStackedPage(this, '" + collectionGroup.getId() + "');");
+            // Set the appropriate page, total pages, and link script into the Pager
+            CollectionLayoutUtils.setupPagerWidget(pagerWidget, collectionGroup, model);
         }
     }
 

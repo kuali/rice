@@ -22,20 +22,30 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.service.ViewService;
+import org.kuali.rice.krad.uif.container.Container;
+import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krad.web.form.UifFormManager;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Provides helper methods that will be used during the request lifecycle
@@ -131,7 +141,7 @@ public class UifControllerHelper {
 
         // handle view building if not a redirect
         if (!form.isRequestRedirected()) {
-            if (!form.isJsonRequest()) {
+            if (!form.isJsonRequest() && !form.isOriginalComponentRequest()) {
                 prepareViewForRendering(request, form);
             }
 
@@ -141,6 +151,24 @@ public class UifControllerHelper {
                 component = form.getPostedView().getViewIndex().getComponentById(form.getUpdateComponentId());
             } else if (form.isUpdatePageRequest()) {
                 component = form.getView().getCurrentPage();
+            }
+
+            if (form.isOriginalComponentRequest()) {
+                // This needs to be done because scenarios where the templates are not present
+                updateViewTemplates(component, form);
+            }
+
+            String changeProperties = request.getParameter(UifParameters.CHANGE_PROPERTIES);
+
+            // Change properties on the the final component
+            if (StringUtils.isNotBlank(changeProperties) && component != null){
+                HashMap<String,Object> changePropertiesMap = new ObjectMapper().readValue(changeProperties,
+                        HashMap.class);
+
+                for (String changePropertyPath : changePropertiesMap.keySet()){
+                    Object value = changePropertiesMap.get(changePropertyPath);
+                    ObjectPropertyUtils.setPropertyValue(component, changePropertyPath, value);
+                }
             }
 
             if (component != null) {
@@ -157,6 +185,33 @@ public class UifControllerHelper {
         modelAndView.addObject(UifParameters.CONFIG_PROPERTIES, properties);
 
         //modelAndView.addObject(UifParameters.STRING_RENDER_CONTEXT, new StringRenderContext());
+    }
+
+    /**
+     * Update the view templates with the ones necessary to render the currentComponent passed in
+     *
+     * @param currentComponent the component to use to update the templates
+     * @param form the current form
+     */
+    protected static void updateViewTemplates(Component currentComponent, UifFormBase form){
+        List<Component> components = ComponentUtils.getAllNestedComponents(currentComponent);
+        components.add(currentComponent);
+        for (Component component : components){
+            // add the components template to the views list of components
+            if (!component.isSelfRendered() && StringUtils.isNotBlank(component.getTemplate()) &&
+                    !form.getPostedView().getViewTemplates().contains(component.getTemplate())) {
+                form.getPostedView().getViewTemplates().add(component.getTemplate());
+            }
+
+            if (component instanceof Container) {
+                LayoutManager layoutManager = ((Container) component).getLayoutManager();
+
+                if ((layoutManager != null)
+                        && !form.getPostedView().getViewTemplates().contains(layoutManager.getTemplate())) {
+                    form.getPostedView().getViewTemplates().add(layoutManager.getTemplate());
+                }
+            }
+        }
     }
 
     /**

@@ -108,6 +108,8 @@ public class CollectionLayoutUtils {
                 .getDisplayLength();
         pagerWidget.setCurrentPage(currentPage);
 
-        pagerWidget.setLinkScript("retrieveCollectionPage(this, '" + collectionGroup.getId() + "');");
+        if (StringUtils.isBlank(pagerWidget.getLinkScript())){
+            pagerWidget.setLinkScript("retrieveCollectionPage(this, '" + collectionGroup.getId() + "');");
+        }
     }
 }

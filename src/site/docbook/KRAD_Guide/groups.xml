@@ -3634,7 +3634,38 @@
     </section>
     <section>
       <title>Disclosure</title>
-      <para>Coming Soon!</para>
+      <para>The Disclosure widget exists on KRAD Groups and is used to define settings for when to
+        display and is used to define disclosure functionality.  Disclosure refers to the ability to
+        show and hide a Group's content by clicking on that Group's header.  By default, Groups in
+        KRAD use the configuration defined by the "Uif-Disclosure" bean definition.  All Group beans
+        which use disclosure by default start with "Uif-Disclosure".  For disclosure functionality
+        to work, a header with headerText must be present.</para>
+      <para>The following properties are available on Disclosure for configuration: <itemizedlist>
+          <listitem>
+            <para>collapseImageSrc - path to the image to use when the Group is collapsed
+              (hidden)</para>
+          </listitem>
+          <listitem>
+            <para>expandImageSrc - path to the image to use when the Group is expanded
+              (shown)</para>
+          </listitem>
+          <listitem>
+            <para>animationSpeed - animation speed in ms for the opening/closing animation</para>
+          </listitem>
+          <listitem>
+            <para>defaultOpen - if true, the disclosure's Group is open by default (this is the
+              default setting).  When false, the disclosure's Group is closed/collapsed</para>
+          </listitem>
+          <listitem>
+            <para>ajaxRetrievalWhenOpened - when true, the Group's content will be retrieved from
+              the server when the disclosure's content is opened for the first time.  This REQUIRES
+              that defaultOpen be false to take effect.  This option may help page load performance
+              when used to hide complex group content.</para>
+          </listitem>
+          <listitem>
+            <para>renderImage - if false, the collapse/expand images are not rendered</para>
+          </listitem>
+        </itemizedlist></para>
       <!-- TODO: Add content here.
                 -->
       <section role="NotInToc">
@@ -3648,9 +3679,8 @@
             </para>
           </listitem>
           <listitem>
-            <para>All groups contain the disclosure component that can be enabled to provide the
-              ability to collapse a part of the page
-            </para>
+            <para>All Groups contain the disclosure component that can be enabled to provide the
+              ability to collapse a Group</para>
           </listitem>
           <listitem>
             <para>The UIF provides beans for all the group beans with disclosure
@@ -3659,15 +3689,16 @@
           </listitem>
           <listitem>
             <para>All the disclosure bean names start with 'Uif-Disclosure' (for example
-              Uif-Disclosure-GridGroup)
-            </para>
+              "Uif-Disclosure-GridGroup") </para>
           </listitem>
           <listitem>
-            <para>The disclosure widget supports the
-              <emphasis role="keyword">defaultOpen</emphasis>
-              property, along with options for rendering (such
-              as animation properties and collapse image)
-            </para>
+            <para>The disclosure widget supports the <emphasis role="keyword">defaultOpen</emphasis>
+              property, along with options for rendering (such as animation properties and collapse
+              image) </para>
+          </listitem>
+          <listitem>
+            <para>The disclosure widget allows the Group's content to be retrieved when opened by
+              using ajaxRetrievalWhenOpened (set to "true") and defaultOpen (set to "false")</para>
           </listitem>
         </itemizedlist>
       </section>

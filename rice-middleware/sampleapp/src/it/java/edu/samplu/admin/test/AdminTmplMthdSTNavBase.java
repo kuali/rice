@@ -64,7 +64,7 @@ public abstract class AdminTmplMthdSTNavBase extends NavTemplateMethodSTBase {
         waitFor(By.name(BLANKET_APPROVE_NAME));
         back();
         checkForIncidentReport();
-        assertTextPresent("Going back from Edit Search results not available", pageBannerText);
+        assertTextPresent("Going back from Edit Search results not available https://jira.kuali.org/browse/KULRICE-9709", pageBannerText);
     }
 
     public void testSearchSearchBack(Failable failable, String fieldName, String searchText) throws Exception {
@@ -73,6 +73,6 @@ public abstract class AdminTmplMthdSTNavBase extends NavTemplateMethodSTBase {
         waitAndTypeByName(fieldName, searchText);
         waitAndClickSearch2();
         back();
-        assertTextPresent("Going back from Search to Search results not available", pageBannerText);
+        assertTextPresent("Going back from Search to Search results not available https://jira.kuali.org/browse/KULRICE-9710", pageBannerText);
     }
 }

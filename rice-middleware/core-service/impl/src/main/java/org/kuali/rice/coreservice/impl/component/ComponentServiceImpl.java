@@ -19,16 +19,20 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.coreservice.api.component.Component;
 import org.kuali.rice.coreservice.api.component.ComponentService;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.util.ChecksumUtils;
+import org.kuali.rice.krad.data.CompoundKey;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,9 +52,11 @@ public class ComponentServiceImpl implements ComponentService {
 
     private static final Logger LOG = Logger.getLogger(ComponentServiceImpl.class);
 
-    private BusinessObjectService businessObjectService;
     private ComponentSetDao componentSetDao;
     private DataObjectService dataObjectService;
+
+
+    private EntityManager entityManager;
 
     @Override
     public Component getComponentByCode(String namespaceCode, String componentCode) {
@@ -63,11 +69,12 @@ public class ComponentServiceImpl implements ComponentService {
         Map<String, String> primaryKeys = new HashMap<String, String>();
         primaryKeys.put("namespaceCode", namespaceCode);
         primaryKeys.put("code", componentCode);
-        ComponentBo componentBo = getBusinessObjectService().findByPrimaryKey(ComponentBo.class, primaryKeys);
+        ComponentBo componentBo = dataObjectService.find(ComponentBo.class,new CompoundKey(primaryKeys));
         if (componentBo != null) {
             return ComponentBo.to(componentBo);
         }
-        DerivedComponentBo derivedComponentBo = getBusinessObjectService().findByPrimaryKey(DerivedComponentBo.class, primaryKeys);
+        DerivedComponentBo derivedComponentBo = dataObjectService.find(
+                        DerivedComponentBo.class,new CompoundKey(primaryKeys));
         return derivedComponentBo == null ? null : DerivedComponentBo.to(derivedComponentBo);
     }
 
@@ -78,13 +85,13 @@ public class ComponentServiceImpl implements ComponentService {
         }
         Map<String, String> criteria = new HashMap<String, String>();
         criteria.put("namespaceCode", namespaceCode);
+        QueryResults<ComponentBo> componentBos =
+                getDataObjectService().findMatching(ComponentBo.class,
+                        QueryByCriteria.Builder.forAttributes(criteria));
 
-        List<Component> components = new ArrayList<Component>();
-
-        Collection<ComponentBo> componentBos =
-                getBusinessObjectService().findMatching(ComponentBo.class, criteria);
-        Collection<DerivedComponentBo> derivedComponentBos =
-                getBusinessObjectService().findMatching(DerivedComponentBo.class, criteria);
+        QueryResults<DerivedComponentBo> derivedComponentBos =
+                getDataObjectService().findMatching(DerivedComponentBo.class, QueryByCriteria.Builder.forAttributes(
+                        criteria));
         return translateCollections(componentBos, derivedComponentBos);
     }
 
@@ -96,11 +103,13 @@ public class ComponentServiceImpl implements ComponentService {
         Map<String, Object> criteria = new HashMap<String, Object>();
         criteria.put("namespaceCode", namespaceCode);
         criteria.put("active", Boolean.TRUE);
-        Collection<ComponentBo> componentBos =
-                getBusinessObjectService().findMatching(ComponentBo.class, criteria);
+        QueryResults<ComponentBo> componentBos =
+                getDataObjectService().findMatching(ComponentBo.class,
+                        QueryByCriteria.Builder.forAttributes(criteria));
         criteria.remove("active");
-        Collection<DerivedComponentBo> derivedComponentBos =
-                getBusinessObjectService().findMatching(DerivedComponentBo.class, criteria);
+        QueryResults<DerivedComponentBo> derivedComponentBos =
+                getDataObjectService().findMatching(DerivedComponentBo.class,
+                        QueryByCriteria.Builder.forAttributes(criteria));
         return translateCollections(componentBos, derivedComponentBos);
     }
 
@@ -111,8 +120,9 @@ public class ComponentServiceImpl implements ComponentService {
         }
         Map<String, Object> criteria = new HashMap<String, Object>();
         criteria.put("componentSetId", componentSetId);
-        Collection<DerivedComponentBo> derivedComponentBos =
-                getBusinessObjectService().findMatching(DerivedComponentBo.class, criteria);
+        QueryResults<DerivedComponentBo> derivedComponentBos =
+                getDataObjectService().findMatching(DerivedComponentBo.class,
+                        QueryByCriteria.Builder.forAttributes(criteria));
         return translateCollections(null, derivedComponentBos);
     }
 
@@ -187,37 +197,34 @@ public class ComponentServiceImpl implements ComponentService {
     protected void updateDerivedComponents(String componentSetId, List<Component> components) {
         Map<String, Object> deleteCriteria = new HashMap<String, Object>();
         deleteCriteria.put("componentSetId", componentSetId);
-        businessObjectService.deleteMatching(DerivedComponentBo.class, deleteCriteria);
+        dataObjectService.deleteMatching(DerivedComponentBo.class,
+                    QueryByCriteria.Builder.forAttributes(deleteCriteria));
+        dataObjectService.flush(DerivedComponentBo.class);
         if (CollectionUtils.isNotEmpty(components)) {
             List<DerivedComponentBo> derivedComponentBos = new ArrayList<DerivedComponentBo>();
             for (Component component : components) {
                 derivedComponentBos.add(DerivedComponentBo.from(component));
             }
-            businessObjectService.save(derivedComponentBos);
+            for(DerivedComponentBo component : derivedComponentBos){
+                dataObjectService.save(component);
+            }
         }
     }
 
-    protected List<Component> translateCollections(Collection<ComponentBo> componentBos, Collection<DerivedComponentBo> derivedComponentBos) {
+    protected List<Component> translateCollections(QueryResults<ComponentBo> componentBos,
+            QueryResults<DerivedComponentBo> derivedComponentBos){
         List<Component> components = new ArrayList<Component>();
-        if (CollectionUtils.isNotEmpty(componentBos)) {
-            for (ComponentBo componentBo : componentBos) {
+        if (componentBos != null && CollectionUtils.isNotEmpty(componentBos.getResults())) {
+            for (ComponentBo componentBo : componentBos.getResults()) {
                 components.add(ComponentBo.to(componentBo));
             }
         }
-        if (CollectionUtils.isNotEmpty(derivedComponentBos)) {
-            for (DerivedComponentBo derivedComponentBo : derivedComponentBos) {
+        if (derivedComponentBos != null && CollectionUtils.isNotEmpty(derivedComponentBos.getResults())) {
+            for (DerivedComponentBo derivedComponentBo : derivedComponentBos.getResults()) {
                 components.add(DerivedComponentBo.to(derivedComponentBo));
             }
         }
         return Collections.unmodifiableList(components);
-    }
-
-    public BusinessObjectService getBusinessObjectService() {
-        return businessObjectService;
-    }
-
-    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
     }
 
     public ComponentSetDao getComponentSetDao() {
@@ -235,6 +242,15 @@ public class ComponentServiceImpl implements ComponentService {
     @Required
     public void setDataObjectService(DataObjectService dataObjectService) {
         this.dataObjectService = dataObjectService;
+    }
+
+
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
     
 }

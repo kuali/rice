@@ -40,22 +40,21 @@
   </bean>
 
   <bean id="namespaceService" class="org.kuali.rice.coreservice.impl.namespace.NamespaceServiceImpl">
-    <property name="businessObjectService" ref="rice.coreService.import.businessObjectService"/>
+    <property name="dataObjectService"  ref="dataObjectService"/>
   </bean>
 
-  <bean id="componentSetDao" class="org.kuali.rice.coreservice.impl.component.ComponentSetDaoOjbImpl" lazy-init="true">
-    <property name="jcdAlias" value="coreServiceDataSource" />
+  <bean id="componentSetDao" class="org.kuali.rice.coreservice.impl.component.ComponentSetDaoJpa" lazy-init="true">
+    <property name="dataObjectService" ref="dataObjectService" />
   </bean>
 
   <bean id="componentService" class="org.kuali.rice.coreservice.impl.component.ComponentServiceImpl">
-    <property name="businessObjectService" ref="rice.coreService.import.businessObjectService"/>
     <property name="componentSetDao" ref="componentSetDao"/>
     <property name="dataObjectService"  ref="dataObjectService"/>
   </bean>
 
   <bean id="parameterRepositoryService" class="org.kuali.rice.coreservice.impl.parameter.ParameterRepositoryServiceImpl">
-    <property name="legacyDataAdapter" ref="rice.coreService.import.legacyDataAdapter"/>
     <property name="criteriaLookupService" ref="rice.coreService.import.criteriaLookupService"/>
+    <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 
   <bean id="parameterService" class="org.kuali.rice.coreservice.impl.parameter.ParameterServiceImpl">
@@ -80,7 +79,8 @@
 
   <bean id="styleRepositoryService" class="org.kuali.rice.coreservice.impl.style.StyleRepositoryServiceImpl">
     <property name="styleXmlParser" ref="styleXmlLoader" />
-    <property name="styleDao" ref="styleDao" />
+    <property name="dataObjectService" ref="dataObjectService" />
+    <property name="entityManager" ref="sharedEntityManager"/>
   </bean>
 
   <bean id="styleXmlLoader" class="org.kuali.rice.coreservice.impl.style.StyleXmlParserImpl">

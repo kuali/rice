@@ -17,20 +17,21 @@ package org.kuali.rice.core.impl.component;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.runner.RunWith;
 import org.kuali.rice.coreservice.api.component.ComponentService;
 import org.kuali.rice.coreservice.impl.component.ComponentServiceImplTest;
 import org.kuali.rice.test.remote.RemoteTestHarness;
+import org.mockito.runners.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ComponentServiceRemoteTest extends ComponentServiceImplTest {
     RemoteTestHarness harness = new RemoteTestHarness();
 
     @Before
-    @Override
     public void setupServiceUnderTest() {
-        super.setupServiceUnderTest();
         ComponentService remoteProxy = harness.publishEndpointAndReturnProxy(
-                ComponentService.class, this.getServiceImpl());
-        super.setService(remoteProxy);
+                ComponentService.class, super.getComponentService());
+        super.setComponentService(remoteProxy);
     }
 
     @After

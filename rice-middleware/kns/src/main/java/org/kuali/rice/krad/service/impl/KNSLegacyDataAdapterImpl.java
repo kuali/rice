@@ -1119,8 +1119,10 @@ public class KNSLegacyDataAdapterImpl implements LegacyDataAdapter{
         void synchronizeValueHolder(Object object) {
             try {
                 ValueHolder valueHolder = (ValueHolder)valueHolderField.get(object);
-                Object value = field.get(object);
-                valueHolder.setValue(value);
+                if(valueHolder != null){
+                    Object value = field.get(object);
+                    valueHolder.setValue(value);
+                }
             } catch (IllegalAccessException e) {
                 throw new RuntimeException(e);
             }

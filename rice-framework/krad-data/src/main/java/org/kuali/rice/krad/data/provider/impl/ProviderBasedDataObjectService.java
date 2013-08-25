@@ -146,6 +146,15 @@ public class ProviderBasedDataObjectService implements DataObjectService {
         return persistenceProvider.resolveProxy(dataObject);
     }
 
+    @Override
+    public void flush(Class<?> type){
+        PersistenceProvider persistenceProvider = persistenceProviderForType(type);
+        if (persistenceProvider == null) {
+            throw new RuntimeException("No PersistenceProvider handles type: " + type);
+        }
+        persistenceProvider.flush();
+    }
+
     @Required
     public void setProviderRegistry(ProviderRegistry providerRegistry) {
         this.providerRegistry = providerRegistry;

@@ -23,6 +23,7 @@ public class PersistenceOption implements Serializable {
 	private static final long serialVersionUID = 1L;
 
     public static PersistenceOption SKIP_LINKING = new PersistenceOption("org.kuali.rice.krad.data.SKIP_LINKING");
+    public static PersistenceOption FLUSH = new PersistenceOption("org.kuali.rice.krad.data.FLUSH");
 
     private final String optionId;
 

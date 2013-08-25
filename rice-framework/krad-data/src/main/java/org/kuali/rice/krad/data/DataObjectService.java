@@ -168,4 +168,9 @@ public interface DataObjectService {
      */
     <T> boolean supports(Class<T> type);
 
+    /**
+     * Flush the entity manager to reset state of objects that are queued up to be persisted
+     */
+    void flush(Class<?> type);
+
 }

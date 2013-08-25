@@ -85,6 +85,10 @@ public class JpaPersistenceProvider implements PersistenceProvider, Initializing
             referenceLinker.linkObjects(dataObject);
         }
 
+        if(optionSet.contains(PersistenceOption.FLUSH)){
+            sharedEntityManager.flush();
+        }
+
 		return dataObject;
     }
 
@@ -142,6 +146,11 @@ public class JpaPersistenceProvider implements PersistenceProvider, Initializing
     public Object resolveProxy(Object dataObject) {
         dataObject.equals(null);
         return dataObject;
+    }
+
+    @Override
+    public void flush(){
+        sharedEntityManager.flush();
     }
 
     protected void verifyDataObjectWritable(Object dataObject) {

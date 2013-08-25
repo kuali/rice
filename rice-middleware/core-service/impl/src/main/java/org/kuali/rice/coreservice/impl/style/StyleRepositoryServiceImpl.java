@@ -18,13 +18,17 @@ package org.kuali.rice.coreservice.impl.style;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.coreservice.impl.style.StyleBo;
+import org.kuali.rice.core.api.util.RiceUtilities;
 import org.kuali.rice.coreservice.api.style.Style;
 import org.kuali.rice.coreservice.api.style.StyleRepositoryService;
-import org.kuali.rice.core.api.util.RiceUtilities;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.springframework.beans.factory.annotation.Required;
 
+import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -42,11 +46,9 @@ public class StyleRepositoryServiceImpl implements StyleRepositoryService {
     private static final String STYLE_CONFIG_PREFIX = "edl.style";
 
     private StyleXmlParser styleXmlParser;
-    private StyleDao styleDao;
+    private DataObjectService dataObjectService;
 
-    public void setStyleDao(StyleDao styleDao) {
-        this.styleDao = styleDao;
-    }
+    private EntityManager entityManager;
 
     public void setStyleXmlParser(StyleXmlParser styleXmlParser) {
         this.styleXmlParser = styleXmlParser;
@@ -63,8 +65,10 @@ public class StyleRepositoryServiceImpl implements StyleRepositoryService {
             throw new RiceIllegalArgumentException("styleName was null or blank");
         }
 
+        StyleBo style = getStyleByName(styleName);
         // try to fetch the style from the database
-        StyleBo style = styleDao.getStyle(styleName);
+
+
         // if it's null, look for a config param specifiying a file to load
         if (style == null) {
             String propertyName = STYLE_CONFIG_PREFIX + "." + styleName;
@@ -103,6 +107,19 @@ public class StyleRepositoryServiceImpl implements StyleRepositoryService {
                 "' specified by configuration parameter '" + propertyName + "'";
     }
 
+    /**
+     *
+     * @return first style that matches a particular name, null otherwise
+     */
+    private StyleBo getStyleByName(String styleName){
+        QueryResults<StyleBo> styleBos =
+                dataObjectService.findMatching(StyleBo.class, QueryByCriteria.Builder.forAttribute("name",styleName));
+        if(styleBos != null && styleBos.getResults().size() > 0){
+            return styleBos.getResults().get(0);
+        }
+        return null;
+    }
+
     @Override
     public void saveStyle(Style data) {
         if (data == null) {
@@ -113,16 +130,35 @@ public class StyleRepositoryServiceImpl implements StyleRepositoryService {
     }
 
     protected void saveStyleBo(StyleBo styleBo) {
-        StyleBo existingData = styleDao.getStyle(styleBo.getName());
+        StyleBo existingData = getStyleByName(styleBo.getName());
         if (existingData != null) {
             existingData.setActive(false);
-            styleDao.saveStyle(existingData);
+            dataObjectService.save(existingData);
         }
-        styleDao.saveStyle(styleBo);
+        dataObjectService.save(styleBo);
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<String> getAllStyleNames() {
-        return styleDao.getAllStyleNames();
+        return (List<String>)entityManager.createNamedQuery("StyleBo.findAllStyleNames").
+                            getResultList();
+    }
+
+
+    public DataObjectService getDataObjectService() {
+        return dataObjectService;
+    }
+    @Required
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
+    }
+
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 }

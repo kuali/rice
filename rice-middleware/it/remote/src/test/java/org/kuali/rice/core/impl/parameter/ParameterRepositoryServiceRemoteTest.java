@@ -17,20 +17,21 @@ package org.kuali.rice.core.impl.parameter;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.runner.RunWith;
 import org.kuali.rice.coreservice.api.parameter.ParameterRepositoryService;
 import org.kuali.rice.coreservice.impl.parameter.ParameterRepositoryServiceImplTest;
 import org.kuali.rice.test.remote.RemoteTestHarness;
+import org.mockito.runners.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ParameterRepositoryServiceRemoteTest extends ParameterRepositoryServiceImplTest {
     RemoteTestHarness harness = new RemoteTestHarness();
 
     @Before
-    @Override
     public void setupServiceUnderTest() {
-        super.setupServiceUnderTest();
         ParameterRepositoryService remoteProxy = harness.publishEndpointAndReturnProxy(
-                ParameterRepositoryService.class, this.getPserviceImpl());
-        super.setPservice(remoteProxy);
+                ParameterRepositoryService.class, super.getParameterRepositoryService());
+        super.setParameterRepositoryService(remoteProxy);
     }
 
     @After

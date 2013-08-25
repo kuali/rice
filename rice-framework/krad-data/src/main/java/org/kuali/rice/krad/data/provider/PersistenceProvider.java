@@ -141,5 +141,10 @@ public interface PersistenceProvider extends Provider {
      */
     Object resolveProxy(Object dataObject);
 
+    /**
+     * Flush the entity manager
+     */
+    void flush();
+
 
 }

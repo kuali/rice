@@ -18,18 +18,29 @@ package org.kuali.rice.core.data;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
+import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
+import org.kuali.rice.coreservice.api.component.Component;
+import org.kuali.rice.coreservice.api.namespace.Namespace;
+import org.kuali.rice.coreservice.api.parameter.Parameter;
+import org.kuali.rice.coreservice.api.parameter.ParameterKey;
+import org.kuali.rice.coreservice.api.parameter.ParameterType;
+import org.kuali.rice.coreservice.api.style.Style;
 import org.kuali.rice.coreservice.impl.component.ComponentBo;
 import org.kuali.rice.coreservice.impl.component.ComponentId;
 import org.kuali.rice.coreservice.impl.component.ComponentSetBo;
 import org.kuali.rice.coreservice.impl.component.DerivedComponentBo;
 import org.kuali.rice.coreservice.impl.namespace.NamespaceBo;
+import org.kuali.rice.coreservice.impl.parameter.ParameterBo;
 import org.kuali.rice.coreservice.impl.parameter.ParameterTypeBo;
 import org.kuali.rice.coreservice.impl.style.StyleBo;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.test.BaselineTestCase;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -38,6 +49,14 @@ import static org.junit.Assert.*;
  */
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class CoreServiceJpaDataTest extends KRADTestCase {
+    public static final String DERIVED_COMPONENT_SET_ID = "DD:TSTKR";
+
+    public static final String NAMESPACE = "KR-TST";
+    public static final String STYLE_ID = "1234";
+    public static final String STYLE_NAME = "TestCSS";
+
+    private static final String APP_ID = "KR-TST";
+
     @Test
     public void testNameSpaceBoDataObject() throws Exception{
         assertTrue("NameSpaceBo is mapped in JPA", KRADServiceLocator.getDataObjectService().supports(NamespaceBo.class));
@@ -103,11 +122,113 @@ public class CoreServiceJpaDataTest extends KRADTestCase {
                 StringUtils.equals(styleBo.getName(),"TestCSS"));
     }
 
+    @Test
+    public void testComponentServiceImpl() throws Exception{
+        setupComponentBoDataObjectAndSave();
+        setupDerivedComponentBoDataObjectAndSave();
+
+        Component component = CoreServiceApiServiceLocator.getComponentService().getComponentByCode("KR-TST","All");
+        assertTrue("ComponentBo refetched after save", component != null && StringUtils.equals(component.getCode(),
+                "All"));
+
+        List<Component> componentList = CoreServiceApiServiceLocator.getComponentService().
+                                    getAllComponentsByNamespaceCode("KR-TST");
+        assertTrue("getAllComponentsByNamespaceCode refetched after save", componentList != null && componentList.size() == 2);
+
+        componentList = CoreServiceApiServiceLocator.getComponentService().
+                                    getActiveComponentsByNamespaceCode("KR-TST");
+        assertTrue("getActiveComponentsByNamespaceCode refetched after save", componentList != null && componentList.size() == 2);
+        componentList = CoreServiceApiServiceLocator.getComponentService().
+                            getDerivedComponentSet(DERIVED_COMPONENT_SET_ID);
+        assertTrue("getDerivedComponentSet refetched after save",componentList != null &&
+                            componentList.size() == 1);
+        DerivedComponentBo derivedComponentBo = DerivedComponentBo.from(componentList.get(0));
+        derivedComponentBo.setComponentSetId(null);
+        component = DerivedComponentBo.to(derivedComponentBo);
+        componentList = new ArrayList<Component>();
+        componentList.add(component);
+        CoreServiceApiServiceLocator.getComponentService().publishDerivedComponents("TEST",componentList);
+        componentList = CoreServiceApiServiceLocator.getComponentService().getDerivedComponentSet("TEST");
+        assertTrue("publishDerivedComponents corrected save",componentList != null &&
+                componentList.size() == 1);
+    }
+
+    @Test
+    public void testNamespaceServiceImpl() throws Exception{
+         setupNameSpaceBoDataObjectAndSave();
+
+        Namespace namespace = CoreServiceApiServiceLocator.getNamespaceService().getNamespace(NAMESPACE);
+        assertTrue("getNamespace retrieved after save",namespace != null &&
+                        StringUtils.equals(namespace.getCode(),NAMESPACE));
+        List<Namespace> namespaceList = CoreServiceApiServiceLocator.getNamespaceService().
+                                            findAllNamespaces();
+        assertTrue("findAllNamespaces retrieved after save",namespaceList != null &&
+                namespaceList.size() == 2);
+    }
+
+    @Test
+    public void testStyleServiceImpl() throws Exception{
+        setupStyleBoDataObjectAndSave();
+
+        List<String> styleNames = CoreServiceApiServiceLocator.getStyleService().getAllStyleNames();
+        assertTrue("getAllStyleNames retrieved correctly", styleNames != null && styleNames.size() == 1);
+
+        Style style = CoreServiceApiServiceLocator.getStyleService().getStyle(STYLE_NAME);
+        assertTrue("getStyle retrieved correctly", style != null && StringUtils.equals(STYLE_NAME,style.getName()));
+
+        StyleBo styleBo = new StyleBo();
+        styleBo.setActive(true);
+        styleBo.setId(STYLE_ID + "23");
+        styleBo.setName(STYLE_NAME + "_NEW");
+        styleBo.setXmlContent("<xml>something_new</xml>");
+        style = StyleBo.to(styleBo);
+        CoreServiceApiServiceLocator.getStyleService().saveStyle(style);
+        style = CoreServiceApiServiceLocator.getStyleService().getStyle(STYLE_NAME+"_NEW");
+        assertTrue("getStyle retrieved correctly", style != null && StringUtils.equals(STYLE_NAME+"_NEW",style.getName()));
+    }
+
+    @Test
+    public void testParameterServiceImpl() throws Exception{
+        setupParameterTypeBoDataObjectAndSave();
+        setupParameterBoDataObjectAndSave();
+        ParameterKey parameterKey = ParameterKey.create(APP_ID, "TST_NM_SPACE", "TST", "TST_PARAM");
+
+        Parameter parameter = CoreServiceApiServiceLocator.getParameterRepositoryService().
+                getParameter(parameterKey);
+        assertTrue("Parameter fetched correctly after save", parameter != null &&
+                StringUtils.equals(parameter.getName(),"TST_PARAM"));
+        String value = CoreServiceApiServiceLocator.getParameterRepositoryService().getParameterValueAsString(parameterKey);
+        assertTrue("Parameter value fetched correctly", StringUtils.equals(parameter.getValue(),value));
+        ParameterBo modifiedParam = ParameterBo.from(parameter);
+        modifiedParam.setValue("new value");
+        CoreServiceApiServiceLocator.getParameterRepositoryService().updateParameter(ParameterBo.to(modifiedParam));
+        value = CoreServiceApiServiceLocator.getParameterRepositoryService().getParameterValueAsString(parameterKey);
+        assertTrue("Parameter value fetched correctly", StringUtils.equals(modifiedParam.getValue(),value));
+    }
+
+    private void setupParameterBoDataObjectAndSave(){
+        ParameterTypeBo parameterType = KradDataServiceLocator.getDataObjectService().find(ParameterTypeBo.class,"HELP");
+        assertTrue("Parameter type must be created first",parameterType != null);
+        ParameterBo parameterBo = new ParameterBo();
+        parameterBo.setApplicationId(APP_ID);
+        parameterBo.setValue("blah");
+        parameterBo.setDescription("descr");
+        parameterBo.setParameterTypeCode("HELP");
+        parameterBo.setParameterType(parameterType);
+        parameterBo.setComponentCode("TST");
+        parameterBo.setNamespaceCode("TST_NM_SPACE");
+        parameterBo.setEvaluationOperatorCode("A");
+        parameterBo.setName("TST_PARAM");
+        CoreServiceApiServiceLocator.getParameterRepositoryService().
+                    createParameter(ParameterBo.to(parameterBo));
+
+    }
+
     private void setupStyleBoDataObjectAndSave(){
         StyleBo styleBo = new StyleBo();
         styleBo.setActive(true);
         styleBo.setId("1234");
-        styleBo.setName("TestCSS");
+        styleBo.setName(STYLE_NAME);
         styleBo.setXmlContent("<xml>something</xml>");
 
         KRADServiceLocator.getDataObjectService().save(styleBo);
@@ -126,7 +247,7 @@ public class CoreServiceJpaDataTest extends KRADTestCase {
     private void setupDerivedComponentBoDataObjectAndSave(){
           DerivedComponentBo derivedComponentBo = new DerivedComponentBo();
           derivedComponentBo.setCode("ComponentBo");
-          derivedComponentBo.setComponentSetId("DD:TSTKR");
+          derivedComponentBo.setComponentSetId(DERIVED_COMPONENT_SET_ID);
           derivedComponentBo.setName("Derived component");
           derivedComponentBo.setNamespaceCode("KR-TST");
 
@@ -161,6 +282,15 @@ public class CoreServiceJpaDataTest extends KRADTestCase {
         namespaceBo.setName("Kuali Rice Test Namespace");
 
         KRADServiceLocator.getDataObjectService().save(namespaceBo);
+
+        namespaceBo = new NamespaceBo();
+        namespaceBo.setActive(true);
+        namespaceBo.setApplicationId("OTH");
+        namespaceBo.setCode("KR-OTH");
+        namespaceBo.setName("Kuali Other");
+
+        KRADServiceLocator.getDataObjectService().save(namespaceBo);
+
     }
 
 

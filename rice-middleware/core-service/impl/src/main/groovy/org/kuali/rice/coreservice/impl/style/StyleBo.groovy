@@ -24,6 +24,7 @@ import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
+import javax.persistence.NamedQuery
 
 /**
  * A BusinessObject implementation of the StyleContract which is mapped to the
@@ -33,6 +34,9 @@ import javax.persistence.Table
  */
 @Entity
 @Table(name="KRCR_STYLE_T")
+@NamedQuery(name="StyleBo.findAllStyleNames",
+query="SELECT sb.name FROM StyleBo sb"
+)
 class StyleBo extends PersistableBusinessObjectBase implements StyleContract {
 
 	private static final long serialVersionUID = 2020611019976731725L

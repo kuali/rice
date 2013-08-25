@@ -16,42 +16,53 @@
 package org.kuali.rice.coreservice.impl.namespace;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.coreservice.api.namespace.Namespace;
 import org.kuali.rice.coreservice.api.namespace.NamespaceService;
-import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.data.CompoundKey;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import static java.util.Collections.singletonMap;
 
 public class NamespaceServiceImpl implements NamespaceService {
-
-    private BusinessObjectService boService;
+    private DataObjectService dataObjectService;
 
     @Override
 	public Namespace getNamespace(String code) {
         if (StringUtils.isBlank(code)) {
             throw new RiceIllegalArgumentException("the code is blank");
-        } 
-
-        return NamespaceBo.to(boService.findByPrimaryKey(NamespaceBo.class, singletonMap("code", code)));
+        }
+        return NamespaceBo.to(dataObjectService.find(NamespaceBo.class, new CompoundKey(singletonMap("code", code))));
 	}
 
     @Override
     public List<Namespace> findAllNamespaces() {
-        List<NamespaceBo> namespaceBos = (List<NamespaceBo>) boService.findAll(NamespaceBo.class);
+        QueryResults<NamespaceBo> namespaceBos = dataObjectService.findMatching(
+                    NamespaceBo.class,QueryByCriteria.Builder.forAttributes(
+                    new HashMap<String,String>()));
         List<Namespace> namespaces = new ArrayList<Namespace>();
-        
-        for (NamespaceBo bo : namespaceBos) {
-            namespaces.add(NamespaceBo.to(bo));
+        if(namespaceBos != null){
+            for (NamespaceBo bo : namespaceBos.getResults()) {
+                namespaces.add(NamespaceBo.to(bo));
+            }
         }
+
         return Collections.unmodifiableList(namespaces);
     }
 
-    public void setBusinessObjectService(BusinessObjectService boService) {
-        this.boService = boService;
+    public DataObjectService getDataObjectService() {
+        return dataObjectService;
+    }
+    @Required
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 }

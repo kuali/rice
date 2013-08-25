@@ -26,9 +26,14 @@ import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.util.Truth;
+import org.kuali.rice.krad.data.CompoundKey;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.springframework.beans.factory.annotation.Required;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -39,8 +44,8 @@ import java.util.Map;
 public final class ParameterRepositoryServiceImpl implements ParameterRepositoryService {
     private static final String SUB_PARAM_SEPARATOR = "=";
 
-    private LegacyDataAdapter legacyDataAdapter;
     private CriteriaLookupService criteriaLookupService;
+    private DataObjectService dataObjectService;
 
     @Override 
     public Parameter createParameter(Parameter parameter) {
@@ -53,8 +58,10 @@ public final class ParameterRepositoryServiceImpl implements ParameterRepository
         if (existing != null && existing.getApplicationId().equals(parameter.getApplicationId())) {
             throw new RiceIllegalStateException("the parameter to create already exists: " + parameter);
         }
-
-        return ParameterBo.to(getLegacyDataAdapter().save(ParameterBo.from(parameter)));
+        //Parameter flush needed here to accomodate the fact that the version number is not set until flush
+        //and the immediate transform of the object loses its JPA context
+        ParameterBo parameterBo = getDataObjectService().save(ParameterBo.from(parameter), PersistenceOption.FLUSH);
+        return ParameterBo.to(parameterBo);
     } 
 
     @Override
@@ -77,8 +84,7 @@ public final class ParameterRepositoryServiceImpl implements ParameterRepository
         } else {
             toUpdate = parameter;
         }
-
-        return ParameterBo.to(getLegacyDataAdapter().save(ParameterBo.from(toUpdate)));
+        return ParameterBo.to(getDataObjectService().save(ParameterBo.from(toUpdate)));
     }
 
     @Override
@@ -99,11 +105,12 @@ public final class ParameterRepositoryServiceImpl implements ParameterRepository
         map.put("applicationId", key.getApplicationId());
         map.put("namespaceCode", key.getNamespaceCode());
         map.put("componentCode", key.getComponentCode());
-        ParameterBo bo =  getLegacyDataAdapter().findByPrimaryKey(ParameterBo.class, Collections.unmodifiableMap(map));
+        ParameterBo bo =  getDataObjectService().find(ParameterBo.class,
+                    new CompoundKey(Collections.unmodifiableMap(map)));
 
         if (bo == null & !KRADConstants.DEFAULT_PARAMETER_APPLICATION_ID.equals(key.getApplicationId())) {
             map.put("applicationId", KRADConstants.DEFAULT_PARAMETER_APPLICATION_ID);
-            bo = getLegacyDataAdapter().findByPrimaryKey(ParameterBo.class, Collections.unmodifiableMap(map));
+            bo = getDataObjectService().find(ParameterBo.class, new CompoundKey(Collections.unmodifiableMap(map)));
         }
         return bo;
     }
@@ -188,16 +195,17 @@ public final class ParameterRepositoryServiceImpl implements ParameterRepository
         return builder.build();
 	}
 
-    public void setLegacyDataAdapter(LegacyDataAdapter legacyDataAdapter) {
-        this.legacyDataAdapter = legacyDataAdapter;
-    }
-
-    protected LegacyDataAdapter getLegacyDataAdapter() {
-        return legacyDataAdapter;
-    }
-
     public void setCriteriaLookupService(final CriteriaLookupService criteriaLookupService) {
         this.criteriaLookupService = criteriaLookupService;
+    }
+
+    public DataObjectService getDataObjectService() {
+        return dataObjectService;
+    }
+
+    @Required
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 
 }

@@ -23,8 +23,6 @@ package org.kuali.rice.coreservice.impl.component;
  */
 public interface ComponentSetDao {
 
-    ComponentSetBo getComponentSet(String componentSetId);
-
     /**
      * Saves the given ComponentSetBo, in the case that an optimistic locking exception occurs, it "eats" the exception
      * and returns "false".  Otherwise, if the save is successful it returns "true".

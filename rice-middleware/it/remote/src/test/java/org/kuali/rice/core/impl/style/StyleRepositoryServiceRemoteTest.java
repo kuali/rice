@@ -17,19 +17,20 @@ package org.kuali.rice.core.impl.style;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.runner.RunWith;
 import org.kuali.rice.coreservice.api.style.StyleRepositoryService;
 import org.kuali.rice.coreservice.impl.style.StyleRepositoryServiceImplTest;
 import org.kuali.rice.test.remote.RemoteTestHarness;
+import org.mockito.runners.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class StyleRepositoryServiceRemoteTest extends StyleRepositoryServiceImplTest {
     RemoteTestHarness harness = new RemoteTestHarness();
 
     @Before
-    @Override
     public void setupServiceUnderTest() {
-        super.setupServiceUnderTest();
         StyleRepositoryService remoteProxy = harness.publishEndpointAndReturnProxy(
-                StyleRepositoryService.class, this.getStyleRepositoryServiceImpl());
+                StyleRepositoryService.class, super.getStyleRepositoryService());
         super.setStyleRepositoryService(remoteProxy);
     }
 

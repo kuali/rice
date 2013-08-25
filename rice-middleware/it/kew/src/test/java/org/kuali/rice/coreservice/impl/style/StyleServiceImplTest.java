@@ -19,11 +19,10 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.impex.xml.XmlIngestionException;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.coreservice.api.style.Style;
-import org.kuali.rice.coreservice.api.style.StyleService;
 import org.kuali.rice.core.framework.impex.xml.XmlLoader;
 import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
+import org.kuali.rice.coreservice.api.style.Style;
+import org.kuali.rice.coreservice.api.style.StyleService;
 import org.kuali.rice.coreservice.impl.CoreServiceImplServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
@@ -71,14 +70,13 @@ public class StyleServiceImplTest extends KEWTestCase {
 	 */
     @Test public void testLoadingFromConfiguredFile() {
         StyleService styleService = CoreServiceApiServiceLocator.getStyleService();
-        StyleDao dao = (StyleDao)GlobalResourceLoader.getService("styleDao");
 
         String notThereStyle = "gidgets";
         String isThereStyle = "widgets";
 
         // first verify that the database doesn't contain these styles already
-        assertNull(dao.getStyle(notThereStyle));
-        assertNull(dao.getStyle(isThereStyle));
+        assertNull(styleService.getStyle(notThereStyle));
+        assertNull(styleService.getStyle(isThereStyle));
 
         // test loading an incorrectly configured style
         try {

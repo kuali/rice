@@ -67,4 +67,8 @@ public class TestPersistenceProvider implements PersistenceProvider {
     public Object resolveProxy(Object dataObject) {
         return true;  //To change body of implemented methods use File | Settings | File Templates.
     }
+
+    @Override
+    public void flush(){
+    }
 }

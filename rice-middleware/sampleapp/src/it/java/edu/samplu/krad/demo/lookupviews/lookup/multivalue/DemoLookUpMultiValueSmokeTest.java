@@ -69,7 +69,7 @@ public class DemoLookUpMultiValueSmokeTest extends SmokeTestBase {
         waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME,"a1");
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(3000);
-        assertElementPresentByXpath("//span[contains(text(), 'a1')]");
+        waitForElementPresentByXpath("//span[contains(text(), 'a1')]");
         waitAndClickButtonByText(CLEAR_VALUES);
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(3000);

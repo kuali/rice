@@ -47,7 +47,7 @@ public class DemoLibraryNavigationGroupSmokeTest extends SmokeTestBase {
     protected void testNavigationView() throws Exception {
        waitAndClickByLinkText("Navigation Group Tab Example");
        switchToWindow("Kuali :: Navigation View");
-       assertElementPresentByXpath("//div[@id='Uif-Navigation']/ul/li");
+       waitForElementPresentByXpath("//div[@id='Uif-Navigation']/ul/li");
        assertElementPresentByXpath("//div[@id='Uif-Navigation']/ul/li[3]");
        switchToWindow("Kuali");
     }
@@ -56,10 +56,9 @@ public class DemoLibraryNavigationGroupSmokeTest extends SmokeTestBase {
         selectByName("exampleShown","Navigation Group Menu");
         waitAndClickByLinkText("Navigation Group Menu Example");
         switchToWindow("Kuali :: Navigation Menu View");
-        Thread.sleep(3000);
-        assertElementPresentByXpath("//div[@class='uif-navigationMenu-wrapper']");
+        waitForElementPresentByXpath("//div[@class='uif-navigationMenu-wrapper']");
         waitAndClickByLinkText("<<");
-        assertElementPresentByXpath("//div[@class='uif-navigationMenu-wrapper' and @style='display: none;']");
+        waitForElementPresentByXpath("//div[@class='uif-navigationMenu-wrapper' and @style='display: none;']");
         switchToWindow("Kuali");
     }
     

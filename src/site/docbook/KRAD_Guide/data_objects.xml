@@ -17,7 +17,7 @@
 
 -->
 <chapter xml:id="data_objects" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">    
-    <title> Data Objects </title>
+    <title> Data Objects and Persistence </title>
     <note>
         <para>This document outlines the KRAD Data Framework as of Kuali Rice 2.4+. If you are
             working with older KRAD code and OJB, you will want to reference this document in pre
@@ -26,7 +26,47 @@
             to older versions of the Kuali Rice documentation.</para>
     </note>
     <section>
-        <title> Data Objects and Business Objects </title>
+        <title>Data Framework</title>
+        <para>KRAD includes a "krad-data" module which provides data and persistence-related
+            services. The data framework provided by this module has a number of goals:<orderedlist>
+                <listitem>
+                    <para>Provide CRUD (Create, Read, Update, Delete) operations for data.</para>
+                </listitem>
+                <listitem>
+                    <para>Maintain a Metadata repository for storing additional information about
+                        data objects and their attributes.</para>
+                </listitem>
+                <listitem>
+                    <para>Provide a mechanism to integrate custom persistence and metadata
+                        providers.</para>
+                </listitem>
+                <listitem>
+                    <para>Include a default implementation based on the Java Persistence API
+                        (JPA).</para>
+                </listitem>
+            </orderedlist>As stated, it is intended that data which is consumed and processed by a
+            KRAD application may be stored in any number of backend data stores or accessed using
+            any number of different technologies.</para>
+        <para>For many KRAD applications, this data will be stored in a relational database and
+            accessed using the Java Persistence API (JPA). This is the default persistence
+            technology that KRAD supports, however the design of the data framework facilitates
+            integration with other technologies (plain JDBC and SQL, spring-data, web services,
+            etc.) and backend data stores (key-value stores, document databases, object databases,
+            etc.). This is accomplished through a service provider interface (SPI) that allows for
+            the creation and integration of custom providers.</para>
+        <para>In addition to providing persistence operations, the krad-data module also provides a
+            Metadata repository which stores various bits of metadata about the data objects that it
+            is managing. Specifically, this includes information about what the keys and
+            relationships are between data objects. It also contains information like human-readable
+            labels for data object properties and constraints related to the valid representation of
+            the data.</para>
+        <para>The krad-data module provides an API to interact with data objects and their metadata
+            which is then consumed by the other components within the KRAD framework whenever they
+            need to perform data-related operations. This API can also be used elsewhere within the
+            application when it needs to interact with its data objects.</para>
+    </section>
+    <section>
+        <title> Data Objects </title>
         <section>
             <title>Data Objects</title>
             <para>We begin our training for the Kuali Rapid Application Development framework with the

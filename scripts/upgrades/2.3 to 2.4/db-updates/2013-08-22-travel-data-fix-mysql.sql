@@ -15,7 +15,7 @@
 --
 
 DROP TABLE TRVL_AUTH_DOC_T  
-/
+;
 CREATE TABLE TRVL_AUTH_DOC_T  ( 
 	FDOC_NBR               	varchar(14),
 	VER_NBR                	decimal(8,0) DEFAULT 1 NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE TRVL_AUTH_DOC_T  (
 	CTZN_CNTRY_CD          	varchar(2),
 	PRIMARY KEY(FDOC_NBR)
 )
-/
+;
 
 CREATE
     TABLE TRVL_TRAVELER_DTL_T
@@ -64,7 +64,7 @@ CREATE
         , postal_cd VARCHAR(11)
         , PRIMARY KEY (id)
     )
-/
+;
 
 INSERT
 INTO
@@ -119,5 +119,5 @@ VALUES
 		, 1 
 		, '95616' 
 	)
-/
+;
 

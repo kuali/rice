@@ -292,18 +292,23 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
 
     @Override
     public void run(final RunNotifier notifier) {
-        Thread.currentThread().setContextClassLoader(customLoader);
-        EachTestNotifier testNotifier = new EachTestNotifier(notifier,
-                getDescription());
+        ClassLoader currentContextClassLoader = Thread.currentThread().getContextClassLoader();
         try {
-            Statement statement = classBlock(notifier);
-            statement.evaluate();
-        } catch (AssumptionViolatedException e) {
-            testNotifier.fireTestIgnored();
-        } catch (StoppedByUserException e) {
-            throw e;
-        } catch (Throwable e) {
-            testNotifier.addFailure(e);
+            Thread.currentThread().setContextClassLoader(customLoader);
+            EachTestNotifier testNotifier = new EachTestNotifier(notifier,
+                    getDescription());
+            try {
+                Statement statement = classBlock(notifier);
+                statement.evaluate();
+            } catch (AssumptionViolatedException e) {
+                testNotifier.fireTestIgnored();
+            } catch (StoppedByUserException e) {
+                throw e;
+            } catch (Throwable e) {
+                testNotifier.addFailure(e);
+            }
+        } finally {
+            Thread.currentThread().setContextClassLoader(currentContextClassLoader);
         }
     }
 

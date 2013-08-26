@@ -15,13 +15,12 @@
  */
 package org.kuali.rice.krad.bo;
 
-
 import org.junit.Test;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.test.KRADTestCase;
+import org.kuali.rice.krad.util.GlobalVariables;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -41,8 +40,7 @@ import static org.junit.Assert.*;
  */
 public class AttachmentTest extends KRADTestCase {
 
-    // attachment is a load-time weaved BO, so need to make sure it's not loaded prior to instrumentation
-	Object dummyAttachment;
+	Attachment dummyAttachment;
 	
 	@Override
 	public void setUp() throws Exception {
@@ -62,8 +60,8 @@ public class AttachmentTest extends KRADTestCase {
      * tests {@link Attachment#getNoteIdentifier()} and {@link Attachment#setNoteIdentifier(Long)}
      */
 	public void testNoteIdentifier(){
-        ((Attachment)dummyAttachment).setNoteIdentifier((long)12345);
-		assertTrue("Testing NoteIdentifier of Attachment in AttachmentTest",12345 == ((Attachment)dummyAttachment).getNoteIdentifier());
+        dummyAttachment.setNoteIdentifier((long)12345);
+		assertTrue("Testing NoteIdentifier of Attachment in AttachmentTest",12345 == dummyAttachment.getNoteIdentifier());
 	}
 	
 	@Test
@@ -71,8 +69,8 @@ public class AttachmentTest extends KRADTestCase {
      * tests {@link Attachment#getAttachmentMimeTypeCode()} and {@link Attachment#setAttachmentMimeTypeCode(String)}
      */
 	public void testAttachmentMimeTypeCode(){
-        ((Attachment)dummyAttachment).setAttachmentMimeTypeCode("MIME_TYP");
-		assertEquals("Testing AttachmentmimeTypeCode of Attachment in AttachmentTest","MIME_TYP", ((Attachment)dummyAttachment).getAttachmentMimeTypeCode());
+        dummyAttachment.setAttachmentMimeTypeCode("MIME_TYP");
+		assertEquals("Testing AttachmentmimeTypeCode of Attachment in AttachmentTest","MIME_TYP", dummyAttachment.getAttachmentMimeTypeCode());
 	}
 	
 	@Test
@@ -80,8 +78,8 @@ public class AttachmentTest extends KRADTestCase {
      * tests {@link Attachment#getAttachmentFileName()} and {@link Attachment#setAttachmentFileName(String)}
      */
 	public void testAttachmentFileName(){
-        ((Attachment)dummyAttachment).setAttachmentFileName("FILE_NM");
-		assertEquals("Testing AttchmentFileName of Attachment in AttachmentTest","FILE_NM", ((Attachment)dummyAttachment).getAttachmentFileName());
+        dummyAttachment.setAttachmentFileName("FILE_NM");
+		assertEquals("Testing AttchmentFileName of Attachment in AttachmentTest","FILE_NM", dummyAttachment.getAttachmentFileName());
 	}
 	
 	@Test
@@ -89,8 +87,8 @@ public class AttachmentTest extends KRADTestCase {
      * tests {@link Attachment#getAttachmentIdentifier()} and {@link Attachment#setAttachmentIdentifier(String)}
      */
 	public void testAttachmentIdentifier(){
-        ((Attachment)dummyAttachment).setAttachmentIdentifier("Att_ID");
-		assertEquals("Testing Attachment in AttachmentTest","Att_ID", ((Attachment)dummyAttachment).getAttachmentIdentifier());
+        dummyAttachment.setAttachmentIdentifier("Att_ID");
+		assertEquals("Testing Attachment in AttachmentTest","Att_ID", dummyAttachment.getAttachmentIdentifier());
 	}
 	
 	@Test
@@ -98,8 +96,8 @@ public class AttachmentTest extends KRADTestCase {
      * tests {@link Attachment#getAttachmentFileSize()} and {@link Attachment#setAttachmentFileSize(Long)}
      */
 	public void testAttachmentFileSize(){
-        ((Attachment)dummyAttachment).setAttachmentFileSize((long)12345);
-		assertTrue("Testing AttachmentFileSize of Attachment in AttachmentTest",12345 == ((Attachment)dummyAttachment).getAttachmentFileSize());
+        dummyAttachment.setAttachmentFileSize((long)12345);
+		assertTrue("Testing AttachmentFileSize of Attachment in AttachmentTest",12345 == dummyAttachment.getAttachmentFileSize());
 	}
 	
 
@@ -108,8 +106,8 @@ public class AttachmentTest extends KRADTestCase {
      * tests {@link Attachment#getAttachmentTypeCode()} and {@link Attachment#setAttachmentTypeCode(String)}
      */
 	public void testAttachmentTypeCode(){
-        ((Attachment)dummyAttachment).setAttachmentTypeCode("ATT_TYP_CD");
-		assertEquals("Testing AttachmentmimeTypeCode of Attachment in AttachmentTest","ATT_TYP_CD", ((Attachment)dummyAttachment).getAttachmentTypeCode());
+        dummyAttachment.setAttachmentTypeCode("ATT_TYP_CD");
+		assertEquals("Testing AttachmentmimeTypeCode of Attachment in AttachmentTest","ATT_TYP_CD", dummyAttachment.getAttachmentTypeCode());
 	}
 	
 
@@ -120,8 +118,8 @@ public class AttachmentTest extends KRADTestCase {
 	public void testNote(){
 		Note dummyNote = new Note();
 		dummyNote.setNoteText("Hello");
-        ((Attachment)dummyAttachment).setNote(dummyNote);
-		assertEquals("Testing Note of Attachment in AttachmentTest","Hello", ((Attachment)dummyAttachment).getNote().getNoteText());
+        dummyAttachment.setNote(dummyNote);
+		assertEquals("Testing Note of Attachment in AttachmentTest","Hello", dummyAttachment.getNote().getNoteText());
 	}
 	
 	@Test
@@ -177,7 +175,7 @@ public class AttachmentTest extends KRADTestCase {
 			GlobalVariables.setUserSession(new UserSession("quickstart"));
 			
 	        Person kualiUser = GlobalVariables.getUserSession().getPerson();
-			PersistableBusinessObject parentNote = KRADServiceLocator.getNoteService().createNote(dummyNote, ((Attachment)dummyAttachment), kualiUser.getPrincipalId());
+			PersistableBusinessObject parentNote = KRADServiceLocator.getNoteService().createNote(dummyNote, dummyAttachment, kualiUser.getPrincipalId());
 			dummyAttachment = KRADServiceLocator.getAttachmentService().createAttachment( parentNote,
 																					   	 "dummy.txt", 
 																					     "MimeTypeCode",
@@ -185,7 +183,7 @@ public class AttachmentTest extends KRADTestCase {
 																					     inStream,
 																					     "AttachmentTypeCode");
 			String result ="";
-            BufferedReader in =  new BufferedReader(new InputStreamReader(((Attachment)dummyAttachment).getAttachmentContents()));
+            BufferedReader in =  new BufferedReader(new InputStreamReader(dummyAttachment.getAttachmentContents()));
             String line;
 			while ((line = in.readLine()) != null) {
 				   result += line;

@@ -29,7 +29,7 @@ public class ExtensionForAnnotationTest extends KRADTestCase {
         return tables;
     }
 
-    protected Object createTestDataObject(String key) {
+    protected TestDataObject createTestDataObject(String key) {
         TestDataObject dataObject = new TestDataObject();
         dataObject.setPrimaryKeyProperty(key);
         dataObject.setStringProperty("aString");
@@ -47,7 +47,7 @@ public class ExtensionForAnnotationTest extends KRADTestCase {
 
     @Test
     public void testCreateDataObjectWithExtension() {
-        TestDataObject dataObject = (TestDataObject)createTestDataObject("1");
+        TestDataObject dataObject = createTestDataObject("1");
 
         getPersistenceProvider().save(dataObject);
 
@@ -64,7 +64,7 @@ public class ExtensionForAnnotationTest extends KRADTestCase {
 
     @Test
     public void testRetrieveDataObjectWithExtension() {
-        TestDataObject dataObject = (TestDataObject)createTestDataObject("2");
+        TestDataObject dataObject = createTestDataObject("2");
 
         getPersistenceProvider().save(dataObject);
 

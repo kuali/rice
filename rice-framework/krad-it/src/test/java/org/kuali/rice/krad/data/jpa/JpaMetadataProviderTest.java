@@ -38,7 +38,6 @@ import static org.junit.Assert.assertTrue;
  */
 public class JpaMetadataProviderTest extends KRADTestCase {
 
-
     @Test
     public void verifyInRegistry() {
         assertNotNull( "Unable to obtain the registry", KradDataServiceLocator.getProviderRegistry() );
@@ -59,4 +58,5 @@ public class JpaMetadataProviderTest extends KRADTestCase {
         assertNotNull("returned metadata map should not be null", provideMetadata);
         Assert.assertFalse("returned metadata map should not be empty", provideMetadata.isEmpty());
     }
+
 }

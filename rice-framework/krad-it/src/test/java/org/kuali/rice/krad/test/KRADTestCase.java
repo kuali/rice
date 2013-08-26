@@ -15,18 +15,8 @@
  */
 package org.kuali.rice.krad.test;
 
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-import java.util.HashSet;
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
 import org.apache.commons.lang.StringUtils;
+import org.junit.runner.RunWith;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.framework.resourceloader.SpringResourceLoader;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
@@ -35,8 +25,19 @@ import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.SQLDataLoader;
 import org.kuali.rice.test.TestUtilities;
 import org.kuali.rice.test.lifecycles.KEWXmlDataLoaderLifecycle;
+import org.kuali.rice.test.runners.LoadTimeWeavableTestRunner;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import javax.xml.namespace.QName;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+import java.util.HashSet;
+import java.util.List;
+
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * Default test base for a full KRAD enabled integration test
@@ -44,6 +45,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK_CLEAR_DB)
+@RunWith(LoadTimeWeavableTestRunner.class)
 public abstract class KRADTestCase extends BaselineTestCase {
     private static final String SQL_FILE = "classpath:org/kuali/rice/krad/test/DefaultSuiteTestData.sql";
     private static final String XML_FILE = "classpath:org/kuali/rice/krad/test/DefaultSuiteTestData.xml";

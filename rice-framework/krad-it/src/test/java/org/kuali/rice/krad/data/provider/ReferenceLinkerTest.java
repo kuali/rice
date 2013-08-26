@@ -141,7 +141,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
 
     @Test
     public void persistenceWhenObjectSet_existingParentObject_changeChildValue() {
-        AccountExtension acct = (AccountExtension)getExAccount();
+        AccountExtension acct = getExAccount();
 
         acct.setAccountTypeCode("IN");
 
@@ -156,7 +156,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
 
     @Test
     public void persistenceWhenObjectSet_existingParentObject_changeChildObject() {
-        AccountExtension acct = (AccountExtension)getExAccount();
+        AccountExtension acct = getExAccount();
 
         enableJotmLogging();
         AccountType acctType = getDOS().find(AccountType.class, "IN");
@@ -170,10 +170,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
         disableJotmLogging();
     }
 
-    /**
-     * Have to return Object because of Load-Time Weaving
-     */
-    protected Object getExAccount() {
+    protected AccountExtension getExAccount() {
         AccountExtension acct = getDOS().find(AccountExtension.class, "EX_TYPE");
         assertNotNull("unable to retrieve EX_TYPE from database", acct);
         assertEquals( "Incorrect acct type on EX_TYPE database record", acct.getAccountTypeCode(), "EX" );
@@ -184,10 +181,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
         return acct;
     }
 
-    /**
-     * Have to return Object because of Load-Time Weaving
-     */
-    protected Object getNullAccount() {
+    protected AccountExtension getNullAccount() {
         AccountExtension acct = getDOS().find(AccountExtension.class, "NULL_TYPE");
         assertNotNull("unable to retrieve NULL_TYPE from database", acct);
         assertNull( "Incorrect acct type on NULL_TYPE database record.", acct.getAccountTypeCode() );
@@ -199,7 +193,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
 
     @Test
     public void persistenceWhenObjectSet_existingParentObject_setChildValue() {
-        AccountExtension acct = (AccountExtension)getNullAccount();
+        AccountExtension acct = getNullAccount();
 
         acct.setAccountTypeCode("IN");
 
@@ -214,7 +208,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
 
     @Test
     public void persistenceWhenObjectSet_existingParentObject_setChildObject() {
-        AccountExtension acct = (AccountExtension)getNullAccount();
+        AccountExtension acct = getNullAccount();
 
         enableJotmLogging();
         AccountType acctType = getDOS().find(AccountType.class, "IN");

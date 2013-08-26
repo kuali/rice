@@ -859,116 +859,74 @@
         <section><title>Results Fields</title>
             <para>
                 <itemizedlist>
-                    <listitem>
-                        <para>Criteria fields changed from <emphasis role="keyword"
-                                >FieldDefinition</emphasis> to <emphasis role="keyword"
-                                >Uif-DataField</emphasis>. [KNS line: 18-21, KRAD line: 30-33]
-                            <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
-                    </listitem>
-                    <listitem>
-                        <para>The <emphasis role="keyword">attributeName</emphasis> property on the
-                            field is now a <emphasis role="keyword">propertyName</emphasis>
-                            property. [KNS line: 18-21, KRAD line: 30-33] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
-                    </listitem>
-                    <listitem>
-                        <para>The <emphasis role="keyword">forceInquiry</emphasis> property does not
-                            need to be set as inquiry links are rendered automatically. Set the
-                                <emphasis role="keyword">inquiry.render</emphasis> property on the
-                                <emphasis role="keyword">Uif-DataField</emphasis> to false to
-                            supress the rendering of the inquiry link. [KNS line: 20, KRAD line:
-                            n/a] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
-                    </listitem>
-                    <listitem>
-                        <para>Custom actions in the result rows are no longer specified by
-                            overriding the <emphasis role="keyword">getCustomActionUrls</emphasis>
-                            method of <emphasis role="keyword">LookupableHelperService</emphasis>.
-                            Instead the <emphasis role="keyword">resultsGroup.lineActions</emphasis>
-                            property list is extended or overridden.
-                            <?oxy_comment_start author="cniesen" timestamp="20130425T151431-0500" comment="Do we need to add detailed example of how to add custom actions?"?>Look
-                            in <emphasis role="keyword">UifLookupDefinition.xml</emphasis> to see
-                            how the edit, copy and delete actions are defined.<?oxy_comment_end?>
-                            <inlinemediaobject><imageobject><imagedata fileref="../images/badge-manualconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
-                    </listitem>
-                    <listitem>
-                        <para>The <emphasis role="keyword">SortDefinition</emphasis> bean with the
-                                <emphasis role="keyword">sortAscending</emphasis> and <emphasis
-                                role="keyword">attributeName</emphasis> properties has been
-                            replaced. The sort order is specified via the <emphasis role="keyword"
-                                >defaultSortAscending</emphasis> property and the sort fields via
-                            the <emphasis role="keyword">defaultSortAttributeName</emphasis>
-                            property list on the <emphasis role="keyword"
-                            >Uif-Lookup-View</emphasis>. [KNS line: 24-33, KRAD line: 36-43] <inlinemediaobject>
-                                <imageobject>
-                                    <imagedata fileref="../images/badge-scriptconv.png"
-                                        contentdepth="9"/>
-                                </imageobject>
-                            </inlinemediaobject></para>
-                    </listitem>
-                    <listitem>
-                        <para>Column totaling is now specified with the <emphasis role="keyword"
-                                >Uif-ColumnCalculationInfo-Sum</emphasis> property on the layout
-                            manager instead via the <emphasis role="keyword">total</emphasis>
-                            property on the field definition. [KNS line: , KRAD line: ] <inlinemediaobject>
-                                <imageobject>
-                                    <imagedata fileref="../images/badge-scriptconv.png"
-                                        contentdepth="9"/>
-                                </imageobject>
-                            </inlinemediaobject></para>
-                    </listitem>
-                    <listitem>
-                        <para>The system and application wide configuration for the lookup resultset
-                            set limit uses now KR-KRAD as the namespace instead of KR-NS. <inlinemediaobject>
-                                <imageobject>
-                                    <imagedata fileref="../images/badge-scriptconv.png"
-                                        contentdepth="9"/>
-                                </imageobject>
-                            </inlinemediaobject></para> 
-                        <programlisting>SELECT * FROM KRCR_PARM_T 
- WHERE <emphasis role="bold">NMSPC_CD = 'KR-KRAD'</emphasis> 
-   AND CMPNT_CD = 'Lookup' 
-   AND PARM_NM = 'RESULTS_LIMIT'</programlisting>
-                    </listitem>
-                    <listitem>
-                        <para>The system and application wide configuration for lookup page size
-                            limit uses now KR-KRAD as the namespace instead of KR-NS. <inlinemediaobject>
-                                <imageobject>
-                                    <imagedata fileref="../images/badge-scriptconv.png"
-                                        contentdepth="9"/>
-                                </imageobject>
-                            </inlinemediaobject></para> 
-                        <programlisting>SELECT * FROM KRCR_PARM_T 
- WHERE <emphasis role="bold">NMSPC_CD = 'KR-KRAD' </emphasis>
-   AND CMPNT_CD = 'Lookup' 
-   AND PARM_NM = 'MULTIPLE_VALUE_RESULTS_PER_PAGE'</programlisting>
-                    </listitem>
-                    <listitem>
-                        <para>The system and application wide configuration for lookup page size
-                            limit uses now KR-KRAD as the namespace instead of KR-NS. <inlinemediaobject>
-                                <imageobject>
-                                    <imagedata fileref="../images/badge-scriptconv.png"
-                                        contentdepth="9"/>
-                                </imageobject>
-                            </inlinemediaobject></para>
-                        <para><emphasis role="bold">KNS example:</emphasis></para>
-                        <programlisting>SELECT * FROM KRCR_PARM_T 
- WHERE <emphasis role="bold">NMSPC_CD = 'KR-NS'</emphasis> 
-   AND CMPNT_CD = 'Lookup' 
-   AND PARM_NM = 'RESULTS_DEFAULT_MAX_COLUMN_LENGTH'</programlisting>
-                        <para><emphasis role="bold">KRAD example:</emphasis></para>
-                        <programlisting linenumbering = "numbered">  &lt;bean id="Uif-TextControl" parent="Uif-TextControl-parentBean"/>
-  &lt;bean id="Uif-TextControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.TextControl"
-        scope="prototype" parent="Uif-ControlBase">
-    &lt;property name="template" value="/krad/WEB-INF/ftl/components/control/text.ftl"/>
-    &lt;property name="templateName" value="uif_text"/>
-    &lt;property name="cssClasses">
-      &lt;list merge="true">
-        &lt;value>uif-textControl&lt;/value>
-      &lt;/list>
-    &lt;/property>
-    <emphasis role="bold">&lt;property name="size" value="30"/></emphasis>
-  &lt;/bean></programlisting>
-                    </listitem>
-                </itemizedlist>
+          <listitem>
+            <para>Criteria fields changed from <emphasis role="keyword">FieldDefinition</emphasis>
+              to <emphasis role="keyword">Uif-DataField</emphasis>. [KNS line: 18-21, KRAD line:
+              30-33] <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                </imageobject>
+              </inlinemediaobject></para>
+          </listitem>
+          <listitem>
+            <para>The <emphasis role="keyword">attributeName</emphasis> property on the field is now
+              a <emphasis role="keyword">propertyName</emphasis> property. [KNS line: 18-21, KRAD
+              line: 30-33] <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                </imageobject>
+              </inlinemediaobject></para>
+          </listitem>
+          <listitem>
+            <para>The <emphasis role="keyword">forceInquiry</emphasis> property does not need to be
+              set as inquiry links are rendered automatically. Set the <emphasis role="keyword"
+                >inquiry.render</emphasis> property on the <emphasis role="keyword"
+                >Uif-DataField</emphasis> to false to supress the rendering of the inquiry link.
+              [KNS line: 20, KRAD line: n/a] <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                </imageobject>
+              </inlinemediaobject></para>
+          </listitem>
+          <listitem>
+            <para>Custom actions in the result rows are no longer specified by overriding the
+                <emphasis role="keyword">getCustomActionUrls</emphasis> method of <emphasis
+                role="keyword">LookupableHelperService</emphasis>. Instead the <emphasis
+                role="keyword">resultsGroup.lineActions</emphasis> property list is extended or
+              overridden.
+              <?oxy_comment_start author="cniesen" timestamp="20130425T151431-0500" comment="Do we need to add detailed example of how to add custom actions?"?>Look
+              in <emphasis role="keyword">UifLookupDefinition.xml</emphasis> to see how the edit,
+              copy and delete actions are defined.<?oxy_comment_end?>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="9"/>
+                </imageobject>
+              </inlinemediaobject></para>
+          </listitem>
+          <listitem>
+            <para>The <emphasis role="keyword">SortDefinition</emphasis> bean with the <emphasis
+                role="keyword">sortAscending</emphasis> and <emphasis role="keyword"
+                >attributeName</emphasis> properties has been replaced. The sort order is specified
+              via the <emphasis role="keyword">defaultSortAscending</emphasis> property and the sort
+              fields via the <emphasis role="keyword">defaultSortAttributeName</emphasis> property
+              list on the <emphasis role="keyword">Uif-Lookup-View</emphasis>. [KNS line: 24-33,
+              KRAD line: 36-43] <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                </imageobject>
+              </inlinemediaobject></para>
+          </listitem>
+          <listitem>
+            <para>Column totaling is now specified with the <emphasis role="keyword"
+                >Uif-ColumnCalculationInfo-Sum</emphasis> property on the layout manager instead via
+              the <emphasis role="keyword">total</emphasis> property on the field definition. [KNS
+              line: , KRAD line: ] <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                </imageobject>
+              </inlinemediaobject></para>
+          </listitem>
+        </itemizedlist>
             </para>
         </section>
 

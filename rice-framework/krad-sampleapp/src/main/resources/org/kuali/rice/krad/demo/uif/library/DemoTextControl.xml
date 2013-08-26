@@ -44,7 +44,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-TextControl-Example1 start-->
-        <bean parent="Uif-InputField" p:propertyName="inputField2">
+        <bean parent="Uif-InputField" p:propertyName="inputField1">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
@@ -74,7 +74,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-TextControl-Example3 start-->
-        <bean parent="Uif-InputField" p:propertyName="inputField2">
+        <bean parent="Uif-InputField" p:propertyName="inputField3">
           <property name="control">
             <bean parent="Uif-TextControl" p:textExpand="true"/>
           </property>
@@ -89,7 +89,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-TextControl-Example4 start-->
-        <bean parent="Uif-InputField" p:propertyName="inputField2">
+        <bean parent="Uif-InputField" p:propertyName="inputField4">
           <property name="control">
             <bean parent="Uif-TextControl" p:disabled="true"/>
           </property>
@@ -104,7 +104,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-TextControl-Example7 start-->
-        <bean parent="Uif-InputField" p:propertyName="inputField2">
+        <bean parent="Uif-InputField" p:propertyName="inputField5">
           <property name="control">
             <bean parent="Uif-TextControl" p:watermarkText="watermark text"/>
           </property>
@@ -119,14 +119,14 @@
     <property name="items">
       <list>
         <!-- ex:Demo-TextControl-Example8 start-->
-        <bean parent="Uif-InputField" p:propertyName="inputField1">
+        <bean parent="Uif-InputField" p:propertyName="inputField6">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField" p:propertyName="inputField2">
+        <bean parent="Uif-InputField" p:propertyName="inputField7">
           <property name="control">
-            <bean parent="Uif-TextControl" p:disabled="true" p:enabledWhenChangedPropertyNames="inputField1"
+            <bean parent="Uif-TextControl" p:disabled="true" p:enabledWhenChangedPropertyNames="inputField6"
                   p:evaluateDisabledOnKeyUp="true"/>
           </property>
         </bean>
@@ -140,14 +140,14 @@
     <property name="items">
       <list>
         <!-- ex:Demo-TextControl-Example9 start-->
-        <bean parent="Uif-InputField" p:propertyName="inputField3">
+        <bean parent="Uif-InputField" p:propertyName="inputField8">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField" p:propertyName="inputField4">
+        <bean parent="Uif-InputField" p:propertyName="inputField9">
           <property name="control">
-            <bean parent="Uif-TextControl" p:disabled="true" p:enabledWhenChangedPropertyNames="inputField3"/>
+            <bean parent="Uif-TextControl" p:disabled="true" p:enabledWhenChangedPropertyNames="inputField8"/>
           </property>
         </bean>
         <!-- ex:Demo-TextControl-Example9 end-->
@@ -160,14 +160,14 @@
     <property name="items">
       <list>
         <!-- ex:Demo-TextControl-Example10 start-->
-        <bean parent="Uif-InputField" p:propertyName="inputField5">
+        <bean parent="Uif-InputField" p:propertyName="inputField10">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField" p:propertyName="inputField6">
+        <bean parent="Uif-InputField" p:propertyName="inputField11">
           <property name="control">
-            <bean parent="Uif-TextControl" p:disabledWhenChangedPropertyNames="inputField5"/>
+            <bean parent="Uif-TextControl" p:disabledWhenChangedPropertyNames="inputField10"/>
           </property>
         </bean>
         <!-- ex:Demo-TextControl-Example10 end-->

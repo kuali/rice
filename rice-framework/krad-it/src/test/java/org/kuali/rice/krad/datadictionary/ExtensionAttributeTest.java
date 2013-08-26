@@ -15,6 +15,13 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -24,7 +31,6 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.krad.UserSession;
-import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.krad.exception.ValidationException;
@@ -39,10 +45,6 @@ import org.kuali.rice.krad.test.document.bo.AccountType;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.ObjectUtils;
 
-import java.util.ArrayList;
-
-import static org.junit.Assert.*;
-
 /**
  * ExtensionAttributeTest tests that {@link org.kuali.rice.krad.bo.PersistableBusinessObject#getExtension()} works as expected
  *
@@ -55,7 +57,8 @@ public class ExtensionAttributeTest extends KRADTestCase {
 
 	DataDictionary dd = null;
 
-	@Before
+	@Override
+    @Before
 	public void setUp() throws Exception {
 		super.setUp();
 
@@ -103,7 +106,8 @@ public class ExtensionAttributeTest extends KRADTestCase {
         dd.parseDataDictionaryConfigurationFiles( false );
 	}
 
-	@After
+	@Override
+    @After
 	public void tearDown() throws Exception {
 		super.tearDown();
 		dd = null;
@@ -145,6 +149,7 @@ public class ExtensionAttributeTest extends KRADTestCase {
 	}
 
 	@Test
+	@Legacy
     /**
      * test that a business object relationship definitions have the expected values
      */
@@ -172,7 +177,7 @@ public class ExtensionAttributeTest extends KRADTestCase {
 
         Field field = FieldUtils.getPropertyField(ta.getClass(), "extension.accountTypeCode", true);
 
-	field = LookupUtils.setFieldQuickfinder((BusinessObject) ta, "extension.accountTypeCode", field,
+	field = LookupUtils.setFieldQuickfinder(ta, "extension.accountTypeCode", field,
 		lookupFieldAttributeList);
 
 		assertEquals( "lookup class not correct", AccountType.class.getName(), field.getQuickFinderClassNameImpl() );

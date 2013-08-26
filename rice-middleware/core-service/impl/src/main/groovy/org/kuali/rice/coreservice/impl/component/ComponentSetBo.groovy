@@ -17,10 +17,12 @@ package org.kuali.rice.coreservice.impl.component;
 
 
 import java.sql.Timestamp
-import javax.persistence.Entity
-import javax.persistence.Table
+
 import javax.persistence.Column
+import javax.persistence.Entity
 import javax.persistence.Id
+import javax.persistence.Table
+import javax.persistence.Version
 
 @Entity
 @Table(name="KRCR_CMPNT_SET_T")
@@ -36,6 +38,7 @@ public class ComponentSetBo implements Serializable {
     @Column(name="CHKSM")
     String checksum
     @Column(name="VER_NBR")
+	@Version
     Long versionNumber
 
 }

@@ -111,6 +111,7 @@ public abstract class BaseRiceTestCase implements MethodAware {
 	/**
 	 * @see org.kuali.rice.test.MethodAware#setTestMethod(java.lang.reflect.Method)
 	 */
+    @Override
 	public void setTestMethod(Method testMethod) {
         this.method = testMethod;
 

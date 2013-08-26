@@ -80,6 +80,8 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
     private static final String DATABASE_WILDCARD_CHARACTER_STRING = "%";
     private static final char DATABASE_WILDCARD_CHARACTER = DATABASE_WILDCARD_CHARACTER_STRING.toCharArray()[0];
 
+    private org.kuali.rice.kew.api.doctype.DocumentTypeService apiDocumentTypeService;
+
     private DatabasePlatform dbPlatform;
     private MessageMap messageMap;
 
@@ -234,33 +236,32 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
         DocumentSearchCriteria.Builder criteriaBuilder = DocumentSearchCriteria.Builder.create(criteria);
         DocumentSearchResults.Builder results = DocumentSearchResults.Builder.create(criteriaBuilder);
         results.setCriteriaModified(criteriaModified);
-        int size = 0;
+
         List<DocumentSearchResult.Builder> resultList = new ArrayList<DocumentSearchResult.Builder>();
         results.setSearchResults(resultList);
         Map<String, DocumentSearchResult.Builder> resultMap = new HashMap<String, DocumentSearchResult.Builder>();
-        PerformanceLogger perfLog = new PerformanceLogger();
-        int iteration = 0;
+
         int startAt = (criteria.getStartAtIndex()==null) ? 0 : criteria.getStartAtIndex();
-        maxResultCap += startAt;
+        int iteration = 0;
         boolean resultSetHasNext = resultSet.next();
-        while ( resultSetHasNext && resultMap.size() < maxResultCap && iteration++ < fetchLimit && startAt >= 0) {
 
-            if(iteration <= startAt) {
-                resultSetHasNext = resultSet.next();
-                continue;
+        PerformanceLogger perfLog = new PerformanceLogger();
+
+        while (resultSetHasNext && resultMap.size() < maxResultCap && iteration < fetchLimit && startAt >= 0) {
+            if (iteration >= startAt) {
+                DocumentSearchResult.Builder resultBuilder = processRow(criteria, searchAttributeStatement, resultSet);
+                String documentId = resultBuilder.getDocument().getDocumentId();
+                if (!resultMap.containsKey(documentId)) {
+                    resultList.add(resultBuilder);
+                    resultMap.put(documentId, resultBuilder);
+                } else {
+                    // handle duplicate rows with different search data
+                    DocumentSearchResult.Builder previousEntry = resultMap.get(documentId);
+                    handleMultipleDocumentRows(previousEntry, resultBuilder);
+                }
             }
 
-            DocumentSearchResult.Builder resultBuilder = processRow(criteria, searchAttributeStatement, resultSet);
-            String documentId = resultBuilder.getDocument().getDocumentId();
-            if (!resultMap.containsKey(documentId)) {
-                resultList.add(resultBuilder);
-                resultMap.put(documentId, resultBuilder);
-                size++;
-            } else {
-                // handle duplicate rows with different search data
-                DocumentSearchResult.Builder previousEntry = resultMap.get(documentId);
-                handleMultipleDocumentRows(previousEntry, resultBuilder);
-            }
+            iteration++;
             resultSetHasNext = resultSet.next();
         }
 
@@ -268,7 +269,7 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
         // if we have threshold+1 results, then we have more results than we are going to display
         results.setOverThreshold(resultSetHasNext);
 
-        LOG.debug("Processed "+size+" document search result rows.");
+        LOG.debug("Processed " + resultMap.size() + " document search result rows.");
         return results;
     }
 
@@ -299,7 +300,7 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
         String initiatorPrincipalId = rs.getString("INITR_PRNCPL_ID");
         String documentTypeName = rs.getString("DOC_TYP_NM");
         org.kuali.rice.kew.api.doctype.DocumentType documentType =
-                KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(documentTypeName);
+                getApiDocumentTypeService().getDocumentTypeByName(documentTypeName);
         if (documentType == null) {
             throw new IllegalStateException("Failed to locate a document type with the given name: " + documentTypeName);
         }
@@ -1012,6 +1013,18 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
      */
     protected boolean isUsingAtLeastOneSearchAttribute(DocumentSearchCriteria criteria) {
         return criteria.getDocumentAttributeValues().size() > 0 || StringUtils.isNotBlank(criteria.getDocumentTypeName());
+    }
+
+    protected org.kuali.rice.kew.api.doctype.DocumentTypeService getApiDocumentTypeService() {
+        if (apiDocumentTypeService == null) {
+            apiDocumentTypeService = KewApiServiceLocator.getDocumentTypeService();
+        }
+
+        return apiDocumentTypeService;
+    }
+
+    protected void setApiDocumentTypeService(org.kuali.rice.kew.api.doctype.DocumentTypeService apiDocumentTypeService) {
+        this.apiDocumentTypeService = apiDocumentTypeService;
     }
 
 }

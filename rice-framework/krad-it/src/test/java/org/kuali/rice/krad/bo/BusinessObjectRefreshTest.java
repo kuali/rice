@@ -15,11 +15,16 @@
  */
 package org.kuali.rice.krad.bo;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Test;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.krad.test.document.bo.Account;
-import org.kuali.rice.krad.test.document.bo.AccountManager;
 import org.kuali.rice.location.impl.county.CountyBo;
 import org.kuali.rice.location.impl.state.StateBo;
 import org.kuali.rice.test.BaselineTestCase;
@@ -28,14 +33,9 @@ import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestFile;
 import org.kuali.rice.test.data.UnitTestSql;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.junit.Assert.assertEquals;
-
 /**
- * Tests how refreshing works for Business Objects 
- * 
+ * Tests how refreshing works for Business Objects
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -69,18 +69,19 @@ public class BusinessObjectRefreshTest extends KRADTestCase {
 	public void testLazyRefreshField() {
 		final String accountNumber = "b101";
 		Account account = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Account.class, accountNumber);
-		
+
+		assertNotNull( "Unable to retrieve account b101", account );
 		assertEquals("Retrieved account should have name b101", "b101", account.getName());
 		assertEquals("Retrieved account should have a account manager with user name fo-101", "fo-101",
                 account.getAccountManager().getUserName());
-		
+
 		account.setAmId(102L);
 		account.refreshReferenceObject("accountManager");
-		
+
 		assertEquals("Account Manager should now have user name of fo-102", "fo-102",
                 account.getAccountManager().getUserName());
 	}
-	
+
 	@Test
     /**
      * tests that {@link PersistableBusinessObjectBase#refresh()} works for a lazy loaded reference when the foreign key is changed
@@ -88,14 +89,15 @@ public class BusinessObjectRefreshTest extends KRADTestCase {
 	public void testLazyRefreshWholeObject() {
 		final String accountNumber = "b101";
 		Account account = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Account.class, accountNumber);
-		
+
+        assertNotNull( "Unable to retrieve account b101", account );
 		assertEquals("Retrieved account should have name b101", "b101", account.getName());
 		assertEquals("Retrieved account should have a account manager with user name fo-101", "fo-101",
                 account.getAccountManager().getUserName());
-		
+
 		account.setAmId(102L);
 		account.refresh();
-		
+
 		assertEquals("Account Manager should now have user name of fo-102", "fo-102",
                 account.getAccountManager().getUserName());
 	}
@@ -117,23 +119,23 @@ public class BusinessObjectRefreshTest extends KRADTestCase {
         primaryKeys.put("code","AZ");
 		//final StateId arizonaStateId = new StateId("US", "AZ");
 		final StateBo arizonaState = KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(StateBo.class, primaryKeys);
-		
+
 		assertEquals("On retrieval from database, state code should be AZ", arizonaState.getCode(),
                 county.getState().getCode());
 		assertEquals("On retrieval from database, state name should be ARIZONA", arizonaState.getName(),
                 county.getState().getName());
-		
+
 		county.setStateCode("CA");
 		county.setCode("VENTURA");
         // NOTE: since county is an EBO, whether or not refresh() fetches references is an implementation choice in the LocationModuleService
 		county.refresh();
-		
+
 		//final StateId californiaStateId = new StateId("US", "CA");
         primaryKeys.clear();
         primaryKeys.put("countryCode","US");
         primaryKeys.put("code","CA");
 		final StateBo californiaState = KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(StateBo.class, primaryKeys);
-		
+
 		assertEquals("Does eager fetching automatically refresh?", californiaState.getCode(),
                 county.getState().getCode());
 		assertEquals("On refresh, state name should be CALIFORNIA", californiaState.getName(),

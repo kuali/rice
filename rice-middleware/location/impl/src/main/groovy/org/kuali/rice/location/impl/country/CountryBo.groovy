@@ -22,11 +22,10 @@ import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
 
-
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter
 import org.kuali.rice.location.api.country.Country
 import org.kuali.rice.location.framework.country.CountryEbo
-import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter
 
 @Entity
 @Table(name="KRLC_CNTRY_T")
@@ -44,6 +43,7 @@ class CountryBo extends PersistableBusinessObjectBase implements CountryEbo {
 
   //@Type(type="yes_no")(type = "yes_no")
   @Column(name = "PSTL_CNTRY_RSTRC_IND")
+  @javax.persistence.Convert(converter=BooleanYNConverter.class)
   def boolean restricted;
 
   //@Type(type="yes_no")(type = "yes_no")

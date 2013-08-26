@@ -32,7 +32,6 @@
       <list>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subAccount"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" p:ranged="true"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="foId"/>
       </list>
@@ -41,7 +40,6 @@
       <list>
         <bean parent="Uif-DataField" p:propertyName="number"/>
         <bean parent="Uif-DataField" p:propertyName="name"/>
-        <bean parent="Uif-DataField" p:propertyName="subAccount"/>
         <bean parent="Uif-DataField" p:propertyName="createDate"/>
         <bean parent="Uif-DataField" p:propertyName="foId"/>
       </list>
@@ -119,7 +117,6 @@
       <list>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subAccount"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" p:ranged="true"
               p:refreshWhenChangedPropertyNames="lookupCriteria[number]"
               p:required="@{#dp.lookupCriteria['number'] == 'a1'}"
@@ -183,7 +180,6 @@
       <list>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number" p:disableWildcardsAndOperators="true"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subAccount"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" p:ranged="true"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="foId"/>
       </list>
@@ -197,7 +193,6 @@
       <list>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subAccount"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" p:ranged="true"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="foId" p:enableAutoQuickfinder="false"/>
       </list>
@@ -211,7 +206,6 @@
       <list>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number" p:enableAutoDirectInquiry="false"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subAccount"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" p:ranged="true"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="foId" />
       </list>
@@ -225,7 +219,6 @@
       <list>
         <bean parent="Uif-DataField" p:propertyName="number" p:enableAutoInquiry="false"/>
         <bean parent="Uif-DataField" p:propertyName="name"/>
-        <bean parent="Uif-DataField" p:propertyName="subAccount"/>
         <bean parent="Uif-DataField" p:propertyName="createDate"/>
         <bean parent="Uif-DataField" p:propertyName="foId"/>
       </list>

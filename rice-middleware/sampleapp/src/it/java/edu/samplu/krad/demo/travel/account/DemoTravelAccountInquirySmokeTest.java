@@ -68,6 +68,7 @@ public class DemoTravelAccountInquirySmokeTest extends SmokeTestBase {
     }
 
     protected void testCollapseExpand() throws InterruptedException {
+        checkForIncidentReport();
         waitForElementPresentByClassName("demo-contactInfo");
         assertTextPresent("Travel Account Number:");
         assertTextPresent(EXPAND_ALL);

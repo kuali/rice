@@ -60,7 +60,8 @@ import static org.junit.internal.runners.rules.RuleFieldValidator.*;
  * for transformers to be added to the ClassLoader for load-time weaving. Useful when writing tests that use JPA with
  * EclipseLink since it depends upon load-time weaving.
  *
- * <p>Much of the code in this class was copied from the JUnit ParentRunner and BlockJUnit4ClassRunner.</p>
+ * <p>Much of the code in this class was copied from the JUnit ParentRunner, BlockJUnit4ClassRunner, and
+ * TomcatInstrumentableClassLoader.</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -795,8 +796,8 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
 
     public static class JUnitCustomClassLoader extends URLClassLoader {
 
-        private static final String[] SYSTEM_CLASSES = new String[] { "java.", "javax.", "javax.", "org.xml.", "org.w3c.", "com.sun.", "sun." };
-        private static final String[] DELEGATE_TO_PARENT =  new String[] { "org.junit." };
+        private static final String[] SYSTEM_CLASSES = new String[] { "java.", "javax.", "org.xml.", "org.w3c.", "com.sun.", "sun." };
+        private static final String[] DELEGATE_TO_PARENT =  new String[] { "org.junit.", "junit.framework." };
 
         private final WeavingTransformer weavingTransformer;
 
@@ -969,8 +970,6 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
          */
         public ClassLoader getThrowawayClassLoader() {
             JUnitCustomClassLoader tempLoader = new JUnitCustomClassLoader();
-            // Use reflection to copy all the fields since most of them are private
-            // on pre-5.5 Tomcat.
             shallowCopyFieldState(this, tempLoader);
             return tempLoader;
         }

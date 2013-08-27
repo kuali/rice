@@ -16,33 +16,33 @@
 package org.kuali.rice.kim.impl.group;
 
 import org.kuali.rice.kim.api.common.attribute.KimAttribute;
+import org.kuali.rice.kim.api.common.attribute.KimAttributeData;
+import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract;
 import org.kuali.rice.kim.api.common.attribute.KimAttributeDataHistory;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
-import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataHistoryBo;
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "KRIM_HIST_GRP_ATTR_DATA_T")
-public class GroupAttributeHistoryBo extends KimAttributeDataHistoryBo {
-
+public class GroupAttributeHistoryBo extends KimAttributeDataBo implements KimAttributeDataContract
+{
     private static final long serialVersionUID = -1358263879165065051L;
 
     @Id
-    @Column(name="HIST_ID")
-    private String historyId;
-
+    @GeneratedValue(generator = "KRIM_HIST_GRP_ATTR_DATA_ID_S")
+    @PortableSequenceGenerator(name = "KRIM_HIST_GRP_ATTR_DATA_ID_S")
     @Column(name="ATTR_DATA_ID")
     private String id;
 
-    @Column(name = "GRP_ID")
+    @Column(name = "GRP_HIST_ID")
     private String assignedToId;
-
-    @Column(name="GRP_HIST_ID")
-    private Long assignedToHistoryId;
 
     @Override
     public String getId() {
@@ -52,16 +52,6 @@ public class GroupAttributeHistoryBo extends KimAttributeDataHistoryBo {
     @Override
     public void setId(String id) {
         this.id = id;
-    }
-
-    @Override
-    public Long getAssignedToHistoryId() {
-        return assignedToHistoryId;
-    }
-
-    @Override
-    public void setAssignedToHistoryId(Long assignedToHistoryId) {
-        this.assignedToHistoryId = assignedToHistoryId;
     }
 
     @Override
@@ -79,12 +69,12 @@ public class GroupAttributeHistoryBo extends KimAttributeDataHistoryBo {
      * @param bo the mutable business object
      * @return the immutable object
      */
-    public static KimAttributeDataHistory to(GroupAttributeHistoryBo bo) {
+    public static KimAttributeData to(GroupAttributeHistoryBo bo) {
         if (bo == null) {
             return null;
         }
 
-        return KimAttributeDataHistory.Builder.create(bo).build();
+        return KimAttributeData.Builder.create(bo).build();
     }
 
     /*public static GroupAttributeHistoryBo from(KimAttributeData im, Timestamp fromDate, Timestamp toDate) {
@@ -106,7 +96,7 @@ public class GroupAttributeHistoryBo extends KimAttributeDataHistoryBo {
         return bo;
     }*/
 
-    public static GroupAttributeHistoryBo from(KimAttributeDataHistory im) {
+    public static GroupAttributeHistoryBo from(KimAttributeData im) {
         if (im == null) {
             return null;
         }
@@ -115,7 +105,7 @@ public class GroupAttributeHistoryBo extends KimAttributeDataHistoryBo {
         bo.setId(im.getId());
         //bo.setHistoryId(im.getHistoryId());
         bo.setAssignedToId(im.getAssignedToId());
-        bo.setAssignedToHistoryId(im.getAssignedToHistoryId());
+        //bo.setAssignedToHistoryId(im.getAssignedToHistoryId());
         bo.setKimAttribute(KimAttributeBo.from(im.getKimAttribute()));
         final KimAttribute attribute = im.getKimAttribute();
         bo.setKimAttributeId((attribute == null ? null : attribute.getId()));

@@ -13,13 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.impl.identity.employment;
+package org.kuali.rice.kim.impl.identity.name;
 
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
 import org.kuali.rice.kim.api.identity.employment.EntityEmploymentHistory;
 import org.kuali.rice.kim.api.identity.employment.EntityEmploymentHistoryContract;
+import org.kuali.rice.kim.api.identity.name.EntityNameHistory;
+import org.kuali.rice.kim.api.identity.name.EntityNameHistoryContract;
 import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationHistoryBo;
+import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentBase;
+import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusHistoryBo;
+import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeHistoryBo;
 import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Column;
@@ -31,16 +36,16 @@ import javax.persistence.Transient;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "KRIM_HIST_ENTITY_EMP_INFO_T")
-public class EntityEmploymentHistoryBo extends EntityEmploymentBase implements EntityEmploymentHistoryContract {
+@Table(name = "KRIM_HIST_ENTITY_NM_T")
+public class EntityNameHistoryBo extends EntityNameBase implements EntityNameHistoryContract {
     private static final long serialVersionUID = -8670268472560378016L;
     @Id
-    @GeneratedValue(generator = "KRIM_HIST_ENTITY_EMP_ID_S")
-    @PortableSequenceGenerator(name = "KRIM_HIST_ENTITY_EMP_ID_S")
+    @GeneratedValue(generator = "KRIM_HIST_NM_ID_S")
+    @PortableSequenceGenerator(name = "KRIM_HIST_NM_ID_S")
     @Column(name ="HIST_ID")
     private Long historyId;
 
-    @Column(name = "ENTITY_EMP_ID")
+    @Column(name = "ENTITY_NM_ID")
     private String id;
 
     @Column(name = "ACTV_FRM_DT")
@@ -50,13 +55,8 @@ public class EntityEmploymentHistoryBo extends EntityEmploymentBase implements E
     private Timestamp activeToDateValue;
 
     @Transient
-    private EntityEmploymentTypeHistoryBo employeeType;
+    private EntityNameTypeHistoryBo nameType;
 
-    @Transient
-    private EntityEmploymentStatusHistoryBo employeeStatus;
-
-    @Transient
-    private EntityAffiliationHistoryBo entityAffiliation;
 
     @Override
     public Long getHistoryId() {
@@ -118,30 +118,12 @@ public class EntityEmploymentHistoryBo extends EntityEmploymentBase implements E
     }
 
     @Override
-    public EntityEmploymentStatusHistoryBo getEmployeeStatus() {
-        return employeeStatus;
+    public EntityNameTypeHistoryBo getNameType() {
+        return nameType;
     }
 
-    public void setEmployeeStatus(EntityEmploymentStatusHistoryBo employeeStatus) {
-        this.employeeStatus = employeeStatus;
-    }
-
-    @Override
-    public EntityEmploymentTypeHistoryBo getEmployeeType() {
-        return employeeType;
-    }
-
-    public void setEmployeeType(EntityEmploymentTypeHistoryBo employeeType) {
-        this.employeeType = employeeType;
-    }
-
-    @Override
-    public EntityAffiliationHistoryBo getEntityAffiliation() {
-        return entityAffiliation;
-    }
-
-    public void setEntityAffiliation(EntityAffiliationHistoryBo entityAffiliation) {
-        this.entityAffiliation = entityAffiliation;
+    public void setNameType(EntityNameTypeHistoryBo nameType) {
+        this.nameType = nameType;
     }
 
     /**
@@ -149,68 +131,48 @@ public class EntityEmploymentHistoryBo extends EntityEmploymentBase implements E
      * @param bo the mutable business object
      * @return the immutable object
      */
-    public static EntityEmploymentHistory to(EntityEmploymentHistoryBo bo) {
+    public static EntityNameHistory to(EntityNameHistoryBo bo) {
         if (bo == null) {
             return null;
         }
 
-        return EntityEmploymentHistory.Builder.create(bo).build();
+        return EntityNameHistory.Builder.create(bo).build();
     }
-    /**
-     * Converts a main object to its historical counterpart
-     * @param employment immutable object
-     * @return the history bo
-     */
-    /*public static EntityEmploymentHistoryBo from(EntityEmployment employment,
-            Timestamp fromDate,
-            Timestamp toDate) {
-        if (employment == null) {
-            return null;
-        }
 
-        EntityEmploymentHistoryBo bo = (EntityEmploymentHistoryBo) EntityEmploymentBo.from(employment);
-        bo.setActiveFromDateValue(fromDate == null? null :fromDate);
-        bo.setActiveToDateValue(toDate == null? null :toDate);
-        bo.setEmployeeStatus(EntityEmploymentStatusHistoryBo.from(employment.getEmployeeStatus(), fromDate, toDate));
-        bo.setEmployeeType(EntityEmploymentTypeHistoryBo.from(employment.getEmployeeType(), fromDate, toDate));
-        bo.setEntityAffiliation(EntityAffiliationHistoryBo.from(employment.getEntityAffiliation(), fromDate, toDate));
-        return bo;
-    }*/
 
     /**
      * Converts a main object to its historical counterpart
      * @param im immutable object
      * @return the history bo
      */
-    public static EntityEmploymentHistoryBo from(EntityEmploymentHistory im) {
+    public static EntityNameHistoryBo from(EntityNameHistory im) {
         if (im == null) {
             return null;
         }
 
-        EntityEmploymentHistoryBo bo = new EntityEmploymentHistoryBo();
+        EntityNameHistoryBo bo = new EntityNameHistoryBo();
 
+        bo.setId(im.getId());
         bo.setActive(im.isActive());
+
         bo.setEntityId(im.getEntityId());
-        if (im.getEmployeeType() != null) {
-            bo.setEmployeeTypeCode(im.getEmployeeType().getCode());
-            bo.setEmployeeType(EntityEmploymentTypeHistoryBo.from(im.getEmployeeType()));
+        bo.setNameType(EntityNameTypeHistoryBo.from(im.getNameType()));
+        if (im.getNameType() != null) {
+            bo.setNameCode(im.getNameType().getCode());
         }
 
-        if (im.getEmployeeStatus() != null) {
-            bo.setEmployeeStatusCode(im.getEmployeeStatus().getCode());
-            bo.setEmployeeStatus(EntityEmploymentStatusHistoryBo.from(im.getEmployeeStatus()));
+        bo.setFirstName(im.getFirstNameUnmasked());
+        bo.setLastName(im.getLastNameUnmasked());
+        bo.setMiddleName(im.getMiddleNameUnmasked());
+        bo.setNamePrefix(im.getNamePrefixUnmasked());
+        bo.setNameTitle(im.getNameTitleUnmasked());
+        bo.setNameSuffix(im.getNameSuffixUnmasked());
+        bo.setNoteMessage(im.getNoteMessage());
+        if (im.getNameChangedDate() != null) {
+            bo.setNameChangedDate(new Timestamp(im.getNameChangedDate().getMillis()));
         }
 
-        if (im.getEntityAffiliation() != null) {
-            bo.setEntityAffiliationId(im.getEntityAffiliation().getId());
-            bo.setEntityAffiliation(EntityAffiliationHistoryBo.from(im.getEntityAffiliation()));
-        }
-
-        bo.setPrimaryDepartmentCode(im.getPrimaryDepartmentCode());
-        bo.setEmployeeId(im.getEmployeeId());
-        bo.setEmploymentRecordId(im.getEmploymentRecordId());
-        bo.setBaseSalaryAmount(im.getBaseSalaryAmount());
-        bo.setPrimary(im.isPrimary());
+        bo.setDefaultValue(im.isDefaultValue());
         bo.setVersionNumber(im.getVersionNumber());
         bo.setObjectId(im.getObjectId());
         bo.setActiveFromDateValue(im.getActiveFromDate() == null? null : new Timestamp(

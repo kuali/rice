@@ -29,7 +29,7 @@ import javax.persistence.Table;
 @AttributeOverrides({
         @AttributeOverride(name="code",column=@Column(name="CTZNSHP_CHNG_CD"))
 })
-@Table(name = "")
+@Table(name = "KRIM_CTZNSHP_CHNG_TYP_T")
 public class EntityCitizenshipChangeTypeBo extends CodedAttributeBo implements EntityCitizenshipChangeTypeEbo {
     private static final long serialVersionUID = 8260752296647393578L;
     public static EntityCitizenshipChangeTypeBo from(CodedAttribute immutable) {

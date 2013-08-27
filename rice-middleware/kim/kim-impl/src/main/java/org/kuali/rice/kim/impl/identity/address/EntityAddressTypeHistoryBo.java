@@ -20,13 +20,17 @@ import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
 import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.kuali.rice.kim.api.identity.CodedAttributeHistory;
 import org.kuali.rice.kim.framework.identity.address.EntityAddressTypeEbo;
-import org.kuali.rice.kim.impl.identity.CodedAttributeHistoryBoUtil;
+import org.kuali.rice.kim.impl.identity.CodedAttributeBo;
 import org.kuali.rice.kim.impl.identity.CodedAttributeHistoryBoContract;
+import org.kuali.rice.kim.impl.identity.CodedAttributeHistoryBoUtil;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Timestamp;
 
@@ -34,9 +38,12 @@ import java.sql.Timestamp;
 @AttributeOverrides({
         @AttributeOverride(name="code",column=@Column(name="ADDR_TYP_CD"))
 })
-@Table(name = "")
-public class EntityAddressTypeHistoryBo extends EntityAddressTypeBo implements EntityAddressTypeEbo, CodedAttributeHistoryBoContract {
+@Table(name = "KRIM_HIST_ADDR_TYP_T")
+public class EntityAddressTypeHistoryBo extends CodedAttributeBo implements EntityAddressTypeEbo, CodedAttributeHistoryBoContract {
     private static final long serialVersionUID = -907313055424585268L;
+    @Id
+    @GeneratedValue(generator = "KRIM_HIST_ENTITY_ADDR_TYP_ID_S")
+    @PortableSequenceGenerator(name = "KRIM_HIST_ENTITY_ADDR_TYP_ID_S")
     @Column(name ="HIST_ID")
     private Long historyId;
     @Column(name = "ACTV_FRM_DT")

@@ -21,12 +21,27 @@ import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.kuali.rice.kim.api.identity.CodedAttributeHistory;
 import org.kuali.rice.kim.impl.identity.CodedAttributeHistoryBoContract;
 import org.kuali.rice.kim.impl.identity.CodedAttributeHistoryBoUtil;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.sql.Timestamp;
 
+@Entity
+@AttributeOverrides({
+        @AttributeOverride(name="code",column=@Column(name="EMP_STAT_CD"))
+})
+@Table(name = "KRIM_HIST_EMP_TYP_T")
 public class EntityEmploymentTypeHistoryBo extends EntityEmploymentTypeBo implements CodedAttributeHistoryBoContract {
     private static final long serialVersionUID = 7546046609268383835L;
+    @Id
+    @GeneratedValue(generator = "KRIM_HIST_EMP_TYP_ID_S")
+    @PortableSequenceGenerator(name = "KRIM_HIST_EMP_TYP_ID_S")
     @Column(name ="HIST_ID")
     private Long historyId;
     @Column(name = "ACTV_FRM_DT")

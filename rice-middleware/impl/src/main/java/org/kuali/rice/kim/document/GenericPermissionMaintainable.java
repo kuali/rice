@@ -84,8 +84,7 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
     public void processAfterCopy(MaintenanceDocument document, Map<String, String[]> parameters) {
         super.processAfterCopy(document,parameters);
         // get id for new permission
-        String newId = getSequenceAccessorService()
-                .getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_PERM_ID_S, PermissionBo.class).toString();
+        String newId = getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_PERM_ID_S, PermissionBo.class).toString();
         ((GenericPermissionBo)document.getNewMaintainableObject().getDataObject()).setId(newId);
     }
 

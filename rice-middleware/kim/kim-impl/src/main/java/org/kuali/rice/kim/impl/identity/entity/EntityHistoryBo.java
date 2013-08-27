@@ -1,121 +1,63 @@
-/**
- * Copyright 2005-2013 The Kuali Foundation
- *
- * Licensed under the Educational Community License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.opensource.org/licenses/ecl2.php
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.kuali.rice.kim.impl.identity.entity;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.kuali.rice.kim.api.identity.EntityUtils;
-import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
-import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenship;
-import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
-import org.kuali.rice.kim.api.identity.entity.Entity;
-import org.kuali.rice.kim.api.identity.entity.EntityContract;
-import org.kuali.rice.kim.api.identity.entity.EntityDefault;
-import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifier;
-import org.kuali.rice.kim.api.identity.name.EntityName;
-import org.kuali.rice.kim.api.identity.name.EntityNameContract;
-import org.kuali.rice.kim.api.identity.personal.EntityEthnicity;
-import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.api.identity.residency.EntityResidency;
-import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
-import org.kuali.rice.kim.api.identity.visa.EntityVisa;
-import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo;
-import org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipBo;
-import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentBo;
-import org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierBo;
-import org.kuali.rice.kim.impl.identity.name.EntityNameBo;
-import org.kuali.rice.kim.impl.identity.personal.EntityBioDemographicsBo;
-import org.kuali.rice.kim.impl.identity.personal.EntityEthnicityBo;
-import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
-import org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo;
-import org.kuali.rice.kim.impl.identity.residency.EntityResidencyBo;
-import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo;
-import org.kuali.rice.kim.impl.identity.visa.EntityVisaBo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Timestamp;
 
 @javax.persistence.Entity
-@Table(name = "KRIM_ENTITY_T")
-public class EntityBo extends PersistableBusinessObjectBase implements EntityContract {
+@Table(name = "KRIM_HIST_ENTITY_T")
+public class EntityHistoryBo extends PersistableBusinessObjectBase /*implements EntityHistoryContract*/ {
     private static final long serialVersionUID = -2448541334029932773L;
+
     @Id
-    @GeneratedValue(generator = "KRIM_ENTITY_ID_S")
-    @PortableSequenceGenerator(name = "KRIM_ENTITY_ID_S")
+    @GeneratedValue(generator = "KRIM_HIST_ENTITY_ID_S")
+    @PortableSequenceGenerator(name = "KRIM_HIST_ENTITY_ID_S")
+    @Column(name = "HIST_ID")
+    private Long historyId;
+
     @Column(name = "ENTITY_ID")
     private String id;
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumn(
-            name = "ENTITY_ID", insertable = false, updatable = false)
-    private List<EntityNameBo> names = new ArrayList<EntityNameBo>();
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumn(
-            name = "ENTITY_ID", insertable = false, updatable = false)
-    private List<PrincipalBo> principals = new ArrayList<PrincipalBo>();
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumn(
-            name = "ENTITY_ID", insertable = false, updatable = false)
-    private List<EntityExternalIdentifierBo> externalIdentifiers = new ArrayList<EntityExternalIdentifierBo>();
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumn(
-            name = "ENTITY_ID", insertable = false, updatable = false)
-    private List<EntityAffiliationBo> affiliations = new ArrayList<EntityAffiliationBo>();
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumn(
-            name = "ENTITY_ID", insertable = false, updatable = false)
-    private List<EntityEmploymentBo> employmentInformation = new ArrayList<EntityEmploymentBo>();
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumn(
-            name = "ENTITY_ID", insertable = false, updatable = false)
-    private List<EntityTypeContactInfoBo> entityTypeContactInfos = new ArrayList<EntityTypeContactInfoBo>();
-    @OneToOne(targetEntity = EntityPrivacyPreferencesBo.class, fetch = FetchType.EAGER,
-            cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "ENTITY_ID", insertable = false,
-            updatable = false)
-    private EntityPrivacyPreferencesBo privacyPreferences;
-    @OneToOne(targetEntity = EntityBioDemographicsBo.class, fetch = FetchType.EAGER, cascade = {})
-    @JoinColumn(
-            name = "ENTITY_ID", insertable = false, updatable = false)
-    private EntityBioDemographicsBo bioDemographics;
-    @OneToMany(targetEntity = EntityCitizenshipBo.class, fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-    private List<EntityCitizenshipBo> citizenships = new ArrayList<EntityCitizenshipBo>();
-    @OneToMany(targetEntity = EntityEthnicityBo.class, fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-    private List<EntityEthnicityBo> ethnicities = new ArrayList<EntityEthnicityBo>();
-    @OneToMany(targetEntity = EntityResidencyBo.class, fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-    private List<EntityResidencyBo> residencies = new ArrayList<EntityResidencyBo>();
-    @OneToMany(targetEntity = EntityVisaBo.class, fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-    private List<EntityVisaBo> visas = new ArrayList<EntityVisaBo>();
+
+    @Column(name = "ACTV_FRM_DT")
+    private Timestamp activeFromDateValue;
+
+    @Column(name = "ACTV_TO_DT")
+    private Timestamp activeToDateValue;
+
+    /*@Transient
+    private List<EntityNameHistoryBo> names = new ArrayList<EntityNameHistoryBo>();
+    @Transient
+    private List<PrincipalHistoryBo> principals = new ArrayList<PrincipalHistoryBo>();
+    @Transient
+    private List<EntityExternalIdentifierHistoryBo> externalIdentifiers = new ArrayList<EntityExternalIdentifierHistoryBo>();
+    @Transient
+    private List<EntityAffiliationHistoryBo> affiliations = new ArrayList<EntityAffiliationHistoryBo>();
+    @Transient
+    private List<EntityEmploymentHistoryBo> employmentInformation = new ArrayList<EntityEmploymentHistoryBo>();
+    @Transient
+    private List<EntityTypeContactInfoHistoryBo> entityTypeContactInfos = new ArrayList<EntityTypeContactInfoHistoryBo>();
+    @Transient
+    private EntityPrivacyPreferencesHistoryBo privacyPreferences;
+    @Transient
+    private EntityBioDemographicsHistoryBo bioDemographics;
+    @Transient
+    private List<EntityCitizenshipHistoryBo> citizenships = new ArrayList<EntityCitizenshipHistoryBo>();
+    @Transient
+    private List<EntityEthnicityHistoryBo> ethnicities = new ArrayList<EntityEthnicityHistoryBo>();
+    @Transient
+    private List<EntityResidencyHistoryBo> residencies = new ArrayList<EntityResidencyHistoryBo>();
+    @Transient
+    private List<EntityVisaHistoryBo> visas = new ArrayList<EntityVisaHistoryBo>();*/
+
     @Column(name = "ACTV_IND")
     private boolean active;
 
-    public static org.kuali.rice.kim.api.identity.entity.Entity to(EntityBo bo) {
+    /*public static Entity to(EntityHistoryBo bo) {
         if (bo == null) {
             return null;
         }
@@ -123,7 +65,7 @@ public class EntityBo extends PersistableBusinessObjectBase implements EntityCon
         return Entity.Builder.create(bo).build();
     }
 
-    public static EntityDefault toDefault(EntityBo bo) {
+    public static EntityDefault toDefault(EntityHistoryBo bo) {
         if (bo == null) {
             return null;
         }
@@ -131,24 +73,24 @@ public class EntityBo extends PersistableBusinessObjectBase implements EntityCon
         return EntityDefault.Builder.create(bo).build();
     }
 
-    public static EntityBo from(org.kuali.rice.kim.api.identity.entity.Entity immutable) {
+    public static EntityHistoryBo from(Entity immutable) {
         return fromAndUpdate(immutable, null);
     }
-
+*/
     /**
      * Creates a EntityBo business object from an immutable representation of a Entity.
      *
      * @param immutable an immutable Entity
      * @return a EntityBo
      */
-    public static EntityBo fromAndUpdate(Entity immutable, EntityBo toUpdate) {
+/*    public static EntityHistoryBo fromAndUpdate(Entity immutable, EntityHistoryBo toUpdate) {
         if (immutable == null) {
             return null;
         }
 
-        EntityBo bo = toUpdate;
+        EntityHistoryBo bo = toUpdate;
         if (toUpdate == null) {
-            bo = new EntityBo();
+            bo = new EntityHistoryBo();
         }
 
         bo.active = immutable.isActive();
@@ -434,6 +376,6 @@ public class EntityBo extends PersistableBusinessObjectBase implements EntityCon
 
     public void setActive(boolean active) {
         this.active = active;
-    }
+    }*/
 
 }

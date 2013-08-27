@@ -24,11 +24,18 @@ import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "KRIM_ENTITY_DSBTY_T")
 public class EntityDisabilityBo extends PersistableBusinessObjectBase implements EntityDisabilityContract {
     private static final long serialVersionUID = -575024049319370685L;
     @Id
@@ -36,14 +43,29 @@ public class EntityDisabilityBo extends PersistableBusinessObjectBase implements
     @PortableSequenceGenerator(name = "KRIM_ENTITY_DSBTY_ID_S")
     @Column(name = "ID")
     private String id;
+
     @Column(name = "ENTITY_ID")
     private String entityId;
+
+    @Column(name="STAT_CD")
     private String statusCode;
+
+    @Column(name="SRC_TYP_CD")
     private String determinationSourceTypeCode;
+
+    @ManyToOne(targetEntity = EntityMilitaryRelationshipStatusBo.class, fetch = FetchType.EAGER, cascade = {})
+    @JoinColumn(name = "SRC_TYP_CD", insertable = false, updatable = false)
     private EntityDisabilityDeterminationSourceBo determinationSourceType;
-    /* hook up with ojb indirection table */
+
+    @ManyToOne(targetEntity = EntityMilitaryRelationshipStatusBo.class, fetch = FetchType.EAGER, cascade = {})
+    @JoinColumn(name = "ACCMDN_TYP_CD", insertable = false, updatable = false)
     private List<EntityDisabilityAccomodationNeededBo> accommodationsNeeded;
+
+    @Column(name="CNDTN_TYP_CD")
     private String conditionTypeCode;
+
+    @ManyToOne(targetEntity = EntityMilitaryRelationshipStatusBo.class, fetch = FetchType.EAGER, cascade = {})
+    @JoinColumn(name = "CNDTN_TYP_CD", insertable = false, updatable = false)
     private EntityDisabilityConditionTypeBo conditionType;
     @javax.persistence.Convert(converter=BooleanYNConverter.class)
     @Column(name = "ACTV_IND")

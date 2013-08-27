@@ -41,6 +41,7 @@ import org.kuali.rice.kim.impl.role.RoleMemberAttributeDataBo;
 import org.kuali.rice.kim.impl.role.RoleMemberBo;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 
@@ -110,7 +111,7 @@ public class RoleServiceImplTest extends KIMTestCase {
         String kimTypeId = "1";
 
         //Create delegation
-        String id = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_DLGN_MBR_ID_S");
+        String id = getNextSequenceStringValue("KRIM_DLGN_MBR_ID_S");
         DelegateTypeBo delegate = new DelegateTypeBo();
         delegate.setDelegationId(id);
         delegate.setDelegationType(DelegationType.PRIMARY);
@@ -317,7 +318,7 @@ public class RoleServiceImplTest extends KIMTestCase {
         String kimTypeId = "1";
 
         //Create delegation
-        String id = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_DLGN_MBR_ID_S");
+        String id = getNextSequenceStringValue("KRIM_DLGN_MBR_ID_S");
         DelegateTypeBo delegate = new DelegateTypeBo();
         delegate.setDelegationId(id);
         delegate.setDelegationType(DelegationType.PRIMARY);

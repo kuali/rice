@@ -19,9 +19,11 @@ import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -33,6 +35,9 @@ import javax.persistence.Table;
 public class PrincipalBo extends PersistableBusinessObjectBase implements PrincipalContract {
     private static final long serialVersionUID = 1L;
     @Id
+
+    @GeneratedValue(generator = "KRIM_PRNCPL_ID_S")
+    @PortableSequenceGenerator(name = "KRIM_PRNCPL_ID_S")
     @Column(name = "PRNCPL_ID", columnDefinition = "VARCHAR(40)")
     private String principalId;
     @Column(name = "PRNCPL_NM")

@@ -26,7 +26,7 @@ import javax.persistence.Table;
 
 @Entity
 @AttributeOverrides({
-        @AttributeOverride(name="code",column=@Column(name="SRC_TYP_CD"))
+    @AttributeOverride(name="code",column=@Column(name="SRC_TYP_CD"))
 })
 @Table(name = "")
 public class EntityDisabilityConditionTypeBo extends CodedAttributeBo {

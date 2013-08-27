@@ -17,13 +17,15 @@ package org.kuali.rice.kim.impl.identity.citizenship;
 
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
-import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenship;
 import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenshipHistory;
 import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenshipHistoryContract;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -33,14 +35,24 @@ import java.sql.Timestamp;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
-@Table(name = "")
-public class EntityCitizenshipHistoryBo extends EntityCitizenshipBo implements EntityCitizenshipHistoryContract {
+@Table(name = "KRIM_HIST_ENTITY_CTZNSHP_T")
+public class EntityCitizenshipHistoryBo extends EntityCitizenshipBase implements EntityCitizenshipHistoryContract {
+    private static final long serialVersionUID = -4224793335812520912L;
+    @Id
+    @GeneratedValue(generator = "KRIM_HIST_ENTITY_CTZNSHP_ID_S")
+    @PortableSequenceGenerator(name = "KRIM_HIST_ENTITY_CTZNSHP_ID_S")
     @Column(name ="HIST_ID")
     private Long historyId;
+
+    @Column(name = "ENTITY_CTZNSHP_ID")
+    private String id;
+
     @Column(name = "ACTV_FRM_DT")
     private Timestamp activeFromDateValue;
+
     @Column(name = "ACTV_TO_DT")
     private Timestamp activeToDateValue;
+
     @ManyToOne(targetEntity = EntityCitizenshipStatusHistoryBo.class, fetch = FetchType.EAGER, cascade = {})
     @JoinColumn(name = "CTZNSHP_STAT_CD", insertable = false, updatable = false)
     private EntityCitizenshipStatusHistoryBo status;
@@ -56,6 +68,15 @@ public class EntityCitizenshipHistoryBo extends EntityCitizenshipBo implements E
 
     public void setHistoryId(Long historyId) {
         this.historyId = historyId;
+    }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Timestamp getActiveFromDateValue() {
@@ -134,7 +155,7 @@ public class EntityCitizenshipHistoryBo extends EntityCitizenshipBo implements E
      * @param ctzn immutable object
      * @return the history bo
      */
-    public static EntityCitizenshipHistoryBo from(EntityCitizenship ctzn,
+    /*public static EntityCitizenshipHistoryBo from(EntityCitizenship ctzn,
             Timestamp fromDate,
             Timestamp toDate) {
         if (ctzn == null) {
@@ -148,7 +169,7 @@ public class EntityCitizenshipHistoryBo extends EntityCitizenshipBo implements E
         bo.setActiveToDateValue(toDate == null? null :toDate);
 
         return bo;
-    }
+    }*/
 
     /**
      * Converts a main object to its historical counterpart

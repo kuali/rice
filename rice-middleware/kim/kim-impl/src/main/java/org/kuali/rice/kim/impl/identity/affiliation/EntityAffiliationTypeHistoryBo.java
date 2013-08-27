@@ -22,15 +22,28 @@ import org.kuali.rice.kim.api.identity.CodedAttributeHistory;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationTypeHistory;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationTypeHistoryContract;
+import org.kuali.rice.kim.impl.identity.CodedAttributeBo;
 import org.kuali.rice.kim.impl.identity.CodedAttributeHistoryBoContract;
 import org.kuali.rice.kim.impl.identity.CodedAttributeHistoryBoUtil;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.sql.Timestamp;
 
+@Entity
+@AttributeOverrides({
+    @AttributeOverride(name="code",column=@Column(name="EMP_TYP_CD"))
+})
+@Table(name = "KRIM_HIST_AFLTN_TYP_T")
 public class EntityAffiliationTypeHistoryBo extends EntityAffiliationTypeBo implements EntityAffiliationTypeHistoryContract, CodedAttributeHistoryBoContract {
     private static final long serialVersionUID = -907313055424585268L;
+
+    @Id
     @Column(name ="HIST_ID")
     private Long historyId;
     @Column(name = "ACTV_FRM_DT")

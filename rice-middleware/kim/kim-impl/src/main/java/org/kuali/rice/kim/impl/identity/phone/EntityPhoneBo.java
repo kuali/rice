@@ -23,10 +23,12 @@ import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -37,6 +39,8 @@ import javax.persistence.Transient;
 @Table(name = "KRIM_ENTITY_PHONE_T")
 public class EntityPhoneBo extends PersistableBusinessObjectBase implements EntityPhoneContract {
     @Id
+    @GeneratedValue(generator = "KRIM_ENTITY_PHONE_ID_S")
+    @PortableSequenceGenerator(name = "KRIM_ENTITY_PHONE_ID_S")
     @Column(name = "ENTITY_PHONE_ID")
     private String id;
 

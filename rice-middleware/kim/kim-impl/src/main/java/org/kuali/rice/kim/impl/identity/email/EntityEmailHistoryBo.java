@@ -17,21 +17,34 @@ package org.kuali.rice.kim.impl.identity.email;
 
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
-import org.kuali.rice.kim.api.identity.email.EntityEmail;
 import org.kuali.rice.kim.api.identity.email.EntityEmailHistory;
 import org.kuali.rice.kim.api.identity.email.EntityEmailHistoryContract;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.sql.Timestamp;
 
-public class EntityEmailHistoryBo extends EntityEmailBo implements EntityEmailHistoryContract {
+@Entity
+@Table(name = "KRIM_HIST_ENTITY_EMAIL_T")
+public class EntityEmailHistoryBo extends EntityEmailBase implements EntityEmailHistoryContract {
     private static final long serialVersionUID = -8670268472560378016L;
+    @Id
+    @GeneratedValue(generator = "KRIM_HIST_ENTITY_EMAIL_ID_S")
+    @PortableSequenceGenerator(name = "KRIM_HIST_ENTITY_EMAIL_ID_S")
     @Column(name ="HIST_ID")
     private Long historyId;
+    @Column(name = "ENTITY_EMAIL_ID")
+    private String id;
     @Column(name = "ACTV_FRM_DT")
     private Timestamp activeFromDateValue;
     @Column(name = "ACTV_TO_DT")
     private Timestamp activeToDateValue;
+    @Transient
     private EntityEmailTypeHistoryBo emailType;
 
     @Override
@@ -41,6 +54,15 @@ public class EntityEmailHistoryBo extends EntityEmailBo implements EntityEmailHi
 
     public void setHistoryId(Long historyId) {
         this.historyId = historyId;
+    }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Timestamp getActiveFromDateValue() {
@@ -110,7 +132,7 @@ public class EntityEmailHistoryBo extends EntityEmailBo implements EntityEmailHi
      * @param email immutable object
      * @return the history bo
      */
-    public static EntityEmailHistoryBo from(EntityEmail email,
+    /*public static EntityEmailHistoryBo from(EntityEmail email,
             Timestamp fromDate,
             Timestamp toDate) {
         if (email == null) {
@@ -123,7 +145,7 @@ public class EntityEmailHistoryBo extends EntityEmailBo implements EntityEmailHi
         bo.setActiveToDateValue(toDate == null? null :toDate);
 
         return bo;
-    }
+    }*/
 
     /**
      * Converts a main object to its historical counterpart

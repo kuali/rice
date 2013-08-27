@@ -30,8 +30,13 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -45,12 +50,14 @@ public class EntityBioDemographicsBo extends PersistableBusinessObjectBase imple
     @Column(name = "ENTITY_ID")
     private String entityId;
     @Column(name = "BIRTH_DT")
+    @Temporal(TemporalType.DATE)
     private java.util.Date birthDateValue;
     @Column(name = "GNDR_CD")
     private String genderCode;
     @Column(name = "GNDR_CHNG_CD")
     private String genderChangeCode;
     @Column(name = "DECEASED_DT")
+    @Temporal(TemporalType.DATE)
     private java.util.Date deceasedDateValue;
     @Column(name = "MARITAL_STATUS")
     private String maritalStatusCode;
@@ -68,8 +75,12 @@ public class EntityBioDemographicsBo extends PersistableBusinessObjectBase imple
     private String geographicOrigin;
     @Column(name = "NOTE_MSG")
     private String noteMessage;
-    private List<EntityMilitary> militaryRecords;
-    private List<EntityDisability> disabilities;
+    @OneToMany(fetch= FetchType.EAGER)
+    @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = true, updatable = true)
+    private List<EntityMilitaryBo> militaryRecords;
+    @OneToMany(fetch= FetchType.EAGER)
+    @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = true, updatable = true)
+    private List<EntityDisabilityBo> disabilities;
     @Transient
     private boolean suppressPersonal;
 
@@ -391,20 +402,20 @@ public class EntityBioDemographicsBo extends PersistableBusinessObjectBase imple
     }
 
     @Override
-    public List<EntityMilitary> getMilitaryRecords() {
+    public List<EntityMilitaryBo> getMilitaryRecords() {
         return militaryRecords;
     }
 
-    public void setMilitaryRecords(List<EntityMilitary> militaryRecords) {
+    public void setMilitaryRecords(List<EntityMilitaryBo> militaryRecords) {
         this.militaryRecords = militaryRecords;
     }
 
     @Override
-    public List<EntityDisability> getDisabilities() {
+    public List<EntityDisabilityBo> getDisabilities() {
         return disabilities;
     }
 
-    public void setDisabilities(List<EntityDisability> disabilities) {
+    public void setDisabilities(List<EntityDisabilityBo> disabilities) {
         this.disabilities = disabilities;
     }
 

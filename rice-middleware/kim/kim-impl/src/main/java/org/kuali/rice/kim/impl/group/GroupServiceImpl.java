@@ -1038,7 +1038,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
             for (GroupAttributeHistoryBo attr : attrHistBos) {
                 attr.setAssignedToId(groupHistory.getId());
                 if (groupHistory.getHistoryId() != null) {
-                    attr.setAssignedToHistoryId(groupHistory.getHistoryId());
+                    attr.setAssignedToId(String.valueOf(groupHistory.getHistoryId()));
                 }
             }
             bo.setAttributeHistoryDetails(attrHistBos);

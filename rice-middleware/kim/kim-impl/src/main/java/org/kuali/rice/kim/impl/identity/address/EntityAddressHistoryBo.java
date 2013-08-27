@@ -17,27 +17,40 @@ package org.kuali.rice.kim.impl.identity.address;
 
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
-import org.kuali.rice.kim.api.identity.address.EntityAddress;
 import org.kuali.rice.kim.api.identity.address.EntityAddressHistory;
 import org.kuali.rice.kim.api.identity.address.EntityAddressHistoryContract;
-import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeHistoryBo;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.sql.Timestamp;
 
-public class EntityAddressHistoryBo extends EntityAddressBo implements EntityAddressHistoryContract {
+@Entity
+@Table(name = "KRIM_HIST_ENTITY_ADDR_T")
+public class EntityAddressHistoryBo extends EntityAddressBase implements EntityAddressHistoryContract {
     private static final long serialVersionUID = -8670268472560378016L;
+    @Id
+    @GeneratedValue(generator = "KRIM_HIST_ENTITY_ADDR_ID_S")
+    @PortableSequenceGenerator(name = "KRIM_HIST_ENTITY_ADDR_ID_S")
     @Column(name ="HIST_ID")
     private Long historyId;
+
+    @Column(name = "ENTITY_ADDR_ID")
+    private String id;
+
     @Column(name = "ACTV_FRM_DT")
     private Timestamp activeFromDateValue;
+
     @Column(name = "ACTV_TO_DT")
     private Timestamp activeToDateValue;
-    @ManyToOne(targetEntity = EntityAddressTypeHistoryBo.class, fetch = FetchType.EAGER, cascade = {})
-    @JoinColumn(name = "ADDR_TYP_CD", insertable = false, updatable = false)
+
+    //@ManyToOne(fetch = FetchType.EAGER, cascade = {})
+    //@JoinColumn(name = "ADDR_TYP_CD", referencedColumnName = "ADDR_TYP_CD", insertable = false, updatable = false)
+    @Transient
     private EntityAddressTypeHistoryBo addressType;
 
     @Override
@@ -47,6 +60,15 @@ public class EntityAddressHistoryBo extends EntityAddressBo implements EntityAdd
 
     public void setHistoryId(Long historyId) {
         this.historyId = historyId;
+    }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Timestamp getActiveFromDateValue() {
@@ -116,7 +138,7 @@ public class EntityAddressHistoryBo extends EntityAddressBo implements EntityAdd
      * @param address immutable object
      * @return the history bo
      */
-    public static EntityAddressHistoryBo from(EntityAddress address,
+    /*public static EntityAddressHistoryBo from(EntityAddress address,
             Timestamp fromDate,
             Timestamp toDate) {
         if (address == null) {
@@ -129,7 +151,7 @@ public class EntityAddressHistoryBo extends EntityAddressBo implements EntityAdd
         bo.setActiveToDateValue(toDate == null? null :toDate);
 
         return bo;
-    }
+    }*/
 
     /**
      * Converts a main object to its historical counterpart

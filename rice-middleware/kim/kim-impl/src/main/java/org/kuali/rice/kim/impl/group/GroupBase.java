@@ -33,9 +33,6 @@ import java.util.Map;
 public abstract class GroupBase extends PersistableBusinessObjectBase implements GroupEbo {
     private static final long serialVersionUID = 1L;
 
-    //@Column(name="GRP_ID")
-    //private String id;
-
     @Column(name="GRP_NM")
     private String name;
 
@@ -51,14 +48,6 @@ public abstract class GroupBase extends PersistableBusinessObjectBase implements
 
     @Column(name="NMSPC_CD")
     private String namespaceCode;
-
-    //@OneToMany(targetEntity=GroupMemberBo.class,cascade={CascadeType.ALL},fetch= FetchType.EAGER)
-    //@JoinColumn(name = "id", referencedColumnName = "groupId")
-    //private List<GroupMemberBo> members;
-
-    //@OneToMany(targetEntity=GroupAttributeBo.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER)
-    //@JoinColumn(name = "id", referencedColumnName = "assignedToId")
-    //private List<GroupAttributeBo> attributeDetails;
 
     @Transient
     private List<Person> memberPersons;
@@ -78,15 +67,6 @@ public abstract class GroupBase extends PersistableBusinessObjectBase implements
     public void setAttributes(Map<String, String> attributes) {
         this.attributes = attributes;
     }
-
-/*    @Override
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }*/
 
     @Override
     public String getName() {
@@ -132,142 +112,6 @@ public abstract class GroupBase extends PersistableBusinessObjectBase implements
     public void setNamespaceCode(String namespaceCode) {
         this.namespaceCode = namespaceCode;
     }
-
-    /*public List<GroupMemberBo> getMembers() {
-        return members;
-    }
-
-    public void setMembers(List<GroupMemberBo> members) {
-        this.members = members;
-    }
-
-    public List<GroupAttributeBo> getAttributeDetails() {
-        return attributeDetails;
-    }
-
-    public void setAttributeDetails(List<GroupAttributeBo> attributeDetails) {
-        this.attributeDetails = attributeDetails;
-    }*/
-
-
-/*    *//**
-     * Converts a mutable bo to its immutable counterpart
-     * @param bo the mutable business object
-     * @return the immutable object
-     *//*
-    public static Group to(GroupBase bo) {
-        if (bo == null) {
-            return null;
-        }
-
-        return Group.Builder.create(bo).build();
-    }
-
-    *//**
-     * Converts a immutable object to its mutable counterpart
-     * @param im immutable object
-     * @return the mutable bo
-     *//*
-    public static GroupBase from(Group im) {
-        if (im == null) {
-            return null;
-        }
-
-        GroupBase bo = new GroupBase();
-        bo.setId(im.getId());
-        bo.setNamespaceCode(im.getNamespaceCode());
-        bo.setName(im.getName());
-        bo.setDescription(im.getDescription());
-        bo.setActive(im.isActive());
-        bo.setKimTypeId(im.getKimTypeId());
-        bo.setAttributes(im.getAttributes());
-        bo.setVersionNumber(im.getVersionNumber());
-        bo.setObjectId(im.getObjectId());
-
-        return bo;
-    }
-
-    //helper function to get Attribute Value with specific id
-    public String getGroupAttributeValueById(String attributeId) {
-        for (GroupAttributeBo gad : getAttributeDetails()) {
-            if (gad.getKimAttributeId().equals(attributeId.trim())) {
-                return gad.getAttributeValue();
-            }
-        }
-        return null;
-    }
-
-    private void splitMembersToTypes() {
-        memberPersons = new ArrayList<Person>();
-        memberGroups = new ArrayList<Group>();
-        if (getMembers() != null) {
-            for ( GroupMemberBo groupMember : getMembers() ) {
-                if (groupMember.isActive(new DateTime())) {
-                    if ( KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.equals(groupMember.getType())) {
-                        Person tempPerson =  KimApiServiceLocator.getPersonService().getPerson(groupMember.getMemberId());
-                        if (tempPerson != null && tempPerson.isActive()) {
-                            memberPersons.add(tempPerson);
-                        }
-                    } else if (KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE.equals(groupMember.getType())) {
-                        Group tempGroup =  KimApiServiceLocator.getGroupService().getGroup(groupMember.getMemberId());
-                        if (tempGroup != null && tempGroup.isActive()) {
-                            memberGroups.add(tempGroup);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public List<Person> getMemberPersons() {
-        if (this.memberPersons == null) {
-            splitMembersToTypes();
-        }
-        return this.memberPersons;
-    }
-
-    public void setMemberPersons(List<Person> memberPersons) {
-        this.memberPersons = memberPersons;
-    }
-
-    public List<String> getMemberPrincipalIds() {
-        List<String> principalIds = new ArrayList<String>();
-        if (getMembers() != null) {
-            for ( GroupMemberBo groupMember : getMembers() ) {
-                if (groupMember.isActive(new DateTime())) {
-                    if ( KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.equals(groupMember.getType())) {
-                        principalIds.add(groupMember.getMemberId());
-                    }
-                }
-            }
-        }
-        return principalIds;
-    }
-
-    public List<String> getMemberGroupIds() {
-        List<String> principalIds = new ArrayList<String>();
-        if (getMembers() != null) {
-            for ( GroupMemberBo groupMember : getMembers() ) {
-                if (groupMember.isActive(new DateTime())) {
-                    if ( KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE.equals(groupMember.getType())) {
-                        principalIds.add(groupMember.getMemberId());
-                    }
-                }
-            }
-        }
-        return principalIds;
-    }
-
-    public List<Group> getMemberGroups() {
-        if (this.memberGroups == null) {
-            splitMembersToTypes();
-        }
-        return this.memberGroups;
-    }
-
-    public void setMemberGroups(List<Group> memberGroups) {
-        this.memberGroups = memberGroups;
-    }*/
 
     public KimTypeBo getKimTypeInfo() {
         return KimTypeBo.from(KimApiServiceLocator.getKimTypeInfoService().getKimType(this.kimTypeId));

@@ -61,16 +61,22 @@ public class EntityTypeContactInfoBo extends PersistableBusinessObjectBase imple
     private EntityTypeBo entityType;
     @OneToMany(targetEntity = EntityTypeContactInfoBo.class, fetch = FetchType.EAGER,
             cascade = {CascadeType.ALL})
-    @JoinColumns({@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false),
-            @JoinColumn(name = "ENT_TYP_CD", insertable = false, updatable = false)})
+    @JoinColumns({
+            @JoinColumn(name = "ENTITY_ID", referencedColumnName="ENTITY_ID", insertable = false, updatable = false),
+            @JoinColumn(name = "ENT_TYP_CD", referencedColumnName="ENT_TYP_CD", insertable = false, updatable = false)
+    })
     private List<EntityEmailBo> emailAddresses;
     @OneToMany(targetEntity = EntityPhoneBo.class, fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumns({@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false),
-            @JoinColumn(name = "ENT_TYP_CD", insertable = false, updatable = false)})
+    @JoinColumns({
+            @JoinColumn(name = "ENTITY_ID", referencedColumnName="ENTITY_ID", insertable = false, updatable = false),
+            @JoinColumn(name = "ENT_TYP_CD", referencedColumnName="ENT_TYP_CD", insertable = false, updatable = false)
+    })
     private List<EntityPhoneBo> phoneNumbers;
     @OneToMany(targetEntity = EntityAddressBo.class, fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumns({@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false),
-            @JoinColumn(name = "ENT_TYP_CD", insertable = false, updatable = false)})
+    @JoinColumns({
+            @JoinColumn(name = "ENTITY_ID", referencedColumnName="ENTITY_ID", insertable = false, updatable = false),
+            @JoinColumn(name = "ENT_TYP_CD", referencedColumnName="ENT_TYP_CD", insertable = false, updatable = false)
+    })
     private List<EntityAddressBo> addresses;
     @javax.persistence.Convert(converter=BooleanYNConverter.class)
     @Column(name = "ACTV_IND")

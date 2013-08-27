@@ -311,20 +311,29 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
 
             if(StringUtils.isNotBlank(attributePrefix) && StringUtils.isNotBlank(attributeName) &&
                     objectMetadata!= null){
-                DataObjectRelationship rd = objectMetadata.getRelationship(attributePrefix);
-                if(rd != null){
-                    DataObjectMetadata relatedObjectMetadata =
-                            dataObjectService.getMetadataRepository().getMetadata(rd.getRelatedType());
-                    if(relatedObjectMetadata != null){
-                        if(DataObjectUtils.isNestedAttribute(attributeName)){
-                            return getPropertyTypeChild(relatedObjectMetadata,attributeName);
-                        } else{
-                            return relatedObjectMetadata.getAttribute(attributeName).getDataType().getType();
-                        }
-                    }
+                Class<?> propertyType = traverseRelationship(objectMetadata,attributePrefix,attributeName);
+                if(propertyType != null){
+                    return propertyType;
                 }
             }
         }
         return getPropertyType(propertyName);
+    }
+
+    private Class<?> traverseRelationship(DataObjectMetadata objectMetadata,String attributePrefix,
+                                          String attributeName){
+        DataObjectRelationship rd = objectMetadata.getRelationship(attributePrefix);
+        if(rd != null){
+            DataObjectMetadata relatedObjectMetadata =
+                    dataObjectService.getMetadataRepository().getMetadata(rd.getRelatedType());
+            if(relatedObjectMetadata != null){
+                if(DataObjectUtils.isNestedAttribute(attributeName)){
+                    return getPropertyTypeChild(relatedObjectMetadata,attributeName);
+                } else{
+                    return relatedObjectMetadata.getAttribute(attributeName).getDataType().getType();
+                }
+            }
+        }
+        return null;
     }
 }

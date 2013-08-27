@@ -34,40 +34,40 @@ public class OfficeOfAffirmativeActionTest extends KEWTestCase {
 		loadXmlFile("OAATestWorkgroups.xml");
 
 		// attributes
-		loadXmlFileFromFileSystem(OAA_DIR + "EdocliteDepartmentSearchAttribute.xml");
-		loadXmlFileFromFileSystem(OAA_DIR + "EdocliteExpectedStartDateSearchAttribute.xml");
-        loadXmlFileFromFileSystem(OAA_DIR + "EdocliteInitiatorAttribute.xml");
-        loadXmlFileFromFileSystem(OAA_DIR + "EdocliteOAASearchAttribute.xml");
-        loadXmlFileFromFileSystem(OAA_DIR + "EdocliteSalaryGradeSearchAttribute.xml");
-        loadXmlFileFromFileSystem(OAA_DIR + "EdocliteSchoolAttribute.xml");
-        loadXmlFileFromFileSystem(OAA_DIR + "EdocliteSchoolSearchAttribute.xml");
-        loadXmlFileFromFileSystem(OAA_DIR + "EdocliteTotalAMFSearchAttribute.xml");
-        loadXmlFileFromFileSystem(OAA_DIR + "EdocliteTotalApplicantsSearchAttribute.xml");
+		loadXmlFile(OAA_DIR + "EdocliteDepartmentSearchAttribute.xml");
+        loadXmlFile(OAA_DIR + "EdocliteExpectedStartDateSearchAttribute.xml");
+        loadXmlFile(OAA_DIR + "EdocliteInitiatorAttribute.xml");
+        loadXmlFile(OAA_DIR + "EdocliteOAASearchAttribute.xml");
+        loadXmlFile(OAA_DIR + "EdocliteSalaryGradeSearchAttribute.xml");
+        loadXmlFile(OAA_DIR + "EdocliteSchoolAttribute.xml");
+        loadXmlFile(OAA_DIR + "EdocliteSchoolSearchAttribute.xml");
+        loadXmlFile(OAA_DIR + "EdocliteTotalAMFSearchAttribute.xml");
+        loadXmlFile(OAA_DIR + "EdocliteTotalApplicantsSearchAttribute.xml");
 
         // templates
-        loadXmlFileFromFileSystem(OAA_DIR + "OfficeOfAffirmativeActionInitiatorAcknowledgmentRuleTemplate.xml");
-        loadXmlFileFromFileSystem(OAA_DIR + "OfficeOfAffirmativeActionOfficerRuleTemplate.xml");
-        loadXmlFileFromFileSystem(OAA_DIR + "OfficeOfAffirmativeActionSchoolAcknowledgementRuleTemplate.xml");
-        loadXmlFileFromFileSystem(OAA_DIR + "OfficeOfAffirmativeActionSchoolRuleTemplate.xml");
-        loadXmlFileFromFileSystem(OAA_DIR + "OfficeOfAffirmativeActionViceChancellorRuleTemplate.xml");
+        loadXmlFile(OAA_DIR + "OfficeOfAffirmativeActionInitiatorAcknowledgmentRuleTemplate.xml");
+        loadXmlFile(OAA_DIR + "OfficeOfAffirmativeActionOfficerRuleTemplate.xml");
+        loadXmlFile(OAA_DIR + "OfficeOfAffirmativeActionSchoolAcknowledgementRuleTemplate.xml");
+        loadXmlFile(OAA_DIR + "OfficeOfAffirmativeActionSchoolRuleTemplate.xml");
+        loadXmlFile(OAA_DIR + "OfficeOfAffirmativeActionViceChancellorRuleTemplate.xml");
 
         // document types
-        loadXmlFileFromFileSystem(OAA_DIR + "OfficeOfAffirmativeActionDocType.xml");
-        loadXmlFileFromFileSystem(OAA_DIR + "InterviewRequestDocType.xml");
-        loadXmlFileFromFileSystem(OAA_DIR + "OfferRequestDocType.xml");
-        loadXmlFileFromFileSystem(OAA_DIR + "SearchStatusDocType.xml");
-        loadXmlFileFromFileSystem(OAA_DIR + "VacancyNoticeDocType.xml");
-        loadXmlFileFromFileSystem(OAA_DIR + "WaiverRequestDocType.xml");
+        loadXmlFile(OAA_DIR + "OfficeOfAffirmativeActionDocType.xml");
+        loadXmlFile(OAA_DIR + "InterviewRequestDocType.xml");
+        loadXmlFile(OAA_DIR + "OfferRequestDocType.xml");
+        loadXmlFile(OAA_DIR + "SearchStatusDocType.xml");
+        loadXmlFile(OAA_DIR + "VacancyNoticeDocType.xml");
+        loadXmlFile(OAA_DIR + "WaiverRequestDocType.xml");
 
         // forms
-        loadXmlFileFromFileSystem(OAA_DIR + "InterviewRequestForm.xml");
-        loadXmlFileFromFileSystem(OAA_DIR + "OfferRequestForm.xml");
-        loadXmlFileFromFileSystem(OAA_DIR + "SearchStatusForm.xml");
-        loadXmlFileFromFileSystem(OAA_DIR + "VacancyNoticeForm.xml");
-        loadXmlFileFromFileSystem(OAA_DIR + "WaiverRequestForm.xml");
+        loadXmlFile(OAA_DIR + "InterviewRequestForm.xml");
+        loadXmlFile(OAA_DIR + "OfferRequestForm.xml");
+        loadXmlFile(OAA_DIR + "SearchStatusForm.xml");
+        loadXmlFile(OAA_DIR + "VacancyNoticeForm.xml");
+        loadXmlFile(OAA_DIR + "WaiverRequestForm.xml");
 
         // rules
-        loadXmlFileFromFileSystem(OAA_DIR + "OfficeOfAffirmativeActionPilotRules.xml");
+        loadXmlFile(OAA_DIR + "OfficeOfAffirmativeActionPilotRules.xml");
 
         // widgets
         loadXmlFile(EDLXmlUtils.class, "default-widgets.xml");

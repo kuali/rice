@@ -19,9 +19,11 @@ import org.kuali.rice.coreservice.api.style.Style
 import org.kuali.rice.coreservice.api.style.StyleContract
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.krad.data.jpa.converters.Boolean01BigDecimalConverter
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator
 
 import javax.persistence.Column
 import javax.persistence.Entity
+import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.Table
 import javax.persistence.NamedQuery
@@ -43,6 +45,8 @@ class StyleBo extends PersistableBusinessObjectBase implements StyleContract {
 
     @Id
     @Column(name="STYLE_ID")
+    @GeneratedValue(generator = "KREW_EDL_S")
+    @PortableSequenceGenerator(name = "KREW_EDL_S")
 	String id
     @Column(name="NM")
 	String name

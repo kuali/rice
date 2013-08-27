@@ -22,6 +22,7 @@ import org.kuali.rice.coreservice.api.style.StyleService;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.springframework.beans.factory.annotation.Required;
 
 import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerConfigurationException;

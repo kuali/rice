@@ -47,8 +47,7 @@ public class StyleRepositoryServiceImpl implements StyleRepositoryService {
 
     private StyleXmlParser styleXmlParser;
     private DataObjectService dataObjectService;
-
-    private EntityManager entityManager;
+    private StyleDao styleDao;
 
     public void setStyleXmlParser(StyleXmlParser styleXmlParser) {
         this.styleXmlParser = styleXmlParser;
@@ -139,10 +138,8 @@ public class StyleRepositoryServiceImpl implements StyleRepositoryService {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<String> getAllStyleNames() {
-        return (List<String>)entityManager.createNamedQuery("StyleBo.findAllStyleNames").
-                            getResultList();
+        return styleDao.getAllStyleNames();
     }
 
 
@@ -154,11 +151,8 @@ public class StyleRepositoryServiceImpl implements StyleRepositoryService {
         this.dataObjectService = dataObjectService;
     }
 
-    public EntityManager getEntityManager() {
-        return entityManager;
-    }
-
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    @Required
+    public void setStyleDao(StyleDao styleDao) {
+        this.styleDao = styleDao;
     }
 }

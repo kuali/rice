@@ -37,7 +37,7 @@ import javax.persistence.NamedQuery
 @Entity
 @Table(name="KRCR_STYLE_T")
 @NamedQuery(name="StyleBo.findAllStyleNames",
-query="SELECT sb.name FROM StyleBo sb"
+query="SELECT sb.name FROM StyleBo sb where sb.active=true"
 )
 class StyleBo extends PersistableBusinessObjectBase implements StyleContract {
 

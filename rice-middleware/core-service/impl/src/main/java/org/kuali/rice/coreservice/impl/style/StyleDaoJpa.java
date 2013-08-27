@@ -16,11 +16,8 @@
 
 package org.kuali.rice.coreservice.impl.style;
 
-import org.springframework.beans.factory.annotation.Required;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceUnit;
 import java.util.List;
 
 /**

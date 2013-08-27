@@ -23,6 +23,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.test.BaselineTestCase;
 
 import java.util.Iterator;
 import java.util.List;
@@ -40,6 +41,7 @@ import static org.junit.Assert.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB) // need to make sure we don't run test in tx because of exception routing
 public class ActionRequestScenariosTest extends KEWTestCase {
 
 	protected void loadTestData() throws Exception {

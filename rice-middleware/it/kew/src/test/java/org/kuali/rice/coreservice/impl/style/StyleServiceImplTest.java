@@ -38,6 +38,7 @@ import java.io.FileNotFoundException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -75,8 +76,9 @@ public class StyleServiceImplTest extends KEWTestCase {
         String isThereStyle = "widgets";
 
         // first verify that the database doesn't contain these styles already
-        assertNull(styleService.getStyle(notThereStyle));
-        assertNull(styleService.getStyle(isThereStyle));
+        List<String> styleNames = styleService.getAllStyleNames();
+        assertFalse("Style should not exist in database: " + notThereStyle, styleNames.contains(notThereStyle));
+        assertFalse("Style should not exist in database: " + isThereStyle, styleNames.contains(isThereStyle));
 
         // test loading an incorrectly configured style
         try {

@@ -358,7 +358,7 @@
     <dependency>
       <groupId>com.saucelabs</groupId>
       <artifactId>sauce_junit</artifactId>
-      <version>[1.0.0,)</version>
+      <version>1.0.19</version>
       <scope>test</scope>
     </dependency>
 
@@ -366,7 +366,7 @@
     <dependency>
       <groupId>com.saucelabs</groupId>
       <artifactId>sauce_java_common</artifactId>
-      <version>[1.0.0,)</version>
+      <version>1.0.19</version>
       <scope>test</scope>
     </dependency>
 

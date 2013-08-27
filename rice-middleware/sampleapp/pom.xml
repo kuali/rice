@@ -37,6 +37,9 @@
     <kuali.generate.reports>false</kuali.generate.reports>
     <!-- csv based JMeter tests result in one graph in Jenkins, we want a graph per test -->
     <maven.jmeter.excludeJmeterTestFile>**/KRAD.jmx</maven.jmeter.excludeJmeterTestFile>
+    <sauce.java.common.version>1.0.19</sauce.java.common.version>
+    <sauce.junit.version>1.0.19</sauce.junit.version>
+    <sauce.rest.version>1.0.0</sauce.rest.version>
   </properties>
 
   <build>
@@ -358,22 +361,22 @@
     <dependency>
       <groupId>com.saucelabs</groupId>
       <artifactId>sauce_junit</artifactId>
-      <version>1.0.19</version>
+      <version>${sauce.junit.version}</version>
       <scope>test</scope>
     </dependency>
 
-    <!-- suacelabs transient dependencies that some setups don't pickup -->
+    <!-- saucelabs transient dependencies that some setups don't pickup -->
     <dependency>
       <groupId>com.saucelabs</groupId>
       <artifactId>sauce_java_common</artifactId>
-      <version>1.0.19</version>
+      <version>${sauce.java.common.version}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.saucelabs</groupId>
       <artifactId>saucerest</artifactId>
-      <version>1.0.0</version>
+      <version>${sauce.rest.version}</version>
       <scope>test</scope>
     </dependency>
 

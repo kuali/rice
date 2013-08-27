@@ -67,8 +67,11 @@ import static org.junit.internal.runners.rules.RuleFieldValidator.*;
 public class LoadTimeWeavableTestRunner extends Runner implements Filterable, Sortable {
 
     private final TestClass fTestClass;
-    private final URLClassLoader customLoader;
     private Method currentMethod;
+
+    // static because we only need one custom loader per JVM in which the tests are running, otherwise the memory
+    // usage gets crazy!
+    private static URLClassLoader customLoader;
 
     private Sorter fSorter = Sorter.NULL;
 
@@ -87,8 +90,10 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
      * Constructs a new {@code ParentRunner} that will run {@code @TestClass}
      */
     public LoadTimeWeavableTestRunner(Class<?> testClass) throws InitializationError {
-        URL[] parentUrls = ((URLClassLoader)testClass.getClassLoader()).getURLs();
-        this.customLoader = new JUnitCustomClassLoader(parentUrls, testClass.getClassLoader());
+        if (LoadTimeWeavableTestRunner.customLoader == null) {
+            URL[] parentUrls = ((URLClassLoader)testClass.getClassLoader()).getURLs();
+            LoadTimeWeavableTestRunner.customLoader = new JUnitCustomClassLoader(parentUrls, testClass.getClassLoader());
+        }
         this.fTestClass = getCustomTestClass(testClass, customLoader);
         validate();
     }

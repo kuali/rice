@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import org.kuali.rice.krad.datadictionary.Copyable;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -33,7 +34,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTag(name = "conditionalCollectionFilter-bean", parent = "Uif-ConditionalCollectionFilter")
-public class ELCollectionFilter implements CollectionFilter {
+public class ELCollectionFilter implements CollectionFilter, Copyable {
     private static final long serialVersionUID = 3273495753269940272L;
 
     private String expression = "";

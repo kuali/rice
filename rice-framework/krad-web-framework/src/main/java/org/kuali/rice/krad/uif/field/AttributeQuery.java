@@ -490,28 +490,11 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
     }
 
     /**
-     * Returns a copy of the attribute query.
-     *
-     * @return AttributeQuery copy of the component
-     */
-    public <T> T copy() {
-        T copiedClass = null;
-        try {
-            copiedClass = (T) this.getClass().newInstance();
-        } catch (Exception exception) {
-            throw new RuntimeException();
-        }
-
-        copyProperties(copiedClass);
-
-        return copiedClass;
-    }
-
-    /**
      * Copies the properties over for the copy method.
      *
      * @param attributeQuery The AttributeQuery to copy
      */
+    @Override
     protected <T> void copyProperties(T attributeQuery) {
         super.copyProperties(attributeQuery);
 

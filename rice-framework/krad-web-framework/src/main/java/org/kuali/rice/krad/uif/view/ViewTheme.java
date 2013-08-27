@@ -617,30 +617,11 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
     }
 
     /**
-     * Returns a clone of the View Theme.
-     *
-     * @return ViewTheme instance
-     */
-    public <T> T copy() {
-        T copiedClass = null;
-        try {
-            copiedClass = (T) this.getClass().newInstance();
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-
-        copyProperties(copiedClass);
-
-        return copiedClass;
-    }
-
-    /**
      * Copies the properties over for the copy method.
      *
      * @param viewTheme ViewTheme instance to copy properties to
      */
+    @Override
     protected <T> void copyProperties(T viewTheme) {
         super.copyProperties(viewTheme);
 

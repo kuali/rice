@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.util;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.Copyable;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.container.Container;
@@ -43,7 +44,7 @@ import java.util.Map;
  * </p>
  */
 @BeanTag(name = "breadcrumbOptions-bean", parent = "Uif-BreadcrumbOptions")
-public class BreadcrumbOptions implements Serializable {
+public class BreadcrumbOptions implements Serializable, Copyable {
 
     private static final long serialVersionUID = -6705552809624394000L;
 

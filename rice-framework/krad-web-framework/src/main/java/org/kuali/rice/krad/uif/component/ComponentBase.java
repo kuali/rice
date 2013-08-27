@@ -1963,6 +1963,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * Copies the properties over for the copy method
      */
+    @Override
     protected <T> void copyProperties(T component) {
         super.copyProperties(component);
 

@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.field;
 
+import org.kuali.rice.krad.datadictionary.Copyable;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,7 +29,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AttributeQueryResult implements Serializable {
+public class AttributeQueryResult implements Serializable, Copyable {
     private static final long serialVersionUID = -6688384365943881516L;
 
     private String resultMessage;

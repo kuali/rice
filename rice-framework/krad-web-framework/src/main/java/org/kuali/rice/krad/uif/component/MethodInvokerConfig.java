@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.component;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.Copyable;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.view.View;
@@ -32,7 +33,7 @@ import java.lang.reflect.Method;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTag(name = "methodInvokerConfig-bean", parent = "Uif-MethodInvokerConfig")
-public class MethodInvokerConfig extends MethodInvoker implements Serializable {
+public class MethodInvokerConfig extends MethodInvoker implements Serializable, Copyable {
 
     private String staticMethod;
     private Class[] argumentTypes;

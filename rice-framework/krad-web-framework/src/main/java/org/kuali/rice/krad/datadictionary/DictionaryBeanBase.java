@@ -22,7 +22,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class DictionaryBeanBase implements DictionaryBean {
+public abstract class DictionaryBeanBase implements DictionaryBean, Copyable {
     private static final long serialVersionUID = 4334492273538657771L;
 
     protected String namespaceCode;

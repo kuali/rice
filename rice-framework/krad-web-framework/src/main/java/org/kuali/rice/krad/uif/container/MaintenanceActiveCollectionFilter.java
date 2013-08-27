@@ -109,6 +109,11 @@ public class MaintenanceActiveCollectionFilter implements CollectionFilter, Copy
         this.oldBindingObjectPath = oldBindingObjectPath;
     }
 
+    /**
+     * Copies object by value
+     *
+     * @return copiedClass
+     */
     public <T> T copy() {
         T copiedClass = null;
         try {
@@ -123,6 +128,11 @@ public class MaintenanceActiveCollectionFilter implements CollectionFilter, Copy
         return copiedClass;
     }
 
+    /**
+     * Copies the properties over for the copy method.
+     *
+     * @param maintenanceActiveCollectionFilter MaintenanceActiveCollectionFilter instance to copy properties to
+     */
     protected <T> void copyProperties(T maintenanceActiveCollectionFilter) {
         MaintenanceActiveCollectionFilter maintenanceActiveCollectionFilterCopy = (MaintenanceActiveCollectionFilter) maintenanceActiveCollectionFilter;
 

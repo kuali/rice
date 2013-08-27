@@ -1302,25 +1302,6 @@ public class CollectionGroup extends Group implements DataBinding {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
-     */
-    @Override
-    public void completeValidation(ValidationTrace tracer) {
-        tracer.addBean(this);
-
-        // Checking if collectionObjectClass is set
-        if (getCollectionObjectClass() == null) {
-            if (Validator.checkExpressions(this, "collectionObjectClass")) {
-                String currentValues[] = {"collectionObjectClass = " + getCollectionObjectClass()};
-                tracer.createWarning("CollectionObjectClass is not set (disregard if part of an abstract)",
-                        currentValues);
-            }
-        }
-
-        super.completeValidation(tracer.getCopy());
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
      */
     @Override
@@ -1426,5 +1407,24 @@ public class CollectionGroup extends Group implements DataBinding {
         if (this.totalColumns != null) {
             collectionGroupCopy.setTotalColumns(new ArrayList<String>(this.totalColumns));
         }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    @Override
+    public void completeValidation(ValidationTrace tracer) {
+        tracer.addBean(this);
+
+        // Checking if collectionObjectClass is set
+        if (getCollectionObjectClass() == null) {
+            if (Validator.checkExpressions(this, "collectionObjectClass")) {
+                String currentValues[] = {"collectionObjectClass = " + getCollectionObjectClass()};
+                tracer.createWarning("CollectionObjectClass is not set (disregard if part of an abstract)",
+                        currentValues);
+            }
+        }
+
+        super.completeValidation(tracer.getCopy());
     }
 }

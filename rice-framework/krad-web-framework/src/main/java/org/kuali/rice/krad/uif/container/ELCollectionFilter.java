@@ -99,6 +99,11 @@ public class ELCollectionFilter implements CollectionFilter, Copyable {
         this.expression = expression;
     }
 
+    /**
+     * Copies object by value
+     *
+     * @return copiedClass
+     */
     public <T> T copy() {
         T copiedClass = null;
         try {
@@ -113,6 +118,11 @@ public class ELCollectionFilter implements CollectionFilter, Copyable {
         return copiedClass;
     }
 
+    /**
+     * Copies the properties over for the copy method.
+     *
+     * @param eLCollectionFilter ELCollectionFilter instance to copy properties to
+     */
     protected <T> void copyProperties(T eLCollectionFilter) {
         ELCollectionFilter eLCollectionFilterCopy = (ELCollectionFilter) eLCollectionFilter;
 

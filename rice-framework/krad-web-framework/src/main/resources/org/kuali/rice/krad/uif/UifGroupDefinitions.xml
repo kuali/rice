@@ -196,74 +196,38 @@
 
   <!--cssGridLayout Groups & Sections -->
 
-  <bean id="Uif-FixedCssGridGroup" parent="Uif-FixedCssGridGroup-parentBean"/>
-  <bean id="Uif-FixedCssGridGroup-parentBean" abstract="true" parent="Uif-GroupBase" scope="prototype">
+  <bean id="Uif-CssGridGroup" parent="Uif-CssGridGroup-parentBean"/>
+  <bean id="Uif-CssGridGroup-parentBean" abstract="true" parent="Uif-GroupBase" scope="prototype">
     <property name="cssClasses">
       <list>
-        <value>uif-fixedCssGridGroup</value>
+        <value>uif-cssGridGroup</value>
       </list>
     </property>
     <property name="layoutManager">
-      <bean parent="Uif-FixedCssGridLayout"/>
+      <bean parent="Uif-CssGridLayout"/>
     </property>
   </bean>
 
-  <bean id="Uif-FixedCssGridSection" parent="Uif-FixedCssGridSection-parentBean"/>
-  <bean id="Uif-FixedCssGridSection-parentBean" abstract="true" parent="Uif-FixedCssGridGroup" scope="prototype">
+  <bean id="Uif-CssGridSection" parent="Uif-CssGridSection-parentBean"/>
+  <bean id="Uif-CssGridSection-parentBean" abstract="true" parent="Uif-CssGridGroup" scope="prototype">
     <property name="header">
       <bean parent="Uif-SectionHeader"/>
     </property>
     <property name="cssClasses">
       <list>
-        <value>uif-fixedCssGridSection</value>
+        <value>uif-cssGridSection</value>
       </list>
     </property>
   </bean>
 
-  <bean id="Uif-FixedCssGridSubSection" parent="Uif-FixedCssGridSubSection-parentBean"/>
-  <bean id="Uif-FixedCssGridSubSection-parentBean" abstract="true" parent="Uif-FixedCssGridGroup" scope="prototype">
+  <bean id="Uif-CssGridSubSection" parent="Uif-CssGridSubSection-parentBean"/>
+  <bean id="Uif-CssGridSubSection-parentBean" abstract="true" parent="Uif-CssGridGroup" scope="prototype">
     <property name="header">
       <bean parent="Uif-SubSectionHeader"/>
     </property>
     <property name="cssClasses">
       <list>
-        <value>uif-fixedCssGridSection</value>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Uif-FluidCssGridGroup" parent="Uif-FluidCssGridGroup-parentBean"/>
-  <bean id="Uif-FluidCssGridGroup-parentBean" abstract="true" parent="Uif-GroupBase" scope="prototype">
-    <property name="cssClasses">
-      <list>
-        <value>uif-fluidCssGridGroup</value>
-      </list>
-    </property>
-    <property name="layoutManager">
-      <bean parent="Uif-FluidCssGridLayout"/>
-    </property>
-  </bean>
-
-  <bean id="Uif-FluidCssGridSection" parent="Uif-FluidCssGridSection-parentBean"/>
-  <bean id="Uif-FluidCssGridSection-parentBean" abstract="true" parent="Uif-FluidCssGridGroup" scope="prototype">
-    <property name="header">
-      <bean parent="Uif-SectionHeader"/>
-    </property>
-    <property name="cssClasses">
-      <list>
-        <value>uif-fluidCssGridSection</value>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Uif-FluidCssGridSubSection" parent="Uif-FluidCssGridSubSection-parentBean"/>
-  <bean id="Uif-FluidCssGridSubSection-parentBean" abstract="true" parent="Uif-FluidCssGridGroup" scope="prototype">
-    <property name="header">
-      <bean parent="Uif-SubSectionHeader"/>
-    </property>
-    <property name="cssClasses">
-      <list>
-        <value>uif-fluidCssGridSection</value>
+        <value>uif-cssGridSubSection</value>
       </list>
     </property>
   </bean>

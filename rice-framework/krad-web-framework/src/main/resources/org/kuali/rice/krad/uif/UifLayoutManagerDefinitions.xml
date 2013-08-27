@@ -58,8 +58,8 @@
 
   <!--Css Grid Layout Managers (div based)-->
 
-  <bean id="Uif-CssGridLayoutBase" abstract="true" parent="Uif-CssGridLayoutBase-parentBean"/>
-  <bean id="Uif-CssGridLayoutBase-parentBean" abstract="true"
+  <bean id="Uif-CssGridLayout" abstract="true" parent="Uif-CssGridLayout-parentBean"/>
+  <bean id="Uif-CssGridLayout-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.layout.CssGridLayoutManager"
         scope="prototype">
     <property name="template" value="/krad/WEB-INF/ftl/layout/cssGrid.ftl"/>
@@ -70,32 +70,8 @@
       </list>
     </property>
     <!-- this means items which don't define their colSpan will take up a whole "row" -->
-    <property name="defaultItemColSpan" value="9"/>
+    <property name="defaultItemColSpan" value="12"/>
     <property name="rowLayoutCssClass" value="row"/>
-  </bean>
-
-  <bean id="Uif-FixedCssGridLayout" parent="Uif-FixedCssGridLayout-parentBean"/>
-  <bean id="Uif-FixedCssGridLayout-parentBean" abstract="true" parent="Uif-CssGridLayoutBase">
-    <property name="libraryCssClasses">
-      <list>
-        <value>span9</value>
-      </list>
-    </property>
-    <property name="cssClasses">
-      <list>
-        <value>uif-fixedCssGridLayout</value>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Uif-FluidCssGridLayout" parent="Uif-FluidCssGridLayout-parentBean"/>
-  <bean id="Uif-FluidCssGridLayout-parentBean" abstract="true" parent="Uif-CssGridLayoutBase">
-    <property name="cssClasses">
-      <list>
-        <value>uif-fluidCssGridLayout</value>
-      </list>
-    </property>
-    <property name="rowLayoutCssClass" value="row-fluid"/>
   </bean>
 
   <!--Grid Layout Managers-->

@@ -64,9 +64,9 @@
         <bean id="Demo-StandardLayout-CssGridPage" parent="Uif-Page" p:headerText="Css Grid Page">
           <property name="items">
             <list>
-              <ref bean="Demo-StandardLayout-FixedCssGridSection1"/>
-              <ref bean="Demo-StandardLayout-FixedCssGridSection2"/>
-              <ref bean="Demo-StandardLayout-FluidCssGridSection1"/>
+              <ref bean="Demo-StandardLayout-CssGridSection1"/>
+              <ref bean="Demo-StandardLayout-CssGridSection2"/>
+              <ref bean="Demo-StandardLayout-CssGridSection3"/>
             </list>
           </property>
         </bean>
@@ -394,8 +394,8 @@
     </property>
   </bean>
 
-  <bean id="Demo-StandardLayout-FixedCssGridSection1" parent="Uif-FixedCssGridSection">
-    <property name="headerText" value="Fixed Css Grid"/>
+  <bean id="Demo-StandardLayout-CssGridSection1" parent="Uif-CssGridSection">
+    <property name="headerText" value="Css Grid"/>
     <property name="layoutManager.defaultItemColSpan" value="3"/>
     <property name="items">
       <list>
@@ -433,8 +433,8 @@
     </property>
   </bean>
 
-  <bean id="Demo-StandardLayout-FixedCssGridSection2" parent="Uif-FixedCssGridSection">
-    <property name="headerText" value="Fixed Css Grid"/>
+  <bean id="Demo-StandardLayout-CssGridSection2" parent="Uif-CssGridSection">
+    <property name="headerText" value="Css Grid"/>
     <property name="items">
       <list>
         <bean parent="Uif-InputField-LabelTop" p:colSpan="6" p:propertyName="field13" p:label="Field 1">
@@ -471,8 +471,8 @@
     </property>
   </bean>
 
-  <bean id="Demo-StandardLayout-FluidCssGridSection1" parent="Uif-FluidCssGridSection">
-    <property name="headerText" value="Fluid Css Grid"/>
+  <bean id="Demo-StandardLayout-CssGridSection3" parent="Uif-CssGridSection">
+    <property name="headerText" value="Css Grid"/>
     <property name="layoutManager.defaultItemColSpan" value="2"/>
     <property name="items">
       <list>

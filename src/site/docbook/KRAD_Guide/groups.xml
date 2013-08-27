@@ -1317,6 +1317,8 @@
     </section>
     <section>
       <title>Css Grid Layout</title>
+      <para><emphasis role="bold">Note: FixedCssGridLayouts have been removed in the 2.4
+          release</emphasis></para>
       <para>There exists one more group layout called the CssGridLayoutManager. This layout attempts
         to mimic the look and field of the GridLayoutManager using divs. The layout will appear to
         be table-based without being backed by the table, tr, and td elements in the DOM. This
@@ -1324,14 +1326,13 @@
       </para>
       <para>To use css grid layout, set the colSpan property of components contained in the items of
         the group. The layout will use this to add a the necessary css class for that item in the
-        layout. Each "row" in the CssGridLayout has a maximum size of 9, if colSpan is not defined
+        layout. Each "row" in the CssGridLayout has a maximum size of 12, if colSpan is not defined
         for an item, that item will automatically take up a full row. When a row contains items
-        which equal 9 total, the next item in the group will be placed on the next row. When an item
-        exceeds the max size for a row, that item will become an item of the next row.
-      </para>
+        which equal 12 total, the next item in the group will be placed on the next row. When an
+        item exceeds the max size for a row, that item will become an item of the next row. </para>
       <para>The following figure shows what a CssGridLayout backed group may look like:
         <figure>
-          <title>Fixed Css Grid Layout</title>
+          <title>Css Grid Layout</title>
           <mediaobject>
             <imageobject>
               <imagedata fileref="../images/KRAD_Guide/cssGridLayout.png"/>
@@ -1340,51 +1341,40 @@
         </figure>
       </para>
       <para>In this example, the group will have 2 rows, the first row will contain the first 3
-        fields, and the second row will contain the last 2
-        fields:
-        <programlisting>        &lt;bean parent="Uif-FixedCssGridGroup">
+        fields, and the second row will contain the last 2 fields:
+        <programlisting>        &lt;bean parent="Uif-CssGridGroup">
           &lt;property name="items">
           &lt;list>
-          &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:colSpan="3" p:instructionalText="This is
+          &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:colSpan="4" p:instructionalText="This is
           instructions"
           p:propertyName="inputField1"/>
-          &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:colSpan="3" p:propertyName="inputField2"/>
-          &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 3" p:colSpan="3" p:propertyName="inputField3"/>
-          &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 4" p:colSpan="4" p:propertyName="inputField4"/>
-          &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 5" p:colSpan="5" p:propertyName="inputField5"/>
+          &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:colSpan="4" p:propertyName="inputField2"/>
+          &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 3" p:colSpan="4" p:propertyName="inputField3"/>
+          &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 4" p:colSpan="6" p:propertyName="inputField4"/>
+          &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 5" p:colSpan="6" p:propertyName="inputField5"/>
           &lt;/list>
           &lt;/property>
           &lt;/bean>
         </programlisting>
       </para>
       <para>In this example, the group will have 2 rows, the first field will take the entire row
-        (because no colSpan is supplied), and the second row will contain the last 2
-        fields:
-        <programlisting>        &lt;bean parent="Uif-FixedCssGridGroup">
+        (because no colSpan is supplied), and the second row will contain the last 2 fields:
+        <programlisting>        &lt;bean parent="Uif-CssGridGroup">
           &lt;property name="items">
           &lt;list>
           &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField6"/>
-          &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:colSpan="6" p:propertyName="inputField7"/>
-          &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 3" p:colSpan="3" p:propertyName="inputField8"/>
+          &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:colSpan="8" p:propertyName="inputField7"/>
+          &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 3" p:colSpan="4" p:propertyName="inputField8"/>
           &lt;/list>
           &lt;/property>
           &lt;/bean>
         </programlisting>
       </para>
-      <para>The CssGridLayoutManager can either be fluid (items expand and retract with page size)
-        or fixed (items do not move or change when page size changes). This is defined by the beans
-        available in the framework as follows (and appropriate group and section beans which have
-        these predefined):
-        <itemizedlist>
+      <para>The CssGridLayoutManager is fluid (items expand and retract with page size).  The
+        following LayoutManager backs this group:<itemizedlist>
           <listitem>
-            <para>Uif-FixedCssGridLayout - fixed layout for items - used by Uif-FixedCssGridGroup,
-              Uif-FixedCssGridSection, etc.
-            </para>
-          </listitem>
-          <listitem>
-            <para>Uif-FluidCssGridLayout - fluid layout for items - used by Uif-FluidCssGridGroup,
-              Uif-FluidCssGridSection, etc.
-            </para>
+            <para>Uif-CssGridLayout - fluid layout for items - used by Uif-CssGridGroup,
+              Uif-CssGridSection, Uif-CssGridSubSection</para>
           </listitem>
         </itemizedlist>
       </para>
@@ -1400,17 +1390,15 @@
       <section>
         <title>Other Css Grid Layout Options</title>
         <para>The CssGridLayoutManager contains a property called<emphasis role="bold"
-                >defaultItemColSpan</emphasis>. As mentioned above, if an item of a group which uses
+            >defaultItemColSpan</emphasis>. As mentioned above, if an item of a group which uses
           CssGridLayoutManager does not define colSpan, normally this item would take up the entire
-          row (default is 9). This property allows you define what the default fallback is for
-          items which do not define colSpan. This makes it easy to make a css grid layout that has
-          a consistent size for all of its items.
-        </para>
-        <para>The following example shows a group that would have two rows of three items because
-          the defaultItemColSpan is set to 3, and each item automatically gets a colspan of 3 if
-          they do not define their own
-          colSpan:
-          <programlisting>        &lt;bean parent="Uif-FixedCssGridGroup">
+          row (default is 12). This property allows you define what the default fallback is for
+          items which do not define colSpan. This makes it easy to make a css grid layout that has a
+          consistent size for all of its items. </para>
+        <para>The following example shows a group that would have two rows of four items because the
+          defaultItemColSpan is set to 3, and each item automatically gets a colspan of 3 if they do
+          not define their own colSpan:
+          <programlisting>        &lt;bean parent="Uif-CssGridGroup">
             &lt;property name="layoutManager.defaultItemColSpan" value="3"/>
             &lt;property name="items">
             &lt;list>
@@ -1605,12 +1593,10 @@
           </para>
         </listitem>
         <listitem>
-          <para>Css grid layout rows have a max size of 9 columns across</para>
+          <para>Css grid layout rows have a max size of 12 columns across</para>
         </listitem>
         <listitem>
-          <para>The beans of css grid layout comes in two varieties: fluid for automatic resizing
-            during page resize, and fixed to not be affected by page resize
-          </para>
+          <para>Css grid layouts are fluid and will react to changes in page size</para>
         </listitem>
       </itemizedlist>
     </section>

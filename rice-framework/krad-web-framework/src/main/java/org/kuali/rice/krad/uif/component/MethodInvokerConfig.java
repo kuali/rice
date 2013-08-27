@@ -119,6 +119,11 @@ public class MethodInvokerConfig extends MethodInvoker implements Serializable, 
         return null;
     }
 
+    /**
+     * Copies object by value
+     *
+     * @return copiedClass
+     */
     public <T> T copy() {
         T copiedClass = null;
         try {
@@ -133,6 +138,11 @@ public class MethodInvokerConfig extends MethodInvoker implements Serializable, 
         return copiedClass;
     }
 
+    /**
+     * Copies the properties over for the copy method.
+     *
+     * @param methodInvokerConfig MethodInvokerConfig instance to copy properties to
+     */
     protected <T> void copyProperties(T methodInvokerConfig) {
         MethodInvokerConfig methodInvokerConfigCopy = (MethodInvokerConfig) methodInvokerConfig;
 

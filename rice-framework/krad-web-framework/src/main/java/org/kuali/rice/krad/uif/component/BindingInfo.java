@@ -380,9 +380,7 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
     }
 
     /**
-     * Copies the properties over for the copy method.
-     *
-     * @param bindingInfo The BindingInfo to copy
+     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
      */
     @Override
     protected <T> void copyProperties(T bindingInfo) {

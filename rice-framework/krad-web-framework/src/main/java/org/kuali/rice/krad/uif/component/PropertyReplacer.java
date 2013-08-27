@@ -203,30 +203,7 @@ public class PropertyReplacer extends UifDictionaryBeanBase implements Serializa
     }
 
     /**
-     * Validates different requirements of component compiling a series of reports detailing information on errors
-     * found in the component.  Used by the RiceDictionaryValidator.
-     *
-     * @param tracer record of component's location
-     */
-    public void completeValidation(ValidationTrace tracer) {
-        tracer.addBean("PropertyReplacer", getPropertyName());
-
-        // Checking that required fields are set
-        if (getPropertyName() == null || getCondition() == null || getReplacement() == null) {
-            String currentValues[] = {"propertyName =" + getPropertyName(), "condition =" + getCondition(),
-                    "replacement =" + getReplacement()};
-            tracer.createWarning("PropertyName, condition and replacement should be set", currentValues);
-        }
-
-        // Validating Spring EL in condition
-        if (!Validator.validateSpringEL(getCondition())) {
-            String currentValues[] = {"condition =" + getCondition()};
-            tracer.createError("Invalid Spring Expression Language", currentValues);
-        }
-    }
-
-    /**
-     * Copies the properties over for the copy method
+     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
      */
     @Override
     protected <T> void copyProperties(T propertyReplacer) {
@@ -248,6 +225,29 @@ public class PropertyReplacer extends UifDictionaryBeanBase implements Serializa
             }
 
             propertyReplacerCopy.setReplacement(replacementCopy);
+        }
+    }
+
+    /**
+     * Validates different requirements of component compiling a series of reports detailing information on errors
+     * found in the component.  Used by the RiceDictionaryValidator.
+     *
+     * @param tracer record of component's location
+     */
+    public void completeValidation(ValidationTrace tracer) {
+        tracer.addBean("PropertyReplacer", getPropertyName());
+
+        // Checking that required fields are set
+        if (getPropertyName() == null || getCondition() == null || getReplacement() == null) {
+            String currentValues[] = {"propertyName =" + getPropertyName(), "condition =" + getCondition(),
+                    "replacement =" + getReplacement()};
+            tracer.createWarning("PropertyName, condition and replacement should be set", currentValues);
+        }
+
+        // Validating Spring EL in condition
+        if (!Validator.validateSpringEL(getCondition())) {
+            String currentValues[] = {"condition =" + getCondition()};
+            tracer.createError("Invalid Spring Expression Language", currentValues);
         }
     }
 }

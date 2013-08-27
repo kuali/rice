@@ -230,6 +230,9 @@ public class ComponentSecurity extends UifDictionaryBeanBase implements Serializ
         }
     }
 
+    /**
+     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     */
     @Override
     protected <T> void copyProperties(T componentSecurity) {
         super.copyProperties(componentSecurity);

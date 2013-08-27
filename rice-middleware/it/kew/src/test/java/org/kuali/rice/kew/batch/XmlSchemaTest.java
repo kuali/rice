@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.util.ClasspathOrFileResourceLoader;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
 import org.kuali.rice.core.impl.impex.xml.ClassLoaderEntityResolver;
 import org.kuali.rice.kew.rule.xmlrouting.WorkflowNamespaceContext;
+import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.test.RiceTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -50,7 +51,7 @@ import static org.junit.Assert.fail;
  * Test schema validation
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class XmlSchemaTest extends RiceTestCase {
+public class XmlSchemaTest extends KEWTestCase {
     private Document validate(InputStream stream) throws ParserConfigurationException, IOException , SAXException {
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();

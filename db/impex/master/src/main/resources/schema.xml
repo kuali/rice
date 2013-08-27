@@ -4013,6 +4013,8 @@
     	<column name="DATE_PROP" type="DATE" />
     	<column name="CURR_PROP" size="19" scale="2" type="DECIMAL" />
     	<column name="NON_STANDARD" size="40" type="VARCHAR" />
+    	<column name="ENCR_PROP" size="255" type="VARCHAR" />
+    	<column name="RO_PROP" size="40" type="VARCHAR" />
     	<column name="BOOL_PROP" size="1" type="CHAR" default="N" />
     </table>
     <table name="KRTST_TEST_TABLE_EXT_T">

@@ -37,7 +37,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import static org.junit.Assert.*;
-@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class ActionItemServiceTest extends KEWTestCase {
 
 	private ActionListService actionListService;
@@ -87,6 +87,9 @@ public class ActionItemServiceTest extends KEWTestCase {
 
         }
 
+        List<GroupMember> loadedNewGroupMembers = groupService.getMembersOfGroup(oldWorkgroup.getId());
+        assertEquals("Workgroup should now have 4 members.", 4, loadedNewGroupMembers.size());
+
         //add user1 and user2
         KimApiServiceLocator.getGroupService().addPrincipalToGroup(user1.getPrincipalId(), oldWorkgroup.getId());
         KimApiServiceLocator.getGroupService().addPrincipalToGroup(user2.getPrincipalId(), oldWorkgroup.getId());
@@ -97,7 +100,7 @@ public class ActionItemServiceTest extends KEWTestCase {
 
         boolean foundUser1 = false;
         boolean foundUser2 = false;
-        Collection<GroupMember> loadedNewGroupMembers = groupService.getMembersOfGroup(loadedNewWorkgroup.getId());
+        loadedNewGroupMembers = groupService.getMembersOfGroup(loadedNewWorkgroup.getId());
         assertEquals("Workgroup should have 6 members.", 6, loadedNewGroupMembers.size());
 
 
@@ -162,7 +165,8 @@ public class ActionItemServiceTest extends KEWTestCase {
         assertEquals("Workgroup should have 6 members.", 6, KimApiServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getId()).size());
         KimApiServiceLocator.getGroupService().removePrincipalFromGroup(ewestfal.getPrincipalId(), workgroup1.getId());
 
-        assertEquals("Workgroup should have 5 members.", 5, KimApiServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getId()).size());
+        assertEquals("Workgroup should have 5 members.", 5,
+                KimApiServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getId()).size());
         assertEquals("User should have 0 action item", 0, KEWServiceLocator.getActionListService().findByPrincipalId(ewestfal.getPrincipalId()).size());
 
          KimApiServiceLocator.getGroupService().addPrincipalToGroup(ewestfal.getPrincipalId(), workgroup1.getId());

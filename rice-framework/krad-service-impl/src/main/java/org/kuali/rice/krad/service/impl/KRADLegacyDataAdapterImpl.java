@@ -143,7 +143,7 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
 
     @Override
     public void deleteMatching(Class<?> type, Map<String, ?> fieldValues) {
-        dataObjectService.deleteMatching(type, QueryByCriteria.Builder.forAttributes(fieldValues));
+        dataObjectService.deleteMatching(type, QueryByCriteria.Builder.forAttributesAnd(fieldValues));
     }
 
     @Override
@@ -169,7 +169,7 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
 
     @Override
     public <T> Collection<T> findMatching(Class<T> clazz, Map<String, ?> fieldValues) {
-        QueryResults<T> result = dataObjectService.findMatching(clazz, QueryByCriteria.Builder.forAttributes(
+        QueryResults<T> result = dataObjectService.findMatching(clazz, QueryByCriteria.Builder.forAttributesAnd(
                     fieldValues));
         return result.getResults();
     }

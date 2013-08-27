@@ -75,7 +75,7 @@ public class CountyServiceImpl implements CountyService {
         map.put("active", Boolean.TRUE);
 
         QueryResults<CountyBo> countyBos = dataObjectService.findMatching(CountyBo.class,
-                QueryByCriteria.Builder.forAttributes(map));
+                QueryByCriteria.Builder.forAttributesAnd(map));
 
         if (countyBos == null) {
             return Collections.emptyList();

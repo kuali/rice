@@ -70,7 +70,7 @@ public class StateServiceImpl implements StateService {
         map.put("active", Boolean.TRUE);
 
         QueryResults<StateBo> stateBos = dataObjectService.findMatching(StateBo.class,
-                QueryByCriteria.Builder.forAttributes(map));
+                QueryByCriteria.Builder.forAttributesAnd(map));
 
         if (stateBos == null) {
             return Collections.emptyList();

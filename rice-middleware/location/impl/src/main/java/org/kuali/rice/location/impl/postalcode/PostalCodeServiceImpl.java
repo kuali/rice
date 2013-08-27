@@ -65,7 +65,7 @@ public class PostalCodeServiceImpl implements PostalCodeService {
         map.put("active", Boolean.TRUE);
 
         QueryResults<PostalCodeBo> postalCodeBoQueryResults = dataObjectService.findMatching(PostalCodeBo.class,
-                    QueryByCriteria.Builder.forAttributes(map));
+                    QueryByCriteria.Builder.forAttributesAnd(map));
         if (postalCodeBoQueryResults == null) {
             return Collections.emptyList();
         }

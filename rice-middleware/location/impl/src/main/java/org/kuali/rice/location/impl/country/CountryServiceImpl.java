@@ -80,7 +80,7 @@ public final class CountryServiceImpl implements CountryService {
 
         map.put(KRADPropertyConstants.POSTAL_COUNTRY_RESTRICTED_INDICATOR, criteriaValues);
         map.put("active", Boolean.TRUE);
-        QueryResults<CountryBo> countryBos = dataObjectService.findMatching(CountryBo.class,QueryByCriteria.Builder.forAttributes(map));
+        QueryResults<CountryBo> countryBos = dataObjectService.findMatching(CountryBo.class,QueryByCriteria.Builder.forAttributesAnd(map));
 
         return convertListOfBosToImmutables(countryBos.getResults());
     }

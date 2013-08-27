@@ -20,12 +20,13 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.document.DocumentContent;
 import org.kuali.rice.kew.api.document.DocumentContentUpdate;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.rule.TestRuleAttribute;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -46,56 +47,57 @@ public class DTOConverterTest extends KEWTestCase {
      * Tests the conversion of a String into a DocumentContentVO object which should split the
      * String into it's 3 distinct components.
      */
-/*    @Test public void testConvertDocumentContent() throws Exception {
+    @Test public void testConvertDocumentContent() throws Exception {
 
         // test null content
         String attributeContent = null;
         String searchableContent = null;
         String applicationContent = null;
         String xmlContent = constructContent(attributeContent, searchableContent, applicationContent);
-        DocumentContentDTO contentVO = DTOConverter.convertDocumentContent(xmlContent, "-1234");
-        assertFalse("Content cannot be empty.", org.apache.commons.lang.StringUtils.isEmpty(contentVO.getFullContent()));
-        assertEquals("Attribute content is invalid.", "", contentVO.getAttributeContent());
-        assertEquals("Searchable content is invalid.", "", contentVO.getSearchableContent());
-        assertEquals("Application content is invalid.", "", contentVO.getApplicationContent());
-        assertEquals("Should have fake document id.", "-1234", contentVO.getDocumentId());
+        DocumentContent.Builder builder = DocumentContent.Builder.create("-1234");
+        builder.setApplicationContent(applicationContent);
+        builder.setAttributeContent(attributeContent);
+        builder.setSearchableContent(searchableContent);
+
+        DocumentContent content = builder.build();
+        assertFalse("Content cannot be empty.", org.apache.commons.lang.StringUtils.isEmpty(content.getFullContent()));
+        assertEquals("Attribute content is invalid.", null, content.getAttributeContent());
+        assertEquals("Searchable content is invalid.", null, content.getSearchableContent());
+        assertEquals("Application content is invalid.", null, content.getApplicationContent());
+        assertEquals("Should have fake document id.", "-1234", content.getDocumentId());
 
         // test empty content
         attributeContent = "";
         searchableContent = "";
         applicationContent = "";
-        contentVO = DTOConverter.convertDocumentContent(constructContent(attributeContent, searchableContent, applicationContent), null);
-        assertContent(contentVO, attributeContent, searchableContent, applicationContent);
+        builder = DocumentContent.Builder.create("testId");
+        builder.setApplicationContent(applicationContent);
+        builder.setAttributeContent(attributeContent);
+        builder.setSearchableContent(searchableContent);
+        content = builder.build();
+        assertContent(content, attributeContent, searchableContent, applicationContent);
 
         // test fancy dancy content
         attributeContent = "<iEnjoyFlexContent><id>1234</id></iEnjoyFlexContent>";
         searchableContent = "<thisIdBeWarrenG>Warren G</thisIdBeWarrenG><whatsMyName>Snoop</whatsMyName>";
         applicationContent = "<thisIsTotallyRad><theCoolestContentInTheWorld qualify=\"iSaidSo\">it's marvelous!</theCoolestContentInTheWorld></thisIsTotallyRad>";
-        contentVO = DTOConverter.convertDocumentContent(constructContent(attributeContent, searchableContent, applicationContent), null);
-        assertContent(contentVO, attributeContent, searchableContent, applicationContent);
+        builder = DocumentContent.Builder.create("testId");
+        builder.setApplicationContent(applicationContent);
+        builder.setAttributeContent(attributeContent);
+        builder.setSearchableContent(searchableContent);
+        content = builder.build();
+        assertContent(content, attributeContent, searchableContent, applicationContent);
+    }
 
-        attributeContent = "invalid<xml, I can't believe you would do such a thing<<<";
-        try {
-            contentVO = DTOConverter.convertDocumentContent(constructContent(attributeContent, searchableContent, applicationContent), null);
-            fail("Parsing bad xml should have thrown an XmlException.");
-        } catch (InvalidDocumentContentException e) {
-            log.info("Expected XmlException was thrown.");
-            // if we got the exception we are good to go
-        }
-
-        // test an older style document
-        String appSpecificXml = "<iAmAnOldSchoolApp><myDocContent type=\"custom\">is totally app specific</myDocContent><howIroll>old school, that's how I roll</howIroll></iAmAnOldSchoolApp>";
-        contentVO = DTOConverter.convertDocumentContent(appSpecificXml, null);
-        assertContent(contentVO, "", "", appSpecificXml);
-
-        // test the old school (Workflow 1.6) flex document XML
-        String fleXml = "<flexdoc><meinAttribute>nein</meinAttribute></flexdoc>";
-        contentVO = DTOConverter.convertDocumentContent(fleXml, null);
+    private void assertContent(DocumentContent contentVO, String attributeContent, String searchableContent, String applicationContent) throws Exception{
         assertFalse("Content cannot be empty.", org.apache.commons.lang.StringUtils.isEmpty(contentVO.getFullContent()));
-        assertEquals("Attribute content is invalid.", StringUtils.deleteWhitespace(fleXml), StringUtils.deleteWhitespace(contentVO.getAttributeContent()));
-        assertEquals("Searchable content is invalid.", "", StringUtils.deleteWhitespace(contentVO.getSearchableContent()));
-        assertEquals("Application content is invalid.", "", StringUtils.deleteWhitespace(contentVO.getApplicationContent()));
-    }*/
+        assertEquals("Attribute content is invalid.", attributeContent.replaceAll("\n", ""),
+                contentVO.getAttributeContent().replaceAll("\n", ""));
+        assertEquals("Searchable content is invalid.", searchableContent.replaceAll("\n", ""), contentVO.getSearchableContent().replaceAll(
+                "\n", ""));
+        assertEquals("Application content is invalid.", applicationContent.replaceAll("\n", ""), contentVO.getApplicationContent().replaceAll(
+                "\n", ""));
+    }
 
     /**
      * Tests the conversion of a DocumentContentVO object into an XML String.  Includes generating content
@@ -156,25 +158,6 @@ public class DTOConverterTest extends KEWTestCase {
             "</"+DOCUMENT_CONTENT+">";
     }
 
-    /*private void assertContent(DocumentContentDTO contentVO, String attributeContent, String searchableContent, String applicationContent) {
-        if (org.apache.commons.lang.StringUtils.isEmpty(attributeContent)) {
-        	attributeContent = "";
-        } else {
-            attributeContent = "<"+ATTRIBUTE_CONTENT+">"+attributeContent+"</"+ATTRIBUTE_CONTENT+">";
-        }
-        if (org.apache.commons.lang.StringUtils.isEmpty(searchableContent)) {
-        	searchableContent = "";
-        } else {
-            searchableContent = "<"+SEARCHABLE_CONTENT+">"+searchableContent+"</"+SEARCHABLE_CONTENT+">";
-        }
-        assertFalse("Content cannot be empty.", org.apache.commons.lang.StringUtils.isEmpty(contentVO.getFullContent()));
-        assertEquals("Attribute content is invalid.", StringUtils.deleteWhitespace(attributeContent), StringUtils.deleteWhitespace(contentVO.getAttributeContent()));
-        assertEquals("Searchable content is invalid.", StringUtils.deleteWhitespace(searchableContent), StringUtils.deleteWhitespace(contentVO.getSearchableContent()));
-        assertEquals("Application content is invalid.", StringUtils.deleteWhitespace(applicationContent), StringUtils.deleteWhitespace(contentVO.getApplicationContent()));
-        assertEquals("Incorrect number of attribute definitions.", 0, contentVO.getAttributeDefinitions().length);
-        assertEquals("Incorrect number of searchable attribute definitions.", 0, contentVO.getSearchableDefinitions().length);
-    }*/
-
     @Test public void testConvertActionItem() throws Exception {
         // get test data
         String testWorkgroupName = "TestWorkgroup";
@@ -234,26 +217,4 @@ public class DTOConverterTest extends KEWTestCase {
         assertEquals("Action Item VO object has incorrect value", testWorkgroupId, actionItemVO.getDelegatorGroupId());
     }
 
-    /*@Test public void testConvertActionRequest() throws Exception {
-    	ActionRequestValue actionRequest = new ActionRequestValue();
-    	ActionTakenValue actionTaken = new ActionTakenValue();
-    	actionRequest.setActionTaken(actionTaken);
-    	actionTaken.getActionRequests().add(actionRequest);
-    	
-    	ActionRequestDTO convertedActionRequest = DTOConverter.convertActionRequest(actionRequest);
-    	assertNotNull("ActionTakenDTO object should be valid", convertedActionRequest);
-
-    }
-
-    @Test public void testConvertActionTaken() throws Exception {
-    	ActionRequestValue actionRequest = new ActionRequestValue();
-    	ActionTakenValue actionTaken = new ActionTakenValue();
-    	actionRequest.setActionTaken(actionTaken);
-    	actionTaken.getActionRequests().add(actionRequest);
-    	
-    	ActionTakenDTO convertedActionTaken = DTOConverter.convertActionTaken(actionTaken);
-    	assertNotNull("ActionTakenDTO object should be valid", convertedActionTaken);
-    	convertedActionTaken = DTOConverter.convertActionTakenWithActionRequests(actionTaken);
-    	assertNotNull("ActionTakenDTO object should be valid", convertedActionTaken);
-    }*/
 }

@@ -118,8 +118,12 @@ public final class DocumentContent extends AbstractDataTransferObject implements
             fullContent.append(getApplicationContent());
             fullContent.append("</").append(KewApiConstants.APPLICATION_CONTENT_ELEMENT).append(">");        	
         }
-        fullContent.append(getAttributeContent());
-        fullContent.append(getSearchableContent());
+        if (!StringUtils.isBlank(getAttributeContent())) {
+            fullContent.append(getAttributeContent());
+        }
+        if (!StringUtils.isBlank(getSearchableContent())) {
+            fullContent.append(getSearchableContent());
+        }
         fullContent.append("</").append(KewApiConstants.DOCUMENT_CONTENT_ELEMENT).append(">");
         return fullContent.toString();
     }

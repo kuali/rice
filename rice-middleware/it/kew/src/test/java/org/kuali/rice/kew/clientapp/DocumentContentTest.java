@@ -45,7 +45,12 @@ public class DocumentContentTest extends KEWTestCase {
     private static final String ATTRIBUTE_CONTENT = KewApiConstants.ATTRIBUTE_CONTENT_ELEMENT;
     private static final String SEARCHABLE_CONTENT = KewApiConstants.SEARCHABLE_CONTENT_ELEMENT;
     private static final String APPLICATION_CONTENT = KewApiConstants.APPLICATION_CONTENT_ELEMENT;
-    
+
+    @Test public void testEmptyDocumentContent() throws Exception {
+        DocumentContent content = DocumentContent.Builder.create("1234").build();
+        assertEquals("<"+DOCUMENT_CONTENT + "></"+DOCUMENT_CONTENT+">", content.getFullContent());
+    }
+
     @Test public void testDocumentContent() throws Exception {
         String startContent = "<"+DOCUMENT_CONTENT+">";
         String endContent = "</"+DOCUMENT_CONTENT+">";

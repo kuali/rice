@@ -13,15 +13,15 @@ import java.util.Map;
  */
 public class LegacyDataAdapterLookupTest extends LookupServiceTest {
 
-//    @Override
-//    protected <T> Collection<T> findCollectionBySearchHelper(Class<T> clazz, Map<String, String> formProps, boolean unbounded) {
-//        return KRADServiceLocator.getLegacyDataAdapter().findCollectionBySearchHelper(clazz, formProps, unbounded, false, null);
-//    }
-//
-//    @Override
-//    protected <T> Collection<T> findCollectionBySearchUnbounded(Class<T> clazz, Map<String, String> formProps) {
-//        return KRADServiceLocator.getLegacyDataAdapter().findCollectionBySearchHelper(clazz, formProps, true, false, null);
-//    }
+    //    @Override
+    //    protected <T> Collection<T> findCollectionBySearchHelper(Class<T> clazz, Map<String, String> formProps, boolean unbounded) {
+    //        return KRADServiceLocator.getLegacyDataAdapter().findCollectionBySearchHelper(clazz, formProps, unbounded, false, null);
+    //    }
+    //
+    //    @Override
+    //    protected <T> Collection<T> findCollectionBySearchUnbounded(Class<T> clazz, Map<String, String> formProps) {
+    //        return KRADServiceLocator.getLegacyDataAdapter().findCollectionBySearchHelper(clazz, formProps, true, false, null);
+    //    }
 
     // superclass test cases ensure LegacyDataAdapter lookups are returning the correct results in legacy mode
     // (this assumes KNS is loaded in the TestHarness, and therefore legacy is enabled by default)
@@ -29,55 +29,83 @@ public class LegacyDataAdapterLookupTest extends LookupServiceTest {
     // Additional test cases below explicitly disable legacy data framework, forcing the tests through
     // the JPA path in LegacyDataAdapter
 
-
     protected void disableLegacyFramework() {
         ConfigContext.getCurrentContextConfig().putProperty(KRADConstants.Config.ENABLE_LEGACY_DATA_FRAMEWORK, "false");
+    }
+
+    protected void enableLegacyFramework() {
+        ConfigContext.getCurrentContextConfig().putProperty(KRADConstants.Config.ENABLE_LEGACY_DATA_FRAMEWORK, "true");
     }
 
     @Test
     public void testJPALookupReturnLimits_AccountManager() throws Exception {
         disableLegacyFramework();
-        testLookupReturnLimits_AccountManager();
+        try {
+            testLookupReturnLimits_AccountManager();
+        } finally {
+            enableLegacyFramework();
+        }
     }
 
     @Test
     public void testJPALookupReturnLimits_TestDataObject() throws Exception {
         disableLegacyFramework();
-        testLookupReturnLimits_TestDataObject();
+        try {
+            testLookupReturnLimits_TestDataObject();
+        } finally {
+            enableLegacyFramework();
+        }
     }
-
 
     @Test
     public void testJPALookupReturnDefaultLimit() throws Exception {
         disableLegacyFramework();
-        testLookupReturnDefaultLimit();
+        try {
+            testLookupReturnDefaultLimit();
+        } finally {
+            enableLegacyFramework();
+        }
     }
 
     @Test
     public void testJPALookupReturnDefaultUnbounded_AccountManager() throws Exception {
         disableLegacyFramework();
-        testLookupReturnDefaultUnbounded_AccountManager();
+        try {
+            testLookupReturnDefaultUnbounded_AccountManager();
+        } finally {
+            enableLegacyFramework();
+        }
     }
 
     @Test
     public void testJPALookupReturnDefaultUnbounded_Account() throws Exception {
         disableLegacyFramework();
-        testLookupReturnDefaultUnbounded_Account();
+        try {
+            testLookupReturnDefaultUnbounded_Account();
+        } finally {
+            enableLegacyFramework();
+        }
     }
 
     @Test
     public void testJPALookupReturnDefaultUnbounded_TestDataObject() throws Exception {
         disableLegacyFramework();
-        testLookupReturnDefaultUnbounded_TestDataObject();
+        try {
+            testLookupReturnDefaultUnbounded_TestDataObject();
+        } finally {
+            enableLegacyFramework();
+        }
     }
 
     @Test
     @Legacy
     public void testJPADatabaseRelationshipLookup() throws Exception {
-        KNSServiceLocator.getDataObjectMetaDataService().getDataObjectRelationship(new org.kuali.rice.krad.test.document.bo.Account(),org.kuali.rice.krad.test.document.bo.Account.class
-                ,"accountManager","",true,false,false);
-        KRADServiceLocatorWeb.getLegacyDataAdapter().getDataObjectRelationship(new org.kuali.rice.krad.test.document.bo.Account(),org.kuali.rice.krad.test.document.bo.Account.class
-                ,"accountManager","",true,false,false);
+        KNSServiceLocator.getDataObjectMetaDataService().getDataObjectRelationship(
+                new org.kuali.rice.krad.test.document.bo.Account(), org.kuali.rice.krad.test.document.bo.Account.class,
+                "accountManager", "", true, false, false);
+        KRADServiceLocatorWeb.getLegacyDataAdapter().getDataObjectRelationship(
+                new org.kuali.rice.krad.test.document.bo.Account(), org.kuali.rice.krad.test.document.bo.Account.class,
+                "accountManager", "", true, false, false);
     }
 
 }

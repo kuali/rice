@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.test.persistence
 
+import org.kuali.rice.kns.service.KNSServiceLocator
 import org.kuali.rice.krad.service.KRADServiceLocator
 import org.kuali.rice.krad.service.BusinessObjectService
 import javax.sql.DataSource
@@ -33,7 +34,7 @@ class PersistenceTestHelper {
     def DataSource datasource;
 
     PersistenceTestHelper(String dsName) {
-        boService = (BusinessObjectService) KRADServiceLocator.getBusinessObjectService()
+        boService = (BusinessObjectService) KNSServiceLocator.getBusinessObjectService()
         datasource = (DataSource) GlobalResourceLoader.getService(dsName)
         if (!datasource) {
             throw new RuntimeException("DataSource bean not found: " + dsName)

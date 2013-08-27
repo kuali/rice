@@ -1,15 +1,13 @@
 package org.kuali.rice.krad.data.jpa.eclipselink;
 
 import org.junit.Test;
-import org.kuali.rice.krad.bo.VersionedAndGloballyUniqueBase;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.test.KRADTestCase;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
-import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
@@ -195,7 +193,7 @@ public class KradEclipseLinkCustomizerTest extends KRADTestCase {
     @Entity
     @Table(name="TRV_ACCT")
     @PortableSequenceGenerator(name="TRVL_ID_SEQ") // sequence name should default to TRVL_ID_SEQ
-    public static class TestEntity extends VersionedAndGloballyUniqueBase {
+    public static class TestEntity extends DataObjectBase {
 
         @Id
         @Column(name="ACCT_NUM")
@@ -239,7 +237,7 @@ public class KradEclipseLinkCustomizerTest extends KRADTestCase {
      */
     @Entity
     @Table(name="TRV_ACCT")
-    public static class TestEntity2 extends VersionedAndGloballyUniqueBase {
+    public static class TestEntity2 extends DataObjectBase {
 
         @Id
         @GeneratedValue(generator="TRVL_ID_SEQ_2")
@@ -285,7 +283,7 @@ public class KradEclipseLinkCustomizerTest extends KRADTestCase {
     @Entity
     @Table(name="TRV_ACCT")
     @Access(AccessType.PROPERTY)
-    public static class TestEntity3 extends VersionedAndGloballyUniqueBase {
+    public static class TestEntity3 extends DataObjectBase {
 
         private String number;
         private String name;
@@ -324,7 +322,7 @@ public class KradEclipseLinkCustomizerTest extends KRADTestCase {
 
     @MappedSuperclass
     @PortableSequenceGenerator(name = "TRVL_ID_SEQ_4", sequenceName = "TRVL_ID_SEQ", initialValue = 1000)
-    public abstract static class ParentTestEntity extends VersionedAndGloballyUniqueBase {
+    public abstract static class ParentTestEntity extends DataObjectBase {
 
         public abstract String getNumber();
 

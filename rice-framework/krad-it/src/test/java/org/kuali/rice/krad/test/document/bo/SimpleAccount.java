@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.test.document.bo;
 
-import org.kuali.rice.krad.bo.VersionedAndGloballyUniqueBase;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.CascadeType;
@@ -35,7 +35,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name="TRV_ACCT")
-public class SimpleAccount extends VersionedAndGloballyUniqueBase {
+public class SimpleAccount extends DataObjectBase {
 
     @Id
     @GeneratedValue(generator="TRVL_ID_SEQ")

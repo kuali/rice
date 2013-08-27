@@ -45,7 +45,8 @@ import java.util.UUID;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @deprecated use new KRAD Data framework {@link org.kuali.rice.krad.data.DataObjectService}.
  *             In this framework, data objects are not required to have a superclass and can
- *             be POJO's.
+ *             be POJO's but they can optionally use {@link org.kuali.rice.krad.bo.DataObjectBase}
+ *             to emulate previous functionality.
  */
 @Deprecated
 @MappedSuperclass

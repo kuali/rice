@@ -29,7 +29,7 @@ import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.identity.Person;
-import org.kuali.rice.krad.bo.VersionedAndGloballyUniqueBase;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.provider.annotation.InheritProperties;
 import org.kuali.rice.krad.data.provider.annotation.InheritProperty;
 import org.kuali.rice.krad.data.provider.annotation.Label;
@@ -38,7 +38,7 @@ import org.kuali.rice.krad.data.provider.annotation.Relationship;
 
 @Entity
 @Table(name="TRVL_TRAVELER_DTL_T")
-public class TravelerDetail extends VersionedAndGloballyUniqueBase {
+public class TravelerDetail extends DataObjectBase {
 	private static final long serialVersionUID = -7169083136626617130L;
 
     @Id

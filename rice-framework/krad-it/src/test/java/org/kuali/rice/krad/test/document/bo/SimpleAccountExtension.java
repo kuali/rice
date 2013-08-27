@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.test.document.bo;
 
-import org.kuali.rice.krad.bo.VersionedAndGloballyUniqueBase;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.provider.annotation.ExtensionFor;
 
 import javax.persistence.Column;
@@ -29,7 +29,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="TRV_ACCT_EXT")
 @ExtensionFor(SimpleAccount.class)
-public class SimpleAccountExtension extends VersionedAndGloballyUniqueBase {
+public class SimpleAccountExtension extends DataObjectBase {
     
 	@Id
 	@Column(name="ACCT_NUM")

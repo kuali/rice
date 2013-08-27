@@ -21,13 +21,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
-import org.kuali.rice.krad.bo.VersionedAndGloballyUniqueBase;
-
-
+import org.kuali.rice.krad.bo.DataObjectBase;
 
 @Entity
 @Table(name="TRVL_TRAVELER_TYP_T")
-public class TravelerType extends VersionedAndGloballyUniqueBase implements MutableInactivatable {
+public class TravelerType extends DataObjectBase implements MutableInactivatable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

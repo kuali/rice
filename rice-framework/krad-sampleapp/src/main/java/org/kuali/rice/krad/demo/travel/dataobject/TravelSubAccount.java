@@ -22,12 +22,12 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.kuali.rice.krad.bo.VersionedAndGloballyUniqueBase;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.provider.annotation.Label;
 
 @Entity
 @Table(name="TRV_SUB_ACCT")
-public class TravelSubAccount extends VersionedAndGloballyUniqueBase implements Serializable {
+public class TravelSubAccount extends DataObjectBase implements Serializable {
 	private static final long serialVersionUID = 5768156680246084251L;
 
 	@Id

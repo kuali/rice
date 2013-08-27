@@ -23,7 +23,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.kuali.rice.krad.bo.VersionedAndGloballyUniqueBase;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.provider.annotation.Label;
 import org.kuali.rice.krad.data.provider.annotation.NonPersistentProperty;
 import org.kuali.rice.krad.data.provider.annotation.ShortLabel;
@@ -31,7 +31,7 @@ import org.kuali.rice.krad.data.provider.annotation.ValidCharactersConstraintBea
 
 @Entity
 @Table(name="TRV_ACCT_TYPE")
-public class TravelAccountType extends VersionedAndGloballyUniqueBase implements Serializable {
+public class TravelAccountType extends DataObjectBase implements Serializable {
     private static final long serialVersionUID = 413236253897119667L;
 
 	@Id

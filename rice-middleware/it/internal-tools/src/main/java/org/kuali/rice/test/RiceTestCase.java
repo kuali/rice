@@ -79,9 +79,13 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
     private SpringResourceLoader testHarnessSpringResourceLoader;
     private boolean clearTables = true;
 
+    private long testStart;
+    private long testEnd;
+
     @Override
 	@Before
     public void setUp() throws Exception {
+        testStart = System.currentTimeMillis();
         try {
             configureLogging();
             logBeforeRun();
@@ -194,6 +198,8 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
         } catch (BeanCreationNotAllowedException bcnae) {
             LOG.warn("BeanCreationNotAllowedException during stopLifecycles during tearDown " + bcnae.getMessage());
         }
+        testEnd = System.currentTimeMillis();
+        report("Total time to run test: " + (testEnd - testStart));
         logAfterRun();
     }
 

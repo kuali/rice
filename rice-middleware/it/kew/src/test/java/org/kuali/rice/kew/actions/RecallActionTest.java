@@ -533,7 +533,8 @@ public class RecallActionTest extends KEWTestCase {
         Role customRole = KimApiServiceLocator.getRoleService().createRole(role.build());
 
         // create a custom attribute for role qualification
-        Long chartAttributeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ATTR_DEFN_ID_S");
+
+        Long chartAttributeId = getNextSequenceLongValue("KRIM_ATTR_DEFN_ID_S");
         KimAttributeBo chartAttribute = new KimAttributeBo();
         chartAttribute.setId("" + chartAttributeId);
         chartAttribute.setAttributeName(roleQualifierName);

@@ -25,9 +25,11 @@ import org.kuali.rice.kew.batch.KEWXmlDataLoader;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
+import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.SQLDataLoader;
+import org.kuali.rice.test.TestHarnessServiceLocator;
 import org.kuali.rice.test.lifecycles.KEWXmlDataLoaderLifecycle;
 import org.kuali.rice.test.runners.LoadTimeWeavableTestRunner;
 import org.springframework.cache.CacheManager;
@@ -228,4 +230,12 @@ public abstract class KEWTestCase extends BaselineTestCase {
 	protected String getGroupIdForName(String namespace, String groupName) {
 		return KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(namespace, groupName).getId();
 	}
+
+    protected Long getNextSequenceLongValue(String sequenceName) {
+        return Long.valueOf(MaxValueIncrementerFactory.getIncrementer(TestHarnessServiceLocator.getDataSource(), sequenceName).nextLongValue());
+    }
+
+    protected String getNextSequenceStringValue(String sequenceName) {
+        return MaxValueIncrementerFactory.getIncrementer(TestHarnessServiceLocator.getDataSource(), sequenceName).nextStringValue();
+    }
 }

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.test;
 
+import org.junit.runner.RunWith;
 import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.framework.resourceloader.SpringResourceLoader;
@@ -28,6 +29,7 @@ import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 import org.kuali.rice.test.SQLDataLoader;
 import org.kuali.rice.test.lifecycles.KEWXmlDataLoaderLifecycle;
+import org.kuali.rice.test.runners.LoadTimeWeavableTestRunner;
 
 import javax.xml.namespace.QName;
 import java.util.ArrayList;
@@ -44,6 +46,7 @@ import static org.junit.Assert.fail;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BaselineMode(Mode.ROLLBACK_CLEAR_DB)
+@RunWith(LoadTimeWeavableTestRunner.class)
 public abstract class KIMTestCase extends BaselineTestCase {
 
 	private static final String KIM_MODULE_NAME = "kim";

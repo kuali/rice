@@ -52,7 +52,7 @@ public class CriteriaLookupDaoProxy implements CriteriaLookupDao {
                 if (lookupDaoValues.get(dataSourceName) != null) {
                     return lookupDaoValues.get(dataSourceName);
                 } else {
-                    if (!LegacyUtils.isLegacyManaged(clazz)) {
+                    if (!LegacyUtils.useLegacy(clazz)) {
                         throw new IllegalStateException(this.getClass() + " called with non-legacy class: " + clazz);
 					} else {
 						CriteriaLookupDaoOjb classSpecificLookupDaoOjb = new CriteriaLookupDaoOjb();

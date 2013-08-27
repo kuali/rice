@@ -93,7 +93,7 @@ public class CoreServiceJpaDataTest extends KRADTestCase {
     }
 
     @Test
-    public void testDerviedComponentBoDataObject() throws Exception{
+    public void testDerivedComponentBoDataObject() throws Exception{
         assertTrue("DerivedComponentBo is mapped in JPA", KRADServiceLocator.getDataObjectService().supports(DerivedComponentBo.class));
         setupDerivedComponentBoDataObjectAndSave();
 
@@ -259,7 +259,7 @@ public class CoreServiceJpaDataTest extends KRADTestCase {
         componentSetBo.setChecksum("ASDFQWER");
         componentSetBo.setComponentSetId("DD:RICETST");
         componentSetBo.setLastUpdateTimestamp(new Timestamp(System.currentTimeMillis()));
-        componentSetBo.setVersionNumber(1L);
+        componentSetBo.setVersionNumber(null);
 
         KRADServiceLocator.getDataObjectService().save(componentSetBo);
     }

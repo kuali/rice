@@ -40,7 +40,6 @@ import java.util.Map;
 
 public class StateServiceImpl implements StateService {
     private CountryService countryService;
-    private CriteriaLookupService criteriaLookupService;
     private DataObjectService dataObjectService;
 
     @Override
@@ -107,7 +106,7 @@ public class StateServiceImpl implements StateService {
     public StateQueryResults findStates(QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
         incomingParamCheck(queryByCriteria, "queryByCriteria");
 
-        GenericQueryResults<StateBo> results = criteriaLookupService.lookup(StateBo.class, queryByCriteria);
+        QueryResults<StateBo> results = dataObjectService.findMatching(StateBo.class, queryByCriteria);
 
         StateQueryResults.Builder builder = StateQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -140,15 +139,6 @@ public class StateServiceImpl implements StateService {
                 && StringUtils.isBlank((String) object)) {
             throw new RiceIllegalArgumentException(name + " was blank");
         }
-    }
-
-    /**
-     * Sets the criteriaLookupService attribute value.
-     *
-     * @param criteriaLookupService The criteriaLookupService to set.
-     */
-    public void setCriteriaLookupService(final CriteriaLookupService criteriaLookupService) {
-        this.criteriaLookupService = criteriaLookupService;
     }
 
     public DataObjectService getDataObjectService() {

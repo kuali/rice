@@ -90,5 +90,13 @@
         <groupId>mysql</groupId>
         <artifactId>${mysql.jdbc.artifactId}</artifactId>
       </dependency>
+      <dependency>
+        <groupId>org.kuali.rice</groupId>
+        <version>${project.version}</version>
+        <artifactId>rice-krad-data</artifactId>
+        <scope>test</scope>
+        <type>test-jar</type>
+      </dependency>
+
     </dependencies>
 </project>

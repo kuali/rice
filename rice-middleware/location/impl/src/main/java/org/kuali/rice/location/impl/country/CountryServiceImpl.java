@@ -44,7 +44,6 @@ import java.util.Map;
 
 public final class CountryServiceImpl implements CountryService {
     private ParameterService parameterService;
-    private CriteriaLookupService criteriaLookupService;
     private DataObjectService dataObjectService;
 
     @Override
@@ -108,7 +107,7 @@ public final class CountryServiceImpl implements CountryService {
     public CountryQueryResults findCountries(QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
         incomingParamCheck(queryByCriteria, "queryByCriteria");
 
-        GenericQueryResults<CountryBo> results = criteriaLookupService.lookup(CountryBo.class, queryByCriteria);
+        QueryResults<CountryBo> results = dataObjectService.findMatching(CountryBo.class, queryByCriteria);
 
         CountryQueryResults.Builder builder = CountryQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -153,15 +152,6 @@ public final class CountryServiceImpl implements CountryService {
                 && StringUtils.isBlank((String) object)) {
             throw new RiceIllegalArgumentException(name + " was blank");
         }
-    }
-
-    /**
-     * Sets the criteriaLookupService attribute value.
-     *
-     * @param criteriaLookupService The criteriaLookupService to set.
-     */
-    public void setCriteriaLookupService(final CriteriaLookupService criteriaLookupService) {
-        this.criteriaLookupService = criteriaLookupService;
     }
 
 

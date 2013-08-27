@@ -38,7 +38,6 @@ import java.util.List;
 import static java.util.Collections.singletonMap;
 
 public class CampusServiceImpl implements CampusService {
-    private CriteriaLookupService criteriaLookupService;
     private DataObjectService dataObjectService;
 	
 	/**
@@ -89,7 +88,7 @@ public class CampusServiceImpl implements CampusService {
     public CampusQueryResults findCampuses(QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
         incomingParamCheck(queryByCriteria, "queryByCriteria");
 
-        GenericQueryResults<CampusBo> results = criteriaLookupService.lookup(CampusBo.class, queryByCriteria);
+        QueryResults<CampusBo> results = dataObjectService.findMatching(CampusBo.class, queryByCriteria);
 
         CampusQueryResults.Builder builder = CampusQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -108,7 +107,7 @@ public class CampusServiceImpl implements CampusService {
     public CampusTypeQueryResults findCampusTypes(QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
         incomingParamCheck(queryByCriteria, "query");
 
-        GenericQueryResults<CampusTypeBo> results = criteriaLookupService.lookup(CampusTypeBo.class, queryByCriteria);
+        QueryResults<CampusTypeBo> results = dataObjectService.findMatching(CampusTypeBo.class, queryByCriteria);
 
         CampusTypeQueryResults.Builder builder = CampusTypeQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -149,16 +148,6 @@ public class CampusServiceImpl implements CampusService {
             throw new RiceIllegalArgumentException(name + " was blank");
         }
     }
-
-    /**
-     * Sets the criteriaLookupService attribute value.
-     *
-     * @param criteriaLookupService The criteriaLookupService to set.
-     */
-    public void setCriteriaLookupService(final CriteriaLookupService criteriaLookupService) {
-        this.criteriaLookupService = criteriaLookupService;
-    }
-
 
     public DataObjectService getDataObjectService() {
         return dataObjectService;

@@ -16,24 +16,21 @@
 package org.kuali.rice.coreservice.impl.parameter;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.exception.RiceIllegalStateException;
+import org.kuali.rice.core.api.util.Truth;
 import org.kuali.rice.coreservice.api.parameter.Parameter;
 import org.kuali.rice.coreservice.api.parameter.ParameterKey;
 import org.kuali.rice.coreservice.api.parameter.ParameterQueryResults;
 import org.kuali.rice.coreservice.api.parameter.ParameterRepositoryService;
-import org.kuali.rice.core.api.criteria.CriteriaLookupService;
-import org.kuali.rice.core.api.criteria.GenericQueryResults;
-import org.kuali.rice.core.api.criteria.QueryByCriteria;
-import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.core.api.exception.RiceIllegalStateException;
-import org.kuali.rice.core.api.util.Truth;
 import org.kuali.rice.krad.data.CompoundKey;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.PersistenceOption;
-import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.springframework.beans.factory.annotation.Required;
 
-import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -44,7 +41,6 @@ import java.util.Map;
 public final class ParameterRepositoryServiceImpl implements ParameterRepositoryService {
     private static final String SUB_PARAM_SEPARATOR = "=";
 
-    private CriteriaLookupService criteriaLookupService;
     private DataObjectService dataObjectService;
 
     @Override 
@@ -180,7 +176,7 @@ public final class ParameterRepositoryServiceImpl implements ParameterRepository
             throw new RiceIllegalArgumentException("queryByCriteria is null");
         }
 
-        GenericQueryResults<ParameterBo> results = criteriaLookupService.lookup(ParameterBo.class, queryByCriteria);
+        QueryResults<ParameterBo> results = dataObjectService.findMatching(ParameterBo.class, queryByCriteria);
 
         ParameterQueryResults.Builder builder = ParameterQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -194,10 +190,6 @@ public final class ParameterRepositoryServiceImpl implements ParameterRepository
         builder.setResults(ims);
         return builder.build();
 	}
-
-    public void setCriteriaLookupService(final CriteriaLookupService criteriaLookupService) {
-        this.criteriaLookupService = criteriaLookupService;
-    }
 
     public DataObjectService getDataObjectService() {
         return dataObjectService;

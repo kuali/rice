@@ -35,7 +35,6 @@ import java.util.List;
 import java.util.Map;
 
 public class CountyServiceImpl implements CountyService {
-    private CriteriaLookupService criteriaLookupService;
     private DataObjectService dataObjectService;
 
     @Override
@@ -106,7 +105,7 @@ public class CountyServiceImpl implements CountyService {
     public CountyQueryResults findCounties(QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
         incomingParamCheck(queryByCriteria, "queryByCriteria");
 
-        GenericQueryResults<CountyBo> results = criteriaLookupService.lookup(CountyBo.class, queryByCriteria);
+        QueryResults<CountyBo> results = dataObjectService.findMatching(CountyBo.class, queryByCriteria);
 
         CountyQueryResults.Builder builder = CountyQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -129,16 +128,6 @@ public class CountyServiceImpl implements CountyService {
             throw new RiceIllegalArgumentException(name + " was blank");
         }
     }
-
-    /**
-     * Sets the criteriaLookupService attribute value.
-     *
-     * @param criteriaLookupService The criteriaLookupService to set.
-     */
-    public void setCriteriaLookupService(final CriteriaLookupService criteriaLookupService) {
-        this.criteriaLookupService = criteriaLookupService;
-    }
-
 
     public DataObjectService getDataObjectService() {
         return dataObjectService;

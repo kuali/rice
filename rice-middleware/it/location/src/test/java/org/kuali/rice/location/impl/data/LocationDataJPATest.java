@@ -27,13 +27,18 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.location.api.campus.Campus;
+import org.kuali.rice.location.api.campus.CampusQueryResults;
 import org.kuali.rice.location.api.campus.CampusType;
+import org.kuali.rice.location.api.campus.CampusTypeQueryResults;
 import org.kuali.rice.location.api.country.Country;
+import org.kuali.rice.location.api.country.CountryQueryResults;
 import org.kuali.rice.location.api.county.County;
 import org.kuali.rice.location.api.county.CountyQueryResults;
 import org.kuali.rice.location.api.postalcode.PostalCode;
+import org.kuali.rice.location.api.postalcode.PostalCodeQueryResults;
 import org.kuali.rice.location.api.services.LocationApiServiceLocator;
 import org.kuali.rice.location.api.state.State;
+import org.kuali.rice.location.api.state.StateQueryResults;
 import org.kuali.rice.location.impl.campus.CampusBo;
 import org.kuali.rice.location.impl.campus.CampusTypeBo;
 import org.kuali.rice.location.impl.country.CountryBo;
@@ -155,6 +160,14 @@ public class LocationDataJPATest extends KRADTestCase {
 
         List<CampusType> campusTypeList = LocationApiServiceLocator.getCampusService().findAllCampusTypes();
         assertTrue("findAllCampusTypes retrieved correctly",campusTypeList.size() > 0);
+
+        CampusQueryResults results = LocationApiServiceLocator.getCampusService().
+                findCampuses(QueryByCriteria.Builder.forAttribute("code", "SE"));
+        assertTrue("findCampuses retrieved correctly",results != null && results.getResults().size() == 1);
+
+        CampusTypeQueryResults resultsType = LocationApiServiceLocator.getCampusService().
+                findCampusTypes(QueryByCriteria.Builder.forAttribute("code", "C"));
+        assertTrue("findCampuses retrieved correctly",resultsType != null && resultsType.getResults().size() == 1);
     }
 
     @Test
@@ -171,6 +184,10 @@ public class LocationDataJPATest extends KRADTestCase {
 
         countryList = LocationApiServiceLocator.getCountryService().findAllCountriesNotRestricted();
         assertTrue("findAllCountriesNotRestricted retrieved correctly",countryList != null && countryList.size() == 1);
+
+        CountryQueryResults results = LocationApiServiceLocator.getCountryService().
+                findCountries(QueryByCriteria.Builder.forAttribute("code", "US"));
+        assertTrue("findCountries retrieved correctly",results != null && results.getResults().size() == 1);
     }
 
     @Test
@@ -180,7 +197,8 @@ public class LocationDataJPATest extends KRADTestCase {
         County county = LocationApiServiceLocator.getCountyService().getCounty("US","IN","MON");
         assertTrue("getCounty retrieved correctly",county != null && StringUtils.equals("MON", county.getCode()));
 
-        CountyQueryResults results = LocationApiServiceLocator.getCountyService().findCounties(QueryByCriteria.Builder.forAttribute("code","MON"));
+        CountyQueryResults results = LocationApiServiceLocator.getCountyService().findCounties(
+                    QueryByCriteria.Builder.forAttribute("code","MON"));
         assertTrue("findCounties retrieved correctly",results != null && results.getResults().size() == 1);
 
         List<County> counties = LocationApiServiceLocator.getCountyService().
@@ -199,6 +217,9 @@ public class LocationDataJPATest extends KRADTestCase {
         assertTrue("findAllStatesInCountry retrieved correctly", stateList != null && stateList.size() == 1);
         stateList = LocationApiServiceLocator.getStateService().findAllStatesInCountryByAltCode("USA");
         assertTrue("findAllStatesInCountryByAltCode retrieved correctly", stateList != null && stateList.size() == 1);
+        StateQueryResults results = LocationApiServiceLocator.getStateService().findStates(
+                        QueryByCriteria.Builder.forAttribute("code","IN"));
+        assertTrue("findStates retrieved correctly",results != null && results.getResults().size() == 1);
     }
 
     @Test
@@ -208,8 +229,13 @@ public class LocationDataJPATest extends KRADTestCase {
         PostalCode postalCode = LocationApiServiceLocator.getPostalCodeService().getPostalCode("US","47203");
         assertTrue("getPostalCode retrieved correctly",postalCode != null &&
                                 StringUtils.equals(postalCode.getCode(),"47203"));
-        List<PostalCode> postalCodeList = LocationApiServiceLocator.getPostalCodeService().findAllPostalCodesInCountry("US");
-        assertTrue("findAllPostalCodesInCountry retrieved correctly", postalCodeList != null && postalCodeList.size() == 1);
+        List<PostalCode> postalCodeList = LocationApiServiceLocator.getPostalCodeService().
+                findAllPostalCodesInCountry("US");
+        assertTrue("findAllPostalCodesInCountry retrieved correctly",
+                postalCodeList != null && postalCodeList.size() == 1);
+        PostalCodeQueryResults results = LocationApiServiceLocator.getPostalCodeService().
+                findPostalCodes(QueryByCriteria.Builder.forAttribute("code", "47203"));
+        assertTrue("findPostalCodes retrieved correctly",results != null && results.getResults().size()==1);
     }
 
     private void setupPostalCodeBoDataObjectAndSave(){

@@ -35,7 +35,6 @@ import java.util.List;
 import java.util.Map;
 
 public class PostalCodeServiceImpl implements PostalCodeService {
-    private CriteriaLookupService criteriaLookupService;
     private DataObjectService dataObjectService;
 
     @Override
@@ -85,7 +84,7 @@ public class PostalCodeServiceImpl implements PostalCodeService {
     public PostalCodeQueryResults findPostalCodes(QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
         incomingParamCheck(queryByCriteria, "queryByCriteria");
 
-        GenericQueryResults<PostalCodeBo> results = criteriaLookupService.lookup(PostalCodeBo.class, queryByCriteria);
+        QueryResults<PostalCodeBo> results = dataObjectService.findMatching(PostalCodeBo.class, queryByCriteria);
 
         PostalCodeQueryResults.Builder builder = PostalCodeQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -107,15 +106,6 @@ public class PostalCodeServiceImpl implements PostalCodeService {
                 && StringUtils.isBlank((String) object)) {
             throw new RiceIllegalArgumentException(name + " was blank");
         }
-    }
-
-    /**
-     * Sets the criteriaLookupService attribute value.
-     *
-     * @param criteriaLookupService The criteriaLookupService to set.
-     */
-    public void setCriteriaLookupService(final CriteriaLookupService criteriaLookupService) {
-        this.criteriaLookupService = criteriaLookupService;
     }
 
     public DataObjectService getDataObjectService() {

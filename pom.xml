@@ -172,6 +172,9 @@
     <!-- Quartz 1.8.5 appears to cause strange errors in spring on startup,
       Quartz 2.0.x is an impacting api and database-level change -->
     <quartz.version>1.8.4</quartz.version>
+    <sauce.java.common.version>1.0.19</sauce.java.common.version>
+    <sauce.junit.version>1.0.19</sauce.junit.version>
+    <sauce.rest.version>1.0.0</sauce.rest.version>
     <selenium-java.version>2.33.0</selenium-java.version>
     <xalan.version>2.7.1</xalan.version>
     <serializer.version>2.7.1</serializer.version>
@@ -1438,6 +1441,28 @@
         <artifactId>${oracle.jdbc.artifactId}</artifactId>
         <version>${oracle.jdbc.version}</version>
         <!--<scope>provided</scope> -->
+      </dependency>
+
+      <dependency>
+        <groupId>com.saucelabs</groupId>
+        <artifactId>sauce_junit</artifactId>
+        <version>${sauce.junit.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <!-- saucelabs transient dependencies that some setups don't pickup -->
+      <dependency>
+        <groupId>com.saucelabs</groupId>
+        <artifactId>sauce_java_common</artifactId>
+        <version>${sauce.java.common.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>com.saucelabs</groupId>
+        <artifactId>saucerest</artifactId>
+        <version>${sauce.rest.version}</version>
+        <scope>test</scope>
       </dependency>
 
       <dependency>

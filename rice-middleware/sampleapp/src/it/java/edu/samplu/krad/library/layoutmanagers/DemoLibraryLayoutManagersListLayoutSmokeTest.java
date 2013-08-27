@@ -46,7 +46,7 @@ public class DemoLibraryLayoutManagersListLayoutSmokeTest extends SmokeTestBase 
 
     protected void testLayoutManagersListLayout() throws Exception {
        assertElementPresentByXpath("//div[@data-parent='Demo-ListLayoutManager-Example1']/ul/li");
-       assertElementPresentByXpath("//div[@data-parent='Demo-ListLayoutManager-Example1']/ul/li[35]");
+       assertElementPresentByXpath("//div[@data-parent='Demo-ListLayoutManager-Example1']/ul/li[12]");
     }
     
     @Test

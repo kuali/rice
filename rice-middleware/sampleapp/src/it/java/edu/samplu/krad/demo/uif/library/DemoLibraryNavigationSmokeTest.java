@@ -41,6 +41,7 @@ public class DemoLibraryNavigationSmokeTest extends DemoLibraryNavigationBase {
 
     protected void testNavigationTabs() throws Exception {
         waitAndClickByLinkText("Navigation Group Tab Example");
+        Thread.sleep(1000);
         try {
             selectWindow(driver.getWindowHandles().toArray()[1].toString());
         } catch (Throwable t) {

@@ -74,6 +74,7 @@ public class DemoLookUpConditionalCriteriaSmokeTest extends SmokeTestBase {
         //It requires "Search" to be clicked twice, for showing message.
         waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME,"a1");
         waitAndClickButtonByText(SEARCH);
+        Thread.sleep(5000); // If we don't wait long enough we'll get concurrency issues.
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(3000);
         assertTextPresent(DATE_REQUIRED_MESSAGE);
@@ -83,8 +84,7 @@ public class DemoLookUpConditionalCriteriaSmokeTest extends SmokeTestBase {
         waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME,"a2");
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(3000);
-        if(isElementPresentByName(LOOKUP_CRITERIA_DATE_NAME))
-        {
+        if(isElementPresentByName(LOOKUP_CRITERIA_DATE_NAME)) {
             fail(FAILURE_MESSAGE);
         }
         

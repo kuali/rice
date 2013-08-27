@@ -4027,10 +4027,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         jiraAwareWaitAndClick(By.id(id), message);
     }
 
-    protected void waitAndClickButtonByText(String buttonText) throws InterruptedException {
-        waitAndClickByXpath("//button[contains(text(), '" + buttonText + "')]");
-    }
-
     protected void waitAndClickByLinkText(String text) throws InterruptedException {
         jiraAwareWaitAndClick(By.linkText(text), "");
     }
@@ -4065,6 +4061,14 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void waitAndClickByXpath(String xpath, String message) throws InterruptedException {
         jiraAwareWaitAndClick(By.xpath(xpath), message);
+    }
+
+    protected void waitAndClickButtonByText(String buttonText) throws InterruptedException {
+        waitAndClickButtonByText(buttonText, "");
+    }
+
+    protected void waitAndClickButtonByText(String buttonText, String message) throws InterruptedException {
+        waitAndClickByXpath("//button[contains(text(), '" + buttonText + "')]", message);
     }
 
     /**

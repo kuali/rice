@@ -37,7 +37,9 @@ public class TestXMLSearchableAttributeDateTime implements SearchableAttribute {
     private static final long serialVersionUID = 1479059967548234181L;
 
     public static final String SEARCH_STORAGE_KEY = "testDateTimeKey";
-    public static final Long SEARCH_STORAGE_VALUE_IN_MILLS = (new Long("1173995646535"));
+    // at the very least, MySQL appears to only store values to a precision of one second, so make sure we have an even
+    // number of milliseconds (i.e. this value need to be evenly divisible by 1000)
+    public static final Long SEARCH_STORAGE_VALUE_IN_MILLS = (new Long("1173995647000"));
     public static final DateTime SEARCH_STORAGE_VALUE = new DateTime(SEARCH_STORAGE_VALUE_IN_MILLS.longValue());
 
     @Override

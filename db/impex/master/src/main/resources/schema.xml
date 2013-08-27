@@ -3932,6 +3932,12 @@
         <column name="CREATE_DT" type="DATE"/>
         <column name="SUBSIDIZED_PCT" type="FLOAT"/>
     </table>
+    <table name="TRV_ACCT_EXT">
+        <column name="ACCT_NUM" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="ACCT_TYPE" primaryKey="true" size="100" type="VARCHAR"/>
+        <column name="OBJ_ID" size="36" type="VARCHAR"/>
+        <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
+    </table>
     <table name="TRV_ACCT_FO">
         <column name="ACCT_FO_ID" primaryKey="true" size="14" type="DECIMAL"/>
         <column name="ACCT_FO_USER_NAME" required="true" size="50" type="VARCHAR"/>

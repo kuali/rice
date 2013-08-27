@@ -18,11 +18,13 @@ package org.kuali.rice.coreservice.impl;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.coreservice.impl.style.StyleXmlParser;
+import org.springframework.cache.CacheManager;
 
 public class CoreServiceImplServiceLocator {
 
 	public static final String STYLE_XML_LOADER = "styleXmlLoader";
 	public static final String STYLE_XML_EXPORTER = "styleXmlExporter";
+    public static final String LOCAL_CACHE_MANAGER = "coreServiceLocalCacheManager";
 
     static <T> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
@@ -34,6 +36,10 @@ public class CoreServiceImplServiceLocator {
         
     public static XmlExporter getStyleXmlExporter() {
         return getService(STYLE_XML_EXPORTER);
+    }
+
+    public static CacheManager getLocalCacheManager() {
+        return getService(LOCAL_CACHE_MANAGER);
     }
 
 }

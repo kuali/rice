@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.api.util.ClasspathOrFileResourceLoader;
 import org.kuali.rice.core.framework.resourceloader.SpringResourceLoader;
+import org.kuali.rice.coreservice.impl.CoreServiceImplServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.batch.KEWXmlDataLoader;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -157,7 +158,8 @@ public abstract class KEWTestCase extends BaselineTestCase {
 	public class ClearCacheLifecycle extends BaseLifecycle {
 		@Override
 		public void stop() throws Exception {
-            clearCacheManagers(KimImplServiceLocator.getLocalCacheManager(), KEWServiceLocator.getLocalCacheManager());
+            clearCacheManagers(KimImplServiceLocator.getLocalCacheManager(), KEWServiceLocator.getLocalCacheManager(),
+                    CoreServiceImplServiceLocator.getLocalCacheManager());
 			super.stop();
 		}
 	}
@@ -232,7 +234,8 @@ public abstract class KEWTestCase extends BaselineTestCase {
 	}
 
     protected Long getNextSequenceLongValue(String sequenceName) {
-        return Long.valueOf(MaxValueIncrementerFactory.getIncrementer(TestHarnessServiceLocator.getDataSource(), sequenceName).nextLongValue());
+        return Long.valueOf(MaxValueIncrementerFactory.getIncrementer(TestHarnessServiceLocator.getDataSource(),
+                sequenceName).nextLongValue());
     }
 
     protected String getNextSequenceStringValue(String sequenceName) {

@@ -33,7 +33,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.util.List;
-
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Implements generic StyleService via existing EDL style table
@@ -111,8 +112,11 @@ public class StyleRepositoryServiceImpl implements StyleRepositoryService {
      * @return first style that matches a particular name, null otherwise
      */
     private StyleBo getStyleByName(String styleName){
+        Map<String, Object> attributes = new HashMap<String, Object>();
+        attributes.put("name", styleName);
+        attributes.put("active", Boolean.TRUE);
         QueryResults<StyleBo> styleBos =
-                dataObjectService.findMatching(StyleBo.class, QueryByCriteria.Builder.forAttribute("name",styleName));
+                dataObjectService.findMatching(StyleBo.class, QueryByCriteria.Builder.forAttributesAnd(attributes));
         if(styleBos != null && styleBos.getResults().size() > 0){
             return styleBos.getResults().get(0);
         }

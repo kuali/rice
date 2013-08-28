@@ -15,9 +15,7 @@
  */
 package org.kuali.rice.krad.test.document.bo;
 
-import org.apache.commons.lang.ObjectUtils;
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -29,7 +27,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.util.List;
+
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 
 /**
@@ -38,8 +39,9 @@ import java.util.List;
 @Entity
 @Table(name="TRV_ACCT_FO")
 public class AccountManager extends PersistableBusinessObjectBase {
-	
-	@Column(name="acct_fo_user_name")
+	private static final long serialVersionUID = 1555425302284842267L;
+
+    @Column(name="acct_fo_user_name")
 	private String userName;
 	@Id
 	@GeneratedValue(generator="TRV_FO_ID_S")
@@ -48,7 +50,7 @@ public class AccountManager extends PersistableBusinessObjectBase {
 	@Transient
 	private String defaultType;
 	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
-	@JoinColumn(name="acct_fo_id",insertable=false,updatable=false)
+	@JoinColumn(name="acct_fo_id",referencedColumnName="acct_fo_id",insertable=false,updatable=false)
 	private List<Account> accounts;
 
 	public void setUserName(String userId) {
@@ -67,6 +69,7 @@ public class AccountManager extends PersistableBusinessObjectBase {
         this.defaultType = defaultType;
     }
 
+    @Override
     public final boolean equals(Object o) {
         if (o == null) return false;
         if (!(o instanceof AccountManager)) return false;
@@ -78,7 +81,7 @@ public class AccountManager extends PersistableBusinessObjectBase {
 	/**
 	 * Returns the hashcode of the docHeaderId, which is supposed to be the
 	 * primary key for the document
-	 * 
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 	/*public int hashCode() {

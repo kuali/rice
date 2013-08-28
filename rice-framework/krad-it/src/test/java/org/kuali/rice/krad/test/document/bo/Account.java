@@ -15,13 +15,21 @@
  */
 package org.kuali.rice.krad.test.document.bo;
 
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-import javax.persistence.*;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 @Entity
 @Table(name="TRV_ACCT")
 public class Account extends PersistableBusinessObjectBase {
+    private static final long serialVersionUID = 1L;
     @Id
     @Column(name="acct_num")
 	private String number;
@@ -29,11 +37,19 @@ public class Account extends PersistableBusinessObjectBase {
     private String name;
 	@Column(name="acct_fo_id")
     private Long amId;
-	
+
 	@ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.REFRESH})
 	@JoinColumn(name="acct_fo_id",insertable=false,updatable=false)
-    private AccountManager accountManager;    
-    
+    private AccountManager accountManager;
+
+    public Account() {}
+
+    public Account(String number, String name) {
+        super();
+        this.number = number;
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }

@@ -13,13 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.data.provider;
+package org.kuali.rice.krad.data.provider.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
+
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import org.apache.log4j.Level;
@@ -30,43 +33,52 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
-import org.kuali.rice.krad.data.jpa.JpaPersistenceProvider;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
-import org.kuali.rice.krad.data.provider.util.ReferenceLinker;
+import org.kuali.rice.krad.data.provider.PersistenceProvider;
 import org.kuali.rice.krad.test.KRADTestCase;
+import org.kuali.rice.krad.test.document.bo.Account;
 import org.kuali.rice.krad.test.document.bo.AccountExtension;
+import org.kuali.rice.krad.test.document.bo.AccountManager;
 import org.kuali.rice.krad.test.document.bo.AccountType;
 import org.kuali.rice.test.BaselineTestCase;
+import org.kuali.rice.test.data.PerSuiteUnitTestData;
 import org.kuali.rice.test.data.PerTestUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
-import org.kuali.rice.test.data.UnitTestFile;
+import org.kuali.rice.test.data.UnitTestSql;
 
 /**
  * TODO jonathan don't forget to fill this in. -- OK.  I won't.  Oops.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-//@PerSuiteUnitTestData( {
-//    @UnitTestData(
-//            sqlStatements = {
-//                    @UnitTestSql("delete from trv_acct_type")
-//                    ,@UnitTestSql("INSERT INTO trv_acct_type ( ACCT_TYPE, ACCT_TYPE_NAME, OBJ_ID, VER_NBR ) VALUES ( 'EX', 'EXPENSE', 'EX', 1 )")
-//                    ,@UnitTestSql("INSERT INTO trv_acct_type ( ACCT_TYPE, ACCT_TYPE_NAME, OBJ_ID, VER_NBR ) VALUES ( 'IN', 'INCOME', 'IN', 1 )")
-//            })
-//})
+@PerSuiteUnitTestData( {
+    @UnitTestData(
+            sqlStatements = {
+                    // Need to remove the not null constraint on the ACCT_TYPE column
+                    @UnitTestSql("DROP TABLE trv_acct_ext")
+                    ,@UnitTestSql("CREATE TABLE trv_acct_ext ( ACCT_NUM VARCHAR(10), ACCT_TYPE VARCHAR(100), OBJ_ID VARCHAR(36), VER_NBR DECIMAL(8) )")
+                    // For some reason, this table seems to be empty - populate with a couple needed values
+                    ,@UnitTestSql("delete from trv_acct_type")
+                    ,@UnitTestSql("INSERT INTO trv_acct_type ( ACCT_TYPE, ACCT_TYPE_NAME, OBJ_ID, VER_NBR ) VALUES ( 'EAT', 'EXPENSE', 'EX', 1 )")
+                    ,@UnitTestSql("INSERT INTO trv_acct_type ( ACCT_TYPE, ACCT_TYPE_NAME, OBJ_ID, VER_NBR ) VALUES ( 'IAT', 'INCOME', 'IN', 1 )")
+            })
+})
 @PerTestUnitTestData(
         value = @UnitTestData(
 //                order = {UnitTestData.Type.SQL_STATEMENTS, UnitTestData.Type.SQL_FILES},
-//                sqlStatements = {
-//                        @UnitTestSql("delete from trv_acct_ext")
-//                        ,@UnitTestSql("INSERT INTO trv_acct_ext(ACCT_NUM, ACCT_TYPE, OBJ_ID, VER_NBR) VALUES('NULL_TYPE', NULL, 'NULL_TYPE', 1)")
-//                        ,@UnitTestSql("INSERT INTO trv_acct_ext(ACCT_NUM, ACCT_TYPE, OBJ_ID, VER_NBR) VALUES('EX_TYPE', 'EX', 'EX_TYPE', 1)")
-//                }
-               sqlFiles = {
-                        @UnitTestFile(filename = "classpath:testAccountType.sql", delimiter = "/")
-                       ,@UnitTestFile(filename = "classpath:testAccounts.sql", delimiter = "/")
+                sqlStatements = {
+                        @UnitTestSql("delete from trv_acct_ext")
+                        ,@UnitTestSql("delete from trv_acct_fo")
+                        ,@UnitTestSql("delete from trv_acct")
+                        ,@UnitTestSql("INSERT INTO trv_acct_ext(ACCT_NUM, ACCT_TYPE, OBJ_ID, VER_NBR) VALUES('NULL_TYPE', NULL, 'NULL_TYPE', 1)")
+                        ,@UnitTestSql("INSERT INTO trv_acct_ext(ACCT_NUM, ACCT_TYPE, OBJ_ID, VER_NBR) VALUES('EX_TYPE', 'EAT', 'EX_TYPE', 1)")
+                        ,@UnitTestSql("INSERT INTO TRV_ACCT_FO(ACCT_FO_ID, ACCT_FO_USER_NAME, OBJ_ID, VER_NBR) VALUES(1, 'One', '1', 1)")
                 }
+//               sqlFiles = {
+//                        @UnitTestFile(filename = "classpath:testAccountType.sql", delimiter = "/")
+//                       ,@UnitTestFile(filename = "classpath:testAccounts.sql", delimiter = "/")
+//                }
         )
 //       ,tearDown = @UnitTestData(
 //                sqlStatements = {
@@ -78,10 +90,16 @@ import org.kuali.rice.test.data.UnitTestFile;
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class ReferenceLinkerTest extends KRADTestCase {
 
+    private static final String EXPENSE_ACCOUNT_TYPE_CODE = "EAT";
+    private static final String INCOME_ACCOUNT_TYPE_CODE = "IAT";
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ReferenceLinkerTest.class);
 
-    protected JpaPersistenceProvider getPersistenceProvider() {
-        return getKRADTestHarnessContext().getBean("kradTestJpaPersistenceProvider", JpaPersistenceProvider.class);
+    protected PersistenceProvider getPersistenceProvider() {
+        return getKRADTestHarnessContext().getBean("kradTestJpaPersistenceProvider", PersistenceProvider.class);
+    }
+
+    protected EntityManager getEntityManager() {
+        return getKRADTestHarnessContext().getBean("kradTestSharedEntityManager", EntityManager.class);
     }
 
     protected DataObjectService getDOS() {
@@ -119,7 +137,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
         AccountExtension acct = new AccountExtension();
         acct.setNumber("NEW_ACCT");
 
-        AccountType acctType = getDOS().find(AccountType.class, "EX");
+        AccountType acctType = getDOS().find(AccountType.class, EXPENSE_ACCOUNT_TYPE_CODE);
         assertNotNull( "Error retrieving EX account type from data object service", acctType );
 
         acct.setAccountType(acctType);
@@ -143,10 +161,10 @@ public class ReferenceLinkerTest extends KRADTestCase {
     public void persistenceWhenObjectSet_existingParentObject_changeChildValue() {
         AccountExtension acct = getExAccount();
 
-        acct.setAccountTypeCode("IN");
+        acct.setAccountTypeCode(INCOME_ACCOUNT_TYPE_CODE);
 
         // test what object getter does
-        LOG.debug( "Account Type After setting FK to 'IN': " + acct.getAccountType());
+        LOG.debug( "Account Type After setting FK to 'IAT': " + acct.getAccountType());
         enableJotmLogging();
         acct = getDOS().save(acct);
         assertNotNull( "After saving, the acct type object should be available", acct.getAccountType());
@@ -159,11 +177,11 @@ public class ReferenceLinkerTest extends KRADTestCase {
         AccountExtension acct = getExAccount();
 
         enableJotmLogging();
-        AccountType acctType = getDOS().find(AccountType.class, "IN");
-        assertNotNull( "Error retrieving IN account type from data object service", acctType );
+        AccountType acctType = getDOS().find(AccountType.class, INCOME_ACCOUNT_TYPE_CODE);
+        assertNotNull( "Error retrieving IAT account type from data object service", acctType );
 
         acct.setAccountType(acctType);
-        assertEquals( "Before saving account type code should have had the old value", "EX", acct.getAccountTypeCode());
+        assertEquals( "Before saving account type code should have had the old value", EXPENSE_ACCOUNT_TYPE_CODE, acct.getAccountTypeCode());
         acct = getDOS().save(acct);
         assertEquals( "After saving, the acct type code should have been set to the PK from the acct type", acctType.getAccountTypeCode(), acct.getAccountTypeCode());
         assertNotNull( "After saving, the acct type object should be available", acct.getAccountType());
@@ -173,7 +191,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
     protected AccountExtension getExAccount() {
         AccountExtension acct = getDOS().find(AccountExtension.class, "EX_TYPE");
         assertNotNull("unable to retrieve EX_TYPE from database", acct);
-        assertEquals( "Incorrect acct type on EX_TYPE database record", acct.getAccountTypeCode(), "EX" );
+        assertEquals( "Incorrect acct type on EX_TYPE database record", acct.getAccountTypeCode(), EXPENSE_ACCOUNT_TYPE_CODE );
 
         assertNotNull( "the acct type object should be available", acct.getAccountType());
         assertEquals( "the acct type code on the object should be the same as the reference", acct.getAccountTypeCode(), acct.getAccountType().getAccountTypeCode());
@@ -195,10 +213,10 @@ public class ReferenceLinkerTest extends KRADTestCase {
     public void persistenceWhenObjectSet_existingParentObject_setChildValue() {
         AccountExtension acct = getNullAccount();
 
-        acct.setAccountTypeCode("IN");
+        acct.setAccountTypeCode(INCOME_ACCOUNT_TYPE_CODE);
 
         // test what object getter does
-        LOG.debug( "Account Type After setting FK to 'IN': " + acct.getAccountType());
+        LOG.debug( "Account Type After setting FK to 'IAT': " + acct.getAccountType());
         enableJotmLogging();
         acct = getDOS().save(acct);
         assertNotNull( "After saving, the acct type object should be available", acct.getAccountType());
@@ -211,7 +229,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
         AccountExtension acct = getNullAccount();
 
         enableJotmLogging();
-        AccountType acctType = getDOS().find(AccountType.class, "IN");
+        AccountType acctType = getDOS().find(AccountType.class, INCOME_ACCOUNT_TYPE_CODE);
         assertNotNull( "Error retrieving IN account type from data object service", acctType );
 
         acct.setAccountType(acctType);
@@ -221,6 +239,32 @@ public class ReferenceLinkerTest extends KRADTestCase {
         assertNotNull( "After saving, the acct type object should be available", acct.getAccountType());
         assertEquals( "After Saving, the acct type code on the reference should be the same as the object", acct.getAccountTypeCode(), acct.getAccountType().getAccountTypeCode());
         disableJotmLogging();
+    }
+
+    @Test
+    public void settingOfCollectionKeys_existingAccountManager() {
+        // Get the AM record
+        AccountManager am = getDOS().find(AccountManager.class, 1L);
+        assertNotNull( "Error retrieving account manager", am );
+
+        // create the new collection records
+        ArrayList<Account> accounts = new ArrayList<Account>();
+        accounts.add( new Account( "a", "Account a") );
+        accounts.add( new Account( "b", "Account b") );
+        am.setAccounts(accounts);
+
+        for ( Account a : am.getAccounts() ) {
+            assertNull( "Before save, the FO ID on the Accounts should have been null", a.getAmId() );
+        }
+        am = getDOS().save(am);
+        for ( Account a : am.getAccounts() ) {
+            assertEquals( "After the save, the FO ID on the Accounts should have been the same as the AccountManager", am.getAmId(), a.getAmId() );
+        }
+    }
+
+    @Test
+    public void settingOfCollectionKeys_newAccountManager() {
+        fail( "Not Implemented");
     }
 
     public void persistenceWhenObjectSet_existingParentObject_blankOutChildValue() {

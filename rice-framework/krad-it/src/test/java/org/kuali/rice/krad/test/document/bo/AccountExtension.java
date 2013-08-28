@@ -15,9 +15,7 @@
  */
 package org.kuali.rice.krad.test.document.bo;
 
-import org.kuali.rice.krad.bo.PersistableBusinessObjectExtensionBase;
-import org.kuali.rice.krad.data.provider.annotation.ExtensionFor;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,21 +24,24 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.kuali.rice.krad.bo.PersistableBusinessObjectExtensionBase;
+import org.kuali.rice.krad.data.provider.annotation.ExtensionFor;
+
 @Entity
 @Table(name="TRV_ACCT_EXT")
 @ExtensionFor(Account.class)
 public class AccountExtension extends PersistableBusinessObjectExtensionBase {
-    
+
 	@Id
 	@Column(name="ACCT_NUM")
     private String number;
 	@Column(name="ACCT_TYPE")
     private String accountTypeCode;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
+
+	@ManyToOne(fetch=FetchType.LAZY,cascade= {CascadeType.DETACH,CascadeType.REFRESH})
 	@JoinColumn(name="ACCT_TYPE",insertable=false,updatable=false)
-    private AccountType accountType; 
-    
+    private AccountType accountType;
+
     public String getNumber() {
         return number;
     }
@@ -65,5 +66,5 @@ public class AccountExtension extends PersistableBusinessObjectExtensionBase {
 		this.accountType = accountType;
 	}
 
- 
+
 }

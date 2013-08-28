@@ -1209,12 +1209,44 @@
                 </itemizedlist>
             </para>
         </section>
-        
-        
-
     </section>
-    
-    
+    <section><title>Maintenance Documents</title>
+        <section><title>Document Error Handling</title>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>
+                            Document errors with custom paths, typically specified in a subclass of
+                            <emphasis role="bold">MaintenanceDocumentRuleBase</emphasis>, will not appear on the
+                            document unless they are converted to the new KRAD format.  For example, if you were
+                            throwing an additional error against text entered for notes, in the KNS you would write
+                            a validation like
+                            <programlisting linenumbering="numbered">public boolean isValid(Note note) {
+  boolean isValid = true;
+  if (!StringUtils.isAllUpperCase(note.getNoteText())) {
+    isValid = false;
+    GlobalVariables.getMessageMap().putError("newNote.noteText", "error.note.not.uppercase");
+  }
+  return isValid;
+}</programlisting>
+                            but in KRAD, the beginning of the property path has changed to
+                            <emphasis role="bold">newCollectionLines['document.notes']</emphasis> so the code would
+                            have to be modified to
+                            <programlisting linenumbering="numbered">public boolean isValid(Note note) {
+  boolean isValid = true;
+  if (!StringUtils.isAllUpperCase(note.getNoteText())) {
+    isValid = false;
+    GlobalVariables.getMessageMap().putError("newCollectionLines['document.notes'].noteText", "error.note.not.uppercase");
+  }
+  return isValid;
+}</programlisting>
+                            Validation of all of these customizations is left to the implementer.
+                        </para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </section>
+    </section>
     <section><title>Transactional Documents</title>
         <para></para>
     </section>

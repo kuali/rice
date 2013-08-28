@@ -78,7 +78,7 @@
     <maven.failsafe.excludes>NOT_NULL</maven.failsafe.excludes>
     <jmeter.phase>verify</jmeter.phase>
     <jmeter.goal>jmeter</jmeter.goal>
-    <jmeter.testFilesDirectory>${basedir}/src/test/jmeter</jmeter.testFilesDirectory>
+    <jmeter.testFilesDirectory>${basedir}/src/test/resources/jmeter</jmeter.testFilesDirectory>
     <jmeter.jMeterTestFile>**/*.jmx</jmeter.jMeterTestFile>
     <jmeter.excludeJmeterTestFile>NOT_NULL</jmeter.excludeJmeterTestFile>
     <jmeter.testResultsTimestamp>false</jmeter.testResultsTimestamp>

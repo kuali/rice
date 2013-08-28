@@ -36,7 +36,7 @@
     <kuali.testjar.phase>none</kuali.testjar.phase>
     <kuali.generate.reports>false</kuali.generate.reports>
     <!-- csv based JMeter tests result in one graph in Jenkins, we want a graph per test -->
-    <maven.jmeter.excludeJmeterTestFile>**/KRAD.jmx</maven.jmeter.excludeJmeterTestFile>
+    <jmeter.excludeJmeterTestFile>**/KRAD.jmx</jmeter.excludeJmeterTestFile>
     <maven.sauce.connect.version>1.0.19</maven.sauce.connect.version>
     <sauce.connect.version>3.0.28</sauce.connect.version>
     <saucelabs.user>SAUCELABS_USER</saucelabs.user>
@@ -314,7 +314,7 @@
             <configuration>
               <testFilesDirectory>${jmeter.jMeterTestFile}</testFilesDirectory>
               <testFilesExcluded>
-                <excludeJmeterTestFile>${maven.jmeter.excludeJmeterTestFile}</excludeJmeterTestFile>
+                <excludeJmeterTestFile>${jmeter.excludeJmeterTestFile}</excludeJmeterTestFile>
               </testFilesExcluded>
             </configuration>
           </plugin>

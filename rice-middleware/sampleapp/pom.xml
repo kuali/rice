@@ -37,8 +37,9 @@
     <kuali.generate.reports>false</kuali.generate.reports>
     <!-- csv based JMeter tests result in one graph in Jenkins, we want a graph per test -->
     <jmeter.excludeJmeterTestFile>**/KRAD.jmx</jmeter.excludeJmeterTestFile>
-    <maven.sauce.connect.version>1.0.19</maven.sauce.connect.version>
-    <sauce.connect.version>3.0.28</sauce.connect.version>
+
+    <saucelabs.connect.plugin.version>1.0.19</saucelabs.connect.plugin.version>
+    <saucelabs.connect.version>3.0.28</saucelabs.connect.version>
     <saucelabs.user>SAUCELABS_USER</saucelabs.user>
     <saucelabs.key>SAUCELABS_KEY</saucelabs.key>
 
@@ -60,15 +61,6 @@
         <excludes>
           <exclude>**/META-INF/*.xml</exclude>
         </excludes>
-      </resource>
-      <resource>
-        <directory>src/it/resources</directory>
-        <filtering>true</filtering>
-        <includes>
-          <include>**/*.xml</include>
-          <include>XML/*.*</include>
-          <include>NeustarJSTemplate/*.*</include>
-        </includes>
       </resource>
     </resources>
 
@@ -160,7 +152,7 @@
         <plugin>
           <groupId>com.saucelabs.maven.plugin</groupId>
           <artifactId>sauce-connect-plugin</artifactId>
-          <version>${maven.sauce.connect.version}</version>
+          <version>${saucelabs.connect.plugin.version}</version>
         </plugin>
 
       </plugins>
@@ -253,7 +245,7 @@
           <plugin>
             <groupId>com.saucelabs.maven.plugin</groupId>
             <artifactId>sauce-connect-plugin</artifactId>
-            <version>${maven.sauce.connect.version}</version>
+            <version>${saucelabs.connect.plugin.version}</version>
             <configuration>
               <sauceUsername>${saucelabs.user}</sauceUsername>
               <sauceAccessKey>${saucelabs.key}</sauceAccessKey>
@@ -419,7 +411,7 @@
     <dependency>
       <groupId>com.saucelabs</groupId>
       <artifactId>sauce-connect</artifactId>
-      <version>${sauce.connect.version}</version>
+      <version>${saucelabs.connect.version}</version>
       <scope>test</scope>
     </dependency>
 

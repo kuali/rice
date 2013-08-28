@@ -118,10 +118,11 @@ class ActionConverter {
         }
         def actionTransform = getActionClassTransform(actionClass.parentClass)
         controllerBinding.imports.add(actionTransform.form)
+        controllerBinding.imports.add(actionTransform.controller)
         controllerBinding.uri = actionElement.uri;
 
         controllerBinding.className = ClassUtils.getShortClassName(actionElement.controller.name)
-        controllerBinding.parentClassName = actionTransform.controller
+        controllerBinding.parentClassName = ClassUtils.getShortClassName(actionTransform.controller)
         //actionElement.controller.parentClassName ?: "UifControllerBase"
 
         controllerBinding.formClassName = actionElement.formName ?: "UifFormBase"

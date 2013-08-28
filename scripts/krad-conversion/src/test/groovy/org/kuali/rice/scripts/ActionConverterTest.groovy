@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.scripts
 
+import org.springframework.util.ResourceUtils;
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -52,7 +53,7 @@ class ActionConverterTest {
 
         def resultControllerBinding = actionConverter.buildControllerBinding(formBeanData, actionElement, actionClass)
         checkMapStructure("controller binding", expectedControllerBinding, resultControllerBinding)
-        Assert.assertEquals("controller import size does not match " + resultControllerBinding.imports, 2, resultControllerBinding.imports.size())
+        Assert.assertEquals("controller import size does not match " + resultControllerBinding.imports, 3, resultControllerBinding.imports.size())
 
     }
 

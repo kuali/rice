@@ -18,6 +18,7 @@ package org.kuali.rice.krad.data.jpa.eclipselink;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.metamodel.Attribute.PersistentAttributeType;
@@ -39,6 +40,7 @@ import org.eclipse.persistence.mappings.CollectionMapping;
 import org.eclipse.persistence.mappings.DatabaseMapping;
 import org.eclipse.persistence.mappings.DirectToFieldMapping;
 import org.eclipse.persistence.mappings.ForeignReferenceMapping;
+import org.eclipse.persistence.mappings.OneToManyMapping;
 import org.eclipse.persistence.mappings.OneToOneMapping;
 import org.eclipse.persistence.mappings.converters.Converter;
 import org.eclipse.persistence.mappings.converters.ConverterClass;
@@ -125,6 +127,20 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
 		if (cd instanceof PluralAttributeImpl) {
 			PluralAttributeImpl<?, ?, ?> coll = (PluralAttributeImpl<?, ?, ?>) cd;
 			CollectionMapping collectionMapping = coll.getCollectionMapping();
+
+			if (collectionMapping instanceof OneToManyMapping) {
+				OneToManyMapping otm = (OneToManyMapping) collectionMapping;
+
+				Map<DatabaseField, DatabaseField> keyMap = otm.getSourceKeysToTargetForeignKeys();
+				List<DataObjectAttributeRelationship> attributeRelationships = new ArrayList<DataObjectAttributeRelationship>();
+				for (Map.Entry<DatabaseField, DatabaseField> keyRel : keyMap.entrySet()) {
+					attributeRelationships.add(new DataObjectAttributeRelationshipImpl(
+							getPropertyNameFromDatabaseColumnName(cd.getDeclaringType(), keyRel.getKey().getName()),
+							getPropertyNameFromDatabaseColumnName(elementEntityType, keyRel.getValue().getName())));
+				}
+				collection.setAttributeRelationships(attributeRelationships);
+			}
+
 			collection.setReadOnly(collectionMapping.isReadOnly());
 			collection.setSavedWithParent(collectionMapping.isCascadePersist());
 			collection.setDeletedWithParent(collectionMapping.isCascadeRemove());

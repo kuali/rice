@@ -284,20 +284,21 @@ public abstract class JpaMetadataProviderImpl extends MetadataProviderBase imple
 			PersistentAttributeType persistentAttributeType = cd.getPersistentAttributeType();
 			
 			// default case:  Without any mapping attributes, collections are linked by their primary key
-			if ( persistentAttributeType == PersistentAttributeType.ONE_TO_MANY ) {
-				
+			if (persistentAttributeType == PersistentAttributeType.ONE_TO_MANY) {
 				// TODO: We probably still need to handle the "mappedBy" property on the OneToMany definition
 				
-				// need to obtain the keys for the relationship
-				List<String> pkFields = getPrimaryKeyAttributeNames((EntityType<?>) cd.getDeclaringType());
-				List<String> fkFields = getPrimaryKeyAttributeNames(elementEntityType);
-				List<DataObjectAttributeRelationship> attributeRelationships = new ArrayList<DataObjectAttributeRelationship>();
-				for (int i = 0; i < pkFields.size(); i++) {
-					attributeRelationships
-							.add(new DataObjectAttributeRelationshipImpl(pkFields.get(i), fkFields.get(i)));
+				// We only perform this logic here if we did not populate it in the implementation-specific call above
+				if (collection.getAttributeRelationships().isEmpty()) {
+					// need to obtain the keys for the relationship
+					List<String> pkFields = getPrimaryKeyAttributeNames((EntityType<?>) cd.getDeclaringType());
+					List<String> fkFields = getPrimaryKeyAttributeNames(elementEntityType);
+					List<DataObjectAttributeRelationship> attributeRelationships = new ArrayList<DataObjectAttributeRelationship>();
+					for (int i = 0; i < pkFields.size(); i++) {
+						attributeRelationships.add(new DataObjectAttributeRelationshipImpl(pkFields.get(i), fkFields
+								.get(i)));
+					}
+					collection.setAttributeRelationships(attributeRelationships);
 				}
-				collection.setAttributeRelationships(attributeRelationships);
-
 			} else if ( persistentAttributeType == PersistentAttributeType.MANY_TO_MANY ) {
 				// OK, this is an assumption
 				collection.setIndirectCollection( true );

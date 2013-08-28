@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.data.provider.util;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,6 +25,7 @@ import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.data.DataObjectWrapper;
 import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
+import org.kuali.rice.krad.data.metadata.DataObjectCollection;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
 import org.kuali.rice.krad.data.metadata.MetadataRepository;
@@ -77,12 +79,17 @@ public class ReferenceLinker {
             return;
         }
 
-        DataObjectWrapper<?> wrap = getDataObjectService().wrap(persistableObject);
+		linkRelationships(metadata, persistableObject, referenceSet);
+		linkCollections(metadata, persistableObject, referenceSet);
+	}
+
+	protected void linkRelationships(DataObjectMetadata metadata, Object persistableObject, Set<Object> referenceSet) {
         // iterate through all object references for the persistableObject
         List<DataObjectRelationship> objectReferences = metadata.getRelationships();
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Obtained relationships for linking: " + objectReferences);
 		}
+		DataObjectWrapper<?> wrap = getDataObjectService().wrap(persistableObject);
         for (DataObjectRelationship referenceDescriptor : objectReferences) {
             // get the actual reference object
             String fieldName = referenceDescriptor.getName();
@@ -163,8 +170,52 @@ public class ReferenceLinker {
 					wrap.setPropertyValue(attrRel.getParentAttributeName(), childPropertyValue);
 				}
 			}
+		}
+	}
 
+	protected void linkCollections(DataObjectMetadata metadata, Object persistableObject, Set<Object> referenceSet) {
+		List<DataObjectCollection> collections = metadata.getCollections();
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Obtained collections for linking: " + collections);
         }
 
+		for (DataObjectCollection collectionMetadata : collections) {
+			// We only process collections if they are being saved with the parent
+			if (!collectionMetadata.isSavedWithParent()) {
+				continue;
+			}
+			// get the actual reference object
+			String fieldName = collectionMetadata.getName();
+			DataObjectWrapper<?> parentObjectWrapper = getDataObjectService().wrap(persistableObject);
+			Collection<?> collection = (Collection<?>) parentObjectWrapper.getPropertyValue(fieldName);
+			if (collection == null) {
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("Referenced collection for field " + fieldName + " is null, skipping");
+				}
+				continue;
+			} else if (referenceSet.contains(collection)) {
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("We've previously linked the object assigned to " + fieldName + ", skipping");
+				}
+				continue;
+			}
+			List<DataObjectAttributeRelationship> collectionAttributeRelationships = collectionMetadata
+					.getAttributeRelationships();
+
+			// Need to iterate through the collection, setting FK values as needed and telling each child object to link
+			// itself
+			for (Object collectionItem : collection) {
+				// recursively link object
+				linkObjectsWithCircularReferenceCheck(collectionItem, referenceSet);
+
+				DataObjectWrapper<Object> collItemWrapper = getDataObjectService().wrap(collectionItem);
+				// Now - go through the keys relating the parent object to each child and set them so that they are
+				// linked properly
+				for (DataObjectAttributeRelationship rel : collectionAttributeRelationships) {
+					collItemWrapper.setPropertyValue(rel.getChildAttributeName(),
+							parentObjectWrapper.getPropertyValueNullSafe(rel.getParentAttributeName()));
+				}
+			}
+		}
     }
 }

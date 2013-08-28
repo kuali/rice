@@ -76,14 +76,14 @@
     <maven.failsafe.skip>true</maven.failsafe.skip>
     <maven.failsafe.includes>**/*Test.java</maven.failsafe.includes>
     <maven.failsafe.excludes>NOT_NULL</maven.failsafe.excludes>
-    <maven.jmeter.phase>verify</maven.jmeter.phase>
-    <maven.jmeter.goal>jmeter</maven.jmeter.goal>
-    <maven.jmeter.testFilesDirectory>${basedir}/src/test/jmeter</maven.jmeter.testFilesDirectory>
-    <maven.jmeter.jMeterTestFile>**/*.jmx</maven.jmeter.jMeterTestFile>
-    <maven.jmeter.excludeJmeterTestFile>NOT_NULL</maven.jmeter.excludeJmeterTestFile>
-    <maven.jmeter.testResultsTimestamp>false</maven.jmeter.testResultsTimestamp>
-    <maven.jmeter.server>localhost</maven.jmeter.server>
-    <maven.jmeter.port>8080</maven.jmeter.port>
+    <jmeter.phase>verify</jmeter.phase>
+    <jmeter.goal>jmeter</jmeter.goal>
+    <jmeter.testFilesDirectory>${basedir}/src/test/jmeter</jmeter.testFilesDirectory>
+    <jmeter.jMeterTestFile>**/*.jmx</jmeter.jMeterTestFile>
+    <jmeter.excludeJmeterTestFile>NOT_NULL</jmeter.excludeJmeterTestFile>
+    <jmeter.testResultsTimestamp>false</jmeter.testResultsTimestamp>
+    <jmeter.server>localhost</jmeter.server>
+    <jmeter.port>8080</jmeter.port>
 
     <readme.date.format>MMMM d, yyyy</readme.date.format>
 
@@ -148,7 +148,7 @@
     <jaxen.version>1.1.3</jaxen.version>
     <jdom.version>1.1</jdom.version>
     <jetty.version>8.1.7.v20120910</jetty.version>
-    <jmeter.version>1.8.1</jmeter.version>
+    <jmeter.plugin.version>1.8.1</jmeter.plugin.version>
     <joda-time.version>2.0</joda-time.version>
     <joda-time-jsptags.version>1.1.1</joda-time-jsptags.version>
     <jotm.version>2.1.10</jotm.version>
@@ -434,23 +434,23 @@
             <plugin>
               <groupId>com.lazerycode.jmeter</groupId>
               <artifactId>jmeter-maven-plugin</artifactId>
-              <version>${jmeter.version}</version>
+              <version>${jmeter.plugin.version}</version>
               <executions>
                 <execution>
                   <id>jmeter-tests</id>
-                  <phase>${maven.jmeter.phase}</phase>
+                  <phase>${jmeter.phase}</phase>
                   <goals>
-                    <goal>${maven.jmeter.goal}</goal>
+                    <goal>${jmeter.goal}</goal>
                   </goals>
                   <configuration>
-                    <testFilesDirectory>${maven.jmeter.testFilesDirectory}</testFilesDirectory>
+                    <testFilesDirectory>${jmeter.testFilesDirectory}</testFilesDirectory>
                     <testFilesIncluded>
-                      <jMeterTestFile>${maven.jmeter.jMeterTestFile}</jMeterTestFile>
+                      <jMeterTestFile>${jmeter.jMeterTestFile}</jMeterTestFile>
                     </testFilesIncluded>
                     <testFilesExcluded>
-                      <excludeJmeterTestFile>${maven.jmeter.excludeJmeterTestFile}</excludeJmeterTestFile>
+                      <excludeJmeterTestFile>${jmeter.excludeJmeterTestFile}</excludeJmeterTestFile>
                     </testFilesExcluded>
-                    <testResultsTimestamp>${maven.jmeter.testResultsTimestamp}</testResultsTimestamp>
+                    <testResultsTimestamp>${jmeter.testResultsTimestamp}</testResultsTimestamp>
                     <propertiesUser>
                       <!-- server and port must be defined (and used) in the JMeter jmx file as User Defined Variables
                             ${__P(server,localhost)}
@@ -460,8 +460,8 @@
                                http://jmeter.apache.org/usermanual/functions.html#__P
                                http://jmeter.apache.org/usermanual/best-practices.html#parameterising_tests
                       -->
-                      <server>${maven.jmeter.server}</server>
-                      <port>${maven.jmeter.port}</port>
+                      <server>${jmeter.server}</server>
+                      <port>${jmeter.port}</port>
                     </propertiesUser>
                   </configuration>
                 </execution>

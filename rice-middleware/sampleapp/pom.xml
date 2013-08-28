@@ -70,14 +70,6 @@
           <include>NeustarJSTemplate/*.*</include>
         </includes>
       </resource>
-      <resource>
-        <directory>src/test/resources/jmeter</directory>
-        <filtering>true</filtering>
-        <includes>
-          <include>KRAD-JMeter.ftl</include>
-          <include>KRAD.csv</include>
-        </includes>
-      </resource>
     </resources>
 
     <plugins>
@@ -320,7 +312,7 @@
             <groupId>com.lazerycode.jmeter</groupId>
             <artifactId>jmeter-maven-plugin</artifactId>
             <configuration>
-              <testFilesDirectory>${maven.jmeter.jMeterTestFile}</testFilesDirectory>
+              <testFilesDirectory>${jmeter.jMeterTestFile}</testFilesDirectory>
               <testFilesExcluded>
                 <excludeJmeterTestFile>${maven.jmeter.excludeJmeterTestFile}</excludeJmeterTestFile>
               </testFilesExcluded>

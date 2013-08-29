@@ -31,7 +31,6 @@ import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.provider.PersistenceProvider;
 import org.kuali.rice.krad.data.provider.ProviderRegistry;
-import org.kuali.rice.krad.data.jpa.JpaCriteriaQuery;
 import org.kuali.rice.krad.data.provider.util.ReferenceLinker;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
@@ -85,8 +84,12 @@ public class JpaPersistenceProvider implements PersistenceProvider, Initializing
             referenceLinker.linkObjects(dataObject);
         }
 
+
         if(optionSet.contains(PersistenceOption.FLUSH)){
-            sharedEntityManager.flush();
+			sharedEntityManager.flush();
+			if (optionSet.contains(PersistenceOption.REFRESH)) {
+				sharedEntityManager.refresh(dataObject);
+			}
         }
 
 		return dataObject;

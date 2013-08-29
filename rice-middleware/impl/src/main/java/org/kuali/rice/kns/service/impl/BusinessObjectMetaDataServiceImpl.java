@@ -15,6 +15,14 @@
  */
 package org.kuali.rice.kns.service.impl;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.datadictionary.FieldDefinition;
 import org.kuali.rice.kns.datadictionary.InquirySectionDefinition;
@@ -36,14 +44,6 @@ import org.kuali.rice.krad.service.impl.DataObjectMetaDataServiceImpl;
 import org.kuali.rice.krad.util.LegacyDataFramework;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -262,6 +262,9 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
 			if (BusinessObject.class.isAssignableFrom(nestedClass)) {
 				relationship = getBusinessObjectRelationship(null, nestedClass, localAttributeName, fullPrefix,
 						keysOnly);
+				// Since it was a nested property, we need to set the "parent" object
+				// back to the parent BO - the code above returns the next level down
+				relationship.setParentClass(boClass);
 			}
 			return relationship;
 		}

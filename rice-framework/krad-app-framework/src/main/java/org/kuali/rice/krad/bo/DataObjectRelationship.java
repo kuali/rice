@@ -137,6 +137,7 @@ public class DataObjectRelationship implements Serializable {
         this.userVisibleIdentifierKey = userVisibleIdentifierKey;
     }
 
+    @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append("Relationship: ").append(parentClass.getName()).append(" -> ").append(relatedClass.getName());
@@ -144,5 +145,17 @@ public class DataObjectRelationship implements Serializable {
             sb.append("\n   ").append(refs.getKey()).append(" -> ").append(refs.getValue());
         }
         return sb.toString();
+    }
+
+    public void setRelatedClass(Class<?> relatedClass) {
+        this.relatedClass = relatedClass;
+    }
+
+    public void setParentClass(Class<?> parentClass) {
+        this.parentClass = parentClass;
+    }
+
+    public void setParentAttributeName(String parentAttributeName) {
+        this.parentAttributeName = parentAttributeName;
     }
 }

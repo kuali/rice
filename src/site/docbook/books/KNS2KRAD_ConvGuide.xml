@@ -596,6 +596,140 @@
       </section>
     </section>
     <section><title>Inquiry</title><para></para>
+        <section><title>InquiryDefinition in KNS Data Dictionary to InquiryView in KRAD</title>
+            <para><emphasis role="bold">KNS Code example:</emphasis></para>
+            <para><programlisting linenumbering="numbered">&lt;bean id="EntityType-inquiryDefinition" parent="InquiryDefinition">
+  &lt;property name="title" value="Entity Type Inquiry"/>
+  &lt;property name="inquirableClass" value="org.kuali.rice.kim.inquiry.EntityTypeInquirableImpl"/>
+  &lt;property name="presentationControllerClass" value="org.kuali.rice.kim.inquiry.EntityTypeInquiryPresentationController"/>
+  &lt;property name="authorizerClass" value="org.kuali.rice.kim.inquiry.EntityTypeInquiryAuthorizer"/>
+  &lt;property name="inquirySections">
+    &lt;list>
+      &lt;bean parent="InquirySectionDefinition">
+        &lt;property name="title" value="Entity Type"/>
+        &lt;property name="numberOfColumns" value="1"/>
+        &lt;property name="defaultOpen" value="false"/>
+        &lt;property name="inquiryFields">
+          &lt;list>
+            &lt;bean parent="FieldDefinition" p:attributeName="code" p:noInquiry="true"/>
+            &lt;bean parent="FieldDefinition" p:attributeName="name"/>
+            &lt;bean parent="FieldDefinition" p:attributeName="active"/>
+          &lt;/list>
+        &lt;/property>
+      &lt;/bean>
+    &lt;/list>
+  &lt;/property>
+&lt;/bean></programlisting></para>
+              <para><emphasis role="bold">KRAD code example:</emphasis></para>
+              <para><programlisting linenumbering = "numbered">&lt;bean id="EntityType-InquiryView" parent="Uif-InquiryView">
+  &lt;property name="headerText" value="Entity Type"/>
+  &lt;property name="dataObjectClassName" value="org.kuali.rice.kim.impl.identity.EntityTypeBo"/>
+  &lt;property name="viewHelperServiceClass" value="org.kuali.rice.kim.inquiry.EntityTypeInquirableImpl"/>
+  &lt;property name="presentationControllerClass" value="org.kuali.rice.kim.inquiry.EntityTypeInquiryPresentationController"/>
+  &lt;property name="authorizerClass" value="org.kuali.rice.kim.inquiry.EntityTypeInquiryAuthorizer"/>
+  &lt;property name="items">
+    &lt;list>
+      &lt;bean parent="EntityType-InquiryView-General" parent="Uif-Disclosure-GridSection">
+        &lt;property name="headerText" value="Entity Type"/>
+        &lt;property name="layoutManager.numberOfColumns" value="2"/>
+        &lt;property name="disclosure.defaultOpen" value="false"/>
+        &lt;property name="items">
+          &lt;list>
+            &lt;bean parent="Uif-DataField" p:propertyName="code" p:inquiry.render="false"/>
+            &lt;bean parent="Uif-DataField" p:propertyName="name"/>
+            &lt;bean parent="Uif-DataField" p:propertyName="active"/>
+          &lt;/list>
+        &lt;/property>
+      &lt;/bean>
+    &lt;/list>
+  &lt;/property>
+&lt;/bean></programlisting></para>
+        </section>
+        <section><title>Base Inquiry Bean</title>
+            <para>
+                <itemizedlist>
+                    <listitem><para>Inquiries are now defined via <emphasis role="keyword">Uif-InquiryView</emphasis>
+                        definitions instead of the KNS <emphasis role="keyword">InquiryDefinition</emphasis> beans.
+                        [KNS line: 1, KRAD line: 1]
+                        <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject>
+                    </para></listitem>
+                    <listitem><para>The title of the view is specified via the
+                        <emphasis role="keyword">headerText</emphasis> property instead of the
+                        <emphasis role="keyword">title</emphasis> property. [KNS line: 2, KRAD line: 3]
+                        <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject>
+                    </para></listitem>
+                    <listitem><para>The data object class is specified via the
+                        <emphasis role="keyword">dataObjectClassName</emphasis> property and is no longer specified via
+                        the <emphasis role="keyword">BusinessObjectEntry</emphasis> as it doesn't exist in KRAD anymore.
+                        A <emphasis role="keyword">businessObject</emphasis> is no longer required and any object can
+                        be used. [KNS line: n/a, KRAD line: 2]
+                        <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject>
+                    </para></listitem>
+                    <listitem><para>The <emphasis role="keyword">inquirableClass</emphasis> has now changed to
+                        <emphasis role="keyword">viewHelperServiceClass</emphasis>, along with a class parent change.
+                        See below for more information. [KNS line: 3, KRAD line: 4]
+                        <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject>
+                    </para></listitem>
+                </itemizedlist>
+            </para>
+        </section>
+        <section><title>Sections</title>
+            <para>
+                <itemizedlist>
+                    <listitem><para>The property that contains the inquiry sections was renamed from
+                        <emphasis role="keyword">inquirySections</emphasis> to
+                        <emphasis role="keyword">items</emphasis>. [KNS line: 6, KRAD line: 7]
+                        <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/></imageobject></inlinemediaobject>
+                    </para></listitem>
+                    <listitem><para>The bean <emphasis role="keyword">InquirySectionDefinition</emphasis> was removed
+                        and can be replaced with any subclass of <emphasis role="keyword">Group</emphasis>, although
+                        the default is a child of <emphasis role="keyword">Uif-Disclosure-GridSection</emphasis>.
+                        [KNS line: 8, KRAD line: 9]
+                      <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/></imageobject></inlinemediaobject>
+                    </para></listitem>
+                    <listitem><para>The title of the section is specified via the
+                        <emphasis role="keyword">headerText</emphasis> property instead of the
+                        <emphasis role="keyword">title</emphasis> property. [KNS line: 9, KRAD line: 10]
+                      <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject>
+                    </para></listitem>
+                    <listitem><para>To use multiple columns for the section use the
+                        <emphasis role="keyword" >layoutManager.numberOfColumns</emphasis> property to configure the
+                        layout manager instead of specifying the <emphasis role="keyword">numberOfColumns</emphasis>
+                        property. Note that in the layout manager the field label and the field itself have their own
+                        columns and therefore the old <emphasis role="keyword">numberOfColumns</emphasis> value needs to
+                        be doubled. [KNS line: 10, KRAD line: 11]
+                        <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/></imageobject></inlinemediaobject>
+                    </para></listitem>
+                    <listitem><para>The property that controls whether the section defaults to open has moved from
+                        <emphasis role="keyword">defaultOpen</emphasis> to the
+                        <emphasis role="keyword">Disclosure</emphasis> object and is now accessed via
+                        <emphasis role="keyword">disclosure.defaultOpen</emphasis>. [KNS line: 11, KRAD line: 12]
+                        <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject>
+                    </para></listitem>
+                    <listitem><para>The property that contains the inquiry display fields was renamed from
+                        <emphasis role="keyword">inquiryFields</emphasis> to
+                        <emphasis role="keyword">items</emphasis>. [KNS line: 12, KRAD line: 13]
+                        <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/></imageobject></inlinemediaobject>
+                    </para></listitem>
+                    <listitem><para>Data fields changed from <emphasis role="keyword">FieldDefinition</emphasis> to
+                        <emphasis role="keyword">Uif-DataField</emphasis>. [KNS line: 14-16, KRAD line: 15-17]
+                        <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/></imageobject></inlinemediaobject>
+                    </para></listitem>
+                    <listitem><para>The <emphasis role="keyword">attributeName</emphasis> property on the field is now a
+                        <emphasis role="keyword">propertyName</emphasis> property. [KNS line: 14-16, KRAD line: 15-17]
+                        <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/></imageobject></inlinemediaobject>
+                    </para></listitem>
+                    <listitem><para>The <emphasis role="keyword">noInquiry</emphasis> property, which suppresses
+                        rendering the inquiry link on the fields, has moved to the
+                        <emphasis role="keyword">Inquiry</emphasis> object and is now accessed via
+                        <emphasis role="keyword">inquiry.render</emphasis>. Note here that
+                        <emphasis role="keyword">noInquiry="true"</emphasis> is equivalent to
+                        <emphasis role="keyword">inquiry.render="false"</emphasis>. [KNS line: 14, KRAD line: 15]
+                        <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject>
+                    </para></listitem>
+                </itemizedlist>
+            </para>
+        </section>
         <section><title>Inquirable / KualiInquirableImpl</title>
             <para>KRAD removes <emphasis role="keyword">KualiInquirableImpl</emphasis> and replaces it with
                 <emphasis role="keyword">InquirableImpl</emphasis>.  Normally, this class does not need to be extended
@@ -618,105 +752,121 @@
                 </para></listitem>
             </itemizedlist>
         </section>
+        <section><title>KualiInquiryAction</title>
+            <para>KRAD removes <emphasis role="keyword">KualiInquiryAction</emphasis> and replaces it with
+                <emphasis role="keyword">InquiryController</emphasis>.  Normally, this class does not need to be
+                extended unless advanced customizations are required, but any implementer already extending this class
+                will have to make the switch manually.
+                <inlinemediaobject><imageobject><imagedata fileref="../images/badge-manualconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem><para>Overrides of the methods <emphasis role="keyword">downloadAttachment</emphasis>,
+                        <emphasis role="keyword">downloadCustomBOAttachment</emphasis>, and
+                        <emphasis role="keyword">downloadBOAttachment</emphasis> need to be moved to
+                        <emphasis role="keyword">InquiryController</emphasis> and adapted to the new Spring MVC format.
+                        <inlinemediaobject><imageobject><imagedata fileref="../images/badge-manualconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </section>
     </section>
     <section><title>Lookup</title><para></para>
         <section><title>LookupDefinition in KNS Data Dictionary to LookupView in KRAD</title>
-            <para><emphasis role="italic">Note that the code example is very inclusive to show the
-                    configurations that have changed.  As a result the lookups themselves have
-                    conflicting settings (i.e. why have custom search buttons when hiding
-                    them).</emphasis></para>
+            <para><emphasis role="italic">Note that the code example is very inclusive to show the configurations that
+                have changed.  As a result the lookups themselves have conflicting settings (i.e. why have custom
+                search buttons when hiding them).</emphasis></para>
             <para><emphasis role="bold">KNS Code example:</emphasis></para>
             <para>
-                
-                <programlisting linenumbering="numbered">   &lt;bean id="EntityType-lookupDefinition" parent="LookupDefinition">
-     &lt;property name="title" value="Entity Type Lookup"/>
-     &lt;property name="menubar" value="&amp;lt;a href=&amp;quot;javascript:void(0)&amp;quot; 
-         onclick=&amp;quot;alert('JavaScript triggered action.')&amp;quot;&amp;gt;Custom Button&amp;lt;/a&amp;gt;"/>
-     &lt;property name="numOfColumns" value="2"/>
-     &lt;property name="extraButtonSource" value="images/tinybutton-createnew.gif"/>
-     &lt;property name="extraButtonParams" value="createNew"/>
-     &lt;property name="disableSearchButtons" value="true"/>
-     &lt;property name="lookupFields">
-      &lt;list>
-        &lt;bean parent="FieldDefinition" p:attributeName="code"/>
-        &lt;bean parent="FieldDefinition" p:attributeName="name" p:noLookup="true"
-                                       p:treatWildcardsAndOperatorsAsLiteral="true"/>
-        &lt;bean parent="FieldDefinition" p:attributeName="active" p:defaultValue="Y"/>
-       &lt;/list>
-    &lt;/property>
-    &lt;property name="resultFields">
-      &lt;list>
-        &lt;bean parent="FieldDefinition" p:attributeName="code" p:triggerOnChange="true"/>
-        &lt;bean parent="FieldDefinition" p:attributeName="name" p:noLookup="true"/>
-        &lt;bean parent="FieldDefinition" p:attributeName="sortCode" p:forceInquiry="true"/>
-        &lt;bean parent="FieldDefinition" p:attributeName="ammount" p:total="true"/>
-        &lt;bean parent="FieldDefinition" p:attributeName="active"/>
-      &lt;/list>
-    &lt;/property>
-    &lt;property name="defaultSort">
-      &lt;bean parent="SortDefinition">
-        &lt;property name="sortAscending" value="false" />
-        &lt;property name="attributeNames">
-          &lt;list>
-            &lt;value>code&lt;/value>
-          &lt;/list>
-        &lt;/property>
-      &lt;/bean>
-    &lt;/property>
-  &lt;/bean></programlisting>    
+                <programlisting linenumbering="numbered">&lt;bean id="EntityType-lookupDefinition" parent="LookupDefinition">
+  &lt;property name="title" value="Entity Type Lookup"/>
+  &lt;property name="menubar" value="&amp;lt;a href=&amp;quot;javascript:void(0)&amp;quot;
+               onclick=&amp;quot;alert('JavaScript triggered action.')&amp;quot;&amp;gt;Custom Button&amp;lt;/a&amp;gt;"/>
+  &lt;property name="numOfColumns" value="2"/>
+  &lt;property name="extraButtonSource" value="images/tinybutton-createnew.gif"/>
+  &lt;property name="extraButtonParams" value="createNew"/>
+  &lt;property name="disableSearchButtons" value="true"/>
+  &lt;property name="lookupFields">
+    &lt;list>
+      &lt;bean parent="FieldDefinition" p:attributeName="code"/>
+      &lt;bean parent="FieldDefinition" p:attributeName="name" p:noLookup="true"
+                                        p:treatWildcardsAndOperatorsAsLiteral="true"/>
+      &lt;bean parent="FieldDefinition" p:attributeName="active" p:defaultValue="Y"/>
+    &lt;/list>
+  &lt;/property>
+  &lt;property name="resultFields">
+    &lt;list>
+      &lt;bean parent="FieldDefinition" p:attributeName="code" p:triggerOnChange="true"/>
+      &lt;bean parent="FieldDefinition" p:attributeName="name" p:noLookup="true"/>
+      &lt;bean parent="FieldDefinition" p:attributeName="sortCode" p:forceInquiry="true"/>
+      &lt;bean parent="FieldDefinition" p:attributeName="amount" p:total="true"/>
+      &lt;bean parent="FieldDefinition" p:attributeName="active"/>
+    &lt;/list>
+  &lt;/property>
+  &lt;property name="defaultSort">
+    &lt;bean parent="SortDefinition">
+      &lt;property name="sortAscending" value="false"/>
+      &lt;property name="attributeNames">
+        &lt;list>
+          &lt;value>code&lt;/value>
+        &lt;/list>
+      &lt;/property>
+    &lt;/bean>
+  &lt;/property>
+&lt;/bean></programlisting>
             </para>
             <para>
                 <emphasis role="bold">KRAD code example:</emphasis>
-                <programlisting linenumbering = "numbered">   &lt;bean id="EntityTypeLookupView" parent="Uif-LookupView">
-     &lt;property name="dataObjectClassName" value="org.kuali.rice.kim.impl.identity.EntityTypeBo"/>
-     &lt;property name="headerText" value="Entity Type Lookup" />
-     &lt;property name="page.header.lowerGroup.items">
-       &lt;list merge="true">
-         &lt;bean parent="Uif-SecondaryActionButton" p:actionLabel="Custom Button"
+                <programlisting linenumbering = "numbered">&lt;bean id="EntityTypeLookupView" parent="Uif-LookupView">
+&lt;property name="dataObjectClassName" value="org.kuali.rice.kim.impl.identity.EntityTypeBo"/>
+  &lt;property name="headerText" value="Entity Type Lookup" />
+  &lt;property name="page.header.lowerGroup.items">
+    &lt;list merge="true">
+      &lt;bean parent="Uif-SecondaryActionButton" p:actionLabel="Custom Button"
                p:actionScript="alert('JavaScript triggered action.')"/>
-       &lt;/list>
-     &lt;/property>
-    &lt;property name="renderLookupCriteria" value="false"/>
-    &lt;property name="criteriaGroup.layoutManager.numberOfColumns" value="4"/>
-    &lt;property name="criteriaGroup.footer">
-      &lt;bean parent="Uif-LookupCriteriaFooter">
-        &lt;property name="items">
-          &lt;list merge="true">
-            &lt;bean parent="Uif-PrimaryActionButton" p:methodToCall="createNew" p:actionLabel="create new"/>
-          &lt;/list>
-        &lt;/property>
-      &lt;/bean>
-    &lt;/property>
-    &lt;property name="renderSearchButtons" value="false"/>
-    &lt;property name="criteriaFields">
-      &lt;list>
-        &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="code" p:triggerOnChange="true"/>
-        &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" p:enableAutoQuickfinder="false"
-                                                    p:disableWildcardsAndOperators="true"/>
-        &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="active" p:defaultValue="Y"/>
-      &lt;/list>
-    &lt;/property>
-    &lt;property name="resultFields">
-      &lt;list>
-        &lt;bean parent="Uif-DataField" p:propertyName="code"/>
-        &lt;bean parent="Uif-DataField" p:propertyName="name"/>
-        &lt;bean parent="Uif-DataField" p:propertyName="sortCode"/>
-        &lt;bean parent="Uif-DataField" p:propertyName="ammount"/>
-        &lt;bean parent="Uif-DataField" p:propertyName="active"/>
-      &lt;/list>
-    &lt;/property>
-    &lt;property name="defaultSortAscending" value="false"/>
-    &lt;property name="defaultSortAttributeNames">
-      &lt;list>
-        &lt;value>code&lt;/value>
-      &lt;/list>
-    &lt;/property>
-    &lt;property name="resultsGroup.layoutManager.columnCalculations">
-        &lt;list>
-          &lt;bean parent="Uif-ColumnCalculationInfo-Sum" p:propertyName="ammount" />
+    &lt;/list>
+  &lt;/property>
+  &lt;property name="renderLookupCriteria" value="false"/>
+  &lt;property name="criteriaGroup.layoutManager.numberOfColumns" value="4"/>
+  &lt;property name="criteriaGroup.footer">
+    &lt;bean parent="Uif-LookupCriteriaFooter">
+      &lt;property name="items">
+        &lt;list merge="true">
+          &lt;bean parent="Uif-PrimaryActionButton" p:methodToCall="createNew" p:actionLabel="create new"/>
         &lt;/list>
       &lt;/property>
-  &lt;/bean></programlisting>
+    &lt;/bean>
+  &lt;/property>
+  &lt;property name="renderSearchButtons" value="false"/>
+  &lt;property name="criteriaFields">
+    &lt;list>
+      &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="code" p:triggerOnChange="true"/>
+      &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" p:enableAutoQuickfinder="false"
+                                                     p:disableWildcardsAndOperators="true"/>
+      &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="active" p:defaultValue="Y"/>
+    &lt;/list>
+  &lt;/property>
+  &lt;property name="resultFields">
+    &lt;list>
+      &lt;bean parent="Uif-DataField" p:propertyName="code"/>
+      &lt;bean parent="Uif-DataField" p:propertyName="name"/>
+      &lt;bean parent="Uif-DataField" p:propertyName="sortCode"/>
+      &lt;bean parent="Uif-DataField" p:propertyName="amount"/>
+      &lt;bean parent="Uif-DataField" p:propertyName="active"/>
+    &lt;/list>
+  &lt;/property>
+  &lt;property name="defaultSortAscending" value="false"/>
+  &lt;property name="defaultSortAttributeNames">
+    &lt;list>
+      &lt;value>code&lt;/value>
+    &lt;/list>
+  &lt;/property>
+  &lt;property name="resultsGroup.layoutManager.columnCalculations">
+    &lt;list>
+      &lt;bean parent="Uif-ColumnCalculationInfo-Sum" p:propertyName="amount" />
+    &lt;/list>
+  &lt;/property>
+&lt;/bean></programlisting>
             </para>
         </section>
         <section><title>Base Lookup Bean</title>

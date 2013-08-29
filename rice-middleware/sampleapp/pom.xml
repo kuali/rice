@@ -38,7 +38,7 @@
     <!-- csv based JMeter tests result in one graph in Jenkins, we want a graph per test -->
     <jmeter.excludeJmeterTestFile>**/KRAD.jmx</jmeter.excludeJmeterTestFile>
 
-    <saucelabs.connect.plugin.version>1.0.19</saucelabs.connect.plugin.version>
+    <plugin.saucelabs.connect.version>1.0.19</plugin.saucelabs.connect.version>
     <saucelabs.connect.version>3.0.28</saucelabs.connect.version>
     <saucelabs.user>SAUCELABS_USER</saucelabs.user>
     <saucelabs.key>SAUCELABS_KEY</saucelabs.key>
@@ -152,7 +152,7 @@
         <plugin>
           <groupId>com.saucelabs.maven.plugin</groupId>
           <artifactId>sauce-connect-plugin</artifactId>
-          <version>${saucelabs.connect.plugin.version}</version>
+          <version>${plugin.saucelabs.connect.version}</version>
         </plugin>
 
       </plugins>
@@ -245,7 +245,7 @@
           <plugin>
             <groupId>com.saucelabs.maven.plugin</groupId>
             <artifactId>sauce-connect-plugin</artifactId>
-            <version>${saucelabs.connect.plugin.version}</version>
+            <version>${plugin.saucelabs.connect.version}</version>
             <configuration>
               <sauceUsername>${saucelabs.user}</sauceUsername>
               <sauceAccessKey>${saucelabs.key}</sauceAccessKey>

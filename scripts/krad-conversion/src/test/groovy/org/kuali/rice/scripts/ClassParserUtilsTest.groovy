@@ -18,6 +18,7 @@ package org.kuali.rice.scripts
 import groovy.util.logging.Log
 import org.junit.Assert
 import org.junit.Test
+import org.springframework.util.ResourceUtils
 
 /**
  * Tests for the {@link ClassParserUtils} class.
@@ -27,23 +28,14 @@ import org.junit.Test
 @Log
 public class ClassParserUtilsTest {
 
-    static def testResourceDir = "./src/test/resources/"
-    static def parserTestDir = testResourceDir + "ClassParserUtilsTest/"
+    static def parserTestDir = "ClassParserUtilsTest/"
 
+    String getPath(String filename) {
+        return ResourceUtils.getFile("classpath:" + filename).absolutePath;
+    }
 
-    @Test
-    void testParseActionClassFile() {
-        def file = new File(parserTestDir + "SampleAction.java")
-        def actionClass = ClassParserUtils.parseClassFile(file.text, false)
-
-        Assert.assertEquals("edu.sampleu.bookstore.document.web", actionClass.package)
-        Assert.assertEquals("imports found in class", 12, actionClass.imports.size())
-        Assert.assertEquals("first import in class matches", "edu.sampleu.bookstore.bo.Book", actionClass.imports[0])
-        Assert.assertEquals("class name matches", "SampleAction", actionClass.className)
-        Assert.assertEquals("superclass matches", "KualiTransactionalDocumentActionBase", actionClass.parentClass)
-        Assert.assertEquals("method count matches", 3, actionClass.methods.size())
-        Assert.assertEquals("selected method exists", 1, actionClass.methods.findAll { it.methodName == "addBookOrder" }.size())
-
+    File getFile(String filename) {
+        return new File(getPath(filename))
     }
 
     /**
@@ -51,7 +43,7 @@ public class ClassParserUtilsTest {
      * */
     @Test
     void testParseActionFormClass() {
-        def file = new File(parserTestDir + "SampleForm.java")
+        def file = getFile(parserTestDir + "SampleForm.java")
         def actionFormData = ClassParserUtils.parseClassFile(file.text, false)
         Assert.assertEquals("form package contains", "edu.sampleu.bookstore.document.web", actionFormData.package)
         Assert.assertEquals("form imports count", 3, actionFormData.imports.size())
@@ -69,6 +61,15 @@ public class ClassParserUtilsTest {
     @Test
     void testParseClassFieldWithValue() {
         def lineText = "  public Integer testcase = 1;"
+        def field = ClassParserUtils.parseFieldDeclaration(lineText)
+        Assert.assertNotNull("field name not null", field.fieldName)
+        Assert.assertEquals("found correct field name", "testcase", field.fieldName)
+
+    }
+
+    @Test
+    void testParseClassFieldWithMap() {
+        def lineText = "  public Map<String, String> testcase;"
         def field = ClassParserUtils.parseFieldDeclaration(lineText)
         Assert.assertNotNull("field name not null", field.fieldName)
         Assert.assertEquals("found correct field name", "testcase", field.fieldName)
@@ -97,6 +98,19 @@ public class ClassParserUtilsTest {
     }
 
     @Test
+    void testParseMethodDeclarationWithMap() {
+
+        def lineText = "  public final Map<String,String> addBookOrder(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {"
+        def methodElement = ClassParserUtils.parseMethodDeclaration(lineText, [])
+        Assert.assertEquals("return type does not match", "Map<String,String>", methodElement.returnType);
+
+        lineText = "    private Map<String, String> getHashMapToFindActiveAward(String goToAwardNumber) {";
+        methodElement = ClassParserUtils.parseMethodDeclaration(lineText, [])
+        Assert.assertEquals("return type does not match", "Map<String, String>", methodElement.returnType);
+
+    }
+
+    @Test
     void testParseClassFieldWithModifiers() {
         def lineText = "  public static final Integer testcase;"
         def field = ClassParserUtils.parseFieldDeclaration(lineText)
@@ -108,12 +122,26 @@ public class ClassParserUtilsTest {
 
     @Test
     void testParseClassDeclaration() {
-        def lineText = "  public class MyClass extends YourClass implements MyInterface,MyOtherInterface"
+        def defaultExpectedClassElement = [accessModifier: "public", nonAccessModifier: [],  \
+                 className: "MyClass", parentClass: "YourClass", interfaces: ["MyInterface", "MyOtherInterface"]];
+        def publicClassLine = "  public class MyClass extends YourClass implements MyInterface,MyOtherInterface"
+        def abstractClassLine = "  public abstract class MyClass extends YourClass implements MyInterface,MyOtherInterface"
+        def staticClassLine = "  public static final class MyClass extends YourClass implements MyInterface,MyOtherInterface"
         def annotations = []
-        def classElement = ClassParserUtils.parseClassDeclaration(lineText, annotations)
-        Assert.assertEquals("parent class does not match", "public", classElement.accessModifier)
-        Assert.assertEquals("class name does not match", "MyClass", classElement.className)
-        Assert.assertEquals("parent class does not match", "YourClass", classElement.parentClass)
-        Assert.assertEquals("interfaces does not match", ["MyInterface", "MyOtherInterface"], classElement.interfaces)
+
+        def classElement = ClassParserUtils.parseClassDeclaration(publicClassLine, annotations)
+        checkClassElements("standard class", defaultExpectedClassElement, classElement);
+        def abstractClassElement = ClassParserUtils.parseClassDeclaration(abstractClassLine, annotations)
+        checkClassElements("abstract class", defaultExpectedClassElement, abstractClassElement);
+        def staticClassElement = ClassParserUtils.parseClassDeclaration(staticClassLine, annotations)
+        checkClassElements("abstract class", defaultExpectedClassElement, staticClassElement);
+
+    }
+
+    void checkClassElements(String messagePrefix, Map expectedClassElement, Map actualClassElement) {
+        Assert.assertEquals(messagePrefix + " parent class does not match", expectedClassElement.accessModifier, actualClassElement.accessModifier)
+        Assert.assertEquals(messagePrefix + " class name does not match", expectedClassElement.className, actualClassElement.className)
+        Assert.assertEquals(messagePrefix + " parent class does not match", expectedClassElement.parentClass, actualClassElement.parentClass)
+        Assert.assertTrue(messagePrefix + " interfaces does not match", expectedClassElement.interfaces.containsAll(actualClassElement.interfaces));
     }
 }

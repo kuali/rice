@@ -44,17 +44,20 @@ public class ClassParserUtils {
                 // comments
                 // skip comments
             }
+
             if (line =~ /^\s*@/) {
                 // visitAnnotationDef
                 // annotations
                 annotations.add(line)
             }
+
             if (line =~ /^\s*package/) {
                 // visitPackageDef
                 // packages
                 def matchPackage = line =~ /package\s+(.*?);/
                 classMap.package = matchPackage[0][1]
             }
+
             if (line =~ /^\s*import\s+(.*);/) {
                 // visitImport
                 // imports
@@ -71,6 +74,10 @@ public class ClassParserUtils {
                 // visitVariableDef
                 classMap.members.add(parseFieldDeclaration(line))
                 annotations = []
+            } else if (line =~ /^\s*(public|private|protected)\s+.*?=\s*\.*?\{/) {
+                // visitVariableDef
+                classMap.members.add(parseFieldDeclaration(line))
+                annotations = []
             } else if (line =~ /^\s*(public|private|protected)\s+.*?\(.*?\)/) {
                 // visitMethodDef
                 def methodElement = parseMethodDeclaration(line, annotations)
@@ -78,6 +85,7 @@ public class ClassParserUtils {
                 annotations = []
             }
         }
+
         return classMap
     }
 
@@ -85,15 +93,15 @@ public class ClassParserUtils {
 
     static def parseFieldDeclaration(lineText) {
         def field = [accessModifier: "", nonAccessModifiers: [], "fieldType": "", fieldName: "", "annotations": []]
-        def matchesField = lineText =~ /^\s*(public|private|protected)((?:\s*(?:static|final|abstract))*)\s+(.*?)\s+(.*?)(?:\s*=\s*(.*?))?\;/
+        def matchesField = lineText =~ /^\s*(public|private|protected)((?:\s*(?:static|final|abstract))*)\s+(?:(.*?(?:\s\<[^>]+\>)?))\s+([^>]*?)(?:\s*=\s*(.*?))?(\;|\{)/
         if (matchesField.size() > 0) {
-            log.finer "matches member data " + matchesField[0]
             field.accessModifier = matchesField[0][1]
             field.nonAccessModifiers = matchesField[0][2]?.replaceFirst(/^\s+/, "").split()
             field.fieldType = matchesField[0][3]
             field.fieldName = matchesField[0][4]
             field.fieldValue = matchesField[0][5]
         }
+
         return field
     }
 
@@ -110,6 +118,7 @@ public class ClassParserUtils {
         } else {
             importString = importClass
         }
+
         return importString
     }
 
@@ -117,7 +126,7 @@ public class ClassParserUtils {
         def methodElement = [accessModifier: "", nonAccessModifiers: [], "returnType": "",
                 methodName: "", "parameters": [], "exceptions": [], "annotations": []]
 
-        def matchesMethod = lineText =~ /^\s*(public|private|protected)((?:\s*(?:static|final|abstract))*)\s+(.*?)\s+(.*?)\(((?:.*?\s+.*?\,)*?(?:.*?\s+.*?)?)\)\s*(?:(?:throws\s+(.*?))?)\s*\{/
+        def matchesMethod = lineText =~ /^\s*(public|private|protected)((?:\s*(?:static|final|abstract))*)\s+(?:(.*?(?:\s\<.*?\>)?))\s+([^>]*?)\(((?:.*?\s+.*?\,)*?(?:.*?\s+.*?)?)\)\s*(?:(?:throws\s+(.*?))?)\s*\{/
         if (matchesMethod.size() > 0) {
             log.finer "matches member data " + matchesMethod[0][4]
             matchesMethod[0].each {
@@ -130,6 +139,7 @@ public class ClassParserUtils {
             methodElement.parameters = matchesMethod[0][5]?.tokenize(",")
             methodElement.exceptions = matchesMethod[0][6]?.tokenize(",")
         }
+
         log.finer "method values are " + methodElement
         return methodElement
 
@@ -143,17 +153,20 @@ public class ClassParserUtils {
      * @return
      */
     static def parseClassDeclaration(lineText, annotations) {
-        def classElement = [accessModifier: "", className: "", parentClass: "", interfaces: []]
-        def matchClass = lineText =~ /^\s*(public|private|protected)\s+class\s+(.+?)\b/
+        def classElement = [accessModifier: "", nonAccessModifier: [], className: "", parentClass: "", interfaces: []]
+        def matchClass = lineText =~ /^\s*(public|private|protected)((?:\s*(?:static|final|abstract))*)\s+class\s+(.+?)\b/
         if (matchClass.size() > 0) {
             log.finer "found match " + matchClass[0]
             classElement.accessModifier = matchClass[0][1]
-            classElement.className = matchClass[0][2]
+            classElement.nonAccessModifier = matchClass[0][2];
+            classElement.className = matchClass[0][3]
         }
+
         def matchExtends = lineText =~ /\bextends\s+(.+?)\b/
         if (matchExtends.size() > 0) {
             classElement.parentClass = matchExtends[0][1]
         }
+
         def matchImplements = lineText =~ /\bimplements\s+((?:\w+\,\s*)*\w+)\b/
         if (matchImplements.size() > 0) {
             classElement.interfaces.addAll(matchImplements[0][1]?.tokenize(','))

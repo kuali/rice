@@ -206,7 +206,7 @@
     <value>org.kuali.rice.krad.messages</value>
     <!-- test jpa packages -->
     <value>org.kuali.rice.krad.test.document</value>
-    <value>org.kuali.rice.krad.data.provider.jpa.testbo</value>
+    <value>org.kuali.rice.krad.data.jpa.testbo</value>
   </util:list>
 
   <!-- Override the EntityManagerFactory -->

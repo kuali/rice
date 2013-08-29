@@ -173,7 +173,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
     }
 
     @Test
-    public void persistenceWhenObjectSet_existingParentObject_changeChildObject() {
+    public void persistenceWhenObjectSet_existingParentObject_changeNonUpdatableChildObject() {
         AccountExtension acct = getExAccount();
 
         enableJotmLogging();
@@ -183,7 +183,9 @@ public class ReferenceLinkerTest extends KRADTestCase {
         acct.setAccountType(acctType);
         assertEquals( "Before saving account type code should have had the old value", EXPENSE_ACCOUNT_TYPE_CODE, acct.getAccountTypeCode());
         acct = getDOS().save(acct);
-        assertEquals( "After saving, the acct type code should have been set to the PK from the acct type", acctType.getAccountTypeCode(), acct.getAccountTypeCode());
+        // reload to be sure
+        acct = getExAccount();
+        assertEquals( "After saving, the acct type code should not have changed - setting the object does not change the key values when the reference updatable==false", EXPENSE_ACCOUNT_TYPE_CODE, acct.getAccountTypeCode());
         assertNotNull( "After saving, the acct type object should be available", acct.getAccountType());
         disableJotmLogging();
     }
@@ -264,7 +266,21 @@ public class ReferenceLinkerTest extends KRADTestCase {
 
     @Test
     public void settingOfCollectionKeys_newAccountManager() {
-        fail( "Not Implemented");
+        AccountManager am = new AccountManager( 2L, "Two" );
+
+        // create the new collection records
+        ArrayList<Account> accounts = new ArrayList<Account>();
+        accounts.add( new Account( "a", "Account a") );
+        accounts.add( new Account( "b", "Account b") );
+        am.setAccounts(accounts);
+
+        for ( Account a : am.getAccounts() ) {
+            assertNull( "Before save, the FO ID on the Accounts should have been null", a.getAmId() );
+        }
+        am = getDOS().save(am);
+        for ( Account a : am.getAccounts() ) {
+            assertEquals( "After the save, the FO ID on the Accounts should have been the same as the AccountManager", am.getAmId(), a.getAmId() );
+        }
     }
 
     public void persistenceWhenObjectSet_existingParentObject_blankOutChildValue() {

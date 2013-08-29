@@ -34,7 +34,7 @@
 
 	<!-- List of all the base packages which we must scan as part of any module. -->
 	<util:list id="kradJpaPackagesToScan">
-		<value>org.kuali.rice.krad.data</value>
+		<value>org.kuali.rice.krad.data.jpa.converters</value>
 		<value>org.kuali.rice.krad.bo</value>
 		<value>org.kuali.rice.krad.document</value>
 		<value>org.kuali.rice.krad.maintenance</value>

@@ -199,7 +199,7 @@
 
   <util:list id="jpaPackagesToScan">
     <!-- krad jpa packages -->
-    <value>org.kuali.rice.krad.data</value>
+    <value>org.kuali.rice.krad.data.jpa.converters</value>
     <value>org.kuali.rice.krad.bo</value>
     <value>org.kuali.rice.krad.document</value>
     <value>org.kuali.rice.krad.maintenance</value>

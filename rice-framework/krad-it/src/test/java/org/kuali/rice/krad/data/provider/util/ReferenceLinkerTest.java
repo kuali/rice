@@ -33,6 +33,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
+import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
 import org.kuali.rice.krad.data.provider.PersistenceProvider;
@@ -166,7 +167,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
         // test what object getter does
         LOG.debug( "Account Type After setting FK to 'IAT': " + acct.getAccountType());
         enableJotmLogging();
-        acct = getDOS().save(acct);
+        acct = getDOS().save(acct,PersistenceOption.FLUSH,PersistenceOption.REFRESH);
         assertNotNull( "After saving, the acct type object should be available", acct.getAccountType());
         assertEquals( "After Saving, the acct type code on the reference should be the same as the object", acct.getAccountTypeCode(), acct.getAccountType().getAccountTypeCode());
         disableJotmLogging();
@@ -220,7 +221,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
         // test what object getter does
         LOG.debug( "Account Type After setting FK to 'IAT': " + acct.getAccountType());
         enableJotmLogging();
-        acct = getDOS().save(acct);
+        acct = getDOS().save(acct,PersistenceOption.FLUSH,PersistenceOption.REFRESH);
         assertNotNull( "After saving, the acct type object should be available", acct.getAccountType());
         assertEquals( "After Saving, the acct type code on the reference should be the same as the object", acct.getAccountTypeCode(), acct.getAccountType().getAccountTypeCode());
         disableJotmLogging();
@@ -283,12 +284,33 @@ public class ReferenceLinkerTest extends KRADTestCase {
         }
     }
 
+    @Test
     public void persistenceWhenObjectSet_existingParentObject_blankOutChildValue() {
-        fail( "Not Implemented");
+        AccountExtension acct = getExAccount();
+
+        acct.setAccountTypeCode(null);
+
+        // test what object getter does
+        LOG.debug( "Account Type After setting FK to null: " + acct.getAccountType());
+        enableJotmLogging();
+        acct = getDOS().save(acct,PersistenceOption.FLUSH,PersistenceOption.REFRESH);
+        assertNull( "After saving, the acct type code should be null", acct.getAccountTypeCode());
+        assertNull( "After saving, the acct type object should not be available", acct.getAccountType());
+        disableJotmLogging();
     }
 
+    @Test
     public void persistenceWhenObjectSet_existingParentObject_blankOutChildObject() {
-        fail( "Not Implemented");
+        AccountExtension acct = getExAccount();
+
+        acct.setAccountType(null);
+
+        // test what object getter does
+        enableJotmLogging();
+        acct = getDOS().save(acct,PersistenceOption.FLUSH,PersistenceOption.REFRESH);
+        assertEquals( "After saving, the acct type code should be unchanged", EXPENSE_ACCOUNT_TYPE_CODE, acct.getAccountTypeCode());
+        assertNotNull( "After saving, the acct type object should be available", acct.getAccountType());
+        disableJotmLogging();
     }
 
     public void persistenceWithUnsetGeneratedKey() {

@@ -171,7 +171,7 @@ public class JpaMetadataProviderTest {
 		Assert.assertNotNull("attribute relationships must not be null", collection.getAttributeRelationships());
 		Assert.assertEquals("attribute relationships size incorrect", 1, collection.getAttributeRelationships().size());
 		DataObjectAttributeRelationship relationship = collection.getAttributeRelationships().get(0);
-		Assert.assertEquals("parent attribute name mismatch", "primaryKeyProperty",
+		Assert.assertEquals("parent attribute name mismatch", "stringProperty",
 				relationship.getParentAttributeName());
 		Assert.assertEquals("child attribute name mismatch", "primaryKeyPropertyUsingDifferentName",
 				relationship.getChildAttributeName());

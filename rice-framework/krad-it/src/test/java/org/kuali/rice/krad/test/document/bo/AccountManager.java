@@ -53,7 +53,17 @@ public class AccountManager extends PersistableBusinessObjectBase {
 	@JoinColumn(name="acct_fo_id",referencedColumnName="acct_fo_id",insertable=false,updatable=false)
 	private List<Account> accounts;
 
-	public void setUserName(String userId) {
+    public AccountManager() {}
+
+
+
+	public AccountManager(Long amId, String userName) {
+        super();
+        this.amId = amId;
+        this.userName = userName;
+    }
+
+    public void setUserName(String userId) {
 		userName = userId;
 	}
 
@@ -77,16 +87,6 @@ public class AccountManager extends PersistableBusinessObjectBase {
         return StringUtils.equals(userName, am.getUserName()) &&
                ObjectUtils.equals(amId, am.getAmId());
 	}
-
-	/**
-	 * Returns the hashcode of the docHeaderId, which is supposed to be the
-	 * primary key for the document
-	 *
-	 * @see java.lang.Object#hashCode()
-	 */
-	/*public int hashCode() {
-		return (accountNum == null) ? 0 : accountNum.hashCode();
-	}*/
 
 	public Long getAmId() {
 		return amId;

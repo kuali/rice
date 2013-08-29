@@ -45,6 +45,7 @@ public class DemoLibraryLayoutManagersCssGridLayoutSmokeTest extends SmokeTestBa
     }
 
     protected void testLayoutManagersCssGridLayoutFixedExample1() throws Exception {
+        // https://jira.kuali.org/browse/KULRICE-10333
        assertElementPresentByXpath("//div[@class='span9 uif-fixedCssGridLayout']/div/div[@class='span3']/div/input[@name='inputField1']");
        assertElementPresentByXpath("//div[@class='span9 uif-fixedCssGridLayout']/div/div[@class='span3'][2]/div/input[@name='inputField2']");
        assertElementPresentByXpath("//div[@class='span9 uif-fixedCssGridLayout']/div/div[@class='span3'][3]/div/input[@name='inputField3']");

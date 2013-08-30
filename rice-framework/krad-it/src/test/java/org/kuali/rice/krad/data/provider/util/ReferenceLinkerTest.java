@@ -42,6 +42,8 @@ import org.kuali.rice.krad.test.document.bo.Account;
 import org.kuali.rice.krad.test.document.bo.AccountExtension;
 import org.kuali.rice.krad.test.document.bo.AccountManager;
 import org.kuali.rice.krad.test.document.bo.AccountType;
+import org.kuali.rice.krad.test.document.bo.ChildOfParentObjectWithGeneratedKey;
+import org.kuali.rice.krad.test.document.bo.ParentObjectWithGeneratedKey;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.data.PerSuiteUnitTestData;
 import org.kuali.rice.test.data.PerTestUnitTestData;
@@ -133,7 +135,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
     }
 
     @Test
-    public void persistenceWhenObjectSet_newParentObject() {
+    public void newParentObject_setChildReferenceObject() {
         // Create a new object and add an existing account type by object
         AccountExtension acct = new AccountExtension();
         acct.setNumber("NEW_ACCT");
@@ -159,7 +161,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
     }
 
     @Test
-    public void persistenceWhenObjectSet_existingParentObject_changeChildValue() {
+    public void existingParentObject_changeReferenceChildKeyValue() {
         AccountExtension acct = getExAccount();
 
         acct.setAccountTypeCode(INCOME_ACCOUNT_TYPE_CODE);
@@ -174,7 +176,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
     }
 
     @Test
-    public void persistenceWhenObjectSet_existingParentObject_changeNonUpdatableChildObject() {
+    public void existingParentObject_changeNonUpdatableChildObject() {
         AccountExtension acct = getExAccount();
 
         enableJotmLogging();
@@ -213,7 +215,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
     }
 
     @Test
-    public void persistenceWhenObjectSet_existingParentObject_setChildValue() {
+    public void existingParentObject_noExistingChildValue_setChildValue() {
         AccountExtension acct = getNullAccount();
 
         acct.setAccountTypeCode(INCOME_ACCOUNT_TYPE_CODE);
@@ -228,7 +230,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
     }
 
     @Test
-    public void persistenceWhenObjectSet_existingParentObject_setChildObject() {
+    public void existingParentObject_noExistingChildValue_setChildObject() {
         AccountExtension acct = getNullAccount();
 
         enableJotmLogging();
@@ -245,7 +247,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
     }
 
     @Test
-    public void settingOfCollectionKeys_existingAccountManager() {
+    public void existingParentObject_noExistingCollectionRecords_settingOfCollectionKeysOnNew() {
         // Get the AM record
         AccountManager am = getDOS().find(AccountManager.class, 1L);
         assertNotNull( "Error retrieving account manager", am );
@@ -266,7 +268,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
     }
 
     @Test
-    public void settingOfCollectionKeys_newAccountManager() {
+    public void newParentObject_noExistingCollectionRecords_settingOfCollectionKeysOnNew() {
         AccountManager am = new AccountManager( 2L, "Two" );
 
         // create the new collection records
@@ -285,7 +287,30 @@ public class ReferenceLinkerTest extends KRADTestCase {
     }
 
     @Test
-    public void persistenceWhenObjectSet_existingParentObject_blankOutChildValue() {
+    public void newParentObjectWithGeneratedKey_noExistingCollectionRecords_settingOfCollectionKeysOnNew() {
+        ParentObjectWithGeneratedKey obj = new ParentObjectWithGeneratedKey();
+
+        // create the new collection records
+        ArrayList<ChildOfParentObjectWithGeneratedKey> children = new ArrayList<ChildOfParentObjectWithGeneratedKey>();
+        children.add( new ChildOfParentObjectWithGeneratedKey( 1L ) );
+        children.add( new ChildOfParentObjectWithGeneratedKey( 22L ) );
+        children.add( new ChildOfParentObjectWithGeneratedKey( 333L ) );
+        obj.setChildren(children);
+
+        for ( ChildOfParentObjectWithGeneratedKey c : obj.getChildren() ) {
+            assertNull( "Before save, the PK ID on the children should have been null", c.getGeneratedKey() );
+        }
+        System.err.println( "Before Saving: " + obj );
+        obj = getDOS().save(obj);
+        System.err.println( "After Saving: " + obj );
+        assertNotNull( "After saving, the generated key should have had a value", obj.getGeneratedKey());
+        for ( ChildOfParentObjectWithGeneratedKey c : obj.getChildren() ) {
+            assertEquals( "After the save, the PK ID on the children should have been the same as the parent", obj.getGeneratedKey(), c.getGeneratedKey() );
+        }
+    }
+
+    @Test
+    public void existingParentObject_setChildKeyValueToNull() {
         AccountExtension acct = getExAccount();
 
         acct.setAccountTypeCode(null);
@@ -300,7 +325,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
     }
 
     @Test
-    public void persistenceWhenObjectSet_existingParentObject_blankOutChildObject() {
+    public void existingParentObject_setChildObjectToNull() {
         AccountExtension acct = getExAccount();
 
         acct.setAccountType(null);
@@ -322,6 +347,9 @@ public class ReferenceLinkerTest extends KRADTestCase {
     public void addingUpdatableChildObject() {
         fail( "Not Implemented");
     }
+
+    // TODO: Test deletion of child records - references and collections
+
 
     void enableJotmLogging() {
         //Logger.getLogger("org.objectweb.jotm").setLevel(Level.DEBUG);

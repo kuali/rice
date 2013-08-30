@@ -592,6 +592,14 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         assertElementPresentByName(CANCEL_NAME);
     }
 
+    protected void assertButtonDisabledByText(String buttonText) {
+        SeleneseTestBase.assertTrue(!findButtonByText(buttonText).isEnabled());
+    }
+
+    protected void assertButtonEnabledByText(String buttonText) {
+        SeleneseTestBase.assertTrue(findButtonByText(buttonText).isEnabled());
+    }
+
     protected void assertCancelConfirmation() throws InterruptedException {
         waitAndClickByLinkText("Cancel");
         alertDismiss();
@@ -1157,6 +1165,18 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         passed = false;
         jGrowlSticky(message);
         fail(message); // Failable.fail
+    }
+
+    protected WebElement findButtonByText(String buttonText) {
+        WebElement found = driver.findElement(By.xpath("//button[contains(text(), '" + buttonText + "')]"));
+        WebDriverUtil.highlightElement(driver, found);
+        return found;
+    }
+
+    protected WebElement findElement(By by) {
+        WebElement found = driver.findElement(by);
+        WebDriverUtil.highlightElement(driver, found);
+        return found;
     }
 
     protected WebElement findElement(By by, WebElement elementToFindOn) {
@@ -4170,6 +4190,12 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      */
     protected void waitAndClickXMLIngester(Failable failable) throws InterruptedException {
         waitAndClickByLinkText(XML_INGESTER_LINK_TEXT, failable);
+    }
+
+
+    protected void waitAndSelectByName(String name, String selectText) throws InterruptedException {
+        waitFor(By.name(name), selectText + " not found.");
+        select(By.name(name), selectText);
     }
 
     protected void waitAndType(By by, String text) throws InterruptedException {

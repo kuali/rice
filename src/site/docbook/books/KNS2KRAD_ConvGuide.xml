@@ -1359,7 +1359,106 @@
                 </itemizedlist>
             </para>
         </section>
+
+    <section><title>Multiple Value Lookups</title>
+        <para>
+            <itemizedlist>
+                <listitem>
+                    <para><emphasis role="bold">KNS code example</emphasis>
+              <programlisting>&lt;bean parent="MaintainableCollectionDefinition">
+  &lt;property name="name" value="delegateGlobals"/>
+  &lt;property name="businessObjectClass" value="org.kuali.kfs.coa.businessobject.AccountDelegateGlobalDetail"/>
+  &lt;property name="sourceClassName" value="org.kuali.kfs.coa.businessobject.AccountDelegate"/>
+  &lt;property name="summaryTitle" value="Account Delegate"/>
+  &lt;property name="summaryFields">
+	&lt;list>
+	  &lt;bean parent="MaintainableFieldDefinition" p:name="financialDocumentTypeCode"/>
+	  &lt;bean parent="MaintainableFieldDefinition" p:name="accountDelegatePrimaryRoutingIndicator"/>
+	  &lt;bean parent="MaintainableFieldDefinition" p:name="accountDelegate.principalName"/>
+	&lt;/list>
+  &lt;/property>
+  &lt;property name="maintainableFields">
+	&lt;list>
+	  &lt;bean parent="MaintainableFieldDefinition" p:name="financialDocumentTypeCode" p:required="true"/>
+	  &lt;bean parent="MaintainableFieldDefinition" p:name="accountDelegatePrimaryRoutingIndicator"/>
+	  &lt;bean parent="MaintainableFieldDefinition" p:name="accountDelegateStartDate" p:required="true" p:defaultValueFinderClass="org.kuali.kfs.sys.businessobject.defaultvalue.CurrentDateMMDDYYYYFinder"/>
+	  &lt;bean parent="MaintainableFieldDefinition" p:name="accountDelegateUniversalId" p:unconditionallyReadOnly="true" p:required="true"/>
+	  &lt;bean parent="MaintainableFieldDefinition" p:name="accountDelegate.principalName" p:required="true" p:webUILeaveFieldFunction="principalNameLookup"/>
+	  &lt;bean parent="MaintainableFieldDefinition" p:name="accountDelegate.name" p:unconditionallyReadOnly="true" p:required="false"/>              
+	  &lt;bean parent="MaintainableFieldDefinition" p:name="approvalFromThisAmount"/>
+	  &lt;bean parent="MaintainableFieldDefinition" p:name="approvalToThisAmount"/>
+	  &lt;bean parent="MaintainableFieldDefinition" p:name="newCollectionRecord"/>
+	&lt;/list>
+  &lt;/property>
+  &lt;property name="includeMultipleLookupLine" value="true"/>
+  &lt;property name="duplicateIdentificationFields">
+	&lt;list>
+		&lt;bean parent="MaintainableFieldDefinition" p:name="accountDelegate.principalName"/>
+		&lt;bean parent="MaintainableFieldDefinition" p:name="financialDocumentTypeCode"/>
+	&lt;/list>
+  &lt;/property>
+&lt;/bean></programlisting>
+            </para>
+                    <para><emphasis role="bold">KRAD code example:</emphasis>
+                    </para>
+                <programlisting>&lt;bean parent="Uif-MaintenanceStackedCollectionSection">
+  &lt;property name="headerText" value="Account Delegates"/>
+  &lt;property name="collectionObjectClass" value="org.kuali.kfs.coa.businessobject.AccountDelegateGlobalDetail"/>
+  &lt;property name="propertyName" value="delegateGlobals"/>
+  &lt;property name="collectionLookup">
+	&lt;bean parent="Uif-CollectionQuickFinder">
+     &lt;property name="lightBoxLookup.render" value="false" />
+    &lt;/bean>
+  &lt;/property>
+  &lt;property name="items">
+	&lt;list>
+	  &lt;bean parent="Uif-InputField" p:propertyName="financialDocumentTypeCode"/>
+	  &lt;bean parent="Uif-InputField" p:propertyName="accountDelegatePrimaryRoutingIndicator"/>
+	  &lt;bean parent="Uif-InputField" p:propertyName="accountDelegate.principalName">
+  &lt;/bean>
+	&lt;/list>
+  &lt;/property>
+  &lt;property name="layoutManager.summaryTitle" value="Account"/>
+  &lt;property name="layoutManager.summaryFields">
+	&lt;list>
+	  &lt;value>financialDocumentTypeCode&lt;/value>
+	  &lt;value>accountDelegatePrimaryRoutingIndicator&lt;/value>
+	  &lt;value>accountDelegateStartDate&lt;/value>
+	  &lt;value>accountDelegateUniversalId&lt;/value>
+	  &lt;value>accountDelegate.principalName&lt;/value>
+	  &lt;value>approvalFromThisAmount&lt;/value>
+	  &lt;value>approvalToThisAmount&lt;/value>
+	&lt;/list>
+  &lt;/property>
+&lt;/bean></programlisting>   
+                </listitem>
+            </itemizedlist>
+        </para>
+    </section>    
+
+        <section><title>Other Lookup Features</title>
+            <para>
+                <itemizedlist>
+                    <listitem> Permission Check <para/></listitem>
+          <listitem/>
+                    <listitem> "Create New" Link
+                    </listitem>
+                    <listitem> Export results
+                    </listitem>
+                    <listitem></listitem>
+
+                    <listitem>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </section>    
+        
+
+
     </section>
+
+
+    
     <section><title>Maintenance Documents</title>
         <section><title>Document Error Handling</title>
             <para>
@@ -1397,6 +1496,7 @@
             </para>
         </section>
     </section>
+>>>>>>> .r41191
     <section><title>Transactional Documents</title>
         <para></para>
     </section>

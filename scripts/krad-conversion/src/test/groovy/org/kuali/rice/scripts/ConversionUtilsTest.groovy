@@ -36,7 +36,7 @@ class ConversionUtilsTest {
 
     @Test
     void testFindFilesByPattern() {
-        def attrPattern = ~/AttributePropertySample/
+        def attrPattern = ~/AttributePropertySample\.xml$/
         def files = ConversionUtils.findFilesByPattern(testResourceDir, attrPattern)
         Assert.assertEquals("file count does not match", 1, files.size())
     }

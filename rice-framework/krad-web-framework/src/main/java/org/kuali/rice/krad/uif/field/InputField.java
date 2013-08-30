@@ -393,8 +393,8 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     }
 
     /**
-     * Overridding to check quickfinder when masked is being applied. If quickfinder is configured set the component
-     * to widgetInputOnly, else set to readOnlh
+     * Overriding to check quickfinder when masked is being applied. If quickfinder is configured set the component
+     * to widgetInputOnly, else set to readOnly
      *
      * @see DataField#setAlternateAndAdditionalDisplayValue(org.kuali.rice.krad.uif.view.View, java.lang.Object)
      */

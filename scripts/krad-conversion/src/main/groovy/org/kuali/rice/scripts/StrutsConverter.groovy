@@ -110,7 +110,7 @@ class StrutsConverter {
             def actionClassFiles = getActionClassFiles(javaClassSearchDirPath, actionClassName);
             if (actionClassFiles?.size() > 0) {
                 // gather relevant data to build controller
-                def baseActionClass = actionClassFiles.sort[0]
+                def baseActionClass = actionClassFiles[0];
                 def actionClassData = ClassParserUtils.parseClassFile(baseActionClass.text, true)
 
                 // gathering form data for action form

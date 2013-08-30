@@ -18,7 +18,6 @@ package org.kuali.rice.krad.data.provider.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 
@@ -44,7 +43,10 @@ import org.kuali.rice.krad.test.document.bo.AccountManager;
 import org.kuali.rice.krad.test.document.bo.AccountType;
 import org.kuali.rice.krad.test.document.bo.ChildOfParentObjectWithGeneratedKey;
 import org.kuali.rice.krad.test.document.bo.ParentObjectWithGeneratedKey;
+import org.kuali.rice.krad.test.document.bo.ParentObjectWithUpdatableChild;
+import org.kuali.rice.krad.test.document.bo.UpdatableChildObject;
 import org.kuali.rice.test.BaselineTestCase;
+import org.kuali.rice.test.SQLDataLoader;
 import org.kuali.rice.test.data.PerSuiteUnitTestData;
 import org.kuali.rice.test.data.PerTestUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
@@ -59,7 +61,8 @@ import org.kuali.rice.test.data.UnitTestSql;
     @UnitTestData(
             sqlStatements = {
                     // Need to remove the not null constraint on the ACCT_TYPE column
-                    @UnitTestSql("DROP TABLE trv_acct_ext")
+                    // TODO: Remove these when master data source corrected
+                     @UnitTestSql("DROP TABLE trv_acct_ext")
                     ,@UnitTestSql("CREATE TABLE trv_acct_ext ( ACCT_NUM VARCHAR(10), ACCT_TYPE VARCHAR(100), OBJ_ID VARCHAR(36), VER_NBR DECIMAL(8) )")
                     // For some reason, this table seems to be empty - populate with a couple needed values
                     ,@UnitTestSql("delete from trv_acct_type")
@@ -69,26 +72,15 @@ import org.kuali.rice.test.data.UnitTestSql;
 })
 @PerTestUnitTestData(
         value = @UnitTestData(
-//                order = {UnitTestData.Type.SQL_STATEMENTS, UnitTestData.Type.SQL_FILES},
                 sqlStatements = {
-                        @UnitTestSql("delete from trv_acct_ext")
+                         @UnitTestSql("delete from trv_acct_ext")
                         ,@UnitTestSql("delete from trv_acct_fo")
                         ,@UnitTestSql("delete from trv_acct")
                         ,@UnitTestSql("INSERT INTO trv_acct_ext(ACCT_NUM, ACCT_TYPE, OBJ_ID, VER_NBR) VALUES('NULL_TYPE', NULL, 'NULL_TYPE', 1)")
                         ,@UnitTestSql("INSERT INTO trv_acct_ext(ACCT_NUM, ACCT_TYPE, OBJ_ID, VER_NBR) VALUES('EX_TYPE', 'EAT', 'EX_TYPE', 1)")
                         ,@UnitTestSql("INSERT INTO TRV_ACCT_FO(ACCT_FO_ID, ACCT_FO_USER_NAME, OBJ_ID, VER_NBR) VALUES(1, 'One', '1', 1)")
                 }
-//               sqlFiles = {
-//                        @UnitTestFile(filename = "classpath:testAccountType.sql", delimiter = "/")
-//                       ,@UnitTestFile(filename = "classpath:testAccounts.sql", delimiter = "/")
-//                }
         )
-//       ,tearDown = @UnitTestData(
-//                sqlStatements = {
-//                        @UnitTestSql("delete from trv_acct where acct_fo_id between 101 and 301")
-//                        ,@UnitTestSql("delete from trv_acct_fo where acct_fo_id between 101 and 301")
-//                }
-//       )
 )
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class ReferenceLinkerTest extends KRADTestCase {
@@ -161,7 +153,25 @@ public class ReferenceLinkerTest extends KRADTestCase {
     }
 
     @Test
-    public void existingParentObject_changeReferenceChildKeyValue() {
+    public void newParentObject_setChildReferenceKeyValue() {
+        // Create a new object and add an existing account type by object
+        AccountExtension acct = new AccountExtension();
+        acct.setNumber("NEW_ACCT");
+
+        acct.setAccountTypeCode(EXPENSE_ACCOUNT_TYPE_CODE);
+        assertNull( "Before saving account type object should have been null", acct.getAccountType());
+
+        // Save the object and test the result
+        enableJotmLogging();
+        acct = getDOS().save(acct,PersistenceOption.FLUSH,PersistenceOption.REFRESH);
+        assertNotNull( "After saving, the acct type object should be available", acct.getAccountType());
+        assertEquals( "After saving, the acct type code on the object should have been the one from the parent object", acct.getAccountTypeCode(), acct.getAccountType().getAccountTypeCode());
+
+        disableJotmLogging();
+    }
+
+    @Test
+    public void existingParent_changeReferenceChildKeyValue() {
         AccountExtension acct = getExAccount();
 
         acct.setAccountTypeCode(INCOME_ACCOUNT_TYPE_CODE);
@@ -176,7 +186,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
     }
 
     @Test
-    public void existingParentObject_changeNonUpdatableChildObject() {
+    public void existingParent_changeNonUpdatableChildObject() {
         AccountExtension acct = getExAccount();
 
         enableJotmLogging();
@@ -193,29 +203,8 @@ public class ReferenceLinkerTest extends KRADTestCase {
         disableJotmLogging();
     }
 
-    protected AccountExtension getExAccount() {
-        AccountExtension acct = getDOS().find(AccountExtension.class, "EX_TYPE");
-        assertNotNull("unable to retrieve EX_TYPE from database", acct);
-        assertEquals( "Incorrect acct type on EX_TYPE database record", acct.getAccountTypeCode(), EXPENSE_ACCOUNT_TYPE_CODE );
-
-        assertNotNull( "the acct type object should be available", acct.getAccountType());
-        assertEquals( "the acct type code on the object should be the same as the reference", acct.getAccountTypeCode(), acct.getAccountType().getAccountTypeCode());
-
-        return acct;
-    }
-
-    protected AccountExtension getNullAccount() {
-        AccountExtension acct = getDOS().find(AccountExtension.class, "NULL_TYPE");
-        assertNotNull("unable to retrieve NULL_TYPE from database", acct);
-        assertNull( "Incorrect acct type on NULL_TYPE database record.", acct.getAccountTypeCode() );
-
-        assertNull( "the acct type object should not be available", acct.getAccountType());
-
-        return acct;
-    }
-
     @Test
-    public void existingParentObject_noExistingChildValue_setChildValue() {
+    public void existingParent_noExistingChildValue_setChildValue() {
         AccountExtension acct = getNullAccount();
 
         acct.setAccountTypeCode(INCOME_ACCOUNT_TYPE_CODE);
@@ -230,7 +219,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
     }
 
     @Test
-    public void existingParentObject_noExistingChildValue_setChildObject() {
+    public void existingParent_noExistingChildValue_setChildObject() {
         AccountExtension acct = getNullAccount();
 
         enableJotmLogging();
@@ -247,7 +236,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
     }
 
     @Test
-    public void existingParentObject_noExistingCollectionRecords_settingOfCollectionKeysOnNew() {
+    public void existingParent_noExistingCollectionRecords_settingOfCollectionKeysOnNew() {
         // Get the AM record
         AccountManager am = getDOS().find(AccountManager.class, 1L);
         assertNotNull( "Error retrieving account manager", am );
@@ -310,7 +299,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
     }
 
     @Test
-    public void existingParentObject_setChildKeyValueToNull() {
+    public void existingParent_setChildKeyValueToNull() {
         AccountExtension acct = getExAccount();
 
         acct.setAccountTypeCode(null);
@@ -325,7 +314,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
     }
 
     @Test
-    public void existingParentObject_setChildObjectToNull() {
+    public void existingParent_setChildObjectToNull() {
         AccountExtension acct = getExAccount();
 
         acct.setAccountType(null);
@@ -338,18 +327,129 @@ public class ReferenceLinkerTest extends KRADTestCase {
         disableJotmLogging();
     }
 
-    public void persistenceWithUnsetGeneratedKey() {
-        // Todo : make sure that the child object is saved first and the new key stored
-        // SimpleAccount has a generated key - create a parent object for that
-        fail( "Not Implemented");
+    @Test
+    public void existingParent_withUpdatableChild_changeChildForeignKey() throws Exception {
+        SQLDataLoader sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_PARENT_OF_UPDATABLE_T(PK_COL, UPDATABLE_CHILD_KEY_COL) VALUES(1, '123')");
+        sqlDataLoader.runSql();
+        sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_UPDATABLE_CHILD_T(PK_COL, SOME_DATA_COL) VALUES('123', 'Some Data 123')");
+        sqlDataLoader.runSql();
+
+        ParentObjectWithUpdatableChild obj = getDOS().find(ParentObjectWithUpdatableChild.class, 1L);
+        assertNotNull( "Unable to find parent object in DB", obj);
+
+        obj.setUpdatableChildsKey("ABC");
+        assertEquals( "Child object's key should not be changed before save", "123", obj.getUpdatableChild().getChildKey());
+        System.err.println( "Before Saving: " + obj );
+        obj = getDOS().save(obj);//, PersistenceOption.FLUSH, PersistenceOption.REFRESH);
+        // TODO: Update referencelinker - if the field is a PK field, it may not be updated
+        // In fact, in the case where we have embedded an updatable reference object which is linked by the PK,
+        // we should always copy that PK value back to the parent
+        System.err.println( "After Saving: " + obj );
+        assertEquals( "Parent object's foreign key should still be changed after save", "ABC", obj.getUpdatableChildsKey());
+        assertEquals( "Child object's key should have been changed after save", "ABC", obj.getUpdatableChild().getChildKey());
     }
 
-    public void addingUpdatableChildObject() {
-        fail( "Not Implemented");
+    @Test
+    public void existingParent_withUpdatableChild_changeChildObject() throws Exception {
+        SQLDataLoader sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_PARENT_OF_UPDATABLE_T(PK_COL, UPDATABLE_CHILD_KEY_COL) VALUES(1, '123')");
+        sqlDataLoader.runSql();
+        sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_UPDATABLE_CHILD_T(PK_COL, SOME_DATA_COL) VALUES('123', 'Some Data 123')");
+        sqlDataLoader.runSql();
+        sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_UPDATABLE_CHILD_T(PK_COL, SOME_DATA_COL) VALUES('456', 'Some Data 456')");
+        sqlDataLoader.runSql();
+
+        ParentObjectWithUpdatableChild obj = getDOS().find(ParentObjectWithUpdatableChild.class, 1L);
+        assertNotNull( "Unable to find parent object in DB", obj);
+        UpdatableChildObject child456 = getDOS().find(UpdatableChildObject.class, "456");
+        assertNotNull( "Unable to find child 456 in DB", child456);
+
+        obj.setUpdatableChild(child456);
+        System.err.println( "Before Saving: " + obj );
+        obj = getDOS().save(obj);//, PersistenceOption.FLUSH, PersistenceOption.REFRESH);
+        System.err.println( "After Saving: " + obj );
+        assertEquals( "Parent object's foreign key should have been changed after save", "456", obj.getUpdatableChildsKey());
+        assertEquals( "Child object's key should not have been reverted after save", "456", obj.getUpdatableChild().getChildKey());
     }
 
+    @Test
+    public void newParent_withNewUpdatableChild_setKeyOnParent() throws Exception {
+        ParentObjectWithUpdatableChild obj = new ParentObjectWithUpdatableChild();
+        obj.setPrimaryKey(56L);
+
+        UpdatableChildObject child = new UpdatableChildObject();
+        child.setSomeData( "Some More Data");
+        obj.setUpdatableChildsKey("789");
+        obj.setUpdatableChild(child);
+
+        System.err.println( "Before Saving: " + obj );
+        obj = getDOS().save(obj);
+        System.err.println( "After Saving: " + obj );
+        assertEquals( "Child object's key should have been set after save", "789", obj.getUpdatableChild().getChildKey());
+
+        obj = getDOS().find(ParentObjectWithUpdatableChild.class, 56L);
+        assertNotNull("after reload from DB, unable to find object", obj);
+        child = getDOS().find(UpdatableChildObject.class, "789");
+        assertNotNull("after reload from DB, unable to find child object", child);
+        assertNotNull("after reload from DB, child object was not loaded", obj.getUpdatableChild());
+    }
+
+    @Test
+    public void newParent_withNewUpdatableChild_setKeyOnChild() throws Exception {
+        ParentObjectWithUpdatableChild obj = new ParentObjectWithUpdatableChild();
+        obj.setPrimaryKey(56L);
+
+        UpdatableChildObject child = new UpdatableChildObject();
+        child.setSomeData( "Some More Data");
+        child.setChildKey("789");
+        obj.setUpdatableChild(child);
+
+        System.err.println( "Before Saving: " + obj );
+        obj = getDOS().save(obj, PersistenceOption.FLUSH, PersistenceOption.REFRESH);
+        System.err.println( "After Saving: " + obj );
+        child = getDOS().find(UpdatableChildObject.class, "789");
+        assertNotNull("after reload from DB, unable to find child object", child);
+
+        // TODO: ReferenceLinker needs to set the keys on the parent when the child object has been changed.
+        // BUT!!!  Only if the foreign keys are not part of the parent's primary key, since those can't be changed.
+        assertEquals( "Parent object's key should have been set after save", "789", obj.getUpdatableChildsKey());
+
+        obj = getDOS().find(ParentObjectWithUpdatableChild.class, 56L);
+        assertNotNull("after reload from DB, unable to find object", obj);
+        assertNotNull("after reload from DB, child object was not loaded", obj.getUpdatableChild());
+    }
+    /*
+    INSERT INTO KRTST_PARENT_OF_UPDATABLE_T(PK_COL, UPDATABLE_CHILD_KEY_COL) VALUES(1, '123')
+    /
+    INSERT INTO KRTST_UPDATABLE_CHILD_T(PK_COL, SOME_DATA_COL) VALUES('123', 'Some Data 123')
+    /
+    INSERT INTO KRTST_PARENT_OF_UPDATABLE_T(PK_COL, UPDATABLE_CHILD_KEY_COL) VALUES(2, NULL)
+    /
+    INSERT INTO KRTST_UPDATABLE_CHILD_T(PK_COL, SOME_DATA_COL) VALUES('456', 'Some Data 456')
+    /
+
+     */
     // TODO: Test deletion of child records - references and collections
 
+    protected AccountExtension getExAccount() {
+        AccountExtension acct = getDOS().find(AccountExtension.class, "EX_TYPE");
+        assertNotNull("unable to retrieve EX_TYPE from database", acct);
+        assertEquals( "Incorrect acct type on EX_TYPE database record", acct.getAccountTypeCode(), EXPENSE_ACCOUNT_TYPE_CODE );
+
+        assertNotNull( "the acct type object should be available", acct.getAccountType());
+        assertEquals( "the acct type code on the object should be the same as the reference", acct.getAccountTypeCode(), acct.getAccountType().getAccountTypeCode());
+
+        return acct;
+    }
+
+    protected AccountExtension getNullAccount() {
+        AccountExtension acct = getDOS().find(AccountExtension.class, "NULL_TYPE");
+        assertNotNull("unable to retrieve NULL_TYPE from database", acct);
+        assertNull( "Incorrect acct type on NULL_TYPE database record.", acct.getAccountTypeCode() );
+
+        assertNull( "the acct type object should not be available", acct.getAccountType());
+
+        return acct;
+    }
 
     void enableJotmLogging() {
         //Logger.getLogger("org.objectweb.jotm").setLevel(Level.DEBUG);

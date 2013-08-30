@@ -175,17 +175,6 @@ public abstract class ControlBase extends ContentElementBase implements Control 
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
-     */
-    @Override
-    public void completeValidation(ValidationTrace tracer){
-        tracer.addBean(this);
-
-        super.completeValidation(tracer.getCopy());
-    }
-
-
-    /**
      * Evaluate the disable condition on controls which disable it on each key up event
      *
      * @return true if evaluate on key up, false otherwise
@@ -314,5 +303,15 @@ public abstract class ControlBase extends ContentElementBase implements Control 
         if (enabledWhenChangedPropertyNames != null) {
             controlBaseCopy.setEnabledWhenChangedPropertyNames(new ArrayList<String>(this.enabledWhenChangedPropertyNames));
         }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    @Override
+    public void completeValidation(ValidationTrace tracer){
+        tracer.addBean(this);
+
+        super.completeValidation(tracer.getCopy());
     }
 }

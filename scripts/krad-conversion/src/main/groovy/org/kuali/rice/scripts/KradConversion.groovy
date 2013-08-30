@@ -57,22 +57,23 @@ StrutsConverter struts = new StrutsConverter(config)
 DictionaryConverter dictionary = new DictionaryConverter(config)
 
 if (StringUtils.isBlank(inputDir) || StringUtils.isBlank(outputDir)) {
-    log.info "Error:\nplease configure your input and output directories before continuing\n\n"
+    System.out.println "Error:\nplease configure your input and output directories before continuing\n\n";
+    System.exit(1);
 }
 
 // experimental - checkout svn directory instead of using input base dir.
 if (config.project.use.svn == "true") {
-    log.info "loading project from svn"
+    System.out.println "loading project from svn"
     def command = [config.project.svn.bin, "checkout", config.project.svn.path, config.project.src.dir]
     print command.toString()
     def proc = command.execute()
     proc.waitFor()
-    log.info "finished loading project from svn"
+    System.out.println "finished loading project from svn"
 }
 
 
 def strutsConfigFiles = ConversionUtils.findFilesByName(strutsSearchDirPath, "struts-config.xml")
-log.info "Load struts-config.xml files for processing - dir: " + strutsSearchDirPath + " " + strutsConfigFiles?.size()
+System.out.println "Load struts-config.xml files for processing - dir: " + strutsSearchDirPath + " " + strutsConfigFiles?.size()
 if (strutsConfigFiles.size > 0) {
     ConversionUtils.buildDirectoryStructure(outputDir, outputPathList, true)
     ScaffoldGenerator.copyWebXml(inputDir, outputDir)
@@ -82,7 +83,7 @@ if (strutsConfigFiles.size > 0) {
 }
 
 // assuming there should only be one struts-config.xml
-log.info "Generating all necessary spring components (controllers, forms, views) from struts information"
+System.out.println "Generating all necessary spring components (controllers, forms, views) from struts information"
 if (strutsConfigFiles != null && strutsConfigFiles.size() > 0) {
     def strutsConfig = StrutsConverter.parseStrutsConfig(strutsConfigFiles[0].path)
     struts.generateSpringComponents(strutsConfig)
@@ -95,11 +96,11 @@ def springBeansFilePathList = []
 springBeansFileList.each { file -> springBeansFilePathList << file.path }
 
 // includes a spring validation test to allow for testing before running the server application
-log.info "Generating spring validation test based on resulting output from conversion"
+System.out.println "Generating spring validation test based on resulting output from conversion"
 scaffold.buildSpringBeansValidationTest(outputDir, springBeansFilePathList);
 
-log.info " -- Script Complete"
-log.info " -- open directory " + outputDir
-log.info " -- prep project -- mvn eclipse:clean eclipse:eclipse generate-resources "
-log.info " -- if using eclipse add target/generate-resources directory as a referenced library (Configure -> Build Path -> Library -> Add Class Folder "
+System.out.println " -- Script Complete"
+System.out.println " -- open directory " + outputDir
+System.out.println " -- prep project -- mvn eclipse:clean eclipse:eclipse generate-resources "
+System.out.println " -- if using eclipse add target/generate-resources directory as a referenced library (Configure -> Build Path -> Library -> Add Class Folder "
 // end of script

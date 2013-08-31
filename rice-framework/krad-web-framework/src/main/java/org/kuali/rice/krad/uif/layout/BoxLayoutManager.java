@@ -215,7 +215,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManagerBase#copy()
+     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
      */
     @Override
     protected <T> void copyProperties(T layout) {

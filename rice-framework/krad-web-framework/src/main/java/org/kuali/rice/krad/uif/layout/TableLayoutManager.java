@@ -1619,32 +1619,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     }
 
     /**
-     * Validates different requirements of component compiling a series of reports detailing information on errors
-     * found in the component.  Used by the RiceDictionaryValidator.
-     *
-     * @param tracer record of component's location
-     * @return a list of ErrorReports detailing errors found within the component and referenced within it
-     */
-    public void completeValidation(ValidationTrace tracer) {
-        tracer.addBean("TableLayoutManager", getId());
-
-        if (getRowDetailsGroup() != null) {
-            boolean validTable = false;
-            if (getRichTable() != null) {
-                if (getRichTable().isRender()) {
-                    validTable = true;
-                }
-            }
-            if (!validTable) {
-                String currentValues[] = {"rowDetailsGroup =" + getRowDetailsGroup(), "richTable =" + getRichTable()};
-                tracer.createError("If rowDetailsGroup is set richTable must be set and its render true",
-                        currentValues);
-            }
-
-        }
-    }
-
-    /**
      * Gets showTotal. showTotal shows/calculates the total field when true, otherwise it is not rendered.
      * <br/>
      * <b>Only used when renderOnlyLeftTotalLabels is TRUE, this overrides the ColumnConfigurationInfo setting.
@@ -2126,7 +2100,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
      */
     @Override
     protected <T> void copyProperties(T layoutManager) {
@@ -2278,6 +2252,32 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         if (this.conditionalRowCssClasses != null) {
             tableLayoutManagerCopy.setConditionalRowCssClasses(new HashMap<String, String>(
                     this.conditionalRowCssClasses));
+        }
+    }
+
+    /**
+     * Validates different requirements of component compiling a series of reports detailing information on errors
+     * found in the component.  Used by the RiceDictionaryValidator.
+     *
+     * @param tracer record of component's location
+     * @return a list of ErrorReports detailing errors found within the component and referenced within it
+     */
+    public void completeValidation(ValidationTrace tracer) {
+        tracer.addBean("TableLayoutManager", getId());
+
+        if (getRowDetailsGroup() != null) {
+            boolean validTable = false;
+            if (getRichTable() != null) {
+                if (getRichTable().isRender()) {
+                    validTable = true;
+                }
+            }
+            if (!validTable) {
+                String currentValues[] = {"rowDetailsGroup =" + getRowDetailsGroup(), "richTable =" + getRichTable()};
+                tracer.createError("If rowDetailsGroup is set richTable must be set and its render true",
+                        currentValues);
+            }
+
         }
     }
 }

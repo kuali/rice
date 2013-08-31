@@ -351,7 +351,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#copyProperties()
+     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
      */
     @Override
     protected <T> void copyProperties(T layoutManager) {

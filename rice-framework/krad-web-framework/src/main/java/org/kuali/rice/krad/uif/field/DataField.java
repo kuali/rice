@@ -1173,40 +1173,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
-     */
-    @Override
-    public void completeValidation(ValidationTrace tracer) {
-        tracer.addBean(this);
-
-        // Checks that the property is connected to the field
-        if (getPropertyName() == null) {
-            if (!Validator.checkExpressions(this, "propertyName")) {
-                String currentValues[] = {"propertyName = " + getPropertyName()};
-                tracer.createError("Property name not set", currentValues);
-            }
-        }
-
-        // Checks that the default values  present
-        if (getDefaultValue() != null && getDefaultValues() != null) {
-            String currentValues[] =
-                    {"defaultValue =" + getDefaultValue(), "defaultValues Size =" + getDefaultValues().length};
-            tracer.createWarning("Both Default Value and Default Values set", currentValues);
-        }
-
-        // Checks that a mask formatter is set if the data field is to be masked
-        if (isApplyMask()) {
-            if (maskFormatter == null) {
-                String currentValues[] = {"applyMask =" + isApplyMask(), "maskFormatter =" + maskFormatter};
-                tracer.createWarning("Apply mask is true, but no value is set for maskFormatter", currentValues);
-            }
-        }
-
-        super.completeValidation(tracer.getCopy());
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
      */
     @Override
     protected <T> void copyProperties(T component) {
@@ -1254,5 +1221,38 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
         if (this.inquiry != null) {
             dataFieldCopy.setInquiry((Inquiry) this.inquiry.copy());
         }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    @Override
+    public void completeValidation(ValidationTrace tracer) {
+        tracer.addBean(this);
+
+        // Checks that the property is connected to the field
+        if (getPropertyName() == null) {
+            if (!Validator.checkExpressions(this, "propertyName")) {
+                String currentValues[] = {"propertyName = " + getPropertyName()};
+                tracer.createError("Property name not set", currentValues);
+            }
+        }
+
+        // Checks that the default values  present
+        if (getDefaultValue() != null && getDefaultValues() != null) {
+            String currentValues[] =
+                    {"defaultValue =" + getDefaultValue(), "defaultValues Size =" + getDefaultValues().length};
+            tracer.createWarning("Both Default Value and Default Values set", currentValues);
+        }
+
+        // Checks that a mask formatter is set if the data field is to be masked
+        if (isApplyMask()) {
+            if (maskFormatter == null) {
+                String currentValues[] = {"applyMask =" + isApplyMask(), "maskFormatter =" + maskFormatter};
+                tracer.createWarning("Apply mask is true, but no value is set for maskFormatter", currentValues);
+            }
+        }
+
+        super.completeValidation(tracer.getCopy());
     }
 }

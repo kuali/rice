@@ -195,6 +195,20 @@ public class LinkField extends FieldBase {
     }
 
     /**
+     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+
+        LinkField linkFieldCopy = (LinkField) component;
+
+        if (this.link != null) {
+            linkFieldCopy.setLink((Link)this.link.copy());
+        }
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
@@ -218,19 +232,5 @@ public class LinkField extends FieldBase {
         }
 
         super.completeValidation(tracer.getCopy());
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        LinkField linkFieldCopy = (LinkField) component;
-
-        if (this.link != null) {
-            linkFieldCopy.setLink((Link)this.link.copy());
-        }
     }
 }

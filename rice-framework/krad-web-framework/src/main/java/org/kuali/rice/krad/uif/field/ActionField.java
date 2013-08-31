@@ -446,6 +446,20 @@ public class ActionField extends FieldBase {
     }
 
     /**
+     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     */
+    @Override
+    protected <T> void copyProperties(T component) {
+        super.copyProperties(component);
+
+        ActionField actionFieldCopy = (ActionField) component;
+
+        if (this.action != null) {
+            actionFieldCopy.setAction((Action)this.action.copy());
+        }
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     @Override
@@ -470,19 +484,5 @@ public class ActionField extends FieldBase {
         }
 
         super.completeValidation(tracer.getCopy());
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        ActionField actionFieldCopy = (ActionField) component;
-
-        if (this.action != null) {
-            actionFieldCopy.setAction((Action)this.action.copy());
-        }
     }
 }

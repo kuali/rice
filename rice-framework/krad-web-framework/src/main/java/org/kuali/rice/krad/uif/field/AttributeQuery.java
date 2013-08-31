@@ -471,28 +471,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
-     */
-    public void completeValidation(ValidationTrace tracer) {
-        tracer.addBean("AttributeQuery", ValidationTrace.NO_BEAN_ID);
-
-        // Checks that at least one aspect is set
-        if (getDataObjectClassName() == null
-                && getQueryMethodToCall() == null
-                && getQueryMethodInvokerConfig() == null) {
-            String currentValues[] = {"dataObjectClassName = " + getDataObjectClassName(),
-                    "queryMethodToCall = " + getQueryMethodToCall(),
-                    "queryMethodInvokerConfig = " + getQueryMethodInvokerConfig()};
-            tracer.createWarning(
-                    "At least 1 should be set: dataObjectClass, queryMethodToCall or queryMethodInvokerConfig",
-                    currentValues);
-        }
-    }
-
-    /**
-     * Copies the properties over for the copy method.
-     *
-     * @param attributeQuery The AttributeQuery to copy
+     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
      */
     @Override
     protected <T> void copyProperties(T attributeQuery) {
@@ -532,6 +511,25 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
         if (this.queryMethodInvokerConfig != null) {
             ((AttributeQuery) attributeQuery).setQueryMethodInvokerConfig(
                     (MethodInvokerConfig) this.queryMethodInvokerConfig.copy());
+        }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    public void completeValidation(ValidationTrace tracer) {
+        tracer.addBean("AttributeQuery", ValidationTrace.NO_BEAN_ID);
+
+        // Checks that at least one aspect is set
+        if (getDataObjectClassName() == null
+                && getQueryMethodToCall() == null
+                && getQueryMethodInvokerConfig() == null) {
+            String currentValues[] = {"dataObjectClassName = " + getDataObjectClassName(),
+                    "queryMethodToCall = " + getQueryMethodToCall(),
+                    "queryMethodInvokerConfig = " + getQueryMethodInvokerConfig()};
+            tracer.createWarning(
+                    "At least 1 should be set: dataObjectClass, queryMethodToCall or queryMethodInvokerConfig",
+                    currentValues);
         }
     }
 }

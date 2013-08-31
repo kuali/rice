@@ -1185,28 +1185,6 @@ public class Action extends ContentElementBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
-     */
-    @Override
-    public void completeValidation(ValidationTrace tracer) {
-        tracer.addBean(this);
-
-        // Checks that a label or image ui is presence
-        if (getActionLabel() == null && getActionImage() == null) {
-            String currentValues[] = {"actionLabel =" + getActionLabel(), "actionImage =" + getActionImage()};
-            tracer.createError("ActionLabel and/or actionImage must be set", currentValues);
-        }
-
-        // Checks that an action is set
-        if (getJumpToIdAfterSubmit() != null && getJumpToNameAfterSubmit() != null) {
-            String currentValues[] = {"jumpToIdAfterSubmit =" + getJumpToIdAfterSubmit(),
-                    "jumpToNameAfterSubmit =" + getJumpToNameAfterSubmit()};
-            tracer.createWarning("Only 1 jumpTo property should be set", currentValues);
-        }
-        super.completeValidation(tracer.getCopy());
-    }
-
-    /**
      * Evaluate the disable condition on controls which disable it on each key up event
      *
      * @return true if evaluate on key up, false otherwise
@@ -1309,7 +1287,7 @@ public class Action extends ContentElementBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
      */
     @Override
     protected <T> void copyProperties(T component) {
@@ -1373,5 +1351,27 @@ public class Action extends ContentElementBase {
         actionCopy.setRefreshId(this.refreshId);
         actionCopy.setRefreshPropertyName(this.refreshPropertyName);
         actionCopy.setSuccessCallback(this.successCallback);
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    @Override
+    public void completeValidation(ValidationTrace tracer) {
+        tracer.addBean(this);
+
+        // Checks that a label or image ui is presence
+        if (getActionLabel() == null && getActionImage() == null) {
+            String currentValues[] = {"actionLabel =" + getActionLabel(), "actionImage =" + getActionImage()};
+            tracer.createError("ActionLabel and/or actionImage must be set", currentValues);
+        }
+
+        // Checks that an action is set
+        if (getJumpToIdAfterSubmit() != null && getJumpToNameAfterSubmit() != null) {
+            String currentValues[] = {"jumpToIdAfterSubmit =" + getJumpToIdAfterSubmit(),
+                    "jumpToNameAfterSubmit =" + getJumpToNameAfterSubmit()};
+            tracer.createWarning("Only 1 jumpTo property should be set", currentValues);
+        }
+        super.completeValidation(tracer.getCopy());
     }
 }

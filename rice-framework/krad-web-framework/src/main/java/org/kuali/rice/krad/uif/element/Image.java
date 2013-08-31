@@ -338,33 +338,7 @@ public class Image extends ContentElementBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
-     */
-    @Override
-    public void completeValidation(ValidationTrace tracer){
-        tracer.addBean(this);
-
-        // Checks that a source is set
-        if(getSource()==null){
-            if(!Validator.checkExpressions(this, "source")){
-                String currentValues [] = {"source ="+getSource()};
-                tracer.createError("Source must be set",currentValues);
-            }
-        }
-
-        // Checks that alt text is set
-        if(getAltText().compareTo("")==0){
-            if(Validator.checkExpressions(this, "altText")){
-                String currentValues [] = {"altText ="+getAltText()};
-                tracer.createWarning("Alt text should be set, violates accessibility standards if not set",currentValues);
-            }
-        }
-
-        super.completeValidation(tracer.getCopy());
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
      */
     @Override
     protected <T> void copyProperties(T component) {
@@ -389,5 +363,31 @@ public class Image extends ContentElementBase {
         imageCopy.setHeight(this.height);
         imageCopy.setSource(this.source);
         imageCopy.setWidth(this.width);
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    @Override
+    public void completeValidation(ValidationTrace tracer){
+        tracer.addBean(this);
+
+        // Checks that a source is set
+        if(getSource()==null){
+            if(!Validator.checkExpressions(this, "source")){
+                String currentValues [] = {"source ="+getSource()};
+                tracer.createError("Source must be set",currentValues);
+            }
+        }
+
+        // Checks that alt text is set
+        if(getAltText().compareTo("")==0){
+            if(Validator.checkExpressions(this, "altText")){
+                String currentValues [] = {"altText ="+getAltText()};
+                tracer.createWarning("Alt text should be set, violates accessibility standards if not set",currentValues);
+            }
+        }
+
+        super.completeValidation(tracer.getCopy());
     }
 }

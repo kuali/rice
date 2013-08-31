@@ -268,27 +268,7 @@ public class Label extends ContentElementBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
-     */
-    @Override
-    public void completeValidation(ValidationTrace tracer){
-        tracer.addBean(this);
-
-        if(tracer.getValidationStage()== ValidationTrace.BUILD){
-            // Checks that text is set if the component is rendered
-            if(isRender() && getLabelText()==null){
-                if(!Validator.checkExpressions(this, "labelText")) {
-                    String currentValues [] = {"render = "+isRender(),"labelText ="+getLabelText()};
-                    tracer.createError("LabelText should be set if render is true",currentValues);
-                }
-            }
-        }
-
-        super.completeValidation(tracer.getCopy());
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
      */
     @Override
     protected <T> void copyProperties(T component) {
@@ -319,5 +299,25 @@ public class Label extends ContentElementBase {
         }
 
         labelCopy.setRequiredMessagePlacement(this.requiredMessagePlacement);
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    @Override
+    public void completeValidation(ValidationTrace tracer){
+        tracer.addBean(this);
+
+        if(tracer.getValidationStage()== ValidationTrace.BUILD){
+            // Checks that text is set if the component is rendered
+            if(isRender() && getLabelText()==null){
+                if(!Validator.checkExpressions(this, "labelText")) {
+                    String currentValues [] = {"render = "+isRender(),"labelText ="+getLabelText()};
+                    tracer.createError("LabelText should be set if render is true",currentValues);
+                }
+            }
+        }
+
+        super.completeValidation(tracer.getCopy());
     }
 }

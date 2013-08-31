@@ -416,48 +416,7 @@ public class Header extends ContentElementBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
-     */
-    @Override
-    public void completeValidation(ValidationTrace tracer) {
-        tracer.addBean(this);
-
-        // Checks that a correct header level is set
-        String headerLevel = getHeaderLevel().toUpperCase();
-        boolean correctHeaderLevel = false;
-        if (headerLevel.compareTo("H1") == 0) {
-            correctHeaderLevel = true;
-        } else if (headerLevel.compareTo("H2") == 0) {
-            correctHeaderLevel = true;
-        } else if (headerLevel.compareTo("H3") == 0) {
-            correctHeaderLevel = true;
-        } else if (headerLevel.compareTo("H4") == 0) {
-            correctHeaderLevel = true;
-        } else if (headerLevel.compareTo("H5") == 0) {
-            correctHeaderLevel = true;
-        } else if (headerLevel.compareTo("H6") == 0) {
-            correctHeaderLevel = true;
-        } else if (headerLevel.compareTo("LABEL") == 0) {
-            correctHeaderLevel = true;
-        }
-        if (!correctHeaderLevel) {
-            String currentValues[] = {"headerLevel =" + getHeaderLevel()};
-            tracer.createError("HeaderLevel must be of values h1, h2, h3, h4, h5, h6, or label", currentValues);
-        }
-
-        // Checks that header text is set
-        if (getHeaderText() == null) {
-            if (!Validator.checkExpressions(this, "headerText")) {
-                String currentValues[] = {"headertText =" + getHeaderText()};
-                tracer.createWarning("HeaderText should be set", currentValues);
-            }
-        }
-
-        super.completeValidation(tracer.getCopy());
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
      */
     @Override
     protected <T> void copyProperties(T component) {
@@ -497,5 +456,46 @@ public class Header extends ContentElementBase {
         if (this.richHeaderMessage != null) {
             headerCopy.setRichHeaderMessage((Message)this.richHeaderMessage.copy());
         }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    @Override
+    public void completeValidation(ValidationTrace tracer) {
+        tracer.addBean(this);
+
+        // Checks that a correct header level is set
+        String headerLevel = getHeaderLevel().toUpperCase();
+        boolean correctHeaderLevel = false;
+        if (headerLevel.compareTo("H1") == 0) {
+            correctHeaderLevel = true;
+        } else if (headerLevel.compareTo("H2") == 0) {
+            correctHeaderLevel = true;
+        } else if (headerLevel.compareTo("H3") == 0) {
+            correctHeaderLevel = true;
+        } else if (headerLevel.compareTo("H4") == 0) {
+            correctHeaderLevel = true;
+        } else if (headerLevel.compareTo("H5") == 0) {
+            correctHeaderLevel = true;
+        } else if (headerLevel.compareTo("H6") == 0) {
+            correctHeaderLevel = true;
+        } else if (headerLevel.compareTo("LABEL") == 0) {
+            correctHeaderLevel = true;
+        }
+        if (!correctHeaderLevel) {
+            String currentValues[] = {"headerLevel =" + getHeaderLevel()};
+            tracer.createError("HeaderLevel must be of values h1, h2, h3, h4, h5, h6, or label", currentValues);
+        }
+
+        // Checks that header text is set
+        if (getHeaderText() == null) {
+            if (!Validator.checkExpressions(this, "headerText")) {
+                String currentValues[] = {"headertText =" + getHeaderText()};
+                tracer.createWarning("HeaderText should be set", currentValues);
+            }
+        }
+
+        super.completeValidation(tracer.getCopy());
     }
 }

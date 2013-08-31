@@ -243,24 +243,6 @@ public class Message extends ContentElementBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
-     */
-    @Override
-    public void completeValidation(ValidationTrace tracer) {
-        tracer.addBean(this);
-
-        // Checks that text is set
-        if (getMessageText() == null) {
-            if (Validator.checkExpressions(this, "messageText")) {
-                String currentValues[] = {"messageText  =" + getMessageText()};
-                tracer.createWarning("MessageText should be set", currentValues);
-            }
-        }
-
-        super.completeValidation(tracer.getCopy());
-    }
-
-    /**
      * Indicates if the inline components must be parsed for rich messages
      *
      * @return boolean
@@ -280,7 +262,7 @@ public class Message extends ContentElementBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
      */
     @Override
     protected <T> void copyProperties(T component) {
@@ -312,5 +294,23 @@ public class Message extends ContentElementBase {
 
         messageCopy.setMessageText(this.messageText);
         messageCopy.setParseComponents(this.parseComponents);
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     */
+    @Override
+    public void completeValidation(ValidationTrace tracer) {
+        tracer.addBean(this);
+
+        // Checks that text is set
+        if (getMessageText() == null) {
+            if (Validator.checkExpressions(this, "messageText")) {
+                String currentValues[] = {"messageText  =" + getMessageText()};
+                tracer.createWarning("MessageText should be set", currentValues);
+            }
+        }
+
+        super.completeValidation(tracer.getCopy());
     }
 }

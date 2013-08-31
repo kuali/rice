@@ -26,6 +26,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Disclosure;
 import org.kuali.rice.krad.uif.widget.Scrollpane;
@@ -373,12 +374,8 @@ public class Group extends ContainerBase {
         }
 
         if (this.items != null) {
-            List<Component> items = new ArrayList<Component>();
-            for (Component itemComponent : this.items) {
-                items.add((Component) itemComponent.copy());
-            }
-
-            groupCopy.setItems(items);
+            List<Component> itemsCopy = ComponentUtils.copy(new ArrayList<Component>(items));
+            groupCopy.setItems(itemsCopy);
         }
     }
 

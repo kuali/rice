@@ -62,7 +62,6 @@ public class ComponentUtilsTest {
         component.setBaseId(componentId);
     }
 
-
     // Initialization methods
     private CollectionGroup initializeCollectionGroup() {
         CollectionGroup collectionGroup = new CollectionGroup();
@@ -268,11 +267,13 @@ public class ComponentUtilsTest {
         assertTrue(ComponentCopyPropertiesMatch(collectionGroupOriginal, collectionGroupCopy));
 
         for (int i = 0; i < collectionGroupOriginal.getAddLineItems().size(); i++) {
-            assertTrue(ComponentCopyPropertiesMatch((ComponentBase)collectionGroupOriginal.getAddLineItems().get(i), (ComponentBase)collectionGroupCopy.getAddLineItems().get(i)));
+            assertTrue(ComponentCopyPropertiesMatch((ComponentBase) collectionGroupOriginal.getAddLineItems().get(i),
+                    (ComponentBase) collectionGroupCopy.getAddLineItems().get(i)));
         }
 
         for (int i = 0; i < collectionGroupOriginal.getAddLineActions().size(); i++) {
-            assertTrue(ComponentCopyPropertiesMatch(collectionGroupOriginal.getAddLineActions().get(i), collectionGroupCopy.getAddLineActions().get(i)));
+            assertTrue(ComponentCopyPropertiesMatch(collectionGroupOriginal.getAddLineActions().get(i),
+                    collectionGroupCopy.getAddLineActions().get(i)));
         }
     }
 
@@ -281,76 +282,170 @@ public class ComponentUtilsTest {
 
         List<String> missingComponentsToRefresh = originalComponent.getAdditionalComponentsToRefresh();
         missingComponentsToRefresh.removeAll(copiedComponent.getAdditionalComponentsToRefresh());
-        if (!missingComponentsToRefresh.isEmpty()) result = false;
+        if (!missingComponentsToRefresh.isEmpty()) {
+            result = false;
+        }
 
         List<String> missingAdditionalCssClasses = originalComponent.getAdditionalCssClasses();
         missingAdditionalCssClasses.removeAll(copiedComponent.getAdditionalCssClasses());
-        if (!missingAdditionalCssClasses.isEmpty()) result = false;
+        if (!missingAdditionalCssClasses.isEmpty()) {
+            result = false;
+        }
 
-        if (!originalComponent.getAlign().equals(copiedComponent.getAlign())) result = false;
+        if (!originalComponent.getAlign().equals(copiedComponent.getAlign())) {
+            result = false;
+        }
 
         List<String> missingCellCssClasses = originalComponent.getCellCssClasses();
         missingCellCssClasses.removeAll(copiedComponent.getCellCssClasses());
-        if (!missingCellCssClasses.isEmpty()) result = false;
+        if (!missingCellCssClasses.isEmpty()) {
+            result = false;
+        }
 
-        if (!originalComponent.getCellStyle().equals(copiedComponent.getCellStyle())) result = false;
-        if (!originalComponent.getCellWidth().equals(copiedComponent.getCellWidth())) result = false;
-        if (originalComponent.getColSpan() != copiedComponent.getColSpan()) result = false;
-        if (!originalComponent.getConditionalRefresh().equals(copiedComponent.getConditionalRefresh())) result = false;
+        if (!originalComponent.getCellStyle().equals(copiedComponent.getCellStyle())) {
+            result = false;
+        }
+        if (!originalComponent.getCellWidth().equals(copiedComponent.getCellWidth())) {
+            result = false;
+        }
+        if (originalComponent.getColSpan() != copiedComponent.getColSpan()) {
+            result = false;
+        }
+        if (!originalComponent.getConditionalRefresh().equals(copiedComponent.getConditionalRefresh())) {
+            result = false;
+        }
 
         List<String> missingCssClasses = originalComponent.getCssClasses();
         missingCssClasses.removeAll(copiedComponent.getCssClasses());
-        if (!missingCssClasses.isEmpty()) result = false;
+        if (!missingCssClasses.isEmpty()) {
+            result = false;
+        }
 
         Set dataAttributes = new HashSet(originalComponent.getDataAttributes().values());
         dataAttributes.removeAll(copiedComponent.getDataAttributes().values());
-        if (!dataAttributes.isEmpty()) result = false;
+        if (!dataAttributes.isEmpty()) {
+            result = false;
+        }
 
-        if (!originalComponent.getFinalizeMethodToCall().equals(copiedComponent.getFinalizeMethodToCall())) result = false;
-        if (!originalComponent.getMethodToCallOnRefresh().equals(copiedComponent.getMethodToCallOnRefresh())) result = false;
-        if (!originalComponent.getOnBlurScript().equals(copiedComponent.getOnBlurScript())) result = false;
-        if (!originalComponent.getOnChangeScript().equals(copiedComponent.getOnChangeScript())) result = false;
-        if (!originalComponent.getOnClickScript().equals(copiedComponent.getOnClickScript())) result = false;
-        if (!originalComponent.getOnCloseScript().equals(copiedComponent.getOnCloseScript())) result = false;
-        if (!originalComponent.getOnDblClickScript().equals(copiedComponent.getOnDblClickScript())) result = false;
-        if (!originalComponent.getOnDocumentReadyScript().equals(copiedComponent.getOnDocumentReadyScript())) result = false;
-        if (!originalComponent.getOnFocusScript().equals(copiedComponent.getOnFocusScript())) result = false;
-        if (!originalComponent.getOnKeyDownScript().equals(copiedComponent.getOnKeyDownScript())) result = false;
-        if (!originalComponent.getOnKeyPressScript().equals(copiedComponent.getOnKeyPressScript())) result = false;
-        if (!originalComponent.getOnKeyUpScript().equals(copiedComponent.getOnKeyUpScript())) result = false;
-        if (!originalComponent.getOnLoadScript().equals(copiedComponent.getOnLoadScript())) result = false;
-        if (!originalComponent.getOnMouseDownScript().equals(copiedComponent.getOnMouseDownScript())) result = false;
-        if (!originalComponent.getOnMouseMoveScript().equals(copiedComponent.getOnMouseMoveScript())) result = false;
-        if (!originalComponent.getOnMouseOutScript().equals(copiedComponent.getOnMouseOutScript())) result = false;
-        if (!originalComponent.getOnMouseOverScript().equals(copiedComponent.getOnMouseOverScript())) result = false;
-        if (!originalComponent.getOnMouseUpScript().equals(copiedComponent.getOnMouseUpScript())) result = false;
-        if (!originalComponent.getOnSubmitScript().equals(copiedComponent.getOnSubmitScript())) result = false;
-        if (!originalComponent.getOnUnloadScript().equals(copiedComponent.getOnUnloadScript())) result = false;
-        if (originalComponent.getOrder() != copiedComponent.getOrder()) result = false;
-        if (!originalComponent.getPostRenderContent().equals(copiedComponent.getPostRenderContent())) result = false;
-        if (!originalComponent.getPreRenderContent().equals(copiedComponent.getPreRenderContent())) result = false;
-        if (!originalComponent.getProgressiveRender().equals(copiedComponent.getProgressiveRender())) result = false;
-        if (originalComponent.getRequired() != copiedComponent.getRequired()) result = false;
-        if (originalComponent.getRefreshTimer() != copiedComponent.getRefreshTimer()) result = false;
+        if (!originalComponent.getFinalizeMethodToCall().equals(copiedComponent.getFinalizeMethodToCall())) {
+            result = false;
+        }
+        if (!originalComponent.getMethodToCallOnRefresh().equals(copiedComponent.getMethodToCallOnRefresh())) {
+            result = false;
+        }
+        if (!originalComponent.getOnBlurScript().equals(copiedComponent.getOnBlurScript())) {
+            result = false;
+        }
+        if (!originalComponent.getOnChangeScript().equals(copiedComponent.getOnChangeScript())) {
+            result = false;
+        }
+        if (!originalComponent.getOnClickScript().equals(copiedComponent.getOnClickScript())) {
+            result = false;
+        }
+        if (!originalComponent.getOnCloseScript().equals(copiedComponent.getOnCloseScript())) {
+            result = false;
+        }
+        if (!originalComponent.getOnDblClickScript().equals(copiedComponent.getOnDblClickScript())) {
+            result = false;
+        }
+        if (!originalComponent.getOnDocumentReadyScript().equals(copiedComponent.getOnDocumentReadyScript())) {
+            result = false;
+        }
+        if (!originalComponent.getOnFocusScript().equals(copiedComponent.getOnFocusScript())) {
+            result = false;
+        }
+        if (!originalComponent.getOnKeyDownScript().equals(copiedComponent.getOnKeyDownScript())) {
+            result = false;
+        }
+        if (!originalComponent.getOnKeyPressScript().equals(copiedComponent.getOnKeyPressScript())) {
+            result = false;
+        }
+        if (!originalComponent.getOnKeyUpScript().equals(copiedComponent.getOnKeyUpScript())) {
+            result = false;
+        }
+        if (!originalComponent.getOnLoadScript().equals(copiedComponent.getOnLoadScript())) {
+            result = false;
+        }
+        if (!originalComponent.getOnMouseDownScript().equals(copiedComponent.getOnMouseDownScript())) {
+            result = false;
+        }
+        if (!originalComponent.getOnMouseMoveScript().equals(copiedComponent.getOnMouseMoveScript())) {
+            result = false;
+        }
+        if (!originalComponent.getOnMouseOutScript().equals(copiedComponent.getOnMouseOutScript())) {
+            result = false;
+        }
+        if (!originalComponent.getOnMouseOverScript().equals(copiedComponent.getOnMouseOverScript())) {
+            result = false;
+        }
+        if (!originalComponent.getOnMouseUpScript().equals(copiedComponent.getOnMouseUpScript())) {
+            result = false;
+        }
+        if (!originalComponent.getOnSubmitScript().equals(copiedComponent.getOnSubmitScript())) {
+            result = false;
+        }
+        if (!originalComponent.getOnUnloadScript().equals(copiedComponent.getOnUnloadScript())) {
+            result = false;
+        }
+        if (originalComponent.getOrder() != copiedComponent.getOrder()) {
+            result = false;
+        }
+        if (!originalComponent.getPostRenderContent().equals(copiedComponent.getPostRenderContent())) {
+            result = false;
+        }
+        if (!originalComponent.getPreRenderContent().equals(copiedComponent.getPreRenderContent())) {
+            result = false;
+        }
+        if (!originalComponent.getProgressiveRender().equals(copiedComponent.getProgressiveRender())) {
+            result = false;
+        }
+        if (originalComponent.getRequired() != copiedComponent.getRequired()) {
+            result = false;
+        }
+        if (originalComponent.getRefreshTimer() != copiedComponent.getRefreshTimer()) {
+            result = false;
+        }
 
         List<String> missingRefreshWhenChangedPropertyNames = originalComponent.getRefreshWhenChangedPropertyNames();
         missingRefreshWhenChangedPropertyNames.removeAll(copiedComponent.getRefreshWhenChangedPropertyNames());
-        if (!missingRefreshWhenChangedPropertyNames.isEmpty()) result = false;
+        if (!missingRefreshWhenChangedPropertyNames.isEmpty()) {
+            result = false;
+        }
 
-        if (!originalComponent.getRenderedHtmlOutput().equals(copiedComponent.getRenderedHtmlOutput())) result = false;
-        if (originalComponent.getRowSpan() != copiedComponent.getRowSpan()) result = false;
-        if (!originalComponent.getStyle().equals(copiedComponent.getStyle())) result = false;
-        if (!originalComponent.getTemplate().equals(copiedComponent.getTemplate())) result = false;
-        if (!originalComponent.getTemplateName().equals(copiedComponent.getTemplateName())) result = false;
+        if (!originalComponent.getRenderedHtmlOutput().equals(copiedComponent.getRenderedHtmlOutput())) {
+            result = false;
+        }
+        if (originalComponent.getRowSpan() != copiedComponent.getRowSpan()) {
+            result = false;
+        }
+        if (!originalComponent.getStyle().equals(copiedComponent.getStyle())) {
+            result = false;
+        }
+        if (!originalComponent.getTemplate().equals(copiedComponent.getTemplate())) {
+            result = false;
+        }
+        if (!originalComponent.getTemplateName().equals(copiedComponent.getTemplateName())) {
+            result = false;
+        }
 
         Set templateOptions = new HashSet(originalComponent.getTemplateOptions().values());
         templateOptions.removeAll(copiedComponent.getTemplateOptions().values());
-        if (!templateOptions.isEmpty()) result = false;
+        if (!templateOptions.isEmpty()) {
+            result = false;
+        }
 
-        if (!originalComponent.getTemplateOptionsJSString().equals(copiedComponent.getTemplateOptionsJSString())) result = false;
-        if (!originalComponent.getTitle().equals(copiedComponent.getTitle())) result = false;
-        if (!originalComponent.getValign().equals(copiedComponent.getValign())) result = false;
-        if (!originalComponent.getWidth().equals(copiedComponent.getWidth())) result = false;
+        if (!originalComponent.getTemplateOptionsJSString().equals(copiedComponent.getTemplateOptionsJSString())) {
+            result = false;
+        }
+        if (!originalComponent.getTitle().equals(copiedComponent.getTitle())) {
+            result = false;
+        }
+        if (!originalComponent.getValign().equals(copiedComponent.getValign())) {
+            result = false;
+        }
+        if (!originalComponent.getWidth().equals(copiedComponent.getWidth())) {
+            result = false;
+        }
 
         return result;
     }
@@ -375,7 +470,9 @@ public class ComponentUtilsTest {
         long index = 0L;
 
         for (Field field : originalClass.getDeclaredFields()) {
-            if (field.isAnnotationPresent(ReferenceCopy.class)) continue;
+            if (field.isAnnotationPresent(ReferenceCopy.class)) {
+                continue;
+            }
 
             try {
                 if (field.getType().equals(String.class)) {
@@ -403,7 +500,7 @@ public class ComponentUtilsTest {
                     objects[0] = new FieldBase();
                     List<?> fieldList = Arrays.asList((Object[]) objects);
                     field.set(originalObject, fieldList);
-                    List<?> retrievedList = (List<?>)field.get(originalObject);
+                    List<?> retrievedList = (List<?>) field.get(originalObject);
                     int somethingElse = 3;
 
                     //ArrayList<?> arrayList = new ArrayList<?>();
@@ -422,21 +519,29 @@ public class ComponentUtilsTest {
         Class copiedClass = copiedObject.getClass();
 
         for (Field field : originalClass.getDeclaredFields()) {
-            if (field.isAnnotationPresent(ReferenceCopy.class)) continue;
+            if (field.isAnnotationPresent(ReferenceCopy.class)) {
+                continue;
+            }
 
             if (field.getType().equals(String.class)) {
                 boolean propertiesMatch = stringPropertiesMatch(originalObject, copiedObject, copiedClass, field);
-                if (!propertiesMatch) return false;
+                if (!propertiesMatch) {
+                    return false;
+                }
             }
 
             if (field.getType().equals(long.class)) {
                 boolean propertiesMatch = longPropertiesMatch(originalObject, copiedObject, copiedClass, field);
-                if (!propertiesMatch) return false;
+                if (!propertiesMatch) {
+                    return false;
+                }
             }
 
             if (field.getType().equals(int.class)) {
                 boolean propertiesMatch = intPropertiesMatch(originalObject, copiedObject, copiedClass, field);
-                if (!propertiesMatch) return false;
+                if (!propertiesMatch) {
+                    return false;
+                }
             }
         }
 
@@ -452,8 +557,7 @@ public class ComponentUtilsTest {
             int copiedInt = copiedClassField.getInt(copiedObject);
 
             return oritinalInt == copiedInt;
-        }
-        catch (IllegalAccessException e) {
+        } catch (IllegalAccessException e) {
             return false;
         } catch (NoSuchFieldException e) {
             return false;
@@ -469,8 +573,7 @@ public class ComponentUtilsTest {
             Long copiedLong = copiedClassField.getLong(copiedObject);
 
             return originalLong.equals(copiedLong);
-        }
-        catch (IllegalAccessException e) {
+        } catch (IllegalAccessException e) {
             return false;
         } catch (NoSuchFieldException e) {
             return false;
@@ -489,8 +592,7 @@ public class ComponentUtilsTest {
             return originalString.equals(copiedString);
         } catch (IllegalAccessException e) {
             return false;
-        }
-        catch (NoSuchFieldException e) {
+        } catch (NoSuchFieldException e) {
             return false;
         }
     }

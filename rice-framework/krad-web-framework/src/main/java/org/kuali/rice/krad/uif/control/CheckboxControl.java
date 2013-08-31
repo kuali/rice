@@ -22,6 +22,7 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
+import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.View;
 
 import java.util.ArrayList;
@@ -182,10 +183,7 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
         }
 
         if(inlineComponents != null) {
-            List<Component> inlineComponentsCopy = new ArrayList<Component>();
-            for(Component inlineComponent : inlineComponents)   {
-                inlineComponentsCopy.add((Component)inlineComponent.copy());
-            }
+            List<Component> inlineComponentsCopy = ComponentUtils.copy(inlineComponents);
             checkboxControlCopy.setInlineComponents(inlineComponentsCopy);
         }
     }

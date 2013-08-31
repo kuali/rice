@@ -258,10 +258,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
         }
 
         if (inlineComponents != null) {
-            List<Component> inlineComponentsCopy = new ArrayList<Component>();
-            for (Component inlineComponent : inlineComponents) {
-                inlineComponentsCopy.add((Component) inlineComponent.copy());
-            }
+            List<Component> inlineComponentsCopy = ComponentUtils.copy(inlineComponents);
             multiValueControlBaseCopy.setInlineComponents(inlineComponentsCopy);
         }
 

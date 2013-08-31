@@ -482,12 +482,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
         }
 
         if (getItems() != null) {
-            List<Component> itemsCopy = new ArrayList<Component>();
-
-            for (Component item : getItems()) {
-                itemsCopy.add((Component) item.copy());
-            }
-
+            List<Component> itemsCopy = ComponentUtils.copy(new ArrayList<Component>(getItems()));
             containerBaseCopy.setItems(itemsCopy);
         }
 

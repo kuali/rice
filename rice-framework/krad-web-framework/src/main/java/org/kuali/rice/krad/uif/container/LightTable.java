@@ -780,12 +780,7 @@ public class LightTable extends Group implements DataBinding {
         }
 
         if (headerLabels != null) {
-            List<Label> headerLabelsCopy = new ArrayList<Label>();
-            for (Label headerLabel : headerLabels) {
-                if (headerLabel != null) {
-                    headerLabelsCopy.add((Label) headerLabel.copy());
-                }
-            }
+            List<Label> headerLabelsCopy = ComponentUtils.copy(headerLabels);
             lightTableCopy.setHeaderLabels(headerLabelsCopy);
         }
 
@@ -794,21 +789,11 @@ public class LightTable extends Group implements DataBinding {
         }
 
         if (expressionConversionMap != null) {
-            Map<String, String> expressionConversionMapCopy = new HashMap<String, String>();
-            for (Map.Entry expressionConversionMapEntry : expressionConversionMap.entrySet()) {
-                expressionConversionMapCopy.put(expressionConversionMapEntry.getKey().toString(),
-                        expressionConversionMapEntry.getValue().toString());
-            }
-            lightTableCopy.setExpressionConversionMap(expressionConversionMapCopy);
+            lightTableCopy.setExpressionConversionMap(new HashMap<String, String>(expressionConversionMap));
         }
 
         if (renderIdExpressionMap != null) {
-            Map<String, String> renderIdExpressionMapCopy = new HashMap<String, String>();
-            for (Map.Entry renderIdExpressionMapEntry : renderIdExpressionMap.entrySet()) {
-                renderIdExpressionMapCopy.put(renderIdExpressionMapEntry.getKey().toString(),
-                        renderIdExpressionMapEntry.getValue().toString());
-            }
-            lightTableCopy.setRenderIdExpressionMap(renderIdExpressionMapCopy);
+            lightTableCopy.setRenderIdExpressionMap(new HashMap<String, String>(renderIdExpressionMap));
         }
 
         if (initialComponentIds != null) {

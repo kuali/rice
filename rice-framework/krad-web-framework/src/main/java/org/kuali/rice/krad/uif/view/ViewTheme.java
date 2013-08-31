@@ -617,9 +617,7 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
     }
 
     /**
-     * Copies the properties over for the copy method.
-     *
-     * @param viewTheme ViewTheme instance to copy properties to
+     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
      */
     @Override
     protected <T> void copyProperties(T viewTheme) {

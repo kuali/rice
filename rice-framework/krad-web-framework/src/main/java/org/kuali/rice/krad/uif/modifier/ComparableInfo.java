@@ -236,7 +236,7 @@ public class ComparableInfo extends UifDictionaryBeanBase implements Serializabl
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copy()
+     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
      */
     @Override
     protected <T> void copyProperties(T comparableInfo) {

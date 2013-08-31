@@ -314,7 +314,7 @@ public class ColumnCalculationInfo extends UifDictionaryBeanBase implements Seri
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copy()
+     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
      */
     @Override
     protected <T> void copyProperties(T columnCalculationInfo) {

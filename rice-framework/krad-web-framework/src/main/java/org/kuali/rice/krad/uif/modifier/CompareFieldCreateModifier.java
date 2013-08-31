@@ -425,7 +425,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
 
 
     /**
-     * @see org.kuali.rice.krad.uif.modifier.ComponentModifierBase#copy()
+     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
      */
     @Override
     protected <T> void copyProperties(T componentModifier) {

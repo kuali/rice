@@ -270,7 +270,7 @@ public class BreadcrumbOptions implements Serializable, Copyable {
     }
 
     /**
-     * Returns a copy of the attribute query.
+     * Returns a copy of the breadcrumb options.
      *
      * @return BreadcrumbOptions copy of the component
      */

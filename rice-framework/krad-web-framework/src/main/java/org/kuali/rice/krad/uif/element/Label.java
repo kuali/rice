@@ -23,6 +23,7 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.UifConstants.Position;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
+import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -277,13 +278,8 @@ public class Label extends ContentElementBase {
         Label labelCopy = (Label) component;
 
         if (this.inlineComponents != null) {
-            List<Component> inlineComponents = new ArrayList<Component>();
-
-            for (Component inlineComponent : this.inlineComponents) {
-                inlineComponents.add((Component) inlineComponent.copy());
-            }
-
-            labelCopy.setInlineComponents(inlineComponents);
+            List<Component> inlineComponentsCopy = ComponentUtils.copy(inlineComponents);
+            labelCopy.setInlineComponents(inlineComponentsCopy);
         }
 
         labelCopy.setLabelForComponentId(this.labelForComponentId);

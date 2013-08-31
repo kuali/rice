@@ -24,6 +24,7 @@ import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
+import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -434,11 +435,8 @@ public class Header extends ContentElementBase {
         headerCopy.setHeaderText(this.headerText);
 
         if(inlineComponents != null) {
-            List<Component> inlineComponents = new ArrayList<Component>();
-            for (Component inlineComponent : this.inlineComponents) {
-                inlineComponents.add((Component)inlineComponent.copy());
-            }
-            headerCopy.setInlineComponents(inlineComponents);
+            List<Component> inlineComponentsCopy = ComponentUtils.copy(inlineComponents);
+            headerCopy.setInlineComponents(inlineComponentsCopy);
         }
 
         if (this.lowerGroup != null) {

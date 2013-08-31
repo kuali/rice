@@ -23,6 +23,7 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.MessageStructureUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -273,23 +274,13 @@ public class Message extends ContentElementBase {
         messageCopy.setGenerateSpan(this.generateSpan);
 
         if (this.inlineComponents != null) {
-            List<Component> inlineComponents = new ArrayList<Component>();
-
-            for (Component inlineComponent : this.inlineComponents) {
-                inlineComponents.add((Component)inlineComponent.copy());
-            }
-
-            messageCopy.setInlineComponents(inlineComponents);
+            List<Component> inlineComponentsCopy = ComponentUtils.copy(inlineComponents);
+            messageCopy.setInlineComponents(inlineComponentsCopy);
         }
 
         if (this.messageComponentStructure != null) {
-            List<Component> messageComponentStructure = new ArrayList<Component>();
-
-            for (Component messageComponentStructureItem : this.messageComponentStructure) {
-                messageComponentStructure.add((Component)messageComponentStructureItem.copy());
-            }
-
-            messageCopy.setMessageComponentStructure(messageComponentStructure);
+            List<Component> messageComponentStructureCopy = ComponentUtils.copy(messageComponentStructure);
+            messageCopy.setMessageComponentStructure(messageComponentStructureCopy);
         }
 
         messageCopy.setMessageText(this.messageText);

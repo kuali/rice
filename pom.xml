@@ -81,9 +81,18 @@
     <jmeter.testFilesDirectory>${basedir}/src/test/resources/jmeter</jmeter.testFilesDirectory>
     <jmeter.jMeterTestFile>**/*.jmx</jmeter.jMeterTestFile>
     <jmeter.excludeJmeterTestFile>NOT_NULL</jmeter.excludeJmeterTestFile>
+    <!-- JMeter properties here will override JMeter User Defined Variable defaults. JMeter User Defined Variable defaults
+         for these properties are only defaulted to if run from the JMeter UI or command line script. -->
     <jmeter.testResultsTimestamp>false</jmeter.testResultsTimestamp>
     <jmeter.server>localhost</jmeter.server>
     <jmeter.port>8080</jmeter.port>
+    <jmeter.threads>1</jmeter.threads>
+    <jmeter.loops>1</jmeter.loops>
+    <jmeter.rampseconds>1</jmeter.rampseconds>
+    <jmeter.userprefix>testuser</jmeter.userprefix>
+    <jmeter.counterconfigstart>1</jmeter.counterconfigstart>
+    <jmeter.counterconfigend>6</jmeter.counterconfigend>
+    <jmeter.counterconfigincr>1</jmeter.counterconfigincr>
 
     <readme.date.format>MMMM d, yyyy</readme.date.format>
 
@@ -462,6 +471,13 @@
                       -->
                       <server>${jmeter.server}</server>
                       <port>${jmeter.port}</port>
+                      <threads>${jmeter.threads}</threads>
+                      <loops>${jmeter.loops}</loops>
+                      <rampseconds>${jmeter.rampseconds}</rampseconds>
+                      <userprefix>${jmeter.userprefix}</userprefix>
+                      <counterconfigstart>${jmeter.counterconfigstart}</counterconfigstart>
+                      <counterconfigend>${jmeter.counterconfigend}</counterconfigend>
+                      <counterconfigincr>${jmeter.counterconfigincr}</counterconfigincr>
                     </propertiesUser>
                   </configuration>
                 </execution>

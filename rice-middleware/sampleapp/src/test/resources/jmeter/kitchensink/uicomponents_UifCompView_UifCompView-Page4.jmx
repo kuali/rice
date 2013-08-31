@@ -11,6 +11,9 @@
     <stringProp name="TestPlan.user_define_classpath"></stringProp>
 </TestPlan>
 <hashTree>
+<!-- When called from Maven the User Defined Variable default values defined here, which have maven properties, are not
+used when running from maven, the jmeter properties from maven override them.  These defaults are used when running from
+the JMeter UI or command line script -->
 <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
     <collectionProp name="Arguments.arguments">
         <elementProp name="SERVER" elementType="Argument">

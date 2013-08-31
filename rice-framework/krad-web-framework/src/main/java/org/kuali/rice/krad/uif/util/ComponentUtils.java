@@ -18,6 +18,8 @@ package org.kuali.rice.krad.uif.util;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.core.api.util.type.TypeUtils;
+import org.kuali.rice.krad.datadictionary.DictionaryBean;
+import org.kuali.rice.krad.datadictionary.DictionaryBeanBase;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
@@ -61,6 +63,26 @@ public class ComponentUtils {
         }
 
         return copy;
+    }
+
+    /**
+     * Copy a list of components
+     *
+     * @param components the list of components to copy
+     * @return the copied list
+     */
+    public static <T extends Component> List<T> copy(List<T> components) {
+        if (components != null) {
+            List<T> componentsCopy = new ArrayList<T>();
+            for (T component : components) {
+                T copiedComponent = copy(component);
+                componentsCopy.add(copiedComponent);
+            }
+
+            return componentsCopy;
+        }
+
+        return new ArrayList<T>();
     }
 
     @SuppressWarnings("unchecked")

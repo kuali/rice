@@ -1320,22 +1320,12 @@ public class CollectionGroup extends Group implements DataBinding {
         collectionGroupCopy.setAddItemCssClass(this.addItemCssClass);
 
         if (addLineItems != null) {
-            List<Component> addLineItemsCopy = new ArrayList<Component>();
-
-            for (Component addLineItem : this.addLineItems) {
-                addLineItemsCopy.add((Component) addLineItem.copy());
-            }
-
+            List<Component> addLineItemsCopy = ComponentUtils.copy(new ArrayList<Component>(addLineItems));
             collectionGroupCopy.setAddLineItems(addLineItemsCopy);
         }
 
         if (addLineActions != null) {
-            List<Action> addLineActionsCopy = new ArrayList<Action>();
-
-            for (Action addLineAction : this.addLineActions) {
-                addLineActionsCopy.add((Action) addLineAction.copy());
-            }
-
+            List<Action> addLineActionsCopy = ComponentUtils.copy(addLineActions);
             collectionGroupCopy.setAddLineActions(addLineActionsCopy);
         }
 
@@ -1374,12 +1364,8 @@ public class CollectionGroup extends Group implements DataBinding {
         collectionGroupCopy.setDisplayLength(this.displayLength);
 
         if (lineActions != null) {
-            List<Action> lineActions = new ArrayList<Action>();
-            for (Action lineAction : this.lineActions) {
-                lineActions.add((Action) lineAction.copy());
-            }
-
-            collectionGroupCopy.setLineActions(lineActions);
+            List<Action> lineActionsCopy = ComponentUtils.copy(lineActions);
+            collectionGroupCopy.setLineActions(lineActionsCopy);
         }
         collectionGroupCopy.setLineSelectPropertyName(this.lineSelectPropertyName);
         collectionGroupCopy.setNewItemsCssClass(this.newItemsCssClass);
@@ -1395,11 +1381,7 @@ public class CollectionGroup extends Group implements DataBinding {
         collectionGroupCopy.setShowInactiveLines(this.showInactiveLines);
 
         if (subCollections != null) {
-            List<CollectionGroup> subCollectionsCopy = new ArrayList<CollectionGroup>();
-            for (CollectionGroup subCollection : this.subCollections) {
-                subCollectionsCopy.add((CollectionGroup) subCollection.copy());
-            }
-
+            List<CollectionGroup> subCollectionsCopy = ComponentUtils.copy(subCollections);
             collectionGroupCopy.setSubCollections(subCollectionsCopy);
         }
         collectionGroupCopy.setSubCollectionSuffix(this.subCollectionSuffix);

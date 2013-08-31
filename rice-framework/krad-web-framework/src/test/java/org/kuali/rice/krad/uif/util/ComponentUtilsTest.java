@@ -21,7 +21,9 @@ import org.junit.Test;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
+import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.control.CheckboxControl;
+import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.DataTable;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.FieldBase;
@@ -62,6 +64,34 @@ public class ComponentUtilsTest {
 
 
     // Initialization methods
+    private CollectionGroup initializeCollectionGroup() {
+        CollectionGroup collectionGroup = new CollectionGroup();
+        collectionGroup = (CollectionGroup) initializeComponentBase(collectionGroup);
+
+        DataField field1 = initializeDataField();
+        DataField field2 = initializeDataField();
+        List<DataField> fields = new ArrayList<DataField>();
+        fields.add(field1);
+        fields.add(field2);
+        collectionGroup.setAddLineItems(fields);
+
+        Action action1 = new Action();
+        action1 = (Action) initializeComponentBase(action1);
+        action1.setActionLabel("Action Label");
+        action1.setActionScript("<script>Action script</script>");
+
+        Action action2 = new Action();
+        action2 = (Action) initializeComponentBase(action2);
+        action2.setActionLabel("Action Label 2");
+        action2.setActionScript("<script>Action script 2</script>");
+        List<Action> addLineActions = new ArrayList<Action>();
+        addLineActions.add(action1);
+        addLineActions.add(action2);
+        collectionGroup.setAddLineActions(addLineActions);
+
+        return collectionGroup;
+    }
+
     private FieldBase initializeFieldBase() {
         FieldBase fieldBase = new FieldBase();
         fieldBase = (FieldBase) initializeComponentBase(fieldBase);
@@ -225,6 +255,25 @@ public class ComponentUtilsTest {
         DataField dataFieldCopy = copy(dataFieldOriginal);
 
         assertTrue(ComponentCopyPropertiesMatch(dataFieldOriginal, dataFieldCopy));
+    }
+
+    @Test
+    /**
+     * test {@link ComponentUtils#copyUsingCloning} using a CollectionGroup object
+     */
+    public void testCopyUsingCloningWithSimpleCollectionGroupSucceeds() {
+        CollectionGroup collectionGroupOriginal = initializeCollectionGroup();
+        CollectionGroup collectionGroupCopy = copy(collectionGroupOriginal);
+
+        assertTrue(ComponentCopyPropertiesMatch(collectionGroupOriginal, collectionGroupCopy));
+
+        for (int i = 0; i < collectionGroupOriginal.getAddLineItems().size(); i++) {
+            assertTrue(ComponentCopyPropertiesMatch((ComponentBase)collectionGroupOriginal.getAddLineItems().get(i), (ComponentBase)collectionGroupCopy.getAddLineItems().get(i)));
+        }
+
+        for (int i = 0; i < collectionGroupOriginal.getAddLineActions().size(); i++) {
+            assertTrue(ComponentCopyPropertiesMatch(collectionGroupOriginal.getAddLineActions().get(i), collectionGroupCopy.getAddLineActions().get(i)));
+        }
     }
 
     private boolean ComponentCopyPropertiesMatch(ComponentBase originalComponent, ComponentBase copiedComponent) {

@@ -1038,7 +1038,7 @@ public class RichTable extends WidgetBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
      */
     @Override
     protected <T> void copyProperties(T component) {

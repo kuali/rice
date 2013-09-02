@@ -75,7 +75,6 @@ public class DemoTravelAccountTypeLookUpSmokeTest extends SmokeTestBase {
         waitForElementsPresentByXpath("//span[contains(text(),'Clearing Account Type')]");
     }
 
-    @Test
     protected void testTravelAccountTypeLookUpXss(String fieldName) throws Exception {
         waitAndTypeByName(fieldName,"\"/><script>alert('!')</script>");
         waitAndClickButtonByText(SEARCH);

@@ -2088,7 +2088,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void testIdentityResponsibilityBlanketApprove() throws Exception {
         selectFrameIframePortlet();
-        checkForIncidentReport();
         waitAndCreateNew();
         String docId = waitForDocId();
         String dtsTwo = ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits();
@@ -4238,6 +4237,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected void waitAndCreateNew() throws InterruptedException {
+        checkForIncidentReport();
         selectFrameIframePortlet();
         try {
             jGrowl("Create New");

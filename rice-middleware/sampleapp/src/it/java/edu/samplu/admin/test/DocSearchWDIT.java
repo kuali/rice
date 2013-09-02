@@ -16,19 +16,18 @@
 
 package edu.samplu.admin.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
+import edu.samplu.common.ITUtil;
+import edu.samplu.common.WebDriverLegacyITBase;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -97,8 +96,7 @@ public class DocSearchWDIT extends WebDriverLegacyITBase {
         //waitAndTypeByName("rangeLowerBoundKeyPrefix_dateCreated", "10/01/2010");
         //waitAndTypeByName("dateCreated", "10/13/2010");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @alt='search']");
-        waitForPageToLoad();
-        assertEquals(docId, driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[1]/a")).getText());
+        assertEquals(docId, waitFor(By.xpath("//table[@id='row']/tbody/tr[1]/td[1]/a")).getText());
         //Thread.sleep(2000);
         waitAndClickByXpath("//input[@name='methodToCall.clearValues' and @alt='clear']");
         assertEquals("", driver.findElement(By.xpath("//input[@name='documentTypeName']")).getAttribute("value"));

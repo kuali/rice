@@ -65,6 +65,8 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("An exception occurred processing JSP page /kr/WEB-INF/jsp/KualiMaintenanceDocument.jsp", "KULRICE-10235 JasperException: An exception occurred processing JSP page /kr/WEB-INF/jsp/KualiMaintenanceDocument.jsp");
 
         jiraMatches.put("BusinessObjectMetaDataServiceImpl.getBusinessObjectRelationship(BusinessObjectMetaDataServiceImpl.java:267)", "KULRICE-10354 Identity links throws NullPointerException");
+
+        jiraMatches.put("//table[@id='row']/tbody/tr[1]/td[1]/a", "KULRICE-10355 Investigate DocSearchWDIT testBasicDocSearch failure");
         //jiraMatches.put("", "");
     }
 

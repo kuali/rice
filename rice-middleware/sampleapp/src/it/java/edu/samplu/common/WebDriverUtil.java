@@ -15,6 +15,7 @@
  */
 package edu.samplu.common;
 
+import com.thoughtworks.selenium.SeleneseTestBase;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.openqa.selenium.By;
@@ -31,8 +32,6 @@ import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
-
-import com.thoughtworks.selenium.SeleneseTestBase;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -458,11 +457,12 @@ public class WebDriverUtil {
      * @param message String
      * @throws InterruptedException
      */
-    public static void waitFor(WebDriver driver, int waitSeconds, By by, String message) throws InterruptedException {
+    public static WebElement waitFor(WebDriver driver, int waitSeconds, By by, String message) throws InterruptedException {
         driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
         Thread.sleep(1000);
-        driver.findElement(by);  // NOTICE just the find, no action, so by is found, but might not be visible or enabled.
+        WebElement element = driver.findElement(by);  // NOTICE just the find, no action, so by is found, but might not be visible or enabled.
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        return element;
     }
 
     /**

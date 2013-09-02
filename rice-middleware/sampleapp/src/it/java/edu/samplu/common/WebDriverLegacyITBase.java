@@ -1398,12 +1398,13 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         }
     }
 
-    protected void jiraAwareWaitFor(By by, String message) throws InterruptedException {
+    protected WebElement jiraAwareWaitFor(By by, String message) throws InterruptedException {
         try {
-            WebDriverUtil.waitFor(this.driver, this.waitSeconds, by, message);
+            return WebDriverUtil.waitFor(this.driver, this.waitSeconds, by, message);
         } catch (Throwable t) {
             jiraAwareFail(by, message, t);
         }
+        return null; // required, but the jiraAwareFail will will end test before this statement is reached
     }
 
     protected void jiraAwareWaitFors(By by, String message) throws InterruptedException {
@@ -4472,8 +4473,8 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         // noop webdriver doesn't it need it, except when it does...
     }
 
-    protected void waitFor(By by) throws InterruptedException {
-        jiraAwareWaitFor(by, "");
+    protected WebElement waitFor(By by) throws InterruptedException {
+        return jiraAwareWaitFor(by, "");
     }
 
     /**

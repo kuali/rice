@@ -2088,7 +2088,8 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void testIdentityResponsibilityBlanketApprove() throws Exception {
         selectFrameIframePortlet();
-        waitAndCreateNew();        
+        checkForIncidentReport();
+        waitAndCreateNew();
         String docId = waitForDocId();
         String dtsTwo = ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits();
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Responsibility " + dtsTwo);

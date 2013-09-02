@@ -63,6 +63,8 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("Account Maintenance (Edit)", "KULRICE-10216 KRAD Demo Account Maintenance (Edit) Incident Report RiceRuntimeException: Exception trying to invoke action ROUTE");
 
         jiraMatches.put("An exception occurred processing JSP page /kr/WEB-INF/jsp/KualiMaintenanceDocument.jsp", "KULRICE-10235 JasperException: An exception occurred processing JSP page /kr/WEB-INF/jsp/KualiMaintenanceDocument.jsp");
+
+        jiraMatches.put("Responsibility", "KULRICE-10354 Responsibility link throws NullPointerException");
         //jiraMatches.put("", "");
     }
 

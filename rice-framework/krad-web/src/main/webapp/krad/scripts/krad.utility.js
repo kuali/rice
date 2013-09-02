@@ -506,41 +506,46 @@ function clearHiddens() {
  */
 function coerceValue(name) {
     var value = "";
-
     var nameSelect = "[name='" + escapeName(name) + "']";
 
-    // when group is opened in lightbox make sure to get the value from field in the lightbox
-    // if that field is in the lightbox
-    var parent = document;
-    if (jQuery(nameSelect, jQuery(".fancybox-wrap")).length) {
-        parent = jQuery(".fancybox-wrap");
+    var fancyBoxWrapper = jQuery("div.fancybox-wrap");
+    var control;
+    // Attempt to get from fancybox first, if it exists
+    if (fancyBoxWrapper.length) {
+        control = jQuery(nameSelect, fancyBoxWrapper);
     }
 
-    if (jQuery(nameSelect + ":checkbox", parent).length == 1) {
-        value = jQuery(nameSelect + ":checked", parent).val();
+    // If no fancybox or control not in fancybox, get from document
+    if (control == null || control.length == 0) {
+        control = jQuery(nameSelect, document);
     }
-    else if (jQuery(nameSelect + ":checkbox", parent).length > 1) {
+
+    if (control.is(":checkbox") && control.length == 1) {
+        value = control.filter(":checked").val();
+    }
+    else if (control.is(":checkbox") && control.length > 1) {
         value = [];
-        jQuery(nameSelect + ":checked", parent).each(function () {
+        control.filter(":checked").each(function () {
             value.push(jQuery(this).val());
         });
     }
-    else if (jQuery(nameSelect + ":radio", parent).length) {
-        value = jQuery(nameSelect + ":checked", parent).val();
+    else if (control.is(":radio")) {
+        value = control.filter(":checked").val();
     }
-    else if (jQuery(nameSelect, parent).length) {
-        if (jQuery(nameSelect, parent).hasClass("watermark")) {
-            jQuery.watermark.hide(nameSelect, parent);
-            value = jQuery(nameSelect, parent).val();
-            jQuery.watermark.show(nameSelect, parent);
+    else if (control.length) {
+        if (control.hasClass("watermark")) {
+            jQuery.watermark.hide(control, parent);
+            value = control.val();
+            jQuery.watermark.show(control, parent);
         }
         else {
-            value = jQuery(nameSelect, parent).val();
+            value = control.val();
         }
     }
 
     if (value == null) {
         value = "";
+        return value;
     }
 
     // boolean matching

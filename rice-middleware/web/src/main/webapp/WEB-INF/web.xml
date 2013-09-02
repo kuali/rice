@@ -25,6 +25,11 @@
     <param-value>dev</param-value>
   </context-param>
 
+  <context-param>
+    <param-name>defaultHtmlEscape</param-name>
+    <param-value>true</param-value>
+  </context-param>
+
   <!-- Change this if you want to use a different Spring file -->
   <context-param>
     <param-name>web.bootstrap.spring.file</param-name>

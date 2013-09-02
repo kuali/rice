@@ -37,7 +37,32 @@ public class DemoTravelAccountLookUpSmokeTest extends SmokeTestBase {
      * Clear Values
      */
     public static final String CLEAR_VALUES = "Clear Values";
-    
+
+    /**
+     * Travel account number field
+     */
+    public static final String TRAVEL_ACCOUNT_NUMBER_FIELD = "lookupCriteria[number]";
+
+    /**
+     * Travel account name field
+     */
+    public static final String TRAVEL_ACCOUNT_NAME_FIELD = "lookupCriteria[name]";
+
+    /**
+     * Sub account field
+     */
+    public static final String SUB_ACCOUNT_FIELD = "lookupCriteria[subAccount]";
+
+    /**
+     * Sub account name field
+     */
+    public static final String SUB_ACCOUNT_NAME_FIELD = "lookupCriteria[subAccountName]";
+
+    /**
+     * Fiscal officer user id
+     */
+    public static final String FISCCAL_OFFICER_USER_ID = "lookupCriteria[fiscalOfficer.principalName]";
+
     @Override
     public String getBookmarkUrl() {
         return BOOKMARK_URL;
@@ -50,7 +75,7 @@ public class DemoTravelAccountLookUpSmokeTest extends SmokeTestBase {
     }
 
     protected void testTravelAccountLookUp() throws Exception {
-        waitAndTypeByName("lookupCriteria[number]","a1");
+        waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_FIELD,"a1");
         waitAndClickButtonByText(SEARCH);
         waitForElementPresentByXpath("//a[contains(text(), 'a1')]");
         waitAndClickButtonByText(CLEAR_VALUES);
@@ -61,15 +86,50 @@ public class DemoTravelAccountLookUpSmokeTest extends SmokeTestBase {
         assertElementPresentByXpath("//a[contains(text(), 'a2')]");
     }
 
+    protected void testTravelAccountLookUpXss(String fieldName) throws Exception {
+        waitAndTypeByName(fieldName,"\"/><script>alert('!')</script>");
+        waitAndClickButtonByText(SEARCH);
+        Thread.sleep(1000);
+        if(isAlertPresent())    {
+            fail(fieldName + " caused XSS.");
+        }
+        waitAndClickButtonByText(CLEAR_VALUES);
+        Thread.sleep(1000);
+    }
+
+    public boolean isAlertPresent()
+    {
+        try
+        {
+            driver.switchTo().alert();
+            return true;
+        }   // try
+        catch (Exception Ex)
+        {
+            return false;
+        }   // catch
+    }   // isAlertPresent()
+
+
     @Test
     public void testTravelAccountLookUpBookmark() throws Exception {
         testTravelAccountLookUp();
+        testTravelAccountLookUpXss(TRAVEL_ACCOUNT_NUMBER_FIELD);
+        testTravelAccountLookUpXss(TRAVEL_ACCOUNT_NAME_FIELD);
+        testTravelAccountLookUpXss(SUB_ACCOUNT_FIELD);
+        testTravelAccountLookUpXss(SUB_ACCOUNT_NAME_FIELD);
+        testTravelAccountLookUpXss(FISCCAL_OFFICER_USER_ID);
         passed();
     }
 
     @Test
     public void testTravelAccountLookUpNav() throws Exception {
         testTravelAccountLookUp();
+        testTravelAccountLookUpXss(TRAVEL_ACCOUNT_NUMBER_FIELD);
+        testTravelAccountLookUpXss(TRAVEL_ACCOUNT_NAME_FIELD);
+        testTravelAccountLookUpXss(SUB_ACCOUNT_FIELD);
+        testTravelAccountLookUpXss(SUB_ACCOUNT_NAME_FIELD);
+        testTravelAccountLookUpXss(FISCCAL_OFFICER_USER_ID);
         passed();
     }
 }

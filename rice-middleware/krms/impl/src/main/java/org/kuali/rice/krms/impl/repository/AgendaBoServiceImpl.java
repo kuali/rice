@@ -379,7 +379,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 
                     Predicate predicate = in("agendaId", agendaIds.toArray());
                     QueryByCriteria criteria = QueryByCriteria.Builder.fromPredicates(predicate);
-                    GenericQueryResults<AgendaItemBo> batch = criteriaLookupService.lookup(AgendaItemBo.class, criteria);
+                    GenericQueryResults<AgendaItemBo> batch = this.getCriteriaLookupService().lookup(AgendaItemBo.class, criteria);
 
                     boResults.addAll(batch.getResults());
 
@@ -391,7 +391,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
             if (agendaIds.size() > 0) {
                 Predicate predicate = in("agendaId", agendaIds.toArray());
                 QueryByCriteria criteria = QueryByCriteria.Builder.fromPredicates(predicate);
-                GenericQueryResults<AgendaItemBo> batch = criteriaLookupService.lookup(AgendaItemBo.class, criteria);
+                GenericQueryResults<AgendaItemBo> batch = this.getCriteriaLookupService().lookup(AgendaItemBo.class, criteria);
 
                 boResults.addAll(batch.getResults());
             }

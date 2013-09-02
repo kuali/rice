@@ -38,6 +38,62 @@ public class DemoTravelAccountMaintenanceNewSmokeTest extends SmokeTestBase {
      */
     public static final String BOOKMARK_URL = "/kr-krad/maintenance?methodToCall=start&dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount&hideReturnLink=true";
 
+
+    /**
+     * Description field
+     */
+    public static final String DESCRIPTION_FIELD = "document.documentHeader.documentDescription";
+
+    /**
+     * Explanation field
+     */
+    public static final String EXPLANATION_FIELD = "document.documentHeader.explanation";
+
+    /**
+     * Organization document number field
+     */
+    public static final String ORGANIZATION_DOCUMENT_NUMBER_FIELD = "document.documentHeader.organizationDocumentNumber";
+
+    /**
+     * Travel account name field
+     */
+    public static final String TRAVEL_ACCOUNT_NAME_FIELD = "document.newMaintainableObject.dataObject.name";
+
+    /**
+     * Travel account nUMBER field
+     */
+    public static final String TRAVEL_ACCOUNT_NUMBER_FIELD = "document.newMaintainableObject.dataObject.number";
+
+    /**
+     * Travel account type code field
+     */
+    public static final String TRAVEL_ACCOUNT_TYPE_CODE_FIELD = "document.newMaintainableObject.dataObject.extension.accountTypeCode";
+
+    /**
+     * Travel sub account field
+     */
+    public static final String SUB_ACCOUNT_FIELD = "document.newMaintainableObject.dataObject.subAccount";
+
+    /**
+     * Travel sub account name field
+     */
+    public static final String SUB_ACCOUNT_NAME_FIELD = "document.newMaintainableObject.dataObject.subAccountName";
+
+    /**
+     * Subsidized percent
+     */
+    public static final String SUBSIDIZED_PERCENT_FIELD = "document.newMaintainableObject.dataObject.subsidizedPercent";
+
+    /**
+     * Date created.
+     */
+    public static final String DATE_CREATED_FIELD = "document.newMaintainableObject.dataObject.createDate";
+
+    /**
+     * Fiscal officer ID
+     */
+    public static final String FISCAL_OFFICER_ID_FIELD = "document.newMaintainableObject.dataObject.foId";
+
     @Override
     public String getBookmarkUrl() {
         return BOOKMARK_URL;
@@ -56,14 +112,48 @@ public class DemoTravelAccountMaintenanceNewSmokeTest extends SmokeTestBase {
         assertTextPresent("Travel Account Maintenance");
     }
 
+    protected void testTravelAccountMaintenanceEditXss() throws Exception {
+        waitAndTypeByName(DESCRIPTION_FIELD,"\"/><script>alert('!')</script>");
+        waitAndTypeByName(EXPLANATION_FIELD,"\"/><script>alert('!')</script>");
+        waitAndTypeByName(ORGANIZATION_DOCUMENT_NUMBER_FIELD,"\"/><script>alert('!')</script>");
+        waitAndTypeByName(TRAVEL_ACCOUNT_NAME_FIELD,"blah");
+        waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_FIELD,"blah");
+        waitAndTypeByName(TRAVEL_ACCOUNT_TYPE_CODE_FIELD,"CAT");
+        waitAndTypeByName(SUB_ACCOUNT_FIELD,"a1");
+        waitAndTypeByName(SUB_ACCOUNT_NAME_FIELD,"\"/><script>alert('!')</script>");
+        waitAndTypeByName(SUBSIDIZED_PERCENT_FIELD,"\"/><script>alert('!')</script>");
+        waitAndTypeByName(DATE_CREATED_FIELD,"\"/><script>alert('!')</script>");
+        waitAndTypeByName(FISCAL_OFFICER_ID_FIELD,"\"/><script>alert('!')</script>");
+        waitAndClickButtonByText("Save");
+        Thread.sleep(1000);
+        if(isAlertPresent())    {
+            fail("XSS vulnerability identified.");
+        }
+    }
+
+    public boolean isAlertPresent()
+    {
+        try
+        {
+            driver.switchTo().alert();
+            return true;
+        }   // try
+        catch (Exception Ex)
+        {
+            return false;
+        }   // catch
+    }
+
     @Test
     public void testDemoTravelAccountMaintenanceNewBookmark() throws Exception {
+        testTravelAccountMaintenanceEditXss();
         testTravelAccountMaintenanceNew();
         passed();
     }
 
     @Test
     public void testDemoTravelAccountMaintenanceNewNav() throws Exception {
+        testTravelAccountMaintenanceEditXss();
         testTravelAccountMaintenanceNew();
         passed();
     }

@@ -37,6 +37,16 @@ public class DemoTravelAccountTypeLookUpSmokeTest extends SmokeTestBase {
      * Clear Values
      */
     public static final String CLEAR_VALUES = "Clear Values";
+
+    /**
+     * Account type code field
+     */
+    public static final String TRAVEL_ACCOUNT_TYPE_CODE_FIELD = "lookupCriteria[accountTypeCode]";
+
+    /**
+     * Account type name field
+     */
+    public static final String TRAVEL_ACCOUNT_TYPE_NAME_FIELD = "lookupCriteria[name]";
     
     @Override
     public String getBookmarkUrl() {
@@ -50,7 +60,7 @@ public class DemoTravelAccountTypeLookUpSmokeTest extends SmokeTestBase {
     }
 
     protected void testTravelAccountTypeLookUp() throws Exception {
-        waitAndTypeByName("lookupCriteria[accountTypeCode]","CAT");
+        waitAndTypeByName(TRAVEL_ACCOUNT_TYPE_CODE_FIELD,"CAT");
         waitAndClickButtonByText(SEARCH);
         assertElementPresentByXpath("//span[contains(text(),'CAT')]");
         waitAndClickButtonByText(CLEAR_VALUES);
@@ -65,15 +75,44 @@ public class DemoTravelAccountTypeLookUpSmokeTest extends SmokeTestBase {
         waitForElementsPresentByXpath("//span[contains(text(),'Clearing Account Type')]");
     }
 
+    @Test
+    protected void testTravelAccountTypeLookUpXss(String fieldName) throws Exception {
+        waitAndTypeByName(fieldName,"\"/><script>alert('!')</script>");
+        waitAndClickButtonByText(SEARCH);
+        Thread.sleep(1000);
+        if(isAlertPresent())    {
+            fail(fieldName + " caused XSS.");
+        }
+        waitAndClickButtonByText(CLEAR_VALUES);
+        Thread.sleep(1000);
+    }
+
+    public boolean isAlertPresent()
+    {
+        try
+        {
+            driver.switchTo().alert();
+            return true;
+        }   // try
+        catch (Exception Ex)
+        {
+            return false;
+        }   // catch
+    }   // isAlertPresent()
+
 //    @Test
     public void testTravelAccountTypeLookUpNav() throws Exception {
         testTravelAccountTypeLookUp();
+        testTravelAccountTypeLookUpXss(TRAVEL_ACCOUNT_TYPE_CODE_FIELD);
+        testTravelAccountTypeLookUpXss(TRAVEL_ACCOUNT_TYPE_NAME_FIELD);
         passed();
     }
 
     @Test
     public void testTravelAccountTypeLookUpBookmark() throws Exception {
         testTravelAccountTypeLookUp();
+        testTravelAccountTypeLookUpXss(TRAVEL_ACCOUNT_TYPE_CODE_FIELD);
+        testTravelAccountTypeLookUpXss(TRAVEL_ACCOUNT_TYPE_NAME_FIELD);
         passed();
     }
 }

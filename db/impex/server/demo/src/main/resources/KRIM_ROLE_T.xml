@@ -84,7 +84,7 @@
         ROLE_NM="GuestRole" VER_NBR="1"/>
     <KRIM_ROLE_T ACTV_IND="Y"
         DESC_TXT="This role derives its members from users with an complete action request in the route log of a given document."
-        KIM_TYP_ID="42" LAST_UPDT_DT="20130823061722"
+        KIM_TYP_ID="42" LAST_UPDT_DT="20130824061727"
         NMSPC_CD="KR-WKFLW" OBJ_ID="D0C2892F47ED9142E0406E0AC31D23D6"
         ROLE_ID="KR1001" ROLE_NM="Complete Request Recipient" VER_NBR="1"/>
     <KRIM_ROLE_T ACTV_IND="Y" DESC_TXT="Test role for the sample app"

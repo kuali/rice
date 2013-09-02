@@ -106,9 +106,11 @@ public final class PropositionBoServiceImpl implements PropositionBoService {
         if (org.apache.commons.lang.StringUtils.isBlank(typeId)) {
             throw new IllegalArgumentException("typeId is null or blank");
         }
+
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("typeId", typeId);
-        Set<PropositionBo> bos = (Set<PropositionBo>) businessObjectService.findMatching(PropositionBo.class, map);
+        Collection<PropositionBo> bos = (Collection<PropositionBo>) businessObjectService.findMatching(PropositionBo.class, map);
+
         return convertBosToImmutables(bos);
     }
 
@@ -117,9 +119,11 @@ public final class PropositionBoServiceImpl implements PropositionBoService {
         if (org.apache.commons.lang.StringUtils.isBlank(ruleId)) {
             throw new IllegalArgumentException("ruleId is null or blank");
         }
+
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("ruleId", ruleId);
-        Set<PropositionBo> bos = (Set<PropositionBo>) businessObjectService.findMatching(PropositionBo.class, map);
+        Collection<PropositionBo> bos = (Collection<PropositionBo>) businessObjectService.findMatching(PropositionBo.class, map);
+
         return convertBosToImmutables(bos);
     }
 
@@ -193,6 +197,12 @@ public final class PropositionBoServiceImpl implements PropositionBoService {
         if (propId == null){ throw new IllegalArgumentException("propId is null"); }
         final PropositionDefinition existing = getPropositionById(propId);
         if (existing == null){ throw new IllegalStateException("the Proposition to delete does not exists: " + propId);}
+
+        List<PropositionParameter> propositionParameters = existing.getParameters();
+        for( PropositionParameter prop : propositionParameters) {
+            businessObjectService.delete(PropositionParameterBo.from(prop));
+        }
+
         businessObjectService.delete(from(existing));
     }
     

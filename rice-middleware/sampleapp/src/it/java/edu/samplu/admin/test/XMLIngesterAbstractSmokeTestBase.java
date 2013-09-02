@@ -170,7 +170,7 @@ public abstract class XMLIngesterAbstractSmokeTestBase extends FreemarkerSTBase 
             fileUploadList.add(
                     writeTemplateToFile(newTempFile("loadtest-group.xml"), cfg.getTemplate(TMPL_GROUP_CONTENT), props));
         } catch( Exception e) {
-            throw new Exception("Unable to generate files for upload", e);
+            throw new Exception("Unable to generate files for upload " + e.getMessage(), e);
         }
 
         return fileUploadList;

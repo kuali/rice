@@ -141,11 +141,11 @@ public class DocSearchWDIT extends WebDriverLegacyITBase {
         assertElementPresentByXpath("//table[@id='row']/tbody/tr[1]/td[contains(a,'admin')]");
         //Thread.sleep(2000);
         waitAndClickByXpath("//input[@name='methodToCall.clearValues' and @alt='clear']");
-        //assertEquals("", driver.findElement(By.xpath("//input[@name='documentTypeName']")).getAttribute("value"));
+        //assertEquals("", driver.findElement(By.xpath("//input[@name='documentTypeName']")).waitAndGetAttribute("value"));
         assertEquals("", driver.findElement(By.xpath("//input[@name='initiatorPrincipalName']")).getAttribute("value"));
-        //assertEquals("", driver.findElement(By.xpath("//input[@name='documentId']")).getAttribute("value"));
-        //assertEquals("", driver.findElement(By.xpath("//input[@name='rangeLowerBoundKeyPrefix_dateCreated']")).getAttribute("value"));
-        //assertEquals("", driver.findElement(By.xpath("//input[@name='dateCreated']")).getAttribute("value"));
+        //assertEquals("", driver.findElement(By.xpath("//input[@name='documentId']")).waitAndGetAttribute("value"));
+        //assertEquals("", driver.findElement(By.xpath("//input[@name='rangeLowerBoundKeyPrefix_dateCreated']")).waitAndGetAttribute("value"));
+        //assertEquals("", driver.findElement(By.xpath("//input[@name='dateCreated']")).waitAndGetAttribute("value"));
         waitAndClickByXpath("//a[@title='cancel']");
         waitForPageToLoad();
         passed();

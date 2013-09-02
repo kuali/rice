@@ -85,14 +85,14 @@ public abstract class DirtyFieldsAbstractSmokeTestBase extends WebDriverLegacyIT
 
         // //Asserting text-field style to uppercase. This style would display
         // input text in uppercase.
-        SeleneseTestBase.assertEquals("text-transform: uppercase;",getAttributeByName("field112", "style"));
+        SeleneseTestBase.assertEquals("text-transform: uppercase;", waitAndGetAttributeByName("field112", "style"));
         assertCancelConfirmation();
         waitForElementPresentByName("field101");
-        SeleneseTestBase.assertEquals("val", getAttributeByName("field101", "value"));
+        SeleneseTestBase.assertEquals("val", waitAndGetAttributeByName("field101", "value"));
         clearTextByName("field101");
         waitAndTypeByName("field101", "1");
         waitAndTypeByName("field104", "");
-        SeleneseTestBase.assertEquals("1", getAttributeByName("field101","value"));
+        SeleneseTestBase.assertEquals("1", waitAndGetAttributeByName("field101", "value"));
         waitAndTypeByName("field104", "2");
 
         // 'Progressive Disclosure' navigation link

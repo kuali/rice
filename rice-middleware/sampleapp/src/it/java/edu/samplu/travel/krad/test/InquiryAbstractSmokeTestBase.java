@@ -119,7 +119,7 @@ public abstract class InquiryAbstractSmokeTestBase extends WebDriverLegacyITBase
         WebElement iframe2 = driver.findElement(By.xpath(FANCYBOX_IFRAME_XPATH));
         driver.switchTo().frame(iframe2);
         Assert.assertEquals("Fiscal Officer Lookup", getTextByXpath("//h1/span").trim());
-        Assert.assertEquals("1", getAttributeByName(CRITERIA_NAME+"[id]", "value"));
+        Assert.assertEquals("1", waitAndGetAttributeByName(CRITERIA_NAME + "[id]", "value"));
         waitAndClickByXpath(SEARCH_BUTTON_XPATH);
         selectFrameIframePortlet();
         selectOptionByName(CRITERIA_NAME+"[extension.accountTypeCode]", "CAT");
@@ -129,7 +129,7 @@ public abstract class InquiryAbstractSmokeTestBase extends WebDriverLegacyITBase
         WebElement iframe3 = driver.findElement(By.xpath(FANCYBOX_IFRAME_XPATH));
         driver.switchTo().frame(iframe3);
         Assert.assertEquals("Travel Account Type Lookup", getTextByXpath("//h1/span").trim());
-        Assert.assertEquals("CAT", getAttributeByName(CRITERIA_NAME+"[accountTypeCode]", "value"));
+        Assert.assertEquals("CAT", waitAndGetAttributeByName(CRITERIA_NAME + "[accountTypeCode]", "value"));
         waitAndClickByXpath(SEARCH_BUTTON_XPATH);
         selectFrameIframePortlet();
     }

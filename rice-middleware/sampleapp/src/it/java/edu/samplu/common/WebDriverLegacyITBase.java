@@ -570,16 +570,16 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void assertAttributeClassRegexDoesntMatch(String field, String regex) throws InterruptedException {
         Thread.sleep(1000);
-        String attribute = getAttributeByName(field, "class");
-        SeleneseTestBase.assertTrue("getAttributeByName(" + field + ", \"class\") should not be null", attribute != null);
+        String attribute = waitAndGetAttributeByName(field, "class");
+        SeleneseTestBase.assertTrue("waitAndGetAttributeByName(" + field + ", \"class\") should not be null", attribute != null);
         SeleneseTestBase.assertFalse("attribute " + attribute + " matches regex " + regex + " and it should not",
                 attribute.matches(regex));
     }
 
     protected void assertAttributeClassRegexMatches(String field, String regex) throws InterruptedException {
         Thread.sleep(1000);
-        String attribute = getAttributeByName(field, "class");
-        SeleneseTestBase.assertTrue("getAttributeByName(" + field + ", \"class\") should not be null", attribute != null);
+        String attribute = waitAndGetAttributeByName(field, "class");
+        SeleneseTestBase.assertTrue("waitAndGetAttributeByName(" + field + ", \"class\") should not be null", attribute != null);
         SeleneseTestBase.assertTrue("attribute " + attribute + " doesn't match regex " + regex, attribute.matches(
                 regex));
     }
@@ -990,14 +990,14 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 //            if (second >= waitSeconds)
 //                failableFail(TIMEOUT_MESSAGE);
 //            try {
-//                if (!"selenium".equals(getAttributeByName("list4[0].subList[0].field1", "value")))
+//                if (!"selenium".equals(waitAndGetAttributeByName("list4[0].subList[0].field1", "value")))
 //                    break;
 //            } catch (Exception e) {}
 //            Thread.sleep(1000);
 //        }
 //
 //        // verify that the value has changed for the input box in the line that has replaced the deleted one
-//        assertNotSame("selenium", getAttributeByName("list4[0].subList[0].field1", "value"));
+//        assertNotSame("selenium", waitAndGetAttributeByName("list4[0].subList[0].field1", "value"));
 //    }
 
     protected void expandColapseByXpath(String clickLocator, String visibleLocator) throws InterruptedException {
@@ -1016,8 +1016,8 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         return (String[]) driver.getWindowHandles().toArray();
     }
 
-    protected String getAttribute(By by, String attribute) throws InterruptedException {
-        jiraAwareWaitFor(by, "");
+    protected String waitAndGetAttribute(By by, String attribute) throws InterruptedException {
+        jiraAwareWaitFor(by, attribute);
         
         return driver.findElement(by).getAttribute(attribute);
     }
@@ -1028,8 +1028,8 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * @param name name of an element
      * @param attribute the name of an attribute whose value is to be retrieved
      */
-    protected String getAttributeByName(String name, String attribute) throws InterruptedException {
-        return getAttribute(By.name(name), attribute);
+    protected String waitAndGetAttributeByName(String name, String attribute) throws InterruptedException {
+        return waitAndGetAttribute(By.name(name), attribute);
     }
 
     /**
@@ -1038,8 +1038,8 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * @param locator locating mechanism of an element
      * @param attribute the name of an attribute whose value is to be retrieved
      */
-    protected String getAttributeByXpath(String locator, String attribute) throws InterruptedException {
-        return getAttribute(By.xpath(locator), attribute);
+    protected String waitAndGetAttributeByXpath(String locator, String attribute) throws InterruptedException {
+        return waitAndGetAttribute(By.xpath(locator), attribute);
     }
 
     protected String getBaseUrlString() {
@@ -2672,7 +2672,8 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitForElementPresentByXpath("//span[@id='" + idPrefix + "TextInputField_label_span']");
         
         // testing for https://groups.google.com/a/kuali.org/group/rice.usergroup.krad/browse_thread/thread/1e501d07c1141aad#
-        String styleValue = getAttributeByXpath("//span[@id='" + idPrefix + "TextInputField_label_span']", "style");
+        String styleValue = waitAndGetAttributeByXpath("//span[@id='" + idPrefix + "TextInputField_label_span']",
+                "style");
         
         // log.info("styleValue is " + styleValue);
         SeleneseTestBase.assertTrue(idPrefix + "textInputField label does not contain expected style", styleValue.replace(" ", "").contains("color:red"));
@@ -2695,7 +2696,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         //confirm that control gets disabled
         selectByXpath(dropDownSelectLocator, "None");
         Thread.sleep(3000);
-        SeleneseTestBase.assertEquals("true", getAttributeByXpath(refreshTextSelectLocator, "disabled"));
+        SeleneseTestBase.assertEquals("true", waitAndGetAttributeByXpath(refreshTextSelectLocator, "disabled"));
     }
 
     /**
@@ -2718,7 +2719,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndTypeByXpath(startTimeId, inputTime);
         String amPmSelectLocator = "//*[@id='" + idPrefix + "StartTimeAmPm" + addLineIdSuffix + "']";
         selectByXpath(amPmSelectLocator, "PM");
-        SeleneseTestBase.assertEquals("PM", getAttributeByXpath(amPmSelectLocator, "value"));
+        SeleneseTestBase.assertEquals("PM", waitAndGetAttributeByXpath(amPmSelectLocator, "value"));
         Thread.sleep(5000); //allow for ajax refresh        
         waitAndClickByXpath("//button");
         Thread.sleep(5000); //allow for line to be added
@@ -3615,9 +3616,9 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].foId", "2");
         waitAndClickByXpath("//button[@data-loadingmessage='Adding Line...']");
         waitForElementPresentByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number");
-        SeleneseTestBase.assertEquals("1234567890", getAttributeByName(
+        SeleneseTestBase.assertEquals("1234567890", waitAndGetAttributeByName(
                 "document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number", "value"));
-        SeleneseTestBase.assertEquals("2", getAttributeByName(
+        SeleneseTestBase.assertEquals("2", waitAndGetAttributeByName(
                 "document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].foId", "value"));
         waitAndClickByXpath("//button[@data-loadingmessage='Deleting Line...']");
         Thread.sleep(3000);

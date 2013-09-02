@@ -70,8 +70,7 @@ public abstract class ClientErrorsAbstractSmokeTestBase extends WebDriverLegacyI
         fireEvent("field1", "blur");
         Thread.sleep(3000);
         fireMouseOverEventByName("field1");
-        Thread.sleep(500);
-        SeleneseTestBase.assertEquals("true", getAttributeByName("field1", "aria-invalid"));
+        SeleneseTestBase.assertEquals("true", waitAndGetAttributeByName("field1", "aria-invalid"));
         assertAttributeClassRegexMatches("field1", REGEX_ERROR);
         SeleneseTestBase.assertTrue(isTextPresent("Required"));
 
@@ -124,8 +123,8 @@ public abstract class ClientErrorsAbstractSmokeTestBase extends WebDriverLegacyI
         fireEvent("field2", "blur");
         fireMouseOverEventByName("field2");
         Thread.sleep(500);
-        //        SeleneseTestBase.assertEquals("true", getAttributeByName("field2", "aria-invalid"));
-        SeleneseTestBase.assertEquals("true", getAttributeByName("field2", "aria-required"));
+        //        SeleneseTestBase.assertEquals("true", waitAndGetAttributeByName("field2", "aria-invalid"));
+        SeleneseTestBase.assertEquals("true", waitAndGetAttributeByName("field2", "aria-required"));
         assertAttributeClassRegexMatches("field2", REGEX_ERROR);
         SeleneseTestBase.assertTrue(isTextPresent("Required"));
 
@@ -141,7 +140,7 @@ public abstract class ClientErrorsAbstractSmokeTestBase extends WebDriverLegacyI
         fireEvent("field3", "blur");
         fireMouseOverEventByName("field3");
         Thread.sleep(500);
-        SeleneseTestBase.assertEquals("true", getAttributeByName("field3", "aria-invalid"));
+        SeleneseTestBase.assertEquals("true", waitAndGetAttributeByName("field3", "aria-invalid"));
         assertAttributeClassRegexMatches("field3", REGEX_ERROR);
         SeleneseTestBase.assertTrue(isTextPresent("Required"));
 
@@ -158,7 +157,7 @@ public abstract class ClientErrorsAbstractSmokeTestBase extends WebDriverLegacyI
         driver.findElement(By.name("field114")).findElements(By.tagName("option")).get(0).click();
         fireEvent("field114", "blur");
         Thread.sleep(500);
-        SeleneseTestBase.assertEquals("true", getAttributeByName("field114", "aria-invalid"));
+        SeleneseTestBase.assertEquals("true", waitAndGetAttributeByName("field114", "aria-invalid"));
         assertAttributeClassRegexMatches("field114", REGEX_ERROR);
         SeleneseTestBase.assertTrue(isTextPresent("Required"));
 
@@ -189,9 +188,9 @@ public abstract class ClientErrorsAbstractSmokeTestBase extends WebDriverLegacyI
             Thread.sleep(1000);
         }
 
-        SeleneseTestBase.assertEquals("true", getAttributeByXpath("//*[@name='field117' and @value='1']",
+        SeleneseTestBase.assertEquals("true", waitAndGetAttributeByXpath("//*[@name='field117' and @value='1']",
                 "aria-invalid"));
-        SeleneseTestBase.assertTrue(getAttributeByXpath("//*[@name='field117' and @value='1']", "class").matches(
+        SeleneseTestBase.assertTrue(waitAndGetAttributeByXpath("//*[@name='field117' and @value='1']", "class").matches(
                 REGEX_ERROR));
         SeleneseTestBase.assertTrue(isTextPresent("Required"));
 
@@ -214,7 +213,7 @@ public abstract class ClientErrorsAbstractSmokeTestBase extends WebDriverLegacyI
         }
 
         SeleneseTestBase.assertFalse(isElementPresentByXpath("//*[@name='field117' and @value='3' and @aria-invalid]"));
-        SeleneseTestBase.assertTrue(getAttributeByXpath("//*[@name='field117' and @value='3']", "class").matches(REGEX_VALID));
+        SeleneseTestBase.assertTrue(waitAndGetAttributeByXpath("//*[@name='field117' and @value='3']", "class").matches(REGEX_VALID));
         SeleneseTestBase.assertFalse(isElementPresentByXpath("//input[@name='field117']/../../../img[@alt='Error']"));
 
         fireEvent("bField1", "focus");
@@ -222,7 +221,7 @@ public abstract class ClientErrorsAbstractSmokeTestBase extends WebDriverLegacyI
         fireEvent("bField1", "blur");
         fireMouseOverEventByName("bField1");
         Thread.sleep(500);
-        SeleneseTestBase.assertEquals("true", getAttributeByName("bField1", "aria-invalid"));
+        SeleneseTestBase.assertEquals("true", waitAndGetAttributeByName("bField1", "aria-invalid"));
         assertAttributeClassRegexMatches("bField1", REGEX_ERROR);
         SeleneseTestBase.assertTrue(isTextPresent("Required"));
 
@@ -254,8 +253,9 @@ public abstract class ClientErrorsAbstractSmokeTestBase extends WebDriverLegacyI
             Thread.sleep(1000);
         }
 
-        SeleneseTestBase.assertEquals("true", getAttributeByXpath("//*[@name='field115' and @value='1']", "aria-invalid"));
-        SeleneseTestBase.assertTrue(getAttributeByXpath("//*[@name='field115' and @value='1']", "class").matches(REGEX_ERROR));
+        SeleneseTestBase.assertEquals("true", waitAndGetAttributeByXpath("//*[@name='field115' and @value='1']",
+                "aria-invalid"));
+        SeleneseTestBase.assertTrue(waitAndGetAttributeByXpath("//*[@name='field115' and @value='1']", "class").matches(REGEX_ERROR));
         SeleneseTestBase.assertTrue(isTextPresent("Required"));
 
         fireEvent("field115", "3", "focus");

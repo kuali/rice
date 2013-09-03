@@ -1373,7 +1373,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         JiraAwareFailureUtil.failOnMatchedJira(by.toString(), message, this);
         // if there isn't a matched jira to fail on, then fail
         checkForIncidentReport(by.toString(), message);
-        failableFail(t.getMessage() + " " + by.toString() + " " + message + " " + driver.getCurrentUrl());
+        failableFail(t.getMessage() + "\n" + by.toString() + " " + message + " " + driver.getCurrentUrl());
     }
 
     private void jiraAwareFail(String message) {
@@ -1609,7 +1609,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         Thread.sleep(3000);
         waitForPageToLoad();
         driver.findElement(By.tagName("body")).getText().contains("Actions"); // there are no actions, but the header is the only unique text from searching
-        waitAndClickByLinkText("1000");
+        waitAndClickByLinkText("1000", "https://jira.kuali.org/browse/KULRICE-10357 Attribute Lookup results no longer clickable");
         waitForPageToLoad();
         driver.findElement(By.tagName("body")).getText().contains("Attribute Inquiry");
         driver.findElement(By.tagName("body")).getText().contains("KRMS Attributes");

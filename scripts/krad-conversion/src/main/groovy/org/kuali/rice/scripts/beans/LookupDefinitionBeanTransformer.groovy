@@ -27,6 +27,9 @@ import org.apache.commons.lang.ClassUtils
 @Log
 class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
 
+    String lookupDefinitionBeanType = "LookupDefinition";
+    String lookupViewBeanType = "Uif-LookupView";
+
     /**
      * Produces Uif-LookupView based on information in LookupDefinition
      *
@@ -42,23 +45,16 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
 
         def objClassName = getObjectClassName(lookupDefParentBeanNode);
         def objName = ClassUtils.getShortClassName(objClassName);
-        def originalBeanType = "LookupDefinition";
-        def transformBeanType = "Uif-LookupView";
-        def translatedBeanId = getTranslatedBeanId(beanNode.@id, originalBeanType, transformBeanType);
-        def translatedParentId = getTranslatedBeanId(beanNode.@parent, originalBeanType, transformBeanType);
+        def translatedBeanId = getTranslatedBeanId(beanNode.@id, lookupDefinitionBeanType, lookupViewBeanType);
+        def translatedParentId = getTranslatedBeanId(beanNode.@parent, lookupDefinitionBeanType, lookupViewBeanType);
+
+        // these attributes are being converted and should not be copied when carryoverAttributes is enabled
+        List ignoreAttributes = [];
+
+        // these properties are being converted and should not be copied when carryoverProperties is enabled
         List ignoreOnCopyProperties = ["menubar", "defaultSort", "numOfColumns", "extraButtonSource", "extraButtonParams", "disableSearchButtons", "lookupFields", "resultFields"]
 
-        def baseAttributes = [id: translatedBeanId, parent: translatedParentId];
-        def beanAttributes = [:];
-        def ignoreAttributes = [];
-        if (carryoverAttributes) {
-            beanAttributes = beanNode.attributes();
-            if (ignoreAttributes.size() > 0) {
-                beanAttributes.keySet().removeAll(ignoreAttributes)
-            };
-        }
-        beanAttributes += baseAttributes;
-
+        def beanAttributes = somethingBeanAttributes(beanNode, lookupDefinitionBeanType, lookupViewBeanType, ignoreAttributes);
 
         if (carryoverProperties) {
             copiedProperties = beanNode.property.collect { it.@name };

@@ -433,6 +433,28 @@ class SpringBeanTransformer {
         return false;
     }
 
+    def Map somethingBeanAttributes(Node beanNode, String originalBeanType, String transformBeanType, List ignoreAttributes) {
+        def translatedBeanId = getTranslatedBeanId(beanNode.@id, originalBeanType, transformBeanType);
+        def translatedParentBeanId = getTranslatedBeanId(beanNode.@parent, originalBeanType, transformBeanType);
+
+        def beanAttributesCarriedOver = [:]
+        if (carryoverAttributes) {
+            beanAttributesCarriedOver = beanNode.attributes();
+            if (ignoreAttributes.size() > 0) {
+                beanAttributesCarriedOver.keySet().removeAll(ignoreAttributes)
+            };
+        } else {
+            // always carry over the abstract attribute
+            if (beanNode.attribute("abstract") != null) {
+                beanAttributesCarriedOver = [abstract: beanNode.attribute("abstract")];
+            }
+        }
+
+        return [id: translatedBeanId] + beanAttributesCarriedOver + [parent: translatedParentBeanId];
+    }
+
+    def Map somethingBeanProperties
+
     /**
      * replaces namespace properties (p:name) with a property tag
      * Allows transformation scripts to handle property tags properly

@@ -16,7 +16,6 @@
 package org.kuali.rice.scripts.beans
 
 import groovy.util.logging.Log
-import org.apache.commons.lang.ClassUtils
 
 /**
  * This class converts inquiry definitions into inquiry views
@@ -28,6 +27,7 @@ class InquiryDefinitionBeanTransformer extends SpringBeanTransformer {
 
     String inquiryDefinitionBeanType = "InquiryDefinition";
     String inquiryViewBeanType = "Uif-InquiryView";
+
     /**
      * @param beanNode
      */
@@ -39,18 +39,14 @@ class InquiryDefinitionBeanTransformer extends SpringBeanTransformer {
 
         def translatedBeanId = getTranslatedBeanId(beanNode.@id, inquiryDefinitionBeanType, inquiryViewBeanType);
         def translatedParentId = getTranslatedBeanId(beanNode.@parent, inquiryDefinitionBeanType, inquiryViewBeanType);
+
+        // these attributes are being converted and should not be copied when carryoverAttributes is enabled
+        List ignoreAttributes = [];
+
+        // these properties are being converted and should not be copied when carryoverProperties is enabled
         List ignoreOnCopyProperties = ["inquirySections"];
 
-        def baseAttributes = [id: translatedBeanId, parent: translatedParentId];
-        def beanAttributes = [:];
-        def ignoreAttributes = [];
-        if (carryoverAttributes) {
-            beanAttributes = beanNode.attributes();
-            if (ignoreAttributes.size() > 0) {
-                beanAttributes.keySet().removeAll(ignoreAttributes)
-            };
-        }
-        beanAttributes += baseAttributes;
+        def beanAttributes = somethingBeanAttributes(beanNode, inquiryDefinitionBeanType, inquiryViewBeanType, ignoreAttributes);
 
         List copiedProperties;
         if (carryoverProperties) {

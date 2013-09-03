@@ -89,18 +89,18 @@ public class ReferenceLinker {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Obtained relationships for linking: " + objectReferences);
 		}
-		DataObjectWrapper<?> wrap = getDataObjectService().wrap(persistableObject);
+		DataObjectWrapper<?> parentWrap = getDataObjectService().wrap(persistableObject);
         for (DataObjectRelationship referenceDescriptor : objectReferences) {
             // get the actual reference object
             String fieldName = referenceDescriptor.getName();
-            Object referenceObject = wrap.getPropertyValue(fieldName);
+			Object childObject = parentWrap.getPropertyValue(fieldName);
 			boolean updatableRelationship = referenceDescriptor.isSavedWithParent();
-			if (referenceObject == null) {
+			if (childObject == null) {
 				if (LOG.isDebugEnabled()) {
 					LOG.debug("Referenced object for field " + fieldName + " is null, skipping");
 				}
 				continue;
-			} else if (referenceSet.contains(referenceObject)) {
+			} else if (referenceSet.contains(childObject)) {
 				if (LOG.isDebugEnabled()) {
 					LOG.debug("We've previously linked the object assigned to " + fieldName + ", skipping");
 				}
@@ -108,7 +108,7 @@ public class ReferenceLinker {
             }
 
             // recursively link object
-            linkObjectsWithCircularReferenceCheck(referenceObject, referenceSet);
+			linkObjectsWithCircularReferenceCheck(childObject, referenceSet);
 
             // iterate through the keys for the reference object and set
             // value
@@ -132,73 +132,81 @@ public class ReferenceLinker {
 			// (Since we can't effectively tell which one is the master.)
 
 			// Go through all the attribute relationships to copy the key fields as appropriate
-			DataObjectWrapper<?> referenceWrap = getDataObjectService().wrap(referenceObject);
+			DataObjectWrapper<?> childWrap = getDataObjectService().wrap(childObject);
 			if (updatableRelationship) {
-				DataObjectMetadata referenceMetadata = getMetadataRepository().getMetadata(referenceDescriptor.getRelatedType());
-				List<String> childPkAttributes = referenceMetadata.getPrimaryKeyAttributeNames();
-				List<String> parentPkAttributes = metadata.getPrimaryKeyAttributeNames();
-				for (DataObjectAttributeRelationship attrRel : refAttrs) {
-					Object parentPropertyValue = wrap.getPropertyValue(attrRel.getParentAttributeName());
-					Object childPropertyValue = referenceWrap.getPropertyValueNullSafe(attrRel.getChildAttributeName());
-
-					// if fk is set in main object, take value from there
-					if (parentPropertyValue != null && StringUtils.isNotBlank(parentPropertyValue.toString())) {
-						// if the child's value is a PK field then we don't want to set it
-						// *unless* it's null, which we assume is an invalid situation
-						// and indicates that it has not been set yet
-						if (childPkAttributes.contains(attrRel.getChildAttributeName()) && childPropertyValue != null
-								&& StringUtils.isNotBlank(childPropertyValue.toString())) {
-							if (LOG.isDebugEnabled()) {
-								LOG.debug("Relationship is to PK value on child object - it may not be changed.  Skipping: "
-										+ referenceDescriptor.getClass().getName()
-										+ "."
-										+ referenceDescriptor.getName() + "." + attrRel.getChildAttributeName());
-							}
-							continue;
-						}
-						if (LOG.isDebugEnabled()) {
-							LOG.debug("Parent Object has FK value set (" + attrRel.getParentAttributeName() + "="
-									+ parentPropertyValue + "): using that");
-						}
-						referenceWrap.setPropertyValue(attrRel.getChildAttributeName(), parentPropertyValue);
-					} else {
-						// The FK field on the parent is blank,
-						// but the child has key values - so set the parent so they link properly
-						if (childPropertyValue != null && StringUtils.isNotBlank(childPropertyValue.toString())) {
-							if (parentPkAttributes.contains(attrRel.getParentAttributeName())) {
-								if (LOG.isDebugEnabled()) {
-									LOG.debug("Relationship is to PK value on parent object - it may not be changed.  Skipping: "
-											+ metadata.getType().getName() + "." + attrRel.getParentAttributeName());
-								}
-								continue;
-							}
-							if (LOG.isDebugEnabled()) {
-								LOG.debug("Child Object has FK value set (" + attrRel.getChildAttributeName() + "="
-										+ childPropertyValue + "): using that");
-							}
-							wrap.setPropertyValue(attrRel.getParentAttributeName(), childPropertyValue);
-						}
-					}
-				}
+				linkUpdatableRelationship(parentWrap, childWrap, refAttrs);
 			} else { // non-updatable (reference-only) relationship
-				for (DataObjectAttributeRelationship attrRel : refAttrs) {
-					Object parentPropertyValue = wrap.getPropertyValueNullSafe(attrRel.getParentAttributeName());
-					if (parentPropertyValue != null && StringUtils.isNotBlank(parentPropertyValue.toString())) {
-						// Skip this property, it has already been set on the parent object
-						continue;
+				linkNonUpdatableRelationship(parentWrap, childWrap, refAttrs);
+			}
+		}
+	}
+
+	protected void linkUpdatableRelationship(DataObjectWrapper<?> parentWrap, DataObjectWrapper<?> childWrap,
+			List<DataObjectAttributeRelationship> refAttrs) {
+		DataObjectMetadata referenceMetadata = childWrap.getMetadata();
+		List<String> childPkAttributes = referenceMetadata.getPrimaryKeyAttributeNames();
+		List<String> parentPkAttributes = parentWrap.getMetadata().getPrimaryKeyAttributeNames();
+		for (DataObjectAttributeRelationship attrRel : refAttrs) {
+			Object parentPropertyValue = parentWrap.getPropertyValue(attrRel.getParentAttributeName());
+			Object childPropertyValue = childWrap.getPropertyValueNullSafe(attrRel.getChildAttributeName());
+
+			// if fk is set in main object, take value from there
+			if (parentPropertyValue != null && StringUtils.isNotBlank(parentPropertyValue.toString())) {
+				// if the child's value is a PK field then we don't want to set it
+				// *unless* it's null, which we assume is an invalid situation
+				// and indicates that it has not been set yet
+				if (childPkAttributes.contains(attrRel.getChildAttributeName()) && childPropertyValue != null
+						&& StringUtils.isNotBlank(childPropertyValue.toString())) {
+					if (LOG.isDebugEnabled()) {
+						LOG.debug("Relationship is to PK value on child object - it may not be changed.  Skipping: "
+								+ childWrap.getWrappedClass().getName() + "." + attrRel.getChildAttributeName());
 					}
-					Object childPropertyValue = referenceWrap.getPropertyValueNullSafe(attrRel.getChildAttributeName());
-					// don't bother setting parent if it's not set itself
-					if (childPropertyValue == null || StringUtils.isBlank(childPropertyValue.toString())) {
+					continue;
+				}
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("Parent Object has FK value set (" + attrRel.getParentAttributeName() + "="
+							+ parentPropertyValue + "): using that");
+				}
+				childWrap.setPropertyValue(attrRel.getChildAttributeName(), parentPropertyValue);
+			} else {
+				// The FK field on the parent is blank,
+				// but the child has key values - so set the parent so they link properly
+				if (childPropertyValue != null && StringUtils.isNotBlank(childPropertyValue.toString())) {
+					if (parentPkAttributes.contains(attrRel.getParentAttributeName())) {
+						if (LOG.isDebugEnabled()) {
+							LOG.debug("Relationship is to PK value on parent object - it may not be changed.  Skipping: "
+									+ parentWrap.getWrappedClass().getName() + "." + attrRel.getParentAttributeName());
+						}
 						continue;
 					}
 					if (LOG.isDebugEnabled()) {
 						LOG.debug("Child Object has FK value set (" + attrRel.getChildAttributeName() + "="
 								+ childPropertyValue + "): using that");
-                    }
-					wrap.setPropertyValue(attrRel.getParentAttributeName(), childPropertyValue);
+					}
+					parentWrap.setPropertyValue(attrRel.getParentAttributeName(), childPropertyValue);
 				}
 			}
+		}
+	}
+
+	protected void linkNonUpdatableRelationship(DataObjectWrapper<?> parentWrap, DataObjectWrapper<?> childWrap,
+			List<DataObjectAttributeRelationship> refAttrs) {
+		for (DataObjectAttributeRelationship attrRel : refAttrs) {
+			Object parentPropertyValue = parentWrap.getPropertyValueNullSafe(attrRel.getParentAttributeName());
+			if (parentPropertyValue != null && StringUtils.isNotBlank(parentPropertyValue.toString())) {
+				// Skip this property, it has already been set on the parent object
+				continue;
+			}
+			Object childPropertyValue = childWrap.getPropertyValueNullSafe(attrRel.getChildAttributeName());
+			// don't bother setting parent if it's not set itself
+			if (childPropertyValue == null || StringUtils.isBlank(childPropertyValue.toString())) {
+				continue;
+			}
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("Child Object has FK value set (" + attrRel.getChildAttributeName() + "="
+						+ childPropertyValue + "): using that");
+			}
+			parentWrap.setPropertyValue(attrRel.getParentAttributeName(), childPropertyValue);
 		}
 	}
 

@@ -766,7 +766,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
         // if both are set they better match
         if (ruleDefinition.getPropId() != null && ruleDefinition.getProposition() != null) {
             if (!ruleDefinition.getPropId().equals(ruleDefinition.getProposition().getId())) {
-                throw new RiceIllegalArgumentException("propId does not proposition.getId" + ruleDefinition.getPropId() + " " + ruleDefinition.getProposition().getId());
+                throw new RiceIllegalArgumentException("propId does not match proposition.getId" + ruleDefinition.getPropId() + " " + ruleDefinition.getProposition().getId());
             }
         }
     }

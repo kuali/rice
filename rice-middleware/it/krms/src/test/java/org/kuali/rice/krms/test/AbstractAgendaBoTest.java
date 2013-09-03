@@ -211,7 +211,7 @@ public class AbstractAgendaBoTest extends AbstractBoTest {
         agendaBoService.updateAgenda(agendaDef);
     }
 
-    private KrmsTypeDefinition createKrmsActionTypeDefinition(String nameSpace) {
+    protected KrmsTypeDefinition createKrmsActionTypeDefinition(String nameSpace) {
         String ACTION_TYPE_NAME = "KrmsActionResolverType";
         KrmsTypeDefinition krmsActionTypeDefinition =  krmsTypeRepository.getTypeByName(nameSpace, ACTION_TYPE_NAME);
 

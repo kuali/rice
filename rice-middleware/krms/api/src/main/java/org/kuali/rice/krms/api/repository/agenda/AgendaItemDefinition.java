@@ -380,7 +380,7 @@ public final class AgendaItemDefinition extends AbstractDataTransferObject imple
          * @param whenFalse the agenda item for the "when false" condition of the agenda item to set
          */
 		public void setWhenFalse(AgendaItemDefinition.Builder whenFalse) {
-			this.whenTrue = whenFalse;
+			this.whenFalse = whenFalse;
 		}
 
         /**

@@ -44,7 +44,7 @@ class InquiryDefinitionBeanTransformer extends SpringBeanTransformer {
         List ignoreAttributes = [];
 
         // these properties are being converted and should not be copied when carryoverProperties is enabled
-        List ignoreOnCopyProperties = ["inquirySections"];
+        List ignoreOnCopyProperties = ["title", "inquirySections"];
 
         def beanAttributes = somethingBeanAttributes(beanNode, inquiryDefinitionBeanType, inquiryViewBeanType, ignoreAttributes);
 

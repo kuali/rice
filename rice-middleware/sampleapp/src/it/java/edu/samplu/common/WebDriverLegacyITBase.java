@@ -617,7 +617,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected void assertElementPresentByName(String name) {
-        driver.findElement(By.name(name));
+        assertElementPresentByName(name, "");
     }
 
     protected void assertElementPresentByName(String name, String message) {
@@ -629,7 +629,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected void assertElementPresentByXpath(String locator) {
-        driver.findElement(By.xpath(locator));
+        assertElementPresentByXpath(locator, "");
     }
 
     protected void assertElementPresentByXpath(String locator, String message) {
@@ -641,11 +641,20 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected void assertElementPresentByLinkText(String linkText) {
-        driver.findElement(By.linkText(linkText));
+        try {
+            driver.findElement(By.linkText(linkText));
+        } catch (Exception e) {
+            jiraAwareFail(By.cssSelector(linkText), "", e);
+        }
+
     }
 
     protected void assertElementPresent(String locator) {
-        driver.findElement(By.cssSelector(locator));
+        try {
+            driver.findElement(By.cssSelector(locator));
+        } catch (Exception e) {
+            jiraAwareFail(By.cssSelector(locator), "", e);
+        }
     }
 
     protected void assertFocusTypeBlurError(String field, String textToType) throws InterruptedException {
@@ -1216,6 +1225,14 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      */
     public void fireMouseOverEventByName(String name) {
         this.fireMouseOverEvent(By.name(name));
+    }
+
+    /**
+     * {@link Actions#moveToElement(org.openqa.selenium.WebElement)}
+     * @param id
+     */
+    public void fireMouseOverEventById(String id) {
+        this.fireMouseOverEvent(By.id(id));
     }
 
     /**

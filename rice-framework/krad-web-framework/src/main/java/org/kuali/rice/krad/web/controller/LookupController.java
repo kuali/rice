@@ -19,6 +19,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -30,9 +31,13 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.krad.bo.Exporter;
+import org.kuali.rice.krad.datadictionary.DataDictionary;
+import org.kuali.rice.krad.datadictionary.DataObjectEntry;
 import org.kuali.rice.krad.lookup.CollectionIncomplete;
 import org.kuali.rice.krad.lookup.LookupUtils;
 import org.kuali.rice.krad.lookup.Lookupable;
+import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -44,6 +49,7 @@ import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.krad.web.form.LookupForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.kuali.rice.krad.web.form.UifFormManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -174,6 +180,46 @@ public class LookupController extends UifControllerBase {
     }
 
     /**
+     * Handles exporting lookup results as xml using a custom xml exporter
+     */
+    @Override
+    protected String retrieveTableData(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        String formatType = getValidatedFormatType(request.getParameter("formatType"));
+
+        // locate session form and its data object entry
+        UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
+        String formKey = request.getParameter(UifParameters.FORM_KEY);
+        LookupForm currentForm = (LookupForm) uifFormManager.getSessionForm(formKey);
+
+        // if it has a valid custom exporter, use the lookup results and the custom exporter
+        DataDictionaryService dictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
+        DataDictionary dictionary = dictionaryService.getDataDictionary();
+        String dataObjectClassName = currentForm.getDataObjectClassName();
+        DataObjectEntry dataObjectEntry = dictionary.getDataObjectEntry(dataObjectClassName);
+        Class<? extends Exporter> exporterClass = dataObjectEntry.getExporterClass();
+
+        // checks for custom xml formatting before using standard approach
+        if (exporterClass != null && KRADConstants.XML_FORMAT.equals(formatType)) {
+            try {
+                Exporter exporter = exporterClass.newInstance();
+                Class<?> dataObjectClass = dataObjectEntry.getDataObjectClass();
+                List<? extends Object> displayList = (List<? extends Object>) currentForm.getLookupResults();
+                setAttachmentResponseHeader(response, "export.xml", KRADConstants.XML_MIME_TYPE);
+                exporter.export(dataObjectClass, displayList, KRADConstants.XML_FORMAT, response.getOutputStream());
+            } catch (Exception e) {
+                LOG.error("Unable to process xml export", e);
+            }
+
+        } else {  // otherwise use standard export
+            return super.retrieveTableData(form, result, request, response);
+        }
+
+        return null; // return null as custom export writes to response output stream
+    }
+
+    /**
      * search - sets the values of the data entered on the form on the jsp into a map and then searches for the
      * results.
      */
@@ -301,14 +347,23 @@ public class LookupController extends UifControllerBase {
         try {
             URL urlOne = new URL(firstDomain.toLowerCase());
             URL urlTwo = new URL(secondDomain.toLowerCase());
-            if(urlOne.getHost().equals(urlTwo.getHost())){
-                LOG.debug("Hosts " + urlOne.getHost() + " of domains " + firstDomain
-                        + " and " + secondDomain + " were determined to be equal");
+            if (urlOne.getHost().equals(urlTwo.getHost())) {
+                LOG.debug("Hosts "
+                        + urlOne.getHost()
+                        + " of domains "
+                        + firstDomain
+                        + " and "
+                        + secondDomain
+                        + " were determined to be equal");
                 return false;
-            }
-            else {
-                LOG.debug("Hosts " + urlOne.getHost() + " of domains " + firstDomain
-                        + " and " + secondDomain + " are not equal");
+            } else {
+                LOG.debug("Hosts "
+                        + urlOne.getHost()
+                        + " of domains "
+                        + firstDomain
+                        + " and "
+                        + secondDomain
+                        + " are not equal");
                 return true;
             }
         } catch (MalformedURLException mue) {

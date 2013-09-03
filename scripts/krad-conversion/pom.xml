@@ -108,9 +108,6 @@
           <scriptpath>
             <element>${pom.basedir}/src/main/groovy</element>
           </scriptpath>
-          <!--<source>-->
-            <!--def shell = new GroovyShell(this.getClass().classLoader)-->
-            <!--shell.run(new File("c:/java/IdeaProjects/rice/trunk/scripts/krad-conversion/src/main/groovy/org/kuali/rice/scripts/KradConversion.groovy",))</source>-->
           <source>src/main/groovy/org/kuali/rice/scripts/GroovyShellWrapper.groovy</source>
           <providerSelection>1.8</providerSelection>
         </configuration>

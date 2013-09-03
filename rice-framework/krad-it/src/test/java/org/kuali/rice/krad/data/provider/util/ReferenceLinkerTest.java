@@ -303,6 +303,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
         AccountExtension acct = getExAccount();
 
         acct.setAccountTypeCode(null);
+        //acct.setAccountType(null);
 
         // test what object getter does
         LOG.debug( "Account Type After setting FK to null: " + acct.getAccountType());
@@ -329,7 +330,11 @@ public class ReferenceLinkerTest extends KRADTestCase {
 
     @Test
     public void existingParent_withUpdatableChild_changeChildForeignKey() throws Exception {
-        SQLDataLoader sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_PARENT_OF_UPDATABLE_T(PK_COL, UPDATABLE_CHILD_KEY_COL) VALUES(1, '123')");
+        SQLDataLoader sqlDataLoader = new SQLDataLoader("DELETE FROM KRTST_PARENT_OF_UPDATABLE_T");
+        sqlDataLoader.runSql();
+        sqlDataLoader = new SQLDataLoader("DELETE FROM KRTST_UPDATABLE_CHILD_T");
+        sqlDataLoader.runSql();
+        sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_PARENT_OF_UPDATABLE_T(PK_COL, UPDATABLE_CHILD_KEY_COL) VALUES(1, '123')");
         sqlDataLoader.runSql();
         sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_UPDATABLE_CHILD_T(PK_COL, SOME_DATA_COL) VALUES('123', 'Some Data 123')");
         sqlDataLoader.runSql();
@@ -341,17 +346,25 @@ public class ReferenceLinkerTest extends KRADTestCase {
         assertEquals( "Child object's key should not be changed before save", "123", obj.getUpdatableChild().getChildKey());
         System.err.println( "Before Saving: " + obj );
         obj = getDOS().save(obj);//, PersistenceOption.FLUSH, PersistenceOption.REFRESH);
-        // TODO: Update referencelinker - if the field is a PK field, it may not be updated
+        // if the field is a PK field, it may not be updated
         // In fact, in the case where we have embedded an updatable reference object which is linked by the PK,
         // we should always copy that PK value back to the parent
         System.err.println( "After Saving: " + obj );
         assertEquals( "Parent object's foreign key should still be changed after save", "ABC", obj.getUpdatableChildsKey());
-        assertEquals( "Child object's key should have been changed after save", "ABC", obj.getUpdatableChild().getChildKey());
+        obj = getDOS().find(ParentObjectWithUpdatableChild.class, 1L);
+        assertNotNull( "Unable to find object after save", obj);
+        System.err.println( "After Reloading: " + obj );
+        assertNull( "Child object not missing after save - should have been, since an 'ABC' does not exist", obj.getUpdatableChild());
+        //assertEquals( "Child object's key should have been changed after save", "ABC", obj.getUpdatableChild().getChildKey());
     }
 
     @Test
     public void existingParent_withUpdatableChild_changeChildObject() throws Exception {
-        SQLDataLoader sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_PARENT_OF_UPDATABLE_T(PK_COL, UPDATABLE_CHILD_KEY_COL) VALUES(1, '123')");
+        SQLDataLoader sqlDataLoader = new SQLDataLoader("DELETE FROM KRTST_PARENT_OF_UPDATABLE_T");
+        sqlDataLoader.runSql();
+        sqlDataLoader = new SQLDataLoader("DELETE FROM KRTST_UPDATABLE_CHILD_T");
+        sqlDataLoader.runSql();
+        sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_PARENT_OF_UPDATABLE_T(PK_COL, UPDATABLE_CHILD_KEY_COL) VALUES(1, '123')");
         sqlDataLoader.runSql();
         sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_UPDATABLE_CHILD_T(PK_COL, SOME_DATA_COL) VALUES('123', 'Some Data 123')");
         sqlDataLoader.runSql();
@@ -409,7 +422,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
         child = getDOS().find(UpdatableChildObject.class, "789");
         assertNotNull("after reload from DB, unable to find child object", child);
 
-        // TODO: ReferenceLinker needs to set the keys on the parent when the child object has been changed.
+        // TODO: ReferenceLinker needs to set the keys on the parent (if null) when the child object has been changed.
         // BUT!!!  Only if the foreign keys are not part of the parent's primary key, since those can't be changed.
         assertEquals( "Parent object's key should have been set after save", "789", obj.getUpdatableChildsKey());
 

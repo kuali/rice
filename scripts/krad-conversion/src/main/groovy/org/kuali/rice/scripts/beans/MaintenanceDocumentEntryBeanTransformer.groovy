@@ -25,6 +25,9 @@ import groovy.util.logging.Log
 @Log
 class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
 
+    String maintenanceDefinitionBeanType = "MaintenanceDocumentEntry";
+    String maintenanceViewBeanType = "Uif-MaintenanceView";
+
     /**
      * Transforms maintenance document entries into uif maintenance views
      *
@@ -32,31 +35,42 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
      * @return
      */
     def transformMaintenanceDocumentEntryBean(Node beanNode) {
-        String objName = getMaintenanceDocumentObjectName(beanNode);
-        def copyProps = ["businessObjectClass", "maintainableClass", "documentTypeName", "documentAuthorizerClass", "lockingKeys"];
         if (beanNode.@parent == "MaintenanceDocumentEntry") {
             def maintDocParentBeanNode = beanNode;
             def beanTitle = maintDocParentBeanNode.property.find { it.@name == "title" }?.@value;
-            beanNode.replaceNode {
-                bean(id: beanNode.@id, parent: beanNode.@parent) {
-                    copyProperties(delegate, beanNode, copyProps)
-                }
+
+            // these attributes are being converted and should not be copied when carryoverAttributes is enabled
+            List ignoreAttributes = [];
+
+            // these properties are being converted and should not be copied when carryoverProperties is enabled
+            List ignoreOnCopyProperties = ["title", "inquirySections"];
+
+            def beanAttributes = somethingBeanAttributes(beanNode, maintenanceDefinitionBeanType, maintenanceViewBeanType, ignoreAttributes);
+
+            List copiedProperties;
+            if (carryoverProperties) {
+                copiedProperties = beanNode.property.collect { it.@name };
+                copiedProperties.removeAll(ignoreOnCopyProperties);
+            } else {
+                copiedProperties = ["businessObjectClass", "maintainableClass", "documentTypeName", "documentAuthorizerClass", "lockingKeys"];
             }
 
-            def originalBeanType = "MaintenanceDocumentEntry";
-            def transformBeanType = "Uif-MaintenanceView";
-            def translatedBeanId = getTranslatedBeanId(beanNode.@id, originalBeanType, transformBeanType);
-            def translatedParentId = getTranslatedBeanId(beanNode.@parent, originalBeanType, transformBeanType);
 
-            beanNode.replaceNode {
-                addComment(delegate, "Maintenance View")
-                bean(id: translatedBeanId, parent: translatedParentId) {
-                    renameProperties(delegate, maintDocParentBeanNode, ["title": "headerText", "businessObjectClass": "dataObjectClassName", "dataObjectClass": "dataObjectClassName"])
-                    addViewNameProperty(delegate, beanTitle);
-                    transformMaintainableSectionsProperty(delegate, maintDocParentBeanNode)
+            log.finer "transform bean node for inquiry"
+            if (isPlaceholder(beanNode)) {
+                beanNode.@id = getTranslatedBeanId(beanNode.@id, maintenanceDefinitionBeanType, maintenanceViewBeanType);
+                beanNode.@parent = getTranslatedBeanId(beanNode.@parent, maintenanceDefinitionBeanType, maintenanceViewBeanType);
+            } else {
+                beanNode.replaceNode {
+                    addComment(delegate, "Maintenance View")
+                    bean(beanAttributes) {
+                        copyProperties(delegate, beanNode, copiedProperties)
+                        renameProperties(delegate, maintDocParentBeanNode, ["title": "headerText", "businessObjectClass": "dataObjectClassName", "dataObjectClass": "dataObjectClassName"])
+                        addViewNameProperty(delegate, beanTitle);
+                        transformMaintainableSectionsProperty(delegate, maintDocParentBeanNode)
+                    }
                 }
             }
-
         }
     }
 

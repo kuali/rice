@@ -52,7 +52,6 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
         }
 
         checkBeanParentExists(ddRootNode, "Uif-MaintenanceView");
-        checkBeanParentExists(ddRootNode, "MaintenanceDocumentEntry");
     }
 
     @Test

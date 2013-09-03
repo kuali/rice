@@ -1050,7 +1050,7 @@ public abstract class UifControllerBase {
     /**
      * Generates exportable table data based on the rich table selected
      */
-    private String retrieveTableData(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+    protected String retrieveTableData(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         LOG.debug("processing table data request");
 
@@ -1073,13 +1073,24 @@ public abstract class UifControllerBase {
         tableData = view.getViewHelperService().buildExportTableData(view, currentForm, tableId, formatType);
 
         // if table data to be returned, format response appropriately
-        response.setHeader("content-type", contentType);
-        response.setHeader("Content-disposition", "attachment; filename=\"export." + formatType + "\"");
+        setAttachmentResponseHeader(response, "export." + formatType, contentType);
+
+        return tableData;
+    }
+
+    /**
+     * Creates consistent setup of attachment response header
+     *
+     * @param response
+     * @param filename
+     * @param contentType
+     */
+    protected void setAttachmentResponseHeader(HttpServletResponse response, String filename, String contentType) {
+        response.setContentType(contentType);
+        response.setHeader("Content-disposition", "attachment; filename=\"" + filename + "\"");
         response.setHeader("Expires", "0");
         response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
         response.setHeader("Pragma", "public");
-
-        return tableData;
     }
 
     /**
@@ -1142,7 +1153,7 @@ public abstract class UifControllerBase {
      * @param formatType
      * @return
      */
-    private String getValidatedFormatType(String formatType) {
+    protected String getValidatedFormatType(String formatType) {
         if ("xls".equals(formatType) || "xml".equals(formatType) || "csv".equals(formatType)) {
             return formatType;
         }

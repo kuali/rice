@@ -69,6 +69,8 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("//table[@id='row']/tbody/tr[1]/td[1]/a", "KULRICE-10355 Investigate DocSearchWDIT testBasicDocSearch failure");
 
         jiraMatches.put("BusinessObjectDaoProxy called with non-legacy class: class org.kuali.rice.coreservice.impl.namespace.NamespaceBo", "KULRICE-10356 Agenda edit BusinessObjectDaoProxy called with non-legacy class: class org.kuali.rice.coreservice.impl.namespace.NamespaceBo");
+
+        jiraMatches.put("annot get new instance of class to check for KualiCode", "KULRICE-10358 Component search Action List Incident Report Cannot get new instance of class to check for KualiCode");
         //jiraMatches.put("", "");
     }
 

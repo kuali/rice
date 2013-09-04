@@ -87,6 +87,8 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("//div[@class='span9 uif-fixedCssGridLayout']/div/div[@class='span3']/div/input[@name='inputField1']", "KULRICE-10333 Update DemoLibraryLayoutManagersCssGridLayoutSmokeTest");
 
         jiraMatches.put("By.linkText: 1000", "KULRICE-10357 Attribute Lookup results no longer clickable");
+
+        jiraMatches.put("BusinessObjectDaoProxy called with non-legacy class: class org.kuali.rice.coreservice.impl.namespace.NamespaceBo","KULRICE-10356 Agenda edit Incident Report BusinessObjectDaoProxy called with non-legacy class: class org.kuali.rice.coreservice.impl.namespace.NamespaceBo");
         //jiraMatches.put("", "");
     }
 

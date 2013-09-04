@@ -45,7 +45,7 @@ public abstract class MainTmplMthdSTNavBase extends NavTemplateMethodSTBase {
         back();
         waitForElementPresentByClassName(DATA_TABLES_INFO);
         if (!pageBannerText.equals(getText(By.className(DATA_TABLES_INFO)))) {
-            failable.fail("Going back from Search to Edit results not available");
+            failable.fail("https://jira.kuali.org/browse/KULRICE-9709 Search Edit Back does not show search results in Firefox");
         }
     }
 
@@ -58,6 +58,6 @@ public abstract class MainTmplMthdSTNavBase extends NavTemplateMethodSTBase {
         waitForElementPresentByClassName(DATA_TABLES_INFO, "Problem with second search");
         back();
         waitForElementsPresentByClassName(DATA_TABLES_INFO, "Going back from Search to Search results not available");
-        assertTextPresent("Going back from Search to Search results not available", pageBannerText);
+        assertTextPresent("https://jira.kuali.org/browse/KULRICE-9710 Search Search back does not display first search results in Firefox", pageBannerText);
     }
 }

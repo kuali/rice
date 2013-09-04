@@ -2262,7 +2262,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         // Mixed capitalization
         waitAndClick(By.xpath(SEARCH_XPATH_3));
         waitAndClickByLinkText(EDIT_LINK_TEXT, "edit button not present does user " + user + " have permission?");
-        Thread.sleep(1000);
+        Thread.sleep(3000);
         checkForIncidentReport("submit");
         assertTextPresent("ubmit");
         assertTextPresent("ave");

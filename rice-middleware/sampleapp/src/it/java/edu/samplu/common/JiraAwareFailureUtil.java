@@ -81,6 +81,7 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("Stacked Collection With Table Sub-Collection", "KULRICE-10382 DemoLibraryLayoutManagersStackedLayoutSmokeTest update to use select drop down");
 
         jiraMatches.put("TopLink7", "KULRICE-10383 Demo Labs Kitchensink Collections freemarker exception in log when SQL updates have been applied");
+        jiraMatches.put("list4[0].subList[0].field1", "KULRICE-10383 Demo Labs Kitchensink Collections freemarker exception in log when SQL updates have been applied");
 
         jiraMatches.put("document.newMaintainableObject.dataObject.extension.accountTypeCode", "KULRICE-10384 DemoTravelAccountMaintenanceNewSmokeTest update to use select for Type");
 

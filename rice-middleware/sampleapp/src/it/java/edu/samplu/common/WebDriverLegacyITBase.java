@@ -2303,6 +2303,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected List<String> testLookUpParameter(String docId, String parameterName) throws Exception {
         performParameterInquiry(parameterName);
+        checkForIncidentReport();
         SeleneseTestBase.assertEquals(parameterName, getTextByXpath(
                 "//div[@class='tab-container']/table//span[@id='name.div']").trim());
         SeleneseTestBase.assertEquals("Y", getTextByXpath("//div[@class='tab-container']/table//span[@id='value.div']")

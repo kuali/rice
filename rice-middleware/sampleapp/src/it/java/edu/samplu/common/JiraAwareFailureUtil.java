@@ -75,6 +75,8 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("Library Widget Suggest, CAT not suggested", "KULRICE-10365 Library Widget Suggest not suggesting");
 
         jiraMatches.put("img[src='/krad/images/validation/error.png']", "KULRICE-10372 DemoLibraryInputFieldSmokeTest mouse over error image fix");
+
+        jiraMatches.put("SELECT ACCT_NUM, SUB_ACCT, OBJ_ID, SUB_ACCT_NAME, VER_NBR FROM TRV_SUB_ACCT WHERE (ACCT_NUM = ?)", "KULRICE-10381 2.4 SQL updates to resolve missing table exception in CI");
         //jiraMatches.put("", "");
     }
 

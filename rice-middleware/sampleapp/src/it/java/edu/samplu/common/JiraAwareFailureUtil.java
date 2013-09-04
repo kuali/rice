@@ -85,6 +85,8 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("document.newMaintainableObject.dataObject.extension.accountTypeCode", "KULRICE-10384 DemoTravelAccountMaintenanceNewSmokeTest update to use select for Type");
 
         jiraMatches.put("//div[@class='span9 uif-fixedCssGridLayout']/div/div[@class='span3']/div/input[@name='inputField1']", "KULRICE-10333 Update DemoLibraryLayoutManagersCssGridLayoutSmokeTest");
+
+        jiraMatches.put("By.linkText: 1000", "KULRICE-10357 Attribute Lookup results no longer clickable");
         //jiraMatches.put("", "");
     }
 

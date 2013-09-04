@@ -601,19 +601,42 @@
             <para><programlisting linenumbering="numbered">&lt;bean id="EntityType-inquiryDefinition" parent="InquiryDefinition">
   &lt;property name="title" value="Entity Type Inquiry"/>
   &lt;property name="inquirableClass" value="org.kuali.rice.kim.inquiry.EntityTypeInquirableImpl"/>
-  &lt;property name="presentationControllerClass" value="org.kuali.rice.kim.inquiry.EntityTypeInquiryPresentationController"/>
-  &lt;property name="authorizerClass" value="org.kuali.rice.kim.inquiry.EntityTypeInquiryAuthorizer"/>
   &lt;property name="inquirySections">
     &lt;list>
       &lt;bean parent="InquirySectionDefinition">
         &lt;property name="title" value="Entity Type"/>
+        &lt;property name="defaultOpen" value="true"/>
         &lt;property name="numberOfColumns" value="1"/>
-        &lt;property name="defaultOpen" value="false"/>
         &lt;property name="inquiryFields">
           &lt;list>
             &lt;bean parent="FieldDefinition" p:attributeName="code" p:noInquiry="true"/>
             &lt;bean parent="FieldDefinition" p:attributeName="name"/>
             &lt;bean parent="FieldDefinition" p:attributeName="active"/>
+          &lt;/list>
+        &lt;/property>
+      &lt;/bean>
+      &lt;bean parent="InquirySectionDefinition">
+        &lt;property name="title" value="Rule Attributes"/>
+        &lt;property name="defaultOpen" value="false"/>
+        &lt;property name="inquiryFields">
+          &lt;list>
+            &lt;bean parent="InquiryCollectionDefinition">
+              &lt;property name="numberOfColumns" value="1"/>
+              &lt;property name="businessObjectClass" value="org.kuali.rice.kim.impl.identity.EntityTypeDetailsBo"/>
+              &lt;property name="attributeName" value="entityTypeDetails"/>
+                &lt;property name="inquiryFields">
+                  &lt;list>
+                    &lt;bean parent="FieldDefinition" p:attributeName="name"/>
+                    &lt;bean parent="FieldDefinition" p:attributeName="value"/>
+                  &lt;/list>
+                &lt;/property>
+              &lt;property name="summaryTitle" value="Entity Type Details"/>
+              &lt;property name="summaryFields">
+                &lt;list>
+                  &lt;bean parent="FieldDefinition" p:attributeName="name"/>
+                &lt;/list>
+              &lt;/property>
+            &lt;/bean>
           &lt;/list>
         &lt;/property>
       &lt;/bean>
@@ -625,19 +648,36 @@
   &lt;property name="headerText" value="Entity Type"/>
   &lt;property name="dataObjectClassName" value="org.kuali.rice.kim.impl.identity.EntityTypeBo"/>
   &lt;property name="viewHelperServiceClass" value="org.kuali.rice.kim.inquiry.EntityTypeInquirableImpl"/>
-  &lt;property name="presentationControllerClass" value="org.kuali.rice.kim.inquiry.EntityTypeInquiryPresentationController"/>
-  &lt;property name="authorizerClass" value="org.kuali.rice.kim.inquiry.EntityTypeInquiryAuthorizer"/>
   &lt;property name="items">
     &lt;list>
-      &lt;bean parent="EntityType-InquiryView-General" parent="Uif-Disclosure-GridSection">
+      &lt;bean id="EntityType-InquiryView-General" parent="Uif-Disclosure-GridSection">
         &lt;property name="headerText" value="Entity Type"/>
+        &lt;property name="disclosure.defaultOpen" value="true"/>
         &lt;property name="layoutManager.numberOfColumns" value="2"/>
-        &lt;property name="disclosure.defaultOpen" value="false"/>
         &lt;property name="items">
           &lt;list>
             &lt;bean parent="Uif-DataField" p:propertyName="code" p:inquiry.render="false"/>
             &lt;bean parent="Uif-DataField" p:propertyName="name"/>
             &lt;bean parent="Uif-DataField" p:propertyName="active"/>
+          &lt;/list>
+        &lt;/property>
+      &lt;/bean>
+      &lt;bean id="EntityType-InquiryView-Details" parent="Uif-Disclosure-StackedCollectionSection">
+        &lt;property name="headerText" value="Rule Attributes"/>
+        &lt;property name="disclosure.defaultOpen" value="false"/>
+        &lt;property name="layoutManager.numberOfColumns" value="2"/>
+        &lt;property name="collectionObjectClass" value="org.kuali.rice.kim.impl.identity.EntityTypeDetailsBo"/>
+        &lt;property name="propertyName" value="entityTypeDetails"/>
+        &lt;property name="items">
+          &lt;list>
+            &lt;bean parent="Uif-DataField" p:attributeName="name" p:inquiry.render="false"/>
+            &lt;bean parent="Uif-DataField" p:attributeName="value"/>
+          &lt;/list>
+        &lt;/property>
+        &lt;property name="layoutManager.summaryTitle" value="Entity Type Details"/>
+        &lt;property name="layoutManager.summaryFields">
+          &lt;list>
+            &lt;value>name&lt;/value>
           &lt;/list>
         &lt;/property>
       &lt;/bean>
@@ -655,14 +695,14 @@
                     </para></listitem>
                     <listitem><para>The title of the view is specified via the
                         <emphasis role="keyword">headerText</emphasis> property instead of the
-                        <emphasis role="keyword">title</emphasis> property. [KNS line: 2, KRAD line: 3]
+                        <emphasis role="keyword">title</emphasis> property. [KNS line: 2, KRAD line: 2]
                         <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject>
                     </para></listitem>
                     <listitem><para>The data object class is specified via the
                         <emphasis role="keyword">dataObjectClassName</emphasis> property and is no longer specified via
                         the <emphasis role="keyword">BusinessObjectEntry</emphasis> as it doesn't exist in KRAD anymore.
                         A <emphasis role="keyword">businessObject</emphasis> is no longer required and any object can
-                        be used. [KNS line: n/a, KRAD line: 2]
+                        be used. [KNS line: n/a, KRAD line: 3]
                         <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject>
                     </para></listitem>
                     <listitem><para>The <emphasis role="keyword">inquirableClass</emphasis> has now changed to
@@ -678,45 +718,45 @@
                 <itemizedlist>
                     <listitem><para>The property that contains the inquiry sections was renamed from
                         <emphasis role="keyword">inquirySections</emphasis> to
-                        <emphasis role="keyword">items</emphasis>. [KNS line: 6, KRAD line: 7]
+                        <emphasis role="keyword">items</emphasis>. [KNS line: 4, KRAD line: 5]
                         <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/></imageobject></inlinemediaobject>
                     </para></listitem>
                     <listitem><para>The bean <emphasis role="keyword">InquirySectionDefinition</emphasis> was removed
                         and can be replaced with any subclass of <emphasis role="keyword">Group</emphasis>, although
                         the default is a child of <emphasis role="keyword">Uif-Disclosure-GridSection</emphasis>.
-                        [KNS line: 8, KRAD line: 9]
+                        [KNS line: 6, KRAD line: 7]
                       <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/></imageobject></inlinemediaobject>
                     </para></listitem>
                     <listitem><para>The title of the section is specified via the
                         <emphasis role="keyword">headerText</emphasis> property instead of the
-                        <emphasis role="keyword">title</emphasis> property. [KNS line: 9, KRAD line: 10]
+                        <emphasis role="keyword">title</emphasis> property. [KNS line: 7, KRAD line: 8]
                       <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject>
-                    </para></listitem>
-                    <listitem><para>To use multiple columns for the section use the
-                        <emphasis role="keyword" >layoutManager.numberOfColumns</emphasis> property to configure the
-                        layout manager instead of specifying the <emphasis role="keyword">numberOfColumns</emphasis>
-                        property. Note that in the layout manager the field label and the field itself have their own
-                        columns and therefore the old <emphasis role="keyword">numberOfColumns</emphasis> value needs to
-                        be doubled. [KNS line: 10, KRAD line: 11]
-                        <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/></imageobject></inlinemediaobject>
                     </para></listitem>
                     <listitem><para>The property that controls whether the section defaults to open has moved from
                         <emphasis role="keyword">defaultOpen</emphasis> to the
                         <emphasis role="keyword">Disclosure</emphasis> object and is now accessed via
-                        <emphasis role="keyword">disclosure.defaultOpen</emphasis>. [KNS line: 11, KRAD line: 12]
+                        <emphasis role="keyword">disclosure.defaultOpen</emphasis>. [KNS line: 8, KRAD line: 9]
                         <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject>
                     </para></listitem>
+                    <listitem><para>To use multiple columns for the section use the
+                        <emphasis role="keyword">layoutManager.numberOfColumns</emphasis> property to configure the
+                        layout manager instead of specifying the <emphasis role="keyword">numberOfColumns</emphasis>
+                        property. Note that in the layout manager the field label and the field itself have their own
+                        columns and therefore the old <emphasis role="keyword">numberOfColumns</emphasis> value needs to
+                        be doubled. [KNS line: 9, KRAD line: 10]
+                        <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/></imageobject></inlinemediaobject>
+                  </para></listitem>
                     <listitem><para>The property that contains the inquiry display fields was renamed from
                         <emphasis role="keyword">inquiryFields</emphasis> to
-                        <emphasis role="keyword">items</emphasis>. [KNS line: 12, KRAD line: 13]
+                        <emphasis role="keyword">items</emphasis>. [KNS line: 10, KRAD line: 11]
                         <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/></imageobject></inlinemediaobject>
                     </para></listitem>
                     <listitem><para>Data fields changed from <emphasis role="keyword">FieldDefinition</emphasis> to
-                        <emphasis role="keyword">Uif-DataField</emphasis>. [KNS line: 14-16, KRAD line: 15-17]
+                        <emphasis role="keyword">Uif-DataField</emphasis>. [KNS line: 12-14, KRAD line: 13-15]
                         <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/></imageobject></inlinemediaobject>
                     </para></listitem>
                     <listitem><para>The <emphasis role="keyword">attributeName</emphasis> property on the field is now a
-                        <emphasis role="keyword">propertyName</emphasis> property. [KNS line: 14-16, KRAD line: 15-17]
+                        <emphasis role="keyword">propertyName</emphasis> property. [KNS line: 12-14, KRAD line: 13-15]
                         <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/></imageobject></inlinemediaobject>
                     </para></listitem>
                     <listitem><para>The <emphasis role="keyword">noInquiry</emphasis> property, which suppresses
@@ -724,18 +764,60 @@
                         <emphasis role="keyword">Inquiry</emphasis> object and is now accessed via
                         <emphasis role="keyword">inquiry.render</emphasis>. Note here that
                         <emphasis role="keyword">noInquiry="true"</emphasis> is equivalent to
-                        <emphasis role="keyword">inquiry.render="false"</emphasis>. [KNS line: 14, KRAD line: 15]
+                        <emphasis role="keyword">inquiry.render="false"</emphasis>. [KNS line: 12, KRAD line: 13]
                         <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject>
                     </para></listitem>
                 </itemizedlist>
             </para>
         </section>
+        <section><title>Collections</title>
+            <para>
+                <itemizedlist>
+                    <listitem><para>The bean <emphasis role="keyword">InquiryCollectionDefinition</emphasis> was removed
+                        and can be replaced with any subclass of <emphasis role="keyword">CollectionGroup</emphasis>,
+                        although the default is a child of
+                        <emphasis role="keyword">Uif-Disclosure-StackedCollectionSection</emphasis>.
+                        [KNS line: 24, KRAD line: 19]
+                        <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/></imageobject></inlinemediaobject>
+                    </para></listitem>
+                    <listitem><para>The <emphasis role="keyword">businessObjectClass</emphasis> property of the
+                        collection has been changed to <emphasis role="keyword">collectionObjectClass</emphasis>.
+                        [KNS line: 25, KRAD line: 23]
+                        <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/></imageobject></inlinemediaobject>
+                    </para></listitem>
+                    <listitem><para>The <emphasis role="keyword">attributeName</emphasis> property of the collection has
+                        been changed to <emphasis role="keyword">propertyName</emphasis>. [KNS line: 26, KRAD line: 24]
+                        <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/></imageobject></inlinemediaobject>
+                    </para></listitem>
+                    <listitem><para>The property that contains the inquiry display fields was renamed from
+                        <emphasis role="keyword">inquiryFields</emphasis> to
+                        <emphasis role="keyword">items</emphasis>. [KNS line: 27, KRAD line: 25]
+                        <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/></imageobject></inlinemediaobject>
+                    </para></listitem>
+                    <listitem><para>The property <emphasis role="keyword">summaryTitle</emphasis> has been moved to
+                        <emphasis role="keyword">layoutManager.summaryTitle</emphasis>. [KNS line: 33, KRAD line: 31]
+                        <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/></imageobject></inlinemediaobject>
+                    </para></listitem>
+                    <listitem><para>The container <emphasis role="keyword">summaryFields</emphasis> has been moved to
+                        <emphasis role="keyword">layoutManager.summaryFields</emphasis> and simplified to just take a
+                        list of values. [KNS line: 34, KRAD line: 32]
+                        <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/></imageobject></inlinemediaobject>
+                    </para></listitem>
+                    <listitem><para>In general, only simple nestings such as the ones shown above are supported by the
+                        conversion script.  Any other combinations, such as
+                        <emphasis role="keyword">InquiryCollectionDefinition</emphasis>s directly inside an
+                        <emphasis role="keyword">inquiryFields</emphasis> property or inside another
+                        <emphasis role="keyword">InquiryCollectionDefinition</emphasis> are not supported and will need
+                        to be converted manually.
+                        <inlinemediaobject><imageobject><imagedata fileref="../images/badge-manualconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject>
+                    </para></listitem>
+                </itemizedlist>
+            </para>
+        </section>
         <section><title>Inquirable / KualiInquirableImpl</title>
-            <para>KRAD removes <emphasis role="keyword">KualiInquirableImpl</emphasis> and replaces it with
-                <emphasis role="keyword">InquirableImpl</emphasis>.  Normally, this class does not need to be extended
-                unless advanced customizations are required, but any implementer already extending this class will have
-                to make the switch manually.
-                <inlinemediaobject><imageobject><imagedata fileref="../images/badge-manualconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject>
+            <para>KRAD adds <emphasis role="keyword">InquirableImpl</emphasis> to eventually replace
+                <emphasis role="keyword">KualiInquirableImpl</emphasis>.  Normally, this class does not need to be
+                extended unless advanced customizations are required.
             </para>
         </section>
         <section><title>ModuleService / RemoteModuleServiceBase / ModuleServiceBase</title>

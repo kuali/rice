@@ -300,7 +300,7 @@ class SpringBeanTransformer {
     }
 
     def valueFieldTransform = { NodeBuilder builderDelegate, Map attributes ->
-        def value = attributes["value"];
+        def value = attributes["p:propertyName"];
         builderDelegate.createNode("value", null, value);
     }
 

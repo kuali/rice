@@ -15,7 +15,9 @@
  */
 package org.kuali.rice.krad.data.jpa;
 
-import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -24,14 +26,17 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 
 /**
  * JPA QueryTranslator that translates queries directly into native JPA 2 Criteria API.
  */
 class NativeJpaQueryTranslator extends QueryTranslatorBase<NativeJpaQueryTranslator.TranslationContext, TypedQuery> {
+	protected static final String[] LOOKUP_WILDCARDS = { "*", "?" };
+	protected static final String[] ESCAPED_LOOKUP_WILDCARDS = { "\\*", "\\?" };
+	protected static final char[] JPQL_WILDCARDS = { '%', '_' };
+
     protected EntityManager entityManager;
 
     /**
@@ -184,8 +189,36 @@ class NativeJpaQueryTranslator extends QueryTranslatorBase<NativeJpaQueryTransla
     @Override
     protected void addLike(TranslationContext criteria, String propertyPath, Object value) {
         // value should be a String pattern
-        criteria.addPredicate(criteria.builder.like(criteria.attr(propertyPath), value.toString()));
+		criteria.addPredicate(criteria.builder.like(criteria.attr(propertyPath), fixSearchPattern(value.toString())));
     }
+
+	/**
+	 * Fixes the search pattern by converting all non-escaped lookup wildcards ("*" and "?") into their respective JPQL
+	 * wildcards ("%" and "_"). Any lookup wildcards escaped by a backslash are converted into their non-backslashed
+	 * equivalents.
+	 */
+	protected String fixSearchPattern(String value) {
+		StringBuilder fixedPattern = new StringBuilder(value);
+		// Convert all non-escaped wildcards.
+		for (int i = 0; i < LOOKUP_WILDCARDS.length; i++) {
+			String lookupWildcard = LOOKUP_WILDCARDS[i];
+			String escapedLookupWildcard = ESCAPED_LOOKUP_WILDCARDS[i];
+			char jpqlWildcard = JPQL_WILDCARDS[i];
+			int wildcardIndex = fixedPattern.indexOf(lookupWildcard);
+			int escapedWildcardIndex = fixedPattern.indexOf(escapedLookupWildcard);
+			while (wildcardIndex != -1) {
+				if (wildcardIndex == 0 || escapedWildcardIndex != wildcardIndex - 1) {
+					fixedPattern.setCharAt(wildcardIndex, jpqlWildcard);
+					wildcardIndex = fixedPattern.indexOf(lookupWildcard, wildcardIndex);
+				} else {
+					fixedPattern.replace(escapedWildcardIndex, wildcardIndex + 1, lookupWildcard);
+					wildcardIndex = fixedPattern.indexOf(lookupWildcard, wildcardIndex);
+					escapedWildcardIndex = fixedPattern.indexOf(escapedLookupWildcard, wildcardIndex);
+				}
+			}
+		}
+		return fixedPattern.toString();
+	}
 
     @Override
     protected void addNotEqualTo(TranslationContext criteria, String propertyPath, Object value) {
@@ -200,7 +233,7 @@ class NativeJpaQueryTranslator extends QueryTranslatorBase<NativeJpaQueryTransla
     @Override
     protected void addNotLike(TranslationContext criteria, String propertyPath, Object value) {
         // value should be a String pattern
-        criteria.addPredicate(criteria.builder.notLike(criteria.attr(propertyPath), value.toString()));
+		criteria.addPredicate(criteria.builder.notLike(criteria.attr(propertyPath), fixSearchPattern(value.toString())));
     }
 
     @Override

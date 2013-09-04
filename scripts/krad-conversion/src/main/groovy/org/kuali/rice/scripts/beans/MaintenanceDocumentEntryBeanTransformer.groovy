@@ -58,11 +58,14 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
 
             log.finer "transform bean node for inquiry"
             if (isPlaceholder(beanNode)) {
+                addCommentIfNotExists(beanNode.parent(), "Maintenance View")
                 beanNode.@id = getTranslatedBeanId(beanNode.@id, maintenanceDefinitionBeanType, maintenanceViewBeanType);
                 beanNode.@parent = getTranslatedBeanId(beanNode.@parent, maintenanceDefinitionBeanType, maintenanceViewBeanType);
+                beanNode.parent().append(beanNode);
+                beanNode.parent().remove(beanNode);
             } else {
                 beanNode.replaceNode {
-                    addComment(delegate, "Maintenance View")
+                    addCommentIfNotExists(beanNode.parent(), "Maintenance View")
                     bean(beanAttributes) {
                         copyProperties(delegate, beanNode, copiedProperties)
                         renameProperties(delegate, maintDocParentBeanNode, ["title": "headerText", "businessObjectClass": "dataObjectClassName", "dataObjectClass": "dataObjectClassName"])

@@ -63,11 +63,14 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
             copiedProperties = [];
         }
         if (isPlaceholder(beanNode)) {
+            addCommentIfNotExists(beanNode.parent(),"Lookup View");
             beanNode.@id = translatedBeanId;
             beanNode.@parent = translatedParentId;
+            beanNode.parent().append(beanNode);
+            beanNode.parent().remove(beanNode);
         } else {
             beanNode.replaceNode {
-                addComment(delegate, "Lookup View")
+                addCommentIfNotExists(beanNode.parent(),"Lookup View");
                 bean(beanAttributes) {
                     addViewNameProperty(delegate, lookupTitle)
                     if (lookupTitle) {

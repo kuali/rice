@@ -63,11 +63,14 @@ class InquiryDefinitionBeanTransformer extends SpringBeanTransformer {
             copiedProperties = [];
         }
         if (isPlaceholder(beanNode)) {
+            addCommentIfNotExists(beanNode.parent(), "Inquiry View")
             beanNode.@id = translatedBeanId;
             beanNode.@parent = translatedParentId;
+            beanNode.parent().append(beanNode);
+            beanNode.parent().remove(beanNode);
         } else {
             beanNode.replaceNode {
-                addComment(delegate, "Inquiry View")
+                addCommentIfNotExists(beanNode.parent(), "Inquiry View")
                 bean(beanAttributes) {
                     addViewNameProperty(delegate, inquiryTitle)
                     if (inquiryTitle) {

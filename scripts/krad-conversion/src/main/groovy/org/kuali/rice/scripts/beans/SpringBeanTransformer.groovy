@@ -491,13 +491,38 @@ class SpringBeanTransformer {
      * used to add comments; current implementation uses meta tags in place of standard
      * comments (node.plus and the xml serialize did not handle xml comments well)
      *
-     * @param builder
+     * @param parent node
      * @param comment
-     * @return
      */
-    def addComment(NodeBuilder builder, String comment) {
-        if (comment != null) {
-            builder.meta(key: "comment", value: comment)
+    def addComment(Node parentNode, String comment) {
+        if (parentNode == null) {
+            throw new IllegalArgumentException ("parentNode must be specified");
+        }
+
+        if (comment == null) {
+            throw new IllegalArgumentException ("comment must be specified");
+        }
+
+        new Node(parentNode, "meta", [key: "comment", value: comment]);
+    }
+    /**
+     * Add comment if it doesn't exist yet.  Guarantees uniqueness.
+     *
+     * @param parent node
+     * @param comment
+     */
+    def addCommentIfNotExists(Node parentNode, String comment) {
+        if (parentNode == null) {
+            throw new IllegalArgumentException ("parentNode must be specified");
+        }
+
+        if (comment == null) {
+            throw new IllegalArgumentException ("comment must be specified");
+        }
+
+        def metaComment = parentNode.meta.find {it.@key=="comment" && it.@value==comment};
+        if (metaComment == null) {
+            addComment(parentNode, comment);
         }
     }
 

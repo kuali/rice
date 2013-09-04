@@ -83,6 +83,8 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("TopLink7", "KULRICE-10383 Demo Labs Kitchensink Collections freemarker exception in log when SQL updates have been applied");
 
         jiraMatches.put("document.newMaintainableObject.dataObject.extension.accountTypeCode", "KULRICE-10384 DemoTravelAccountMaintenanceNewSmokeTest update to use select for Type");
+
+        jiraMatches.put("//div[@class='span9 uif-fixedCssGridLayout']/div/div[@class='span3']/div/input[@name='inputField1']", "KULRICE-10333 Update DemoLibraryLayoutManagersCssGridLayoutSmokeTest");
         //jiraMatches.put("", "");
     }
 

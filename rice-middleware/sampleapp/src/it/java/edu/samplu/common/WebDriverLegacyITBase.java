@@ -870,17 +870,22 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     public void checkForDocError() {
         checkForIncidentReport();
         if (hasDocError()) {
-            String errorText = driver.findElement(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).getText();
-            errorText = ITUtil.blanketApprovalCleanUpErrorText(errorText);
-            if (driver.findElements(By.xpath(ITUtil.DIV_EXCOL_LOCATOR)).size() > 0) { // not present if errors are at the bottom of the page (see left-errmsg below)
-                errorText = ITUtil.blanketApprovalCleanUpErrorText(driver.findElement(
-                        By.xpath(ITUtil.DIV_EXCOL_LOCATOR)).getText()); // replacing errorText as DIV_EXCOL_LOCATOR includes the error count
-            }
-            if (driver.findElements(By.xpath(DIV_LEFT_ERRMSG)).size() > 0) {
-                errorText = errorText + ITUtil.blanketApprovalCleanUpErrorText(driver.findElement(By.xpath(DIV_LEFT_ERRMSG)).getText());
-            }
+            String errorText = extractErrorText();
             failableFail(errorText);
         }
+    }
+
+    protected String extractErrorText() {
+        String errorText = driver.findElement(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).getText();
+        errorText = ITUtil.blanketApprovalCleanUpErrorText(errorText);
+        if (driver.findElements(By.xpath(ITUtil.DIV_EXCOL_LOCATOR)).size() > 0) { // not present if errors are at the bottom of the page (see left-errmsg below)
+            errorText = ITUtil.blanketApprovalCleanUpErrorText(driver.findElement(
+                    By.xpath(ITUtil.DIV_EXCOL_LOCATOR)).getText()); // replacing errorText as DIV_EXCOL_LOCATOR includes the error count
+        }
+        if (driver.findElements(By.xpath(DIV_LEFT_ERRMSG)).size() > 0) {
+            errorText = errorText + ITUtil.blanketApprovalCleanUpErrorText(driver.findElement(By.xpath(DIV_LEFT_ERRMSG)).getText());
+        }
+        return errorText;
     }
 
     /**

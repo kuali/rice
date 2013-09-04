@@ -296,39 +296,23 @@ public class BreadcrumbOptions implements Serializable, Copyable {
         BreadcrumbOptions breadcrumbOptionsCopy = (BreadcrumbOptions) breadcrumbOptions;
 
         if (breadcrumbOverrides != null) {
-            List<BreadcrumbItem> breadcrumbOverrides = new ArrayList<BreadcrumbItem>();
-            for (BreadcrumbItem breadcrumbOverride : this.breadcrumbOverrides) {
-                breadcrumbOverrides.add((BreadcrumbItem) breadcrumbOverride.copy());
-            }
-
-            breadcrumbOptionsCopy.setBreadcrumbOverrides(breadcrumbOverrides);
+            List<BreadcrumbItem> breadcrumbOverridesCopy = ComponentUtils.copy(breadcrumbOverrides);
+            breadcrumbOptionsCopy.setBreadcrumbOverrides(breadcrumbOverridesCopy);
         }
 
         if (homewardPathBreadcrumbs != null) {
-            List<BreadcrumbItem> homewardPathBreadcrumbs = new ArrayList<BreadcrumbItem>();
-            for (BreadcrumbItem homewardPathBreadcrumb : this.homewardPathBreadcrumbs) {
-                homewardPathBreadcrumbs.add((BreadcrumbItem) homewardPathBreadcrumb.copy());
-            }
-
-            breadcrumbOptionsCopy.setHomewardPathBreadcrumbs(homewardPathBreadcrumbs);
+            List<BreadcrumbItem> homewardPathBreadcrumbsCopy = ComponentUtils.copy(homewardPathBreadcrumbs);
+            breadcrumbOptionsCopy.setHomewardPathBreadcrumbs(homewardPathBreadcrumbsCopy);
         }
 
         if (prePageBreadcrumbs != null) {
-            List<BreadcrumbItem> prePageBreadcrumbs = new ArrayList<BreadcrumbItem>();
-            for (BreadcrumbItem prePageBreadcrumb : this.prePageBreadcrumbs) {
-                prePageBreadcrumbs.add((BreadcrumbItem) prePageBreadcrumb.copy());
-            }
-
-            breadcrumbOptionsCopy.setPrePageBreadcrumbs(prePageBreadcrumbs);
+            List<BreadcrumbItem> prePageBreadcrumbsCopy = ComponentUtils.copy(prePageBreadcrumbs);
+            breadcrumbOptionsCopy.setPrePageBreadcrumbs(prePageBreadcrumbsCopy);
         }
 
         if (preViewBreadcrumbs != null) {
-            List<BreadcrumbItem> preViewBreadcrumbs = new ArrayList<BreadcrumbItem>();
-            for (BreadcrumbItem preViewBreadcrumb : this.preViewBreadcrumbs) {
-                preViewBreadcrumbs.add((BreadcrumbItem) preViewBreadcrumb.copy());
-            }
-
-            breadcrumbOptionsCopy.setPreViewBreadcrumbs(preViewBreadcrumbs);
+            List<BreadcrumbItem> preViewBreadcrumbsCopy = ComponentUtils.copy(preViewBreadcrumbs);
+            breadcrumbOptionsCopy.setPreViewBreadcrumbs(preViewBreadcrumbsCopy);
         }
     }
 }

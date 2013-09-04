@@ -535,10 +535,7 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
         }
 
         if (this.resolvedBreadcrumbItems != null) {
-            List<BreadcrumbItem> resolvedBreadcrumbItemsCopy = new ArrayList<BreadcrumbItem>();
-            for (BreadcrumbItem resolvedBreadcrumb : this.resolvedBreadcrumbItems) {
-                resolvedBreadcrumbItemsCopy.add((BreadcrumbItem) resolvedBreadcrumb.copy());
-            }
+            List<BreadcrumbItem> resolvedBreadcrumbItemsCopy = ComponentUtils.copy(resolvedBreadcrumbItems);
             parentLocationCopy.resolvedBreadcrumbItems = resolvedBreadcrumbItemsCopy;
         }
     }

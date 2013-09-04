@@ -46,6 +46,7 @@ import org.kuali.rice.krad.uif.util.BreadcrumbOptions;
 import org.kuali.rice.krad.uif.util.ClientValidationUtils;
 import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
+import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ParentLocation;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.widget.BlockUI;
@@ -2117,10 +2118,7 @@ public class View extends ContainerBase {
         }
 
         if (this.pathBasedBreadcrumbs != null) {
-            List<BreadcrumbItem> pathBasedBreadcrumbsCopy = new ArrayList<BreadcrumbItem>();
-            for (BreadcrumbItem pathBasedBreadcrumb : this.pathBasedBreadcrumbs) {
-                pathBasedBreadcrumbs.add((BreadcrumbItem) pathBasedBreadcrumb.copy());
-            }
+            List<BreadcrumbItem> pathBasedBreadcrumbsCopy = ComponentUtils.copy(pathBasedBreadcrumbs);
             viewCopy.setPathBasedBreadcrumbs(pathBasedBreadcrumbsCopy);
         }
 
@@ -2201,10 +2199,7 @@ public class View extends ContainerBase {
         }
 
         if (this.dialogs != null) {
-            List<Group> dialogsCopy = new ArrayList<Group>();
-            for (Group dialog : this.dialogs) {
-                dialogsCopy.add((Group) dialog.copy());
-            }
+            List<Group> dialogsCopy = ComponentUtils.copy(dialogs);
             viewCopy.setDialogs(dialogsCopy);
         }
 

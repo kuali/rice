@@ -813,18 +813,12 @@ public class LookupView extends FormView {
         }
 
         if (this.criteriaFields != null) {
-            List<Component> criteriaFieldsCopy = new ArrayList<Component>();
-            for (Component criteriaField : criteriaFields) {
-                criteriaFieldsCopy.add((Component) criteriaField.copy());
-            }
+            List<Component> criteriaFieldsCopy = ComponentUtils.copy(criteriaFields);
             lookupViewCopy.setCriteriaFields(criteriaFieldsCopy);
         }
 
         if (this.resultFields != null) {
-            List<Component> resultFieldsCopy = new ArrayList<Component>();
-            for (Component resultField : resultFields) {
-                resultFieldsCopy.add((Component) resultField.copy());
-            }
+            List<Component> resultFieldsCopy = ComponentUtils.copy(resultFields);
             lookupViewCopy.setResultFields(resultFieldsCopy);
         }
 

@@ -262,9 +262,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         }
 
         // Calculate the number of pages for the pager widget if we are using server paging
-        if ((this.getRichTable() == null || !this.getRichTable().isRender())
-                && ((CollectionGroup) container).isUseServerPaging()
-                && this.getPagerWidget() != null) {
+        if ((this.getRichTable() == null || !this.getRichTable().isRender()) && ((CollectionGroup) container)
+                .isUseServerPaging() && this.getPagerWidget() != null) {
             // Set the appropriate page, total pages, and link script into the Pager
             CollectionLayoutUtils.setupPagerWidget(pagerWidget, collectionGroup, model);
         }
@@ -2144,37 +2143,22 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         tableLayoutManagerCopy.setNumberOfDataColumns(this.numberOfDataColumns);
 
         if (this.headerLabels != null) {
-            List<Label> headerLabelsCopy = new ArrayList<Label>();
-            for (Label headerLabel : headerLabels) {
-                if (headerLabel != null) {
-                    headerLabelsCopy.add((Label) headerLabel.copy());
-                }
-            }
+            List<Label> headerLabelsCopy = ComponentUtils.copy(headerLabels);
             tableLayoutManagerCopy.setHeaderLabels(headerLabelsCopy);
         }
 
         if (this.allRowFields != null) {
-            List<Field> allRowFieldsCopy = new ArrayList<Field>();
-            for (Field allRowField : allRowFields) {
-                if (allRowField != null) {
-                    allRowFieldsCopy.add((Field) allRowField.copy());
-                }
-            }
+            List<Field> allRowFieldsCopy = ComponentUtils.copy(allRowFields);
             tableLayoutManagerCopy.setAllRowFields(allRowFieldsCopy);
         }
 
         if (this.firstRowFields != null) {
-            List<Field> firstRowFieldsCopy = new ArrayList<Field>();
-            for (Field firstRowField : firstRowFields) {
-                if (firstRowField != null) {
-                    firstRowFieldsCopy.add((Field) firstRowField.copy());
-                }
-            }
+            List<Field> firstRowFieldsCopy = ComponentUtils.copy(firstRowFields);
             tableLayoutManagerCopy.setFirstRowFields(firstRowFieldsCopy);
         }
 
         if (this.pagerWidget != null) {
-            tableLayoutManagerCopy.setPagerWidget((Pager)this.pagerWidget.copy());
+            tableLayoutManagerCopy.setPagerWidget((Pager) this.pagerWidget.copy());
         }
 
         if (this.richTable != null) {
@@ -2240,12 +2224,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         }
 
         if (this.footerCalculationComponents != null) {
-            List<Component> footerCalculationComponentsCopy = new ArrayList<Component>();
-            for (Component footerCalculationComponent : footerCalculationComponents) {
-                if (footerCalculationComponent != null) {
-                    footerCalculationComponentsCopy.add((Component) footerCalculationComponent.copy());
-                }
-            }
+            List<Component> footerCalculationComponentsCopy = ComponentUtils.copy(footerCalculationComponents);
             tableLayoutManagerCopy.setFooterCalculationComponents(footerCalculationComponentsCopy);
         }
 

@@ -584,10 +584,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
         }
 
         if (this.stackedGroups != null) {
-            List<Group> stackedGroupsCopy = new ArrayList<Group>();
-            for (Group stackedGroup : stackedGroups) {
-                stackedGroupsCopy.add((Group) stackedGroup.copy());
-            }
+            List<Group> stackedGroupsCopy = ComponentUtils.copy(stackedGroups);
             stackedLayoutManagerCopy.setStackedGroups(stackedGroupsCopy);
         }
 

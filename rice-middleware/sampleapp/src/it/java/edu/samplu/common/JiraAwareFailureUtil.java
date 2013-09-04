@@ -77,6 +77,8 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("img[src='/krad/images/validation/error.png']", "KULRICE-10372 DemoLibraryInputFieldSmokeTest mouse over error image fix");
 
         jiraMatches.put("SELECT ACCT_NUM, SUB_ACCT, OBJ_ID, SUB_ACCT_NAME, VER_NBR FROM TRV_SUB_ACCT WHERE (ACCT_NUM = ?)", "KULRICE-10381 2.4 SQL updates to resolve missing table exception in CI");
+
+        jiraMatches.put("Stacked Collection With Table Sub-Collection", "KULRICE-10382 DemoLibraryLayoutManagersStackedLayoutSmokeTest update to use select drop down");
         //jiraMatches.put("", "");
     }
 

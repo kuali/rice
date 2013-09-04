@@ -17,10 +17,7 @@ package edu.samplu.krad.library.layoutmanagers;
 
 import org.junit.Test;
 
-import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
 import edu.samplu.common.SmokeTestBase;
-import edu.samplu.common.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -45,7 +42,7 @@ public class DemoLibraryLayoutManagersStackedLayoutSmokeTest extends SmokeTestBa
     }
 
     protected void testLayoutManagersStackedLayout() throws Exception {
-       assertElementPresentByXpath("//div[@class='uif-collectionItem uif-gridCollectionItem uif-collectionAddItem']/div[@class='uif-footer']/div/button[contains(text(),'add')]");
+       waitForElementPresentByXpath("//div[@class='uif-collectionItem uif-gridCollectionItem uif-collectionAddItem']/div[@class='uif-footer']/div/button[contains(text(),'add')]");
        assertElementPresentByXpath("//div[@class='uif-collectionItem uif-gridCollectionItem']/div[@class='uif-footer']/div/button[contains(text(),'delete')]");
        assertElementPresentByXpath("//div[@class='uif-collectionItem uif-gridCollectionItem'][35]/div[@class='uif-footer']/div/button[contains(text(),'delete')]");
     }

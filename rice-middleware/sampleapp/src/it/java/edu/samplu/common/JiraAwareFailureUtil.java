@@ -79,6 +79,8 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("SELECT ACCT_NUM, SUB_ACCT, OBJ_ID, SUB_ACCT_NAME, VER_NBR FROM TRV_SUB_ACCT WHERE (ACCT_NUM = ?)", "KULRICE-10381 2.4 SQL updates to resolve missing table exception in CI");
 
         jiraMatches.put("Stacked Collection With Table Sub-Collection", "KULRICE-10382 DemoLibraryLayoutManagersStackedLayoutSmokeTest update to use select drop down");
+
+        jiraMatches.put("TopLink7", "KULRICE-10383 Demo Labs Kitchensink Collections freemarker exception in log when SQL updates have been applied");
         //jiraMatches.put("", "");
     }
 

@@ -109,38 +109,48 @@ class StrutsConverter {
             def actionClassName = ClassUtils.getShortClassName(actionBean.@type)
             def actionClassFiles = getActionClassFiles(javaClassSearchDirPath, actionClassName);
             if (actionClassFiles?.size() > 0) {
-                // gather relevant data to build controller
-                def baseActionClass = actionClassFiles[0];
-                def actionClassData = ClassParserUtils.parseClassFile(baseActionClass.text, true)
-
-                // gathering form data for action form
                 def actionBeanData = actionConverter.getActionBeanData(actionBean)
                 def formBeanData = formConverter.getFormBeanData(actionBeanData.formName, formBeans)
+                actionClassFiles.each { actionClassFile ->
+                    // gather relevant data to build controller
+                    def actionClassData = ClassParserUtils.parseClassFile(actionClassFile.text, true)
 
-                log.finer "build controller binding"
-                def controllerBinding = actionConverter.buildControllerBinding(formBeanData, actionBeanData, actionClassData)
-                controllerBinding.className = controllerBinding.className.replaceAll("\\{1\\}", "");
-                prefixes.add(controllerBinding.package)
-                def controllerText = buildController(controllerBinding)
+                    log.finer "build controller binding"
+                    def controllerBinding = actionConverter.buildControllerBinding(formBeanData, actionBeanData, actionClassData);
+                    log.finer "controller classfile - " + controllerBinding.className;
+                    def controllerFileName = ClassUtils.getShortClassName(controllerBinding.className) + ".java";
+                    // update classname and request mapping path if regex based
+                    log.finer "processing " + actionBeanData.class;
+                    def strutsPatternMatches = [];
+                    if (containsStrutsRegexPattern(actionBeanData.class)) {
+                        strutsPatternMatches = getStrutsRegexPatternMatch(actionClassFile.name, ClassUtils.getShortClassName(actionBeanData.class));
+                        log.finer "replacing all cases with " + strutsPatternMatches;
+                        controllerBinding.className = replaceStrutsPatternWithValues(controllerBinding.className, strutsPatternMatches);
+                        controllerBinding.uri = controllerBinding.uri.replaceAll("\\*", strutsPatternMatches[0]);
+                        controllerFileName = replaceStrutsPatternWithValues(controllerFileName, strutsPatternMatches);
+                    }
 
-                // build controller file
-                def controllerFileName = ClassUtils.getShortClassName(controllerBinding.className) + ".java"
-                controllerFileName = controllerFileName.replaceAll("\\{1\\}", "");
-                def controllerFilePath = javaClassOutputDirPath + ConversionUtils.getRelativePathFromPackage(controllerBinding.package)
-                ConversionUtils.buildFile(controllerFilePath, controllerFileName, controllerText)
-                log.finer "generating new controller file: " + controllerFileName
-                //   END - build controller
+                    prefixes.add(controllerBinding.package)
+                    def controllerText = buildController(controllerBinding)
 
-                // build view binding
-                def jspFiles = ConversionUtils.findFilesByName(jspSearchDirPath, actionBeanData.jspFile)
-                if (jspFiles.size() > 0) {
-                    // gather relevant data
-                    def jspRoot = JspParserUtils.parseJspFile(jspFiles[0].path)
-                    log.finer "transforming jsp into view class"
-                    def jspPageData = JstlConverter.transformPage(jspRoot, tagMap)
-                    actionConverter.buildUifViewFile(jspPageData, formBeanData, actionClassData)
+                    def controllerFilePath = javaClassOutputDirPath + ConversionUtils.getRelativePathFromPackage(controllerBinding.package)
+                    ConversionUtils.buildFile(controllerFilePath, controllerFileName, controllerText)
+                    log.finer "generating new controller file: " + controllerFileName
+                    //   END - build controller
+                    // build view binding
+                    def jspFilenameCriteria = actionBeanData.jspFile;
+                    if (containsStrutsRegexPattern(jspFilenameCriteria)) {
+                        jspFilenameCriteria = replaceStrutsPatternWithValues(actionBeanData.jspFile, strutsPatternMatches)
+                    }
+                    def jspFiles = ConversionUtils.findFilesByName(jspSearchDirPath, jspFilenameCriteria)
+                    jspFiles.each { jspFile ->
+                        // gather relevant data
+                        def jspRoot = JspParserUtils.parseJspFile(jspFile.path)
+                        def jspPageData = JstlConverter.transformPage(jspRoot, tagMap)
+                        actionConverter.buildUifViewFile(jspPageData, formBeanData, actionClassData)
+                    }
+
                 }
-
             }
         }
 
@@ -152,10 +162,37 @@ class StrutsConverter {
 
     }
 
+    protected boolean containsStrutsRegexPattern(String className) {
+        if (className =~ /\{\d\}/) {
+            return true;
+        }
+        return false;
+    }
+
+    protected getStrutsRegexPatternMatch(String actionClassName, String actionClassPattern) {
+        if (containsStrutsRegexPattern(actionClassPattern)) {
+            String actionClassNameString = actionClassPattern.replaceAll(~/\{\d\}/, "(.*?)");
+            def actionClassNamePattern = ~"${actionClassNameString}"
+            log.info "processing " + actionClassName + " and " + actionClassNameString;
+            def matches = actionClassName =~ actionClassNamePattern;
+            if (matches?.size() > 0) {
+                return matches[0][1..-1]; // exclude first element from list
+            }
+        }
+
+        return [];
+    }
+
+    protected String replaceStrutsPatternWithValues(String strutsClassName, List replacementValues) {
+        (0..<replacementValues.size()).each { count -> strutsClassName = strutsClassName.replaceAll("\\{" + (count + 1) + "\\}", replacementValues[count]) }
+
+        return strutsClassName;
+    }
+
     def getActionClassFiles(String javaClassSearchDirPath, String actionClassName) {
         def actionClassFiles = [];
         if (!StringUtils.isBlank(actionClassName)) {
-            if (actionClassName =~ /\{1\}/) {
+            if (containsStrutsRegexPattern(actionClassName)) {
                 String actionClassNameString = actionClassName.replaceAll("\\.", "\\\\.").replaceAll("\\{1\\}", ".*?") + "\\.java\$";
                 def actionClassNamePattern = ~"${actionClassNameString}"
                 actionClassFiles = ConversionUtils.findFilesByPattern(javaClassSearchDirPath, actionClassNamePattern);

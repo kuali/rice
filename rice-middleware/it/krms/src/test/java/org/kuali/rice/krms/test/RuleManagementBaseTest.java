@@ -27,6 +27,7 @@ import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameterType;
 import org.kuali.rice.krms.api.repository.proposition.PropositionType;
+import org.kuali.rice.krms.api.repository.reference.ReferenceObjectBinding;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.kuali.rice.krms.api.repository.term.TermDefinition;
 import org.kuali.rice.krms.api.repository.term.TermParameterDefinition;
@@ -391,5 +392,28 @@ public class RuleManagementBaseTest extends AbstractAgendaBoTest{
         assertEquals("Invalid number of agendaItems created", 7, agendaItems.size());
 
         return AgendaDefinition.Builder.create(ruleManagementServiceImpl.getAgenda(agendaXX00.getId()));
+    }
+
+
+    protected ReferenceObjectBinding.Builder buildReferenceObjectBinding(String agendaSuffix) {
+        String namespace = "Namespace" + agendaSuffix;
+        AgendaDefinition.Builder agendaBuilder = buildAgenda(agendaSuffix);
+        // create krms type for AgendaXXXX
+        KrmsTypeDefinition krmsTypeDefinition = createKrmsActionTypeDefinition(namespace, "AgendaType" + agendaSuffix , null);
+
+        return buildReferenceObjectBinding("ParkingPolicies", agendaBuilder.getId(), krmsTypeDefinition.getId(),
+                namespace, "PA" + agendaSuffix, "ParkingAffiliationType", true);
+    }
+
+
+    protected ReferenceObjectBinding.Builder buildReferenceObjectBinding(String collectionName, String krmsObjectId, String krmsDiscriminatorType,
+            String namespace, String referenceObjectId, String referenceDiscriminatorType, boolean active) {
+
+        ReferenceObjectBinding.Builder refObjBindingBuilder = ReferenceObjectBinding.Builder.
+                create(krmsDiscriminatorType, krmsObjectId, namespace, referenceDiscriminatorType,   referenceObjectId);
+        refObjBindingBuilder.setCollectionName(collectionName);
+        refObjBindingBuilder.setActive(active);
+
+        return  ReferenceObjectBinding.Builder.create(ruleManagementServiceImpl.createReferenceObjectBinding(refObjBindingBuilder.build()));
     }
 }

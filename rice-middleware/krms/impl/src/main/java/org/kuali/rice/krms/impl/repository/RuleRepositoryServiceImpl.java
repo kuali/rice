@@ -258,6 +258,9 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
     }
 
     protected CriteriaLookupService getCriteriaLookupService() {
+        if ( criteriaLookupService == null ) {
+            criteriaLookupService = KrmsRepositoryServiceLocator.getCriteriaLookupService();
+        }
         return criteriaLookupService;
     }
     

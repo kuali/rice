@@ -152,4 +152,12 @@ class SpringBeanTransformerTest extends BeanTransformerTestBase {
         Assert.assertEquals("child bean still exists", ddRootNode.findAll { parentName.equals(it.@name) }.size(), 0);
     }
 
+    @Test
+    public void testGetTranslatedBeanIdForParentBean() {
+        String beanId = "Book-LookupDefinition-parentBean";
+        String actualResult = springBeanTransformer.getTranslatedBeanId(beanId, "LookupDefinition", "Uif-LookupView");
+        String expectedResult = "Book-LookupView-parentBean";
+        Assert.assertEquals("incorrect translation of bean id", expectedResult, actualResult);
+    }
+
 }

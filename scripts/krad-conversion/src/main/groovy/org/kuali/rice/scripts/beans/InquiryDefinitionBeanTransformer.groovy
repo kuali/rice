@@ -81,7 +81,8 @@ class InquiryDefinitionBeanTransformer extends SpringBeanTransformer {
                     }
                     copyProperties(delegate, beanNode, copiedProperties);
 
-                    renameProperties(delegate, beanNode, ["inquirableClass": "viewHelperServiceClass", "authorizerClass": "authorizer", "presentationControllerClass": "presentationController"]);
+                    renameProperties(delegate, beanNode, ["inquirableClass": "viewHelperServiceClass"]);
+                    copyProperties(delegate, beanNode, ["authorizerClass", "presentationControllerClass"]);
                     transformInquirySectionsProperty(delegate, beanNode)
                 }
             }

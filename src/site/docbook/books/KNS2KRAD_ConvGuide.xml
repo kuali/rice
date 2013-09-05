@@ -820,6 +820,28 @@
                 extended unless advanced customizations are required.
             </para>
         </section>
+        <section><title>InquiryAuthorizer</title>
+            <para>KRAD moves the functionality of <emphasis role="keyword">InquiryAuthorizer</emphasis> to
+                <emphasis role="keyword">InquiryViewAuthorizer</emphasis>.  While the data dictionary entry will be
+                automatically converted, if it points to a custom implementation of
+                <emphasis role="keyword">InquiryAuthorizer</emphasis>, then the custom class will need to be reparented
+                to <emphasis role="keyword">InquiryViewAuthorizer</emphasis> and the methods will need to be migrated
+                to <emphasis role="keyword">canViewGroup</emphasis> (for sections) and
+                <emphasis role="keyword">canViewField</emphasis> (for fields).
+                <inlinemediaobject><imageobject><imagedata fileref="../images/badge-manualconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject>
+            </para>
+        </section>
+        <section><title>InquiryPresentationController</title>
+            <para>KRAD moves the functionality of <emphasis role="keyword">InquiryPresentationController</emphasis> to
+                <emphasis role="keyword">InquiryViewPresentationController</emphasis>.  While the data dictionary entry
+                will be automatically converted, if it points to a custom implementation of
+                <emphasis role="keyword">InquiryPresentationController</emphasis>, then the custom class will need to be
+                reparented to <emphasis role="keyword">InquiryViewPresentationController</emphasis> and the methods will
+                need to be migrated to <emphasis role="keyword">canViewGroup</emphasis> (for sections) and
+                <emphasis role="keyword">canViewField</emphasis> (for fields).
+                <inlinemediaobject><imageobject><imagedata fileref="../images/badge-manualconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject>
+            </para>
+        </section>
         <section><title>ModuleService / RemoteModuleServiceBase / ModuleServiceBase</title>
             <para>KRAD has both added and deprecated methods in this interface and its base classes.</para>
             <itemizedlist>

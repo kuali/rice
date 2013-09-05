@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif.component;
 
-import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -25,6 +24,7 @@ import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.control.ControlBase;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
+import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
@@ -1750,6 +1750,10 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @param value value of the data attribute
      */
     public void addDataAttribute(String key, String value) {
+        if (this.dataAttributes == null) {
+            this.dataAttributes = new HashMap<String, String>();
+        }
+
         dataAttributes.put(key, value);
     }
 
@@ -1904,7 +1908,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         if (!Validator.validateSpringEL(getConditionalRefresh())) {
             String currentValues[] = {"conditionalRefresh =" + getConditionalRefresh()};
             tracer.createError("conditionalRefresh must follow the Spring EL @{} format", currentValues);
-            ;
         }
     }
 
@@ -1914,10 +1917,10 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @return ComponentBase copy of the component
      */
     @Override
-    public <T> T copy() {
-        T copiedClass = null;
+    public ComponentBase copy() {
+        ComponentBase copiedClass = null;
         try {
-            copiedClass = (T) this.getClass().newInstance();
+            copiedClass = (ComponentBase) this.getClass().newInstance();
         } catch (Exception exception) {
             throw new RuntimeException();
         }
@@ -1971,7 +1974,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         componentCopy.setDisclosedByAction(this.disclosedByAction);
         componentCopy.setFinalizeMethodToCall(this.finalizeMethodToCall);
         componentCopy.setFinalizeMethodAdditionalArguments(this.finalizeMethodAdditionalArguments);
-        componentCopy.setFinalizeMethodInvoker(this.finalizeMethodInvoker);
+        componentCopy.setFinalizeMethodInvoker(CloneUtils.deepClone(this.finalizeMethodInvoker));
         componentCopy.setForceSessionPersistence(this.forceSessionPersistence);
         componentCopy.setHidden(this.hidden);
         componentCopy.setMethodToCallOnRefresh(this.methodToCallOnRefresh);

@@ -21,6 +21,7 @@ import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LookupService;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
 import org.kuali.rice.krad.uif.field.AttributeQuery;
 import org.kuali.rice.krad.uif.field.AttributeQueryResult;
@@ -108,50 +109,55 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
      * @param results the set of original results
      * @param fieldSuggest the Suggest widget
      */
-    private void retrievePropertiesOnResults(AttributeQueryResult queryResult, Collection<?> results,
-            Suggest fieldSuggest){
+    protected void retrievePropertiesOnResults(AttributeQueryResult queryResult, Collection<?> results,
+            Suggest fieldSuggest) {
         List<Object> suggestData = new ArrayList<Object>();
         for (Object result : results) {
+            if (result == null) {
+                continue;
+            }
 
             Map<String, String> propMap = new HashMap<String, String>();
 
-            //value prop
+            // if result is type string, use as both value and label
+            if (result instanceof String) {
+                propMap.put(UifParameters.VALUE, (String) result);
+                propMap.put(UifParameters.LABEL, (String) result);
+            }
+
+            // value prop
             Object suggestFieldValue = null;
             if (StringUtils.isNotBlank(fieldSuggest.getValuePropertyName())) {
-                suggestFieldValue = ObjectPropertyUtils.getPropertyValue(result,
-                        fieldSuggest.getValuePropertyName());
-            } else if (ObjectPropertyUtils.isReadableProperty(result, "value")) {
-                suggestFieldValue = ObjectPropertyUtils.getPropertyValue(result, "value");
+                suggestFieldValue = ObjectPropertyUtils.getPropertyValue(result, fieldSuggest.getValuePropertyName());
+            } else if (ObjectPropertyUtils.isReadableProperty(result, UifParameters.VALUE)) {
+                suggestFieldValue = ObjectPropertyUtils.getPropertyValue(result, UifParameters.VALUE);
             }
 
-            //set
             if (suggestFieldValue != null) {
-                propMap.put("value", suggestFieldValue.toString());
+                propMap.put(UifParameters.VALUE, suggestFieldValue.toString());
             }
 
-            //label prop
+            // label prop
             Object suggestFieldLabel = null;
             if (StringUtils.isNotBlank(fieldSuggest.getLabelPropertyName())) {
-                suggestFieldLabel = ObjectPropertyUtils.getPropertyValue(result,
-                        fieldSuggest.getLabelPropertyName());
-            } else if (ObjectPropertyUtils.isReadableProperty(result, "label")) {
-                suggestFieldLabel = ObjectPropertyUtils.getPropertyValue(result, "label");
+                suggestFieldLabel = ObjectPropertyUtils.getPropertyValue(result, fieldSuggest.getLabelPropertyName());
+            } else if (ObjectPropertyUtils.isReadableProperty(result, UifParameters.LABEL)) {
+                suggestFieldLabel = ObjectPropertyUtils.getPropertyValue(result, UifParameters.LABEL);
             }
 
-            //set
             if (suggestFieldLabel != null) {
-                propMap.put("label", suggestFieldLabel.toString());
+                propMap.put(UifParameters.LABEL, suggestFieldLabel.toString());
             }
 
-            //location suggest specific properties
+            // location suggest specific properties
             if (fieldSuggest instanceof LocationSuggest) {
-                handleLocationSuggestProperties((LocationSuggest)fieldSuggest, result, propMap);
+                handleLocationSuggestProperties((LocationSuggest) fieldSuggest, result, propMap);
             }
 
-            //additional properties
+            // additional properties
             handleAdditionalSuggestProperties(fieldSuggest, result, propMap);
 
-            //only add if there was a property to send back
+            // only add if there was a property to send back
             if (!propMap.isEmpty()) {
                 //TODO: need to apply formatter for field or have method in object property utils
                 suggestData.add(propMap);

@@ -65,7 +65,7 @@
         <bean parent="Uif-InputField" p:label="Suggest"
               p:instructionalText="auto-query configuration, type a1 or a2 for suggestions" p:propertyName="field61">
           <property name="suggest">
-            <bean parent="Uif-Suggest" p:render="true" p:valuePropertyName="number" p:returnFullQueryObject="true"
+            <bean parent="Uif-Suggest" p:render="true" p:valuePropertyName="number"
                   p:suggestQuery.dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"/>
           </property>
         </bean>
@@ -113,7 +113,7 @@
               p:instructionalText="static method and query result suggestions option, type a or c for suggestions"
               p:propertyName="field65">
           <property name="suggest">
-            <bean parent="Uif-Suggest" p:render="true" p:returnFullQueryObject="true">
+            <bean parent="Uif-Suggest" p:render="true">
               <property name="suggestQuery">
                 <bean parent="Uif-AttributeQueryConfig" p:queryMethodInvokerConfig.staticMethod=
                         "edu.sampleu.demo.TestSuggestClass.getLanguages"/>
@@ -238,7 +238,7 @@
         </bean>
 
         <bean parent="Uif-InputField" p:label="Object Options"
-              p:instructionalText="Retrieving a custom object using namePropertyName and labelPropertyName"
+              p:instructionalText="Retrieving a custom object using namePropertyName and labelPropertyName, enter anything"
               p:propertyName="field62">
           <property name="suggest">
             <bean parent="Uif-Suggest" p:render="true"

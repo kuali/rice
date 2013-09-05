@@ -27,6 +27,9 @@ import org.apache.commons.lang.StringUtils
 @Log
 class SpringBeanTransformer {
 
+    public static String PARENT_BEAN_SUFFIX = "-parentBean";
+    public static String UIF_PREFIX = "Uif-";
+
     // Used as the default prefix on all krad converted files
     public static String OUTPUT_CONV_FILE_PREFIX = "KradConv";
 
@@ -67,10 +70,21 @@ class SpringBeanTransformer {
             return transformBeanType;
         }
 
-        String prefix = beanId.split('-')[0];
-        transformBeanType = transformBeanType.replaceFirst("Uif-", "");
-        String suffix = beanId.contains("-parentBean") ? "-parentBean" : "";
-        return prefix + "-" + transformBeanType + suffix;
+        String translatedBeanId = beanId;
+        def origBeanTypePattern = ~"(?i)${originalBeanType}";
+        transformBeanType = transformBeanType.replaceFirst(UIF_PREFIX, "");
+
+        if (beanId =~ origBeanTypePattern) {
+            translatedBeanId = translatedBeanId.replaceAll(origBeanTypePattern, transformBeanType);
+        } else {
+            if (beanId.contains(PARENT_BEAN_SUFFIX)) {
+                translatedBeanId = translatedBeanId.replaceFirst(PARENT_BEAN_SUFFIX, "") + '-' + transformBeanType + PARENT_BEAN_SUFFIX;
+            } else {
+                translatedBeanId = translatedBeanId + '-' + transformBeanType;
+            }
+        }
+
+        return translatedBeanId;
     }
 
     public String getTransformableBeanType(Node beanNode) {
@@ -506,15 +520,16 @@ class SpringBeanTransformer {
      */
     def addComment(Node parentNode, String comment) {
         if (parentNode == null) {
-            throw new IllegalArgumentException ("parentNode must be specified");
+            throw new IllegalArgumentException("parentNode must be specified");
         }
 
         if (comment == null) {
-            throw new IllegalArgumentException ("comment must be specified");
+            throw new IllegalArgumentException("comment must be specified");
         }
 
         new Node(parentNode, "meta", [key: "comment", value: comment]);
     }
+
     /**
      * Add comment if it doesn't exist yet.  Guarantees uniqueness.
      *
@@ -523,14 +538,14 @@ class SpringBeanTransformer {
      */
     def addCommentIfNotExists(Node parentNode, String comment) {
         if (parentNode == null) {
-            throw new IllegalArgumentException ("parentNode must be specified");
+            throw new IllegalArgumentException("parentNode must be specified");
         }
 
         if (comment == null) {
-            throw new IllegalArgumentException ("comment must be specified");
+            throw new IllegalArgumentException("comment must be specified");
         }
 
-        def metaComment = parentNode.meta.find {it.@key=="comment" && it.@value==comment};
+        def metaComment = parentNode.meta.find { it.@key == "comment" && it.@value == comment };
         if (metaComment == null) {
             addComment(parentNode, comment);
         }

@@ -3886,7 +3886,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndClickByXpath(parentDocType);
         waitAndClickSearch();
         waitAndClickReturnValue();
-        String docTypeName = "DocType" + ITUtil.DTS;
+        String docTypeName = "DocType" + dts;
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", docTypeName);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedDocHandlerUrl']",
                 "${kr.url}/maintenance.do?methodToCall=docHandler");

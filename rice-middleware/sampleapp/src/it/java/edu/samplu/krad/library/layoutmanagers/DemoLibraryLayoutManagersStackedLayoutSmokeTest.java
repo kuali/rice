@@ -48,21 +48,40 @@ public class DemoLibraryLayoutManagersStackedLayoutSmokeTest extends SmokeTestBa
     }
     
     protected void testLayoutManagersStackedWithTableSubCollectionLayout() throws Exception {
-        waitAndClickByLinkText("Stacked Collection With Table Sub-Collection");
+        selectByName("exampleShown","Stacked Collection With Table Sub-Collection");
         assertElementPresentByXpath("//div[@class='uif-stackedCollectionLayout']/div[@class='uif-collectionItem uif-gridCollectionItem']/table/tbody/tr/td/div/input[@name='collection4[0].field1']");
         assertElementPresentByXpath("//div[@class='uif-stackedCollectionLayout']/div[@class='uif-collectionItem uif-gridCollectionItem']/div[@class='uif-footer']/div/button[contains(text(),'Update Official')]");
     }
     
     protected void testLayoutManagersStackedWithStackedSubCollectionLayout() throws Exception {
-        waitAndClickByLinkText("Stacked Collection with a Stacked Sub-Collection");
-        assertElementPresentByXpath("//div[@class='uif-collectionItem uif-gridCollectionItem uif-collectionAddItem']/table/tbody/td/div/input[@name='newCollectionLines['collection5'].field3']");
+        selectByName("exampleShown","Stacked Collection with a Stacked Sub-Collection");
+        assertElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-Collection3_disclosureContent']/div/div/table/tbody/tr[3]/td/div/input");
         assertElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-SubCollection2']/div[@class='uif-stackedCollectionLayout']/div/table");
-     }
+    }
+    
+    protected void testLayoutManagersStackedCollectionWithServersidePaging() throws Exception {
+        selectByName("exampleShown","Stacked Collection with server-side paging");
+        assertElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-Example4']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='pagination']/ul/li[4]/a");
+    }
+    
+    protected void testLayoutManagersStackedCollectionAjaxDisclosures() throws Exception {
+        selectByName("exampleShown","Stacked Collection Ajax Disclosures");
+        if(isElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-Example5']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-stackedCollectionLayout']/div[@class='uif-collectionItem uif-gridCollectionItem']/div[@class='uif-disclosureContent']/table"))
+        {
+            fail("Ajax Disclosure Not working!");
+        }
+        waitAndClickByLinkText("Item 100");
+        Thread.sleep(3000);
+        assertElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-Example5']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-stackedCollectionLayout']/div[@class='uif-collectionItem uif-gridCollectionItem']/div[@class='uif-disclosureContent']/table");
+    }
     
     @Test
     public void testLayoutManagersStackedLayoutBookmark() throws Exception {
         testLayoutManagersStackedLayout();
         testLayoutManagersStackedWithTableSubCollectionLayout();
+        testLayoutManagersStackedWithStackedSubCollectionLayout();
+        testLayoutManagersStackedCollectionWithServersidePaging();
+        testLayoutManagersStackedCollectionAjaxDisclosures();
         passed();
     }
 
@@ -70,6 +89,9 @@ public class DemoLibraryLayoutManagersStackedLayoutSmokeTest extends SmokeTestBa
     public void testLayoutManagersStackedLayoutNav() throws Exception {
         testLayoutManagersStackedLayout();
         testLayoutManagersStackedWithTableSubCollectionLayout();
+        testLayoutManagersStackedWithStackedSubCollectionLayout();
+        testLayoutManagersStackedCollectionWithServersidePaging();
+        testLayoutManagersStackedCollectionAjaxDisclosures();
         passed();
     }  
 }

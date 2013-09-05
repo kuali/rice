@@ -1056,6 +1056,21 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         return waitAndGetAttribute(By.xpath(locator), attribute);
     }
 
+    protected String[] waitAndGetText(By by) throws InterruptedException {
+        WebDriverUtil.waitFors(driver, DEFAULT_WAIT_SEC, by, "");
+        List<WebElement> found = findElements(by);
+        String[] texts = new String[found.size()];
+        int i = 0;
+        for (WebElement element: found) {
+            texts[i++] = element.getText();
+        }
+        if (texts.length == 0) {
+            jiraAwareFail(by.toString());
+        }
+        return texts;
+    }
+
+
     protected String getBaseUrlString() {
         return ITUtil.getBaseUrlString();
     }
@@ -1209,6 +1224,11 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         }
 
         return visibleWebElements;
+    }
+
+    protected List<WebElement> findElements(By by) {
+        List<WebElement> found = driver.findElements(by);
+        return found;
     }
 
     protected void fireEvent(String name, String event) {

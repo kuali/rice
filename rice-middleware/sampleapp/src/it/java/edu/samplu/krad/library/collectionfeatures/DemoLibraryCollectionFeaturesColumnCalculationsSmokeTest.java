@@ -15,8 +15,9 @@
  */
 package edu.samplu.krad.library.collectionfeatures;
 
-import org.junit.Test;
 import edu.samplu.common.SmokeTestBase;
+import org.junit.Test;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -41,13 +42,12 @@ public class DemoLibraryCollectionFeaturesColumnCalculationsSmokeTest extends Sm
     }
 
     protected void testCollectionFeaturesColumnCalculations() throws Exception {
-        Integer preValue=Integer.parseInt(getTextByXpath("//div[@id='Demo-TableLayoutTotaling-Section1']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span[@data-role]"));
+        Integer preValue=Integer.parseInt(waitAndGetText(By.xpath("//div[@id='Demo-TableLayoutTotaling-Section1']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span[@data-role]"))[0]);
         clearTextByName("collection1[0].field1");
         waitAndTypeByName("collection1[0].field1","0");
         waitAndTypeByName("newCollectionLines['collection1'].field1","");
         Integer postValue=Integer.parseInt(getTextByXpath("//div[@id='Demo-TableLayoutTotaling-Section1']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span[@data-role]"));
-        if(postValue>=preValue)
-        {
+        if(postValue>=preValue) {
             fail("Calculation Error !");
             
         }
@@ -55,13 +55,12 @@ public class DemoLibraryCollectionFeaturesColumnCalculationsSmokeTest extends Sm
     
     protected void testCollectionFeaturesColumnCalculationsOnKeyUp() throws Exception {
         selectByName("exampleShown","On Key Up");
-        Integer preValue=Integer.parseInt(getTextByXpath("//div[@id='Demo-TableLayoutTotaling-Section2']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span[@data-role]"));
+        Integer preValue=Integer.parseInt(waitAndGetText(By.xpath("//div[@id='Demo-TableLayoutTotaling-Section2']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span[@data-role]"))[0]);
         clearTextByName("collection1_2[0].field1");
         waitAndTypeByName("collection1_2[0].field1","0");
 //        waitAndTypeByName("newCollectionLines['collection1'].field1","");
         Integer postValue=Integer.parseInt(getTextByXpath("//div[@id='Demo-TableLayoutTotaling-Section2']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span[@data-role]"));
-        if(postValue>=preValue)
-        {
+        if(postValue>=preValue) {
             fail("Calculation Error !");
             
         }
@@ -69,13 +68,12 @@ public class DemoLibraryCollectionFeaturesColumnCalculationsSmokeTest extends Sm
     
     protected void testCollectionFeaturesColumnCalculationsSomeColumns() throws Exception {
         selectByName("exampleShown","Some Columns");
-        Integer preValue=Integer.parseInt(getTextByXpath("//div[@id='Demo-TableLayoutTotaling-Section3']/div/table/tfoot/tr/th[3]/div/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span[@data-role]"));
+        Integer preValue=Integer.parseInt(waitAndGetText(By.xpath("//div[@id='Demo-TableLayoutTotaling-Section3']/div/table/tfoot/tr/th[3]/div/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span[@data-role]"))[0]);
         clearTextByName("collection1_3[0].field2");
         waitAndTypeByName("collection1_3[0].field2","0");
         waitAndTypeByName("newCollectionLines['collection1_3'].field2","");
         Integer postValue=Integer.parseInt(getTextByXpath("//div[@id='Demo-TableLayoutTotaling-Section3']/div/table/tfoot/tr/th[3]/div/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span[@data-role]"));
-        if(postValue>=preValue)
-        {
+        if(postValue>=preValue) {
             fail("Calculation Error !");
             
         }
@@ -90,8 +88,7 @@ public class DemoLibraryCollectionFeaturesColumnCalculationsSmokeTest extends Sm
         selectByName("exampleShown","Multiple Options");
         assertElementPresentByXpath("//div[@id='Demo-TableLayoutTotaling-Section5']/div/table/tfoot/tr/th/div/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span[@data-role]");
         assertElementPresentByXpath("//div[@id='Demo-TableLayoutTotaling-Section5']/div/table/tfoot/tr/th/div/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span/label");
-        if(isElementPresentByXpath("//div[@id='Demo-TableLayoutTotaling-Section5']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span/label"))
-        {
+        if(isElementPresentByXpath("//div[@id='Demo-TableLayoutTotaling-Section5']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span/label")) {
             fail("Multiple Options Failure !");
         }
     }
@@ -102,8 +99,7 @@ public class DemoLibraryCollectionFeaturesColumnCalculationsSmokeTest extends Sm
         assertElementPresentByXpath("//div[@id='Demo-TableLayoutTotaling-Section6']/div/table/tfoot/tr/th[5]/div/div[@class='uif-verticalBoxLayout clearfix']/div[2]/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span[@data-role]");
         assertElementPresentByXpath("//div[@id='Demo-TableLayoutTotaling-Section6']/div/table/tfoot/tr/th[5]/div/div[@class='uif-verticalBoxLayout clearfix']/div[3]/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span[@data-role]");
         assertElementPresentByXpath("//div[@id='Demo-TableLayoutTotaling-Section6']/div/table/tfoot/tr/th[5]/div/div[@class='uif-verticalBoxLayout clearfix']/div[4]/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span[@data-role]");
-        if(isElementPresentByXpath("//div[@id='Demo-TableLayoutTotaling-Section6']/div/table/tfoot/tr/th/div/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span[@data-role]"))
-        {
+        if(isElementPresentByXpath("//div[@id='Demo-TableLayoutTotaling-Section6']/div/table/tfoot/tr/th/div/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span[@data-role]")) {
             fail("Multiple Calculations Failure !");
         }
     }

@@ -45,7 +45,7 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
             // these properties are being converted and should not be copied when carryoverProperties is enabled
             List ignoreOnCopyProperties = ["title", "inquirySections"];
 
-            def beanAttributes = somethingBeanAttributes(beanNode, maintenanceDefinitionBeanType, maintenanceViewBeanType, ignoreAttributes);
+            def beanAttributes = convertBeanAttributes(beanNode, maintenanceDefinitionBeanType, maintenanceViewBeanType, ignoreAttributes);
 
             List copiedProperties;
             if (carryoverProperties) {

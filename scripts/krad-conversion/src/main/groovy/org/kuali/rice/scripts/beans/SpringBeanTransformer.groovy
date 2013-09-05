@@ -433,13 +433,23 @@ class SpringBeanTransformer {
         return false;
     }
 
-    def Map somethingBeanAttributes(Node beanNode, String originalBeanType, String transformBeanType, List ignoreAttributes) {
+    /**
+     * Convert the bean attributes of view beans
+     *
+     * @param beanNode of the view
+     * @param originalBeanType of the view
+     * @param transformBeanType new view type
+     * @param ignoreAttributes list of know attributes that should not be carried over
+     * @return
+     */
+    def Map convertBeanAttributes(Node beanNode, String originalBeanType, String transformBeanType, List ignoreAttributes) {
         def translatedBeanId = getTranslatedBeanId(beanNode.@id, originalBeanType, transformBeanType);
         def translatedParentBeanId = getTranslatedBeanId(beanNode.@parent, originalBeanType, transformBeanType);
 
         def beanAttributesCarriedOver = [:]
         if (carryoverAttributes) {
             beanAttributesCarriedOver = beanNode.attributes();
+            beanAttributesCarriedOver.keySet().removeAll(["id", "parent"])
             if (ignoreAttributes.size() > 0) {
                 beanAttributesCarriedOver.keySet().removeAll(ignoreAttributes)
             };

@@ -36,6 +36,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.container.LightTable;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.field.ActionField;
@@ -322,6 +323,23 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
                 String lineSuffix = origCollectionGroup.getSubCollectionSuffix();
                 collectionGroup.setSubCollectionSuffix(lineSuffix);
+            }
+
+            // Handle LightTables, as well
+            List<LightTable> origLightTables = ComponentUtils.getComponentsOfTypeShallow(origComponent,
+                    LightTable.class);
+            List<LightTable> lightTables = ComponentUtils.getComponentsOfTypeShallow(component,
+                    LightTable.class);
+
+            for (int i = 0; i < lightTables.size(); i++) {
+                LightTable origLightTable = origLightTables.get(i);
+                LightTable lightTable = lightTables.get(i);
+
+                String prefix = origLightTable.getBindingInfo().getBindByNamePrefix();
+                if (StringUtils.isNotBlank(prefix) && StringUtils.isBlank(
+                        lightTable.getBindingInfo().getBindByNamePrefix())) {
+                    ComponentUtils.prefixBindingPath(lightTable, prefix);
+                }
             }
         }
 

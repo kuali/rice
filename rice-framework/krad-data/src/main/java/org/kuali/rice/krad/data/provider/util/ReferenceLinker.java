@@ -272,6 +272,10 @@ public class ReferenceLinker {
 				DataObjectWrapper<Object> collItemWrapper = getDataObjectService().wrap(collectionItem);
 				// Now - go through the keys relating the parent object to each child and set them so that they are
 				// linked properly
+				// This will also reset them to the parent's values in case they were changed.
+				// If this updates the PK fields of the collection objects, then the user is doing
+				// something they shouldn't (swapping Collection items between parent data objects)
+				// And it will blow up with an JPA exception anyway.
 				for (DataObjectAttributeRelationship rel : collectionAttributeRelationships) {
 					collItemWrapper.setPropertyValue(rel.getChildAttributeName(),
 							parentObjectWrapper.getPropertyValueNullSafe(rel.getParentAttributeName()));
@@ -279,4 +283,5 @@ public class ReferenceLinker {
 			}
 		}
     }
+
 }

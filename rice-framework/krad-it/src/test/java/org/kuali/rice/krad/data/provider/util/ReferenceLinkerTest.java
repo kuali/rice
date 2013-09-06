@@ -30,6 +30,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.data.PersistenceOption;
@@ -44,6 +45,7 @@ import org.kuali.rice.krad.test.document.bo.AccountType;
 import org.kuali.rice.krad.test.document.bo.ChildOfParentObjectWithGeneratedKey;
 import org.kuali.rice.krad.test.document.bo.ParentObjectWithGeneratedKey;
 import org.kuali.rice.krad.test.document.bo.ParentObjectWithUpdatableChild;
+import org.kuali.rice.krad.test.document.bo.ParentWithMultipleFieldKey;
 import org.kuali.rice.krad.test.document.bo.UpdatableChildObject;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.SQLDataLoader;
@@ -235,6 +237,14 @@ public class ReferenceLinkerTest extends KRADTestCase {
         disableJotmLogging();
     }
 
+//    @Test
+//    public void testChangePrimaryKey() {
+//        AccountManager am = getDOS().find(AccountManager.class, 1L);
+//        assertNotNull( "Error retrieving account manager", am );
+//        am.setAmId(124L);
+//        am = getDOS().save(am);
+//    }
+
     @Test
     public void existingParent_noExistingCollectionRecords_settingOfCollectionKeysOnNew() {
         // Get the AM record
@@ -298,6 +308,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
         }
     }
 
+
     @Test
     public void existingParent_setChildKeyValueToNull() {
         AccountExtension acct = getExAccount();
@@ -358,13 +369,21 @@ public class ReferenceLinkerTest extends KRADTestCase {
         //assertEquals( "Child object's key should have been changed after save", "ABC", obj.getUpdatableChild().getChildKey());
     }
 
-    @Test
-    public void existingParent_withUpdatableChild_changeChildObject() throws Exception {
+    protected void clearTestingTables() throws Exception {
         SQLDataLoader sqlDataLoader = new SQLDataLoader("DELETE FROM KRTST_PARENT_OF_UPDATABLE_T");
         sqlDataLoader.runSql();
         sqlDataLoader = new SQLDataLoader("DELETE FROM KRTST_UPDATABLE_CHILD_T");
         sqlDataLoader.runSql();
-        sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_PARENT_OF_UPDATABLE_T(PK_COL, UPDATABLE_CHILD_KEY_COL) VALUES(1, '123')");
+        sqlDataLoader = new SQLDataLoader("DELETE FROM KRTST_TWO_KEY_CHILD_T");
+        sqlDataLoader.runSql();
+        sqlDataLoader = new SQLDataLoader("DELETE FROM KRTST_PARENT_WITH_MULTI_KEY_T");
+        sqlDataLoader.runSql();
+    }
+
+    @Test
+    public void existingParent_withUpdatableChild_changeChildObject() throws Exception {
+        clearTestingTables();
+        SQLDataLoader sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_PARENT_OF_UPDATABLE_T(PK_COL, UPDATABLE_CHILD_KEY_COL) VALUES(1, '123')");
         sqlDataLoader.runSql();
         sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_UPDATABLE_CHILD_T(PK_COL, SOME_DATA_COL) VALUES('123', 'Some Data 123')");
         sqlDataLoader.runSql();
@@ -399,6 +418,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
         System.err.println( "After Saving: " + obj );
         assertEquals( "Child object's key should have been set after save", "789", obj.getUpdatableChild().getChildKey());
 
+        System.err.println( getDOS().findMatching(ParentObjectWithUpdatableChild.class, QueryByCriteria.Builder.create().build()));
         obj = getDOS().find(ParentObjectWithUpdatableChild.class, 56L);
         assertNotNull("after reload from DB, unable to find object", obj);
         child = getDOS().find(UpdatableChildObject.class, "789");
@@ -430,6 +450,51 @@ public class ReferenceLinkerTest extends KRADTestCase {
         assertNotNull("after reload from DB, unable to find object", obj);
         assertNotNull("after reload from DB, child object was not loaded", obj.getUpdatableChild());
     }
+
+    @Test
+    public void newTwoKeyParentObject_setChildReferenceKeyValue_saveNoRefresh() throws Exception {
+        clearTestingTables();
+        SQLDataLoader sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_TWO_KEY_CHILD_T(FIN_COA_CD, ORG_CD) VALUES('3', 'ACCT')");
+        sqlDataLoader.runSql();
+        //sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_UPDATABLE_CHILD_T(PK_COL, SOME_DATA_COL) VALUES('123', 'Some Data 123')");
+        // Create a new object and add an existing account type by object
+        ParentWithMultipleFieldKey acct = new ParentWithMultipleFieldKey();
+        acct.setChartOfAccountsCode("3");
+        acct.setAccountNumber("6620110");
+
+        acct.setOrganizationCode("ACCT");
+        assertNull( "Before saving account type object should have been null", acct.getOrganization());
+
+        // Save the object and test the result
+        enableJotmLogging();
+        acct = getDOS().save(acct);
+        assertNull( "After saving, the child object should still be null", acct.getOrganization());
+
+        disableJotmLogging();
+    }
+
+    @Test
+    public void newTwoKeyParentObject_setChildReferenceKeyValue_saveWithRefresh() throws Exception {
+        clearTestingTables();
+        SQLDataLoader sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_TWO_KEY_CHILD_T(FIN_COA_CD, ORG_CD) VALUES('3', 'ACCT')");
+        sqlDataLoader.runSql();
+        // Create a new object and add an existing account type by object
+        ParentWithMultipleFieldKey acct = new ParentWithMultipleFieldKey();
+        acct.setChartOfAccountsCode("3");
+        acct.setAccountNumber("6620110");
+
+        acct.setOrganizationCode("ACCT");
+        assertNull( "Before saving account type object should have been null", acct.getOrganization());
+
+        // Save the object and test the result
+        enableJotmLogging();
+        acct = getDOS().save(acct,PersistenceOption.FLUSH,PersistenceOption.REFRESH);
+        assertNotNull( "After saving, the child object should be available", acct.getOrganization());
+        assertEquals( "After saving, the org code on the object should have been the one from the parent object", acct.getOrganizationCode(), acct.getOrganization().getOrganizationCode());
+
+        disableJotmLogging();
+    }
+
     /*
     INSERT INTO KRTST_PARENT_OF_UPDATABLE_T(PK_COL, UPDATABLE_CHILD_KEY_COL) VALUES(1, '123')
     /

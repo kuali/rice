@@ -230,7 +230,7 @@ public class DemoLibraryInputFieldSmokeTest extends DemoLibraryBase {
 
         waitAndClick(By.cssSelector("#" + controlId));
         waitAndClick(By.cssSelector("#" + fieldId));
-
+        fireMouseOverEventByName("inputField10");
         if (!field.getAttribute("class").contains("uif-hasError")) {
             fail("Control does not show error class");
         }

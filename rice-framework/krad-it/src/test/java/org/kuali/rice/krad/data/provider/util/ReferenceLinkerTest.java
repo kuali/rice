@@ -46,6 +46,7 @@ import org.kuali.rice.krad.test.document.bo.ChildOfParentObjectWithGeneratedKey;
 import org.kuali.rice.krad.test.document.bo.ParentObjectWithGeneratedKey;
 import org.kuali.rice.krad.test.document.bo.ParentObjectWithUpdatableChild;
 import org.kuali.rice.krad.test.document.bo.ParentWithMultipleFieldKey;
+import org.kuali.rice.krad.test.document.bo.ParentWithMultipleFieldKeyId;
 import org.kuali.rice.krad.test.document.bo.UpdatableChildObject;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.SQLDataLoader;
@@ -469,6 +470,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
         enableJotmLogging();
         acct = getDOS().save(acct);
         assertNull( "After saving, the child object should still be null", acct.getOrganization());
+        assertEquals( "After saving, the FK field should still be set", "ACCT", acct.getOrganizationCode());
 
         disableJotmLogging();
     }
@@ -495,6 +497,30 @@ public class ReferenceLinkerTest extends KRADTestCase {
         disableJotmLogging();
     }
 
+    @Test
+    public void existingTwoKeyParentObject_setChildReferenceKeyValueToNull_saveWithRefresh() throws Exception {
+        clearTestingTables();
+        SQLDataLoader sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_TWO_KEY_CHILD_T(FIN_COA_CD, ORG_CD) VALUES('3', 'ACCT')");
+        sqlDataLoader.runSql();
+        sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_PARENT_WITH_MULTI_KEY_T(FIN_COA_CD, ACCOUNT_NBR, ORG_CD) VALUES('3', '6620110', 'ACCT')");
+        sqlDataLoader.runSql();
+        // Create a new object and add an existing account type by object
+        ParentWithMultipleFieldKey acct = getDOS().find(ParentWithMultipleFieldKey.class,
+                new ParentWithMultipleFieldKeyId("3", "6620110"));
+        assertNotNull("Unable to retreive 3-6620110 from database", acct);
+        assertNotNull( "After loading, organization object should not have been null", acct.getOrganization());
+
+        acct.setOrganizationCode(null);
+        assertNotNull( "Before saving organization object should not have been null", acct.getOrganization());
+
+        // Save the object and test the result
+        enableJotmLogging();
+        acct = getDOS().save(acct,PersistenceOption.FLUSH,PersistenceOption.REFRESH);
+        assertNull( "After saving, the child object no longer be available", acct.getOrganization());
+
+        disableJotmLogging();
+    }
+
     /*
     INSERT INTO KRTST_PARENT_OF_UPDATABLE_T(PK_COL, UPDATABLE_CHILD_KEY_COL) VALUES(1, '123')
     /
@@ -507,6 +533,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
 
      */
     // TODO: Test deletion of child records - references and collections
+    // I.e., removal of records from objects - with and without orphan removal
 
     protected AccountExtension getExAccount() {
         AccountExtension acct = getDOS().find(AccountExtension.class, "EX_TYPE");

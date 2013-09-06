@@ -336,7 +336,7 @@ public class FieldBase extends ComponentBase implements Field {
      */
     @Override
     public void setComponentSecurity(ComponentSecurity componentSecurity) {
-        if (!(componentSecurity instanceof FieldSecurity)) {
+        if ((componentSecurity != null) && !(componentSecurity instanceof FieldSecurity)) {
             throw new RiceRuntimeException("Component security for Field should be instance of FieldSecurity");
         }
 

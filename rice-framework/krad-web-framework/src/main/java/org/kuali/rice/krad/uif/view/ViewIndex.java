@@ -16,11 +16,11 @@
 package org.kuali.rice.krad.uif.view;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ViewCleaner;
 
@@ -32,7 +32,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Holds field indexes of a <code>View</code> instance for retrieval
+ * Holds component indexes of a <code>View</code> instance for convenient retrieval during the lifecycle
+ * and persisting components for the refresh process
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -41,14 +42,20 @@ public class ViewIndex implements Serializable {
 
     protected Map<String, Component> index;
     protected Map<String, DataField> dataFieldIndex;
+    protected Set<String> idsToHoldInIndex;
+
     protected Map<String, CollectionGroup> collectionsIndex;
 
     protected Map<String, Component> initialComponentStates;
+
+    protected Set<String> idsToHoldInitialState;
 
     protected Map<String, PropertyEditor> fieldPropertyEditors;
     protected Map<String, PropertyEditor> secureFieldPropertyEditors;
     protected Map<String, Integer> idSequenceSnapshot;
     protected Map<String, Map<String, String>> componentExpressionGraphs;
+
+    protected Map<String, Map<String, Object>> postContext;
 
     /**
      * Constructs new instance
@@ -56,12 +63,15 @@ public class ViewIndex implements Serializable {
     public ViewIndex() {
         index = new HashMap<String, Component>();
         dataFieldIndex = new HashMap<String, DataField>();
+        idsToHoldInIndex = new HashSet<String>();
         collectionsIndex = new HashMap<String, CollectionGroup>();
         initialComponentStates = new HashMap<String, Component>();
+        idsToHoldInitialState = new HashSet<String>();
         fieldPropertyEditors = new HashMap<String, PropertyEditor>();
         secureFieldPropertyEditors = new HashMap<String, PropertyEditor>();
         idSequenceSnapshot = new HashMap<String, Integer>();
         componentExpressionGraphs = new HashMap<String, Map<String, String>>();
+        postContext = new HashMap<String, Map<String, Object>>();
     }
 
     /**
@@ -141,88 +151,97 @@ public class ViewIndex implements Serializable {
      * needed for the post
      */
     public void clearIndexesAfterRender() {
-        // build list of factory ids for components whose initial state needs to be keep
-        Set<String> holdIds = new HashSet<String>();
-        Set<String> holdFactoryIds = new HashSet<String>();
+        // build list of factory ids for components whose initial or final state needs to be kept
         for (Component component : index.values()) {
-            if (component != null) {
-                // if component has a refresh condition we need to keep it
-                if (!component.isDisableSessionPersistence() && (StringUtils.isNotBlank(
-                        component.getProgressiveRender())
-                        || StringUtils.isNotBlank(component.getConditionalRefresh())
-                        || component.getRefreshTimer() > 0
-                        || (component.getRefreshWhenChangedPropertyNames() != null && !component
-                        .getRefreshWhenChangedPropertyNames().isEmpty())
-                        || component.isRefreshedByAction()
-                        || component.isDisclosedByAction())) {
-                    holdFactoryIds.add(component.getBaseId());
-                    holdIds.add(component.getId());
-                }
-                // if component is marked as persist in session we need to keep it
-                else if (component.isForceSessionPersistence()) {
-                    holdFactoryIds.add(component.getBaseId());
-                    holdIds.add(component.getId());
-                }
-                // hold collection if being used for table data export
-                else if (component instanceof CollectionGroup && ((CollectionGroup) component)
-                        .getLayoutManager() instanceof TableLayoutManager && usesTableExportOption(
-                        (TableLayoutManager) ((CollectionGroup) component).getLayoutManager())) {
-                    holdFactoryIds.add(component.getBaseId());
-                    holdIds.add(component.getId());
-                }
-                // if component is a collection we need to keep it
-                else if (component instanceof CollectionGroup && !component.isDisableSessionPersistence()) {
-                    ViewCleaner.cleanCollectionGroup((CollectionGroup) component);
-                    holdFactoryIds.add(component.getBaseId());
-                    holdIds.add(component.getId());
-                }
-                // if component is input field and has a query we need to keep the final state
-                else if ((component instanceof InputField) && !component.isDisableSessionPersistence()) {
-                    InputField inputField = (InputField) component;
-                    if ((inputField.getAttributeQuery() != null) || ((inputField.getSuggest() != null) && inputField
-                            .getSuggest().isRender())) {
-                        holdIds.add(component.getId());
-                    }
+            if (component == null) {
+                continue;
+            }
+
+            if (component.isDisableSessionPersistence()) {
+                continue;
+            }
+
+            if (component.isForceSessionPersistence() || canBeRefreshed(component)) {
+                idsToHoldInitialState.add(component.getBaseId());
+                idsToHoldInIndex.add(component.getId());
+            }
+            // if component is a collection we need to keep it for add/delete and other collection functions
+            else if (component instanceof CollectionGroup) {
+                idsToHoldInitialState.add(component.getBaseId());
+                idsToHoldInIndex.add(component.getId());
+            }
+            else if ((component instanceof InputField)) {
+                InputField inputField = (InputField) component;
+
+                if ((inputField.getAttributeQuery() != null) || ((inputField.getSuggest() != null) && inputField
+                        .getSuggest().isRender())) {
+                    idsToHoldInIndex.add(component.getId());
                 }
             }
         }
 
-        // remove initial states for components we don't need for post
+        // now filter the indexes to include only the components that we need (determined above)
         Map<String, Component> holdInitialComponentStates = new HashMap<String, Component>();
         for (String factoryId : initialComponentStates.keySet()) {
-            if (holdFactoryIds.contains(factoryId)) {
+            if (idsToHoldInitialState.contains(factoryId)) {
                 holdInitialComponentStates.put(factoryId, initialComponentStates.get(factoryId));
             }
         }
         initialComponentStates = holdInitialComponentStates;
 
-        // remove final states for components we don't need for post
         Map<String, Component> holdComponentStates = new HashMap<String, Component>();
         for (String id : index.keySet()) {
-            if (holdIds.contains(id)) {
-                Component component = index.get(id);
-                holdComponentStates.put(id, component);
+            if (idsToHoldInIndex.contains(id)) {
+                Component component = this.index.get(id);
 
                 // hold expressions for refresh (since they could have been pushed from a parent)
-                if (!component.getRefreshExpressionGraph().isEmpty()) {
+                if ((component.getRefreshExpressionGraph() != null) && !component.getRefreshExpressionGraph()
+                        .isEmpty()) {
                     componentExpressionGraphs.put(component.getBaseId(), component.getRefreshExpressionGraph());
                 }
+
+                ViewCleaner.cleanComponent(component, this);
+
+                holdComponentStates.put(id, component);
             }
         }
         index = holdComponentStates;
+
+        for (CollectionGroup collectionGroup : collectionsIndex.values()) {
+            ViewCleaner.cleanComponent(collectionGroup, this);
+        }
 
         dataFieldIndex = new HashMap<String, DataField>();
     }
 
     /**
-     * checks the export feature is being used
+     * Indicates if the given component has configuration that it allows it to be refreshed
      *
-     * @param layoutManager
-     * @return
+     * @param component instance to check
+     * @return true if component can be refreshed, false if not
      */
-    private boolean usesTableExportOption(TableLayoutManager layoutManager) {
-        return layoutManager.getRichTable() != null && (layoutManager.getRichTable().isShowExportOption()
-                || layoutManager.getRichTable().isShowSearchAndExportOptions());
+    protected boolean canBeRefreshed(Component component) {
+        boolean canBeRefreshed = false;
+
+        boolean hasRefreshCondition = StringUtils.isNotBlank(component.getProgressiveRender()) ||
+                StringUtils.isNotBlank(component.getConditionalRefresh()) || (component.getRefreshTimer() > 0) ||
+                (component.getRefreshWhenChangedPropertyNames() != null && !component
+                        .getRefreshWhenChangedPropertyNames().isEmpty());
+
+        canBeRefreshed = hasRefreshCondition || component.isRefreshedByAction() || component.isDisclosedByAction();
+
+        return canBeRefreshed;
+    }
+
+    /**
+     * Indicates whether the given component id is for a component maintained by the view index for
+     * the refresh process
+     *
+     * @param componentId id for the component to check
+     * @return true if the component id is for a refreshed component, false if not
+     */
+    public boolean isIdForRefreshComponent(String componentId) {
+        return idsToHoldInIndex.contains(componentId);
     }
 
     /**
@@ -417,6 +436,62 @@ public class ViewIndex implements Serializable {
     }
 
     /**
+     * A map of state that is held in the session
+     *
+     * <p>
+     * Instead of storing entire components in the session in order to retrieve information for posts, just the
+     * state that is needed can be added to this map and then retrieve on the post through the posted view's index
+     * </p>
+     *
+     * @return Map of post context which is a map of maps. First map is keyed by component id, then each map
+     * value gives the context for that component
+     */
+    public Map<String, Map<String, Object>> getPostContext() {
+        return postContext;
+    }
+
+    /**
+     * Adds an entry to the post context for the given component
+     *
+     * @param componentId id of the component the context is associated with
+     * @param entryKey key for the entry
+     * @param entryValue value for the entry
+     */
+    public void addPostContextEntry(String componentId, String entryKey, Object entryValue) {
+        Map<String, Object> componentContext = null;
+
+        if (postContext.containsKey(componentId)) {
+            componentContext = postContext.get(componentId);
+        } else {
+            componentContext = new HashMap<String, Object>();
+            postContext.put(componentId, componentContext);
+        }
+
+        componentContext.put(entryKey, entryValue);
+    }
+
+    /**
+     * Retrieves a context entry values for the given component and entry key
+     *
+     * @param componentId id of the component the entry is associated with
+     * @param entryKey key for the entry
+     * @return value associated with the entry, or null if entry is not found
+     */
+    public Object getPostContextEntry(String componentId, String entryKey) {
+        Object entryValue = null;
+
+        Map<String, Object> componentContext = null;
+
+        if (postContext.containsKey(componentId)) {
+            componentContext = postContext.get(componentId);
+
+            entryValue = componentContext.get(entryKey);
+        }
+
+        return entryValue;
+    }
+
+    /**
      * Returns a clone of the view index.
      *
      * @return ViewIndex clone
@@ -476,6 +551,10 @@ public class ViewIndex implements Serializable {
         if (this.componentExpressionGraphs != null) {
             viewIndexCopy.componentExpressionGraphs = new HashMap<String, Map<String, String>>(
                     this.componentExpressionGraphs);
+        }
+
+        if (this.postContext != null) {
+            viewIndexCopy.postContext = new HashMap<String, Map<String, Object>>(this.postContext);
         }
 
         return viewIndexCopy;

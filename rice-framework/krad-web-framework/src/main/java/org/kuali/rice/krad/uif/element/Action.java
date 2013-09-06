@@ -616,7 +616,7 @@ public class Action extends ContentElementBase {
      */
     @Override
     public void setComponentSecurity(ComponentSecurity componentSecurity) {
-        if (!(componentSecurity instanceof ActionSecurity)) {
+        if ((componentSecurity != null) && !(componentSecurity instanceof ActionSecurity)) {
             throw new RiceRuntimeException("Component security for Action should be instance of ActionSecurity");
         }
 

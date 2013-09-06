@@ -883,7 +883,7 @@ public class CollectionGroup extends Group implements DataBinding {
      */
     @Override
     public void setComponentSecurity(ComponentSecurity componentSecurity) {
-        if (!(componentSecurity instanceof CollectionGroupSecurity)) {
+        if ((componentSecurity != null) && !(componentSecurity instanceof CollectionGroupSecurity)) {
             throw new RiceRuntimeException(
                     "Component security for CollectionGroup should be instance of CollectionGroupSecurity");
         }

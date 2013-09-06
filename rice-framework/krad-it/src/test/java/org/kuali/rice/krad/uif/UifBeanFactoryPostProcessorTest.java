@@ -17,9 +17,7 @@ package org.kuali.rice.krad.uif;
 
 import org.junit.Test;
 import org.kuali.rice.krad.test.TestDictionaryBean;
-import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.view.InquiryView;
 import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.krad.test.TestDictionaryConfig;
 

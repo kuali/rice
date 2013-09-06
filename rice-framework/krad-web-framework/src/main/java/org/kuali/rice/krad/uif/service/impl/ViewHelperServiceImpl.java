@@ -1178,6 +1178,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             applyDefaultValues(view, view, model);
             ((ViewModel) model).setDefaultsApplied(true);
         }
+
+        setExpressionEvaluator(null);
     }
 
     /**
@@ -1747,7 +1749,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             // TODO: should check to see if there is an add line method on the
             // collection parent and if so call that instead of just adding to
             // the collection (so that sequence can be set)
-            addLine(collection, addLine, collectionGroup.getAddLinePlacement().equals("TOP"));
+            addLine(collection, addLine, collectionGroup.getAddLinePlacement().equals(
+                    UifConstants.Position.TOP.name()));
 
             // make a new instance for the add line
             collectionGroup.initializeNewCollectionLine(view, model, collectionGroup, true);

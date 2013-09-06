@@ -133,7 +133,8 @@ public class ValidationMessages extends ContentElementBase {
         //Add identifying data attributes
         this.addDataAttribute(UifConstants.DataAttributes.MESSAGES_FOR, parent.getId());
 
-        if (parent.getDataAttributes().get(UifConstants.DataAttributes.PARENT) == null) {
+        if ((parent.getDataAttributes() == null) || (parent.getDataAttributes().get(UifConstants.DataAttributes.PARENT)
+                == null)) {
             parent.addDataAttribute(UifConstants.DataAttributes.PARENT, parentContainerId);
         }
 

@@ -34,7 +34,7 @@ public class DemoTravelAccountMaintenanceNewSmokeTest extends SmokeTestBase {
     public static final String FANCY_BOX_IFRAME_XPATH = "//iframe[@class='fancybox-iframe']";
 
     /**
-     * /kr-krad/maintenance?methodToCall=start&dataObjectClassName=org.kuali.rice.krad.demo.travel.account.TravelAccount&hideReturnLink=true
+     * /kr-krad/maintenance?methodToCall=start&dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount&hideReturnLink=true
      */
     public static final String BOOKMARK_URL = "/kr-krad/maintenance?methodToCall=start&dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount&hideReturnLink=true";
 
@@ -66,17 +66,17 @@ public class DemoTravelAccountMaintenanceNewSmokeTest extends SmokeTestBase {
     /**
      * Travel account type code field
      */
-    public static final String TRAVEL_ACCOUNT_TYPE_CODE_FIELD = "document.newMaintainableObject.dataObject.extension.accountTypeCode";
+    public static final String TRAVEL_ACCOUNT_TYPE_CODE_FIELD = "document.newMaintainableObject.dataObject.accountTypeCode";
 
     /**
      * Travel sub account field
      */
-    public static final String SUB_ACCOUNT_FIELD = "document.newMaintainableObject.dataObject.subAccount";
+    public static final String SUB_ACCOUNT_FIELD_XPATH = "//div[@data-label='Travel Sub Account Number']/input";
 
     /**
      * Travel sub account name field
      */
-    public static final String SUB_ACCOUNT_NAME_FIELD = "document.newMaintainableObject.dataObject.subAccountName";
+    public static final String SUB_ACCOUNT_NAME_FIELD_XPATH = "//div[@data-label='Sub Account Name']/input";
 
     /**
      * Subsidized percent
@@ -91,7 +91,7 @@ public class DemoTravelAccountMaintenanceNewSmokeTest extends SmokeTestBase {
     /**
      * Fiscal officer ID
      */
-    public static final String FISCAL_OFFICER_ID_FIELD = "document.newMaintainableObject.dataObject.foId";
+    public static final String FISCAL_OFFICER_ID_FIELD = "document.newMaintainableObject.dataObject.fiscalOfficer.principalName";
 
     @Override
     public String getBookmarkUrl() {
@@ -106,8 +106,6 @@ public class DemoTravelAccountMaintenanceNewSmokeTest extends SmokeTestBase {
     protected void testTravelAccountMaintenanceNew() throws Exception {
         waitAndTypeByName("document.documentHeader.documentDescription","Travel Account Maintenance New Test Document");
         waitAndTypeByName("document.newMaintainableObject.dataObject.number","a1");
-        waitAndClickByXpath("//input[@alt='Direct Inquiry']");
-        waitAndClickByXpath(FANCY_BOX_CLOSE_XPATH);
         assertTextPresent("Travel Account Maintenance");
     }
 
@@ -117,9 +115,9 @@ public class DemoTravelAccountMaintenanceNewSmokeTest extends SmokeTestBase {
         waitAndTypeByName(ORGANIZATION_DOCUMENT_NUMBER_FIELD,"\"/><script>alert('!')</script>");
         waitAndTypeByName(TRAVEL_ACCOUNT_NAME_FIELD,"blah");
         waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_FIELD,"blah");
-        waitAndTypeByName(TRAVEL_ACCOUNT_TYPE_CODE_FIELD,"CAT");
-        waitAndTypeByName(SUB_ACCOUNT_FIELD,"a1");
-        waitAndTypeByName(SUB_ACCOUNT_NAME_FIELD,"\"/><script>alert('!')</script>");
+        selectByName(TRAVEL_ACCOUNT_TYPE_CODE_FIELD,"Clearing Account Type");
+        waitAndTypeByXpath(SUB_ACCOUNT_FIELD_XPATH,"a1");
+        waitAndTypeByXpath(SUB_ACCOUNT_NAME_FIELD_XPATH,"\"/><script>alert('!')</script>");
         waitAndTypeByName(SUBSIDIZED_PERCENT_FIELD,"\"/><script>alert('!')</script>");
         waitAndTypeByName(DATE_CREATED_FIELD,"\"/><script>alert('!')</script>");
         waitAndTypeByName(FISCAL_OFFICER_ID_FIELD,"\"/><script>alert('!')</script>");
@@ -150,7 +148,7 @@ public class DemoTravelAccountMaintenanceNewSmokeTest extends SmokeTestBase {
         passed();
     }
 
-    @Test
+//    @Test
     public void testDemoTravelAccountMaintenanceNewNav() throws Exception {
         testTravelAccountMaintenanceEditXss();
         testTravelAccountMaintenanceNew();

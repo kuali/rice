@@ -24,6 +24,7 @@ import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -131,7 +132,6 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
         } catch (Exception e) {
             // IllegalStateException: the Proposition to delete does not exists
         }
-
     }
 
     @Test
@@ -161,5 +161,47 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
         if(!ruleIds.contains(rule3010.getId())){
             fail("RuleId not found in results");
         }
+    }
+
+    @Test
+    public void testGetRule() {
+        RuleDefinition ruleDefinition = ruleManagementServiceImpl.createRule(newTestRuleDefinition(NAMESPACE1,"3014"));
+
+        assertNotNull(ruleManagementServiceImpl.getRule(ruleDefinition.getId()));
+
+        assertNull("Should have returned null", ruleManagementServiceImpl.getRule(null));
+        assertNull("Should have returned null",ruleManagementServiceImpl.getRule("   "));
+        assertNull("Should have returned null",ruleManagementServiceImpl.getRule("badValueId"));
+    }
+
+
+    @Test
+    public void testGetRules() {
+        List<String> ruleIds = new ArrayList<String>();
+        RuleDefinition rule3015 = ruleManagementServiceImpl.createRule(newTestRuleDefinition(NAMESPACE1,"3015"));
+        ruleIds.add(rule3015.getId());
+        RuleDefinition rule3016 = ruleManagementServiceImpl.createRule(newTestRuleDefinition(NAMESPACE1,"3016"));
+        ruleIds.add(rule3016.getId());
+
+        List<RuleDefinition> ruleDefinitions = ruleManagementServiceImpl.getRules(ruleIds);
+        assertEquals("Two RuleDefintions should have been returned",2,ruleDefinitions.size());
+
+        for(RuleDefinition ruleDefinition : ruleDefinitions) {
+            if (!ruleIds.contains(ruleDefinition.getId())) {
+                fail("Invalid RuleDefinition returned");
+            }
+        }
+
+        try {
+            ruleManagementServiceImpl.getRules(null);
+            fail("Should have failed with RiceIllegalArgumentException: ruleIds must not be null");
+        } catch (Exception e) {
+            // throws RiceIllegalArgumentException: ruleIds must not be null
+        }
+
+        assertEquals("No RuleDefinitions should have been returned",0,ruleManagementServiceImpl.getRules(new ArrayList<String>()).size());
+
+        ruleIds = Arrays.asList("badValueId");
+        assertEquals("No RuleDefinitions should have been returned",0,ruleManagementServiceImpl.getRules(ruleIds).size());
     }
 }

@@ -116,7 +116,6 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
         // ( cannot change name or context as these are used to uniquely identify agenda for findCreateAgenda
         agendaBuilder = AgendaDefinition.Builder.create(
                 "AgendaId5002", "ChangedName5002", null, "ContextId5002");
-        //agendaBuilder.setVersionNumber(Long.valueOf("2"));
         agenda = agendaBuilder.build();
         try {
             agenda = ruleManagementServiceImpl.findCreateAgenda(agenda);

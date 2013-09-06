@@ -2706,7 +2706,7 @@
         <column name="POSTAL_CNTRY_CD" primaryKey="true" size="2" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column name="POSTAL_CNTRY_NM" size="40" type="VARCHAR"/>
+        <column name="POSTAL_CNTRY_NM" size="255" type="VARCHAR"/>
         <column name="PSTL_CNTRY_RSTRC_IND" required="true" size="1" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" required="true" size="1" type="VARCHAR"/>
         <column name="ALT_POSTAL_CNTRY_CD" size="3" type="VARCHAR"/>

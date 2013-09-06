@@ -521,6 +521,84 @@ public class ReferenceLinkerTest extends KRADTestCase {
         disableJotmLogging();
     }
 
+    @Test
+    public void existingTwoKeyParentObject_setChildReferenceKeyValueToNull_saveNoRefresh() throws Exception {
+        clearTestingTables();
+        SQLDataLoader sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_TWO_KEY_CHILD_T(FIN_COA_CD, ORG_CD) VALUES('3', 'ACCT')");
+        sqlDataLoader.runSql();
+        sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_PARENT_WITH_MULTI_KEY_T(FIN_COA_CD, ACCOUNT_NBR, ORG_CD) VALUES('3', '6620110', 'ACCT')");
+        sqlDataLoader.runSql();
+        // Create a new object and add an existing account type by object
+        ParentWithMultipleFieldKey acct = getDOS().find(ParentWithMultipleFieldKey.class,
+                new ParentWithMultipleFieldKeyId("3", "6620110"));
+        assertNotNull("Unable to retreive 3-6620110 from database", acct);
+        assertNotNull( "After loading, organization object should not have been null", acct.getOrganization());
+
+        acct.setOrganizationCode(null);
+        assertNotNull( "Before saving organization object should not have been null", acct.getOrganization());
+
+        // Save the object and test the result
+        enableJotmLogging();
+        acct = getDOS().save(acct);
+        assertNull( "After saving, the child object should have been nulled by the reference linker", acct.getOrganization());
+
+        disableJotmLogging();
+    }
+
+    @Test
+    public void existingTwoKeyParentObject_changeChildReferenceKeyValue_saveNoRefresh() throws Exception {
+        clearTestingTables();
+        SQLDataLoader sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_TWO_KEY_CHILD_T(FIN_COA_CD, ORG_CD) VALUES('3', 'ACCT')");
+        sqlDataLoader.runSql();
+        sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_TWO_KEY_CHILD_T(FIN_COA_CD, ORG_CD) VALUES('3', 'XXXX')");
+        sqlDataLoader.runSql();
+        sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_PARENT_WITH_MULTI_KEY_T(FIN_COA_CD, ACCOUNT_NBR, ORG_CD) VALUES('3', '6620110', 'ACCT')");
+        sqlDataLoader.runSql();
+        // Create a new object and add an existing account type by object
+        ParentWithMultipleFieldKey acct = getDOS().find(ParentWithMultipleFieldKey.class,
+                new ParentWithMultipleFieldKeyId("3", "6620110"));
+        assertNotNull("Unable to retreive 3-6620110 from database", acct);
+        assertNotNull( "After loading, organization object should not have been null", acct.getOrganization());
+
+        acct.setOrganizationCode("XXXX");
+        assertNotNull( "Before saving organization object should not have been null", acct.getOrganization());
+
+        // Save the object and test the result
+        enableJotmLogging();
+        acct = getDOS().save(acct);
+        assertNull( "After saving, the child object should have been nulled by the reference linker", acct.getOrganization());
+
+        disableJotmLogging();
+    }
+
+    @Test
+    public void existingTwoKeyParentObject_changeChildReferenceKeyValue_saveWithRefresh() throws Exception {
+        clearTestingTables();
+        SQLDataLoader sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_TWO_KEY_CHILD_T(FIN_COA_CD, ORG_CD) VALUES('3', 'ACCT')");
+        sqlDataLoader.runSql();
+        sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_TWO_KEY_CHILD_T(FIN_COA_CD, ORG_CD) VALUES('3', 'XXXX')");
+        sqlDataLoader.runSql();
+        sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_PARENT_WITH_MULTI_KEY_T(FIN_COA_CD, ACCOUNT_NBR, ORG_CD) VALUES('3', '6620110', 'ACCT')");
+        sqlDataLoader.runSql();
+        // Create a new object and add an existing account type by object
+        ParentWithMultipleFieldKey acct = getDOS().find(ParentWithMultipleFieldKey.class,
+                new ParentWithMultipleFieldKeyId("3", "6620110"));
+        assertNotNull("Unable to retreive 3-6620110 from database", acct);
+        assertNotNull( "After loading, organization object should not have been null", acct.getOrganization());
+
+        acct.setOrganizationCode("XXXX");
+        assertNotNull( "Before saving organization object should not have been null", acct.getOrganization());
+
+        // Save the object and test the result
+        enableJotmLogging();
+        acct = getDOS().save(acct,PersistenceOption.FLUSH,PersistenceOption.REFRESH);
+        assertNotNull( "After saving, the child object should have refreshed", acct.getOrganization());
+        assertEquals( "After saving, the FK field should still be set", "XXXX", acct.getOrganizationCode());
+        assertEquals( "After saving, the child should reference the new key", "XXXX", acct.getOrganization().getOrganizationCode());
+
+        disableJotmLogging();
+    }
+
     /*
     INSERT INTO KRTST_PARENT_OF_UPDATABLE_T(PK_COL, UPDATABLE_CHILD_KEY_COL) VALUES(1, '123')
     /

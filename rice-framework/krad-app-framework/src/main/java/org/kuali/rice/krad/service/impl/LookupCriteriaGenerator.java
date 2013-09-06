@@ -17,6 +17,7 @@ package org.kuali.rice.krad.service.impl;
 
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,8 +27,34 @@ import java.util.Map;
  */
 public interface LookupCriteriaGenerator {
 
+    /**
+     * Generates QueryByCriteria for lookup search criteria obtained from the lookup form.
+     *
+     * @param type
+     * @param formProps
+     * @param usePrimaryKeysOnly
+     * @return
+     * @deprecated please use {@link #generateCriteria(Class, java.util.Map, java.util.List, boolean)} instead
+     */
+    @Deprecated
     QueryByCriteria.Builder generateCriteria(Class<?> type, Map<String, String> formProps, boolean usePrimaryKeysOnly);
 
-    QueryByCriteria.Builder createObjectCriteriaFromMap(Object example, Map<String, String> formProps);
+    /**
+     * Generates QueryByCriteria for lookup search criteria obtained from the lookup form.
+     *
+     * <p>
+     *     This implementation better isolates the UIFramework from the lookup service.
+     * </p>
+     *
+     * @param type the class name of the object on which the lookup is performed.
+     * @param formProps a Map containing the form properties to be used as search criteria.
+     * @param wildcardAsLiteralPropertyNames  list of properties that have wildcards disabled, any wildcard characters
+     *      are treated as literals.
+     * @param usePrimaryKeysOnly determines whether only primary keys are used in search
+     * @return QueryByCriteria.Builder
+     */
+    QueryByCriteria.Builder generateCriteria(Class<?> type, Map<String, String> formProps,
+            List<String> wildcardAsLiteralPropertyNames, boolean usePrimaryKeysOnly);
 
+    QueryByCriteria.Builder createObjectCriteriaFromMap(Object example, Map<String, String> formProps);
 }

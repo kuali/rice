@@ -16,11 +16,12 @@
 package org.kuali.rice.krad.service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Provides search capabilities for the lookup framework. This service is primarily intended for internal use by the
- * lookup framework. Client code should preferably invoke {@link org.kuali.rice.krad.data.DataObjectService#findMatching(org.kuali.rice.krad.data.DataObjectType, org.kuali.rice.core.api.criteria.QueryByCriteria)}
+ * lookup framework. Client code should preferably invoke {@link org.kuali.rice.krad.data.DataObjectService#findMatching(Class, org.kuali.rice.core.api.criteria.QueryByCriteria)}
  * passing the appropriate criteria.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -55,8 +56,36 @@ public interface LookupService {
     <T> Collection<T> findCollectionBySearchHelper(Class<T> type, Map<String, String> formProperties,
             boolean unbounded);
 
+    /**
+     *
+     * @param type class name of the data object on which the lookup is performed
+     * @param formProperties Map of search criteria properties obtained from the lookup form
+     * @param unbounded determines if search limit used
+     * @param searchResultsLimit search limit value
+     * @return Collection of items found
+     * @deprecated please use {@link #findCollectionBySearchHelper(Class, java.util.Map, java.util.List, boolean, Integer)} instead
+     */
+    @Deprecated
     <T> Collection<T> findCollectionBySearchHelper(Class<T> type, Map<String, String> formProperties,
             boolean unbounded, Integer searchResultsLimit);
+
+    /**
+     * Returns a collection of objects based on the given search parameters.
+     *
+     * <p>
+     * This version of findCollectionBySearchHelper further isolates the UIFramework from the LookupService and
+     * should be used instead of the deprecated version.
+     * </p>
+     *
+     * @param type class name of the data object on which the lookup is performed
+     * @param formProperties Map of search criteria properties obtained from the lookup form
+     * @param wildcardAsLiteralPropertyNames List of property names with wildcards disabled
+     * @param unbounded determines if search limit used
+     * @param searchResultsLimit search limit value
+     * @return Collection of items found
+     */
+    <T> Collection<T> findCollectionBySearchHelper(Class<T> type, Map<String, String> formProperties,
+            List<String> wildcardAsLiteralPropertyNames, boolean unbounded, Integer searchResultsLimit);
 
     /**
      * Retrieves an Object based on the search criteria, which should uniquely

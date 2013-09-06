@@ -20,6 +20,7 @@ import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.LookupService;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -53,10 +54,18 @@ public class LookupServiceImpl implements LookupService {
     }
 
     @Override
+    @Deprecated
     public <T> Collection<T> findCollectionBySearchHelper(Class<T> type,
             Map<String, String> formProps, boolean unbounded, Integer searchResultsLimit) {
         return getLegacyDataAdapter().findCollectionBySearchHelper(type, formProps, unbounded,
                 allPrimaryKeyValuesPresentAndNotWildcard(type, formProps), searchResultsLimit);
+    }
+
+    @Override
+    public <T> Collection<T> findCollectionBySearchHelper(Class<T> type,Map<String, String> formProps,
+           List<String> wildcardAsLiteralPropertyNames, boolean unbounded, Integer searchResultsLimit) {
+        return getLegacyDataAdapter().findCollectionBySearchHelper(type, formProps, wildcardAsLiteralPropertyNames,
+                unbounded, allPrimaryKeyValuesPresentAndNotWildcard(type, formProps), searchResultsLimit);
     }
 
     @Override

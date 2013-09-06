@@ -140,6 +140,14 @@ public class LegacyDataAdapterImpl implements LegacyDataAdapter {
     }
 
     @Override
+    public <T> Collection<T> findCollectionBySearchHelper(Class<T> dataObjectClass, Map<String, String> formProperties,
+            List<String> wildcardAsLiteralPropertyNames, boolean unbounded,
+            boolean allPrimaryKeyValuesPresentAndNotWildcard, Integer searchResultsLimit) {
+        return selectAdapter(dataObjectClass).findCollectionBySearchHelper(dataObjectClass, formProperties,
+                wildcardAsLiteralPropertyNames, unbounded, allPrimaryKeyValuesPresentAndNotWildcard, searchResultsLimit);
+    }
+
+    @Override
     public <T> T findObjectBySearch(Class<T> type, Map<String, String> formProps) {
         return selectAdapter(type).findObjectBySearch(type, formProps);
     }

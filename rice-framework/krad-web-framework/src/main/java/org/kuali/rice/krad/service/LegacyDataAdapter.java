@@ -196,9 +196,33 @@ public interface LegacyDataAdapter {
      * @param allPrimaryKeyValuesPresentAndNotWildcard indicates whether or not the search only contains non-wildcarded primary key values
      * @param searchResultsLimit if the search is bounded, the search results limit, otherwise ignored. null is equivalent to KNS default for the clazz
      * @return collection of matching data objects
+     * @deprecated please use {@link #findCollectionBySearchHelper(Class, java.util.Map, java.util.List, boolean, boolean, Integer)}  instead
      */
+    @Deprecated
     <T> Collection<T> findCollectionBySearchHelper(Class<T> clazz, Map<String, String> formProps, boolean unbounded,
             boolean allPrimaryKeyValuesPresentAndNotWildcard, Integer searchResultsLimit);
+
+    /**
+     * Returns a collection of objects based on the given search parameters.
+     *
+     * <p>
+     * Search results are bounded by the KNS search results limit determined for the class.
+     * This implementation further isolates the UIFramework from the LookupService and should be used
+     * in place of the deprecated method.
+     * </p>
+     *
+     * @param clazz the data object type
+     * @param formProps field values for query
+     * @param wildcardAsLiteralPropertyNames list of fields for query that do not allow wildcards
+     * @param unbounded whether the search results should be bounded
+     * @param allPrimaryKeyValuesPresentAndNotWildcard indicates whether or not the search only contains non-wildcarded primary key values
+     * @param searchResultsLimit if the search is bounded, the search results limit, otherwise ignored. null is equivalent to KNS default for the clazz
+     * @return collection of matching data objects
+     */
+    <T> Collection<T> findCollectionBySearchHelper(Class<T> clazz, Map<String, String> formProps,
+            List<String> wildcardAsLiteralPropertyNames, boolean unbounded,
+            boolean allPrimaryKeyValuesPresentAndNotWildcard, Integer searchResultsLimit);
+
     /**
      * Retrieves a Object based on the search criteria, which should uniquely
      * identify a record.

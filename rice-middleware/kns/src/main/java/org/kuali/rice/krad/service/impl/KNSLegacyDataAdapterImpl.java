@@ -291,6 +291,15 @@ public class KNSLegacyDataAdapterImpl implements LegacyDataAdapter{
                     allPrimaryKeyValuesPresentAndNotWildcard, searchResultsLimit);
     }
 
+    //TODO: implement. currently is same implementation as above
+    @Override
+    public <T> Collection<T> findCollectionBySearchHelper(Class<T> dataObjectClass, Map<String, String> formProperties,
+            List<String> wildcardAsLiteralPropertyNames, boolean unbounded,
+            boolean allPrimaryKeyValuesPresentAndNotWildcard, Integer searchResultsLimit) {
+        return lookupDao.findCollectionBySearchHelper(dataObjectClass, formProperties, unbounded,
+                allPrimaryKeyValuesPresentAndNotWildcard, searchResultsLimit);
+    }
+
     /**
      *
      * @param dataObjectClass the dataobject class

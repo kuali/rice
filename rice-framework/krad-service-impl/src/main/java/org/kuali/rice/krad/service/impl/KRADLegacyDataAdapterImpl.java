@@ -225,6 +225,14 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
                 allPrimaryKeyValuesPresentAndNotWildcard, searchResultsLimit);
     }
 
+    @Override
+    public <T> Collection<T> findCollectionBySearchHelper(Class<T> dataObjectClass, Map<String, String> formProperties,
+            List<String> wildcardAsLiteralPropertyNames, boolean unbounded, boolean allPrimaryKeyValuesPresentAndNotWildcard,
+            Integer searchResultsLimit) {
+        return performDataObjectServiceLookup(dataObjectClass, formProperties, wildcardAsLiteralPropertyNames, unbounded,
+                allPrimaryKeyValuesPresentAndNotWildcard, searchResultsLimit);
+    }
+
     /**
      * Our new DataObjectService-based lookup implementation
      *
@@ -245,6 +253,36 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
         }
         QueryByCriteria.Builder query = lookupCriteriaGenerator.generateCriteria(dataObjectClass, formProperties,
                 allPrimaryKeyValuesPresentAndNotWildcard);
+        if (!unbounded && searchResultsLimit != null) {
+            query.setMaxResults(searchResultsLimit);
+        }
+
+        Collection<T> results = dataObjectService.findMatching(dataObjectClass, query.build()).getResults();
+        return filterCurrentDataObjects(dataObjectClass, results, formProperties);
+    }
+
+    /**
+     * Our newer DataObjectService-based lookup implementation
+     *
+     * @param dataObjectClass the dataobject class
+     * @param formProperties the incoming lookup form properties
+     * @param wildcardAsLiteralPropertyNames list of the lookup properties with wildcard characters disabled
+     * @param unbounded whether the search is unbounded
+     * @param searchResultsLimit the searchResultsLimit; null implies use of default KNS value if set for the class
+     * @param <T> the data object type
+     * @return collection of lookup results
+     */
+    protected <T> Collection<T> performDataObjectServiceLookup(Class<T> dataObjectClass,
+            Map<String, String> formProperties, List<String> wildcardAsLiteralPropertyNames,
+            boolean unbounded, boolean allPrimaryKeyValuesPresentAndNotWildcard, Integer searchResultsLimit) {
+        if (!unbounded && searchResultsLimit == null) {
+            // use KRAD LookupUtils.getSearchResultsLimit instead of KNS version. we have no LookupForm, so pass null, only the class will be used
+            //searchResultsLimit = LookupUtils.getSearchResultsLimit(example, null);
+            searchResultsLimit = org.kuali.rice.kns.lookup.LookupUtils.getSearchResultsLimit(dataObjectClass);
+        }
+
+        QueryByCriteria.Builder query = lookupCriteriaGenerator.generateCriteria(dataObjectClass, formProperties,
+                wildcardAsLiteralPropertyNames, allPrimaryKeyValuesPresentAndNotWildcard);
         if (!unbounded && searchResultsLimit != null) {
             query.setMaxResults(searchResultsLimit);
         }

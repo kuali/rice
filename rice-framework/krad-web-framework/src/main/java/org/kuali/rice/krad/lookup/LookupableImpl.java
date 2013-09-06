@@ -148,6 +148,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
         // removed blank search values and decrypt any encrypted search values
         Map<String, String> nonBlankSearchCriteria = processSearchCriteria(form, searchCriteria);
+        List<String> wildcardAsLiteralSearchCriteria = identifyWildcardDisabledFields(form, nonBlankSearchCriteria);
 
         // return empty search results (none found) when the search doesn't have any nonBlankSearchCriteria although
         // a filtered search criteria is specified
@@ -178,11 +179,11 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
                 // add those results as criteria run the normal search (but with the EBO criteria added)
                 searchResults = new ArrayList(getLookupService().findCollectionBySearchHelper(getDataObjectClass(),
-                                              eboSearchCriteria, unbounded, searchResultsLimit));
+                        eboSearchCriteria, wildcardAsLiteralSearchCriteria, unbounded, searchResultsLimit));
                 generateLookupResultsMessages(form, eboSearchCriteria, searchResults, unbounded);
             } else {
                 searchResults = new ArrayList(getLookupService().findCollectionBySearchHelper(getDataObjectClass(),
-                                              nonBlankSearchCriteria, unbounded, searchResultsLimit));
+                        nonBlankSearchCriteria, wildcardAsLiteralSearchCriteria, unbounded, searchResultsLimit));
                 generateLookupResultsMessages(form, nonBlankSearchCriteria, searchResults, unbounded);
             }
 
@@ -385,6 +386,34 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         }
 
         return nonBlankSearchCriteria;
+    }
+
+    /**
+     * Determines which searchCriteria have been configured with wildcard characters disabled.
+     *
+     * @param lookupForm form used to collect search criteria
+     * @param searchCriteria Map of property names and values to use as search parameters
+     * @return List of property names which have wildcard characters disabled
+     */
+    protected List<String> identifyWildcardDisabledFields(LookupForm lookupForm, Map<String, String> searchCriteria) {
+        List<String> wildcardAsLiteralPropertyNames = new ArrayList<String>();
+        Map<String, InputField> criteriaFields = new HashMap<String, InputField>();
+        if (lookupForm.getPostedView() != null) {
+            criteriaFields = getCriteriaFieldsForValidation((LookupView) lookupForm.getPostedView(), lookupForm);
+        }
+
+        for (String fieldName : searchCriteria.keySet()) {
+            InputField inputField = criteriaFields.get(fieldName);
+            if ((inputField == null) || !(inputField instanceof LookupInputField)) {
+                continue;
+            }
+            if ((LookupInputField.class.isAssignableFrom(inputField.getClass())) && (((LookupInputField) inputField)
+                .isDisableWildcardsAndOperators())) {
+                wildcardAsLiteralPropertyNames.add(fieldName);
+            }
+        }
+
+        return wildcardAsLiteralPropertyNames;
     }
 
     /**

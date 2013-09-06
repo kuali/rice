@@ -107,11 +107,21 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
     }
 
     @Override
+    @Deprecated
     public QueryByCriteria.Builder generateCriteria(Class<?> type, Map<String, String> formProps, boolean usePrimaryKeysOnly) {
         if (usePrimaryKeysOnly) {
             return getCollectionCriteriaFromMapUsingPrimaryKeysOnly(type, instantiateLookupDataObject(type), formProps).toQueryBuilder();
         } else {
             return getCollectionCriteriaFromMap(type, instantiateLookupDataObject(type), formProps).toQueryBuilder();
+        }
+    }
+
+    @Override
+    public QueryByCriteria.Builder generateCriteria(Class<?> type, Map<String, String> formProps, List<String> wildcardAsLiteralPropertyNames, boolean usePrimaryKeysOnly) {
+        if (usePrimaryKeysOnly) {
+            return getCollectionCriteriaFromMapUsingPrimaryKeysOnly(type, instantiateLookupDataObject(type), formProps).toQueryBuilder();
+        } else {
+            return getCollectionCriteriaFromMap(type, instantiateLookupDataObject(type), formProps, wildcardAsLiteralPropertyNames).toQueryBuilder();
         }
     }
 
@@ -198,11 +208,48 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
         return true;
     }
 
+    /**
+     * Adds a criteria Predicate for each property contained in the map.
+     *
+     * @param type class name of the Data Object being looked up
+     * @param example sample object instance of the class type
+     * @param formProps Map of search criteria properties
+     * @return Predicates built from criteria map
+     * @deprecated please use {@link #getCollectionCriteriaFromMap(Class, Object, java.util.Map, java.util.List)} instead
+     */
+    @Deprecated
     protected Predicates getCollectionCriteriaFromMap(Class<?> type, Object example, Map<String, String> formProps) {
         Predicates criteria = new Predicates();
         for (String propertyName : formProps.keySet()) {
             boolean caseInsensitive = determineAttributeSearchCaseSensitivity(type, propertyName);
             boolean treatWildcardsAndOperatorsAsLiteral = doesLookupFieldTreatWildcardsAndOperatorsAsLiteral(type, propertyName);
+            String searchValue = formProps.get(propertyName);
+            addCriteriaForPropertyValues(example, propertyName, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria, formProps, searchValue);
+        }
+        return criteria;
+    }
+
+    /**
+     * Adds a criteria Predicate for each property contained in the map.
+     *
+     * <p>
+     *     Checks for case sensitivity for the search parameter, and whether or not wildcard characters are allowed.
+     *
+     *     This implementation further separates the UIFramework from the LookupService and should be used in place
+     *     of the deprecated method.
+     * </p>
+     *
+     * @param type class name of the Data Object being looked up
+     * @param example sample object instance of the class type
+     * @param formProps Map of search criteria properties
+     * @param wildcardAsLiteralPropertyNames List of search criteria properties with wildcard characters disabled.
+     * @return Predicates built from criteria map
+     */
+    protected Predicates getCollectionCriteriaFromMap(Class<?> type, Object example, Map<String, String> formProps, List<String> wildcardAsLiteralPropertyNames) {
+        Predicates criteria = new Predicates();
+        for (String propertyName : formProps.keySet()) {
+            boolean caseInsensitive = determineAttributeSearchCaseSensitivity(type, propertyName);
+            boolean treatWildcardsAndOperatorsAsLiteral = wildcardAsLiteralPropertyNames.contains(propertyName);
             String searchValue = formProps.get(propertyName);
             addCriteriaForPropertyValues(example, propertyName, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria, formProps, searchValue);
         }
@@ -375,6 +422,9 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
             } else {
                 if (treatWildcardsAndOperatorsAsLiteral) {
                     propertyValue = StringUtils.replace(propertyValue, "*", "\\*");
+                    propertyValue = StringUtils.replace(propertyValue, "%", "\\%");
+                    propertyValue = StringUtils.replace(propertyValue, "?", "\\?");
+                    propertyValue = StringUtils.replace(propertyValue, "_", "\\_");
                 }
                 addLike(criteria, propertyName, propertyValue, caseInsensitive);
             }

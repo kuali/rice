@@ -42,11 +42,11 @@ public class DemoLibraryCollectionFeaturesColumnCalculationsSmokeTest extends Sm
     }
 
     protected void testCollectionFeaturesColumnCalculations() throws Exception {
-        Integer preValue=Integer.parseInt(waitAndGetText(By.xpath("//div[@id='Demo-TableLayoutTotaling-Section1']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span[@data-role]"))[0]);
+        Integer preValue=Integer.parseInt(waitAndGetText(By.xpath("//div[@id='Demo-TableLayoutTotaling-Section1']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]"))[0]);
         clearTextByName("collection1[0].field1");
         waitAndTypeByName("collection1[0].field1","0");
         waitAndTypeByName("newCollectionLines['collection1'].field1","");
-        Integer postValue=Integer.parseInt(getTextByXpath("//div[@id='Demo-TableLayoutTotaling-Section1']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span[@data-role]"));
+        Integer postValue=Integer.parseInt(getTextByXpath("//div[@id='Demo-TableLayoutTotaling-Section1']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]"));
         if(postValue>=preValue) {
             fail("Calculation Error !");
             
@@ -55,11 +55,11 @@ public class DemoLibraryCollectionFeaturesColumnCalculationsSmokeTest extends Sm
     
     protected void testCollectionFeaturesColumnCalculationsOnKeyUp() throws Exception {
         selectByName("exampleShown","On Key Up");
-        Integer preValue=Integer.parseInt(waitAndGetText(By.xpath("//div[@id='Demo-TableLayoutTotaling-Section2']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span[@data-role]"))[0]);
+        Integer preValue=Integer.parseInt(waitAndGetText(By.xpath("//div[@id='Demo-TableLayoutTotaling-Section2']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]"))[0]);
         clearTextByName("collection1_2[0].field1");
         waitAndTypeByName("collection1_2[0].field1","0");
-//        waitAndTypeByName("newCollectionLines['collection1'].field1","");
-        Integer postValue=Integer.parseInt(getTextByXpath("//div[@id='Demo-TableLayoutTotaling-Section2']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span[@data-role]"));
+        Thread.sleep(2000);
+        Integer postValue=Integer.parseInt(getTextByXpath("//div[@id='Demo-TableLayoutTotaling-Section2']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]"));
         if(postValue>=preValue) {
             fail("Calculation Error !");
             
@@ -68,11 +68,11 @@ public class DemoLibraryCollectionFeaturesColumnCalculationsSmokeTest extends Sm
     
     protected void testCollectionFeaturesColumnCalculationsSomeColumns() throws Exception {
         selectByName("exampleShown","Some Columns");
-        Integer preValue=Integer.parseInt(waitAndGetText(By.xpath("//div[@id='Demo-TableLayoutTotaling-Section3']/div/table/tfoot/tr/th[3]/div/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span[@data-role]"))[0]);
+        Integer preValue=Integer.parseInt(waitAndGetText(By.xpath("//div[@id='Demo-TableLayoutTotaling-Section3']/div/table/tfoot/tr/th[3]/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]"))[0]);
         clearTextByName("collection1_3[0].field2");
         waitAndTypeByName("collection1_3[0].field2","0");
         waitAndTypeByName("newCollectionLines['collection1_3'].field2","");
-        Integer postValue=Integer.parseInt(getTextByXpath("//div[@id='Demo-TableLayoutTotaling-Section3']/div/table/tfoot/tr/th[3]/div/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span[@data-role]"));
+        Integer postValue=Integer.parseInt(getTextByXpath("//div[@id='Demo-TableLayoutTotaling-Section3']/div/table/tfoot/tr/th[3]/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]"));
         if(postValue>=preValue) {
             fail("Calculation Error !");
             
@@ -86,20 +86,20 @@ public class DemoLibraryCollectionFeaturesColumnCalculationsSmokeTest extends Sm
     
     protected void testCollectionFeaturesColumnCalculationsMultipleOptions() throws Exception {
         selectByName("exampleShown","Multiple Options");
-        assertElementPresentByXpath("//div[@id='Demo-TableLayoutTotaling-Section5']/div/table/tfoot/tr/th/div/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span[@data-role]");
-        assertElementPresentByXpath("//div[@id='Demo-TableLayoutTotaling-Section5']/div/table/tfoot/tr/th/div/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span/label");
-        if(isElementPresentByXpath("//div[@id='Demo-TableLayoutTotaling-Section5']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span/label")) {
+        assertElementPresentByXpath("//div[@id='Demo-TableLayoutTotaling-Section5']/div/table/tfoot/tr/th/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]");
+        assertElementPresentByXpath("//div[@id='Demo-TableLayoutTotaling-Section5']/div/table/tfoot/tr/th/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span/label");
+        if(isElementPresentByXpath("//div[@id='Demo-TableLayoutTotaling-Section5']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span/label")) {
             fail("Multiple Options Failure !");
         }
     }
     
     protected void testCollectionFeaturesColumnCalculationsMultipleCalculations() throws Exception {
         selectByName("exampleShown","Multiple Calculations");
-        assertElementPresentByXpath("//div[@id='Demo-TableLayoutTotaling-Section6']/div/table/tfoot/tr/th[5]/div/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span[@data-role]");
-        assertElementPresentByXpath("//div[@id='Demo-TableLayoutTotaling-Section6']/div/table/tfoot/tr/th[5]/div/div[@class='uif-verticalBoxLayout clearfix']/div[2]/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span[@data-role]");
-        assertElementPresentByXpath("//div[@id='Demo-TableLayoutTotaling-Section6']/div/table/tfoot/tr/th[5]/div/div[@class='uif-verticalBoxLayout clearfix']/div[3]/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span[@data-role]");
-        assertElementPresentByXpath("//div[@id='Demo-TableLayoutTotaling-Section6']/div/table/tfoot/tr/th[5]/div/div[@class='uif-verticalBoxLayout clearfix']/div[4]/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span[@data-role]");
-        if(isElementPresentByXpath("//div[@id='Demo-TableLayoutTotaling-Section6']/div/table/tfoot/tr/th/div/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span[@data-role]")) {
+        assertElementPresentByXpath("//div[@id='Demo-TableLayoutTotaling-Section6']/div/table/tfoot/tr/th[5]/div/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]");
+        assertElementPresentByXpath("//div[@id='Demo-TableLayoutTotaling-Section6']/div/table/tfoot/tr/th[5]/div/div[@class='uif-verticalBoxLayout clearfix']/div[2]/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]");
+        assertElementPresentByXpath("//div[@id='Demo-TableLayoutTotaling-Section6']/div/table/tfoot/tr/th[5]/div/div[@class='uif-verticalBoxLayout clearfix']/div[3]/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]");
+        assertElementPresentByXpath("//div[@id='Demo-TableLayoutTotaling-Section6']/div/table/tfoot/tr/th[5]/div/div[@class='uif-verticalBoxLayout clearfix']/div[4]/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]");
+        if(isElementPresentByXpath("//div[@id='Demo-TableLayoutTotaling-Section6']/div/table/tfoot/tr/th[2]/div/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]")) {
             fail("Multiple Calculations Failure !");
         }
     }
@@ -113,7 +113,7 @@ public class DemoLibraryCollectionFeaturesColumnCalculationsSmokeTest extends Sm
     
     protected void testCollectionFeaturesColumnCalculationsNonClientSide() throws Exception {
         selectByName("exampleShown","Non Client-side");
-        assertElementPresentByXpath("//div[@id='Demo-TableLayoutTotaling-Section8']/div/table/tfoot/tr/th[3]/div/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span[@data-role]");
+        assertElementPresentByXpath("//div[@id='Demo-TableLayoutTotaling-Section8']/div/table/tfoot/tr/th[3]/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]");
     }
     
     protected void testCollectionFeaturesColumnCalculationsCustomCalculation() throws Exception {
@@ -124,12 +124,28 @@ public class DemoLibraryCollectionFeaturesColumnCalculationsSmokeTest extends Sm
     @Test
     public void testCollectionFeaturesColumnCalculationsBookmark() throws Exception {
         testCollectionFeaturesColumnCalculations();
+        testCollectionFeaturesColumnCalculationsOnKeyUp();
+        testCollectionFeaturesColumnCalculationsSomeColumns();
+        testCollectionFeaturesColumnCalculationsLeftLabel();
+        testCollectionFeaturesColumnCalculationsMultipleOptions();
+        testCollectionFeaturesColumnCalculationsMultipleCalculations();
+        testCollectionFeaturesColumnCalculationsGroupingCalculations();
+        testCollectionFeaturesColumnCalculationsNonClientSide();
+        testCollectionFeaturesColumnCalculationsCustomCalculation();
         passed();
     }
 
     @Test
     public void testCollectionFeaturesColumnCalculationsNav() throws Exception {
         testCollectionFeaturesColumnCalculations();
+        testCollectionFeaturesColumnCalculationsOnKeyUp();
+        testCollectionFeaturesColumnCalculationsSomeColumns();
+        testCollectionFeaturesColumnCalculationsLeftLabel();
+        testCollectionFeaturesColumnCalculationsMultipleOptions();
+        testCollectionFeaturesColumnCalculationsMultipleCalculations();
+        testCollectionFeaturesColumnCalculationsGroupingCalculations();
+        testCollectionFeaturesColumnCalculationsNonClientSide();
+        testCollectionFeaturesColumnCalculationsCustomCalculation();
         passed();
     }  
 }

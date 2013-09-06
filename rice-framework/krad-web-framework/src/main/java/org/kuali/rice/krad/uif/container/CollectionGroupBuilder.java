@@ -328,6 +328,12 @@ public class CollectionGroupBuilder implements Serializable {
                 ComponentUtils.prefixBindingPath(fieldCollectionGroup, bindingPath);
                 fieldCollectionGroup.setSubCollectionSuffix(lineSuffix);
             }
+
+            // OR LightTables in details...
+            List<LightTable> lightTables = ComponentUtils.getComponentsOfTypeDeep(field, LightTable.class);
+            for (LightTable lightTable : lightTables) {
+                ComponentUtils.prefixBindingPath(lightTable, bindingPath);
+            }
         }
 
         boolean readOnlyLine = collectionGroup.isReadOnly();

@@ -202,6 +202,10 @@ public class RichTable extends WidgetBase {
                     + UifParameters.AJAX_REQUEST
                     + "="
                     + "true");
+
+            // store col defs so columns can be built on paging request
+            view.getViewIndex().addPostContextEntry(component.getId(), UifConstants.TableToolsKeys.AO_COLUMN_DEFS,
+                    getTemplateOptions().get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS));
         }
 
         //build sAjaxSource url to call
@@ -223,7 +227,6 @@ public class RichTable extends WidgetBase {
                 + UifParameters.AJAX_REQUEST
                 + "="
                 + "true");
-
     }
 
     /**

@@ -512,16 +512,19 @@ public class View extends ContainerBase {
         components.add(navigationBlockUI);
         components.add(refreshBlockUI);
         components.add(breadcrumbItem);
-        components.add(parentLocation.getPageBreadcrumbItem());
-        components.add(parentLocation.getViewBreadcrumbItem());
-        components.addAll(parentLocation.getResolvedBreadcrumbItems());
+
+        if (parentLocation != null) {
+            components.add(parentLocation.getPageBreadcrumbItem());
+            components.add(parentLocation.getViewBreadcrumbItem());
+            components.addAll(parentLocation.getResolvedBreadcrumbItems());
+        }
 
         // Note super items should be added after navigation and other view components so
         // conflicting ids between nav and page do not occur on page navigation via ajax
         components.addAll(super.getComponentsForLifecycle());
 
         // remove all pages that are not the current page
-        if (!singlePageView) {
+        if (!singlePageView && (this.getItems() != null)) {
             for (Group group : this.getItems()) {
                 if ((group instanceof PageGroup) && !StringUtils.equals(group.getId(), getCurrentPageId()) && components
                         .contains(group)) {

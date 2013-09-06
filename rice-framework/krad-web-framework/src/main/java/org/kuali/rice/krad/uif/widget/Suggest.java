@@ -280,12 +280,11 @@ public class Suggest extends WidgetBase {
      * <p>
      * Note this is not supported for highly complex objects (ie, most auto-query objects - will throw exception).
      * Intended usage of this flag is with custom query methods which return simple data objects.
-     * The query method can return
-     * a list of Strings which will be used for the suggestions, a list of objects with 'label' and 'value' properties,
-     * or a custom object.  In the case of using a customObject labelPropertyName or valuePropertyName MUST be
-     * specified (or both) OR the custom object must contain a property named "label" or "value" (or both)
-     * for the suggestions to appear.  In cases where this is not used, the data sent back represents a slim
-     * subset of the properties on the object.
+     * The query method can return a list of Strings which will be used for the suggestions, a list of objects
+     * with 'label' and 'value' properties, or a custom object.  In the case of using a customObject
+     * labelPropertyName or valuePropertyName MUST be specified (or both) OR the custom object must contain a
+     * property named "label" or "value" (or both) for the suggestions to appear.  In cases where this is not used,
+     * the data sent back represents a slim subset of the properties on the object.
      * </p>
      *
      * @return true if the query method results should be used as the suggestions, false to assume

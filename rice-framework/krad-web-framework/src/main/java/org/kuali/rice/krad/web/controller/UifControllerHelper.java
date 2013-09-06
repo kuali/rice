@@ -248,6 +248,9 @@ public class UifControllerHelper {
             // run lifecycle and update in view
             postedView.getViewHelperService().performComponentLifecycle(postedView, form, comp, refreshComponentId);
 
+            // TODO: this should be in ViewHelperServiceImpl#performComponentLifecycle where other
+            // adjustments are made, and it should use constants
+
             // add the layout item style that should happen in the parent BoxLayoutManager
             // and is skipped in a child component refresh
             if (boxLayoutHorizontalItem) {

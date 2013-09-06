@@ -54,6 +54,8 @@ var warningImage;
 var infoImage;
 var detailsOpenImage;
 var detailsCloseImage;
+var refreshImage;
+var navigationImage;
 var ajaxReturnHandlers = {};
 
 var gCurrentBubblePopupId;
@@ -745,6 +747,8 @@ function setupImages() {
     infoImage = "<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "validation/info.png' alt='" + getMessage(kradVariables.MESSAGE_INFORMATION) + "' /> ";
     detailsOpenImage = jQuery("<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "details_open.png' alt='" + getMessage(kradVariables.MESSAGE_DETAILS) + "' /> ");
     detailsCloseImage = jQuery("<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "details_close.png' alt='" + getMessage(kradVariables.MESSAGE_CLOSE_DETAILS) + "' /> ");
+    refreshImage = jQuery("<img src='" + getContext().blockUI.defaults.refreshOptions.blockingImage + "' alt='" + getMessage(kradVariables.MESSAGE_LOADING) + "' /> ");
+    navigationImage = jQuery("<img src='" + getContext().blockUI.defaults.navigationOptions.blockingImage + "' alt='" + getMessage(kradVariables.MESSAGE_LOADING) + "' /> ");
 }
 
 /**

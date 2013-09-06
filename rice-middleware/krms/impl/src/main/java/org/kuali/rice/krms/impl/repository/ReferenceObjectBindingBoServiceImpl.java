@@ -60,6 +60,13 @@ public final class ReferenceObjectBindingBoServiceImpl
         this.criteriaLookupService = criteriaLookupService;
     }
 
+    public CriteriaLookupService getCriteriaLookupService() {
+        if ( criteriaLookupService == null ) {
+            criteriaLookupService = KrmsRepositoryServiceLocator.getCriteriaLookupService();
+        }
+        return this.criteriaLookupService;
+    }
+
     public void setAttributeDefinitionService(KrmsAttributeDefinitionService attributeDefinitionService) {
         this.attributeDefinitionService = attributeDefinitionService;
     }
@@ -199,7 +206,7 @@ public final class ReferenceObjectBindingBoServiceImpl
     public ReferenceObjectBindingQueryResults findReferenceObjectBindings(final QueryByCriteria queryByCriteria) {
         LookupCustomizer.Builder<ReferenceObjectBindingBo> lc = LookupCustomizer.Builder.create();
         lc.setPredicateTransform(AttributeTransform.getInstance());
-        GenericQueryResults<ReferenceObjectBindingBo> results = criteriaLookupService.lookup(ReferenceObjectBindingBo.class, queryByCriteria, lc.build());
+        GenericQueryResults<ReferenceObjectBindingBo> results = getCriteriaLookupService().lookup(ReferenceObjectBindingBo.class, queryByCriteria, lc.build());
         ReferenceObjectBindingQueryResults.Builder builder = ReferenceObjectBindingQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
         builder.setTotalRowCount(results.getTotalRowCount());

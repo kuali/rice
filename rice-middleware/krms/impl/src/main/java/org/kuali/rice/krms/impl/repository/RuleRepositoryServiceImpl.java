@@ -86,6 +86,10 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
     	}
 		// Get agenda items from db, then build up agenda tree structure
 		AgendaBo agendaBo = getBusinessObjectService().findBySinglePrimaryKey(AgendaBo.class, agendaId);
+        if (agendaBo == null) {
+            return null;
+        }
+
 		String agendaItemId = agendaBo.getFirstItemId();
 		
 		// walk thru the agenda items, building an agenda tree definition Builder along the way
@@ -102,8 +106,14 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
 	@Override
 	public List<AgendaTreeDefinition> getAgendaTrees(List<String> agendaIds) {
 		List<AgendaTreeDefinition> agendaTrees = new ArrayList<AgendaTreeDefinition>();
+        if (agendaIds == null) {
+            return agendaTrees;
+        }
+
 		for (String agendaId : agendaIds){
-			agendaTrees.add( getAgendaTree(agendaId) );
+            if (getAgendaTree(agendaId) != null) {
+			   agendaTrees.add( getAgendaTree(agendaId) );
+            }
 		}
         return Collections.unmodifiableList(agendaTrees);		
 	}
@@ -259,6 +269,9 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
     }
 
     protected CriteriaLookupService getCriteriaLookupService() {
+        if ( criteriaLookupService == null ) {
+            criteriaLookupService = KrmsRepositoryServiceLocator.getCriteriaLookupService();
+        }
         return criteriaLookupService;
     }
     

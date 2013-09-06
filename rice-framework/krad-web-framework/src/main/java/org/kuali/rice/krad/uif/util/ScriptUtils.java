@@ -201,14 +201,12 @@ public class ScriptUtils {
      * @return the converted value
      */
     public static String convertToJsValue(String value) {
-        boolean isNumber = false;
 
         // save input value to preserve any whitespace formatting
         String originalValue = value;
 
         // remove whitespace for correct string matching
         value = StringUtils.strip(value);
-        isNumber = NumberUtils.isNumber(value);
 
         // If an option value starts with { or [, it would be a nested value
         // and it should not use quotes around it
@@ -225,10 +223,11 @@ public class ScriptUtils {
             return originalValue;
         }
         // for numerics
-        else if (isNumber) {
+        else if (NumberUtils.isNumber(value)) {
             return originalValue;
         } else {
-            // use single quotes since hidden scripts are placed in the value attribute which surrounds the script with double quotes
+            // use single quotes since hidden scripts are placed in
+            // the value attribute which surrounds the script with double quotes
             return "'" + originalValue + "'";
         }
     }

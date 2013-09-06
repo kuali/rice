@@ -1040,10 +1040,12 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         components.addAll(headerLabels);
         components.addAll(allRowFields);
 
-        for (ColumnCalculationInfo cInfo : columnCalculations) {
-            components.add(cInfo.getTotalField());
-            components.add(cInfo.getPageTotalField());
-            components.add(cInfo.getGroupTotalFieldPrototype());
+        if (columnCalculations != null) {
+            for (ColumnCalculationInfo cInfo : columnCalculations) {
+                components.add(cInfo.getTotalField());
+                components.add(cInfo.getPageTotalField());
+                components.add(cInfo.getGroupTotalFieldPrototype());
+            }
         }
 
         if (isShowToggleAllDetails()) {

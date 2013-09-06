@@ -297,7 +297,7 @@ public class RemoteFieldsHolder extends ComponentBase implements DataBinding {
         remoteFieldsHolderCopy.setFetchingMethodToCall(this.fetchingMethodToCall);
 
         if(this.fetchingMethodInvoker != null) {
-            this.setFetchingMethodInvoker((MethodInvokerConfig)this.fetchingMethodInvoker.copy());
+            this.setFetchingMethodInvoker(CloneUtils.deepClone(this.fetchingMethodInvoker));
         }
     }
 

@@ -68,31 +68,23 @@ public class DataTablesPagingHelper {
             synchronized (view) { // only one concurrent request per view please
 
                 CollectionGroup oldCollectionGroup = (CollectionGroup) view.getViewIndex().getComponentById(tableId);
-                newColumnSorts = buildColumnSorts(dataTablesInputs, oldCollectionGroup);
+                newColumnSorts = buildColumnSorts(view, dataTablesInputs, oldCollectionGroup);
+
+                // get the collection for this group from the model
+                modelCollection = ObjectPropertyUtils.getPropertyValue(form,
+                        oldCollectionGroup.getBindingInfo().getBindingPath());
+
+                applyTableJsonSort(modelCollection, oldColumnSorts, newColumnSorts, oldCollectionGroup, view);
 
                 // get a new instance of the collection group component that we'll run the lifecycle on
                 newCollectionGroup = (CollectionGroup) ComponentFactory.getNewInstanceForRefresh(form.getPostedView(),
                         tableId);
-
-                // copy over bindingInfo
-                BindingInfo originalBindingInfo = newCollectionGroup.getBindingInfo();
-                newCollectionGroup.setBindingInfo(oldCollectionGroup.getBindingInfo());
-
-                // get the collection for this group from the model
-                modelCollection = ObjectPropertyUtils.getPropertyValue(form,
-                        newCollectionGroup.getBindingInfo().getPropertyAdjustedBindingPath(
-                                newCollectionGroup.getPropertyName()));
-
-                applyTableJsonSort(modelCollection, oldColumnSorts, newColumnSorts, oldCollectionGroup, view);
 
                 // set up the collection group properties related to paging in the collection group to set the bounds for
                 // what needs to be rendered
                 newCollectionGroup.setUseServerPaging(true);
                 newCollectionGroup.setDisplayStart(dataTablesInputs.iDisplayStart);
                 newCollectionGroup.setDisplayLength(dataTablesInputs.iDisplayLength);
-
-                // set back original binding info
-                newCollectionGroup.setBindingInfo(originalBindingInfo);
 
                 // run lifecycle on the table component and update in view
                 view.getViewHelperService().performComponentLifecycle(view, form, newCollectionGroup,
@@ -112,18 +104,18 @@ public class DataTablesPagingHelper {
     /**
      * Extract the sorting information from the DataTablesInputs into a more generic form.
      *
+     * @param view posted view containing the collection
      * @param dataTablesInputs the parsed request data from dataTables
      * @return the List of ColumnSort elements representing the requested sort columns, types, and directions
      */
-    private List<ColumnSort> buildColumnSorts(DataTablesInputs dataTablesInputs, CollectionGroup collectionGroup) {
+    private List<ColumnSort> buildColumnSorts(View view, DataTablesInputs dataTablesInputs, CollectionGroup collectionGroup) {
         int[] sortCols = dataTablesInputs.iSortCol_; // cols being sorted on (for multi-col sort)
         boolean[] sortable = dataTablesInputs.bSortable_; // which columns are sortable
         String[] sortDir = dataTablesInputs.sSortDir_; // direction to sort
 
         // parse table options to gather the sort types
-        String aoColumnDefsValue =
-                ((TableLayoutManager) collectionGroup.getLayoutManager()).getRichTable().getTemplateOptions().get(
-                        UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
+        String aoColumnDefsValue = (String) view.getViewIndex().getPostContextEntry(collectionGroup.getId(),
+                UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
         JsonArray jsonColumnDefs = null;
 
         if (!StringUtils.isEmpty(aoColumnDefsValue)) { // we'll parse this using a JSON library to make things simpler

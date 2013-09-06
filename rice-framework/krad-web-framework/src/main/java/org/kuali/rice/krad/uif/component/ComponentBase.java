@@ -25,6 +25,8 @@ import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.control.ControlBase;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
+import org.kuali.rice.krad.uif.util.CloneUtils;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
@@ -290,11 +292,13 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
         // Set the skipInTabOrder flag on all nested components
         // Set the tabIndex on controls to -1 in order to be skipped on tabbing
-        for (Component component : getComponentsForLifecycle()) {
-            if (component != null && component instanceof ComponentBase && skipInTabOrder) {
-                ((ComponentBase) component).setSkipInTabOrder(skipInTabOrder);
-                if (component instanceof ControlBase) {
-                    ((ControlBase) component).setTabIndex(-1);
+        if (skipInTabOrder){
+            for (Component component : getComponentsForLifecycle()) {
+                if (component != null && component instanceof ComponentBase) {
+                    ((ComponentBase) component).setSkipInTabOrder(skipInTabOrder);
+                    if (component instanceof ControlBase) {
+                        ((ControlBase) component).setTabIndex(-1);
+                    }
                 }
             }
         }
@@ -1783,6 +1787,10 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @param value value of the data attribute
      */
     public void addDataAttribute(String key, String value) {
+        if (this.dataAttributes == null) {
+            this.dataAttributes = new HashMap<String, String>();
+        }
+
         dataAttributes.put(key, value);
     }
 
@@ -1897,7 +1905,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         componentCopy.setDisclosedByAction(this.disclosedByAction);
         componentCopy.setFinalizeMethodToCall(this.finalizeMethodToCall);
         componentCopy.setFinalizeMethodAdditionalArguments(this.finalizeMethodAdditionalArguments);
-        componentCopy.setFinalizeMethodInvoker(this.finalizeMethodInvoker);
+        componentCopy.setFinalizeMethodInvoker(CloneUtils.deepClone(this.finalizeMethodInvoker));
         componentCopy.setForceSessionPersistence(this.forceSessionPersistence);
         componentCopy.setHidden(this.hidden);
         componentCopy.setMethodToCallOnRefresh(this.methodToCallOnRefresh);

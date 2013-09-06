@@ -144,6 +144,12 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
         if (agendaId == null){ throw new RiceIllegalArgumentException("agendaId is null"); }
         final AgendaDefinition existing = getAgendaByAgendaId(agendaId);
         if (existing == null){ throw new IllegalStateException("the Agenda to delete does not exists: " + agendaId);}
+
+        List<AgendaItemDefinition> agendaItems = this.getAgendaItemsByAgendaId(existing.getId());
+        for( AgendaItemDefinition agendaItem : agendaItems) {
+            businessObjectService.delete(AgendaItemBo.from(agendaItem));
+        }
+
         businessObjectService.delete(from(existing));
     }
 

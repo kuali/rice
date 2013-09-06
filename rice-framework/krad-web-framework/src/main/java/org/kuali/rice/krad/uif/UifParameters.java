@@ -46,6 +46,7 @@ public class UifParameters {
     public static final String JUMP_TO_ID = "jumpToId";
     public static final String FOCUS_ID = "focusId";
 	public static final String RENDER_LOOKUP_CRITERIA = "renderlookupCriteria";
+    public static final String LABEL = "label";
 	public static final String LOOKUP_PARAMETERS = "lookupParameters";
     public static final String LOOKUP_COLLECTION_NAME = "lookupCollectionName";
     public static final String MULTIPLE_VALUES_SELECT = "multipleValuesSelect";
@@ -68,6 +69,7 @@ public class UifParameters {
     public static final String TABLE_ID = "tableId";
 	public static final String PAGE_ID = "pageId";
 	public static final String NAVIGATE_TO_PAGE_ID = "navigateToPageId";
+    public static final String VALUE = "value";
 	public static final String VIEW_ID = "viewId";
 	public static final String VIEW_NAME = "viewName";
 	public static final String VIEW_TYPE_NAME = "viewTypeName";

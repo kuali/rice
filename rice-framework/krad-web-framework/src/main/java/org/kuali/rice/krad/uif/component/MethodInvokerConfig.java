@@ -19,7 +19,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.Copyable;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.uif.view.View;
 import org.springframework.util.MethodInvoker;
 import org.springframework.util.ReflectionUtils;
 
@@ -34,6 +33,7 @@ import java.lang.reflect.Method;
  */
 @BeanTag(name = "methodInvokerConfig-bean", parent = "Uif-MethodInvokerConfig")
 public class MethodInvokerConfig extends MethodInvoker implements Serializable, Copyable {
+    private static final long serialVersionUID = 6626790175367500081L;
 
     private String staticMethod;
     private Class[] argumentTypes;

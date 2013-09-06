@@ -23,6 +23,7 @@ import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
+import org.kuali.rice.krad.uif.util.CloneUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -509,8 +510,8 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
         }
 
         if (this.queryMethodInvokerConfig != null) {
-            ((AttributeQuery) attributeQuery).setQueryMethodInvokerConfig(
-                    (MethodInvokerConfig) this.queryMethodInvokerConfig.copy());
+            ((AttributeQuery) attributeQuery).setQueryMethodInvokerConfig(CloneUtils.deepClone(
+                    this.queryMethodInvokerConfig));
         }
     }
 

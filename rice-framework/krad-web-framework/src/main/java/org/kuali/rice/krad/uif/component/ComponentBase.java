@@ -293,11 +293,13 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
         // Set the skipInTabOrder flag on all nested components
         // Set the tabIndex on controls to -1 in order to be skipped on tabbing
-        for (Component component : getComponentsForLifecycle()) {
-            if (component != null && component instanceof ComponentBase && skipInTabOrder) {
-                ((ComponentBase) component).setSkipInTabOrder(skipInTabOrder);
-                if (component instanceof ControlBase) {
-                    ((ControlBase) component).setTabIndex(-1);
+        if (skipInTabOrder){
+            for (Component component : getComponentsForLifecycle()) {
+                if (component != null && component instanceof ComponentBase) {
+                    ((ComponentBase) component).setSkipInTabOrder(skipInTabOrder);
+                    if (component instanceof ControlBase) {
+                        ((ControlBase) component).setTabIndex(-1);
+                    }
                 }
             }
         }

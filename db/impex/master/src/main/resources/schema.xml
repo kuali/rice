@@ -4023,6 +4023,58 @@
     	<column name="STR_PROP" size="10" type="VARCHAR" primaryKey="true" />
     	<column name="OTHER_STR_PROP" size="40" type="VARCHAR" />
     </table>
+    <table name="KRTST_PARENT_GEN_KEY_T">
+    	<column name="GENERATED_PK_COL" size="8" type="DECIMAL" primaryKey="true" />
+    </table>
+    <table name="KRTST_PARENT_GEN_KEY_CHILD_T">
+    	<column name="CHILDS_PK_COL" size="8" type="DECIMAL" primaryKey="true" />
+    	<column name="GENERATED_PK_COL" size="8" type="DECIMAL" />
+    </table>
+    <table name="KRTST_PARENT_OF_UPDATABLE_T">
+    	<column name="PK_COL" size="8" type="DECIMAL" primaryKey="true" />
+    	<column name="UPDATABLE_CHILD_KEY_COL" size="10" type="VARCHAR" />
+    </table>
+    <table name="KRTST_UPDATABLE_CHILD_T">
+    	<column name="PK_COL" size="10" type="VARCHAR" primaryKey="true" />
+    	<column name="SOME_DATA_COL" size="40" type="VARCHAR" />
+    </table>
+    <table name="KRTST_PARENT_WITH_MULTI_KEY_T">
+    	<column name="FIN_COA_CD" size="2" type="VARCHAR" primaryKey="true" />
+    	<column name="ACCOUNT_NBR" size="7" type="VARCHAR" primaryKey="true" />
+    	<column name="ORG_CD" size="4" type="VARCHAR" />
+    </table>
+    <table name="KRTST_TWO_KEY_CHILD_T">
+    	<column name="FIN_COA_CD" size="2" type="VARCHAR" primaryKey="true" />
+    	<column name="ORG_CD" size="4" type="VARCHAR" primaryKey="true" />
+    </table>
+
+    <table name="TRVL_TRAVELER_DTL_T">
+        <column name="ID" primaryKey="true" size="10" type="DECIMAL"/>
+        <column name="OBJ_ID" size="36" type="VARCHAR" required="true"/>
+        <column default="1" name="VER_NBR" size="8" type="DECIMAL" required="true" />
+        <column name="ACTV_IND" size="1" type="CHAR" default="Y" />
+        <column name="citizenship" size="40" type="VARCHAR"/>
+        <column name="city_nm" size="50" type="VARCHAR"/>
+        <column name="country_cd" size="2" type="VARCHAR"/>
+        <column name="customer_num" size="40" type="VARCHAR"/>
+        <column name="doc_nbr" size="14" type="VARCHAR"/>
+        <column name="drive_lic_exp_dt" type="DATE"/>
+        <column name="drive_lic_num" size="20" type="VARCHAR"/>
+        <column name="email_addr" size="50" type="VARCHAR"/>
+        <column name="first_nm" size="40" type="VARCHAR"/>
+        <column name="gender" size="1" type="VARCHAR"/>
+        <column name="last_nm" size="40" type="VARCHAR"/>
+        <column name="MIDDLENAME" size="40" type="VARCHAR"/>
+        <column name="non_res_alien" size="1" type="CHAR"/>
+        <column name="phone_nbr" size="20" type="VARCHAR"/>
+        <column name="EMP_PRINCIPAL_ID" size="255" type="VARCHAR"/>
+        <column name="postal_state_cd" size="2" type="VARCHAR"/>
+        <column name="addr_line_1" size="50" type="VARCHAR"/>
+        <column name="addr_line_2" size="50" type="VARCHAR"/>
+        <column name="traveler_typ_cd" size="3" type="VARCHAR"/>
+        <column name="poastal_cd" size="11" type="VARCHAR"/>
+    </table>
+
     <view name="KRIM_GRP_MBR_V" viewdefinition="SELECT g.NMSPC_CD&#xa;, g.grp_nm&#xa;, g.GRP_ID&#xa;, p.PRNCPL_NM&#xa;, p.PRNCPL_ID&#xa;, mg.GRP_NM AS mbr_grp_nm&#xa;, mg.GRP_ID AS mbr_grp_id&#xa;FROM KRIM_GRP_MBR_T gm&#xa;LEFT JOIN krim_grp_t g&#xa;ON g.GRP_ID = gm.GRP_ID&#xa;LEFT OUTER JOIN krim_grp_t mg&#xa;ON mg.GRP_ID = gm.MBR_ID&#xa;AND gm.MBR_TYP_CD = 'G'&#xa;LEFT OUTER JOIN krim_prncpl_t p&#xa;ON p.PRNCPL_ID = gm.MBR_ID&#xa;AND gm.MBR_TYP_CD = 'P'&#xa;LEFT OUTER JOIN krim_entity_nm_t en&#xa;ON en.ENTITY_ID = p.ENTITY_ID&#xa;AND en.DFLT_IND = 'Y'&#xa;AND en.ACTV_IND = 'Y'&#xa;ORDER BY nmspc_cd, grp_nm, prncpl_nm&#xa;&#xa;&#xa; &#xa; &#xa;"/>
     <view name="KRIM_GRP_V" viewdefinition="SELECT g.NMSPC_CD&#xa;, g.grp_nm&#xa;, g.GRP_ID&#xa;, t.NM AS grp_typ_nm&#xa;, a.NM AS attr_nm&#xa;, d.ATTR_VAL AS attr_val&#xa;FROM krim_grp_t g&#xa;LEFT OUTER JOIN KRIM_GRP_ATTR_DATA_T d&#xa;ON d.grp_id = g.GRP_ID&#xa;LEFT OUTER JOIN KRIM_ATTR_DEFN_T a&#xa;ON a.KIM_ATTR_DEFN_ID = d.KIM_ATTR_DEFN_ID&#xa;LEFT OUTER JOIN KRIM_TYP_T t&#xa;ON g.KIM_TYP_ID = t.KIM_TYP_ID&#xa;&#xa;&#xa; &#xa; &#xa;"/>
     <view name="KRIM_PERM_ATTR_V" viewdefinition="SELECT&#xa;t.nmspc_cd AS tmpl_nmspc_cd&#xa;, t.NM AS tmpl_nm&#xa;, t.PERM_TMPL_ID&#xa;, p.nmspc_cd AS perm_nmspc_cd&#xa;, p.NM AS perm_nm&#xa;, p.PERM_ID&#xa;, a.NM AS attr_nm&#xa;, ad.ATTR_VAL AS attr_val&#xa;FROM KRIM_PERM_T p&#xa;LEFT JOIN KRIM_PERM_TMPL_T t&#xa;ON p.PERM_TMPL_ID = t.PERM_TMPL_ID&#xa;LEFT OUTER JOIN KRIM_PERM_ATTR_DATA_T ad&#xa;ON p.PERM_ID = ad.perm_id&#xa;LEFT OUTER JOIN KRIM_ATTR_DEFN_T a&#xa;ON ad.KIM_ATTR_DEFN_ID = a.KIM_ATTR_DEFN_ID&#xa;ORDER BY tmpl_nmspc_cd, tmpl_nm, perm_nmspc_cd, perm_id, attr_nm&#xa;&#xa;&#xa; &#xa; &#xa;"/>
@@ -4161,6 +4213,7 @@
     <sequence name="KRSB_MSG_QUE_S" nextval="467"/>
     <sequence name="KRSB_SVC_DEF_S" nextval="10105"/>
     <sequence name="KRSB_SVC_DSCRPTR_S" nextval="10105"/>
+    <sequence name="KRTST_GENERATED_PK_S" nextval="100"/>
     <sequence name="TRVL_ID_SEQ" nextval="1"/>
     <sequence name="TRV_FO_ID_S" nextval="1000"/>
 </database>

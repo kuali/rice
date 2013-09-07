@@ -262,9 +262,12 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
 			if (BusinessObject.class.isAssignableFrom(nestedClass)) {
 				relationship = getBusinessObjectRelationship(null, nestedClass, localAttributeName, fullPrefix,
 						keysOnly);
+
 				// Since it was a nested property, we need to set the "parent" object
 				// back to the parent BO - the code above returns the next level down
-				relationship.setParentClass(boClass);
+                if (relationship != null) {
+				    relationship.setParentClass(boClass);
+                }
 			}
 			return relationship;
 		}

@@ -611,7 +611,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         if (isElementPresent(By.linkText(docId))) {
             SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getDocStatus());
         } else {
-            SeleneseTestBase.assertEquals(docId,driver.findElement(By.xpath(DOC_ID_XPATH_2)));
+            SeleneseTestBase.assertEquals(docId,findElement(By.xpath(DOC_ID_XPATH_2)));
             SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getDocStatus());
         }
     }
@@ -622,7 +622,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void assertElementPresentByName(String name, String message) {
         try {
-            driver.findElement(By.name(name));
+            findElement(By.name(name));
         } catch (Exception e) {
             failableFail(name + " not present " + message);
         }
@@ -634,7 +634,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void assertElementPresentByXpath(String locator, String message) {
         try {
-            driver.findElement(By.xpath(locator));
+            findElement(By.xpath(locator));
         } catch (Exception e) {
             jiraAwareFail(By.xpath(locator), message, e);
         }
@@ -642,7 +642,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void assertElementPresentByLinkText(String linkText) {
         try {
-            driver.findElement(By.linkText(linkText));
+            findElement(By.linkText(linkText));
         } catch (Exception e) {
             jiraAwareFail(By.cssSelector(linkText), "", e);
         }
@@ -651,7 +651,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void assertElementPresent(String locator) {
         try {
-            driver.findElement(By.cssSelector(locator));
+            findElement(By.cssSelector(locator));
         } catch (Exception e) {
             jiraAwareFail(By.cssSelector(locator), "", e);
         }
@@ -736,7 +736,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * @param url The URL of the popup window
      */
     protected void assertPopUpWindowUrl(By by, String windowName, String url) {
-        driver.findElement(by).click();
+        findElement(by).click();
         String parentWindowHandle = driver.getWindowHandle();
         // wait page to be loaded
         driver.switchTo().window(windowName).findElements(By.tagName("head"));
@@ -766,7 +766,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected void assertTextPresent(String text, String cssSelector, String message){
-        WebElement element = driver.findElement(By.cssSelector(cssSelector));
+        WebElement element = findElement(By.cssSelector(cssSelector));
         if (!element.getText().contains(text)){
             failableFail(text + " for " + cssSelector + " not present " + message);
         }
@@ -829,7 +829,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected void check(By by) throws InterruptedException {
-        WebElement element = driver.findElement(by);
+        WebElement element = findElement(by);
 
         if (!element.isSelected()) {
             element.click();
@@ -876,14 +876,14 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected String extractErrorText() {
-        String errorText = driver.findElement(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).getText();
+        String errorText = driver.findElement(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).getText(); // don't highlight
         errorText = ITUtil.blanketApprovalCleanUpErrorText(errorText);
         if (driver.findElements(By.xpath(ITUtil.DIV_EXCOL_LOCATOR)).size() > 0) { // not present if errors are at the bottom of the page (see left-errmsg below)
-            errorText = ITUtil.blanketApprovalCleanUpErrorText(driver.findElement(
+            errorText = ITUtil.blanketApprovalCleanUpErrorText(driver.findElement( // don't highlight
                     By.xpath(ITUtil.DIV_EXCOL_LOCATOR)).getText()); // replacing errorText as DIV_EXCOL_LOCATOR includes the error count
         }
         if (driver.findElements(By.xpath(DIV_LEFT_ERRMSG)).size() > 0) {
-            errorText = errorText + ITUtil.blanketApprovalCleanUpErrorText(driver.findElement(By.xpath(DIV_LEFT_ERRMSG)).getText());
+            errorText = errorText + ITUtil.blanketApprovalCleanUpErrorText(driver.findElement(By.xpath(DIV_LEFT_ERRMSG)).getText()); // don't highlight
         }
         return errorText;
     }
@@ -894,7 +894,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      */
     public boolean hasDocError() {
         if (driver.findElements(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).size() > 0) {
-            String errorText = driver.findElement(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).getText();
+            String errorText = driver.findElement(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).getText(); // don't highlight
             if (errorText != null && errorText.contains("error(s) found on page.")) {
                 return true;
             }
@@ -909,9 +909,9 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      */
     public boolean hasDocError(String errorTextToMatch) {
         if (driver.findElements(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).size() > 0) {
-            String errorText = driver.findElement(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).getText();
+            String errorText = driver.findElement(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).getText(); // don't highlight
             if (errorText != null && errorText.contains("error(s) found on page.")) {
-                WebElement errorDiv = driver.findElement(By.xpath("//div[@class='left-errmsg']/div[2]/div"));
+                WebElement errorDiv = driver.findElement(By.xpath("//div[@class='left-errmsg']/div[2]/div")); // don't highlight
                 if (errorDiv != null) {
                     errorText = errorDiv.getText();
                     return errorText != null && errorText.contains(errorTextToMatch);
@@ -938,7 +938,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected void clearText(By by) throws InterruptedException {
-        driver.findElement(by).clear();
+        findElement(by).clear();
     }
 
     protected void clearText(String selector) throws InterruptedException {
@@ -1033,7 +1033,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     protected String waitAndGetAttribute(By by, String attribute) throws InterruptedException {
         jiraAwareWaitFor(by, attribute);
         
-        return driver.findElement(by).getAttribute(attribute);
+        return findElement(by).getAttribute(attribute);
     }
 
     /**
@@ -1061,12 +1061,15 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         List<WebElement> found = findElements(by);
         String[] texts = new String[found.size()];
         int i = 0;
+
         for (WebElement element: found) {
             texts[i++] = element.getText();
         }
+
         if (texts.length == 0) {
             jiraAwareFail(by.toString());
         }
+
         return texts;
     }
 
@@ -1085,21 +1088,21 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * @return
      */
     protected int getCssCount(By by) {
-        return (driver.findElements(by)).size();
+        return (findElements(by)).size();
     }
 
     protected String getDocStatus() {
-        return driver.findElement(By.xpath(DOC_STATUS_XPATH_2)).getText();
+        return findElement(By.xpath(DOC_STATUS_XPATH_2)).getText();
     }
 
     /**
-     * Uses Selenium's findElements method which does not throw a test exception if not found.
+     * Uses Selenium's findElements for getting the options (findElement for the select) method which does not throw a test exception if not found.
      * @param by
      * @return
      * @throws InterruptedException
      */
     protected String[] getSelectOptions(By by) throws InterruptedException {
-        WebElement select1 = driver.findElement(by);
+        WebElement select1 = driver.findElement(by); // don't highlight
         List<WebElement> options = select1.findElements(By.tagName("option"));
         String[] optionValues = new String[options.size()];
         int counter = 0;
@@ -1129,7 +1132,8 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected String getText(By by) throws InterruptedException {
-        return driver.findElement(by).getText();
+        WebElement element = findElement(by);
+        return element.getText();
     }
 
     protected String getTextByClassName(String className) throws InterruptedException {
@@ -1174,12 +1178,12 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         driver.switchTo().defaultContent();
        
         if (driver.findElements(By.xpath("//iframe")).size() > 0) {
-            WebElement containerFrame = driver.findElement(By.xpath("//iframe"));
+            WebElement containerFrame = driver.findElement(By.xpath("//iframe")); // don't highlight
             driver.switchTo().frame(containerFrame);
         }
         
         if (driver.findElements(By.xpath("//iframe")).size() > 0) {
-            WebElement contentFrame = driver.findElement(By.xpath("//iframe"));
+            WebElement contentFrame = driver.findElement(By.xpath("//iframe")); // don't highlight
             driver.switchTo().frame(contentFrame);
         }
         
@@ -1197,9 +1201,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected WebElement findButtonByText(String buttonText) {
-        WebElement found = driver.findElement(By.xpath("//button[contains(text(), '" + buttonText + "')]"));
-        WebDriverUtil.highlightElement(driver, found);
-        return found;
+        return findElement(By.xpath("//button[contains(text(), '" + buttonText + "')]"));
     }
 
     protected WebElement findElement(By by) {
@@ -1274,12 +1276,12 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      */
     public void fireMouseOverEvent(By by) {
         Actions builder = new Actions(driver);
-        Actions hover = builder.moveToElement(driver.findElement(by));
+        Actions hover = builder.moveToElement(findElement(by));
         hover.perform();
     }
 
     protected boolean isChecked(By by) {
-        return driver.findElement(by).isSelected();
+        return findElement(by).isSelected();
     }
 
     protected boolean isCheckedById(String id) {
@@ -1295,7 +1297,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected boolean isEnabled(By by) {
-        return driver.findElement(by).isEnabled();
+        return findElement(by).isEnabled();
     }
 
     protected boolean isEnabledById(String id) {
@@ -1432,8 +1434,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     protected void jiraAwareWaitAndClick(By by, String message, Failable failable) throws InterruptedException {
         try {
             jiraAwareWaitFor(by, message, failable);
-            WebElement element = driver.findElement(by);
-            WebDriverUtil.highlightElement(driver, element);
+            WebElement element = findElement(by);
             element.click();
         } catch (Exception e) {
             jiraAwareFail(by, message, e);
@@ -1506,7 +1507,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      */
     protected void select(By by, String selectText) throws InterruptedException {
         checkForIncidentReport(by.toString(), "trying to select text " + selectText);
-        WebElement select1 = driver.findElement(by);
+        WebElement select1 = findElement(by);
         List<WebElement> options = select1.findElements(By.tagName("option"));
 
         for (WebElement option : options) {
@@ -1532,7 +1533,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * @throws InterruptedException
      */
     protected void selectOption(By by, String optionValue) throws InterruptedException {
-        WebElement select1 = driver.findElement(by);
+        WebElement select1 = findElement(by);
         List<WebElement> options = select1.findElements(By.tagName("option"));
 
         if (options == null || options.size() == 0) {
@@ -1586,9 +1587,9 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         assertDocumentStatusSaved();
 
         //checks it is saved and initiator is admin.
-        SeleneseTestBase.assertEquals(DOC_STATUS_SAVED, driver.findElement(By.xpath(
+        SeleneseTestBase.assertEquals(DOC_STATUS_SAVED, findElement(By.xpath(
                 "//table[@class='headerinfo']/tbody/tr[1]/td[2]")).getText());
-        SeleneseTestBase.assertEquals("admin", driver.findElement(By.xpath(
+        SeleneseTestBase.assertEquals("admin", findElement(By.xpath(
                 "//table[@class='headerinfo']/tbody/tr[2]/td[1]/a")).getText());
     }
 
@@ -1617,8 +1618,8 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         checkForIncidentReport();
 
         //checks it is saved and initiator is admin.
-        SeleneseTestBase.assertEquals(DOC_STATUS_SAVED, driver.findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[1]/td[2]")).getText());
-        SeleneseTestBase.assertEquals("admin", driver.findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[2]/td[1]/a")).getText());
+        SeleneseTestBase.assertEquals(DOC_STATUS_SAVED, findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[1]/td[2]")).getText());
+        SeleneseTestBase.assertEquals("admin", findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[2]/td[1]/a")).getText());
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
         waitForPageToLoad();
         waitAndClickSearch();
@@ -1650,16 +1651,16 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndClickByXpath("//button[contains(.,'earch')]");
         Thread.sleep(3000);
         waitForPageToLoad();
-        driver.findElement(By.tagName("body")).getText().contains("Actions"); // there are no actions, but the header is the only unique text from searching
+        findElement(By.tagName("body")).getText().contains("Actions"); // there are no actions, but the header is the only unique text from searching
         waitAndClickByLinkText("1000");
         waitForPageToLoad();
-        driver.findElement(By.tagName("body")).getText().contains("Attribute Inquiry");
-        driver.findElement(By.tagName("body")).getText().contains("KRMS Attributes");
-        driver.findElement(By.tagName("body")).getText().contains("Attribute Label");
-        driver.findElement(By.tagName("body")).getText().contains("1000");
-        driver.findElement(By.tagName("body")).getText().contains("peopleFlowId");
-        driver.findElement(By.tagName("body")).getText().contains("KR-RULE");
-        driver.findElement(By.tagName("body")).getText().contains("PeopleFlow");
+        findElement(By.tagName("body")).getText().contains("Attribute Inquiry");
+        findElement(By.tagName("body")).getText().contains("KRMS Attributes");
+        findElement(By.tagName("body")).getText().contains("Attribute Label");
+        findElement(By.tagName("body")).getText().contains("1000");
+        findElement(By.tagName("body")).getText().contains("peopleFlowId");
+        findElement(By.tagName("body")).getText().contains("KR-RULE");
+        findElement(By.tagName("body")).getText().contains("PeopleFlow");
 
         // selectFrame("name=fancybox-frame1343151577256"); // TODO parse source to get name
         // jiraAwareWaitAndClick("css=button:contains(Close)"); // looks lower case, but is upper
@@ -1733,7 +1734,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         assertElementPresentByXpath("//*[@name='methodToCall.route' and @alt='submit']","save button does not exist on the page");
         
         //waitForElementPresentByXpath(DOC_ID_XPATH);
-        //String docId = driver.findElement(By.xpath(DOC_ID_XPATH)).getText();
+        //String docId = findElement(By.xpath(DOC_ID_XPATH)).getText();
         String docId = waitForDocId();
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Creating new Document Type");
         String parentDocType = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:document.newMaintainableObject.parentDocType.name,documentTypeId:document.newMaintainableObject.docTypeParentId,))).((`document.newMaintainableObject.parentDocType.name:name,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
@@ -1761,7 +1762,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         selectFrameIframePortlet();
         waitAndClickSearch();
         Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(docId, driver.findElement(By.xpath(DOC_ID_XPATH_2)).getText());
+        SeleneseTestBase.assertEquals(docId, findElement(By.xpath(DOC_ID_XPATH_2)).getText());
     }
 
     protected void testCreateNewCancel() throws Exception {
@@ -2351,44 +2352,44 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitForElementPresent("div[data-header_for='PeopleFlow-MaintenanceView'] div[data-label='Document Number'] > span");
         String docId = getText("div[data-header_for='PeopleFlow-MaintenanceView'] div[data-label='Document Number'] > span");
         jGrowlSticky("Doc Id is " + docId);
-        driver.findElement(By.name("document.documentHeader.documentDescription")).clear();
-        driver.findElement(By.name("document.documentHeader.documentDescription")).sendKeys("Description for Document");
-        new Select(driver.findElement(By.name("document.newMaintainableObject.dataObject.namespaceCode"))).selectByVisibleText("KUALI - Kuali Systems");
-        driver.findElement(By.name("document.newMaintainableObject.dataObject.name")).clear();
-        driver.findElement(By.name("document.newMaintainableObject.dataObject.name")).sendKeys("Document Name" + ITUtil.DTS);
+        findElement(By.name("document.documentHeader.documentDescription")).clear();
+        findElement(By.name("document.documentHeader.documentDescription")).sendKeys("Description for Document");
+        new Select(findElement(By.name("document.newMaintainableObject.dataObject.namespaceCode"))).selectByVisibleText("KUALI - Kuali Systems");
+        findElement(By.name("document.newMaintainableObject.dataObject.name")).clear();
+        findElement(By.name("document.newMaintainableObject.dataObject.name")).sendKeys("Document Name" + ITUtil.DTS);
 
         jGrowl("Add Member kr");
-        driver.findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).clear();
-        driver.findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).sendKeys("kr");
-        driver.findElement(By.cssSelector("button[data-loadingmessage='Adding Line...']")).click();
+        findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).clear();
+        findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).sendKeys("kr");
+        findElement(By.cssSelector("button[data-loadingmessage='Adding Line...']")).click();
         Thread.sleep(3000);
 
         jGrowl("Add Member admin");
-        driver.findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).clear();
-        driver.findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).sendKeys("admin");
-        driver.findElement(By.cssSelector("button[data-loadingmessage='Adding Line...']")).click();
+        findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).clear();
+        findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).sendKeys("admin");
+        findElement(By.cssSelector("button[data-loadingmessage='Adding Line...']")).click();
         Thread.sleep(3000);
 
-        driver.findElement(By.cssSelector("div[data-parent='PeopleFlow-MaintenanceView'] > div.uif-footer button~button~button")).click();
+        findElement(By.cssSelector("div[data-parent='PeopleFlow-MaintenanceView'] > div.uif-footer button~button~button")).click();
         Thread.sleep(3000);
         checkForIncidentReport();
         jGrowl("Blanket Approve");
         Thread.sleep(5000);
         
         //Close the Doc
-        //driver.findElement(By.id("uif-close")).click();
+        //findElement(By.id("uif-close")).click();
         //Thread.sleep(3000);
         driver.switchTo().window(driver.getWindowHandles().toArray()[0].toString());
-        driver.findElement(By.cssSelector("img[alt=\"doc search\"]")).click();
+        findElement(By.cssSelector("img[alt=\"doc search\"]")).click();
         Thread.sleep(5000);
         jGrowl("Document Search is " + docId + " present?");
         selectFrameIframePortlet();
-        driver.findElement(By.cssSelector("td.infoline > input[name=\"methodToCall.search\"]")).click();
+        findElement(By.cssSelector("td.infoline > input[name=\"methodToCall.search\"]")).click();
         Thread.sleep(5000);
         jGrowl("Is doc status final?");
-        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, driver.findElement(By.xpath("//table[@id='row']/tbody/tr/td[4]")).getText());
+        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, findElement(By.xpath("//table[@id='row']/tbody/tr/td[4]")).getText());
         driver.switchTo().defaultContent();
-        driver.findElement(By.name("imageField")).click();
+        findElement(By.name("imageField")).click();
         Thread.sleep(5000);
         // TODO open the document and verify data is as we expect.
     }
@@ -2837,7 +2838,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndClickByXpath("//button[contains(.,'earch')]");
         Thread.sleep(3000);
         waitForPageToLoad();
-        driver.findElement(By.tagName("body")).getText().contains("Actions"); // there are no actions, but the header is the only unique text from searching
+        findElement(By.tagName("body")).getText().contains("Actions"); // there are no actions, but the header is the only unique text from searching
         
         // Category's don't have actions (yet)
         //waitAndClick("id=u80");
@@ -3644,7 +3645,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     protected void testViewHelp2() throws Exception {
         // test tooltip help
         if (isElementPresentByXpath("//td[@class='jquerybubblepopup-innerHtml']")) {
-            SeleneseTestBase.assertFalse(driver.findElement(By.cssSelector("td.jquerybubblepopup-innerHtml")).isDisplayed());
+            SeleneseTestBase.assertFalse(findElement(By.cssSelector("td.jquerybubblepopup-innerHtml")).isDisplayed());
         }
 
         // test tooltip help
@@ -3899,7 +3900,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected void uncheck(By by) throws InterruptedException {
-        WebElement element = driver.findElement(by);
+        WebElement element = findElement(by);
         if (element.isSelected()) {
             element.click();
         }
@@ -4252,9 +4253,9 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     protected void waitAndType(By by, String text, String message) throws InterruptedException {
         try {
             jiraAwareWaitFor(by, "");
-            WebElement element = driver.findElement(by);
-            WebDriverUtil.highlightElement(driver, driver.findElement(by));
-            (driver.findElement(by)).sendKeys(text);
+            WebElement element = findElement(by);
+            WebDriverUtil.highlightElement(driver, element);
+            element.sendKeys(text);
         } catch (Exception e) {
             JiraAwareFailureUtil.failOnMatchedJira(by.toString(), this);
             failableFail(e.getMessage() + " " + by.toString() + "  unable to type text '" + text + "'  " + message
@@ -4323,7 +4324,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         checkForDocError();
         waitForElementPresentByXpath(DOC_ID_XPATH);
 
-        return driver.findElement(By.xpath(DOC_ID_XPATH)).getText();
+        return findElement(By.xpath(DOC_ID_XPATH)).getText();
     }
 
     protected void waitForElementPresent(By by) throws InterruptedException {
@@ -4573,19 +4574,19 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected WebElement getElementByDataAttributeValue(String dataAttributeName, String value){
-        return driver.findElement(By.cssSelector("[data-" + dataAttributeName + "='" + value +"']"));
+        return findElement(By.cssSelector("[data-" + dataAttributeName + "='" + value +"']"));
     }
 
     protected WebElement getElementByDataAttribute(String dataAttributeName){
-        return driver.findElement(By.cssSelector("[data-" + dataAttributeName + "]"));
+        return findElement(By.cssSelector("[data-" + dataAttributeName + "]"));
     }
 
     protected WebElement getElementByAttributeValue(String attributeName, String value){
-        return driver.findElement(By.cssSelector("[" + attributeName + "='" + value +"']"));
+        return findElement(By.cssSelector("[" + attributeName + "='" + value +"']"));
     }
 
     protected WebElement getElementByAttribute(String attributeName){
-        return driver.findElement(By.cssSelector("[" + attributeName + "]"));
+        return findElement(By.cssSelector("[" + attributeName + "]"));
     }
 
     /**
@@ -4598,7 +4599,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * @return label text
      */
     protected String getForLabelText(String forElementId) {
-        return driver.findElement(By.cssSelector("label[for=" + forElementId + "]")).getText();
+        return findElement(By.cssSelector("label[for=" + forElementId + "]")).getText();
     }
 
     /**

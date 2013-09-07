@@ -107,12 +107,6 @@ public class WebDriverUtil {
     public static int SHORT_IMPLICIT_WAIT_TIME = 1;
 
     /**
-     * Set -Dremote.driver.saucelabs for running on saucelabs
-     * @link https://wiki.kuali.org/display/KULRICE/How+To+Run+a+Selenium+Test for patch required
-     */
-    public static final String REMOTE_DRIVER_SAUCELABS_PROPERTY = "remote.driver.saucelabs";
-
-    /**
      * Selenium's webdriver.chrome.driver parameter, you can set -Dwebdriver.chrome.driver= or Rice's REMOTE_PUBLIC_CHROME
      */
     public static final String WEBDRIVER_CHROME_DRIVER = "webdriver.chrome.driver";
@@ -186,7 +180,7 @@ public class WebDriverUtil {
         }
 
         WebDriver driver = null;
-        if (System.getProperty(REMOTE_DRIVER_SAUCELABS_PROPERTY) == null) {
+        if (System.getProperty(SauceLabsWebDriverHelper.REMOTE_DRIVER_SAUCELABS_PROPERTY) == null) {
             driver = getWebDriver();
         } else {
             SauceLabsWebDriverHelper saucelabs = new SauceLabsWebDriverHelper();
@@ -221,7 +215,7 @@ public class WebDriverUtil {
      */
     public static void tearDown(boolean passed, String sessionId, String testParam, String userParam) throws Exception {
 
-        if (System.getProperty(SauceLabsWebDriverHelper.SAUCE_PROPERTY) != null) {
+        if (System.getProperty(SauceLabsWebDriverHelper.REMOTE_DRIVER_SAUCELABS_PROPERTY) != null) {
             SauceLabsWebDriverHelper.tearDown(passed, sessionId, System.getProperty(SauceLabsWebDriverHelper.SAUCE_USER_PROPERTY),
                     System.getProperty(SauceLabsWebDriverHelper.SAUCE_KEY_PROPERTY));
         }

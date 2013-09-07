@@ -583,7 +583,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     @Override
     public Map<String, String> performClear(LookupForm form, Map<String, String> searchCriteria) {
         Map<String, InputField> criteriaFieldMap = new HashMap<String, InputField>();
-        if (form.getPostedView() == null) {
+
+        if (form.getPostedView() != null) {
             criteriaFieldMap = getCriteriaFieldsForValidation((LookupView) form.getPostedView(), form);
         }
 

@@ -94,6 +94,8 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("//div[@id='Demo-TableLayoutTotaling-Section1']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span[@data-role]", "KULRICE-10402 Update DemoLibraryCollectionFeaturesColumnCalculationsSmokeTest which is failing");
 
         jiraMatches.put("Unable to decrypt value from db", "KULRICE-10403 Rice 2.4: Stack trace on submitting People Flow doc");
+
+        jiraMatches.put("org.kuali.rice.krad.uif.container.LightTable.buildRows", "KULRICE-10421 DemoLibraryCollectionFeaturesLightTableSmokeTest inline freemarker exception");
         //jiraMatches.put("", "");
     }
 

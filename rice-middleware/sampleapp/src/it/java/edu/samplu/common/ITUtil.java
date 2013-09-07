@@ -438,7 +438,7 @@ public class ITUtil {
         JiraAwareFailureUtil.failOnMatchedJira(contents, failable);
         String ftlStackTrace = null;
         if (contents.contains("more<")) {
-            ftlStackTrace = contents.substring(contents.indexOf("Error: on line"), contents.indexOf("more<") - 1);
+            ftlStackTrace = contents.substring(contents.indexOf("----------"), contents.indexOf("more<") - 1);
         } else if (contents.contains("at java.lang.Thread.run(Thread.java:")) {
             ftlStackTrace = contents.substring(contents.indexOf("Error: on line"), contents.indexOf("at java.lang.Thread.run(Thread.java:") + 39 );
         }

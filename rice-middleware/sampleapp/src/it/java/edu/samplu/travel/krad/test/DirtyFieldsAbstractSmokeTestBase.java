@@ -67,7 +67,7 @@ public abstract class DirtyFieldsAbstractSmokeTestBase extends WebDriverLegacyIT
 
     protected void testDirtyFieldsCheck() throws Exception {
         checkForIncidentReport(getTestUrl());
-        Thread.sleep(5000);
+        waitAndClickByLinkText("Text Controls");
         waitAndTypeByName("field1", "test 1");
         waitAndTypeByName("field102", "test 2");
         assertCancelConfirmation();
@@ -85,7 +85,7 @@ public abstract class DirtyFieldsAbstractSmokeTestBase extends WebDriverLegacyIT
 
         // //Asserting text-field style to uppercase. This style would display
         // input text in uppercase.
-        SeleneseTestBase.assertEquals("text-transform: uppercase;", waitAndGetAttributeByName("field112", "style"));
+        SeleneseTestBase.assertTrue(waitAndGetAttributeByName("field112", "style").contains("text-transform: uppercase;"));
         assertCancelConfirmation();
         waitForElementPresentByName("field101");
         SeleneseTestBase.assertEquals("val", waitAndGetAttributeByName("field101", "value"));

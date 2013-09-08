@@ -76,6 +76,7 @@ public class DemoTravelAccountMultivalueLookUpSmokeTest extends SmokeTestBase {
         waitAndSelectByName(ACCOUNT_TYPE_CODE_NAME, "Expense Account Type");
         waitAndClickButtonByText(SEARCH);
         waitAndClickButtonByText("select all from this page");
+        Thread.sleep(1000);
         assertButtonEnabledByText(RETURN_SELECTED_BUTTON_TEXT);
         assertTextPresent("a2");
         assertTextPresent("a8");

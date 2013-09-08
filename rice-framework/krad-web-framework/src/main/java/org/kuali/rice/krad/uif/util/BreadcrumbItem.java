@@ -54,7 +54,11 @@ public class BreadcrumbItem extends ContentElementBase {
 
         if (url != null) {
             Map<String, Object> context = new HashMap<String, Object>();
-            context.putAll(view.getContext());
+
+            Map<String, Object> viewContext = view.getContext();
+            if (viewContext != null) {
+                context.putAll(viewContext);
+            }
 
             ExpressionUtils.populatePropertyExpressionsFromGraph(url, false);
             view.getViewHelperService().getExpressionEvaluator().evaluateExpressionsOnConfigurable(view, url,

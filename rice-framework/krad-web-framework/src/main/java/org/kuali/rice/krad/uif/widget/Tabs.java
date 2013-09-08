@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -77,7 +80,13 @@ public class Tabs extends WidgetBase {
 
             // if active tab index is set, add the plugin active option
             if (found) {
-                getTemplateOptions().put(UifConstants.TabOptionKeys.ACTIVE, Integer.toString(index));
+                Map<String, String> oTemplateOptions = this.getTemplateOptions();
+                
+                if (oTemplateOptions == null) {
+                    setTemplateOptions(oTemplateOptions = new HashMap<String, String>());
+                }
+                
+                oTemplateOptions.put(UifConstants.TabOptionKeys.ACTIVE, Integer.toString(index));
             }
         }
     }

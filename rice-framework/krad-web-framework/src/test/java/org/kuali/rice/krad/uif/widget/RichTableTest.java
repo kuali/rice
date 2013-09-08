@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.widget;
 
 import com.google.common.collect.Lists;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
@@ -32,6 +33,7 @@ import org.kuali.rice.krad.uif.view.LookupView;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -57,7 +59,7 @@ public class RichTableTest {
 
     public static final String B_VISIBLE_FALSE_TARGETS_1 = "{bVisible: false, \"aTargets\": [1]}";
     public static final String B_SORTABLE_FALSE_TARGETS_3 = "{'bSortable': false, \"aTargets\": [3]}";
-    
+
     private RichTable richTable;
     private CollectionGroup group;
     private LookupView mockView;
@@ -98,7 +100,7 @@ public class RichTableTest {
 
         group.setItems(items);
 
-        mockView =  mock(LookupView.class);
+        mockView = mock(LookupView.class);
         ViewHelperService mockViewHelperService = mock(ViewHelperService.class);
         when(mockView.getViewHelperService()).thenReturn(mockViewHelperService);
     }
@@ -117,7 +119,8 @@ public class RichTableTest {
      */
     public void testComponentOptionsAoColumnsJSOptions() throws Exception {
         String innerColValues = "{bVisible: false}, null, null";
-        assertRichTableComponentOptions("[" + innerColValues + "]", "[" + EXPECTED + " ," + innerColValues + "]", UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
+        assertRichTableComponentOptions("[" + innerColValues + "]", "[" + EXPECTED + " ," + innerColValues + "]",
+                UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
     }
 
     @Test
@@ -133,7 +136,7 @@ public class RichTableTest {
         richTable.setHiddenColumns(hiddenColumns);
         String expected = "[" + S_TYPE + ", " +
                 B_VISIBLE_FALSE_TARGETS_1 + ", " +
-                S_SORT_DATA_TARGETS_2 +", " +
+                S_SORT_DATA_TARGETS_2 + ", " +
                 B_SORTABLE_FALSE_TARGETS_3 + "]";
         assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
     }
@@ -290,12 +293,17 @@ public class RichTableTest {
 
     /**
      * a common method to test rich table options
-     *
+     * 
      * @param optionsOnGroup - a string in JSON format of the options set on the collection group
      * @param optionsOnRichTable - a string in JSON format of the options set on the rich table
      * @param optionKey - a string with the rich table option key being tested
      */
     private void assertRichTableComponentOptions(String optionsOnGroup, String optionsOnRichTable, String optionKey) {
+        
+        if (richTable.getTemplateOptions() == null) {
+            richTable.setTemplateOptions(new HashMap<String, String>());
+        }
+        
         richTable.getTemplateOptions().put(optionKey, optionsOnGroup);
         richTable.performFinalize(mockView, new UifFormBase(), group);
         assertEquals(optionsOnRichTable, richTable.getTemplateOptions().get(optionKey));

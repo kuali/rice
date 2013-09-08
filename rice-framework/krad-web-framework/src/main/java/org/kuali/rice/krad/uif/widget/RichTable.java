@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.widget;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
@@ -54,20 +55,23 @@ import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import javax.annotation.Nullable;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
  * Decorates a HTML Table client side with various tools
- *
+ * 
  * <p>
- * Decorations implemented depend on widget implementation. Examples are
- * sorting, paging and skinning.
+ * Decorations implemented depend on widget implementation. Examples are sorting, paging and
+ * skinning.
  * </p>
- *
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTags({@BeanTag(name = "richTable-bean", parent = "Uif-RichTable"),
@@ -105,7 +109,7 @@ public class RichTable extends WidgetBase {
 
     /**
      * The following initialization is performed:
-     *
+     * 
      * <ul>
      * <li>Initializes component options for empty table message</li>
      * </ul>
@@ -122,7 +126,13 @@ public class RichTable extends WidgetBase {
 
         if (StringUtils.isNotBlank(getEmptyTableMessage()) && !getTemplateOptions().containsKey(
                 UifConstants.TableToolsKeys.LANGUAGE)) {
-            getTemplateOptions().put(UifConstants.TableToolsKeys.LANGUAGE,
+            Map<String, String> oTemplateOptions = this.getTemplateOptions();
+
+            if (oTemplateOptions == null) {
+                setTemplateOptions(oTemplateOptions = new HashMap<String, String>());
+            }
+
+            oTemplateOptions.put(UifConstants.TableToolsKeys.LANGUAGE,
                     "{\"" + UifConstants.TableToolsKeys.EMPTY_TABLE + "\" : \"" + getEmptyTableMessage() + "\"}");
         }
 
@@ -231,7 +241,7 @@ public class RichTable extends WidgetBase {
 
     /**
      * Add the css style to the cellCssClasses by column index, later used by the aoColumnDefs
-     *
+     * 
      * @param manager the tableLayoutManager that contains the original fields
      */
     private void addCellStyling(TableLayoutManager manager) {
@@ -246,7 +256,7 @@ public class RichTable extends WidgetBase {
 
     /**
      * Builds the footer callback template option for column totals
-     *
+     * 
      * @param collectionGroup the collection group
      */
     private void setTotalOptions(CollectionGroup collectionGroup) {
@@ -263,7 +273,13 @@ public class RichTable extends WidgetBase {
                 }
                 array = StringUtils.removeEnd(array, ",");
                 array = array + "]";
-                getTemplateOptions().put(UifConstants.TableToolsKeys.FOOTER_CALLBACK,
+
+                Map<String, String> oTemplateOptions = this.getTemplateOptions();
+                if (oTemplateOptions == null) {
+                    setTemplateOptions(oTemplateOptions = new HashMap<String, String>());
+                }
+
+                oTemplateOptions.put(UifConstants.TableToolsKeys.FOOTER_CALLBACK,
                         "function (nRow, aaData, iStart, iEnd, aiDisplay) {initializeTotalsFooter (nRow, aaData, iStart, iEnd, aiDisplay, "
                                 + array
                                 + " )}");
@@ -273,7 +289,7 @@ public class RichTable extends WidgetBase {
 
     /**
      * Builds column options for sorting
-     *
+     * 
      * @param collectionGroup
      */
     protected void buildTableOptions(CollectionGroup collectionGroup) {
@@ -290,8 +306,14 @@ public class RichTable extends WidgetBase {
             if (collectionGroup.isRenderAddLine()
                     && !collectionGroup.isReadOnly()
                     && !((layoutManager instanceof TableLayoutManager) && ((TableLayoutManager) layoutManager)
-                    .isSeparateAddLine())) {
-                getTemplateOptions().put(UifConstants.TableToolsKeys.SORT_SKIP_ROWS,
+                            .isSeparateAddLine())) {
+                Map<String, String> oTemplateOptions = this.getTemplateOptions();
+
+                if (oTemplateOptions == null) {
+                    setTemplateOptions(oTemplateOptions = new HashMap<String, String>());
+                }
+
+                oTemplateOptions.put(UifConstants.TableToolsKeys.SORT_SKIP_ROWS,
                         "[" + UifConstants.TableToolsValues.ADD_ROW_DEFAULT_INDEX + "]");
             }
 
@@ -371,7 +393,8 @@ public class RichTable extends WidgetBase {
                             null);
                     tableToolsColumnOptions.append(actionColOptions);
                 } else {
-                    tableToolsColumnOptions = new StringBuilder(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
+                    tableToolsColumnOptions = new StringBuilder(StringUtils.removeEnd(
+                            tableToolsColumnOptions.toString(),
                             ", "));
                 }
 
@@ -389,7 +412,8 @@ public class RichTable extends WidgetBase {
                             null);
                     tableToolsColumnOptions.append(actionColOptions);
                 } else {
-                    tableToolsColumnOptions = new StringBuilder(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
+                    tableToolsColumnOptions = new StringBuilder(StringUtils.removeEnd(
+                            tableToolsColumnOptions.toString(),
                             ", "));
                 }
 
@@ -424,6 +448,7 @@ public class RichTable extends WidgetBase {
                         component = ((FieldGroup) component).getItems().get(0);
                     }
 
+                    Map<String, String> componentDataAttributes;
                     if (component instanceof DataField) {
                         DataField field = (DataField) component;
 
@@ -465,9 +490,10 @@ public class RichTable extends WidgetBase {
                             tableToolsColumnOptions.append(colOptions + " , ");
                         }
                         columnIndex++;
-                    } else if (component instanceof MessageField && component.getDataAttributes().get(
-                            UifConstants.DataAttributes.ROLE) != null && component.getDataAttributes().get(
-                            UifConstants.DataAttributes.ROLE).equals(UifConstants.RoleTypes.ROW_GROUPING)) {
+                    } else if ((component instanceof MessageField)
+                            && (componentDataAttributes = component.getDataAttributes()) != null
+                            && UifConstants.RoleTypes.ROW_GROUPING.equals(componentDataAttributes.get(
+                                    UifConstants.DataAttributes.ROLE))) {
                         //Grouping column is never shown, so skip
                         tableToolsColumnOptions.append("{"
                                 + UifConstants.TableToolsKeys.VISIBLE
@@ -500,7 +526,8 @@ public class RichTable extends WidgetBase {
                             null);
                     tableToolsColumnOptions.append(actionColOptions);
                 } else {
-                    tableToolsColumnOptions = new StringBuilder(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
+                    tableToolsColumnOptions = new StringBuilder(StringUtils.removeEnd(
+                            tableToolsColumnOptions.toString(),
                             ", "));
                 }
 
@@ -521,7 +548,7 @@ public class RichTable extends WidgetBase {
 
     /**
      * Builds default sorting options.
-     *
+     * 
      * @param lookupView the view for the lookup
      * @param collectionGroup the collection group for the table
      */
@@ -566,7 +593,11 @@ public class RichTable extends WidgetBase {
 
                 tableToolsSortOptions.append("]");
 
-                getTemplateOptions().put(UifConstants.TableToolsKeys.AASORTING, tableToolsSortOptions.toString());
+                Map<String, String> oTemplateOptions = this.getTemplateOptions();
+                if (oTemplateOptions == null) {
+                    setTemplateOptions(oTemplateOptions = new HashMap<String, String>());
+                }
+                oTemplateOptions.put(UifConstants.TableToolsKeys.AASORTING, tableToolsSortOptions.toString());
             }
         }
     }
@@ -586,7 +617,7 @@ public class RichTable extends WidgetBase {
 
     /**
      * Construct the column options for a data field
-     *
+     * 
      * @param collectionGroup the collectionGroup in which the data field is defined
      * @param field the field to construction options for
      * @return options as valid for datatable
@@ -611,7 +642,7 @@ public class RichTable extends WidgetBase {
             sortType = UifConstants.TableToolsValues.DOM_TEXT;
         }
 
-        Class dataTypeClass = ObjectPropertyUtils.getPropertyType(collectionGroup.getCollectionObjectClass(),
+        Class<?> dataTypeClass = ObjectPropertyUtils.getPropertyType(collectionGroup.getCollectionObjectClass(),
                 field.getPropertyName());
 
         boolean isSortable = true;
@@ -624,20 +655,20 @@ public class RichTable extends WidgetBase {
     }
 
     /**
-     * Constructs the sort data type for each data table columns in a format that will be used to initialize the data
-     * table widget via javascript
-     *
+     * Constructs the sort data type for each data table columns in a format that will be used to
+     * initialize the data table widget via javascript
+     * 
      * @param target the column index
      * @param isSortable whether a column should be marked as sortable
      * @param isUseServerPaging is server side paging enabled?
-     * @param dataTypeClass the class type of the column value - used determine the sType option - which identifies
-     * the search plugin to use
-     * @param sortDataType Defines a data source type for the sorting which can be used to read realtime information
-     * from the table
+     * @param dataTypeClass the class type of the column value - used determine the sType option -
+     *        which identifies the search plugin to use
+     * @param sortDataType Defines a data source type for the sorting which can be used to read
+     *        realtime information from the table
      * @return a formatted string with data table options for one column
      */
     public String constructTableColumnOptions(int target, boolean isSortable, boolean isUseServerPaging,
-            Class dataTypeClass, String sortDataType) {
+            Class<?> dataTypeClass, String sortDataType) {
         String colOptions = "null";
 
         String sortType = "";
@@ -692,7 +723,7 @@ public class RichTable extends WidgetBase {
 
     /**
      * Returns the text which is used to display text when the table is empty
-     *
+     * 
      * @return empty table message
      */
     @BeanTagAttribute(name = "emptyTableMessage")
@@ -702,7 +733,7 @@ public class RichTable extends WidgetBase {
 
     /**
      * Setter for a text to be displayed when the table is empty
-     *
+     * 
      * @param emptyTableMessage
      */
     public void setEmptyTableMessage(String emptyTableMessage) {
@@ -711,7 +742,7 @@ public class RichTable extends WidgetBase {
 
     /**
      * Returns true if sorting is disabled
-     *
+     * 
      * @return the disableTableSort
      */
     @BeanTagAttribute(name = "disableTableSort")
@@ -721,7 +752,7 @@ public class RichTable extends WidgetBase {
 
     /**
      * Enables/disables the table sorting
-     *
+     * 
      * @param disableTableSort the disableTableSort to set
      */
     public void setDisableTableSort(boolean disableTableSort) {
@@ -730,7 +761,7 @@ public class RichTable extends WidgetBase {
 
     /**
      * Returns true if search and export options are enabled
-     *
+     * 
      * @return the showSearchAndExportOptions
      */
     @BeanTagAttribute(name = "showSearchAndExportOptions")
@@ -740,7 +771,7 @@ public class RichTable extends WidgetBase {
 
     /**
      * Returns true if search option is enabled
-     *
+     * 
      * @return the showSearchOption
      */
     @BeanTagAttribute(name = "showSearchOption")
@@ -750,7 +781,7 @@ public class RichTable extends WidgetBase {
 
     /**
      * Returns true if export option is enabled
-     *
+     * 
      * @return the showExportOption
      */
     @BeanTagAttribute(name = "showExportOption")
@@ -759,9 +790,9 @@ public class RichTable extends WidgetBase {
     }
 
     /**
-     * Show/Hide the search and export options in tabletools.  This option supercedes
-     * the individual 'show search' option and 'show export' option
-     *
+     * Show/Hide the search and export options in tabletools. This option supercedes the individual
+     * 'show search' option and 'show export' option
+     * 
      * @param showSearchAndExportOptions the showSearchAndExportOptions to set
      */
     public void setShowSearchAndExportOptions(boolean showSearchAndExportOptions) {
@@ -770,7 +801,7 @@ public class RichTable extends WidgetBase {
 
     /**
      * Show/Hide the search option in tabletools
-     *
+     * 
      * @param showSearchOption the showSearchOptions to set
      */
     public void setShowSearchOption(boolean showSearchOption) {
@@ -779,7 +810,7 @@ public class RichTable extends WidgetBase {
 
     /**
      * Show/Hide the search and export option in tabletools
-     *
+     * 
      * @param showExportOption the showExportOptions to set
      */
     public void setShowExportOption(boolean showExportOption) {
@@ -788,9 +819,11 @@ public class RichTable extends WidgetBase {
 
     /**
      * Holds propertyNames for the ones meant to be hidden since columns are visible by default
-     *
-     * <p>Duplicate entries are ignored and the order of entries is not significant</p>
-     *
+     * 
+     * <p>
+     * Duplicate entries are ignored and the order of entries is not significant
+     * </p>
+     * 
      * @return a set with propertyNames of columns to be hidden
      */
     @BeanTagAttribute(name = "hiddenColumns", type = BeanTagAttribute.AttributeType.SETVALUE)
@@ -800,7 +833,7 @@ public class RichTable extends WidgetBase {
 
     /**
      * Setter for the hidden columns set
-     *
+     * 
      * @param hiddenColumns a set containing propertyNames
      */
     public void setHiddenColumns(Set<String> hiddenColumns) {
@@ -809,9 +842,11 @@ public class RichTable extends WidgetBase {
 
     /**
      * Holds the propertyNames for columns that are to be sorted
-     *
-     * <p>Duplicate entries are ignored and the order of entries is not significant</p>
-     *
+     * 
+     * <p>
+     * Duplicate entries are ignored and the order of entries is not significant
+     * </p>
+     * 
      * @return a set of propertyNames with for columns that will be sorted
      */
     @BeanTagAttribute(name = "sortableColumns", type = BeanTagAttribute.AttributeType.SETVALUE)
@@ -821,7 +856,7 @@ public class RichTable extends WidgetBase {
 
     /**
      * Setter for sortable columns
-     *
+     * 
      * @param sortableColumns a set containing propertyNames of columns to be sorted
      */
     public void setSortableColumns(Set<String> sortableColumns) {
@@ -830,13 +865,14 @@ public class RichTable extends WidgetBase {
 
     /**
      * Specifies a URL for acquiring the table data with ajax
-     *
+     * 
      * <p>
-     * When the ajax source URL is specified the rich table plugin will retrieve the data by invoking the URL and
-     * building the table rows from the result. This is different from the standard use of the rich table plugin
-     * with uses progressive enhancement to decorate a table that has already been rendereed
+     * When the ajax source URL is specified the rich table plugin will retrieve the data by
+     * invoking the URL and building the table rows from the result. This is different from the
+     * standard use of the rich table plugin with uses progressive enhancement to decorate a table
+     * that has already been rendereed
      * </p>
-     *
+     * 
      * @return URL for ajax source
      */
     @BeanTagAttribute(name = "ajaxSource")
@@ -846,7 +882,7 @@ public class RichTable extends WidgetBase {
 
     /**
      * Setter for the Ajax source URL
-     *
+     * 
      * @param ajaxSource
      */
     public void setAjaxSource(String ajaxSource) {
@@ -855,7 +891,7 @@ public class RichTable extends WidgetBase {
 
     /**
      * Get groupingOption
-     *
+     * 
      * @return
      */
     public String getGroupingOptionsJSString() {
@@ -863,8 +899,8 @@ public class RichTable extends WidgetBase {
     }
 
     /**
-     * Set the groupingOptions js data.  <b>This should not be set through XML configuration.</b>
-     *
+     * Set the groupingOptions js data. <b>This should not be set through XML configuration.</b>
+     * 
      * @param groupingOptionsJSString
      */
     public void setGroupingOptionsJSString(String groupingOptionsJSString) {
@@ -872,12 +908,12 @@ public class RichTable extends WidgetBase {
     }
 
     /**
-     * If set to true and the aoColumnDefs template option is explicitly defined in templateOptions, those aoColumnDefs
-     * will be used for this table.  Otherwise, if false, the aoColumnDefs will attempt to be merged with those that
-     * are automatically generated by RichTable
-     *
-     * @return true if the aoColumnDefs set will completely override those that are generated automatically by
-     *         RichTable
+     * If set to true and the aoColumnDefs template option is explicitly defined in templateOptions,
+     * those aoColumnDefs will be used for this table. Otherwise, if false, the aoColumnDefs will
+     * attempt to be merged with those that are automatically generated by RichTable
+     * 
+     * @return true if the aoColumnDefs set will completely override those that are generated
+     *         automatically by RichTable
      */
     public boolean isForceAoColumnDefsOverride() {
         return forceAoColumnDefsOverride;
@@ -885,7 +921,7 @@ public class RichTable extends WidgetBase {
 
     /**
      * Set forceAoColumnDefsOverride
-     *
+     * 
      * @param forceAoColumnDefsOverride
      */
     public void setForceAoColumnDefsOverride(boolean forceAoColumnDefsOverride) {
@@ -894,17 +930,19 @@ public class RichTable extends WidgetBase {
 
     /**
      * If true, the table will automatically use row JSON data generated by this widget
-     *
-     * <p>This forces the table backed by this RichTable to get its content from a template option called aaData.  This
-     * will automatically skip row generation in the template, and cause
-     * the table receive its data from the aaData template option automatically generated and set by this RichTable.
-     * This allows the table to take advantage of the bDeferRender option (also automatically set to true)
-     * when this table is a paged table (performance increase for tables that are more than one page).
-     * Note: the CollectionGroup's isUseServerPaging flag will always override this functionality if it is also true.
+     * 
+     * <p>
+     * This forces the table backed by this RichTable to get its content from a template option
+     * called aaData. This will automatically skip row generation in the template, and cause the
+     * table receive its data from the aaData template option automatically generated and set by
+     * this RichTable. This allows the table to take advantage of the bDeferRender option (also
+     * automatically set to true) when this table is a paged table (performance increase for tables
+     * that are more than one page). Note: the CollectionGroup's isUseServerPaging flag will always
+     * override this functionality if it is also true.
      * </p>
-     *
-     * @return true if backed by the aaData option in JSON, that is generated during the ftl rendering process by
-     *         this widget for this table
+     * 
+     * @return true if backed by the aaData option in JSON, that is generated during the ftl
+     *         rendering process by this widget for this table
      */
     public boolean isForceLocalJsonData() {
         return forceLocalJsonData;
@@ -912,7 +950,7 @@ public class RichTable extends WidgetBase {
 
     /**
      * Set the forceLocalJsonData flag to force this table to use generated row json data
-     *
+     * 
      * @param forceLocalJsonData
      */
     public void setForceLocalJsonData(boolean forceLocalJsonData) {
@@ -921,12 +959,15 @@ public class RichTable extends WidgetBase {
 
     /**
      * The nestedLevel property represents how many collection tables deep this particular table is
-     *
-     * <p>This property must be manually set if the flag forceLocalJsonData is being used and the collection table this
-     * RichTable represents is a subcollection of a TABLE collection (not stacked collection).  If this is true,
-     * add 1 for each level deep (ex. subCollection would be 1, sub-subCollection would be 2).  If this property is
-     * not set javascript errors will occur on the page, as this determines how deep to escape certain characters.</p>
-     *
+     * 
+     * <p>
+     * This property must be manually set if the flag forceLocalJsonData is being used and the
+     * collection table this RichTable represents is a subcollection of a TABLE collection (not
+     * stacked collection). If this is true, add 1 for each level deep (ex. subCollection would be
+     * 1, sub-subCollection would be 2). If this property is not set javascript errors will occur on
+     * the page, as this determines how deep to escape certain characters.
+     * </p>
+     * 
      * @return the nestedLevel representing the
      */
     public int getNestedLevel() {
@@ -934,9 +975,9 @@ public class RichTable extends WidgetBase {
     }
 
     /**
-     * Set the nestedLevel for this table - must be set if using forceLocalJsonData and this is a subCollection of
-     * a TableCollection (also using forceLocalJsonData)
-     *
+     * Set the nestedLevel for this table - must be set if using forceLocalJsonData and this is a
+     * subCollection of a TableCollection (also using forceLocalJsonData)
+     * 
      * @param nestedLevel
      */
     public void setNestedLevel(int nestedLevel) {
@@ -945,11 +986,12 @@ public class RichTable extends WidgetBase {
 
     /**
      * Get the translated aaData array generated by calls to addRowToTableData by the ftl
-     *
-     * <p>This data is in JSON format and expected to be consumed by datatables when utilizing the forceLocalJsonData
-     * option.
-     * This will be populated automatically if that flag is set to true.</p>
-     *
+     * 
+     * <p>
+     * This data is in JSON format and expected to be consumed by datatables when utilizing the
+     * forceLocalJsonData option. This will be populated automatically if that flag is set to true.
+     * </p>
+     * 
      * @return the generated aaData
      */
     public String getAaData() {
@@ -958,10 +1000,12 @@ public class RichTable extends WidgetBase {
 
     /**
      * Set the translated aaData array
-     *
-     * <p>This data is in JSON format and expected to be consumed by datatables when utilizing the forceLocalJsonData.
-     * This setter is required for copyProperties()</p>
-     *
+     * 
+     * <p>
+     * This data is in JSON format and expected to be consumed by datatables when utilizing the
+     * forceLocalJsonData. This setter is required for copyProperties()
+     * </p>
+     * 
      * @return the generated aaData
      */
     protected void setAaData(String aaData) {
@@ -969,10 +1013,11 @@ public class RichTable extends WidgetBase {
     }
 
     /**
-     * Get the simple value as a string that represents the field's sortable value, to be used as val in the custom
-     * uif json data object (accessed by mDataProp option on datatables - automated by framework) when using the
-     * forceLocalJsonData option or the CollectionGroup's isUseServerPaging option
-     *
+     * Get the simple value as a string that represents the field's sortable value, to be used as
+     * val in the custom uif json data object (accessed by mDataProp option on datatables -
+     * automated by framework) when using the forceLocalJsonData option or the CollectionGroup's
+     * isUseServerPaging option
+     * 
      * @param model model the current model
      * @param field the field to retrieve a sortable value from for use in custom json data
      * @return the value as a String
@@ -990,13 +1035,17 @@ public class RichTable extends WidgetBase {
     }
 
     /**
-     * Add row content passed from table ftl to the aaData array by converting and escaping the content
-     * to an object (in an array of objects) in JSON format
-     *
-     * <p>The data in aaData is expected to be consumed by a call by the datatables plugin using sAjaxSource or aaData.
-     * The addRowToTableData generation call is additive must be made per a row in the ftl.</p>
-     *
-     * @param row the row of content with each cell content surrounded by the @quot@ token and followed by a comma
+     * Add row content passed from table ftl to the aaData array by converting and escaping the
+     * content to an object (in an array of objects) in JSON format
+     * 
+     * <p>
+     * The data in aaData is expected to be consumed by a call by the datatables plugin using
+     * sAjaxSource or aaData. The addRowToTableData generation call is additive must be made per a
+     * row in the ftl.
+     * </p>
+     * 
+     * @param row the row of content with each cell content surrounded by the @quot@ token and
+     *        followed by a comma
      */
     public void addRowToTableData(String row) {
         String escape = "";
@@ -1021,17 +1070,28 @@ public class RichTable extends WidgetBase {
         if (StringUtils.isBlank(aaData)) {
             aaData = "[" + row + "]";
 
-            if (this.getTemplateOptions().get(UifConstants.TableToolsKeys.DEFER_RENDER) == null) {
+            Map<String, String> oTemplateOptions = this.getTemplateOptions();
+            if (oTemplateOptions == null) {
+                setTemplateOptions(oTemplateOptions = new HashMap<String, String>());
+            }
+
+            if (oTemplateOptions.get(UifConstants.TableToolsKeys.DEFER_RENDER) == null) {
                 //make sure deferred rendering is forced if not explicitly set
-                this.getTemplateOptions().put(UifConstants.TableToolsKeys.DEFER_RENDER,
+                oTemplateOptions.put(UifConstants.TableToolsKeys.DEFER_RENDER,
                         UifConstants.TableToolsValues.TRUE);
             }
+
         } else if (StringUtils.isNotBlank(row)) {
             aaData = aaData.substring(0, aaData.length() - 1) + "," + row + "]";
         }
 
         //force json data use if forceLocalJsonData flag is set
         if (forceLocalJsonData) {
+            Map<String, String> oTemplateOptions = this.getTemplateOptions();
+            if (oTemplateOptions == null) {
+                setTemplateOptions(oTemplateOptions = new HashMap<String, String>());
+            }
+
             this.getTemplateOptions().put(UifConstants.TableToolsKeys.AA_DATA, aaData);
         }
     }

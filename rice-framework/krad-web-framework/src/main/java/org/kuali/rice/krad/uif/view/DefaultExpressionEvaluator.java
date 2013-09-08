@@ -43,7 +43,7 @@ import java.util.regex.Pattern;
 
 /**
  * Evaluates expression language statements using the Spring EL engine
- *
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DefaultExpressionEvaluator implements ExpressionEvaluator {
@@ -62,7 +62,8 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
     }
 
     /**
-     * org.kuali.rice.krad.uif.view.ExpressionEvaluator#initializeEvaluationContext(java.lang.Object)
+     * org.kuali.rice.krad.uif.view.ExpressionEvaluator#initializeEvaluationContext(java.lang.Object
+     * )
      */
     public void initializeEvaluationContext(Object contextObject) {
         evaluationContext = new StandardEvaluationContext(contextObject);
@@ -84,7 +85,8 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ExpressionEvaluator#evaluateExpression(java.util.Map, String)
+     * @see org.kuali.rice.krad.uif.view.ExpressionEvaluator#evaluateExpression(java.util.Map,
+     *      String)
      */
     public Object evaluateExpression(Map<String, Object> evaluationParameters, String expressionStr) {
         Object result = null;
@@ -99,7 +101,9 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
         try {
             Expression expression = retrieveCachedExpression(expressionStr);
 
-            evaluationContext.setVariables(evaluationParameters);
+            if (evaluationParameters != null) {
+                evaluationContext.setVariables(evaluationParameters);
+            }
 
             result = expression.getValue(evaluationContext);
         } catch (Exception e) {
@@ -111,7 +115,8 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ExpressionEvaluator#evaluateExpressionTemplate(java.util.Map, String)
+     * @see org.kuali.rice.krad.uif.view.ExpressionEvaluator#evaluateExpressionTemplate(java.util.Map,
+     *      String)
      */
     public String evaluateExpressionTemplate(Map<String, Object> evaluationParameters, String expressionTemplate) {
         String result = null;
@@ -119,7 +124,9 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
         try {
             Expression expression = retrieveCachedExpression(expressionTemplate);
 
-            evaluationContext.setVariables(evaluationParameters);
+            if (evaluationParameters != null) {
+                evaluationContext.setVariables(evaluationParameters);
+            }
 
             result = expression.getValue(evaluationContext, String.class);
         } catch (Exception e) {
@@ -131,8 +138,9 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ExpressionEvaluator#evaluatePropertyExpression(View, java.util.Map,
-     * org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean, String, boolean)
+     * @see org.kuali.rice.krad.uif.view.ExpressionEvaluator#evaluatePropertyExpression(View,
+     *      java.util.Map, org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean, String,
+     *      boolean)
      */
     public void evaluatePropertyExpression(View view, Map<String, Object> evaluationParameters,
             UifDictionaryBean expressionConfigurable, String propertyName, boolean removeExpression) {
@@ -158,8 +166,9 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
 
         // determine whether the expression is a string template, or evaluates to another object type
         if (StringUtils.startsWith(adjustedExpression, UifConstants.EL_PLACEHOLDER_PREFIX) && StringUtils.endsWith(
-                adjustedExpression, UifConstants.EL_PLACEHOLDER_SUFFIX) && (StringUtils.countMatches(adjustedExpression,
-                UifConstants.EL_PLACEHOLDER_PREFIX) == 1)) {
+                adjustedExpression, UifConstants.EL_PLACEHOLDER_SUFFIX)
+                && (StringUtils.countMatches(adjustedExpression,
+                        UifConstants.EL_PLACEHOLDER_PREFIX) == 1)) {
             propertyValue = evaluateExpression(evaluationParameters, adjustedExpression);
         } else {
             // treat as string template
@@ -205,7 +214,8 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ExpressionEvaluator#replaceBindingPrefixes(View, Object, String)
+     * @see org.kuali.rice.krad.uif.view.ExpressionEvaluator#replaceBindingPrefixes(View, Object,
+     *      String)
      */
     public String replaceBindingPrefixes(View view, Object object, String expression) {
         String adjustedExpression = StringUtils.replace(expression, UifConstants.NO_BIND_ADJUST_PREFIX, "");
@@ -228,7 +238,8 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
                     adjustedExpression = StringUtils.replace(adjustedExpression, path, adjustedPath);
                 }
             } else {
-                adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.FIELD_PATH_BIND_ADJUST_PREFIX,
+                adjustedExpression = StringUtils.replace(adjustedExpression,
+                        UifConstants.FIELD_PATH_BIND_ADJUST_PREFIX,
                         "");
             }
         }
@@ -256,7 +267,7 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
             String nodePath = "";
 
             Map<String, Object> context = ((Component) object).getContext();
-            if (context.containsKey(UifConstants.ContextVariableNames.NODE_PATH)) {
+            if (context != null && context.containsKey(UifConstants.ContextVariableNames.NODE_PATH)) {
                 nodePath = (String) context.get(UifConstants.ContextVariableNames.NODE_PATH);
             }
 
@@ -268,9 +279,9 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
     }
 
     /**
-     * Attempts to retrieve the {@link Expression} instance for the given expression template, if not found
-     * one is created and added to the cache
-     *
+     * Attempts to retrieve the {@link Expression} instance for the given expression template, if
+     * not found one is created and added to the cache
+     * 
      * @param expressionTemplate template string for the expression
      * @return Expression instance
      */
@@ -299,14 +310,15 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
 
     /**
      * Registers custom functions for el expressions with the given context
-     *
+     * 
      * @param context - context instance to register functions to
      */
     protected void addCustomFunctions(StandardEvaluationContext context) {
         try {
             // TODO: possibly reflect ExpressionFunctions and add automatically
-            context.registerFunction("isAssignableFrom", ExpressionFunctions.class.getDeclaredMethod("isAssignableFrom",
-                    new Class[]{Class.class, Class.class}));
+            context.registerFunction("isAssignableFrom",
+                    ExpressionFunctions.class.getDeclaredMethod("isAssignableFrom",
+                            new Class[]{Class.class, Class.class}));
             context.registerFunction("empty", ExpressionFunctions.class.getDeclaredMethod("empty",
                     new Class[]{Object.class}));
             context.registerFunction("emptyList", ExpressionFunctions.class.getDeclaredMethod("emptyList",
@@ -327,8 +339,9 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
                     new Class[]{String.class, String.class, Map.class, Map.class}));
             context.registerFunction("sequence", ExpressionFunctions.class.getDeclaredMethod("sequence",
                     new Class[]{String.class}));
-            context.registerFunction("getDataObjectKey", ExpressionFunctions.class.getDeclaredMethod("getDataObjectKey",
-                    new Class[]{String.class}));
+            context.registerFunction("getDataObjectKey",
+                    ExpressionFunctions.class.getDeclaredMethod("getDataObjectKey",
+                            new Class[]{String.class}));
         } catch (NoSuchMethodException e) {
             LOG.error("Custom function for el expressions not found: " + e.getMessage());
             throw new RuntimeException("Custom function for el expressions not found: " + e.getMessage(), e);
@@ -339,10 +352,10 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
      * Iterates through any configured <code>PropertyReplacer</code> instances for the component and
      * evaluates the given condition. If the condition is met, the replacement value is set on the
      * corresponding property
-     *
+     * 
      * @param view - view instance being rendered
-     * @param expressionConfigurable - expressionConfigurable instance with property replacers list, should be either a
-     * component or layout manager
+     * @param expressionConfigurable - expressionConfigurable instance with property replacers list,
+     *        should be either a component or layout manager
      * @param evaluationParameters - parameters for el evaluation
      */
     protected void evaluatePropertyReplacers(View view, UifDictionaryBean expressionConfigurable,
@@ -354,32 +367,35 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
             replacers = ((LayoutManager) expressionConfigurable).getPropertyReplacers();
         }
 
-        for (PropertyReplacer propertyReplacer : replacers) {
-            String expression = propertyReplacer.getCondition();
-            String adjustedExpression = replaceBindingPrefixes(view, expressionConfigurable, expression);
+        if (replacers != null) {
+            for (PropertyReplacer propertyReplacer : replacers) {
+                String expression = propertyReplacer.getCondition();
+                String adjustedExpression = replaceBindingPrefixes(view, expressionConfigurable, expression);
 
-            String conditionEvaluation = evaluateExpressionTemplate(evaluationParameters, adjustedExpression);
-            boolean conditionSuccess = Boolean.parseBoolean(conditionEvaluation);
-            if (conditionSuccess) {
-                ObjectPropertyUtils.setPropertyValue(expressionConfigurable, propertyReplacer.getPropertyName(),
-                        propertyReplacer.getReplacement());
+                String conditionEvaluation = evaluateExpressionTemplate(evaluationParameters, adjustedExpression);
+                boolean conditionSuccess = Boolean.parseBoolean(conditionEvaluation);
+                if (conditionSuccess) {
+                    ObjectPropertyUtils.setPropertyValue(expressionConfigurable, propertyReplacer.getPropertyName(),
+                            propertyReplacer.getReplacement());
+                }
             }
         }
     }
 
     /**
      * Iterates through the keys of the property expressions map and invokes
-     * {@link #evaluatePropertyExpression(org.kuali.rice.krad.uif.view.View, java.util.Map,
-     * org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean, String, boolean)}
-     *
+     * {@link #evaluatePropertyExpression(org.kuali.rice.krad.uif.view.View, java.util.Map, org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean, String, boolean)}
+     * 
      * <p>
-     * If the expression is an el template (part static text and part expression), only the expression
-     * part will be replaced with the result. More than one expressions may be contained within the template
+     * If the expression is an el template (part static text and part expression), only the
+     * expression part will be replaced with the result. More than one expressions may be contained
+     * within the template
      * </p>
-     *
+     * 
      * @param view - view instance that is being rendered
      * @param expressionConfigurable - object instance to evaluate expressions for
-     * @param evaluationParameters - map of additional parameters that may be used within the expressions
+     * @param evaluationParameters - map of additional parameters that may be used within the
+     *        expressions
      */
     protected void evaluatePropertyExpressions(View view, UifDictionaryBean expressionConfigurable,
             Map<String, Object> evaluationParameters) {
@@ -394,17 +410,18 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
     }
 
     /**
-     * Determines the value for the {@link org.kuali.rice.krad.uif.UifConstants#LINE_PATH_BIND_ADJUST_PREFIX} binding
-     * prefix
+     * Determines the value for the
+     * {@link org.kuali.rice.krad.uif.UifConstants#LINE_PATH_BIND_ADJUST_PREFIX} binding prefix
      * based on collection group found in the component context
-     *
+     * 
      * @param component - component instance for which the prefix is configured on
      * @return String line binding path or empty string if path not found
      */
     protected static String getLinePathPrefixValue(Component component) {
         String linePath = "";
 
-        CollectionGroup collectionGroup = (CollectionGroup) (component.getContext().get(
+        Map<String, Object> componentContext = component.getContext();
+        CollectionGroup collectionGroup = componentContext == null ? null : (CollectionGroup) (componentContext.get(
                 UifConstants.ContextVariableNames.COLLECTION_GROUP));
         if (collectionGroup == null) {
             LOG.warn("collection group not found for " + component + "," + component.getId() + ", " + component
@@ -412,11 +429,13 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
             return linePath;
         }
 
-        Object indexObj = component.getContext().get(UifConstants.ContextVariableNames.INDEX);
+        Object indexObj = componentContext == null ? null : componentContext
+                .get(UifConstants.ContextVariableNames.INDEX);
         if (indexObj != null) {
             int index = (Integer) indexObj;
             boolean addLine = false;
-            Object addLineObj = component.getContext().get(UifConstants.ContextVariableNames.IS_ADD_LINE);
+            Object addLineObj = componentContext == null ? null : componentContext
+                    .get(UifConstants.ContextVariableNames.IS_ADD_LINE);
 
             if (addLineObj != null) {
                 addLine = (Boolean) addLineObj;

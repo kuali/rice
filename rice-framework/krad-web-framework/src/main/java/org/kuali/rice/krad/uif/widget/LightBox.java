@@ -55,7 +55,7 @@ public class LightBox extends WidgetBase {
         Map<String, String> templateOptions = super.getTemplateOptions();
 
         if (templateOptions == null) {
-            templateOptions = new HashMap<String, String>();
+            super.setTemplateOptions(templateOptions = new HashMap<String, String>());
         }
 
         if (StringUtils.isNotBlank(width) && !templateOptions.containsKey("width")) {

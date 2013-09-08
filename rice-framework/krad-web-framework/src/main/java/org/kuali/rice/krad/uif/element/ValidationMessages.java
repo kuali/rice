@@ -107,7 +107,10 @@ public class ValidationMessages extends ContentElementBase {
         MessageMap messageMap = GlobalVariables.getMessageMap();
 
         String parentContainerId = "";
-        Object parentContainer = parent.getContext().get(UifConstants.ContextVariableNames.PARENT);
+
+        Map<String, Object> parentContext = parent.getContext();
+        Object parentContainer = parentContext == null ? null : parentContext
+                .get(UifConstants.ContextVariableNames.PARENT);
 
         if (parentContainer != null && (parentContainer instanceof Container
                 || parentContainer instanceof FieldGroup)) {
@@ -122,7 +125,9 @@ public class ValidationMessages extends ContentElementBase {
 
         // special case for nested contentElement with no parent
         if (parentContainer != null && parentContainer instanceof Component && StringUtils.isBlank(parentContainerId)) {
-            parentContainer = ((Component) parentContainer).getContext().get(UifConstants.ContextVariableNames.PARENT);
+            parentContext = ((Component) parentContainer).getContext();
+            parentContainer = parentContext == null ? null : parentContext
+                    .get(UifConstants.ContextVariableNames.PARENT);
             if (parentContainer != null && (parentContainer instanceof Container
                     || parentContainer instanceof FieldGroup)) {
                 parentContainerId = ((Component) parentContainer).getId();

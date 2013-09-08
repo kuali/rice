@@ -132,7 +132,12 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
 
         // evaluate expressions on comparables
         Map<String, Object> context = new HashMap<String, Object>();
-        context.putAll(view.getContext());
+        
+        Map<String, Object> viewContext = view.getContext();
+        if (viewContext != null) {
+            context.putAll(view.getContext());
+        }
+        
         context.put(UifConstants.ContextVariableNames.COMPONENT, component);
 
         ExpressionEvaluator expressionEvaluator =

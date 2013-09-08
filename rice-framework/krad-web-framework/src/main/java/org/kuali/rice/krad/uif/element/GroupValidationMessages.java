@@ -67,7 +67,9 @@ public class GroupValidationMessages extends ValidationMessages {
     public void generateMessages(boolean reset, View view, Object model, Component parent) {
         super.generateMessages(reset, view, model, parent);
 
-        Object parentContainer = parent.getContext().get(UifConstants.ContextVariableNames.PARENT);
+        Map<String, Object> parentContext = parent.getContext();
+        Object parentContainer = parentContext == null ? null : parentContext
+                .get(UifConstants.ContextVariableNames.PARENT);
 
         List<? extends Component> items = ((Container) parent).getItems();
         boolean skipSections = false;
@@ -101,7 +103,9 @@ public class GroupValidationMessages extends ValidationMessages {
                 showPageSummaryHeader = ((PageValidationMessages) this).isShowPageSummaryHeader();
             }
         } else if (parentContainer instanceof FieldGroup) {
-            String role = ((FieldGroup) parentContainer).getDataAttributes().get(UifConstants.DataAttributes.ROLE);
+            Map<String, String> parentFieldGroupDataAttributes = ((FieldGroup) parentContainer).getDataAttributes();
+            String role = parentFieldGroupDataAttributes == null ? null : parentFieldGroupDataAttributes
+                    .get(UifConstants.DataAttributes.ROLE);
             if (StringUtils.isNotBlank(role) && role.equals("detailsFieldGroup")){
                 forceShow = false;
             }

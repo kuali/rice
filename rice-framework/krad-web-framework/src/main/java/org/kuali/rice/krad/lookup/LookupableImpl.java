@@ -772,9 +772,12 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      */
     public void getReturnUrlForResults(Action returnLink, Object model) {
         LookupForm lookupForm = (LookupForm) model;
-        LookupView lookupView = (LookupView) returnLink.getContext().get(UifConstants.ContextVariableNames.VIEW);
-
-        Object dataObject = returnLink.getContext().get(UifConstants.ContextVariableNames.LINE);
+        
+        Map<String, Object> returnLinkContext = returnLink.getContext();
+        LookupView lookupView = returnLinkContext == null ? null : (LookupView) returnLinkContext
+                .get(UifConstants.ContextVariableNames.VIEW);
+        Object dataObject = returnLinkContext == null ? null : returnLinkContext
+                .get(UifConstants.ContextVariableNames.LINE);
 
         // don't render return link if the object is null or if the row is not returnable
         if ((dataObject == null) || (!isResultReturnable(dataObject))) {
@@ -925,8 +928,9 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      */
     public void getMaintenanceActionLink(Action actionLink, Object model, String maintenanceMethodToCall) {
         LookupForm lookupForm = (LookupForm) model;
-        LookupView lookupView = (LookupView) actionLink.getContext().get(UifConstants.ContextVariableNames.VIEW);
-        Object dataObject = actionLink.getContext().get(UifConstants.ContextVariableNames.LINE);
+        Map<String, Object> actionLinkContext = actionLink.getContext();
+        Object dataObject = actionLinkContext == null ? null : actionLinkContext
+                .get(UifConstants.ContextVariableNames.LINE);
 
         List<String> pkNames = getLegacyDataAdapter().listPrimaryKeyFieldNames(getDataObjectClass());
 
@@ -1003,7 +1007,9 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     @Override
     public void setMultiValueLookupSelect(InputField selectField, Object model) {
         LookupForm lookupForm = (LookupForm) model;
-        Object lineDataObject = selectField.getContext().get(UifConstants.ContextVariableNames.LINE);
+        Map<String, Object> selectFieldContext = selectField.getContext();
+        Object lineDataObject = selectFieldContext == null ? null : selectFieldContext
+                .get(UifConstants.ContextVariableNames.LINE);
         if (lineDataObject == null) {
             throw new RuntimeException("Unable to get data object for line from component: " + selectField.getId());
         }

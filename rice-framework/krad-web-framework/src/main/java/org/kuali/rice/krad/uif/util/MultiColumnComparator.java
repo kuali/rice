@@ -44,12 +44,17 @@ import java.util.regex.Pattern;
 
 /**
  * Comparator used for server side sorting of CollectionGroup data.
- *
- * <p>This may include DataFields, as well as Fields that don't map directly to elements in the model collection, such
- * as {@link org.kuali.rice.krad.uif.field.LinkField}s that may contain expressions.</p>
- *
- * <p>NOTE: This class is not thread safe, and each instance is intended to be used only once.</p>
- *
+ * 
+ * <p>
+ * This may include DataFields, as well as Fields that don't map directly to elements in the model
+ * collection, such as {@link org.kuali.rice.krad.uif.field.LinkField}s that may contain
+ * expressions.
+ * </p>
+ * 
+ * <p>
+ * NOTE: This class is not thread safe, and each instance is intended to be used only once.
+ * </p>
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MultiColumnComparator implements Comparator<Integer> {
@@ -74,7 +79,7 @@ public class MultiColumnComparator implements Comparator<Integer> {
 
     /**
      * Constructs a MultiColumnComparator instance
-     *
+     * 
      * @param modelCollection the model collection that the CollectionGroup is associated with
      * @param collectionGroup the CollectionGroup whose columns are being sorted
      * @param columnSorts A list from highest to lowest precedence of the column sorts to apply
@@ -101,11 +106,11 @@ public class MultiColumnComparator implements Comparator<Integer> {
     /**
      * Compares the modelCollecton element at index1 to the element at index2 based on the provided
      * {@link org.kuali.rice.krad.uif.util.ColumnSort}s.
-     *
+     * 
      * @param index1 the index of the first modelCollection element used for comparison
      * @param index2 the index of the second modelCollection element used for comparison
-     * @return 0 if the two elements are considered equal, a positive integer if the element at index1 is considered
-     * greater, else a negative integer
+     * @return 0 if the two elements are considered equal, a positive integer if the element at
+     *         index1 is considered greater, else a negative integer
      */
     @Override
     public int compare(Integer index1, Integer index2) {
@@ -120,7 +125,7 @@ public class MultiColumnComparator implements Comparator<Integer> {
             if (isOneNull(modelElement1, modelElement2)) { // is one of the modelCollection elements null?
                 sortResult = compareOneIsNull(modelElement1, modelElement2);
             } else if (protoField instanceof DataField) {
-                sortResult = compareDataFieldValues(columnSort, (DataField)protoField, index1, index2);
+                sortResult = compareDataFieldValues(columnSort, (DataField) protoField, index1, index2);
             } else {
                 sortResult = compareFieldStringValues(columnSort, protoField, index1, index2);
             }
@@ -140,13 +145,14 @@ public class MultiColumnComparator implements Comparator<Integer> {
 
     /**
      * Compare the DataField values for the two modelCollection element indexes.
-     *
-     * @param columnSort the comparison metadata (which column number, which direction, what type of sort)
+     * 
+     * @param columnSort the comparison metadata (which column number, which direction, what type of
+     *        sort)
      * @param protoField the prototype DataField for the column being sorted
      * @param index1 the index of the first modelCollection element for comparison
      * @param index2 the index of the second modelCollection element for comparison
-     * @return 0 if the two elements are considered equal, a positive integer if the element at index1 is considered
-     * greater, else a negative integer
+     * @return 0 if the two elements are considered equal, a positive integer if the element at
+     *         index1 is considered greater, else a negative integer
      */
     private int compareDataFieldValues(ColumnSort columnSort, DataField protoField, Integer index1, Integer index2) {
         final int sortResult;// for DataFields, try to get the property value and use it directly
@@ -166,7 +172,7 @@ public class MultiColumnComparator implements Comparator<Integer> {
             if (isOneNull(datum1, datum2)) {
                 sortResult = compareOneIsNull(datum1, datum2);
             } else if (String.class.equals(columnDataClass)) {
-                sortResult = columnTypeCompare((String)datum1, (String)datum2, columnSort.getSortType());
+                sortResult = columnTypeCompare((String) datum1, (String) datum2, columnSort.getSortType());
             } else {
                 sortResult = datum1.compareTo(datum2);
             }
@@ -179,12 +185,15 @@ public class MultiColumnComparator implements Comparator<Integer> {
 
     /**
      * Attempt to determine the class of the column data value using the given modelCollection.
-     *
-     * <p>If the class can not be determined, Object will be returned.</p>
-     *
-     * @param propertyPath the path to the datum (which applies to modelCollection elements) whose class we are
-     * attempting to determine
-     * @return the class of the given property from the modelElements, or Object if the class cannot be determined.
+     * 
+     * <p>
+     * If the class can not be determined, Object will be returned.
+     * </p>
+     * 
+     * @param propertyPath the path to the datum (which applies to modelCollection elements) whose
+     *        class we are attempting to determine
+     * @return the class of the given property from the modelElements, or Object if the class cannot
+     *         be determined.
      */
     private Class<?> getColumnDataClass(String propertyPath) {
         Class<?> dataClass = propertyClassCache.get(propertyPath);
@@ -192,7 +201,7 @@ public class MultiColumnComparator implements Comparator<Integer> {
         if (dataClass == null) {
 
             // for the elements in the modelCollection while dataClass is null
-            for (int i=0; i<modelCollection.size() && dataClass == null; i++) {
+            for (int i = 0; i < modelCollection.size() && dataClass == null; i++) {
                 // try getting the class from the modelCollection element
                 dataClass = ObjectPropertyUtils.getPropertyType(modelCollection.get(i), propertyPath);
             }
@@ -208,14 +217,16 @@ public class MultiColumnComparator implements Comparator<Integer> {
     }
 
     /**
-     * Compare the field values by computing the two string values and comparing them based on the sort type.
-     *
-     * @param columnSort the comparison metadata (which column number, which direction, what type of sort)
+     * Compare the field values by computing the two string values and comparing them based on the
+     * sort type.
+     * 
+     * @param columnSort the comparison metadata (which column number, which direction, what type of
+     *        sort)
      * @param protoField the prototype Field for the column being sorted
      * @param index1 the index of the first modelCollection element for comparison
      * @param index2 the index of the second modelCollection element for comparison
-     * @return 0 if the two elements are considered equal, a positive integer if the element at index1 is considered
-     * greater, else a negative integer
+     * @return 0 if the two elements are considered equal, a positive integer if the element at
+     *         index1 is considered greater, else a negative integer
      */
     private int compareFieldStringValues(ColumnSort columnSort, Field protoField, Integer index1, Integer index2) {
         final int sortResult;
@@ -237,16 +248,19 @@ public class MultiColumnComparator implements Comparator<Integer> {
 
     /**
      * Calculates the value for a field that may contain expressions.
-     *
-     * <p>Checks for a cached value for this calculated value, and if there isn't one, expressions are
-     * evaluated before getting the value, which is then cached and returned.</p>
-     *
+     * 
+     * <p>
+     * Checks for a cached value for this calculated value, and if there isn't one, expressions are
+     * evaluated before getting the value, which is then cached and returned.
+     * </p>
+     * 
      * @param protoField the Field whose expressions need evaluation
-     * @param collectionIndex the index of the model collection element being used in the calculation
+     * @param collectionIndex the index of the model collection element being used in the
+     *        calculation
      * @param columnIndex the index of the column whose value is being calculated
      * @return the calculated value for the field for this collection line
      */
-    private String calculateFieldValue(Field protoField, Integer collectionIndex, int columnIndex ) {
+    private String calculateFieldValue(Field protoField, Integer collectionIndex, int columnIndex) {
         final String fieldValue1;
 
         // cache key format is "<elementIndex>,<columnIndex>"
@@ -258,7 +272,13 @@ public class MultiColumnComparator implements Comparator<Integer> {
             ExpressionEvaluator expressionEvaluator = view.getViewHelperService().getExpressionEvaluator();
 
             // set up expression context
-            Map<String, Object> expressionContext = Maps.newHashMap(view.getContext());
+            Map<String, Object> viewContext = view.getContext();
+            Map<String, Object> expressionContext = new HashMap<String, Object>();
+            
+            if (viewContext != null) {
+                expressionContext.putAll(viewContext);
+            }
+            
             expressionContext.put(UifConstants.ContextVariableNames.LINE, collectionElement);
             expressionContext.put(UifConstants.ContextVariableNames.INDEX, collectionIndex);
             expressionContext.put(UifConstants.ContextVariableNames.COLLECTION_GROUP, collectionGroup);
@@ -279,14 +299,14 @@ public class MultiColumnComparator implements Comparator<Integer> {
     }
 
     /**
-     * Compare the string values based on the given sortType, which must match one of the constants in
-     * {@link UifConstants.TableToolsValues}.
-     *
+     * Compare the string values based on the given sortType, which must match one of the constants
+     * in {@link UifConstants.TableToolsValues}.
+     * 
      * @param val1 The first string value for comparison
      * @param val2 The second string value for comparison
      * @param sortType the sort type
-     * @return 0 if the two elements are considered equal, a positive integer if the element at index1 is considered
-     * greater, else a negative integer
+     * @return 0 if the two elements are considered equal, a positive integer if the element at
+     *         index1 is considered greater, else a negative integer
      */
     private int columnTypeCompare(String val1, String val2, String sortType) {
         final int result;
@@ -300,7 +320,7 @@ public class MultiColumnComparator implements Comparator<Integer> {
         } else if (UifConstants.TableToolsValues.PERCENT.equals(sortType)) {
             result = NumericValueComparator.getInstance().compare(val1, val2);
         } else if (UifConstants.TableToolsValues.DATE.equals(sortType)) {
-            result =  TemporalValueComparator.getInstance().compare(val1, val2);
+            result = TemporalValueComparator.getInstance().compare(val1, val2);
         } else if (UifConstants.TableToolsValues.CURRENCY.equals(sortType)) {
             // strip off non-numeric symbols, convert to KualiDecimals, and compare
             KualiDecimal decimal1 = new KualiDecimal(val1.replaceAll("[^0-9.]", ""));
@@ -316,7 +336,7 @@ public class MultiColumnComparator implements Comparator<Integer> {
 
     /**
      * Is one of the given objects null?
-     *
+     * 
      * @param o1 the first object
      * @param o2 the second object
      * @return true if one of the given references is null, false otherwise
@@ -327,10 +347,12 @@ public class MultiColumnComparator implements Comparator<Integer> {
 
     /**
      * Compare two referenced objects (assuming at least one of them is null).
-     *
-     * <p>The arbitrary determination here is
-     * that a non-null reference is greater than a null reference, and two null references are equal.</p>
-     *
+     * 
+     * <p>
+     * The arbitrary determination here is that a non-null reference is greater than a null
+     * reference, and two null references are equal.
+     * </p>
+     * 
      * @param o1 the first object
      * @param o2 the second object
      * @return 0 if both are null, 1 if the first is non-null, and -1 if the second is non-null.
@@ -353,10 +375,12 @@ public class MultiColumnComparator implements Comparator<Integer> {
 
     /**
      * Build a List of prototype Fields representing a row of the table.
-     *
-     * <p>Any DataFields will have their binding
-     * paths shortened to access the model collection elements directly, instead of via the data object</p>
-     *
+     * 
+     * <p>
+     * Any DataFields will have their binding paths shortened to access the model collection
+     * elements directly, instead of via the data object
+     * </p>
+     * 
      * @return a List of prototype Fields representing a row in the table
      */
     private List<Field> buildPrototypeRow() {
@@ -378,12 +402,12 @@ public class MultiColumnComparator implements Comparator<Integer> {
         }
 
         // build prototypes from first row, starting just past the add line components
-        for (int i=0; i< tableLayoutManager.getNumberOfColumns(); i++) {
+        for (int i = 0; i < tableLayoutManager.getNumberOfColumns(); i++) {
             Field protoField = allRowFields.get(componentsSkipped + i).copy(); // note the adjusted index
 
             if (protoField instanceof DataField) {
                 // adjust binding path for direct element access
-                final DataField dataField = (DataField)protoField;
+                final DataField dataField = (DataField) protoField;
 
                 // use a copy of the binding info so no shared data gets affected
                 final BindingInfo bindingInfoCopy = dataField.getBindingInfo().copy();
@@ -399,5 +423,3 @@ public class MultiColumnComparator implements Comparator<Integer> {
         return prototypeRow;
     }
 }
-
-

@@ -38,7 +38,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import java.lang.reflect.Method;
 
 import static junit.framework.Assert.assertEquals;
@@ -46,7 +45,7 @@ import static junit.framework.Assert.assertTrue;
 
 /**
  * ComponentUtilsTest tests various ComponentUtils methods
- *
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ComponentUtilsTest {
@@ -281,9 +280,11 @@ public class ComponentUtilsTest {
         boolean result = true;
 
         List<String> missingComponentsToRefresh = originalComponent.getAdditionalComponentsToRefresh();
-        missingComponentsToRefresh.removeAll(copiedComponent.getAdditionalComponentsToRefresh());
-        if (!missingComponentsToRefresh.isEmpty()) {
-            result = false;
+        if (missingComponentsToRefresh != null) {
+            missingComponentsToRefresh.removeAll(copiedComponent.getAdditionalComponentsToRefresh());
+            if (!missingComponentsToRefresh.isEmpty()) {
+                result = false;
+            }
         }
 
         List<String> missingAdditionalCssClasses = originalComponent.getAdditionalCssClasses();
@@ -297,9 +298,11 @@ public class ComponentUtilsTest {
         }
 
         List<String> missingCellCssClasses = originalComponent.getCellCssClasses();
-        missingCellCssClasses.removeAll(copiedComponent.getCellCssClasses());
-        if (!missingCellCssClasses.isEmpty()) {
-            result = false;
+        if (missingCellCssClasses != null) {
+            missingCellCssClasses.removeAll(copiedComponent.getCellCssClasses());
+            if (!missingCellCssClasses.isEmpty()) {
+                result = false;
+            }
         }
 
         if (!originalComponent.getCellStyle().equals(copiedComponent.getCellStyle())) {
@@ -321,10 +324,13 @@ public class ComponentUtilsTest {
             result = false;
         }
 
-        Set dataAttributes = new HashSet(originalComponent.getDataAttributes().values());
-        dataAttributes.removeAll(copiedComponent.getDataAttributes().values());
-        if (!dataAttributes.isEmpty()) {
-            result = false;
+        Map<String, String> origDataAttributes = originalComponent.getDataAttributes();
+        if (origDataAttributes != null) {
+            Set<String> dataAttributes = new HashSet<String>(origDataAttributes.values());
+            dataAttributes.removeAll(copiedComponent.getDataAttributes().values());
+            if (!dataAttributes.isEmpty()) {
+                result = false;
+            }
         }
 
         if (!originalComponent.getFinalizeMethodToCall().equals(copiedComponent.getFinalizeMethodToCall())) {
@@ -407,9 +413,11 @@ public class ComponentUtilsTest {
         }
 
         List<String> missingRefreshWhenChangedPropertyNames = originalComponent.getRefreshWhenChangedPropertyNames();
-        missingRefreshWhenChangedPropertyNames.removeAll(copiedComponent.getRefreshWhenChangedPropertyNames());
-        if (!missingRefreshWhenChangedPropertyNames.isEmpty()) {
-            result = false;
+        if (missingRefreshWhenChangedPropertyNames != null) {
+            missingRefreshWhenChangedPropertyNames.removeAll(copiedComponent.getRefreshWhenChangedPropertyNames());
+            if (!missingRefreshWhenChangedPropertyNames.isEmpty()) {
+                result = false;
+            }
         }
 
         if (!originalComponent.getRenderedHtmlOutput().equals(copiedComponent.getRenderedHtmlOutput())) {
@@ -428,10 +436,18 @@ public class ComponentUtilsTest {
             result = false;
         }
 
-        Set templateOptions = new HashSet(originalComponent.getTemplateOptions().values());
-        templateOptions.removeAll(copiedComponent.getTemplateOptions().values());
-        if (!templateOptions.isEmpty()) {
-            result = false;
+        Map<String, String> origTemplateOptions = originalComponent.getTemplateOptions();
+        if (origTemplateOptions != null) {
+            Set<String> templateOptions = new HashSet<String>(origTemplateOptions.values());
+            Map<String, String> copiedTemplateOptions = copiedComponent.getTemplateOptions();
+
+            if (copiedTemplateOptions != null) {
+                templateOptions.removeAll(copiedTemplateOptions.values());
+            }
+
+            if (!templateOptions.isEmpty()) {
+                result = false;
+            }
         }
 
         if (!originalComponent.getTemplateOptionsJSString().equals(copiedComponent.getTemplateOptionsJSString())) {
@@ -450,7 +466,8 @@ public class ComponentUtilsTest {
         return result;
     }
 
-    @Ignore // Ignored for now, but this is a proof of concept for using reflection to test copying
+    @Ignore
+    // Ignored for now, but this is a proof of concept for using reflection to test copying
     @Test
     /**
      * test {@link ComponentUtils#copyUsingCloning} using a DataField object

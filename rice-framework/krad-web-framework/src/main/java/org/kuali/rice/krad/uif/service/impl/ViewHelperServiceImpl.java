@@ -15,6 +15,21 @@
  */
 package org.kuali.rice.krad.uif.service.impl;
 
+import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Queue;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
@@ -75,6 +90,7 @@ import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.util.ViewCleaner;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
@@ -97,22 +113,9 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.MethodInvoker;
 
-import java.io.Serializable;
-import java.lang.annotation.Annotation;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
 /**
  * Default Implementation of <code>ViewHelperService</code>
- *
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
@@ -127,32 +130,39 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     private transient LegacyDataAdapter legacyDataAdapter;
 
     /**
-     * Uses reflection to find all fields defined on the <code>View</code> instance that have
-     * the <code>RequestParameter</code> annotation (which indicates the field may be populated by the request).
-     *
+     * Uses reflection to find all fields defined on the <code>View</code> instance that have the
+     * <code>RequestParameter</code> annotation (which indicates the field may be populated by the
+     * request).
+     * 
      * <p>
      * For each field found, if there is a corresponding key/value pair in the request parameters,
      * the value is used to populate the field. In addition, any conditional properties of
-     * <code>PropertyReplacers</code> configured for the field are cleared so that the request parameter
-     * value does not get overridden by the dictionary conditional logic
+     * <code>PropertyReplacers</code> configured for the field are cleared so that the request
+     * parameter value does not get overridden by the dictionary conditional logic
      * </p>
-     *
+     * 
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#populateViewFromRequestParameters(org.kuali.rice.krad.uif.view.View,
      *      java.util.Map)
      */
     @Override
     public void populateViewFromRequestParameters(View view, Map<String, String> parameters) {
+
         // build Map of property replacers by property name so that we can remove them
         // if the property was set by a request parameter
         Map<String, Set<PropertyReplacer>> viewPropertyReplacers = new HashMap<String, Set<PropertyReplacer>>();
-        for (PropertyReplacer replacer : view.getPropertyReplacers()) {
-            Set<PropertyReplacer> propertyReplacers = new HashSet<PropertyReplacer>();
-            if (viewPropertyReplacers.containsKey(replacer.getPropertyName())) {
-                propertyReplacers = viewPropertyReplacers.get(replacer.getPropertyName());
-            }
-            propertyReplacers.add(replacer);
+        List<PropertyReplacer> propertyReplacerSource = view.getPropertyReplacers();
+        if (propertyReplacerSource != null) {
+            for (PropertyReplacer replacer : propertyReplacerSource) {
+                String replacerPropertyName = replacer.getPropertyName();
+                Set<PropertyReplacer> propertyReplacers = viewPropertyReplacers.get(replacerPropertyName);
 
-            viewPropertyReplacers.put(replacer.getPropertyName(), propertyReplacers);
+                if (propertyReplacers == null) {
+                    viewPropertyReplacers.put(replacerPropertyName,
+                            propertyReplacers = new HashSet<PropertyReplacer>());
+                }
+
+                propertyReplacers.add(replacer);
+            }
         }
 
         Map<String, Annotation> annotatedFields = CloneUtils.getFieldsWithAnnotation(view.getClass(),
@@ -221,7 +231,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         }
     }
 
-    /**
+/**
      * Performs the complete component lifecycle on the component passed in, in this order:
      * performComponentInitialization, performComponentApplyModel, and performComponentFinalize.
      *
@@ -251,13 +261,19 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         // on existing components
         view.setIdSequence(currentSequenceVal);
 
-        Component parent = (Component) origComponent.getContext().get(UifConstants.ContextVariableNames.PARENT);
+        Map<String, Object> origContext = origComponent.getContext();
+
+        Component parent = origContext == null ? null : (Component) origContext
+                .get(UifConstants.ContextVariableNames.PARENT);
 
         // update context on all components within the refresh component to catch context set by parent
-        component.pushAllToContext(origComponent.getContext());
-        List<Component> nestedComponents = ComponentUtils.getAllNestedComponents(component);
-        for (Component nestedComponent : nestedComponents) {
-            nestedComponent.pushAllToContext(origComponent.getContext());
+        if (origContext != null) {
+            component.pushAllToContext(origContext);
+
+            List<Component> nestedComponents = ComponentUtils.getAllNestedComponents(component);
+            for (Component nestedComponent : nestedComponents) {
+                nestedComponent.pushAllToContext(origContext);
+            }
         }
 
         // make sure the dataAttributes are the same as original
@@ -409,8 +425,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#spawnSubLifecyle(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component, org.kuali.rice.krad.uif.component.Component,
-     *      java.lang.String, java.lang.String)
+     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component,
+     *      org.kuali.rice.krad.uif.component.Component, java.lang.String, java.lang.String)
      */
     @Override
     public void spawnSubLifecyle(View view, Object model, Component component, Component parent, String startPhase,
@@ -469,25 +485,22 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Performs initialization of a component by these steps:
-     *
+     * 
      * <ul>
-     * <li>For <code>DataField</code> instances, set defaults from the data
-     * dictionary.</li>
-     * <li>Invoke the initialize method on the component. Here the component can
-     * setup defaults and do other initialization that is specific to that
-     * component.</li>
-     * <li>Invoke any configured <code>ComponentModifier</code> instances for
-     * the component.</li>
-     * <li>Call the component to get the List of components that are nested
-     * within and recursively call this method to initialize those components.</li>
+     * <li>For <code>DataField</code> instances, set defaults from the data dictionary.</li>
+     * <li>Invoke the initialize method on the component. Here the component can setup defaults and
+     * do other initialization that is specific to that component.</li>
+     * <li>Invoke any configured <code>ComponentModifier</code> instances for the component.</li>
+     * <li>Call the component to get the List of components that are nested within and recursively
+     * call this method to initialize those components.</li>
      * <li>Call custom initialize hook for service overrides</li>
      * </ul>
-     *
+     * 
      * <p>
-     * Note the order various initialize points are called, this can sometimes
-     * be an important factor to consider when initializing a component
+     * Note the order various initialize points are called, this can sometimes be an important
+     * factor to consider when initializing a component
      * </p>
-     *
+     * 
      * @throws RiceRuntimeException if the component id or factoryId is not specified
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#performComponentInitialization(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
@@ -518,12 +531,18 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         component.performInitialization(view, model);
 
         // move expressions on property replacers and component modifiers
-        for (PropertyReplacer replacer : component.getPropertyReplacers()) {
-            ExpressionUtils.populatePropertyExpressionsFromGraph(replacer, true);
+        List<PropertyReplacer> componentPropertyReplacers = component.getPropertyReplacers();
+        if (componentPropertyReplacers != null) {
+            for (PropertyReplacer replacer : componentPropertyReplacers) {
+                ExpressionUtils.populatePropertyExpressionsFromGraph(replacer, true);
+            }
         }
 
-        for (ComponentModifier modifier : component.getComponentModifiers()) {
-            ExpressionUtils.populatePropertyExpressionsFromGraph(modifier, true);
+        List<ComponentModifier> componentModifiers = component.getComponentModifiers();
+        if (componentModifiers != null) {
+            for (ComponentModifier modifier : component.getComponentModifiers()) {
+                ExpressionUtils.populatePropertyExpressionsFromGraph(modifier, true);
+            }
         }
 
         // for attribute fields, set defaults from dictionary entry
@@ -532,8 +551,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         }
 
         if (component instanceof Container) {
-            LayoutManager layoutManager = ((Container) component).getLayoutManager();
-
             // invoke hook point for adding components through code
             addCustomContainerComponents(view, model, (Container) component);
 
@@ -567,10 +584,11 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Iterates through the containers configured items checking for <code>RemotableFieldsHolder</code>, if found
-     * the holder is invoked to retrieved the remotable fields and translate to attribute fields. The translated list
-     * is then inserted into the container item list at the position of the holder
-     *
+     * Iterates through the containers configured items checking for
+     * <code>RemotableFieldsHolder</code>, if found the holder is invoked to retrieved the remotable
+     * fields and translate to attribute fields. The translated list is then inserted into the
+     * container item list at the position of the holder
+     * 
      * @param view view instance containing the container
      * @param model object instance containing the view data
      * @param container container instance to check for any remotable fields holder
@@ -595,9 +613,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Sets properties of the <code>InputField</code> (if blank) to the
-     * corresponding attribute entry in the data dictionary
-     *
+     * Sets properties of the <code>InputField</code> (if blank) to the corresponding attribute
+     * entry in the data dictionary
+     * 
      * @param view view instance containing the field
      * @param field data field instance to initialize
      */
@@ -651,28 +669,24 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Recursively drills down the property path (if nested) to find an
-     * AttributeDefinition, the first attribute definition found will be
-     * returned
-     *
+     * Recursively drills down the property path (if nested) to find an AttributeDefinition, the
+     * first attribute definition found will be returned
+     * 
      * <p>
-     * e.g. suppose parentPath is 'document' and propertyPath is
-     * 'account.subAccount.name', first the property type for document will be
-     * retrieved using the view metadata and used as the dictionary entry, with
-     * the propertyPath as the dictionary attribute, if an attribute definition
-     * exists it will be returned. Else, the first part of the property path is
-     * added to the parent, making the parentPath 'document.account' and the
-     * propertyPath 'subAccount.name', the method is then called again to
-     * perform the process with those parameters. The recursion continues until
-     * an attribute field is found, or the propertyPath is no longer nested
+     * e.g. suppose parentPath is 'document' and propertyPath is 'account.subAccount.name', first
+     * the property type for document will be retrieved using the view metadata and used as the
+     * dictionary entry, with the propertyPath as the dictionary attribute, if an attribute
+     * definition exists it will be returned. Else, the first part of the property path is added to
+     * the parent, making the parentPath 'document.account' and the propertyPath 'subAccount.name',
+     * the method is then called again to perform the process with those parameters. The recursion
+     * continues until an attribute field is found, or the propertyPath is no longer nested
      * </p>
-     *
+     * 
      * @param view view instance containing the field
-     * @param field field we are attempting to find a supporting attribute
-     * definition for
+     * @param field field we are attempting to find a supporting attribute definition for
      * @param parentPath parent path to use for getting the dictionary entry
-     * @param propertyPath path of the property relative to the parent, to use as
-     * dictionary attribute and to drill down on
+     * @param propertyPath path of the property relative to the parent, to use as dictionary
+     *        attribute and to drill down on
      * @return AttributeDefinition if found, or Null
      */
     protected AttributeDefinition findNestedDictionaryAttribute(View view, DataField field, String parentPath,
@@ -737,21 +751,24 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      */
     @Override
     public void performApplyModel(View view, Object model) {
+        ProcessLogger.trace("apply-model:" + view.getId());
         // get action flag and edit modes from authorizer/presentation controller
         retrieveEditModesAndActionFlags(view, (UifFormBase) model);
 
         // set view context for conditional expressions
         setViewContext(view, model);
 
+        ProcessLogger.trace("apply-comp-model:" + view.getId());
         Map<String, Integer> visitedIds = new HashMap<String, Integer>();
         performComponentApplyModel(view, view, model, visitedIds);
+        ProcessLogger.trace("apply-model-end:" + view.getId());
     }
 
     /**
-     * Invokes the configured <code>PresentationController</code> and
-     * </code>Authorizer</code> for the view to get the exported action flags
-     * and edit modes that can be used in conditional logic
-     *
+     * Invokes the configured <code>PresentationController</code> and </code>Authorizer</code> for
+     * the view to get the exported action flags and edit modes that can be used in conditional
+     * logic
+     * 
      * @param view view instance that is being built and presentation/authorizer pulled for
      * @param model Object that contains the model data
      */
@@ -775,9 +792,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Sets up the view context which will be available to other components
-     * through their context for conditional logic evaluation
-     *
+     * Sets up the view context which will be available to other components through their context
+     * for conditional logic evaluation
+     * 
      * @param view view instance to set context for
      * @param model object containing the view data
      */
@@ -794,9 +811,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Returns the general context that is available before the apply model
-     * phase (during the initialize phase)
-     *
+     * Returns the general context that is available before the apply model phase (during the
+     * initialize phase)
+     * 
      * @param view view instance for context
      * @return context map
      */
@@ -816,15 +833,14 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Applies the model data to a component of the View instance
-     *
+     * 
      * <p>
-     * The component is invoked to to apply the model data. Here the component
-     * can generate any additional fields needed or alter the configured fields.
-     * After the component is invoked a hook for custom helper service
-     * processing is invoked. Finally the method is recursively called for all
-     * the component children
+     * The component is invoked to to apply the model data. Here the component can generate any
+     * additional fields needed or alter the configured fields. After the component is invoked a
+     * hook for custom helper service processing is invoked. Finally the method is recursively
+     * called for all the component children
      * </p>
-     *
+     * 
      * @param view view instance the component belongs to
      * @param component the component instance the model should be applied to
      * @param model top level object containing the data
@@ -836,15 +852,24 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             return;
         }
 
+        // ProcessLogger.ntrace("comp-model:", ":" + component.getClass().getSimpleName(), 500);
+        // ProcessLogger.countBegin("comp-model");
+
         // set context on component for evaluating expressions
         component.pushAllToContext(getCommonContext(view, component));
 
-        for (PropertyReplacer replacer : component.getPropertyReplacers()) {
-            getExpressionEvaluator().evaluateExpressionsOnConfigurable(view, replacer, component.getContext());
+        List<PropertyReplacer> componentPropertyReplacers = component.getPropertyReplacers();
+        if (componentPropertyReplacers != null) {
+            for (PropertyReplacer replacer : componentPropertyReplacers) {
+                getExpressionEvaluator().evaluateExpressionsOnConfigurable(view, replacer, component.getContext());
+            }
         }
 
-        for (ComponentModifier modifier : component.getComponentModifiers()) {
-            getExpressionEvaluator().evaluateExpressionsOnConfigurable(view, modifier, component.getContext());
+        List<ComponentModifier> componentModifiers = component.getComponentModifiers();
+        if (componentModifiers != null) {
+            for (ComponentModifier modifier : component.getComponentModifiers()) {
+                getExpressionEvaluator().evaluateExpressionsOnConfigurable(view, modifier, component.getContext());
+            }
         }
 
         getExpressionEvaluator().evaluateExpressionsOnConfigurable(view, component, component.getContext());
@@ -885,7 +910,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         //component.setId(adjustIdIfNecessary(component.getId(), visitedIds));
 
         // invoke component to perform its conditional logic
-        Component parent = (Component) component.getContext().get(UifConstants.ContextVariableNames.PARENT);
+        Map<String, Object> parentContext = component.getContext();
+        Component parent = parentContext == null ? null : (Component) parentContext
+                .get(UifConstants.ContextVariableNames.PARENT);
+
         component.performApplyModel(view, model, parent);
 
         // invoke service override hook
@@ -894,19 +922,31 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         // invoke component modifiers configured to run in the apply model phase
         runComponentModifiers(view, component, model, UifConstants.ViewPhases.APPLY_MODEL);
 
+        // ProcessLogger.countEnd("comp-model", view.getId() + " " + component.getClass() + " " + component.getId());
+
         // get children and recursively perform conditional logic
+        Queue<Component> nested = new LinkedList<Component>();
         for (Component nestedComponent : component.getComponentsForLifecycle()) {
             if (nestedComponent != null) {
+                nested.offer(nestedComponent);
+            }
+        }
+
+        if (!nested.isEmpty()) {
+            // ProcessLogger.countBegin("comp-nest");
+            while (!nested.isEmpty()) {
+                Component nestedComponent = nested.poll();
                 nestedComponent.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, component);
                 performComponentApplyModel(view, nestedComponent, model, visitedIds);
             }
+            // ProcessLogger.countEnd("comp-nest", view.getId() + " " + component.getClass() + " " + component.getId());
         }
     }
 
     /**
-     * Checks against the visited ids to see if the id is duplicate, if so it is adjusted to make
-     * an unique id by appending an unique sequence number
-     *
+     * Checks against the visited ids to see if the id is duplicate, if so it is adjusted to make an
+     * unique id by appending an unique sequence number
+     * 
      * @param id id to adjust if necessary
      * @param visitedIds tracks components ids that have been seen for adjusting duplicates
      * @return original or adjusted id
@@ -936,23 +976,21 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Invokes the view's configured {@link ViewAuthorizer} and {@link ViewPresentationController} to set state of
-     * the component
-     *
+     * Invokes the view's configured {@link ViewAuthorizer} and {@link ViewPresentationController}
+     * to set state of the component
+     * 
      * <p>
-     * The following authorization is done here:
-     * Fields: edit, view, required, mask, and partial mask
-     * Groups: edit and view
-     * Actions: take action
+     * The following authorization is done here: Fields: edit, view, required, mask, and partial
+     * mask Groups: edit and view Actions: take action
      * </p>
-     *
+     * 
      * <p>
-     * Note additional checks are also done for fields that are part of a collection group. This authorization is
-     * found in {@link org.kuali.rice.krad.uif.container.CollectionGroupBuilder}
+     * Note additional checks are also done for fields that are part of a collection group. This
+     * authorization is found in {@link org.kuali.rice.krad.uif.container.CollectionGroupBuilder}
      * </p>
-     *
-     * @param view view instance the component belongs to and from which the authorizer and presentation controller
-     * will be pulled
+     * 
+     * @param view view instance the component belongs to and from which the authorizer and
+     *        presentation controller will be pulled
      * @param component component instance to authorize
      * @param model model object containing the data for the view
      */
@@ -1108,21 +1146,25 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Runs any configured <code>ComponentModifiers</code> for the given
-     * component that match the given run phase and who run condition evaluation
-     * succeeds
-     *
+     * Runs any configured <code>ComponentModifiers</code> for the given component that match the
+     * given run phase and who run condition evaluation succeeds
+     * 
      * <p>
      * If called during the initialize phase, the performInitialization method will be invoked on
      * the <code>ComponentModifier</code> before running
      * </p>
-     *
+     * 
      * @param view view instance for context
      * @param component component instance whose modifiers should be run
      * @param model model object for context
      * @param runPhase current phase to match on
      */
     protected void runComponentModifiers(View view, Component component, Object model, String runPhase) {
+        List<ComponentModifier> componentModifiers = component.getComponentModifiers();
+        if (componentModifiers == null) {
+            return;
+        }
+
         for (ComponentModifier modifier : component.getComponentModifiers()) {
             // if run phase is initialize, invoke initialize method on modifier first
             if (StringUtils.equals(runPhase, UifConstants.ViewPhases.INITIALIZE)) {
@@ -1151,16 +1193,19 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Gets global objects for the context map and pushes them to the context
-     * for the component
-     *
+     * Gets global objects for the context map and pushes them to the context for the component
+     * 
      * @param view view instance for component
      * @param component component instance to push context to
      */
     public Map<String, Object> getCommonContext(View view, Component component) {
         Map<String, Object> context = new HashMap<String, Object>();
 
-        context.putAll(view.getContext());
+        Map<String, Object> viewContext = view.getContext();
+        if (viewContext != null) {
+            context.putAll(view.getContext());
+        }
+
         context.put(UifConstants.ContextVariableNames.THEME_IMAGES, view.getTheme().getImageDirectory());
         context.put(UifConstants.ContextVariableNames.COMPONENT, component);
 
@@ -1193,11 +1238,12 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Builds script that will initialize configuration parameters and component state on the client
-     *
+     * 
      * <p>
-     * Here client side state is initialized along with configuration variables that need exposed to script
+     * Here client side state is initialized along with configuration variables that need exposed to
+     * script
      * </p>
-     *
+     * 
      * @param view view instance that is being built
      * @param model model containing the client side state map
      */
@@ -1232,7 +1278,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Generates formatted table data based on the posted view results and format type
-     *
+     * 
      * @param view view instance where the table is located
      * @param model top level object containing the data
      * @param tableId id of the table being generated
@@ -1287,7 +1333,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Helper method used to build formatted table row data for export
-     *
+     * 
      * @return
      */
     protected String buildExportTableRow(List<String> columnData, Map<String, String> tableFormatOptions,
@@ -1315,9 +1361,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Helper function to determine whether if column should be displayed.  Used to help
-     * extract columns used in screen format such as action or select that is not needed for export.
-     *
+     * Helper function to determine whether if column should be displayed. Used to help extract
+     * columns used in screen format such as action or select that is not needed for export.
+     * 
      * @param layoutManager
      * @param collectionGroup
      * @return
@@ -1355,8 +1401,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Identify table formatting elements based on formatType.  Defaults to txt format if not found
-     *
+     * Identify table formatting elements based on formatType. Defaults to txt format if not found
+     * 
      * @param formatType
      * @return
      */
@@ -1412,18 +1458,19 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Builds JS script that will invoke the show growl method to display a growl message when the page is
-     * rendered
-     *
+     * Builds JS script that will invoke the show growl method to display a growl message when the
+     * page is rendered
+     * 
      * <p>
      * A growl call will be created for any explicit growl messages added to the message map.
      * </p>
-     *
+     * 
      * <p>
-     * Growls are only generated if @{link org.kuali.rice.krad.uif.view.View#isGrowlMessagingEnabled()} is enabled.
-     * If not, the growl messages are set as info messages for the page
+     * Growls are only generated if @{link
+     * org.kuali.rice.krad.uif.view.View#isGrowlMessagingEnabled()} is enabled. If not, the growl
+     * messages are set as info messages for the page
      * </p>
-     *
+     * 
      * @param view view instance for which growls are being generated
      * @return JS script string for generated growl messages
      */
@@ -1470,9 +1517,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Update state of the given component and does final preparation for
-     * rendering
-     *
+     * Update state of the given component and does final preparation for rendering
+     * 
      * @param view view instance the component belongs to
      * @param component the component instance that should be updated
      * @param model top level object containing the data
@@ -1526,9 +1572,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Updates the properties of the given component instance with the value found from the corresponding map of
-     * client state (if found)
-     *
+     * Updates the properties of the given component instance with the value found from the
+     * corresponding map of client state (if found)
+     * 
      * @param component component instance to update
      * @param clientSideState map of state to sync with
      */
@@ -1565,10 +1611,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Invokes the finalize method for the component (if configured) and sets
-     * the render output for the component to the returned method string (if
-     * method is not a void type)
-     *
+     * Invokes the finalize method for the component (if configured) and sets the render output for
+     * the component to the returned method string (if method is not a void type)
+     * 
      * @param view view instance that contains the component
      * @param component component to run finalize method for
      * @param model top level object containing the data
@@ -1675,11 +1720,11 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Perform a database or data dictionary based refresh of a specific property object
-     *
+     * 
      * <p>
      * The object needs to be of type PersistableBusinessObject.
      * </p>
-     *
+     * 
      * @param parentObject parent object that references the object to be refreshed
      * @param referenceObjectName property name of the parent object to be refreshed
      */
@@ -1831,9 +1876,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Add addLine to collection while giving derived classes an opportunity to override
-     * for things like sorting.
-     *
+     * Add addLine to collection while giving derived classes an opportunity to override for things
+     * like sorting.
+     * 
      * @param collection the Collection to add the given addLine to
      * @param addLine the line to add to the given collection
      * @param insertFirst indicates if the item should be inserted as the first item
@@ -1847,16 +1892,15 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Performs validation on the new collection line before it is added to the
-     * corresponding collection
-     *
+     * Performs validation on the new collection line before it is added to the corresponding
+     * collection
+     * 
      * @param view view instance that the action was taken on
      * @param collectionGroup collection group component for the collection
      * @param addLine new line instance to validate
      * @param model object instance that contain's the views data
-     * @return true if the line is valid and it should be added to the
-     *         collection, false if it was not valid and should not be added to
-     *         the collection
+     * @return true if the line is valid and it should be added to the collection, false if it was
+     *         not valid and should not be added to the collection
      */
     protected boolean performAddLineValidation(View view, CollectionGroup collectionGroup, Object model,
             Object addLine) {
@@ -1902,14 +1946,14 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Performs validation on the collection line before it is removed from the
-     * corresponding collection
-     *
+     * Performs validation on the collection line before it is removed from the corresponding
+     * collection
+     * 
      * @param view view instance that the action was taken on
      * @param collectionGroup collection group component for the collection
      * @param deleteLine line that will be removed
-     * @return true if the action is allowed and the line should be
-     *         removed, false if the line should not be removed
+     * @return true if the action is allowed and the line should be removed, false if the line
+     *         should not be removed
      */
     protected boolean performDeleteLineValidation(View view, CollectionGroup collectionGroup, Object deleteLine) {
         boolean isValid = true;
@@ -1991,9 +2035,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Finds the <code>Inquirable</code> configured for the given data object
-     * class and delegates to it for building the inquiry URL
-     *
+     * Finds the <code>Inquirable</code> configured for the given data object class and delegates to
+     * it for building the inquiry URL
+     * 
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#buildInquiryLink(java.lang.Object,
      *      java.lang.String, org.kuali.rice.krad.uif.widget.Inquiry)
      */
@@ -2011,8 +2055,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#applyDefaultValuesForCollectionLine(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.container.CollectionGroup,
-     *      java.lang.Object)
+     *      java.lang.Object, org.kuali.rice.krad.uif.container.CollectionGroup, java.lang.Object)
      */
     public void applyDefaultValuesForCollectionLine(View view, Object model, CollectionGroup collectionGroup,
             Object line) {
@@ -2031,8 +2074,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Iterates through the view components picking up data fields and applying an default value configured
-     *
+     * Iterates through the view components picking up data fields and applying an default value
+     * configured
+     * 
      * @param view view instance we are applying default values for
      * @param component component that should be checked for default values
      * @param model model object that values should be set on
@@ -2052,29 +2096,29 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             populateDefaultValueForField(view, model, dataField, dataField.getBindingInfo().getBindingPath());
         }
 
-        List<Component> nestedComponents = component.getComponentsForLifecycle();
+        for (Component nested : component.getComponentsForLifecycle()) {
+            applyDefaultValues(view, nested, model);
+        }
 
         // if view, need to add all pages since only one will be on the lifecycle
         if (component instanceof View) {
-            nestedComponents.addAll(((View) component).getItems());
+            for (Component nested : ((View) component).getItems()) {
+                applyDefaultValues(view, nested, model);
+            }
         }
 
-        for (Component nested : nestedComponents) {
-            applyDefaultValues(view, nested, model);
-        }
     }
 
     /**
-     * Applies the default value configured for the given field (if any) to the
-     * line given object property that is determined by the given binding path
-     *
+     * Applies the default value configured for the given field (if any) to the line given object
+     * property that is determined by the given binding path
+     * 
      * <p>
-     * Checks for a configured default value or default value class for the
-     * field. If both are given, the configured static default value will win.
-     * In addition, if the default value contains an el expression it is
-     * evaluated against the initial context
+     * Checks for a configured default value or default value class for the field. If both are
+     * given, the configured static default value will win. In addition, if the default value
+     * contains an el expression it is evaluated against the initial context
      * </p>
-     *
+     * 
      * @param view view instance the field belongs to
      * @param object object that should be populated
      * @param dataField field to check for configured default value
@@ -2114,17 +2158,17 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Hook for creating new components with code and adding them to a container
-     *
+     * 
      * <p>
-     * Subclasses can override this method to check for one or more containers by id and then adding components
-     * created in code. This is invoked before the initialize method on the container component, so the full
-     * lifecycle will be run on the components returned.
+     * Subclasses can override this method to check for one or more containers by id and then adding
+     * components created in code. This is invoked before the initialize method on the container
+     * component, so the full lifecycle will be run on the components returned.
      * </p>
-     *
+     * 
      * <p>
      * New components instances can be retrieved using {@link ComponentFactory}
      * </p>
-     *
+     * 
      * @param view view instance the container belongs to
      * @param model object containing the view data
      * @param container container instance to add components to
@@ -2134,9 +2178,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Hook for service overrides to perform custom initialization on the
-     * component
-     *
+     * Hook for service overrides to perform custom initialization on the component
+     * 
      * @param view view instance containing the component
      * @param component component instance to initialize
      */
@@ -2145,13 +2188,12 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Hook for service overrides to perform custom apply model logic on the
-     * component
-     *
+     * Hook for service overrides to perform custom apply model logic on the component
+     * 
      * @param view view instance containing the component
      * @param component component instance to apply model to
-     * @param model Top level object containing the data (could be the model or a
-     * top level business object, dto)
+     * @param model Top level object containing the data (could be the model or a top level business
+     *        object, dto)
      */
     protected void performCustomApplyModel(View view, Component component, Object model) {
 
@@ -2159,7 +2201,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Hook for service overrides to perform custom component finalization
-     *
+     * 
      * @param view view instance containing the component
      * @param component component instance to update
      * @param model Top level object containing the data
@@ -2170,13 +2212,12 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Hook for service overrides to process the new collection line before it
-     * is added to the collection
-     *
-     * @param view view instance that is being presented (the action was taken
-     * on)
-     * @param collectionGroup collection group component for the collection the line will
-     * be added to
+     * Hook for service overrides to process the new collection line before it is added to the
+     * collection
+     * 
+     * @param view view instance that is being presented (the action was taken on)
+     * @param collectionGroup collection group component for the collection the line will be added
+     *        to
      * @param model object instance that contain's the views data
      * @param addLine the new line instance to be processed
      */
@@ -2185,13 +2226,11 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Hook for service overrides to process the new collection line after it
-     * has been added to the collection
-     *
-     * @param view view instance that is being presented (the action was taken
-     * on)
-     * @param collectionGroup collection group component for the collection the line that
-     * was added
+     * Hook for service overrides to process the new collection line after it has been added to the
+     * collection
+     * 
+     * @param view view instance that is being presented (the action was taken on)
+     * @param collectionGroup collection group component for the collection the line that was added
      * @param model object instance that contain's the views data
      * @param addLine the new line that was added
      * @param isValidLine indicates if the line is valid
@@ -2202,11 +2241,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Hook for service overrides to process the save collection line before it
-     * is validated
-     *
-     * @param view view instance that is being presented (the action was taken
-     * on)
+     * Hook for service overrides to process the save collection line before it is validated
+     * 
+     * @param view view instance that is being presented (the action was taken on)
      * @param collectionGroup collection group component for the collection
      * @param model object instance that contain's the views data
      * @param addLine the new line instance to be processed
@@ -2216,11 +2253,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Hook for service overrides to process the save collection line after it
-     * has been validated
-     *
-     * @param view view instance that is being presented (the action was taken
-     * on)
+     * Hook for service overrides to process the save collection line after it has been validated
+     * 
+     * @param view view instance that is being presented (the action was taken on)
      * @param collectionGroup collection group component for the collection
      * @param model object instance that contains the views data
      * @param addLine the new line that was added
@@ -2231,10 +2266,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Hook for service overrides to process the collection line after it has been deleted
-     *
+     * 
      * @param view view instance that is being presented (the action was taken on)
-     * @param collectionGroup collection group component for the collection the line that
-     * was added
+     * @param collectionGroup collection group component for the collection the line that was added
      * @param model object instance that contains the views data
      * @param lineIndex index of the line that was deleted
      */
@@ -2244,7 +2278,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Log the error and throw a new runtime exception
-     *
+     * 
      * @param message - the error message (both to log and throw as a new exception)
      */
     protected void logAndThrowRuntime(String message) {
@@ -2252,10 +2286,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         throw new RuntimeException(message);
     }
 
-
-
     protected LegacyDataAdapter getLegacyDataAdapter() {
-        if(legacyDataAdapter == null){
+        if (legacyDataAdapter == null) {
             return KRADServiceLocatorWeb.getLegacyDataAdapter();
         }
         return legacyDataAdapter;
@@ -2267,7 +2299,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Gets the data dictionary service
-     *
+     * 
      * @return data dictionary service
      */
     protected DataDictionaryService getDataDictionaryService() {
@@ -2280,7 +2312,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Sets the data dictionary service
-     *
+     * 
      * @param dataDictionaryService
      */
     public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
@@ -2289,7 +2321,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Gets the expression evaluator service
-     *
+     * 
      * @return expression evaluator service
      */
     public ExpressionEvaluator getExpressionEvaluator() {
@@ -2302,7 +2334,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Sets the expression evaluator service
-     *
+     * 
      * @param expressionEvaluator
      */
     public void setExpressionEvaluator(ExpressionEvaluator expressionEvaluator) {
@@ -2311,7 +2343,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Gets the view dictionary service
-     *
+     * 
      * @return view dictionary service
      */
     public ViewDictionaryService getViewDictionaryService() {
@@ -2323,7 +2355,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Sets the view dictionary service
-     *
+     * 
      * @param viewDictionaryService
      */
     public void setViewDictionaryService(ViewDictionaryService viewDictionaryService) {
@@ -2332,7 +2364,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Gets the configuration service
-     *
+     * 
      * @return configuration service
      */
     public ConfigurationService getConfigurationService() {
@@ -2344,7 +2376,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Sets the configuration service
-     *
+     * 
      * @param configurationService
      */
     public void setConfigurationService(ConfigurationService configurationService) {

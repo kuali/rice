@@ -96,6 +96,8 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("Unable to decrypt value from db", "KULRICE-10403 Rice 2.4: Stack trace on submitting People Flow doc");
 
         jiraMatches.put("org.kuali.rice.krad.uif.container.LightTable.buildRows", "KULRICE-10421 DemoLibraryCollectionFeaturesLightTableSmokeTest inline freemarker exception");
+
+        jiraMatches.put("Invalid search field sent for property name: foId", "KULRICE-10422 DemoTravelAccountMultivalueLookUpSmokeTest Invalid search field sent for property name: foId");
         //jiraMatches.put("", "");
     }
 

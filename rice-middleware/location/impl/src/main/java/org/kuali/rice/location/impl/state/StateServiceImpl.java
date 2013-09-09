@@ -16,8 +16,6 @@
 package org.kuali.rice.location.impl.state;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.criteria.CriteriaLookupService;
-import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
@@ -70,7 +68,7 @@ public class StateServiceImpl implements StateService {
         map.put("active", Boolean.TRUE);
 
         QueryResults<StateBo> stateBos = dataObjectService.findMatching(StateBo.class,
-                QueryByCriteria.Builder.forAttributesAnd(map));
+                QueryByCriteria.Builder.andAttributes(map).build());
 
         if (stateBos == null) {
             return Collections.emptyList();

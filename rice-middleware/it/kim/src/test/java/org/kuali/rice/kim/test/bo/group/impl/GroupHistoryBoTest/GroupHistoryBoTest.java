@@ -28,7 +28,7 @@ public class GroupHistoryBoTest extends KIMTestCase {
         //Collection<GroupHistoryBo> groupHistoryBos =
         //        KRADServiceLocator.getBusinessObjectService().findMatching(GroupHistoryBo.class, criteria);
 
-        QueryByCriteria qbc = QueryByCriteria.Builder.forAttribute("id", "g1");
+        QueryByCriteria qbc = QueryByCriteria.Builder.forAttribute("id", "g1").build();
 
         QueryResults<GroupBo> groups =
                 KRADServiceLocator.getDataObjectService().findMatching(GroupBo.class, qbc);

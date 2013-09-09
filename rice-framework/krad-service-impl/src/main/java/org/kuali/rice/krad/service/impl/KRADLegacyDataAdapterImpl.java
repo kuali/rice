@@ -30,6 +30,8 @@ import java.util.TreeMap;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.core.api.criteria.OrderByField;
+import org.kuali.rice.core.api.criteria.OrderDirection;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.PredicateFactory;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
@@ -143,7 +145,7 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
 
     @Override
     public void deleteMatching(Class<?> type, Map<String, ?> fieldValues) {
-        dataObjectService.deleteMatching(type, QueryByCriteria.Builder.forAttributesAnd(fieldValues));
+        dataObjectService.deleteMatching(type, QueryByCriteria.Builder.andAttributes(fieldValues).build());
     }
 
     @Override
@@ -169,17 +171,18 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
 
     @Override
     public <T> Collection<T> findMatching(Class<T> clazz, Map<String, ?> fieldValues) {
-        QueryResults<T> result = dataObjectService.findMatching(clazz, QueryByCriteria.Builder.forAttributesAnd(
-                    fieldValues));
+        QueryResults<T> result = dataObjectService.findMatching(clazz, QueryByCriteria.Builder.andAttributes(
+                fieldValues).build());
         return result.getResults();
     }
 
     @Override
     public <T> Collection<T> findMatchingOrderBy(Class<T> clazz, Map<String, ?> fieldValues, String sortField,
             boolean sortAscending) {
+        OrderDirection direction = sortAscending ? OrderDirection.ASCENDING : OrderDirection.DESCENDING;
+        OrderByField orderBy = OrderByField.Builder.create(sortField, direction).build();
         QueryResults<T> result = dataObjectService.findMatching(clazz,
-                QueryByCriteria.Builder.forAttributesAndOrderBy(fieldValues, Collections.singletonList(sortField),
-                        sortAscending));
+                QueryByCriteria.Builder.andAttributes(fieldValues).setOrderByFields(orderBy).build());
         return result.getResults();
     }
 
@@ -395,7 +398,7 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
     @Override
     public void deleteLocks(String documentNumber) {
         dataObjectService.deleteMatching(MaintenanceLock.class, QueryByCriteria.Builder.forAttribute(
-                    "documentNumber", documentNumber));
+                    "documentNumber", documentNumber).build());
     }
 
     @Override

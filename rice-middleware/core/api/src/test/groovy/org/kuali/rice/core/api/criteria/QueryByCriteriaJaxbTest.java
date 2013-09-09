@@ -16,6 +16,7 @@
 package org.kuali.rice.core.api.criteria;
 
 import junit.framework.Assert;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,9 +28,18 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * tests that all predicates can be marshalled and unmarshalled successfully
@@ -115,6 +125,220 @@ public class QueryByCriteriaJaxbTest {
                     "xsi:type=\"" + shortenedClassName.toLowerCase() + "type\""));
         }
 
+    }
+
+    @Test
+    public void testAndAttributes_Null() {
+        QueryByCriteria criteria = QueryByCriteria.Builder.andAttributes(new HashMap<String, String>()).build();
+        assertEmptyCriteria(criteria);
+    }
+
+    @Test
+    public void testAndAttributes_Empty() {
+        QueryByCriteria criteria = QueryByCriteria.Builder.andAttributes(new HashMap<String, String>()).build();
+        assertEmptyCriteria(criteria);
+    }
+
+    @Test
+    public void testAndAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        DateTime now = new DateTime();
+
+        // 7 attributes, including an empty list and empty set
+        attributes.put("nonNullString", "abcdefg");
+        attributes.put("null", null);
+        attributes.put("list", Arrays.asList("a", "b", "c"));
+        attributes.put("emptyList", Collections.emptyList());
+        attributes.put("emptySet", Collections.emptySet());
+        attributes.put("set", new HashSet<Integer>(Arrays.asList(5)));
+        attributes.put("date", now);
+
+        // now create the criteria
+        QueryByCriteria criteria = QueryByCriteria.Builder.andAttributes(attributes).build();
+        Predicate predicate = criteria.getPredicate();
+        assertTrue(predicate instanceof AndPredicate);
+        AndPredicate and = (AndPredicate)predicate;
+
+        // there should be 5 predicates because the emptyList and emptySet will simply be dropped since they represents no real criteria
+        assertEquals("Should be 5 predicates in the AND", 5, and.getPredicates().size());
+
+        // now let's pick out the individual predicates, since there's only a single value in the set predicate, it should get reduced down to a simple equal
+        EqualPredicate nonNullStringPredicate = null;
+        NullPredicate nullPredicate = null;
+        OrPredicate listPredicate = null;
+        EqualPredicate setPredicate = null;
+        EqualPredicate datePredicate = null;
+        for (Predicate pred : and.getPredicates()) {
+            if (pred instanceof PropertyPathPredicate) {
+                String propertyPath = ((PropertyPathPredicate)pred).getPropertyPath();
+                if (propertyPath.equals("nonNullString")) {
+                    nonNullStringPredicate = (EqualPredicate)pred;
+                } else if (propertyPath.equals("null")) {
+                    nullPredicate = (NullPredicate)pred;
+                } else if (propertyPath.equals("date")) {
+                    datePredicate = (EqualPredicate)pred;
+                } else if (propertyPath.equals("set")) {
+                    setPredicate = (EqualPredicate)pred;
+                } else {
+                    fail("Encountered an invalid PropertyPathPredicate with propertyPath=" + propertyPath);
+                }
+            } else if (pred instanceof CompositePredicate) {
+                CompositePredicate composite = (CompositePredicate)pred;
+                String propertyPath = ((PropertyPathPredicate)composite.getPredicates().iterator().next()).getPropertyPath();
+                if (propertyPath.equals("list")) {
+                    listPredicate = (OrPredicate)pred;
+                } else {
+                    fail("Encountered an invalid CompositePredicate with first entry with propertyPath=" + propertyPath);
+                }
+            } else {
+                fail("Invalid predicate encountered: " + pred);
+            }
+        }
+
+        // check non-null predicate
+        assertNotNull(nonNullStringPredicate);
+        assertTrue(nonNullStringPredicate.getValue() instanceof CriteriaStringValue);
+        assertEquals("abcdefg", nonNullStringPredicate.getValue().getValue());
+
+        // check null predicate
+        assertNotNull(nullPredicate);
+
+        // check date predicate
+        assertNotNull(datePredicate);
+        assertTrue(datePredicate.getValue() instanceof CriteriaDateTimeValue);
+        assertEquals(now, datePredicate.getValue().getValue());
+
+        // check list predicate
+        assertNotNull(listPredicate);
+        assertEquals(3, listPredicate.getPredicates().size());
+        Set<String> listValues = new HashSet<String>();
+        for (Predicate listEntry : listPredicate.getPredicates()) {
+            assertTrue(listEntry instanceof EqualPredicate);
+            EqualPredicate le = (EqualPredicate)listEntry;
+            assertEquals("list", le.getPropertyPath());
+            assertTrue(le.getValue() instanceof CriteriaStringValue);
+            String value = (String)le.getValue().getValue();
+            listValues.add(value);
+        }
+        assertTrue(listValues.contains("a"));
+        assertTrue(listValues.contains("b"));
+        assertTrue(listValues.contains("c"));
+
+        // check set predicate
+        assertNotNull(setPredicate);
+        // since set predicate only had a size of 1, it will be reduced down to a simple equal predicate instead of an OR
+        assertEquals("set", setPredicate.getPropertyPath());
+        assertTrue(setPredicate.getValue() instanceof CriteriaIntegerValue);
+        assertEquals(BigInteger.valueOf(5), (BigInteger)setPredicate.getValue().getValue());
+    }
+
+    @Test
+    public void testOrAttributes_Null() {
+        QueryByCriteria criteria = QueryByCriteria.Builder.orAttributes(new HashMap<String, String>()).build();
+        assertEmptyCriteria(criteria);
+    }
+
+    @Test
+    public void testOrAttributes_Empty() {
+        QueryByCriteria criteria = QueryByCriteria.Builder.orAttributes(new HashMap<String, String>()).build();
+        assertEmptyCriteria(criteria);
+    }
+
+    @Test
+    public void testOrAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        DateTime now = new DateTime();
+
+        // 7 attributes, including an empty list and empty set
+        attributes.put("nonNullString", "abcdefg");
+        attributes.put("null", null);
+        attributes.put("list", Arrays.asList("a", "b", "c"));
+        attributes.put("emptyList", Collections.emptyList());
+        attributes.put("emptySet", Collections.emptySet());
+        attributes.put("set", new HashSet<Integer>(Arrays.asList(5)));
+        attributes.put("date", now);
+
+        // now create the criteria
+        QueryByCriteria criteria = QueryByCriteria.Builder.orAttributes(attributes).build();
+        Predicate predicate = criteria.getPredicate();
+        assertTrue(predicate instanceof OrPredicate);
+        OrPredicate or = (OrPredicate)predicate;
+
+        // there should be 7 predicates because the entries in the list will get converted to top-level predicates since we are doing an or anyway (no need to nest the OR's)
+        assertEquals("Should be 7 predicates in the AND", 7, or.getPredicates().size());
+
+        // now let's pick out the individual predicates
+        EqualPredicate nonNullStringPredicate = null;
+        NullPredicate nullPredicate = null;
+        EqualPredicate listA = null;
+        EqualPredicate listB = null;
+        EqualPredicate listC = null;
+        EqualPredicate setPredicate = null;
+        EqualPredicate datePredicate = null;
+        for (Predicate pred : or.getPredicates()) {
+            if (pred instanceof PropertyPathPredicate) {
+                String propertyPath = ((PropertyPathPredicate)pred).getPropertyPath();
+                if (propertyPath.equals("nonNullString")) {
+                    nonNullStringPredicate = (EqualPredicate)pred;
+                } else if (propertyPath.equals("null")) {
+                    nullPredicate = (NullPredicate)pred;
+                } else if (propertyPath.equals("list")) {
+                    EqualPredicate listPredicate = (EqualPredicate)pred;
+                    assertTrue(listPredicate.getValue() instanceof CriteriaStringValue);
+                    String value = (String)listPredicate.getValue().getValue();
+                    if (value.equals("a")) {
+                        listA = listPredicate;
+                    } else if (value.equals("b")) {
+                        listB = listPredicate;
+                    } else if (value.equals("c")) {
+                        listC = listPredicate;
+                    } else {
+                        fail("Encountered invalid value for list predicate: " + value);
+                    }
+                } else if (propertyPath.equals("date")) {
+                    datePredicate = (EqualPredicate)pred;
+                } else if (propertyPath.equals("set")) {
+                    setPredicate = (EqualPredicate)pred;
+                } else {
+                    fail("Encountered an invalid PropertyPathPredicate with propertyPath=" + propertyPath);
+                }
+            } else {
+                fail("Invalid predicate encountered: " + pred);
+            }
+        }
+
+        // check non-null predicate
+        assertNotNull(nonNullStringPredicate);
+        assertTrue(nonNullStringPredicate.getValue() instanceof CriteriaStringValue);
+        assertEquals("abcdefg", nonNullStringPredicate.getValue().getValue());
+
+        // check null predicate
+        assertNotNull(nullPredicate);
+
+        // check list predicates, we already checked everything we needed in the for loop above, let's just make sure it found them
+        assertNotNull(listA);
+        assertNotNull(listB);
+        assertNotNull(listC);
+
+        // check date predicate
+        assertNotNull(datePredicate);
+        assertTrue(datePredicate.getValue() instanceof CriteriaDateTimeValue);
+        assertEquals(now, datePredicate.getValue().getValue());
+
+        // check set predicate
+        assertNotNull(setPredicate);
+        // since set predicate only had a size of 1, it will be reduced down to a simple equal predicate instead of an OR
+        assertEquals("set", setPredicate.getPropertyPath());
+        assertTrue(setPredicate.getValue() instanceof CriteriaIntegerValue);
+        assertEquals(BigInteger.valueOf(5), (BigInteger)setPredicate.getValue().getValue());
+    }
+
+    private void assertEmptyCriteria(QueryByCriteria criteria) {
+        assertNotNull(criteria);
+        assertTrue(criteria.getPredicate() instanceof CompositePredicate);
+        assertTrue(((CompositePredicate)criteria.getPredicate()).getPredicates().isEmpty());
     }
 
     private String marshallToString(QueryByCriteria queryByCriteria) throws JAXBException {

@@ -28,7 +28,6 @@ import org.kuali.rice.coreservice.api.style.StyleRepositoryService;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.springframework.beans.factory.annotation.Required;
 
-import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -116,7 +115,7 @@ public class StyleRepositoryServiceImpl implements StyleRepositoryService {
         attributes.put("name", styleName);
         attributes.put("active", Boolean.TRUE);
         QueryResults<StyleBo> styleBos =
-                dataObjectService.findMatching(StyleBo.class, QueryByCriteria.Builder.forAttributesAnd(attributes));
+                dataObjectService.findMatching(StyleBo.class, QueryByCriteria.Builder.andAttributes(attributes).build());
         if(styleBos != null && styleBos.getResults().size() > 0){
             return styleBos.getResults().get(0);
         }

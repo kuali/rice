@@ -16,8 +16,6 @@
 package org.kuali.rice.location.impl.postalcode;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.criteria.CriteriaLookupService;
-import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
@@ -65,7 +63,7 @@ public class PostalCodeServiceImpl implements PostalCodeService {
         map.put("active", Boolean.TRUE);
 
         QueryResults<PostalCodeBo> postalCodeBoQueryResults = dataObjectService.findMatching(PostalCodeBo.class,
-                    QueryByCriteria.Builder.forAttributesAnd(map));
+                    QueryByCriteria.Builder.andAttributes(map).build());
         if (postalCodeBoQueryResults == null) {
             return Collections.emptyList();
         }

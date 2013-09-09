@@ -99,7 +99,7 @@ public class JpaPersistenceProvider implements PersistenceProvider, Initializing
     public <T> T find(Class<T> type, Object id) {
         if (id instanceof CompoundKey) {
 			QueryResults<T> results = findMatching(type,
-					QueryByCriteria.Builder.forAttributesAnd(((CompoundKey) id).getKeys()));
+					QueryByCriteria.Builder.andAttributes(((CompoundKey) id).getKeys()).build());
 			if (results.getResults().size() > 1) {
 				throw new NonUniqueResultException("Error Compound Key: " + id + " on class " + type.getName()
 						+ " returned more than one row.");

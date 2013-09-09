@@ -56,7 +56,7 @@ public class JpaPersistenceProviderTest extends KRADTestCase {
      * Derives a QueryByCriteria for a test object
      */
     protected QueryByCriteria queryFor(Object a) {
-        return QueryByCriteria.Builder.forAttributes(a, Arrays.asList(getPropertiesForQuery()));
+        return QueryByCriteria.Builder.andAttributes(a, Arrays.asList(getPropertiesForQuery())).build();
     }
 
     /**

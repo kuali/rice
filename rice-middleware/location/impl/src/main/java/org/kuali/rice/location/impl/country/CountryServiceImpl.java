@@ -17,22 +17,17 @@ package org.kuali.rice.location.impl.country;
 
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.criteria.CriteriaLookupService;
-import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.krad.data.DataObjectService;
-import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.location.api.country.Country;
 import org.kuali.rice.location.api.country.CountryQueryResults;
 import org.kuali.rice.location.api.country.CountryService;
-import org.kuali.rice.location.impl.campus.CampusBo;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.ArrayList;
@@ -60,7 +55,7 @@ public final class CountryServiceImpl implements CountryService {
         if (StringUtils.isBlank(alternateCode)) {
             throw new RiceIllegalArgumentException("alt code is blank");
         }
-        QueryByCriteria qbc = QueryByCriteria.Builder.forAttribute(KRADPropertyConstants.ALTERNATE_POSTAL_COUNTRY_CODE, alternateCode);
+        QueryByCriteria qbc = QueryByCriteria.Builder.forAttribute(KRADPropertyConstants.ALTERNATE_POSTAL_COUNTRY_CODE, alternateCode).build();
         QueryResults<CountryBo> countryBoQueryResults = getDataObjectService().findMatching(CountryBo.class,qbc);
         List<CountryBo> countryList = countryBoQueryResults.getResults();
         if (countryList == null || countryList.isEmpty()) {
@@ -80,7 +75,8 @@ public final class CountryServiceImpl implements CountryService {
 
         map.put(KRADPropertyConstants.POSTAL_COUNTRY_RESTRICTED_INDICATOR, criteriaValues);
         map.put("active", Boolean.TRUE);
-        QueryResults<CountryBo> countryBos = dataObjectService.findMatching(CountryBo.class,QueryByCriteria.Builder.forAttributesAnd(map));
+        QueryResults<CountryBo> countryBos = dataObjectService.findMatching(CountryBo.class,QueryByCriteria.Builder.andAttributes(
+                map).build());
 
         return convertListOfBosToImmutables(countryBos.getResults());
     }
@@ -88,7 +84,7 @@ public final class CountryServiceImpl implements CountryService {
     @Override
     public List<Country> findAllCountries() {
         QueryResults<CountryBo> countryBoQueryResults = dataObjectService.findMatching(CountryBo.class,
-                QueryByCriteria.Builder.forAttribute("active",Boolean.TRUE));
+                QueryByCriteria.Builder.forAttribute("active",Boolean.TRUE).build());
         //Collection<CountryBo> countryBos = businessObjectService.findMatching(CountryBo.class, Collections.unmodifiableMap(map));
         return convertListOfBosToImmutables(countryBoQueryResults.getResults());
     }

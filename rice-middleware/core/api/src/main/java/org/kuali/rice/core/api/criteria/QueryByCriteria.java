@@ -15,14 +15,12 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.apache.commons.beanutils.PropertyUtils;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
+import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.core.api.util.collect.CollectionUtils;
+import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -33,13 +31,14 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.apache.commons.beanutils.PropertyUtils;
-import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
-import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.util.collect.CollectionUtils;
-import org.w3c.dom.Element;
+import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Defines a criteria-based query.  Consists of a {@link Predicate} definition
@@ -253,23 +252,32 @@ public final class QueryByCriteria extends AbstractDataTransferObject {
 			return this.countFlag;
 		}
 
-		public void setCountFlag(CountFlag countFlag) {
+		public QueryByCriteria.Builder setCountFlag(CountFlag countFlag) {
 			if (countFlag == null) {
                 throw new IllegalArgumentException("countFlag was null");
             }
-
             this.countFlag = countFlag;
+            return this;
 		}
 
         public List<OrderByField> getOrderByFields() {
             return this.orderByFields;
         }
 
-        public void setOrderByFields(List<OrderByField> orderByFields) {
+        public QueryByCriteria.Builder setOrderByFields(List<OrderByField> orderByFields) {
             if (orderByFields == null) {
                 throw new IllegalArgumentException("orderByFields was null");
             }
             this.orderByFields = orderByFields;
+            return this;
+        }
+
+        public QueryByCriteria.Builder setOrderByFields(OrderByField... orderByFields) {
+            if (orderByFields == null) {
+                throw new IllegalArgumentException("orderByFields was null");
+            }
+            setOrderByFields(new ArrayList<OrderByField>(Arrays.asList(orderByFields)));
+            return this;
         }
 
         /**
@@ -291,9 +299,10 @@ public final class QueryByCriteria extends AbstractDataTransferObject {
          * constraints on the query.
          * @param predicates the predicates to set.
          */
-        public void setPredicates(Predicate... predicates) {
+        public QueryByCriteria.Builder setPredicates(Predicate... predicates) {
             //defensive copies on array
             this.predicates = predicates != null ? Arrays.copyOf(predicates, predicates.length) : null;
+            return this;
 		}
 
         @Override
@@ -309,12 +318,15 @@ public final class QueryByCriteria extends AbstractDataTransferObject {
         }
 
         /**
-         * Static helper for generating a QueryByCriteria from a Map<String, ?> of attributes
-         * @param attributes key/value map of attributes
+         * Static helper for generating a QueryByCriteria from a Map<String, ?> of attributes by "OR"-ing those
+         * attributes together.
+         *
+         * @param attributes key/value map of attributes to OR together in the criteria
+         *
          * @return a QueryByCriteria which selects the given attributes (if map is non-null and non-empty)
          */
-        public static QueryByCriteria forAttributes(Map<String, ?> attributes) {
-            List<Predicate> predicates = new ArrayList<Predicate>(attributes.size());
+        public static QueryByCriteria.Builder orAttributes(Map<String, ?> attributes) {
+            List<Predicate> predicates = new ArrayList<Predicate>();
             if (attributes != null) {
                 for (Map.Entry<String, ?> entry: attributes.entrySet()) {
                     if(entry.getValue() instanceof Collection<?>){
@@ -323,13 +335,44 @@ public final class QueryByCriteria extends AbstractDataTransferObject {
                         }
                     } else {
                         predicates.add(buildPredicate(entry.getKey(),entry.getValue()));
-
                     }
                 }
             }
             QueryByCriteria.Builder qbc = QueryByCriteria.Builder.create();
             qbc.setPredicates(PredicateFactory.or(predicates.toArray(new Predicate[predicates.size()])));
-            return qbc.build();
+            return qbc;
+        }
+
+        /**
+         * Static helper for generating a QueryByCriteria from a Map<String, ?> of attributes by "AND"-ing those
+         * attributes together. If any of the values in the Map is a collection, all items in the collection will be
+         * "OR"-ed together (essentially treated like an "IN" condition).
+         *
+         * @param attributes key/value map of attributes to AND together in the criteria
+         *
+         * @return a QueryByCriteria which selects the given attributes (if map is non-null and non-empty)
+         */
+        public static QueryByCriteria.Builder andAttributes(Map<String, ?> attributes) {
+            List<Predicate> predicates = new ArrayList<Predicate>();
+            if (attributes != null) {
+                for (Map.Entry<String, ?> entry: attributes.entrySet()) {
+                    if(entry.getValue() instanceof Collection<?>) {
+                        Collection<?> values = (Collection<?>)entry.getValue();
+                        if (!values.isEmpty()) {
+                            List<Predicate> orPredicates = new ArrayList<Predicate>();
+                            for(Object entryVal : values) {
+                                orPredicates.add(buildPredicate(entry.getKey(),entryVal));
+                            }
+                            predicates.add(PredicateFactory.or(orPredicates.toArray(new Predicate[orPredicates.size()])));
+                        }
+                    } else {
+                        predicates.add(buildPredicate(entry.getKey(),entry.getValue()));
+                    }
+                }
+            }
+            QueryByCriteria.Builder qbc = QueryByCriteria.Builder.create();
+            qbc.setPredicates(PredicateFactory.and(predicates.toArray(new Predicate[predicates.size()])));
+            return qbc;
         }
 
         private static Predicate buildPredicate(String attributeKey, Object attributeValue){
@@ -342,66 +385,15 @@ public final class QueryByCriteria extends AbstractDataTransferObject {
         }
 
         /**
-         * Static helper for generating a QueryByCriteria from a Map<String, ?> of attributes using 'and' as
-         * predicate operation
-         * @param attributes key/value map of attributes
-         * @return a QueryByCriteria which selects the given attributes (if map is non-null and non-empty)
-         */
-        public static QueryByCriteria forAttributesAnd(Map<String, ?> attributes) {
-            List<Predicate> predicates = new ArrayList<Predicate>(attributes.size());
-            if (attributes != null) {
-                for (Map.Entry<String, ?> entry: attributes.entrySet()) {
-                    if(entry.getValue() instanceof Collection<?>){
-                        List<Predicate> orPredicates = new ArrayList<Predicate>();
-                        for(Object entryVal : (Collection<?>)entry.getValue()) {
-                            orPredicates.add(buildPredicate(entry.getKey(),entryVal));
-                        }
-                        predicates.add(PredicateFactory.or(orPredicates.toArray(new Predicate[orPredicates.size()])));
-                    } else {
-                        predicates.add(buildPredicate(entry.getKey(),entry.getValue()));
-                    }
-                }
-            }
-            QueryByCriteria.Builder qbc = QueryByCriteria.Builder.create();
-            qbc.setPredicates(PredicateFactory.and(predicates.toArray(new Predicate[predicates.size()])));
-            return qbc.build();
-        }
-
-
-        /**
-         * Static helper for generating a QueryByCriteria from a Map<String, ?> of attributes
-         * @param attributes key/value map of attributes
-         * @return a QueryByCriteria which selects the given attributes (if map is non-null and non-empty)
-         */
-        public static QueryByCriteria forAttributesAndOrderBy(Map<String, ?> attributes, List<String> sortAttributeNames, boolean sortAscending ) {
-            List<Predicate> predicates = new ArrayList<Predicate>(attributes.size());
-            if (attributes != null) {
-                for (Map.Entry<String, ?> entry: attributes.entrySet()) {
-                    predicates.add(PredicateFactory.equal(entry.getKey(), entry.getValue()));
-                }
-            }
-            QueryByCriteria.Builder qbc = QueryByCriteria.Builder.create();
-            qbc.setPredicates(PredicateFactory.or(predicates.toArray(new Predicate[predicates.size()])));
-            if ( sortAttributeNames != null && !sortAttributeNames.isEmpty() ) {
-                List<OrderByField> orderByFields = new ArrayList<OrderByField>( sortAttributeNames.size() );
-                for ( String attributeName : sortAttributeNames ) {
-                    orderByFields.add( OrderByField.Builder.create(attributeName, sortAscending?OrderDirection.ASCENDING:OrderDirection.DESCENDING).build() );
-                }
-                qbc.setOrderByFields(orderByFields);
-            }
-            return qbc.build();
-        }
-
-        /**
          * Static helper for generating a QueryByCriteria from a single attribute key/value pair
          * @param name attribute name
          * @param value attribute value
          * @return a QueryByCriteria which selects the specified attribute value
          */
-        public static QueryByCriteria forAttribute(String name, Object value) {
+        public static QueryByCriteria.Builder forAttribute(String name, Object value) {
             Map<String, Object> attrib = new HashMap<String, Object>();
             attrib.put(name, value);
-            return forAttributes(attrib);
+            return andAttributes(attrib);
         }
 
         /**
@@ -411,8 +403,19 @@ public final class QueryByCriteria extends AbstractDataTransferObject {
          * @param attributes list of attributes to select from the example object
          * @return a QueryByCriteria that selects the attribute values that exist on the example object
          */
-        public static QueryByCriteria forAttributes(Object object, Collection<String> attributes) {
-            return forAttributes(getAttributeValueMap(object, attributes));
+        public static QueryByCriteria.Builder orAttributes(Object object, Collection<String> attributes) {
+            return orAttributes(getAttributeValueMap(object, attributes));
+        }
+
+        /**
+         * Static helper for generating a QueryByCriteria that selects the attribute values
+         * that exist on the example object.
+         * @param object the example object
+         * @param attributes list of attributes to select from the example object
+         * @return a QueryByCriteria that selects the attribute values that exist on the example object
+         */
+        public static QueryByCriteria.Builder andAttributes(Object object, Collection<String> attributes) {
+            return andAttributes(getAttributeValueMap(object, attributes));
         }
 
         /**

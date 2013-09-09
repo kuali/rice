@@ -57,7 +57,7 @@ public class CampusServiceImpl implements CampusService {
      */
 	@Override
 	public List<Campus> findAllCampuses() {
-        QueryByCriteria qbc = QueryByCriteria.Builder.forAttribute("active", true);
+        QueryByCriteria qbc = QueryByCriteria.Builder.forAttribute("active", true).build();
         QueryResults<CampusBo> campusBos = getDataObjectService().findMatching(CampusBo.class,qbc);
         return this.convertListOfCampusBosToImmutables(campusBos.getResults());
 	}
@@ -79,7 +79,7 @@ public class CampusServiceImpl implements CampusService {
      */
 	@Override
 	public List<CampusType> findAllCampusTypes() {
-        QueryByCriteria qbc = QueryByCriteria.Builder.forAttribute("active", true);
+        QueryByCriteria qbc = QueryByCriteria.Builder.forAttribute("active", true).build();
         QueryResults<CampusTypeBo> campusTypeBos = dataObjectService.findMatching(CampusTypeBo.class,qbc);
 		return this.convertListOfCampusTypesBosToImmutables(campusTypeBos.getResults());
 	}

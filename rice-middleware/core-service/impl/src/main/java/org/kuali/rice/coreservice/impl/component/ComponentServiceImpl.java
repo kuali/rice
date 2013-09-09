@@ -27,15 +27,12 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.util.ChecksumUtils;
 import org.kuali.rice.krad.data.CompoundKey;
 import org.kuali.rice.krad.data.DataObjectService;
-import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -87,11 +84,11 @@ public class ComponentServiceImpl implements ComponentService {
         criteria.put("namespaceCode", namespaceCode);
         QueryResults<ComponentBo> componentBos =
                 getDataObjectService().findMatching(ComponentBo.class,
-                        QueryByCriteria.Builder.forAttributesAnd(criteria));
+                        QueryByCriteria.Builder.andAttributes(criteria).build());
 
         QueryResults<DerivedComponentBo> derivedComponentBos =
-                getDataObjectService().findMatching(DerivedComponentBo.class, QueryByCriteria.Builder.forAttributesAnd(
-                        criteria));
+                getDataObjectService().findMatching(DerivedComponentBo.class, QueryByCriteria.Builder.andAttributes(
+                        criteria).build());
         return translateCollections(componentBos, derivedComponentBos);
     }
 
@@ -105,11 +102,11 @@ public class ComponentServiceImpl implements ComponentService {
         criteria.put("active", Boolean.TRUE);
         QueryResults<ComponentBo> componentBos =
                 getDataObjectService().findMatching(ComponentBo.class,
-                        QueryByCriteria.Builder.forAttributesAnd(criteria));
+                        QueryByCriteria.Builder.andAttributes(criteria).build());
         criteria.remove("active");
         QueryResults<DerivedComponentBo> derivedComponentBos =
                 getDataObjectService().findMatching(DerivedComponentBo.class,
-                        QueryByCriteria.Builder.forAttributesAnd(criteria));
+                        QueryByCriteria.Builder.andAttributes(criteria).build());
         return translateCollections(componentBos, derivedComponentBos);
     }
 
@@ -122,7 +119,7 @@ public class ComponentServiceImpl implements ComponentService {
         criteria.put("componentSetId", componentSetId);
         QueryResults<DerivedComponentBo> derivedComponentBos =
                 getDataObjectService().findMatching(DerivedComponentBo.class,
-                        QueryByCriteria.Builder.forAttributesAnd(criteria));
+                        QueryByCriteria.Builder.andAttributes(criteria).build());
         return translateCollections(null, derivedComponentBos);
     }
 
@@ -198,7 +195,7 @@ public class ComponentServiceImpl implements ComponentService {
         Map<String, Object> deleteCriteria = new HashMap<String, Object>();
         deleteCriteria.put("componentSetId", componentSetId);
         dataObjectService.deleteMatching(DerivedComponentBo.class,
-                    QueryByCriteria.Builder.forAttributesAnd(deleteCriteria));
+                    QueryByCriteria.Builder.andAttributes(deleteCriteria).build());
         dataObjectService.flush(DerivedComponentBo.class);
         if (CollectionUtils.isNotEmpty(components)) {
             List<DerivedComponentBo> derivedComponentBos = new ArrayList<DerivedComponentBo>();

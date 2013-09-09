@@ -16,8 +16,6 @@
 package org.kuali.rice.location.impl.county;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.criteria.CriteriaLookupService;
-import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
@@ -75,7 +73,7 @@ public class CountyServiceImpl implements CountyService {
         map.put("active", Boolean.TRUE);
 
         QueryResults<CountyBo> countyBos = dataObjectService.findMatching(CountyBo.class,
-                QueryByCriteria.Builder.forAttributesAnd(map));
+                QueryByCriteria.Builder.andAttributes(map).build());
 
         if (countyBos == null) {
             return Collections.emptyList();

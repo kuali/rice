@@ -46,8 +46,7 @@ public class NamespaceServiceImpl implements NamespaceService {
     @Override
     public List<Namespace> findAllNamespaces() {
         QueryResults<NamespaceBo> namespaceBos = dataObjectService.findMatching(
-                    NamespaceBo.class,QueryByCriteria.Builder.forAttributesAnd(
-                    new HashMap<String,String>()));
+                    NamespaceBo.class,QueryByCriteria.Builder.andAttributes(new HashMap<String, String>()).build());
         List<Namespace> namespaces = new ArrayList<Namespace>();
         if(namespaceBos != null){
             for (NamespaceBo bo : namespaceBos.getResults()) {

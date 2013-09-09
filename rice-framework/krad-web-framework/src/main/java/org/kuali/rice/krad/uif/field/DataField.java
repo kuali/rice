@@ -723,7 +723,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      */
     @Override
     public void setComponentSecurity(ComponentSecurity componentSecurity) {
-        if (!(componentSecurity instanceof DataFieldSecurity)) {
+        if ((componentSecurity != null) && !(componentSecurity instanceof DataFieldSecurity)) {
             throw new RiceRuntimeException("Component security for DataField should be instance of DataFieldSecurity");
         }
 

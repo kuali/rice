@@ -98,6 +98,8 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("org.kuali.rice.krad.uif.container.LightTable.buildRows", "KULRICE-10421 DemoLibraryCollectionFeaturesLightTableSmokeTest inline freemarker exception");
 
         jiraMatches.put("Invalid search field sent for property name: foId", "KULRICE-10422 DemoTravelAccountMultivalueLookUpSmokeTest Invalid search field sent for property name: foId");
+
+        jiraMatches.put("org.kuali.rice.krad.uif.layout.TableLayoutManager.buildLine(TableLayoutManager.java:771)", "KULRICE-10429 NPE in Table Layout Manager when opening up Travel Account maintenance documents");
         //jiraMatches.put("", "");
     }
 

@@ -976,14 +976,14 @@
         <section><title>Base Lookup Bean</title>
             <para>
                 <itemizedlist>
-                    <listitem><para>Lookups are now defined via <emphasis role="keyword">Uif-LookupView</emphasis> definitions 
+                  <listitem xml:id="LBB1"><para>Lookups are now defined via <emphasis role="keyword">Uif-LookupView</emphasis> definitions 
                             instead of the KNS <emphasis role="keyword">LookupDefinition</emphasis>
                         beans. [KNS line: 1, KRAD line: 1] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para></listitem>
-                    <listitem><para>The title of the view is specified via the <emphasis role="keyword">headerText</emphasis>
+                  <listitem xml:id="LBB2"><para>The title of the view is specified via the <emphasis role="keyword">headerText</emphasis>
                             property instead of the <emphasis role="keyword">title</emphasis>
                             property. [KNS line: 2, KRAD line: 3] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
                     </listitem>
-                    <listitem>
+                  <listitem xml:id="LBB3">
                         <para>The data object class is specified via the <emphasis role="keyword"
                                 >dataObjectClassName</emphasis> property and is no longer specified
                             via the <emphasis role="keyword">BusinessObjectEntry</emphasis> as it
@@ -991,7 +991,7 @@
                                 >businessObject</emphasis> is no longer required and any object can
                             be used. [KNS line: n/a, KRAD line: 2] <inlinemediaobject><imageobject><imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"></imagedata></imageobject></inlinemediaobject></para>
                     </listitem>
-                    <listitem>
+                  <listitem xml:id="LBB4">
                         <para>Instead of specifying the supplemental menu bar via the <emphasis
                                 role="keyword">menubar</emphasis> property, the <emphasis
                                 role="keyword">page.header.lowerGroup.items</emphasis> property is
@@ -1003,15 +1003,14 @@
         <section><title>Criteria Fields</title>
             <para>
                 <itemizedlist>
-                    <listitem><para>The property that contains the lookup criteria fields was renamed from <emphasis
-                                role="keyword">lookupFields</emphasis> to <emphasis role="keyword"
-                                >criteriaFields</emphasis>. [KNS line: 9, KRAD line: 22] <inlinemediaobject>
-                                <imageobject>
-                                    <imagedata fileref="../images/badge-scriptconv.png"
-                                        contentdepth="9"/>
-                                </imageobject>
-                            </inlinemediaobject></para></listitem>
-                    <listitem><para>Criteria fields changed from <emphasis role="keyword">FieldDefinition</emphasis> to <emphasis
+                  <listitem xml:id="LCF1"><para>The property that contains the lookup criteria fields was
+              renamed from <emphasis role="keyword">lookupFields</emphasis> to <emphasis
+                role="keyword">criteriaFields</emphasis>. [KNS line: 9, KRAD line: 22] <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                </imageobject>
+              </inlinemediaobject></para></listitem>
+                  <listitem xml:id="LCF2"><para>Criteria fields changed from <emphasis role="keyword">FieldDefinition</emphasis> to <emphasis
                                 role="keyword">Uif-LookupCriteriaInputField</emphasis>. [KNS line:
                             11-13, KRAD line: 24-26] <inlinemediaobject>
                                 <imageobject>
@@ -1019,7 +1018,7 @@
                                         contentdepth="9"/>
                                 </imageobject>
                             </inlinemediaobject></para></listitem>
-                    <listitem>
+                  <listitem xml:id="LCF3">
                         <para>The <emphasis role="keyword">attributeName</emphasis> property on the
                             field is now a <emphasis role="keyword">propertyName</emphasis>
                             property. [KNS line: 11-13, KRAD line: 24-26] <inlinemediaobject>
@@ -1029,7 +1028,7 @@
                                 </imageobject>
                             </inlinemediaobject></para>
                     </listitem>
-                    <listitem>
+                  <listitem xml:id="LCF4">
                         <para>Not rendering a quickfinder on a lookup criteria field is specified
                             via the<emphasis role="keyword">enableAutoQuickfinder</emphasis> property
                             instead of the <emphasis role="keyword">noLookup</emphasis> property.
@@ -1040,7 +1039,7 @@
                                 </imageobject>
                             </inlinemediaobject></para>
                     </listitem>
-                    <listitem>
+                  <listitem xml:id="LCF5">
                         <para>Adding additional buttons to the bottom of the search criterias is
                             done by adding a <emphasis role="keyword"
                                 >Uif-PrimaryActionButton</emphasis> to the <emphasis role="keyword"
@@ -1054,7 +1053,7 @@
                                 </imageobject>
                             </inlinemediaobject></para>
                     </listitem>
-                    <listitem>
+                  <listitem xml:id="LCF6">
                         <para>The property that specifies wether or not to show the search buttons
                             changed from <emphasis role="keyword">disableSearchButtons</emphasis> to
                                 <emphasis role="keyword">renderSearchButtons</emphasis>. [KNS line:
@@ -1065,7 +1064,7 @@
                                 </imageobject>
                             </inlinemediaobject></para>
                     </listitem>
-                    <listitem>
+                  <listitem  xml:id="LCF7">
                         <para>The rendering of search criterias was suppressed in KNS by adding the
                                 <emphasis role="keyword">searchCriteriaEnabled=false</emphasis>
                             parameter to the URL.  In KRAD the URL parameter is renamed to <emphasis
@@ -1078,7 +1077,7 @@
                                 </imageobject>
                             </inlinemediaobject></para>
                     </listitem>
-                    <listitem>
+                  <listitem xml:id="LCF8">
                         <para>To use multiple columns for the criteria fields use the <emphasis
                                 role="keyword"
                                 >criteriaGroup.layoutManager.numberOfColumns</emphasis> property to
@@ -1094,7 +1093,7 @@
                                 </imageobject>
                             </inlinemediaobject></para>
                     </listitem>
-                    <listitem>
+                  <listitem  xml:id="LCF9">
                         <para>The <emphasis role="keyword"
                                 >treatWildcardsAndOperatorsAsLiteral</emphasis> property of
                                 <emphasis role="keyword">FieldDefinition</emphasis> changed to

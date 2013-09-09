@@ -16,34 +16,5 @@
 
 -->
 <#macro uif_collectionGroup group>
-
-    <@krad.groupWrap group=group>
-
-        <#-- render collection quickfinder -->
-        <@krad.template component=group.collectionLookup componentId="${group.id}"/>
-
-        <#if group.renderAddBlankLineButton && (group.addLinePlacement == 'TOP')>
-            <@krad.template component=group.addBlankLineAction/>
-        </#if>
-
-        <#if group.addViaLightBox && (group.addLinePlacement == 'TOP')>
-            <@krad.template component=group.addViaLightBoxAction/>
-        </#if>
-
-        <#-- invoke layout manager -->
-        <#local templateName=".main.${group.layoutManager.templateName}"/>
-        <#local templateParms="items=group.items manager=group.layoutManager container=group"/>
-
-        <#dyncall templateName templateParms/>
-
-        <#if group.renderAddBlankLineButton && (group.addLinePlacement == 'BOTTOM')>
-            <@krad.template component=group.addBlankLineAction/>
-        </#if>
-
-        <#if group.addViaLightBox && (group.addLinePlacement == 'BOTTOM')>
-            <@krad.template component=group.addViaLightBoxAction/>
-        </#if>
-
-    </@krad.groupWrap>
-
+	<#krad_inline 'collectionGroup' />
 </#macro>

@@ -16,13 +16,5 @@
 
 -->
 <#macro script value component='' role="script">
-
-    <#if component?has_content && component.id?has_content>
-        <#local dataFor="data-for=\"${component.id}\""/>
-    </#if>
-
-    <#if value?has_content>
-        <input name="script" type="hidden" data-role="${role}" ${dataFor!} value="${value?html}"/>
-    </#if>
-
+	<#krad_inline 'script' />
 </#macro>

@@ -1566,7 +1566,6 @@
               Configuration:</para><para>A permission which extends the KR-NS <emphasis>Look Up
                 Records</emphasis> template will have to be created. A namespace code will restrict
               a user to accessing lookups in the particluar namespace.</para></listitem>
-          <listitem/>
           <listitem><para> "Create New" Link </para><para>Overriding the behavior of the "Create New" link can be
               accomplished through a variety of methods. Rather than using the
                 <emphasis>Lookupable</emphasis> provided by Rice, data dictionary configuration can
@@ -1601,10 +1600,11 @@
 
                     <listitem>
             <para>Refreshing Reference objects </para>
-            <para>Specifying which reference objects to refresh on a document can be configured by
-              using the <emphasis>fieldConversions</emphasis> property on a lookup.  Specifically,
-              the <emphasis>fieldConversions</emphasis> property is a mapping of fields on the
-              Lookup to fields on the document that the lookup is populating.</para>
+                      <para>Specifying which reference objects to refresh on a document can be configured by
+                        using the <emphasis>referencesToRefresh</emphasis> property on a lookup. Specifically,
+                        the <emphasis>referencesToRefresh</emphasis> property specifies primary keys of
+                        reference objects, which are then used to pull those objects from where they are
+                        persisted. </para>
                     </listitem>
                 </itemizedlist>
             </para>

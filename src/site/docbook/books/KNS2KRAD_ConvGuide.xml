@@ -1596,9 +1596,8 @@
             <para>Customization of Export Results</para>
             <para/>
                     </listitem>
-                    <listitem> Export results
+                  <listitem><para> Export results</para>
                     </listitem>
-                    <listitem></listitem>
 
                     <listitem>
             <para>Refreshing Reference objects </para>
@@ -1654,7 +1653,6 @@
             </para>
         </section>
     </section>
-  <section>
     <section><title>Transactional Documents</title>
         <para></para>
     </section>

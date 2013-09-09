@@ -768,8 +768,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             //details action
             if (lineField instanceof FieldGroup && ((FieldGroup) lineField).getItems() != null) {
                 for (Component component : ((FieldGroup) lineField).getItems()) {
-                    if (component != null && component instanceof Action && component.getDataAttributes().get("role")
-                                != null && component.getDataAttributes().get("role").equals("detailsLink") &&
+                    if (component != null && component instanceof Action && (component.getDataAttributes() != null)
+                            && component.getDataAttributes().get("role")
+                            != null && component.getDataAttributes().get("role").equals("detailsLink") &&
                             StringUtils.isBlank(((Action) component).getActionScript())) {
                         ((Action) component).setActionScript("rowDetailsActionHandler(this,'" + this.getId() + "');");
                     }

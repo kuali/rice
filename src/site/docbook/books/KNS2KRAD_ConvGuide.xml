@@ -1468,6 +1468,13 @@
         <para>
             <itemizedlist>
                 <listitem>
+            <para>Multiple value lookups allow for a collection on a maintenance document to be
+              populated with multiple results at once, rather than forcing the user to iteratively
+              add results one after another. For a maintenance document to use a multiple value
+              lookup, the maintenance document must contain a collection, and a collection lookup
+              must be configured for that collection.</para>
+          </listitem>
+          <listitem>
                     <para><emphasis role="bold">KNS code example</emphasis>
               <programlisting>&lt;bean parent="MaintainableCollectionDefinition">
   &lt;property name="name" value="delegateGlobals"/>
@@ -1543,15 +1550,62 @@
         <section><title>Other Lookup Features</title>
             <para>
                 <itemizedlist>
-                    <listitem> Permission Check <para/></listitem>
+          <listitem> <para>Permission Check </para><para>Permission checks in KRAD are configurable by editting
+              the <emphasis>AttributeDefinition</emphasis> tag of a data dictionary xml file, in
+              conjunction with the creation of specific permissions in KIM, specifically the
+              attributeSecurity tags found in a DataDictionary xml file:</para><para>Data dictionary
+              configuration:<programlisting>    &lt;property name="attributeSecurity">
+      &lt;bean parent="AttributeSecurity">
+        &lt;property name="mask" value="true"/>
+        &lt;property name="maskFormatter">
+          &lt;bean parent="MaskFormatterLiteral" p:literal="*********"/>
+        &lt;/property>
+      &lt;/bean>
+    &lt;/property>
+</programlisting></para><para>KIM
+              Configuration:</para><para>A permission which extends the KR-NS <emphasis>Look Up
+                Records</emphasis> template will have to be created. A namespace code will restrict
+              a user to accessing lookups in the particluar namespace.</para></listitem>
           <listitem/>
-                    <listitem> "Create New" Link
+          <listitem><para> "Create New" Link </para><para>Overriding the behavior of the "Create New" link can be
+              accomplished through a variety of methods. Rather than using the
+                <emphasis>Lookupable</emphasis> provided by Rice, data dictionary configuration can
+              be modified to point at a custom class which extends <emphasis>Lookupable</emphasis>
+              and overrides various methods. If the link itself needs to be modified, the
+                <emphasis>getMaintenanceActionLink</emphasis> method could be overriden to
+              accomplish this. If the availability of the link needs to be restricted in a custom
+              fashion, a developer can override the
+                <emphasis>allowsMaintenanceNewOrCopyAction</emphasis> to add logic which would do
+              this.</para></listitem>
+          <listitem> <para>Export results</para><para>Export results can be configured for use when using a rich
+              table. Rice allows for a variety of different export formats, specifically, XML, CSV,
+              and Excel are provided, and implementing projects can add custom exporters. Setting a
+              value of "true" for either the <emphasis>showSearchAndExportOptions</emphasis> or
+                <emphasis>showExportOption</emphasis> properties will result in the export buttons
+              being shown, and the export functionality being
+            enabled.</para><programlisting>  &lt;bean id="CustomTable" parent="Uif-RichTable"/>
+    ...
+    &lt;property name="emptyTableMessage" value="No records found"/>
+    &lt;property name="showSearchAndExportOptions" value="false"/>
+    &lt;property name="showSearchOption" value="false"/>
+    &lt;property name="showExportOption" value="true"/>
+    &lt;property name="forceAoColumnDefsOverride" value="false"/>
+  &lt;/bean>
+</programlisting></listitem>
+          <listitem>
+            <para>Customization of Export Results</para>
+            <para/>
                     </listitem>
                     <listitem> Export results
                     </listitem>
                     <listitem></listitem>
 
                     <listitem>
+            <para>Refreshing Reference objects </para>
+            <para>Specifying which reference objects to refresh on a document can be configured by
+              using the <emphasis>fieldConversions</emphasis> property on a lookup.  Specifically,
+              the <emphasis>fieldConversions</emphasis> property is a mapping of fields on the
+              Lookup to fields on the document that the lookup is populating.</para>
                     </listitem>
                 </itemizedlist>
             </para>
@@ -1600,7 +1654,7 @@
             </para>
         </section>
     </section>
->>>>>>> .r41191
+  <section>
     <section><title>Transactional Documents</title>
         <para></para>
     </section>

@@ -2119,7 +2119,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         if (!Validator.validateSpringEL(getConditionalRefresh())) {
             String currentValues[] = {"conditionalRefresh =" + getConditionalRefresh()};
             tracer.createError("conditionalRefresh must follow the Spring EL @{} format", currentValues);
-            ;
         }
     }
 }

@@ -58,6 +58,8 @@
     </property>
   </bean>
 
+  <bean class="org.kuali.rice.krad.uif.freemarker.FreeMarkerInlineRenderBootstrap" />
+
   <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
     <property name="preferFileSystemAccess" value="false" />
     <property name="templateLoaderPath" value="/"/>

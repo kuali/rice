@@ -610,9 +610,17 @@ class SpringBeanTransformer {
             def attributes = genericGatherAttributes(controlDefBean, ["*rows": "p:rows", "*cols": "p:cols"]);
             attributes.put("parent", "Uif-TextAreaControl");
             genericBeanTransform(builder, attributes);
+        } else if (controlDefReplacements[controlDefParent] != null && controlDefReplacements[controlDefParent] == "Uif-LinkField") {
+            def attributes = genericGatherAttributes(controlDefBean, ["*target": "p:target", "*hrefText": "p:linkText", "*styleClass":"p:fieldLabel.cssClasses"]);
+            attributes.put("parent", "Uif-LinkField");
+            genericBeanTransform(builder, attributes);
+        } else if (controlDefReplacements[controlDefParent] != null && controlDefReplacements[controlDefParent] == "Uif-CurrencyTextControl") {
+            def attributes = genericGatherAttributes(controlDefBean, ["*formattedMaxLength": "p:maxLength", "*size": "p:size"]);
+            attributes.put("parent", "Uif-CurrencyTextControl");
+            genericBeanTransform(builder, attributes);
         } else if (controlDefReplacements[controlDefParent] != null) {
             builder.bean(parent: controlDefReplacements[controlDefParent])
-        } else {
+        }else {
             builder.bean(parent: "Uif-" + controlDefParent.replace("Definition", ""))
         }
     }

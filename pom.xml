@@ -141,7 +141,7 @@
     <dwr.version>3.0.RC2</dwr.version>
     <ehcache.version>2.5.0</ehcache.version>
     <filemonitor.version>1.0-kuali</filemonitor.version>
-    <freemarker.version>2.3.19-patch3</freemarker.version>
+    <freemarker.version>2.3.20-patch1</freemarker.version>
     <plexus-utils.version>3.0.10</plexus-utils.version>
     <lesscss.version>1.3.3</lesscss.version>
     <yuicompressor.version>2.4.7</yuicompressor.version>

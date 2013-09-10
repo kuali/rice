@@ -1348,6 +1348,36 @@
         </itemizedlist>
       </para>
     </section>
+    <section>
+      <title>Other Inquiry Features</title>
+      <para>
+        <itemizedlist>
+          <listitem>
+            <para>Section Permission Checks</para>
+            <para>The viewability of sections in Inquiries are controlled by a KIM permission only when a
+              <emphasis role="keyword">componentSecurity</emphasis> is configured in the section and the appropriate
+              KIM permission is added.  Any sections listed in an override of the method
+              <emphasis role="keyword">InquiryAuthorizer.getSecurePotentiallyHiddenSectionIds()</emphasis> will need
+              to have these configurations added.
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="9"/>
+                </imageobject>
+              </inlinemediaobject>
+            </para>
+            <para>Inquiry View:</para>
+            <para><programlisting>&lt;property name="componentSecurity">
+  &lt;bean parent="Uif-CollectionGroupSecurity" p:viewAuthz="true"/>
+&lt;/property></programlisting></para>
+            <para>KIM Configuration:</para>
+            <para>A permission which extends the <emphasis role="keyword">KR-KRAD : View Group</emphasis> template
+              will have to be created.</para>
+            <para>
+            </para>
+          </listitem>
+        </itemizedlist>
+      </para>
+    </section>
   </section>
   <section>
     <title>Lookup</title>

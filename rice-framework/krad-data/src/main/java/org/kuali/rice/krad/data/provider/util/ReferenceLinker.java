@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.DataObjectUtils;
@@ -212,14 +213,21 @@ public class ReferenceLinker {
 			String childObjectPropertyName, List<DataObjectAttributeRelationship> refAttrs) {
 		for (DataObjectAttributeRelationship attrRel : refAttrs) {
 			Object parentPropertyValue = parentWrap.getPropertyValueNullSafe(attrRel.getParentAttributeName());
-			if (parentPropertyValue != null && StringUtils.isNotBlank(parentPropertyValue.toString())) {
-				// Skip this property, it has already been set on the parent object
-				continue;
+			Object childPropertyValue = childWrap.getPropertyValueNullSafe(attrRel.getChildAttributeName());
+			// if (parentPropertyValue != null && StringUtils.isNotBlank(parentPropertyValue.toString())) {
+			// // Skip this property, it has already been set on the parent object
+			// continue;
+			// }
+			if (ObjectUtils.notEqual(parentPropertyValue, childPropertyValue)) {
+				parentWrap.setPropertyValue(childObjectPropertyName, null);
+				break;
+				// we have nothing else to do - one of the parent properties
+				// was blank (or mismatched) so we can quit
 			}
+
 			// The key field on the parent is blank, and so can not link to a child object
 			// Blank out the child reference object.
-			parentWrap.setPropertyValue(childObjectPropertyName, null);
-			break; // we have nothing else to do - one of the parent properties was blank so we can quit
+
 
 			// Object childPropertyValue = childWrap.getPropertyValueNullSafe(attrRel.getChildAttributeName());
 			// // don't bother setting parent if it's not set itself

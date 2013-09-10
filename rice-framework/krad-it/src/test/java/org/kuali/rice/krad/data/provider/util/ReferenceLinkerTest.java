@@ -144,7 +144,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
         // Save the object and test the result
         enableJotmLogging();
         acct = getDOS().save(acct);
-        assertEquals( "After saving, the acct type code should have been set to the PK from the acct type", acctType.getAccountTypeCode(), acct.getAccountTypeCode());
+        assertEquals( "??? IS THIS RIGHT ??? : After saving, the acct type code should have been set to the PK from the acct type", acctType.getAccountTypeCode(), acct.getAccountTypeCode());
         assertNotNull( "After saving, the acct type object should be available", acct.getAccountType());
 
         // Reload from database
@@ -222,7 +222,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
     }
 
     @Test
-    public void existingParent_noExistingChildValue_setChildObject() {
+    public void existingParent_noExistingNonUpdatableChildValue_setChildObject() {
         AccountExtension acct = getNullAccount();
 
         enableJotmLogging();

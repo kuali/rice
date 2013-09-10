@@ -40,7 +40,7 @@ public class ParentObjectWithGeneratedKey {
     @PortableSequenceGenerator(name="KRTST_GENERATED_PK_S")
     Long generatedKey;
 
-    @OneToMany(fetch=FetchType.LAZY,cascade= {CascadeType.ALL})
+    @OneToMany(fetch=FetchType.LAZY,cascade= {CascadeType.ALL}, orphanRemoval=true)
     @JoinColumn(name="GENERATED_PK_COL",referencedColumnName="GENERATED_PK_COL",updatable=false,insertable=false)
     List<ChildOfParentObjectWithGeneratedKey> children = new ArrayList<ChildOfParentObjectWithGeneratedKey>();
 
@@ -58,6 +58,15 @@ public class ParentObjectWithGeneratedKey {
 
     public void setChildren(List<ChildOfParentObjectWithGeneratedKey> children) {
         this.children = children;
+    }
+
+    public ChildOfParentObjectWithGeneratedKey getChildByKey( Long childKey ) {
+        for ( ChildOfParentObjectWithGeneratedKey child : children ) {
+            if ( child.childKey.equals(childKey) ) {
+                return child;
+            }
+        }
+        return null;
     }
 
     @Override

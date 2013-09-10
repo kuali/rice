@@ -613,6 +613,33 @@ public class ReferenceLinkerTest extends KRADTestCase {
     // TODO: Test deletion of child records - references and collections
     // I.e., removal of records from objects - with and without orphan removal
 
+    @Test
+    public void existingParent_withUpdateableCollection_removeItem() throws Exception {
+        clearTestingTables();
+        SQLDataLoader sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_PARENT_GEN_KEY_T(GENERATED_PK_COL) VALUES(12345)");
+        sqlDataLoader.runSql();
+        sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_PARENT_GEN_KEY_CHILD_T(GENERATED_PK_COL,CHILDS_PK_COL) VALUES(12345,1)");
+        sqlDataLoader.runSql();
+        sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_PARENT_GEN_KEY_CHILD_T(GENERATED_PK_COL,CHILDS_PK_COL) VALUES(12345,2)");
+        sqlDataLoader.runSql();
+        sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_PARENT_GEN_KEY_CHILD_T(GENERATED_PK_COL,CHILDS_PK_COL) VALUES(12345,3)");
+        sqlDataLoader.runSql();
+
+        ParentObjectWithGeneratedKey parent = getDOS().find(ParentObjectWithGeneratedKey.class, 12345L);
+        assertNotNull("Unable to retrieve parent from DB", parent);
+        assertNotNull( "Child objects should have been present", parent.getChildren() );
+        assertEquals("Wrong number of child records", 3, parent.getChildren().size() );
+
+        parent.getChildren().remove(1);
+        parent = getDOS().save(parent);
+        assertNull("Child 2 should be missing from the child list - before refresh", parent.getChildByKey(2L));
+        System.err.println(parent);
+        parent = getDOS().save(parent,PersistenceOption.FLUSH,PersistenceOption.REFRESH);
+        System.err.println(parent);
+        assertNull("Child 2 should be missing from the child list - after refresh", parent.getChildByKey(2L));
+    }
+
+
     protected AccountExtension getExAccount() {
         AccountExtension acct = getDOS().find(AccountExtension.class, "EX_TYPE");
         assertNotNull("unable to retrieve EX_TYPE from database", acct);

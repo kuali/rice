@@ -62,11 +62,6 @@
 
   <bean id="Uif-HeaderLowerGroup" parent="Uif-HeaderLowerGroup-parentBean"/>
   <bean id="Uif-HeaderLowerGroup-parentBean" abstract="true" parent="Uif-HorizontalBoxGroup">
-    <property name="cssClasses">
-      <list merge="true">
-        <value>uif-lowerHeaderGroup</value>
-      </list>
-    </property>
   </bean>
 
   <bean id="Uif-HeaderOne" parent="Uif-HeaderOne-parentBean"/>

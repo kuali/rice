@@ -49,16 +49,17 @@
                     </#if>
                 </span>
 
-                <#if element.context['parent']?has_content>
+                <#if element.context?? && element.context['parent']?has_content>
                     <#local group=element.context['parent']/>
                     <@krad.template component=group.help/>
                 </#if>
 
                 ${headerCloseTag}
 
-                <#-- right group -->
-                <@krad.template component=element.rightGroup/>
             </#if>
+
+            <#-- right group -->
+            <@krad.template component=element.rightGroup/>
 
         </@krad.div>
 

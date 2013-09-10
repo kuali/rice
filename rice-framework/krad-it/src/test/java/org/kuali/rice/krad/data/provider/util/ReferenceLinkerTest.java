@@ -232,7 +232,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
         acct.setAccountType(acctType);
         assertNull( "Before saving account type code should have had the old value", acct.getAccountTypeCode());
         acct = getDOS().save(acct);
-        assertEquals( "After saving, the acct type code should have been set to the PK from the acct type", acctType.getAccountTypeCode(), acct.getAccountTypeCode());
+        assertEquals( "??? IS THIS RIGHT ??? : After saving, the acct type code should have been set to the PK from the acct type", acctType.getAccountTypeCode(), acct.getAccountTypeCode());
         assertNotNull( "After saving, the acct type object should be available", acct.getAccountType());
         assertEquals( "After Saving, the acct type code on the reference should be the same as the object", acct.getAccountTypeCode(), acct.getAccountType().getAccountTypeCode());
         disableJotmLogging();
@@ -379,6 +379,33 @@ public class ReferenceLinkerTest extends KRADTestCase {
         sqlDataLoader.runSql();
         sqlDataLoader = new SQLDataLoader("DELETE FROM KRTST_PARENT_WITH_MULTI_KEY_T");
         sqlDataLoader.runSql();
+        sqlDataLoader = new SQLDataLoader("DELETE FROM KRTST_PARENT_GEN_KEY_CHILD_T");
+        sqlDataLoader.runSql();
+        sqlDataLoader = new SQLDataLoader("DELETE FROM KRTST_PARENT_GEN_KEY_T");
+    }
+
+    @Test
+    public void existingParent_withUpdatableChild_changeChildForeignKey_testOriginalObjectExistence() throws Exception {
+        clearTestingTables();
+        SQLDataLoader sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_PARENT_OF_UPDATABLE_T(PK_COL, UPDATABLE_CHILD_KEY_COL) VALUES(1, '123')");
+        sqlDataLoader.runSql();
+        sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_UPDATABLE_CHILD_T(PK_COL, SOME_DATA_COL) VALUES('123', 'Some Data 123')");
+        sqlDataLoader.runSql();
+        sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_UPDATABLE_CHILD_T(PK_COL, SOME_DATA_COL) VALUES('456', 'Some Data 456')");
+        sqlDataLoader.runSql();
+
+        ParentObjectWithUpdatableChild obj = getDOS().find(ParentObjectWithUpdatableChild.class, 1L);
+        assertNotNull( "Unable to find parent object in DB", obj);
+
+        obj.setUpdatableChildsKey("456");
+        System.err.println( "Before Saving: " + obj );
+        obj = getDOS().save(obj,PersistenceOption.FLUSH, PersistenceOption.REFRESH);
+        System.err.println( "After Saving: " + obj );
+        assertEquals( "Parent object's foreign key should have been changed after save", "456", obj.getUpdatableChildsKey());
+        assertEquals( "Child object's key should not have been reverted after save", "456", obj.getUpdatableChild().getChildKey());
+
+        UpdatableChildObject child123 = getDOS().find(UpdatableChildObject.class, "123");
+        assertNotNull( "Object 123 should have been deleted since it has now been orphaned", child123 );
     }
 
     @Test
@@ -400,7 +427,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
         System.err.println( "Before Saving: " + obj );
         obj = getDOS().save(obj);//, PersistenceOption.FLUSH, PersistenceOption.REFRESH);
         System.err.println( "After Saving: " + obj );
-        assertEquals( "Parent object's foreign key should have been changed after save", "456", obj.getUpdatableChildsKey());
+        assertEquals( "??? IS THIS RIGHT ??? : Parent object's foreign key should have been changed after save", "456", obj.getUpdatableChildsKey());
         assertEquals( "Child object's key should not have been reverted after save", "456", obj.getUpdatableChild().getChildKey());
     }
 

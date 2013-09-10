@@ -35,7 +35,7 @@ public class ParentObjectWithUpdatableChild {
     @Column(name="UPDATABLE_CHILD_KEY_COL",length=10)
     String updatableChildsKey;
 
-    @OneToOne(fetch=FetchType.EAGER,cascade= {CascadeType.ALL})
+    @OneToOne(fetch=FetchType.EAGER,cascade= {CascadeType.ALL},orphanRemoval=true)
     @JoinColumn(name="UPDATABLE_CHILD_KEY_COL",referencedColumnName="PK_COL",updatable=false,insertable=false)
     UpdatableChildObject updatableChild;
 

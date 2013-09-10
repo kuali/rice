@@ -251,8 +251,9 @@
             </property>
           </bean>
           <bean parent="Uif-InputField" p:propertyName="field118" p:width="auto">
-            <property name="onMouseOverScript" value="jq(this).stop().animate({backgroundColor:'pink'},{duration:20});
-            jq(this).stop().animate({backgroundColor:'black'},{duration:20});jq(this).stop().animate({backgroundColor:'pink'},{duration:20});
+            <property name="onMouseOverScript" value="var color = jq('input:radio:checked',this).val();
+            if (color === undefined){color = 'white';};
+            jq(this).stop().animate({backgroundColor: color },1000);
             " />
             <property name="onMouseOutScript" value="jq(this).stop().animate({backgroundColor:'white'},{duration:500});" />
             <property name="control">

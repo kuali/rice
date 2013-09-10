@@ -341,7 +341,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
     }
 
     @Test
-    public void existingParent_withUpdatableChild_changeChildForeignKey() throws Exception {
+    public void existingParent_withUpdatableChild_changeChildForeignKeyToNonExistentValue() throws Exception {
         SQLDataLoader sqlDataLoader = new SQLDataLoader("DELETE FROM KRTST_PARENT_OF_UPDATABLE_T");
         sqlDataLoader.runSql();
         sqlDataLoader = new SQLDataLoader("DELETE FROM KRTST_UPDATABLE_CHILD_T");
@@ -366,6 +366,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
         obj = getDOS().find(ParentObjectWithUpdatableChild.class, 1L);
         assertNotNull( "Unable to find object after save", obj);
         System.err.println( "After Reloading: " + obj );
+        assertEquals( "Parent object's foreign key should still be changed after reload", "ABC", obj.getUpdatableChildsKey());
         assertNull( "Child object not missing after save - should have been, since an 'ABC' does not exist", obj.getUpdatableChild());
         //assertEquals( "Child object's key should have been changed after save", "ABC", obj.getUpdatableChild().getChildKey());
     }

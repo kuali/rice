@@ -93,13 +93,15 @@ public class JiraAwareFailureUtil {
 
         jiraMatches.put("//div[@id='Demo-TableLayoutTotaling-Section1']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout clearfix']/div/span[@data-role]", "KULRICE-10402 Update DemoLibraryCollectionFeaturesColumnCalculationsSmokeTest which is failing");
 
-        jiraMatches.put("Unable to decrypt value from db", "KULRICE-10403 Rice 2.4: Stack trace on submitting People Flow doc");
+        jiraMatches.put("Unable to decrypt value from db", "KULRICE-10403 Unable to decrypt value from db: Input length must be multiple of 8 when decrypting with padded ciphe");
 
         jiraMatches.put("org.kuali.rice.krad.uif.container.LightTable.buildRows", "KULRICE-10421 DemoLibraryCollectionFeaturesLightTableSmokeTest inline freemarker exception");
 
         jiraMatches.put("Invalid search field sent for property name: foId", "KULRICE-10422 DemoTravelAccountMultivalueLookUpSmokeTest Invalid search field sent for property name: foId");
 
         jiraMatches.put("org.kuali.rice.krad.uif.layout.TableLayoutManager.buildLine(TableLayoutManager.java:771)", "KULRICE-10429 NPE in Table Layout Manager when opening up Travel Account maintenance documents");
+
+        jiraMatches.put("Document Expired", "KULRICE-9709 Search Edit Back does not show search results in Firefox");
         //jiraMatches.put("", "");
     }
 

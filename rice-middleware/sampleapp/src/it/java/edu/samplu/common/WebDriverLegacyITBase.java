@@ -2977,7 +2977,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndClickByName(BLANKET_APPROVE_NAME);
         waitForPageToLoad();
         driver.switchTo().defaultContent(); //selectWindow("null");
-        Thread.sleep(2000);
         waitAndClickDocSearch();
         waitForPageToLoad();
         SeleneseTestBase.assertEquals("Kuali Portal Index", getTitle());
@@ -4519,8 +4518,8 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndClick(locator, "");
     }
 
-    protected void waitForPageToLoad() {
-        // noop webdriver doesn't it need it, except when it does...
+    protected void waitForPageToLoad() throws InterruptedException {
+        Thread.sleep(5000);
     }
 
     protected WebElement waitFor(By by) throws InterruptedException {

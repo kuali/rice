@@ -190,6 +190,15 @@ public class LegacyDetectorTest {
         }
     }
 
+    /**
+     * Verifies that if you pass an instance of java.lang.Class to useLegacyForObject, that it
+     * throws an IllegalArgumentException since you should use the useLegacy method for that
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testUseLegacyForObject_PassingAClassIsBad() {
+        detector.useLegacyForObject(DummyDataObject.class);
+    }
+
     @Test(expected=IllegalStateException.class)
     public void testBeginLegacyContext_LegacyFrameworkDisabled() {
         detector.beginLegacyContext();

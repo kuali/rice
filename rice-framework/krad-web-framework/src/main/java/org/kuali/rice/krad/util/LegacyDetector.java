@@ -203,6 +203,9 @@ class LegacyDetector {
      */
     public boolean useLegacyForObject(Object dataObject) {
         Validate.notNull(dataObject, "Data Object must not be null");
+        if (dataObject instanceof Class) {
+            throw new IllegalArgumentException("Passed a Class object to useLegacyForObject, call useLegacy instead!");
+        }
         return useLegacy(dataObject.getClass());
     }
 }

@@ -1355,10 +1355,10 @@
           <listitem>
             <para>Section Permission Checks</para>
             <para>The viewability of sections in Inquiries are controlled by a KIM permission only when a
-              <emphasis role="keyword">componentSecurity</emphasis> is configured in the section and the appropriate
-              KIM permission is added.  Any sections listed in an override of the method
-              <emphasis role="keyword">InquiryAuthorizer.getSecurePotentiallyHiddenSectionIds()</emphasis> will need
-              to have these configurations added.
+              <emphasis role="keyword">componentSecurity</emphasis> is configured in the section of the InquiryView and
+              the appropriate KIM permission exists.  The conversion requires that any sections listed in an override of
+              the method <emphasis role="keyword">InquiryAuthorizer.getSecurePotentiallyHiddenSectionIds()</emphasis>
+              will need to have these configurations added, and that new KRAD permissions are created.
               <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-manualconv.png" contentdepth="9"/>
@@ -1371,6 +1371,34 @@
 &lt;/property></programlisting></para>
             <para>KIM Configuration:</para>
             <para>A permission which extends the <emphasis role="keyword">KR-KRAD : View Group</emphasis> template
+              will have to be created.</para>
+            <para>
+            </para>
+          </listitem>
+          <listitem>
+            <para>Field Permission Checks</para>
+            <para>The viewability of fields in Inquiries are controlled by a KIM permission only when either
+              <itemizedlist>
+                <listitem>
+                  <emphasis role="keyword">attributeSecurity</emphasis> is configured in the DD field, or
+                </listitem>
+                <listitem>
+                  <emphasis role="keyword">componentSecurity</emphasis> is configured in the field of the InquiryView
+                </listitem>
+              </itemizedlist>
+              and the appropriate KIM permission exists.  The conversion requires that new KRAD permissions are created.
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="9"/>
+                </imageobject>
+              </inlinemediaobject>
+            </para>
+            <para>Data Dictionary:</para>
+            <para><programlisting>&lt;property name="attributeSecurity">
+  &lt;bean parent="AttributeSecurity" p:hide="true"/>
+&lt;/property></programlisting></para>
+            <para>KIM Configuration:</para>
+            <para>A permission which extends the <emphasis role="keyword">KR-KRAD : View Field</emphasis> template
               will have to be created.</para>
             <para>
             </para>

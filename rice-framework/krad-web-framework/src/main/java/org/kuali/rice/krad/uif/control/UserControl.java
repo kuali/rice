@@ -160,8 +160,8 @@ public class UserControl extends TextControl implements FilterableLookupCriteria
     protected void buildUserQuickfinder(View view, Object model, InputField field) {
         QuickFinder quickFinder = field.getQuickfinder();
 
-        // if they explicitly turned off the quickfinder we will not build it
-        if ((quickFinder != null) && !quickFinder.isRender()) {
+        // don't build quickfinder if explicitly turned off
+        if (!field.isEnableAutoQuickfinder()) {
             return;
         }
 

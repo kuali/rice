@@ -68,7 +68,7 @@ public class GroupControl extends TextControl implements FilterableLookupCriteri
         QuickFinder quickFinder = field.getQuickfinder();
 
         // don't build quickfinder if explicitly turned off
-        if ((quickFinder != null) && !quickFinder.isRender()) {
+        if (!field.isEnableAutoQuickfinder()) {
             return;
         }
 

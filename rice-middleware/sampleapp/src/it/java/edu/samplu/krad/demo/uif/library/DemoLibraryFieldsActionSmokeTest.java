@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoLibraryActionFieldSmokeTest extends DemoLibraryBase {
+public class DemoLibraryFieldsActionSmokeTest extends DemoLibraryBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-ActionField-View&methodToCall=start

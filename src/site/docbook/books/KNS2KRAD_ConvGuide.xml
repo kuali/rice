@@ -2223,9 +2223,13 @@
             <para/>
           </listitem>
           <listitem>
-            <para> Export results</para>
-          </listitem>
-
+             <para>Customization of export results involves writing a class that extends the Exporter
+                    class, associating this class with the lookup via the
+                    <emphasis>exporterClass</emphasis> parameter on the business object data dictionary
+                    file.  In addition, if further customization of the export is needed, this can be
+                    accomplished by writing a custom class extending <emphasis>LookupController</emphasis>
+                    and specifically overriding the <emphasis>retrieveTableData</emphasis> method.</para>
+                  </listitem>
           <listitem>
             <para>Refreshing Reference objects </para>
             <para>Specifying which reference objects to refresh on a document can be configured by

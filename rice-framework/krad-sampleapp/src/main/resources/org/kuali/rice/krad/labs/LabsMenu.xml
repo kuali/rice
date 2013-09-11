@@ -60,6 +60,8 @@
                               p:href="@{#ConfigProperties['krad.url']}/labs?viewId=LabsMenuLookupView"/>
                         <bean parent="Uif-Link" p:linkText="KSA Transaction" p:target="_self"
                               p:href="@{#ConfigProperties['krad.url']}/transaction?viewId=TransactionView"/>
+                        <bean parent="Uif-Link" p:linkText="Dropdown Menu" p:target="_self"
+                              p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-DropdownMenu"/>
                       </list>
                   </property>
               </bean>

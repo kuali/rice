@@ -27,6 +27,11 @@ public class UifKeyValueLocation extends UifKeyValue {
 
     private UrlInfo location;
 
+    private boolean disabled;
+
+    private boolean optionDivider;
+    private boolean optionHeader;
+
     /**
      * Base constructor
      */
@@ -68,5 +73,42 @@ public class UifKeyValueLocation extends UifKeyValue {
      */
     public void setLocation(UrlInfo location) {
         this.location = location;
+    }
+
+    /**
+     * Convenience setter for setting the href (full URL) of the location object
+     *
+     * @param href URL for location option
+     */
+    public void setHref(String href) {
+        if (this.location == null) {
+            ComponentFactory.getUrlInfo();
+        }
+
+        this.location.setHref(href);
+    }
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
+    public boolean isOptionDivider() {
+        return optionDivider;
+    }
+
+    public void setOptionDivider(boolean optionDivider) {
+        this.optionDivider = optionDivider;
+    }
+
+    public boolean isOptionHeader() {
+        return optionHeader;
+    }
+
+    public void setOptionHeader(boolean optionHeader) {
+        this.optionHeader = optionHeader;
     }
 }

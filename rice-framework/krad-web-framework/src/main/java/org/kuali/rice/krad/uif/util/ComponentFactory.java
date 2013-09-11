@@ -164,6 +164,8 @@ public class ComponentFactory {
     public static final String SESSION_TIMEOUT_WARNING_DIALOG = "Uif-SessionTimeoutWarning-DialogGroup";
     public static final String SESSION_TIMEOUT_DIALOG = "Uif-SessionTimeout-DialogGroup";
 
+    public static final String URL_INFO = "Uif-Url";
+
     private static Map<String, Component> cache = new HashMap<String, Component>();
 
     /**
@@ -1157,5 +1159,14 @@ public class ComponentFactory {
      */
     public static DialogGroup getSessionTimeoutDialog() {
         return (DialogGroup) getNewComponentInstance(SESSION_TIMEOUT_DIALOG);
+    }
+
+    /**
+     * Gets an instance of an UrlInfo
+     *
+     * @return instance of UrlInfo
+     */
+    public static UrlInfo getUrlInfo() {
+        return (UrlInfo) getNewComponentInstance(URL_INFO);
     }
 }

@@ -484,4 +484,18 @@
     </property>
   </bean>
 
+  <bean id="Uif-DropdownMenu" parent="Uif-DropdownMenu-parentBean"/>
+  <bean id="Uif-DropdownMenu-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.DropdownMenu"
+        parent="Uif-ContentElementBase" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/dropdownMenu.ftl"/>
+    <property name="templateName" value="uif_dropdownMenu"/>
+    <property name="dropdownToggle">
+      <bean parent="Uif-Message" p:generateSpan="false"/>
+    </property>
+    <property name="cssClasses">
+      <list>
+        <value>uif-dropdownMenu</value>
+      </list>
+    </property>
+  </bean>
 </beans>

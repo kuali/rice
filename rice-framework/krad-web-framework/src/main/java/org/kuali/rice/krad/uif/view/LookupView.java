@@ -245,6 +245,21 @@ public class LookupView extends FormView {
     }
 
     /**
+     * @see org.kuali.rice.krad.uif.container.ContainerBase#performFinalize(org.kuali.rice.krad.uif.view.View,
+     *      Object, org.kuali.rice.krad.uif.component.Component)
+     */
+    @Override
+    public void performFinalize(View view, Object model, Component parent) {
+        super.performFinalize(view, model, parent);
+
+        // force session persistence of criteria fields so we can validate the search input
+        List<InputField> fields = ComponentUtils.getComponentsOfTypeDeep(criteriaGroup, InputField.class);
+        for (InputField field : fields) {
+            field.setForceSessionPersistence(true);
+        }
+    }
+
+    /**
      * Adds an on change script to fields with the isTriggerOnChange set to true. Also prevents adds script to execute
      * search on enter when focus is in a criteris field
      *

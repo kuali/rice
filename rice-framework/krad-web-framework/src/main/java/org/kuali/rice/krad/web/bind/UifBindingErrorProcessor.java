@@ -23,26 +23,34 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.DefaultBindingErrorProcessor;
 
 /**
- * This is a description of what this class does - pctsh don't forget to fill this in.
+ * UIF handler for binding processing errors
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public class UifBindingErrorProcessor extends DefaultBindingErrorProcessor {
 
-	public void processPropertyAccessException(PropertyAccessException ex, BindingResult bindingResult) {
-		// Create field error with the exceptions's code, e.g. "typeMismatch".
-		super.processPropertyAccessException(ex, bindingResult);
-		Object rejectedValue = ex.getValue();
-		if (!(rejectedValue == null || rejectedValue.equals(""))) {
-			if (ex.getCause() instanceof FormatException) {
-				GlobalVariables.getMessageMap().putError(ex.getPropertyName(), ((FormatException)ex.getCause()).getErrorKey(),
-						new String[] {rejectedValue.toString()});
-			}else{
-				GlobalVariables.getMessageMap().putError(ex.getPropertyName(), RiceKeyConstants.ERROR_CUSTOM,
-						new String[] {"Invalid format"});
-			}
-		}
-	}
+    /**
+     * Adds an entry to the {@link org.kuali.rice.krad.util.GlobalVariables#getMessageMap()} for the given
+     * binding processing error
+     *
+     * @param ex exception that was thrown
+     * @param bindingResult binding result containing the results of the binding process
+     */
+    @Override
+    public void processPropertyAccessException(PropertyAccessException ex, BindingResult bindingResult) {
+        // Create field error with the exceptions's code, e.g. "typeMismatch".
+        super.processPropertyAccessException(ex, bindingResult);
 
+        Object rejectedValue = ex.getValue();
+        if (!(rejectedValue == null || rejectedValue.equals(""))) {
+            if (ex.getCause() instanceof FormatException) {
+                GlobalVariables.getMessageMap().putError(ex.getPropertyName(),
+                        ((FormatException) ex.getCause()).getErrorKey(),
+                        new String[] {rejectedValue.toString()});
+            } else {
+                GlobalVariables.getMessageMap().putError(ex.getPropertyName(), RiceKeyConstants.ERROR_CUSTOM,
+                        new String[] {"Invalid format"});
+            }
+        }
+    }
 }

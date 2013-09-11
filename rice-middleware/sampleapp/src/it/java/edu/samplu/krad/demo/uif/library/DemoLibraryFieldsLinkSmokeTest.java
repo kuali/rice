@@ -8,7 +8,7 @@ import org.openqa.selenium.WebElement;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoLibraryLinkFieldSmokeTest extends DemoLibraryBase {
+public class DemoLibraryFieldsLinkSmokeTest extends DemoLibraryBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-LinkField-View&methodToCall=start

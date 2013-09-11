@@ -24,7 +24,7 @@ import org.openqa.selenium.WebElement;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoLibraryDataFieldSmokeTest extends DemoLibraryBase {
+public class DemoLibraryFieldsDataSmokeTest extends DemoLibraryBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-DataField-View&methodToCall=start

@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoLibraryGroupSmokeTest extends DemoLibraryBase {
+public class DemoLibraryContainersGroupSmokeTest extends DemoLibraryBase {
 
     public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=ComponentLibraryHome";
 

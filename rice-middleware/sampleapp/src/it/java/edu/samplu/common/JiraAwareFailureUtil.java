@@ -74,7 +74,7 @@ public class JiraAwareFailureUtil {
 
         jiraMatches.put("Library Widget Suggest, CAT not suggested", "KULRICE-10365 Library Widget Suggest not suggesting");
 
-        jiraMatches.put("img[src='/krad/images/validation/error.png']", "KULRICE-10372 DemoLibraryInputFieldSmokeTest mouse over error image fix");
+        jiraMatches.put("img[src='/krad/images/validation/error.png']", "KULRICE-10372 DemoLibraryFieldsInputmokeTest mouse over error image fix");
 
         jiraMatches.put("table or view does not exist", "KULRICE-10381 2.4 SQL updates to resolve missing table exception in CI");
 

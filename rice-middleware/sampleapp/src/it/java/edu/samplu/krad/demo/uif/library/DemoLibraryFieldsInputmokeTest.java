@@ -8,7 +8,7 @@ import org.openqa.selenium.WebElement;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoLibraryInputFieldSmokeTest extends DemoLibraryBase {
+public class DemoLibraryFieldsInputmokeTest extends DemoLibraryBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-InputField-View&methodToCall=start

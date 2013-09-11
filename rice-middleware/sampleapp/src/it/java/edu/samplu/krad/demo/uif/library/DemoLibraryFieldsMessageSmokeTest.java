@@ -7,7 +7,7 @@ import org.openqa.selenium.WebElement;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoLibraryMessageFieldSmokeTest extends DemoLibraryBase {
+public class DemoLibraryFieldsMessageSmokeTest extends DemoLibraryBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-MessageField-View&methodToCall=start

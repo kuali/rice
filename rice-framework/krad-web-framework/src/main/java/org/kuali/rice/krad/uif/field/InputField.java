@@ -59,6 +59,8 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
 import org.kuali.rice.krad.uif.widget.Suggest;
+import org.kuali.rice.krad.service.DataDictionaryService;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -282,17 +284,23 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
             return;
         }
 
-        if (uppercaseValue) {
-            Object currentPropertyValue = ObjectPropertyUtils.getPropertyValue(model, getBindingInfo().getBindingPath());
-            if (currentPropertyValue instanceof String) {
-                String uppercasedValue = ((String) currentPropertyValue).toUpperCase();
-                ObjectPropertyUtils.setPropertyValue(model, getBindingInfo().getBindingPath(), uppercasedValue);
+        DataDictionaryService dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
+        if (this.getDictionaryObjectEntry() != null && this.getDictionaryAttributeName() != null) {
+            AttributeDefinition ad = dataDictionaryService.getAttributeDefinition(this.getDictionaryObjectEntry(),
+                    this.getDictionaryAttributeName());
+            if (ad.getForceUppercase() || uppercaseValue) {
+                Object currentPropertyValue = ObjectPropertyUtils.getPropertyValue(model,
+                        getBindingInfo().getBindingPath());
+                if (currentPropertyValue instanceof String) {
+                    String uppercasedValue = ((String) currentPropertyValue).toUpperCase();
+                    ObjectPropertyUtils.setPropertyValue(model, getBindingInfo().getBindingPath(), uppercasedValue);
+                }
             }
         }
 
         // browser's native autocomplete causes issues with the suggest plugin
         if ((suggest != null) && suggest.isSuggestConfigured()) {
-           setDisableNativeAutocomplete(true);
+            setDisableNativeAutocomplete(true);
         }
 
         // adjust paths on PrerequisiteConstraint property names
@@ -704,11 +712,10 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * @return the class of the set optionsFinder, if not set or not applicable, returns null
      */
     @BeanTagAttribute(name = "optionsFinderClass")
-    public Class<? extends KeyValuesFinder> getOptionsFinderClass(){
-        if(this.optionsFinder != null){
+    public Class<? extends KeyValuesFinder> getOptionsFinderClass() {
+        if (this.optionsFinder != null) {
             return this.optionsFinder.getClass();
-        }
-        else{
+        } else {
             return null;
         }
     }

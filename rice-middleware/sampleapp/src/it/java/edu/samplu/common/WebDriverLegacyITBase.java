@@ -2999,7 +2999,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         SeleneseTestBase.assertTrue(isElementPresent(By.linkText(docId)));
         
         if (isElementPresent(By.linkText(docId))) {
-            assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2), "https://jira.kuali.org/browse/KULRICE-9051 WorkFlow Route Rules Blanket Approval submit status results in Enroute, not Final");
+            assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
         } else {
             SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_XPATH_2));
             SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));

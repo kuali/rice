@@ -48,12 +48,12 @@ public class DemoTravelAccountMaintenanceEditSmokeTest extends SmokeTestBase {
     /**
      * Travel sub account field
      */
-    public static final String SUB_ACCOUNT_FIELD = "document.newMaintainableObject.dataObject.subAccount";
+    public static final String SUB_ACCOUNT_FIELD = "newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccount";
 
     /**
      * Travel sub account name field
      */
-    public static final String SUB_ACCOUNT_NAME_FIELD = "document.newMaintainableObject.dataObject.subAccountName";
+    public static final String SUB_ACCOUNT_NAME_FIELD = "newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccountName";
 
     /**
      * Subsidized percent
@@ -81,9 +81,9 @@ public class DemoTravelAccountMaintenanceEditSmokeTest extends SmokeTestBase {
     }
 
     protected void testTravelAccountMaintenanceEdit() throws Exception {
-        waitAndTypeByName("document.documentHeader.documentDescription","Travel Account Edit"+RandomStringUtils.randomAlphabetic(2));
-        waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccount","a1");
-        waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccountName","Sub Account 1"+RandomStringUtils.randomAlphabetic(2));
+        waitAndTypeByName("document.documentHeader.documentDescription", "Travel Account Edit"+RandomStringUtils.randomAlphabetic(2));
+        waitAndTypeByName(SUB_ACCOUNT_FIELD, "a1");
+        waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccountName", "Sub Account 1"+RandomStringUtils.randomAlphabetic(2));
         waitAndClickButtonByText("submit");
         Thread.sleep(10000);
         checkForIncidentReport("Account Maintenance (Edit)");
@@ -98,7 +98,7 @@ public class DemoTravelAccountMaintenanceEditSmokeTest extends SmokeTestBase {
         waitAndTypeByName(SUB_ACCOUNT_NAME_FIELD,"\"/><script>alert('!')</script>");
         waitAndTypeByName(SUBSIDIZED_PERCENT_FIELD,"\"/><script>alert('!')</script>");
         waitAndTypeByName(DATE_CREATED_FIELD,"\"/><script>alert('!')</script>");
-        waitAndTypeByName(FISCAL_OFFICER_ID_FIELD,"\"/><script>alert('!')</script>");
+//        waitAndTypeByName(FISCAL_OFFICER_ID_FIELD,"\"/><script>alert('!')</script>");
         waitAndClickButtonByText("Save");
         Thread.sleep(1000);
         if(isAlertPresent())    {
@@ -106,15 +106,12 @@ public class DemoTravelAccountMaintenanceEditSmokeTest extends SmokeTestBase {
         }
     }
 
-    public boolean isAlertPresent()
-    {
-        try
-        {
+    protected boolean isAlertPresent() {
+        try {
             driver.switchTo().alert();
             return true;
         }   // try
-        catch (Exception Ex)
-        {
+        catch (Exception Ex) {
             return false;
         }   // catch
     }
@@ -122,14 +119,25 @@ public class DemoTravelAccountMaintenanceEditSmokeTest extends SmokeTestBase {
     @Test
     public void testDemoTravelAccountMaintenanceEditBookmark() throws Exception {
         testTravelAccountMaintenanceEdit();
-        testTravelAccountMaintenanceEditXss();
         passed();
     }
 
     @Test
     public void testDemoTravelAccountMaintenanceEditNav() throws Exception {
         testTravelAccountMaintenanceEdit();
+        passed();
+    }
+
+    @Test
+    public void testDemoTravelAccountMaintenanceEditXssBookmark() throws Exception {
         testTravelAccountMaintenanceEditXss();
         passed();
     }
+
+    @Test
+    public void testDemoTravelAccountMaintenanceEditXssNav() throws Exception {
+        testTravelAccountMaintenanceEditXss();
+        passed();
+    }
+
 }

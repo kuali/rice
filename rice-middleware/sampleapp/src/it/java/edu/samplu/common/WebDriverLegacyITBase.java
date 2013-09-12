@@ -754,10 +754,18 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         SeleneseTestBase.assertTrue(pageSource.contains("Actions"));
     }
 
+    /**
+     * Warning, this only does a check against the page source.  The form url can have random character that match simple text
+     * @param text
+     */
     protected void assertTextPresent(String text) {
         assertTextPresent(text, "");
     }
 
+    /**
+     * Warning, this only does a check against the page source.  The form url can have random character that match simple text
+     * @param text
+     */
     protected void assertTextPresent(String text, String message) {
         String pageSource = driver.getPageSource();
         if (!pageSource.contains(text)) {
@@ -765,6 +773,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         }
     }
 
+    /**
+     * Warning, this only does a check against the page source.  The form url can have random character that match simple text
+     * @param text
+     */
     protected void assertTextPresent(String text, String cssSelector, String message){
         WebElement element = findElement(By.cssSelector(cssSelector));
         if (!element.getText().contains(text)){
@@ -774,6 +786,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     /**
      * Asset that the given text does not occur in the page
+     * Warning, this only does a check against the page source.  The form url can have random character that match simple text
      * @param text the text to search for
      */
     protected void assertTextNotPresent(String text) {
@@ -4326,32 +4339,32 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         return findElement(By.xpath(DOC_ID_XPATH)).getText();
     }
 
-    protected void waitForElementPresent(By by) throws InterruptedException {
-        jiraAwareWaitFor(by, "");
+    protected WebElement waitForElementPresent(By by) throws InterruptedException {
+        return jiraAwareWaitFor(by, "");
     }
 
-    protected void waitForElementPresent(By by, String message) throws InterruptedException {
-        jiraAwareWaitFor(by, message);
+    protected WebElement waitForElementPresent(By by, String message) throws InterruptedException {
+        return jiraAwareWaitFor(by, message);
     }
 
-    protected void waitForElementPresent(String locator) throws InterruptedException {
-        jiraAwareWaitFor(By.cssSelector(locator), "");
+    protected WebElement waitForElementPresent(String locator) throws InterruptedException {
+        return jiraAwareWaitFor(By.cssSelector(locator), "");
     }
 
-    protected void waitForElementPresentByClassName(String name) throws InterruptedException {
-        jiraAwareWaitFor(By.className(name), "");
+    protected WebElement waitForElementPresentByClassName(String name) throws InterruptedException {
+        return jiraAwareWaitFor(By.className(name), "");
     }
 
-    protected void waitForElementPresentByClassName(String name, String message) throws InterruptedException {
-        jiraAwareWaitFor(By.className(name), message);
+    protected WebElement waitForElementPresentByClassName(String name, String message) throws InterruptedException {
+        return jiraAwareWaitFor(By.className(name), message);
     }
 
     protected void waitForElementsPresentByClassName(String name, String message) throws InterruptedException {
         jiraAwareWaitFors(By.className(name), message);
     }
 
-    protected void waitForElementPresentById(String id) throws InterruptedException {
-        jiraAwareWaitFor(By.id(id), "");
+    protected WebElement waitForElementPresentById(String id) throws InterruptedException {
+        return jiraAwareWaitFor(By.id(id), "");
     }
 
     protected void waitForElementPresentById(String id, String message) throws InterruptedException {
@@ -4362,16 +4375,16 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         jiraAwareWaitFors(By.id(id), message);
     }
 
-    protected void waitForElementPresentByName(String name) throws InterruptedException {
-        jiraAwareWaitFor(By.name(name), "");
+    protected WebElement waitForElementPresentByName(String name) throws InterruptedException {
+        return jiraAwareWaitFor(By.name(name), "");
     }
 
-    protected void waitForElementPresentByXpath(String xpath) throws InterruptedException {
-        jiraAwareWaitFor(By.xpath(xpath), "");
+    protected WebElement waitForElementPresentByXpath(String xpath) throws InterruptedException {
+        return jiraAwareWaitFor(By.xpath(xpath), "");
     }
 
-    protected void waitForElementPresentByXpath(String xpath, String message) throws InterruptedException {
-        jiraAwareWaitFor(By.xpath(xpath), message);
+    protected WebElement waitForElementPresentByXpath(String xpath, String message) throws InterruptedException {
+        return jiraAwareWaitFor(By.xpath(xpath), message);
     }
 
     protected void waitForElementsPresentByXpath(String xpathLocator) throws InterruptedException {

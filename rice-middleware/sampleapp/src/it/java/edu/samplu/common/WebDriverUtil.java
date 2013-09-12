@@ -463,8 +463,9 @@ public class WebDriverUtil {
             if (second >= waitSeconds)
                 failed = true;
             try {
-                if (failed || (driver.findElements(by)).size() > 0)
+                if (failed || (driver.findElements(by)).size() > 0) {
                     break;
+                }
             } catch (Exception e) {}
         }
 

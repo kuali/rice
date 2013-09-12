@@ -17,6 +17,7 @@ package edu.samplu.krad.demo.lookupviews.lookup.search;
 
 import edu.samplu.common.SmokeTestBase;
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -40,10 +41,10 @@ public class DemoLookUpSearchSmokeTest extends SmokeTestBase {
     }
 
     protected void testLookUpSearch() throws InterruptedException {
+        waitForElementPresentByXpath("//span[contains(text(), 'a1')]");
         assertTextPresent("a1*");
-        assertTextPresent("a1");
-        assertTextPresent("a14");
-        assertTextNotPresent("a2"," Only records with a1* should be displayed, but a2 is.");
+        assertElementPresentByXpath("//span[contains(text(), 'a14')]");
+        findElements(By.xpath("//span[contains(text(), 'a2')]"));
     }
 
     @Test

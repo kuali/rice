@@ -91,8 +91,9 @@ select[multiple] {
 ul {
   padding: 0px;
 }
-
-
+fieldset {padding: 0px;
+  margin: 0px;
+  border: 0px;}
 
 
 /** View structure related **************************************************************************/
@@ -144,19 +145,6 @@ ul {
   margin: 0;
   padding: 0;
 }
-.uif-viewHeader-contentWrapper {
-  /* width: 100%; */
-  background-color: white;
-  z-index: 3;
-  padding: 0;
-  margin: 0;
-}
-.uif-viewHeader-contentWrapper > .uif-header-upperGroup, .uif-viewHeader-contentWrapper > .uif-header-lowerGroup {
-  padding-left: 20px;
-}
-.uif-header-contentWrapper {
-  width: 100%;
-}
 .uif-header {
   position: relative;
 }
@@ -165,12 +153,7 @@ ul {
   float: inherit;  /* bootstrap override */
   margin-left: 0px;
 }
-.uif-viewHeader {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 20px
-}
-.uif-viewHeader, .uif-pageHeader, .uif-sectionHeader {
+.uif-pageHeader, .uif-sectionHeader {
   margin-top: 10px;
   position: relative;
 }
@@ -179,55 +162,7 @@ ul {
   right: 20px;
   top: 0;
 }
-.uif-supportTitle-wrapper {
-  display: block;
-}
-.uif-viewHeader-contentWrapper {
-  padding-top: 0;
 
-}
-.uif-viewHeader-contentWrapper h1 {
-  font-size: 20px;
-  margin-top: 0;
-  margin-right: 0;
-  margin-bottom: 0;
-}
-.uif-viewHeader .uif-headerText {
-  margin-bottom: 0;
-  display: inline;
-}
-.uif-viewHeader .uif-headerText .uif-viewHeader-areaTitle {
-  display: block;
-  font-size: .6em;
-  color: #666;
-  line-height: 14px;
-  font-weight: normal;
-  padding-bottom: .5em;
-}
-.uif-viewHeader .uif-headerText .uif-headerText-span {
-  display: block;
-  float: inherit;
-  width: inherit;
-  clear: both;
-  font-size: 32px;
-  margin: 0;
-  padding: 0;
-
-  padding-top: 8px;
-
-
-
-
-}
-.uif-viewHeader .uif-supportTitle-wrapper .uif-viewHeader-supportTitle {
-  display: block;
-}
-.uif-viewHeader .uif-viewHeader-metadata {
-  padding-right: 20px;
-  position: absolute;
-  right: 0;
-  bottom: 8px;
-}
 #Uif-TopGroupWrapper > div {
   padding-left: 0px;
 }
@@ -487,6 +422,7 @@ table.uif-tableCollectionLayout thead th.sorting, table.uif-tableCollectionLayou
 }
 .uif-tableCollectionLayout input[type="text"] {
   margin-bottom: 0px;
+  width: 120px;
 }
 .uif-gridLayout th, .uif-tableCollectionLayout th {
 //background-color: @grayLighter;

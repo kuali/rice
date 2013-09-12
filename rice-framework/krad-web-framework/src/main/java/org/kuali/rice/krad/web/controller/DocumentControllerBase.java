@@ -15,6 +15,16 @@
  */
 package org.kuali.rice.krad.web.controller;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -32,10 +42,10 @@ import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.DocumentAuthorizer;
-import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.exception.DocumentAuthorizationException;
 import org.kuali.rice.krad.exception.UnknownDocumentIdException;
 import org.kuali.rice.krad.exception.ValidationException;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.rules.rule.event.AddNoteEvent;
 import org.kuali.rice.krad.service.AttachmentService;
 import org.kuali.rice.krad.service.DataDictionaryService;
@@ -63,15 +73,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
 
 /**
  * Base controller class for all KRAD <code>DocumentView</code> screens working
@@ -547,7 +548,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
 
         // if the rule evaluation passed, let's add the note; otherwise, return with an error
         if (rulePassed) {
-            newNote.refresh();
+            //newNote.refresh(); // OJB Method
 
             DocumentHeader documentHeader = document.getDocumentHeader();
 
@@ -604,7 +605,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
             //so refreshNonUpdateableReferences() should work the same as refresh()
             if (note.getNoteIdentifier()
                     != null) { // KULRICE-2343 don't blow away note reference if the note wasn't persisted
-                attachment.refreshNonUpdateableReferences();
+            //    attachment.refreshNonUpdateableReferences(); // OJB Method
             }
             getAttachmentService().deleteAttachmentContents(attachment);
         }

@@ -49,7 +49,7 @@
           <property name="collectionLookup">
             <bean parent="Uif-CollectionQuickFinder"
                   p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
-                  p:fieldConversions="number:field1,name:field2,subAccount:field3,subAccountName:field4"/>
+                  p:fieldConversions="number:field1,name:field2,accountTypeCode:field3"/>
           </property>
           <property name="items">
             <list>

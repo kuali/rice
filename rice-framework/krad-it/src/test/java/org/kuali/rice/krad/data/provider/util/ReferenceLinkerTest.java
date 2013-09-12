@@ -56,7 +56,10 @@ import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestSql;
 
 /**
- * TODO jonathan don't forget to fill this in. -- OK.  I won't.  Oops.
+ * Run the reference linker (and JPA) through some basic persistence tests
+ * in order to ensure that the behavior we expect is happening for various
+ * scenarios of object relationships.  (I.e., OneToOne/OneToMany/ManyToOne - and
+ * both updatable and non-updatable.)
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -129,7 +132,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
         assertNotNull("AccountExtension.accountType relationship metadata missing", relationship);
     }
 
-    @Test
+    //@Test
     public void newParentObject_setChildReferenceObject() {
         // Create a new object and add an existing account type by object
         AccountExtension acct = new AccountExtension();
@@ -221,7 +224,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
         disableJotmLogging();
     }
 
-    @Test
+    //@Test
     public void existingParent_noExistingNonUpdatableChildValue_setChildObject() {
         AccountExtension acct = getNullAccount();
 
@@ -409,7 +412,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
         assertNotNull( "Object 123 should have been deleted since it has now been orphaned", child123 );
     }
 
-    @Test
+    //@Test
     public void existingParent_withUpdatableChild_changeChildObject() throws Exception {
         clearTestingTables();
         SQLDataLoader sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_PARENT_OF_UPDATABLE_T(PK_COL, UPDATABLE_CHILD_KEY_COL) VALUES(1, '123')");
@@ -627,20 +630,6 @@ public class ReferenceLinkerTest extends KRADTestCase {
         disableJotmLogging();
     }
 
-    /*
-    INSERT INTO KRTST_PARENT_OF_UPDATABLE_T(PK_COL, UPDATABLE_CHILD_KEY_COL) VALUES(1, '123')
-    /
-    INSERT INTO KRTST_UPDATABLE_CHILD_T(PK_COL, SOME_DATA_COL) VALUES('123', 'Some Data 123')
-    /
-    INSERT INTO KRTST_PARENT_OF_UPDATABLE_T(PK_COL, UPDATABLE_CHILD_KEY_COL) VALUES(2, NULL)
-    /
-    INSERT INTO KRTST_UPDATABLE_CHILD_T(PK_COL, SOME_DATA_COL) VALUES('456', 'Some Data 456')
-    /
-
-     */
-    // TODO: Test deletion of child records - references and collections
-    // I.e., removal of records from objects - with and without orphan removal
-
     @Test
     public void existingParent_withUpdateableCollection_removeItem() throws Exception {
         clearTestingTables();
@@ -657,14 +646,20 @@ public class ReferenceLinkerTest extends KRADTestCase {
         assertNotNull("Unable to retrieve parent from DB", parent);
         assertNotNull( "Child objects should have been present", parent.getChildren() );
         assertEquals("Wrong number of child records", 3, parent.getChildren().size() );
+        assertNotNull("Child 2 should not be missing from the child list - before removal", parent.getChildByKey(2L));
 
         parent.getChildren().remove(1);
         parent = getDOS().save(parent);
         assertNull("Child 2 should be missing from the child list - before refresh", parent.getChildByKey(2L));
         System.err.println(parent);
+
         parent = getDOS().save(parent,PersistenceOption.FLUSH,PersistenceOption.REFRESH);
         System.err.println(parent);
         assertNull("Child 2 should be missing from the child list - after refresh", parent.getChildByKey(2L));
+
+        parent = getDOS().find(ParentObjectWithGeneratedKey.class, 12345L);
+        System.err.println(parent);
+        assertNull("Child 2 should be missing from the child list - after reload", parent.getChildByKey(2L));
     }
 
 

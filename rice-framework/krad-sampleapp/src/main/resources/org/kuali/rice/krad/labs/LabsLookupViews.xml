@@ -33,7 +33,7 @@
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" p:ranged="true"/>
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="foId"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="fiscalOfficer.principalName"/>
       </list>
     </property>
     <property name="resultFields">
@@ -41,7 +41,7 @@
         <bean parent="Uif-DataField" p:propertyName="number"/>
         <bean parent="Uif-DataField" p:propertyName="name"/>
         <bean parent="Uif-DataField" p:propertyName="createDate"/>
-        <bean parent="Uif-DataField" p:propertyName="foId"/>
+        <bean parent="Uif-DataField" p:propertyName="fiscalOfficer.principalName"/>
       </list>
     </property>
   </bean>
@@ -181,7 +181,7 @@
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number" p:disableWildcardsAndOperators="true"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" p:ranged="true"/>
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="foId"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="fiscalOfficer.principalName"/>
       </list>
     </property>
   </bean>
@@ -191,10 +191,10 @@
     <property name="headerText" value="Lookup Sample with quickfinder disabled"/>
     <property name="criteriaFields">
       <list>
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number" p:defaultValue="a2"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" p:ranged="true"/>
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="foId" p:enableAutoQuickfinder="false"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="fiscalOfficer.principalName" p:enableAutoQuickfinder="false"/>
       </list>
     </property>
   </bean>
@@ -207,7 +207,7 @@
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number" p:enableAutoDirectInquiry="false"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" p:ranged="true"/>
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="foId" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="fiscalOfficer.principalName" />
       </list>
     </property>
   </bean>
@@ -220,7 +220,7 @@
         <bean parent="Uif-DataField" p:propertyName="number" p:enableAutoInquiry="false"/>
         <bean parent="Uif-DataField" p:propertyName="name"/>
         <bean parent="Uif-DataField" p:propertyName="createDate"/>
-        <bean parent="Uif-DataField" p:propertyName="foId"/>
+        <bean parent="Uif-DataField" p:propertyName="fiscalOfficer.principalName"/>
       </list>
     </property>
   </bean>
@@ -231,8 +231,7 @@
     <property name="defaultSortAscending" value="false"/>
     <property name="defaultSortAttributeNames">
       <list>
-        <value>foId</value>
-        <value>number</value>
+        <value>name</value>
       </list>
     </property>
   </bean>

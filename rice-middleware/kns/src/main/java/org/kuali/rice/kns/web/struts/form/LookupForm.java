@@ -607,8 +607,9 @@ public class LookupForm extends KualiForm {
     }
 
     /**
-     * Gets the showMaintenanceLinks attribute.
-     * @return Returns the showMaintenanceLinks.
+     * If true the maintenance links (create new, edit, copy, delete) are displayed on the lookup
+     *
+     * @return showMaintenanceLinks.
      */
     public boolean isShowMaintenanceLinks() {
         return showMaintenanceLinks;

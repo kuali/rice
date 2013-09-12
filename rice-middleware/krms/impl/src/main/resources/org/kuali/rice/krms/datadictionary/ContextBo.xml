@@ -123,7 +123,6 @@
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" />
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="namespace" />
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="typeId" p:label="Context Type" />
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="active" p:defaultValue="Y"/>
       </list>
     </property>
     <property name="resultFields">

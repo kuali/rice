@@ -1420,10 +1420,10 @@
             <para>The viewability of fields in Inquiries are controlled by a KIM permission only when either
               <itemizedlist>
                 <listitem>
-                  <emphasis role="keyword">attributeSecurity</emphasis> is configured in the DD field, or
+                  <para><emphasis role="keyword">attributeSecurity</emphasis> is configured in the DD field, or</para>
                 </listitem>
                 <listitem>
-                  <emphasis role="keyword">componentSecurity</emphasis> is configured in the field of the InquiryView
+                  <para><emphasis role="keyword">componentSecurity</emphasis> is configured in the field of the InquiryView</para>
                 </listitem>
               </itemizedlist>
               and the appropriate KIM permission exists.  The conversion requires that new KRAD permissions are created.
@@ -1760,6 +1760,15 @@
               line: , KRAD line: ] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                </imageobject>
+              </inlinemediaobject></para>
+          </listitem>
+          <listitem xml:id="LRF7">
+            <para>To display the maintenance links (create new, edit, copy, delete) on non
+              maintenance documents the <emphasis role="keyword">showMaintenanceLinks</emphasis> on
+              the LookupForm needs to be set.<inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="9"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>

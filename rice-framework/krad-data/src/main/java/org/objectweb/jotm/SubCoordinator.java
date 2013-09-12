@@ -386,7 +386,9 @@ public class SubCoordinator extends PortableRemoteObject implements Resource {
 					TraceTm.jta.debug(error);
 				}
 			}
+			// KULRICE-9919 : Updated to include the rollback cause
 			throw new JotmTransactionRolledbackException(rollbackCause);
+			// END KULRICE-9919
 		case Status.STATUS_MARKED_ROLLBACK:
 			doBeforeCompletion(false);
 			try {
@@ -399,7 +401,9 @@ public class SubCoordinator extends PortableRemoteObject implements Resource {
 				}
 			}
 			doRollback();
+			// KULRICE-9919 : Updated to include the rollback cause
 			throw new JotmTransactionRolledbackException(rollbackCause);
+			// END KULRICE-9919
 		case Status.STATUS_COMMITTED:
 			try {
 				tx.doDetach(XAResource.TMSUCCESS);
@@ -436,7 +440,9 @@ public class SubCoordinator extends PortableRemoteObject implements Resource {
 		if (status == Status.STATUS_MARKED_ROLLBACK) {
 			TraceTm.jotm.info("Rollback during beforeCompletion in SubCoordinator.commit_one_phase");
 			doRollback();
+			// KULRICE-9919 : Updated to include the rollback cause
 			throw new JotmTransactionRolledbackException(rollbackCause);
+			// END KULRICE-9919
 		}
 
 		// only 1 Resource => 1 phase commit
@@ -459,7 +465,9 @@ public class SubCoordinator extends PortableRemoteObject implements Resource {
 			break;
 		case Resource.VOTE_ROLLBACK:
 			doRollback();
+			// KULRICE-9919 : Updated to include the rollback cause
 			throw new JotmTransactionRolledbackException(rollbackCause);
+			// END KULRICE-9919
 		}
 	}
 
@@ -997,7 +1005,9 @@ public class SubCoordinator extends PortableRemoteObject implements Resource {
 				doAfterCompletion();
 				log.forgetLog();
 
+				// KULRICE-9919 : Updated to include the rollback cause
 				throw new JotmTransactionRolledbackException(e);
+				// END KULRICE-9919
 			}
 		}
 
@@ -1273,7 +1283,9 @@ public class SubCoordinator extends PortableRemoteObject implements Resource {
 			TraceTm.jotm.error("Got XAException from res.commit: " + error);
 
 			if (e.errorCode == XAException.XA_RBROLLBACK) {
+				// KULRICE-9919 : Updated to include the rollback cause
 				throw new JotmTransactionRolledbackException("XAException:" + error, e);
+				// END KULRICE-9919
 			}
 			throw new RemoteException("XAException:" + error);
 		} finally {

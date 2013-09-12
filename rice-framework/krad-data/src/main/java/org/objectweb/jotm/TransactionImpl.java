@@ -242,9 +242,11 @@ public class TransactionImpl implements Transaction, TimerEventListener {
 					TraceTm.jta.debug("Commit distributed transaction -> rolled back!");
 				}
 				localstatus = Status.STATUS_ROLLEDBACK;
+				// KULRICE-9919 : Updated to include the rollback cause
 				RollbackException ex = new RollbackException();
 				ex.initCause(e);
 				throw ex;
+				// END KULRICE-9919
 			} catch (RemoteException e) {
 
 				if (TraceTm.jta.isWarnEnabled()) {
@@ -257,25 +259,31 @@ public class TransactionImpl implements Transaction, TimerEventListener {
 						TraceTm.jta.debug("Commit distributed transaction -> rolled back!");
 					}
 					localstatus = Status.STATUS_ROLLEDBACK;
+					// KULRICE-9919 : Updated to include the rollback cause
 					RollbackException ex = new RollbackException();
 					ex.initCause(e.detail);
 					throw ex;
+					// END KULRICE-9919
 				}
 
 				if (e.detail instanceof HeuristicMixed) {
 					TraceTm.jotm.info("Commit distributed transaction -> Heuristic mixed!");
 					throw new HeuristicMixedException();
 				} else {
+					// KULRICE-9919 : Updated to include the rollback cause
 					SystemException ex = new SystemException("Unexpected RemoteException on commit:"
 							+ e.detail.getMessage());
 					ex.initCause(e.detail);
 					throw ex;
+					// END KULRICE-9919
 				}
 			} catch (Exception e) {
 				TraceTm.jotm.error("Unexpected Exception on commit:", e);
+				// KULRICE-9919 : Updated to include the rollback cause
 				SystemException ex = new SystemException("Unexpected Exception on commit");
 				ex.initCause(e);
 				throw ex;
+				// END KULRICE-9919
 			} finally {
 				propagateCtx = true;
 				if (subcoord == null) {
@@ -300,16 +308,20 @@ public class TransactionImpl implements Transaction, TimerEventListener {
 				}
 				Current.getCurrent().forgetTx(getXid());
 				localstatus = Status.STATUS_ROLLEDBACK;
+				// KULRICE-9919 : Updated to include the rollback cause
 				RollbackException ex = new RollbackException();
 				ex.initCause(e);
 				throw ex;
+				// END KULRICE-9919
 			} catch (RemoteException e) {
 				TraceTm.jotm.error("Unexpected Exception on commit_one_phase:", e);
 				Current.getCurrent().forgetTx(getXid());
 				localstatus = Status.STATUS_UNKNOWN;
+				// KULRICE-9919 : Updated to include the rollback cause
 				SystemException ex = new SystemException("Unexpected Exception on commit_one_phase");
 				ex.initCause(e);
 				throw ex;
+				// END KULRICE-9919
 			}
 		} else {
 			// if no coordinator, just unset the timer and release this object.

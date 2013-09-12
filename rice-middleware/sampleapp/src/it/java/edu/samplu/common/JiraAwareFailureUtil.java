@@ -57,6 +57,8 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("after clicking Expand All", "KULRICE-3833 KRAD Sampleapp (Travel) Account Inquiry Collapse all toggles all and Expand all does nothing");
 
         jiraMatches.put("Library Widget Suggest, CAT not suggested", "KULRICE-10365 Library Widget Suggest not suggesting"); // already in 2.4 merged back as error exists in 2.3 as well.
+
+        jiraMatches.put("a6", "KULRICE-10503 KRAD Demo Library Widget Suggest View Helper Method Configuration 2 not suggesting"); // 2.3.1 only
         //        jiraMatches.put("",
         //                "");
     }

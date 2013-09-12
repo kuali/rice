@@ -30,19 +30,19 @@ import org.kuali.rice.core.api.util.type.KualiDecimal;
  */
 public enum DataType {
 	STRING(String.class,false,false),
-	MARKUP(String.class,false,false),
+    TIMESTAMP(Timestamp.class,false,true),
 	DATE(Date.class,false,true),
+    DATETIME(Date.class,false,true),
 	TRUNCATED_DATE(Date.class,false,true),
     BOOLEAN(Boolean.class,false,false),
+    CURRENCY(KualiDecimal.class,true,false),
+    PRECISE_DECIMAL(BigDecimal.class,true,false),
+    LARGE_INTEGER(BigInteger.class,true,false),
     INTEGER(Integer.class,true,false),
+    LONG(Long.class,true,false),
     FLOAT(Float.class,true,false),
     DOUBLE(Double.class,true,false),
-    LONG(Long.class,true,false),
-    DATETIME(Date.class,false,true),
-    TIMESTAMP(Timestamp.class,false,true),
-    CURRENCY(KualiDecimal.class,true,false)
-    , PRECISE_DECIMAL(BigDecimal.class,true,false)
-    , LARGE_INTEGER(BigInteger.class,true,false)
+    MARKUP(String.class,false,false)
     ;
 
 	private final Class<?> type;

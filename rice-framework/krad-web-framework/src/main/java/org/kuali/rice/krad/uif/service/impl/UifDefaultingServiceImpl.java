@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
@@ -35,6 +36,7 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
     protected static final String ANY_CHARACTER_PATTERN_CONSTRAINT = "UTF8AnyCharacterPatternConstraint";
     protected static final String DATE_PATTERN_CONSTRAINT = "BasicDatePatternConstraint";
     protected static final String FLOATING_POINT_PATTERN_CONSTRAINT = "FloatingPointPatternConstraintTemplate";
+    protected static final String TIMESTAMP_PATTERN_CONSTRAINT = "TimestampPatternConstraint";
 
     @Override
     public String deriveHumanFriendlyNameFromPropertyName(String camelCasedName) {
@@ -162,7 +164,11 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
                 if ( attrDef.getDataType().isNumeric() ) {
                     validCharactersConstraint = (ValidCharactersConstraint) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(FLOATING_POINT_PATTERN_CONSTRAINT);
                 } else if ( attrDef.getDataType().isTemporal() ) {
-                    validCharactersConstraint = (ValidCharactersConstraint) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(DATE_PATTERN_CONSTRAINT);
+                    if ( attrDef.getDataType() == DataType.DATE ) {
+                        validCharactersConstraint = (ValidCharactersConstraint) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(DATE_PATTERN_CONSTRAINT);
+                    } else if ( attrDef.getDataType() == DataType.TIMESTAMP ) {
+                        validCharactersConstraint = (ValidCharactersConstraint) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(TIMESTAMP_PATTERN_CONSTRAINT);
+                    }
                 }
             }
         }

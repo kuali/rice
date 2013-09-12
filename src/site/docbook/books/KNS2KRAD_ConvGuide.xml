@@ -1376,6 +1376,23 @@
       <para>
         <itemizedlist>
           <listitem>
+            <para>Inquiry Header Links</para>
+            <para>It is now possible to add links in the header of the Inquiry page.  This was supposed to be possible
+              in the KNS but never worked.  Thus, any links desired in the header of the Inquiry will have to be added
+              manually.
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="9"/>
+                </imageobject>
+              </inlinemediaobject>
+            </para>
+            <para><programlisting>&lt;property name="page.header.lowerGroup.items">
+  &lt;list merge="true">
+    &lt;bean parent="Uif-Link" p:href="http://www.kuali.org" p:linkText="Kuali Site"/>
+  &lt;/list>
+&lt;/property></programlisting></para>
+          </listitem>
+          <listitem>
             <para>Section Permission Checks</para>
             <para>The viewability of sections in Inquiries are controlled by a KIM permission only when a
               <emphasis role="keyword">componentSecurity</emphasis> is configured in the section of the InquiryView and

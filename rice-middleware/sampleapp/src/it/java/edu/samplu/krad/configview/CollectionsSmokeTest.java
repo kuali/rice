@@ -34,7 +34,7 @@ public class CollectionsSmokeTest extends SmokeTestBase {
      * (//a[contains(text(),'Collections Configuration Test View')])[2]
      */
     public static final String TEXT_COLLECTIONS_CONFIGURATION_TEST_VIEW_XPATH =
-            "(//a[contains(text(),'Collections Configuration Test View')])[2]";
+            "(//a[contains(text(),'Collections Configuration Test View')])[1]";
 
     /**
      * Kuali :: Collection Test View

@@ -82,8 +82,8 @@ public class DemoTravelAccountMaintenanceEditSmokeTest extends SmokeTestBase {
 
     protected void testTravelAccountMaintenanceEdit() throws Exception {
         waitAndTypeByName("document.documentHeader.documentDescription","Travel Account Edit"+RandomStringUtils.randomAlphabetic(2));
-        waitAndTypeByName("document.newMaintainableObject.dataObject.subAccount","a1");
-        waitAndTypeByName("document.newMaintainableObject.dataObject.subAccountName","Sub Account 1"+RandomStringUtils.randomAlphabetic(2));
+        waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccount","a1");
+        waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccountName","Sub Account 1"+RandomStringUtils.randomAlphabetic(2));
         waitAndClickButtonByText("submit");
         Thread.sleep(10000);
         checkForIncidentReport("Account Maintenance (Edit)");

@@ -71,12 +71,14 @@ public class DemoLookUpConditionalCriteriaSmokeTest extends SmokeTestBase {
 
     protected void testLookUpConditionalCriteria() throws InterruptedException {
         //Case 1 - Date field required by number a1
-        //It requires "Search" to be clicked twice, for showing message.
+        //It requires "Search" to be clicked twice, for the date required message to show.
         waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME,"a1");
         waitAndClickButtonByText(SEARCH);
-        Thread.sleep(5000); // If we don't wait long enough we'll get concurrency issues.
+        Thread.sleep(10000); // If we don't wait long enough we'll get concurrency issues.
+        checkForIncidentReport();
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(3000);
+        checkForIncidentReport();
         assertTextPresent(DATE_REQUIRED_MESSAGE);
         
         //Case 2 - Date field read only by number a2

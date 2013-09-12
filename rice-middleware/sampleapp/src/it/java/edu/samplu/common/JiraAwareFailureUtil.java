@@ -102,6 +102,8 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("org.kuali.rice.krad.uif.layout.TableLayoutManager.buildLine(TableLayoutManager.java:771)", "KULRICE-10429 NPE in Table Layout Manager when opening up Travel Account maintenance documents");
 
         jiraMatches.put("Document Expired", "KULRICE-9709 Search Edit Back does not show search results in Firefox");
+
+        jiraMatches.put("org.kuali.rice.krad.uif.view.View cannot be cast to org.kuali.rice.krad.uif.view.LookupView", "KULRICE-10489 KRAD Demo Lookup Sample with Conditional Criteria ClassCastException on search");
         //jiraMatches.put("", "");
     }
 

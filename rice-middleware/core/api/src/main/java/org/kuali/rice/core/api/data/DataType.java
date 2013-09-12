@@ -17,6 +17,7 @@ package org.kuali.rice.core.api.data;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.Date;
 
 import org.kuali.rice.core.api.util.jaxb.EnumStringAdapter;
@@ -38,6 +39,7 @@ public enum DataType {
     DOUBLE(Double.class,true,false),
     LONG(Long.class,true,false),
     DATETIME(Date.class,false,true),
+    TIMESTAMP(Timestamp.class,false,true),
     CURRENCY(KualiDecimal.class,true,false)
     , PRECISE_DECIMAL(BigDecimal.class,true,false)
     , LARGE_INTEGER(BigInteger.class,true,false)

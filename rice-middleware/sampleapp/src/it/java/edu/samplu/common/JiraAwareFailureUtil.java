@@ -108,6 +108,8 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("WorkFlowRouteRulesBlanketApp expected:<[FINAL]>", "KULRICE-9051 WorkFlow Route Rules Blanket Approval submit status results in Enroute, not Final");
 
         jiraMatches.put("//div[@class='uif-stackedCollectionLayout']/div[@class='uif-collectionItem uif-gridCollectionItem']/table/tbody/tr/td/div/input[@name='collection4[0].field1']", "KULRICE-10520 Update DemoLibraryLayoutManagersStackedLayoutSmokeTest");
+
+        jiraMatches.put("//div[@id='Demo-TableLayoutDetails-Example4']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='dataTables_wrapper']/table/tbody/tr[@class='detailsRow']/td/div/div[@class='uif-verticalBoxLayout clearfix']/div[@class='uif-stackedSubCollection uif-boxLayoutVerticalItem clearfix']/div[@class='uif-stackedCollectionLayout']/div/table", "KULRICE-10521 Update DemoLibraryCollectionFeaturesRowDetailsSmokeTest");
         //jiraMatches.put("", "");
     }
 

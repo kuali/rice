@@ -2905,6 +2905,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected void testWorkFlowRouteRulesBlanketApp() throws Exception {
+        String random = ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits();
         waitForPageToLoad();
         Thread.sleep(3000);
         SeleneseTestBase.assertEquals("Kuali Portal Index", getTitle());
@@ -2951,13 +2952,14 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         SeleneseTestBase.assertTrue(isElementPresentByName(CANCEL_NAME));
        
         // type in the Document Overview Description the text Test Routing Rule
-        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Test Routing Rule");
+        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Test Routing Rule " + random);
        
         // click the Force Action checkbox
         waitAndClickByXpath("//input[@id='document.newMaintainableObject.forceAction']");
        
         // type in the Description text area the text Test Routing Rule1
-        waitAndTypeByXpath("//textarea[@id='document.newMaintainableObject.description']", "Test Routing Rule1");
+        waitAndTypeByXpath("//textarea[@id='document.newMaintainableObject.description']", "Test Routing Rule1 "
+                + random);
        
         // type in the Document type name field the text DocumentTypeDocument
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.fieldValues(1321~docTypeFullName)']",
@@ -2994,12 +2996,14 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitForPageToLoad();
         SeleneseTestBase.assertEquals("Kuali Portal Index", getTitle());
         selectFrameIframePortlet();
+        waitAndTypeByName("documentId", docId);
         waitAndClickSearch();
-        waitForPageToLoad();
-        SeleneseTestBase.assertTrue(isElementPresent(By.linkText(docId)));
+        waitForElementPresent(By.linkText(docId));
         
         if (isElementPresent(By.linkText(docId))) {
-            assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
+            if (!DOC_STATUS_FINAL.equalsIgnoreCase(getTextByXpath(DOC_STATUS_XPATH_2))) {
+                jiraAwareFail("WorkFlowRouteRulesBlanketApp expected:<[FINAL]> but was " + getTextByXpath(DOC_STATUS_XPATH_2));
+            }
         } else {
             SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_XPATH_2));
             SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));

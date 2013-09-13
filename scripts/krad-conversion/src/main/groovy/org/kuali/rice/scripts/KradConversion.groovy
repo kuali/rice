@@ -56,6 +56,7 @@ def copyPortalTags = config.bool.script.copyPortalTags;
 def includeRiceValidationTest = config.bool.script.includeRiceValidationTest;
 
 def strutsSearchDirPath = config.input.dir + config.input.path.src.webapp
+def ignoreStrutsPattern = config.pattern.script.ignoreStruts;
 
 // setup all necessary classes
 ScaffoldGenerator scaffold = new ScaffoldGenerator(config)
@@ -68,7 +69,14 @@ if (StringUtils.isBlank(inputDir) || StringUtils.isBlank(outputDir)) {
 }
 
 // confirm existence of strut-config files and begin processing
-def strutsConfigFiles = ConversionUtils.findFilesByPattern(strutsSearchDirPath, /struts-.*?\.xml$/, /kew|kr|ken|core|kim|kns/);
+def strutsConfigFiles;
+if (ignoreStrutsPattern) {
+    strutsConfigFiles = ConversionUtils.findFilesByPattern(strutsSearchDirPath, /struts-.*?\.xml$/, ignoreStrutsPattern);
+} else {
+    strutsConfigFiles = ConversionUtils.findFilesByPattern(strutsSearchDirPath, /struts-.*?\.xml$/);
+}
+
+
 System.out.println "Load struts-config.xml files for processing - dir: " + strutsSearchDirPath + " " + strutsConfigFiles?.size()
 
 if (strutsConfigFiles.size == 0) {

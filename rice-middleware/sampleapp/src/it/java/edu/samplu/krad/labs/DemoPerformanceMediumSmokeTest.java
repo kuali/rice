@@ -2,6 +2,7 @@ package edu.samplu.krad.labs;
 
 import edu.samplu.common.SmokeTestBase;
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -46,11 +47,12 @@ public class DemoPerformanceMediumSmokeTest extends SmokeTestBase {
 
     private void navigateToSecondPage() throws InterruptedException {
         waitAndClickByLinkText("Page 2");
+        jiraAwareWaitFor(By.xpath("//div[@class='blockUI blockMsg blockPage']"),11,"Timeout 11s - Page is taking too long to load.");
         waitForBottomButton();
     }
 
     private void waitForBottomButton() throws InterruptedException {
-        waitForElementsPresentByXpath("//button[contains(text(), 'Refresh - Non-Ajax')]");
+    	jiraAwareWaitFor(By.xpath("//button[contains(text(), 'Refresh - Non-Ajax')]"),11,"Timeout 11s - Button Not Present");
     }
 
     protected void testPerformanceMedium()throws Exception {

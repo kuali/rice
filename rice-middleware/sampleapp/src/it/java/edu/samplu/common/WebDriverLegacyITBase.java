@@ -1478,6 +1478,15 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
             jiraAwareFail(by, message, t);
         }
     }
+    
+    protected WebElement jiraAwareWaitFor(By by, int seconds, String message) throws InterruptedException {
+        try {
+            return WebDriverUtil.waitFor(this.driver, seconds, by, message);
+        } catch (Throwable t) {
+            jiraAwareFail(by, message, t);
+        }
+        return null; // required, but the jiraAwareFail will will end test before this statement is reached
+    }
 
     protected void open(String url) {
         driver.get(url);

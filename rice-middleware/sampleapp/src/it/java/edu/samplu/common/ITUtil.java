@@ -221,7 +221,7 @@ public class ITUtil {
             failWithInfo("\nHTTP Status 500 stacktrace: " + extract500Exception(contents), linkLocator, failable, message);
         }
 
-        if (contents.contains("Java backtrace for programmers:")) { // freemarker exception
+        if (contents.contains("Java backtrace for programmers:") || contents.contains("Java stack trace (for programmers):")) { // freemarker exception
             try {
                 processFreemarkerException(contents, linkLocator, failable, message);
             } catch (IndexOutOfBoundsException e) {

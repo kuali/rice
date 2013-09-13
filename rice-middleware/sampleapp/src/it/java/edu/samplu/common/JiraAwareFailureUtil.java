@@ -106,6 +106,8 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("org.kuali.rice.krad.uif.view.View cannot be cast to org.kuali.rice.krad.uif.view.LookupView", "KULRICE-10489 KRAD Demo Lookup Sample with Conditional Criteria ClassCastException on search");
 
         jiraMatches.put("WorkFlowRouteRulesBlanketApp expected:<[FINAL]>", "KULRICE-9051 WorkFlow Route Rules Blanket Approval submit status results in Enroute, not Final");
+
+        jiraMatches.put("//div[@class='uif-stackedCollectionLayout']/div[@class='uif-collectionItem uif-gridCollectionItem']/table/tbody/tr/td/div/input[@name='collection4[0].field1']", "KULRICE-10520 Update DemoLibraryLayoutManagersStackedLayoutSmokeTest");
         //jiraMatches.put("", "");
     }
 

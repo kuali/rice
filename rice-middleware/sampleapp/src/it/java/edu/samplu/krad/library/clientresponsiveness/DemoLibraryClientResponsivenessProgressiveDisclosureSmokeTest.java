@@ -57,6 +57,7 @@ public class DemoLibraryClientResponsivenessProgressiveDisclosureSmokeTest exten
     
     protected void testClientResponsivenessProgressiveDisclosureAjaxRetrieval() throws Exception {
         waitAndClickByLinkText("Ajax Retrieval");
+        checkForIncidentReport("DemoLibraryClientResponsivenessProgressiveDisclosureSmokeTest Ajax Retrieval");
         assertIsNotVisibleByXpath("//input[@name='inputField4']", "element");
         waitAndClickByName("booleanField2");
         assertIsVisibleByXpath("//input[@name='inputField4']", "element");

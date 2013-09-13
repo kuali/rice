@@ -110,6 +110,8 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("//div[@class='uif-stackedCollectionLayout']/div[@class='uif-collectionItem uif-gridCollectionItem']/table/tbody/tr/td/div/input[@name='collection4[0].field1']", "KULRICE-10520 Update DemoLibraryLayoutManagersStackedLayoutSmokeTest");
 
         jiraMatches.put("//div[@id='Demo-TableLayoutDetails-Example4']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='dataTables_wrapper']/table/tbody/tr[@class='detailsRow']/td/div/div[@class='uif-verticalBoxLayout clearfix']/div[@class='uif-stackedSubCollection uif-boxLayoutVerticalItem clearfix']/div[@class='uif-stackedCollectionLayout']/div/table", "KULRICE-10521 Update DemoLibraryCollectionFeaturesRowDetailsSmokeTest");
+
+        jiraMatches.put("//input[@name='inputField4']", "KULRICE-10522 KRAD Demo Library Client Responsiveness Progressive Disclosure Ajax Retrieval NullPointer Incident Report");
         //jiraMatches.put("", "");
     }
 

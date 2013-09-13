@@ -44,83 +44,61 @@ public class DemoLibraryLayoutManagersCssGridLayoutSmokeTest extends SmokeTestBa
         waitAndClickByLinkText("Css Grid Layout");
     }
 
-    protected void testLayoutManagersCssGridLayoutFixedExample1() throws Exception {
-        // https://jira.kuali.org/browse/KULRICE-10333
-       waitForElementPresentByXpath("//div[@class='span9 uif-fixedCssGridLayout']/div/div[@class='span3']/div/input[@name='inputField1']");
-       assertElementPresentByXpath("//div[@class='span9 uif-fixedCssGridLayout']/div/div[@class='span3'][2]/div/input[@name='inputField2']");
-       assertElementPresentByXpath("//div[@class='span9 uif-fixedCssGridLayout']/div/div[@class='span3'][3]/div/input[@name='inputField3']");
-       assertElementPresentByXpath("//div[@class='span9 uif-fixedCssGridLayout']/div[2]/div[@class='span4']/div/input[@name='inputField4']");
-       assertElementPresentByXpath("//div[@class='span9 uif-fixedCssGridLayout']/div[2]/div[@class='span5']/div/input[@name='inputField5']");
+    protected void testLayoutManagersCssGridLayoutDefault() throws Exception {
+        waitForElementPresentByXpath("//div[@id='Demo-CssGridLayoutManager-Example1']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-cssGridLayout']/div/div/div/input");
+        assertElementPresentByXpath("//div[@id='Demo-CssGridLayoutManager-Example1']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-cssGridLayout']/div/div[2]/div/input");
+        assertElementPresentByXpath("//div[@id='Demo-CssGridLayoutManager-Example1']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-cssGridLayout']/div/div[3]/div/input");
+        assertElementPresentByXpath("//div[@id='Demo-CssGridLayoutManager-Example1']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-cssGridLayout']/div[2]/div/div/input");
+        assertElementPresentByXpath("//div[@id='Demo-CssGridLayoutManager-Example1']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-cssGridLayout']/div[2]/div[2]/div/input");
     }
     
-    protected void testLayoutManagersCssGridLayoutFixedExample2() throws Exception {
-        selectByName("exampleShown", "Fixed Example 2");
-        waitForElementPresentByXpath("//div[@class='span9 uif-fixedCssGridLayout']/div/div[@class='span9']/div/input[@name='inputField6']");
-        assertElementPresentByXpath("//div[@class='span9 uif-fixedCssGridLayout']/div/div[@class='span6']/div/input[@name='inputField7']");
-        assertElementPresentByXpath("//div[@class='span9 uif-fixedCssGridLayout']/div/div[@class='span3']/div/input[@name='inputField8']");
-     }
-    
-    protected void testLayoutManagersCssGridLayoutFluidExample1() throws Exception {
-        selectByName("exampleShown", "Fluid Example 1");
-        waitForElementPresentByXpath("//div[@class='uif-fluidCssGridLayout']/div/div[@class='span3']/div/input[@name='inputField9']");
-        assertElementPresentByXpath("//div[@class='uif-fluidCssGridLayout']/div/div[@class='span3']/div/input[@name='inputField10']");
-        assertElementPresentByXpath("//div[@class='uif-fluidCssGridLayout']/div/div[@class='span3']/div/input[@name='inputField11']");
-        assertElementPresentByXpath("//div[@class='uif-fluidCssGridLayout']/div[2]/div[@class='span4']/div/input[@name='inputField12']");
-        assertElementPresentByXpath("//div[@class='uif-fluidCssGridLayout']/div[2]/div[@class='span5']/div/input[@name='inputField13']");
-     }
-    
-    protected void testLayoutManagersCssGridLayoutFluidExample2() throws Exception {
-        selectByName("exampleShown", "Fluid Example 2");
-        waitForElementPresentByXpath("//div[@class='uif-fluidCssGridLayout']/div/div[@class='span9']/div/input[@name='inputField14']");
-        assertElementPresentByXpath("//div[@class='uif-fluidCssGridLayout']/div/div[@class='span6']/div/input[@name='inputField15']");
-        assertElementPresentByXpath("//div[@class='uif-fluidCssGridLayout']/div/div[@class='span3']/div/input[@name='inputField16']");
+    protected void testLayoutManagersCssGridLayoutDefaultWidthBehaviour() throws Exception {
+        selectByName("exampleShown", "Default width behavior");
+        waitForElementPresentByXpath("//div[@id='Demo-CssGridLayoutManager-Example2']/div[@class='uif-verticalBoxLayout clearfix']/div/div/div/div/div/input");
+        assertElementPresentByXpath("//div[@id='Demo-CssGridLayoutManager-Example2']/div[@class='uif-verticalBoxLayout clearfix']/div/div/div[2]/div/div/input");
+        assertElementPresentByXpath("//div[@id='Demo-CssGridLayoutManager-Example2']/div[@class='uif-verticalBoxLayout clearfix']/div/div/div[2]/div[2]/div/input");
      }
     
     protected void testLayoutManagersCssGridLayoutRowCss() throws Exception {
         selectByName("exampleShown", "Row Css");
-        waitForElementPresentByXpath("//div[@class='span9 uif-fixedCssGridLayout']/div[@class='row demo-odd demo-border']/div[@class='span3']/div/input[@name='inputField17']");
-        assertElementPresentByXpath("//div[@class='span9 uif-fixedCssGridLayout']/div[@class='row demo-odd demo-border']/div[@class='span3']/div/input[@name='inputField18']");
-        assertElementPresentByXpath("//div[@class='span9 uif-fixedCssGridLayout']/div[@class='row demo-odd demo-border']/div[@class='span3']/div/input[@name='inputField19']");
-        assertElementPresentByXpath("//div[@class='span9 uif-fixedCssGridLayout']/div[@class='row demo-even demo-border']/div[@class='span4']/div/input[@name='inputField20']");
-        assertElementPresentByXpath("//div[@class='span9 uif-fixedCssGridLayout']/div[@class='row demo-even demo-border']/div[@class='span5']/div/input[@name='inputField21']");
+        waitForElementPresentByXpath("//div[@class='row demo-odd demo-border']/div/div/input[@name='inputField17']");
+        assertElementPresentByXpath("//div[@class='row demo-odd demo-border']/div/div/input[@name='inputField18']");
+        assertElementPresentByXpath("//div[@class='row demo-odd demo-border']/div/div/input[@name='inputField19']");
+        assertElementPresentByXpath("//div[@class='row demo-even demo-border']/div/div/input[@name='inputField20']");
+        assertElementPresentByXpath("//div[@class='row demo-even demo-border']/div/div/input[@name='inputField21']");
      }
     
-    protected void testLayoutManagersCssGridLayoutDefaultColSpan() throws Exception {
+    protected void testLayoutManagersCssGridLayoutDefaultColspan() throws Exception {
         selectByName("exampleShown", "Default ColSpan");
-        waitForElementPresentByXpath("//div[@class='span9 uif-fixedCssGridLayout']/div/div[@class='span3']/div/input[@name='inputField22']");
-        assertElementPresentByXpath("//div[@class='span9 uif-fixedCssGridLayout']/div/div[@class='span3']/div/input[@name='inputField23']");
-        assertElementPresentByXpath("//div[@class='span9 uif-fixedCssGridLayout']/div/div[@class='span3']/div/input[@name='inputField24']");
-        assertElementPresentByXpath("//div[@class='span9 uif-fixedCssGridLayout']/div/div[@class='span3']/div/input[@name='inputField25']");
-        assertElementPresentByXpath("//div[@class='span9 uif-fixedCssGridLayout']/div/div[@class='span3']/div/input[@name='inputField26']");
-        assertElementPresentByXpath("//div[@class='span9 uif-fixedCssGridLayout']/div/div[@class='span3']/div/input[@name='inputField27']");
-     }
+        waitForElementPresentByXpath("//div[@id='Demo-CssGridLayoutManager-Example6']/div[@class='uif-verticalBoxLayout clearfix']/div/div/div/div/div/input[@name='inputField22']");
+        assertElementPresentByXpath("//div[@id='Demo-CssGridLayoutManager-Example6']/div[@class='uif-verticalBoxLayout clearfix']/div/div/div/div/div/input[@name='inputField23']");
+        assertElementPresentByXpath("//div[@id='Demo-CssGridLayoutManager-Example6']/div[@class='uif-verticalBoxLayout clearfix']/div/div/div/div/div/input[@name='inputField24']");
+        assertElementPresentByXpath("//div[@id='Demo-CssGridLayoutManager-Example6']/div[@class='uif-verticalBoxLayout clearfix']/div/div/div/div/div/input[@name='inputField25']");
+        assertElementPresentByXpath("//div[@id='Demo-CssGridLayoutManager-Example6']/div[@class='uif-verticalBoxLayout clearfix']/div/div/div/div/div/input[@name='inputField26']");
+    }
     
     protected void testLayoutManagersCssGridLayoutGroupLayout() throws Exception {
         selectByName("exampleShown", "Group Layout");
-        waitForElementPresentByXpath("//div[@class='span9 uif-fixedCssGridLayout']/div/div[@class='span3']/div[@class='uif-boxSection']");
-        assertElementPresentByXpath("//div[@class='span9 uif-fixedCssGridLayout']/div/div[@class='span6']/div[@class='uif-boxSection']");
+        waitForElementPresentByXpath("//div[@id='Demo-CssGridLayoutManager-Example7']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-cssGridLayout']/div/div/div[@class='uif-boxSection' and @style='background-color: #00CC66; height: 200px;']");
+        assertElementPresentByXpath("//div[@id='Demo-CssGridLayoutManager-Example7']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-cssGridLayout']/div/div/div[@class='uif-boxSection' and @style='background-color: #00CCFF; height: 200px;']");
      }
     
     @Test
     public void testLayoutManagersCssGridLayoutBookmark() throws Exception {
-        testLayoutManagersCssGridLayoutFixedExample1();
-        testLayoutManagersCssGridLayoutFixedExample2();
-        testLayoutManagersCssGridLayoutFluidExample1();
-        testLayoutManagersCssGridLayoutFluidExample2();
+        testLayoutManagersCssGridLayoutDefault();
+        testLayoutManagersCssGridLayoutDefaultWidthBehaviour();
         testLayoutManagersCssGridLayoutRowCss();
-        testLayoutManagersCssGridLayoutDefaultColSpan();
+        testLayoutManagersCssGridLayoutDefaultColspan();
         testLayoutManagersCssGridLayoutGroupLayout();
         passed();
     }
 
     @Test
     public void testLayoutManagersCssGridLayoutNav() throws Exception {
-        testLayoutManagersCssGridLayoutFixedExample1();
-        testLayoutManagersCssGridLayoutFixedExample2();
-        testLayoutManagersCssGridLayoutFluidExample1();
-        testLayoutManagersCssGridLayoutFluidExample2();
+        testLayoutManagersCssGridLayoutDefault();
+        testLayoutManagersCssGridLayoutDefaultWidthBehaviour();
         testLayoutManagersCssGridLayoutRowCss();
-        testLayoutManagersCssGridLayoutDefaultColSpan();
+        testLayoutManagersCssGridLayoutDefaultColspan();
         testLayoutManagersCssGridLayoutGroupLayout();
         passed();
     }  

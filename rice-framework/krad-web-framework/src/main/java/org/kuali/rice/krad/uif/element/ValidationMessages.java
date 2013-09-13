@@ -108,7 +108,10 @@ public class ValidationMessages extends ContentElementBase {
         MessageMap messageMap = GlobalVariables.getMessageMap();
 
         String parentContainerId = "";
-        Object parentContainer = parent.getContext().get("parent");
+
+        Map<String, Object> parentContext = parent.getContext();
+        Object parentContainer = parentContext == null ? null : parentContext
+                .get(UifConstants.ContextVariableNames.PARENT);
 
         if (parentContainer != null && (parentContainer instanceof Container
                 || parentContainer instanceof FieldGroup)) {

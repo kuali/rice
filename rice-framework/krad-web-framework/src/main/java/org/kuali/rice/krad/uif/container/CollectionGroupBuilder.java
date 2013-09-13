@@ -727,7 +727,12 @@ public class CollectionGroupBuilder implements Serializable {
         // evaluate conditional render string if set
         if (StringUtils.isNotBlank(conditionalRender)) {
             Map<String, Object> context = new HashMap<String, Object>();
-            context.putAll(view.getContext());
+            Map<String, Object> viewContext = view.getContext();
+            
+            if (viewContext != null) {
+                context.putAll(viewContext);
+            }
+            
             context.put(UifConstants.ContextVariableNames.PARENT, collectionGroup);
             context.put(UifConstants.ContextVariableNames.COMPONENT, subCollectionGroup);
 
@@ -882,9 +887,17 @@ public class CollectionGroupBuilder implements Serializable {
      */
     protected Map<String, Object> getContextForField(View view, CollectionGroup collectionGroup, Field field) {
         Map<String, Object> context = new HashMap<String, Object>();
+        
+        Map<String, Object> viewContext = view.getContext();
+        if (viewContext != null) {
+            context.putAll(viewContext);
+        }
+        
+        Map<String, Object> fieldContext = field.getContext();
+        if (fieldContext != null) {
+            context.putAll(fieldContext);
+        }
 
-        context.putAll(view.getContext());
-        context.putAll(field.getContext());
         context.put(UifConstants.ContextVariableNames.PARENT, collectionGroup);
         context.put(UifConstants.ContextVariableNames.COMPONENT, field);
 

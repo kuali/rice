@@ -32,20 +32,23 @@ import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.widget.DatePicker;
 import org.kuali.rice.krad.util.KRADUtils;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Contains all the methods necessary for generating the js required to perform validation client side.
- * The processAndApplyConstraints(InputField field, View view) is the key method of this class used by
- * InputField to setup its client side validation mechanisms.
- *
+ * Contains all the methods necessary for generating the js required to perform validation client
+ * side. The processAndApplyConstraints(InputField field, View view) is the key method of this class
+ * used by InputField to setup its client side validation mechanisms.
+ * 
  * Methods now take into account state based validation and states on constraints.
- *
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ClientValidationUtils {
@@ -100,11 +103,11 @@ public class ClientValidationUtils {
 
     /**
      * Returns formatted message text for the given message namespace, component, and key
-     *
+     * 
      * @param namespace namespace code the message is associated with, if null the default namespace
-     * will be used
+     *        will be used
      * @param componentCode component code the message is associated with, if null default component
-     * code is used
+     *        code is used
      * @param messageKey key for the message to retrieve
      * @param params list of parameters for the message text
      * @return formatted message text
@@ -131,9 +134,9 @@ public class ClientValidationUtils {
     }
 
     /**
-     * Generates the js object used to override all default messages for validator jquery plugin with
-     * custom messages retrieved from the message service
-     *
+     * Generates the js object used to override all default messages for validator jquery plugin
+     * with custom messages retrieved from the message service
+     * 
      * @return script for message override
      */
     public static String generateValidatorMessagesOption() {
@@ -160,9 +163,9 @@ public class ClientValidationUtils {
     }
 
     /**
-     * Returns the add method jquery validator call for the regular expression
-     * stored in validCharactersConstraint.
-     *
+     * Returns the add method jquery validator call for the regular expression stored in
+     * validCharactersConstraint.
+     * 
      * @param validCharactersConstraint
      * @return js validator.addMethod script
      */
@@ -193,10 +196,10 @@ public class ClientValidationUtils {
     }
 
     /**
-     * Returns the add method jquery validator call for the regular expression
-     * stored in validCharactersConstraint that explicitly checks a boolean.  Needed because one method
-     * accepts params and the other doesn't.
-     *
+     * Returns the add method jquery validator call for the regular expression stored in
+     * validCharactersConstraint that explicitly checks a boolean. Needed because one method accepts
+     * params and the other doesn't.
+     * 
      * @param validCharactersConstraint
      * @return js validator.addMethod script
      */
@@ -228,14 +231,13 @@ public class ClientValidationUtils {
     }
 
     /**
-     * This method processes a single CaseConstraint. Internally it makes calls
-     * to processWhenConstraint for each WhenConstraint that exists in this
-     * constraint. It adds a "dependsOn" css class to this field for the field
-     * which the CaseConstraint references.
-     *
+     * This method processes a single CaseConstraint. Internally it makes calls to
+     * processWhenConstraint for each WhenConstraint that exists in this constraint. It adds a
+     * "dependsOn" css class to this field for the field which the CaseConstraint references.
+     * 
      * @param view
-     * @param andedCase the boolean logic to be anded when determining if this case is
-     * satisfied (used for nested CaseConstraints)
+     * @param andedCase the boolean logic to be anded when determining if this case is satisfied
+     *        (used for nested CaseConstraints)
      */
     public static void processCaseConstraint(InputField field, View view, CaseConstraint constraint, String andedCase,
             String validationState, StateMapping stateMapping) {
@@ -276,12 +278,11 @@ public class ClientValidationUtils {
     }
 
     /**
-     * This method processes the WhenConstraint passed in. The when constraint
-     * is used to create a boolean statement to determine if the constraint will
-     * be applied. The necessary rules/methods for applying this constraint are
-     * created in the createRule call. Note the use of the use of coerceValue js
-     * function call.
-     *
+     * This method processes the WhenConstraint passed in. The when constraint is used to create a
+     * boolean statement to determine if the constraint will be applied. The necessary rules/methods
+     * for applying this constraint are created in the createRule call. Note the use of the use of
+     * coerceValue js function call.
+     * 
      * @param view
      * @param wc
      * @param fieldPath
@@ -351,7 +352,7 @@ public class ClientValidationUtils {
 
     /**
      * Adds the script to the view to execute on a jQuery document ready event.
-     *
+     * 
      * @param view
      * @param script
      */
@@ -367,7 +368,7 @@ public class ClientValidationUtils {
     /**
      * Determines which fields are being evaluated in a boolean statement, so handlers can be
      * attached to them if needed, returns these names in a list.
-     *
+     * 
      * @param statement
      * @return
      */
@@ -376,14 +377,14 @@ public class ClientValidationUtils {
         String[] splits = StringUtils.splitByWholeSeparator(statement, "coerceValue(");
         for (String s : splits) {
             //must be a coerceValue param and not preceding content from the split, always starts with "'"
-            if(!s.startsWith("'")){
+            if (!s.startsWith("'")) {
                 continue;
             }
 
             s = s.substring(1);
             String fieldName = StringUtils.substringBefore(s, "'");
             //Only add field name once for this condition check
-            if(fieldNames.contains(fieldName)){
+            if (fieldNames.contains(fieldName)) {
                 fieldNames.add(fieldName);
             }
 
@@ -392,18 +393,16 @@ public class ClientValidationUtils {
     }
 
     /**
-     * This method takes in a constraint to apply only when the passed in
-     * booleanStatement is valid. The method will create the necessary addMethod
-     * and addRule jquery validator calls for the rule to be applied to the
-     * field when the statement passed in evaluates to true during runtime and
-     * this field is being validated. Note the use of custom methods for min/max
-     * length/value.
-     *
+     * This method takes in a constraint to apply only when the passed in booleanStatement is valid.
+     * The method will create the necessary addMethod and addRule jquery validator calls for the
+     * rule to be applied to the field when the statement passed in evaluates to true during runtime
+     * and this field is being validated. Note the use of custom methods for min/max length/value.
+     * 
      * @param field the field to apply the generated methods and rules to
-     * @param constraint the constraint to be applied when the booleanStatement
-     * evaluates to true during validation
-     * @param booleanStatement the booleanstatement in js - should return true when the
-     * validation rule should be applied
+     * @param constraint the constraint to be applied when the booleanStatement evaluates to true
+     *        during validation
+     * @param booleanStatement the booleanstatement in js - should return true when the validation
+     *        rule should be applied
      * @param view
      * @return
      */
@@ -422,7 +421,8 @@ public class ClientValidationUtils {
                     for (String checkedField : parseOutFields(booleanStatement)) {
                         showIndicatorScript = showIndicatorScript +
                                 "setupShowReqIndicatorCheck('" + checkedField + "', '" + field.getBindingInfo()
-                                .getBindingPath() + "', " + "function(){\nreturn (" + booleanStatement + ");});\n";
+                                        .getBindingPath() + "', " + "function(){\nreturn (" + booleanStatement
+                                + ");});\n";
                     }
                     addScriptToPage(view, field, showIndicatorScript);
 
@@ -525,7 +525,7 @@ public class ClientValidationUtils {
 
     /**
      * Simpler version of processPrerequisiteConstraint
-     *
+     * 
      * @param constraint
      * @param view
      * @see ClientValidationUtils#processPrerequisiteConstraint(org.kuali.rice.krad.uif.field.InputField,
@@ -536,13 +536,13 @@ public class ClientValidationUtils {
     }
 
     /**
-     * Processes a Prerequisite constraint that should be applied
-     * when the booleanStatement passed in evaluates to true.
-     *
+     * Processes a Prerequisite constraint that should be applied when the booleanStatement passed
+     * in evaluates to true.
+     * 
      * @param constraint prerequisiteConstraint
      * @param view
-     * @param booleanStatement the booleanstatement in js - should return true when the
-     * validation rule should be applied
+     * @param booleanStatement the booleanstatement in js - should return true when the validation
+     *        rule should be applied
      */
     public static void processPrerequisiteConstraint(InputField field, PrerequisiteConstraint constraint, View view,
             String booleanStatement) {
@@ -576,15 +576,14 @@ public class ClientValidationUtils {
     }
 
     /**
-     * Creates the script necessary for executing a prerequisite
-     * rule in which this field occurs after the field specified in the
-     * prerequisite rule - since it requires a specific set of UI logic. Builds
-     * an if statement containing an addMethod jquery validator call. Adds a
+     * Creates the script necessary for executing a prerequisite rule in which this field occurs
+     * after the field specified in the prerequisite rule - since it requires a specific set of UI
+     * logic. Builds an if statement containing an addMethod jquery validator call. Adds a
      * "dependsOn" css class to this field for the field specified.
-     *
+     * 
      * @param constraint prerequisiteConstraint
-     * @param booleanStatement the booleanstatement in js - should return true when the
-     * validation rule should be applied
+     * @param booleanStatement the booleanstatement in js - should return true when the validation
+     *        rule should be applied
      * @return
      */
     private static String getPrerequisiteStatement(InputField field, View view, PrerequisiteConstraint constraint,
@@ -629,7 +628,7 @@ public class ClientValidationUtils {
 
         String method = "\njQuery.validator.addMethod(\"" + methodName + "\", function(value, element) {\n" +
                 " if(" + booleanStatement + "){ return (this.optional(element) || (coerceValue('" + ScriptUtils
-                .escapeName(constraint.getPropertyName()) + "')));}else{return true;} " +
+                        .escapeName(constraint.getPropertyName()) + "')));}else{return true;} " +
                 "}, \"" + message + "\");";
 
         String ifStatement = "if(occursBefore('"
@@ -646,14 +645,14 @@ public class ClientValidationUtils {
     }
 
     /**
-     * This method creates the script necessary for executing a prerequisite
-     * rule in which this field occurs before the field specified in the
-     * prerequisite rule - since it requires a specific set of UI logic. Builds
-     * an if statement containing an addMethod jquery validator call.
-     *
+     * This method creates the script necessary for executing a prerequisite rule in which this
+     * field occurs before the field specified in the prerequisite rule - since it requires a
+     * specific set of UI logic. Builds an if statement containing an addMethod jquery validator
+     * call.
+     * 
      * @param constraint prerequisiteConstraint
-     * @param booleanStatement the booleanstatement in js - should return true when the
-     * validation rule should be applied
+     * @param booleanStatement the booleanstatement in js - should return true when the validation
+     *        rule should be applied
      * @return
      */
     private static String getPostrequisiteStatement(InputField field, PrerequisiteConstraint constraint,
@@ -704,15 +703,15 @@ public class ClientValidationUtils {
     }
 
     /**
-     * This method processes the MustOccurConstraint. The constraint is only
-     * applied when the booleanStatement evaluates to true during validation.
-     * This method creates the addMethod and add rule calls for the jquery
-     * validation plugin necessary for applying this constraint to this field.
-     *
+     * This method processes the MustOccurConstraint. The constraint is only applied when the
+     * booleanStatement evaluates to true during validation. This method creates the addMethod and
+     * add rule calls for the jquery validation plugin necessary for applying this constraint to
+     * this field.
+     * 
      * @param view
      * @param mc
-     * @param booleanStatement the booleanstatement in js - should return true when the
-     * validation rule should be applied
+     * @param booleanStatement the booleanstatement in js - should return true when the validation
+     *        rule should be applied
      */
     public static void processMustOccurConstraint(InputField field, View view, MustOccurConstraint mc,
             String booleanStatement) {
@@ -744,12 +743,11 @@ public class ClientValidationUtils {
     }
 
     /**
-     * This method takes in a MustOccurConstraint and returns the statement used
-     * in determining if the must occurs constraint has been satisfied when this
-     * field is validated. Note the use of the mustOccurCheck method. Nested
-     * mustOccurConstraints are ored against the result of the mustOccurCheck by
-     * calling this method recursively.
-     *
+     * This method takes in a MustOccurConstraint and returns the statement used in determining if
+     * the must occurs constraint has been satisfied when this field is validated. Note the use of
+     * the mustOccurCheck method. Nested mustOccurConstraints are ored against the result of the
+     * mustOccurCheck by calling this method recursively.
+     * 
      * @param constraint
      * @return
      */
@@ -805,11 +803,11 @@ public class ClientValidationUtils {
     }
 
     /**
-     * Generates a message for the must occur constraint (if no label key is specified).
-     * This message is most accurate when must occurs is a single
-     * or double level constraint.  Beyond that, the message will still be accurate but may be confusing for
-     * the user - this auto-generated message however will work in MOST use cases.
-     *
+     * Generates a message for the must occur constraint (if no label key is specified). This
+     * message is most accurate when must occurs is a single or double level constraint. Beyond
+     * that, the message will still be accurate but may be confusing for the user - this
+     * auto-generated message however will work in MOST use cases.
+     * 
      * @param view
      * @return
      */
@@ -823,7 +821,6 @@ public class ClientValidationUtils {
         } else {
             String and = messageService.getMessageText(AND_MSG_KEY);
             String or = messageService.getMessageText(OR_MSG_KEY);
-            String all = messageService.getMessageText(ALL_MSG_KEY);
             String mustOccursMsgEqualMinMax = messageService.getMessageText(
                     UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + MUSTOCCURS_MSG_EQUAL_KEY);
             String atMost = messageService.getMessageText(ATMOST_MSG_KEY);
@@ -900,11 +897,12 @@ public class ClientValidationUtils {
     }
 
     /**
-     * This method processes all the constraints on the InputField passed in and adds all the necessary
-     * jQuery and js required (validator's rules, methods, and messages) to the View's onDocumentReady call.
-     * The result is js that will validate all the constraints contained on an InputField during user interaction
-     * with the field using the jQuery validation plugin and custom code.
-     *
+     * This method processes all the constraints on the InputField passed in and adds all the
+     * necessary jQuery and js required (validator's rules, methods, and messages) to the View's
+     * onDocumentReady call. The result is js that will validate all the constraints contained on an
+     * InputField during user interaction with the field using the jQuery validation plugin and
+     * custom code.
+     * 
      * @param field
      */
     @SuppressWarnings("boxing")
@@ -925,7 +923,14 @@ public class ClientValidationUtils {
                 if (simpleConstraint.getExclusiveMin() != null) {
                     if (field.getControl() instanceof TextControl
                             && ((TextControl) field.getControl()).getDatePicker() != null) {
-                        ((TextControl) field.getControl()).getDatePicker().getTemplateOptions().put("minDate",
+                        DatePicker datePicker = ((TextControl) field.getControl()).getDatePicker();
+                        Map<String, String> dpTemplateOptions = datePicker.getTemplateOptions();
+
+                        if (dpTemplateOptions == null) {
+                            datePicker.setTemplateOptions(dpTemplateOptions = new HashMap<String, String>());
+                        }
+
+                        dpTemplateOptions.put("minDate",
                                 simpleConstraint.getExclusiveMin());
                     } else {
                         String rule = "jQuery('[name=\""

@@ -15,6 +15,12 @@
  */
 package org.kuali.rice.krad.uif.component;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -25,30 +31,24 @@ import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.control.ControlBase;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.util.CloneUtils;
-import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
+import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Tooltip;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.ObjectUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
- * Base implementation of <code>Component</code> which other component
- * implementations should extend
- *
+ * Base implementation of <code>Component</code> which other component implementations should extend
+ * 
  * <p>
- * Provides base component properties such as id and template. Also provides
- * default implementation for the <code>ScriptEventSupport</code> and
- * <code>Ordered</code> interfaces. By default no script events except the
- * onDocumentReady are supported.
+ * Provides base component properties such as id and template. Also provides default implementation
+ * for the <code>ScriptEventSupport</code> and <code>Ordered</code> interfaces. By default no script
+ * events except the onDocumentReady are supported.
  * </p>
- *
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTag(name = "componentBase-bean", parent = "Uif-ComponentBase")
@@ -163,6 +163,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     public ComponentBase() {
         super();
 
+        ProcessLogger.ntrace("new-comp:", ":" + getClass().getSimpleName(), 1000);
+
         order = 0;
         colSpan = 1;
         rowSpan = 1;
@@ -178,25 +180,28 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
         componentSecurity = ObjectUtils.newInstance(getComponentSecurityClass());
 
-        refreshWhenChangedPropertyNames = new ArrayList<String>();
-        additionalComponentsToRefresh = new ArrayList<String>();
-        finalizeMethodAdditionalArguments = new ArrayList<Object>();
-        cellCssClasses = new ArrayList<String>();
-        cssClasses = new ArrayList<String>();
-        componentModifiers = new ArrayList<ComponentModifier>();
-        templateOptions = new HashMap<String, String>();
-        context = new HashMap<String, Object>();
-        propertyReplacers = new ArrayList<PropertyReplacer>();
-        dataAttributes = new HashMap<String, String>();
+        // TODO : lazy init
+        //    DONE: refreshWhenChangedPropertyNames = new ArrayList<String>();
+        //    DONE: additionalComponentsToRefresh = new ArrayList<String>();
+        //    DONE: finalizeMethodAdditionalArguments = new ArrayList<Object>();
+        //    DONE: cellCssClasses = new ArrayList<String>();
+        //    DONE: cssClasses = new ArrayList<String>();
+        //    DONE: componentModifiers = new ArrayList<ComponentModifier>();
+        //    DONE: templateOptions = new HashMap<String, String>();
+        //    DONE: context = new HashMap<String, Object>();
+        //    DONE: propertyReplacers = new ArrayList<PropertyReplacer>();
+        //    DONE: dataAttributes = new HashMap<String, String>();
+        // TODO: KULRICE-8954 test for NPE
+
     }
 
     /**
      * The following updates are done here:
-     *
+     * 
      * <ul>
      * <li></li>
      * </ul>
-     *
+     * 
      * @see org.kuali.rice.krad.uif.component.Component#performInitialization(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object)
      */
@@ -206,15 +211,14 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * The following updates are done here:
-     *
+     * 
      * <ul>
-     * <li>Evaluate the progressive render condition (if set) and combine with the current render status to set the
-     * render status</li>
+     * <li>Evaluate the progressive render condition (if set) and combine with the current render
+     * status to set the render status</li>
      * </ul>
-     *
+     * 
      * @see org.kuali.rice.krad.uif.component.Component#performApplyModel(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object,
-     *      org.kuali.rice.krad.uif.component.Component)
+     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     public void performApplyModel(View view, Object model, Component parent) {
         if (this.render && StringUtils.isNotEmpty(progressiveRender)) {
@@ -224,6 +228,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
             String adjustedProgressiveRender = expressionEvaluator.replaceBindingPrefixes(view, this,
                     progressiveRender);
 
+            if (context == null) {
+                context = new HashMap<String, Object>();
+            }
             Boolean progRenderEval = (Boolean) expressionEvaluator.evaluateExpression(context,
                     adjustedProgressiveRender);
 
@@ -233,17 +240,15 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * The following finalization is done here:
-     *
+     * 
      * <ul>
      * <li>progressiveRender and conditionalRefresh variables are processed if set</li>
-     * <li>If any of the style properties were given, sets the style string on
-     * the style property</li>
+     * <li>If any of the style properties were given, sets the style string on the style property</li>
      * <li>Set the skipInTabOrder flag for nested components</li>
      * </ul>
-     *
+     * 
      * @see org.kuali.rice.krad.uif.component.Component#performFinalize(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object,
-     *      org.kuali.rice.krad.uif.component.Component)
+     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     public void performFinalize(View view, Object model, Component parent) {
         ExpressionEvaluator expressionEvaluator = view.getViewHelperService().getExpressionEvaluator();
@@ -264,13 +269,14 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
                     conditionalRefreshControlNames);
         }
 
-        List<String> adjustedRefreshPropertyNames = new ArrayList<String>();
-        for (String refreshPropertyName : refreshWhenChangedPropertyNames) {
-            adjustedRefreshPropertyNames.add(expressionEvaluator.replaceBindingPrefixes(view, this,
-                    refreshPropertyName));
+        if (refreshWhenChangedPropertyNames != null) {
+            List<String> adjustedRefreshPropertyNames = new ArrayList<String>(refreshWhenChangedPropertyNames.size());
+            for (String refreshPropertyName : refreshWhenChangedPropertyNames) {
+                adjustedRefreshPropertyNames.add(expressionEvaluator.replaceBindingPrefixes(view, this,
+                        refreshPropertyName));
+            }
+            refreshWhenChangedPropertyNames = adjustedRefreshPropertyNames;
         }
-
-        refreshWhenChangedPropertyNames = adjustedRefreshPropertyNames;
 
         // retrieveViaAjax forces session persistence because it assumes that this component will be retrieved by
         // some ajax retrieval call
@@ -293,7 +299,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
         // Set the skipInTabOrder flag on all nested components
         // Set the tabIndex on controls to -1 in order to be skipped on tabbing
-        if (skipInTabOrder){
+        if (skipInTabOrder) {
             for (Component component : getComponentsForLifecycle()) {
                 if (component != null && component instanceof ComponentBase) {
                     ((ComponentBase) component).setSkipInTabOrder(skipInTabOrder);
@@ -384,21 +390,31 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     public List<Component> getComponentPrototypes() {
         List<Component> components = new ArrayList<Component>();
 
-        for (ComponentModifier modifier : componentModifiers) {
-            components.addAll(modifier.getComponentPrototypes());
+        if (componentModifiers != null) {
+            for (ComponentModifier modifier : componentModifiers) {
+                components.addAll(modifier.getComponentPrototypes());
+            }
         }
 
-        components.addAll(getPropertyReplacerComponents());
+        List<Component> propertyReplacerComponents = getPropertyReplacerComponents();
+        if (propertyReplacerComponents != null) {
+            components.addAll(propertyReplacerComponents);
+        }
 
         return components;
     }
 
     /**
-     * Returns list of components that are being held in property replacers configured for this component
-     *
+     * Returns list of components that are being held in property replacers configured for this
+     * component
+     * 
      * @return List<Component>
      */
     public List<Component> getPropertyReplacerComponents() {
+        if (propertyReplacers == null) {
+            return null;
+        }
+        
         List<Component> components = new ArrayList<Component>();
         for (Object replacer : propertyReplacers) {
             components.addAll(((PropertyReplacer) replacer).getNestedComponents());
@@ -614,9 +630,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Builds the HTML class attribute string by combining the cellStyleClasses list
-     * with a space delimiter
-     *
+     * Builds the HTML class attribute string by combining the cellStyleClasses list with a space
+     * delimiter
+     * 
      * @return class attribute string
      */
     public String getCellStyleClassesAsString() {
@@ -717,10 +733,12 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * Additional css classes that come before css classes listed in the cssClasses property
-     *
-     * <p>These are used by the framework for styling with a library (for example, bootstrap), and should normally
-     * not be overridden.</p>
-     *
+     * 
+     * <p>
+     * These are used by the framework for styling with a library (for example, bootstrap), and
+     * should normally not be overridden.
+     * </p>
+     * 
      * @return the library cssClasses
      */
     public List<String> getLibraryCssClasses() {
@@ -729,7 +747,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * Set the libraryCssClasses
-     *
+     * 
      * @param libraryCssClasses
      */
     public void setLibraryCssClasses(List<String> libraryCssClasses) {
@@ -767,9 +785,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Builds the HTML class attribute string by combining the styleClasses list
-     * with a space delimiter
-     *
+     * Builds the HTML class attribute string by combining the styleClasses list with a space
+     * delimiter
+     * 
      * @return class attribute string
      */
     public String getStyleClassesAsString() {
@@ -784,6 +802,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#addStyleClass(java.lang.String)
      */
     public void addStyleClass(String styleClass) {
+        if (cssClasses == null) {
+            cssClasses = new LinkedList<String>();
+        }
         if (!cssClasses.contains(styleClass)) {
             cssClasses.add(styleClass);
         }
@@ -809,7 +830,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * Setter for the finalize method
-     *
+     * 
      * @param finalizeMethodToCall
      */
     public void setFinalizeMethodToCall(String finalizeMethodToCall) {
@@ -826,7 +847,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * Setter for the finalize additional arguments list
-     *
+     * 
      * @param finalizeMethodAdditionalArguments
      */
     public void setFinalizeMethodAdditionalArguments(List<Object> finalizeMethodAdditionalArguments) {
@@ -843,7 +864,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * Setter for the method invoker instance
-     *
+     * 
      * @param finalizeMethodInvoker
      */
     public void setFinalizeMethodInvoker(MethodInvokerConfig finalizeMethodInvoker) {
@@ -981,8 +1002,11 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     * PropertyReplacer object. Only checks for a list, map or component.
     */
     protected void pushToPropertyReplacerContext(String objectName, Object object) {
-        for (Component replacerComponent : getPropertyReplacerComponents()) {
-            replacerComponent.pushObjectToContext(objectName, object);
+        List<Component> propertyReplacerComponents = getPropertyReplacerComponents();
+        if (propertyReplacerComponents != null) {
+            for (Component replacerComponent : propertyReplacerComponents) {
+                replacerComponent.pushObjectToContext(objectName, object);
+            }
         }
     }
 
@@ -1022,7 +1046,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * Setter for the component's order
-     *
+     * 
      * @param order
      */
     public void setOrder(int order) {
@@ -1352,9 +1376,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     @BeanTagAttribute(name = "templateOptions", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getTemplateOptions() {
-        if (templateOptions == null) {
-            templateOptions = new HashMap<String, String>();
-        }
         return this.templateOptions;
     }
 
@@ -1366,10 +1387,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Builds a string from the underlying <code>Map</code> of template options
-     * that will export that options as a JavaScript Map for use in js and
-     * jQuery plugins
-     *
+     * Builds a string from the underlying <code>Map</code> of template options that will export
+     * that options as a JavaScript Map for use in js and jQuery plugins
+     * 
      * @return String of widget options formatted as JS Map.
      */
     @Override
@@ -1410,23 +1430,25 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * When set if the condition is satisfied, the component will be displayed. The component MUST BE a
-     * container or field type. progressiveRender is defined in a limited Spring EL syntax. Only valid
-     * form property names, and, or, logical comparison operators (non-arithmetic), #listContains, #emptyList, matches
-     * clause are allowed. String and regex values must use single quotes ('), booleans must be either true or false,
-     * numbers must be a valid double, either negative or positive.
-     *
+     * When set if the condition is satisfied, the component will be displayed. The component MUST
+     * BE a container or field type. progressiveRender is defined in a limited Spring EL syntax.
+     * Only valid form property names, and, or, logical comparison operators (non-arithmetic),
+     * #listContains, #emptyList, matches clause are allowed. String and regex values must use
+     * single quotes ('), booleans must be either true or false, numbers must be a valid double,
+     * either negative or positive.
+     * 
      * <p>
-     * DO NOT use progressiveRender and a conditional refresh statement on the same component
-     * unless it is known that the component will always be visible in all cases when a conditional refresh happens
-     * (ie conditional refresh has progressiveRender's condition anded with its own condition).
+     * DO NOT use progressiveRender and a conditional refresh statement on the same component unless
+     * it is known that the component will always be visible in all cases when a conditional refresh
+     * happens (ie conditional refresh has progressiveRender's condition anded with its own
+     * condition).
      * </p>
-     *
+     * 
      * <p>
-     * <b>If a component should be refreshed every time it is shown, use the progressiveRenderAndRefresh option
-     * with this property instead.</b>
+     * <b>If a component should be refreshed every time it is shown, use the
+     * progressiveRenderAndRefresh option with this property instead.</b>
      * </p>
-     *
+     * 
      * @return progressiveRender expression
      */
     @BeanTagAttribute(name = "progressiveRender")
@@ -1443,21 +1465,22 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * When set if the condition is satisfied, the component will be refreshed.
-     *
-     * <p>The component MUST BE a container or field type. conditionalRefresh is
-     * defined in a limited Spring EL syntax. Only valid form property names,
-     * and, or, logical comparison operators (non-arithmetic), #listContains, #emptyList, and the matches
-     * clause are allowed. String and regex values must use single quotes ('),
-     * booleans must be either true or false, numbers must be a valid double
-     * either negative or positive.
-     *
-     * <p>DO NOT use progressiveRender and conditionalRefresh on the same component
-     * unless it is known that the component will always be visible in all cases
-     * when a conditionalRefresh happens (ie conditionalRefresh has
-     * progressiveRender's condition anded with its own condition). <b>If a
-     * component should be refreshed every time it is shown, use the
-     * progressiveRenderAndRefresh option with this property instead.</b></p>
-     *
+     * 
+     * <p>
+     * The component MUST BE a container or field type. conditionalRefresh is defined in a limited
+     * Spring EL syntax. Only valid form property names, and, or, logical comparison operators
+     * (non-arithmetic), #listContains, #emptyList, and the matches clause are allowed. String and
+     * regex values must use single quotes ('), booleans must be either true or false, numbers must
+     * be a valid double either negative or positive.
+     * 
+     * <p>
+     * DO NOT use progressiveRender and conditionalRefresh on the same component unless it is known
+     * that the component will always be visible in all cases when a conditionalRefresh happens (ie
+     * conditionalRefresh has progressiveRender's condition anded with its own condition). <b>If a
+     * component should be refreshed every time it is shown, use the progressiveRenderAndRefresh
+     * option with this property instead.</b>
+     * </p>
+     * 
      * @return the conditionalRefresh
      */
     @BeanTagAttribute(name = "conditionalRefresh")
@@ -1467,7 +1490,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * Set the conditional refresh condition
-     *
+     * 
      * @param conditionalRefresh the conditionalRefresh to set
      */
     public void setConditionalRefresh(String conditionalRefresh) {
@@ -1475,9 +1498,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Control names used to control progressive disclosure, set internally
-     * cannot be set.
-     *
+     * Control names used to control progressive disclosure, set internally cannot be set.
+     * 
      * @return the progressiveDisclosureControlNames
      */
     public List<String> getProgressiveDisclosureControlNames() {
@@ -1485,9 +1507,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * The condition to show this component progressively converted to a js
-     * expression, set internally cannot be set.
-     *
+     * The condition to show this component progressively converted to a js expression, set
+     * internally cannot be set.
+     * 
      * @return the progressiveDisclosureConditionJs
      */
     public String getProgressiveDisclosureConditionJs() {
@@ -1495,9 +1517,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * The condition to refresh this component converted to a js expression, set
-     * internally cannot be set.
-     *
+     * The condition to refresh this component converted to a js expression, set internally cannot
+     * be set.
+     * 
      * @return the conditionalRefreshConditionJs
      */
     public String getConditionalRefreshConditionJs() {
@@ -1505,9 +1527,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Control names used to control conditional refresh, set internally cannot
-     * be set.
-     *
+     * Control names used to control conditional refresh, set internally cannot be set.
+     * 
      * @return the conditionalRefreshControlNames
      */
     public List<String> getConditionalRefreshControlNames() {
@@ -1515,14 +1536,16 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * When progressiveRenderViaAJAX is true, this component will be retrieved
-     * from the server when it first satisfies its progressive render condition.
-     *
-     * <p>After the first retrieval, it is hidden/shown in the html by the js when
-     * its progressive condition result changes. <b>By default, this is false,
-     * so components with progressive render capabilities will always be already
-     * within the client html and toggled to be hidden or visible.</b></p>
-     *
+     * When progressiveRenderViaAJAX is true, this component will be retrieved from the server when
+     * it first satisfies its progressive render condition.
+     * 
+     * <p>
+     * After the first retrieval, it is hidden/shown in the html by the js when its progressive
+     * condition result changes. <b>By default, this is false, so components with progressive render
+     * capabilities will always be already within the client html and toggled to be hidden or
+     * visible.</b>
+     * </p>
+     * 
      * @return the progressiveRenderViaAJAX
      */
     @BeanTagAttribute(name = "progressiveRenderViaAJAX")
@@ -1538,15 +1561,15 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * If true, when the progressiveRender condition is satisfied, the component
-     * will always be retrieved from the server and shown(as opposed to being
-     * stored on the client, but hidden, after the first retrieval as is the
-     * case with the progressiveRenderViaAJAX option).
-     *
-     * <p><b>By default, this is
-     * false, so components with progressive render capabilities will always be
-     * already within the client html and toggled to be hidden or visible.</b></p>
-     *
+     * If true, when the progressiveRender condition is satisfied, the component will always be
+     * retrieved from the server and shown(as opposed to being stored on the client, but hidden,
+     * after the first retrieval as is the case with the progressiveRenderViaAJAX option).
+     * 
+     * <p>
+     * <b>By default, this is false, so components with progressive render capabilities will always
+     * be already within the client html and toggled to be hidden or visible.</b>
+     * </p>
+     * 
      * @return the progressiveRenderAndRefresh
      */
     @BeanTagAttribute(name = "progressiveRenderAndRefresh")
@@ -1556,7 +1579,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * Set the progressive render and refresh option.
-     *
+     * 
      * @param progressiveRenderAndRefresh the progressiveRenderAndRefresh to set.
      */
     public void setProgressiveRenderAndRefresh(boolean progressiveRenderAndRefresh) {
@@ -1572,7 +1595,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#setRefreshWhenChangedPropertyNames(java.util.List<java.lang.String>)
+     * @see 
+     *      org.kuali.rice.krad.uif.component.Component#setRefreshWhenChangedPropertyNames(java.util.
+     *      List<java.lang.String>)
      */
     public void setRefreshWhenChangedPropertyNames(List<String> refreshWhenChangedPropertyNames) {
         this.refreshWhenChangedPropertyNames = refreshWhenChangedPropertyNames;
@@ -1587,7 +1612,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#setAdditionalComponentsToRefresh(java.util.List<java.lang.String>)
+     * @see 
+     *      org.kuali.rice.krad.uif.component.Component#setAdditionalComponentsToRefresh(java.util.List
+     *      <java.lang.String>)
      */
     public void setAdditionalComponentsToRefresh(List<String> additionalComponentsToRefresh) {
         this.additionalComponentsToRefresh = additionalComponentsToRefresh;
@@ -1597,7 +1624,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#getAdditionalComponentsToRefreshJs
      */
     public String getAdditionalComponentsToRefreshJs() {
-        if (!(this.getAdditionalComponentsToRefresh().isEmpty())) {
+        if (additionalComponentsToRefresh != null && !additionalComponentsToRefresh.isEmpty()) {
             additionalComponentsToRefreshJs = ScriptUtils.convertStringListToJsArray(
                     this.getAdditionalComponentsToRefresh());
         }
@@ -1635,12 +1662,13 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * Time in seconds that the component will be automatically refreshed
-     *
+     * 
      * <p>
-     * This will invoke the refresh process just like the conditionalRefresh and refreshWhenChangedPropertyNames.
-     * When using this property methodToCallOnRefresh and id should also be specified
+     * This will invoke the refresh process just like the conditionalRefresh and
+     * refreshWhenChangedPropertyNames. When using this property methodToCallOnRefresh and id should
+     * also be specified
      * </p>
-     *
+     * 
      * @return refreshTimer
      */
     @BeanTagAttribute(name = "refreshTimer")
@@ -1650,7 +1678,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * Setter for refreshTimer
-     *
+     * 
      * @param refreshTimer
      */
     public void setRefreshTimer(int refreshTimer) {
@@ -1673,20 +1701,22 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Name of a method on the controller that should be invoked as part of the component refresh and disclosure
-     * process
-     *
+     * Name of a method on the controller that should be invoked as part of the component refresh
+     * and disclosure process
+     * 
      * <p>
-     * During the component refresh or disclosure process it might be necessary to perform other operations, such as
-     * preparing data or executing a business process. This allows the configuration of a method on the underlying
-     * controller that should be called for the component refresh action. In this method, the necessary logic can be
-     * performed and then the base component update method invoked to carry out the component refresh.
+     * During the component refresh or disclosure process it might be necessary to perform other
+     * operations, such as preparing data or executing a business process. This allows the
+     * configuration of a method on the underlying controller that should be called for the
+     * component refresh action. In this method, the necessary logic can be performed and then the
+     * base component update method invoked to carry out the component refresh.
      * </p>
-     *
+     * 
      * <p>
-     * Controller method to invoke must accept the form, binding result, request, and response arguments
+     * Controller method to invoke must accept the form, binding result, request, and response
+     * arguments
      * </p>
-     *
+     * 
      * @return valid controller method name
      */
     @BeanTagAttribute(name = "methodToCallOnRefresh")
@@ -1696,7 +1726,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * Setter for the controller method to call for a refresh or disclosure action on this component
-     *
+     * 
      * @param methodToCallOnRefresh
      */
     public void setMethodToCallOnRefresh(String methodToCallOnRefresh) {
@@ -1711,9 +1741,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Flag indicating that this component and its nested components must be
-     * skipped when keyboard tabbing.
-     *
+     * Flag indicating that this component and its nested components must be skipped when keyboard
+     * tabbing.
+     * 
      * @return the skipInTabOrder flag
      */
     @BeanTagAttribute(name = "skipInTabOrder")
@@ -1723,12 +1753,13 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * Get the dataAttributes setup for this component - to be written to the html/jQuery data
-     *
-     * <p>The attributes that are complex objects (contain {}) they will be written through script.
-     * The attritubes that are simple (contain no objects) will be written directly to the html of the
-     * component using standard data-.
-     * Either way they can be access through .data() call in jQuery</p>
-     *
+     * 
+     * <p>
+     * The attributes that are complex objects (contain {}) they will be written through script. The
+     * attritubes that are simple (contain no objects) will be written directly to the html of the
+     * component using standard data-. Either way they can be access through .data() call in jQuery
+     * </p>
+     * 
      * @return map of dataAttributes
      */
     @BeanTagAttribute(name = "dataAttributes", type = BeanTagAttribute.AttributeType.MAPVALUE)
@@ -1737,8 +1768,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * DataAttributes that will be written to the html and/or through script to be consumed by jQuery.
-     *
+     * DataAttributes that will be written to the html and/or through script to be consumed by
+     * jQuery.
+     * 
      * @param dataAttributes the data attributes to set for this component
      */
     public void setDataAttributes(Map<String, String> dataAttributes) {
@@ -1747,7 +1779,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * Add a data attribute to the dataAttributes map - to be written to the html/jQuery data.
-     *
+     * 
      * @param key key of the data attribute
      * @param value value of the data attribute
      */
@@ -1760,9 +1792,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Add a data attribute to the dataAttributes map if the given value is non null
-     * or the empty string
-     *
+     * Add a data attribute to the dataAttributes map if the given value is non null or the empty
+     * string
+     * 
      * @param key key for the data attribute entry
      * @param value value for the data attribute
      */
@@ -1773,8 +1805,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Returns a string that can be put into a the tag of a component to add all data attributes inline.
-     *
+     * Returns a string that can be put into a the tag of a component to add all data attributes
+     * inline.
+     * 
      * @return html string for data attributes for the simple attributes
      */
     @Override
@@ -1943,7 +1976,10 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         componentCopy.setId(this.id);
         componentCopy.setBaseId(this.baseId);
 
-        componentCopy.setAdditionalComponentsToRefresh(new ArrayList<String>(this.getAdditionalComponentsToRefresh()));
+        List<String> copyAdditionalComponentsToRefresh = this.getAdditionalComponentsToRefresh();
+        if (copyAdditionalComponentsToRefresh != null) {
+            componentCopy.setAdditionalComponentsToRefresh(new ArrayList<String>(copyAdditionalComponentsToRefresh));
+        }
 
         if (this.additionalCssClasses != null) {
             componentCopy.setAdditionalCssClasses(new ArrayList<String>(this.additionalCssClasses));

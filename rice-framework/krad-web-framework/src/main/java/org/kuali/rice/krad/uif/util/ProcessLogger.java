@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.util;
 
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.Deque;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.Callable;
@@ -54,9 +55,9 @@ public class ProcessLogger {
         private final String name;
 
         /**
-         * The start time of the currently active execution.
+         * Stack of the start times for currently active executions.
          */
-        private long start;
+        private Deque<Long> start = new java.util.LinkedList<Long>();
 
         /**
          * The total count of all executions.
@@ -265,8 +266,7 @@ public class ProcessLogger {
                 pc = new ProcessCounter(name);
                 counters.put(name, pc);
             }
-            pc.start = System.currentTimeMillis();
-            pc.count++;
+            pc.start.push(new Long(System.currentTimeMillis()));
         }
 
         /**
@@ -279,11 +279,14 @@ public class ProcessLogger {
          */
         private ProcessCounter countEnd(String name, String detail) {
             ProcessCounter pc = counters.get(name);
-            if (pc == null) {
+            if (pc == null || pc.start.isEmpty()) {
                 return null;
             }
-            long elapsed = System.currentTimeMillis() - pc.start;
-            if (elapsed < pc.min || pc.min == 0L) {
+
+            long start = pc.start.pop();
+            long elapsed = System.currentTimeMillis() - start;
+            
+            if (elapsed < pc.min || pc.count == 0L) {
                 pc.min = elapsed;
             }
 
@@ -292,6 +295,7 @@ public class ProcessLogger {
                 pc.longest = detail;
             }
 
+            pc.count++;
             pc.avg = (pc.avg * (pc.count - 1) + elapsed) / pc.count;
 
             return pc;

@@ -66,7 +66,7 @@ public class ProcessLoggingFilter implements Filter {
         }
         
         try {
-            ProcessLogger.follow("request", "Servlet Request " + requestPath, new Callable<Void>() {
+            ProcessLogger.follow("request", "Servlet Request " + requestPath, true, new Callable<Void>() {
                 @Override
                 public Void call() throws Exception {
                     filterChain.doFilter(request, response);

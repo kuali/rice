@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.view;
 
+import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.krad.uif.component.BindingInfo;
@@ -27,7 +29,7 @@ import static junit.framework.Assert.assertTrue;
 
 /**
  * ViewIndexTest has various tests for ViewIndex
- *
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ViewIndexTest {
@@ -37,8 +39,9 @@ public class ViewIndexTest {
     }
 
     /**
-     * test that clear indexes after render does not clear fields with a value for refreshWhenChanged and their nested controls
-     *
+     * test that clear indexes after render does not clear fields with a value for
+     * refreshWhenChanged and their nested controls
+     * 
      * @throws Exception
      */
     @Test
@@ -51,6 +54,9 @@ public class ViewIndexTest {
         field.setBindingInfo(bindingInfo);
         String fieldId = "field1";
         field.setId(fieldId);
+        if (field.getRefreshWhenChangedPropertyNames() == null) {
+            field.setRefreshWhenChangedPropertyNames(new ArrayList<String>());
+        }
         field.getRefreshWhenChangedPropertyNames().add("#lp.allDay eq true");
         // set a control
         TextControl textControl = new TextControl();
@@ -60,20 +66,19 @@ public class ViewIndexTest {
 
         //add to view index
         Component[] components = {field};
-        for (Component component: components) {
+        for (Component component : components) {
             viewIndex.indexComponent(component);
             viewIndex.addInitialComponentStateIfNeeded(component);
         }
 
         // verify initial view index state
-        for (Component component: components) {
+        for (Component component : components) {
             assertNotNull(viewIndex.getComponentById(component.getId()));
         }
 
-
         viewIndex.clearIndexesAfterRender();
         // confirm that the index still has the components
-        for (Component component: components) {
+        for (Component component : components) {
             assertNotNull(viewIndex.getComponentById(component.getId()));
             assertTrue(viewIndex.getInitialComponentStates().containsKey(component.getId()));
         }

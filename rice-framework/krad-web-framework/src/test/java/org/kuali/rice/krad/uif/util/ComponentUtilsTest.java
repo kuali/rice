@@ -36,7 +36,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import java.lang.reflect.Method;
 
 import static junit.framework.Assert.assertEquals;
@@ -44,7 +43,7 @@ import static junit.framework.Assert.assertTrue;
 
 /**
  * ComponentUtilsTest tests various ComponentUtils methods
- *
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ComponentUtilsTest {
@@ -306,7 +305,8 @@ public class ComponentUtilsTest {
         return result;
     }
 
-    @Ignore // Ignored for now, but this is a proof of concept for using reflection to test copying
+    @Ignore
+    // Ignored for now, but this is a proof of concept for using reflection to test copying
     @Test
     /**
      * test {@link ComponentUtils#copyUsingCloning} using a DataField object

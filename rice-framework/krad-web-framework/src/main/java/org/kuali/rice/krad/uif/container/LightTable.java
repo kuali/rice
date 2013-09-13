@@ -15,7 +15,14 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import com.google.common.collect.Maps;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -47,14 +54,6 @@ import org.kuali.rice.krad.uif.widget.Tooltip;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * LightTable is a light-weight collection table implementation that supports a subset of features,
@@ -291,7 +290,7 @@ public class LightTable extends Group implements DataBinding {
 
         //set emptyTable true if null, empty, or not valid collection
         if (collectionValue == null || !(collectionValue instanceof Collection) ||
-                ((Collection) collectionValue).isEmpty()) {
+                ((Collection<?>) collectionValue).isEmpty()) {
             emptyTable = true;
         }
     }
@@ -403,7 +402,13 @@ public class LightTable extends Group implements DataBinding {
         }
 
         String aoColumnDefs = StringUtils.removeEnd(tableToolsColumnOptions.toString(), " , ") + "]";
-        richTable.getTemplateOptions().put(UifConstants.TableToolsKeys.AO_COLUMN_DEFS, aoColumnDefs);
+        Map<String, String> rtTemplateOptions = richTable.getTemplateOptions();
+        
+        if (rtTemplateOptions == null) {
+            richTable.setTemplateOptions(rtTemplateOptions = new HashMap<String, String>());
+        }
+        
+        rtTemplateOptions.put(UifConstants.TableToolsKeys.AO_COLUMN_DEFS, aoColumnDefs);
 
         // construct aaData option to set data in dataTable options (speed enhancement)
         String aaData = StringUtils.removeEnd(rows.toString(), ",");
@@ -411,10 +416,10 @@ public class LightTable extends Group implements DataBinding {
         aaData = aaData.replace(KRADConstants.QUOTE_PLACEHOLDER, "\"");
 
         //set the aaData option on datatable for faster rendering
-        richTable.getTemplateOptions().put(UifConstants.TableToolsKeys.AA_DATA, aaData);
+        rtTemplateOptions.put(UifConstants.TableToolsKeys.AA_DATA, aaData);
 
         //make sure deferred rendering is forced whether set or not
-        richTable.getTemplateOptions().put(UifConstants.TableToolsKeys.DEFER_RENDER,
+        rtTemplateOptions.put(UifConstants.TableToolsKeys.DEFER_RENDER,
                 UifConstants.TableToolsValues.TRUE);
     }
 

@@ -348,9 +348,12 @@ public class ComponentUtils {
             }
         }
 
-        for (Component nested : component.getPropertyReplacerComponents()) {
-            if (nested != null) {
-                updateIdsWithSuffixNested(nested, idSuffix);
+        List<Component> propertyReplacerComponents = component.getPropertyReplacerComponents();
+        if (propertyReplacerComponents != null) {
+            for (Component nested : propertyReplacerComponents) {
+                if (nested != null) {
+                    updateIdsWithSuffixNested(nested, idSuffix);
+                }
             }
         }
     }
@@ -375,9 +378,12 @@ public class ComponentUtils {
             }
         }
 
-        for (Component nested : component.getPropertyReplacerComponents()) {
-            if (nested != null) {
-                clearIds(nested);
+        List<Component> propertyReplacerComponents = component.getPropertyReplacerComponents();
+        if (propertyReplacerComponents != null) {
+            for (Component nested : propertyReplacerComponents) {
+                if (nested != null) {
+                    clearIds(nested);
+                }
             }
         }
     }

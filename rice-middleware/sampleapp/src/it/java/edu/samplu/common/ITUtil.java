@@ -217,7 +217,7 @@ public class ITUtil {
             failable.fail("\nHTTP Status 404 " + linkLocator + " " + message + " " + "\ncontents:" + contents);
         }
 
-        if (contents.contains("Java backtrace for programmers:")) { // freemarker exception
+        if (contents.contains("Java backtrace for programmers:") || contents.contains("Java stack trace (for programmers):")) { // freemarker exception
             try {
                 processFreemarkerException(contents, linkLocator, failable, message);
             } catch (IndexOutOfBoundsException e) {

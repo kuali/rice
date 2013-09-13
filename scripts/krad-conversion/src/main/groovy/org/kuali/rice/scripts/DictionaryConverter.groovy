@@ -37,8 +37,6 @@ import java.util.regex.Pattern
 @Log
 class DictionaryConverter {
 
-    public static String OUTPUT_CONV_FILE_PREFIX = "KradConv";
-
     def config
 
     // directory and path structure
@@ -47,6 +45,7 @@ class DictionaryConverter {
 
     def outputDir = ""
     def outputPaths = [:]
+    def outputFilePrefix = "KradConv";
 
     // namespace schema (p and xsi)
     def pNamespaceSchema
@@ -63,7 +62,7 @@ class DictionaryConverter {
     // spring bean maps (id: dataObject, id, parent) preloaded before conversion
     Map<String, String> definitionDataObjects = [:];
     Map<String, String> parentBeans = [:];
-
+    Map<String, String> alternateBeanNames = [:];
 
     // contains 'transform*Bean' and 'transform*Property' methods
     @Delegate LookupDefinitionBeanTransformer lookupDefinitionBeanTransformer = new LookupDefinitionBeanTransformer();
@@ -82,18 +81,22 @@ class DictionaryConverter {
 
 
     def init(config) {
-        inputDir = config.input.dir
-        outputDir = config.output.dir
+        inputDir = config.input.dir;
+        outputDir = config.output.dir;
 
-        inputPaths = config.input.path
-        outputPaths = config.output.path
+        inputPaths = config.input.path;
+        outputPaths = config.output.path;
 
-        pNamespaceSchema = config.msg_bean_schema
-        xsiNamespaceSchema = config.msg_xml_schema_legacy
+        outputFilePrefix = config.output.filePrefix;
+
+        pNamespaceSchema = config.msg_bean_schema;
+        xsiNamespaceSchema = config.msg_xml_schema_legacy;
 
         preprocessInclPattern = config.pattern.dictionaryconversion.preProcessInclude;
         preprocessExclPattern = config.pattern.dictionaryconversion.preProcessExclude;
         processInclPattern = config.pattern.dictionaryconversion.processInclude;
+
+        alternateBeanNames = config.map.convert.alternateBeanNames;
     }
 
 
@@ -183,7 +186,7 @@ class DictionaryConverter {
             if (rootNode != null) {
                 transformSpringBeans(rootNode);
                 String filename = FilenameUtils.normalize(outputBaseDir, true) + ConversionUtils.getRelativePath(inputBaseDir, springFile.path);
-                generateSpringBeanFile(rootNode, filename, OUTPUT_CONV_FILE_PREFIX + springFile.name)
+                generateSpringBeanFile(rootNode, filename, outputFilePrefix + springFile.name)
             }
         }
     }
@@ -209,9 +212,8 @@ class DictionaryConverter {
      * @return
      */
     protected String getAlternateTransformableBeanType(String parentName) {
-        def relevantBeans = ["AttributeDefinition": "BusinessObjectEntry", "AttributeReferenceDummy-genericSystemId": "BusinessObjectEntry"];
-        if (relevantBeans.containsKey(parentName)) {
-            return relevantBeans.get(parentName);
+        if (alternateBeanNames.containsKey(parentName)) {
+            return alternateBeanNames.get(parentName);
         }
         return parentName;
     }

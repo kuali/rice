@@ -22,67 +22,32 @@
 
 <#macro uif_dropdownMenu element>
 
-    <#if element.dropdownToggle.render && element.dropdownToggle.messageText?has_content>
-
-    <#if element.nestedMenu>
-        <li id="${element.id!}" ${krad.attrBuild(element)} ${element.simpleDataAttributes}>
-    <#else>
+    <#if element.dropdownToggle.render || element.renderToggleButton>
         <div id="${element.id!}" ${krad.attrBuild(element)} ${element.simpleDataAttributes}>
+
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <@krad.template component=element.dropdownToggle/>
+
+            <#if element.renderToggleCaret || element.renderToggleButton>
+                <#local caretClass="caret"/>
+                <#if element.renderToggleButton>
+                    <#-- tmp until styling is fixed -->
+                    <#--<#local caretClass="${caretClass} btn btn-xs"/>-->
+                </#if>
+
+                <b class="${caretClass}"></b>
+            </#if>
+        </a>
     </#if>
 
+    <ul class="dropdown-menu">
+        <#list element.menuActions as menuAction>
+            <@krad.template component=menuAction/>
+        </#list>
+    </ul>
 
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <@krad.template component=element.dropdownToggle/>
-                <#if element.includeToggleCaret>
-                    <b class="caret"></b>
-                </#if>
-            </a>
-
-          <#local ulClass="class=\"dropdown-menu\""/>
-      </#if>
-
-        <ul ${ulClass!}>
-
-        <#if element.options??>
-
-            <#list element.options as option>
-                <#if option.optionDivider>
-                    <li class="divider"></li>
-                <#elseif option.optionHeader>
-                    <li class="dropdown-header">${option.value?html}</li>
-                <#else>
-                    <#if option.disabled>
-                       <#local disabled="class=\"disabled\""/>
-                    </#if>
-
-                    <li ${disabled!}>
-                        <a href="${option.location.href}">${option.value?html}</a>
-                    </li>
-                </#if>
-            </#list>
-
-        <#elseif element.menuColumns??>
-
-          <#list element.menuColumns as menuColumnDropdowns>
-
-            <li class="col-lg-${element.menuNumberOfColumns}">
-                <#list menuColumnDropdowns as dropdown>
-                     <@krad.template component=dropdown/>
-                </#list>
-            </li>
-
-          </#list>
-
-        </#if>
-
-        </ul>
-
-    <#if element.dropdownToggle.render && element.dropdownToggle.messageText?has_content>
-    <#if element.nestedMenu>
-        </li>
-    <#else>
+    <#if element.dropdownToggle.render || element.renderToggleButton>
         </div>
-    </#if>
     </#if>
 
 </#macro>

@@ -962,6 +962,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             headerLabel.setLabelText(field.getLabel());
         }
 
+        headerLabel.setInlineComponents(field.getFieldLabel().getInlineComponents());
+
         headerLabel.setRowSpan(field.getRowSpan());
         headerLabel.setColSpan(field.getColSpan());
 

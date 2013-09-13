@@ -492,10 +492,26 @@
     <property name="dropdownToggle">
       <bean parent="Uif-Message" p:generateSpan="false"/>
     </property>
+    <property name="libraryCssClasses">
+      <list>
+        <value>dropdown</value>
+      </list>
+    </property>
     <property name="cssClasses">
       <list>
         <value>uif-dropdownMenu</value>
       </list>
     </property>
   </bean>
+
+  <bean id="Uif-MenuAction" parent="Uif-MenuAction-parentBean"/>
+  <bean id="Uif-MenuAction-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.MenuAction"
+        parent="Uif-ActionLink" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/menuAction.ftl"/>
+    <property name="templateName" value="uif_menuAction"/>
+    <property name="actionUrl">
+      <bean parent="Uif-Url"/>
+    </property>
+  </bean>
+
 </beans>

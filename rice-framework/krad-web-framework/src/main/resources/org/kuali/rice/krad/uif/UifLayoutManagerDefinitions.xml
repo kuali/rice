@@ -175,9 +175,7 @@
             p:cssClasses="uif-collectionItem,uif-tableCollectionItem,uif-collectionAddItem"/>
     </property>
     <property name="subCollectionFieldGroupPrototype">
-      <bean parent="Uif-VerticalFieldGroup"
-            p:fieldLabel.render="false"
-            p:cssClasses="uif-subCollection"/>
+      <bean parent="Uif-VerticalFieldGroup" p:fieldLabel.render="false" p:cssClasses="uif-subCollection"/>
     </property>
     <property name="selectFieldPrototype">
       <bean parent="Uif-SelectCollectionItemField"/>
@@ -322,10 +320,39 @@
     </property>
   </bean>
 
-  <bean id="Uif-SelectCollectionItemField" parent="Uif-InputField" p:readOnly="false"
-        p:label="Select?" p:shortLabel="Select?">
+  <bean id="Uif-SelectCollectionItemField" parent="Uif-SelectCollectionItemField-parentBean"/>
+  <bean id="Uif-SelectCollectionItemField-parentBean" abstract="true" parent="Uif-InputField" p:readOnly="false">
     <property name="control">
       <bean parent="Uif-CheckboxControl"/>
+    </property>
+    <property name="fieldLabel">
+      <bean parent="Uif-Label" p:labelText="[0]">
+        <property name="inlineComponents">
+          <list>
+             <bean parent="Uif-SelectCollectionItemMenu"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="Uif-SelectCollectionItemMenu" parent="Uif-SelectCollectionItemMenu-parentBean"/>
+  <bean id="Uif-SelectCollectionItemMenu-parentBean" abstract="true" parent="Uif-DropdownMenu"
+        p:renderToggleButton="true">
+    <property name="menuActions">
+      <list>
+        <bean parent="Uif-MenuAction" p:actionLabel="select all items on this page"
+              p:actionScript="selectAllLines('@{#collectionGroup.id}');"/>
+
+        <bean parent="Uif-MenuAction" p:actionLabel="deselect all items on this page"
+              p:actionScript="deselectAllLines('@{#collectionGroup.id}');"/>
+
+        <bean parent="Uif-MenuAction" p:actionLabel="select all items"
+              p:actionScript="selectAllPagesLines('@{#collectionGroup.id}');"/>
+
+        <bean parent="Uif-MenuAction" p:actionLabel="deselect all items"
+              p:actionScript="deselectAllPagesLines('@{#collectionGroup.id}');"/>
+      </list>
     </property>
   </bean>
 

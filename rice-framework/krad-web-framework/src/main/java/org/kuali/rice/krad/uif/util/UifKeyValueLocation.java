@@ -21,16 +21,14 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 /**
  * KeyValue that has an additional location property that takes a Url object.  When this is used with a dropdown or
  * an optionList control, those options become navigation controls.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTag(name = "keyValueLocation-bean", parent = "Uif-KeyValueLocation")
 public class UifKeyValueLocation extends UifKeyValue {
+    private static final long serialVersionUID = -4613047498920929280L;
 
     private UrlInfo location;
-
-    private boolean disabled;
-
-    private boolean optionDivider;
-    private boolean optionHeader;
 
     /**
      * Base constructor
@@ -88,27 +86,4 @@ public class UifKeyValueLocation extends UifKeyValue {
         this.location.setHref(href);
     }
 
-    public boolean isDisabled() {
-        return disabled;
-    }
-
-    public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
-    }
-
-    public boolean isOptionDivider() {
-        return optionDivider;
-    }
-
-    public void setOptionDivider(boolean optionDivider) {
-        this.optionDivider = optionDivider;
-    }
-
-    public boolean isOptionHeader() {
-        return optionHeader;
-    }
-
-    public void setOptionHeader(boolean optionHeader) {
-        this.optionHeader = optionHeader;
-    }
 }

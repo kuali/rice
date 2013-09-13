@@ -17,14 +17,20 @@ package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.util.CloneUtils;
-import org.kuali.rice.krad.uif.util.UifKeyValueLocation;
 import org.kuali.rice.krad.uif.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Renders a dropdown menu (context menu) of actions
+ *
+ * <p>
+ * The dropdown menu component can be used to build context menus or full application menus. Essentially the
+ * component is configured by first setting the text that will appear as a link (optionally with a caret). When the
+ * user clicks the link, the dropdown of actions ({@link #getMenuActions()} will be presented.
+ * </p>
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DropdownMenu extends ContentElementBase {
@@ -32,23 +38,16 @@ public class DropdownMenu extends ContentElementBase {
 
     private String dropdownToggleText;
     private Message dropdownToggle;
-    private boolean includeToggleCaret;
 
-    private List<UifKeyValueLocation> options;
+    private boolean renderToggleCaret;
+    private boolean renderToggleButton;
 
-    private int menuNumberOfColumns;
-    private List<DropdownMenu> siblingDropdownMenus;
-
-    private List<List<DropdownMenu>> menuColumns;
-
-    private boolean nestedMenu;
+    private List<MenuAction> menuActions;
 
     public DropdownMenu() {
         super();
 
-        menuNumberOfColumns = 1;
-
-        includeToggleCaret = true;
+        renderToggleCaret = true;
     }
 
     /**
@@ -62,105 +61,111 @@ public class DropdownMenu extends ContentElementBase {
         if (StringUtils.isNotBlank(dropdownToggleText) && StringUtils.isBlank(dropdownToggle.getMessageText())) {
             dropdownToggle.setMessageText(dropdownToggleText);
         }
-
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
      */
     @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
+    public List<Component> getComponentsForLifecycle() {
+        List<Component> components = super.getComponentsForLifecycle();
 
-        // if (StringUtils.isNotBlank(dropdownToggle.getMessageText()) && dropdownToggle.isRender()) {
-        getCssClasses().add(0, "dropdown");
-        //  }
+        components.add(dropdownToggle);
+        components.addAll(menuActions);
 
-        menuColumns = new ArrayList<List<DropdownMenu>>(this.menuNumberOfColumns);
-
-        for (int i = 0; i < this.menuNumberOfColumns; i++) {
-            List<DropdownMenu> column = new ArrayList<DropdownMenu>();
-            menuColumns.add(i, column);
-        }
-
-        if (this.siblingDropdownMenus != null) {
-            int currentColumn = 0;
-            for (DropdownMenu siblingMenu : this.siblingDropdownMenus) {
-                menuColumns.get(currentColumn).add(siblingMenu);
-
-                currentColumn++;
-            }
-        }
-
-        if ((this.options == null || this.options.isEmpty()) && (this.siblingDropdownMenus == null || this
-                .siblingDropdownMenus.isEmpty())) {
-            this.includeToggleCaret = false;
-        }
+        return components;
     }
 
+    /**
+     * Text to display as the dropdown toggle link
+     *
+     * <p>
+     * This text will appear as a link for the user to click on, which then will bring up the dropdown menu. This
+     * property is a shortcut for {@link #getDropdownToggle().setMessageText()}. This text is not required, in which
+     * case only the caret will render
+     * </p>
+     *
+     * @return text to display for the dropdown toggle link
+     */
     public String getDropdownToggleText() {
         return dropdownToggleText;
     }
 
+    /**
+     * @see DropdownMenu#getDropdownToggleText()
+     */
     public void setDropdownToggleText(String dropdownToggleText) {
         this.dropdownToggleText = dropdownToggleText;
     }
 
+    /**
+     * {@code Message} component that is associated with the dropdown toggle text, can be used to adjust styling
+     * and so forth
+     *
+     * @return Message instance for toggle text
+     */
     public Message getDropdownToggle() {
         return dropdownToggle;
     }
 
+    /**
+     * @see DropdownMenu#getDropdownToggle()
+     */
     public void setDropdownToggle(Message dropdownToggle) {
         this.dropdownToggle = dropdownToggle;
     }
 
-    public boolean isIncludeToggleCaret() {
-        return includeToggleCaret;
+    /**
+     * Indicates whether a caret icon should be rendered to the right of the toggle text (if present)
+     *
+     * @return boolean true if caret should be rendered, false if not
+     */
+    public boolean isRenderToggleCaret() {
+        return renderToggleCaret;
     }
 
-    public void setIncludeToggleCaret(boolean includeToggleCaret) {
-        this.includeToggleCaret = includeToggleCaret;
+    /**
+     * @see DropdownMenu#isRenderToggleCaret()
+     */
+    public void setRenderToggleCaret(boolean renderToggleCaret) {
+        this.renderToggleCaret = renderToggleCaret;
     }
 
-    public List<UifKeyValueLocation> getOptions() {
-        return options;
+    /**
+     * Indicates whether a caret button should be rendered to the right of the toggle text (if present)
+     *
+     * @return boolean true if caret button should be rendered, false if not
+     */
+    public boolean isRenderToggleButton() {
+        return renderToggleButton;
     }
 
-    public void setOptions(List<UifKeyValueLocation> options) {
-        this.options = options;
+    /**
+     * @see DropdownMenu#isRenderToggleButton()
+     */
+    public void setRenderToggleButton(boolean renderToggleButton) {
+        this.renderToggleButton = renderToggleButton;
     }
 
-    public int getMenuNumberOfColumns() {
-        return menuNumberOfColumns;
+    /**
+     * List of {@link MenuAction} instances that should be rendered for the dropdown
+     *
+     * <p>
+     * Actions for the menu are configured through this list. The order of the actions within the list is
+     * the order they will appear in the dropdown
+     * </p>
+     *
+     * @return List of menu actions for the dropdown
+     */
+    public List<MenuAction> getMenuActions() {
+        return menuActions;
     }
 
-    public void setMenuNumberOfColumns(int menuNumberOfColumns) {
-        this.menuNumberOfColumns = menuNumberOfColumns;
-    }
-
-    public List<DropdownMenu> getSiblingDropdownMenus() {
-        return siblingDropdownMenus;
-    }
-
-    public void setSiblingDropdownMenus(List<DropdownMenu> siblingDropdownMenus) {
-        this.siblingDropdownMenus = siblingDropdownMenus;
-    }
-
-    public boolean isNestedMenu() {
-        return nestedMenu;
-    }
-
-    public void setNestedMenu(boolean nestedMenu) {
-        this.nestedMenu = nestedMenu;
-    }
-
-    public List<List<DropdownMenu>> getMenuColumns() {
-        return menuColumns;
-    }
-
-    public void setMenuColumns(List<List<DropdownMenu>> menuColumns) {
-        this.menuColumns = menuColumns;
+    /**
+     * @see DropdownMenu#getMenuActions()
+     */
+    public void setMenuActions(List<MenuAction> menuActions) {
+        this.menuActions = menuActions;
     }
 
     /**
@@ -177,28 +182,16 @@ public class DropdownMenu extends ContentElementBase {
         }
         dropdownCopy.setDropdownToggleText(this.dropdownToggleText);
 
-        if (this.options != null) {
-            List<UifKeyValueLocation> optionsCopy = new ArrayList<UifKeyValueLocation>();
+        dropdownCopy.setRenderToggleCaret(this.renderToggleCaret);
+        dropdownCopy.setRenderToggleButton(this.renderToggleButton);
 
-            for (UifKeyValueLocation location : this.options) {
-                optionsCopy.add(CloneUtils.deepClone(location));
+        if (this.menuActions != null) {
+            List<MenuAction> optionsCopy = new ArrayList<MenuAction>();
+
+            for (MenuAction action : this.menuActions) {
+                optionsCopy.add((MenuAction) action.copy());
             }
-            dropdownCopy.setOptions(optionsCopy);
+            dropdownCopy.setMenuActions(optionsCopy);
         }
-
-        dropdownCopy.setIncludeToggleCaret(this.includeToggleCaret);
-
-        dropdownCopy.setMenuNumberOfColumns(this.menuNumberOfColumns);
-
-        if (this.siblingDropdownMenus != null) {
-            List<DropdownMenu> siblingDropdownMenusCopy = new ArrayList<DropdownMenu>();
-
-            for (DropdownMenu dropdownMenu : this.siblingDropdownMenus) {
-                siblingDropdownMenusCopy.add(CloneUtils.deepClone(dropdownMenu));
-            }
-            dropdownCopy.setSiblingDropdownMenus(siblingDropdownMenusCopy);
-        }
-
-        dropdownCopy.setNestedMenu(this.nestedMenu);
     }
 }

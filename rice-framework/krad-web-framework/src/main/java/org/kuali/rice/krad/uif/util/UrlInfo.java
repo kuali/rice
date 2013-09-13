@@ -88,6 +88,19 @@ public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
         this.methodToCall = methodToCall;
     }
 
+    public boolean isFullyConfigured() {
+        boolean fullyConfigured = false;
+
+        if (StringUtils.isNotBlank(href)) {
+            fullyConfigured = true;
+        }
+        else if (StringUtils.isNotBlank(baseUrl) && StringUtils.isNotBlank(controllerMapping)) {
+            fullyConfigured = true;
+        }
+
+        return fullyConfigured;
+    }
+
     /**
      * Generate the url based on properties of this object
      *

@@ -211,18 +211,7 @@
   <bean id="Uif-LookupResultsFooter" parent="Uif-FooterBase">
     <property name="items">
       <list>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="selectAllPages" p:actionLabel="select all from all pages"
-              p:actionScript="selectAllPagesLines('@{#collectionGroup.id}');"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="deselectAllPages"
-              p:actionLabel="deselect all from all pages"
-              p:actionScript="deselectAllPagesLines('@{#collectionGroup.id}');"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="selectAllPage" p:actionLabel="select all from this page"
-              p:actionScript="selectAllLines('@{#collectionGroup.id}');"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="deselectAllPage"
-              p:actionLabel="deselect all from this page"
-              p:actionScript="deselectAllLines('@{#collectionGroup.id}');"/>
-        <bean parent="Uif-PrimaryActionButton"
-              p:ajaxSubmit="true" p:render="@{#form.renderedInLightBox}"
+        <bean parent="Uif-PrimaryActionButton" p:render="@{#form.renderedInLightBox}"
               p:preSubmitCall="setMultiValueReturnTarget();return true;"
               p:successCallback="closeLightboxReloadPage();" p:errorCallback="closeLightbox()"
               p:methodToCall="returnSelected" p:actionLabel="return selected" p:disabled="true">
@@ -232,6 +221,7 @@
             </list>
           </property>
         </bean>
+
         <bean parent="Uif-PrimaryActionButton"
               p:ajaxSubmit="false" p:render="@{!#form.renderedInLightBox}"
               p:methodToCall="returnSelected" p:actionLabel="return selected" p:disabled="true">
@@ -240,8 +230,7 @@
               <value>uif-returnSelectedAction</value>
             </list>
           </property>
-       </bean>
-
+        </bean>
       </list>
     </property>
   </bean>

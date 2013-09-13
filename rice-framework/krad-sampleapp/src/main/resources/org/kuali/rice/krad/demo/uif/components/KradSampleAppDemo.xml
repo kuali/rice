@@ -243,9 +243,9 @@
           <property name="items">
             <list>
               <bean id="ComponentLibraryHome-NewItem1" parent="Uif-Link"/>
-              <bean id="ComponentLibraryHome-NewItem2" parent="Uif-Link"/>
-              <bean id="ComponentLibraryHome-NewItem3" parent="Uif-Link"/>
-              <bean id="ComponentLibraryHome-NewItem4" parent="Uif-Link"/>
+              <!--<bean id="ComponentLibraryHome-NewItem2" parent="Uif-Link"/>-->
+              <!--<bean id="ComponentLibraryHome-NewItem3" parent="Uif-Link"/>-->
+              <!--<bean id="ComponentLibraryHome-NewItem4" parent="Uif-Link"/>-->
             </list>
           </property>
         </bean>
@@ -358,6 +358,8 @@
       <list>
         <bean parent="Uif-Link" p:linkText="Action"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Action-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Dropdown Menu"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DropdownMenu-View"/>
         <bean parent="Uif-Link" p:linkText="Header"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Header-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Image"

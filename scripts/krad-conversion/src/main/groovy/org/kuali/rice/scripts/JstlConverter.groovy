@@ -102,7 +102,9 @@ class JstlConverter {
         if (pageChildren.size() > 0) {
             log.finer "page children exists : " + pageChildren.size()
             (0..<pageChildren.size()).each {
-                if (pageChildren[it].name() =~ /kul\:/) {
+                if (pageChildren[it].name() =~ /c\:/) {
+                    // do nothing
+                } else if (pageChildren[it].name() =~ /kul\:/) {
                     log.finer "kuali page child (" + it + ") - " + pageChildren[it].name()
                     transformKualiElement(builder, bindingElements, pageChildren[it], jspMap, depth)
                 } else if (pageChildren[it].name() =~ /html\:/) {

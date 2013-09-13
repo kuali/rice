@@ -8,28 +8,33 @@ To produce a non-destructive testable krad-compatible screens from existing KNS 
 
 Assumptions:
 ---
-Application being modified has portalBody and portalTab tag that follows Rice convention (used for adding tab for new area)
+- Converting project to rice 2.2+
+
+How it works:
+---
+KRAD Conversion script builds a maven war overlay project using your existing project and appends all converted files to the
+new project.  This allows testing of the krad additions in isolation.  Conversion is broken down in scaffolding, dictionary
+conversion, and struts conversion.
 
 
 Usage:
 ---
+
 Locate the project directory and a target directory for running your conversion script.
 
-Create a new file (project.conversion.properties) or modify the krad.conversion.properties.  Make sure to update the input
-and output directories as well as the project information.
+If there are class files located in the original project you may need them for compiling the project.  If the original
+project is maven, update the maven-war-plugin to include attachClasses property set to true.  Add the classes dependency
+into the project's conversion.properties file (see knsapp.conversion.properties for example)
 
-If running from Intellij, add the scripts/krad-conversion as a new module
-    File > New Module > [ Select scripts/krad-conversion ]  > Build from existing module > Maven > Next
-    Update maven imports
+Create a new file based on src/main/resources/project.conversion.properties, filling out all fields based on the project.
+Be sure to include a full directory path and that the output.dir contains no files of importance as it will be cleaned
+before building the new project.
 
-Update the project artifact settings as necessary and the input.dir and output.dir settings.  Be sure to include
-a full directory path and that the output.dir contains no resources as it will be cleaned before building the new project
-
-Run 'mvn install'
+Run 'mvn -Dalt.config.location="<project.conversion.properties.file>" install'
 
 The script will generate a war overlay structure in order to maintain the dependencies and original files of the app
 without requiring the need to copy in place.
 
 Once the script is complete, run 'mvn clean package' on the target project
 
-You can then open the project in eclipse (if so you may wish to run eclipse:eclipse) or intellij
+

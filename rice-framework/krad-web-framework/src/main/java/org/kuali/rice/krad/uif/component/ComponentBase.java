@@ -32,7 +32,6 @@ import org.kuali.rice.krad.uif.control.ControlBase;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
-import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
@@ -163,7 +162,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     public ComponentBase() {
         super();
 
-        ProcessLogger.ntrace("new-comp:", ":" + getClass().getSimpleName(), 1000);
+        //        ProcessLogger.ntrace("new-comp:", ":" + getClass().getSimpleName(), 1000);
 
         order = 0;
         colSpan = 1;
@@ -179,19 +178,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         forceSessionPersistence = false;
 
         componentSecurity = ObjectUtils.newInstance(getComponentSecurityClass());
-
-        // TODO : lazy init
-        //    DONE: refreshWhenChangedPropertyNames = new ArrayList<String>();
-        //    DONE: additionalComponentsToRefresh = new ArrayList<String>();
-        //    DONE: finalizeMethodAdditionalArguments = new ArrayList<Object>();
-        //    DONE: cellCssClasses = new ArrayList<String>();
-        //    DONE: cssClasses = new ArrayList<String>();
-        //    DONE: componentModifiers = new ArrayList<ComponentModifier>();
-        //    DONE: templateOptions = new HashMap<String, String>();
-        //    DONE: context = new HashMap<String, Object>();
-        //    DONE: propertyReplacers = new ArrayList<PropertyReplacer>();
-        //    DONE: dataAttributes = new HashMap<String, String>();
-        // TODO: KULRICE-8954 test for NPE
 
     }
 

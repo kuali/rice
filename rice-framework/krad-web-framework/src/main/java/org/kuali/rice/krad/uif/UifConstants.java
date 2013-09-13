@@ -392,6 +392,7 @@ public class UifConstants {
     public static final class JsFunctions {
         public static final String INITIALIZE_VIEW_STATE = "initializeViewState";
         public static final String INITIALIZE_SESSION_TIMERS = "initializeSessionTimers";
+        public static final String REDIRECT = "redirect";
         public static final String SET_CONFIG_PARM = "setConfigParam";
         public static final String SET_VALUE = "setValue";
     }
@@ -414,4 +415,8 @@ public class UifConstants {
         public static final String MIN = ".min";
     }
 
+    public static final class PostContextKeys {
+        public static final String QUICKFINDER_FOCUS_ID = "quickfinderFocusId";
+        public static final String QUICKFINDER_JUMP_TO_ID = "quickfinderJumpToId";
+    }
 }

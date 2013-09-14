@@ -16,5 +16,5 @@
 
 -->
 <#macro script value component='' role="script">
-	<#krad_inline 'script' />
+	<#inline 'script' />
 </#macro>

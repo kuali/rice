@@ -21,5 +21,5 @@
  -->
 
 <#macro uif_stacked items manager container>
-	<#krad_inline 'stacked' />
+	<#inline 'stacked' />
 </#macro>

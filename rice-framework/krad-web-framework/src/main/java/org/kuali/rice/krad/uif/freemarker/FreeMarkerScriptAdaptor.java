@@ -22,7 +22,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.springframework.util.StringUtils;
 
 import freemarker.core.Environment;
-import freemarker.core.InlineKradAdaptor;
+import freemarker.core.InlineTemplateAdaptor;
 import freemarker.template.TemplateException;
 
 /**
@@ -30,7 +30,7 @@ import freemarker.template.TemplateException;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class FreeMarkerScriptAdaptor implements InlineKradAdaptor, Serializable {
+public class FreeMarkerScriptAdaptor implements InlineTemplateAdaptor, Serializable {
 
     private static final long serialVersionUID = 1675270336764602352L;
 

@@ -16,38 +16,9 @@
 
 -->
 <#macro groupWrap group>
-
-    <@div component=group>
-
-        <@template component=group.header/>
-
-        <#if !group.disclosure?has_content || !group.disclosure.ajaxRetrievalWhenOpened
-            || (group.disclosure.render && group.disclosure.ajaxRetrievalWhenOpened && group.disclosure.defaultOpen)>
-
-            <#if group.disclosure?has_content && group.disclosure.render>
-                <div id="${group.id}_disclosureContent" data-role="disclosureContent"
-                     data-open="${group.disclosure.defaultOpen?string}" class="uif-disclosureContent">
-            </#if>
-
-            <@template component=group.validationMessages/>
-            <@template component=group.instructionalMessage/>
-
-            <#nested/>
-
-            <@template component=group.footer/>
-
-            <#if group.disclosure?has_content && group.disclosure.render>
-                </div>
-            </#if>
-
-        <#else>
-            <div id="${group.id}_disclosureContent" data-role="placeholder"> Loading... </div>
-        </#if>
-
-        <#if group.disclosure?has_content && group.disclosure.render>
-            <@template component=group.disclosure parent=group/>
-        </#if>
-
-    </@div>
-
+	<#inline 'groupWrap-open' />
+	<#if !group.renderLoading>
+		<#nested/>
+	</#if>
+	<#inline 'groupWrap-close' />
 </#macro>

@@ -17,7 +17,7 @@ package org.kuali.rice.krad.uif.freemarker;
 
 import org.springframework.beans.factory.InitializingBean;
 
-import freemarker.core.InlineKradElement;
+import freemarker.core.InlineTemplateElement;
 
 /**
  * Register inline template processing adaptors for high-traffic KRAD templates.
@@ -33,10 +33,12 @@ public class FreeMarkerInlineRenderBootstrap implements InitializingBean {
      */
     @Override
     public void afterPropertiesSet() throws Exception {
-        InlineKradElement.registerAdaptor("script", new FreeMarkerScriptAdaptor());
-        InlineKradElement.registerAdaptor("template", new FreeMarkerTemplateAdaptor());
-        InlineKradElement.registerAdaptor("collectionGroup", new FreeMarkerCollectionGroupAdaptor());
-        InlineKradElement.registerAdaptor("stacked", new FreeMarkerStackedAdaptor());
+        InlineTemplateElement.registerAdaptor("script", new FreeMarkerScriptAdaptor());
+        InlineTemplateElement.registerAdaptor("template", new FreeMarkerTemplateAdaptor());
+        InlineTemplateElement.registerAdaptor("collectionGroup", new FreeMarkerCollectionGroupAdaptor());
+        InlineTemplateElement.registerAdaptor("stacked", new FreeMarkerStackedAdaptor());
+        InlineTemplateElement.registerAdaptor("groupWrap-open", new FreeMarkerOpenGroupWrapAdaptor());
+        InlineTemplateElement.registerAdaptor("groupWrap-close", new FreeMarkerCloseGroupWrapAdaptor());
     }
 
 }

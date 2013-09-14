@@ -16,5 +16,5 @@
 
 -->
 <#macro template component=[] body='' componentUpdate=false includeSrc=false tmplParms...>
-	<#krad_inline 'template' />
+	<#inline 'template' />
 </#macro>

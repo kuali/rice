@@ -96,6 +96,10 @@ public class BoxLayoutManager extends LayoutManagerBase {
             if (c != null) {
                 // add item styles to the the item
                 List<String> styleClasses = c.getCssClasses();
+                if (styleClasses == null) {
+                    styleClasses = new ArrayList<String>();
+                }
+
                 if (orientation.equals(Orientation.HORIZONTAL)) {
                     styleClasses.add("uif-boxLayoutHorizontalItem");
                     styleClasses.addAll(this.getItemStyleClasses());

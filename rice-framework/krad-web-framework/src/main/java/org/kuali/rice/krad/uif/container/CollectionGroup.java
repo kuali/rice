@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -41,6 +40,7 @@ import org.kuali.rice.krad.uif.widget.QuickFinder;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -166,11 +166,11 @@ public class CollectionGroup extends Group implements DataBinding {
         highlightAddItem = true;
         addLinePlacement = "TOP";
 
-        filters = new ArrayList<CollectionFilter>();
-        lineActions = new ArrayList<Action>();
-        addLineItems = new ArrayList<Field>();
-        addLineActions = new ArrayList<Action>();
-        subCollections = new ArrayList<CollectionGroup>();
+        filters = Collections.emptyList();
+        lineActions = Collections.emptyList();
+        addLineItems = Collections.emptyList();
+        addLineActions = Collections.emptyList();
+        subCollections = Collections.emptyList();
     }
 
     /**
@@ -1297,7 +1297,7 @@ public class CollectionGroup extends Group implements DataBinding {
 
         collectionGroupCopy.setAddItemCssClass(this.addItemCssClass);
 
-        if (addLineItems != null) {
+        if (addLineItems != null && !addLineItems.isEmpty()) {
             List<Component> addLineItemsCopy = new ArrayList<Component>();
 
             for (Component addLineItem : this.addLineItems) {
@@ -1307,7 +1307,7 @@ public class CollectionGroup extends Group implements DataBinding {
             collectionGroupCopy.setAddLineItems(addLineItemsCopy);
         }
 
-        if (addLineActions != null) {
+        if (addLineActions != null && !addLineActions.isEmpty()) {
             List<Action> addLineActionsCopy = new ArrayList<Action>();
 
             for (Action addLineAction : this.addLineActions) {
@@ -1342,7 +1342,11 @@ public class CollectionGroup extends Group implements DataBinding {
         }
 
         collectionGroupCopy.setCollectionObjectClass(this.collectionObjectClass);
-        collectionGroupCopy.setFilters(new ArrayList<CollectionFilter>(this.filters));
+        
+        if (this.filters != null && !this.filters.isEmpty()) {
+            collectionGroupCopy.setFilters(new ArrayList<CollectionFilter>(this.filters));
+        }
+        
         collectionGroupCopy.setHighlightAddItem(this.highlightAddItem);
         collectionGroupCopy.setHighlightNewItems(this.highlightNewItems);
         collectionGroupCopy.setIncludeLineSelectionField(this.includeLineSelectionField);
@@ -1351,7 +1355,7 @@ public class CollectionGroup extends Group implements DataBinding {
         collectionGroupCopy.setDisplayStart(this.displayStart);
         collectionGroupCopy.setDisplayLength(this.displayLength);
 
-        if (lineActions != null) {
+        if (lineActions != null && !lineActions.isEmpty()) {
             List<Action> lineActions = new ArrayList<Action>();
             for (Action lineAction : this.lineActions) {
                 lineActions.add((Action) lineAction.copy());
@@ -1359,6 +1363,7 @@ public class CollectionGroup extends Group implements DataBinding {
 
             collectionGroupCopy.setLineActions(lineActions);
         }
+        
         collectionGroupCopy.setLineSelectPropertyName(this.lineSelectPropertyName);
         collectionGroupCopy.setNewItemsCssClass(this.newItemsCssClass);
         collectionGroupCopy.setPropertyName(this.propertyName);
@@ -1372,7 +1377,7 @@ public class CollectionGroup extends Group implements DataBinding {
         collectionGroupCopy.setRenderSaveLineActions(this.renderSaveLineActions);
         collectionGroupCopy.setShowInactiveLines(this.showInactiveLines);
 
-        if (subCollections != null) {
+        if (subCollections != null && !subCollections.isEmpty()) {
             List<CollectionGroup> subCollectionsCopy = new ArrayList<CollectionGroup>();
             for (CollectionGroup subCollection : this.subCollections) {
                 subCollectionsCopy.add((CollectionGroup) subCollection.copy());

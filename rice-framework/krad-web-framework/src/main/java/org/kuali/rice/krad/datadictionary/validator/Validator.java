@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.datadictionary.validator;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -248,15 +249,15 @@ public class Validator {
      * @param tracer - The current bean trace for the validation line
      */
     private void runValidationsOnLifecycle(Component component, ValidationTrace tracer) {
-        if (component.getComponentsForLifecycle() == null) {
+        List<Component> nestedComponents = component.getComponentsForLifecycle();
+        if (nestedComponents == null) {
             return;
         }
         if (!doValidationOnUIFBean(component)) {
             return;
         }
         tracer.addBean(component);
-        for (int j = 0; j < component.getComponentsForLifecycle().size(); j++) {
-            Component temp = component.getComponentsForLifecycle().get(j);
+        for (Component temp : nestedComponents) {
             if (temp == null) {
                 continue;
             }
@@ -277,15 +278,15 @@ public class Validator {
      * @param tracer - The current bean trace for the validation line
      */
     private void runValidationsOnPrototype(Component component, ValidationTrace tracer) {
-        if (component.getComponentPrototypes() == null) {
+        List<Component> componentPrototypes = component.getComponentPrototypes();
+        if (componentPrototypes == null) {
             return;
         }
         if (!doValidationOnUIFBean(component)) {
             return;
         }
         tracer.addBean(component);
-        for (int j = 0; j < component.getComponentPrototypes().size(); j++) {
-            Component temp = component.getComponentPrototypes().get(j);
+        for (Component temp : componentPrototypes) {
             if (temp == null) {
                 continue;
             }

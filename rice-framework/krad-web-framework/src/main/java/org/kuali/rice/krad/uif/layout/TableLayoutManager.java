@@ -54,6 +54,8 @@ import org.kuali.rice.krad.uif.widget.RichTable;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
+import com.google.common.collect.Lists;
+
 /**
  * Layout manager that works with {@code CollectionGroup} components and renders the collection as a
  * Table
@@ -770,7 +772,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                 for (Component component : ((FieldGroup) lineField).getItems()) {
                     if (component != null && component instanceof Action && (component.getDataAttributes() != null)
                             && component.getDataAttributes().get("role")
-                            != null && component.getDataAttributes().get("role").equals("detailsLink") &&
+                                != null && component.getDataAttributes().get("role").equals("detailsLink") &&
                             StringUtils.isBlank(((Action) component).getActionScript())) {
                         ((Action) component).setActionScript("rowDetailsActionHandler(this,'" + this.getId() + "');");
                     }
@@ -2247,7 +2249,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * Validates different requirements of component compiling a series of reports detailing
      * information on errors found in the component. Used by the RiceDictionaryValidator.
-     * 
+     *
      * @param tracer record of component's location
      * @return a list of ErrorReports detailing errors found within the component and referenced
      *         within it

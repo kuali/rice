@@ -187,7 +187,7 @@ public class CssGridLayoutManager extends LayoutManagerBase {
 
     /**
      * The default cell colSpan to use for this layout (max setting, and the bean default, is 12)
-     * 
+     *
      * @return int representing the default colSpan for cells in this layout
      */
     @BeanTagAttribute(name = "defaultItemColSpan")

@@ -115,10 +115,10 @@ public class DemoTravelAccountLookUpSmokeTest extends SmokeTestBase {
     public void testTravelAccountLookUpBookmark() throws Exception {
         testTravelAccountLookUp();
         testTravelAccountLookUpXss(TRAVEL_ACCOUNT_NUMBER_FIELD);
-        testTravelAccountLookUpXss(TRAVEL_ACCOUNT_NAME_FIELD);
+//        testTravelAccountLookUpXss(TRAVEL_ACCOUNT_NAME_FIELD); // in 2.3 this is readonly (and masked)
         testTravelAccountLookUpXss(SUB_ACCOUNT_FIELD);
-        testTravelAccountLookUpXss(SUB_ACCOUNT_NAME_FIELD);
-        testTravelAccountLookUpXss(FISCCAL_OFFICER_USER_ID);
+//        testTravelAccountLookUpXss(SUB_ACCOUNT_NAME_FIELD);  // in 2.3 this is readonly (and masked)
+        testTravelAccountLookUpXss("lookupCriteria[foId]"); // in 2.3 this has a different name
         passed();
     }
 
@@ -126,10 +126,10 @@ public class DemoTravelAccountLookUpSmokeTest extends SmokeTestBase {
     public void testTravelAccountLookUpNav() throws Exception {
         testTravelAccountLookUp();
         testTravelAccountLookUpXss(TRAVEL_ACCOUNT_NUMBER_FIELD);
-        testTravelAccountLookUpXss(TRAVEL_ACCOUNT_NAME_FIELD);
+//        testTravelAccountLookUpXss(TRAVEL_ACCOUNT_NAME_FIELD); // in 2.3 this is readonly (and masked)
         testTravelAccountLookUpXss(SUB_ACCOUNT_FIELD);
-        testTravelAccountLookUpXss(SUB_ACCOUNT_NAME_FIELD);
-        testTravelAccountLookUpXss(FISCCAL_OFFICER_USER_ID);
+//        testTravelAccountLookUpXss(SUB_ACCOUNT_NAME_FIELD);  // in 2.3 this is readonly (and masked)
+        testTravelAccountLookUpXss("lookupCriteria[foId]"); // in 2.3 this has a different name
         passed();
     }
 }

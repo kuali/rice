@@ -16,6 +16,10 @@
 
 -->
 <#macro div component>
+	<#-- NOTICE: By KULRICE-10353 this method is duplicated, but not replaced, by
+			org.kuali.rice.krad.uif.freemarker.FreeMarkerInlineRenderUtils.renderOpenDiv() and
+			org.kuali.rice.krad.uif.freemarker.FreeMarkerInlineRenderUtils.renderCloseDiv().
+			When updating this template, also update those methods. -->
 
   <div id="${component.id!}" ${krad.attrBuild(component)} ${component.simpleDataAttributes}>
     <#nested/>

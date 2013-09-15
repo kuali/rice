@@ -35,7 +35,7 @@ import org.kuali.rice.krad.uif.widget.Tooltip;
 import org.springframework.util.StringUtils;
 
 import freemarker.core.Environment;
-import freemarker.core.KualiTemplateUtils;
+import freemarker.core.InlineTemplateUtils;
 import freemarker.core.Macro;
 import freemarker.ext.beans.BeansWrapper;
 import freemarker.template.ObjectWrapper;
@@ -194,7 +194,7 @@ public class FreeMarkerInlineRenderUtils {
                     args.put("body", body);
                 }
 
-                KualiTemplateUtils.invokeMacro(env, fmMacro, args, null);
+                InlineTemplateUtils.invokeMacro(env, fmMacro, args, null);
             }
 
             if (StringUtils.hasText(s = component.getEventHandlerScript())) {
@@ -275,9 +275,9 @@ public class FreeMarkerInlineRenderUtils {
      * This method originated as template.ftl, and supercedes the previous content of that template.
      * </p>
      * 
-     * @param component
-     * @param out
-     * @throws IOException
+     * @param component The component to render a tooltip for.
+     * @param out The output writer to render to, typically from {@link Environment#getOut()}.
+     * @throws IOException If rendering is interrupted due to an I/O error.
      */
     public static void renderTooltip(Component component, Writer out) throws IOException {
         Tooltip tt = component.getToolTip();
@@ -291,6 +291,18 @@ public class FreeMarkerInlineRenderUtils {
         }
     }
 
+    /**
+     * Render a KRAD script component.
+     * 
+     * <p>
+     * This method originated as script.ftl, and supercedes the previous content of that template.
+     * </p>
+     * 
+     * @param script The script to render.
+     * @param component The component the script is related to.
+     * @param out The output writer to render to, typically from {@link Environment#getOut()}.
+     * @throws IOException If rendering is interrupted due to an I/O error.
+     */
     public static void renderScript(String script, Component component, String role, Writer out) throws IOException {
         if (script == null || "".equals(script.trim()))
             return;
@@ -309,6 +321,18 @@ public class FreeMarkerInlineRenderUtils {
         out.write("\" />");
     }
 
+    /**
+     * Render common attributes for a KRAD component.
+     * 
+     * <p>
+     * NOTICE: By KULRICE-10353 this method duplicates, but does not replace,
+     * krad/WEB-INF/ftl/lib/attrBuild.ftl. When updating this method, also update that template.
+     * </p>
+     * 
+     * @param component The component to open a render attributes for.
+     * @param out The output writer to render to, typically from {@link Environment#getOut()}.
+     * @throws IOException If rendering is interrupted due to an I/O error.
+     */
     public static void renderAttrBuild(Component component, Writer out) throws IOException {
         String s;
         if (component instanceof ComponentBase) {
@@ -333,6 +357,25 @@ public class FreeMarkerInlineRenderUtils {
         }
     }
 
+    /**
+     * Render an open div tag for a component.
+     * 
+     * <p>
+     * NOTE: Inline rendering performance is improved by *not* passing continuations for nested body
+     * content, so the open div and close div methods are implemented separately. Always call
+     * {@link #renderCloseDiv(Writer)} after rendering the &lt;div&gt; body related to this open
+     * tag.
+     * </p>
+     * 
+     * <p>
+     * NOTICE: By KULRICE-10353 this method duplicates, but does not replace,
+     * krad/WEB-INF/ftp/lib/div.ftl. When updating this method, also update that template.
+     * </p>
+     * 
+     * @param component The component to render a wrapper div for.
+     * @param out The output writer to render to, typically from {@link Environment#getOut()}.
+     * @throws IOException If rendering is interrupted due to an I/O error.
+     */
     public static void renderOpenDiv(Component component, Writer out) throws IOException {
         out.write("<div id=\"");
         out.write(component.getId());
@@ -341,39 +384,126 @@ public class FreeMarkerInlineRenderUtils {
         out.write(">");
     }
 
+    /**
+     * Render a close div tag for a component.
+     * 
+     * <p>
+     * NOTE: Inline rendering performance is improved by *not* passing continuations for nested body
+     * content, so the open div and close div methods are implemented separately. Always call this
+     * method after rendering the &lt;div&gt; body related to and open tag rendered by
+     * {@link #renderOpenDiv(Component, Writer)}.
+     * </p>
+     * 
+     * <p>
+     * NOTICE: By KULRICE-10353 this method duplicates, but does not replace,
+     * krad/WEB-INF/ftp/lib/div.ftl. When updating this method, also update that template.
+     * </p>
+     * 
+     * @param component The component to render a wrapper div for.
+     * @param out The output writer to render to, typically from {@link Environment#getOut()}.
+     * @throws IOException If rendering is interrupted due to an I/O error.
+     */
     public static void renderCloseDiv(Writer out) throws IOException {
         out.write("</div>");
     }
 
+    /**
+     * Render open tags wrapping a group component.
+     * 
+     * <p>
+     * NOTE: Inline rendering performance is improved by *not* passing continuations for nested body
+     * content, so the open and close methods are implemented separately. Always call
+     * {@link #renderCloseGroupWrap(Writer)} after rendering the body related to a call to
+     * {@link #renderOpenGroupWrap(Environment, Group)}.
+     * </p>
+     * 
+     * <p>
+     * This method originated as groupWrap.ftl, and supercedes the previous content of that
+     * template.
+     * </p>
+     * 
+     * @param env The FreeMarker environment to use for rendering.
+     * @param group The group to render open wrapper tags for.
+     * @throws IOException If rendering is interrupted due to an I/O error.
+     * @throws TemplateException If FreeMarker rendering fails.
+     */
     public static void renderOpenGroupWrap(Environment env, Group group) throws IOException, TemplateException {
         Writer out = env.getOut();
         renderOpenDiv(group, out);
         renderTemplate(env, group.getHeader(), null, false, false, null);
-        Disclosure disclosure = group.getDisclosure();
-        if (disclosure != null && disclosure.isRender()) {
+
+        if (group.isRenderLoading()) {
             out.write("<div id=\"");
             out.write(group.getId());
-            out.write("\" data-role=\"disclosureContent\" data-open=\"");
-            out.write(Boolean.toString(disclosure.isDefaultOpen()));
-            out.write("\" class=\"uif-disclosureContent\">");
+            out.write("_disclosureContent\" data-role=\"placeholder\"> Loading... </div>");
+        } else {
+            Disclosure disclosure = group.getDisclosure();
+            if (disclosure != null && disclosure.isRender()) {
+                out.write("<div id=\"");
+                out.write(group.getId());
+                out.write("\" data-role=\"disclosureContent\" data-open=\"");
+                out.write(Boolean.toString(disclosure.isDefaultOpen()));
+                out.write("\" class=\"uif-disclosureContent\">");
+            }
+            renderTemplate(env, group.getValidationMessages(), null, false, false, null);
+            renderTemplate(env, group.getInstructionalMessage(), null, false, false, null);
         }
-        renderTemplate(env, group.getValidationMessages(), null, false, false, null);
-        renderTemplate(env, group.getInstructionalMessage(), null, false, false, null);
     }
 
+    /**
+     * Render close tags wrapping a group component.
+     * 
+     * <p>
+     * NOTE: Inline rendering performance is improved by *not* passing continuations for nested body
+     * content, so the open and close methods are implemented separately. Always call
+     * {@link #renderCloseGroupWrap(Writer)} after rendering the body related to a call to
+     * {@link #renderOpenGroupWrap(Environment, Group)}.
+     * </p>
+     * 
+     * <p>
+     * This method originated as groupWrap.ftl, and supercedes the previous content of that
+     * template.
+     * </p>
+     * 
+     * @param env The FreeMarker environment to use for rendering.
+     * @param group The group to render open wrapper tags for.
+     * @throws IOException If rendering is interrupted due to an I/O error.
+     * @throws TemplateException If FreeMarker rendering fails.
+     */
     public static void renderCloseGroupWrap(Environment env, Group group) throws IOException, TemplateException {
         Writer out = env.getOut();
-        renderTemplate(env, group.getFooter(), null, false, false, null);
+
+        boolean renderLoading = group.isRenderLoading();
+        if (!renderLoading) {
+            renderTemplate(env, group.getFooter(), null, false, false, null);
+        }
+
         Disclosure disclosure = group.getDisclosure();
         if (disclosure != null && disclosure.isRender()) {
-            out.write("</div>");
+            if (!renderLoading) {
+                out.write("</div>");
+            }
             Map<String, TemplateModel> tmplParms = new HashMap<String, TemplateModel>();
             tmplParms.put("parent", env.getObjectWrapper().wrap(group));
             renderTemplate(env, disclosure, null, false, false, tmplParms);
         }
+
         renderCloseDiv(out);
     }
 
+    /**
+     * Render a collection group inline.
+     * 
+     * <p>
+     * This method originated as collectionGroup.ftl, and supercedes the previous content of that
+     * template.
+     * </p>
+     * 
+     * @param component The component to render a wrapper div for.
+     * @param group The collection group to render.
+     * @throws IOException If rendering is interrupted due to an I/O error.
+     * @throws TemplateException If FreeMarker rendering fails.
+     */
     public static void renderCollectionGroup(Environment env, CollectionGroup group) throws IOException,
             TemplateException {
         renderOpenGroupWrap(env, group);
@@ -409,7 +539,7 @@ public class FreeMarkerInlineRenderUtils {
             args.put("items", items);
             args.put("manager", group.getLayoutManager());
             args.put("container", group);
-            KualiTemplateUtils.invokeMacro(env, fmMacro, args, null);
+            InlineTemplateUtils.invokeMacro(env, fmMacro, args, null);
         }
 
         if ("BOTTOM".equals(group.getAddLinePlacement())) {
@@ -425,9 +555,21 @@ public class FreeMarkerInlineRenderUtils {
         renderCloseGroupWrap(env, group);
     }
 
+    /**
+     * Render a stacked collection inline.
+     * 
+     * <p>
+     * This method originated as stacked.ftl, and supercedes the previous content of that
+     * template.
+     * </p>
+     * 
+     * @param component The component to render a wrapper div for.
+     * @param group The collection group to render.
+     * @throws IOException If rendering is interrupted due to an I/O error.
+     * @throws TemplateException If FreeMarker rendering fails.
+     */
     public static void renderStacked(Environment env, List<? extends Component> items, StackedLayoutManager manager,
-            CollectionGroup container) throws IOException,
-            TemplateException {
+            CollectionGroup container) throws IOException, TemplateException {
         String s;
         Writer out = env.getOut();
 

@@ -406,4 +406,14 @@ public class Group extends ContainerBase {
         super.completeValidation(tracer.getCopy());
     }
 
+    /**
+     * Determine the group should be rendered on initial load, or if a loading message should be rendered instead.
+     * 
+     * @return True if a loading message should be rendered, false if the group should be rendered now.
+     */
+    public boolean isRenderLoading() {
+        return disclosure != null && disclosure.isAjaxRetrievalWhenOpened()
+                && (!disclosure.isRender() || !disclosure.isDefaultOpen());
+    }
+
 }

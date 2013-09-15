@@ -23,6 +23,9 @@ for style. The attribute strings can be referenced by the calling template throu
 variables -->
 
 <#function attrBuild component>
+	<#-- NOTICE: By KULRICE-10353 this method is duplicated, but not replaced, by
+			org.kuali.rice.krad.uif.freemarker.FreeMarkerInlineRenderUtils.renderAttrBuild().
+			When updating this template, also update that method. -->
 
     <#if component.styleClassesAsString?has_content>
         <#local styleClass="class=\"${component.styleClassesAsString}\""/>

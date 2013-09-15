@@ -16,5 +16,5 @@
 
 -->
 <#macro uif_collectionGroup group>
-	<#krad_inline 'collectionGroup' />
+	<#inline 'collectionGroup' />
 </#macro>

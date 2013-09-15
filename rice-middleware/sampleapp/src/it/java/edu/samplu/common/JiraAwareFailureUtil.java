@@ -114,6 +114,8 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("//input[@name='inputField4']", "KULRICE-10522 KRAD Demo Library Client Responsiveness Progressive Disclosure Ajax Retrieval NullPointer Incident Report");
 
         jiraMatches.put("HTTP Status 404 - /kew/RouteLog.do", "KULRICE-10540 Demo Travel Account Maintenance Edit Route log inline 404");
+
+        jiraMatches.put("//a[contains(text(),'Required')] not visiable", "KULRICE-10541 DemoLibraryElementsActionSmokeTest Validation required text missing");
         //jiraMatches.put("", "");
     }
 

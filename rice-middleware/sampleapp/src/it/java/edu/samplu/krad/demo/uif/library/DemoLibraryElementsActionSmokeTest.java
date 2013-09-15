@@ -155,6 +155,13 @@ public class DemoLibraryElementsActionSmokeTest extends DemoLibraryBase {
     }
 
     @Test
+    public void testActionButtonAndImagesBookmark() throws Exception {
+        testActionImages();
+        testActionButton();
+        passed();
+    }
+
+    @Test
     public void testActionButtonBookmark() throws Exception {
         testActionButton();
         passed();

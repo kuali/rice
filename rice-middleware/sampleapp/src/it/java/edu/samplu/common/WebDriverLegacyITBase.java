@@ -1189,18 +1189,20 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     protected void gotoNestedFrame() {
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
         driver.switchTo().defaultContent();
-       
-        if (driver.findElements(By.xpath("//iframe")).size() > 0) {
-            WebElement containerFrame = driver.findElement(By.xpath("//iframe")); // don't highlight
-            driver.switchTo().frame(containerFrame);
-        }
-        
-        if (driver.findElements(By.xpath("//iframe")).size() > 0) {
-            WebElement contentFrame = driver.findElement(By.xpath("//iframe")); // don't highlight
+        String iframeXpath = "//frame";
+
+        gotoIframeByXpath(iframeXpath);
+
+        gotoIframeByXpath(iframeXpath);
+
+        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
+    }
+
+    protected void gotoIframeByXpath(String iframeXpath) {
+        if (driver.findElements(By.xpath(iframeXpath)).size() > 0) {
+            WebElement contentFrame = driver.findElement(By.xpath(iframeXpath)); // don't highlight
             driver.switchTo().frame(contentFrame);
         }
-        
-        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
     }
 
     /**

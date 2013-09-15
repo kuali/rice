@@ -112,6 +112,8 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("//div[@id='Demo-TableLayoutDetails-Example4']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='dataTables_wrapper']/table/tbody/tr[@class='detailsRow']/td/div/div[@class='uif-verticalBoxLayout clearfix']/div[@class='uif-stackedSubCollection uif-boxLayoutVerticalItem clearfix']/div[@class='uif-stackedCollectionLayout']/div/table", "KULRICE-10521 Update DemoLibraryCollectionFeaturesRowDetailsSmokeTest");
 
         jiraMatches.put("//input[@name='inputField4']", "KULRICE-10522 KRAD Demo Library Client Responsiveness Progressive Disclosure Ajax Retrieval NullPointer Incident Report");
+
+        jiraMatches.put("HTTP Status 404 - /kew/RouteLog.do", "KULRICE-10540 Demo Travel Account Maintenance Edit Route log inline 404");
         //jiraMatches.put("", "");
     }
 

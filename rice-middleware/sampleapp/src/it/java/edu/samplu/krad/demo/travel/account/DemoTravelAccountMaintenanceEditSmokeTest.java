@@ -84,6 +84,9 @@ public class DemoTravelAccountMaintenanceEditSmokeTest extends SmokeTestBase {
         waitAndTypeByName("document.documentHeader.documentDescription", "Travel Account Edit"+RandomStringUtils.randomAlphabetic(2));
         waitAndTypeByName(SUB_ACCOUNT_FIELD, "a1");
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccountName", "Sub Account 1"+RandomStringUtils.randomAlphabetic(2));
+        gotoIframeByXpath("//iframe[@id='routeLogIFrame']");
+        checkForIncidentReport();
+        selectFrameIframePortlet();
         waitAndClickButtonByText("submit");
         Thread.sleep(10000);
         checkForIncidentReport("Account Maintenance (Edit)");

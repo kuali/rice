@@ -53,6 +53,10 @@ class BeanTransformerTestBase {
         Assert.assertTrue("bean should contains property " + propertyName, beanNode.property.findAll { propertyName.equals(it.@name) }.size() > 0);
     }
 
+    public void checkBeanPropertyNotExists(def beanNode, String propertyName) {
+        Assert.assertTrue("bean should not contain property " + propertyName, beanNode.property.findAll { propertyName.equals(it.@name) }.size() == 0);
+    }
+
     public Node getFileRootNode(String filepath) {
         def file = new File(filepath);
         return new XmlParser().parse(file);
@@ -67,6 +71,20 @@ class BeanTransformerTestBase {
     public static Node getSimpleSpringXmlNode() {
         def rootBean = new XmlParser().parseText("<beans>" + "<bean id='SimpleBean' parent='SpringBean' attributeName='test'>" + "<property name='simpleProperty' value='test' />" + "<property name='propertyWithRef' value='value2' />" + "<property name='propertyList'>" + "<list><value>1</value><value>2</value></list>" + "</property>" + "<property name='propertyListWithBeans'>" + "<list><bean id='test' parent='FieldDefinition' attributeName='builder'/></list>" + "</property>" + "</bean>" + "</beans>");
         return rootBean;
+    }
+
+
+    /**
+     * Used to check bean structure has been transformed appropriately.  Helpful for cases which carry over properties
+     * that should not be included in the new bean.
+     *
+     * @param beanNode - bean being validated
+     * @param containsProperties - properties that should exist in the bean structure
+     * @param invalidProperties - properties that should not exist in the bean structure
+     */
+    public void checkBeanStructure(Node beanNode, List containsProperties, List invalidProperties) {
+        containsProperties?.each { property -> checkBeanPropertyExists(beanNode, property); }
+        invalidProperties?.each { property -> checkBeanPropertyNotExists(beanNode, property); }
     }
 
 }

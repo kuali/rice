@@ -40,9 +40,14 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
         maintenanceDocumentEntryBeanTransformer.init(config);
     }
 
+    /**
+     * Verifies maintenance document entry has been converted into a valid maintenance doc entry and view
+     */
     @Test
     void testTransformMaintenanceDocumentEntryBean() {
         def ddRootNode = getFileRootNode(defaultTestFilePath);
+        ddRootNode.bean.each { bean -> maintenanceDocumentEntryBeanTransformer.fixNamespaceProperties(bean) }
+
         def beanNode = ddRootNode.bean.find { "MaintenanceDocumentEntry".equals(it.@parent) }
         try {
             maintenanceDocumentEntryBeanTransformer.transformMaintenanceDocumentEntryBean(beanNode);
@@ -51,7 +56,13 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
             Assert.fail("exception occurred in testing");
         }
 
+        checkBeanParentExists(ddRootNode, "MaintenanceDocumentEntry");
+        def resultMDENode = ddRootNode.bean.find { "MaintenanceDocumentEntry".equals(it.@parent) }
+        checkBeanStructure(resultMDENode, [], ["businessObjectEntry"]);
+
         checkBeanParentExists(ddRootNode, "Uif-MaintenanceView");
+        def resultMVNode = ddRootNode.bean.find { "Uif-MaintenanceView".equals(it.@parent) }
+        checkBeanStructure(resultMVNode, [], ["maintainableSections"]);
     }
 
     @Test

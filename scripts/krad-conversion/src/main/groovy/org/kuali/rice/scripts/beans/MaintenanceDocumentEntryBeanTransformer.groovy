@@ -29,7 +29,8 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
     String maintenanceViewBeanType = "Uif-MaintenanceView";
 
     /**
-     * Transforms maintenance document entries into uif maintenance views
+     * Transforms maintenance document entry which results in an updated document entry
+     * and a maintenance View
      *
      * @param beanNode
      * @return
@@ -38,12 +39,14 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
         if (beanNode.@parent == "MaintenanceDocumentEntry") {
             def maintDocParentBeanNode = beanNode;
             def beanTitle = maintDocParentBeanNode.property.find { it.@name == "title" }?.@value;
+            def docEntryCopyProperties = ["businessObjectClass", "maintainableClass", "documentTypeName", "documentAuthorizerClass", "lockingKeys"];
+            Map docEntryAttributes = beanNode.attributes().clone();
 
             // these attributes are being converted and should not be copied when carryoverAttributes is enabled
             List ignoreAttributes = [];
 
             // these properties are being converted and should not be copied when carryoverProperties is enabled
-            List ignoreOnCopyProperties = ["title", "inquirySections"];
+            List ignoreOnCopyProperties = ["title", "maintainableSections"];
 
             def beanAttributes = convertBeanAttributes(beanNode, maintenanceDefinitionBeanType, maintenanceViewBeanType, ignoreAttributes);
 
@@ -52,11 +55,10 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
                 copiedProperties = beanNode.property.collect { it.@name };
                 copiedProperties.removeAll(ignoreOnCopyProperties);
             } else {
-                copiedProperties = ["businessObjectClass", "maintainableClass", "documentTypeName", "documentAuthorizerClass", "lockingKeys"];
+                copiedProperties = docEntryCopyProperties;
             }
 
-
-            log.finer "transform bean node for inquiry"
+            log.finer "transform bean node for maintenance document entry"
             if (isPlaceholder(beanNode)) {
                 addCommentIfNotExists(beanNode.parent(), "Maintenance View")
                 beanNode.@id = getTranslatedBeanId(beanNode.@id, maintenanceDefinitionBeanType, maintenanceViewBeanType);
@@ -70,11 +72,17 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
                         copyProperties(delegate, beanNode, copiedProperties)
                         renameProperties(delegate, maintDocParentBeanNode, ["title": "headerText", "businessObjectClass": "dataObjectClassName", "dataObjectClass": "dataObjectClassName"])
                         addViewNameProperty(delegate, beanTitle);
-                        transformMaintainableSectionsProperty(delegate, maintDocParentBeanNode)
+                        transformMaintainableSectionsProperty(delegate, beanNode)
+                    }
+                    addCommentIfNotExists(beanNode.parent(), "Maintenance Document Entry")
+                    bean(docEntryAttributes) {
+                        copyProperties(delegate, beanNode, docEntryCopyProperties)
                     }
                 }
             }
         }
+
+        return beanNode;
     }
 
     /**

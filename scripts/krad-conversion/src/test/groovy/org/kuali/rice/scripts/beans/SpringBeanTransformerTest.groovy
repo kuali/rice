@@ -48,38 +48,38 @@ class SpringBeanTransformerTest extends BeanTransformerTestBase {
 
         copyNode.bean[0].replaceNode {
             bean() {
-                springBeanTransformer.copyProperties(delegate, beanNode, ["title"]);
+                springBeanTransformer.copyProperties(delegate, beanNode, ["title", "title3"]);
             }
         }
 
-        Assert.assertTrue(copyNode.bean[0].property.findAll { it.@name == "title" }.size() > 0);
-        Assert.assertTrue(copyNode.bean[0].property.findAll { it.@name == "title2" }.size() == 0);
+        def copyBean = copyNode.bean[0];
+        checkBeanStructure(copyBean, ["title", "title3"], ["title2"]);
+        def copyPropertyList = copyBean.property.find { "title3".equals(it.@name) };
+        Assert.assertTrue("copied properties should contain list with values", copyPropertyList?.list?.value?.size() == 2);
     }
 
     @Test
     void testRenameProperties() {
-        def rootBean = new XmlParser().parseText("<beans><bean parent='SampleAppBean'>" + "<property name='title' value='value1' /><property name='title2' value='value2' />" + "</bean></beans>");
+        def rootBean = new XmlParser().parseText("<beans><bean parent='SampleAppBean'>" + "<property name='old' value='value1' /><property name='uncopied' value='value2' />" + "</bean></beans>");
         def copyNode = new XmlParser().parseText("<beans><bean parent='SampleAppBean'></bean></beans>");
         def beanNode = rootBean.bean[0];
 
         copyNode.bean[0].replaceNode {
             bean() {
-                springBeanTransformer.renameProperties(delegate, beanNode, ["title": "title3"]);
+                springBeanTransformer.renameProperties(delegate, beanNode, ["old": "new"]);
             }
         }
 
-        Assert.assertTrue(copyNode.bean[0].property.findAll { it.@name == "title3" }.size() > 0);
-        Assert.assertTrue(copyNode.bean[0].property.findAll { it.@name == "title2" }.size() == 0);
+        checkBeanStructure(copyNode.bean[0], ["new"], ["uncopied"]);
     }
 
     @Test
     void testRemoveProperties() {
-        def rootBean = new XmlParser().parseText("<beans><bean parent='SampleAppBean'>" + "<property name='title' value='value1' /><property name='title2' value='value2' />" + "</bean></beans>");
+        def rootBean = new XmlParser().parseText("<beans><bean parent='SampleAppBean'>" + "<property name='keptProperty' value='value1' />" + "<property name='removedProperty' value='value2' />" + "</bean></beans>");
 
-        rootBean.bean.each { beanNode -> springBeanTransformer.removeProperties(beanNode, ["title"]); }
+        rootBean.bean.each { beanNode -> springBeanTransformer.removeProperties(beanNode, ["removedProperty"]); }
 
-        Assert.assertTrue(rootBean.bean[0].property.findAll { it.@name == "title" }.size() == 0);
-        Assert.assertTrue(rootBean.bean[0].property.findAll { it.@name == "title2" }.size() > 0);
+        checkBeanStructure(rootBean.bean[0], ["keptProperty"], ["removedProperty"]);
     }
 
     @Test

@@ -329,17 +329,15 @@ class SpringBeanTransformer {
      * @return
      */
     def copyProperties(NodeBuilder builderDelegate, Node beanNode, List<String> propertyNames) {
-        beanNode.property.findAll { propertyNames.contains(it.@name) }.each { beanProperty ->
+        beanNode.property.findAll { propertyNames.contains(it.@name) }.each { Node beanProperty ->
             if (beanProperty.list) {
-                builderDelegate.property(name: beanProperty.@name) {
+                builderDelegate.property(beanProperty.attributes().clone()) {
                     list {
-                        beanProperty.list.value.each {
-                            value(it.@value)
-                        }
+                        beanProperty.list.value.each { Node listItem -> createNode(listItem.name(), listItem.attributes(), listItem.value()) }
                     }
                 }
             } else {
-                builderDelegate.property(name: beanProperty.@name, value: beanProperty.@value)
+                builderDelegate.createNode(beanProperty.name(), beanProperty.attributes(), beanProperty.value())
             }
         }
     }
@@ -611,7 +609,7 @@ class SpringBeanTransformer {
             attributes.put("parent", "Uif-TextAreaControl");
             genericBeanTransform(builder, attributes);
         } else if (controlDefReplacements[controlDefParent] != null && controlDefReplacements[controlDefParent] == "Uif-LinkField") {
-            def attributes = genericGatherAttributes(controlDefBean, ["*target": "p:target", "*hrefText": "p:linkText", "*styleClass":"p:fieldLabel.cssClasses"]);
+            def attributes = genericGatherAttributes(controlDefBean, ["*target": "p:target", "*hrefText": "p:linkText", "*styleClass": "p:fieldLabel.cssClasses"]);
             attributes.put("parent", "Uif-LinkField");
             genericBeanTransform(builder, attributes);
         } else if (controlDefReplacements[controlDefParent] != null && controlDefReplacements[controlDefParent] == "Uif-CurrencyTextControl") {
@@ -620,7 +618,7 @@ class SpringBeanTransformer {
             genericBeanTransform(builder, attributes);
         } else if (controlDefReplacements[controlDefParent] != null) {
             builder.bean(parent: controlDefReplacements[controlDefParent])
-        }else {
+        } else {
             builder.bean(parent: "Uif-" + controlDefParent.replace("Definition", ""))
         }
     }

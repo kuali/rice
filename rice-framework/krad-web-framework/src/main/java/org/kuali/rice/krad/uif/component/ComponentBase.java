@@ -956,7 +956,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.ComponentSecurity#isEditAuthz()
      */
-    public boolean isEditAuthz() {
+    public Boolean isEditAuthz() {
         initializeComponentSecurity();
 
         return this.componentSecurity.isEditAuthz();
@@ -965,7 +965,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.ComponentSecurity#setEditAuthz(boolean)
      */
-    public void setEditAuthz(boolean editAuthz) {
+    public void setEditAuthz(Boolean editAuthz) {
         initializeComponentSecurity();
 
         this.componentSecurity.setEditAuthz(editAuthz);
@@ -974,7 +974,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.ComponentSecurity#isViewAuthz()
      */
-    public boolean isViewAuthz() {
+    public Boolean isViewAuthz() {
         initializeComponentSecurity();
 
         return this.componentSecurity.isViewAuthz();
@@ -983,7 +983,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.ComponentSecurity#setViewAuthz(boolean)
      */
-    public void setViewAuthz(boolean viewAuthz) {
+    public void setViewAuthz(Boolean viewAuthz) {
         initializeComponentSecurity();
 
         this.componentSecurity.setViewAuthz(viewAuthz);

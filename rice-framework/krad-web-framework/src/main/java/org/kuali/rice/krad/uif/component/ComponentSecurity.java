@@ -41,8 +41,8 @@ import java.util.Map;
 public class ComponentSecurity extends UifDictionaryBeanBase implements Serializable {
     private static final long serialVersionUID = 726347449984853891L;
 
-    private boolean editAuthz;
-    private boolean viewAuthz;
+    private Boolean editAuthz;
+    private Boolean viewAuthz;
 
     private String namespaceAttribute;
     private String componentAttribute;
@@ -52,9 +52,6 @@ public class ComponentSecurity extends UifDictionaryBeanBase implements Serializ
     private Map<String, String> additionalRoleQualifiers;
 
     public ComponentSecurity() {
-        editAuthz = false;
-        viewAuthz = false;
-
         additionalPermissionDetails = new HashMap<String, String>();
         additionalRoleQualifiers = new HashMap<String, String>();
     }
@@ -65,7 +62,7 @@ public class ComponentSecurity extends UifDictionaryBeanBase implements Serializ
      * @return true if the component has edit authorization, false if not
      */
     @BeanTagAttribute(name="editAuthz")
-    public boolean isEditAuthz() {
+    public Boolean isEditAuthz() {
         return editAuthz;
     }
 
@@ -74,7 +71,7 @@ public class ComponentSecurity extends UifDictionaryBeanBase implements Serializ
      *
      * @param editAuthz
      */
-    public void setEditAuthz(boolean editAuthz) {
+    public void setEditAuthz(Boolean editAuthz) {
         this.editAuthz = editAuthz;
     }
 
@@ -84,7 +81,7 @@ public class ComponentSecurity extends UifDictionaryBeanBase implements Serializ
      * @return true if the component has view authorization, false if not
      */
     @BeanTagAttribute(name="viewAuthz")
-    public boolean isViewAuthz() {
+    public Boolean isViewAuthz() {
         return viewAuthz;
     }
 
@@ -93,7 +90,7 @@ public class ComponentSecurity extends UifDictionaryBeanBase implements Serializ
      *
      * @param viewAuthz
      */
-    public void setViewAuthz(boolean viewAuthz) {
+    public void setViewAuthz(Boolean viewAuthz) {
         this.viewAuthz = viewAuthz;
     }
 

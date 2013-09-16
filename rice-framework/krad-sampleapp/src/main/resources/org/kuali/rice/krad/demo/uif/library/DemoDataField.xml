@@ -35,7 +35,9 @@
         <ref bean="Demo-DataField-Example6"/>
         <ref bean="Demo-DataField-Example7"/>
         <ref bean="Demo-DataField-Example8"/>
-
+        <ref bean="Demo-DataField-Example9"/>
+        <ref bean="Demo-DataField-Example10"/>
+        <ref bean="Demo-DataField-Example11"/>
       </list>
     </property>
   </bean>
@@ -128,13 +130,71 @@
     </property>
   </bean>
 
-  <!-- ApplyMask -->
+  <!-- ApplyFullMask -->
   <bean id="Demo-DataField-Example9" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!-- ex:Demo-DataField-Example9 start-->
-        <bean parent="Uif-DataField" p:label="DataField 1" p:applyMask="true" p:propertyName="dataField1"/>
+        <bean parent="Uif-DataField" p:label="DataField 1" p:propertyName="dataField1">
+          <property name="componentSecurity">
+            <bean parent="Uif-DataFieldSecurity">
+              <property name="attributeSecurity">
+                <bean parent="AttributeSecurity">
+                  <property name="mask" value="true"/>
+                  <property name="maskFormatter">
+                    <bean parent="MaskFormatterLiteral" p:literal="*********"/>
+                  </property>
+                </bean>
+              </property>
+            </bean>
+          </property>
+        </bean>
         <!-- ex:Demo-DataField-Example9 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- ApplyPartialMask -->
+  <bean id="Demo-DataField-Example10" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-DataField-Example10 start-->
+        <bean parent="Uif-DataField" p:label="DataField 1" p:propertyName="dataField1">
+          <property name="componentSecurity">
+            <bean parent="Uif-DataFieldSecurity">
+              <property name="attributeSecurity">
+                <bean parent="AttributeSecurity">
+                  <property name="partialMask" value="true"/>
+                  <property name="partialMaskFormatter">
+                    <bean parent="MaskFormatterSubString" p:maskLength="2"/>
+                  </property>
+                </bean>
+              </property>
+            </bean>
+          </property>
+        </bean>
+        <!-- ex:Demo-DataField-Example10 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- HideProperty -->
+  <bean id="Demo-DataField-Example11" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-DataField-Example11 start-->
+        <bean parent="Uif-DataField" p:label="DataField 1" p:propertyName="dataField1">
+          <property name="componentSecurity">
+            <bean parent="Uif-DataFieldSecurity">
+              <property name="attributeSecurity">
+                <bean parent="AttributeSecurity">
+                  <property name="hide" value="true"/>
+                </bean>
+              </property>
+            </bean>
+          </property>
+        </bean>
+        <!-- ex:Demo-DataField-Example11 end-->
       </list>
     </property>
   </bean>

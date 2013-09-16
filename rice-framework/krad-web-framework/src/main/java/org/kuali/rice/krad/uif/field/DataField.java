@@ -1140,11 +1140,11 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     }
 
     /**
-     * Indicates whether the value for the field is secure
+     * Indicates whether the value for the field is secure.
      *
      * <p>
      * A value will be secured if masking has been applied (by configuration or a failed KIM permission) or the field
-     * has been marked as hidden due to an authorization check
+     * has been marked as hidden due to a required KIM permission check failing.
      * </p>
      *
      * @return true if value is secure, false if not
@@ -1153,9 +1153,23 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
         boolean hasHideAuthz = false;
 
         if (getDataFieldSecurity() != null) {
-            hasHideAuthz = getDataFieldSecurity().isViewAuthz() || getDataFieldSecurity().isViewInLineAuthz() || (
-                    (getDataFieldSecurity().getAttributeSecurity() != null) && getDataFieldSecurity()
-                            .getAttributeSecurity().isHide());
+            boolean isViewAuthz = false;
+            boolean isViewInLineAuthz = false;
+            boolean isHide = false;
+
+            if (getDataFieldSecurity().isViewAuthz() != null) {
+                isViewAuthz = getDataFieldSecurity().isViewAuthz().booleanValue();
+            }
+
+            if (getDataFieldSecurity().isViewInLineAuthz() != null) {
+                isViewInLineAuthz = getDataFieldSecurity().isViewInLineAuthz().booleanValue();
+            }
+
+            if (getDataFieldSecurity().getAttributeSecurity() != null) {
+                isHide = getDataFieldSecurity().getAttributeSecurity().isHide();
+            }
+
+            hasHideAuthz = isViewAuthz || isViewInLineAuthz || isHide;
         }
 
         return isApplyMask() || (hasHideAuthz && isHidden());

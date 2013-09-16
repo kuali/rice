@@ -31,7 +31,9 @@ import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.field.DataFieldSecurity;
 import org.kuali.rice.krad.uif.field.Field;
+import org.kuali.rice.krad.uif.field.FieldSecurity;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.widget.Widget;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -227,8 +229,20 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
      * org.kuali.rice.krad.uif.field.Field, java.lang.String, org.kuali.rice.kim.api.identity.Person)
      */
     public boolean canEditField(View view, ViewModel model, Field field, String propertyName, Person user) {
-        // check edit authz flag is set
-        if ((field.getComponentSecurity() == null) || !field.getComponentSecurity().isEditAuthz()) {
+        ComponentSecurity componentSecurity = field.getComponentSecurity();
+
+        // check component security exists
+        if (componentSecurity == null) {
+            return true;
+        }
+
+        // first check hide flag is set (lower precedence)
+        if (componentSecurity.isEditAuthz() == null && !isDataFieldAttributeSecurityHide(field)) {
+            return true;
+        }
+
+        // then check edit authz is set (higher precedence)
+        if (componentSecurity.isEditAuthz() != null && !componentSecurity.isEditAuthz().booleanValue()) {
             return true;
         }
 
@@ -241,8 +255,20 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
      * org.kuali.rice.krad.uif.field.Field, java.lang.String, org.kuali.rice.kim.api.identity.Person)
      */
     public boolean canViewField(View view, ViewModel model, Field field, String propertyName, Person user) {
-        // check view authz flag is set
-        if ((field.getComponentSecurity() == null) || !field.getComponentSecurity().isViewAuthz()) {
+        ComponentSecurity componentSecurity = field.getComponentSecurity();
+
+        // check component security exists
+        if (componentSecurity == null) {
+            return true;
+        }
+
+        // first check hide flag is set (lower precedence)
+        if (componentSecurity.isViewAuthz() == null && !isDataFieldAttributeSecurityHide(field)) {
+            return true;
+        }
+
+        // then check view authz is set (higher precedence)
+        if (componentSecurity.isViewAuthz() != null && !componentSecurity.isViewAuthz().booleanValue()) {
             return true;
         }
 
@@ -255,8 +281,15 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
      * org.kuali.rice.krad.uif.container.Group, java.lang.String, org.kuali.rice.kim.api.identity.Person)
      */
     public boolean canEditGroup(View view, ViewModel model, Group group, String groupId, Person user) {
+        ComponentSecurity componentSecurity = group.getComponentSecurity();
+
+        // check component security exists
+        if (componentSecurity == null) {
+            return true;
+        }
+
         // check edit group authz flag is set
-        if ((group.getComponentSecurity() == null) || !group.getComponentSecurity().isEditAuthz()) {
+        if (componentSecurity.isEditAuthz() == null || !componentSecurity.isEditAuthz().booleanValue()) {
             return true;
         }
 
@@ -269,8 +302,15 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
      * org.kuali.rice.krad.uif.container.Group, java.lang.String, org.kuali.rice.kim.api.identity.Person)
      */
     public boolean canViewGroup(View view, ViewModel model, Group group, String groupId, Person user) {
+        ComponentSecurity componentSecurity = group.getComponentSecurity();
+
+        // check component security exists
+        if (componentSecurity == null) {
+            return true;
+        }
+
         // check view group authz flag is set
-        if ((group.getComponentSecurity() == null) || !group.getComponentSecurity().isViewAuthz()) {
+        if (componentSecurity.isViewAuthz() == null || !componentSecurity.isViewAuthz().booleanValue()) {
             return true;
         }
 
@@ -283,8 +323,15 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
      * org.kuali.rice.krad.uif.widget.Widget, java.lang.String, org.kuali.rice.kim.api.identity.Person)
      */
     public boolean canEditWidget(View view, ViewModel model, Widget widget, String widgetId, Person user) {
+        ComponentSecurity componentSecurity = widget.getComponentSecurity();
+
+        // check component security exists
+        if (componentSecurity == null) {
+            return true;
+        }
+
         // check edit widget authz flag is set
-        if ((widget.getComponentSecurity() == null) || !widget.getComponentSecurity().isViewAuthz()) {
+        if (componentSecurity.isEditAuthz() == null || !componentSecurity.isEditAuthz().booleanValue()) {
             return true;
         }
 
@@ -297,8 +344,15 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
      * org.kuali.rice.krad.uif.widget.Widget, java.lang.String, org.kuali.rice.kim.api.identity.Person)
      */
     public boolean canViewWidget(View view, ViewModel model, Widget widget, String widgetId, Person user) {
+        ComponentSecurity componentSecurity = widget.getComponentSecurity();
+
+        // check component security exists
+        if (componentSecurity == null) {
+            return true;
+        }
+
         // check view widget authz flag is set
-        if ((widget.getComponentSecurity() == null) || !widget.getComponentSecurity().isViewAuthz()) {
+        if (componentSecurity.isViewAuthz() == null || !componentSecurity.isViewAuthz().booleanValue()) {
             return true;
         }
 
@@ -352,8 +406,20 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
 
     public boolean canEditLineField(View view, ViewModel model, CollectionGroup collectionGroup,
             String collectionPropertyName, Object line, Field field, String propertyName, Person user) {
-        // check edit line field authz flag is set
-        if ((field.getFieldSecurity() == null) || !field.getFieldSecurity().isEditInLineAuthz()) {
+        FieldSecurity fieldSecurity = field.getFieldSecurity();
+
+        // check field security exists
+        if (fieldSecurity == null) {
+            return true;
+        }
+
+        // first check hide flag is set (lower precedence)
+        if (fieldSecurity.isEditInLineAuthz() == null && !isDataFieldAttributeSecurityHide(field)) {
+            return true;
+        }
+
+        // then check edit line field authz flag is set (higher precedence)
+        if (fieldSecurity.isEditInLineAuthz() != null && !fieldSecurity.isEditInLineAuthz().booleanValue()) {
             return true;
         }
 
@@ -368,8 +434,20 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
 
     public boolean canViewLineField(View view, ViewModel model, CollectionGroup collectionGroup,
             String collectionPropertyName, Object line, Field field, String propertyName, Person user) {
-        // check view line field authz flag is set
-        if ((field.getFieldSecurity() == null) || !field.getFieldSecurity().isViewInLineAuthz()) {
+        FieldSecurity fieldSecurity = field.getFieldSecurity();
+
+        // check field security exists
+        if (fieldSecurity == null) {
+            return true;
+        }
+
+        // first check hide flag is set (lower precedence)
+        if (fieldSecurity.isViewInLineAuthz() == null && !isDataFieldAttributeSecurityHide(field)) {
+            return true;
+        }
+
+        // then check view line field authz flag is set (higher precedence)
+        if (fieldSecurity.isViewInLineAuthz() != null && !fieldSecurity.isViewInLineAuthz().booleanValue()) {
             return true;
         }
 
@@ -620,6 +698,33 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
         return !getConfigurationService().getPropertyValueAsString(KRADConstants.PROD_ENVIRONMENT_CODE_KEY).
                 equalsIgnoreCase(getConfigurationService().getPropertyValueAsString(KRADConstants.ENVIRONMENT_KEY))
                 && !getConfigurationService().getPropertyValueAsBoolean(KRADConstants.ENABLE_NONPRODUCTION_UNMASKING);
+    }
+
+    /**
+     * Determines whether {@code AttributeSecurity} is set on the {@code DataField} and if it is, whether its hide
+     * attribute is enabled.
+     *
+     * @param field the field to check for the hide attribute
+     *
+     * @return true if the hide attribute is enabled, false otherwise
+     */
+    private boolean isDataFieldAttributeSecurityHide(Field field) {
+        if (field instanceof DataField) {
+            DataField dataField = (DataField) field;
+            DataFieldSecurity dataFieldSecurity = dataField.getDataFieldSecurity();
+
+            if (dataFieldSecurity == null) {
+                return false;
+            }
+
+            if (dataFieldSecurity.getAttributeSecurity() == null || !dataFieldSecurity.getAttributeSecurity().isHide()) {
+                return false;
+            }
+
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @BeanTagAttribute(name="configurationService",type= BeanTagAttribute.AttributeType.SINGLEBEAN)

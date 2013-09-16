@@ -302,7 +302,7 @@
 }
 
 #ComponentLibrary-TabGroup_tabs > div.ui-tabs-panel {
-    min-height: 200px;
+    min-height: 300px;
     overflow: hidden;
     width: 72%;
     border: 1px solid #CCCCCC;

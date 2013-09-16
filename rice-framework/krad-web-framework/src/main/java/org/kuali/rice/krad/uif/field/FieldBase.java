@@ -357,16 +357,16 @@ public class FieldBase extends ComponentBase implements Field {
     /**
      * @see org.kuali.rice.krad.uif.field.FieldSecurity#isEditInLineAuthz()
      */
-    public boolean isEditInLineAuthz() {
+    public Boolean isEditInLineAuthz() {
         initializeComponentSecurity();
 
         return getFieldSecurity().isEditInLineAuthz();
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.field.FieldSecurity#setEditInLineAuthz(boolean)
+     * @see org.kuali.rice.krad.uif.field.FieldSecurity#setEditInLineAuthz(Boolean)
      */
-    public void setEditInLineAuthz(boolean editInLineAuthz) {
+    public void setEditInLineAuthz(Boolean editInLineAuthz) {
         initializeComponentSecurity();
 
         getFieldSecurity().setEditInLineAuthz(editInLineAuthz);
@@ -375,16 +375,16 @@ public class FieldBase extends ComponentBase implements Field {
     /**
      * @see org.kuali.rice.krad.uif.field.FieldSecurity#isViewInLineAuthz()
      */
-    public boolean isViewInLineAuthz() {
+    public Boolean isViewInLineAuthz() {
         initializeComponentSecurity();
 
         return getFieldSecurity().isViewInLineAuthz();
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.field.FieldSecurity#setViewInLineAuthz(boolean)
+     * @see org.kuali.rice.krad.uif.field.FieldSecurity#setViewInLineAuthz(Boolean)
      */
-    public void setViewInLineAuthz(boolean viewInLineAuthz) {
+    public void setViewInLineAuthz(Boolean viewInLineAuthz) {
         initializeComponentSecurity();
 
         getFieldSecurity().setViewInLineAuthz(viewInLineAuthz);

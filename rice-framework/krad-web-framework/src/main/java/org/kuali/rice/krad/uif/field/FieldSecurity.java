@@ -32,14 +32,11 @@ import org.kuali.rice.krad.uif.component.ComponentSecurity;
 @BeanTag(name = "fieldSecurity-bean")
 public class FieldSecurity extends ComponentSecurity {
 
-    private boolean editInLineAuthz;
-    private boolean viewInLineAuthz;
+    private Boolean editInLineAuthz;
+    private Boolean viewInLineAuthz;
 
     public FieldSecurity() {
         super();
-
-        editInLineAuthz = false;
-        viewInLineAuthz = false;
     }
 
     /**
@@ -48,7 +45,7 @@ public class FieldSecurity extends ComponentSecurity {
      * @return true if the field has edit in line authorization, false if not
      */
     @BeanTagAttribute(name="editInLineAuthz")
-    public boolean isEditInLineAuthz() {
+    public Boolean isEditInLineAuthz() {
         return editInLineAuthz;
     }
 
@@ -57,7 +54,7 @@ public class FieldSecurity extends ComponentSecurity {
      *
      * @param editInLineAuthz
      */
-    public void setEditInLineAuthz(boolean editInLineAuthz) {
+    public void setEditInLineAuthz(Boolean editInLineAuthz) {
         this.editInLineAuthz = editInLineAuthz;
     }
 
@@ -67,7 +64,7 @@ public class FieldSecurity extends ComponentSecurity {
      * @return true if the field has view in line unmask authorization, false if not
      */
     @BeanTagAttribute(name="viewInLineAuthz")
-    public boolean isViewInLineAuthz() {
+    public Boolean isViewInLineAuthz() {
         return viewInLineAuthz;
     }
 
@@ -76,7 +73,7 @@ public class FieldSecurity extends ComponentSecurity {
      *
      * @param viewInLineAuthz
      */
-    public void setViewInLineAuthz(boolean viewInLineAuthz) {
+    public void setViewInLineAuthz(Boolean viewInLineAuthz) {
         this.viewInLineAuthz = viewInLineAuthz;
     }
 

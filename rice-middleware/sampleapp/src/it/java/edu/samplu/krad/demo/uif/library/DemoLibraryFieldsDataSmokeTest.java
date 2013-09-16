@@ -16,9 +16,12 @@
 package edu.samplu.krad.demo.uif.library;
 
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -30,6 +33,9 @@ public class DemoLibraryFieldsDataSmokeTest extends DemoLibraryBase {
      * /kr-krad/kradsampleapp?viewId=Demo-DataField-View&methodToCall=start
      */
     public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-DataField-View&methodToCall=start";
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     @Override
     public String getBookmarkUrl() {
@@ -131,6 +137,23 @@ public class DemoLibraryFieldsDataSmokeTest extends DemoLibraryBase {
         Assert.assertEquals("1001 *-* My Book Title", valueText);
     }
 
+    protected void testDataFieldApplyFullMask() throws Exception {
+        String valueText = textValueUnderTest("Demo-DataField-Example9", "DataField 1");
+        Assert.assertEquals("*********", valueText);
+    }
+
+    protected void testDataFieldApplyPartialMask() throws Exception {
+        String valueText = textValueUnderTest("Demo-DataField-Example10", "DataField 1");
+        Assert.assertEquals("**01", valueText);
+    }
+
+    protected void testDataFieldHideProperty() throws Exception {
+        WebElement exampleDiv = navigateToExample("Demo-DataField-Example11");
+
+        exception.expect(NoSuchElementException.class);
+        findElement(By.cssSelector("div[data-label='DataField 1']"), exampleDiv);
+    }
+
     private String textValueUnderTest(String example, String testLabel) throws Exception {
         WebElement exampleDiv = navigateToExample(example);
         WebElement field = findElement(By.cssSelector("div[data-label='" + testLabel + "']"), exampleDiv);
@@ -159,6 +182,9 @@ public class DemoLibraryFieldsDataSmokeTest extends DemoLibraryBase {
         testDataFieldReplaceProperty();
         testDataFieldReplacePropertyWithField();
         testDataFieldAppendPropertyWithField();
+        testDataFieldApplyFullMask();
+        testDataFieldApplyPartialMask();
+        testDataFieldHideProperty();
     }
 
     @Test
@@ -266,6 +292,42 @@ public class DemoLibraryFieldsDataSmokeTest extends DemoLibraryBase {
     @Test
     public void testDataFieldAppendPropertyWithFieldNav() throws Exception {
         testDataFieldAppendPropertyWithField();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldApplyFullMaskBookmark() throws Exception {
+        testDataFieldApplyFullMask();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldApplyFullMaskNav() throws Exception {
+        testDataFieldApplyFullMask();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldApplyPartialMaskBookmark() throws Exception {
+        testDataFieldApplyPartialMask();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldApplyPartialMaskNav() throws Exception {
+        testDataFieldApplyPartialMask();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldHidePropertyBookmark() throws Exception {
+        testDataFieldHideProperty();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldHidePropertyNav() throws Exception {
+        testDataFieldHideProperty();
         passed();
     }
 }

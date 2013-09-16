@@ -49,7 +49,7 @@ public class DemoLibraryElementsDataTableSmokeTest extends SmokeTestBase {
     }
 
     protected void testLibraryElementsDataTable() throws Exception {
-        assertElementPresentByXpath("//div[@id='Demo-DataTable-Example1']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='dataTables_scroll']/div[@class='dataTables_scrollBody']/table/tbody/tr/td/span");
+        waitForElementPresentByXpath("//div[@id='Demo-DataTable-Example1']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='dataTables_scroll']/div[@class='dataTables_scrollBody']/table/tbody/tr/td/span");
     }
     
     @Test

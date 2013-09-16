@@ -57,9 +57,14 @@ import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.util.Assert;
+import org.springframework.util.FileCopyUtils;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -1245,6 +1250,41 @@ public final class KRADUtils {
             throw new RuntimeException("BO class was passed in as null");
         }
         return KRADServiceLocatorWeb.getLegacyDataAdapter().createNewObjectFromClass(clazz);
+    }
+
+
+    /**
+     * This method add the header and content of an attachment to the response.
+     *
+     * @param response
+     * @param contentType the content type of the attachment
+     * @param inputStream the content of the attachment
+     * @param fileName the file name of the attachment
+     * @param fileSize the size of the attachment
+     *
+     */
+    public static void addAttachmentToResponse(HttpServletResponse response,
+            InputStream inputStream, String contentType, String fileName, long fileSize) throws IOException {
+
+        // If there are quotes in the name, we should replace them to avoid issues.
+        // The filename will be wrapped with quotes below when it is set in the header
+        String updateFileName;
+        if(fileName.contains("\"")) {
+            updateFileName = fileName.replaceAll("\"", "");
+        } else {
+            updateFileName =  fileName;
+        }
+
+        // set response
+        response.setContentType(contentType);
+        response.setContentLength(org.springframework.util.NumberUtils.convertNumberToTargetClass(fileSize, Integer.class));
+        response.setHeader("Content-disposition", "attachment; filename=\"" + updateFileName + "\"");
+        response.setHeader("Expires", "0");
+        response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+        response.setHeader("Pragma", "public");
+
+        // Copy the input stream to the response
+        FileCopyUtils.copy(inputStream, response.getOutputStream());
     }
 
 }

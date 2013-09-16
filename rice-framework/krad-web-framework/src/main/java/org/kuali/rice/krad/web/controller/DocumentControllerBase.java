@@ -63,6 +63,7 @@ import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.NoteType;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.util.FileCopyUtils;
@@ -626,25 +627,56 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     public ModelAndView downloadAttachment(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
             HttpServletRequest request,
             HttpServletResponse response) throws ServletRequestBindingException, FileNotFoundException, IOException {
-        // Get the attachment input stream
         String selectedLineIndex = uifForm.getActionParamaterValue("selectedLineIndex");
         Note note = ((DocumentFormBase) uifForm).getDocument().getNote(Integer.parseInt(selectedLineIndex));
         Attachment attachment = note.getAttachment();
-        InputStream is = getAttachmentService().retrieveAttachmentContents(attachment);
 
-        // Set the response headers
-        response.setContentType(attachment.getAttachmentMimeTypeCode());
-        response.setContentLength(attachment.getAttachmentFileSize().intValue());
-        response.setHeader("Expires", "0");
-        response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
-        response.setHeader("Pragma", "public");
-        response.setHeader("Content-Disposition",
-                "attachment; filename=\"" + attachment.getAttachmentFileName() + "\"");
-
-        // Copy the input stream to the response
-        FileCopyUtils.copy(is, response.getOutputStream());
+        // Add attachment to response
+        KRADUtils.addAttachmentToResponse(response, getAttachmentService().retrieveAttachmentContents(attachment),
+                attachment.getAttachmentMimeTypeCode(), attachment.getAttachmentFileName(),
+                attachment.getAttachmentFileSize());
         return null;
     }
+
+    /**
+     * Called by the download attachment action on a note. Method
+     * gets the attachment input stream from the AttachmentService
+     * and writes it to the request output stream.
+     */
+
+    /**
+     * Gets attachment based on noteIdentifier parameter.
+     * @param uifForm
+     * @param result
+     * @return request
+     * @return response
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=downloadBOAttachment")
+    public ModelAndView downloadBOAttachment(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
+            HttpServletRequest request,
+            HttpServletResponse response) throws ServletRequestBindingException, FileNotFoundException, IOException {
+        // Get the attachment input stream
+        Long noteIdentifier = Long.valueOf(request.getParameter(KRADConstants.NOTE_IDENTIFIER));
+        Note note = this.getNoteService().getNoteByNoteId(noteIdentifier);
+        if (note != null) {
+            Attachment attachment = note.getAttachment();
+            if (attachment != null) {
+                //make sure attachment is setup with backwards reference to note (rather then doing this we could also just call the attachment service (with a new method that took in the note)
+                attachment.setNote(note);
+
+                // Add attachment to response
+                KRADUtils.addAttachmentToResponse(response, getAttachmentService().retrieveAttachmentContents(
+                        attachment), attachment.getAttachmentMimeTypeCode(), attachment.getAttachmentFileName(),
+                        attachment.getAttachmentFileSize());
+            }
+        }
+
+        return null;
+    }
+
 
     /**
      * Called by the cancel attachment action on a note. Method

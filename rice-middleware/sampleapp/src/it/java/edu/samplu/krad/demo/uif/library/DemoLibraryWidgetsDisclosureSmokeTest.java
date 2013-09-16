@@ -15,10 +15,7 @@
  */
 package edu.samplu.krad.demo.uif.library;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
-import edu.samplu.krad.demo.uif.library.DemoLibraryBase;
 import org.junit.Test;
-import edu.samplu.common.SmokeTestBase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 

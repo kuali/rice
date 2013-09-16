@@ -17,6 +17,7 @@ package edu.samplu.krad.demo.travelapplication.accountmultivalue.lookup;
 
 import edu.samplu.common.SmokeTestBase;
 import org.junit.Test;
+import org.openqa.selenium.WebElement;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -75,12 +76,17 @@ public class DemoTravelAccountMultivalueLookUpSmokeTest extends SmokeTestBase {
     private void testSelectThisPage() throws InterruptedException {
         waitAndSelectByName(ACCOUNT_TYPE_CODE_NAME, "Expense Account Type");
         waitAndClickButtonByText(SEARCH);
-        waitAndClickButtonByText("select all from this page");
-        Thread.sleep(1000);
+        WebElement dropdownMenu = getElementByAttributeValue("class", "dropdown-toggle");
+        dropdownMenu.click();
+        waitAndClickLinkContainingText("select all items on this page", "dropdown click select all items on this page problem");
+        Thread.sleep(5000);
         assertButtonEnabledByText(RETURN_SELECTED_BUTTON_TEXT);
         assertTextPresent("a2");
         assertTextPresent("a8");
+        dropdownMenu = getElementByAttributeValue("class", "dropdown-toggle");
+        dropdownMenu.click();
         waitAndClickButtonByText("deselect all from this page");
+        waitForPageToLoad();
         assertButtonDisabledByText(RETURN_SELECTED_BUTTON_TEXT);
     }
 

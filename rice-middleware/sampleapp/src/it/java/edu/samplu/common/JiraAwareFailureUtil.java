@@ -116,6 +116,10 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("HTTP Status 404 - /kew/RouteLog.do", "KULRICE-10540 Demo Travel Account Maintenance Edit Route log inline 404");
 
         jiraMatches.put("//a[contains(text(),'Required')] not visiable", "KULRICE-10541 DemoLibraryElementsActionSmokeTest Validation required text missing");
+
+        jiraMatches.put("u100085_disclosureContent", "KULRICE-10560 Update DemoLibraryWidgetsDisclosureSmokeTest to not use ids");
+
+        jiraMatches.put("//div[@class='uif-horizontalBoxGroup uif-stickyFooter uif-stickyButtonFooter' and @data-sticky_footer='true']", "KULRICE-10565 DemoLibraryGeneralFeaturesStickyFooterSmokeTest Example 5 - page and view footers not sticky");
         //jiraMatches.put("", "");
     }
 

@@ -1226,9 +1226,14 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected WebElement findElement(By by, WebElement elementToFindOn) {
-        WebElement found = elementToFindOn.findElement(by);
-        WebDriverUtil.highlightElement(driver, found);
-        return found;
+        try {
+            WebElement found = elementToFindOn.findElement(by);
+            WebDriverUtil.highlightElement(driver, found);
+            return found;
+        } catch (Exception e) {
+            jiraAwareFail(e.getMessage());
+        }
+        return null; // requred by compiler, never reached
     }
 
     protected List<WebElement> findVisibleElements(By by) {
@@ -4118,6 +4123,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     protected void waitAndClickById(String id) throws InterruptedException {
         jiraAwareWaitAndClick(By.id(id), "");
     }
+
     protected void waitAndClickById(String id, String message) throws InterruptedException {
         jiraAwareWaitAndClick(By.id(id), message);
     }
@@ -4136,6 +4142,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void waitAndClickByLinkText(String text, String message, Failable failable) throws InterruptedException {
         jiraAwareWaitAndClick(By.linkText(text), message, failable);
+    }
+
+    protected void waitAndClickLinkContainingText(String linkTest, String message) throws InterruptedException {
+        waitAndClickByXpath("//a[contains(text(), '" + linkTest + "')]", message);
     }
 
     protected void waitAndClickByName(String name) throws InterruptedException {

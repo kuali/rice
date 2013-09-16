@@ -247,7 +247,9 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
         }
 
         // if not title, then get primary relationship
-        inquiryObjectClass = getLegacyDataAdapter().getInquiryObjectClassIfNotTitle(dataObject,propertyName);
+        if (inquiryObjectClass == null) {
+            inquiryObjectClass = getLegacyDataAdapter().getInquiryObjectClassIfNotTitle(dataObject,propertyName);
+        }
 
         // if haven't found inquiry class, then no inquiry can be rendered
         if (inquiryObjectClass == null) {

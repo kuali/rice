@@ -53,6 +53,7 @@ import org.kuali.rice.krad.data.provider.annotation.CollectionRelationship;
 import org.kuali.rice.krad.data.provider.annotation.CollectionSortAttribute;
 import org.kuali.rice.krad.data.provider.annotation.Description;
 import org.kuali.rice.krad.data.provider.annotation.ExtensionFor;
+import org.kuali.rice.krad.data.provider.annotation.ForceUppercase;
 import org.kuali.rice.krad.data.provider.annotation.InheritProperties;
 import org.kuali.rice.krad.data.provider.annotation.InheritProperty;
 import org.kuali.rice.krad.data.provider.annotation.KeyValuesFinderClass;
@@ -60,9 +61,9 @@ import org.kuali.rice.krad.data.provider.annotation.Label;
 import org.kuali.rice.krad.data.provider.annotation.MergeAction;
 import org.kuali.rice.krad.data.provider.annotation.NonPersistentProperty;
 import org.kuali.rice.krad.data.provider.annotation.PropertyEditorClass;
-import org.kuali.rice.krad.data.provider.annotation.Sensitive;
 import org.kuali.rice.krad.data.provider.annotation.ReadOnly;
 import org.kuali.rice.krad.data.provider.annotation.Relationship;
+import org.kuali.rice.krad.data.provider.annotation.Sensitive;
 import org.kuali.rice.krad.data.provider.annotation.ShortLabel;
 import org.kuali.rice.krad.data.provider.annotation.ValidCharactersConstraintBeanName;
 import org.kuali.rice.krad.data.provider.impl.MetadataProviderBase;
@@ -390,6 +391,10 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 		}
 		if (a instanceof NotNull) {
 			attr.setRequired(true);
+			return true;
+		}
+		if (a instanceof ForceUppercase) {
+			attr.setForceUppercase(true);
 			return true;
 		}
 		if (a instanceof PropertyEditorClass) {

@@ -50,6 +50,7 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 
 	protected String displayAttributeName;
 	protected Boolean caseInsensitive;
+	protected Boolean forceUppercase;
 	protected Boolean required;
 	protected Boolean persisted;
 	protected Boolean sensitive;
@@ -94,6 +95,22 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 	public void setCaseInsensitive(boolean caseInsensitive) {
 		this.caseInsensitive = caseInsensitive;
 	}
+
+	@Override
+	public boolean isForceUppercase() {
+		if (forceUppercase != null) {
+			return forceUppercase;
+		}
+		if (embeddedAttribute != null) {
+			return embeddedAttribute.isForceUppercase();
+		}
+		return false;
+	}
+
+	public void setForceUppercase(boolean forceUppercase) {
+		this.forceUppercase = forceUppercase;
+	}
+
 	@Override
 	public PropertyEditor getPropertyEditor() {
 		if (propertyEditor != null) {

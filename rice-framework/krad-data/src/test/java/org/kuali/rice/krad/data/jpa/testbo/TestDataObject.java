@@ -48,6 +48,7 @@ import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.krad.data.jpa.converters.EncryptionConverter;
 import org.kuali.rice.krad.data.provider.annotation.AttributeRelationship;
 import org.kuali.rice.krad.data.provider.annotation.CollectionRelationship;
+import org.kuali.rice.krad.data.provider.annotation.ForceUppercase;
 import org.kuali.rice.krad.data.provider.annotation.InheritProperties;
 import org.kuali.rice.krad.data.provider.annotation.InheritProperty;
 import org.kuali.rice.krad.data.provider.annotation.Label;
@@ -62,6 +63,7 @@ public class TestDataObject implements Serializable {
 
 	@Id
 	@Column(name = "PK_PROP")
+	@ForceUppercase
 	String primaryKeyProperty;
 
 	@Column(name = "STR_PROP", length = 40)

@@ -58,7 +58,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     private static final long serialVersionUID = -2490613377818442742L;
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(AttributeDefinition.class);
 
-    protected Boolean forceUppercase = Boolean.FALSE;
+    protected Boolean forceUppercase;
 
     protected Boolean unique;
 
@@ -120,11 +120,19 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * as upper case and thus be persisted as upper case.
      * </p>
      *
+     * If not set and embedded metadata is present, the ForceUppercase value will be read from the linked metadata.
+     *
      * @return boolean true if force upper case is set
      */
     @BeanTagAttribute(name = "forceUppercase")
     public Boolean getForceUppercase() {
-        return this.forceUppercase;
+        if ( forceUppercase != null ) {
+            return forceUppercase;
+        }
+        if ( getDataObjectAttribute() != null ) {
+            return getDataObjectAttribute().isForceUppercase();
+        }
+        return Boolean.FALSE;
     }
 
     /**

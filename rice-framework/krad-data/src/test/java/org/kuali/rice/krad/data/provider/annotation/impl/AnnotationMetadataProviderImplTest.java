@@ -226,6 +226,20 @@ public class AnnotationMetadataProviderImplTest {
 	}
 
 	@Test
+	public void testForceUppercaseAnnotation() {
+		DataObjectMetadata metadata = compositeProvider.provideMetadata().get(TestDataObject.class);
+		assertNotNull("Metadata should have been retrieved for TestDataObject", metadata);
+		assertNotNull("getAttribute(primaryKeyProperty) should not have returned null",
+				metadata.getAttribute("primaryKeyProperty"));
+		assertTrue("forceUppercase flag not set", metadata.getAttribute("primaryKeyProperty")
+				.isForceUppercase());
+		assertNotNull("getAttribute(readOnlyProperty) should not have returned null",
+				metadata.getAttribute("readOnlyProperty"));
+		assertFalse("forceUppercase flag should not have been set", metadata.getAttribute("readOnlyProperty")
+				.isForceUppercase());
+	}
+
+	@Test
 	public void testCollectionAnnotation_derivedType() {
 		DataObjectMetadata metadata = compositeProvider.provideMetadata().get(
 				TestDataObject.class);

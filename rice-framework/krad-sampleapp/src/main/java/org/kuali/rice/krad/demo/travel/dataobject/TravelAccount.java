@@ -38,6 +38,7 @@ import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.provider.annotation.Description;
+import org.kuali.rice.krad.data.provider.annotation.ForceUppercase;
 import org.kuali.rice.krad.data.provider.annotation.InheritProperties;
 import org.kuali.rice.krad.data.provider.annotation.InheritProperty;
 import org.kuali.rice.krad.data.provider.annotation.KeyValuesFinderClass;
@@ -60,6 +61,7 @@ public class TravelAccount extends DataObjectBase implements Serializable {
 
 	@Column(name="ACCT_NAME",length=40)
 	@Label("Account Name")
+	@ForceUppercase
 	private String name;
 
 	@Column(name="SUBSIDIZED_PCT",length=5,precision=2)

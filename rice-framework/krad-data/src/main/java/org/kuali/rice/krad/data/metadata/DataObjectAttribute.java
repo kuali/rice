@@ -19,6 +19,7 @@ import java.beans.PropertyEditor;
 
 import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.provider.PersistenceProvider;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 
 /**
@@ -53,6 +54,11 @@ public interface DataObjectAttribute extends MetadataCommon {
 	 * Whether this attribute should be treated as case insensitive when performing lookups and searches.
 	 */
 	boolean isCaseInsensitive();
+
+	/**
+	 * Whether this attribute should be forced to upper case before being sent to the {@link PersistenceProvider}.
+	 */
+	boolean isForceUppercase();
 
 	/**
 	 * Whether (at the data level) this attribute must have a non-null value.

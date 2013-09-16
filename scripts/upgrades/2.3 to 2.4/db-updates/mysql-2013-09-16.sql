@@ -20,7 +20,7 @@ INSERT INTO KRCR_PARM_T (OBJ_ID, NMSPC_CD, CMPNT_CD, PARM_NM, PARM_TYP_CD, VAL, 
      WHERE NMSPC_CD = 'KR-NS'
        AND CMPNT_CD = 'Lookup'
        AND PARM_NM = 'RESULTS_LIMIT'
-       AND NOT EXISTS (SELECT '1' FROM KRCR_PARM_T
+       AND APPL_ID NOT IN (SELECT APPL_ID FROM KRCR_PARM_T
                         WHERE NMSPC_CD = 'KR-KRAD'
                           AND CMPNT_CD = 'Lookup'
                           AND PARM_NM = 'RESULTS_LIMIT')

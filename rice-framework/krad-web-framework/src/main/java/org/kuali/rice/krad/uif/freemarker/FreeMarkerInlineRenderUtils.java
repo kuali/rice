@@ -381,6 +381,7 @@ public class FreeMarkerInlineRenderUtils {
         out.write(component.getId());
         out.write("\"");
         renderAttrBuild(component, out);
+        out.write(component.getSimpleDataAttributes());
         out.write(">");
     }
 

@@ -152,6 +152,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     @ReferenceCopy(newCollectionInstance = true)
     private transient Map<String, Object> context;
+
+    @ReferenceCopy
     private transient Map<String, Object> unmodifiableContext;
 
     private List<PropertyReplacer> propertyReplacers;

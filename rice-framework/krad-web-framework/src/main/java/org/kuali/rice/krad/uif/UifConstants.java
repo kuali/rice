@@ -167,6 +167,7 @@ public class UifConstants {
         public static final String CONSTRAINT = "_constraint";
         public static final String DETAIL_LINK = "_detLink";
         public static final String DETAIL_GROUP = "_detGroup";
+        public static final String DISCLOSURE_CONTENT = "_disclosureContent";
         public static final String DIRECT_INQUIRY = "_directinquiry";
         public static final String ERRORS = "_errors";
         public static final String INSTRUCTIONAL = "_instructional";

@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
@@ -441,7 +442,7 @@ public class FreeMarkerInlineRenderUtils {
             Disclosure disclosure = group.getDisclosure();
             if (disclosure != null && disclosure.isRender()) {
                 out.write("<div id=\"");
-                out.write(group.getId());
+                out.write(group.getId() + UifConstants.IdSuffixes.DISCLOSURE_CONTENT);
                 out.write("\" data-role=\"disclosureContent\" data-open=\"");
                 out.write(Boolean.toString(disclosure.isDefaultOpen()));
                 out.write("\" class=\"uif-disclosureContent\">");

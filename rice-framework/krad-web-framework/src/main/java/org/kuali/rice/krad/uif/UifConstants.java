@@ -157,6 +157,7 @@ public class UifConstants {
     }
 
     public static class IdSuffixes {
+        public static final String ACTION = "_act";
         public static final String ADD_LINE = "_add";
         public static final String CONTROL = "_control";
         public static final String ATTRIBUTE = "_attribute";
@@ -167,6 +168,7 @@ public class UifConstants {
         public static final String DETAIL_LINK = "_detLink";
         public static final String DETAIL_GROUP = "_detGroup";
         public static final String DIRECT_INQUIRY = "_directinquiry";
+        public static final String DISCLOSURE_CONTENT = "_disclosureContent";
         public static final String ERRORS = "_errors";
         public static final String INSTRUCTIONAL = "_instructional";
         public static final String LINE = "_line";

@@ -15,6 +15,7 @@
  */
 package edu.samplu.common;
 
+import com.thoughtworks.selenium.SeleneseTestBase;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.openqa.selenium.By;
@@ -31,8 +32,6 @@ import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
-
-import com.thoughtworks.selenium.SeleneseTestBase;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -108,12 +107,6 @@ public class WebDriverUtil {
     public static int SHORT_IMPLICIT_WAIT_TIME = 1;
 
     /**
-     * Set -Dremote.driver.saucelabs for running on saucelabs
-     * @link https://wiki.kuali.org/display/KULRICE/How+To+Run+a+Selenium+Test for patch required
-     */
-    public static final String REMOTE_DRIVER_SAUCELABS_PROPERTY = "remote.driver.saucelabs";
-
-    /**
      * Selenium's webdriver.chrome.driver parameter, you can set -Dwebdriver.chrome.driver= or Rice's REMOTE_PUBLIC_CHROME
      */
     public static final String WEBDRIVER_CHROME_DRIVER = "webdriver.chrome.driver";
@@ -187,7 +180,7 @@ public class WebDriverUtil {
         }
 
         WebDriver driver = null;
-        if (System.getProperty(REMOTE_DRIVER_SAUCELABS_PROPERTY) == null) {
+        if (System.getProperty(SauceLabsWebDriverHelper.REMOTE_DRIVER_SAUCELABS_PROPERTY) == null) {
             driver = getWebDriver();
         } else {
             SauceLabsWebDriverHelper saucelabs = new SauceLabsWebDriverHelper();
@@ -222,7 +215,7 @@ public class WebDriverUtil {
      */
     public static void tearDown(boolean passed, String sessionId, String testParam, String userParam) throws Exception {
 
-        if (System.getProperty(SauceLabsWebDriverHelper.SAUCE_PROPERTY) != null) {
+        if (System.getProperty(SauceLabsWebDriverHelper.REMOTE_DRIVER_SAUCELABS_PROPERTY) != null) {
             SauceLabsWebDriverHelper.tearDown(passed, sessionId, System.getProperty(SauceLabsWebDriverHelper.SAUCE_USER_PROPERTY),
                     System.getProperty(SauceLabsWebDriverHelper.SAUCE_KEY_PROPERTY));
         }
@@ -458,11 +451,12 @@ public class WebDriverUtil {
      * @param message String
      * @throws InterruptedException
      */
-    public static void waitFor(WebDriver driver, int waitSeconds, By by, String message) throws InterruptedException {
+    public static WebElement waitFor(WebDriver driver, int waitSeconds, By by, String message) throws InterruptedException {
         driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
         Thread.sleep(1000);
-        driver.findElement(by);  // NOTICE just the find, no action, so by is found, but might not be visible or enabled.
+        WebElement element = driver.findElement(by);  // NOTICE just the find, no action, so by is found, but might not be visible or enabled.
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        return element;
     }
 
     /**

@@ -49,14 +49,15 @@ public class DemoLibraryLayoutManagersStackedLayoutSmokeTest extends SmokeTestBa
     
     protected void testLayoutManagersStackedWithTableSubCollectionLayout() throws Exception {
         selectByName("exampleShown","Stacked Collection With Table Sub-Collection");
-        assertElementPresentByXpath("//div[@class='uif-stackedCollectionLayout']/div[@class='uif-collectionItem uif-gridCollectionItem']/table/tbody/tr/td/div/input[@name='collection4[0].field1']");
-        assertElementPresentByXpath("//div[@class='uif-stackedCollectionLayout']/div[@class='uif-collectionItem uif-gridCollectionItem']/div[@class='uif-footer']/div/button[contains(text(),'Update Official')]");
+        waitForElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-Collection2']/div[2]/div[2]/table/tbody/tr/td/div/input[@name='collection4[0].field1']");
+        assertElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-Collection2']/div[2]/div[2]/table/tbody/tr[5]/td/div/fieldset/div/div[2]/div[2]/table");
+        assertElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-Collection2']/div[2]/div[3]/table/tbody/tr/td/div/input[@name='collection4[1].field1']");
     }
     
     protected void testLayoutManagersStackedWithStackedSubCollectionLayout() throws Exception {
         selectByName("exampleShown","Stacked Collection with a Stacked Sub-Collection");
-        assertElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-Collection3_disclosureContent']/div/div/table/tbody/tr[3]/td/div/input");
-        assertElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-SubCollection2']/div[@class='uif-stackedCollectionLayout']/div/table");
+        waitForElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-Collection3']/div[2]/div[2]/table/tbody/tr/td/div/input[@name='collection5[0].field1']");
+        assertElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-Collection3']/div[2]/div[2]/table/tbody/tr[5]/td/div/fieldset/div/div[3]/div/table");
     }
     
     protected void testLayoutManagersStackedCollectionWithServersidePaging() throws Exception {
@@ -66,13 +67,13 @@ public class DemoLibraryLayoutManagersStackedLayoutSmokeTest extends SmokeTestBa
     
     protected void testLayoutManagersStackedCollectionAjaxDisclosures() throws Exception {
         selectByName("exampleShown","Stacked Collection Ajax Disclosures");
-        if(isElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-Example5']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-stackedCollectionLayout']/div[@class='uif-collectionItem uif-gridCollectionItem']/div[@class='uif-disclosureContent']/table"))
+        if(isElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-Example5']/div[@class='uif-verticalBoxLayout clearfix']/div/div[3]/div[@class='uif-collectionItem uif-gridCollectionItem']/div[@class='uif-disclosureContent']/table/tbody/tr/td/div/input[@name='groupedCollection3[0].field1']"))
         {
             fail("Ajax Disclosure Not working!");
         }
         waitAndClickByLinkText("Item 100");
         Thread.sleep(3000);
-        assertElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-Example5']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-stackedCollectionLayout']/div[@class='uif-collectionItem uif-gridCollectionItem']/div[@class='uif-disclosureContent']/table");
+        waitForElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-Example5']/div[@class='uif-verticalBoxLayout clearfix']/div/div[3]/div[@class='uif-collectionItem uif-gridCollectionItem']/div[@class='uif-disclosureContent']/table/tbody/tr/td/div/input[@name='groupedCollection3[0].field1']");
     }
     
     @Test

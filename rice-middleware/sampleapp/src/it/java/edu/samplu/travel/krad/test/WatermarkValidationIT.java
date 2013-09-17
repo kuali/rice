@@ -42,14 +42,12 @@ public class WatermarkValidationIT extends WebDriverITBase {
 	 */
 	public void testWatermarking() throws Exception {
 		waitAndClickByLinkText("KRAD");
-		Thread.sleep(5000);
 		waitAndClickByLinkText(WebDriverLegacyITBase.UIF_COMPONENTS_KITCHEN_SINK_LINK_TEXT);
 		Thread.sleep(5000);
-		Thread.sleep(2000);
 		//Switch to new window.
 		switchWindow();
-		Thread.sleep(3000);
-		assertEquals("It's watermarked ",getAttributeByName("field106", "placeholder"));
+        waitAndClickByLinkText("Text Controls");
+        assertEquals("It's watermarked ",getAttributeByName("field106", "placeholder"));
 		assertEquals("Watermark... ",getAttributeByName("field110", "placeholder"));
 	}
 }

@@ -37,12 +37,6 @@
     <kuali.generate.reports>false</kuali.generate.reports>
     <!-- csv based JMeter tests result in one graph in Jenkins, we want a graph per test -->
     <jmeter.excludeJmeterTestFile>**/KRAD.jmx</jmeter.excludeJmeterTestFile>
-
-    <plugin.saucelabs.connect.version>1.0.19</plugin.saucelabs.connect.version>
-    <saucelabs.connect.version>3.0.28</saucelabs.connect.version>
-    <saucelabs.user>SAUCELABS_USER</saucelabs.user>
-    <saucelabs.key>SAUCELABS_KEY</saucelabs.key>
-
   </properties>
 
   <build>
@@ -148,13 +142,6 @@
 				</dependency>
 			</dependencies>
         </plugin>
-
-        <plugin>
-          <groupId>com.saucelabs.maven.plugin</groupId>
-          <artifactId>sauce-connect-plugin</artifactId>
-          <version>${plugin.saucelabs.connect.version}</version>
-        </plugin>
-
       </plugins>
     </pluginManagement>
   </build>
@@ -208,63 +195,6 @@
                 <phase>post-integration-test</phase>
                 <goals>
                   <goal>stop-server</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <version>${plugin.failsafe.version}</version>
-            <executions>
-              <execution>
-                <id>integration-test</id>
-                <phase>integration-test</phase>
-                <goals>
-                  <goal>integration-test</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>sauceconnect</id>
-      <properties>
-        <maven.failsafe.skip>false</maven.failsafe.skip>
-        <maven.failsafe.includes>**/*IT.java, **/*Gen.java</maven.failsafe.includes>
-        <!-- exclude krad/labs and krad/demo which only work against krad-sampleapp (env11) -->
-        <maven.failsafe.excludes>
-          **/krad/labs/**/*.java, **/krad/demo/**/*.java
-        </maven.failsafe.excludes>
-      </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>com.saucelabs.maven.plugin</groupId>
-            <artifactId>sauce-connect-plugin</artifactId>
-            <version>${plugin.saucelabs.connect.version}</version>
-            <configuration>
-              <sauceUsername>${saucelabs.user}</sauceUsername>
-              <sauceAccessKey>${saucelabs.key}</sauceAccessKey>
-            </configuration>
-            <executions>
-              <!-- Start Sauce Connect prior to running the integration tests -->
-              <execution>
-                <id>start-sauceconnct</id>
-                <phase>pre-integration-test</phase>
-                <goals>
-                  <goal>start-sauceconnect</goal>
-                </goals>
-              </execution>
-              <!-- Stop the Sauce Connect process after the integration tests have finished -->
-              <execution>
-                <id>stop-sauceconnect</id>
-                <phase>post-integration-test</phase>
-                <goals>
-                  <goal>stop-sauceconnect</goal>
                 </goals>
               </execution>
             </executions>

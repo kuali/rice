@@ -247,7 +247,7 @@ public class ObjectPathExpressionParser {
             if (bracket && nextScanIndex <= path.length()) {
                 firstChar = path.charAt(0);
                 if ((firstChar == '\'' || firstChar == '\"') && path.charAt(nextScanIndex - 1) == firstChar) {
-                    path = path.substring(1, nextScanIndex - 1);
+                    path = path.substring(1, nextScanIndex - 1) + path.substring(nextScanIndex);
                     nextScanIndex -= 2;
                 }
             }

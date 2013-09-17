@@ -4251,6 +4251,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         jiraAwareWaitFor(by, "");
     }
 
+    protected void waitForElementPresent(By by, String message) throws InterruptedException {
+        jiraAwareWaitFor(by, message);
+    }
+
     protected void waitForElementPresent(String locator) throws InterruptedException {
         jiraAwareWaitFor(By.cssSelector(locator), "");
     }

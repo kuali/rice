@@ -51,6 +51,7 @@ public class DemoLibraryWidgetsSuggestSmokeTest extends DemoLibraryBase {
         waitAndTypeByName(inputFieldName, search);
 
         //verify expect suggest results
+        waitForElementPresent(By.linkText(result), "Library Widget Suggest, CAT not suggested");
         assertElementPresentByLinkText(result);
         waitAndClickByLinkText(result);
 

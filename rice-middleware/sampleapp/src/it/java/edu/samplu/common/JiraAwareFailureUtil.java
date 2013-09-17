@@ -58,9 +58,22 @@ public class JiraAwareFailureUtil {
 
         jiraMatches.put("Library Widget Suggest, CAT not suggested", "KULRICE-10365 Library Widget Suggest not suggesting"); // already in 2.4 merged back as error exists in 2.3 as well.
 
-        jiraMatches.put("a6", "KULRICE-10503 KRAD Demo Library Widget Suggest View Helper Method Configuration 2 not suggesting"); // 2.3.1 only
-        //        jiraMatches.put("",
-        //                "");
+        jiraMatches.put("Lookupable is null", "KULRICE-10207 DemoTravelAccountMultivalueLookUpSmokeTest Lookupable is null.");
+
+        jiraMatches.put("Account Maintenance (Edit)", "KULRICE-10216 KRAD Demo Account Maintenance (Edit) Incident Report RiceRuntimeException: Exception trying to invoke action ROUTE");
+
+        jiraMatches.put("An exception occurred processing JSP page /kr/WEB-INF/jsp/KualiMaintenanceDocument.jsp", "KULRICE-10235 JasperException: An exception occurred processing JSP page /kr/WEB-INF/jsp/KualiMaintenanceDocument.jsp");
+
+        jiraMatches.put("BusinessObjectMetaDataServiceImpl.getBusinessObjectRelationship(BusinessObjectMetaDataServiceImpl.java:267)", "KULRICE-10354 Identity links throws NullPointerException");
+
+        jiraMatches.put("//table[@id='row']/tbody/tr[1]/td[1]/a", "KULRICE-10355 Investigate DocSearchWDIT testBasicDocSearch failure");
+
+        jiraMatches.put("BusinessObjectDaoProxy called with non-legacy class: class org.kuali.rice.coreservice.impl.namespace.NamespaceBo", "KULRICE-10356 Agenda edit BusinessObjectDaoProxy called with non-legacy class: class org.kuali.rice.coreservice.impl.namespace.NamespaceBo");
+
+        jiraMatches.put("annot get new instance of class to check for KualiCode", "KULRICE-10358 Component search Action List Incident Report Cannot get new instance of class to check for KualiCode");
+
+        jiraMatches.put("Library Widget Suggest, CAT not suggested", "KULRICE-10365 Library Widget Suggest not suggesting");
+        //jiraMatches.put("", "");
     }
 
     /**

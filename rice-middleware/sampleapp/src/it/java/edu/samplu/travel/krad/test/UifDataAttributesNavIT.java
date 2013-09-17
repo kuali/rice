@@ -92,7 +92,7 @@ public class UifDataAttributesNavIT extends WebDriverLegacyITBase {
 
         // the message field does not support complex attributes
         //if (!tagId.equalsIgnoreCase("messageField")) {
-            String scriptValue = getAttributeByXpath(complexAttributesXpath , "value");
+            String scriptValue = waitAndGetAttributeByXpath(complexAttributesXpath, "value");
             assertNotNull("script value is null",scriptValue);
         boolean ok = scriptValue.contains(
                 "jQuery('#" + tagId + "').data('capitals', {kenya:'nairobi', uganda:'kampala', tanzania:'dar'});")
@@ -118,7 +118,7 @@ public class UifDataAttributesNavIT extends WebDriverLegacyITBase {
         String complexAttributesXpath="//input[@type='hidden' and @data-for='"+ tagId +  "']";
 
         // the message field does not support complex attributes
-        String scriptValue = getAttributeByXpath(complexAttributesXpath , "value");
+        String scriptValue = waitAndGetAttributeByXpath(complexAttributesXpath, "value");
         assertNotNull("script value is null",scriptValue);
         // log.info("scriptValue for " + tagId + " is " + scriptValue);
         return scriptValue.contains("jQuery('#" + tagId + "').data('transitions', 3);") &&

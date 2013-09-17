@@ -17,7 +17,6 @@
 package edu.samplu.krad.compview;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
-import edu.samplu.common.ITUtil;
 import edu.samplu.common.SmokeTestBase;
 import org.junit.Test;
 
@@ -254,7 +253,7 @@ public class ConstraintsSmokeTest extends SmokeTestBase {
                 SeleneseTestBase.fail("timeout");
             }
             try {
-                if (getAttributeByName("field25", "class").matches(REGEX_VALID)) {
+                if (waitAndGetAttributeByName("field25", "class").matches(REGEX_VALID)) {
                     break;
                 }
             } catch (Exception e) {}
@@ -274,7 +273,7 @@ public class ConstraintsSmokeTest extends SmokeTestBase {
                 SeleneseTestBase.fail("timeout");
             }
             try {
-                if (getAttributeByName("field25", "class").matches(REGEX_VALID)) {
+                if (waitAndGetAttributeByName("field25", "class").matches(REGEX_VALID)) {
                     break;
                 }
             } catch (Exception e) {}
@@ -291,7 +290,7 @@ public class ConstraintsSmokeTest extends SmokeTestBase {
                 SeleneseTestBase.fail("timeout");
             }
             try {
-                if (getAttributeByName("field25", "class").matches(REGEX_ERROR)) {
+                if (waitAndGetAttributeByName("field25", "class").matches(REGEX_ERROR)) {
                     break;
                 }
             } catch (Exception e) {}
@@ -316,7 +315,7 @@ public class ConstraintsSmokeTest extends SmokeTestBase {
                 SeleneseTestBase.fail("timeout");
             }
             try {
-                if (getAttributeByName("field26", "class").matches(REGEX_ERROR)) {
+                if (waitAndGetAttributeByName("field26", "class").matches(REGEX_ERROR)) {
                     break;
                 }
             } catch (Exception e) {}
@@ -346,7 +345,7 @@ public class ConstraintsSmokeTest extends SmokeTestBase {
                 SeleneseTestBase.fail("timeout");
             }
             try {
-                if (getAttributeByName("field26", "class").matches(REGEX_ERROR)) {
+                if (waitAndGetAttributeByName("field26", "class").matches(REGEX_ERROR)) {
                     break;
                 }
             } catch (Exception e) {}
@@ -368,7 +367,7 @@ public class ConstraintsSmokeTest extends SmokeTestBase {
                 SeleneseTestBase.fail("timeout");
             }
             try {
-                if (getAttributeByName("field28", "class").matches(REGEX_ERROR)) {
+                if (waitAndGetAttributeByName("field28", "class").matches(REGEX_ERROR)) {
                     break;
                 }
             } catch (Exception e) {}
@@ -385,7 +384,7 @@ public class ConstraintsSmokeTest extends SmokeTestBase {
                 SeleneseTestBase.fail("timeout");
             }
             try {
-                if (getAttributeByName("field28", "class").matches(REGEX_VALID)) {
+                if (waitAndGetAttributeByName("field28", "class").matches(REGEX_VALID)) {
                     break;
                 }
             } catch (Exception e) {}
@@ -405,7 +404,7 @@ public class ConstraintsSmokeTest extends SmokeTestBase {
                 SeleneseTestBase.fail("timeout");
             }
             try {
-                if (getAttributeByName("field28", "class").matches(REGEX_VALID)) {
+                if (waitAndGetAttributeByName("field28", "class").matches(REGEX_VALID)) {
                     break;
                 }
             } catch (Exception e) {}

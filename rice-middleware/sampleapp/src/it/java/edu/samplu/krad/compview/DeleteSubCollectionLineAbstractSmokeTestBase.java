@@ -85,7 +85,7 @@ public abstract class DeleteSubCollectionLineAbstractSmokeTestBase extends WebDr
             if (second >= waitSeconds)fail(TIMEOUT_MESSAGE);
             
             try {
-                if (!"selenium".equals(getAttributeByName(FIELD_ELEMENT_NAME, "value")))
+                if (!"selenium".equals(waitAndGetAttributeByName(FIELD_ELEMENT_NAME, "value")))
                     break;
             } catch (Exception e) {}
             
@@ -93,6 +93,6 @@ public abstract class DeleteSubCollectionLineAbstractSmokeTestBase extends WebDr
         }
 
         // verify that the value has changed for the input box in the line that has replaced the deleted one
-        assertNotSame("selenium", getAttributeByName(FIELD_ELEMENT_NAME, "value"));
+        assertNotSame("selenium", waitAndGetAttributeByName(FIELD_ELEMENT_NAME, "value"));
     }
 }

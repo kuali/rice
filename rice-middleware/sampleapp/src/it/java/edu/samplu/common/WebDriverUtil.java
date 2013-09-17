@@ -323,7 +323,7 @@ public class WebDriverUtil {
 //                System.out.println("highlighting " + webElement.toString() + " on url " + webDriver.getCurrentUrl());
                 JavascriptExecutor js = (JavascriptExecutor) webDriver;
                 js.executeScript("element = arguments[0];\n"
-                        + "originalStyle = element.getAttribute('style');\n"
+                        + "originalStyle = element.waitAndGetAttribute('style');\n"
                         + "element.setAttribute('style', originalStyle + \"; background: "
                         + JS_HIGHLIGHT_BACKGROUND + "; border: 2px solid " + JS_HIGHLIGHT_BOARDER + ";\");\n"
                         + "setTimeout(function(){\n"

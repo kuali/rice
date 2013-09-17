@@ -15,21 +15,23 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.kuali.rice.core.api.util.ConcreteKeyValue;
-import org.kuali.rice.core.api.util.KeyValue;
-import org.kuali.rice.coreservice.impl.namespace.NamespaceBo;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase;
-import org.kuali.rice.krad.uif.view.ViewModel;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.coreservice.impl.namespace.NamespaceBo;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
+import org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase;
+import org.kuali.rice.krad.uif.view.ViewModel;
 
 /**
  * Helper class that returns all namespaces that have contexts associated w/ them.
@@ -44,18 +46,23 @@ public class AgendaNamespaceValuesFinder extends UifKeyValuesFinderBase {
 
         Collection<ContextBo> contexts = KNSServiceLocator.getBusinessObjectService().findAll(ContextBo.class);
 
-        Collection<NamespaceBo> namespaceBos = KNSServiceLocator.getBusinessObjectService().findAll(NamespaceBo.class);
+        QueryResults<NamespaceBo> namespaceBos = KradDataServiceLocator.getDataObjectService().findMatching(NamespaceBo.class,
+                QueryByCriteria.Builder.create().build());
         Map<String, String> namespaceCodeToName = new HashMap<String, String>();
-        if (!CollectionUtils.isEmpty(namespaceBos)) for (NamespaceBo namespaceBo : namespaceBos) {
-            namespaceCodeToName.put(namespaceBo.getCode(), namespaceBo.getName());
+        if (!namespaceBos.getResults().isEmpty()) {
+            for (NamespaceBo namespaceBo : namespaceBos.getResults()) {
+                namespaceCodeToName.put(namespaceBo.getCode(), namespaceBo.getName());
+            }
         }
 
         List<String> namespaceCodes = new ArrayList<String>();
 
-        if (!CollectionUtils.isEmpty(contexts)) for (ContextBo context : contexts) {
-            if (!namespaceCodes.contains(context.getNamespace())) {
-                // add if not already there
-                namespaceCodes.add(context.getNamespace());
+        if (!CollectionUtils.isEmpty(contexts)) {
+            for (ContextBo context : contexts) {
+                if (!namespaceCodes.contains(context.getNamespace())) {
+                    // add if not already there
+                    namespaceCodes.add(context.getNamespace());
+                }
             }
         }
 
@@ -63,7 +70,9 @@ public class AgendaNamespaceValuesFinder extends UifKeyValuesFinderBase {
 
         for (String namespaceCode : namespaceCodes) {
             String namespaceName = namespaceCode;
-            if (namespaceCodeToName.containsKey(namespaceCode)) { namespaceName = namespaceCodeToName.get(namespaceCode); }
+            if (namespaceCodeToName.containsKey(namespaceCode)) {
+                namespaceName = namespaceCodeToName.get(namespaceCode);
+            }
             keyValues.add(new ConcreteKeyValue(namespaceCode, namespaceName));
         }
 

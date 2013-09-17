@@ -39,7 +39,7 @@
           <property name="items">
             <list>
               <bean id="collection1-generated" parent="Uif-Disclosure-TableCollectionSection"
-                    p:layoutManager.numberOfColumns="4">
+                    p:layoutManager.numberOfColumns="5">
                 <property name="headerText" value="Collection Group - 100 items"/>
                 <property name="instructionalText"
                           value="This is a table based layout of a collection - CollectionGroupTableLayout"/>

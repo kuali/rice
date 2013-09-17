@@ -190,10 +190,10 @@
               </inlinemediaobject></para>
           </listitem>
           <listitem>
-            <para>The size property and similar properties of TextControl are not yet converted by
-              the script and requires manual conversion. [KNS line: 15, KRAD line: 15] <inlinemediaobject>
+            <para>The size property and similar properties of TextControl are converted or carried over by
+              the script. [KNS line: 15, KRAD line: 15] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -210,13 +210,13 @@
       <para>
         <emphasis role="bold">KRAD Attribute Definition code example:</emphasis>
         <programlisting linenumbering="numbered">&lt;property name="validationPattern">
-  &lt;bean parent="AlphaNumericValidationPattern"/>
+  &lt;bean  parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
 &lt;/property></programlisting>
       </para>
       <para>
         <emphasis role="bold">KRAD Attribute Definition code example:</emphasis>
         <programlisting linenumbering="numbered">&lt;property name="validCharactersConstraint">
-  &lt;bean parent="AlphaNumericPatternConstraint"/>
+  &lt;bean parent="AnyCharacterPatternConstraint" p:allowWhitespace="true"/>
 &lt;/property></programlisting>
       </para>
       <para>
@@ -360,12 +360,20 @@
           <listitem>
             <para>The constraint <emphasis role="keyword"
                 >UTF8AnyCharacterValidationPattern</emphasis> replaces the KNS pattern <emphasis
-                role="keyword">UTF8AnyCharacterValidationPattern</emphasis>. This pattern has not
-              yet been added to the conversion script.<inlinemediaobject>
+                role="keyword">UTF8AnyCharacterValidationPattern</emphasis>.<inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
                 </imageobject>
               </inlinemediaobject></para>
+          </listitem>
+          <listitem>
+            <para>Sub-properties for the validation pattern constraint beans, such as <emphasis role="keyword"
+                    >allowWhitespace="true"</emphasis> in the above example are either carried over or converted
+              as appropriate.<inlinemediaobject>
+              <imageobject>
+                <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+              </imageobject>
+            </inlinemediaobject></para>
           </listitem>
         </itemizedlist>
       </para>
@@ -471,10 +479,9 @@
           </listitem>
           <listitem>
             <para>The sub-properties for the various controls, ex: <emphasis role="keyword">
-                p:size="10"</emphasis> is not currently handled by the script and therefore requires
-              manual conversion. [KNS line: 2, KRAD line: 2]<inlinemediaobject>
+                p:size="10"</emphasis> are converted or carried over by the script. [KNS line: 2, KRAD line: 2]<inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -499,7 +506,7 @@
               <para>The property <emphasis role="keyword">Uif-PrimaryActionButton</emphasis>
                 replaces the KNS <emphasis role="keyword">ButtonControlDefinition</emphasis>.<inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/badge-manualconv.png" contentdepth="9"/>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
                   </imageobject>
                 </inlinemediaobject></para>
             </listitem>
@@ -563,22 +570,30 @@
         <title>Currency Control</title>
         <para> KNS Currency control example:
           <programlisting linenumbering="numbered">&lt;property name="control">
-  &lt;bean parent="CurrencyControlDefinition"/>
+  &lt;bean parent="CurrencyControlDefinition" p:formattedMaxLength="26" p:size="10"/>
 &lt;/property>
             </programlisting>
         </para>
         <para> KRAD Currency Text control example:
           <programlisting linenumbering="numbered">&lt;property name="controlField">
-  &lt;bean parent="Uif-CurrencyTextControl"/>
+  &lt;bean parent="Uif-CurrencyTextControl" p:maxLength="26" p:size="10" />
 &lt;/property></programlisting>
         </para>
         <para>
           <itemizedlist>
             <listitem>
               <para>The property <emphasis role="keyword">Uif-CurrencyTextControl</emphasis>
-                replaces the KNS <emphasis role="keyword">CurrencyControlDefinition</emphasis>.<inlinemediaobject>
+                replaces the KNS <emphasis role="keyword">CurrencyControlDefinition</emphasis>.[KNS line: 2, KRAD line: 2]<inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/badge-manualconv.png" contentdepth="9"/>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  </imageobject>
+                </inlinemediaobject></para>
+            </listitem>
+            <listitem>
+              <para>The sub-property <emphasis role="keyword">maxlength</emphasis>
+                replaces the KNS <emphasis role="keyword">formattedMaxLength</emphasis> property.[KNS line: 2, KRAD line: 2]<inlinemediaobject>
+                  <imageobject>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
                   </imageobject>
                 </inlinemediaobject></para>
             </listitem>
@@ -656,7 +671,7 @@
               <para>The property <emphasis role="keyword">Uif-KimPersonControl</emphasis> replaces
                 the KNS <emphasis role="keyword">KualiUserControlDefinition</emphasis>.<inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/badge-manualconv.png" contentdepth="9"/>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
                   </imageobject>
                 </inlinemediaobject></para>
             </listitem>
@@ -667,22 +682,45 @@
         <title>Link Control</title>
         <para> KNS Link control example:
           <programlisting linenumbering="numbered">&lt;property name="control">
-  &lt;bean parent="LinkControlDefinition"/>
-&lt;/property>
-            </programlisting>
+  &lt;bean parent="LinkControlDefinition" p:styleClass="globalLinks" p:target="_blank" p:hrefText="click here" />
+&lt;/property></programlisting>
         </para>
         <para> KRAD Link control example:
           <programlisting linenumbering="numbered">&lt;property name="controlField">
-  &lt;bean parent="Uif-Link"/>
-&lt;/property></programlisting>
+  &lt;bean parent="Uif-LinkField" p:fieldLabel.cssClasses="globalLinks" p:target="_blank" p:linkText="click here" href="@{#propertyName}"/>
+          &lt;/property></programlisting>
         </para>
         <para>
           <itemizedlist>
             <listitem>
               <para>The property <emphasis role="keyword">Uif-Link</emphasis> replaces the KNS
-                  <emphasis role="keyword">LinkControlDefinition</emphasis>.<inlinemediaobject>
+                  <emphasis role="keyword">LinkControlDefinition</emphasis>.[KNS line: 2, KRAD line: 2]<inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/badge-manualconv.png" contentdepth="9"/>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  </imageobject>
+                </inlinemediaobject></para>
+            </listitem>
+            <listitem>
+              <para>The sub-property <emphasis role="keyword">target</emphasis>
+                is carried over during conversion.[KNS line: 2, KRAD line: 2]<inlinemediaobject>
+                  <imageobject>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  </imageobject>
+                </inlinemediaobject></para>
+            </listitem>
+            <listitem>
+              <para>The sub-property <emphasis role="keyword">linkText</emphasis>
+                replaces the KNS <emphasis role="keyword">jrefText</emphasis> property.[KNS line: 2, KRAD line: 2]<inlinemediaobject>
+                  <imageobject>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  </imageobject>
+                </inlinemediaobject></para>
+            </listitem>
+            <listitem>
+              <para>The sub-property <emphasis role="keyword">fieldLabel.cssClasses</emphasis>
+                replaces the KNS <emphasis role="keyword">styleClass</emphasis> property.[KNS line: 2, KRAD line: 2]<inlinemediaobject>
+                  <imageobject>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
                   </imageobject>
                 </inlinemediaobject></para>
             </listitem>
@@ -764,13 +802,13 @@
         <title>Radio Control Group</title>
         <para> KNS Radio Group control example:
           <programlisting linenumbering="numbered">&lt;property name="control">
-  &lt;bean parent="RadioControlDefinition" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.DelegateRuleValuesFinder"/>
+  &lt;bean parent="RadioControlDefinition" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.DelegateRuleValuesFinder" p:includeKeyInLabel="true"/>
 &lt;/property> </programlisting>
         </para>
         <para> KRAD Radio Group control example:
           <programlisting linenumbering="numbered">&lt;bean parent="Uif-InputField" p:propertyName="selectedOpt" p:label="Radio 1">
   &lt;property name="control">
-    &lt;bean parent="Uif-VerticalRadioControl"/>
+    &lt;bean parent="Uif-VerticalRadioControl" p:includeKeyInLabel="true"/>
   &lt;/property&gt;
   &lt;property name="optionsFinder">
     &lt;bean class="org.kuali.rice.krad.keyvalues.DelegateRuleValuesFinder"/>
@@ -786,7 +824,7 @@
                   role="keyword">RadioControlDefinition</emphasis>
                 <inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/badge-manualconv.png" contentdepth="9"/>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
                   </imageobject>
                 </inlinemediaobject></para>
             </listitem>
@@ -795,7 +833,15 @@
                   <emphasis role="keyword">valuesFinderClass</emphasis>. [KNS line: 2, KRAD lines:
                 5-7] <inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/badge-manualconv.png" contentdepth="9"/>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  </imageobject>
+                </inlinemediaobject></para>
+            </listitem>
+            <listitem>
+              <para>The sub-property <emphasis role="keyword">includeKeyInLabel</emphasis>
+                is carried over during conversion.[KNS line: 2, KRAD line: 3]<inlinemediaobject>
+                  <imageobject>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
                   </imageobject>
                 </inlinemediaobject></para>
             </listitem>
@@ -871,10 +917,9 @@
             </listitem>
             <listitem>
               <para>The sub-properties for the SelectControlDefinition in KNS ex: <emphasis
-                  role="keyword"> p:includeBlankRow="true"</emphasis> is not currently handled by
-                the script and therefore requires manual conversion. [KNS line: 13] <inlinemediaobject>
+                  role="keyword"> p:includeBlankRow="true"</emphasis> carried over by the conversion script. [KNS line: 13] <inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/badge-manualconv.png" contentdepth="9"/>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
                   </imageobject>
                 </inlinemediaobject></para>
             </listitem>

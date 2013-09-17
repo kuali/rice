@@ -618,3 +618,34 @@
 
 // Large screen / wide desktop
 @container-lg-desktop:        ((1140px + @grid-gutter-width));
+
+
+// Kboot theme extenstions
+
+@body_background:					#181818;
+@header_background:					#aa003e;
+@white_background:					#fff;
+@shaded_background:					#f6f6f6;
+@dark_background:					@body_background;
+
+@link_blue:							#0055cc;
+@link_blue_hover:					darken(@link_blue, 7%);
+@link_red:							@header_background;
+@link_red_hover:					darken(@link_red, 7%);
+@link_white:						@white_background;
+
+@error_delete_red:					red;
+@success_add_green:					green;
+@info_blue:							@link_blue;
+
+@text_dark:							#222;
+@text_white:						@white_background;
+@text_light_gray:					#f2f2f2;
+@text_med_gray:						#ccc;
+
+@border_color:						@text_med_gray;
+
+@lookup_image:						url(../img/icon-lookup.png);
+
+@grid-gutter-width:					15px;
+

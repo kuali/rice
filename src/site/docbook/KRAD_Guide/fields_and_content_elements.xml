@@ -4290,13 +4290,13 @@ image&quot; p:source=&quot;@{#ConfigProperties[&apos;krad.externalizable.images.
           </listitem>
           <listitem>
             <para>When building a link component, we specify the page that should be
-                            linked using the <emphasis role="keyword">hrefText</emphasis> property.
+                            linked using the <emphasis role="keyword">href</emphasis> property.
                             This gives the relative or full URL to the page that should be
                             linked</para>
           </listitem>
           <listitem>
             <para>The link label is the text that displays to the user. This is set
-                            using the <emphasis role="keyword">linkLabel</emphasis> property</para>
+                            using the <emphasis role="keyword">linkText</emphasis> property</para>
           </listitem>
           <listitem>
             <para>We can configure the frame for which the linked document will open in

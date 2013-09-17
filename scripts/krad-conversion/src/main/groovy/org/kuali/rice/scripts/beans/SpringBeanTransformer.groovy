@@ -52,8 +52,11 @@ class SpringBeanTransformer {
     Map<String, String> definitionDataObjects = [:];
     Map<String, String> parentBeans = [:];
 
-    def carryoverAttributes;
-    def carryoverProperties;
+    def carryoverAttributes
+    def carryoverProperties
+    def replacePropertyDuringConversion
+    def controlPropertiesMap
+    def validationPatternPropertiesMap
 
     def init(config) {
         ddPropertiesMap = config.map.convert.dd_prop
@@ -63,6 +66,9 @@ class SpringBeanTransformer {
         xsiNamespaceSchema = config.msg_xml_schema_legacy
         carryoverAttributes = config.bool.dictionaryconversion.carryoverAttributes;
         carryoverProperties = config.bool.dictionaryconversion.carryoverProperties;
+        controlPropertiesMap = config.map.convert_control_properties
+        validationPatternPropertiesMap = config.map.convert_validation_pattern_properties
+        replacePropertyDuringConversion = config.bool.dictionaryconversion.replaceControlProperty
     }
 
     public String getTranslatedBeanId(String beanId, String originalBeanType, String transformBeanType) {
@@ -282,6 +288,9 @@ class SpringBeanTransformer {
     def gatherAttributeNameAttribute = { Node beanNode -> return genericGatherAttributes(beanNode, ["*attributeName": "p:propertyName"]); }
 
     def gatherNameAttribute = { Node beanNode -> return genericGatherAttributes(beanNode, ["*name": "p:propertyName"]); }
+
+    def gatherValidationPatternAttributes = { Node beanNode -> return genericGatherAttributes(beanNode, validationPatternPropertiesMap); }
+    def gatherControlAttributes = { Node beanNode -> return genericGatherAttributes(beanNode, controlPropertiesMap); }
 
     // helper closures - bean transforms
     def genericNodeTransform = { NodeBuilder builderDelegate, String nodeType, Map<String, String> attributes, String value -> builderDelegate.createNode(nodeType, attributes, value); }
@@ -571,10 +580,12 @@ class SpringBeanTransformer {
                     }
                 }
 
-                if ("Uif-DropdownControl".equals(renamedControlBeans.get(controlDefParent))) {
+                if ("Uif-VerticalRadioControl".equals(renamedControlBeans.get(controlDefParent)) ||
+                        "Uif-DropdownControl".equals(renamedControlBeans.get(controlDefParent))) {
+                    def attributes = genericGatherAttributes(controlDefBean, ["*valuesFinderClass": "p:optionsFinder"]);
                     controlProperty.plus {
                         property(name: "optionsFinder") {
-                            bean(class: "org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder")
+                            bean(class: attributes.get("p:optionsFinder").value)
                         }
                     }
                 }
@@ -601,26 +612,30 @@ class SpringBeanTransformer {
      * @return
      */
     def transformControlDefinitionBean(NodeBuilder builder, Node controlDefBean, Map<String, String> controlDefReplacements) {
-        String controlDefParent = controlDefBean.@parent.toString();
+        String controlDefParent = controlDefBean.@parent.toString()
+        def attributes = gatherControlAttributes (controlDefBean)
         if (controlDefReplacements[controlDefParent] != null && controlDefReplacements[controlDefParent] == "Uif-DropdownControl") {
-            builder.bean(parent: "Uif-DropdownControl")
-        } else if (controlDefReplacements[controlDefParent] != null && controlDefReplacements[controlDefParent] == "Uif-TextAreaControl") {
-            def attributes = genericGatherAttributes(controlDefBean, ["*rows": "p:rows", "*cols": "p:cols"]);
-            attributes.put("parent", "Uif-TextAreaControl");
-            genericBeanTransform(builder, attributes);
+            attributes.putAll(genericGatherAttributes(controlDefBean, ["*includeKeyInLabel": "p:includeKeyInLabel"]))
+            attributes.put("parent", "Uif-DropdownControl")
+        } else if (controlDefReplacements[controlDefParent] != null && controlDefReplacements[controlDefParent] == "Uif-VerticalRadioControl") {
+            attributes.putAll(genericGatherAttributes(controlDefBean, ["*includeKeyInLabel": "p:includeKeyInLabel"]))
+            attributes.put("parent", "Uif-VerticalRadioControl");
+       } else if (controlDefReplacements[controlDefParent] != null && controlDefReplacements[controlDefParent] == "Uif-TextAreaControl") {
+            attributes.putAll(genericGatherAttributes(controlDefBean, ["*rows": "p:rows", "*cols": "p:cols"]))
+            attributes.put("parent", "Uif-TextAreaControl")
         } else if (controlDefReplacements[controlDefParent] != null && controlDefReplacements[controlDefParent] == "Uif-LinkField") {
-            def attributes = genericGatherAttributes(controlDefBean, ["*target": "p:target", "*hrefText": "p:linkText", "*styleClass": "p:fieldLabel.cssClasses"]);
-            attributes.put("parent", "Uif-LinkField");
-            genericBeanTransform(builder, attributes);
+            attributes.putAll(genericGatherAttributes(controlDefBean, ["*target": "p:target", "*hrefText": "p:linkText", "*styleClass":"p:fieldLabel.cssClasses"]))
+            attributes.put("parent", "Uif-LinkField")
+            attributes.put("href", "@{#propertyName}")
         } else if (controlDefReplacements[controlDefParent] != null && controlDefReplacements[controlDefParent] == "Uif-CurrencyTextControl") {
-            def attributes = genericGatherAttributes(controlDefBean, ["*formattedMaxLength": "p:maxLength", "*size": "p:size"]);
-            attributes.put("parent", "Uif-CurrencyTextControl");
-            genericBeanTransform(builder, attributes);
+            attributes.putAll(genericGatherAttributes(controlDefBean, ["*formattedMaxLength": "p:maxLength", "*size": "p:size"]))
+            attributes.put("parent", "Uif-CurrencyTextControl")
         } else if (controlDefReplacements[controlDefParent] != null) {
-            builder.bean(parent: controlDefReplacements[controlDefParent])
-        } else {
-            builder.bean(parent: "Uif-" + controlDefParent.replace("Definition", ""))
+            attributes.put("parent", controlDefReplacements[controlDefParent])
+        }else {
+            attributes.put("parent", "Uif-" + controlDefParent.replace("Definition", ""))
         }
+        genericBeanTransform(builder, attributes)
     }
 
     /**

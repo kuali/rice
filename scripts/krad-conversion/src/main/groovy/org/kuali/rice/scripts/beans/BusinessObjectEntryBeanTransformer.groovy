@@ -38,7 +38,7 @@ class BusinessObjectEntryBeanTransformer extends SpringBeanTransformer {
         transformControlProperty(beanNode, ddBeanControlMap);
         this.removeProperties(beanNode, ddPropertiesRemoveList);
         this.renameProperties(beanNode, ddPropertiesMap);
-        renamePropertyBeans(beanNode, ddPropertiesMap, true);
+        renamePropertyBeans(beanNode, ddPropertiesMap, false);
 
         return beanNode
     }

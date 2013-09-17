@@ -26,7 +26,7 @@ public class DemoTravelAccountInquirySmokeTest extends SmokeTestBase {
     /**
      * //a[@title='Travel Account ']
      */
-    public static final String ANCHOR_TITLE_TRAVEL_ACCOUNT = "//a[@title='Travel Account ']";
+    public static final String ANCHOR_TITLE_TRAVEL_ACCOUNT = "//a[@id='TravelAccount-InquiryView-SubAccounts_toggle']";
 
     /**
      * /kr-krad/inquiry?methodToCall=start&number=a14&dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount

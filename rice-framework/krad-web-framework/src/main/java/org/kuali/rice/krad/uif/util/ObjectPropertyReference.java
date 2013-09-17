@@ -477,7 +477,8 @@ public class ObjectPropertyReference {
             } else {
 
                 // TODO: Determine if a different PropertyEditor registry exists for KRAD
-                PropertyEditor editor = PropertyEditorManager.findEditor(propertyType);
+                PropertyEditor editor = PropertyEditorManager
+                        .findEditor(getPrimitiveType(propertyType));
                 if (editor == null) {
                     throw new IllegalArgumentException("No property editor available for converting '" + propertyValue
                             + "' to " + propertyType);

@@ -1,0 +1,73 @@
+<!--
+
+    Copyright 2005-2013 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <!-- PageGroup demo -->
+  <bean id="Demo-PageGroup-View" parent="ComponentLibraryView">
+    <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoPageGroup.xml"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.container.PageGroup"/>
+    <property name="docBookAnchor" value="d6813e6638"/>
+    <property name="demoGroups">
+      <list>
+        <ref bean="Demo-PageGroup-Example1"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-PageGroup-Example1" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-PageGroup-Example1 start-->
+        <bean parent="Uif-Page">
+          <property name="items">
+            <list>
+              <ref bean="page1"/>
+              <ref bean="page2"/>
+              <ref bean="page3"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-PageGroup-Example1 end-->
+      </list>
+    </property>
+  </bean>
+  <bean id="page1" parent="Uif-VerticalBoxSection" p:header.render="false">
+    <property name="items">
+      <list>
+        <bean parent="Uif-Label" p:labelText="Page 1" />
+      </list>
+    </property>
+  </bean>
+  <bean id="page2" parent="Uif-VerticalBoxSection" p:header.render="false">
+    <property name="items">
+      <list>
+        <bean parent="Uif-Label" p:labelText="Page 2" />
+      </list>
+    </property>
+  </bean>
+  <bean id="page3" parent="Uif-VerticalBoxSection" p:header.render="false">
+    <property name="items">
+      <list>
+        <bean parent="Uif-Label" p:labelText="Page 3" />
+      </list>
+    </property>
+  </bean>
+</beans>

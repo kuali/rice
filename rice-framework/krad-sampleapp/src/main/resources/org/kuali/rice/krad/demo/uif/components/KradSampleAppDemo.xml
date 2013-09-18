@@ -461,6 +461,8 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-NavigationGroup-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Tree Group"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TreeGroup-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Page Group"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-PageGroup-View&amp;methodToCall=start"/>
       </list>
     </property>
   </bean>
@@ -501,7 +503,6 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-SyntaxHighlighter-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Growls"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Growls-View&amp;methodToCall=start"/>
-        <!--<bean parent="Uif-Link" p:linkText="BlockUI" p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-BlockUI-View&amp;methodToCall=start"/>-->
       </list>
     </property>
   </bean>

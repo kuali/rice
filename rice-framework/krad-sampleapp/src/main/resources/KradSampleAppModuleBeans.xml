@@ -75,6 +75,7 @@
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoLinkGroupResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoAccordionGroupResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTreeGroupResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoPageGroupResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoActionFieldResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTabGroupResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoSimpleConstraintResources</value>

@@ -23,9 +23,13 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
  * items in the options or it can show only the selected options (if backed by a propertyName).  One use case for this
  * control is to use it in combination with UifKeyValueLocation to provide a list of locations retrieved through a
  * KeyValuesFinder.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTag(name = "optionListControl-bean", parent = "Uif-OptionListControl")
 public class OptionListControl extends MultiValueControlBase {
+    private static final long serialVersionUID = 8249529888721507155L;
+
     private String itemCssClass;
     private String selectedItemCssClass;
     private boolean showOnlySelected;

@@ -247,7 +247,7 @@ public class FreeMarkerInlineRenderUtils {
             for (String cName : component.getConditionalRefreshControlNames()) {
                 renderScript(
                         "var condition = function(){return ("
-                                + StringEscapeUtils.escapeJavaScript(component.getConditionalRefreshConditionJs())
+                                + component.getConditionalRefreshConditionJs()
                                 + ");};setupRefreshCheck('" + StringEscapeUtils.escapeJavaScript(cName) + "', '"
                                 + component.getId() + "', condition,'"
                                 + ((component instanceof ComponentBase) ? ((ComponentBase) component)

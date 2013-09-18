@@ -2368,6 +2368,115 @@
   <section>
     <title>Maintenance Documents</title>
     <section>
+      <title>Additional display value</title>
+      <para>
+        <itemizedlist>
+          <listitem>
+            <para>
+              In KNS <emphasis role="bold"> LookupDefinition.translateCode</emphasis>
+              <emphasis role="bold"> FieldUtils.setAdditionalDisplayPropertyForCodes
+              </emphasis> gave the ability to indicate that any property which is the
+              code on a relationship for a BO class that implements <emphasis role="bold">
+              KualiCode</emphasis> should display itself as a combination of Code + Name
+              in read-only mode.
+
+              In KRAD this is done using  <emphasis role="bold">
+              View.translateCodesOnReadOnlyDisplay</emphasis> and <emphasis role="bold">
+              DataField.setAlternateAndAdditionalDisplayValue</emphasis>
+              <emphasis role="bold">translateCodesOnReadOnlyDisplay</emphasis>  is a
+              boolean that indicates whether code properties should automatically be
+              translated to their name property for read only display.
+              <emphasis role="bold">setAlternateAndAdditionalDisplayValue</emphasis>
+              get the relationship configured in the datadictionary file and set the name
+              additional display value which will be displayed along with the code
+            </para>
+          </listitem>
+        </itemizedlist>
+      </para>
+    </section>
+    <section>
+      <title>Specifying a maintainable class</title>
+      <para>
+        <itemizedlist>
+          <listitem>
+            <para>
+              The maintainable class for a given document is specified in the same way in KRAD as
+              was done in KNS using the <emphasis role="bold">maintainableClass</emphasis> property of
+              MaintenanceDocumentEntry. The maintainable class should extend <emphasis role="bold">
+              org.kuali.rice.krad.maintenance.MaintainableImpl.</emphasis>
+              <programlisting linenumbering = "numbered">
+                &lt;property name="maintainableClass" value="org.kuali.rice.krad.maintenance.SampleMaintainableImpl" /&gt;
+              </programlisting>
+            </para>
+          </listitem>
+        </itemizedlist>
+      </para>
+    </section>
+    <section>
+      <title>Overriding default values</title>
+      <para>
+        <itemizedlist>
+          <listitem>
+            <para>
+              In KNS <emphasis role="bold">Maintainable.setGenerateDefaultValues</emphasis> was used to set the default
+              values for fields. However in KRAD this functionality is provided by <emphasis role="bold">
+              ViewHelperServiceImpl.applyDefaultValues</emphasis>. This is called during the finalize
+              phase of the view cycle before the view is rendered.
+            </para>
+          </listitem>
+        </itemizedlist>
+      </para>
+    </section>
+    <section>
+      <title>Customization Hooks</title>
+      <para>
+        <itemizedlist>
+          <listitem>
+            <para>
+              Customization hooks have been provided for the various actions that can be performed on a maintenance
+              document. It involves overriding the specific methods related to that action (new,copy etc). KNS used to
+              provide the following methods:
+              <itemizedlist>
+                <listitem>
+                  MaintenanceDocument.getNewMaintainableObject
+                 </listitem>
+                  <listitem>
+                  Maintainable.setupNewFromExisting
+                  </listitem>
+                  <listitem>
+                  Maintainable.processBeforeAddLine
+                  </listitem>
+                  <listitem>
+                  Maintainable.processAfterPost
+                </listitem>
+              </itemizedlist>
+              Similar functionality can be obtained in KRAD using the following methods:
+              <itemizedlist>
+                <listitem>
+                MaintenanceDocumentController.setupMaintenance
+                </listitem>
+                <listitem>
+                Maintainable.setupNewFromExisting
+                </listitem>
+                <listitem>
+                Maintainable.retrieveObjectForEditOrCopy
+                </listitem>
+                <listitem>
+                Maintainable.processAfterPost
+                </listitem>
+                <listitem>
+                ViewHelperServiceImpl.processBeforeAddLine
+                </listitem>
+                <listitem>
+                ViewHelperServiceImpl.processAfterAddLine
+                </listitem>
+              </itemizedlist>
+              </para>
+          </listitem>
+        </itemizedlist>
+      </para>
+    </section>
+    <section>
       <title>Document Error Handling</title>
       <para>
         <itemizedlist>

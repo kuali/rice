@@ -1833,6 +1833,13 @@
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
+          <listitem xml:id="LRF8">
+            <para>For automatic translation of code fields in lookup the <emphasis role="keyword"
+                >translateCodes</emphasis> of the <emphasis role="keyword"
+                >LookupDefinition</emphasis> was set. In KRAD the automatic translation is enabled
+              by setting the <emphasis role="keyword">translateCodesOnReadOnlyDisplay</emphasis> of the
+                <emphasis role="keyword">Uif-LookupView</emphasis></para>
+          </listitem>
         </itemizedlist>
       </para>
     </section>

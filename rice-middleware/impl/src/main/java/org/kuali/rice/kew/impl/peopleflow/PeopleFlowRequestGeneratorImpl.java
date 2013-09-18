@@ -19,15 +19,14 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.config.ConfigurationException;
+import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.membership.MemberType;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.VersionHelper;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentContent;
@@ -74,54 +73,152 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
 
     protected void generateRequestForMember(Context context, PeopleFlowMember member) {
         String actionRequestPolicyCode = null;
+
+        // used later for generating any delegate requests
+        List<ActionRequestValue> memberRequests = new ArrayList<ActionRequestValue>();
+
         if (member.getActionRequestPolicy() != null) {
             actionRequestPolicyCode = member.getActionRequestPolicy().getCode();
         }
+
         if (MemberType.ROLE == member.getMemberType()) {
-            generateRequestForRoleMember(context, member, actionRequestPolicyCode);
+            memberRequests.addAll(generateRequestForRoleMember(context, member, actionRequestPolicyCode));
         } else {
             ActionRequestValue actionRequest = context.getActionRequestFactory().addRootActionRequest(
                     context.getActionRequested().getCode(), member.getPriority(), toRecipient(member), "",
                     member.getResponsibilityId(), Boolean.TRUE, actionRequestPolicyCode, null);
-            if (CollectionUtils.isNotEmpty(member.getDelegates())) {
-                for (PeopleFlowDelegate delegate : member.getDelegates()) {
-                    context.getActionRequestFactory().addDelegationRequest(actionRequest, toRecipient(delegate),
-                            delegate.getResponsibilityId(), Boolean.TRUE, delegate.getDelegationType(), "", null);
+
+            if (actionRequest != null) {
+                memberRequests.add(actionRequest);
+            }
+        }
+
+        // generate delegate requests
+        // NOTE: if the member type is ROLE, and the nested peopleFlowTypeService.resolveMultipleRoleQualifiers calls
+        // returns N results for the member and M results for the delegate, this will generate N x M requests
+        // TODO: factor out helper methods to clean this block up
+        if (!CollectionUtils.isEmpty(member.getDelegates())) {
+            for (PeopleFlowDelegate delegate : member.getDelegates()) {
+                for (ActionRequestValue memberRequest : memberRequests) {
+                    if (MemberType.ROLE == delegate.getMemberType()) {
+                        generateDelegateToRoleRequests(memberRequest, context, member, delegate,
+                                actionRequestPolicyCode);
+                    } else {
+                        Recipient recipient;
+
+                        if (MemberType.PRINCIPAL == delegate.getMemberType()) {
+                            recipient = new KimPrincipalRecipient(delegate.getMemberId());
+                        } else if (MemberType.GROUP == delegate.getMemberType()) {
+                            recipient = new KimGroupRecipient(delegate.getMemberId());
+                        } else {
+                            throw new RiceIllegalStateException("MemberType unknown: " + delegate.getMemberType());
+                        }
+
+                        // TODO: delegation annotation
+                        String delegationAnnotation = "TODO: delegation annotation";
+
+                        context.getActionRequestFactory().addDelegationRequest(memberRequest, recipient,
+                                delegate.getResponsibilityId(), memberRequest.getForceAction(),
+                                delegate.getDelegationType(), delegationAnnotation, null);
+                    }
                 }
             }
         }
     }
 
-    protected void generateRequestForRoleMember(Context context, PeopleFlowMember member, String actionRequestPolicyCode) {
-        List<Map<String, String>> roleQualifierList = loadRoleQualifiers(context, member);
+    protected List<ActionRequestValue> generateRequestForRoleMember(Context context, PeopleFlowMember member, String actionRequestPolicyCode) {
+        List<ActionRequestValue> roleMemberRequests = new ArrayList<ActionRequestValue>(); // results
+
+        List<Map<String, String>> roleQualifierList = loadRoleQualifiers(context, member.getMemberId());
         Role role = getRoleService().getRole(member.getMemberId());
+
+        boolean hasPeopleFlowDelegates = !CollectionUtils.isEmpty(member.getDelegates());
+
+        if (role == null) {
+            throw new IllegalStateException("Failed to locate a role with the given role id of '" +
+                    member.getMemberId() + "'");
+        }
+
+        if (CollectionUtils.isEmpty(roleQualifierList)) {
+            roleMemberRequests.add(
+                    addKimRoleRequest(context, role, member, Collections.<String, String>emptyMap(),
+                            actionRequestPolicyCode, hasPeopleFlowDelegates )
+            );
+        } else {
+            for (Map<String, String> roleQualifiers : roleQualifierList) {
+                roleMemberRequests.add(addKimRoleRequest(context, role, member, roleQualifiers, actionRequestPolicyCode,
+                        hasPeopleFlowDelegates ));
+            }
+        }
+
+        return roleMemberRequests;
+    }
+
+    protected List<ActionRequestValue> generateDelegateToRoleRequests(ActionRequestValue parentRequest, Context context,
+            PeopleFlowMember member, PeopleFlowDelegate delegate, String actionRequestPolicyCode) {
+
+        List<ActionRequestValue> roleMemberRequests = new ArrayList<ActionRequestValue>(); // results
+
+        List<Map<String, String>> roleQualifierList = loadRoleQualifiers(context, member.getMemberId());
+        Role role = getRoleService().getRole(delegate.getMemberId());
 
         if (role == null) {
             throw new IllegalStateException("Failed to locate a role with the given role id of '" + member.getMemberId() + "'");
         }
 
         if (CollectionUtils.isEmpty(roleQualifierList)) {
-            addKimRoleRequest(context, role, member, Collections.<String, String>emptyMap(), actionRequestPolicyCode );
+            roleMemberRequests.add(
+                    addKimRoleDelegateRequest(parentRequest, context, role, member, delegate,
+                            Collections.<String, String>emptyMap(), actionRequestPolicyCode)
+            );
         } else {
             for (Map<String, String> roleQualifiers : roleQualifierList) {
-                addKimRoleRequest(context, role, member, roleQualifiers, actionRequestPolicyCode );
+                roleMemberRequests.add(addKimRoleDelegateRequest(parentRequest, context, role, member, delegate,
+                        roleQualifiers, actionRequestPolicyCode));
             }
         }
-        // TODO - KULRICE-5726 - still need to implement support for ignoring built-in kim delegates whenever peopleflow delegate(s) are defined
+
+        return roleMemberRequests;
     }
 
+    private ActionRequestValue addKimRoleRequest(Context context, Role role, PeopleFlowMember member, Map<String, String> roleQualifiers,
+            String actionRequestPolicyCode, boolean ignoreKimDelegates) {
+        ActionRequestValue roleMemberRequest = null;
 
-    private void addKimRoleRequest(Context context, Role role, PeopleFlowMember member, Map<String, String> roleQualifiers, String actionRequestPolicyCode) {
         List<RoleMembership> memberships = getRoleService().getRoleMembers(Collections.singletonList(
                 member.getMemberId()), roleQualifiers);
 
         if (!CollectionUtils.isEmpty(memberships)) {
-            context.getActionRequestFactory().addKimRoleRequest(context.getActionRequested().getCode(), member.getPriority(),
-                    role, memberships, null, member.getResponsibilityId(), true, actionRequestPolicyCode, null);
+            roleMemberRequest = context.getActionRequestFactory().addKimRoleRequest(
+                    context.getActionRequested().getCode(), member.getPriority(), role, memberships, null,
+                    member.getResponsibilityId(), true, actionRequestPolicyCode, null, ignoreKimDelegates);
         }
+
+        return roleMemberRequest;
     }
 
-    protected List<Map<String, String>> loadRoleQualifiers(Context context, PeopleFlowMember member) {
+    private ActionRequestValue addKimRoleDelegateRequest(ActionRequestValue parentRequest, Context context, Role role, PeopleFlowMember member,
+            PeopleFlowDelegate delegate, Map<String, String> roleQualifiers, String actionRequestPolicyCode) {
+
+        if (MemberType.ROLE != delegate.getMemberType()) {
+            throw new IllegalArgumentException("delegate member must be of type ROLE");
+        }
+
+        ActionRequestValue roleMemberRequest = null;
+
+        List<RoleMembership> memberships = getRoleService().getRoleMembers(Collections.singletonList(
+                delegate.getMemberId()), roleQualifiers);
+
+        if (!CollectionUtils.isEmpty(memberships)) {
+            roleMemberRequest = context.getActionRequestFactory().addDelegateKimRoleRequest(parentRequest,
+                    delegate.getDelegationType(), context.getActionRequested().getCode(), member.getPriority(), role,
+                    memberships, null, delegate.getResponsibilityId(), true, actionRequestPolicyCode, null);
+        }
+
+        return roleMemberRequest;
+    }
+
+    protected List<Map<String, String>> loadRoleQualifiers(Context context, String roleId) {
         PeopleFlowTypeService peopleFlowTypeService = context.getPeopleFlowTypeService();
         List<Map<String, String>> roleQualifierList = new ArrayList<Map<String, String>>();
 
@@ -130,17 +227,19 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
             DocumentRouteHeaderValueContent content = new DocumentRouteHeaderValueContent(document.getDocumentId());
             content.setDocumentContent(context.getRouteContext().getDocumentContent().getDocContent());
             DocumentContent documentContent = DocumentRouteHeaderValueContent.to(content);
+
             Map<String, String> roleQualifiers = peopleFlowTypeService.resolveRoleQualifiers(
-                    context.getPeopleFlow().getTypeId(), member.getMemberId(), document, documentContent);
+                    context.getPeopleFlow().getTypeId(), roleId, document, documentContent
+            );
 
             if (roleQualifiers != null) {
                 roleQualifierList.add(roleQualifiers);
             }
 
-            boolean versionOk = VersionHelper.compareVersion(context.getPeopleFlowTypeServiceVersion(), CoreConstants.Versions.VERSION_2_3_0)!=-1? true:false;
+            boolean versionOk = VersionHelper.compareVersion(context.getPeopleFlowTypeServiceVersion(), CoreConstants.Versions.VERSION_2_3_0) != -1;
             if(versionOk) {
                 List<Map<String, String>> multipleRoleQualifiers = peopleFlowTypeService.resolveMultipleRoleQualifiers(
-                        context.getPeopleFlow().getTypeId(), member.getMemberId(), document, documentContent);
+                        context.getPeopleFlow().getTypeId(), roleId, document, documentContent);
 
                 if (multipleRoleQualifiers != null) {
                     roleQualifierList.addAll(multipleRoleQualifiers);

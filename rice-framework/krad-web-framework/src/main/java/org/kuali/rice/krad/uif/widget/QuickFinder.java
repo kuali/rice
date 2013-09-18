@@ -20,7 +20,6 @@ import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.BindingInfo;
@@ -33,6 +32,7 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -325,23 +325,17 @@ public class QuickFinder extends WidgetBase {
      * @param bindingInfo binding info instance to copy binding path prefix from
      */
     public void updateReferencesToRefresh (BindingInfo bindingInfo) {
-        String adjustedReferencesToRefresh = new String();
+        List<String> adjustedReferencesToRefresh = new ArrayList<String>();
 
         if (referencesToRefresh == null) {
-            referencesToRefresh = adjustedReferencesToRefresh;
+            referencesToRefresh = new String();
         }
 
         for (String reference : StringUtils.split(referencesToRefresh, KRADConstants.REFERENCES_TO_REFRESH_SEPARATOR )){
-
-            // add separator between references to refresh
-            if (StringUtils.isNotBlank(adjustedReferencesToRefresh)) {
-                adjustedReferencesToRefresh = adjustedReferencesToRefresh + KRADConstants.REFERENCES_TO_REFRESH_SEPARATOR;
-            }
-
-            String adjustedReference = bindingInfo.getPropertyAdjustedBindingPath(reference);
-            adjustedReferencesToRefresh = adjustedReferencesToRefresh + adjustedReference;
+            adjustedReferencesToRefresh.add(bindingInfo.getPropertyAdjustedBindingPath(reference));
         }
-        this.referencesToRefresh = adjustedReferencesToRefresh;
+
+        this.referencesToRefresh = StringUtils.join(adjustedReferencesToRefresh, KRADConstants.REFERENCES_TO_REFRESH_SEPARATOR);
     }
 
     /**

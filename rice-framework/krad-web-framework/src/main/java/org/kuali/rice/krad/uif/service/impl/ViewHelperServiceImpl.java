@@ -63,24 +63,17 @@ import org.kuali.rice.krad.uif.view.ViewPresentationController;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.ClientSideState;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.control.Control;
-import org.kuali.rice.krad.uif.element.Action;
-import org.kuali.rice.krad.uif.element.Label;
-import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
-import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.RemoteFieldsHolder;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
-import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.service.ViewDictionaryService;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
@@ -92,14 +85,9 @@ import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
-import org.kuali.rice.krad.uif.util.ViewCleaner;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
-import org.kuali.rice.krad.uif.view.DefaultExpressionEvaluator;
-import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.view.ViewAuthorizer;
 import org.kuali.rice.krad.uif.view.ViewModel;
-import org.kuali.rice.krad.uif.view.ViewPresentationController;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.Widget;
 import org.kuali.rice.krad.util.ErrorMessage;
@@ -1720,15 +1708,15 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Perform a database or data dictionary based refresh of a specific property object
-     * 
+     *
      * <p>
      * The object needs to be of type PersistableBusinessObject.
      * </p>
-     * 
+     *
      * @param parentObject parent object that references the object to be refreshed
      * @param referenceObjectName property name of the parent object to be refreshed
      */
-    private void refreshReference(Object parentObject, String referenceObjectName) {
+    protected void refreshReference(Object parentObject, String referenceObjectName) {
         if (!(parentObject instanceof PersistableBusinessObject)) {
             LOG.warn("Could not refresh reference " + referenceObjectName + " off class " + parentObject.getClass()
                     .getName() + ". Class not of type PersistableBusinessObject");

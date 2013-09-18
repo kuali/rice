@@ -68,6 +68,7 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
         if (request.getSession().getAttribute(UifConstants.HistoryFlow.HISTORY_MANAGER) == null){
             request.getSession().setAttribute(UifConstants.HistoryFlow.HISTORY_MANAGER, new HistoryManager());
         }
+
         ProcessLogger.trace("pre-handle");
 
         return true;
@@ -85,6 +86,7 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
             ModelAndView modelAndView) throws Exception {
         UifControllerHelper.postControllerHandle(request, response, handler, modelAndView);
+
         ProcessLogger.trace("post-handle");
     }
 
@@ -98,6 +100,7 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
             Exception ex) throws Exception {
         ProcessLogger.trace("after-completion");
+
         UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
         UifFormBase uifForm = (UifFormBase) request.getAttribute(UifConstants.REQUEST_FORM);
 
@@ -136,6 +139,7 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
             uifFormManager.purgeForm(uifForm);
             uifFormManager.addSessionForm(uifForm);
         }
+
         ProcessLogger.trace("after-completion-end");
     }
 

@@ -1225,14 +1225,6 @@ function closeLightbox() {
 }
 
 /**
- * Convenience method closes lightbox and reloads page
- */
-function closeLightboxReloadPage() {
-    closeLightbox();
-    top.window.location.reload(true);
-}
-
-/**
  * Internal function for appending callback function to fancybox options
  *
  * <p>

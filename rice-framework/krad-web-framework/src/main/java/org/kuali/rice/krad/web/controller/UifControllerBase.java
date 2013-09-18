@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.web.controller;
 
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kim.api.identity.Person;
@@ -26,12 +25,9 @@ import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
-import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.field.AttributeQueryResult;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
-import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.DialogManager;
 import org.kuali.rice.krad.uif.view.MessageView;
 import org.kuali.rice.krad.uif.view.View;
@@ -467,30 +463,19 @@ public abstract class UifControllerBase {
     }
 
     /**
-     * handles an ajax refresh
-     *
-     * <p>The query form plugin  activates this request via a form post, where on the JS side,
-     * {@code org.kuali.rice.krad.uif.UifParameters#RENDER_FULL_VIEW} is set to false</p>
-     *
-     * @param form -  Holds properties necessary to determine the <code>View</code> instance that will be used to
-     * render
-     * the UI
-     * @param result -   represents binding results
-     * @param request - http servlet request data
-     * @param response - http servlet response object
-     * @return the  ModelAndView object
-     * @throws Exception
+     * Invoked to refresh a view, generally when returning from another view (for example a lookup))
      */
     @RequestMapping(params = "methodToCall=refresh")
     public ModelAndView refresh(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
-        // TODO: this code still needs to handle reference refreshes
+        View view = form.getPostedView();
 
         String flashMapSelectedLineValues = "";
         if (RequestContextUtils.getInputFlashMap(request) != null) {
             flashMapSelectedLineValues = (String) RequestContextUtils.getInputFlashMap(request).get(
                     UifParameters.SELECTED_LINE_VALUES);
         }
+
         String refreshCallerType = "";
         if (request.getParameterMap().containsKey(KRADConstants.REFRESH_CALLER_TYPE)) {
             refreshCallerType = request.getParameter(KRADConstants.REFRESH_CALLER_TYPE);
@@ -517,13 +502,32 @@ public abstract class UifControllerBase {
             }
 
             // invoked view helper to populate the collection from lookup results
-            form.getPostedView().getViewHelperService().processMultipleValueLookupResults(form.getPostedView(), form,
+            view.getViewHelperService().processMultipleValueLookupResults(form.getPostedView(), form,
                     lookupCollectionName, selectedLineValues);
         }
 
+        // refresh references
         if (request.getParameterMap().containsKey(KRADConstants.REFERENCES_TO_REFRESH)) {
             String referencesToRefresh = request.getParameter(KRADConstants.REFERENCES_TO_REFRESH);
-            form.getPostedView().getViewHelperService().refreshReferences(form, referencesToRefresh);
+
+            view.getViewHelperService().refreshReferences(form, referencesToRefresh);
+        }
+
+        // set focus and jump position for returning from a quickfinder
+        if (request.getParameterMap().containsKey(UifParameters.QUICKFINDER_ID)) {
+            String quickfinderId = request.getParameter(UifParameters.QUICKFINDER_ID);
+
+            String focusId = (String) view.getViewIndex().getPostContextEntry(quickfinderId,
+                    UifConstants.PostContextKeys.QUICKFINDER_FOCUS_ID);
+            if (StringUtils.isNotBlank(focusId)) {
+                form.setFocusId(focusId);
+            }
+
+            String jumpToId = (String) view.getViewIndex().getPostContextEntry(quickfinderId,
+                    UifConstants.PostContextKeys.QUICKFINDER_JUMP_TO_ID);
+            if (StringUtils.isNotBlank(jumpToId)) {
+                form.setJumpToId(jumpToId);
+            }
         }
 
         return getUIFModelAndView(form);
@@ -563,8 +567,6 @@ public abstract class UifControllerBase {
 
             lookupParameters.remove(UifParameters.LOOKUP_PARAMETERS);
         }
-
-        // TODO: lookup anchors and doc number?
 
         String baseLookupUrl = (String) lookupParameters.get(UifParameters.BASE_LOOKUP_URL);
         lookupParameters.remove(UifParameters.BASE_LOOKUP_URL);

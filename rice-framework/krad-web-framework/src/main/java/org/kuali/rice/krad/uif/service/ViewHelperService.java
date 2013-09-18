@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.service;
 
 import org.kuali.rice.krad.uif.container.CollectionGroup;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
@@ -310,5 +311,25 @@ public interface ViewHelperService {
      * @return
      */
     public String buildExportTableData(View view, Object model, String tableId, String formatType);
+
+    /**
+     * Gets the {@code ViewLifecycle} instance associated with the view helper.
+     *
+     * <p>
+     * Components can retrieve the view lifecycle through the view helper for event registration (such as
+     * when the lifecycle is complete for another component)
+     * </p>
+     *
+     * @return view lifecycle instance
+     */
+    public ViewLifecycle getViewLifecycle();
+
+    /**
+     * Sets the {@code ViewLifecycle} instance associated with the view helper.
+     *
+     * @param viewLifecycle view lifecycle instance
+     * @see ViewHelperService#getViewLifecycle()
+     */
+    public void setViewLifecycle(ViewLifecycle viewLifecycle);
 
 }

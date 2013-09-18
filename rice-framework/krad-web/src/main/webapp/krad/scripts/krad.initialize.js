@@ -118,6 +118,7 @@ jQuery(document).ready(function () {
     });
 
     time(false, "viewSetup-phase-1");
+
     // show the page
     jQuery("#" + kradVariables.APP_ID).show();
 

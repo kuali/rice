@@ -347,26 +347,21 @@ public class Action extends ContentElementBase {
         }
 
         // if focus id not set default to focus on action
-        if (focusOnIdAfterSubmit == null) {
-            focusOnIdAfterSubmit = UifConstants.Order.SELF.toString();
-        }
-
-        if (focusOnIdAfterSubmit.equalsIgnoreCase(UifConstants.Order.SELF.toString())) {
+        if ((focusOnIdAfterSubmit == null) || focusOnIdAfterSubmit.equalsIgnoreCase(
+                UifConstants.Order.SELF.toString())) {
             focusOnIdAfterSubmit = this.getId();
-            submitData.put("focusId", focusOnIdAfterSubmit);
         } else if (focusOnIdAfterSubmit.equalsIgnoreCase(UifConstants.Order.NEXT_INPUT.toString())) {
             focusOnIdAfterSubmit = UifConstants.Order.NEXT_INPUT.toString() + ":" + this.getId();
-            submitData.put("focusId", focusOnIdAfterSubmit);
-        } else {
-            // Use the id passed in
-            submitData.put("focusId", focusOnIdAfterSubmit);
         }
+
+        submitData.put("focusId", focusOnIdAfterSubmit);
 
         // if jump to not set default to jump to location of the action
         if (StringUtils.isBlank(jumpToIdAfterSubmit) && StringUtils.isBlank(jumpToNameAfterSubmit)) {
             jumpToIdAfterSubmit = this.getId();
-            submitData.put("jumpToId", jumpToIdAfterSubmit);
-        } else if (StringUtils.isNotBlank(jumpToIdAfterSubmit)) {
+        }
+
+        if (StringUtils.isNotBlank(jumpToIdAfterSubmit)) {
             submitData.put("jumpToId", jumpToIdAfterSubmit);
         } else {
             submitData.put("jumpToName", jumpToNameAfterSubmit);

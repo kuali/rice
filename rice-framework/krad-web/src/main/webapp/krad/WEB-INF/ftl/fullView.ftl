@@ -19,7 +19,7 @@
 
     <@krad.script value="${KualiForm.growlScript!}"/>
 
-<div id="Uif-Application" style="display:none;" class="uif-application">
+    <div id="Uif-Application" style="display:none;" class="uif-application">
 
     <!-- APPLICATION HEADER -->
     <#if view.applicationHeader?has_content>
@@ -43,34 +43,34 @@
     onSubmitScript="${view.onSubmitScript!}" disableNativeAutocomplete=view.disableNativeAutocomplete>
 
         <#if view.renderForm>
-        <#-- write out view, page id as hidden so the view can be reconstructed if necessary -->
+            <#-- write out view, page id as hidden so the view can be reconstructed if necessary -->
             <@spring.formHiddenInput id="viewId" path="KualiForm.viewId"/>
 
-        <#-- all forms will be stored in session, this is the conversation key -->
+            <#-- all forms will be stored in session, this is the conversation key -->
             <@spring.formHiddenInput id="formKey" path="KualiForm.formKey"/>
 
-        <#-- original form key requested, may differ from actual form key-->
+            <#-- original form key requested, may differ from actual form key-->
             <@spring.formHiddenInput id="requestedFormKey" path="KualiForm.requestedFormKey"/>
 
-        <#-- tracks the session, used to determine timeouts -->
+            <#-- tracks the session, used to determine timeouts -->
             <@spring.formHiddenInput id="sessionId" path="KualiForm.sessionId"/>
 
-        <#-- flow key to maintain a history flow -->
+            <#-- flow key to maintain a history flow -->
             <@spring.formHiddenInput id="flowKey" path="KualiForm.flowKey"/>
 
-        <#-- based on the view setting, form elements will be checked for dirtyness -->
+            <#-- based on the view setting, form elements will be checked for dirtyness -->
             <@spring.formHiddenInput id="validateDirty" path="KualiForm.view.applyDirtyCheck"/>
 
-        <#-- based on the view setting, form elements will be checked for dirtyness -->
+            <#-- based on the view setting, form elements will be checked for dirtyness -->
             <@spring.formHiddenInput id="dirtyForm" path="KualiForm.dirtyForm"/>
 
-        <#-- indicator which is set to true when content is being rendered inside a lightbox -->
+            <#-- indicator which is set to true when content is being rendered inside a lightbox -->
             <@spring.formHiddenInput id="renderedInLightBox" path="KualiForm.renderedInLightBox"/>
 
-        <#-- indicator for single page view, used to drive script page handling logic -->
+            <#-- indicator for single page view, used to drive script page handling logic -->
             <@spring.formHiddenInput id="singlePageView" path="KualiForm.view.singlePageView"/>
 
-        <#-- indicator for disabling browser caching of the view -->
+            <#-- indicator for disabling browser caching of the view -->
             <@spring.formHiddenInput id="disableBrowserCache" path="KualiForm.view.disableBrowserCache"/>
         </#if>
 
@@ -79,7 +79,7 @@
 
     <@krad.script value="${KualiForm.lightboxScript!}"/>
 
-<#-- set focus and perform jump to -->
+    <#-- set focus and perform jump to -->
     <#if KualiForm.view.currentPage?has_content>
         <@krad.script value="jQuery(document).on(kradVariables.PAGE_LOAD_EVENT, function(){
                     performFocusAndJumpTo(${KualiForm.view.currentPage.autoFocus?string}, true, true, '${KualiForm.focusId!}',
@@ -87,9 +87,9 @@
                 });" component=Component/>
     </#if>
 
-</div>
+    </div>
 
-<!-- APPLICATION FOOTER -->
+    <!-- APPLICATION FOOTER -->
     <#if view.applicationFooter?has_content>
         <#assign stickyFooterDataAttribute=""/>
         <#if view.stickyApplicationFooter>

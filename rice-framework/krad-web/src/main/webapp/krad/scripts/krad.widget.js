@@ -442,20 +442,17 @@ function returnLookupResultByScript(fieldName, value) {
 }
 
 /*
- * Function that sets the return target when returning multiple lookup results
+ * Sets form target for the multi-value return and closes the lightbox
  */
-function setMultiValueReturnTarget() {
-    if (parent.jQuery('iframe[id*=easyXDM_]').length > 0) {
-        // portal and content on same domain
-        top.jQuery('iframe[id*=easyXDM_]').contents().find('#' + kradVariables.PORTAL_IFRAME_ID).contents().find('#' + kradVariables.KUALI_FORM).attr('target', kradVariables.PORTAL_IFRAME_ID);
-    } else if (parent.parent.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).length > 0) {
-        // portal and content on different domain
-        parent.jQuery('#' + kradVariables.KUALI_FORM).attr('target', kradVariables.PORTAL_IFRAME_ID);
-    } else if (parent != null) {
-        top.jQuery('#' + kradVariables.KUALI_FORM).attr('target', parent.name);
-    } else {
-        top.jQuery('#' + kradVariables.KUALI_FORM).attr('target', '_parent');
+function setupMultiValueReturn() {
+    if ((parent.jQuery('iframe[id*=easyXDM_]').length > 0) || (parent.parent.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).length > 0)) {
+        jQuery('#' + kradVariables.KUALI_FORM).attr('target', kradVariables.PORTAL_IFRAME_ID);
     }
+    else {
+        jQuery('#' + kradVariables.KUALI_FORM).attr('target', '_parent');
+    }
+
+    closeLightbox();
 }
 
 /**

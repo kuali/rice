@@ -25,6 +25,7 @@ import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.service.ViewTypeService;
@@ -157,6 +158,10 @@ public class ViewServiceImpl implements ViewService {
         // get the configured helper service for the view
         ViewHelperService helperService = view.getViewHelperService();
 
+        // start a new lifecycle
+        ViewLifecycle viewLifecycle = new ViewLifecycle();
+        helperService.setViewLifecycle(viewLifecycle);
+
         // invoke initialize phase on the views helper service
         if (LOG.isEnabledFor(Priority.INFO)) {
             LOG.info("performing initialize phase for view: " + view.getId());
@@ -198,6 +203,8 @@ public class ViewServiceImpl implements ViewService {
             LOG.info("processing final indexing for view: " + view.getId());
         }
         view.index();
+
+        helperService.setViewLifecycle(null);
 
         // update status on view
         if (LOG.isDebugEnabled()) {

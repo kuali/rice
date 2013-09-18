@@ -211,20 +211,8 @@
   <bean id="Uif-LookupResultsFooter" parent="Uif-FooterBase">
     <property name="items">
       <list>
-        <bean parent="Uif-PrimaryActionButton" p:render="@{#form.renderedInLightBox}"
-              p:preSubmitCall="setMultiValueReturnTarget();return true;"
-              p:successCallback="closeLightboxReloadPage();" p:errorCallback="closeLightbox()"
-              p:methodToCall="returnSelected" p:actionLabel="return selected" p:disabled="true">
-          <property name="cssClasses">
-            <list merge="true">
-              <value>uif-returnSelectedAction</value>
-            </list>
-          </property>
-        </bean>
-
-        <bean parent="Uif-PrimaryActionButton"
-              p:ajaxSubmit="false" p:render="@{!#form.renderedInLightBox}"
-              p:methodToCall="returnSelected" p:actionLabel="return selected" p:disabled="true">
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="returnSelected" p:actionLabel="return selected"
+              p:preSubmitCall="setupMultiValueReturn();return true;" p:disabled="true" p:ajaxSubmit="false">
           <property name="cssClasses">
             <list merge="true">
               <value>uif-returnSelectedAction</value>

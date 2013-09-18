@@ -258,16 +258,14 @@ public class LookupController extends UifControllerBase {
      * Invoked from the UI to return the selected lookup results lines, parameters are collected to build a URL to
      * the caller and then a redirect is performed
      *
-     * @param lookupForm - lookup form instance containing the selected results and lookup configuration
+     * @param lookupForm lookup form instance containing the selected results and lookup configuration
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=returnSelected")
     public String returnSelected(@ModelAttribute("KualiForm") LookupForm lookupForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response, final RedirectAttributes redirectAttributes) {
-
-        Properties parameters = new Properties();
-
         // build string of select line identifiers
         String selectedLineValues = "";
+
         Set<String> selectedLines = lookupForm.getSelectedCollectionLines().get(UifPropertyPaths.LOOKUP_RESULTS);
         if (selectedLines != null) {
             for (String selectedLine : selectedLines) {
@@ -276,14 +274,17 @@ public class LookupController extends UifControllerBase {
             selectedLineValues = StringUtils.removeEnd(selectedLineValues, ",");
         }
 
-        //check to see what the redirect URL length would be
+        Properties parameters = new Properties();
+
         parameters.put(UifParameters.SELECTED_LINE_VALUES, selectedLineValues);
         parameters.putAll(lookupForm.getInitialRequestParameters());
+
         String redirectUrl = UrlFactory.parameterizeUrl(lookupForm.getReturnLocation(), parameters);
 
         boolean lookupCameFromDifferentServer = areDifferentDomains(lookupForm.getReturnLocation(),
                 lookupForm.getRequestUrl());
 
+        //
         if (redirectUrl.length() > RiceConstants.MAXIMUM_URL_LENGTH && !lookupCameFromDifferentServer) {
             redirectAttributes.addFlashAttribute(UifParameters.SELECTED_LINE_VALUES, selectedLineValues);
         }
@@ -317,6 +318,10 @@ public class LookupController extends UifControllerBase {
         redirectAttributes.addAttribute(KRADConstants.REFRESH_CALLER_TYPE,
                 UifConstants.RefreshCallerTypes.MULTI_VALUE_LOOKUP);
         redirectAttributes.addAttribute(KRADConstants.REFRESH_DATA_OBJECT_CLASS, lookupForm.getDataObjectClassName());
+
+        if (StringUtils.isNotBlank(lookupForm.getQuickfinderId())) {
+            redirectAttributes.addAttribute(UifParameters.QUICKFINDER_ID, lookupForm.getQuickfinderId());
+        }
 
         if (StringUtils.isNotBlank(lookupForm.getDocNum())) {
             redirectAttributes.addAttribute(UifParameters.DOC_NUM, lookupForm.getDocNum());

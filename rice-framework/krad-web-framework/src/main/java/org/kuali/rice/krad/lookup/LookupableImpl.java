@@ -860,12 +860,12 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     }
 
     /**
-     * Builds up a <code>Properties</code> object that will be used to provide the request parameters for the
+     * Builds up a {@code Properties} object that will be used to provide the request parameters for the
      * return URL link
      *
-     * @param lookupView - lookup view instance containing lookup configuration
-     * @param lookupForm - lookup form instance containing the data
-     * @param dataObject - data object instance for the current line and for which the return URL is being built
+     * @param lookupView lookup view instance containing lookup configuration
+     * @param lookupForm lookup form instance containing the data
+     * @param dataObject data object instance for the current line and for which the return URL is being built
      * @return Properties instance containing request parameters for return URL
      */
     protected Properties getReturnUrlParameters(LookupView lookupView, LookupForm lookupForm, Object dataObject) {
@@ -884,7 +884,11 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         }
 
         if (StringUtils.isNotBlank(lookupForm.getReferencesToRefresh())) {
-            props.put(KRADConstants.REFERENCES_TO_REFRESH, lookupForm.getReferencesToRefresh());
+            props.put(UifParameters.REFERENCES_TO_REFRESH, lookupForm.getReferencesToRefresh());
+        }
+
+        if (StringUtils.isNotBlank(lookupForm.getQuickfinderId())) {
+            props.put(UifParameters.QUICKFINDER_ID, lookupForm.getQuickfinderId());
         }
 
         List<String> returnKeys = getReturnKeys(lookupView, lookupForm, dataObject);
@@ -898,7 +902,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
             props.put(returnKey, returnValue);
         }
-        // props.put(UifParameters.AJAX_REQUEST,"false");
+
         return props;
     }
 

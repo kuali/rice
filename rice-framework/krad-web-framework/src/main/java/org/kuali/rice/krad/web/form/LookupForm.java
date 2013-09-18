@@ -45,6 +45,8 @@ public class LookupForm extends UifFormBase {
     private boolean multipleValuesSelect;
     private String lookupCollectionName;
 
+    private String quickfinderId;
+
     private Map<String, String> lookupCriteria;
     private Map<String, String> fieldConversions;
 
@@ -59,10 +61,6 @@ public class LookupForm extends UifFormBase {
         super();
 
         setViewTypeName(ViewType.LOOKUP);
-        atLeastOneRowReturnable = false;
-        atLeastOneRowHasActions = false;
-        multipleValuesSelect = false;
-        redirectedLookup = false;
 
         lookupCriteria = new HashMap<String, String>();
         fieldConversions = new HashMap<String, String>();
@@ -194,6 +192,14 @@ public class LookupForm extends UifFormBase {
      */
     public void setLookupCollectionName(String lookupCollectionName) {
         this.lookupCollectionName = lookupCollectionName;
+    }
+
+    public String getQuickfinderId() {
+        return quickfinderId;
+    }
+
+    public void setQuickfinderId(String quickfinderId) {
+        this.quickfinderId = quickfinderId;
     }
 
     public Map<String, String> getLookupCriteria() {

@@ -55,6 +55,7 @@ import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ViewCleaner;
 import org.kuali.rice.krad.uif.view.DefaultExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
@@ -102,12 +103,12 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.MethodInvoker;
 
 /**
- * Default Implementation of <code>ViewHelperService</code>
+ * Default Implementation of {@code ViewHelperService}
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
-
+    private static final long serialVersionUID = 1772618197133239852L;
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ViewHelperServiceImpl.class);
 
     private transient DataDictionaryService dataDictionaryService;
@@ -116,6 +117,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     private transient ConfigurationService configurationService;
 
     private transient LegacyDataAdapter legacyDataAdapter;
+
+    private ViewLifecycle viewLifecycle;
 
     /**
      * Uses reflection to find all fields defined on the <code>View</code> instance that have the
@@ -219,7 +222,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         }
     }
 
-/**
+    /**
      * Performs the complete component lifecycle on the component passed in, in this order:
      * performComponentInitialization, performComponentApplyModel, and performComponentFinalize.
      *
@@ -234,11 +237,14 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     public void performComponentLifecycle(View view, Object model, Component component, String origId) {
         Component origComponent = view.getViewIndex().getComponentById(origId);
 
-        // run through and assign any ids starting with the id for the refreshed component (this might be
-        // necessary if we are getting a new component instance from the bean factory)
+        // start new lifecycle for event registration
+        setViewLifecycle(new ViewLifecycle());
+
+        // run through and assign any ids starting with the id for the refreshed component, so the ids are the
+        // same as they were for the full view build
         Integer currentSequenceVal = view.getIdSequence();
+
         Integer startingSequenceVal = view.getViewIndex().getIdSequenceSnapshot().get(component.getId());
-        // if the component was retrieved from the initial states map in ViewIndex, startingSequenceVal is null
         if (startingSequenceVal != null) {
             view.setIdSequence(startingSequenceVal);
         }
@@ -409,6 +415,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         ((ViewModel) model).setGrowlScript(growlScript);
 
         view.getViewIndex().indexComponent(component);
+
+        setViewLifecycle(null);
     }
 
     /**
@@ -734,12 +742,15 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
+     * Implement...
+     *
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#performApplyModel(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object)
      */
     @Override
     public void performApplyModel(View view, Object model) {
         ProcessLogger.trace("apply-model:" + view.getId());
+
         // get action flag and edit modes from authorizer/presentation controller
         retrieveEditModesAndActionFlags(view, (UifFormBase) model);
 
@@ -747,8 +758,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         setViewContext(view, model);
 
         ProcessLogger.trace("apply-comp-model:" + view.getId());
+
         Map<String, Integer> visitedIds = new HashMap<String, Integer>();
         performComponentApplyModel(view, view, model, visitedIds);
+
         ProcessLogger.trace("apply-model-end:" + view.getId());
     }
 
@@ -1557,6 +1570,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         for (Component nestedComponent : component.getComponentsForLifecycle()) {
             performComponentFinalize(view, nestedComponent, model, component);
         }
+
+        // trigger lifecycle complete event for component
+        getViewLifecycle().invokeEventListeners(ViewLifecycle.LifecycleEvent.LIFECYCLE_COMPLETE, view, model, component);
     }
 
     /**
@@ -2262,6 +2278,20 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      */
     protected void processAfterDeleteLine(View view, CollectionGroup collectionGroup, Object model, int lineIndex) {
 
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.service.ViewHelperService#getViewLifecycle()
+     */
+    public ViewLifecycle getViewLifecycle() {
+        return viewLifecycle;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.service.ViewHelperService#setViewLifecycle(org.kuali.rice.krad.uif.lifecycle.ViewLifecycle)
+     */
+    public void setViewLifecycle(ViewLifecycle viewLifecycle) {
+        this.viewLifecycle = viewLifecycle;
     }
 
     /**

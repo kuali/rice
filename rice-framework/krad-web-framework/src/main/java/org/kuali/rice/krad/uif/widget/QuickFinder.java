@@ -21,12 +21,15 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.lifecycle.LifecycleEventListener;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -45,7 +48,7 @@ import java.util.Map;
 @BeanTags({@BeanTag(name = "quickFinder-bean", parent = "Uif-QuickFinder"),
         @BeanTag(name = "quickFinderByScript-bean", parent = "Uif-QuickFinderByScript"),
         @BeanTag(name = "collectionQuickFinder-bean", parent = "Uif-CollectionQuickFinder")})
-public class QuickFinder extends WidgetBase {
+public class QuickFinder extends WidgetBase implements LifecycleEventListener {
     private static final long serialVersionUID = 3302390972815386785L;
 
     // lookup configuration
@@ -100,6 +103,8 @@ public class QuickFinder extends WidgetBase {
         if (quickfinderAction != null && (lightBoxLookup != null && lightBoxLookup.isRender())) {
             quickfinderAction.setActionScript("voidAction");
         }
+
+        view.getViewHelperService().getViewLifecycle().registerLifecycleCompleteListener(quickfinderAction, this);
     }
 
     /**
@@ -198,6 +203,8 @@ public class QuickFinder extends WidgetBase {
             }
         }
 
+        quickfinderAction.setId(getId() + UifConstants.IdSuffixes.ACTION);
+
         quickfinderAction.addActionParameter(UifParameters.BASE_LOOKUP_URL, baseLookupUrl);
         quickfinderAction.addActionParameter(UifParameters.DATA_OBJECT_CLASS_NAME, dataObjectClassName);
 
@@ -224,6 +231,7 @@ public class QuickFinder extends WidgetBase {
         addActionParameterIfNotNull(UifParameters.SHOW_MAINTENANCE_LINKS, showMaintenanceLinks);
         addActionParameterIfNotNull(UifParameters.MULTIPLE_VALUES_SELECT, multipleValuesSelect);
         addActionParameterIfNotNull(UifParameters.LOOKUP_COLLECTION_NAME, lookupCollectionName);
+        addActionParameterIfNotNull(UifParameters.QUICKFINDER_ID, getId());
 
         // TODO:
         // org.kuali.rice.kns.util.FieldUtils.populateQuickfinderDefaultsForLookup(Class,
@@ -349,6 +357,25 @@ public class QuickFinder extends WidgetBase {
         components.add(lightBoxLookup);
 
         return components;
+    }
+
+    /**
+     * Adds post context data for the quickfinder so when the lookup return occurs the focus and jump point
+     * of the quickfinder action can be retrieved
+     *
+     * @see org.kuali.rice.krad.uif.lifecycle.LifecycleEventListener#processEvent(org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent,
+     * org.kuali.rice.krad.uif.view.View, java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     */
+    @Override
+    public void processEvent(ViewLifecycle.LifecycleEvent lifecycleEvent, View view, Object model,
+            Component eventComponent) {
+        Action finalQuickfinderAction = (Action) eventComponent;
+
+        // add post metadata for focus point when the associated lookup returns
+        view.getViewIndex().addPostContextEntry(getId(), UifConstants.PostContextKeys.QUICKFINDER_FOCUS_ID,
+                finalQuickfinderAction.getFocusOnIdAfterSubmit());
+        view.getViewIndex().addPostContextEntry(getId(), UifConstants.PostContextKeys.QUICKFINDER_JUMP_TO_ID,
+                finalQuickfinderAction.getJumpToIdAfterSubmit());
     }
 
     /**
@@ -848,11 +875,11 @@ public class QuickFinder extends WidgetBase {
         quickFinderCopy.setViewName(this.viewName);
         quickFinderCopy.setReferencesToRefresh(this.referencesToRefresh);
 
-        if(fieldConversions != null) {
+        if (fieldConversions != null) {
             quickFinderCopy.setFieldConversions(new HashMap<String, String>(this.fieldConversions));
         }
 
-        if(lookupParameters != null) {
+        if (lookupParameters != null) {
             quickFinderCopy.setLookupParameters(new HashMap<String, String>(this.lookupParameters));
         }
 
@@ -868,12 +895,12 @@ public class QuickFinder extends WidgetBase {
         quickFinderCopy.setMultipleValuesSelect(this.multipleValuesSelect);
         quickFinderCopy.setLookupCollectionName(this.lookupCollectionName);
 
-        if(lightBoxLookup != null) {
-            quickFinderCopy.setLightBoxLookup((LightBox)this.lightBoxLookup.copy());
+        if (lightBoxLookup != null) {
+            quickFinderCopy.setLightBoxLookup((LightBox) this.lightBoxLookup.copy());
         }
 
         if (this.quickfinderAction != null) {
-            quickFinderCopy.setQuickfinderAction((Action)this.quickfinderAction.copy());
+            quickFinderCopy.setQuickfinderAction((Action) this.quickfinderAction.copy());
         }
     }
 }

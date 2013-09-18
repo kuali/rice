@@ -148,7 +148,7 @@
       <bean parent="Uif-LightBoxPost" p:lookupReturnByScript="false"/>
     </property>
     <property name="quickfinderAction">
-      <bean parent="Uif-ActionImage" p:methodToCall="performLookup">
+      <bean parent="Uif-ActionImage" p:methodToCall="performLookup" p:focusOnIdAfterSubmit="NEXT_INPUT">
         <property name="actionImage">
           <bean parent="Uif-QuickLookupImage"/>
         </property>

@@ -137,7 +137,7 @@ public class JiraAwareFailureUtil {
         while (iter.hasNext()) {
             key = iter.next();
             if (contents.contains(key)) {
-                failable.fail(JIRA_BROWSE_URL + jiraMatches.get(key));
+                failable.fail(JIRA_BROWSE_URL + jiraMatches.get(key) + "\n\n" + contents);
             }
         }
     }

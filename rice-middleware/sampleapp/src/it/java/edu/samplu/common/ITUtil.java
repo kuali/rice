@@ -334,6 +334,7 @@ public class ITUtil {
 
     private static void failWithReportInfo(String contents, String linkLocator, Failable failable, String message) {
         final String incidentReportInformation = extractIncidentReportInfo(contents, linkLocator, message);
+        JiraAwareFailureUtil.failOnMatchedJira(incidentReportInformation, failable);
         failWithInfo(incidentReportInformation, linkLocator, failable, message);
     }
 
@@ -345,6 +346,7 @@ public class ITUtil {
 */
     private static void failWithReportInfoForKim(String contents, String linkLocator, Failable failable, String message) {
         final String kimIncidentReport = extractIncidentReportKim(contents, linkLocator, message);
+        JiraAwareFailureUtil.failOnMatchedJira(kimIncidentReport, failable);
         failable.fail(kimIncidentReport);
     }
 
@@ -442,6 +444,7 @@ public class ITUtil {
         } else if (contents.contains("at java.lang.Thread.run(Thread.java:")) {
             ftlStackTrace = contents.substring(contents.indexOf("Error: on line"), contents.indexOf("at java.lang.Thread.run(Thread.java:") + 39 );
         }
+        JiraAwareFailureUtil.failOnMatchedJira(ftlStackTrace, failable);
         failable.fail( "\nFreemarker Exception " + message + " navigating to " + linkLocator + "\nStackTrace: " + ftlStackTrace.trim());
     }
 
@@ -468,7 +471,6 @@ public class ITUtil {
 */
 
     protected static void processIncidentReport(String contents, String linkLocator, Failable failable, String message) {
-        JiraAwareFailureUtil.failOnMatchedJira(contents, failable);
 
         if (contents.indexOf("Incident Feedback") > -1) {
             failWithReportInfo(contents, linkLocator, failable, message);
@@ -478,6 +480,7 @@ public class ITUtil {
             failWithReportInfoForKim(contents, linkLocator, failable, message);
         }
 
+        JiraAwareFailureUtil.failOnMatchedJira(contents, failable);
         failable.fail("\nIncident report detected "
                 + message
                 + "\n Unable to parse out details for the contents that triggered exception: "

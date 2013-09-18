@@ -186,6 +186,8 @@
     <sauce.junit.version>1.0.19</sauce.junit.version>
     <sauce.rest.version>1.0.0</sauce.rest.version>
     <saucelabs.connect.version>3.0.28</saucelabs.connect.version>
+    <saucelabs.connect.excludes>NOT_NULL</saucelabs.connect.excludes>
+    <saucelabs.connect.includes>**/*SeAFT.java</saucelabs.connect.includes>
     <saucelabs.user>SAUCELABS_USER</saucelabs.user>
     <saucelabs.key>SAUCELABS_KEY</saucelabs.key>
     <selenium-java.version>2.33.0</selenium-java.version>
@@ -495,12 +497,11 @@
     <profile>
       <id>sauceconnect</id>
       <properties>
+        <!-- Should these be maven.failsafes or saucelabs.connect -->
         <maven.failsafe.skip>false</maven.failsafe.skip>
-        <maven.failsafe.includes>**/*IT.java, **/*Gen.java</maven.failsafe.includes>
+        <maven.failsafe.includes>${saucelabs.connect.includes}</maven.failsafe.includes>
         <!-- exclude krad/labs and krad/demo which only work against krad-sampleapp (env11) -->
-        <maven.failsafe.excludes>
-          **/krad/labs/**/*.java, **/krad/demo/**/*.java
-        </maven.failsafe.excludes>
+        <maven.failsafe.excludes>${saucelabs.connect.excludes}</maven.failsafe.excludes>
       </properties>
       <build>
         <plugins>

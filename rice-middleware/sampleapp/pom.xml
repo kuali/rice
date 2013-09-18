@@ -155,6 +155,18 @@
     </profile>
 
     <profile>
+      <id>sauceconnect</id>
+      <properties>
+        <saucelabs.connect.excludes>
+          **/krad/labs/**/*.java, **/krad/demo/**/*.java
+        </saucelabs.connect.excludes>
+        <saucelabs.connect.includes>
+          **/*IT.java, **/*Gen.java
+        </saucelabs.connect.includes>
+      </properties>
+    </profile>
+
+    <profile>
       <id>stests</id>
       <properties>
         <maven.failsafe.skip>false</maven.failsafe.skip>

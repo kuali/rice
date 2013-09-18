@@ -73,6 +73,8 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("annot get new instance of class to check for KualiCode", "KULRICE-10358 Component search Action List Incident Report Cannot get new instance of class to check for KualiCode");
 
         jiraMatches.put("Library Widget Suggest, CAT not suggested", "KULRICE-10365 Library Widget Suggest not suggesting");
+
+        jiraMatches.put("WorkFlowRouteRulesBlanketApp expected:<[FINAL]>", "KULRICE-9051 WorkFlow Route Rules Blanket Approval submit status results in Enroute, not Final");
         //jiraMatches.put("", "");
     }
 

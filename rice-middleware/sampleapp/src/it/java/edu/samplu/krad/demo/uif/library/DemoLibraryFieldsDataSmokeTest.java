@@ -33,6 +33,7 @@ public class DemoLibraryFieldsDataSmokeTest extends DemoLibraryBase {
      * /kr-krad/kradsampleapp?viewId=Demo-DataField-View&methodToCall=start
      */
     public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-DataField-View&methodToCall=start";
+    public static final String DIV_DATA_LABEL_DATA_FIELD_1 = "div[data-label='DataField 1']";
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
@@ -49,7 +50,7 @@ public class DemoLibraryFieldsDataSmokeTest extends DemoLibraryBase {
 
     protected void testDataFieldDefault() throws Exception {
         WebElement exampleDiv = navigateToExample("Demo-DataField-Example1");
-        WebElement field = findElement(By.cssSelector("div[data-label='DataField 1']"), exampleDiv);
+        WebElement field = findElement(By.cssSelector(DIV_DATA_LABEL_DATA_FIELD_1), exampleDiv);
 
         String fieldId = field.getAttribute("id");
         String controlId = fieldId + UifConstants.IdSuffixes.CONTROL;
@@ -71,7 +72,7 @@ public class DemoLibraryFieldsDataSmokeTest extends DemoLibraryBase {
 
     protected void testDataFieldLabelTop() throws Exception {
         WebElement exampleDiv = navigateToExample("Demo-DataField-Example2");
-        WebElement field = findElement(By.cssSelector("div[data-label='DataField 1']"), exampleDiv);
+        WebElement field = findElement(By.cssSelector(DIV_DATA_LABEL_DATA_FIELD_1), exampleDiv);
 
         String fieldId = field.getAttribute("id");
         String controlId = fieldId + UifConstants.IdSuffixes.CONTROL;
@@ -92,7 +93,7 @@ public class DemoLibraryFieldsDataSmokeTest extends DemoLibraryBase {
 
     protected void testDataFieldLabelRight() throws Exception {
         WebElement exampleDiv = navigateToExample("Demo-DataField-Example3");
-        WebElement field = findElement(By.cssSelector("div[data-label='DataField 1']"), exampleDiv);
+        WebElement field = findElement(By.cssSelector(DIV_DATA_LABEL_DATA_FIELD_1), exampleDiv);
 
         String fieldId = field.getAttribute("id");
         String controlId = fieldId + UifConstants.IdSuffixes.CONTROL;
@@ -150,8 +151,9 @@ public class DemoLibraryFieldsDataSmokeTest extends DemoLibraryBase {
     protected void testDataFieldHideProperty() throws Exception {
         WebElement exampleDiv = navigateToExample("Demo-DataField-Example11");
 
-        exception.expect(NoSuchElementException.class);
-        findElement(By.cssSelector("div[data-label='DataField 1']"), exampleDiv);
+        if (findElements(By.cssSelector(DIV_DATA_LABEL_DATA_FIELD_1), exampleDiv).size() > 0) {
+            failableFail(DIV_DATA_LABEL_DATA_FIELD_1 + " not hidden");
+        }
     }
 
     private String textValueUnderTest(String example, String testLabel) throws Exception {

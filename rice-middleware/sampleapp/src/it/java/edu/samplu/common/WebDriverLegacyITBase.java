@@ -1253,6 +1253,11 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         return found;
     }
 
+    protected List<WebElement> findElements(By by, WebElement element) {
+        List<WebElement> found = element.findElements(by);
+        return found;
+    }
+
     protected void fireEvent(String name, String event) {
         ((JavascriptExecutor) driver).executeScript("var elements=document.getElementsByName(\"" + name + "\");" +
                 "for (var i = 0; i < elements.length; i++){" +

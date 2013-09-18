@@ -743,7 +743,7 @@ public class ObjectPropertyReference {
             return getImplClass();
         }
 
-        if (bean != null) {
+        if (implClass != null) {
             if (implClass.isArray()) {
                 if ("length".equals(name) || "size".equals(name)) {
                     return int.class;
@@ -787,7 +787,7 @@ public class ObjectPropertyReference {
             }
         }
 
-        if (bean == null) {
+        if (implClass == null) {
             return null;
         }
 

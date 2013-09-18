@@ -452,22 +452,23 @@ public class WebDriverUtil {
      * @throws InterruptedException
      */
     public static WebElement waitFor(WebDriver driver, int waitSeconds, By by, String message) throws InterruptedException {
-//        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
 
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-
-        boolean failed = false;
-
-        for (int second = 0;; second++) {
-            Thread.sleep(1000);
-            if (second >= waitSeconds)
-                failed = true;
-            try {
-                if (failed || (driver.findElements(by)).size() > 0) {
-                    break;
-                }
-            } catch (Exception e) {}
-        }
+// Is this Thread.sleep find pattern the problem with being unable to find elements that are present?
+//        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+//
+//        boolean failed = false;
+//
+//        for (int second = 0;; second++) {
+//            Thread.sleep(1000);
+//            if (second >= waitSeconds)
+//                failed = true;
+//            try {
+//                if (failed || (driver.findElements(by)).size() > 0) {
+//                    break;
+//                }
+//            } catch (Exception e) {}
+//        }
 
         WebElement element = driver.findElement(by);  // NOTICE just the find, no action, so by is found, but might not be visible or enabled.
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);

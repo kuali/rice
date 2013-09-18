@@ -477,7 +477,8 @@ public class ObjectPropertyReference {
             } else {
 
                 // TODO: Determine if a different PropertyEditor registry exists for KRAD
-                PropertyEditor editor = PropertyEditorManager.findEditor(propertyType);
+                PropertyEditor editor = PropertyEditorManager
+                        .findEditor(getPrimitiveType(propertyType));
                 if (editor == null) {
                     throw new IllegalArgumentException("No property editor available for converting '" + propertyValue
                             + "' to " + propertyType);
@@ -742,46 +743,52 @@ public class ObjectPropertyReference {
             return getImplClass();
         }
 
-        if (implClass.isArray()) {
-            if ("length".equals(name) || "size".equals(name)) {
-                return int.class;
-            } else {
-                return implClass.getComponentType();
+        if (implClass != null) {
+            if (implClass.isArray()) {
+                if ("length".equals(name) || "size".equals(name)) {
+                    return int.class;
+                } else {
+                    return implClass.getComponentType();
+                }
+            }
+
+            boolean isMap = Map.class.isAssignableFrom(implClass);
+            boolean isList = List.class.isAssignableFrom(implClass);
+            if (isMap || isList) {
+
+                if (isList && ("length".equals(name) || "size".equals(name))) {
+                    return int.class;
+                } else {
+                    Object refBean = null;
+
+                    if (isMap) {
+                        refBean = getMap((Map<?, ?>) bean, name);
+                    } else if (isList) {
+                        refBean = getList((List<?>) bean, name);
+                    }
+
+                    if (refBean != null) {
+                        return refBean.getClass();
+                    }
+
+                    if (!(beanType instanceof ParameterizedType)) {
+                        return Object.class;
+                    }
+
+                    ParameterizedType parameterizedType = (ParameterizedType) beanType;
+                    Type valueType = parameterizedType.getActualTypeArguments()[isList ? 0 : 1];
+
+                    if (valueType instanceof Class) {
+                        return (Class<?>) valueType;
+                    }
+
+                    return Object.class;
+                }
             }
         }
 
-        boolean isMap = Map.class.isAssignableFrom(implClass);
-        boolean isList = List.class.isAssignableFrom(implClass);
-        if (isMap || isList) {
-
-            if (isList && ("length".equals(name) || "size".equals(name))) {
-                return int.class;
-            } else {
-                Object refBean = null;
-
-                if (isMap) {
-                    refBean = getMap((Map<?, ?>) bean, name);
-                } else if (isList) {
-                    refBean = getList((List<?>) bean, name);
-                }
-
-                if (refBean != null) {
-                    return refBean.getClass();
-                }
-
-                if (!(beanType instanceof ParameterizedType)) {
-                    return Object.class;
-                }
-
-                ParameterizedType parameterizedType = (ParameterizedType) beanType;
-                Type valueType = parameterizedType.getActualTypeArguments()[isList ? 0 : 1];
-
-                if (valueType instanceof Class) {
-                    return (Class<?>) valueType;
-                }
-
-                return Object.class;
-            }
+        if (implClass == null) {
+            return null;
         }
 
         Method readMethod = ObjectPropertyUtils.getReadMethod(implClass, name);

@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.BeanUtils;
 
 /**
  * Utility methods to get/set property values and working with objects.
@@ -198,7 +199,8 @@ public class ObjectPropertyUtils {
      * @see ObjectPathExpressionParser
      */
     public static Class<?> getPropertyType(Class<?> beanClass, String propertyPath) {
-        return ObjectPropertyReference.resolvePath(null, beanClass, propertyPath, false).getPropertyType();
+        Object object = BeanUtils.instantiateClass(beanClass);
+        return ObjectPropertyReference.resolvePath(object, beanClass, propertyPath, false).getPropertyType();
     }
 
     /**

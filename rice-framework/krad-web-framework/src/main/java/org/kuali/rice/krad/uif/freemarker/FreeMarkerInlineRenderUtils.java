@@ -585,6 +585,7 @@ public class FreeMarkerInlineRenderUtils {
 
         out.write("<div id=\"");
         out.write(manager.getId());
+        out.write("\"");
 
         if (StringUtils.hasText(s = manager.getStyle())) {
             out.write(" style=\"");

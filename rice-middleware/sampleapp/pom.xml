@@ -157,6 +157,7 @@
     <profile>
       <id>sauceconnect</id>
       <properties>
+        <saucelabs.connect.skip>false</saucelabs.connect.skip>
         <saucelabs.connect.excludes>
           **/krad/labs/**/*.java, **/krad/demo/**/*.java
         </saucelabs.connect.excludes>

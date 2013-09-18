@@ -49,6 +49,7 @@ public class DemoLibraryElementsSpaceSmokeTest extends SmokeTestBase {
     }
 
     protected void testLibraryElementsSpace() throws Exception {
+        waitForPageToLoad();
         assertTextPresent("Before space");
         assertTextPresent("nbsp");
         assertTextPresent("After space");

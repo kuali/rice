@@ -75,6 +75,8 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("Library Widget Suggest, CAT not suggested", "KULRICE-10365 Library Widget Suggest not suggesting");
 
         jiraMatches.put("WorkFlowRouteRulesBlanketApp expected:<[FINAL]>", "KULRICE-9051 WorkFlow Route Rules Blanket Approval submit status results in Enroute, not Final");
+
+        jiraMatches.put("HTTP Status 404 - /kew/RouteLog.do", "KULRICE-10540 Demo Travel Account Maintenance Edit Route log inline 404");
         //jiraMatches.put("", "");
     }
 

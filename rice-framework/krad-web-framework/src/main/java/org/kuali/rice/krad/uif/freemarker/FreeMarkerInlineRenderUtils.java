@@ -212,6 +212,11 @@ public class FreeMarkerInlineRenderUtils {
             return;
         }
 
+        String methodToCallOnRefresh = ((ComponentBase) component).getMethodToCallOnRefresh();
+        if (!StringUtils.hasText(methodToCallOnRefresh)) {
+            methodToCallOnRefresh = "";
+        }
+
         if (StringUtils.hasText(s = component.getProgressiveRender())) {
             if (!component.isRender()
                     && (component.isProgressiveRenderViaAJAX() || component.isProgressiveRenderAndRefresh())) {
@@ -221,11 +226,6 @@ public class FreeMarkerInlineRenderUtils {
             }
 
             for (String cName : component.getProgressiveDisclosureControlNames()) {
-                String methodToCallOnRefresh = ((ComponentBase) component).getMethodToCallOnRefresh();
-                if (!StringUtils.hasText(methodToCallOnRefresh)) {
-                    methodToCallOnRefresh = "";
-                }
-
                 renderScript(
                         "var condition = function(){return ("
                                 + component.getProgressiveDisclosureConditionJs()
@@ -254,8 +254,7 @@ public class FreeMarkerInlineRenderUtils {
                                 + component.getConditionalRefreshConditionJs()
                                 + ");};setupRefreshCheck('" + StringEscapeUtils.escapeJavaScript(cName) + "', '"
                                 + component.getId() + "', condition,'"
-                                + ((component instanceof ComponentBase) ? ((ComponentBase) component)
-                                        .getMethodToCallOnRefresh() : "") + "');", null, null, out);
+                                + methodToCallOnRefresh + "');", null, null, out);
             }
         }
 
@@ -265,8 +264,7 @@ public class FreeMarkerInlineRenderUtils {
                 renderScript(
                         "setupOnChangeRefresh('" + StringEscapeUtils.escapeJavaScript(cName) + "', '"
                                 + component.getId()
-                                + "','" + ((component instanceof ComponentBase) ? ((ComponentBase) component)
-                                        .getMethodToCallOnRefresh() : "") + "');", null, null, out);
+                                + "','" + methodToCallOnRefresh + "');", null, null, out);
             }
         }
 

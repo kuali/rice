@@ -80,6 +80,7 @@ import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.field.SpaceField;
+import org.kuali.rice.krad.uif.view.InquiryView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.LightBox;
@@ -134,6 +135,7 @@ public class ComponentFactory {
     public static final String HORIZONTAL_BOX_SECTION = "Uif-HorizontalBoxSection";
     public static final String PAGE_GROUP = "Uif-Page";
     public static final String GROUP_GRID_LAYOUT = "Uif-GridSection";
+    public static final String GROUP_WITH_DISCLOSURE_GRID_LAYOUT = "Uif-Disclosure-GridSection";
     public static final String GROUP_BODY_ONLY = "Uif-BoxGroupBase";
     public static final String GROUP_GRID_BODY_ONLY = "Uif-GridGroup";
     public static final String TAB_GROUP = "Uif-TabSection";
@@ -163,6 +165,8 @@ public class ComponentFactory {
 
     public static final String SESSION_TIMEOUT_WARNING_DIALOG = "Uif-SessionTimeoutWarning-DialogGroup";
     public static final String SESSION_TIMEOUT_DIALOG = "Uif-SessionTimeout-DialogGroup";
+
+    public static final String INQUIRY_VIEW = "Uif-InquiryView";
 
     public static final String URL_INFO = "Uif-Url";
 
@@ -963,6 +967,10 @@ public class ComponentFactory {
         return (Group) getNewComponentInstance(GROUP_GRID_LAYOUT);
     }
 
+    public static Group getGroupWithDisclosureGridLayout() {
+        return (Group) getNewComponentInstance(GROUP_WITH_DISCLOSURE_GRID_LAYOUT);
+    }
+
     /**
      * Gets the group body only
      *
@@ -1168,5 +1176,14 @@ public class ComponentFactory {
      */
     public static UrlInfo getUrlInfo() {
         return (UrlInfo) getNewComponentInstance(URL_INFO);
+    }
+
+    /**
+     * Gets an empty inquiry view configuration for population.
+     *
+     * @return Inquiry component
+     */
+    public static InquiryView getInquiryView() {
+        return (InquiryView) getNewComponentInstance(INQUIRY_VIEW);
     }
 }

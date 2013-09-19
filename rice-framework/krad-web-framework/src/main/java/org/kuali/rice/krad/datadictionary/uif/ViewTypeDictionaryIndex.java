@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krad.datadictionary.uif;
 
-import org.kuali.rice.krad.datadictionary.DataDictionaryException;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import org.kuali.rice.krad.datadictionary.DataDictionaryException;
 
 /**
  * Holds view index information for a view type, where the index keys are built
@@ -43,7 +43,7 @@ public class ViewTypeDictionaryIndex {
 
     public void put(String index, String beanName) {
         if (viewIndex.containsKey(index)) {
-            throw new DataDictionaryException("Two Views must not share the same type index: " + index);
+            throw new DataDictionaryException("Two Views: (" + viewIndex.get(index) + " and " + beanName + ") must not share the same type index: " + index);
         }
 
         viewIndex.put(index, beanName);

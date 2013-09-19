@@ -575,7 +575,10 @@
     </property>
   </bean>
 
-  <bean id="uifDefaultingService" class="org.kuali.rice.krad.uif.service.impl.UifDefaultingServiceImpl" />
+  <bean id="uifDefaultingService" class="org.kuali.rice.krad.uif.service.impl.UifDefaultingServiceImpl">
+    <property name="dataDictionaryService" ref="dataDictionaryService"/>
+    <property name="metadataRepository" ref="kd-metadataRepository" />
+  </bean>
 
   <bean id="attributeQueryService" class="org.kuali.rice.krad.uif.service.impl.AttributeQueryServiceImpl">
     <property name="lookupService">

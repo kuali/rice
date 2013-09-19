@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.data.metadata.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +28,7 @@ import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
 import org.kuali.rice.krad.data.metadata.DataObjectCollection;
 import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
 import org.kuali.rice.krad.data.metadata.MetadataMergeAction;
+import org.kuali.rice.krad.data.provider.annotation.AutoCreateViewType;
 
 /**
  * Base implementation class for the metadata related to the data object as a whole.
@@ -69,6 +71,8 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 	protected boolean primaryDisplayAttributeSetManually;
 
 	protected Boolean supportsOptimisticLocking;
+
+	protected Collection<AutoCreateViewType> autoCreateUifViewTypes;
 
 	public DataObjectMetadataImpl() {
 	}
@@ -515,6 +519,30 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 
 	public void setSupportsOptimisticLocking(boolean supportsOptimisticLocking) {
 		this.supportsOptimisticLocking = supportsOptimisticLocking;
+	}
+
+	@Override
+	public boolean shouldAutoCreateUifViewOfType(AutoCreateViewType viewType) {
+		if (getAutoCreateUifViewTypes() == null) {
+			return false;
+		}
+		return getAutoCreateUifViewTypes().contains(viewType)
+				|| getAutoCreateUifViewTypes().contains(AutoCreateViewType.ALL);
+	}
+
+	@Override
+	public Collection<AutoCreateViewType> getAutoCreateUifViewTypes() {
+		if (autoCreateUifViewTypes != null) {
+			return autoCreateUifViewTypes;
+		}
+		if (embedded != null) {
+			return embedded.getAutoCreateUifViewTypes();
+		}
+		return null;
+	}
+
+	public void setAutoCreateUifViewTypes(Collection<AutoCreateViewType> autoCreateUifViewTypes) {
+		this.autoCreateUifViewTypes = autoCreateUifViewTypes;
 	}
 
 }

@@ -18,6 +18,8 @@ package org.kuali.rice.krad.data.metadata;
 import java.util.Collection;
 import java.util.List;
 
+import org.kuali.rice.krad.data.provider.annotation.AutoCreateViewType;
+
 
 /**
  * Metadata for a given data object type. References the data object class and contains lists of all the attributes,
@@ -141,4 +143,7 @@ public interface DataObjectMetadata extends MetadataCommon {
 	 */
 	boolean isSupportsOptimisticLocking();
 
+	Collection<AutoCreateViewType> getAutoCreateUifViewTypes();
+
+	boolean shouldAutoCreateUifViewOfType(AutoCreateViewType viewType);
 }

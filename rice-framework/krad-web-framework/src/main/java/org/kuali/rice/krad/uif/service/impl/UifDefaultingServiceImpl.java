@@ -15,23 +15,35 @@
  */
 package org.kuali.rice.krad.uif.service.impl;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.data.DataType;
-import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
+import org.kuali.rice.krad.data.metadata.MetadataRepository;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
+import org.kuali.rice.krad.datadictionary.DataObjectEntry;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.DataDictionaryService;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.control.UserControl;
+import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.service.UifDefaultingService;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
+import org.kuali.rice.krad.uif.view.InquiryView;
 
 public class UifDefaultingServiceImpl implements UifDefaultingService {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(UifDefaultingServiceImpl.class);
+
+    protected DataDictionaryService dataDictionaryService;
+    protected MetadataRepository metadataRepository;
 
     protected static final String ANY_CHARACTER_PATTERN_CONSTRAINT = "UTF8AnyCharacterPatternConstraint";
     protected static final String DATE_PATTERN_CONSTRAINT = "BasicDatePatternConstraint";
@@ -72,7 +84,7 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
             // Need to find the relationship information
             // get the relationship ID by removing .principalName from the attribute name
             String relationshipName = StringUtils.removeEnd(attrDef.getName(), ".principalName");
-            DataObjectMetadata metadata = KradDataServiceLocator.getMetadataRepository().getMetadata(attrDef.getDataObjectAttribute().getOwningType());
+            DataObjectMetadata metadata = metadataRepository.getMetadata(attrDef.getDataObjectAttribute().getOwningType());
             if ( metadata != null ) {
                 DataObjectRelationship relationship = metadata.getRelationship(relationshipName);
                 if ( relationship != null ) {
@@ -152,7 +164,7 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
         // First - see if one was defined in the metadata (provided by krad-data module annotations)
         if ( attrDef.getDataObjectAttribute() != null ) {
             if ( StringUtils.isNotBlank( attrDef.getDataObjectAttribute().getValidCharactersConstraintBeanName() ) ) {
-                Object consObj = KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(attrDef.getDataObjectAttribute().getValidCharactersConstraintBeanName());
+                Object consObj = dataDictionaryService.getDictionaryObject(attrDef.getDataObjectAttribute().getValidCharactersConstraintBeanName());
                 if ( consObj != null && consObj instanceof ValidCharactersConstraint ) {
                     validCharactersConstraint  = (ValidCharactersConstraint) consObj;
                 }
@@ -162,21 +174,69 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
         if ( validCharactersConstraint == null ) {
             if ( attrDef.getDataType() != null ) {
                 if ( attrDef.getDataType().isNumeric() ) {
-                    validCharactersConstraint = (ValidCharactersConstraint) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(FLOATING_POINT_PATTERN_CONSTRAINT);
+                    validCharactersConstraint = (ValidCharactersConstraint) dataDictionaryService.getDictionaryObject(FLOATING_POINT_PATTERN_CONSTRAINT);
                 } else if ( attrDef.getDataType().isTemporal() ) {
                     if ( attrDef.getDataType() == DataType.DATE ) {
-                        validCharactersConstraint = (ValidCharactersConstraint) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(DATE_PATTERN_CONSTRAINT);
+                        validCharactersConstraint = (ValidCharactersConstraint) dataDictionaryService.getDictionaryObject(DATE_PATTERN_CONSTRAINT);
                     } else if ( attrDef.getDataType() == DataType.TIMESTAMP ) {
-                        validCharactersConstraint = (ValidCharactersConstraint) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(TIMESTAMP_PATTERN_CONSTRAINT);
+                        validCharactersConstraint = (ValidCharactersConstraint) dataDictionaryService.getDictionaryObject(TIMESTAMP_PATTERN_CONSTRAINT);
                     }
                 }
             }
         }
         // default to UTF8
         if ( validCharactersConstraint == null ) {
-            validCharactersConstraint = (ValidCharactersConstraint) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(ANY_CHARACTER_PATTERN_CONSTRAINT);
+            validCharactersConstraint = (ValidCharactersConstraint) dataDictionaryService.getDictionaryObject(ANY_CHARACTER_PATTERN_CONSTRAINT);
         }
 
         return validCharactersConstraint;
+    }
+
+    protected Group createInquirySection( String groupId, String headerText ) {
+        Group group = ComponentFactory.getGroupWithDisclosureGridLayout();
+        group.setId(groupId);
+        group.setHeaderText(headerText);
+        return group;
+    }
+
+    /**
+     * This overridden method ...
+     *
+     * @see org.kuali.rice.krad.uif.service.UifDefaultingService#deriveInquiryViewFromMetadata(org.kuali.rice.krad.datadictionary.DataObjectEntry)
+     */
+    @Override
+    public InquiryView deriveInquiryViewFromMetadata(DataObjectEntry dataObjectEntry) {
+        // Create the main view object and set the title and BO class
+        InquiryView view = ComponentFactory.getInquiryView();
+        view.setHeaderText(dataObjectEntry.getObjectLabel());
+        view.setDataObjectClassName(dataObjectEntry.getDataObjectClass());
+
+        // Set up data structures to manage the creation of sections
+        Map<String,Group> inquirySectionsById = new HashMap<String,Group>();
+        Group currentGroup = createInquirySection("default",dataObjectEntry.getObjectLabel());
+        inquirySectionsById.put(currentGroup.getId(), currentGroup);
+        ((List<Group>)view.getItems()).add(currentGroup);
+
+        // Loop over the attributes on the data object, adding them into the inquiry
+        // TODO: If we have an @Section notation, switch to the section, creating if the ID is unknown
+        List<Component> items = (List<Component>) currentGroup.getItems(); // needed to deal with generics issue
+        for ( AttributeDefinition attr : dataObjectEntry.getAttributes() ) {
+            DataField dataField = ComponentFactory.getDataField();
+            dataField.setPropertyName(attr.getName());
+            items.add(dataField);
+        }
+        // TODO: if there are updatable reference objects, include sections for them
+
+        // TODO: If there are collections on the object, include sections for them
+
+        return view;
+    }
+
+    public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
+        this.dataDictionaryService = dataDictionaryService;
+    }
+
+    public void setMetadataRepository(MetadataRepository metadataRepository) {
+        this.metadataRepository = metadataRepository;
     }
 }

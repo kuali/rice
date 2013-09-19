@@ -16,8 +16,10 @@
 package org.kuali.rice.krad.uif.service;
 
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
+import org.kuali.rice.krad.datadictionary.DataObjectEntry;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.krad.uif.control.Control;
+import org.kuali.rice.krad.uif.view.InquiryView;
 
 /**
  * This service helps build/define default controls for the UIF based on the associated data-level metadata.
@@ -49,12 +51,14 @@ public interface UifDefaultingService {
      * In the case that the name given is a nested property, only the portion of the
      * name after the last period will be used.
      */
-    public String deriveHumanFriendlyNameFromPropertyName(String camelCasedName);
+    String deriveHumanFriendlyNameFromPropertyName(String camelCasedName);
 
     /**
      * Derives a default valid characters constraint definition given the metadata in the {@link AttributeDefinition}
      *
      * @return A {@link ValidCharactersConstraint} object or null if no information in the {@link AttributeDefinition} suggests an appropriate default.
      */
-    public ValidCharactersConstraint deriveValidCharactersConstraint( AttributeDefinition attrDef );
+    ValidCharactersConstraint deriveValidCharactersConstraint( AttributeDefinition attrDef );
+
+    InquiryView deriveInquiryViewFromMetadata( DataObjectEntry dataObjectEntry );
 }

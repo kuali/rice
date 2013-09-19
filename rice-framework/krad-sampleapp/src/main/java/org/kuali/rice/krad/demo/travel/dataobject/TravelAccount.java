@@ -37,6 +37,8 @@ import org.kuali.rice.core.api.util.type.KualiPercent;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.krad.data.provider.annotation.AutoCreateUifViews;
+import org.kuali.rice.krad.data.provider.annotation.AutoCreateViewType;
 import org.kuali.rice.krad.data.provider.annotation.Description;
 import org.kuali.rice.krad.data.provider.annotation.ForceUppercase;
 import org.kuali.rice.krad.data.provider.annotation.InheritProperties;
@@ -49,6 +51,7 @@ import org.kuali.rice.krad.demo.travel.options.AccountTypeKeyValues;
 
 @Entity
 @Table(name="TRV_ACCT")
+@AutoCreateUifViews(AutoCreateViewType.INQUIRY)
 public class TravelAccount extends DataObjectBase implements Serializable {
 	private static final long serialVersionUID = -7739303391609093875L;
 

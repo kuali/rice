@@ -48,6 +48,7 @@ import org.kuali.rice.krad.data.metadata.impl.DataObjectMetadataImpl;
 import org.kuali.rice.krad.data.metadata.impl.DataObjectRelationshipImpl;
 import org.kuali.rice.krad.data.metadata.impl.MetadataCommonBase;
 import org.kuali.rice.krad.data.provider.annotation.AttributeRelationship;
+import org.kuali.rice.krad.data.provider.annotation.AutoCreateUifViews;
 import org.kuali.rice.krad.data.provider.annotation.BusinessKey;
 import org.kuali.rice.krad.data.provider.annotation.CollectionRelationship;
 import org.kuali.rice.krad.data.provider.annotation.CollectionSortAttribute;
@@ -168,6 +169,9 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 				metadata.setMergeAction(mma);
 				classAnnotationFound = true;
 				continue;
+			}
+			if (a instanceof AutoCreateUifViews) {
+				metadata.setAutoCreateUifViewTypes(Arrays.asList(((AutoCreateUifViews) a).value()));
 			}
 		}
 		if (fieldAnnotationsFound) {

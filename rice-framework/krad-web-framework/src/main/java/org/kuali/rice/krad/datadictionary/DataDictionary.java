@@ -15,6 +15,18 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import java.beans.PropertyDescriptor;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.ArrayUtils;
@@ -23,6 +35,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
+import org.kuali.rice.krad.data.provider.annotation.AutoCreateViewType;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.exception.CompletionException;
 import org.kuali.rice.krad.datadictionary.parse.StringListConverter;
@@ -36,28 +49,19 @@ import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.util.ComponentBeanPostProcessor;
 import org.kuali.rice.krad.uif.util.UifBeanFactoryPostProcessor;
+import org.kuali.rice.krad.uif.view.InquiryView;
 import org.kuali.rice.krad.uif.view.View;
 import org.springframework.beans.PropertyValues;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import org.springframework.beans.factory.support.ChildBeanDefinition;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.expression.StandardBeanExpressionResolver;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.util.StopWatch;
-
-import java.beans.PropertyDescriptor;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 
 /**
  * Encapsulates a bean factory and indexes to the beans within the factory for providing
@@ -218,6 +222,10 @@ public class DataDictionary {
         for (DocumentEntry entry : ddBeans.getBeansOfType(DocumentEntry.class).values()) {
             entry.dataDictionaryPostProcessing();
         }
+        // Check if there are inquiry definitions for data objects
+        timer.stop();
+        timer.start("UIF Defaulting");
+        generateMissingInquiryDefinitions();
         timer.stop();
 
         if (allowConcurrentValidation) {
@@ -228,11 +236,50 @@ public class DataDictionary {
             t2.start();
             LOG.info( "Completed Data Dictionary Post Processing - Not Including Indexing");
         } else {
-            timer.start("Indexing");
+            timer.start("Data Dictionary Indexing");
             ddIndex.run();
+            timer.stop();
+            timer.start("UIF Indexing");
             uifIndex.run();
             timer.stop();
             LOG.info( "Completed Data Dictionary Post Processing");
+        }
+    }
+
+    protected void generateMissingInquiryDefinitions() {
+        Collection<InquiryView> inquiryViewBeans = ddBeans.getBeansOfType(InquiryView.class).values();
+        // Index all the inquiry views by the data object class so we can find them easily below
+        Map<Class<?>,InquiryView> viewsByDataObjectClass = new HashMap<Class<?>, InquiryView>();
+        for ( InquiryView view : inquiryViewBeans ) {
+            viewsByDataObjectClass.put(view.getDataObjectClassName(), view);
+        }
+        for (DataObjectEntry entry : ddBeans.getBeansOfType(DataObjectEntry.class).values()) {
+            // if an inquiry already exists, just ignore - we only default if none exist
+            if ( viewsByDataObjectClass.containsKey(entry.getDataObjectClass())) {
+                continue;
+            }
+            // We only generate the inquiry if the metadata says to
+            if ( entry.getDataObjectMetadata() == null ) {
+                continue;
+            }
+            if ( !entry.getDataObjectMetadata().shouldAutoCreateUifViewOfType(AutoCreateViewType.INQUIRY)) {
+                continue;
+            }
+            // no inquiry exists and we want one to, create one
+            if ( LOG.isInfoEnabled() ) {
+                LOG.info( "Generating Inquiry View for : " + entry.getDataObjectClass() );
+            }
+            InquiryView inquiryView = KRADServiceLocatorWeb.getUifDefaultingService().deriveInquiryViewFromMetadata(entry);
+
+            String inquiryBeanName = entry.getFullClassName()+"-InquiryView-default";
+
+            ChildBeanDefinition inquiryBean = new ChildBeanDefinition("Uif-InquiryView");
+            inquiryBean.setScope(BeanDefinition.SCOPE_SINGLETON);
+            inquiryBean.setAttribute("dataObjectClassName", inquiryView.getDataObjectClassName());
+            inquiryBean.getPropertyValues().add("dataObjectClassName", inquiryView.getDataObjectClassName().getName());
+            inquiryBean.setResourceDescription("Autogenerated From Metadata");
+            ddBeans.registerBeanDefinition(inquiryBeanName, inquiryBean);
+            ddBeans.registerSingleton(inquiryBeanName, inquiryView);
         }
     }
 

@@ -126,6 +126,12 @@ public final class NaturalLanguageTemplateBoServiceImpl
         incomingParamCheck(naturalLanguageTemplateId , "naturalLanguageTemplateId");
         final NaturalLanguageTemplate existing = getNaturalLanguageTemplate(naturalLanguageTemplateId);
         if (existing == null){ throw new IllegalStateException("the NaturalLanguageTemplate to delete does not exists: " + naturalLanguageTemplateId);}
+
+        // delete any existing attributes
+        Map<String,String> fields = new HashMap<String,String>(1);
+        fields.put(KrmsImplConstants.PropertyNames.NaturalLanguageTemplate.NATURAL_LANGUAGE_TEMPLATE_ID,existing.getId());
+        businessObjectService.deleteMatching(NaturalLanguageTemplateAttributeBo.class, fields);
+
         businessObjectService.delete(from(existing));
     }
 

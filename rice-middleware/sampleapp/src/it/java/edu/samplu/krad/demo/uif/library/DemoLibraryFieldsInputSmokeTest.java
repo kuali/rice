@@ -8,7 +8,7 @@ import org.openqa.selenium.WebElement;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoLibraryFieldsInputmokeTest extends DemoLibraryBase {
+public class DemoLibraryFieldsInputSmokeTest extends DemoLibraryBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-InputField-View&methodToCall=start
@@ -189,7 +189,7 @@ public class DemoLibraryFieldsInputmokeTest extends DemoLibraryBase {
     }
 
     protected void testInputFieldInquiry() throws Exception {
-        WebElement exampleDiv = navigateToExample("Demo-InputField-Example8");
+        WebElement exampleDiv = navigateToExample("Demo-InputField-Example9");
         WebElement field = findElement(By.cssSelector("div[data-label='Inquiry Field']"), exampleDiv);
 
         String fieldId = field.getAttribute("id");
@@ -214,7 +214,7 @@ public class DemoLibraryFieldsInputmokeTest extends DemoLibraryBase {
     }
 
     protected void testInputFieldRequired() throws Exception {
-        WebElement exampleDiv = navigateToExample("Demo-InputField-Example10");
+        WebElement exampleDiv = navigateToExample("Demo-InputField-Example11");
         WebElement field = findElement(By.cssSelector("div[data-label='Required Field']"), exampleDiv);
 
         String fieldId = field.getAttribute("id");
@@ -234,11 +234,11 @@ public class DemoLibraryFieldsInputmokeTest extends DemoLibraryBase {
         if (!field.getAttribute("class").contains("uif-hasError")) {
             fail("Control does not show error class");
         }
-        assertElementPresent("#" + errorId + " img[src='/krad/images/validation/error.png']");
+        assertElementPresent("#" + errorId + " img[src$='/krad/images/validation/error.png']");
     }
 
     protected void testInputFieldUppercase() throws Exception {
-        WebElement exampleDiv = navigateToExample("Demo-InputField-Example11");
+        WebElement exampleDiv = navigateToExample("Demo-InputField-Example12");
         WebElement field = findElement(By.cssSelector("div[data-label='Uppercase field']"), exampleDiv);
 
         String fieldId = field.getAttribute("id");

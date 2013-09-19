@@ -35,8 +35,10 @@
         <ref bean="Demo-InputField-Example6"/>
         <ref bean="Demo-InputField-Example7"/>
         <ref bean="Demo-InputField-Example8"/>
+        <ref bean="Demo-InputField-Example9"/>
         <ref bean="Demo-InputField-Example10"/>
         <ref bean="Demo-InputField-Example11"/>
+        <ref bean="Demo-InputField-Example12"/>
       </list>
     </property>
   </bean>
@@ -135,17 +137,16 @@
     </property>
   </bean>
 
-  <!-- Inquiry -->
+  <!-- Quickfinder when widgetInputOnly -->
   <bean id="Demo-InputField-Example8" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!-- ex:Demo-InputField-Example8 start-->
-        <bean parent="Uif-InputField-LabelTop" p:label="Inquiry Field" p:propertyName="inputField8"
-              p:instructionalText="Click the inquiry image to see details of TravelAccount with number corresponding
-                  to the input" p:constraintText="Input a1-a9" p:defaultValue="a2">
-          <property name="inquiry">
-            <bean parent="Uif-Inquiry" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
-                  p:inquiryParameters="inputField8:number"/>
+        <bean parent="Uif-InputField-LabelTop" p:label="Quickfinder Field" p:propertyName="inputField8"
+              p:widgetInputOnly="true" p:instructionalText="Instructions are not displayed on readOnly fields">
+          <property name="quickfinder">
+            <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
+                  p:fieldConversions="number:inputField8"/>
           </property>
         </bean>
         <!-- ex:Demo-InputField-Example8 end-->
@@ -153,29 +154,65 @@
     </property>
   </bean>
 
-  <!-- Required -->
+  <!-- Inquiry -->
+  <bean id="Demo-InputField-Example9" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-InputField-Example9 start-->
+        <bean parent="Uif-InputField-LabelTop" p:label="Inquiry Field" p:propertyName="inputField9"
+              p:instructionalText="Click the inquiry image to see details of TravelAccount with number corresponding
+                  to the input" p:constraintText="Input a1-a9" p:defaultValue="a2">
+          <property name="inquiry">
+            <bean parent="Uif-Inquiry" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
+                  p:inquiryParameters="inputField9:number"/>
+          </property>
+        </bean>
+        <!-- ex:Demo-InputField-Example9 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- Inquiry when widgetInputOnly -->
   <bean id="Demo-InputField-Example10" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!-- ex:Demo-InputField-Example10 start-->
-        <bean parent="Uif-InputField-LabelTop" p:label="Required Field"
-              p:instructionalText="Try clicking in and out without entering a value"
-              p:propertyName="inputField10" p:required="true">
+        <bean parent="Uif-InputField-LabelTop" p:label="Inquiry Field" p:propertyName="inputField10"
+              p:widgetInputOnly="true" p:instructionalText="Instructions are not displayed on readOnly fields"
+              p:defaultValue="a2">
+          <property name="inquiry">
+            <bean parent="Uif-Inquiry" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
+                  p:inquiryParameters="inputField10:number"/>
+          </property>
         </bean>
         <!-- ex:Demo-InputField-Example10 end-->
       </list>
     </property>
   </bean>
 
-  <!-- Uppercase -->
+  <!-- Required -->
   <bean id="Demo-InputField-Example11" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!-- ex:Demo-InputField-Example11 start-->
-        <bean parent="Uif-InputField-LabelTop" p:label="Uppercase field" p:propertyName="inputField11"
-              p:uppercaseValue="true">
+        <bean parent="Uif-InputField-LabelTop" p:label="Required Field"
+              p:instructionalText="Try clicking in and out without entering a value"
+              p:propertyName="inputField11" p:required="true">
         </bean>
         <!-- ex:Demo-InputField-Example11 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- Uppercase -->
+  <bean id="Demo-InputField-Example12" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-InputField-Example12 start-->
+        <bean parent="Uif-InputField-LabelTop" p:label="Uppercase field" p:propertyName="inputField12"
+              p:uppercaseValue="true">
+        </bean>
+        <!-- ex:Demo-InputField-Example12 end-->
       </list>
     </property>
   </bean>

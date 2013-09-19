@@ -221,14 +221,18 @@ public class FreeMarkerInlineRenderUtils {
             }
 
             for (String cName : component.getProgressiveDisclosureControlNames()) {
+                String methodToCallOnRefresh = ((ComponentBase) component).getMethodToCallOnRefresh();
+                if (!StringUtils.hasText(methodToCallOnRefresh)) {
+                    methodToCallOnRefresh = "";
+                }
+
                 renderScript(
                         "var condition = function(){return ("
                                 + component.getProgressiveDisclosureConditionJs()
                                 + ");};setupProgressiveCheck('" + StringEscapeUtils.escapeJavaScript(cName)
                                 + "', '" + component.getId() + "', '" + component.getBaseId() + "', condition,"
                                 + component.isProgressiveRenderAndRefresh() + ", '"
-                                + ((component instanceof ComponentBase) ? ((ComponentBase) component)
-                                        .getMethodToCallOnRefresh() : "") + "');"
+                                + methodToCallOnRefresh + "');"
                         , component, null, out);
             }
 

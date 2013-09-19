@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.impl.peopleflow;
 
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.core.api.delegation.DelegationType;
@@ -31,7 +32,12 @@ import org.kuali.rice.kew.api.peopleflow.PeopleFlowDelegate;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowMember;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowService;
 import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kim.api.common.delegate.DelegateMember;
+import org.kuali.rice.kim.api.common.delegate.DelegateType;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.role.Role;
+import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
@@ -54,12 +60,35 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
     private static final String PEOPLE_FLOW_1 = "PeopleFlow1";
     private static final String PEOPLE_FLOW_2 = "PeopleFlow2";
     private static final String PEOPLE_FLOW_3 = "PeopleFlow3";
+    private static final String PEOPLE_FLOW_4 = "PeopleFlow4";
+    private static final String PEOPLE_FLOW_5 = "PeopleFlow5";
+    private static final String PEOPLE_FLOW_6 = "PeopleFlow6";
+    private static final String PEOPLE_FLOW_7 = "PeopleFlow7";
+    private static final String PEOPLE_FLOW_8 = "PeopleFlow8";
+    private static final String PEOPLE_FLOW_9 = "PeopleFlow9";
+    private static final String PEOPLE_FLOW_10 = "PeopleFlow10";
+    private static final String PEOPLE_FLOW_11 = "PeopleFlow11";
+    private static final String PEOPLE_FLOW_12 = "PeopleFlow12";
+    private static final String PEOPLE_FLOW_13 = "PeopleFlow13";
 
     private static final String SINGLE_PEOPLE_FLOW_PARALLEL_APPROVE = "SinglePeopleFlow-Parallel-Approve";
     private static final String SINGLE_PEOPLE_FLOW_SEQUENTIAL_APPROVE = "SinglePeopleFlow-Sequential-Approve";
     private static final String SINGLE_PEOPLE_FLOW_PRIORITY_PARALLEL_APPROVE = "SinglePeopleFlow-PriorityParallel-Approve";
     private static final String MULTIPLE_PEOPLE_FLOW_PRIORITY_PARALLEL = "MultiplePeopleFlow-PriorityParallel";
     private static final String DELEGATE_PEOPLE_FLOW_PRIORITY_PARALLEL_APPROVE = "DelegatePeopleFlow-PriorityParallel-Approve";
+
+    private static final String ROLE_DELEGATE_PEOPLE_FLOW_JUST_KIM_DELEGATE = "RoleDelegatePeopleFlow-JustKimDelegate";
+    private static final String ROLE_DELEGATE_PEOPLE_FLOW_PRIMARY_DELEGATE = "RoleDelegatePeopleFlow-PrimaryDelegate";
+    private static final String ROLE_DELEGATE_PEOPLE_FLOW_SECONDARY_DELEGATE = "RoleDelegatePeopleFlow-SecondaryDelegate";
+    private static final String ROLE_DELEGATE_PEOPLE_FLOW_DELEGATE_ROLE_HAS_KIM_DELEGATE = "RoleDelegatePeopleFlow-DelegateRoleHasKimDelegate";
+
+    private static final String ROLE_DELEGATE_PEOPLE_FLOW_PRINCIPAL_MEMBER_HAS_ROLE_DELEGATE = "RoleDelegatePeopleFlow-PrincipalMemberHasRoleDelegate";
+    private static final String ROLE_DELEGATE_PEOPLE_FLOW_ROLE_MEMBER_HAS_PRINCIPAL_DELEGATE = "RoleDelegatePeopleFlow-RoleMemberHasPrincipalDelegate";
+    private static final String ROLE_DELEGATE_PEOPLE_FLOW_ROLE_MULTIPLE_MEMBERS = "RoleDelegatePeopleFlow-MultipleRoleMembers";
+
+    private static final String ROLE_DELEGATE_PEOPLE_FLOW_ROLE_MULTIPLE_MEMBERS_FIRST_APPROVE = "RoleDelegatePeopleFlow-MultipleRoleMembers-FirstApprove";
+    private static final String ROLE_DELEGATE_PEOPLE_FLOW_ROLE_MULTIPLE_MEMBERS_DELEGATE_FIRST_APPROVE = "RoleDelegatePeopleFlow-MultipleRoleMembers-DelegateFirstApprove";
+    private static final String GROUP_DELEGATE_PEOPLE_FLOW_ROLE_MULTIPLE_MEMBERS = "GroupDelegatePeopleFlow-MultipleRoleMembers";
 
     private PeopleFlowService peopleFlowService;
 
@@ -70,7 +99,14 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
     private String testuser2;
     private String testuser3;
     private String ewestfal;
+    private String fran;
+    private String earl;
     private String testWorkgroup;
+    private String ppfTestRole1;
+    private String ppfTestRole2;
+    private String ppfTestRole3;
+    private String ppfTestRole4;
+    private String ppfTestGroup1;
 
     protected void loadTestData() throws Exception {
         loadXmlFile("PeopleFlowRoutingTest.xml");
@@ -88,7 +124,17 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
         testuser2 = getPrincipalIdForName("testuser2");
         testuser3 = getPrincipalIdForName("testuser3");
         ewestfal = getPrincipalIdForName("ewestfal");
+        fran = getPrincipalIdForName("fran");
+        earl = getPrincipalIdForName("earl");
         testWorkgroup = getGroupIdForName("KR-WKFLW", "TestWorkgroup");
+
+        createTestRolesIfNotExists();
+        ppfTestRole1 = getRoleIdForName(NAMESPACE_CODE, "ppfTestRole1");
+        ppfTestRole2 = getRoleIdForName(NAMESPACE_CODE, "ppfTestRole2");
+        ppfTestRole3 = getRoleIdForName(NAMESPACE_CODE, "ppfTestRole3");
+        ppfTestRole4 = getRoleIdForName(NAMESPACE_CODE, "ppfTestRole4");
+
+        ppfTestGroup1 = getGroupIdForName(NAMESPACE_CODE, "ppfTestGroup1");
     }
 
     protected void setPeopleFlowService(PeopleFlowService peopleFlowService) {
@@ -97,6 +143,79 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
 
     protected PeopleFlowService getPeopleFlowService() {
         return peopleFlowService;
+    }
+
+    private void createTestRolesIfNotExists() {
+        RoleService roleService = KimApiServiceLocator.getRoleService();
+        GroupService groupService = KimApiServiceLocator.getGroupService();
+
+        if (groupService.getGroupByNamespaceCodeAndName(NAMESPACE_CODE, "ppfTestGroup1") == null) {
+            Group.Builder testgroup1Builder = Group.Builder.create(NAMESPACE_CODE, "ppfTestGroup1", "1");
+            testgroup1Builder.setActive(true);
+            Group testgroup1Group = groupService.createGroup(testgroup1Builder.build());
+
+            groupService.addPrincipalToGroup("earl", testgroup1Group.getId());
+            groupService.addPrincipalToGroup("fran", testgroup1Group.getId());
+        }
+
+        if (getRoleIdForName(NAMESPACE_CODE, "ppfTestRole1") == null) {
+
+            // build ppfTestRole1 which has one member, user1.  user1 has a primary delegate, ewestfal.
+
+            Role.Builder testRole1Builder = Role.Builder.create(null, "ppfTestRole1", NAMESPACE_CODE, "test role 1",
+                    "1" /* default role type */);
+
+            Role roleTestRole1 = roleService.createRole(testRole1Builder.build());
+            RoleMember user1RoleMember = roleService.assignPrincipalToRole(user1, NAMESPACE_CODE, "ppfTestRole1", Collections.<String, String>emptyMap());
+
+            DelegateType.Builder delegateTypeBuilder =
+                    DelegateType.Builder.create(roleTestRole1.getId(), DelegationType.PRIMARY,
+                            Collections.<DelegateMember.Builder>emptyList());
+            delegateTypeBuilder.setKimTypeId("1");
+
+            DelegateType delegateType = roleService.createDelegateType(delegateTypeBuilder.build());
+
+            DelegateMember.Builder testRole1DelegateBuilder = DelegateMember.Builder.create();
+            testRole1DelegateBuilder.setActiveFromDate(DateTime.now());
+            testRole1DelegateBuilder.setDelegationId(delegateType.getDelegationId());
+            testRole1DelegateBuilder.setRoleMemberId(user1RoleMember.getId());
+            testRole1DelegateBuilder.setMemberId(ewestfal);
+            testRole1DelegateBuilder.setType(MemberType.PRINCIPAL);
+
+            DelegateMember testRole1Delegate = roleService.createDelegateMember(testRole1DelegateBuilder.build());
+        }
+
+        if (getRoleIdForName(NAMESPACE_CODE, "ppfTestRole2") == null) {
+            // build ppfTestRole2 which has one member, user2
+
+            Role.Builder testRole2Builder = Role.Builder.create(null, "ppfTestRole2", NAMESPACE_CODE, "test role 2",
+                    "1" /* default role type */);
+
+            Role roleTestRole2 = roleService.createRole(testRole2Builder.build());
+            RoleMember user2RoleMember = roleService.assignPrincipalToRole(user2, NAMESPACE_CODE, "ppfTestRole2", Collections.<String, String>emptyMap());
+        }
+
+        if (getRoleIdForName(NAMESPACE_CODE, "ppfTestRole3") == null) {
+            // build ppfTestRole2 which has one member, user2
+
+            Role.Builder testRole3Builder = Role.Builder.create(null, "ppfTestRole3", NAMESPACE_CODE, "test role 3",
+                    "1" /* default role type */);
+
+            Role roleTestRole3 = roleService.createRole(testRole3Builder.build());
+            RoleMember user1RoleMember = roleService.assignPrincipalToRole(user1, NAMESPACE_CODE, "ppfTestRole3", Collections.<String, String>emptyMap());
+            RoleMember user2RoleMember = roleService.assignPrincipalToRole(user2, NAMESPACE_CODE, "ppfTestRole3", Collections.<String, String>emptyMap());
+        }
+
+        if (getRoleIdForName(NAMESPACE_CODE, "ppfTestRole4") == null) {
+            // build ppfTestRole2 which has one member, user2
+
+            Role.Builder testRole4Builder = Role.Builder.create(null, "ppfTestRole4", NAMESPACE_CODE, "test role 4",
+                    "1" /* default role type */);
+
+            Role roleTestRole4 = roleService.createRole(testRole4Builder.build());
+            RoleMember testuser1RoleMember = roleService.assignPrincipalToRole(testuser1, NAMESPACE_CODE, "ppfTestRole4", Collections.<String, String>emptyMap());
+            RoleMember testuser2RoleMember = roleService.assignPrincipalToRole(testuser2, NAMESPACE_CODE, "ppfTestRole4", Collections.<String, String>emptyMap());
+        }
     }
 
     /**
@@ -465,6 +584,856 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
 
         // now the document should be final!
         assertTrue(document.isFinal());
+    }
+
+    /**
+     * Defines a PeopleFlow as follows:
+     *
+     * <pre>
+     *
+     * Priority 1:
+     *   -> testuser3
+     *   ----> ppfTestRole2 - primary delegate
+     *
+     * </pre>
+     *
+     * this test will ensure that the delegate, a role is properly delegated to when the member is a principal
+     */
+    @Test
+    public void test_PrincipalMember_roleDelegate() throws Exception {
+        PeopleFlowMember.Builder member = PeopleFlowMember.Builder.create(testuser3, MemberType.PRINCIPAL);
+        PeopleFlowDelegate.Builder delegate = PeopleFlowDelegate.Builder.create(ppfTestRole2, MemberType.ROLE);
+        delegate.setDelegationType(DelegationType.PRIMARY);
+
+        createSimplePeopleFlow(PEOPLE_FLOW_8, member, delegate);
+
+        // now route a document to it
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(user3, ROLE_DELEGATE_PEOPLE_FLOW_PRINCIPAL_MEMBER_HAS_ROLE_DELEGATE);
+        document.route("");
+        assertTrue("Document should be enroute.", document.isEnroute());
+
+        // testuser3 and delegate user2 (as member of ppfTestRole2) should have
+        // activated requests, make sure the requests look correct
+
+        List<ActionRequest> rootActionRequests = document.getRootActionRequests();
+        assertEquals("Should have 1 root action requests", 1, rootActionRequests.size());
+        ActionRequest testuser3Request = null;
+        for (ActionRequest actionRequest : rootActionRequests) {
+            RecipientType recipientType = actionRequest.getRecipientType();
+            if (recipientType == RecipientType.PRINCIPAL) {
+                if (testuser3.equals(actionRequest.getPrincipalId())) {
+                    testuser3Request = actionRequest;
+                }
+            }
+        }
+
+        // now let's ensure we got the requests we wanted
+        assertNotNull(testuser3Request);
+        assertEquals(ActionRequestStatus.ACTIVATED, testuser3Request.getStatus());
+
+        // check delegate requests on testuser3Request now
+        assertEquals(1, testuser3Request.getChildRequests().size());
+        ActionRequest user2Request = testuser3Request.getChildRequests().get(0);
+        assertEquals(user2, user2Request.getPrincipalId());
+        assertEquals(DelegationType.PRIMARY, user2Request.getDelegationType());
+        assertEquals(ActionRequestStatus.ACTIVATED, user2Request.getStatus());
+
+        // let's run through the approvals for this peopleflow
+        assertApproveRequested(document, user2, testuser3);
+        assertApproveNotRequested(document, user1, user3, testuser1, testuser2, ewestfal);
+
+        // approve as user2 who is the lone member of testrole2
+        document.switchPrincipal(user2);
+        document.approve("");
+
+        // at this point all priorty1 folks should have approvals
+        assertApproveNotRequested(document, user2, testuser3);
+
+        // document should now be FINAL!
+        assertTrue(document.isFinal());
+    }
+
+    /**
+     * Defines a PeopleFlow as follows:
+     *
+     * <pre>
+     *
+     * Priority 1:
+     *   -> ppfTestRole2
+     *   ----> testuser3 - primary delegate
+     *
+     * </pre>
+     *
+     * ensure that the delegate, a principal, gets the requests when the member is a role
+     */
+    @Test
+    public void test_RoleMember_principalDelegate() throws Exception {
+        PeopleFlowMember.Builder member = PeopleFlowMember.Builder.create(ppfTestRole2, MemberType.ROLE);
+        PeopleFlowDelegate.Builder delegate = PeopleFlowDelegate.Builder.create(testuser3, MemberType.PRINCIPAL);
+        delegate.setDelegationType(DelegationType.PRIMARY);
+
+        createSimplePeopleFlow(PEOPLE_FLOW_9, member, delegate);
+
+        // now route a document to it
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(user3, ROLE_DELEGATE_PEOPLE_FLOW_ROLE_MEMBER_HAS_PRINCIPAL_DELEGATE);
+        document.route("");
+        assertTrue("Document should be enroute.", document.isEnroute());
+
+        // user2 (as member of ppfTestRole2) and delegate testuser3 should have
+        // activated requests, make sure the requests look correct
+
+        List<ActionRequest> rootActionRequests = document.getRootActionRequests();
+        assertEquals("Should have 1 root action requests", 1, rootActionRequests.size());
+        ActionRequest user2Request = null;
+        for (ActionRequest actionRequest : rootActionRequests) {
+            RecipientType recipientType = actionRequest.getRecipientType();
+            if (recipientType == RecipientType.PRINCIPAL) {
+                if (user2.equals(actionRequest.getPrincipalId())) {
+                    user2Request = actionRequest;
+                }
+            }
+        }
+
+        // now let's ensure we got the requests we wanted
+        assertNotNull(user2Request);
+        assertEquals(ActionRequestStatus.ACTIVATED, user2Request.getStatus());
+
+        // check delegate requests on testuser3Request now
+        assertEquals(1, user2Request.getChildRequests().size());
+        ActionRequest testuser3Request = user2Request.getChildRequests().get(0);
+        assertEquals(testuser3, testuser3Request.getPrincipalId());
+        assertEquals(DelegationType.PRIMARY, testuser3Request.getDelegationType());
+        assertEquals(ActionRequestStatus.ACTIVATED, testuser3Request.getStatus());
+
+        // let's run through the approvals for this peopleflow
+        assertApproveRequested(document, user2, testuser3);
+        assertApproveNotRequested(document, user1, user3, testuser1, testuser2, ewestfal);
+
+        // approve as testuser3, the delegate
+        document.switchPrincipal(testuser3);
+        document.approve("");
+
+        // at this point all priorty1 folks should have approvals
+        assertApproveNotRequested(document, user2, testuser3);
+
+        // document should now be FINAL!
+        assertTrue(document.isFinal());
+
+    }
+
+    /**
+     * Defines a PeopleFlow as follows:
+     *
+     * <pre>
+     *
+     * Priority 1:
+     *   -> ppfTestRole1 (has delegate ewestfal defined in KIM)
+     *
+     * </pre>
+     *
+     * The desired behavior is that the KIM delegate gets requests
+     */
+    @Test
+    public void test_RoleDelegate_justKimDelegate() throws Exception {
+        createSimpleRoleDelegatePeopleFlow(PEOPLE_FLOW_4, // PeopleFlow name
+                ppfTestRole1,  // member role ID
+                null,          // no delegate
+                null           // ^^ so no DelegationType
+        );
+
+        // now route a document to it
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(user3, ROLE_DELEGATE_PEOPLE_FLOW_JUST_KIM_DELEGATE);
+        document.route("");
+        assertTrue("Document should be enroute.", document.isEnroute());
+
+        // user1 (as member of ppfTestRole1) and ewestfal (as user1's primary KIM delegate for ppfTestRole1) should have
+        // activated requests, make sure the requests look correct
+
+        List<ActionRequest> rootActionRequests = document.getRootActionRequests();
+        assertEquals("Should have 1 root action requests", 1, rootActionRequests.size());
+        ActionRequest user1Request = null;
+        for (ActionRequest actionRequest : rootActionRequests) {
+            RecipientType recipientType = actionRequest.getRecipientType();
+            if (recipientType == RecipientType.PRINCIPAL) {
+                if (user1.equals(actionRequest.getPrincipalId())) {
+                    user1Request = actionRequest;
+                }
+            }
+        }
+
+        // now let's ensure we got the requests we wanted
+        assertNotNull(user1Request);
+        assertEquals(ActionRequestStatus.ACTIVATED, user1Request.getStatus());
+
+        // check delegate requests on user1Request now
+        assertEquals(1, user1Request.getChildRequests().size());
+        ActionRequest ewestfalDelegateRequest = user1Request.getChildRequests().get(0);
+        assertEquals(ewestfal, ewestfalDelegateRequest.getPrincipalId());
+        assertEquals(DelegationType.PRIMARY, ewestfalDelegateRequest.getDelegationType());
+        assertEquals(ActionRequestStatus.ACTIVATED, ewestfalDelegateRequest.getStatus());
+
+        // let's run through the approvals for this peopleflow
+        assertApproveRequested(document, user1, ewestfal);
+        assertApproveNotRequested(document, user2, user3, testuser1, testuser2, testuser3);
+
+        // approve as ewestfal who is user1's primary KIM delegate for testrole1
+        document.switchPrincipal(ewestfal);
+        document.approve("");
+
+        // at this point all priorty1 folks should have approvals
+        assertApproveNotRequested(document, user1, ewestfal);
+
+        // document should now be FINAL!
+        assertTrue(document.isFinal());
+    }
+
+
+
+    /**
+     * Defines a PeopleFlow as follows:
+     *
+     * <pre>
+     *
+     * Priority 1:
+     *   -> ppfTestRole1 (has delegate ewestfal defined in KIM)
+     *   ----> ppfTestRole2 - primary delegate
+     *
+     * </pre>
+     *
+     * The desired behavior is that the delegate defined in the PeopleFlow gets the requests, overriding the KIM
+     * delegate which gets ignored.  Since the delegation type is 'primary', only ppfTestRole2's member gets requests.
+     */
+    @Test
+    public void test_RoleDelegate_primaryDelegateRole() throws Exception {
+        createSimpleRoleDelegatePeopleFlow(PEOPLE_FLOW_5,    // PeopleFlow name
+                ppfTestRole1,     // member role ID
+                ppfTestRole2,     // delegate role ID
+                DelegationType.PRIMARY);
+
+        // now route a document to it
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(user3, ROLE_DELEGATE_PEOPLE_FLOW_PRIMARY_DELEGATE);
+        document.route("");
+        assertTrue("Document should be enroute.", document.isEnroute());
+
+        // user1 (as member of ppfTestRole1) and user2 (as a member of user1's primary delegate role for ppfTestRole1)
+        // should have activated requests, make sure the requests look correct
+
+        List<ActionRequest> rootActionRequests = document.getRootActionRequests();
+        assertEquals("Should have 1 root action requests", 1, rootActionRequests.size());
+        ActionRequest user1Request = null;
+        for (ActionRequest actionRequest : rootActionRequests) {
+            RecipientType recipientType = actionRequest.getRecipientType();
+            if (recipientType == RecipientType.PRINCIPAL) {
+                if (user1.equals(actionRequest.getPrincipalId())) {
+                    user1Request = actionRequest;
+                }
+            }
+        }
+
+        // now let's ensure we got the requests we wanted
+        assertNotNull(user1Request);
+        assertEquals(ActionRequestStatus.ACTIVATED, user1Request.getStatus());
+
+        // check delegate requests on user1Request now
+        assertEquals(1, user1Request.getChildRequests().size());
+        ActionRequest user2DelegateRequest = user1Request.getChildRequests().get(0);
+        assertEquals(user2, user2DelegateRequest.getPrincipalId());
+        assertEquals(DelegationType.PRIMARY, user2DelegateRequest.getDelegationType());
+        assertEquals(ActionRequestStatus.ACTIVATED, user2DelegateRequest.getStatus());
+
+        // let's run through the approvals for this peopleflow
+        assertApproveRequested(document, user1, user2);
+        assertApproveNotRequested(document, user3, testuser1, testuser2, testuser3, ewestfal);
+
+        // approve as user2 who is user1's primary PPF delegate for testrole1
+        document.switchPrincipal(user2);
+        document.approve("");
+
+        // at this point all priorty1 folks should have approvals
+        assertApproveNotRequested(document, user1, user2);
+
+        // document should now be FINAL!
+        assertTrue(document.isFinal());
+    }
+
+    /**
+     * Defines a PeopleFlow as follows:
+     *
+     * <pre>
+     *
+     * Priority 1:
+     *   -> ppfTestRole1 (has delegate ewestfal defined in KIM)
+     *   ----> ppfTestRole2 - secondary delegate
+     *
+     * </pre>
+     *
+     * The desired behavior is that the delegate defined in the PeopleFlow gets the requests, overriding the KIM
+     * delegate which gets ignored.  Since the delegation type is 'secondary', both ppfTestRole2 and ppfTestRole2 get
+     * requests.
+     */
+    @Test
+    public void test_RoleDelegate_secondaryDelegateRole() throws Exception {
+        createSimpleRoleDelegatePeopleFlow(
+                PEOPLE_FLOW_6,    // PeopleFlow name
+                ppfTestRole1,     // member role ID
+                ppfTestRole2,     // delegate role ID
+                DelegationType.SECONDARY
+        );
+
+        // now route a document to it
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(user3, ROLE_DELEGATE_PEOPLE_FLOW_SECONDARY_DELEGATE);
+        document.route("");
+        assertTrue("Document should be enroute.", document.isEnroute());
+
+        // user1 (as member of ppfTestRole1) and user2 (as a member of user1's primary delegate role for ppfTestRole1)
+        // should have activated requests, make sure the requests look correct
+
+        List<ActionRequest> rootActionRequests = document.getRootActionRequests();
+        assertEquals("Should have 1 root action requests", 1, rootActionRequests.size());
+        ActionRequest user1Request = null;
+        for (ActionRequest actionRequest : rootActionRequests) {
+            RecipientType recipientType = actionRequest.getRecipientType();
+            if (recipientType == RecipientType.PRINCIPAL) {
+                if (user1.equals(actionRequest.getPrincipalId())) {
+                    user1Request = actionRequest;
+                }
+            }
+        }
+
+        // now let's ensure we got the requests we wanted
+        assertNotNull(user1Request);
+        assertEquals(ActionRequestStatus.ACTIVATED, user1Request.getStatus());
+
+        // check delegate requests on user1Request now
+        assertEquals(1, user1Request.getChildRequests().size());
+        ActionRequest user2DelegateRequest = user1Request.getChildRequests().get(0);
+        assertEquals(user2, user2DelegateRequest.getPrincipalId());
+        assertEquals(DelegationType.SECONDARY, user2DelegateRequest.getDelegationType());
+        assertEquals(ActionRequestStatus.ACTIVATED, user2DelegateRequest.getStatus());
+
+        // let's run through the approvals for this peopleflow
+        assertApproveRequested(document, user1, user2);
+        assertApproveNotRequested(document, user3, testuser1, testuser2, testuser3, ewestfal);
+
+        // approve as user2 who is user1's primary PPF delegate for testrole1
+        document.switchPrincipal(user2);
+        document.approve("");
+
+        // at this point all priorty1 folks should have approvals
+        assertApproveNotRequested(document, user1, user2);
+
+        // document should now be FINAL!
+        assertTrue(document.isFinal());
+    }
+
+    /**
+     * Defines a PeopleFlow as follows:
+     *
+     * <pre>
+     *
+     * Priority 1:
+     *   -> ppfTestRole2
+     *   ----> ppfTestRole1 - primary delegate (+ has delegate ewestfal defined in KIM)
+     *
+     * </pre>
+     *
+     * KEW is limited to only one level of delegation, so the behavior will be to respect the delegate defined in the
+     * PeopleFlow, but ignore the KIM delegate otherwise we'd have to add support for multi-level delegation.  Since
+     * the PeopleFlow delegation is 'primary', ppfTestRole1 will get the requests.
+     */
+    @Test
+    public void test_RoleDelegate_delegateRoleHasKimDelegate() throws Exception {
+        createSimpleRoleDelegatePeopleFlow(PEOPLE_FLOW_7,    // PeopleFlow name
+                ppfTestRole2,     // member role ID
+                ppfTestRole1,     // delegate role ID
+                DelegationType.PRIMARY);
+
+        // now route a document to it
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(user3, ROLE_DELEGATE_PEOPLE_FLOW_DELEGATE_ROLE_HAS_KIM_DELEGATE);
+        document.route("");
+        assertTrue("Document should be enroute.", document.isEnroute());
+
+        // user2 (as member of ppfTestRole2) and user1 (as a member of user1's primary delegate role for ppfTestRole2)
+        // should have activated requests, make sure the requests look correct
+
+        List<ActionRequest> rootActionRequests = document.getRootActionRequests();
+        assertEquals("Should have 1 root action requests", 1, rootActionRequests.size());
+        ActionRequest user2Request = null;
+        for (ActionRequest actionRequest : rootActionRequests) {
+            RecipientType recipientType = actionRequest.getRecipientType();
+            if (recipientType == RecipientType.PRINCIPAL) {
+                if (user2.equals(actionRequest.getPrincipalId())) {
+                    user2Request = actionRequest;
+                }
+            }
+        }
+
+        // now let's ensure we got the requests we wanted
+        assertNotNull(user2Request);
+        assertEquals(ActionRequestStatus.ACTIVATED, user2Request.getStatus());
+
+        // check delegate requests on user1Request now
+        assertEquals(1, user2Request.getChildRequests().size());
+        ActionRequest user1DelegateRequest = user2Request.getChildRequests().get(0);
+        assertEquals(user1, user1DelegateRequest.getPrincipalId());
+        assertEquals(DelegationType.PRIMARY, user1DelegateRequest.getDelegationType());
+        assertEquals(ActionRequestStatus.ACTIVATED, user1DelegateRequest.getStatus());
+
+        // let's run through the approvals for this peopleflow
+        assertApproveRequested(document, user1, user2);
+        assertApproveNotRequested(document, user3, testuser1, testuser2, testuser3, ewestfal);
+
+        // approve as user1 who is user2's primary PPF delegate for testrole2
+        document.switchPrincipal(user1);
+        document.approve("");
+
+        // at this point all priorty1 folks should have approvals
+        assertApproveNotRequested(document, user1, user2);
+
+        // document should now be FINAL!
+        assertTrue(document.isFinal());
+    }
+
+    /**
+     * Defines a PeopleFlow as follows:
+     *
+     * <pre>
+     *
+     * Priority 1:
+     *   -> ppfTestRole3
+     *   ----> ppfTestRole4 - primary delegate
+     *
+     * </pre>
+     *
+     * this test will ensure that approvals work as expected when a role delegates to a role and both have
+     * the action request policy ALL
+     */
+    @Test
+    public void test_RoleDelegate_RoleMemberWithMultiplePrincipals_AllApprove() throws Exception {
+        PeopleFlowMember.Builder member = PeopleFlowMember.Builder.create(ppfTestRole3, MemberType.ROLE);
+        member.setActionRequestPolicy(ActionRequestPolicy.ALL);
+        PeopleFlowDelegate.Builder delegate = PeopleFlowDelegate.Builder.create(ppfTestRole4, MemberType.ROLE);
+        delegate.setDelegationType(DelegationType.PRIMARY);
+        delegate.setActionRequestPolicy(ActionRequestPolicy.ALL);
+        createSimplePeopleFlow(PEOPLE_FLOW_10, member, delegate);
+
+        // prove that if both members approve, the doc goes final
+        {
+            // route a document to the peopleflow
+            WorkflowDocument document = WorkflowDocumentFactory.createDocument(user3,
+                    ROLE_DELEGATE_PEOPLE_FLOW_ROLE_MULTIPLE_MEMBERS);
+            document.route("");
+            assertTrue("Document should be enroute.", document.isEnroute());
+
+            // ppfTestRole3 members (user1, user2) delegate role ppfTestRole4 members (testuser1, testuser2) should have
+            // activated requests
+
+            // let's run through the approvals for this peopleflow
+            assertApproveRequested(document, user1, user2, testuser1, testuser2);
+            assertApproveNotRequested(document, user3, testuser3, ewestfal);
+
+            // approve as testuser1 who a member of ppfTestRole3
+            document.switchPrincipal(user1);
+            document.approve("");
+
+            // approve as testuser2 who is the second member of ppfTestRole3
+            document.switchPrincipal(user2);
+            document.approve("");
+
+            // at this point all priorty1 folks should have approvals
+            assertApproveNotRequested(document, user1, user2, testuser1, testuser2);
+
+            // document should now be FINAL!
+            assertTrue(document.isFinal());
+        }
+
+        // prove that if both delegates approve, the doc goes final
+        {
+            // route a document to the peopleflow
+            WorkflowDocument document = WorkflowDocumentFactory.createDocument(user3,
+                    ROLE_DELEGATE_PEOPLE_FLOW_ROLE_MULTIPLE_MEMBERS);
+            document.route("");
+            assertTrue("Document should be enroute.", document.isEnroute());
+
+            // ppfTestRole3 members (user1, user2) delegate role ppfTestRole4 members (testuser1, testuser2) should have
+            // activated requests
+
+            // let's run through the approvals for this peopleflow
+            assertApproveRequested(document, user1, user2, testuser1, testuser2);
+            assertApproveNotRequested(document, user3, testuser3, ewestfal);
+
+            // approve as testuser1 who a member of ppfTestRole4
+            document.switchPrincipal(testuser1);
+            document.approve("");
+
+            // approve as testuser2 who is the second member of ppfTestRole4
+            document.switchPrincipal(testuser2);
+            document.approve("");
+
+            // at this point all priorty1 folks should have approvals
+            assertApproveNotRequested(document, user1, user2, testuser1, testuser2);
+
+            // document should now be FINAL!
+            assertTrue(document.isFinal());
+        }
+
+        // Prove that if a member approves, then both delegates need to approve due to the action request policy of
+        // ALL for the doc to go final
+        {
+            // route a document to the peopleflow
+            WorkflowDocument document = WorkflowDocumentFactory.createDocument(user3,
+                    ROLE_DELEGATE_PEOPLE_FLOW_ROLE_MULTIPLE_MEMBERS);
+            document.route("");
+            assertTrue("Document should be enroute.", document.isEnroute());
+
+            // ppfTestRole3 members (user1, user2) delegate role ppfTestRole4 members (testuser1, testuser2) should have
+            // activated requests
+
+            // let's run through the approvals for this peopleflow
+            assertApproveRequested(document, user1, user2, testuser1, testuser2);
+            assertApproveNotRequested(document, user3, testuser3, ewestfal);
+
+            // approve as user1 who a member of ppfTestRole3
+            document.switchPrincipal(user1);
+            document.approve("");
+
+            assertApproveNotRequested(document, user1);
+
+            // approve as testuser1 who a member of ppfTestRole4
+            document.switchPrincipal(testuser1);
+            document.approve("");
+
+            // approve as testuser2 who is the second member of ppfTestRole4
+            document.switchPrincipal(testuser2);
+            document.approve("");
+
+            // at this point all priorty1 folks should have approvals
+            assertApproveNotRequested(document, user1, user2, testuser1, testuser2);
+
+            // document should now be FINAL!
+            assertTrue(document.isFinal());
+        }
+    }
+
+    /**
+     * Defines a PeopleFlow as follows:
+     *
+     * <pre>
+     *
+     * Priority 1:
+     *   -> ppfTestRole3
+     *   ----> ppfTestRole4 - primary delegate
+     *
+     * </pre>
+     *
+     * The action request policy for each role is set to FIRST.
+     * this test will verify that when one delegate approves, the document goes final.
+     */
+    @Test
+    public void test_RoleDelegate_RoleMemberWithMultiplePrincipals_FirstApprove() throws Exception {
+        PeopleFlowMember.Builder member = PeopleFlowMember.Builder.create(ppfTestRole3, MemberType.ROLE);
+        member.setActionRequestPolicy(ActionRequestPolicy.FIRST);
+        PeopleFlowDelegate.Builder delegate = PeopleFlowDelegate.Builder.create(ppfTestRole4, MemberType.ROLE);
+        delegate.setDelegationType(DelegationType.PRIMARY);
+        delegate.setActionRequestPolicy(ActionRequestPolicy.FIRST);
+
+        createSimplePeopleFlow(PEOPLE_FLOW_11, member, delegate);
+
+        // First, prove that just one of the delegates needs to approve for the doc to go final:
+        {
+            // route a document to it
+            WorkflowDocument document = WorkflowDocumentFactory.createDocument(user3,
+                    ROLE_DELEGATE_PEOPLE_FLOW_ROLE_MULTIPLE_MEMBERS_FIRST_APPROVE);
+            document.route("");
+            assertTrue("Document should be enroute.", document.isEnroute());
+
+            // verify the expected initial state
+            assertApproveRequested(document, user1, user2, testuser1, testuser2);
+            assertApproveNotRequested(document, user3, testuser3, ewestfal);
+
+            // approve as testuser1 who a member of ppfTestRole4
+            document.switchPrincipal(testuser1);
+            document.approve("");
+
+            assertApproveNotRequested(document, user1, user2, testuser1, testuser2, user3, ewestfal);
+
+            assertTrue(document.isFinal());
+        }
+
+        // prove that just one of the members needs to approve for the doc to go final:
+        {
+            // route a document to it
+            WorkflowDocument document = WorkflowDocumentFactory.createDocument(user3,
+                    ROLE_DELEGATE_PEOPLE_FLOW_ROLE_MULTIPLE_MEMBERS_FIRST_APPROVE);
+            document.route("");
+            assertTrue("Document should be enroute.", document.isEnroute());
+
+            // verify the expected initial state
+            assertApproveRequested(document, user1, user2, testuser1, testuser2);
+            assertApproveNotRequested(document, user3, testuser3, ewestfal);
+
+            // approve as testuser1 who a member of ppfTestRole4
+            document.switchPrincipal(user1);
+            document.approve("");
+
+            assertApproveNotRequested(document, user1, user2, testuser1, testuser2, user3, ewestfal);
+
+            assertTrue(document.isFinal());
+        }
+
+    }
+
+    /**
+     * Defines a PeopleFlow as follows:
+     *
+     * <pre>
+     *
+     * Priority 1:
+     *   -> ppfTestRole3
+     *   ----> ppfTestRole4 - primary delegate
+     *
+     * </pre>
+     *
+     * this test will ensure that the delegate, a role is properly delegated to when the member is a principal
+     */
+    @Test
+    public void test_RoleDelegate_RoleMemberWithMultiplePrincipals_DelegateFirstApprove() throws Exception {
+        PeopleFlowMember.Builder member = PeopleFlowMember.Builder.create(ppfTestRole3, MemberType.ROLE);
+        member.setActionRequestPolicy(ActionRequestPolicy.ALL);
+        PeopleFlowDelegate.Builder delegate = PeopleFlowDelegate.Builder.create(ppfTestRole4, MemberType.ROLE);
+        delegate.setDelegationType(DelegationType.PRIMARY);
+        delegate.setActionRequestPolicy(ActionRequestPolicy.FIRST);
+        createSimplePeopleFlow(PEOPLE_FLOW_12, member, delegate);
+
+        // prove that both members need to approve before the doc goes final (due to the
+        // ALL action request policy on the member role).
+        {
+            // now route a document to it
+            WorkflowDocument document = WorkflowDocumentFactory.createDocument(user3, ROLE_DELEGATE_PEOPLE_FLOW_ROLE_MULTIPLE_MEMBERS_DELEGATE_FIRST_APPROVE);
+            document.route("");
+            assertTrue("Document should be enroute.", document.isEnroute());
+
+
+            // verify initial state
+            assertApproveRequested(document, user1, user2, testuser1, testuser2);
+            assertApproveNotRequested(document, user3, testuser3, ewestfal);
+
+            // approve as user1 who is a member of ppfTestRole3
+            document.switchPrincipal(user1);
+            document.approve("");
+
+            assertApproveRequested(document, user2, testuser1, testuser2);
+            assertApproveNotRequested(document, user1);
+
+            // approve as testuser1 who is a member of ppfTestRole3
+            document.switchPrincipal(user2);
+            document.approve("");
+
+            // at this point all priorty1 folks should have approvals
+            assertApproveNotRequested(document, user1, user2, testuser1, testuser2);
+
+            // document should now be FINAL!
+            assertTrue(document.isFinal());
+        }
+
+        // prove that only one delegate needs to approve due to action request policy FIRST on the delegate role
+        {
+            // now route a document to it
+            WorkflowDocument document = WorkflowDocumentFactory.createDocument(user3, ROLE_DELEGATE_PEOPLE_FLOW_ROLE_MULTIPLE_MEMBERS_DELEGATE_FIRST_APPROVE);
+            document.route("");
+            assertTrue("Document should be enroute.", document.isEnroute());
+
+
+            // let's run through the approvals for this peopleflow
+            assertApproveRequested(document, user1, user2, testuser1, testuser2);
+            assertApproveNotRequested(document, user3, testuser3, ewestfal);
+
+            // approve as testuser1 who is a member of ppfTestRole4
+            document.switchPrincipal(testuser1);
+            document.approve("");
+
+            // at this point all priorty1 folks should have approvals
+            assertApproveNotRequested(document, user1, user2, testuser1, testuser2);
+
+            // document should now be FINAL!
+            assertTrue(document.isFinal());
+        }
+
+        // prove that if one member approves and then one delegate approves, the doc goes final (due to the
+        // ALL action request policy on the member role).
+        {
+            // now route a document to it
+            WorkflowDocument document = WorkflowDocumentFactory.createDocument(user3, ROLE_DELEGATE_PEOPLE_FLOW_ROLE_MULTIPLE_MEMBERS_DELEGATE_FIRST_APPROVE);
+            document.route("");
+            assertTrue("Document should be enroute.", document.isEnroute());
+
+
+            // verify initial state
+            assertApproveRequested(document, user1, user2, testuser1, testuser2);
+            assertApproveNotRequested(document, user3, testuser3, ewestfal);
+
+            // approve as user1 who is a member of ppfTestRole3
+            document.switchPrincipal(user1);
+            document.approve("");
+
+            assertApproveRequested(document, user2, testuser1, testuser2);
+            assertApproveNotRequested(document, user1);
+
+            // approve as testuser1 who is a member of ppfTestRole4
+            document.switchPrincipal(testuser1);
+            document.approve("");
+
+            // at this point all priorty1 folks should have approvals
+            assertApproveNotRequested(document, user1, user2, testuser1, testuser2);
+
+            // document should now be FINAL!
+            assertTrue(document.isFinal());
+        }
+    }
+
+    /**
+     * Defines a PeopleFlow as follows:
+     *
+     * <pre>
+     *
+     * Priority 1:
+     *   -> ppfTestGroup1
+     *   ----> ppfTestRole4 - primary delegate
+     *
+     * </pre>
+     *
+     * this test will verify that groups can delegate to roles, and that the ALL approval logic will hold for the
+     * delegate
+     */
+    @Test
+    public void test_GroupDelegate_RoleMemberWithMultiplePrincipals_AllApprove() throws Exception {
+        PeopleFlowMember.Builder member = PeopleFlowMember.Builder.create(ppfTestGroup1, MemberType.GROUP);
+        PeopleFlowDelegate.Builder delegate = PeopleFlowDelegate.Builder.create(ppfTestRole4, MemberType.ROLE);
+        delegate.setDelegationType(DelegationType.PRIMARY);
+        delegate.setActionRequestPolicy(ActionRequestPolicy.ALL);
+        createSimplePeopleFlow(PEOPLE_FLOW_13, member, delegate);
+
+        // prove that one group member approving makes the doc go final
+        {
+            // now route a document to it
+            WorkflowDocument document = WorkflowDocumentFactory.createDocument(user3,
+                    GROUP_DELEGATE_PEOPLE_FLOW_ROLE_MULTIPLE_MEMBERS);
+            document.route("");
+            assertTrue("Document should be enroute.", document.isEnroute());
+
+            // let's run through the approvals for this peopleflow
+            assertApproveRequested(document, earl, fran, testuser1, testuser2);
+            assertApproveNotRequested(document, user1, user2, user3, testuser3, ewestfal);
+
+            // approve as earl who a member of ppfTestGroup1
+            document.switchPrincipal(earl);
+            document.approve("");
+
+            // at this point all priorty1 folks should have approvals
+            assertApproveNotRequested(document, user1, user2, earl, fran, testuser1, testuser2);
+
+            // document should now be FINAL!
+            assertTrue(document.isFinal());
+        }
+
+        // prove that both delegates need to approve (due to action request policy ALL) before the doc goes final
+        {
+            // now route a document to it
+            WorkflowDocument document = WorkflowDocumentFactory.createDocument(user3,
+                    GROUP_DELEGATE_PEOPLE_FLOW_ROLE_MULTIPLE_MEMBERS);
+            document.route("");
+            assertTrue("Document should be enroute.", document.isEnroute());
+
+            assertApproveRequested(document, earl, fran, testuser1, testuser2);
+            assertApproveNotRequested(document, user1, user2, user3, testuser3, ewestfal);
+
+            // approve as testuser1 who a member of ppfTestRole4
+            document.switchPrincipal(testuser1);
+            document.approve("");
+
+            assertFalse(document.isFinal());
+
+            // approve as testuser2 who a member of ppfTestRole4
+            document.switchPrincipal(testuser2);
+            document.approve("");
+
+            // at this point all priorty1 folks should have approvals
+            assertApproveNotRequested(document, user1, user2, earl, fran, testuser1, testuser2);
+
+            // document should now be FINAL!
+            assertTrue(document.isFinal());
+        }
+    }
+
+    /**
+     * creates a simple PeopleFlow in the TEST namespace with (by default) a member of type role having a delegate of
+     * type role as follows:
+     *
+     * <pre>
+     *
+     * Priority 1:
+     *   -> memberRole
+     *   ----> delegateRole
+     *
+     * </pre>
+     *
+     * The member and delegate roles are specified by ID as memberRoleId and delegateRoleId.
+     * The type of the delegate (primary or secondary) is specified by delegationType.
+     * If the delegate ID is null, no delegate will be added.
+     *
+     * @param peopleFlowName the name to give the new PeopleFlow (the namespace will always be TEST)
+     * @param memberRoleId the ID of the role for the PeopleFlow member
+     * @param delegateRoleId the ID of the role for the PeopleFlow member's delegate
+     * @param delegationType the delegate's type (primary or secondary)
+     * @return the PeopleFlowDefinition created
+     */
+    private PeopleFlowDefinition createSimpleRoleDelegatePeopleFlow(String peopleFlowName, String memberRoleId, String delegateRoleId,
+            DelegationType delegationType) {
+        PeopleFlowDefinition.Builder peopleFlow = PeopleFlowDefinition.Builder.create(NAMESPACE_CODE, peopleFlowName);
+
+        // build stop 1
+        // build role member
+        PeopleFlowMember.Builder memberBuilder = peopleFlow.addRole(memberRoleId);
+        memberBuilder.setPriority(1);
+
+        if (delegateRoleId != null) {
+            // build primary delegate role1
+            PeopleFlowDelegate.Builder delegateBuilder =
+                    PeopleFlowDelegate.Builder.create(delegateRoleId, MemberType.ROLE);
+            delegateBuilder.setDelegationType(delegationType);
+
+            memberBuilder.getDelegates().add(delegateBuilder);
+        }
+
+        return peopleFlowService.createPeopleFlow(peopleFlow.build());
+    }
+
+    /**
+     * creates a simple PeopleFlow in the TEST namespace with a member having a delegate, like so:
+     *
+     * <pre>
+     *
+     * Priority 1:
+     *   -> member
+     *   ----> delegate
+     *
+     * </pre>
+     *
+     * @return the PeopleFlowDefinition created
+     */
+    private PeopleFlowDefinition createSimplePeopleFlow(String peopleFlowName, PeopleFlowMember.Builder member, PeopleFlowDelegate.Builder delegate) {
+        PeopleFlowDefinition.Builder peopleFlow = PeopleFlowDefinition.Builder.create(NAMESPACE_CODE, peopleFlowName);
+
+        member.setPriority(1);
+
+        if (delegate != null) {
+            // link delegate to member
+            member.getDelegates().add(delegate);
+        }
+
+        peopleFlow.getMembers().add(member);
+
+        return peopleFlowService.createPeopleFlow(peopleFlow.build());
     }
 
     /**

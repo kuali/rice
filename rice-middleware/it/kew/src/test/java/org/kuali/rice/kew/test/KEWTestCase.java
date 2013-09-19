@@ -21,6 +21,7 @@ import org.kuali.rice.core.framework.resourceloader.SpringResourceLoader;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.batch.KEWXmlDataLoader;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
@@ -224,4 +225,9 @@ public abstract class KEWTestCase extends BaselineTestCase {
 	protected String getGroupIdForName(String namespace, String groupName) {
 		return KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(namespace, groupName).getId();
 	}
+
+    protected String getRoleIdForName(String namespace, String roleName) {
+        Role role = KimApiServiceLocator.getRoleService().getRoleByNamespaceCodeAndName(namespace, roleName);
+        return (role == null) ? null : role.getId();
+    }
 }

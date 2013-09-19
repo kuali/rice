@@ -96,6 +96,21 @@ public class ObjectPathExpressionParser {
         private int nextTokenIndex;
 
         /**
+         * The full original parse string.
+         */
+        private String originalPath;
+
+        /**
+         * The current lexical index in the original path.
+         */
+        private int originalPathIndex;
+
+        /**
+         * The portion of the path parsed so far.
+         */
+        private String parentPath;
+
+        /**
          * The root continuation.
          */
         private Object root;
@@ -124,6 +139,9 @@ public class ObjectPathExpressionParser {
             stack.clear();
             currentContinuation = null;
             useSpringSyntax = false;
+            originalPath = null;
+            originalPathIndex = 0;
+            parentPath = null;
         }
 
         /**
@@ -239,6 +257,9 @@ public class ObjectPathExpressionParser {
                 }
                 nextScanIndex--;
 
+                // Move original path index forward to correct for stripped brackets
+                originalPathIndex += 2;
+
             } else {
                 nextScanIndex++;
             }
@@ -247,8 +268,11 @@ public class ObjectPathExpressionParser {
             if (bracket && nextScanIndex <= path.length()) {
                 firstChar = path.charAt(0);
                 if ((firstChar == '\'' || firstChar == '\"') && path.charAt(nextScanIndex - 1) == firstChar) {
-                    path = path.substring(1, nextScanIndex - 1);
+                    path = path.substring(1, nextScanIndex - 1) + path.substring(nextScanIndex);
                     nextScanIndex -= 2;
+
+                    // Move original path index forward to correct for stripped quotes
+                    originalPathIndex += 2;
                 }
             }
 
@@ -272,7 +296,7 @@ public class ObjectPathExpressionParser {
                     case ']':
                         if (useSpringSyntax) {
                             // should have been removed by prepareNextScan
-                            throw new IllegalArgumentException("Unmatched ')': " + path);
+                            throw new IllegalArgumentException("Unmatched ']': " + path);
                         }
                         // else fall through
                     case '\'':
@@ -283,6 +307,11 @@ public class ObjectPathExpressionParser {
                         if (nextTokenIndex == -1) {
                             nextTokenIndex = currentIndex;
                         }
+
+                        // Move original path index forward
+                        originalPathIndex += nextTokenIndex;
+                        parentPath = originalPath.substring(0, originalPathIndex);
+
                         return;
                 }
             }
@@ -305,7 +334,7 @@ public class ObjectPathExpressionParser {
 
             if (nextTokenIndex == -1) {
                 // Only a symbolic reference, resolve it and return.
-                currentContinuation = pathEntry.parse(pathEntry.prepare(currentContinuation), path, false);
+                currentContinuation = pathEntry.parse(parentPath, pathEntry.prepare(currentContinuation), path, false);
                 return null;
             }
 
@@ -319,7 +348,7 @@ public class ObjectPathExpressionParser {
 
                         // Resolve non-empty key reference as the current continuation
                         if (nextTokenIndex != 0) {
-                            currentContinuation = pathEntry.parse(
+                            currentContinuation = pathEntry.parse(parentPath,
                                     pathEntry.prepare(currentContinuation),
                                     path.substring(0, nextTokenIndex), false);
                         }
@@ -329,7 +358,11 @@ public class ObjectPathExpressionParser {
 
                         // Reset the current continuation for evaluating the
                         // subexpression
-                        currentContinuation = pathEntry.parse(root, null, false);
+                        currentContinuation = pathEntry.parse(parentPath, root, null, false);
+
+                        // Step past the left bracket
+                        originalPathIndex++;
+
                         return path.substring(nextTokenIndex + 1);
                     }
                     // else fall through
@@ -337,23 +370,30 @@ public class ObjectPathExpressionParser {
                 case '(':
                     // Approaching a parenthetical expression, not preceded by a subexpression,
                     // resolve the key reference as the current continuation
-                    currentContinuation = pathEntry.parse(pathEntry.prepare(currentContinuation),
+                    currentContinuation = pathEntry.parse(parentPath,
+                            pathEntry.prepare(currentContinuation),
                             path.substring(0, nextTokenIndex), false);
                     return path.substring(nextTokenIndex); // Keep the left parenthesis
 
                 case '.':
                     // Crossing a period, not preceded by a subexpression,
                     // resolve the key reference as the current continuation
-                    currentContinuation = pathEntry.parse(pathEntry.prepare(currentContinuation),
+                    currentContinuation = pathEntry.parse(parentPath,
+                            pathEntry.prepare(currentContinuation),
                             path.substring(0, nextTokenIndex), false);
-                    return path.substring(nextTokenIndex + 1); // Skip the period
+
+                    // Step past the period
+                    originalPathIndex++;
+
+                    return path.substring(nextTokenIndex + 1);
 
                 case ']':
                     if (!useSpringSyntax) {
 
                         if (nextTokenIndex > 0) {
                             // Approaching a right bracket, resolve the key reference as the current continuation
-                            currentContinuation = pathEntry.parse(pathEntry.prepare(currentContinuation),
+                            currentContinuation = pathEntry.parse(parentPath,
+                                    pathEntry.prepare(currentContinuation),
                                     path.substring(0, nextTokenIndex), false);
                             return path.substring(nextTokenIndex); // Keep the right bracket
                         }
@@ -363,7 +403,8 @@ public class ObjectPathExpressionParser {
                         // Use the current continuation as the parameter for resolving
                         // the top continuation on the stack, then make the result the
                         // current continuation.
-                        currentContinuation = pathEntry.parse(pathEntry.prepare(stack.pop()),
+                        currentContinuation = pathEntry.parse(parentPath,
+                                pathEntry.prepare(stack.pop()),
                                 pathEntry.dereference(currentContinuation), true);
                         if (nextTokenIndex + 1 >= path.length()) {
                             return null;
@@ -374,10 +415,14 @@ public class ObjectPathExpressionParser {
                         switch (path.charAt(nextTokenIndex + 1)) {
                             case '.':
                                 // crossing a dot, skip it
+                                originalPathIndex += 2;
+
                                 return path.substring(nextTokenIndex + 2);
                             case '[':
                             case ']':
                                 // crossing to another subexpression, don't skip it.
+                                originalPathIndex++;
+
                                 return path.substring(nextTokenIndex + 1);
                             default:
                                 throw new IllegalArgumentException(
@@ -408,7 +453,7 @@ public class ObjectPathExpressionParser {
          *        false indicates the next node in the same expression.
          * @return A reference to the next parse node.
          */
-        Object parse(Object node, String next, boolean inherit);
+        Object parse(String parentPath, Object node, String next, boolean inherit);
 
         /**
          * Prepare the next parse node based on a reference returned from the prior node.
@@ -425,6 +470,32 @@ public class ObjectPathExpressionParser {
          * @return the next path element based on the returned reference data.
          */
         String dereference(Object prev);
+    }
+
+    /**
+     * Determine if a property name is a path or a plain property reference.
+     *
+     * <p>
+     * This method is used to eliminate parsing and object creation overhead when resolving an
+     * object property reference with a non-complex property path.
+     * </p>
+     *
+     * @return True if the name is a path, false if a plain reference.
+     */
+    public static boolean isPath(String propertyName) {
+        if (propertyName == null) {
+            return false;
+        }
+
+        int length = propertyName.length();
+        for (int i = 0; i < length; i++) {
+            char c = propertyName.charAt(i);
+            if (c != '_' && c != '$' && !Character.isLetterOrDigit(c)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -467,8 +538,11 @@ public class ObjectPathExpressionParser {
         }
 
         try {
+            parseState.originalPath = path;
+            parseState.originalPathIndex = 0;
+            parseState.parentPath = null;
             parseState.root = root;
-            parseState.currentContinuation = pathEntry.parse(root, null, false);
+            parseState.currentContinuation = pathEntry.parse(null, root, null, false);
             parseState.useSpringSyntax = useSpringSyntax;
             while (path != null) {
                 path = parseState.prepareNextScan(path);

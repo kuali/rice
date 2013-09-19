@@ -87,7 +87,7 @@ public class ObjectPropertyReference {
          *      java.lang.String, boolean)
          */
         @Override
-        public Object parse(Object node, String next, boolean inherit) {
+        public Object parse(String parentPath, Object node, String next, boolean inherit) {
             ObjectPropertyReference current = (ObjectPropertyReference) node;
 
             // At the initial parse node, copy to a new property reference.
@@ -170,32 +170,6 @@ public class ObjectPropertyReference {
             // Expect that any other reference resolves to null or a string
             return (String) prevReference.get();
         }
-    }
-
-    /**
-     * Determine if a property name is a path or a plain property reference.
-     * 
-     * <p>
-     * This method is used to eliminate parsing and object creation overhead when resolving an
-     * object property reference with a non-complex property path.
-     * </p>
-     * 
-     * @return True if the name is a path, false if a plain reference.
-     */
-    private static boolean isPath(String propertyName) {
-        if (propertyName == null) {
-            return false;
-        }
-
-        int length = propertyName.length();
-        for (int i = 0; i < length; i++) {
-            char c = propertyName.charAt(i);
-            if (c != '_' && c != '$' && !Character.isLetterOrDigit(c)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -360,7 +334,7 @@ public class ObjectPropertyReference {
      * @return A reference to the final parse node involved in parsing the path expression.
      */
     public static ObjectPropertyReference resolvePath(Object bean, Class<?> beanClass, String propertyPath, boolean grow) {
-        if (isPath(propertyPath)) {
+        if (ObjectPathExpressionParser.isPath(propertyPath)) {
 
             // Parse the path expression.  This requires a new reference object since object read
             // methods could potentially call this method recursively.
@@ -382,17 +356,36 @@ public class ObjectPropertyReference {
 
         } else {
 
-            ObjectPropertyReference reference = TL_BUILDER_REF.get();
-            if (reference == null) {
-                TL_BUILDER_REF.set(reference = new ObjectPropertyReference());
-            }
-            reference.bean = bean;
-            reference.beanClass = beanClass;
-            reference.beanType = beanClass;
-            reference.name = propertyPath;
-            return reference;
+            return resolveProperty(bean, beanClass, propertyPath);
 
         }
+    }
+
+    /**
+     * Get a single-use reference for resolving a property on a bean.
+     *
+     * <p>
+     * When using this method, the property name will be treated as-is, and will not be resolved as
+     * a path expression.
+     * </p>
+     *
+     * @param bean The bean.
+     * @param beanClass The bean class.
+     * @param property The property name.
+     * @return A single-use reference to the final parse node involved in parsing the path
+     *         expression. Note that the reference returned by this method will be reused and
+     *         modified by the next call, so should not be set to a variable.
+     */
+    public static ObjectPropertyReference resolveProperty(Object bean, Class<?> beanClass, String propertyPath) {
+        ObjectPropertyReference reference = TL_BUILDER_REF.get();
+        if (reference == null) {
+            TL_BUILDER_REF.set(reference = new ObjectPropertyReference());
+        }
+        reference.bean = bean;
+        reference.beanClass = beanClass;
+        reference.beanType = beanClass;
+        reference.name = propertyPath;
+        return reference;
     }
 
     /**
@@ -737,6 +730,10 @@ public class ObjectPropertyReference {
      */
     public Class<?> getPropertyType() {
         Class<?> implClass = getImplClass();
+
+        if (implClass == null) {
+            return null;
+        }
 
         if (name == null) {
             // self reference

@@ -55,7 +55,7 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
 
     @BeforeClass
-    public static void setupMockUserSession() {
+    public static void setupMockUserSession() throws Throwable {
         UifUnitTestUtils.establishMockConfig(ObjectPropertyUtilsTest.class.getSimpleName());
         UifUnitTestUtils.establishMockUserSession("testuser");
     }

@@ -33,7 +33,7 @@ public class ObjectPathExpressionParserTest extends ProcessLoggingUnitTest {
     private static class DoIt implements PathEntry {
 
         @Override
-        public String parse(Object node, String next, boolean inherit) {
+        public String parse(String parentPath, Object node, String next, boolean inherit) {
             if (next == null) {
                 return "";
             }

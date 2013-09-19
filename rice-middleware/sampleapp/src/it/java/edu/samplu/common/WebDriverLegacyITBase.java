@@ -3009,8 +3009,13 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         // click the add button
         waitAndClickByName("methodToCall.addLine.personResponsibilities.(!!org.kuali.rice.kew.rule.PersonRuleResponsibility!!).(:::;15;:::).anchor15");
         waitForPageToLoad();
+
         checkForIncidentReport(BLANKET_APPROVE_NAME);
+
+        // click Blanket Approve
         waitAndClickByName(BLANKET_APPROVE_NAME);
+
+        // doc search for the docId
         waitForPageToLoad();
         driver.switchTo().defaultContent(); //selectWindow("null");
         waitAndClickDocSearch();
@@ -3019,8 +3024,9 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         selectFrameIframePortlet();
         waitAndTypeByName("documentId", docId);
         waitAndClickSearch();
+
+        // Expect the doc status to be FINAL
         waitForElementPresent(By.linkText(docId));
-        
         if (isElementPresent(By.linkText(docId))) {
             if (!DOC_STATUS_FINAL.equalsIgnoreCase(getTextByXpath(DOC_STATUS_XPATH_2))) {
                 jiraAwareFail("WorkFlowRouteRulesBlanketApp expected:<[FINAL]> but was " + getTextByXpath(DOC_STATUS_XPATH_2));

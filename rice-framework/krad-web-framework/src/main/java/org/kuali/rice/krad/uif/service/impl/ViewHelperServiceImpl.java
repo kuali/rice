@@ -56,6 +56,7 @@ import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.util.ObjectPathExpressionParser;
 import org.kuali.rice.krad.uif.util.ViewCleaner;
 import org.kuali.rice.krad.uif.view.DefaultExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
@@ -83,6 +84,7 @@ import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
+import org.kuali.rice.krad.uif.util.ObjectPathExpressionParser.PathEntry;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
@@ -644,7 +646,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 propertyPath += "." + field.getBindingInfo().getBindingName();
             }
 
-            attributeDefinition = findNestedDictionaryAttribute(view, field, null, propertyPath);
+            attributeDefinition = findNestedDictionaryAttribute(view, field, propertyPath);
         }
 
         // if a definition was found, initialize field from definition
@@ -665,6 +667,117 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
+     * Helper method for forming the model class path while parsing a path expression.
+     *
+     * @param rootPath The root parse path.
+     * @param parentPath The parent path of the current parse node.
+     * @return A model class path formed by concatenating the root path and parent path with a dot
+     *         separator, then removing all collection index/key references.
+     */
+    private String getModelClassPath(String rootPath, String parentPath) {
+        if (rootPath == null && parentPath == null) {
+            return null;
+        }
+
+        StringBuilder modelClassPathBuilder = new StringBuilder();
+
+        if (rootPath != null) {
+            modelClassPathBuilder.append(rootPath);
+        }
+
+        if (parentPath != null) {
+            if (rootPath != null) modelClassPathBuilder.append('.');
+            modelClassPathBuilder.append(parentPath);
+        }
+
+        int bracketCount = 0;
+        int leftBracketPos = -1;
+        for (int i=0; i < modelClassPathBuilder.length(); i++) {
+            char c = modelClassPathBuilder.charAt(i);
+
+            if (c == '[') {
+                bracketCount++;
+                if (bracketCount == 1) leftBracketPos = i;
+            }
+
+           if (c == ']') {
+               bracketCount--;
+
+               if (bracketCount < 0) {
+                   throw new IllegalArgumentException("Unmatched ']' at " + i + " " + modelClassPathBuilder);
+               }
+
+               if (bracketCount == 0) {
+                   modelClassPathBuilder.delete(leftBracketPos, i + 1);
+                   i -= i + 1 - leftBracketPos;
+                   leftBracketPos = -1;
+               }
+           }
+        }
+
+        if (bracketCount > 0) {
+            throw new IllegalArgumentException("Unmatched '[' at " + leftBracketPos + " " + modelClassPathBuilder);
+        }
+
+        return modelClassPathBuilder.toString();
+    }
+
+    /**
+     * Helper method for optimzing a call to
+     * {@link ViewModelUtils#getPropertyTypeByClassAndView(View, String)} while parsing a path
+     * expression for an attribute definition.
+     *
+     * @param formClass The view's form class.
+     * @param modelClasses The view's model classes mapping.
+     * @param rootPath The root path of the parse.
+     * @param parentPath The parent path of the current parse entry.
+     * @return The name of the dictionary entry to check at the current parse node.
+     */
+    private String getDictionaryEntryName(Class<?> formClass, Map<String, Class<?>> modelClasses, String rootPath,
+            String parentPath) {
+        String modelClassPath = getModelClassPath(rootPath, parentPath);
+
+        if (modelClassPath == null) {
+            return null;
+        }
+
+        Class<?> dictionaryModelClass = modelClasses.get(modelClassPath);
+
+        // full match
+        if (dictionaryModelClass != null) {
+            return dictionaryModelClass.getName();
+        }
+
+        // in case of partial match, holds the class that matched and the
+        // property so we can get by reflection
+        Class<?> modelClass = formClass;
+        String modelProperty = modelClassPath;
+
+        int bestMatchLength = 0;
+        int modelClassPathLength = modelClassPath.length();
+
+        // check if property path matches one of the modelClass entries
+        for (Entry<String, Class<?>> modelClassEntry : modelClasses.entrySet()) {
+            String path = modelClassEntry.getKey();
+            int pathlen = path.length();
+
+            if (modelClassPath.startsWith(path) && pathlen > bestMatchLength
+                    && modelClassPathLength > pathlen && modelClassPath.charAt(pathlen + 1) == '.') {
+                bestMatchLength = pathlen;
+                modelClass = modelClassEntry.getValue();
+                modelProperty = modelClassPath.substring(pathlen + 1);
+            }
+        }
+
+        // if a partial match was found, look up the property type
+        if (modelClass != null) {
+            dictionaryModelClass = ObjectPropertyUtils.getPropertyType(modelClass, modelProperty);
+        }
+
+        return dictionaryModelClass == null ? null : dictionaryModelClass.getName();
+    }
+
+    /**
      * Recursively drills down the property path (if nested) to find an AttributeDefinition, the
      * first attribute definition found will be returned
      * 
@@ -680,65 +793,92 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * 
      * @param view view instance containing the field
      * @param field field we are attempting to find a supporting attribute definition for
-     * @param parentPath parent path to use for getting the dictionary entry
-     * @param propertyPath path of the property relative to the parent, to use as dictionary
-     *        attribute and to drill down on
+     * @param propertyPath path of the property to use as dictionary attribute and to drill down on
      * @return AttributeDefinition if found, or Null
      */
-    protected AttributeDefinition findNestedDictionaryAttribute(View view, DataField field, String parentPath,
-            String propertyPath) {
-        AttributeDefinition attributeDefinition = null;
-
+    protected AttributeDefinition findNestedDictionaryAttribute(final View view, DataField field, String propertyPath) {
         // attempt to find definition for parent and property
+        String fieldBindingPrefix = null;
         String dictionaryAttributeName = propertyPath;
-        String dictionaryObjectEntry = null;
 
         if (field.getBindingInfo().isBindToMap()) {
-            parentPath = "";
+            fieldBindingPrefix = "";
             if (!field.getBindingInfo().isBindToForm() && StringUtils.isNotBlank(
                     field.getBindingInfo().getBindingObjectPath())) {
-                parentPath = field.getBindingInfo().getBindingObjectPath();
+                fieldBindingPrefix = field.getBindingInfo().getBindingObjectPath();
             }
             if (StringUtils.isNotBlank(field.getBindingInfo().getBindByNamePrefix())) {
-                if (StringUtils.isNotBlank(parentPath)) {
-                    parentPath += "." + field.getBindingInfo().getBindByNamePrefix();
+                if (StringUtils.isNotBlank(fieldBindingPrefix)) {
+                    fieldBindingPrefix += "." + field.getBindingInfo().getBindByNamePrefix();
                 } else {
-                    parentPath = field.getBindingInfo().getBindByNamePrefix();
+                    fieldBindingPrefix = field.getBindingInfo().getBindByNamePrefix();
                 }
             }
 
             dictionaryAttributeName = field.getBindingInfo().getBindingName();
         }
 
-        if (StringUtils.isNotBlank(parentPath)) {
-            Class<?> dictionaryModelClass = ViewModelUtils.getPropertyTypeByClassAndView(view, parentPath);
-            if (dictionaryModelClass != null) {
-                dictionaryObjectEntry = dictionaryModelClass.getName();
+        if (StringUtils.isEmpty(dictionaryAttributeName)) {
+            return null;
+        }
 
-                attributeDefinition = getDataDictionaryService().getAttributeDefinition(dictionaryObjectEntry,
-                        dictionaryAttributeName);
+        final DataDictionaryService dataDictionaryService = getDataDictionaryService();
+        final String rootPath = fieldBindingPrefix;
+        final Class<?> formClass = view.getFormClass();
+        final Map<String, Class<?>> modelClasses = view.getObjectPathToConcreteClassMapping();
+
+        class AttributePathEntry implements PathEntry {
+            String dictionaryObjectEntry;
+            AttributeDefinition attributeDefinition;
+
+            @Override
+            public Object parse(String parentPath, Object node, String next, boolean inherit) {
+                if (next == null) {
+                    return node;
+                }
+
+                if (attributeDefinition != null || node == null) {
+                    return null;
+                }
+
+                String dictionaryEntryName =
+                        getDictionaryEntryName(formClass, modelClasses, rootPath, parentPath);
+
+                if (dictionaryEntryName != null) {
+                    attributeDefinition = dataDictionaryService
+                            .getAttributeDefinition(dictionaryEntryName, next);
+
+                    if (attributeDefinition != null) {
+                        dictionaryObjectEntry = dictionaryEntryName;
+                        return null;
+                    }
+                }
+
+                return node;
+            }
+
+            @Override
+            public Object prepare(Object prev) {
+                return prev;
+            }
+
+            @Override
+            public String dereference(Object prev) {
+                throw new IllegalStateException("Should not be reached using spring syntax");
             }
         }
 
-        // if definition not found and property is still nested, recurse down
-        // one level
-        if ((attributeDefinition == null) && StringUtils.contains(propertyPath, ".")) {
-            String nextParentPath = StringUtils.substringBefore(propertyPath, ".");
-            if (StringUtils.isNotBlank(parentPath)) {
-                nextParentPath = parentPath + "." + nextParentPath;
-            }
-            String nextPropertyPath = StringUtils.substringAfter(propertyPath, ".");
-
-            return findNestedDictionaryAttribute(view, field, nextParentPath, nextPropertyPath);
-        }
+        AttributePathEntry attributePathEntry = new AttributePathEntry();
+        ObjectPathExpressionParser
+                .parsePathExpression(attributePathEntry, dictionaryAttributeName, true, attributePathEntry);
 
         // if a definition was found, update the fields dictionary properties
-        if (attributeDefinition != null) {
+        if (attributePathEntry.attributeDefinition != null) {
             field.setDictionaryAttributeName(dictionaryAttributeName);
-            field.setDictionaryObjectEntry(dictionaryObjectEntry);
+            field.setDictionaryObjectEntry(attributePathEntry.dictionaryObjectEntry);
         }
 
-        return attributeDefinition;
+        return attributePathEntry.attributeDefinition;
     }
 
     /**

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
@@ -1012,10 +1013,14 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
 
     @Override
     public PropositionDefinition getProposition(String id) throws RiceIllegalArgumentException {
+        if (StringUtils.isBlank(id)) {
+            throw new RiceIllegalArgumentException("Proposition id must not be null or blank");
+        }
+
         PropositionDefinition proposition = propositionBoService.getPropositionById(id);
 
         if (proposition == null) {
-            throw new RiceIllegalArgumentException (id);
+            return null;
         }
 
         proposition = this.replaceTermValues (proposition).build();

@@ -16,7 +16,9 @@
 
 package org.kuali.rice.krms.test;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaTreeDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaTreeEntryDefinitionContract;
@@ -33,95 +35,94 @@ import static org.junit.Assert.fail;
 
 
 /**
+ *   RuleManagementAgendaTreeDefinitionTest is to test the methods of ruleManagementServiceImpl relating to AgendaTreeDefinitions
  *
+ *   Each test focuses on one of the methods.
  */
 public class RuleManagementAgendaTreeDefinitionTest  extends RuleManagementBaseTest {
-    ////
-    //// AgendaTreeDefinition tests
-    ////
+    @Override
+    @Before
+    public void setClassDiscriminator() {
+        // set a unique discriminator for test objects of this class
+        CLASS_DISCRIMINATOR = "RMATDT";
+    }
 
+    /**
+     *  Test testGetAgendaTree()
+     *
+     *  This test focuses specifically on the RuleManagementServiceImpl .getAgendaTree(AgendaDefinition) method
+     */
     @Test
     public void testGetAgendaTree() {
-        // Build this Agenda to generate tree from
-        // "Complex" agenda7000
-        //  agendaItem7000 ( rule7000)
-        //      WhenTrue   agendaItem7001( rule7001 )
-        //      WhenFalse  agendaItem7002( rule7002 )
-        //      Always     agendaItem7003( rule7003 )
-        //  agendaItem7001 ( rule7001 )
-        //      Always     agendaItem7005
-        //  agendaItem7002 ( rule7002 )
-        //      WhenFalse  agendaItem7004
-        //      Always     agendaItem7006
-        //  agendaItem7003 ( rule7003 )
-        //  agendaItem7004 ( rule7004 )
-        //  agendaItem7005 ( rule7005 )
-        //  agendaItem7006 ( rule7006 )
-
-        /*  This is the tree which should be generated from complex Agenda7000
-        AgendaTreeDefinition agendaTreeDefinition
-            agendaId ="AgendaId7000"
-            entries = ArrayList size = 2
-            [0] = AgendaTreeRuleEntry
-                agendaItemId = "AI7000"
-                ruleId = "RuleManagementITRuleId7000"
-                ifTrue = AgendaTreeDefinition
-                    agendaId = "AgendaId7000"
+        /* *************************
+            This is the tree which should be generated from a demo complex Agenda
+           *************************
+                AgendaTreeDefinition agendaTreeDefinition
+                    agendaId = t0.agenda_Id
                     entries = ArrayList size = 2
-                        [0] = AgendaTreeRuleEntry
-                            agendaItemId = "AI7001"
-                            ruleId = "RuleManagementITRuleId7001"
-                            ifTrue = null
-                            ifFalse = null
-                        [1] = AgendaTreeRuleEntry
-                            agendaItemId = "AI7005"
-                            ruleId = "RuleManagementITRuleId7005"
-                            ifTrue = null
-                            ifFalse = null
-                ifFalse = AgendaTreeDefinition
-                    agendaId = "AgendaId7000"
-                    entries = ArrayList size = 2
-                        [0] = AgendaTreeRuleEntry
-                            agendaItemId = "AI7002"
-                            ruleId = "RuleManagementITRuleId7002"
-                            ifTrue = null
-                            ifFalse = AgendaTreeDefinition
-                                agendaId = AgendaId7000"
-                                entries = ArrayList  size = 1
-                                    [0] = AgendaTreeRuleEntry
-                                        agendaItemId = "AI7004"
-                                        ruleId = "RuleManagementITRuleId7004"
-                                        ifTrue = null
-                                        ifFalse = null
-                        [1] = AgendaTreeRuleEntry
-                            agendaItemId = "AI7006"
-                            ruleId = "RuleManagementITRuleId7006"
-                            ifTrue = null
-                            ifFalse = null
-            [1] = AgendaTreeRuleEntry
-                agendaItemId = "AI7003"
-                ruleId = "RuleManagementITRuleId7003"
-                ifTrue = null
-                ifFalse = null
+                    [0] = AgendaTreeRuleEntry
+                        agendaItemId = t0.agendaItem_0_Id
+                        ruleId = t0.rule_0_Id
+                        ifTrue = AgendaTreeDefinition
+                            agendaId = t0.agenda_Id
+                            entries = ArrayList size = 2
+                                [0] = AgendaTreeRuleEntry
+                                    agendaItemId = t0.agendaItem_1_Id
+                                    ruleId = t0.rule_1_Id
+                                    ifTrue = null
+                                    ifFalse = null
+                                [1] = AgendaTreeRuleEntry
+                                    agendaItemId = t0.agendaItem_5_Id
+                                    ruleId = t0.rule_5_Id
+                                    ifTrue = null
+                                    ifFalse = null
+                        ifFalse = AgendaTreeDefinition
+                            agendaId = t0.agenda_Id
+                            entries = ArrayList size = 2
+                                [0] = AgendaTreeRuleEntry
+                                    agendaItemId = t0.agendaItem_2_Id
+                                    ruleId = t0.rule_2_Id
+                                    ifTrue = null
+                                    ifFalse = AgendaTreeDefinition
+                                        agendaId = t0.agenda_Id
+                                        entries = ArrayList  size = 1
+                                            [0] = AgendaTreeRuleEntry
+                                                agendaItemId = t0.agendaItem_4_Id
+                                                ruleId = t0.rule_4_Id
+                                                ifTrue = null
+                                                ifFalse = null
+                                [1] = AgendaTreeRuleEntry
+                                    agendaItemId = t0.agendaItem_6_Id
+                                    ruleId = t0.rule_6_Id
+                                    ifTrue = null
+                                    ifFalse = null
+                    [1] = AgendaTreeRuleEntry
+                        agendaItemId = t0.agendaItem_3_Id
+                        ruleId = t0.rule_3_Id
+                        ifTrue = null
+                        ifFalse = null
          */
-        // create the Agenda7000 to test with
-        AgendaDefinition.Builder agendaBuilder7000 = buildComplexAgenda("70");
+
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t0 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t0");
+        // create the Agenda to test with
+        AgendaDefinition.Builder agendaBuilder = buildComplexAgenda(t0);
 
         // Get the AgendaTreeDefinition and drill down a branch to one of the lowest levels for information
-        AgendaTreeDefinition agendaTreeDefinition = ruleManagementServiceImpl.getAgendaTree(agendaBuilder7000.getId());
+        AgendaTreeDefinition agendaTreeDefinition = ruleManagementServiceImpl.getAgendaTree(agendaBuilder.getId());
         assertNotNull("Should have returned a AgendaTreeDefinition", agendaTreeDefinition);
 
         List<AgendaTreeEntryDefinitionContract> agendaTreeRuleEntrys = agendaTreeDefinition.getEntries();
         assertEquals("First level of tree should of had 2 entries",2,agendaTreeRuleEntrys.size());
 
-        // drill down a branch
+        // drill down a branch to test returned AgendaTreeDefinition
         AgendaTreeRuleEntry firstLevelFirstEntry = (AgendaTreeRuleEntry) agendaTreeRuleEntrys.get(0);
         AgendaTreeRuleEntry firstLevelSecondEntry = (AgendaTreeRuleEntry) agendaTreeRuleEntrys.get(1);
         AgendaTreeDefinition ifTrueEntry = firstLevelFirstEntry.getIfTrue();
         agendaTreeRuleEntrys = ifTrueEntry.getEntries();
         assertEquals("IfTrue level of first entry of tree should of had 2 entries",2,agendaTreeRuleEntrys.size());
         AgendaTreeRuleEntry agendaTreeRuleEntry = (AgendaTreeRuleEntry) agendaTreeRuleEntrys.get(1);
-        assertEquals("Incorrect AgendaItemId found", "AI7005", agendaTreeRuleEntry.getAgendaItemId());
+        assertEquals("Incorrect AgendaItemId found", t0.agendaItem_5_Id, agendaTreeRuleEntry.getAgendaItemId());
 
         // drill down to another location
         AgendaTreeDefinition ifFalseEntry = firstLevelFirstEntry.getIfFalse();
@@ -131,13 +132,13 @@ public class RuleManagementAgendaTreeDefinitionTest  extends RuleManagementBaseT
         ifFalseEntry = agendaTreeRuleEntry.getIfFalse();
         agendaTreeRuleEntrys = ifFalseEntry.getEntries();
         agendaTreeRuleEntry = (AgendaTreeRuleEntry) agendaTreeRuleEntrys.get(0);
-        assertEquals("Incorrect AgendaItemId found", "AI7004", agendaTreeRuleEntry.getAgendaItemId());
+        assertEquals("Incorrect AgendaItemId found", t0.agendaItem_4_Id, agendaTreeRuleEntry.getAgendaItemId());
 
         // Test call with blank parameter
         try {
             agendaTreeDefinition = ruleManagementServiceImpl.getAgendaTree(" ");
             fail("Should have thrown RiceIllegalArgumentException: agenda id is null or blank");
-        } catch (Exception e) {
+        } catch (RiceIllegalArgumentException e) {
             // throws RiceIllegalArgumentException: agenda id is null or blank
         }
 
@@ -145,22 +146,35 @@ public class RuleManagementAgendaTreeDefinitionTest  extends RuleManagementBaseT
         try {
             agendaTreeDefinition = ruleManagementServiceImpl.getAgendaTree(null);
             fail("Should have thrown RiceIllegalArgumentException: agenda id is null or blank");
-        } catch (Exception e) {
+        } catch (RiceIllegalArgumentException e) {
             // throws RiceIllegalArgumentException: agenda id is null or blank
         }
 
         assertNull("Should have return null",ruleManagementServiceImpl.getAgendaTree("badValueId"));
     }
 
-
+    /**
+     *  Test testGetAgendaTrees()
+     *
+     *  This test focuses specifically on the RuleManagementServiceImpl .getAgendaTrees(List<String> agendaIds</String>) method
+     */
     @Test
     public void testGetAgendaTrees() {
-        // create  Agenda7100 & Agenda7200  to test with
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t1 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t1");
+
+        // create the Agenda to test with
+        AgendaDefinition.Builder agendaBuilder = buildComplexAgenda(t1);
+
+        // get a second set of object names and create a second agenda to test with
+        RuleManagementBaseTestObjectNames t2 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t2");
+        buildComplexAgenda(t2);
+
+        // create  a list of the agenda ids created
         List<String> agendaIds = new ArrayList<String>();
-        AgendaDefinition.Builder agendaBuilder7100 = buildComplexAgenda("71");
-        agendaIds.add(agendaBuilder7100.getId());
-        AgendaDefinition.Builder agendaBuilder7200 = buildComplexAgenda("72");
-        agendaIds.add(agendaBuilder7200.getId());
+        agendaIds.add(t1.agenda_Id);
+        agendaIds.add(t2.agenda_Id);
+
 
         List<AgendaTreeDefinition> agendaTreeDefinitions = ruleManagementServiceImpl.getAgendaTrees( agendaIds);
         assertEquals("Two agendaTree definitions should have been return",2,agendaTreeDefinitions.size());
@@ -170,7 +184,8 @@ public class RuleManagementAgendaTreeDefinitionTest  extends RuleManagementBaseT
             }
         }
 
-        assertEquals("No AgendaTreeDefinitions should have been returned",0,ruleManagementServiceImpl.getAgendaTrees( null).size());
+        assertEquals("No AgendaTreeDefinitions should have been returned", 0, ruleManagementServiceImpl.getAgendaTrees(
+                null).size());
 
         agendaIds = Arrays.asList("badValueId");
         assertEquals("No AgendaTreeDefinitions should have been returned",0,ruleManagementServiceImpl.getAgendaTrees( agendaIds).size());

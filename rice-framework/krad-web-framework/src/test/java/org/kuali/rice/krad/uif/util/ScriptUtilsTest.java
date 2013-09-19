@@ -29,7 +29,7 @@ import static org.junit.Assert.assertNull;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ScriptUtilsTest extends ProcessLoggingUnitTest {
+public class ScriptUtilsTest {
 
     @Test
     /**

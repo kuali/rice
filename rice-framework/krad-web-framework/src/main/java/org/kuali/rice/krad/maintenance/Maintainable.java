@@ -248,7 +248,7 @@ public interface Maintainable extends ViewHelperService, java.io.Serializable {
      * Called during setupMaintenanceObject to retrieve the original dataObject that is being
      * edited or copied.  Override this method for non BusinessObject external persistence,
      * Maintainable objects that extend BO should override isExternalBusinessObject and
-     * prepareBusinessObject instead.
+     * prepareExternalBusinessObject instead.
      *
      * Do not override this method and isExternalBusinessObject.
      *

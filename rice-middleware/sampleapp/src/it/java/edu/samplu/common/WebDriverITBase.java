@@ -40,7 +40,7 @@ import static org.junit.Assert.assertEquals;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class WebDriverITBase {
+public abstract class WebDriverITBase implements Failable {
 
     public WebDriver driver;
     static ChromeDriverService chromeDriverService;
@@ -66,6 +66,11 @@ public abstract class WebDriverITBase {
         if (chromeDriverService != null) chromeDriverService.start();
     }
 
+
+    @Override
+    public void fail(String message) {
+        SeleneseTestBase.fail(message);
+    }
 
     /**
      * Setup the WebDriver test, login and load the tested web page

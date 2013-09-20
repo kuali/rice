@@ -122,6 +122,8 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("//div[@class='uif-horizontalBoxGroup uif-stickyFooter uif-stickyButtonFooter' and @data-sticky_footer='true']", "KULRICE-10565 DemoLibraryGeneralFeaturesStickyFooterSmokeTest Example 5 - page and view footers not sticky");
 
         jiraMatches.put("//div[@id='Demo-TableLayoutDetails-Example3']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='dataTables_wrapper']/table/tbody/tr[@class='detailsRow']/td/div/div[@class='uif-verticalBoxLayout clearfix']/div[@class='uif-disclosure uif-boxLayoutVerticalItem clearfix']/div[@class='uif-disclosureContent']/div[@class='dataTables_wrapper']/table", "KULRICE-10569 DemoLibraryCollectionFeaturesRowDetailsSmokeTest testCollectionFeaturesRowDetailsTableSubCollection no subtable");
+
+        jiraMatches.put("WatermarkValidationIT.testWatermarking navigating to Uif Components", "KULRICE-10674 Old sampleapp KRAD Kitchensink NPE InputField.performFinalize");
         //jiraMatches.put("", "");
     }
 

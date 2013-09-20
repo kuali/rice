@@ -302,11 +302,14 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
     }
 
     protected void injectMetadataIntoAttributes( DataObjectMetadata dataObjectMetadata ) {
-        List<AttributeDefinition> dataObjectEntryAttributes = getAttributes();
+        List<AttributeDefinition> originalDataObjectEntryAttributes = getAttributes();
         // this should never happen, but just in case someone was pathological enough to set it to null manually, let's be prepared
-        if ( dataObjectEntryAttributes == null ) {
-            dataObjectEntryAttributes = new ArrayList<AttributeDefinition>();
+        // We will use this to restore any UIF-Only attributes.
+        if ( originalDataObjectEntryAttributes == null ) {
+            originalDataObjectEntryAttributes = new ArrayList<AttributeDefinition>();
         }
+        // This is the list we will set
+        List<AttributeDefinition> dataObjectEntryAttributes = new ArrayList<AttributeDefinition>();
         // We are going to loop over the data in the metadata instead of the DD
         // because we want to add attribute definitions if they do not exist
         // and we don't care about attributes which only exist in the DD
@@ -325,17 +328,20 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
             }
 
             AttributeDefinition attributeDefinition = getAttributeDefinition(attr.getName());
+            originalDataObjectEntryAttributes.remove(attributeDefinition);
 
             if ( attributeDefinition == null ) {
                 attributeDefinition = new AttributeDefinition();
                 attributeDefinition.setName(attr.getName());
                 attributeDefinition.setGeneratedFromMetadata(true);
-                dataObjectEntryAttributes.add(attributeDefinition);
             }
 
             attributeDefinition.setDataObjectAttribute(attr);
             attributeDefinition.setEmbeddedDataObjectMetadata(true);
+            dataObjectEntryAttributes.add(attributeDefinition);
         }
+        // Add any which remain in this list to the end
+        dataObjectEntryAttributes.addAll(originalDataObjectEntryAttributes);
         // now that we are done, we need to set the resulting list back to the entry
         // This triggers the needed indexing
         setAttributes(dataObjectEntryAttributes);

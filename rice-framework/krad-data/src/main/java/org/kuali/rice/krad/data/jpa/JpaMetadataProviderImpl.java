@@ -19,7 +19,9 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -150,8 +152,9 @@ public abstract class JpaMetadataProviderImpl extends MetadataProviderBase imple
 
 		// Main Attribute Extraction
 		try {
-			metadata.setAttributes(getSingularAttributes(persistableClass, entityType.getSingularAttributes(),
-					metadata.getPrimaryKeyAttributeNames()));
+			List<DataObjectAttribute> attributes = getSingularAttributes(persistableClass,
+					entityType.getSingularAttributes(), metadata.getPrimaryKeyAttributeNames());
+			metadata.setAttributes(attributes);
 		} catch (RuntimeException ex) {
 			LOG.error("Error processing attribute metadata for " + entityType.getBindableJavaType().getName());
 			throw ex;
@@ -220,11 +223,26 @@ public abstract class JpaMetadataProviderImpl extends MetadataProviderBase imple
 		if (fields == null) {
 			fields = Collections.emptySet();
 		}
-		List<DataObjectAttribute> attributes = new ArrayList<DataObjectAttribute>(fields.size());
+		// Put them all into a map by their property name so we can find them
+		// We want to add them to the list in appearance order in the class
+		Map<String, SingularAttribute> attrs = new HashMap<String, SingularAttribute>(fields.size());
 		for (SingularAttribute attr : (Collection<SingularAttribute>) fields) {
 			if (!attr.isAssociation()) {
-				attributes.add(getAttributeMetadata(persistableClass, attr, primaryKeyAttributes));
+				attrs.put(attr.getName(), attr);
 			}
+		}
+		List<DataObjectAttribute> attributes = new ArrayList<DataObjectAttribute>(fields.size());
+		// This will process them in appearance order
+		for (Field f : persistableClass.getDeclaredFields()) {
+			SingularAttribute attr = attrs.get(f.getName());
+			if (attr != null) {
+				attributes.add(getAttributeMetadata(persistableClass, attr, primaryKeyAttributes));
+				attrs.remove(f.getName()); // to note that it's been used - see below
+			}
+		}
+		// Just in case there are others which don't match, we don't want to miss them and will add them at the end
+		for (SingularAttribute attr : attrs.values()) {
+			attributes.add(getAttributeMetadata(persistableClass, attr, primaryKeyAttributes));
 		}
 		return attributes;
 	}

@@ -239,6 +239,9 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
         // TODO: If we have an @Section notation, switch to the section, creating if the ID is unknown
         List<Component> items = (List<Component>) currentGroup.getItems(); // needed to deal with generics issue
         for ( AttributeDefinition attr : dataObjectEntry.getAttributes() ) {
+            if ( attr.getControlField().isHidden() ) {
+                continue;
+            }
             DataField dataField = ComponentFactory.getDataField();
             dataField.setPropertyName(attr.getName());
             items.add(dataField);

@@ -56,6 +56,7 @@ class SpringBeanTransformer {
     def carryoverProperties
     def replacePropertyDuringConversion
     def controlPropertiesMap
+    def validationPatternMap
     def validationPatternPropertiesMap
 
     def init(config) {
@@ -67,6 +68,7 @@ class SpringBeanTransformer {
         carryoverAttributes = config.bool.dictionaryconversion.carryoverAttributes;
         carryoverProperties = config.bool.dictionaryconversion.carryoverProperties;
         controlPropertiesMap = config.map.convert_control_properties
+        validationPatternMap = config.map.convert.dd_validation_patterns
         validationPatternPropertiesMap = config.map.convert_validation_pattern_properties
         replacePropertyDuringConversion = config.bool.dictionaryconversion.replaceControlProperty
     }
@@ -565,18 +567,26 @@ class SpringBeanTransformer {
      * @param renamedControlBeans
      * @return
      */
-    def transformControlProperty(def beanNode, Map<String, String> renamedControlBeans) {
+    def transformControlProperty(def beanNode, Map<String, String> renamedControlBeans, boolean replaceNode) {
         def controlProperty = beanNode?.property?.find { "control".equals(it.@name) };
         def controlFieldProperty = beanNode?.property?.find { "controlField".equals(it.@name) };
         if (controlProperty) {
             def controlDefBean = controlProperty.bean.find { it.@parent?.endsWith("Definition") };
             def controlDefParent = controlDefBean.@parent;
-            if (controlFieldProperty) {
+            if (controlFieldProperty && replaceNode) {
                 this.removeProperties(beanNode, ["control"]);
             } else if (renamedControlBeans.get(controlDefParent) != null) {
-                controlProperty.replaceNode {
-                    property(name: "controlField") {
-                        transformControlDefinitionBean(delegate, controlDefBean, renamedControlBeans)
+                if (replaceNode){
+                    controlProperty.replaceNode {
+                        property(name: "controlField") {
+                            transformControlDefinitionBean(delegate, controlDefBean, renamedControlBeans)
+                        }
+                    }
+                }else {
+                    controlProperty.plus {
+                        property(name: "controlField") {
+                            transformControlDefinitionBean(delegate, controlDefBean, renamedControlBeans)
+                        }
                     }
                 }
 

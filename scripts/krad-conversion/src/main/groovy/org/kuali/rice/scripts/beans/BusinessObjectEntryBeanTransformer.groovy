@@ -35,12 +35,56 @@ class BusinessObjectEntryBeanTransformer extends SpringBeanTransformer {
         if (beanNode?.@parent == "BusinessObjectEntry") {
             beanNode.@parent = "DataObjectEntry";
         }
-        transformControlProperty(beanNode, ddBeanControlMap);
+        transformControlProperty(beanNode, ddBeanControlMap, replacePropertyDuringConversion);
+        transformValidationPatternBeanProperty(beanNode, replacePropertyDuringConversion)
         this.removeProperties(beanNode, ddPropertiesRemoveList);
         this.renameProperties(beanNode, ddPropertiesMap);
         renamePropertyBeans(beanNode, ddPropertiesMap, false);
 
         return beanNode
+    }
+
+    /**
+     * Modifies validationPattern into KRAD validCharactersConstraint
+     *
+     * @param beanNode
+     * @param replaceNode - if true, replace existing KNS node. if false, add new KRAD node, keeping KNS node
+     * @return
+     */
+    def transformValidationPatternBeanProperty(Node beanNode, boolean replaceNode) {
+        def validationPatternProperty = beanNode?.property?.find { "validationPattern".equals(it.@name) };
+        if (validationPatternProperty){
+            if (replaceNode){
+                // transform the existing validationPattern node into KRAD validCharactersConstraint
+                validationPatternProperty.replaceNode {
+                    transformValidationPatternProperty(delegate, validationPatternProperty);
+                }
+            }  else {
+                // build a new KRAD validationCharactersConstraint and add it to the parent, keeping the existing KNS validationPattern
+                validationPatternProperty.plus {
+                    transformValidationPatternProperty(delegate, validationPatternProperty);
+                }
+            }
+        }
+    }
+
+    /**
+     * Builds a KRAD validCharactersConstraint property node, with corresponding validationPatterConstraint bean.
+     * @param builder
+     * @param beanNode
+     * @return the newly created property node
+     */
+    def transformValidationPatternProperty(NodeBuilder builder, Node beanNode) {
+        def patternBean = beanNode.bean.find { return true; }
+        def beanAttributes  = gatherValidationPatternAttributes(patternBean)
+        def propertyAttributes = [name: 'validCharactersConstraint']
+        if (beanNode.@id) {
+            propertyAttributes.put("id", beanNode.@id)
+        }
+        builder.property(propertyAttributes) {
+            beanAttributes.put("parent", validationPatternMap[patternBean.@parent])
+            genericBeanTransform(builder, beanAttributes)
+        }
     }
 
 }

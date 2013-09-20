@@ -20,6 +20,8 @@ import edu.samplu.admin.test.ComponentSmokeTest;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created as a way to link Rice Smoke Test failures to existing Jiras as a html link in Jenkins.  The more failures
@@ -43,9 +45,16 @@ public class JiraAwareFailureUtil {
      */
     public static final String JIRA_BROWSE_URL = "https://jira.kuali.org/browse/";
 
-    static Map<String, String> jiraMatches;
+    static Map<String, String> regexJiraMatches; // for more powerful matching
+
+    static Map<String, String> jiraMatches; // simple contains matching
 
     static {
+        regexJiraMatches = new HashMap<String, String>();
+
+        regexJiraMatches.put(".*NullPointerException.*InputField.performFinalize.*", "KULRICE-10674 Old sampleapp KRAD Kitchensink NPE InputField.performFinalize");
+
+
         jiraMatches = new HashMap<String, String>();
 
         jiraMatches.put(
@@ -122,8 +131,6 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("//div[@class='uif-horizontalBoxGroup uif-stickyFooter uif-stickyButtonFooter' and @data-sticky_footer='true']", "KULRICE-10565 DemoLibraryGeneralFeaturesStickyFooterSmokeTest Example 5 - page and view footers not sticky");
 
         jiraMatches.put("//div[@id='Demo-TableLayoutDetails-Example3']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='dataTables_wrapper']/table/tbody/tr[@class='detailsRow']/td/div/div[@class='uif-verticalBoxLayout clearfix']/div[@class='uif-disclosure uif-boxLayoutVerticalItem clearfix']/div[@class='uif-disclosureContent']/div[@class='dataTables_wrapper']/table", "KULRICE-10569 DemoLibraryCollectionFeaturesRowDetailsSmokeTest testCollectionFeaturesRowDetailsTableSubCollection no subtable");
-
-        jiraMatches.put("WatermarkValidationIT.testWatermarking navigating to Uif Components", "KULRICE-10674 Old sampleapp KRAD Kitchensink NPE InputField.performFinalize");
         //jiraMatches.put("", "");
     }
 
@@ -133,8 +140,23 @@ public class JiraAwareFailureUtil {
      * @param failable to fail with the jiraMatches value if the jiraMatches key is contained in the contents
      */
     public static void failOnMatchedJira(String contents, Failable failable) {
-        Iterator<String> iter = jiraMatches.keySet().iterator();
         String key = null;
+        Pattern pattern = null;
+        Matcher matcher = null;
+
+        Iterator<String> iter = regexJiraMatches.keySet().iterator();
+
+        while (iter.hasNext()) {
+            key = iter.next();
+            pattern = Pattern.compile(key, Pattern.DOTALL); // match across line terminators
+            matcher = pattern.matcher(contents);
+
+            if (matcher.find()) {
+                failable.fail(JIRA_BROWSE_URL + regexJiraMatches.get(key) + "\n\n" + contents);
+            }
+        }
+
+        iter = jiraMatches.keySet().iterator();
 
         while (iter.hasNext()) {
             key = iter.next();

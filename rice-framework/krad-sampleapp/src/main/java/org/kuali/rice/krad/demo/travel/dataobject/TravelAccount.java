@@ -37,8 +37,6 @@ import org.kuali.rice.core.api.util.type.KualiPercent;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.bo.DataObjectBase;
-import org.kuali.rice.krad.data.provider.annotation.AutoCreateUifViews;
-import org.kuali.rice.krad.data.provider.annotation.AutoCreateViewType;
 import org.kuali.rice.krad.data.provider.annotation.Description;
 import org.kuali.rice.krad.data.provider.annotation.ForceUppercase;
 import org.kuali.rice.krad.data.provider.annotation.InheritProperties;
@@ -46,12 +44,16 @@ import org.kuali.rice.krad.data.provider.annotation.InheritProperty;
 import org.kuali.rice.krad.data.provider.annotation.KeyValuesFinderClass;
 import org.kuali.rice.krad.data.provider.annotation.Label;
 import org.kuali.rice.krad.data.provider.annotation.Relationship;
-import org.kuali.rice.krad.data.provider.annotation.ValidCharactersConstraintBeanName;
+import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViewType;
+import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViews;
+import org.kuali.rice.krad.data.provider.annotation.UifDisplayHint;
+import org.kuali.rice.krad.data.provider.annotation.UifDisplayHints;
+import org.kuali.rice.krad.data.provider.annotation.UifValidCharactersConstraintBeanName;
 import org.kuali.rice.krad.demo.travel.options.AccountTypeKeyValues;
 
 @Entity
 @Table(name="TRV_ACCT")
-@AutoCreateUifViews(AutoCreateViewType.INQUIRY)
+@UifAutoCreateViews(UifAutoCreateViewType.INQUIRY)
 public class TravelAccount extends DataObjectBase implements Serializable {
 	private static final long serialVersionUID = -7739303391609093875L;
 
@@ -59,7 +61,7 @@ public class TravelAccount extends DataObjectBase implements Serializable {
 	@Column(name="ACCT_NUM",length=10)
 	@Label("Travel Account Number")
 	@Description("Unique identifier for account")
-	@ValidCharactersConstraintBeanName("AlphaNumericPatternConstraint")
+	@UifValidCharactersConstraintBeanName("AlphaNumericPatternConstraint")
 	private String number;
 
 	@Column(name="ACCT_NAME",length=40)
@@ -77,6 +79,7 @@ public class TravelAccount extends DataObjectBase implements Serializable {
 
     @Column(name="ACCT_FO_ID",length=40)
     @Size(max=40)
+    @UifDisplayHints(UifDisplayHint.HIDDEN)
 	private String foId;
 
     @Relationship(foreignKeyFields="foId")
@@ -91,6 +94,7 @@ public class TravelAccount extends DataObjectBase implements Serializable {
 	@Label("Travel Account Type Code")
 	@Description("Type code grouping for account")
 	@KeyValuesFinderClass(AccountTypeKeyValues.class)
+    @UifDisplayHints(UifDisplayHint.RADIO)
     protected String accountTypeCode;
 
     @ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.REFRESH})

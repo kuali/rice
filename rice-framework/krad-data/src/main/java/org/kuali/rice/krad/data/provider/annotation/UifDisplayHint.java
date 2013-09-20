@@ -15,18 +15,26 @@
  */
 package org.kuali.rice.krad.data.provider.annotation;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 /**
- * Indicates that you want the krad-data module to auto-generate the listed types of KRAD views upon startup.
+ * Enum representing the hints which can be passed through when auto-generating the input fields for an attribute.
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-public @interface AutoCreateUifViews {
-	AutoCreateViewType[] value() default AutoCreateViewType.ALL;
+public enum UifDisplayHint {
+	/**
+	 * Tells the defaulter to hide this field and not generate an input field for it.
+	 */
+	HIDDEN,
+	/**
+	 * Tells the defaulter to exclude this field and not generate an attribute definition at all.
+	 */
+	EXCLUDE,
+	/**
+	 * If a values finder is present for the field, generate as a Drop-down list.
+	 */
+	DROPDOWN,
+	/**
+	 * If a values finder is present for the field, generate as a set of radio buttons.
+	 */
+	RADIO;
 }

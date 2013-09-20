@@ -35,7 +35,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
-import org.kuali.rice.krad.data.provider.annotation.AutoCreateViewType;
+import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViewType;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.exception.CompletionException;
 import org.kuali.rice.krad.datadictionary.parse.StringListConverter;
@@ -262,7 +262,7 @@ public class DataDictionary {
             if ( entry.getDataObjectMetadata() == null ) {
                 continue;
             }
-            if ( !entry.getDataObjectMetadata().shouldAutoCreateUifViewOfType(AutoCreateViewType.INQUIRY)) {
+            if ( !entry.getDataObjectMetadata().shouldAutoCreateUifViewOfType(UifAutoCreateViewType.INQUIRY)) {
                 continue;
             }
             // no inquiry exists and we want one to, create one

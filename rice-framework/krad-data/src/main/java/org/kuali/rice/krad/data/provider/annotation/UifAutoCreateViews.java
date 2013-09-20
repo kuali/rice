@@ -15,24 +15,18 @@
  */
 package org.kuali.rice.krad.data.provider.annotation;
 
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
- * Enum representing the types which can be auto-generated.
+ * Indicates that you want the krad-data module to auto-generate the listed types of KRAD views upon startup.
  */
-public enum AutoCreateViewType {
-	/**
-	 * Convenience value which tells the system to generate all of the other items.
-	 */
-	ALL,
-	/**
-	 * Generate a bean which provides an InquiryView
-	 */
-	INQUIRY,
-	/**
-	 * Generate a bean which provides a LookupView
-	 */
-	LOOKUP,
-	/**
-	 * Generate beans which provides a maintenance document and related MaintenanceView
-	 */
-	MAINT_DOC;
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface UifAutoCreateViews {
+	UifAutoCreateViewType[] value() default UifAutoCreateViewType.ALL;
 }

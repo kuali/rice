@@ -16,10 +16,12 @@
 package org.kuali.rice.krad.data.metadata;
 
 import java.beans.PropertyEditor;
+import java.util.Set;
 
 import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.provider.PersistenceProvider;
+import org.kuali.rice.krad.data.provider.annotation.UifDisplayHint;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 
 /**
@@ -118,4 +120,9 @@ public interface DataObjectAttribute extends MetadataCommon {
 	 * Obtains the "original" data object attribute in a chain of embedded attribute definitions.
 	 */
 	DataObjectAttribute getOriginalDataObjectAttribute();
+
+	/**
+	 * Returns a set of display hints which can be used by the UIF layer when displaying these fields.
+	 */
+	Set<UifDisplayHint> getDisplayHints();
 }

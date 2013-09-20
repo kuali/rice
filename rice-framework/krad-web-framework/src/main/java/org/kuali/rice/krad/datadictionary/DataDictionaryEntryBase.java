@@ -17,6 +17,7 @@ package org.kuali.rice.krad.datadictionary;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,7 @@ import org.kuali.rice.krad.data.metadata.DataObjectCollection;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
 import org.kuali.rice.krad.data.provider.MetadataProvider;
+import org.kuali.rice.krad.data.provider.annotation.UifDisplayHint;
 import org.kuali.rice.krad.datadictionary.exception.DuplicateEntryException;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.state.StateMapping;
@@ -293,6 +295,12 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
         }
     }
 
+    protected static final Set<String> EXCLUDED_PROPERTY_NAMES = new HashSet<String>();
+    static {
+        EXCLUDED_PROPERTY_NAMES.add("objectId");
+        EXCLUDED_PROPERTY_NAMES.add("versionNumber");
+    }
+
     protected void injectMetadataIntoAttributes( DataObjectMetadata dataObjectMetadata ) {
         List<AttributeDefinition> dataObjectEntryAttributes = getAttributes();
         // this should never happen, but just in case someone was pathological enough to set it to null manually, let's be prepared
@@ -303,21 +311,30 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
         // because we want to add attribute definitions if they do not exist
         // and we don't care about attributes which only exist in the DD
         for ( DataObjectAttribute attr : dataObjectMetadata.getAttributes() ) {
-            if ( StringUtils.isNotBlank(attr.getName())) {
-                AttributeDefinition attributeDefinition = getAttributeDefinition(attr.getName());
-
-                if ( attributeDefinition == null ) {
-                    attributeDefinition = new AttributeDefinition();
-                    attributeDefinition.setName(attr.getName());
-                    attributeDefinition.setGeneratedFromMetadata(true);
-                    dataObjectEntryAttributes.add(attributeDefinition);
-
-                }
-                attributeDefinition.setDataObjectAttribute(attr);
-                attributeDefinition.setEmbeddedDataObjectMetadata(true);
-            } else {
+            if ( StringUtils.isBlank(attr.getName())) {
                 LOG.warn( "Attribute in metadata model contained blank name attribute: " + attr );
+                continue;
             }
+            // certain old properties we never want to see
+            if ( EXCLUDED_PROPERTY_NAMES.contains( attr.getName() ) ) {
+                continue;
+            }
+            // if we've been told to exclude it, just ignore
+            if ( attr.getDisplayHints().contains(UifDisplayHint.EXCLUDE) ) {
+                continue;
+            }
+
+            AttributeDefinition attributeDefinition = getAttributeDefinition(attr.getName());
+
+            if ( attributeDefinition == null ) {
+                attributeDefinition = new AttributeDefinition();
+                attributeDefinition.setName(attr.getName());
+                attributeDefinition.setGeneratedFromMetadata(true);
+                dataObjectEntryAttributes.add(attributeDefinition);
+            }
+
+            attributeDefinition.setDataObjectAttribute(attr);
+            attributeDefinition.setEmbeddedDataObjectMetadata(true);
         }
         // now that we are done, we need to set the resulting list back to the entry
         // This triggers the needed indexing

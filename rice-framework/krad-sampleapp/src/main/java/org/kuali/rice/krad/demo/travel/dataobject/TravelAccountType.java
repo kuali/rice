@@ -27,7 +27,7 @@ import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.provider.annotation.Label;
 import org.kuali.rice.krad.data.provider.annotation.NonPersistentProperty;
 import org.kuali.rice.krad.data.provider.annotation.ShortLabel;
-import org.kuali.rice.krad.data.provider.annotation.ValidCharactersConstraintBeanName;
+import org.kuali.rice.krad.data.provider.annotation.UifValidCharactersConstraintBeanName;
 
 @Entity
 @Table(name="TRV_ACCT_TYPE")
@@ -38,14 +38,14 @@ public class TravelAccountType extends DataObjectBase implements Serializable {
 	@Column(name="ACCT_TYPE",length=3)
 	@Label("Travel Account Type Code")
 	@ShortLabel("Code")
-	@ValidCharactersConstraintBeanName("AnyCharacterPatternConstraint")
+	@UifValidCharactersConstraintBeanName("AnyCharacterPatternConstraint")
 	private String accountTypeCode;
 
     @Column(name="ACCT_TYPE_NAME",length=40)
 	@Label("Account Type Name")
     @ShortLabel("Name")
     @NotNull
-	@ValidCharactersConstraintBeanName("AnyCharacterPatternConstraint")
+	@UifValidCharactersConstraintBeanName("AnyCharacterPatternConstraint")
 	private String name;
 
 

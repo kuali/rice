@@ -18,7 +18,7 @@ package org.kuali.rice.krad.data.metadata;
 import java.util.Collection;
 import java.util.List;
 
-import org.kuali.rice.krad.data.provider.annotation.AutoCreateViewType;
+import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViewType;
 
 
 /**
@@ -143,7 +143,7 @@ public interface DataObjectMetadata extends MetadataCommon {
 	 */
 	boolean isSupportsOptimisticLocking();
 
-	Collection<AutoCreateViewType> getAutoCreateUifViewTypes();
+	Collection<UifAutoCreateViewType> getAutoCreateUifViewTypes();
 
-	boolean shouldAutoCreateUifViewOfType(AutoCreateViewType viewType);
+	boolean shouldAutoCreateUifViewOfType(UifAutoCreateViewType viewType);
 }

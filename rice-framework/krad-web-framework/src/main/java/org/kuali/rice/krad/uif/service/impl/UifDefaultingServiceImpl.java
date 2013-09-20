@@ -21,9 +21,11 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.data.DataType;
+import org.kuali.rice.krad.data.metadata.DataObjectAttribute;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
 import org.kuali.rice.krad.data.metadata.MetadataRepository;
+import org.kuali.rice.krad.data.provider.annotation.UifDisplayHint;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.DataObjectEntry;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
@@ -70,21 +72,26 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
         return label.toString().trim();
     }
 
-    @Override
-    public Control deriveControlAttributeFromMetadata( AttributeDefinition attrDef ) {
+    protected Control getControlInstance( AttributeDefinition attrDef, DataObjectAttribute dataObjectAttribute ) {
         Control c = null;
-        // First, check if a values finder has been established
-        // If so, use a drop-down list
-        if ( attrDef.getOptionsFinder() != null ) {
-            c = ComponentFactory.getSelectControl();
-        // FIXME: JHK: Yes, I know this is a *HORRIBLE* hack - but the alternative
-        // would look even more "hacky" and error-prone
-        } else if ( attrDef.getName().endsWith( ".principalName" ) && attrDef.getDataObjectAttribute() != null ) {
+        // Check for the hidden hint - if present - then use that control type
+        if ( dataObjectAttribute != null && dataObjectAttribute.getDisplayHints().contains(UifDisplayHint.HIDDEN) ) {
+            c = ComponentFactory.getHiddenControl();
+        } else if ( attrDef.getOptionsFinder() != null ) {
+            // if a values finder has been established, use a radio button group or drop-down list
+            if ( dataObjectAttribute != null && dataObjectAttribute.getDisplayHints().contains(UifDisplayHint.RADIO)) {
+                c = ComponentFactory.getRadioGroupControl();
+            } else {
+                c = ComponentFactory.getSelectControl();
+            }
+        } else if ( attrDef.getName().endsWith( ".principalName" ) && dataObjectAttribute != null ) {
+            // FIXME: JHK: Yes, I know this is a *HORRIBLE* hack - but the alternative
+            // would look even more "hacky" and error-prone
             c = ComponentFactory.getUserControl();
             // Need to find the relationship information
             // get the relationship ID by removing .principalName from the attribute name
             String relationshipName = StringUtils.removeEnd(attrDef.getName(), ".principalName");
-            DataObjectMetadata metadata = metadataRepository.getMetadata(attrDef.getDataObjectAttribute().getOwningType());
+            DataObjectMetadata metadata = metadataRepository.getMetadata(dataObjectAttribute.getOwningType());
             if ( metadata != null ) {
                 DataObjectRelationship relationship = metadata.getRelationship(relationshipName);
                 if ( relationship != null ) {
@@ -92,7 +99,7 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
                     ((UserControl)c).setPersonObjectPropertyName(relationshipName);
                 }
             } else {
-                LOG.warn( "Attempt to pull relationship name: " + relationshipName + " resulted in missing metadata when looking for: " + attrDef.getDataObjectAttribute().getOwningType() );
+                LOG.warn( "Attempt to pull relationship name: " + relationshipName + " resulted in missing metadata when looking for: " + dataObjectAttribute.getOwningType() );
             }
         } else {
             switch ( attrDef.getDataType() ) {
@@ -129,31 +136,42 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
                     break;
             }
         }
+        return c;
+    }
+
+    protected void customizeControlInstance( Control c, AttributeDefinition attrDef, DataObjectAttribute dataObjectAttribute ) {
+        c.setRequired(attrDef.isRequired());
+        if ( c instanceof TextControl ) {
+            if ( attrDef.getMaxLength() != null ) {
+                ((TextControl) c).setMaxLength( attrDef.getMaxLength() );
+                ((TextControl) c).setSize( attrDef.getMaxLength() );
+                // If it's a larger field, add the expand icon by default
+                if ( attrDef.getMaxLength() > 80 ) { // JHK : yes, this was a mostly arbitrary choice
+                    ((TextControl) c).setTextExpand(true);
+                }
+            }
+            if ( attrDef.getMinLength() != null ) {
+                ((TextControl) c).setMinLength( attrDef.getMinLength() );
+            }
+        }
+        if ( c instanceof TextAreaControl ) {
+            if ( attrDef.getMaxLength() != null ) {
+                ((TextAreaControl) c).setMaxLength( attrDef.getMaxLength() );
+                ((TextAreaControl) c).setRows(attrDef.getMaxLength()/((TextAreaControl) c).getCols());
+            }
+            if ( attrDef.getMinLength() != null ) {
+                ((TextAreaControl) c).setMinLength( attrDef.getMinLength() );
+            }
+        }
+    }
+
+    @Override
+    public Control deriveControlAttributeFromMetadata( AttributeDefinition attrDef ) {
+        DataObjectAttribute dataObjectAttribute = attrDef.getDataObjectAttribute();
+        Control c = getControlInstance(attrDef, dataObjectAttribute);
         // If we a have a control...we should - but just in case - don't want to be too dependent on assumptions of the above code
         if ( c != null ) {
-            c.setRequired(attrDef.isRequired());
-            if ( c instanceof TextControl ) {
-                if ( attrDef.getMaxLength() != null ) {
-                    ((TextControl) c).setMaxLength( attrDef.getMaxLength() );
-                    ((TextControl) c).setSize( attrDef.getMaxLength() );
-                    // If it's a larger field, add the expand icon by default
-                    if ( attrDef.getMaxLength() > 80 ) { // JHK : yes, this was a mostly arbitrary choice
-                        ((TextControl) c).setTextExpand(true);
-                    }
-                }
-                if ( attrDef.getMinLength() != null ) {
-                    ((TextControl) c).setMinLength( attrDef.getMinLength() );
-                }
-            }
-            if ( c instanceof TextAreaControl ) {
-                if ( attrDef.getMaxLength() != null ) {
-                    ((TextAreaControl) c).setMaxLength( attrDef.getMaxLength() );
-                    ((TextAreaControl) c).setRows(attrDef.getMaxLength()/((TextAreaControl) c).getCols());
-                }
-                if ( attrDef.getMinLength() != null ) {
-                    ((TextAreaControl) c).setMinLength( attrDef.getMinLength() );
-                }
-            }
+            customizeControlInstance( c, attrDef, dataObjectAttribute );
         }
         return c;
     }

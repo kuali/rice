@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -48,7 +49,6 @@ import org.kuali.rice.krad.data.metadata.impl.DataObjectMetadataImpl;
 import org.kuali.rice.krad.data.metadata.impl.DataObjectRelationshipImpl;
 import org.kuali.rice.krad.data.metadata.impl.MetadataCommonBase;
 import org.kuali.rice.krad.data.provider.annotation.AttributeRelationship;
-import org.kuali.rice.krad.data.provider.annotation.AutoCreateUifViews;
 import org.kuali.rice.krad.data.provider.annotation.BusinessKey;
 import org.kuali.rice.krad.data.provider.annotation.CollectionRelationship;
 import org.kuali.rice.krad.data.provider.annotation.CollectionSortAttribute;
@@ -66,7 +66,11 @@ import org.kuali.rice.krad.data.provider.annotation.ReadOnly;
 import org.kuali.rice.krad.data.provider.annotation.Relationship;
 import org.kuali.rice.krad.data.provider.annotation.Sensitive;
 import org.kuali.rice.krad.data.provider.annotation.ShortLabel;
-import org.kuali.rice.krad.data.provider.annotation.ValidCharactersConstraintBeanName;
+import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViews;
+import org.kuali.rice.krad.data.provider.annotation.UifDisplayHint;
+import org.kuali.rice.krad.data.provider.annotation.UifDisplayHints;
+import org.kuali.rice.krad.data.provider.annotation.UifSection;
+import org.kuali.rice.krad.data.provider.annotation.UifValidCharactersConstraintBeanName;
 import org.kuali.rice.krad.data.provider.impl.MetadataProviderBase;
 
 /**
@@ -170,8 +174,8 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 				classAnnotationFound = true;
 				continue;
 			}
-			if (a instanceof AutoCreateUifViews) {
-				metadata.setAutoCreateUifViewTypes(Arrays.asList(((AutoCreateUifViews) a).value()));
+			if (a instanceof UifAutoCreateViews) {
+				metadata.setAutoCreateUifViewTypes(Arrays.asList(((UifAutoCreateViews) a).value()));
 			}
 		}
 		if (fieldAnnotationsFound) {
@@ -381,8 +385,8 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 			attr.setReadOnly(true);
 			return true;
 		}
-		if (a instanceof ValidCharactersConstraintBeanName) {
-			attr.setValidCharactersConstraintBeanName(((ValidCharactersConstraintBeanName) a).value());
+		if (a instanceof UifValidCharactersConstraintBeanName) {
+			attr.setValidCharactersConstraintBeanName(((UifValidCharactersConstraintBeanName) a).value());
 			return true;
 		}
 		if (a instanceof KeyValuesFinderClass) {
@@ -420,6 +424,12 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 		}
 		if (a instanceof Sensitive) {
 			attr.setSensitive(true);
+		}
+		if (a instanceof UifDisplayHints) {
+			attr.setDisplayHints(new HashSet<UifDisplayHint>(Arrays.asList(((UifDisplayHints) a).value())));
+		}
+		if (a instanceof UifSection) {
+			// TODO
 		}
 		if (a instanceof MergeAction) {
 			MetadataMergeAction mma = ((MergeAction) a).value();

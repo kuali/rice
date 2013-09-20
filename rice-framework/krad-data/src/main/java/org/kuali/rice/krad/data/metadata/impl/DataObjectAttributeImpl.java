@@ -16,10 +16,13 @@
 package org.kuali.rice.krad.data.metadata.impl;
 
 import java.beans.PropertyEditor;
+import java.util.Collections;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.krad.data.metadata.DataObjectAttribute;
+import org.kuali.rice.krad.data.provider.annotation.UifDisplayHint;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 
 /**
@@ -63,6 +66,8 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 	protected DataType dataType = DataType.STRING;
 	protected Class<?> type = String.class;
 	
+	protected Set<UifDisplayHint> displayHints;
+
 	@Override
 	public String getDisplayAttributeName() {
 		if (displayAttributeName != null) {
@@ -357,7 +362,7 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		if (sensitive != null) {
 			return sensitive;
 		}
-		if (sensitive != null) {
+		if (embeddedAttribute != null) {
 			return embeddedAttribute.isSensitive();
 		}
 		return false;
@@ -365,5 +370,20 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 
 	public void setSensitive(boolean sensitive) {
 		this.sensitive = sensitive;
+	}
+
+	@Override
+	public Set<UifDisplayHint> getDisplayHints() {
+		if (displayHints != null) {
+			return displayHints;
+		}
+		if (embeddedAttribute != null) {
+			return embeddedAttribute.getDisplayHints();
+		}
+		return Collections.emptySet();
+	}
+
+	public void setDisplayHints(Set<UifDisplayHint> displayHints) {
+		this.displayHints = displayHints;
 	}
 }

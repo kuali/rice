@@ -54,6 +54,8 @@ public class JiraAwareFailureUtil {
 
         regexJiraMatches.put(".*NullPointerException.*InputField.performFinalize.*", "KULRICE-10674 Old sampleapp KRAD Kitchensink NPE InputField.performFinalize");
 
+        regexJiraMatches.put(".*NullPointerException.*ReflectUtil.checkPackageAccess.*", "KULRICE-10675 KRAD Demo Travel Account Maintenance Edit NPE Incident Report ReflectUtil.checkPackageAccess");
+
 
         jiraMatches = new HashMap<String, String>();
 
@@ -152,7 +154,7 @@ public class JiraAwareFailureUtil {
             matcher = pattern.matcher(contents);
 
             if (matcher.find()) {
-                failable.fail(JIRA_BROWSE_URL + regexJiraMatches.get(key) + "\n\n" + contents);
+                failable.fail("\n" + JIRA_BROWSE_URL + regexJiraMatches.get(key) + "\n\n" + contents);
             }
         }
 
@@ -161,7 +163,7 @@ public class JiraAwareFailureUtil {
         while (iter.hasNext()) {
             key = iter.next();
             if (contents.contains(key)) {
-                failable.fail(JIRA_BROWSE_URL + jiraMatches.get(key) + "\n\n" + contents);
+                failable.fail("\n" + JIRA_BROWSE_URL + jiraMatches.get(key) + "\n\n" + contents);
             }
         }
     }

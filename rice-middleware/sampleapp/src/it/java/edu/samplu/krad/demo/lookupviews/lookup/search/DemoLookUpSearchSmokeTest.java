@@ -41,10 +41,10 @@ public class DemoLookUpSearchSmokeTest extends SmokeTestBase {
     }
 
     protected void testLookUpSearch() throws InterruptedException {
-        waitForElementPresentByXpath("//span[contains(text(), 'a1')]");
+        waitForElementPresentByXpath("//a[contains(text(), 'a1')]");
         assertTextPresent("a1*");
-        assertElementPresentByXpath("//span[contains(text(), 'a14')]");
-        findElements(By.xpath("//span[contains(text(), 'a2')]"));
+        assertElementPresentByXpath("//a[contains(text(), 'a14')]");
+        findElements(By.xpath("//a[contains(text(), 'a2')]"));
     }
 
     @Test

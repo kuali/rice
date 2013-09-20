@@ -463,6 +463,8 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TreeGroup-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Page Group"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-PageGroup-View&amp;methodToCall=start"/>
+        <bean parent="Uif-Link" p:linkText="Field Group"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-FieldGroup-View&amp;methodToCall=start"/>
       </list>
     </property>
   </bean>

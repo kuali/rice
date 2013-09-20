@@ -1187,7 +1187,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * Uses Selenium's findElements method which does not throw a test exception if not found.
      */
     protected void gotoNestedFrame() {
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
         driver.switchTo().defaultContent();
         String iframeXpath = "//frame";
 
@@ -1195,7 +1195,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
         gotoIframeByXpath(iframeXpath);
 
-        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
     }
 
     protected void gotoIframeByXpath(String iframeXpath) {

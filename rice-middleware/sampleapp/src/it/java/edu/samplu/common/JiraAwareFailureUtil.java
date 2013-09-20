@@ -56,6 +56,8 @@ public class JiraAwareFailureUtil {
 
         regexJiraMatches.put(".*NullPointerException.*ReflectUtil.checkPackageAccess.*", "KULRICE-10675 KRAD Demo Travel Account Maintenance Edit NPE Incident Report ReflectUtil.checkPackageAccess");
 
+        regexJiraMatches.put(".*RiceIllegalArgumentException.*KimTypeInfoServiceImpl.incomingParamCheck.*", "KULRICE-10647 KRAD Demo LIbrary Control KIM Group null id Incident Report");
+
 
         jiraMatches = new HashMap<String, String>();
 

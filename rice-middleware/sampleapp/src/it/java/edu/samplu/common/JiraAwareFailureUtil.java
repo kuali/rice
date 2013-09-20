@@ -117,6 +117,7 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("Document Expired", "KULRICE-9709 Search Edit Back does not show search results in Firefox");
 
         jiraMatches.put("org.kuali.rice.krad.uif.view.View cannot be cast to org.kuali.rice.krad.uif.view.LookupView", "KULRICE-10489 KRAD Demo Lookup Sample with Conditional Criteria ClassCastException on search");
+        jiraMatches.put("DemoLookUpConditionalCriteriaSmokeTest testLookUpConditionalCriteria", "KULRICE-10489 KRAD Demo Lookup Sample with Conditional Criteria ClassCastException on search");
 
         jiraMatches.put("WorkFlowRouteRulesBlanketApp expected:<[FINAL]>", "KULRICE-9051 WorkFlow Route Rules Blanket Approval submit status results in Enroute, not Final");
 

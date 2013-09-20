@@ -75,7 +75,7 @@ public class DemoLookUpConditionalCriteriaSmokeTest extends SmokeTestBase {
         waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME,"a1");
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(10000); // If we don't wait long enough we'll get concurrency issues.
-        checkForIncidentReport();
+        checkForIncidentReport(SEARCH, "DemoLookUpConditionalCriteriaSmokeTest testLookUpConditionalCriteria");
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(3000);
         checkForIncidentReport();

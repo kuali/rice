@@ -290,22 +290,25 @@ public class ITUtil {
     }
 
     private static String extractIncidentReportKim(String contents, String linkLocator, String message) {
-        String chunk =  contents.substring(contents.indexOf("id=\"headerarea\""), contents.lastIndexOf("</div>") );
-        String docIdPre = "type=\"hidden\" value=\"";
-        String docId = chunk.substring(chunk.indexOf(docIdPre) + docIdPre.length(), chunk.indexOf("\" name=\"documentId\""));
+        if (contents.indexOf("id=\"headerarea\"") > -1) {
+            String chunk =  contents.substring(contents.indexOf("id=\"headerarea\""), contents.lastIndexOf("</div>") );
+            String docIdPre = "type=\"hidden\" value=\"";
+            String docId = chunk.substring(chunk.indexOf(docIdPre) + docIdPre.length(), chunk.indexOf("\" name=\"documentId\""));
 
-        String stackTrace = chunk.substring(chunk.lastIndexOf("name=\"displayMessage\""), chunk.length());
-        String stackTracePre = "value=\"";
-        stackTrace = stackTrace.substring(stackTrace.indexOf(stackTracePre) + stackTracePre.length(), stackTrace.indexOf("name=\"stackTrace\"") - 2);
+            String stackTrace = chunk.substring(chunk.lastIndexOf("name=\"displayMessage\""), chunk.length());
+            String stackTracePre = "value=\"";
+            stackTrace = stackTrace.substring(stackTrace.indexOf(stackTracePre) + stackTracePre.length(), stackTrace.indexOf("name=\"stackTrace\"") - 2);
 
-        return "\nIncident report "
-                + message
-                + " navigating to "
-                + linkLocator
-                + " Doc Id: "
-                + docId.trim()
-                + "\nStackTrace: "
-                + stackTrace.trim();
+            return "\nIncident report "
+                    + message
+                    + " navigating to "
+                    + linkLocator
+                    + " Doc Id: "
+                    + docId.trim()
+                    + "\nStackTrace: "
+                    + stackTrace.trim();
+        }
+        return "\nIncident report detected for " + linkLocator + " but not able to parse.  " + message;
     }
 
     public static void failOnInvalidUserName(String userName, String contents, Failable failable) {

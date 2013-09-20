@@ -15,10 +15,14 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.kuali.rice.krms.api.repository.language.NaturalLanguageTemplate;
 import org.kuali.rice.krms.api.repository.language.NaturalLanguageUsage;
 import org.kuali.rice.krms.test.AbstractBoTest;
+
+import java.util.List;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -27,6 +31,7 @@ import org.kuali.rice.krms.test.AbstractBoTest;
 public final class NaturalLanguageUsageIntegrationGenTest extends AbstractBoTest{
 
     NaturalLanguageUsageBoServiceImpl naturalLanguageUsageBoServiceImpl;
+    NaturalLanguageTemplateBoServiceImpl naturalLanguageTemplateBoServiceImpl;
     NaturalLanguageUsage naturalLanguageUsage;
 
     NaturalLanguageUsage getNaturalLanguageUsage() {
@@ -41,6 +46,10 @@ public final class NaturalLanguageUsageIntegrationGenTest extends AbstractBoTest
     public void setup() {
         naturalLanguageUsageBoServiceImpl = new NaturalLanguageUsageBoServiceImpl();
         naturalLanguageUsageBoServiceImpl.setBusinessObjectService(getBoService());
+
+        // NOTE: this is not fully wired, we only need the BusinessObjectService for what we do with this impl
+        naturalLanguageTemplateBoServiceImpl = new NaturalLanguageTemplateBoServiceImpl();
+        naturalLanguageTemplateBoServiceImpl.setBusinessObjectService(getBoService());
     }
 
     @Test(expected = java.lang.IllegalArgumentException.class)
@@ -114,6 +123,17 @@ public final class NaturalLanguageUsageIntegrationGenTest extends AbstractBoTest
         test_createNaturalLanguageUsage();
         NaturalLanguageUsage def = getNaturalLanguageUsage();
         String id = def.getId();
+
+        // make sure there aren't any templates for this usage which will cause deleting the usage to fail
+        List<NaturalLanguageTemplate> templates =
+                naturalLanguageTemplateBoServiceImpl.findNaturalLanguageTemplatesByNaturalLanguageUsage(id);
+
+        if (!CollectionUtils.isEmpty(templates)) {
+            for (NaturalLanguageTemplate template : templates) {
+                naturalLanguageTemplateBoServiceImpl.deleteNaturalLanguageTemplate(template.getId());
+            }
+        }
+
         naturalLanguageUsageBoServiceImpl.deleteNaturalLanguageUsage(id);
         NaturalLanguageUsage def2 = naturalLanguageUsageBoServiceImpl.getNaturalLanguageUsage(id);
         assert(def2 == null);

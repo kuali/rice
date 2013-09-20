@@ -16,7 +16,11 @@
 
 package org.kuali.rice.krms.test;
 
-
+/**
+ * RuleManagementBaseTestObjectNames use is to provide common consistent literal values for tests in this package
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class RuleManagementBaseTestObjectNames {
     protected String discriminator;
     protected String object0;
@@ -64,6 +68,12 @@ public class RuleManagementBaseTestObjectNames {
     protected String context1_Id;
     protected String context2_Id;
     protected String context3_Id;
+
+    protected String contextDescr;
+    protected String context0_Descr;
+    protected String context1_Descr;
+    protected String context2_Descr;
+    protected String context3_Descr;
 
     protected String contextName;
     protected String context0_Name;
@@ -171,11 +181,19 @@ public class RuleManagementBaseTestObjectNames {
         context2_Id = "ContextId" + object2;
         context3_Id = "ContextId" + object3;
 
+        contextDescr = "ContextDescr" + object0;
+        context0_Descr = "ContextDescr" + object0;
+        context1_Descr = "ContextDescr" + object1;
+        context2_Descr = "ContextDescr" + object2;
+        context3_Descr = "ContextDescr" + object3;
+
         contextName = "ContextName" + object0;
         context0_Name = "ContextName" + object0;
         context1_Name = "ContextName" + object1;
         context2_Name = "ContextName" + object2;
         context3_Name = "ContextName" + object3;
+
+
 
         namespaceName = "Namespace" + object0;
         namespaceType = "NamespaceType" + object0;

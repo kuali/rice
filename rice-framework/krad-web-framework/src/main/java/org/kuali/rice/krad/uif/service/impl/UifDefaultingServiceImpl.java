@@ -33,6 +33,7 @@ import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.control.Control;
+import org.kuali.rice.krad.uif.control.HiddenControl;
 import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.control.UserControl;
@@ -239,7 +240,7 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
         // TODO: If we have an @Section notation, switch to the section, creating if the ID is unknown
         List<Component> items = (List<Component>) currentGroup.getItems(); // needed to deal with generics issue
         for ( AttributeDefinition attr : dataObjectEntry.getAttributes() ) {
-            if ( attr.getControlField().isHidden() ) {
+            if ( attr.getControlField() instanceof HiddenControl ) {
                 continue;
             }
             DataField dataField = ComponentFactory.getDataField();

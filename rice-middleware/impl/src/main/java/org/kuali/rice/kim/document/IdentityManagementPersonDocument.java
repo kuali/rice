@@ -467,7 +467,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
             for(PersonDocumentEmploymentInfo empInfo: affiliation.getEmpInfos()){
                 if(CollectionUtils.isNotEmpty(empInfos)){
                     for(EntityEmployment origEmpInfo: empInfos){
-                        if (origEmpInfo.getEmployeeId().equals(empInfo.getEntityEmploymentId())) {
+                        if (origEmpInfo.getId().equals(empInfo.getEntityEmploymentId())) {
                             empInfo.setEmploymentRecordId(origEmpInfo.getEmploymentRecordId());
                         }
                     }

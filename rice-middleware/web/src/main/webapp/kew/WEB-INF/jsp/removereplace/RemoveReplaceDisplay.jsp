@@ -85,7 +85,7 @@
             <br>
   <display:table class="result-table" cellspacing="0" cellpadding="0" name="${RemoveReplaceForm.rules}" defaultsort="1" id="rule" requestURI="RemoveReplace.do"
        decorator="org.kuali.rice.kew.lookupable.LookupDecorator" >
-       <display:column sortable="true" title="Id"decorator="org.kuali.rice.kew.lookupable.LookupColumnDecorator">
+       <display:column sortable="true" title="Id" decorator="org.kuali.rice.kew.lookupable.LookupColumnDecorator">
          <a target="_blank" href="Rule.do?methodToCall=report&currentRuleId=<c:out value="${rule.rule.ruleBaseValuesId}"/>"><c:out value="${rule.rule.ruleBaseValuesId}"/></a>
        </display:column>
        <display:column sortable="true" title="Document Type" property="rule.docTypeName" decorator="org.kuali.rice.kew.lookupable.LookupColumnDecorator"/>

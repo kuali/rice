@@ -542,17 +542,48 @@ public class ActionRequestFactory {
     	return delegationRoleRequest;
     }
 
-    public ActionRequestValue addDelegationRequest(ActionRequestValue parentRequest, Recipient recipient, String responsibilityId, Boolean forceAction, DelegationType delegationType, String annotation, String ruleId) {
-    	if (! relatedToRoot(parentRequest)) {
-    		throw new WorkflowRuntimeException("The parent request is not related to any request managed by this factory");
-    	}
-    	ActionRequestValue delegationRequest = createActionRequest(parentRequest.getActionRequested(), parentRequest.getPriority(), recipient, parentRequest.getResponsibilityDesc(), responsibilityId, forceAction, null, ruleId, annotation);
-    	delegationRequest.setDelegationType(delegationType);
-    	
-        parentRequest.getChildrenRequests().add(delegationRequest); 
+    /**
+     * Add a delegation request to the given parent action request.
+     *
+     * @param parentRequest the parent request to add it to
+     * @param recipient the recipient to send the delegation request to
+     * @param responsibilityId
+     * @param forceAction
+     * @param delegationType primary or secondary?
+     * @param actionRequestPolicyCode the action request policy code specifying when the action requests are considered to be completed
+     * @param annotation the annotation to put on the delegation request
+     * @param ruleId
+     * @return the delegation request that was added
+     */
+    public ActionRequestValue addDelegationRequest(ActionRequestValue parentRequest, Recipient recipient, String responsibilityId, Boolean forceAction, DelegationType delegationType, String actionRequestPolicyCode, String annotation, String ruleId) {
+        if (! relatedToRoot(parentRequest)) {
+            throw new WorkflowRuntimeException("The parent request is not related to any request managed by this factory");
+        }
+        ActionRequestValue delegationRequest = createActionRequest(parentRequest.getActionRequested(), parentRequest.getPriority(), recipient, parentRequest.getResponsibilityDesc(), responsibilityId, forceAction, actionRequestPolicyCode, ruleId, annotation);
+        delegationRequest.setDelegationType(delegationType);
+
+        parentRequest.getChildrenRequests().add(delegationRequest);
         delegationRequest.setParentActionRequest(parentRequest);
 
-    	return delegationRequest;
+        return delegationRequest;
+    }
+
+    /**
+     * Add a delegation request to the given parent action request.
+     *
+     * <p>no action type policy code will be specified.</p>
+     *
+     * @param parentRequest the parent request to add it to
+     * @param recipient the recipient to send the delegation request to
+     * @param responsibilityId
+     * @param forceAction
+     * @param delegationType primary or secondary?
+     * @param annotation the annotation to put on the delegation request
+     * @param ruleId
+     * @return the delegation request that was added
+     */
+    public ActionRequestValue addDelegationRequest(ActionRequestValue parentRequest, Recipient recipient, String responsibilityId, Boolean forceAction, DelegationType delegationType, String annotation, String ruleId) {
+    	return addDelegationRequest(parentRequest, recipient, responsibilityId, forceAction, delegationType, null, annotation, ruleId);
     }
 
     //could probably base behavior off of recipient type
@@ -564,15 +595,50 @@ public class ActionRequestFactory {
 
     /**
      * Generates an ActionRequest graph for the given KIM Responsibilities.  This graph includes any associated delegations.
+     *
+     * @param actionRequestedCode the type of action requested
+     * @param priority
+     * @param role the role that the members belong to
+     * @param memberships the role members to generate child requests to
+     * @param description
+     * @param responsibilityId
+     * @param forceAction
+     * @param actionRequestPolicyCode the action request policy code specifying when the action requests are considered to be completed
+     * @param requestLabel
+     * @return the request generated for the role members
      */
-    public void addKimRoleRequest(String actionRequestedCode, Integer priority, Role role,
+    public ActionRequestValue addKimRoleRequest(String actionRequestedCode, Integer priority, Role role,
             List<RoleMembership> memberships, String description, String responsibilityId, boolean forceAction,
             String actionRequestPolicyCode, String requestLabel) {
+        return addKimRoleRequest(actionRequestedCode, priority, role, memberships, description, responsibilityId,
+                forceAction, actionRequestPolicyCode, requestLabel, /* ignoreKimDelegates = */ false);
+    }
+
+    /**
+     * Generates an ActionRequest graph for the given KIM Responsibilities.  This graph includes any associated delegations.
+     *
+     * @param actionRequestedCode the type of action requested
+     * @param priority
+     * @param role the role that the members belong to
+     * @param memberships the role members to generate child requests to
+     * @param description
+     * @param responsibilityId
+     * @param forceAction
+     * @param actionRequestPolicyCode the action request policy code specifying when the action requests are considered to be completed
+     * @param requestLabel
+     * @param ignoreKimDelegates should kim delegates be ignored when generating requests
+     * @return the request generated for the role members     */
+    public ActionRequestValue addKimRoleRequest(String actionRequestedCode, Integer priority, Role role,
+            List<RoleMembership> memberships, String description, String responsibilityId, boolean forceAction,
+            String actionRequestPolicyCode, String requestLabel, boolean ignoreKimDelegates) {
+
+        ActionRequestValue roleMemberRequest = null;
+
     	if (CollectionUtils.isEmpty(memberships)) {
     		LOG.warn("Didn't create action requests for action request description because no role members were defined for role id " + role.getId());
-    		return;
+    		return roleMemberRequest;
     	}
-    	
+
         KimRoleRecipient roleRecipient = new KimRoleRecipient(role);
 
     	// Creation of a parent graph entry for ????
@@ -590,10 +656,12 @@ public class ActionRequestFactory {
 	    	        null );// annotation
 	    	requestGraphs.add(requestGraph);
     	}
+
     	for (RoleMembership membership : memberships) {
     		if ( LOG.isDebugEnabled() ) {
     			LOG.debug( "Processing RoleMembership for action request: " + membership );
     		}
+
 			if (MemberType.PRINCIPAL.equals(membership.getType())) {
 				roleRecipient.setTarget(new KimPrincipalRecipient(membership.getMemberId()));
 			} else if (MemberType.GROUP.equals(membership.getType())) {
@@ -601,6 +669,7 @@ public class ActionRequestFactory {
 			} else {
 				throw new RiceRuntimeException("Failed to identify a group or principal on the given RoleMembership:" + membership);
 			}
+
 			ActionRequestValue request = createActionRequest(
 			        actionRequestedCode,
 			        priority,
@@ -614,15 +683,124 @@ public class ActionRequestFactory {
 			        (memberships.size() == 1) ? ActionRequestPolicy.FIRST.getCode() : actionRequestPolicyCode,
 			        null, // ruleId
 			        null); // annotation
+
 			// if there is only a single request, don't create the nesting structure
 			if ( memberships.size() > 1 ) {
 				request.setParentActionRequest(requestGraph);
 				requestGraph.getChildrenRequests().add(request);
+
+                if (roleMemberRequest == null) {
+                    roleMemberRequest = requestGraph;
+                }
 			} else {
+                roleMemberRequest = request;
 				requestGraphs.add(request);
 			}
-            generateKimRoleDelegationRequests(membership.getDelegates(), request);
+
+            if (!ignoreKimDelegates) {
+                generateKimRoleDelegationRequests(membership.getDelegates(), request);
+            }
 	    }
+
+        return roleMemberRequest;
+    }
+
+    /**
+     * Generates a delegate request to a KIM role.
+     *
+     * <p>In other words, the Role is the delegate.  Since delegates in KEW are limited to 1 level, this will ignore
+     * any KIM delegations on the given role.</p>
+     *
+     * @param parentRequest the parent request that the delegate request will be added to
+     * @param actionRequestedCode the type of action requested
+     * @param priority
+     * @param role the role that is being delegated to
+     * @param memberships the role members to generate child requests to
+     * @param description
+     * @param responsibilityId
+     * @param forceAction
+     * @param actionRequestPolicyCode the action request policy code specifying when the action requests are considered to be completed
+     * @param requestLabel
+     * @return the delegate request generated for the role members
+     */
+    public ActionRequestValue addDelegateKimRoleRequest(ActionRequestValue parentRequest, DelegationType delegationType,
+            String actionRequestedCode, Integer priority, Role role, List<RoleMembership> memberships,
+            String description, String responsibilityId, boolean forceAction, String actionRequestPolicyCode,
+            String requestLabel) {
+
+        // This is a modified version of addKimRoleRequest.  The methods could probably be combined,
+        // but the signature would be even more out of hand and the usage even more confusing.
+
+        ActionRequestValue delegateRoleRequest = null;
+
+        if (CollectionUtils.isEmpty(memberships)) {
+            LOG.warn("Didn't create action requests for action request description because no role members were defined for role id " + role.getId());
+            return delegateRoleRequest;
+        }
+
+        KimRoleRecipient roleRecipient = new KimRoleRecipient(role);
+
+        // Creation of a parent graph entry for ????
+        ActionRequestValue requestGraph = null;
+        if ( memberships.size() > 1 ) {
+            requestGraph = createActionRequest(
+                    actionRequestedCode,
+                    priority,
+                    roleRecipient,
+                    "", // description
+                    responsibilityId,
+                    forceAction,
+                    actionRequestPolicyCode,
+                    null, // ruleId
+                    null );// annotation
+            requestGraphs.add(requestGraph);
+        }
+
+        for (RoleMembership membership : memberships) {
+            if ( LOG.isDebugEnabled() ) {
+                LOG.debug( "Processing RoleMembership for action request: " + membership );
+            }
+
+            if (MemberType.PRINCIPAL.equals(membership.getType())) {
+                roleRecipient.setTarget(new KimPrincipalRecipient(membership.getMemberId()));
+            } else if (MemberType.GROUP.equals(membership.getType())) {
+                roleRecipient.setTarget(new KimGroupRecipient(membership.getMemberId()));
+            } else {
+                throw new RiceRuntimeException("Failed to identify a group or principal on the given RoleMembership:" + membership);
+            }
+
+            ActionRequestValue request = createActionRequest(
+                    actionRequestedCode,
+                    priority,
+                    roleRecipient,
+                    "", // description
+                    responsibilityId,
+                    forceAction,
+                    // If not nested in a parent action request, ensure that the request
+                    // is first approve so delegations of this request do not require
+                    // ALL_APPROVE as well
+                    (memberships.size() == 1) ? ActionRequestPolicy.FIRST.getCode() : actionRequestPolicyCode,
+                    null, // ruleId
+                    null); // annotation
+
+            // if there is only a single request, don't create the nesting structure
+            if ( memberships.size() > 1 ) {
+                request.setParentActionRequest(requestGraph);
+                requestGraph.getChildrenRequests().add(request);
+
+                if (delegateRoleRequest == null) {
+                    delegateRoleRequest = requestGraph;
+                }
+            } else {
+                delegateRoleRequest = request;
+            }
+        }
+
+        delegateRoleRequest.setDelegationType(delegationType);
+        delegateRoleRequest.setParentActionRequest(parentRequest);
+        parentRequest.getChildrenRequests().add(delegateRoleRequest);
+
+        return delegateRoleRequest;
     }
 
      private void generateKimRoleDelegationRequests(List<DelegateType> delegates, ActionRequestValue parentRequest) {

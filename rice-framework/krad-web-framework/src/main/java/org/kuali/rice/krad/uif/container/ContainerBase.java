@@ -81,7 +81,6 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 *
 	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public void performInitialization(View view, Object model) {
 		super.performInitialization(view, model);

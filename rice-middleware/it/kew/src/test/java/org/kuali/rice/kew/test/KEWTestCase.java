@@ -24,6 +24,7 @@ import org.kuali.rice.coreservice.impl.CoreServiceImplServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.batch.KEWXmlDataLoader;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
@@ -240,5 +241,10 @@ public abstract class KEWTestCase extends BaselineTestCase {
 
     protected String getNextSequenceStringValue(String sequenceName) {
         return MaxValueIncrementerFactory.getIncrementer(TestHarnessServiceLocator.getDataSource(), sequenceName).nextStringValue();
+    }
+
+    protected String getRoleIdForName(String namespace, String roleName) {
+        Role role = KimApiServiceLocator.getRoleService().getRoleByNamespaceCodeAndName(namespace, roleName);
+        return (role == null) ? null : role.getId();
     }
 }

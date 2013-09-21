@@ -900,7 +900,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
                                     && StringUtils.equals(docAffiliation.getEntityAffiliationId(),
                                                           (empInfo.getEntityAffiliation() != null ? empInfo.getEntityAffiliation().getId() : null))) {
 								PersonDocumentEmploymentInfo docEmpInfo = new PersonDocumentEmploymentInfo();
-								docEmpInfo.setEntityEmploymentId(empInfo.getEmployeeId());
+								docEmpInfo.setEntityEmploymentId(empInfo.getId());
 								docEmpInfo.setEmployeeId(empInfo.getEmployeeId());
 								docEmpInfo.setEmploymentRecordId(empInfo.getEmploymentRecordId());
 								docEmpInfo.setBaseSalaryAmount(empInfo.getBaseSalaryAmount());

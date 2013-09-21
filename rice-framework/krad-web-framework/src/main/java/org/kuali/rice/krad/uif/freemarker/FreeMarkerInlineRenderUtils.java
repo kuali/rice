@@ -221,14 +221,18 @@ public class FreeMarkerInlineRenderUtils {
             }
 
             for (String cName : component.getProgressiveDisclosureControlNames()) {
+                String methodToCallOnRefresh = ((ComponentBase) component).getMethodToCallOnRefresh();
+                if (!StringUtils.hasText(methodToCallOnRefresh)) {
+                    methodToCallOnRefresh = "";
+                }
+
                 renderScript(
                         "var condition = function(){return ("
                                 + component.getProgressiveDisclosureConditionJs()
                                 + ");};setupProgressiveCheck('" + StringEscapeUtils.escapeJavaScript(cName)
                                 + "', '" + component.getId() + "', '" + component.getBaseId() + "', condition,"
                                 + component.isProgressiveRenderAndRefresh() + ", '"
-                                + ((component instanceof ComponentBase) ? ((ComponentBase) component)
-                                        .getMethodToCallOnRefresh() : "") + "');"
+                                + methodToCallOnRefresh + "');"
                         , component, null, out);
             }
 
@@ -247,7 +251,7 @@ public class FreeMarkerInlineRenderUtils {
             for (String cName : component.getConditionalRefreshControlNames()) {
                 renderScript(
                         "var condition = function(){return ("
-                                + StringEscapeUtils.escapeJavaScript(component.getConditionalRefreshConditionJs())
+                                + component.getConditionalRefreshConditionJs()
                                 + ");};setupRefreshCheck('" + StringEscapeUtils.escapeJavaScript(cName) + "', '"
                                 + component.getId() + "', condition,'"
                                 + ((component instanceof ComponentBase) ? ((ComponentBase) component)
@@ -585,6 +589,7 @@ public class FreeMarkerInlineRenderUtils {
 
         out.write("<div id=\"");
         out.write(manager.getId());
+        out.write("\"");
 
         if (StringUtils.hasText(s = manager.getStyle())) {
             out.write(" style=\"");

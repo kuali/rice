@@ -15,6 +15,17 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import java.beans.PropertyDescriptor;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.core.api.util.type.TypeUtils;
@@ -26,7 +37,6 @@ import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.component.Ordered;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
@@ -35,20 +45,13 @@ import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.OrderComparator;
 
-import java.beans.PropertyDescriptor;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 /**
  * ComponentUtils is a utility class providing methods to help create and modify <code>Component</code> instances
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ComponentUtils {
+
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ComponentUtils.class);
 
     public static <T extends Component> T copy(T component) {
@@ -115,7 +118,11 @@ public class ComponentUtils {
     }
 
     public static <T extends Field> List<T> copyFieldList(List<T> fields, String idSuffix) {
-        List<T> copiedFieldList = new ArrayList<T>();
+        if (fields == null || fields.isEmpty()) {
+            return Collections.emptyList();
+        }
+        
+        List<T> copiedFieldList = new ArrayList<T>(fields.size());
 
         for (T field : fields) {
             T copiedField = copy(field, idSuffix);
@@ -134,7 +141,11 @@ public class ComponentUtils {
     }
 
     public static <T extends Component> List<T> copyComponentList(List<T> components, String idSuffix) {
-        List<T> copiedComponentList = new ArrayList<T>();
+        if (components == null || components.isEmpty()) {
+            return Collections.emptyList();
+        }
+        
+        List<T> copiedComponentList = new ArrayList<T>(components.size());
 
         for (T field : components) {
             T copiedComponent = copy(field, idSuffix);
@@ -144,15 +155,25 @@ public class ComponentUtils {
         return copiedComponentList;
     }
 
-    @SuppressWarnings("unchecked")
     public static <T extends Component> List<T> getComponentsOfType(List<? extends Component> items,
             Class<T> componentType) {
-        List<T> typeComponents = new ArrayList<T>();
-
+        if (items == null || items.isEmpty()) {
+            return Collections.emptyList();
+        }
+        
+        List<T> typeComponents = Collections.emptyList();
+        
         for (Component component : items) {
-            if (componentType.isAssignableFrom(component.getClass())) {
-                typeComponents.add((T) component);
+            
+            if (!componentType.isInstance(component)) {
+                continue;
             }
+
+            if (typeComponents.isEmpty()) {
+                typeComponents = new ArrayList<T>(items.size());
+            }
+
+            typeComponents.add(componentType.cast(component));
         }
 
         return typeComponents;
@@ -174,32 +195,51 @@ public class ComponentUtils {
      */
     public static <T extends Component> List<T> getComponentsOfTypeDeep(List<? extends Component> items,
             Class<T> componentType) {
-        List<T> typeComponents = new ArrayList<T>();
+        if (items == null) {
+            return Collections.emptyList();
+        }
+        
+        List<T> components = Collections.emptyList();
+        
+        Queue<Component> componentQueue = new LinkedList<Component>();
+        componentQueue.addAll(items);
 
-        for (Component component : items) {
-            typeComponents.addAll(getComponentsOfTypeDeep(component, componentType));
+        while (!componentQueue.isEmpty()) {
+            Component currentComponent = componentQueue.poll();
+            if (currentComponent == null) {
+                continue;
+            }
+
+            if (componentType.isInstance(currentComponent)) {
+                if (components.isEmpty()) {
+                    components = new ArrayList<T>();
+                }
+
+                components.add(componentType.cast(currentComponent));
+            }
+            
+            componentQueue.addAll(currentComponent.getComponentsForLifecycle());
         }
 
-        return typeComponents;
+        return components;
     }
 
-    @SuppressWarnings("unchecked")
+    /**
+     * Return the components of the specified type from the given component list
+     *
+     * <p>
+     * Components that match, implement or are extended from the specified {@code componentType} are returned in
+     * the result.  If a component is a parent to other components then these child components are searched for
+     * matching component types as well.
+     * </p>
+     *
+     * @param component The components to search
+     * @param componentType the class or interface of the component type to return
+     * @param <T> the type of the components that are returned
+     * @return List of matching components
+     */
     public static <T extends Component> List<T> getComponentsOfTypeDeep(Component component, Class<T> componentType) {
-        List<T> typeComponents = new ArrayList<T>();
-
-        if (component == null) {
-            return typeComponents;
-        }
-
-        if (componentType.isAssignableFrom(component.getClass())) {
-            typeComponents.add((T) component);
-        }
-
-        for (Component nested : component.getComponentsForLifecycle()) {
-            typeComponents.addAll(getComponentsOfTypeDeep(nested, componentType));
-        }
-
-        return typeComponents;
+        return getComponentsOfTypeDeep(Collections.singletonList(component), componentType);
     }
 
     /**
@@ -211,24 +251,20 @@ public class ComponentUtils {
      * @param <T> type of component that will be returned
      * @return list of child components with the given type
      */
-    @SuppressWarnings("unchecked")
     public static <T extends Component> List<T> getComponentsOfTypeShallow(Component component,
             Class<T> componentType) {
-        List<T> typeComponents = new ArrayList<T>();
-
         if (component == null) {
-            return typeComponents;
+            return Collections.emptyList();
         }
-
-        if (componentType.isAssignableFrom(component.getClass())) {
-            typeComponents.add((T) component);
-        }
-
-        for (Component nested : component.getComponentsForLifecycle()) {
-            if ((nested != null) && componentType.isAssignableFrom(nested.getClass())) {
-                typeComponents.add((T) nested);
+        
+        List<T> typeComponents = getNestedComponentsOfTypeShallow(component, componentType);
+        
+        if (componentType.isInstance(component)) {
+            if (typeComponents.isEmpty()) {
+                typeComponents = Collections.singletonList(componentType.cast(component));
+            } else {
+                typeComponents.add(0, componentType.cast(component));
             }
-
         }
 
         return typeComponents;
@@ -245,34 +281,61 @@ public class ComponentUtils {
      */
     public static <T extends Component> List<T> getNestedComponentsOfTypeShallow(Component component,
             Class<T> componentType) {
-        List<T> typeComponents = new ArrayList<T>();
-
         if (component == null) {
-            return typeComponents;
+            return Collections.emptyList();
         }
 
-        for (Component nested : component.getComponentsForLifecycle()) {
-            if ((nested != null) && componentType.isAssignableFrom(nested.getClass())) {
-                typeComponents.add((T) nested);
+        List<T> typeComponents = Collections.emptyList();
+        List<Component> nestedComponents = component.getComponentsForLifecycle();
+
+        for (Component nested : nestedComponents) {
+            
+            if (!componentType.isInstance(nested)) {
+                continue;
             }
 
+            if (typeComponents.isEmpty()) {
+                typeComponents = new ArrayList<T>();
+            }
+
+            typeComponents.add(componentType.cast(nested));
         }
 
         return typeComponents;
     }
 
+    /**
+     * Get all nested children of a given component.
+     * 
+     * @param component The component to search.
+     * @return All nested children of the component.
+     * @see Component#getComponentsForLifecycle()
+     */
     public static List<Component> getAllNestedComponents(Component component) {
-        List<Component> components = new ArrayList<Component>();
-
         if (component == null) {
-            return components;
+            return Collections.emptyList();
         }
-
-        for (Component nested : component.getComponentsForLifecycle()) {
-            if (nested != null) {
-                components.add(nested);
-                components.addAll(getAllNestedComponents(nested));
+        
+        List<Component> components = Collections.emptyList();
+        Queue<Component> componentQueue = new LinkedList<Component>();
+        componentQueue.offer(component);
+        
+        while (!componentQueue.isEmpty()) {
+            Component currentComponent = componentQueue.poll();
+            
+            if (currentComponent == null) {
+                continue;
             }
+
+            if (currentComponent != component) {
+                if (components.isEmpty()) {
+                    components = new ArrayList<Component>();
+                }
+
+                components.add(currentComponent);
+            }
+
+            componentQueue.addAll(currentComponent.getComponentsForLifecycle());
         }
 
         return components;
@@ -286,16 +349,13 @@ public class ComponentUtils {
      * @return component found in the list or null
      */
     public static Component findComponentInList(List<Component> components, String componentId) {
-        Component foundComponent = null;
-
         for (Component component : components) {
-            if (component != null && component.getId() != null && component.getId().equals(componentId)) {
-                foundComponent = component;
-                break;
+            if (component != null && StringUtils.equals(component.getId(), componentId)) {
+                return component;
             }
         }
 
-        return foundComponent;
+        return null;
     }
 
     /**
@@ -306,17 +366,28 @@ public class ComponentUtils {
      * @return Component instance for child (if found) or null
      */
     public static Component findNestedComponentById(Component parent, String nestedId) {
-        Component childComponent = null;
-
-        List<Component> children = getAllNestedComponents(parent);
-        for (Component child : children) {
-            if (StringUtils.equals(nestedId, child.getId())) {
-                childComponent = child;
-                break;
-            }
+        if (parent == null) {
+            return null;
         }
+        
+        Queue<Component> componentQueue = new LinkedList<Component>();
+        componentQueue.offer(parent);
+        
+        while (!componentQueue.isEmpty()) {
+            Component child = componentQueue.poll();
+            
+            if (child == null) {
+                continue;
+            }
 
-        return childComponent;
+            if (child != parent && StringUtils.equals(nestedId, child.getId())) {
+                return child;
+            }
+
+            componentQueue.addAll(child.getComponentsForLifecycle());
+        }
+        
+        return null;
     }
 
     public static void prefixBindingPath(List<? extends Field> fields, String addBindingPrefix) {
@@ -500,8 +571,30 @@ public class ComponentUtils {
      */
     public static void pushObjectToContext(List<? extends Component> components, String contextName,
             Object contextValue) {
-        for (Component component : components) {
-            pushObjectToContext(component, contextName, contextValue);
+        if (components == null || components.isEmpty()) {
+            return;
+        }
+        
+        Queue<Component> componentQueue = new LinkedList<Component>();
+        componentQueue.addAll(components);
+        
+        while (!componentQueue.isEmpty()) {
+            Component currentComponent = componentQueue.poll();
+            
+            if (currentComponent == null) {
+                continue;
+            }
+            
+            currentComponent.pushObjectToContext(contextName, contextValue);
+
+            if (currentComponent instanceof Container) {
+                LayoutManager layoutManager = ((Container) currentComponent).getLayoutManager();
+                if (layoutManager != null) {
+                    layoutManager.pushObjectToContext(contextName, contextValue);
+                }
+            }
+            
+            componentQueue.addAll(currentComponent.getComponentsForLifecycle());
         }
     }
 
@@ -520,26 +613,58 @@ public class ComponentUtils {
             return;
         }
 
-        component.pushObjectToContext(contextName, contextValue);
+        pushObjectToContext(Collections.singletonList(component), contextName, contextValue);
+    }
 
-        // special container check so we pick up the layout manager
-        if (Container.class.isAssignableFrom(component.getClass())) {
-            LayoutManager layoutManager = ((Container) component).getLayoutManager();
-            if (layoutManager != null) {
-                // add to layout manager context only if not present
-                if (layoutManager.getContext().get(contextName) != contextValue) {
-                    layoutManager.pushObjectToContext(contextName, contextValue);
+    /**
+     * places a all entries from a map into each context map of a list of components
+     *
+     * @param components The list components.
+     * @param sourceContext The source context map.
+     */
+    public static void pushAllToContext(List<? extends Component> components, Map<String, Object> sourceContext) {
+        if (components == null || components.isEmpty()) {
+            return;
+        }
+        
+        Queue<Component> componentQueue = new LinkedList<Component>();
+        componentQueue.addAll(components);
+        
+        while (!componentQueue.isEmpty()) {
+            Component currentComponent = componentQueue.poll();
+            
+            if (currentComponent == null) {
+                continue;
+            }
+            
+            currentComponent.pushAllToContext(sourceContext);
 
-                    for (Component nestedComponent : layoutManager.getComponentsForLifecycle()) {
-                        pushObjectToContext(nestedComponent, contextName, contextValue);
-                    }
+            if (currentComponent instanceof Container) {
+                LayoutManager layoutManager = ((Container) currentComponent).getLayoutManager();
+                if (layoutManager != null) {
+                    layoutManager.pushAllToContext(sourceContext);
                 }
             }
+            
+            componentQueue.addAll(currentComponent.getComponentsForLifecycle());
+        }
+    }
+
+    /**
+     * pushes object to a component's context so that it is available from {@link Component#getContext()}
+     *
+     * <p>The component's nested components that are available via {@code Component#getComponentsForLifecycle}
+     * are also updated recursively</p>
+     *
+     * @param component the component whose context is to be updated
+     * @param sourceContext The source context map.
+     */
+    public static void pushAllToContext(Component component, Map<String, Object> sourceContext) {
+        if (component == null) {
+            return;
         }
 
-        for (Component nestedComponent : component.getComponentsForLifecycle()) {
-            pushObjectToContext(nestedComponent, contextName, contextValue);
-        }
+        pushAllToContext(Collections.singletonList(component), sourceContext);
     }
 
     /**
@@ -573,12 +698,14 @@ public class ComponentUtils {
      */
     public static void updateContextForLine(Component component, Object collectionLine, int lineIndex,
             String lineSuffix) {
-        pushObjectToContext(component, UifConstants.ContextVariableNames.LINE, collectionLine);
-        pushObjectToContext(component, UifConstants.ContextVariableNames.INDEX, Integer.valueOf(lineIndex));
-        pushObjectToContext(component, UifConstants.ContextVariableNames.LINE_SUFFIX, lineSuffix);
+        Map<String, Object> toUpdate = new HashMap<String,Object>(4);
+        toUpdate.put(UifConstants.ContextVariableNames.LINE, collectionLine);
+        toUpdate.put(UifConstants.ContextVariableNames.INDEX, Integer.valueOf(lineIndex));
+        toUpdate.put(UifConstants.ContextVariableNames.LINE_SUFFIX, lineSuffix);
 
         boolean isAddLine = (lineIndex == -1);
-        pushObjectToContext(component, UifConstants.ContextVariableNames.IS_ADD_LINE, isAddLine);
+        toUpdate.put(UifConstants.ContextVariableNames.IS_ADD_LINE, isAddLine);
+        pushAllToContext(component, toUpdate);
     }
 
     /**
@@ -601,14 +728,18 @@ public class ComponentUtils {
      * @see @see org.springframework.core.Ordered
      */
     public static List<? extends Ordered> sort(List<? extends Ordered> items, int defaultOrderSequence) {
-        List<Ordered> orderedItems = new ArrayList<Ordered>();
+        if (items == null) {
+            return null;
+        }
+        
+        List<Ordered> orderedItems = new ArrayList<Ordered>(items.size());
 
         // do replacement for items with the same order property value
         Set<Integer> foundOrders = new HashSet<Integer>();
 
         // reverse the list, so items later in the list win
-        Collections.reverse(items);
-        for (Ordered component : items) {
+        for (int i = items.size()-1; i >= 0; i--) {
+            Ordered component = items.get(i);
             int order = component.getOrder();
 
             // if order not set just add to list
@@ -624,8 +755,8 @@ public class ComponentUtils {
 
         // now reverse the list back so we can assign defaults for items without
         // an order value
-        Collections.reverse(items);
-        for (Ordered component : items) {
+        for (int i = 0; i < items.size(); i++) {
+            Ordered component = items.get(i);
             int order = component.getOrder();
 
             // if order property not set assign default

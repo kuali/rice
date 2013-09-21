@@ -25,6 +25,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -175,7 +176,17 @@ public class CloneUtils {
     protected static Object deepCloneMap(Object original, Map<Object, Object> cache, boolean referenceCollectionCopy)
             throws Exception {
         // Instantiate a new instance
-        Map<Object, Object> clone = (Map<Object, Object>) instantiate(original);
+        Map<Object, Object> clone = null;
+        try {
+            clone = (Map<Object, Object>) instantiate(original);
+        } catch (Exception e) {
+            // check for collections empty map which cannot be instantiated
+            if ((original != null) && ((Map) original).isEmpty()) {
+                return Collections.emptyMap();
+            } else {
+                throw new RuntimeException(e);
+            }
+        }
 
         // Populate data
         for (Entry<Object, Object> entry : ((Map<Object, Object>) original).entrySet()) {
@@ -195,7 +206,18 @@ public class CloneUtils {
     protected static Object deepCloneList(Object original, Map<Object, Object> cache, boolean referenceCollectionCopy)
             throws Exception {
         // Instantiate a new instance
-        List<Object> clone = (List<Object>) instantiate(original);
+        List<Object> clone = null;
+        try {
+            clone = (List<Object>) instantiate(original);
+        } catch (Exception e) {
+            // check for collections empty list which cannot be instantiated
+            if ((original != null) && ((Collection) original).isEmpty()) {
+                return Collections.emptyList();
+            }
+            else {
+                throw new RuntimeException(e);
+            }
+        }
 
         // Populate data
         for (Iterator<Object> iterator = ((List<Object>) original).iterator(); iterator.hasNext();) {
@@ -209,6 +231,7 @@ public class CloneUtils {
         }
 
         return clone;
+
     }
 
     /**

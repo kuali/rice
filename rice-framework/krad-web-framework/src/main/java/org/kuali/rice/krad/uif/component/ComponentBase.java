@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.component;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -153,6 +154,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     @ReferenceCopy(newCollectionInstance = true)
     private transient Map<String, Object> context;
 
+    @ReferenceCopy
+    private transient Map<String, Object> unmodifiableContext;
+
     private List<PropertyReplacer> propertyReplacers;
 
     private Map<String, String> dataAttributes;
@@ -190,7 +194,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         //    DONE: propertyReplacers = new ArrayList<PropertyReplacer>();
         //    DONE: dataAttributes = new HashMap<String, String>();
         // TODO: KULRICE-8954 test for NPE
-
+        
+        unmodifiableContext = context = Collections.emptyMap();
     }
 
     /**
@@ -226,10 +231,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
             String adjustedProgressiveRender = expressionEvaluator.replaceBindingPrefixes(view, this,
                     progressiveRender);
 
-            if (context == null) {
-                context = new HashMap<String, Object>();
-            }
-            Boolean progRenderEval = (Boolean) expressionEvaluator.evaluateExpression(context,
+            Boolean progRenderEval = (Boolean) expressionEvaluator.evaluateExpression(unmodifiableContext,
                     adjustedProgressiveRender);
 
             this.setRender(progRenderEval);
@@ -410,7 +412,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     public List<Component> getPropertyReplacerComponents() {
         if (propertyReplacers == null) {
-            return null;
+            return Collections.emptyList();
         }
         
         List<Component> components = new ArrayList<Component>();
@@ -1009,14 +1011,19 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     @BeanTagAttribute(name = "context", type = BeanTagAttribute.AttributeType.MAPBEAN)
     public Map<String, Object> getContext() {
-        return this.context;
+        return this.unmodifiableContext;
     }
 
     /**
      * @see org.kuali.rice.krad.uif.component.Component#setContext(java.util.Map)
      */
     public void setContext(Map<String, Object> context) {
-        this.context = context;
+        if (context == null || context.isEmpty()) {
+            this.unmodifiableContext = this.context = Collections.emptyMap();
+        } else {
+            this.context = context;
+            this.unmodifiableContext = Collections.unmodifiableMap(this.context);
+        }
     }
 
     /**
@@ -1024,9 +1031,11 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      *      java.lang.Object)
      */
     public void pushObjectToContext(String objectName, Object object) {
-        if (this.context == null) {
+        if (this.context.isEmpty()) {
             this.context = new HashMap<String, Object>();
+            this.unmodifiableContext = Collections.unmodifiableMap(this.context);
         }
+
         pushToPropertyReplacerContext(objectName, object);
         this.context.put(objectName, object);
     }
@@ -1048,9 +1057,21 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.ComponentBase#pushAllToContext
      */
     public void pushAllToContext(Map<String, Object> objects) {
-        if (objects != null) {
-            for (Map.Entry<String, Object> objectEntry : objects.entrySet()) {
-                pushObjectToContext(objectEntry.getKey(), objectEntry.getValue());
+        if (objects == null || objects.isEmpty()) {
+            return;
+        }
+        
+        if (this.context.isEmpty()) {
+            this.context = new HashMap<String, Object>();
+            this.unmodifiableContext = Collections.unmodifiableMap(this.context);
+        }
+
+        context.putAll(objects);
+
+        List<Component> propertyReplacerComponents = getPropertyReplacerComponents();
+        if (propertyReplacerComponents != null) {
+            for (Component replacerComponent : propertyReplacerComponents) {
+                replacerComponent.pushAllToContext(objects);
             }
         }
     }
@@ -2015,7 +2036,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
             componentCopy.setToolTip((Tooltip) this.toolTip.copy());
         }
 
-        if (this.context != null) {
+        if (!this.context.isEmpty()) {
             Map<String, Object> contextCopy = new HashMap<String, Object>(this.context);
 
             componentCopy.setContext(contextCopy);

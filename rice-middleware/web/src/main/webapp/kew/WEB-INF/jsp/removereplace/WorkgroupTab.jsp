@@ -69,7 +69,7 @@
 	     	</c:if>
 	     </div>
 	   </display:column>
-       <display:column sortable="true" title="Id"decorator="org.kuali.rice.kew.lookupable.LookupColumnDecorator">
+       <display:column sortable="true" title="Id" decorator="org.kuali.rice.kew.lookupable.LookupColumnDecorator">
          <a target="_blank" href="Workgroup.do?methodToCall=report&workgroupId=<c:out value="${workgroup.id}"/>"><c:out value="${workgroup.id}"/></a>
        </display:column>
        <display:column sortable="true" title="Name" property="name" decorator="org.kuali.rice.kew.lookupable.LookupColumnDecorator"/>

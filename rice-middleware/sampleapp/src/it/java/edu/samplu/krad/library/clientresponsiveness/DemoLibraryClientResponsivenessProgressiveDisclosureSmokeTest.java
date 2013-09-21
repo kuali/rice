@@ -52,6 +52,7 @@ public class DemoLibraryClientResponsivenessProgressiveDisclosureSmokeTest exten
       assertIsNotVisibleByXpath("//input[@name='inputField3']", "Is Visible");
       waitAndTypeByName("inputField2", "show");
       waitAndClickByLinkText("Usage");
+      Thread.sleep(2000);
       assertIsVisibleByXpath("//input[@name='inputField3']","Not Visible");
     }
     
@@ -60,6 +61,7 @@ public class DemoLibraryClientResponsivenessProgressiveDisclosureSmokeTest exten
         checkForIncidentReport("DemoLibraryClientResponsivenessProgressiveDisclosureSmokeTest Ajax Retrieval");
         assertIsNotVisibleByXpath("//input[@name='inputField4']", "element");
         waitAndClickByName("booleanField2");
+        Thread.sleep(2000);
         assertIsVisibleByXpath("//input[@name='inputField4']", "element");
     }
     
@@ -67,6 +69,7 @@ public class DemoLibraryClientResponsivenessProgressiveDisclosureSmokeTest exten
         waitAndClickByLinkText("Refresh when Shown");
         assertIsNotVisibleByXpath("//input[@name='inputField5']", "element");
         waitAndClickByName("booleanField3");
+        Thread.sleep(2000);
         assertIsVisibleByXpath("//input[@name='inputField5']", "element");
     }
     

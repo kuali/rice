@@ -453,10 +453,10 @@ public class WebDriverUtil {
      * @throws InterruptedException
      */
     public static WebElement waitFor(WebDriver driver, int waitSeconds, By by, String message) throws InterruptedException {
-//        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS); // jenkins implies this might be worse than sleep loop
+// jenkins implies that implicitlyWait is worse than sleep loop for finding elements by 100+ test failures on the old sampleapp
+//        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
 //        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 
-        // Is this Thread.sleep find pattern the problem with being unable to find elements that are present?
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 
         boolean failed = false;

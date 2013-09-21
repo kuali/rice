@@ -315,11 +315,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     public static final String SEARCH_XPATH="//input[@name='methodToCall.search' and @value='search']";
 
     /**
-     * //input[@name='methodToCall.route' and @alt='submit']
-     */
-    public static final String SUBMIT_XPATH="//input[@name='methodToCall.route' and @alt='submit']";
-
-    /**
      * //input[@value='search']
      */
     public static final String SEARCH_XPATH_2 = "//input[@value='search']";
@@ -328,6 +323,11 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * //button[contains(text(),'Search')]
      */
     public static final String SEARCH_XPATH_3 = "//button[contains(text(),'earch')]";
+
+    /**
+     * //input[@name='methodToCall.route' and @alt='submit']
+     */
+    public static final String SUBMIT_XPATH="//input[@name='methodToCall.route' and @alt='submit']";
 
     /**
      * div.uif-group.uif-collectionGroup.uif-tableCollectionGroup.uif-tableSubCollection.uif-disclosure span.uif-headerText-span
@@ -1203,15 +1203,21 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * Uses Selenium's findElements method which does not throw a test exception if not found.
      */
     protected void gotoNestedFrame() {
-        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
         driver.switchTo().defaultContent();
         String iframeXpath = "//frame";
 
-        gotoIframeByXpath(iframeXpath);
+        if (driver.findElements(By.xpath(iframeXpath)).size() > 0) {
+            WebElement contentFrame = driver.findElement(By.xpath(iframeXpath)); // don't highlight
+            driver.switchTo().frame(contentFrame);
+        }
 
-        gotoIframeByXpath(iframeXpath);
+        if (driver.findElements(By.xpath(iframeXpath)).size() > 0) {
+            WebElement contentFrame = driver.findElement(By.xpath(iframeXpath)); // don't highlight
+            driver.switchTo().frame(contentFrame);
+        }
 
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
     }
 
     protected void gotoIframeByXpath(String iframeXpath) {
@@ -4279,14 +4285,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     /**
-     * {@link #SEARCH_XPATH}
-     * @throws InterruptedException
-     */
-    private void waitAndClickSearch() throws InterruptedException {
-        waitAndClickByXpath(SEARCH_XPATH);
-    }
-
-    /**
      * {@link #SUBMIT_XPATH}
      * @throws InterruptedException
      */
@@ -4374,6 +4372,14 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void waitAndClickReturnValue() throws InterruptedException {
         waitAndClickByLinkText(RETURN_VALUE_LINK_TEXT);
+    }
+
+    /**
+     * {@link #SEARCH_XPATH}
+     * @throws InterruptedException
+     */
+    protected void waitAndClickSearch() throws InterruptedException {
+        waitAndClickByXpath(SEARCH_XPATH);
     }
 
     protected void waitAndClickSearch2() throws InterruptedException {

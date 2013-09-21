@@ -65,29 +65,31 @@ public class DemoTravelAccountMultivalueLookUpSmokeTest extends SmokeTestBase {
     private void testSelectAllPages() throws InterruptedException {
         waitAndSelectByName(ACCOUNT_TYPE_CODE_NAME, "Income Account Type");
         waitAndClickButtonByText(SEARCH);
-        waitAndClickButtonByText("select all from all pages");
+        waitAndClickDropDown("select all items");
         assertTextPresent("a1");
         assertTextPresent("a3");
         assertButtonEnabledByText(RETURN_SELECTED_BUTTON_TEXT);
-        waitAndClickButtonByText("deselect all from all pages");
+        waitAndClickDropDown("deselect all items");
         assertButtonDisabledByText(RETURN_SELECTED_BUTTON_TEXT);
     }
 
     private void testSelectThisPage() throws InterruptedException {
         waitAndSelectByName(ACCOUNT_TYPE_CODE_NAME, "Expense Account Type");
         waitAndClickButtonByText(SEARCH);
-        WebElement dropdownMenu = getElementByAttributeValue("class", "dropdown-toggle");
-        dropdownMenu.click();
-        waitAndClickLinkContainingText("select all items on this page", "dropdown click select all items on this page problem");
-        Thread.sleep(5000);
+        waitAndClickDropDown("select all items on this page");
         assertButtonEnabledByText(RETURN_SELECTED_BUTTON_TEXT);
         assertTextPresent("a2");
         assertTextPresent("a8");
-        dropdownMenu = getElementByAttributeValue("class", "dropdown-toggle");
-        dropdownMenu.click();
-        waitAndClickButtonByText("deselect all from this page");
+        waitAndClickDropDown("deselect all items on this page");
         waitForPageToLoad();
         assertButtonDisabledByText(RETURN_SELECTED_BUTTON_TEXT);
+    }
+
+    private void waitAndClickDropDown(String dropDownText) throws InterruptedException {
+        WebElement dropdownMenu = waitAndGetElementByAttributeValue("class", "dropdown-toggle");
+        Thread.sleep(1000);
+        dropdownMenu.click();
+        waitAndClickLinkContainingText(dropDownText, "dropdown click " + dropDownText + " problem");
     }
 
     private void testSearchSelect() throws InterruptedException {

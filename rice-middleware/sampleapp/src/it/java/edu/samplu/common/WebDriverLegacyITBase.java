@@ -1085,6 +1085,31 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         return waitAndGetAttribute(By.xpath(locator), attribute);
     }
 
+    protected WebElement waitAndGetElementByAttributeValue(String attribute, String attributeValue) throws InterruptedException {
+        // jenkins implies that implicitlyWait is worse than sleep loop for finding elements by 100+ test failures on the old sampleapp
+        //        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
+        //        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+
+        boolean failed = false;
+
+        for (int second = 0;; second++) {
+            Thread.sleep(1000);
+            if (second >= waitSeconds)
+                failed = true;
+            try {
+                if (failed || (getElementByAttributeValue(attribute, attributeValue) != null)) {
+                    break;
+                }
+            } catch (Exception e) {}
+        }
+
+        WebElement element = getElementByAttributeValue(attribute, attributeValue);
+        driver.manage().timeouts().implicitlyWait(WebDriverUtil.DEFAULT_IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
+        return element;
+    }
+
     protected String[] waitAndGetText(By by) throws InterruptedException {
         WebDriverUtil.waitFors(driver, DEFAULT_WAIT_SEC, by, "");
         List<WebElement> found = findElements(by);

@@ -192,6 +192,9 @@
     <saucelabs.user>SAUCELABS_USER</saucelabs.user>
     <saucelabs.key>SAUCELABS_KEY</saucelabs.key>
     <selenium-java.version>2.33.0</selenium-java.version>
+    <stests.excludes>NOT_NULL</stests.excludes>
+    <stests.includes>**/*SeTest.java</stests.includes>
+    <stests.skip>true</stests.skip>
     <xalan.version>2.7.1</xalan.version>
     <serializer.version>2.7.1</serializer.version>
     <servlet-api.version>2.5</servlet-api.version>
@@ -529,6 +532,74 @@
                 <phase>post-integration-test</phase>
                 <goals>
                   <goal>stop-sauceconnect</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>${plugin.failsafe.version}</version>
+            <executions>
+              <execution>
+                <id>integration-test</id>
+                <phase>integration-test</phase>
+                <goals>
+                  <goal>integration-test</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+      <dependencies>
+        <dependency>
+          <groupId>com.saucelabs</groupId>
+          <artifactId>sauce-connect</artifactId>
+          <version>${saucelabs.connect.version}</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+
+    <profile>
+      <id>stests</id>
+      <properties>
+        <maven.failsafe.skip>${stests.skip}</maven.failsafe.skip>
+        <maven.failsafe.includes>${stests.includes}</maven.failsafe.includes>
+        <maven.failsafe.excludes>${stests.excludes}</maven.failsafe.excludes>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>selenium-maven-plugin</artifactId>
+            <executions>
+              <!--
+                <execution>
+                <id>xvfb</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                <goal>xvfb</goal>
+                </goals>
+                </execution>
+              -->
+              <execution>
+                <id>start-selenium-server</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>start-server</goal>
+                </goals>
+                <configuration>
+                  <background>true</background>
+                  <logOutput>true</logOutput>
+                </configuration>
+              </execution>
+              <execution>
+                <id>stop-selenium-server</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>stop-server</goal>
                 </goals>
               </execution>
             </executions>

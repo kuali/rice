@@ -16,17 +16,16 @@
 
 package org.kuali.rice.krms.test;
 
-import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
-import org.kuali.rice.core.api.criteria.Predicate;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.krad.criteria.CriteriaLookupDaoProxy;
 import org.kuali.rice.krad.criteria.CriteriaLookupServiceImpl;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,33 +36,36 @@ import static org.junit.Assert.assertNull;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 /**
- *   Test methods of ruleManagementServiceImpl relating to Actions
+ *   RuleManagementActionDefinitionTest is to test the methods of ruleManagementServiceImpl relating to krms Actions
+ *
+ *   Each test focuses on one of the methods.
  */
-public class RuleManagementActionDefinitionTest extends RuleManagementBaseTest {
-    static final String ACTION1_ID = "ActionId1";
-    static final String ACTION1_NAME = "Action1Name";
-    static final String ACTION2_ID = "ActionId2";
-    static final String ACTION2_NAME = "Action2Name";
-    static final String ACTION3_ID = "ActionId3";
-    static final String ACTION3_NAME = "Action3Name";
-    static final String ACTION4_ID = "ActionId4";
-    static final String ACTION4_NAME = "Action4Name";
+    public class RuleManagementActionDefinitionTest extends RuleManagementBaseTest {
 
-    /*
-    ////
-    //// action methods
-    ////
-    */
+    @Override
+    @Before
+    public void setClassDiscriminator() {
+        // set a unique discriminator for test objects of this class
+        CLASS_DISCRIMINATOR = "RMADT";
+    }
 
+    /**
+     *  Test testCreateAction()
+     *
+     *  This test focuses specifically on the RuleManagementServiceImpl .createAction(ActionDefinition) method
+     */
     @Test
     public void testCreateAction() {
-        KrmsTypeDefinition krmsTypeDefinition = createKrmsActionTypeDefinition(NAMESPACE1);
-        RuleDefinition ruleDefintion = createTestRule(NAMESPACE1, "0001");
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t0 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t0");
 
-        ActionDefinition actionDefinition = ActionDefinition.Builder.create(ACTION1_ID,ACTION1_NAME,
-                NAMESPACE1,krmsTypeDefinition.getId(),ruleDefintion.getId(),1).build();
+        KrmsTypeDefinition krmsTypeDefinition = createKrmsActionTypeDefinition(t0.namespaceName);
+        RuleDefinition ruleDefintion = createTestRule(t0.namespaceName, t0.discriminator);
 
-        assertNull("action should not be in database", ruleManagementServiceImpl.getAction(ACTION1_ID));
+        ActionDefinition actionDefinition = ActionDefinition.Builder.create(t0.action0_Id, t0.action0_Name,
+                t0.namespaceName,krmsTypeDefinition.getId(),ruleDefintion.getId(),1).build();
+
+        assertNull("action should not be in database", ruleManagementServiceImpl.getAction(t0.action0_Id));
 
         // primary statement for test
         actionDefinition =  ruleManagementServiceImpl.createAction(actionDefinition);
@@ -71,61 +73,69 @@ public class RuleManagementActionDefinitionTest extends RuleManagementBaseTest {
         ActionDefinition returnActionDefinition = ruleManagementServiceImpl.getAction(actionDefinition.getId());
 
         assertNotNull("created action not found", (Object) returnActionDefinition);
-        assertEquals("create action error:", ACTION1_ID, returnActionDefinition.getId());
+        assertEquals("create action error:", t0.action0_Id, returnActionDefinition.getId());
     }
 
+    /**
+     *  Test testUpdateAction()
+     *
+     *  This test focuses specifically on the RuleManagementServiceImpl .testUpdateAction(ActionDefinition) method
+     */
     @Test
     public void testUpdateAction() {
-        KrmsTypeDefinition krmsTypeDefinition = createKrmsActionTypeDefinition(NAMESPACE1);
-        RuleDefinition ruleDefintion = createTestRule(NAMESPACE1, "0002");
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t1 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t1");
 
-        ActionDefinition actionDefinition = ActionDefinition.Builder.create(ACTION2_ID,ACTION2_NAME,
-                NAMESPACE1,krmsTypeDefinition.getId(),ruleDefintion.getId(),1).build();
+        KrmsTypeDefinition krmsTypeDefinition = createKrmsActionTypeDefinition(t1.namespaceName);
+        RuleDefinition ruleDefinition = createTestRule(t1.namespaceName, t1.object0);
 
-        assertNull("action should not be in database",ruleManagementServiceImpl.getAction(ACTION2_ID ));
+        ActionDefinition actionDefinition = ActionDefinition.Builder.create(t1.action0_Id,t1.action0_Name,
+                t1.namespaceName,krmsTypeDefinition.getId(),ruleDefinition.getId(),1).build();
+
+        assertNull("action should not be in database",ruleManagementServiceImpl.getAction(t1.action0_Id));
 
         actionDefinition =  ruleManagementServiceImpl.createAction(actionDefinition);
 
         ActionDefinition returnActionDefinition = ruleManagementServiceImpl.getAction(actionDefinition.getId());
         ActionDefinition.Builder builder = ActionDefinition.Builder.create(returnActionDefinition);
-        builder.setDescription(ACTION2_NAME);
+        builder.setDescription("ChangedDescr");
 
         // primary statement for test
         ruleManagementServiceImpl.updateAction(builder.build());
 
         returnActionDefinition = ruleManagementServiceImpl.getAction(actionDefinition.getId());
 
-        assertNotNull("action not found", (Object) returnActionDefinition);
-        assertEquals("update action error:", ACTION2_NAME, returnActionDefinition.getDescription());
+        assertNotNull("action not found", returnActionDefinition);
+        assertEquals("update action error:","ChangedDescr", returnActionDefinition.getDescription());
     }
 
-    /*
-    @Override
-    public void updateAction(ActionDefinition actionDefinition) throws RiceIllegalArgumentException {
-        actionBoService.updateAction(actionDefinition);
-    }
-    */
-
+    /**
+     *  Test testDeleteAction()
+     *
+     *  This test focuses specifically on the RuleManagementServiceImpl .testDeleteAction(ActionDefinition) method
+     */
     @Test
     public void testDeleteAction() {
-        KrmsTypeDefinition krmsTypeDefinition = createKrmsActionTypeDefinition(NAMESPACE1);
-        RuleDefinition ruleDefintion = createTestRule(NAMESPACE1, "0003");
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t2 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t2");
 
-        ActionDefinition actionDefinition = ActionDefinition.Builder.create(ACTION3_ID,ACTION3_NAME,
-                NAMESPACE1,krmsTypeDefinition.getId(),ruleDefintion.getId(),1).build();
+        KrmsTypeDefinition krmsTypeDefinition = createKrmsActionTypeDefinition(t2.namespaceName);
+        RuleDefinition ruleDefintion = createTestRule(t2.namespaceName, t2.object0);
 
-        assertNull("action should not be in database",ruleManagementServiceImpl.getAction(ACTION3_ID ));
+        ActionDefinition actionDefinition = ActionDefinition.Builder.create(t2.action0_Id,t2.action0_Name,
+                t2.namespaceName,krmsTypeDefinition.getId(),ruleDefintion.getId(),1).build();
 
-        // primary statement for test
+        assertNull("action should not be in database",ruleManagementServiceImpl.getAction(t2.action0_Id));
+
         actionDefinition =  ruleManagementServiceImpl.createAction(actionDefinition);
-
         actionDefinition = ruleManagementServiceImpl.getAction(actionDefinition.getId());
-        assertNotNull("action not found", (Object) ruleManagementServiceImpl.getAction(actionDefinition.getId()));
+        assertNotNull("action not found",ruleManagementServiceImpl.getAction(actionDefinition.getId()));
 
         try {
-            ruleManagementServiceImpl.deleteAction(ACTION3_ID);
+            // primary statement for test
+            ruleManagementServiceImpl.deleteAction(t2.action0_Id);
             fail("should fail deleteAction not implemented");
-        }   catch (Exception e) {
+        }   catch (RiceIllegalArgumentException e) {
             // RiceIllegalArgumentException ("not implemented yet because not supported by the bo service");
         }
 
@@ -133,33 +143,50 @@ public class RuleManagementActionDefinitionTest extends RuleManagementBaseTest {
         assertNotNull("action not found", (Object) actionDefinition);
     }
 
+    /**
+     *  Test testGetAction()
+     *
+     *  This test focuses specifically on the RuleManagementServiceImpl .testGetAction(Action_Id) method
+     */
     @Test
     public void testGetAction() {
-        KrmsTypeDefinition krmsTypeDefinition = createKrmsActionTypeDefinition(NAMESPACE1);
-        RuleDefinition ruleDefintion = createTestRule(NAMESPACE1,"0004");
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t3 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t3");
 
-        ActionDefinition actionDefinition = ActionDefinition.Builder.create(ACTION4_ID,ACTION4_NAME,
-                NAMESPACE1,krmsTypeDefinition.getId(),ruleDefintion.getId(),1).build();
+        KrmsTypeDefinition krmsTypeDefinition = createKrmsActionTypeDefinition(t3.namespaceName);
+        RuleDefinition ruleDefintion = createTestRule(t3.namespaceName,t3.object0);
 
-        assertNull("action should not be in database", ruleManagementServiceImpl.getAction(ACTION4_ID));
+        ActionDefinition actionDefinition = ActionDefinition.Builder.create(t3.action0_Id,t3.action0_Name,
+                t3.namespaceName,krmsTypeDefinition.getId(),ruleDefintion.getId(),1).build();
+
+        assertNull("action should not be in database", ruleManagementServiceImpl.getAction(t3.action0_Id));
         actionDefinition =  ruleManagementServiceImpl.createAction(actionDefinition);
 
         // primary statement being tested
         ActionDefinition returnActionDefinition = ruleManagementServiceImpl.getAction(actionDefinition.getId());
 
         assertNotNull("action not found", (Object) returnActionDefinition);
-        assertEquals("getAction error:", ACTION4_ID, returnActionDefinition.getId());
+        assertEquals("getAction error:", t3.action0_Id, returnActionDefinition.getId());
 
     }
 
+    /**
+     *  Test testGetActions()
+     *
+     *  This test focuses specifically on the RuleManagementServiceImpl .testGetActions(List<Action_Id>) method
+     */
     @Test
     public void testGetActions() {
-        createTestActions("Action1001", "Action1001Name", "Action1001Desc", 1, "1001", NAMESPACE1);
-        createTestActions("Action1002", "Action1002Name", "Action1002Desc", 1, "1002", NAMESPACE1);
-        createTestActions("Action1003", "Action1003Name", "Action1003Desc", 1, "1003", NAMESPACE1);
-        createTestActions("Action1004", "Action1004Name", "Action1004Desc", 1, "1004", NAMESPACE1);
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t4 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t4");
 
-        List<String> actionIds = Arrays.asList("Action1001", "Action1002", "Action1003", "Action1004");
+        createTestActions(t4.action0_Id, t4.action0_Name, t4.action0_Descr, 1, t4.object0, t4.namespaceName);
+        createTestActions(t4.action1_Id, t4.action1_Name, t4.action1_Descr, 1, t4.object1, t4.namespaceName);
+        createTestActions(t4.action2_Id, t4.action2_Name, t4.action2_Descr, 1, t4.object2, t4.namespaceName);
+        createTestActions(t4.action3_Id, t4.action3_Name, t4.action3_Descr, 1, t4.object3, t4.namespaceName);
+        List<String> actionIds = Arrays.asList(t4.action0_Id, t4.action1_Id, t4.action2_Id, t4.action3_Id);
+
+        // primary statement being tested
         List<ActionDefinition> returnActionDefinitions = ruleManagementServiceImpl.getActions(actionIds);
 
         assertEquals("incorrect number of actions returned",4,returnActionDefinitions.size());
@@ -173,18 +200,25 @@ public class RuleManagementActionDefinitionTest extends RuleManagementBaseTest {
         }
 
         assertEquals("incorrect number of actions returned",4,actionsFound);
-        assertEquals("action not found","Action1001Desc", ruleManagementServiceImpl.getAction("Action1001").getDescription());
-        assertEquals("action not found","Action1002Desc", ruleManagementServiceImpl.getAction("Action1002").getDescription());
-        assertEquals("action not found","Action1003Desc", ruleManagementServiceImpl.getAction("Action1003").getDescription());
-        assertEquals("action not found","Action1004Desc", ruleManagementServiceImpl.getAction("Action1004").getDescription());
+        assertEquals("action not found",t4.action0_Descr, ruleManagementServiceImpl.getAction(t4.action0_Id).getDescription());
+        assertEquals("action not found",t4.action1_Descr, ruleManagementServiceImpl.getAction(t4.action1_Id).getDescription());
+        assertEquals("action not found",t4.action2_Descr, ruleManagementServiceImpl.getAction(t4.action2_Id).getDescription());
+        assertEquals("action not found",t4.action3_Descr, ruleManagementServiceImpl.getAction(t4.action3_Id).getDescription());
     }
 
+    /**
+     *  Test testFindActionIds()
+     *
+     *  This test focuses specifically on the RuleManagementServiceImpl .testFindActionIds(QueryByCriteria) method
+     */
     @Test
     public void testFindActionIds() {
-        createTestActions("Action1011", "Action1011Name", "Action1011Desc", 1, "1011", NAMESPACE1);
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t5 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t5");
+        createTestActions(t5.action0_Id, t5.action0_Name, t5.action0_Descr, 1, t5.object0, t5.namespaceName);
 
         QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
-        builder.setPredicates(equal("name","Action1011Name"));
+        builder.setPredicates(equal("name",t5.action0_Name));
 
         CriteriaLookupServiceImpl criteriaLookupService = new CriteriaLookupServiceImpl();
         criteriaLookupService.setCriteriaLookupDao(new CriteriaLookupDaoProxy());
@@ -192,11 +226,8 @@ public class RuleManagementActionDefinitionTest extends RuleManagementBaseTest {
 
         List<String> actionIds = ruleManagementServiceImpl.findActionIds(builder.build());
 
-        if(!actionIds.contains("Action1011")){
+        if(!actionIds.contains(t5.action0_Id)){
             fail("actionId not found");
         }
     }
-
-
-
 }

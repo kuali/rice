@@ -757,7 +757,7 @@ public class RuleManagementServiceMockImpl implements RuleManagementService {
             String krmsObjectId,
             String languageCode)
             throws RiceIllegalArgumentException {
-        TranslationUtility util = new TranslationUtility(this, this.templater);
+        TranslationUtility util = new TranslationUtility(this, this.termRepositoryService, this.templater);
         return util.translateNaturalLanguageForObject(naturalLanguageUsageId, typeId, krmsObjectId, languageCode);
     }
 
@@ -765,7 +765,7 @@ public class RuleManagementServiceMockImpl implements RuleManagementService {
     public String translateNaturalLanguageForProposition(String naturalLanguageUsageId,
             PropositionDefinition proposition, String languageCode)
             throws RiceIllegalArgumentException {
-        TranslationUtility util = new TranslationUtility(this, this.templater);
+        TranslationUtility util = new TranslationUtility(this, this.termRepositoryService, this.templater);
         return util.translateNaturalLanguageForProposition(naturalLanguageUsageId, proposition, languageCode);
     }
 
@@ -773,7 +773,7 @@ public class RuleManagementServiceMockImpl implements RuleManagementService {
     public NaturalLanguageTree translateNaturalLanguageTreeForProposition(String naturalLanguageUsageId,
             PropositionDefinition propositionDefinintion,
             String languageCode) throws RiceIllegalArgumentException {
-        TranslationUtility util = new TranslationUtility(this, this.templater);
+        TranslationUtility util = new TranslationUtility(this, this.termRepositoryService, this.templater);
         return util.translateNaturalLanguageTreeForProposition(naturalLanguageUsageId, propositionDefinintion, languageCode);
     }
 

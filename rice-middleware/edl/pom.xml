@@ -24,6 +24,7 @@
   </parent>
   <artifactId>rice-edl</artifactId>
   <packaging>pom</packaging>
+  <version>2.4.0-M2-SNAPSHOT</version>
   <name>Rice EDL</name>
   <modules>
   	<module>framework</module>

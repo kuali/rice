@@ -24,7 +24,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.krms.api.repository.LogicalOperator;
 import org.kuali.rice.krms.api.repository.NaturalLanguageTree;
 import org.kuali.rice.krms.api.repository.RuleManagementService;
 import org.kuali.rice.krms.api.repository.TranslateBusinessMethods;
@@ -47,11 +49,13 @@ import org.kuali.rice.krms.api.repository.term.TermRepositoryService;
 public class TranslationUtility implements TranslateBusinessMethods {
 
     private RuleManagementService ruleManagementService;
+    private TermRepositoryService termRepositoryService;
     private NaturalLanguageTemplaterContract templater;
 
-    public TranslationUtility(RuleManagementService ruleManagementService,
+    public TranslationUtility(RuleManagementService ruleManagementService, TermRepositoryService termRepositoryService,
             NaturalLanguageTemplaterContract templater) {
         this.ruleManagementService = ruleManagementService;
+        this.termRepositoryService = termRepositoryService;
         this.templater = templater;
     }
 
@@ -75,86 +79,153 @@ public class TranslationUtility implements TranslateBusinessMethods {
     public String translateNaturalLanguageForObject(String naturalLanguageUsageId, String typeId, String krmsObjectId, String languageCode)
             throws RiceIllegalArgumentException {
 
-        PropositionDefinition proposition = null;
         // TODO: find out what RICE intended for this typeId? Was it supposed to be the Simple Class name?
-        if (typeId.equals("proposition")) {
-            proposition = this.ruleManagementService.getProposition(krmsObjectId);
-            if (proposition == null) {
-                throw new RiceIllegalArgumentException(krmsObjectId + " is not an Id for a proposition");
-            }
-        } else if (typeId.equals("agenda")) {
+        if (typeId.equals("agenda")) {
             AgendaDefinition agenda = this.ruleManagementService.getAgenda(krmsObjectId);
             if (agenda == null) {
                 throw new RiceIllegalArgumentException(krmsObjectId + " is not an Id for an agenda");
             }
-            if (agenda.getFirstItemId() == null) {
-                throw new RiceIllegalArgumentException("Agenda has no first item");
+            return this.translateNaturalLanguageForAgenda(naturalLanguageUsageId, agenda, languageCode);
+        } else if (typeId.equals("rule")) {
+            RuleDefinition rule = this.ruleManagementService.getRule(krmsObjectId);
+            if (rule == null) {
+                throw new RiceIllegalArgumentException(krmsObjectId + " is not an Id for a rule");
             }
-            AgendaItemDefinition item = this.ruleManagementService.getAgendaItem(agenda.getFirstItemId());
-            if (item.getRuleId() == null) {
-                throw new RiceIllegalArgumentException("Only simple agenda's composed of one item that holds a rule is supported at this time");
-            }
-            RuleDefinition rule = this.ruleManagementService.getRule(item.getRuleId());
-            proposition = rule.getProposition();
+            return this.translateNaturalLanguageForRule(naturalLanguageUsageId, rule, languageCode);
+        } else if (typeId.equals("proposition")) {
+            PropositionDefinition proposition = this.ruleManagementService.getProposition(krmsObjectId);
             if (proposition == null) {
-                throw new RiceIllegalArgumentException("The agenda's rule has a proposition that is null");
+                throw new RiceIllegalArgumentException(krmsObjectId + " is not an Id for a proposition");
             }
+            return this.translateNaturalLanguageForProposition(naturalLanguageUsageId, proposition, languageCode);
         }
-        String propositionTypeId = proposition.getTypeId();
-        NaturalLanguageTemplate naturalLanguageTemplate =
-                this.ruleManagementService.findNaturalLanguageTemplateByLanguageCodeTypeIdAndNluId(languageCode,
-                propositionTypeId,
-                naturalLanguageUsageId);
-        if (naturalLanguageTemplate == null) {
-            throw new RiceIllegalArgumentException("no template found for " + languageCode
-                    + " " + typeId
-                    + " " + naturalLanguageUsageId);
+
+        return StringUtils.EMPTY;
+    }
+
+    protected String translateNaturalLanguageForAgenda(String naturalLanguageUsageId, AgendaDefinition agenda, String languageCode) throws RiceIllegalArgumentException {
+        if (agenda.getFirstItemId() == null) {
+            throw new RiceIllegalArgumentException("Agenda has no first item");
         }
-        return this.translateNaturalLanguageForProposition(naturalLanguageUsageId, proposition, languageCode);
+
+        AgendaItemDefinition item = this.ruleManagementService.getAgendaItem(agenda.getFirstItemId());
+        return translateNaturalLanguageForAgendaItem(naturalLanguageUsageId, item, languageCode);
+    }
+
+    protected String translateNaturalLanguageForAgendaItem(String naturalLanguageUsageId, AgendaItemDefinition item, String languageCode) {
+        if(item==null){
+            return StringUtils.EMPTY;
+        }
+
+        String naturalLanguage = StringUtils.EMPTY;
+        if (item.getRuleId() != null) {
+            RuleDefinition rule = this.ruleManagementService.getRule(item.getRuleId());
+            naturalLanguage += this.translateNaturalLanguageForRule(naturalLanguageUsageId, rule, languageCode);
+        }
+        naturalLanguage += translateNaturalLanguageForAgendaItem(naturalLanguageUsageId, item.getWhenTrue(), languageCode);
+        naturalLanguage += translateNaturalLanguageForAgendaItem(naturalLanguageUsageId, item.getWhenFalse(), languageCode);
+        naturalLanguage += translateNaturalLanguageForAgendaItem(naturalLanguageUsageId, item.getAlways(), languageCode);
+        return naturalLanguage;
+    }
+
+    protected String translateNaturalLanguageForRule(String naturalLanguageUsageId, RuleDefinition rule, String languageCode) throws RiceIllegalArgumentException {
+        if(rule==null){
+            return StringUtils.EMPTY;
+        }
+
+        NaturalLanguageTemplate nlTemplate = ruleManagementService.findNaturalLanguageTemplateByLanguageCodeTypeIdAndNluId(languageCode, rule.getTypeId(), naturalLanguageUsageId);
+        String naturalLanguage = nlTemplate.getTemplate() + " ";
+
+        if(rule.getProposition()!=null){
+            naturalLanguage += this.translateNaturalLanguageForProposition(naturalLanguageUsageId, rule.getProposition(), languageCode);
+        }
+
+        return naturalLanguage;
     }
 
     @Override
     public String translateNaturalLanguageForProposition(String naturalLanguageUsageId,
             PropositionDefinition proposition, String languageCode)
             throws RiceIllegalArgumentException {
-        NaturalLanguageTemplate naturalLanguageTemplate =
-                this.ruleManagementService.findNaturalLanguageTemplateByLanguageCodeTypeIdAndNluId(languageCode,
-                proposition.getTypeId(), naturalLanguageUsageId);
-        if (naturalLanguageTemplate == null) {
-            throw new RiceIllegalArgumentException(languageCode + "." + proposition.getTypeId() + "." + naturalLanguageUsageId);
-        }
-        Map<String, Object> contextMap;
+        return translateNaturalLanguageForProposition(naturalLanguageUsageId, proposition, languageCode, true) + ". ";
+    }
+
+    /**
+     * This method is added because from a functional point of view the root proposition is ignored when it is a group
+     * and therefore handled differently.
+     *
+     * @param naturalLanguageUsageId
+     * @param proposition
+     * @param languageCode
+     * @param isRoot
+     * @return
+     */
+    private String translateNaturalLanguageForProposition(String naturalLanguageUsageId, PropositionDefinition proposition, String languageCode, boolean isRoot) {
+        NaturalLanguageTemplate naturalLanguageTemplate = this.ruleManagementService.findNaturalLanguageTemplateByLanguageCodeTypeIdAndNluId(
+                languageCode, proposition.getTypeId(), naturalLanguageUsageId);
+
+        StringBuilder naturalLanguage = new StringBuilder();
         if (proposition.getPropositionTypeCode().equals(PropositionType.SIMPLE.getCode())) {
-            contextMap = this.buildSimplePropositionContextMap(proposition);
+            if(naturalLanguageTemplate!=null){
+                Map<String, Object> contextMap = this.buildSimplePropositionContextMap(proposition);
+                naturalLanguage.append(templater.translate(naturalLanguageTemplate, contextMap));
+            }
+
+        } else if (proposition.getPropositionTypeCode().equals(PropositionType.COMPOUND.getCode())) {
+            if(naturalLanguageTemplate!=null){
+                Map<String, Object> contextMap = this.buildCompoundPropositionContextMap(naturalLanguageUsageId, proposition, languageCode);
+                naturalLanguage.append(templater.translate(naturalLanguageTemplate, contextMap));
+            }
+
+            //Null check because newly created compound propositions should also be translateable.
+            if(proposition.getCompoundComponents()!=null){
+                String operator = getCompoundSeperator(proposition, isRoot);
+                for (PropositionDefinition child : proposition.getCompoundComponents()) {
+                    if(proposition.getCompoundComponents().indexOf(child)!=0){
+                        naturalLanguage.append(operator);
+                    }
+                    naturalLanguage.append(this.translateNaturalLanguageForProposition(naturalLanguageUsageId, child, languageCode, false));
+                }
+            }
+
         } else {
-            contextMap = this.buildCompoundPropositionContextMap(null, proposition, null);
+            throw new RiceIllegalArgumentException("Unknown proposition type: " + proposition.getPropositionTypeCode());
         }
-        return templater.translate(naturalLanguageTemplate, contextMap);
+
+        return naturalLanguage.toString();
+    }
+
+    private String getCompoundSeperator(PropositionDefinition proposition, boolean isRoot) {
+        String operator = getCompoundOperator(proposition);
+        if (isRoot){
+            return ". " + StringUtils.capitalize(operator) + " ";
+        }
+        return "; " + operator + " ";
+    }
+
+    private String getCompoundOperator(PropositionDefinition proposition) {
+        String operator = null;
+        if (LogicalOperator.AND.getCode().equalsIgnoreCase(proposition.getCompoundOpCode())) {
+            operator = "and";
+        } else if (LogicalOperator.OR.getCode().equalsIgnoreCase(proposition.getCompoundOpCode())) {
+            operator = "or";
+        }
+        return operator;
     }
 
     @Override
     public NaturalLanguageTree translateNaturalLanguageTreeForProposition(String naturalLanguageUsageId,
             PropositionDefinition proposition,
             String languageCode) throws RiceIllegalArgumentException {
-        NaturalLanguageTemplate naturalLanguageTemplate = null;
-        //Continue if typeid is null, some children may not be initialized yet.
-        if (proposition.getTypeId() != null) {
-            naturalLanguageTemplate = this.ruleManagementService.findNaturalLanguageTemplateByLanguageCodeTypeIdAndNluId(languageCode,
-                    proposition.getTypeId(), naturalLanguageUsageId);
-            if (naturalLanguageTemplate == null) {
-                throw new RiceIllegalArgumentException(languageCode + "." + proposition.getTypeId() + "." + naturalLanguageUsageId);
-            }
-        }
+        NaturalLanguageTemplate naturalLanguageTemplate = getNaturalLanguageTemplateForProposition(naturalLanguageUsageId, proposition, languageCode);
 
+        NaturalLanguageTree.Builder tree = NaturalLanguageTree.Builder.create();
         if (proposition.getPropositionTypeCode().equals(PropositionType.SIMPLE.getCode())) {
-            NaturalLanguageTree.Builder tree = NaturalLanguageTree.Builder.create();
             Map<String, Object> contextMap = this.buildSimplePropositionContextMap(proposition);
             String naturalLanguage = templater.translate(naturalLanguageTemplate, contextMap);
             tree.setNaturalLanguage(naturalLanguage);
-            return tree.build();
-        }
-        if (proposition.getPropositionTypeCode().equals(PropositionType.COMPOUND.getCode())) {
-            NaturalLanguageTree.Builder tree = NaturalLanguageTree.Builder.create();
+
+        } else if (proposition.getPropositionTypeCode().equals(PropositionType.COMPOUND.getCode())) {
             Map<String, Object> contextMap = this.buildCompoundPropositionContextMap(naturalLanguageUsageId, proposition, languageCode);
             String naturalLanguage = templater.translate(naturalLanguageTemplate, contextMap);
             tree.setNaturalLanguage(naturalLanguage);
@@ -168,9 +239,24 @@ public class TranslationUtility implements TranslateBusinessMethods {
                 tree.setChildren(children);
             }
 
-            return tree.build();
+        } else {
+            throw new RiceIllegalArgumentException("Unknown proposition type: " + proposition.getPropositionTypeCode());
         }
-        throw new RiceIllegalArgumentException("Unknown proposition type: " + proposition.getPropositionTypeCode());
+
+        return tree.build();
+    }
+
+    protected NaturalLanguageTemplate getNaturalLanguageTemplateForProposition(String naturalLanguageUsageId, PropositionDefinition proposition, String languageCode) {
+        NaturalLanguageTemplate naturalLanguageTemplate = null;
+        //Continue if typeid is null, some children may not be initialized yet.
+        if (proposition.getTypeId() != null) {
+            naturalLanguageTemplate = this.ruleManagementService.findNaturalLanguageTemplateByLanguageCodeTypeIdAndNluId(languageCode,
+                    proposition.getTypeId(), naturalLanguageUsageId);
+            if (naturalLanguageTemplate == null) {
+                throw new RiceIllegalArgumentException(languageCode + "." + proposition.getTypeId() + "." + naturalLanguageUsageId);
+            }
+        }
+        return naturalLanguageTemplate;
     }
 
     protected Map<String, Object> buildSimplePropositionContextMap(PropositionDefinition proposition) {
@@ -180,8 +266,12 @@ public class TranslationUtility implements TranslateBusinessMethods {
         Map<String, Object> contextMap = new LinkedHashMap<String, Object>();
         for (PropositionParameter param : proposition.getParameters()) {
             if (param.getParameterType().equals(PropositionParameterType.TERM.getCode())) {
-                if (param.getTermValue() != null) {
-                    for (TermParameterDefinition termParam : param.getTermValue().getParameters()) {
+                TermDefinition term = param.getTermValue();
+                if ((term == null) && (StringUtils.isNotBlank(param.getValue()))) {
+                   term = this.termRepositoryService.getTerm(param.getValue());
+                }
+                if (term != null) {
+                    for (TermParameterDefinition termParam : term.getParameters()) {
                         contextMap.put(termParam.getName(), termParam.getValue());
                     }
                 } else {
@@ -193,52 +283,12 @@ public class TranslationUtility implements TranslateBusinessMethods {
         }
         return contextMap;
     }
-    public static final String COMPOUND_COMPONENTS = "compoundComponent";
 
     protected Map<String, Object> buildCompoundPropositionContextMap(String naturalLanguageUsageId, PropositionDefinition proposition, String languageCode) {
         if (!proposition.getPropositionTypeCode().equals(PropositionType.COMPOUND.getCode())) {
             throw new RiceIllegalArgumentException("proposition us not compound " + proposition.getPropositionTypeCode() + " " + proposition.getId() + proposition.getDescription());
         }
-        Map<String, Object> contextMap = new LinkedHashMap<String, Object>();
-        /*List<String> children = new ArrayList<String>();
-         for (PropositionDefinition param : proposition.getCompoundComponents()) {
-         children.add(this.translateNaturalLanguageForProposition(naturalLanguageUsageId, proposition, languageCode));
-         }
-         contextMap.put(COMPOUND_COMPONENTS, children);*/
-        return contextMap;
+        return new LinkedHashMap<String, Object>();
     }
 
-    protected String translateCompoundProposition(PropositionDefinition proposition, String naturalLanguageUsageId, String languageCode)
-            throws RiceIllegalArgumentException {
-        if (!proposition.getPropositionTypeCode().equals(PropositionType.COMPOUND.getCode())) {
-            throw new RiceIllegalArgumentException("proposition us not compound " + proposition.getPropositionTypeCode() + " " + proposition.getId() + proposition.getDescription());
-        }
-        String compoundNaturalLanguageTypeId = this.calcCompoundNaturalLanguageTypeId(proposition.getCompoundOpCode());
-        // TODO: make sure we cache the AND and OR templates
-        NaturalLanguageTemplate template = this.ruleManagementService.findNaturalLanguageTemplateByLanguageCodeTypeIdAndNluId(languageCode,
-                compoundNaturalLanguageTypeId, naturalLanguageUsageId);
-        Map<String, Object> contextMap = this.buildCompoundPropositionContextMap(naturalLanguageUsageId, proposition, languageCode);
-        return this.templater.translate(template, contextMap);
-
-    }
-
-    protected String calcCompoundNaturalLanguageTypeId(String compoundOpCode) throws RiceIllegalArgumentException {
-        if (compoundOpCode.equals("a")) {
-            return "kuali.compound.proposition.op.code." + "and";
-        }
-        if (compoundOpCode.equals("o")) {
-            return "kuali.compound.proposition.op.code." + "or";
-        }
-        throw new RiceIllegalArgumentException("unsupported compound op code " + compoundOpCode);
-    }
-
-    protected String translateSimpleProposition(NaturalLanguageTemplate naturalLanguageTemplate,
-            PropositionDefinition proposition)
-            throws RiceIllegalArgumentException {
-        if (!proposition.getPropositionTypeCode().equals(PropositionType.SIMPLE.getCode())) {
-            throw new RiceIllegalArgumentException("proposition not simple " + proposition.getPropositionTypeCode() + " " + proposition.getId() + proposition.getDescription());
-        }
-        Map<String, Object> contextMap = this.buildSimplePropositionContextMap(proposition);
-        return templater.translate(naturalLanguageTemplate, contextMap);
-    }
 }

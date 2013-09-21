@@ -16,107 +16,322 @@
 
 package org.kuali.rice.krms.test;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.krad.criteria.CriteriaLookupDaoProxy;
+import org.kuali.rice.krad.criteria.CriteriaLookupServiceImpl;
+import org.kuali.rice.krms.api.repository.context.ContextDefinition;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.*;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.in;
 
 /**
+ *   RuleManagementContextDefinitionTest is to test the methods of ruleManagementServiceImpl relating to ContextDefinitions
  *
+ *   Each test focuses on one of the methods.
  */
-public class RuleManagementContextDefinitionTest {
-    /*
-    ////
-    //// context methods
-    ////
-    */
+public class RuleManagementContextDefinitionTest  extends RuleManagementBaseTest {
+    @Override
+    @Before
+    public void setClassDiscriminator() {
+        // set a unique discriminator for test objects of this class
+        CLASS_DISCRIMINATOR = "RMCDT";
+    }
 
+
+    /**
+     *  Test testCreateContext()
+     *
+     *  This test focuses specifically on the RuleManagementServiceImpl
+     *      .createContext(ContextDefinition contextDefinition) method
+     */
     @Test
     public void testCreateContext() {
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t0 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t0");
 
+        // create a context
+        ContextDefinition.Builder contextDefinitionBuilder = ContextDefinition.Builder.create(t0.namespaceName, t0.context0_Name);
+        contextDefinitionBuilder.setId(t0.context0_Id);
+        ruleManagementServiceImpl.createContext(contextDefinitionBuilder.build());
+
+        // try to create context that already exists
+        try {
+            ruleManagementServiceImpl.createContext(contextDefinitionBuilder.build());
+            fail("Should have thrown IllegalStateException: the context to create already exists");
+        } catch (IllegalStateException e) {
+            // throws IllegalStateException: the context to create already exists
+        }
+
+        // verify created context
+        ContextDefinition context = ruleManagementServiceImpl.getContext(t0.context0_Id);
+        assertEquals("Unexpected namespace on created context",t0.namespaceName,context.getNamespace());
+        assertEquals("Unexpected name on created context",t0.context0_Name,context.getName());
+        assertEquals("Unexpected context id on returned context",t0.context0_Id,context.getId());
+
+        // build context with null Namespace
+        try {
+            contextDefinitionBuilder = ContextDefinition.Builder.create(null, t0.context1_Name);
+            fail("Should have thrown IllegalArgumentException: namespace is blank");
+        } catch (IllegalArgumentException e) {
+            // throws IllegalArgumentException: namespace is blank
+        }
+
+        // build context with null Name
+        try {
+            contextDefinitionBuilder = ContextDefinition.Builder.create(t0.namespaceName, null);
+            fail("Should have thrown IllegalArgumentException: name is blank");
+        } catch (IllegalArgumentException e) {
+            // throws IllegalArgumentException: name is blank
+        }
     }
-    /*
-    @Override
-    public ContextDefinition createContext(ContextDefinition contextDefinition) throws RiceIllegalArgumentException {
-        return this.contextBoService.createContext(contextDefinition);
-    }
 
-    */
 
+    /**
+     *  Test testFindCreateContext()
+     *
+     *  This test focuses specifically on the RuleManagementServiceImpl
+     *      .findCreateContext(ContextDefinition contextDefinition) method
+     */
     @Test
     public void testFindCreateContext() {
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t1 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t1");
 
-    }
-    /*
-    @Override
-    public ContextDefinition findCreateContext(ContextDefinition contextDefinition) throws RiceIllegalArgumentException {
-        ContextDefinition orig = this.contextBoService.getContextByNameAndNamespace(contextDefinition.getName(), contextDefinition.getNamespace());
+        // findCreateContext a context which does not already exist
+        ContextDefinition.Builder contextDefinitionBuilder = ContextDefinition.Builder.create(t1.namespaceName, t1.context0_Name);
+        contextDefinitionBuilder.setId(t1.context0_Id);
+        ContextDefinition context = ruleManagementServiceImpl.findCreateContext(contextDefinitionBuilder.build());
 
-        if (orig != null) {
-            return orig;
+        // verify created context
+        assertEquals("Unexpected namespace on created context",t1.namespaceName,context.getNamespace());
+        assertEquals("Unexpected name on created context",t1.context0_Name,context.getName());
+        assertEquals("Unexpected context id on returned context",t1.context0_Id,context.getId());
+
+        // try to findCreate context that already exists
+        contextDefinitionBuilder = ContextDefinition.Builder.create(t1.namespaceName, t1.context0_Name);
+        context = ruleManagementServiceImpl.findCreateContext(contextDefinitionBuilder.build());
+
+        // re-verify created context - id should be from original create
+        assertEquals("Unexpected context id on returned context",t1.context0_Id,context.getId());
+        assertEquals("Unexpected namespace on created context",t1.namespaceName,context.getNamespace());
+        assertEquals("Unexpected name on created context",t1.context0_Name,context.getName());
+
+        // test findCreate with null ContextDefinition
+        try {
+            ruleManagementServiceImpl.findCreateContext(null);
+            fail("Should have thrown NullPointerException");
+        } catch (NullPointerException e) {
+            // throws NullPointerException
         }
-
-        return this.contextBoService.createContext(contextDefinition);
     }
-    */
 
+
+    /**
+     *  Test testUpdateContext()
+     *
+     *  This test focuses specifically on the RuleManagementServiceImpl
+     *      .updateContext(ContextDefinition contextDefinition) method
+     */
     @Test
     public void testUpdateContext() {
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t2 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t2");
 
-    }
-    /*
-    @Override
-    public void updateContext(ContextDefinition contextDefinition) throws RiceIllegalArgumentException {
-        this.contextBoService.updateContext(contextDefinition);
-    }
-    */
+        // build test Context
+        ContextDefinition context = buildTestContext(t2.object0);
+        // verify created context
+        assertEquals("Unexpected namespace on created context",t2.namespaceName,context.getNamespace());
+        assertEquals("Unexpected name on created context",t2.context0_Name,context.getName());
+        assertEquals("Unexpected context id on returned context",t2.context0_Id,context.getId());
+        assertNull("Context Description not yet set, should have been null",context.getDescription());
+        assertEquals("Unexpected context active state",true,context.isActive());
 
+        // update the context's namespace, name, description and set inactive
+        ContextDefinition.Builder contextBuilder = ContextDefinition.Builder.create(context);
+        contextBuilder.setNamespace(t2.namespaceName + "Changed");
+        contextBuilder.setName(t2.context0_Name + "Changed");
+        contextBuilder.setDescription(t2.context0_Descr + "Changed");
+        contextBuilder.setActive(false);
+        ruleManagementServiceImpl.updateContext(contextBuilder.build());
+
+        context = ruleManagementServiceImpl.getContext(t2.context0_Id);
+        // verify updated context
+        assertEquals("Unexpected namespace on created context",t2.namespaceName + "Changed",context.getNamespace());
+        assertEquals("Unexpected name on created context",t2.context0_Name + "Changed",context.getName());
+        assertEquals("Unexpected context id on returned context",t2.context0_Id,context.getId());
+        assertEquals("Unexpected context description on returned context",t2.context0_Descr + "Changed",context.getDescription());
+        assertEquals("Unexpected contex active state",false,context.isActive());
+
+        // try update on null Content
+        try {
+            ruleManagementServiceImpl.updateContext(null);
+            fail("Should have thrown IllegalArgumentException: context is null");
+        } catch (IllegalArgumentException e) {
+            // throws IllegalArgumentException: context is null
+        }
+    }
+
+
+    /**
+     *  Test testDeleteContext()
+     *
+     *  This test focuses specifically on the RuleManagementServiceImpl
+     *      .deleteContext(String contextId) method
+     */
     @Test
     public void testDeleteContext() {
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t3 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t3");
 
-    }
-    /*
-    @Override
-    public void deleteContext(String id) throws RiceIllegalArgumentException {
-        throw new RiceIllegalArgumentException("not implemented yet");
-    }
-    */
+        // build test Context
+        ContextDefinition context = buildTestContext(t3.object0);
+        // proof text context exists
+        context = ruleManagementServiceImpl.getContext(t3.context0_Id);
+        assertEquals("Unexpected contex name returned ",t3.context0_Name,context.getName());
 
-    @Test
-    public void testGetContext() {
-
-    }
-    /*
-    @Override
-    public ContextDefinition getContext(String id) throws RiceIllegalArgumentException {
-        return this.contextBoService.getContextByContextId(id);
-    }
-    */
-
-    @Test
-    public void testGetContextByNameAndNamespace() {
-
-    }
-    /*
-    @Override
-    public ContextDefinition getContextByNameAndNamespace(String name, String namespace) throws RiceIllegalArgumentException {
-        return this.contextBoService.getContextByNameAndNamespace(name, namespace);
-    }
-
-     */
-
-    @Test
-    public void testFindContextIds() {
-
-    }
-    /*
-        @Override
-    public List<String> findContextIds(QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
-        GenericQueryResults<ContextBo> results = getCriteriaLookupService().lookup(ContextBo.class, queryByCriteria);
-
-        List<String> list = new ArrayList<String> ();
-        for (ContextBo bo : results.getResults()) {
-            list.add (bo.getId());
+        // delete Context
+        try {
+            ruleManagementServiceImpl.deleteContext(t3.context0_Id);
+            fail("Should have thrown RiceIllegalArgumentException: not implemented yet");
+        } catch (RiceIllegalArgumentException e) {
+            // throws RiceIllegalArgumentException: not implemented yet
         }
 
-        return list;
+        // proof text context deleted  (uncomment when implemented
+        // context = ruleManagementServiceImpl.getContext(t3.context0_Id);
+        // assertEquals("Unexpected contex name returned ",t3.context0_Name,context.getName());
     }
+
+
+    /**
+     *  Test testGetContext()
+     *
+     *  This test focuses specifically on the RuleManagementServiceImpl
+     *      .getContext(String contextId) method
      */
+    @Test
+    public void testGetContext() {
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t4 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t4");
+
+        // build test Context
+        buildTestContext(t4.object0);
+
+        // read context
+        ContextDefinition context = ruleManagementServiceImpl.getContext(t4.context0_Id);
+
+        //proof context was read
+        assertEquals("Unexpected contex name returned ",t4.context0_Name,context.getName());
+
+        assertNull("Should be null",ruleManagementServiceImpl.getContext(null));
+        assertNull("Should be null", ruleManagementServiceImpl.getContext("   "));
+        assertNull("Should be null", ruleManagementServiceImpl.getContext("badValue"));
+    }
+
+
+    /**
+     *  Test testGetContextByNameAndNamespace()
+     *
+     *  This test focuses specifically on the RuleManagementServiceImpl
+     *      .getContextByNameAndNamespace(String name, String namespace) method
+     */
+    @Test
+    public void testGetContextByNameAndNamespace() {
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t5 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t5");
+
+        // build test Context
+        buildTestContext(t5.object0);
+
+        // read context  ByNameAndNamespace
+        ContextDefinition context = ruleManagementServiceImpl.getContextByNameAndNamespace(t5.context0_Name,
+                t5.namespaceName);
+
+        assertEquals("Unexpected namespace on created context",t5.namespaceName,context.getNamespace());
+        assertEquals("Unexpected name on created context",t5.context0_Name,context.getName());
+
+        // test call with null name
+        try {
+            ruleManagementServiceImpl.getContextByNameAndNamespace(null,t5.namespaceName);
+            fail("Should have thrown IllegalArgumentException: name is null or blank");
+        } catch (IllegalArgumentException e) {
+            // throws IllegalArgumentException: name is null or blank
+        }
+
+        // test call with null namespace
+        try {
+            ruleManagementServiceImpl.getContextByNameAndNamespace(null,t5.namespaceName);
+            fail("Should have thrown IllegalArgumentException: namespace is null or blank");
+        } catch (IllegalArgumentException e) {
+            // throws IllegalArgumentException: namespace is null or blank
+        }
+
+        // test call with blank name
+        try {
+            ruleManagementServiceImpl.getContextByNameAndNamespace("  ",t5.namespaceName);
+            fail("Should have thrown IllegalArgumentException: name is null or blank");
+        } catch (IllegalArgumentException e) {
+            // throws IllegalArgumentException: name is null or blank
+        }
+
+        // test call with null namespace
+        try {
+            ruleManagementServiceImpl.getContextByNameAndNamespace(t5.context0_Name,"  ");
+            fail("Should have thrown IllegalArgumentException: namespace is null or blank");
+        } catch (IllegalArgumentException e) {
+            // throws IllegalArgumentException: namespace is null or blank
+        }
+
+        // test get with values for non-existent name and namespace
+        assertNull("Should be null",ruleManagementServiceImpl.getContextByNameAndNamespace("badValue", t5.namespaceName));
+        assertNull("Should be null",ruleManagementServiceImpl.getContextByNameAndNamespace(t5.context0_Name, "badValue"));
+    }
+
+
+    /**
+     *  Test testFindContextIds()
+     *
+     *  This test focuses specifically on the RuleManagementServiceImpl
+     *      .findContextIds(QueryByCriteria queryByCriteria) method
+     */
+    @Test
+    public void testFindContextIds() {
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t6 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t6");
+
+        // build four test Contexts
+        buildTestContext(t6.object0);
+        buildTestContext(t6.object1);
+        buildTestContext(t6.object2);
+        buildTestContext(t6.object3);
+        List<String> contextIds = Arrays.asList(t6.context0_Id,t6.context1_Id,t6.context2_Id,t6.context3_Id);
+
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+
+        builder.setPredicates(in("id", contextIds.toArray(new String[]{})));
+
+        CriteriaLookupServiceImpl criteriaLookupService = new CriteriaLookupServiceImpl();
+        criteriaLookupService.setCriteriaLookupDao(new CriteriaLookupDaoProxy());
+        ruleManagementServiceImpl.setCriteriaLookupService( criteriaLookupService);
+
+        List<String> foundIds = ruleManagementServiceImpl.findContextIds(builder.build());
+        assertEquals("Should of found 4 contexts",4,foundIds.size());
+
+        for (String contactId : contextIds) {
+            assertTrue("Should have only these ids",foundIds.contains(contactId));
+        }
+
+        try {
+            ruleManagementServiceImpl.findContextIds(null);
+            fail("Should have thrown IllegalArgumentException: criteria is null");
+        } catch (IllegalArgumentException e) {
+            // throws IllegalArgumentException: criteria is null
+        }
+    }
 }

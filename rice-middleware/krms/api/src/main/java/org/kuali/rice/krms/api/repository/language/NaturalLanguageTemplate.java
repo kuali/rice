@@ -93,7 +93,7 @@ public final class NaturalLanguageTemplate
         this.typeId = null;
         this.template = null;
         this.id = null;
-        this.active = false;
+        this.active = true;
         this.versionNumber = null;
     }
 

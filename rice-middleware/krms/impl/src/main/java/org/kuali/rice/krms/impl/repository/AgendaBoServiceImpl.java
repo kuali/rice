@@ -159,7 +159,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
     @Override
     public AgendaDefinition getAgendaByAgendaId(String agendaId) {
         if (StringUtils.isBlank(agendaId)){
-            throw new RiceIllegalArgumentException("agenda id is null");
+            throw new RiceIllegalArgumentException("agenda id is null or blank");
         }
         AgendaBo bo = businessObjectService.findBySinglePrimaryKey(AgendaBo.class, agendaId);
         return to(bo);

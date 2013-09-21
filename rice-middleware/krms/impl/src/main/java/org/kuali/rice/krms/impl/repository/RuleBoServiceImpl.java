@@ -121,10 +121,10 @@ public final class RuleBoServiceImpl implements RuleBoService {
 	@Override
 	public RuleDefinition getRuleByNameAndNamespace(String name, String namespace) {
         if (StringUtils.isBlank(name)) {
-            throw new IllegalArgumentException("name is blank");
+            throw new IllegalArgumentException("name is null or blank");
         }
         if (StringUtils.isBlank(namespace)) {
-            throw new IllegalArgumentException("namespace is blank");
+            throw new IllegalArgumentException("namespace is null or blank");
         }
 
         final Map<String, Object> map = new HashMap<String, Object>();

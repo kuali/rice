@@ -63,6 +63,7 @@ public interface AgendaBoService {
      * @throws IllegalStateException if the Agenda does not exists in the system
      *
      */
+    @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
     public void deleteAgenda(String agendaId);
 
     /**

@@ -292,7 +292,7 @@ public final class AgendaItemDefinition extends AbstractDataTransferObject imple
 		 * @throws IllegalArgumentException if the id is blank
 		 */
         public void setId(String agendaItemId) {
-            if (id != null && StringUtils.isBlank(agendaItemId)) {
+            if (agendaItemId != null && StringUtils.isBlank(agendaItemId)) {
                 throw new IllegalArgumentException("agendaItemId must be null or non-blank");
             }
 			this.id = agendaItemId;

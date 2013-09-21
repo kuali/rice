@@ -688,15 +688,21 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         }
     }
 
+    protected void assertIsVisible(By by, String message) {
+        if (!isVisible(by)) {
+            jiraAwareFail(by + " not visible " + message);
+        }
+    }
+
     protected void assertIsVisibleByXpath(String xpath, String message) {
         if (!isVisibleByXpath(xpath)) {
-            jiraAwareFail(xpath + " not visiable " + message);
+            jiraAwareFail(xpath + " not visible " + message);
         }
     }
 
     protected void assertIsNotVisibleByXpath(String xpath, String message) {
         if (isVisibleByXpath(xpath)) {
-            jiraAwareFail(xpath + " not visiable " + message);
+            jiraAwareFail(xpath + " visible and should not be " + message);
         }
     }
 
@@ -709,6 +715,16 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     protected void assertIsVisibleById(String id) {
         if (!isVisibleById(id)) {
             jiraAwareFail(id + " is not visible and should be");
+        }
+    }
+
+    protected void assertIsNotVisible(By by) {
+        assertIsNotVisible(by, "");
+    }
+
+    protected void assertIsNotVisible(By by, String message) {
+        if (isVisible(by)) {
+            jiraAwareFail(by + " is visible and should not be " + message);
         }
     }
 

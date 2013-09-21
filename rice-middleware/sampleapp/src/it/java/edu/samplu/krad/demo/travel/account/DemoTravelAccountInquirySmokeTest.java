@@ -17,6 +17,7 @@ package edu.samplu.krad.demo.travel.account;
 
 import edu.samplu.common.SmokeTestBase;
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -76,14 +77,16 @@ public class DemoTravelAccountInquirySmokeTest extends SmokeTestBase {
         assertIsVisibleByXpath(ANCHOR_TITLE_TRAVEL_ACCOUNT, "");
 
         waitAndClickButtonByText(COLLAPSE_ALL);
-        assertIsNotVisibleByXpath(ANCHOR_TITLE_TRAVEL_ACCOUNT, " after clicking " + COLLAPSE_ALL);
+        Thread.sleep(2000);
+        assertIsNotVisible(By.linkText("a"), " after clicking " + COLLAPSE_ALL);
 
         waitAndClickButtonByText(EXPAND_ALL);
-        assertIsVisibleByXpath(ANCHOR_TITLE_TRAVEL_ACCOUNT, " after clicking " + EXPAND_ALL);
+        Thread.sleep(2000);
+        assertIsVisible(By.linkText("a"), " after clicking " + EXPAND_ALL);
     }
 
     protected void testInquiryLightBox() throws Exception {
-        waitAndClickByLinkText("a6");
+        waitAndClickByLinkText("a");
         assertIsVisibleByXpath(ANCHOR_TITLE_TRAVEL_ACCOUNT, "");
     }
 

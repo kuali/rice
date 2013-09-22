@@ -15,9 +15,17 @@
  */
 package edu.samplu.krad.demo.travelapplication.accountmultivalue.lookup;
 
+import edu.samplu.common.JiraAwareFailureUtil;
 import edu.samplu.common.SmokeTestBase;
+import edu.samplu.common.WebDriverUtil;
 import org.junit.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+
+import java.util.List;
+
+import static com.thoughtworks.selenium.SeleneseTestCase.assertEquals;
+import static com.thoughtworks.selenium.SeleneseTestCase.assertNotEquals;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -63,26 +71,85 @@ public class DemoTravelAccountMultivalueLookUpSmokeTest extends SmokeTestBase {
     }
 
     private void testSelectAllPages() throws InterruptedException {
-        waitAndSelectByName(ACCOUNT_TYPE_CODE_NAME, "Income Account Type");
         waitAndClickButtonByText(SEARCH);
+
+        // select all, all checkboxes should be checked and return button enabled
         waitAndClickDropDown("select all items");
-        assertTextPresent("a1");
-        assertTextPresent("a3");
+        if (!areAllChecked()) {
+            JiraAwareFailureUtil.fail("select all items failure", this);
+        }
         assertButtonEnabledByText(RETURN_SELECTED_BUTTON_TEXT);
+
+        // all should be checked and button enabled on the next page as well (server side paging)
+        waitAndClickByLinkText("Next");
+        if (!areAllChecked()) {
+            JiraAwareFailureUtil.fail("select all items server side paging failure", this);
+        }
+        assertButtonEnabledByText(RETURN_SELECTED_BUTTON_TEXT);
+
+        // deselect all no checkboxes should be checked and return button disabled
         waitAndClickDropDown("deselect all items");
+        if (!areNoneChecked()) {
+            JiraAwareFailureUtil.fail("deselect all items failure", this);
+        }
+        assertButtonDisabledByText(RETURN_SELECTED_BUTTON_TEXT);
+
+        waitAndClickByLinkText("Previous");
+        if (!areNoneChecked()) {
+            JiraAwareFailureUtil.fail("deselect all items failure", this);
+        }
         assertButtonDisabledByText(RETURN_SELECTED_BUTTON_TEXT);
     }
 
     private void testSelectThisPage() throws InterruptedException {
-        waitAndSelectByName(ACCOUNT_TYPE_CODE_NAME, "Expense Account Type");
-        waitAndClickButtonByText(SEARCH);
+        // select all on this page, all checkboxes should be checked and return button enabled
         waitAndClickDropDown("select all items on this page");
+        if (!areAllChecked()) {
+            JiraAwareFailureUtil.fail("select all items on this page failure", this);
+        }
         assertButtonEnabledByText(RETURN_SELECTED_BUTTON_TEXT);
-        assertTextPresent("a2");
-        assertTextPresent("a8");
+
+        // the next page should not have any checkboxes checked return button should still be enabled
+        waitAndClickByLinkText("Next");
+        if (!areNoneChecked()) {
+            JiraAwareFailureUtil.fail("select all items on this page failure", this);
+        }
+        assertButtonEnabledByText(RETURN_SELECTED_BUTTON_TEXT);
+
+        // back to the previous page, checkboxes should be checked and return button enabled still
+        waitAndClickByLinkText("Previous");
+        if (!areAllChecked()) {
+            JiraAwareFailureUtil.fail("select all items on previous page failure", this);
+        }
+
+        // deselect no checkboxes should be checked and the return button should be disabled
         waitAndClickDropDown("deselect all items on this page");
-        waitForPageToLoad();
+        if (!areNoneChecked()) {
+            JiraAwareFailureUtil.fail("deselect all items on this page failure", this);
+        }
         assertButtonDisabledByText(RETURN_SELECTED_BUTTON_TEXT);
+    }
+
+    private boolean areAllChecked() throws InterruptedException {
+        WebElement tbody = waitAndGetElementByAttributeValue("role", "alert"); // results table body
+        List<WebElement> checkboxes = findElements(By.className("uif-checkboxControl"),tbody);
+        for (WebElement checkbox: checkboxes) {
+            if (!"true".equals(checkbox.getAttribute("checked"))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean areNoneChecked() throws InterruptedException {
+        WebElement tbody = waitAndGetElementByAttributeValue("role", "alert"); // results table body
+        List<WebElement> checkboxes = findElements(By.className("uif-checkboxControl"),tbody);
+        for (WebElement checkbox: checkboxes) {
+            if (null != checkbox.getAttribute("checked")) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private void waitAndClickDropDown(String dropDownText) throws InterruptedException {

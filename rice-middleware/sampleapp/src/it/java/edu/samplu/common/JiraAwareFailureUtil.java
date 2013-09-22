@@ -138,7 +138,41 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("//div[@id='Demo-TableLayoutDetails-Example3']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='dataTables_wrapper']/table/tbody/tr[@class='detailsRow']/td/div/div[@class='uif-verticalBoxLayout clearfix']/div[@class='uif-disclosure uif-boxLayoutVerticalItem clearfix']/div[@class='uif-disclosureContent']/div[@class='dataTables_wrapper']/table", "KULRICE-10569 DemoLibraryCollectionFeaturesRowDetailsSmokeTest testCollectionFeaturesRowDetailsTableSubCollection no subtable");
 
         jiraMatches.put("//div[@id='Demo-StackedLayoutManager-Collection2']/div[2]/div[2]/table/tbody/tr/td/div/input[@name='collection4[0].field1']", "KULRICE-10520 Update DemoLibraryLayoutManagersStackedLayoutSmokeTest");
+
+        jiraMatches.put("select all items server side paging failure", "KULRICE-10534 : Multivalue lookup server side select for server side paging");
         //jiraMatches.put("", "");
+    }
+
+    /**
+     * Calls failOnMatchedJira(String, Failable) and fails if no matched jira failures
+     * @param message
+     * @param failable
+     */
+    public static void fail(String message, Failable failable) {
+        failOnMatchedJira(message, failable);
+        failable.fail(message);
+    }
+
+    /**
+     * Calls failOnMatchedJira(String, String, Failable) and fails if no matched jira failures
+     * @param contents
+     * @param message
+     * @param failable
+     */
+    public static void fail(String contents, String message, Failable failable) {
+        failOnMatchedJira(contents, message, failable);
+        failable.fail(message);
+    }
+
+    /**
+     * Calls failOnMatchedJira(String, String) with the contents and if no match is detected then the message.
+     * @param contents to check for containing of the jiraMatches keys.
+     * @param message to check for containing of the jiraMatches keys if contents doesn't
+     * @param failable to fail with the jiraMatches value if the contents or message is detected
+     */
+    public static void failOnMatchedJira(String contents, String message, Failable failable) {
+        failOnMatchedJira(contents, failable);
+        failOnMatchedJira(message, failable);
     }
 
     /**
@@ -171,16 +205,5 @@ public class JiraAwareFailureUtil {
                 failable.fail("\n" + JIRA_BROWSE_URL + jiraMatches.get(key) + "\n\n" + contents);
             }
         }
-    }
-
-    /**
-     * Calls failOnMatchedJira with the contents and if no match is detected then the message.
-     * @param contents to check for containing of the jiraMatches keys.
-     * @param message to check for containing of the jiraMatches keys if contents doesn't
-     * @param failable to fail with the jiraMatches value if the contents or message is detected
-     */
-    public static void failOnMatchedJira(String contents, String message, Failable failable) {
-        failOnMatchedJira(contents, failable);
-        failOnMatchedJira(message, failable);
     }
 }

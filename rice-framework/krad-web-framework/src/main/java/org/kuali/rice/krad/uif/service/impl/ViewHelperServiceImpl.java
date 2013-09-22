@@ -1030,7 +1030,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             LayoutManager layoutManager = ((Container) component).getLayoutManager();
 
             if (layoutManager != null) {
-                layoutManager.getContext().putAll(getCommonContext(view, component));
+                layoutManager.pushAllToContext(getCommonContext(view, component));
                 layoutManager.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, component);
                 layoutManager.pushObjectToContext(UifConstants.ContextVariableNames.MANAGER, layoutManager);
 

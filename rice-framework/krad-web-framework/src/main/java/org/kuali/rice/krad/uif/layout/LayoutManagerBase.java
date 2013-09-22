@@ -26,7 +26,6 @@ import org.kuali.rice.krad.uif.view.View;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,13 +54,15 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
 
     @ReferenceCopy(newCollectionInstance = true)
     private Map<String, Object> context;
-    private Map<String, Object> unmodifiableContext;
 
     private List<PropertyReplacer> propertyReplacers;
 
     public LayoutManagerBase() {
         super();
-        unmodifiableContext = context = Collections.emptyMap();
+
+        cssClasses = new ArrayList<String>();
+        context = new HashMap<String, Object>();
+        propertyReplacers = new ArrayList<PropertyReplacer>();
     }
 
     /**
@@ -289,7 +290,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
         if (cssClasses == null || cssClasses.isEmpty()) {
             cssClasses = new ArrayList<String>();
         }
-        
+
         if (!cssClasses.contains(styleClass)) {
             cssClasses.add(styleClass);
         }
@@ -312,7 +313,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     @Override
     @BeanTagAttribute(name = "context", type = BeanTagAttribute.AttributeType.MAPBEAN)
     public Map<String, Object> getContext() {
-        return this.unmodifiableContext;
+        return this.context;
     }
 
     /**
@@ -320,12 +321,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      */
     @Override
     public void setContext(Map<String, Object> context) {
-        if (context == null || context.isEmpty()) {
-            this.unmodifiableContext = this.context = Collections.emptyMap();
-        } else {
-            this.context = context;
-            this.unmodifiableContext = Collections.unmodifiableMap(this.context);
-        }
+        this.context = context;
     }
 
     /**
@@ -336,7 +332,6 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     public void pushObjectToContext(String objectName, Object object) {
         if (this.context.isEmpty()) {
             this.context = new HashMap<String, Object>();
-            this.unmodifiableContext = Collections.unmodifiableMap(this.context);
         }
 
         this.context.put(objectName, object);
@@ -350,10 +345,9 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
         if (sourceContext == null || sourceContext.isEmpty()) {
             return;
         }
-        
+
         if (this.context.isEmpty()) {
             this.context = new HashMap<String, Object>();
-            this.unmodifiableContext = Collections.unmodifiableMap(this.context);
         }
 
         this.context.putAll(sourceContext);

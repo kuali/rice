@@ -140,6 +140,8 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("//div[@id='Demo-StackedLayoutManager-Collection2']/div[2]/div[2]/table/tbody/tr/td/div/input[@name='collection4[0].field1']", "KULRICE-10520 Update DemoLibraryLayoutManagersStackedLayoutSmokeTest");
 
         jiraMatches.put("select all items server side paging failure", "KULRICE-10534 : Multivalue lookup server side select for server side paging");
+
+        jiraMatches.put("not enough results for next page", "KULRICE-10680 Apply 2013-09-21.sql and mysql-2013-09-21.sql");
         //jiraMatches.put("", "");
     }
 

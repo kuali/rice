@@ -17,15 +17,11 @@ package edu.samplu.krad.demo.travelapplication.accountmultivalue.lookup;
 
 import edu.samplu.common.JiraAwareFailureUtil;
 import edu.samplu.common.SmokeTestBase;
-import edu.samplu.common.WebDriverUtil;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
-
-import static com.thoughtworks.selenium.SeleneseTestCase.assertEquals;
-import static com.thoughtworks.selenium.SeleneseTestCase.assertNotEquals;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -62,16 +58,9 @@ public class DemoTravelAccountMultivalueLookUpSmokeTest extends SmokeTestBase {
         waitAndClickByLinkText("Account Multi-Value Lookup");
     }
 
-    protected void testTravelAccountMultivalueLookUp() throws Exception {
-        testSearchSelect();
-
-        testSelectThisPage();
-
-        testSelectAllPages();
-    }
-
     private void testSelectAllPages() throws InterruptedException {
         waitAndClickButtonByText(SEARCH);
+        assertButtonDisabledByText(RETURN_SELECTED_BUTTON_TEXT);
 
         // select all, all checkboxes should be checked and return button enabled
         waitAndClickDropDown("select all items");
@@ -80,8 +69,17 @@ public class DemoTravelAccountMultivalueLookUpSmokeTest extends SmokeTestBase {
         }
         assertButtonEnabledByText(RETURN_SELECTED_BUTTON_TEXT);
 
+        boolean anotherPageOfResults = false;
+        if (Integer.parseInt(resultCount()) > 10) {
+            anotherPageOfResults = true;
+        }
+
         // all should be checked and button enabled on the next page as well (server side paging)
+        if (!anotherPageOfResults) {
+            JiraAwareFailureUtil.fail("select all items server side paging failure not enough results for next page", this);
+        }
         waitAndClickByLinkText("Next");
+
         if (!areAllChecked()) {
             JiraAwareFailureUtil.fail("select all items server side paging failure", this);
         }
@@ -102,17 +100,25 @@ public class DemoTravelAccountMultivalueLookUpSmokeTest extends SmokeTestBase {
     }
 
     private void testSelectThisPage() throws InterruptedException {
+        waitAndClickButtonByText(SEARCH);
+        assertButtonDisabledByText(RETURN_SELECTED_BUTTON_TEXT);
+
         // select all on this page, all checkboxes should be checked and return button enabled
-        waitAndClickDropDown("select all items on this page");
-        if (!areAllChecked()) {
-            JiraAwareFailureUtil.fail("select all items on this page failure", this);
+        assertSelectAllThisPage();
+
+        boolean anotherPageOfResults = false;
+        if (Integer.parseInt(resultCount()) > 10) {
+            anotherPageOfResults = true;
         }
-        assertButtonEnabledByText(RETURN_SELECTED_BUTTON_TEXT);
 
         // the next page should not have any checkboxes checked return button should still be enabled
         waitAndClickByLinkText("Next");
         if (!areNoneChecked()) {
-            JiraAwareFailureUtil.fail("select all items on this page failure", this);
+            if (anotherPageOfResults) {
+                JiraAwareFailureUtil.fail("select all items on this page failure", this);
+            } else {
+                JiraAwareFailureUtil.fail("select all items on this page failure not enough results for next page", this);
+            }
         }
         assertButtonEnabledByText(RETURN_SELECTED_BUTTON_TEXT);
 
@@ -123,11 +129,30 @@ public class DemoTravelAccountMultivalueLookUpSmokeTest extends SmokeTestBase {
         }
 
         // deselect no checkboxes should be checked and the return button should be disabled
+        assertDeselectAllThisPage();
+    }
+
+    private void assertDeselectAllThisPage() throws InterruptedException {
         waitAndClickDropDown("deselect all items on this page");
         if (!areNoneChecked()) {
             JiraAwareFailureUtil.fail("deselect all items on this page failure", this);
         }
         assertButtonDisabledByText(RETURN_SELECTED_BUTTON_TEXT);
+    }
+
+    private void assertSelectAllThisPage() throws InterruptedException {
+        waitAndClickDropDown("select all items on this page");
+        if (!areAllChecked()) {
+            JiraAwareFailureUtil.fail("select all items on this page failure", this);
+        }
+        assertButtonEnabledByText(RETURN_SELECTED_BUTTON_TEXT);
+    }
+
+    private String resultCount() throws InterruptedException {
+        List<WebElement> resultLi = waitAndGetElementsByAttributeValue("class", "uif-infoMessageItem");
+        String resultsCount = resultLi.get(1).getText(); // second uif-infoMessageItem contains count
+        resultsCount = resultsCount.substring(0, resultsCount.indexOf((" ")));
+        return resultsCount;
     }
 
     private boolean areAllChecked() throws InterruptedException {
@@ -169,17 +194,48 @@ public class DemoTravelAccountMultivalueLookUpSmokeTest extends SmokeTestBase {
         assertButtonEnabledByText(RETURN_SELECTED_BUTTON_TEXT);
         waitAndClickByName("selectedCollectionLines['lookupResults']");
         assertButtonDisabledByText(RETURN_SELECTED_BUTTON_TEXT);
+
+        assertSelectAllThisPage();
+        assertDeselectAllThisPage();
+
+        waitAndClickByName("selectedCollectionLines['lookupResults']");
+        waitAndClickButtonByText(SEARCH);
+        checkForIncidentReport();
     }
 
     @Test
-    public void testTravelAccountMultivalueLookUpBookmark() throws Exception {
-        testTravelAccountMultivalueLookUp();
+    public void testTravelAccountMultivalueLookUpSearchSelectBookmark() throws Exception {
+        testSearchSelect();
         passed();
     }
 
     @Test
-    public void testTravelAccountMultivalueLookUpNav() throws Exception {
-        testTravelAccountMultivalueLookUp();
+    public void testTravelAccountMultivalueLookUpSearchSelectNav() throws Exception {
+        testSearchSelect();
+        passed();
+    }
+
+    @Test
+    public void testTravelAccountMultivalueLookUpSelectThisPageBookmark() throws Exception {
+        testSelectThisPage();
+        passed();
+    }
+
+    @Test
+    public void testTravelAccountMultivalueLookUpSelectThisPageNav() throws Exception {
+        testSelectThisPage();
+        passed();
+    }
+
+    @Test
+    public void testTravelAccountMultivalueLookUpSelectAllPagesBookmark() throws Exception {
+        testSelectAllPages();
+        passed();
+    }
+
+    @Test
+    public void testTravelAccountMultivalueLookUpSelectAllPagesNav() throws Exception {
+        testSelectAllPages();
         passed();
     }
 }

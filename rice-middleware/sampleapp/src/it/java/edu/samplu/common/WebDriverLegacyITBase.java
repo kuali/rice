@@ -1110,6 +1110,31 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         return element;
     }
 
+    protected List<WebElement> waitAndGetElementsByAttributeValue(String attribute, String attributeValue) throws InterruptedException {
+        // jenkins implies that implicitlyWait is worse than sleep loop for finding elements by 100+ test failures on the old sampleapp
+        //        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
+        //        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+
+        boolean failed = false;
+
+        for (int second = 0;; second++) {
+            Thread.sleep(1000);
+            if (second >= waitSeconds)
+                failed = true;
+            try {
+                if (failed || (getElementsByAttributeValue(attribute, attributeValue) != null)) {
+                    break;
+                }
+            } catch (Exception e) {}
+        }
+
+        List<WebElement> elements = getElementsByAttributeValue(attribute, attributeValue);
+        driver.manage().timeouts().implicitlyWait(WebDriverUtil.DEFAULT_IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
+        return elements;
+    }
+
     protected String[] waitAndGetText(By by) throws InterruptedException {
         WebDriverUtil.waitFors(driver, DEFAULT_WAIT_SEC, by, "");
         List<WebElement> found = findElements(by);
@@ -4668,20 +4693,24 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         return (ITUtil.REMOTE_UIF_KRAD.equalsIgnoreCase(getUiFramework()));
     }
 
-    protected WebElement getElementByDataAttributeValue(String dataAttributeName, String value){
-        return findElement(By.cssSelector("[data-" + dataAttributeName + "='" + value +"']"));
+    protected WebElement getElementByAttribute(String attributeName){
+        return findElement(By.cssSelector("[" + attributeName + "]"));
     }
 
     protected WebElement getElementByDataAttribute(String dataAttributeName){
         return findElement(By.cssSelector("[data-" + dataAttributeName + "]"));
     }
 
+    protected WebElement getElementByDataAttributeValue(String dataAttributeName, String value){
+        return findElement(By.cssSelector("[data-" + dataAttributeName + "='" + value +"']"));
+    }
+
     protected WebElement getElementByAttributeValue(String attributeName, String value){
         return findElement(By.cssSelector("[" + attributeName + "='" + value +"']"));
     }
 
-    protected WebElement getElementByAttribute(String attributeName){
-        return findElement(By.cssSelector("[" + attributeName + "]"));
+    protected List<WebElement> getElementsByAttributeValue(String attributeName, String value){
+        return findElements(By.cssSelector("[" + attributeName + "='" + value +"']"));
     }
 
     /**

@@ -154,63 +154,61 @@ public class ViewServiceImpl implements ViewService {
      * is generally comes from the request and can be the request parameter Map itself. Any parameters
      * not valid for the View will be filtered out
      */
-    protected void performViewLifecycle(View view, Object model, Map<String, String> parameters) {
+    protected void performViewLifecycle(final View view, final Object model, final Map<String, String> parameters) {
         // get the configured helper service for the view
-        ViewHelperService helperService = view.getViewHelperService();
+        final ViewHelperService helperService = view.getViewHelperService();
 
-        // start a new lifecycle
-        ViewLifecycle viewLifecycle = new ViewLifecycle();
-        helperService.setViewLifecycle(viewLifecycle);
+        helperService.encapsulateViewLifecycle(new Runnable(){
+			@Override
+			public void run() {
+		        // invoke initialize phase on the views helper service
+		        if (LOG.isEnabledFor(Priority.INFO)) {
+		            LOG.info("performing initialize phase for view: " + view.getId());
+		        }
+		        helperService.performInitialization(view, model);
 
-        // invoke initialize phase on the views helper service
-        if (LOG.isEnabledFor(Priority.INFO)) {
-            LOG.info("performing initialize phase for view: " + view.getId());
-        }
-        helperService.performInitialization(view, model);
+		        // do indexing                               
+		        if (LOG.isDebugEnabled()) {
+		            LOG.debug("processing indexing for view: " + view.getId());
+		        }
+		        view.index();
 
-        // do indexing                               
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("processing indexing for view: " + view.getId());
-        }
-        view.index();
+		        // update status on view
+		        if (LOG.isDebugEnabled()) {
+		            LOG.debug("Updating view status to INITIALIZED for view: " + view.getId());
+		        }
+		        view.setViewStatus(ViewStatus.INITIALIZED);
 
-        // update status on view
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Updating view status to INITIALIZED for view: " + view.getId());
-        }
-        view.setViewStatus(ViewStatus.INITIALIZED);
+		        // Apply Model Phase
+		        if (LOG.isEnabledFor(Priority.INFO)) {
+		            LOG.info("performing apply model phase for view: " + view.getId());
+		        }
+		        helperService.performApplyModel(view, model);
 
-        // Apply Model Phase
-        if (LOG.isEnabledFor(Priority.INFO)) {
-            LOG.info("performing apply model phase for view: " + view.getId());
-        }
-        helperService.performApplyModel(view, model);
+		        // do indexing
+		        if (LOG.isEnabledFor(Priority.INFO)) {
+		            LOG.info("reindexing after apply model for view: " + view.getId());
+		        }
+		        view.index();
 
-        // do indexing
-        if (LOG.isEnabledFor(Priority.INFO)) {
-            LOG.info("reindexing after apply model for view: " + view.getId());
-        }
-        view.index();
+		        // Finalize Phase
+		        if (LOG.isEnabledFor(Priority.INFO)) {
+		            LOG.info("performing finalize phase for view: " + view.getId());
+		        }
+		        helperService.performFinalize(view, model);
 
-        // Finalize Phase
-        if (LOG.isEnabledFor(Priority.INFO)) {
-            LOG.info("performing finalize phase for view: " + view.getId());
-        }
-        helperService.performFinalize(view, model);
+		        // do indexing
+		        if (LOG.isEnabledFor(Priority.INFO)) {
+		            LOG.info("processing final indexing for view: " + view.getId());
+		        }
+		        view.index();
 
-        // do indexing
-        if (LOG.isEnabledFor(Priority.INFO)) {
-            LOG.info("processing final indexing for view: " + view.getId());
-        }
-        view.index();
-
-        helperService.setViewLifecycle(null);
-
-        // update status on view
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Updating view status to FINAL for view: " + view.getId());
-        }
-        view.setViewStatus(ViewStatus.FINAL);
+		        // update status on view
+		        if (LOG.isDebugEnabled()) {
+		            LOG.debug("Updating view status to FINAL for view: " + view.getId());
+		        }
+		        view.setViewStatus(ViewStatus.FINAL);
+			}});
     }
 
     public ViewTypeService getViewTypeService(UifConstants.ViewType viewType) {

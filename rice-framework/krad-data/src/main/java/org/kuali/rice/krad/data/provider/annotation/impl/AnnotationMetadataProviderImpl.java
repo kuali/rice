@@ -69,7 +69,6 @@ import org.kuali.rice.krad.data.provider.annotation.ShortLabel;
 import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViews;
 import org.kuali.rice.krad.data.provider.annotation.UifDisplayHint;
 import org.kuali.rice.krad.data.provider.annotation.UifDisplayHints;
-import org.kuali.rice.krad.data.provider.annotation.UifSection;
 import org.kuali.rice.krad.data.provider.annotation.UifValidCharactersConstraintBeanName;
 import org.kuali.rice.krad.data.provider.impl.MetadataProviderBase;
 
@@ -427,9 +426,6 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 		}
 		if (a instanceof UifDisplayHints) {
 			attr.setDisplayHints(new HashSet<UifDisplayHint>(Arrays.asList(((UifDisplayHints) a).value())));
-		}
-		if (a instanceof UifSection) {
-			// TODO
 		}
 		if (a instanceof MergeAction) {
 			MetadataMergeAction mma = ((MergeAction) a).value();

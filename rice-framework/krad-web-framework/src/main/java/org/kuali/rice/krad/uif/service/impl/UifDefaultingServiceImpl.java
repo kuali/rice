@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,7 @@ import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
 import org.kuali.rice.krad.data.metadata.MetadataRepository;
 import org.kuali.rice.krad.data.provider.annotation.UifDisplayHint;
+import org.kuali.rice.krad.data.provider.annotation.UifDisplayHintType;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.DataObjectEntry;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
@@ -73,14 +75,34 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
         return label.toString().trim();
     }
 
+
+    protected UifDisplayHint getHintOfType( DataObjectAttribute attr, UifDisplayHintType hintType ) {
+        if ( attr != null && attr.getDisplayHints() != null ) {
+            for ( UifDisplayHint hint : attr.getDisplayHints() ) {
+                if ( hint.value().equals(hintType) ) {
+                    return hint;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Check the {@link UifDisplayHint}s on an attribute, return true if any of them have the
+     * given type.
+     */
+    protected boolean hasHintOfType( DataObjectAttribute attr, UifDisplayHintType hintType ) {
+        return getHintOfType(attr, hintType) != null;
+    }
+
     protected Control getControlInstance( AttributeDefinition attrDef, DataObjectAttribute dataObjectAttribute ) {
         Control c = null;
         // Check for the hidden hint - if present - then use that control type
-        if ( dataObjectAttribute != null && dataObjectAttribute.getDisplayHints().contains(UifDisplayHint.HIDDEN) ) {
+        if ( dataObjectAttribute != null && hasHintOfType(dataObjectAttribute, UifDisplayHintType.HIDDEN) ) {
             c = ComponentFactory.getHiddenControl();
         } else if ( attrDef.getOptionsFinder() != null ) {
             // if a values finder has been established, use a radio button group or drop-down list
-            if ( dataObjectAttribute != null && dataObjectAttribute.getDisplayHints().contains(UifDisplayHint.RADIO)) {
+            if ( dataObjectAttribute != null && hasHintOfType(dataObjectAttribute, UifDisplayHintType.RADIO) ) {
                 c = ComponentFactory.getRadioGroupControl();
             } else {
                 c = ComponentFactory.getSelectControl();
@@ -215,6 +237,7 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
         Group group = ComponentFactory.getGroupWithDisclosureGridLayout();
         group.setId(groupId);
         group.setHeaderText(headerText);
+        group.setItems(new ArrayList<Component>());
         return group;
     }
 
@@ -237,9 +260,30 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
         ((List<Group>)view.getItems()).add(currentGroup);
 
         // Loop over the attributes on the data object, adding them into the inquiry
-        // TODO: If we have an @Section notation, switch to the section, creating if the ID is unknown
+        // If we have an @Section notation, switch to the section, creating if the ID is unknown
         List<Component> items = (List<Component>) currentGroup.getItems(); // needed to deal with generics issue
         for ( AttributeDefinition attr : dataObjectEntry.getAttributes() ) {
+            // Check for a section hint
+            // Create or retrieve existing section as determined by the ID on the annotation
+            UifDisplayHint sectionHint = getHintOfType(attr.getDataObjectAttribute(), UifDisplayHintType.SECTION);
+            if ( sectionHint != null ) {
+                if ( StringUtils.isNotBlank( sectionHint.id() ) ) {
+                    currentGroup = inquirySectionsById.get( sectionHint.id() );
+                    if ( currentGroup == null ) {
+                        String sectionLabel = sectionHint.label();
+                        if ( StringUtils.isBlank(sectionLabel) ) {
+                            sectionLabel = deriveHumanFriendlyNameFromPropertyName(sectionHint.id() );
+                        }
+                        currentGroup = createInquirySection(sectionHint.id(), sectionHint.label());
+                        inquirySectionsById.put(currentGroup.getId(), currentGroup);
+                        ((List<Group>)view.getItems()).add(currentGroup);
+                    }
+                } else {
+                    LOG.warn( "SECTION UifDisplayHint given without an ID - assuming 'default'" );
+                    currentGroup = inquirySectionsById.get("default");
+                }
+                items = (List<Component>) currentGroup.getItems();
+            }
             if ( attr.getControlField() instanceof HiddenControl ) {
                 continue;
             }

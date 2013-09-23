@@ -32,6 +32,7 @@ import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
 import org.kuali.rice.krad.data.provider.MetadataProvider;
 import org.kuali.rice.krad.data.provider.annotation.UifDisplayHint;
+import org.kuali.rice.krad.data.provider.annotation.UifDisplayHintType;
 import org.kuali.rice.krad.datadictionary.exception.DuplicateEntryException;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.state.StateMapping;
@@ -323,7 +324,7 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
                 continue;
             }
             // if we've been told to exclude it, just ignore
-            if ( attr.getDisplayHints().contains(UifDisplayHint.EXCLUDE) ) {
+            if ( hasExcludedHint(attr) ) {
                 continue;
             }
 
@@ -347,6 +348,20 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
         setAttributes(dataObjectEntryAttributes);
     }
 
+    /**
+     * Check the {@link UifDisplayHint}s on an attribute, return true if any of them have the
+     * EXCLUDE type.
+     */
+    protected boolean hasExcludedHint( DataObjectAttribute attr ) {
+        if ( attr.getDisplayHints() != null ) {
+            for ( UifDisplayHint hint : attr.getDisplayHints() ) {
+                if ( hint.value().equals(UifDisplayHintType.EXCLUDE) ) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     @Override
     public void dataDictionaryPostProcessing() {

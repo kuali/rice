@@ -16,25 +16,55 @@
 package org.kuali.rice.krad.data.provider.annotation;
 
 /**
- * Enum representing the hints which can be passed through when auto-generating the input fields for an attribute.
+ * Class representing the hints which can be passed through when auto-generating the input fields for an attribute.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public enum UifDisplayHint {
-	/**
-	 * Tells the defaulter to hide this field and not generate an input field for it.
-	 */
-	HIDDEN,
-	/**
-	 * Tells the defaulter to exclude this field and not generate an attribute definition at all.
-	 */
-	EXCLUDE,
-	/**
-	 * If a values finder is present for the field, generate as a Drop-down list.
-	 */
-	DROPDOWN,
-	/**
-	 * If a values finder is present for the field, generate as a set of radio buttons.
-	 */
-	RADIO;
+public @interface UifDisplayHint {
+	UifDisplayHintType value();
+
+	// public static final UifDisplayHint HIDDEN = new UifDisplayHint(UifDisplayHintType.HIDDEN);
+	// public static final UifDisplayHint EXCLUDE = new UifDisplayHint(UifDisplayHintType.EXCLUDE);
+	// public static final UifDisplayHint DROPDOWN = new UifDisplayHint(UifDisplayHintType.DROPDOWN);
+	// public static final UifDisplayHint RADIO = new UifDisplayHint(UifDisplayHintType.RADIO);
+
+	// private final UifDisplayHintType hintType;
+	String id() default "";
+
+	String label() default "";
+
+	// public UifDisplayHint(UifDisplayHintType hintType) {
+	// this.hintType = hintType;
+	// }
+	//
+	// public UifDisplayHint(UifDisplayHintType hintType, String id) {
+	// this(hintType);
+	// this.id = id;
+	// }
+	//
+	// public UifDisplayHint(UifDisplayHintType hintType, String id, String label) {
+	// this(hintType, id);
+	// this.label = label;
+	// }
+	//
+	// public UifDisplayHintType getHintType() {
+	// return hintType;
+	// }
+	//
+	// public String getId() {
+	// return id;
+	// }
+	//
+	// public void setId(String id) {
+	// this.id = id;
+	// }
+	//
+	// public String getLabel() {
+	// return label;
+	// }
+	//
+	// public void setLabel(String label) {
+	// this.label = label;
+	// }
+
 }

@@ -47,6 +47,7 @@ import org.kuali.rice.krad.data.provider.annotation.Relationship;
 import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViewType;
 import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViews;
 import org.kuali.rice.krad.data.provider.annotation.UifDisplayHint;
+import org.kuali.rice.krad.data.provider.annotation.UifDisplayHintType;
 import org.kuali.rice.krad.data.provider.annotation.UifDisplayHints;
 import org.kuali.rice.krad.data.provider.annotation.UifValidCharactersConstraintBeanName;
 import org.kuali.rice.krad.demo.travel.options.AccountTypeKeyValues;
@@ -69,7 +70,21 @@ public class TravelAccount extends DataObjectBase implements Serializable {
 	@ForceUppercase
 	private String name;
 
-	@Column(name="SUBSIDIZED_PCT",length=5,precision=2)
+
+    @Column(name="ACCT_TYPE",length=3)
+    @Label("Travel Account Type Code")
+    @Description("Type code grouping for account")
+    @KeyValuesFinderClass(AccountTypeKeyValues.class)
+    @UifDisplayHints(@UifDisplayHint(UifDisplayHintType.RADIO))
+    protected String accountTypeCode;
+
+    @ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.REFRESH})
+    @JoinColumn(name="ACCT_TYPE", insertable=false, updatable=false)
+    @InheritProperty(name="codeAndDescription")
+    @UifDisplayHints(@UifDisplayHint(UifDisplayHintType.HIDDEN))
+    private TravelAccountType accountType;
+
+    @Column(name="SUBSIDIZED_PCT",length=5,precision=2)
 	private KualiPercent subsidizedPercent;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -79,7 +94,7 @@ public class TravelAccount extends DataObjectBase implements Serializable {
 
     @Column(name="ACCT_FO_ID",length=40)
     @Size(max=40)
-    @UifDisplayHints(UifDisplayHint.HIDDEN)
+    @UifDisplayHints({@UifDisplayHint(UifDisplayHintType.HIDDEN),@UifDisplayHint(value=UifDisplayHintType.SECTION,id="fo",label="Fiscal Officer")})
 	private String foId;
 
     @Relationship(foreignKeyFields="foId")
@@ -89,18 +104,6 @@ public class TravelAccount extends DataObjectBase implements Serializable {
     		@InheritProperty(name="name",label=@Label("Fiscal Officer Name"))
     })
 	private Person fiscalOfficer;
-
-	@Column(name="ACCT_TYPE",length=3)
-	@Label("Travel Account Type Code")
-	@Description("Type code grouping for account")
-	@KeyValuesFinderClass(AccountTypeKeyValues.class)
-    @UifDisplayHints(UifDisplayHint.RADIO)
-    protected String accountTypeCode;
-
-    @ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.REFRESH})
-	@JoinColumn(name="ACCT_TYPE", insertable=false, updatable=false)
-    @InheritProperty(name="codeAndDescription")
-	private TravelAccountType accountType;
 
     @OneToMany(fetch=FetchType.EAGER, orphanRemoval=true, cascade= {CascadeType.ALL} )
 	@JoinColumn(name="ACCT_NUM", nullable=false, insertable=false, updatable=false)

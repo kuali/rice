@@ -185,7 +185,7 @@ public class DemoTravelAccountMultivalueLookUpSmokeTest extends SmokeTestBase {
     }
 
     private void testSearchSelect() throws InterruptedException {
-        waitAndSelectByName(ACCOUNT_TYPE_CODE_NAME, "Clearing Account Type");
+        waitAndClickByValue("CAT");
         waitAndClickButtonByText(SEARCH);
         waitAndClickByName("selectedCollectionLines['lookupResults']");
         assertTextPresent("a14");

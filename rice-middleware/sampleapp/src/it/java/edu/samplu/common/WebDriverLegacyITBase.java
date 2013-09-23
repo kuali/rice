@@ -4235,6 +4235,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         jiraAwareWaitAndClick(By.name(name), "");
     }
 
+    protected void waitAndClickByValue(String value) throws InterruptedException {
+        waitAndGetElementByAttributeValue("value", value).click();
+    }
+
     protected void waitAndClickByXpath(String xpath) throws InterruptedException {
         waitAndClick(By.xpath(xpath));
     }
@@ -4342,7 +4346,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         waitAndClickByXpath(SUBMIT_XPATH);
     }
 
-
     /**
      * {@link #XML_INGESTER_LINK_TEXT}
      * @param failable
@@ -4351,7 +4354,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     protected void waitAndClickXMLIngester(Failable failable) throws InterruptedException {
         waitAndClickByLinkText(XML_INGESTER_LINK_TEXT, failable);
     }
-
 
     protected void waitAndSelectByName(String name, String selectText) throws InterruptedException {
         waitFor(By.name(name), selectText + " not found.");

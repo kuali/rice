@@ -1854,7 +1854,7 @@
         <title>Lookupable</title>
         <para>
           <itemizedlist>
-            <listitem>
+            <listitem xml:id="LLA1">
               <para><emphasis role="keyword">set/getBusinessObjectClass</emphasis>have been renamed
                 to set/getDataObjectClass. Since now all data objects are supported the requirement
                 that the object is a BusinessObject has been removed. The rename of these methods
@@ -1865,7 +1865,7 @@
   ...
 &lt;/bean></programlisting></para>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLA2">
               <para><emphasis role="keyword">getHtmlMenuBar/getSupplementalMenuBar</emphasis>have
                 been removed. Instead these menu bars are configred via Uif. The HtmlMenuBar used to
                 add additional HTML content to the right of the "Create New" button, while the
@@ -1904,11 +1904,11 @@
                 of "rightGroup", "upperGroup" and "lowerGroup" can be used to position components
                 above and below the header. </para>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLA3">
               <para><emphasis role="keyword">getRows</emphasis> has been removed. Criteria fields
                 can be conditionally displayed and configured via Uif. </para>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLA4">
               <para><emphasis role="keyword">getColumns</emphasis> has been removed. The result
                 columns are now specified via the Uif-LookupView (see resultFields property).
                 <programlisting linenumbering="numbered">&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
@@ -1922,7 +1922,7 @@
   ...
 &lt;/bean></programlisting></para>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLA5">
               <para><emphasis role="keyword">validateSearchParameters</emphasis> takes the
                 LookupForm as an additional parameter and returns a boolean value indicating that no
                 validation error message has occurred (true = no error). Warning and informational
@@ -1932,24 +1932,24 @@
                   xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/KRAD_Guide.html#constraints"
                   >Constraints</link>) </para>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLA6">
               <para><emphasis role="keyword">performLookup</emphasis> has been renamed to
                 performSearch. The resultTable parameter has been removed and takes searchCriteria
                 as an additional parameter. </para>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLA7">
               <para><emphasis role="keyword">getSearchResults</emphasis> takes the LookupForm and
                 indicator for bounded/unbounded search as additional parameters. <emphasis
                   role="keyword">getSearchResultsUnbounded</emphasis> has been removed. </para>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLA8">
               <para><emphasis role="keyword">performClear</emphasis> takes the <emphasis
                   role="keyword">searchCriteria</emphasis> map as an additional parameter since it
                 is no longer stored in the Lookupable. The <emphasis role="keyword"
                   >searchCriteria</emphasis> map is returned after clearing the criteria and setting
                 their default values. </para>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLA9">
               <para><emphasis role="keyword">getReturnUrl</emphasis> has been renamed to
                 getReturnUrlForResults which accepts the LinkField that returns the result from the
                 lookup and the model. Configuration via the Uif-LookupView is also possible:
@@ -1961,7 +1961,7 @@
   ...
 &lt;/bean></programlisting></para>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLA10">
               <para><emphasis role="keyword">getCreateNewUrl</emphasis> has been removed. The create
                 new url is now specified via the Uif-LookupView:
                 <programlisting linenumbering="numbered">&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
@@ -1980,7 +1980,7 @@
   ...
 &lt;/bean></programlisting></para>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLA11">
               <para><emphasis role="keyword">getTitle</emphasis> has been removed. The title is now
                 specified via the Uif-LookupView (see headerText property).
                 <programlisting linenumbering="numbered">&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
@@ -1988,33 +1988,33 @@
   ...
 &lt;/bean></programlisting></para>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLA12">
               <para><emphasis role="keyword">getReturnKeys</emphasis> takes the <emphasis
                   role="keyword">LookupView, LookupForm</emphasis> and the data object as an
                 additional parameter.</para>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLA13">
               <para><emphasis role="keyword">getReturnLocation</emphasis> has been removed. The
                 return location is now stored on the form. Use <emphasis role="keyword"
                   >LookupForm.getReturnLocation.</emphasis></para>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLA14">
               <para><emphasis role="keyword">getExtraButtonSource</emphasis> has been removed.
                 Buttons are configured via <emphasis role="keyword"
                   >Uif-LookupCriteriaGroup</emphasis> (see footer property). </para>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLA15">
               <para><emphasis role="keyword">getExtraButtonParams</emphasis> has been removed.
                 Buttons are configured via <emphasis role="keyword"
                   >Uif-LookupCriteriaGroup</emphasis> (see footer property). </para>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLA16">
               <para><emphasis role="keyword">checkForAdditionalFields</emphasis> has been removed.
                 Use <link
                   xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/KRAD_Guide.html#disclosure"
                   >progressive disclosure</link> of the Uif.</para>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLA17">
               <para><emphasis role="keyword">getDefaultSortColumns</emphasis> has been removed. Sort
                 columns are configured via Uif-LookupView (see defaultSortAttributeNames property). </para>
               <programlisting linenumbering="numbered">&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
@@ -2029,12 +2029,12 @@
 &lt;/bean>
 </programlisting>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLA18">
               <para><emphasis role="keyword">set/getDocFormKey</emphasis> has been removed. The
                 document form key is stored on the form. Use <emphasis role="keyword"
                   >LookupForm.getFormKey</emphasis>. </para>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLA19">
               <para><emphasis role="keyword">setFieldConversions</emphasis> has been removed. The
                 field conversion is specified via Uif (see quickfinder.fieldConversions property).
                 <programlisting linenumbering="numbered">&lt;bean parent="Uif-InputField">
@@ -2048,7 +2048,7 @@
   ...
 &lt;/bean></programlisting></para>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLA20">
               <para><emphasis role="keyword">setReadOnlyFieldsList</emphasis> has been removed. Read
                 only criteria fields are specified via Uif (see <emphasis role="keyword"
                   >readOnly</emphasis> property).
@@ -2064,7 +2064,7 @@
   ...
 &lt;/bean></programlisting></para>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLA21">
               <para><emphasis role="keyword">set/getLookupableHelperService</emphasis> has been
                 removed. Lookupable helper services are specified via <emphasis role="keyword"
                   >Uif-LookupView</emphasis>:
@@ -2074,34 +2074,34 @@
   ...
 &lt;/bean></programlisting></para>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLA22">
               <para><emphasis role="keyword">isSearchUsingOnlyPrimaryKeyValues</emphasis> has been
                 removed. </para>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLA23">
               <para><emphasis role="keyword">getPrimaryKeyFieldLabels</emphasis> has been
                 removed.</para>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLA24">
               <para><emphasis role="keyword">shouldDisplayHeaderNonMaintActions</emphasis> has been
                 removed.</para>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLA25">
               <para><emphasis role="keyword">shouldDisplayLookupCriteria</emphasis> has been
                 removed.</para>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLA26">
               <para><emphasis role="keyword">performCustomAction</emphasis> has been removed. Create
                   <emphasis role="keyword">methodToCall</emphasis> methods for the actions in the
                   <link
                   xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/KRAD_Guide.html#controllers"
                   >controller</link> for the data object. </para>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLA27">
               <para><emphasis role="keyword">getExtraField</emphasis> has been removed (see
                 getHtmlMenuBar/getSupplementalMenuBar above).</para>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLA28">
               <para><emphasis role="keyword">get/setExtraOnLoad</emphasis> has been removed. OnLoad
                 scripts can be specified via the Uif-LookupView:
                 <programlisting linenumbering="numbered">&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
@@ -2109,11 +2109,11 @@
   ...
 &lt;/bean></programlisting></para>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLA29">
               <para><emphasis role="keyword">applyFieldAuthorizationsFromNestedLookups</emphasis>
                 has been removed.</para>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLA30">
               <para><emphasis role="keyword">applyConditionalLogicForFieldDisplay</emphasis> has
                 been removed. Conditional displaying of criteria field is done through Uif
                 configuration.
@@ -2140,17 +2140,17 @@
         <title>LookupableHelper</title>
         <para>The functionality of <emphasis role="keyword">LookupableHelper</emphasis> can now be
           found in the <emphasis role="keyword">LookupableImpl</emphasis> class. <itemizedlist>
-            <listitem>
+            <listitem xml:id="LLH1">
               <para>The method <emphasis role="keyword">allowsMaintenanceNewOrCopyAction</emphasis>,
                   <emphasis role="keyword">allowsMaintenanceEditAction</emphasis>, and <emphasis
                   role="keyword">allowsMaintenanceDeleteAction</emphasis> remain the same.</para>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLH2">
               <para>The functionality of <emphasis role="keyword">getActionUrl</emphasis> and
                   <emphasis role="keyword">getMaintenanceUrl</emphasis> is handled by <emphasis
                   role="keyword">getMaintenanceActionLink</emphasis>.</para>
             </listitem>
-            <listitem>
+            <listitem xml:id="LLH4">
               <para>The method <emphasis role="keyword">getSearchResults</emphasis> now accepts the
                 form, search criteria and the unbounded indicator.</para>
             </listitem>
@@ -2381,12 +2381,13 @@
                 type="org.kuali.kfs.gl.web.struts.BalanceInquiryForm" /> </programlisting></para>
           </listitem>
           <listitem>
-            <para>Refreshing Reference objects </para>
+            <para><?oxy_comment_start author="cniesen" timestamp="20130919T143137-0500" comment="This sounds like stuff that should go into the KRAD documentation.  Since the configuration of referenceToRefresh has not changed, this should be removed"?>Refreshing
+              Reference objects </para>
             <para>Specifying which reference objects to refresh on a document can be configured by
               using the <emphasis>referencesToRefresh</emphasis> property on a lookup. Specifically,
               the <emphasis>referencesToRefresh</emphasis> property specifies primary keys of
               reference objects, which are then used to pull those objects from where they are
-              persisted. </para>
+              persisted. <?oxy_comment_end?></para>
             <para><emphasis role="bold">KRAD Configuration
               Sample</emphasis></para>
             <para>
@@ -2476,37 +2477,37 @@
               provide the following methods:
               <itemizedlist>
                 <listitem>
-                  MaintenanceDocument.getNewMaintainableObject
+                  <para>MaintenanceDocument.getNewMaintainableObject</para>
                  </listitem>
                   <listitem>
-                  Maintainable.setupNewFromExisting
+                    <para>Maintainable.setupNewFromExisting</para>
                   </listitem>
                   <listitem>
-                  Maintainable.processBeforeAddLine
+                    <para>Maintainable.processBeforeAddLine</para>
                   </listitem>
                   <listitem>
-                  Maintainable.processAfterPost
+                    <para>Maintainable.processAfterPost</para>
                 </listitem>
               </itemizedlist>
               Similar functionality can be obtained in KRAD using the following methods:
               <itemizedlist>
                 <listitem>
-                MaintenanceDocumentController.setupMaintenance
+                  <para>MaintenanceDocumentController.setupMaintenance</para>
                 </listitem>
                 <listitem>
-                Maintainable.setupNewFromExisting
+                  <para>Maintainable.setupNewFromExisting</para>
                 </listitem>
                 <listitem>
-                Maintainable.retrieveObjectForEditOrCopy
+                  <para>Maintainable.retrieveObjectForEditOrCopy</para>
                 </listitem>
                 <listitem>
-                Maintainable.processAfterPost
+                  <para>Maintainable.processAfterPost</para>
                 </listitem>
                 <listitem>
-                ViewHelperServiceImpl.processBeforeAddLine
+                  <para>ViewHelperServiceImpl.processBeforeAddLine</para>
                 </listitem>
                 <listitem>
-                ViewHelperServiceImpl.processAfterAddLine
+                  <para>ViewHelperServiceImpl.processAfterAddLine</para>
                 </listitem>
               </itemizedlist>
               </para>

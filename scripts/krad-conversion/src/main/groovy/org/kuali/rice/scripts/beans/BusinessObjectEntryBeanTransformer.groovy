@@ -36,7 +36,7 @@ class BusinessObjectEntryBeanTransformer extends SpringBeanTransformer {
             beanNode.@parent = "DataObjectEntry";
         }
         transformControlProperty(beanNode, ddBeanControlMap, replacePropertyDuringConversion);
-        transformValidationPatternBeanProperty(beanNode, replacePropertyDuringConversion)
+        transformValidationPatternProperty(beanNode, replacePropertyDuringConversion)
         this.removeProperties(beanNode, ddPropertiesRemoveList);
         this.renameProperties(beanNode, ddPropertiesMap);
         renamePropertyBeans(beanNode, ddPropertiesMap, false);
@@ -45,24 +45,104 @@ class BusinessObjectEntryBeanTransformer extends SpringBeanTransformer {
     }
 
     /**
-     * Modifies validationPattern into KRAD validCharactersConstraint
+     * Modifies control and controlField elements into Uif Control elements
      *
      * @param beanNode
-     * @param replaceNode - if true, replace existing KNS node. if false, add new KRAD node, keeping KNS node
+     * @param renamedControlBeans
+     * @param replace
      * @return
      */
-    def transformValidationPatternBeanProperty(Node beanNode, boolean replaceNode) {
+    def transformControlProperty(def beanNode, Map<String, String> renamedControlBeans, boolean replace) {
+        def controlProperty = beanNode?.property?.find { "control".equals(it.@name) };
+        def controlFieldProperty = beanNode?.property?.find { "controlField".equals(it.@name) };
+        if (controlProperty) {
+            def controlDefBean = controlProperty.bean.find { it.@parent?.endsWith("Definition") };
+            def controlDefParent = controlDefBean.@parent;
+            if (controlFieldProperty && replace) {
+                this.removeProperties(beanNode, ["control"]);
+            } else if (renamedControlBeans.get(controlDefParent) != null) {
+                if (replace){
+                    controlProperty.replaceNode {
+                        property(name: "controlField") {
+                            transformControlDefinitionBean(delegate, controlDefBean, renamedControlBeans)
+                        }
+                    }
+                }else {
+                    controlProperty.plus {
+                        property(name: "controlField") {
+                            transformControlDefinitionBean(delegate, controlDefBean, renamedControlBeans)
+                        }
+                    }
+                }
+
+                if ("Uif-VerticalRadioControl".equals(renamedControlBeans.get(controlDefParent)) ||
+                        "Uif-DropdownControl".equals(renamedControlBeans.get(controlDefParent))) {
+                    def attributes = genericGatherAttributes(controlDefBean, ["*valuesFinderClass": "p:optionsFinder"]);
+                    controlProperty.plus {
+                        property(name: "optionsFinder") {
+                            bean(class: attributes.get("p:optionsFinder").value)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Used for transforming control definitions into control field properties
+     *
+     * @param builder
+     * @param controlDefBean
+     * @param controlDefReplacements
+     * @return
+     */
+    def transformControlDefinitionBean(NodeBuilder builder, Node controlDefBean, Map<String, String> controlDefReplacements) {
+        String controlDefParent = controlDefBean.@parent.toString()
+        def controlDefReplacementBean = controlDefReplacements[controlDefParent]
+        def attributes = gatherControlAttributes (controlDefBean)
+        if ("Uif-DropdownControl".equals(controlDefReplacementBean)) {
+            attributes.putAll(genericGatherAttributes(controlDefBean, ["*includeKeyInLabel": "p:includeKeyInLabel"]))
+            attributes.put("parent", "Uif-DropdownControl")
+        } else if ("Uif-VerticalRadioControl".equals(controlDefReplacementBean)) {
+            attributes.putAll(genericGatherAttributes(controlDefBean, ["*includeKeyInLabel": "p:includeKeyInLabel"]))
+            attributes.put("parent", "Uif-VerticalRadioControl")
+        } else if ("Uif-TextAreaControl".equals(controlDefReplacementBean)) {
+            attributes.putAll(genericGatherAttributes(controlDefBean, ["*rows": "p:rows", "*cols": "p:cols"]))
+            attributes.put("parent", "Uif-TextAreaControl")
+        } else if ("Uif-LinkField".equals(controlDefReplacementBean)) {
+            attributes.putAll(genericGatherAttributes(controlDefBean, ["*target": "p:target", "*hrefText": "p:linkText", "*styleClass":"p:fieldLabel.cssClasses"]))
+            attributes.put("parent", "Uif-LinkField")
+            attributes.put("href", "@{#propertyName}")
+        } else if ("Uif-CurrencyTextControl".equals(controlDefReplacementBean)) {
+            attributes.putAll(genericGatherAttributes(controlDefBean, ["*formattedMaxLength": "p:maxLength", "*size": "p:size"]))
+            attributes.put("parent", "Uif-CurrencyTextControl")
+        } else if (controlDefReplacementBean != null) {
+            attributes.put("parent", controlDefReplacements[controlDefParent])
+        }else {
+            attributes.put("parent", "Uif-" + controlDefParent.replace("Definition", ""))
+        }
+        genericBeanTransform(builder, attributes)
+    }
+
+    /**
+     * Modifies KNS validationPattern property into KRAD validCharactersConstraint
+     *
+     * @param beanNode
+     * @param replace - boolean.  if true, replace existing KNS node. if false, add new KRAD node, keeping KNS node
+     * @return KRAD validCharacterConstraint property element with appropriate child validationPatternConstraint bean.
+     */
+    def transformValidationPatternProperty(Node beanNode, boolean replace) {
         def validationPatternProperty = beanNode?.property?.find { "validationPattern".equals(it.@name) };
         if (validationPatternProperty){
-            if (replaceNode){
+            if (replace){
                 // transform the existing validationPattern node into KRAD validCharactersConstraint
                 validationPatternProperty.replaceNode {
-                    transformValidationPatternProperty(delegate, validationPatternProperty);
+                    buildValidationPatternProperty(delegate, validationPatternProperty);
                 }
             }  else {
                 // build a new KRAD validationCharactersConstraint and add it to the parent, keeping the existing KNS validationPattern
                 validationPatternProperty.plus {
-                    transformValidationPatternProperty(delegate, validationPatternProperty);
+                    buildValidationPatternProperty(delegate, validationPatternProperty);
                 }
             }
         }
@@ -74,7 +154,7 @@ class BusinessObjectEntryBeanTransformer extends SpringBeanTransformer {
      * @param beanNode
      * @return the newly created property node
      */
-    def transformValidationPatternProperty(NodeBuilder builder, Node beanNode) {
+    def buildValidationPatternProperty(NodeBuilder builder, Node beanNode) {
         def patternBean = beanNode.bean.find { return true; }
         def beanAttributes  = gatherValidationPatternAttributes(patternBean)
         def propertyAttributes = [name: 'validCharactersConstraint']

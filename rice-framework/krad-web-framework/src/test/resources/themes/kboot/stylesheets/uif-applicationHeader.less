@@ -1,0 +1,117 @@
+
+.portal-header {
+  width: 100%;
+  background-color: @header_background;
+  z-index: 9999;
+  .navbar {
+    background-color: @header_background;
+    margin-bottom: 0px;
+    border: none;
+    .dropdown {
+      .dropdown-menu {
+        white-space: nowrap;
+        min-width: 10px;
+        .portal-menu {
+          min-width: 600px;
+          white-space: normal;
+          padding-bottom: 20px;
+          h3 {
+            border-bottom-width: 1px;
+            border-bottom-style: solid;
+            border-bottom-color: #ccc;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            font-size: 1.1em;
+          }
+          h4 {
+            font-size: 12px;
+            font-weight: normal;
+          }
+          ul {
+            font-size: 12px;
+            list-style: disc;
+            padding-left: 20px;
+            li {
+              a {
+                color: @link_blue;
+              }
+              a:hover {
+                background: #FFF;
+                text-decoration: underline;
+              }
+            }
+          }
+        }
+      }
+    }
+    a:focus {
+      color: #FFF;
+      background: darken(@header_background,3%);
+    }
+    div.logoBrand {
+      width: 200px;
+      height: 69px;
+      background-image: url(../img/logo.png);
+      position: absolute;
+      top: 0px;
+      margin-left: -16px;
+    }
+    .nav {
+      li.active {
+        a {
+          background: darken(@header_background,3%);
+        }
+      }
+      .dropdown-toggle {
+        text-transform: uppercase;
+      }
+      .dropdown-menu {
+        li {
+          ul {
+            list-style: none;
+            margin: 0px;
+            padding: 0px;
+            li {
+              a {
+                display: block;
+                padding: 3px 20px;
+                clear: both;
+                font-weight: normal;
+                color: @link_blue;
+                white-space: nowrap;
+              }
+            }
+          }
+        }
+      }
+      li {
+        position: relative;
+        z-index: 10;
+      }
+    }
+    a {
+      color: #fff;
+    }
+    a:hover {
+      color: #FFF;
+      background: darken(@header_background,3%);
+    }
+    .navbar-toggle {
+      color: white;
+      font-size: 120%;
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

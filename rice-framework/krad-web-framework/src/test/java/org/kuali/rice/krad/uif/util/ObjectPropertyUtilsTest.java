@@ -59,7 +59,7 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
         UifUnitTestUtils.establishMockConfig(ObjectPropertyUtilsTest.class.getSimpleName());
         UifUnitTestUtils.establishMockUserSession("testuser");
     }
-    
+
     @AfterClass
     public static void teardownMockUserSession() throws Exception {
         GlobalVariables.setUserSession(null);
@@ -72,13 +72,14 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
         String afoo();
     }
 
-    public class TestBean implements Serializable {
+    public static class TestBean implements Serializable {
 
         private static final long serialVersionUID = 1L;
 
         public TestBean() {}
 
         private String rwProp;
+        private TestBeanTwo complexProp;
 
         public String getRwProp() {
             return this.rwProp;
@@ -215,6 +216,38 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
             this.mapProp = mapProp;
         }
 
+        /**
+         * @return the complexProp
+         */
+        public TestBeanTwo getComplexProp() {
+            return this.complexProp;
+        }
+
+        /**
+         * @param complexProp the complexProp to set
+         */
+        public void setComplexProp(TestBeanTwo complexProp) {
+            this.complexProp = complexProp;
+        }
+    }
+
+    public static class TestBeanTwo {
+
+        private String fooProp;
+
+        /**
+         * @return the fooProp
+         */
+        public String getFooProp() {
+            return this.fooProp;
+        }
+
+        /**
+         * @param fooProp the fooProp to set
+         */
+        public void setFooProp(String fooProp) {
+            this.fooProp = fooProp;
+        }
     }
 
     @Test
@@ -244,9 +277,10 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
 
         try {
             ObjectPropertyUtils.getPropertyValue(tb, "woProp");
-            fail("expected exception");
-        } catch (RuntimeException E) {
-            // OK!
+            // KULRICE-10677 - should return null - fail("expected exception");
+        } catch (RuntimeException e) {
+            // KULRICE-10677 - should return null
+            throw e;
         }
     }
 
@@ -506,12 +540,44 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
 
         collectionGroupBuilder.build(view, form, collectionGroup);
     }
-    
+
     @Test
     public void testSetStringMapFromInt() {
         Action action = new Action();
         ObjectPropertyUtils.setPropertyValue(action, "actionParameters['lineIndex']", 34);
         assertEquals("34", action.getActionParameter("lineIndex"));
+    }
+
+    @Test
+    public void testClassNavigation() {
+        assertEquals(String.class, ObjectPropertyUtils.getPropertyType(TestBean.class, "complexProp.fooProp"));
+        
+        try {
+            // valid first reference, invalid second reference
+            assertEquals(null, ObjectPropertyUtils.getPropertyType(TestBean.class, "complexProp.foobar"));
+            // NULL is ok - fail("KULRICE-10677 - is this ok?");
+        } catch (IllegalArgumentException e) {
+            // IAE is not ok - KULRICE-10677 is this ok?
+            throw e;
+        }
+        
+        try {
+            // invalid single reference
+            assertEquals(null, ObjectPropertyUtils.getPropertyType(TestBean.class, "foo"));
+            // NULL is ok - fail("KULRICE-10677 - is this ok?");
+        } catch (IllegalArgumentException e) {
+            // IAE is not ok - KULRICE-10677 is this ok?
+            throw e;
+        }
+
+        try {
+            // invalid first reference
+            assertEquals(null, ObjectPropertyUtils.getPropertyType(TestBean.class, "foo.bar"));
+            // NULL is ok - fail("KULRICE-10677 - is this ok?");
+        } catch (IllegalArgumentException e) {
+            // IAE is not ok - KULRICE-10677 is this ok?
+            throw e;
+        }
     }
 
 }

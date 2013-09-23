@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2005-2013 The Kuali Foundation Licensed under the Educational 
+	Community License, Version 2.0 (the "License"); you may not use this file 
+	except in compliance with the License. You may obtain a copy of the License 
+	at http://www.opensource.org/licenses/ecl2.php Unless required by applicable 
+	law or agreed to in writing, software distributed under the License is distributed 
+	on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either 
+	express or implied. See the License for the specific language governing permissions 
+	and limitations under the License. -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/util
+                           http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<import resource="classpath:/org/kuali/rice/krad/data/config/KRADDataSpringBeans.xml" />
+
+	<bean id="configProperties" class="org.kuali.rice.krad.uif.util.UifUnitTestUtils"
+		factory-method="getConfigProperties" />
+
+	<bean id="personService" class="org.kuali.rice.krad.uif.util.MockPersonService" />
+
+	<bean id="kimPermissionService" class="org.kuali.rice.krad.uif.util.MockPermissionService" />
+
+	<bean id="kualiConfigurationService" class="org.kuali.rice.krad.uif.util.SimpleConfigurationService">
+		<property name="properties" ref="configProperties" />
+	</bean>
+
+	<bean id="kualiModuleService" class="org.kuali.rice.krad.uif.util.MockKualiModuleService" />
+
+	<bean id="legacyDataAdapter" class="org.kuali.rice.krad.uif.util.MockLegacyDataAdapter" />
+	
+	<bean id="messageService" class="org.kuali.rice.krad.uif.util.MockMessageService" />
+	
+	<bean id="viewDictionaryService" class="org.kuali.rice.krad.uif.util.TestViewDictionaryService" />
+
+	<util:list id="uifDictionaryBeans">
+		<value>classpath:/org/kuali/rice/kns_2_4_M2/bo/datadictionary/DataDictionaryBaseTypes.xml</value>
+		<value>classpath:/org/kuali/rice/krad/datadictionary/AdHocRoutePerson.xml</value>
+		<value>classpath:/org/kuali/rice/krad/datadictionary/AdHocRouteWorkgroup.xml</value>
+		<value>classpath:/org/kuali/rice/krad/datadictionary/Attachment.xml</value>
+		<value>classpath:/org/kuali/rice/krad/datadictionary/AttributeReference.xml</value>
+		<value>classpath:/org/kuali/rice/krad/datadictionary/DataDictionaryBaseTypes.xml</value>
+		<value>classpath:/org/kuali/rice/krad/datadictionary/DocumentHeader.xml</value>
+		<value>classpath:/org/kuali/rice/krad/datadictionary/Note.xml</value>
+		<value>classpath:/org/kuali/rice/krad/datadictionary/NoteType.xml</value>
+		<value>classpath:/org/kuali/rice/krad/datadictionary/PessimisticLock.xml</value>
+		<value>classpath:/org/kuali/rice/krad/uif/UifActionDefinitions.xml</value>
+		<value>classpath:/org/kuali/rice/krad/uif/UifConfigurationDefinitions.xml</value>
+		<value>classpath:/org/kuali/rice/krad/uif/UifControlDefinitions.xml</value>
+		<value>classpath:/org/kuali/rice/krad/uif/UifDocumentDefinitions.xml</value>
+		<value>classpath:/org/kuali/rice/krad/uif/UifElementDefinitions.xml</value>
+		<value>classpath:/org/kuali/rice/krad/uif/UifFieldDefinitions.xml</value>
+		<value>classpath:/org/kuali/rice/krad/uif/UifGroupDefinitions.xml</value>
+		<value>classpath:/org/kuali/rice/krad/uif/UifHeaderFooterDefinitions.xml</value>
+		<value>classpath:/org/kuali/rice/krad/uif/UifIncidentReportDefinitions.xml</value>
+		<value>classpath:/org/kuali/rice/krad/uif/UifInitiateDocumentInfoDefinitions.xml</value>
+		<value>classpath:/org/kuali/rice/krad/uif/UifInquiryDefinitions.xml</value>
+		<value>classpath:/org/kuali/rice/krad/uif/UifLayoutManagerDefinitions.xml</value>
+		<value>classpath:/org/kuali/rice/krad/uif/UifLookupDefinitions.xml</value>
+		<value>classpath:/org/kuali/rice/krad/uif/UifMaintenanceDefinitions.xml</value>
+		<value>classpath:/org/kuali/rice/krad/uif/UifRiceDefinitions.xml</value>
+		<value>classpath:/org/kuali/rice/krad/uif/UifViewPageDefinitions.xml</value>
+		<value>classpath:/org/kuali/rice/krad/uif/UifWidgetDefinitions.xml</value>
+		<value>classpath:/UifTestOverrides.xml</value>
+	</util:list>
+
+</beans>

@@ -1,0 +1,179 @@
+<!--
+
+    Copyright 2005-2013 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <!-- Dropdown Menu demo -->
+  <bean id="Demo-DropdownMenu-View" parent="ComponentLibraryView">
+    <property name="xmlFilePath" value="/org/kuali/rice/krad/sampleapp_2_4_M2/demo/uif/library/DemoDropdownMenu.xml"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.element.DropdownMenu"/>
+    <!-- TODO: add anchor once docs are complete -->
+    <!--<property name="docBookAnchor" value="d6813e7830"/>-->
+    <property name="demoGroups">
+      <list>
+        <ref bean="Demo-DropdownMenu-Example1"/>
+        <ref bean="Demo-DropdownMenu-Example2"/>
+        <ref bean="Demo-DropdownMenu-Example3"/>
+        <ref bean="Demo-DropdownMenu-Example4"/>
+        <ref bean="Demo-DropdownMenu-Example5"/>
+        <ref bean="Demo-DropdownMenu-Example6"/>
+      </list>
+    </property>
+  </bean>
+
+  <!-- ex:Demo-DropdownMenu-Example1 start-->
+  <bean id="Demo-MenuAction" parent="Uif-MenuAction"
+        p:actionUrl.viewId="Demo-DropdownMenu-View"
+        p:actionUrl.controllerMapping="/kradsampleapp"/>
+  <!-- ex:Demo-DropdownMenu-Example1 end-->
+
+  <bean id="Demo-DropdownMenu-Example1" parent="Uif-VerticalBoxSection" p:headerText="Basic Dropdown"
+        p:instructionalText="Example of a basic dropdown of actions" p:style="min-height: 250px;">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-DropdownMenu-Example1 start-->
+        <bean parent="Uif-DropdownMenu" p:dropdownToggleText="User thclark">
+          <property name="menuActions">
+            <list>
+              <bean parent="Demo-MenuAction" p:actionLabel="Preferences"/>
+
+              <bean parent="Demo-MenuAction" p:actionLabel="Logout"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-DropdownMenu-Example1 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-DropdownMenu-Example2" parent="Uif-VerticalBoxSection" p:headerText="Dropdown with Divider"
+        p:instructionalText="Example of a dropdown that contains a divider" p:style="min-height: 250px;">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-DropdownMenu-Example2 start-->
+        <bean parent="Uif-DropdownMenu" p:dropdownToggleText="Action List">
+          <property name="menuActions">
+            <list>
+              <bean parent="Demo-MenuAction" p:actionLabel="Proposal #1034"/>
+
+              <bean parent="Demo-MenuAction" p:actionLabel="Proposal #1035"/>
+
+              <bean parent="Demo-MenuAction" p:actionLabel="Proposal #1036"/>
+
+              <bean parent="Demo-MenuAction" p:actionLabel="Proposal #1037"/>
+
+              <bean parent="Uif-MenuAction" p:menuDivider="true"/>
+
+              <bean parent="Demo-MenuAction" p:actionLabel="Full Action List"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-DropdownMenu-Example2 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-DropdownMenu-Example3" parent="Uif-VerticalBoxSection" p:headerText="Dropdown with Headers"
+        p:instructionalText="Example of a dropdown with headers" p:style="min-height: 250px;">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-DropdownMenu-Example3 start-->
+        <bean parent="Uif-DropdownMenu" p:dropdownToggleText="Favorites">
+          <property name="menuActions">
+            <list>
+              <bean parent="Uif-MenuAction" p:menuHeader="true" p:actionLabel="Documents"/>
+
+              <bean parent="Demo-MenuAction" p:actionLabel="Proposal"/>
+
+              <bean parent="Demo-MenuAction" p:actionLabel="Budget"/>
+
+              <bean parent="Uif-MenuAction" p:menuHeader="true" p:actionLabel="Reports"/>
+
+              <bean parent="Demo-MenuAction" p:actionLabel="Yearly Budget"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-DropdownMenu-Example3 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-DropdownMenu-Example4" parent="Uif-VerticalBoxSection" p:headerText="Dropdown with Disabled"
+        p:instructionalText="Example of a dropdown with disabled actions" p:style="min-height: 250px;">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-DropdownMenu-Example4 start-->
+        <bean parent="Uif-DropdownMenu" p:dropdownToggleText="Select Action">
+          <property name="menuActions">
+            <list>
+              <bean parent="Demo-MenuAction" p:actionLabel="Approve"/>
+
+              <bean parent="Demo-MenuAction" p:actionLabel="Disapprove" p:disabled="true"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-DropdownMenu-Example4 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-DropdownMenu-Example5" parent="Uif-VerticalBoxSection" p:headerText="Dropdown with Action Options"
+        p:instructionalText="Example of a dropdown with various action options" p:style="min-height: 250px;">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-DropdownMenu-Example5 start-->
+        <bean parent="Uif-DropdownMenu" p:dropdownToggleText="Select Action">
+          <property name="menuActions">
+            <list>
+              <bean parent="Uif-MenuAction" p:actionLabel="Refresh Section" p:methodToCall="refresh"
+                    p:refreshId="Demo-DropdownMenu-Example5"/>
+
+              <bean parent="Uif-MenuAction" p:actionLabel="Action Script" p:actionScript="alert('Menu Script');"/>
+
+              <bean parent="Uif-MenuAction" p:actionLabel="Pre-Submit Script"
+                    p:preSubmitCall="alert('Presubmit Call');return true;"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-DropdownMenu-Example5 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-DropdownMenu-Example6" parent="Uif-VerticalBoxSection" p:headerText="Dropdown with Toggle Button"
+        p:instructionalText="Example of a dropdown with a toggle button" p:style="min-height: 250px;">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-DropdownMenu-Example6 start-->
+        <bean parent="Uif-DropdownMenu" p:renderToggleButton="true">
+          <property name="menuActions">
+            <list>
+              <bean parent="Demo-MenuAction" p:actionLabel="Preferences"/>
+
+              <bean parent="Demo-MenuAction" p:actionLabel="Logout"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-DropdownMenu-Example6 end-->
+      </list>
+    </property>
+  </bean>
+
+</beans>

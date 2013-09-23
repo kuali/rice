@@ -114,12 +114,14 @@
         <#-- render span and values for informational properties -->
         <span id="${field.id}_info_message"></span>
 
-        <#list field.propertyNamesForAdditionalDisplay as infoPropertyPath>
-            <span id="${field.id}_info_${krad.cleanPath(infoPropertyPath)}" class="uif-informationalMessage">
-                <@spring.bind path="KualiForm.${infoPropertyPath}"/>
-                 ${spring.status.value?default("")}
-            </span>
-        </#list>
+        <#if field.propertyNamesForAdditionalDisplay??>
+	        <#list field.propertyNamesForAdditionalDisplay as infoPropertyPath>
+	            <span id="${field.id}_info_${krad.cleanPath(infoPropertyPath)}" class="uif-informationalMessage">
+	                <@spring.bind path="KualiForm.${infoPropertyPath}"/>
+	                 ${spring.status.value?default("")}
+	            </span>
+	        </#list>
+        </#if>
 
         <#-- render field suggest if field is editable -->
         <#if !readOnly>
@@ -128,10 +130,12 @@
 
         <#-- render hidden fields -->
         <#-- TODO: always render hiddens if configured? -->
-        <#list field.additionalHiddenPropertyNames as hiddenPropertyName>
-            <@spring.formHiddenInput id="${field.id}_h${hiddenPropertyName_index}"
-            path="KualiForm.${hiddenPropertyName}"/>
-        </#list>
+        <#if field.additionalHiddenPropertyNames??>
+	        <#list field.additionalHiddenPropertyNames as hiddenPropertyName>
+	            <@spring.formHiddenInput id="${field.id}_h${hiddenPropertyName_index}"
+	            path="KualiForm.${hiddenPropertyName}"/>
+	        </#list>
+        </#if>
 
         <#-- transform all text on attribute field to uppercase -->
         <#if !readOnly && field.control?? && field.uppercaseValue>

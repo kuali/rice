@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import com.google.common.collect.Lists;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;

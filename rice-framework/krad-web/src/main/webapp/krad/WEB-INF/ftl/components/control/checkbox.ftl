@@ -33,6 +33,10 @@
         <#local attributes='${attributes} disabled="disabled"'/>
     </#if>
 
+    <#if control.checked>
+        <#local attributes='${attributes} checked="checked"'/>
+    </#if>
+
     <#if control.style?has_content>
         <#local attributes='${attributes} style="${control.style}"'/>
     </#if>

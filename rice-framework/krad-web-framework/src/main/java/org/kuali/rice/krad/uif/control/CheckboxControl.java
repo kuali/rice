@@ -17,7 +17,6 @@ package org.kuali.rice.krad.uif.control;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Message;
@@ -25,7 +24,6 @@ import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.View;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,6 +38,7 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
 
     private String value;
     private String checkboxLabel;
+    private boolean checked;
 
     private Message richLabelMessage;
     private List<Component> inlineComponents;
@@ -125,6 +124,23 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
     }
 
     /**
+     * Sets the checked state.
+     *
+     * @param checked - boolean true = checked, false = not checked
+     */
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+
+    /**
+     * Returns true if checked, false if not checked.
+     * @return
+     */
+    public boolean isChecked() {
+        return checked;
+    }
+
+    /**
      * Gets the Message that represents the rich message content of the label if labelText is using rich message tags.
      * <b>DO NOT set this
      * property directly unless you need full control over the message structure.</b>
@@ -177,6 +193,7 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
 
         checkboxControlCopy.setValue(this.value);
         checkboxControlCopy.setCheckboxLabel(this.checkboxLabel);
+        checkboxControlCopy.setChecked(this.checked);
 
         if (this.richLabelMessage != null) {
             checkboxControlCopy.setRichLabelMessage((Message)this.richLabelMessage.copy());

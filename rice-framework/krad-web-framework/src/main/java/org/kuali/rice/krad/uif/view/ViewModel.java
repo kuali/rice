@@ -24,12 +24,12 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Interface that must be implemented for clases the provide the backing data (model) for a {@link View}
+ * Interface that must be implemented for classes the provide the backing data (model) for a {@link View}
  *
  * <p>
- * Since the View relies on helper properties from the model it is necessary the backing object implement this
- * interface. Note model objects can extend {@link org.kuali.rice.krad.web.form.UifFormBase} which implements
- * this interface
+ * Since the View relies on helper properties from the model it is necessary the backing object implement the
+ * ViewModel interface. Note model objects can extend {@link org.kuali.rice.krad.web.form.UifFormBase} which implements
+ * the ViewModel interface.
  * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)

@@ -378,6 +378,7 @@ public class UifConstants {
         public static final String STICKY_FOOTER = "sticky_footer";
         public static final String DETAILS_DEFAULT_OPEN = "details_default_open";
         public static final String TAB_FOR = "tabfor";
+        public static final String CHECKED = "checked";
     }
 
     public static final class CaseConstraintOperators {

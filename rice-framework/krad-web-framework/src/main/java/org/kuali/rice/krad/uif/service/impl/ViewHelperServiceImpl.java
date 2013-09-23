@@ -47,35 +47,29 @@ import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
-import org.kuali.rice.krad.uif.component.ComponentSecurity;
-import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.container.LightTable;
-import org.kuali.rice.krad.uif.element.Action;
-import org.kuali.rice.krad.uif.element.Label;
-import org.kuali.rice.krad.uif.field.ActionField;
-import org.kuali.rice.krad.uif.field.FieldGroup;
-import org.kuali.rice.krad.uif.layout.TableLayoutManager;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.util.ObjectPathExpressionParser;
-import org.kuali.rice.krad.uif.util.ViewCleaner;
-import org.kuali.rice.krad.uif.view.DefaultExpressionEvaluator;
-import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
-import org.kuali.rice.krad.uif.view.ViewAuthorizer;
-import org.kuali.rice.krad.uif.view.ViewPresentationController;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.ClientSideState;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
+import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.container.LightTable;
 import org.kuali.rice.krad.uif.control.Control;
+import org.kuali.rice.krad.uif.element.Action;
+import org.kuali.rice.krad.uif.element.Label;
+import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
+import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.RemoteFieldsHolder;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
+import org.kuali.rice.krad.uif.layout.TableLayoutManager;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.service.ViewDictionaryService;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
@@ -84,13 +78,19 @@ import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
+import org.kuali.rice.krad.uif.util.ObjectPathExpressionParser;
 import org.kuali.rice.krad.uif.util.ObjectPathExpressionParser.PathEntry;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
+import org.kuali.rice.krad.uif.util.ViewCleaner;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
+import org.kuali.rice.krad.uif.view.DefaultExpressionEvaluator;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.view.ViewAuthorizer;
 import org.kuali.rice.krad.uif.view.ViewModel;
+import org.kuali.rice.krad.uif.view.ViewPresentationController;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.Widget;
 import org.kuali.rice.krad.util.ErrorMessage;
@@ -112,6 +112,8 @@ import org.springframework.util.MethodInvoker;
 public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     private static final long serialVersionUID = 1772618197133239852L;
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ViewHelperServiceImpl.class);
+    
+    private static ThreadLocal<ViewLifecycle> TL_VIEWLIFECYCLE = new ThreadLocal<ViewLifecycle>();
 
     private transient DataDictionaryService dataDictionaryService;
     private transient ExpressionEvaluator expressionEvaluator;
@@ -119,8 +121,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     private transient ConfigurationService configurationService;
 
     private transient LegacyDataAdapter legacyDataAdapter;
-
-    private ViewLifecycle viewLifecycle;
 
     /**
      * Uses reflection to find all fields defined on the <code>View</code> instance that have the
@@ -236,189 +236,194 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * @see {@link #performComponentApplyModel(View, Component, Object)}
      * @see {@link #performComponentFinalize(View, Component, Object, Component, Map)}
      */
-    public void performComponentLifecycle(View view, Object model, Component component, String origId) {
-        Component origComponent = view.getViewIndex().getComponentById(origId);
+    public void performComponentLifecycle(final View view, final Object model, final Component component,
+            final String origId) {
+        encapsulateViewLifecycle(new Runnable() {
+            @Override
+            public void run() {
+                Component origComponent = view.getViewIndex().getComponentById(origId);
 
-        // start new lifecycle for event registration
-        setViewLifecycle(new ViewLifecycle());
+                // run through and assign any ids starting with the id for the refreshed component, so the ids are the
+                // same as they were for the full view build
+                Integer currentSequenceVal = view.getIdSequence();
 
-        // run through and assign any ids starting with the id for the refreshed component, so the ids are the
-        // same as they were for the full view build
-        Integer currentSequenceVal = view.getIdSequence();
-
-        Integer startingSequenceVal = view.getViewIndex().getIdSequenceSnapshot().get(component.getId());
-        if (startingSequenceVal != null) {
-            view.setIdSequence(startingSequenceVal);
-        }
-
-        view.assignComponentIds(component);
-
-        // now set back from the ending view sequence so IDs for any dynamically created (newly) will not stomp
-        // on existing components
-        view.setIdSequence(currentSequenceVal);
-
-        Map<String, Object> origContext = origComponent.getContext();
-
-        Component parent = origContext == null ? null : (Component) origContext
-                .get(UifConstants.ContextVariableNames.PARENT);
-
-        // update context on all components within the refresh component to catch context set by parent
-        if (origContext != null) {
-            component.pushAllToContext(origContext);
-
-            List<Component> nestedComponents = ComponentUtils.getAllNestedComponents(component);
-            for (Component nestedComponent : nestedComponents) {
-                nestedComponent.pushAllToContext(origContext);
-            }
-        }
-
-        // make sure the dataAttributes are the same as original
-        component.setDataAttributes(origComponent.getDataAttributes());
-
-        // initialize the expression evaluator
-        view.getViewHelperService().getExpressionEvaluator().initializeEvaluationContext(model);
-
-        // the expression graph for refreshed components is captured in the view index (initially it might expressions
-        // might have come from a parent), after getting the expression graph then we need to populate the expressions
-        // on the configurable for which they apply
-        Map<String, String> expressionGraph = view.getViewIndex().getComponentExpressionGraphs().get(
-                component.getBaseId());
-        component.setExpressionGraph(expressionGraph);
-        ExpressionUtils.populatePropertyExpressionsFromGraph(component, false);
-
-        // binding path should stay the same
-        if (component instanceof DataBinding) {
-            ((DataBinding) component).setBindingInfo(((DataBinding) origComponent).getBindingInfo());
-            ((DataBinding) component).getBindingInfo().setBindingPath(
-                    ((DataBinding) origComponent).getBindingInfo().getBindingPath());
-        }
-
-        // copy properties that are set by parent components in the full view lifecycle
-        if (component instanceof Field) {
-            ((Field) component).setLabelRendered(((Field) origComponent).isLabelRendered());
-        }
-
-        if (origComponent.isRefreshedByAction()) {
-            component.setRefreshedByAction(true);
-        }
-
-        // reset data if needed
-        if (component.isResetDataOnRefresh()) {
-            // TODO: this should handle groups as well, going through nested data fields
-            if (component instanceof DataField) {
-                // TODO: should check default value
-
-                // clear value
-                ObjectPropertyUtils.initializeProperty(model,
-                        ((DataField) component).getBindingInfo().getBindingPath());
-            }
-        }
-
-        performComponentInitialization(view, model, component);
-
-        // adjust IDs for suffixes that might have been added by a parent component during the full view lifecycle
-        String suffix = StringUtils.replaceOnce(origComponent.getId(), origComponent.getBaseId(), "");
-        if (StringUtils.isNotBlank(suffix)) {
-            ComponentUtils.updateIdWithSuffix(component, suffix);
-            ComponentUtils.updateChildIdsWithSuffixNested(component, suffix);
-        }
-
-        // for collections that are nested in the refreshed group, we need to adjust the binding prefix and
-        // set the sub collection id prefix from the original component (this is needed when the group being
-        // refreshed is part of another collection)
-        if (component instanceof Group || component instanceof FieldGroup) {
-            List<CollectionGroup> origCollectionGroups = ComponentUtils.getComponentsOfTypeShallow(origComponent,
-                    CollectionGroup.class);
-            List<CollectionGroup> collectionGroups = ComponentUtils.getComponentsOfTypeShallow(component,
-                    CollectionGroup.class);
-
-            for (int i = 0; i < collectionGroups.size(); i++) {
-                CollectionGroup origCollectionGroup = origCollectionGroups.get(i);
-                CollectionGroup collectionGroup = collectionGroups.get(i);
-
-                String prefix = origCollectionGroup.getBindingInfo().getBindByNamePrefix();
-                if (StringUtils.isNotBlank(prefix) && StringUtils.isBlank(
-                        collectionGroup.getBindingInfo().getBindByNamePrefix())) {
-                    ComponentUtils.prefixBindingPath(collectionGroup, prefix);
+                Integer startingSequenceVal = view.getViewIndex().getIdSequenceSnapshot().get(component.getId());
+                if (startingSequenceVal != null) {
+                    view.setIdSequence(startingSequenceVal);
                 }
 
-                String lineSuffix = origCollectionGroup.getSubCollectionSuffix();
-                collectionGroup.setSubCollectionSuffix(lineSuffix);
-            }
+                view.assignComponentIds(component);
 
-            // Handle LightTables, as well
-            List<LightTable> origLightTables = ComponentUtils.getComponentsOfTypeShallow(origComponent,
-                    LightTable.class);
-            List<LightTable> lightTables = ComponentUtils.getComponentsOfTypeShallow(component,
-                    LightTable.class);
+                // now set back from the ending view sequence so IDs for any dynamically created (newly) will not stomp
+                // on existing components
+                view.setIdSequence(currentSequenceVal);
 
-            for (int i = 0; i < lightTables.size(); i++) {
-                LightTable origLightTable = origLightTables.get(i);
-                LightTable lightTable = lightTables.get(i);
+                Map<String, Object> origContext = origComponent.getContext();
 
-                String prefix = origLightTable.getBindingInfo().getBindByNamePrefix();
-                if (StringUtils.isNotBlank(prefix) && StringUtils.isBlank(
-                        lightTable.getBindingInfo().getBindByNamePrefix())) {
-                    ComponentUtils.prefixBindingPath(lightTable, prefix);
-                }
-            }
-        }
+                Component parent = origContext == null ? null : (Component) origContext
+                        .get(UifConstants.ContextVariableNames.PARENT);
 
-        // if disclosed by action and request was made, make sure the component will display
-        if (component.isDisclosedByAction()) {
-            ComponentUtils.setComponentPropertyFinal(component, UifPropertyPaths.RENDER, true);
-            ComponentUtils.setComponentPropertyFinal(component, UifPropertyPaths.HIDDEN, false);
-        }
+                // update context on all components within the refresh component to catch context set by parent
+                if (origContext != null) {
+                    component.pushAllToContext(origContext);
 
-        performComponentApplyModel(view, component, model, new HashMap<String, Integer>());
-        view.getViewIndex().indexComponent(component);
-
-        // adjust nestedLevel property on some specific collection cases
-        if (component instanceof Container) {
-            ComponentUtils.adjustNestedLevelsForTableCollections((Container) component, 0);
-        } else if (component instanceof FieldGroup) {
-            ComponentUtils.adjustNestedLevelsForTableCollections(((FieldGroup) component).getGroup(), 0);
-        }
-
-        performComponentFinalize(view, component, model, parent);
-
-        // make sure id, binding, and label settings stay the same as initial
-        if (component instanceof Group || component instanceof FieldGroup) {
-            List<Component> nestedGroupComponents = ComponentUtils.getAllNestedComponents(component);
-            List<Component> originalNestedGroupComponents = ComponentUtils.getAllNestedComponents(origComponent);
-
-            for (Component nestedComponent : nestedGroupComponents) {
-                Component origNestedComponent = ComponentUtils.findComponentInList(originalNestedGroupComponents,
-                        nestedComponent.getId());
-
-                if (origNestedComponent != null) {
-                    // update binding
-                    if (nestedComponent instanceof DataBinding) {
-                        ((DataBinding) nestedComponent).setBindingInfo(
-                                ((DataBinding) origNestedComponent).getBindingInfo());
-                        ((DataBinding) nestedComponent).getBindingInfo().setBindingPath(
-                                ((DataBinding) origNestedComponent).getBindingInfo().getBindingPath());
-                    }
-
-                    // update label rendered flag
-                    if (nestedComponent instanceof Field) {
-                        ((Field) nestedComponent).setLabelRendered(((Field) origNestedComponent).isLabelRendered());
-                    }
-
-                    if (origNestedComponent.isRefreshedByAction()) {
-                        nestedComponent.setRefreshedByAction(true);
+                    List<Component> nestedComponents = ComponentUtils.getAllNestedComponents(component);
+                    for (Component nestedComponent : nestedComponents) {
+                        nestedComponent.pushAllToContext(origContext);
                     }
                 }
+
+                // make sure the dataAttributes are the same as original
+                component.setDataAttributes(origComponent.getDataAttributes());
+
+                // initialize the expression evaluator
+                view.getViewHelperService().getExpressionEvaluator().initializeEvaluationContext(model);
+
+                // the expression graph for refreshed components is captured in the view index (initially it might expressions
+                // might have come from a parent), after getting the expression graph then we need to populate the expressions
+                // on the configurable for which they apply
+                Map<String, String> expressionGraph = view.getViewIndex().getComponentExpressionGraphs().get(
+                        component.getBaseId());
+                component.setExpressionGraph(expressionGraph);
+                ExpressionUtils.populatePropertyExpressionsFromGraph(component, false);
+
+                // binding path should stay the same
+                if (component instanceof DataBinding) {
+                    ((DataBinding) component).setBindingInfo(((DataBinding) origComponent).getBindingInfo());
+                    ((DataBinding) component).getBindingInfo().setBindingPath(
+                            ((DataBinding) origComponent).getBindingInfo().getBindingPath());
+                }
+
+                // copy properties that are set by parent components in the full view lifecycle
+                if (component instanceof Field) {
+                    ((Field) component).setLabelRendered(((Field) origComponent).isLabelRendered());
+                }
+
+                if (origComponent.isRefreshedByAction()) {
+                    component.setRefreshedByAction(true);
+                }
+
+                // reset data if needed
+                if (component.isResetDataOnRefresh()) {
+                    // TODO: this should handle groups as well, going through nested data fields
+                    if (component instanceof DataField) {
+                        // TODO: should check default value
+
+                        // clear value
+                        ObjectPropertyUtils.initializeProperty(model,
+                                ((DataField) component).getBindingInfo().getBindingPath());
+                    }
+                }
+
+                performComponentInitialization(view, model, component);
+
+                // adjust IDs for suffixes that might have been added by a parent component during the full view lifecycle
+                String suffix = StringUtils.replaceOnce(origComponent.getId(), origComponent.getBaseId(), "");
+                if (StringUtils.isNotBlank(suffix)) {
+                    ComponentUtils.updateIdWithSuffix(component, suffix);
+                    ComponentUtils.updateChildIdsWithSuffixNested(component, suffix);
+                }
+
+                // for collections that are nested in the refreshed group, we need to adjust the binding prefix and
+                // set the sub collection id prefix from the original component (this is needed when the group being
+                // refreshed is part of another collection)
+                if (component instanceof Group || component instanceof FieldGroup) {
+                    List<CollectionGroup> origCollectionGroups = ComponentUtils.getComponentsOfTypeShallow(
+                            origComponent,
+                            CollectionGroup.class);
+                    List<CollectionGroup> collectionGroups = ComponentUtils.getComponentsOfTypeShallow(component,
+                            CollectionGroup.class);
+
+                    for (int i = 0; i < collectionGroups.size(); i++) {
+                        CollectionGroup origCollectionGroup = origCollectionGroups.get(i);
+                        CollectionGroup collectionGroup = collectionGroups.get(i);
+
+                        String prefix = origCollectionGroup.getBindingInfo().getBindByNamePrefix();
+                        if (StringUtils.isNotBlank(prefix) && StringUtils.isBlank(
+                                collectionGroup.getBindingInfo().getBindByNamePrefix())) {
+                            ComponentUtils.prefixBindingPath(collectionGroup, prefix);
+                        }
+
+                        String lineSuffix = origCollectionGroup.getSubCollectionSuffix();
+                        collectionGroup.setSubCollectionSuffix(lineSuffix);
+                    }
+
+                    // Handle LightTables, as well
+                    List<LightTable> origLightTables = ComponentUtils.getComponentsOfTypeShallow(origComponent,
+                            LightTable.class);
+                    List<LightTable> lightTables = ComponentUtils.getComponentsOfTypeShallow(component,
+                            LightTable.class);
+
+                    for (int i = 0; i < lightTables.size(); i++) {
+                        LightTable origLightTable = origLightTables.get(i);
+                        LightTable lightTable = lightTables.get(i);
+
+                        String prefix = origLightTable.getBindingInfo().getBindByNamePrefix();
+                        if (StringUtils.isNotBlank(prefix) && StringUtils.isBlank(
+                                lightTable.getBindingInfo().getBindByNamePrefix())) {
+                            ComponentUtils.prefixBindingPath(lightTable, prefix);
+                        }
+                    }
+                }
+
+                // if disclosed by action and request was made, make sure the component will display
+                if (component.isDisclosedByAction()) {
+                    ComponentUtils.setComponentPropertyFinal(component, UifPropertyPaths.RENDER, true);
+                    ComponentUtils.setComponentPropertyFinal(component, UifPropertyPaths.HIDDEN, false);
+                }
+
+                performComponentApplyModel(view, component, model, new HashMap<String, Integer>());
+                view.getViewIndex().indexComponent(component);
+
+                // adjust nestedLevel property on some specific collection cases
+                if (component instanceof Container) {
+                    ComponentUtils.adjustNestedLevelsForTableCollections((Container) component, 0);
+                } else if (component instanceof FieldGroup) {
+                    ComponentUtils.adjustNestedLevelsForTableCollections(((FieldGroup) component).getGroup(), 0);
+                }
+
+                performComponentFinalize(view, component, model, parent);
+
+                // make sure id, binding, and label settings stay the same as initial
+                if (component instanceof Group || component instanceof FieldGroup) {
+                    List<Component> nestedGroupComponents = ComponentUtils.getAllNestedComponents(component);
+                    List<Component> originalNestedGroupComponents = ComponentUtils
+                            .getAllNestedComponents(origComponent);
+
+                    for (Component nestedComponent : nestedGroupComponents) {
+                        Component origNestedComponent = ComponentUtils.findComponentInList(
+                                originalNestedGroupComponents,
+                                nestedComponent.getId());
+
+                        if (origNestedComponent != null) {
+                            // update binding
+                            if (nestedComponent instanceof DataBinding) {
+                                ((DataBinding) nestedComponent).setBindingInfo(
+                                        ((DataBinding) origNestedComponent).getBindingInfo());
+                                ((DataBinding) nestedComponent).getBindingInfo().setBindingPath(
+                                        ((DataBinding) origNestedComponent).getBindingInfo().getBindingPath());
+                            }
+
+                            // update label rendered flag
+                            if (nestedComponent instanceof Field) {
+                                ((Field) nestedComponent).setLabelRendered(((Field) origNestedComponent)
+                                        .isLabelRendered());
+                            }
+
+                            if (origNestedComponent.isRefreshedByAction()) {
+                                nestedComponent.setRefreshedByAction(true);
+                            }
+                        }
+                    }
+                }
+
+                // get script for generating growl messages
+                String growlScript = buildGrowlScript(view);
+                ((ViewModel) model).setGrowlScript(growlScript);
+
+                view.getViewIndex().indexComponent(component);
             }
-        }
-
-        // get script for generating growl messages
-        String growlScript = buildGrowlScript(view);
-        ((ViewModel) model).setGrowlScript(growlScript);
-
-        view.getViewIndex().indexComponent(component);
-
-        setViewLifecycle(null);
+        });
     }
 
     /**
@@ -545,7 +550,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         // for attribute fields, set defaults from dictionary entry
         if (component instanceof DataField) {
-            initializeDataFieldFromDataDictionary(view, (DataField) component);
+            initializeDataFieldFromDataDictionary(view, model, (DataField) component);
         }
 
         if (component instanceof Container) {
@@ -617,7 +622,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * @param view view instance containing the field
      * @param field data field instance to initialize
      */
-    protected void initializeDataFieldFromDataDictionary(View view, DataField field) {
+    protected void initializeDataFieldFromDataDictionary(View view, Object model, DataField field) {
         AttributeDefinition attributeDefinition = null;
 
         String dictionaryAttributeName = field.getDictionaryAttributeName();
@@ -637,16 +642,34 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         // if definition not found, recurse through path
         if (attributeDefinition == null) {
-            String propertyPath = field.getBindingInfo().getBindingPath();
-            if (StringUtils.isNotBlank(field.getBindingInfo().getCollectionPath())) {
-                propertyPath = field.getBindingInfo().getCollectionPath();
-                if (StringUtils.isNotBlank(field.getBindingInfo().getBindByNamePrefix())) {
-                    propertyPath += "." + field.getBindingInfo().getBindByNamePrefix();
+            
+            BindingInfo fieldBindingInfo = field.getBindingInfo();
+            String collectionPath = fieldBindingInfo.getCollectionPath();
+            String propertyPath;
+            
+            if (StringUtils.isNotBlank(collectionPath)) {
+                StringBuilder propertyPathBuilder = new StringBuilder();
+
+                String bindingObjectPath = fieldBindingInfo.getBindingObjectPath();
+                if (StringUtils.isNotBlank(bindingObjectPath)) {
+                    propertyPathBuilder.append(bindingObjectPath).append('.');
                 }
-                propertyPath += "." + field.getBindingInfo().getBindingName();
+
+                propertyPathBuilder.append(collectionPath).append('.');
+
+                String bindByNamePrefix = fieldBindingInfo.getBindByNamePrefix();
+                if (StringUtils.isNotBlank(bindByNamePrefix)) {
+                    propertyPathBuilder.append(bindByNamePrefix).append('.');
+                }
+
+                propertyPathBuilder.append(fieldBindingInfo.getBindingName());
+                propertyPath = propertyPathBuilder.toString();
+
+            } else {
+                propertyPath = field.getBindingInfo().getBindingPath();
             }
 
-            attributeDefinition = findNestedDictionaryAttribute(view, field, propertyPath);
+            attributeDefinition = findNestedDictionaryAttribute(view, model, field, propertyPath);
         }
 
         // if a definition was found, initialize field from definition
@@ -733,7 +756,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * @param parentPath The parent path of the current parse entry.
      * @return The name of the dictionary entry to check at the current parse node.
      */
-    private String getDictionaryEntryName(Class<?> formClass, Map<String, Class<?>> modelClasses, String rootPath,
+    private String getDictionaryEntryName(Object model, Map<String, Class<?>> modelClasses, String rootPath,
             String parentPath) {
         String modelClassPath = getModelClassPath(rootPath, parentPath);
 
@@ -750,7 +773,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         // in case of partial match, holds the class that matched and the
         // property so we can get by reflection
-        Class<?> modelClass = formClass;
+        Class<?> modelClass = null;
         String modelProperty = modelClassPath;
 
         int bestMatchLength = 0;
@@ -769,9 +792,14 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             }
         }
 
-        // if a partial match was found, look up the property type
         if (modelClass != null) {
+            // if a partial match was found, look up the property type based on matched model class
             dictionaryModelClass = ObjectPropertyUtils.getPropertyType(modelClass, modelProperty);
+        }
+
+        if (dictionaryModelClass == null) {
+            // If no full or partial match, look up based on the model directly
+            dictionaryModelClass = ObjectPropertyUtils.getPropertyType(model, modelClassPath);
         }
 
         return dictionaryModelClass == null ? null : dictionaryModelClass.getName();
@@ -796,10 +824,11 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * @param propertyPath path of the property to use as dictionary attribute and to drill down on
      * @return AttributeDefinition if found, or Null
      */
-    protected AttributeDefinition findNestedDictionaryAttribute(final View view, DataField field, String propertyPath) {
+    protected AttributeDefinition findNestedDictionaryAttribute(final View view, final Object model, DataField field,
+            String propertyPath) {
         // attempt to find definition for parent and property
         String fieldBindingPrefix = null;
-        String dictionaryAttributeName = propertyPath;
+        String dictionaryAttributePath = propertyPath;
 
         if (field.getBindingInfo().isBindToMap()) {
             fieldBindingPrefix = "";
@@ -815,20 +844,20 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 }
             }
 
-            dictionaryAttributeName = field.getBindingInfo().getBindingName();
+            dictionaryAttributePath = field.getBindingInfo().getBindingName();
         }
 
-        if (StringUtils.isEmpty(dictionaryAttributeName)) {
+        if (StringUtils.isEmpty(dictionaryAttributePath)) {
             return null;
         }
 
         final DataDictionaryService dataDictionaryService = getDataDictionaryService();
         final String rootPath = fieldBindingPrefix;
-        final Class<?> formClass = view.getFormClass();
         final Map<String, Class<?>> modelClasses = view.getObjectPathToConcreteClassMapping();
 
         class AttributePathEntry implements PathEntry {
             String dictionaryObjectEntry;
+            String dictionaryAttributeName;
             AttributeDefinition attributeDefinition;
 
             @Override
@@ -842,7 +871,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 }
 
                 String dictionaryEntryName =
-                        getDictionaryEntryName(formClass, modelClasses, rootPath, parentPath);
+                        getDictionaryEntryName(model, modelClasses, rootPath, parentPath);
 
                 if (dictionaryEntryName != null) {
                     attributeDefinition = dataDictionaryService
@@ -850,6 +879,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
                     if (attributeDefinition != null) {
                         dictionaryObjectEntry = dictionaryEntryName;
+                        dictionaryAttributeName = next;
                         return null;
                     }
                 }
@@ -870,12 +900,12 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         AttributePathEntry attributePathEntry = new AttributePathEntry();
         ObjectPathExpressionParser
-                .parsePathExpression(attributePathEntry, dictionaryAttributeName, true, attributePathEntry);
+                .parsePathExpression(attributePathEntry, dictionaryAttributePath, true, attributePathEntry);
 
         // if a definition was found, update the fields dictionary properties
         if (attributePathEntry.attributeDefinition != null) {
-            field.setDictionaryAttributeName(dictionaryAttributeName);
             field.setDictionaryObjectEntry(attributePathEntry.dictionaryObjectEntry);
+            field.setDictionaryAttributeName(attributePathEntry.dictionaryAttributeName);
         }
 
         return attributePathEntry.attributeDefinition;
@@ -1712,7 +1742,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         }
 
         // trigger lifecycle complete event for component
-        getViewLifecycle().invokeEventListeners(ViewLifecycle.LifecycleEvent.LIFECYCLE_COMPLETE, view, model, component);
+        ViewLifecycle viewLifecycle = getViewLifecycle();
+        viewLifecycle.invokeEventListeners(ViewLifecycle.LifecycleEvent.LIFECYCLE_COMPLETE, view, model, component);
     }
 
     /**
@@ -2424,14 +2455,34 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#getViewLifecycle()
      */
     public ViewLifecycle getViewLifecycle() {
+    	ViewLifecycle viewLifecycle = TL_VIEWLIFECYCLE.get();
+        if (viewLifecycle == null) {
+            throw new IllegalStateException("No view lifecycle is active on this thread");
+        }
+        
         return viewLifecycle;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.service.ViewHelperService#setViewLifecycle(org.kuali.rice.krad.uif.lifecycle.ViewLifecycle)
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.krad.uif.service.ViewHelperService#encapsulateViewLifecycle(java.lang.Runnable)
      */
-    public void setViewLifecycle(ViewLifecycle viewLifecycle) {
-        this.viewLifecycle = viewLifecycle;
+    @Override
+    public void encapsulateViewLifecycle(Runnable lifecycleProcess) {
+        ViewLifecycle viewLifecycle = TL_VIEWLIFECYCLE.get();
+        if (viewLifecycle != null) {
+            throw new IllegalStateException("View lifecycle is active on this thread");
+        }
+        
+        try {
+        	TL_VIEWLIFECYCLE.set(new ViewLifecycle());
+        	
+        	lifecycleProcess.run();
+        	
+        } finally {
+            TL_VIEWLIFECYCLE.remove();
+        }
     }
 
     /**

@@ -30,6 +30,7 @@ import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.LifecycleEventListener;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -104,7 +105,9 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
             quickfinderAction.setActionScript("voidAction");
         }
 
-        view.getViewHelperService().getViewLifecycle().registerLifecycleCompleteListener(quickfinderAction, this);
+        ViewHelperService viewHelperService = view.getViewHelperService();
+        ViewLifecycle viewLifecycle = viewHelperService.getViewLifecycle();
+        viewLifecycle.registerLifecycleCompleteListener(quickfinderAction, this);
     }
 
     /**

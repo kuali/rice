@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.BeanUtils;
 
 /**
  * Utility methods to get/set property values and working with objects.
@@ -199,8 +198,13 @@ public class ObjectPropertyUtils {
      * @see ObjectPathExpressionParser
      */
     public static Class<?> getPropertyType(Class<?> beanClass, String propertyPath) {
-        Object object = BeanUtils.instantiateClass(beanClass);
-        return ObjectPropertyReference.resolvePath(object, beanClass, propertyPath, false).getPropertyType();
+//        Object object = BeanUtils.instantiateClass(beanClass);
+        try {
+            ObjectPropertyReference.setWarning(true);
+            return ObjectPropertyReference.resolvePath(null, beanClass, propertyPath, false).getPropertyType();
+        } finally {
+            ObjectPropertyReference.setWarning(false);
+        }
     }
 
     /**
@@ -213,7 +217,13 @@ public class ObjectPropertyUtils {
      * @see ObjectPathExpressionParser
      */
     public static Class<?> getPropertyType(Object object, String propertyPath) {
-        return ObjectPropertyReference.resolvePath(object, object.getClass(), propertyPath, false).getPropertyType();
+        try {
+            ObjectPropertyReference.setWarning(true);
+            return ObjectPropertyReference.resolvePath(object, object.getClass(), propertyPath, false)
+                    .getPropertyType();
+        } finally {
+            ObjectPropertyReference.setWarning(false);
+        }
     }
 
     /**
@@ -233,12 +243,14 @@ public class ObjectPropertyUtils {
         }
 
         try {
+            ObjectPropertyReference.setWarning(true);
         
             return (T) ObjectPropertyReference.resolvePath(object, object.getClass(), propertyPath, false).get();
         
         } catch (RuntimeException e) {
             throw new RuntimeException("Error getting property '" + propertyPath + "' from " + object, e);
         } finally {
+            ObjectPropertyReference.setWarning(false);
             if (ProcessLogger.isTraceActive() && object != null) {
                 ProcessLogger.countEnd("bean-property-read", object.getClass().getSimpleName() + ":" + propertyPath);
             }
@@ -298,6 +310,7 @@ public class ObjectPropertyUtils {
         }
         
         try {
+            ObjectPropertyReference.setWarning(true);
 
             ObjectPropertyReference.resolvePath(object, object.getClass(), propertyPath, true).set(propertyValue);
         
@@ -305,6 +318,7 @@ public class ObjectPropertyUtils {
             throw new RuntimeException("Error setting property '" + propertyPath + "' on " + object + " with "
                     + propertyValue, e);
         } finally {
+            ObjectPropertyReference.setWarning(false);
             if (ProcessLogger.isTraceActive() && object != null) {
                 ProcessLogger.countEnd("bean-property-write", object.getClass().getSimpleName() + ":" + propertyPath);
             }

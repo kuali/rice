@@ -15,6 +15,13 @@
  */
 package org.kuali.rice.krad.uif.view;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
@@ -53,13 +60,6 @@ import org.kuali.rice.krad.uif.widget.BlockUI;
 import org.kuali.rice.krad.uif.widget.Breadcrumbs;
 import org.kuali.rice.krad.uif.widget.Growls;
 import org.kuali.rice.krad.web.form.UifFormBase;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Root of the component tree which encompasses a set of related
@@ -186,7 +186,7 @@ public class View extends ContainerBase {
     private String preLoadScript;
 
     private List<String> viewTemplates;
-
+    
     private Class<? extends ViewHelperService> viewHelperServiceClass;
 
     @ReferenceCopy
@@ -2318,4 +2318,5 @@ public class View extends ContainerBase {
         }
         super.completeValidation(tracer.getCopy());
     }
+
 }

@@ -23,14 +23,11 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.util.io.SerializationUtils;
-import org.kuali.rice.core.api.util.type.TypeUtils;
-import org.kuali.rice.krad.datadictionary.DictionaryBean;
-import org.kuali.rice.krad.datadictionary.DictionaryBeanBase;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
@@ -42,7 +39,6 @@ import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
-import org.springframework.beans.BeanUtils;
 import org.springframework.core.OrderComparator;
 
 /**
@@ -510,31 +506,68 @@ public class ComponentUtils {
         }
     }
 
-    public static void setComponentsPropertyDeep(List<? extends Component> components, String propertyPath,
+    /**
+     * Traverse a component tree, setting a property on all components for which the property is writable.
+     * 
+     * @param components The components to traverse.
+     * @param propertyPath The property path to set.
+     * @param propertyValue The property value to set.
+     * @see ObjectPropertyUtils#isWritableProperty(Object, String)
+     * @see ObjectPropertyUtils#setPropertyValue(Object, String, Object)
+     */
+    public static <T extends Component> void setComponentsPropertyDeep(List<T> components, String propertyPath,
             Object propertyValue) {
-        for (Component component : components) {
-            setComponentPropertyDeep(component, propertyPath, propertyValue);
+        if (components == null || components.isEmpty()) {
+            return;
+        }
+
+        Set<Class<?>> skipTypes = null;
+        Queue<Component> componentQueue = new LinkedList<Component>();
+        componentQueue.addAll(components);
+
+        while (!componentQueue.isEmpty()) {
+            Component currentComponent = componentQueue.poll();
+            if (currentComponent == null) {
+                continue;
+            }
+
+            componentQueue.addAll(currentComponent.getComponentsForLifecycle());
+
+            Class<?> componentClass = currentComponent.getClass();
+            if (skipTypes != null && skipTypes.contains(componentClass)) {
+                continue;
+            }
+
+            if (!ObjectPropertyUtils.isWritableProperty(currentComponent, propertyPath)) {
+                if (skipTypes == null) skipTypes = new HashSet<Class<?>>();
+                skipTypes.add(componentClass);
+                continue;
+            }
+
+            ObjectPropertyUtils.setPropertyValue(currentComponent, propertyPath, propertyValue, true);
         }
     }
 
+    /**
+     * Traverse a component tree, setting a property on all components for which the property is writable.
+     * 
+     * @param components The component to traverse.
+     * @param propertyPath The property path to set.
+     * @param propertyValue The property value to set.
+     * @see ObjectPropertyUtils#isWritableProperty(Object, String)
+     * @see ObjectPropertyUtils#setPropertyValue(Object, String, Object)
+     */
     public static void setComponentPropertyDeep(Component component, String propertyPath, Object propertyValue) {
-        ObjectPropertyUtils.setPropertyValue(component, propertyPath, propertyValue, true);
-
-        for (Component nested : component.getComponentsForLifecycle()) {
-            if (nested != null) {
-                setComponentPropertyDeep(nested, propertyPath, propertyValue);
-            }
-        }
+        setComponentsPropertyDeep(Collections.singletonList(component), propertyPath, propertyValue);
     }
 
     public static List<String> getComponentPropertyNames(Class<? extends Component> componentClass) {
         List<String> componentProperties = new ArrayList<String>();
 
-        PropertyDescriptor[] properties = BeanUtils.getPropertyDescriptors(componentClass);
-        for (int i = 0; i < properties.length; i++) {
-            PropertyDescriptor descriptor = properties[i];
-            if (descriptor.getReadMethod() != null) {
-                componentProperties.add(descriptor.getName());
+        for (Entry<String, PropertyDescriptor> propertyDescriptorEntry : ObjectPropertyUtils.getPropertyDescriptors(
+                componentClass).entrySet()) {
+            if (propertyDescriptorEntry.getValue().getReadMethod() != null) {
+                componentProperties.add(propertyDescriptorEntry.getKey());
             }
         }
 

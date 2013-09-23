@@ -25,6 +25,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.kuali.rice.krad.uif.util.ObjectPathExpressionParser.PathEntry;
 import org.kuali.rice.krad.util.KRADUtils;
 
@@ -45,9 +46,19 @@ import org.kuali.rice.krad.util.KRADUtils;
 public class ObjectPropertyReference {
 
     /**
+     * Log4j logger.
+     */
+    private static final Logger LOG = Logger.getLogger(ObjectPropertyReference.class);
+
+    /**
      * Reference for single use.
      */
     private static ThreadLocal<ObjectPropertyReference> TL_BUILDER_REF = new ThreadLocal<ObjectPropertyReference>();
+
+    /**
+     * Reference for single use.
+     */
+    private static ThreadLocal<Boolean> TL_WARN = new ThreadLocal<Boolean>();
 
     /**
      * Singleton reference path entry, to be used when parsing for looking up a bean property
@@ -324,6 +335,30 @@ public class ObjectPropertyReference {
     }
 
     /**
+     * Determine if a warning should be logged on when an invalid property is encountered
+     * on the current thread.
+     * @param warning True to log warnings when invalid properties are encountered, false to ignore
+     *        invalid properties.
+     */
+    public static boolean isWarning() {
+        return Boolean.TRUE.equals(TL_WARN.get());
+    }
+
+    /**
+     * Indicate whether or not a warning should be logged on when an invalid property is encountered
+     * on the current thread.
+     * @param warning True to log warnings when invalid properties are encountered, false to ignore
+     *        invalid properties.
+     */
+    public static void setWarning(boolean warning) {
+        if (warning) {
+            TL_WARN.set(true);
+        } else {
+            TL_WARN.remove();
+        }
+    }
+
+    /**
      * Resolve a path expression on a bean.
      * 
      * @param bean The bean.
@@ -577,6 +612,10 @@ public class ObjectPropertyReference {
         }
 
         Class<?> implClass = getImplClass();
+        
+        if (implClass == null) {
+            return false;
+        }
 
         if (implClass.isArray() || List.class.isAssignableFrom(implClass)) {
             if ("length".equals(name) || "size".equals(name)) {
@@ -615,6 +654,10 @@ public class ObjectPropertyReference {
         }
 
         Class<?> implClass = getImplClass();
+        
+        if (implClass == null) {
+            return false;
+        }
 
         if (implClass.isArray() || List.class.isAssignableFrom(implClass)) {
             if (name.length() == 0) {
@@ -651,6 +694,10 @@ public class ObjectPropertyReference {
         }
 
         Class<?> implClass = getImplClass();
+
+        if (implClass == null) {
+            return false;
+        }
 
         if (bean != null) {
             if (implClass.isArray()) {
@@ -701,8 +748,15 @@ public class ObjectPropertyReference {
 
         Method readMethod = ObjectPropertyUtils.getReadMethod(implClass, name);
         if (readMethod == null) {
-            throw new IllegalArgumentException("No property name '" + name + "' is readable on " +
-                    (implClass == beanClass ? implClass.toString() : "impl " + implClass + ", bean " + beanClass));
+            
+            if (isWarning()) {
+                IllegalArgumentException missingPropertyException = new IllegalArgumentException("No property name '"
+                        + name + "' is readable on " +
+                        (implClass == beanClass ? implClass.toString() : "impl " + implClass + ", bean " + beanClass));
+                LOG.warn(missingPropertyException, missingPropertyException);
+            }
+
+            return null;
         }
 
         try {
@@ -788,6 +842,14 @@ public class ObjectPropertyReference {
             writeMethod = ObjectPropertyUtils.getWriteMethod(implClass, name);
             assert writeMethod == null || writeMethod.getParameterTypes().length == 1 : "Invalid write method "
                     + writeMethod;
+            
+            if (isWarning()) {
+                IllegalArgumentException missingPropertyException = new IllegalArgumentException("No property name '"
+                        + name + "' is readable or writable on " +
+                        (implClass == beanClass ? implClass.toString() : "impl " + implClass + ", bean " + beanClass));
+                LOG.warn(missingPropertyException, missingPropertyException);
+            }
+
             return writeMethod == null ? null : writeMethod.getParameterTypes()[0];
         } else {
             Class<?> returnType = readMethod.getReturnType();
@@ -815,6 +877,10 @@ public class ObjectPropertyReference {
         propertyValue = convertToPropertyType(propertyValue);
 
         Class<?> implClass = getImplClass();
+
+        if (implClass == null) {
+            throw new IllegalArgumentException("No property name '" + name + "' is writable on " + beanClass);
+        }
 
         if (implClass.isArray()) {
             setArray(bean, name, propertyValue);

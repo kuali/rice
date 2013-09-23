@@ -168,6 +168,10 @@ public class ObjectPathExpressionParser {
          */
         public String prepareNextScan(String path) {
             nextScanIndex = 0;
+            
+            if (path.length() == 0) {
+                throw new IllegalArgumentException("Unexpected end of input " + parentPath);
+            }
 
             char firstChar = path.charAt(0);
 

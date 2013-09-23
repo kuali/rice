@@ -15,14 +15,15 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import java.util.Collection;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.view.View;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.config.TypedStringValue;
-
-import java.util.Collection;
-import java.util.Map;
 
 /**
  * Provides methods for getting property values, types, and paths within the
@@ -60,16 +61,16 @@ public class ViewModelUtils {
      * @return Class<?> type of property in model, or Null if type could not be determined
      * @see org.kuali.rice.krad.uif.view.View#getObjectPathToConcreteClassMapping()
      */
-    public static Class<?> getPropertyTypeByClassAndView(View view, String propertyPath) {
-        Class<?> propertyType = null;
-
+    public static Class<?> getPropertyTypeByClassAndView(View view, Object model, String propertyPath) {
         if (StringUtils.isBlank(propertyPath)) {
-            return propertyType;
+            return null;
         }
+
+        Class<?> propertyType = null;
 
         // in case of partial match, holds the class that matched and the
         // property so we can get by reflection
-        Class<?> modelClass = view.getFormClass();
+        Class<?> modelClass = null;
         String modelProperty = propertyPath;
 
         int bestMatchLength = 0;
@@ -98,7 +99,13 @@ public class ViewModelUtils {
 
         // if full match not found, get type based on reflection
         if (propertyType == null) {
-            propertyType = ObjectPropertyUtils.getPropertyType(modelClass, modelProperty);
+            if (modelClass == null) {
+                // no match, check model instance directly
+                propertyType = ObjectPropertyUtils.getPropertyType(model, propertyPath);
+            } else {
+                // partial match, check modelClass
+                propertyType = ObjectPropertyUtils.getPropertyType(modelClass, modelProperty);
+            }
         }
 
         return propertyType;
@@ -111,46 +118,26 @@ public class ViewModelUtils {
      * @return parent object path
      */
     public static String getParentObjectPath(DataField field) {
-        String parentObjectPath = "";
+        StringBuilder parentObjectPath = new StringBuilder();
+        
+        BindingInfo fieldBindingInfo = field.getBindingInfo();
 
-        String objectPath = field.getBindingInfo().getBindingObjectPath();
-        String propertyPrefix = field.getBindingInfo().getBindByNamePrefix();
-
-        if (!field.getBindingInfo().isBindToForm() && StringUtils.isNotBlank(objectPath)) {
-            parentObjectPath = objectPath;
+        String objectPath = fieldBindingInfo.getBindingObjectPath();
+        if (!fieldBindingInfo.isBindToForm() && StringUtils.isNotBlank(objectPath)) {
+            parentObjectPath.append(objectPath);
         }
 
+        String propertyPrefix = fieldBindingInfo.getBindByNamePrefix();
         if (StringUtils.isNotBlank(propertyPrefix)) {
-            if (StringUtils.isNotBlank(parentObjectPath)) {
-                parentObjectPath += ".";
+            
+            if (parentObjectPath.length() > 0) {
+                parentObjectPath.append('.');
             }
-
-            parentObjectPath += propertyPrefix;
+            
+            parentObjectPath.append(propertyPrefix);
         }
 
-        return parentObjectPath;
-    }
-
-    /**
-     * Determines the associated type for the property within the View context
-     *
-     * <p>
-     * The abstract type classes map configured on the View will be consulted for any entries that match
-     * the property path. If the parent object path for the given field contains a partial match to an
-     * abstract class (somewhere on path is an abstract class), the property type will be retrieved based
-     * on the given concrete class to use and the part of the path remaining. If no matching entry is found,
-     * standard reflection is used to get the type
-     * </p>
-     *
-     * @param view view instance providing the context (abstract map)
-     * @param field field to retrieve type for
-     * @return Class<?> type of property in model, or Null if type could not be determined
-     * @see org.kuali.rice.krad.uif.view.View#getObjectPathToConcreteClassMapping()
-     */
-    public static Class<?> getParentObjectClassForMetadata(View view, DataField field) {
-        String parentObjectPath = getParentObjectPath(field);
-
-        return getPropertyTypeByClassAndView(view, parentObjectPath);
+        return parentObjectPath.toString();
     }
 
     /**
@@ -203,7 +190,7 @@ public class ViewModelUtils {
         }
 
         // get class by property type with abstract map check
-        return getPropertyTypeByClassAndView(view, propertyPath);
+        return getPropertyTypeByClassAndView(view, model, propertyPath);
     }
 
     /**
@@ -228,7 +215,7 @@ public class ViewModelUtils {
             if ((parentObject == null) || Collection.class.isAssignableFrom(parentObject.getClass()) ||
                     Map.class.isAssignableFrom(parentObject.getClass())) {
                 try {
-                    Class<?> parentObjectClass = getPropertyTypeByClassAndView(view, parentObjectPath);
+                    Class<?> parentObjectClass = getPropertyTypeByClassAndView(view, model, parentObjectPath);
                     if (parentObjectClass != null) {
                         parentObject = parentObjectClass.newInstance();
                     }

@@ -323,13 +323,12 @@ public interface ViewHelperService {
      * @return view lifecycle instance
      */
     public ViewLifecycle getViewLifecycle();
-
+    
     /**
-     * Sets the {@code ViewLifecycle} instance associated with the view helper.
-     *
-     * @param viewLifecycle view lifecycle instance
-     * @see ViewHelperService#getViewLifecycle()
+     * Encapsulate a new view lifecycle on the current thread.
+     * 
+     * @param lifecycleProcess The view lifecycle process.
      */
-    public void setViewLifecycle(ViewLifecycle viewLifecycle);
+    public void encapsulateViewLifecycle(Runnable lifecycleProcess);
 
 }

@@ -90,6 +90,18 @@ public class TestDataObject implements Serializable {
 	// converter = NonStandardDataTypeConverter.class)
 	NonStandardDataType nonStandardDataType;
 
+	// DON'T MOVE THIS - WE ARE TESTING ORDERING OF PROPERTIES
+	@ManyToOne(
+			fetch = FetchType.LAZY,
+			cascade = CascadeType.REFRESH)
+	@JoinColumn(
+			name = "STR_PROP",
+			insertable = false,
+			updatable = false)
+	@InheritProperty(
+			name = "someOtherStringProperty")
+	ReferencedDataObject referencedObject;
+
 	@Column(name="BOOL_PROP")
 	// @Convert("YN_BooleanConverter")
 	Boolean booleanProperty;
@@ -141,17 +153,6 @@ public class TestDataObject implements Serializable {
 					name = "COLL_PK_PROP",
 					referencedColumnName = "PK_PROP"))
 	List<IndirectlyLinkedCollectionDataObject> indirectCollection;
-
-	@ManyToOne(
-			fetch = FetchType.LAZY,
-			cascade = CascadeType.REFRESH)
-	@JoinColumn(
-			name = "STR_PROP",
-			insertable = false,
-			updatable = false)
-	@InheritProperty(
-			name = "someOtherStringProperty")
-	ReferencedDataObject referencedObject;
 
 	@ManyToOne(
 			fetch = FetchType.EAGER,

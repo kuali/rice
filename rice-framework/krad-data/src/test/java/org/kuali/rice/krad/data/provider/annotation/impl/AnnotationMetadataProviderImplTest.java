@@ -204,6 +204,29 @@ public class AnnotationMetadataProviderImplTest {
 	}
 
 	@Test
+	public void testOrderingOfInheritedProperties() {
+		DataObjectMetadata metadata = compositeProvider.provideMetadata().get(TestDataObject.class);
+		assertNotNull("Metadata should have been retrieved for TestDataObject", metadata);
+
+		// Find the property right before this one - should be nonStandardDataType
+		List<DataObjectAttribute> attributes = metadata.getAttributes();
+		int indexOfPriorProperty = -1;
+		for (int i = 0; i < attributes.size(); i++) {
+			if (attributes.get(i).getName().equals("nonStandardDataType")) {
+				indexOfPriorProperty = i;
+				break;
+			}
+		}
+		assertFalse("Unable to find nonStandardDataType Property", indexOfPriorProperty == -1);
+		assertFalse("nonStandardDataType should not have been the last property",
+				indexOfPriorProperty + 1 == attributes.size());
+
+		DataObjectAttribute attr = attributes.get(indexOfPriorProperty + 1);
+		assertEquals("Property property after nonStandardDataType not correct: ",
+				"referencedObject.someOtherStringProperty", attr.getName());
+	}
+
+	@Test
 	public void testInheritedProperties_labelOverride() {
 		DataObjectMetadata metadata = compositeProvider.provideMetadata().get(
 				TestDataObject.class);

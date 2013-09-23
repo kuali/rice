@@ -1,15 +1,17 @@
-/*!
- * jQuery JavaScript Library v1.8.3
- * http://jquery.com/
+/*
+ * Copyright 2005-2013 The Kuali Foundation
  *
- * Includes Sizzle.js
- * http://sizzlejs.com/
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Copyright 2012 jQuery Foundation and other contributors
- * Released under the MIT license
- * http://jquery.org/license
+ * http://www.opensource.org/licenses/ecl2.php
  *
- * Date: Tue Nov 13 2012 08:20:33 GMT-0500 (Eastern Standard Time)
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 (function( window, undefined ) {
 var
@@ -47406,7 +47408,7 @@ ZeroClipboard.Client.prototype = {
  *   http://www.opensource.org/licenses/mit-license.php
  *   http://www.gnu.org/licenses/gpl.html
  *
- * $Date: 2011-02-09 01:17:14 +0200 (�?р, 09 февр 2011) $
+ * $Date: 2011-02-09 01:17:14 +0200 (�?р, 09 февр 2011) $
  * $Revision: 236 $
  */
 
@@ -53444,7 +53446,7 @@ if(c=a.current.title)c=d('<div class="fancybox-title fancybox-title-'+b.type+'-w
 /*
  * jQuery UI Autocomplete HTML Extension
  *
- * Copyright 2010, Scott Gonz�lez (http://scottgonzalez.com)
+ * Copyright 2010, Scott Gonz�lez (http://scottgonzalez.com)
  * Dual licensed under the MIT or GPL Version 2 licenses.
  *
  * http://github.com/scottgonzalez/jquery-ui-extensions

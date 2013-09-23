@@ -2205,7 +2205,7 @@
               populated with multiple results at once, rather than forcing the user to iteratively
               add results one after another. For a maintenance document to use a multiple value
               lookup, the maintenance document must contain a collection, and a collection lookup
-              must be configured for that collection.</para>
+              must be configured for that collection. </para>
           </listitem>
           <listitem>
             <para><emphasis role="bold">KNS code example</emphasis>
@@ -2342,18 +2342,24 @@
                 <emphasis>exporterClass</emphasis> parameter on the business object data dictionary
               file. In addition, if further customization of the export is needed, this can be
               accomplished by writing a custom class extending <emphasis>LookupController</emphasis>
-              and specifically overriding the <emphasis>retrieveTableData</emphasis> method.</para>
+              and specifically overriding the <emphasis>retrieveTableData</emphasis> method.   In
+              the KNS, a custom exporter would implement the
+                <emphasis>org.kuali.rice.kns.bo.Exporter</emphasis> interface, with KRAD, a custom
+              exporter must implement the <emphasis>org.kuali.rice.krad.util.Exporter</emphasis>
+              interface.</para>
           </listitem>
           <listitem>
             <para>Customization of the lookup function, criteria and results section</para>
             <para>Customization of the lookup at these levels can be performed through code
-              modification and overrides.  Classes of interest to the developer performing
+              modification and overrides. Classes of interest to the developer performing
               customization of a particular lookup are the <emphasis>LookupableImpl</emphasis>,
                 <emphasis>LookupView</emphasis>, and <emphasis>LookupForm</emphasis>, among others.
               A custom bean would be created, which had as its parent the
                 <emphasis>Uif-LookupView</emphasis> and which set the applicable classpaths pointing
-              towards the customized java classes.  The customized Java classes would extend and
-              override the original class which was being modified.</para>
+              towards the customized java classes. The customized Java classes would extend and
+              override the original class which was being modified.  In KRAD, these customization
+              can be added via modification of the data dictionary XML files.</para>
+            <para><emphasis role="bold">KRAD Configuration Sample</emphasis></para>
             <para>
               <programlisting>  &lt;bean id="Uif-LookupView" abstract="true" parent="Uif-LookupView-parentBean"/>
   &lt;bean id="Uif-LookupView-parentBean" abstract="true"
@@ -2368,6 +2374,11 @@
   &lt;/bean>
 </programlisting>
             </para>
+            <para><emphasis role="bold">KNS Configuration Sample</emphasis></para>
+            <para>From the <emphasis>struts-config.xml</emphasis> file in an application using the
+              KNS and a custom form, the configuration looks like the following:</para>
+            <para><programlisting>&lt;form-bean name="BalanceInquiryForm"
+                type="org.kuali.kfs.gl.web.struts.BalanceInquiryForm" /> </programlisting></para>
           </listitem>
           <listitem>
             <para>Refreshing Reference objects </para>
@@ -2376,6 +2387,11 @@
               the <emphasis>referencesToRefresh</emphasis> property specifies primary keys of
               reference objects, which are then used to pull those objects from where they are
               persisted. </para>
+            <para><emphasis role="bold">KRAD Configuration
+              Sample</emphasis></para>
+            <para>
+              <programlisting/>
+            </para>
           </listitem>
         </itemizedlist>
       </para>

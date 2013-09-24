@@ -621,16 +621,11 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Processing InheritProperties field Annotations on " + clazz);
 		}
-		List<DataObjectAttribute> attributes = new ArrayList<DataObjectAttribute>();
+		List<DataObjectAttribute> attributes = new ArrayList<DataObjectAttribute>(metadata.getAttributes());
 		boolean fieldAnnotationsFound = false;
-		int lastIndexOfNormalAttribute = -1;
 		for (Field f : clazz.getDeclaredFields()) {
 			boolean fieldAnnotationFound = false;
 			String propertyName = f.getName();
-
-			if (metadata.getAttribute(propertyName) != null) {
-				lastIndexOfNormalAttribute = attributes.indexOf(metadata.getAttribute(propertyName));
-			}
 
 			if (!f.isAnnotationPresent(InheritProperties.class) && !f.isAnnotationPresent(InheritProperty.class)) {
 				continue;
@@ -685,12 +680,7 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 					// Handle the label override, if present
 					processAnnotationForAttribute(inheritedProperty.label(), attr, metadata);
 
-					if (lastIndexOfNormalAttribute != -1) {
-						lastIndexOfNormalAttribute++;
-						attributes.add(lastIndexOfNormalAttribute, attr);
-					} else {
-						attributes.add(attr);
-					}
+					attributes.add(attr);
 				}
 			}
 

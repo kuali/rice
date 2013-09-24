@@ -190,6 +190,12 @@
               </inlinemediaobject></para>
           </listitem>
           <listitem>
+            <para>The property <emphasis role="keyword">forceUpperCase</emphasis> remains the same in KRAD,
+              however you can also specify <emphasis role="keyword">@ForceUppercase</emphasis> annotation for
+              a property in KRAD.
+             </para>
+          </listitem>
+          <listitem>
             <para>The size property and similar properties of TextControl are converted or carried over by
               the script. [KNS line: 15, KRAD line: 15] <inlinemediaobject>
                 <imageobject>
@@ -2513,6 +2519,32 @@
               </para>
           </listitem>
         </itemizedlist>
+      </para>
+    </section>
+    <section>
+      <title>Preparing the BO as part of document setup </title>
+        <para>
+         In KNS the business object was set up as part document setup  using the Maintainable.prepareBusinessObject.
+          <programlisting linenumbering="numbered">
+            public void prepareBusinessObject(BusinessObject businessObject);
+          </programlisting>
+
+          In KRAD this has been replaced by  using MaintenanceDocumentService.setupMaintenanceObject
+          <programlisting linenumbering="numbered">
+            public void setupMaintenanceObject(MaintenanceDocument document, String maintenanceAction,
+            Map&lt;String, String[]&gt; requestParameters);
+          </programlisting>
+        </para>
+    </section>
+    <section>
+      <title>Refreshing references </title>
+      <para>Specifying which reference objects to refresh on a document can be configured by
+        using the <emphasis>referencesToRefresh</emphasis> property. It specifies primary keys of
+        reference objects, which are then used to pull those objects from where they are
+        persisted. </para>
+      <para>
+        In KNS this was done using the AbstractLookupableHelperServiceImpl.referencesToRefresh and KualiMaintainableImpl.refreshReferences.
+        In KRAD this has been replaced by  LookupForm.referencesToRefresh and ViewHelperService.refreshReferences.
       </para>
     </section>
     <section>

@@ -40,11 +40,38 @@ class BusinessObjectEntryBeanTransformerTest extends BeanTransformerTestBase {
     }
 
     @Test
+    void testTransformControlProperty() {
+        String inqDefFilePath = getDictionaryTestDir() + "ControlFieldSample.xml";
+        def ddRootNode = getFileRootNode(inqDefFilePath);
+        def renamedControlDefinitions = config.map.convert.dd_bean_control;
+        def selectBeanNode = ddRootNode.bean.find { "BookOrder-bookId-parentBean".equals(it.@id) };
+        def textAreaBeanNode = ddRootNode.bean.find { "BookOrder-value-parentBean".equals(it.@id) };
+
+        try {
+            businessObjectEntryBeanTransformer.transformControlProperty(selectBeanNode, renamedControlDefinitions, true);
+            businessObjectEntryBeanTransformer.transformControlProperty(textAreaBeanNode, renamedControlDefinitions, true);
+        } catch (Exception e) {
+            e.printStackTrace()
+            Assert.fail("exception occurred in testing")
+        }
+
+        // validate a control field and options finder were generated
+        Assert.assertEquals("control field count", 1, selectBeanNode.property.findAll { it.@name == "controlField" }.size());
+        Assert.assertEquals("options finder count", 1, selectBeanNode.property.findAll { it.@name == "optionsFinder" }.size());
+        Assert.assertEquals("control count", 0, selectBeanNode.property.findAll { it.@name == "control" }.size());
+
+        // testing text area control transform
+        def textAreaControlField = textAreaBeanNode.property.findAll { it.@name == "controlField" };
+        Assert.assertEquals("control field count", 1, textAreaControlField.size());
+
+    }
+
+    @Test
     void testTransformValidationPatternBeanProperty() {
         def ddRootNode = getFileRootNode(defaultTestFilePath);
         def beanNode = ddRootNode.bean.find { "TravelerDetail-id-parentBean".equals(it.@id) };
         try {
-            businessObjectEntryBeanTransformer.transformValidationPatternBeanProperty(beanNode, true);
+            businessObjectEntryBeanTransformer.transformValidationPatternProperty(beanNode, true);
             checkBeanPropertyExists(beanNode, "validCharactersConstraint");
 
             log.finer("resulting node is " + getNodeString(beanNode));

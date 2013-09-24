@@ -90,34 +90,7 @@ class SpringBeanTransformerTest extends BeanTransformerTestBase {
         Assert.assertEquals("bean properties size does not match", 5, ddRootNode.bean.property.size())
     }
 
-    @Test
-    void testTransformControlProperty() {
-        String inqDefFilePath = getDictionaryTestDir() + "ControlFieldSample.xml";
-        def ddRootNode = getFileRootNode(inqDefFilePath);
-        def renamedControlDefinitions = config.map.convert.dd_bean_control;
-        def selectBeanNode = ddRootNode.bean.find { "BookOrder-bookId-parentBean".equals(it.@id) };
-        def textAreaBeanNode = ddRootNode.bean.find { "BookOrder-value-parentBean".equals(it.@id) };
-
-        try {
-            springBeanTransformer.transformControlProperty(selectBeanNode, renamedControlDefinitions);
-            springBeanTransformer.transformControlProperty(textAreaBeanNode, renamedControlDefinitions);
-        } catch (Exception e) {
-            e.printStackTrace()
-            Assert.fail("exception occurred in testing")
-        }
-
-        // validate a control field and options finder were generated
-        Assert.assertEquals("control field count", 1, selectBeanNode.property.findAll { it.@name == "controlField" }.size());
-        Assert.assertEquals("options finder count", 1, selectBeanNode.property.findAll { it.@name == "optionsFinder" }.size());
-        Assert.assertEquals("control count", 0, selectBeanNode.property.findAll { it.@name == "control" }.size());
-
-        // testing text area control transform
-        def textAreaControlField = textAreaBeanNode.property.findAll { it.@name == "controlField" };
-        Assert.assertEquals("control field count", 1, textAreaControlField.size());
-
-    }
-
-    @Test
+   @Test
     void testGenericNodeTransform() {
         def ddRootNode = getSimpleSpringXmlNode();
         def searchAttrs = ["*name": "p:propertyName"];

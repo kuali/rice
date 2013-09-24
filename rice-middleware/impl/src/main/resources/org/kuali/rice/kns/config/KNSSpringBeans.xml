@@ -432,7 +432,7 @@
         class="org.kuali.rice.krad.service.impl.PersistenceStructureServiceOjbImpl"/>
 
   <bean id="persistenceServiceOjb" class="org.kuali.rice.krad.service.impl.PersistenceServiceOjbImpl">
-    <property name="persistenceDao" ref="persistenceDaoOjb"/>
+    <property name="persistenceDao" ref="persistenceDao"/>
   </bean>
 
   <bean id="persistenceDaoOjb" parent="platformAwareDao" class="org.kuali.rice.krad.dao.impl.PersistenceDaoOjb">

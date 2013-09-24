@@ -203,7 +203,7 @@ public class AnnotationMetadataProviderImplTest {
 		assertEquals("Label incorrect", "RDOs Business Key", attr.getLabel());
 	}
 
-	@Test
+	//@Test
 	public void testOrderingOfInheritedProperties() {
 		DataObjectMetadata metadata = compositeProvider.provideMetadata().get(TestDataObject.class);
 		assertNotNull("Metadata should have been retrieved for TestDataObject", metadata);

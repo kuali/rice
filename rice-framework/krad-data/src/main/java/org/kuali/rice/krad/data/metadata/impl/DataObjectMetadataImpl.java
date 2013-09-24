@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.data.metadata.impl;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -53,6 +54,7 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 	protected List<DataObjectAttribute> attributes;
 	protected Map<String, DataObjectAttribute> attributeMap;
 	protected List<String> removedAttributeNames;
+	protected List<String> orderedAttributeList = new ArrayList<String>();
 
 	protected List<DataObjectCollection> collections;
 	protected Map<String, DataObjectCollection> collectionMap;
@@ -196,16 +198,53 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		}
 	}
 
+	public List<DataObjectAttribute> orderAttributesByDefinedOrder(List<DataObjectAttribute> attributes) {
+		List<DataObjectAttribute> sorted = new ArrayList<DataObjectAttribute>(attributes.size());
+		Map<String, DataObjectAttribute> keyedAttributes = new HashMap<String, DataObjectAttribute>(attributes.size());
+		Map<String, List<DataObjectAttribute>> inheritedAttributes = new HashMap<String, List<DataObjectAttribute>>();
+		for (DataObjectAttribute attr : attributes) {
+			if (attr.isInherited()) {
+				List<DataObjectAttribute> inheritedByProperty = inheritedAttributes.get(attr
+						.getInheritedFromParentAttributeName());
+				if (inheritedByProperty == null) {
+					inheritedByProperty = new ArrayList<DataObjectAttribute>();
+					inheritedAttributes.put(attr.getInheritedFromParentAttributeName(), inheritedByProperty);
+				}
+				inheritedByProperty.add(attr);
+			} else {
+				keyedAttributes.put(attr.getName(), attr);
+			}
+		}
+		for (Field f : getType().getDeclaredFields()) {
+			DataObjectAttribute attr = keyedAttributes.get(f.getName());
+			if (attr != null) {
+				sorted.add(attr);
+				keyedAttributes.remove(f.getName());
+			}
+			if (inheritedAttributes.containsKey(f.getName())) {
+				sorted.addAll(inheritedAttributes.get(f.getName()));
+			}
+		}
+		sorted.addAll(keyedAttributes.values());
+		return sorted;
+	}
+
+	List<DataObjectAttribute> mergedAttributes = null;
+
 	@Override
 	public List<DataObjectAttribute> getAttributes() {
+		if (mergedAttributes != null) {
+			return mergedAttributes;
+		}
 		// We have a local list and no overrides - return the existing list
 		if (attributes != null && embedded == null) {
-			return attributes;
+			mergedAttributes = orderAttributesByDefinedOrder(attributes);
+		} else if (embedded != null) {
+			mergedAttributes = orderAttributesByDefinedOrder(mergeLists(embedded.getAttributes(), attributes));
+		} else {
+			mergedAttributes = Collections.emptyList();
 		}
-		if (embedded != null) {
-			return mergeLists(embedded.getAttributes(), attributes);
-		}
-		return Collections.emptyList();
+		return mergedAttributes;
 	}
 
 	public void setAttributes(List<DataObjectAttribute> attributes) {
@@ -213,6 +252,7 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 			attributes = Collections.emptyList();
 		}
 		this.attributes = Collections.unmodifiableList(attributes);
+		mergedAttributes = null;
 		attributeMap = new HashMap<String, DataObjectAttribute>(attributes.size());
 		removedAttributeNames = new ArrayList<String>();
 		for (DataObjectAttribute attr : attributes) {
@@ -477,22 +517,22 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		builder.append("type=").append(getType()).append(", ");
 		builder.append("typeLabel=").append(label).append(", ");
 		builder.append("backingObjectName=").append(backingObjectName);
-		if (!getAttributes().isEmpty()) {
+		if (attributes != null && !attributes.isEmpty()) {
 			builder.append(", ").append("attributes=").append(attributes);
 		}
-		if (!getPrimaryKeyAttributeNames().isEmpty()) {
+		if (primaryKeyAttributeNames != null && !primaryKeyAttributeNames.isEmpty()) {
 			builder.append(", ").append("primaryKeyAttributeNames=").append(primaryKeyAttributeNames);
 		}
 		if (getPrimaryDisplayAttributeName() != null) {
 			builder.append(", ").append("primaryDisplayAttributeName=").append(getPrimaryDisplayAttributeName());
 		}
-		if (!getBusinessKeyAttributeNames().isEmpty()) {
+		if (businessKeyAttributeNames != null && !businessKeyAttributeNames.isEmpty()) {
 			builder.append(", ").append("businessKeyAttributeNames=").append(businessKeyAttributeNames);
 		}
-		if (!getCollections().isEmpty()) {
+		if (collections != null && !collections.isEmpty()) {
 			builder.append(", ").append("collections=").append(collections);
 		}
-		if (!getRelationships().isEmpty()) {
+		if (relationships != null && !relationships.isEmpty()) {
 			builder.append(", ").append("relationships=").append(relationships);
 		}
 		if (providerName != null) {
@@ -543,6 +583,14 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 
 	public void setAutoCreateUifViewTypes(Collection<UifAutoCreateViewType> autoCreateUifViewTypes) {
 		this.autoCreateUifViewTypes = autoCreateUifViewTypes;
+	}
+
+	public List<String> getOrderedAttributeList() {
+		return orderedAttributeList;
+	}
+
+	public void setOrderedAttributeList(List<String> orderedAttributeList) {
+		this.orderedAttributeList = orderedAttributeList;
 	}
 
 }

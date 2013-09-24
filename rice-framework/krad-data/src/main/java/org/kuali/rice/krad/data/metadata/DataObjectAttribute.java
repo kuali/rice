@@ -112,6 +112,12 @@ public interface DataObjectAttribute extends MetadataCommon {
 	String getInheritedFromAttributeName();
 
 	/**
+	 * If this attribute is inherited from a different data object, the attribute name on the parent object. Otherwise
+	 * null.
+	 */
+	String getInheritedFromParentAttributeName();
+
+	/**
 	 * Whether this attribute is inherited from a different data object.
 	 */
 	boolean isInherited();

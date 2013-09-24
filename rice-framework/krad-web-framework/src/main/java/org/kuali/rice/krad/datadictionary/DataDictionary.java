@@ -222,28 +222,33 @@ public class DataDictionary {
         for (DocumentEntry entry : ddBeans.getBeansOfType(DocumentEntry.class).values()) {
             entry.dataDictionaryPostProcessing();
         }
-        // Check if there are inquiry definitions for data objects
         timer.stop();
+
+//        if (allowConcurrentValidation) {
+//            Thread t = new Thread(ddIndex);
+//            t.start();
+//
+//            Thread t2 = new Thread(uifIndex);
+//            t2.start();
+//            LOG.info( "Completed Data Dictionary Post Processing - Not Including Indexing");
+//        } else {
+
+        timer.start("Data Dictionary Indexing");
+        ddIndex.run();
+        timer.stop();
+
+        // The UIF defaulting must be done before the UIF indexing but after
+        // the main DD data object indexing
         timer.start("UIF Defaulting");
+        // Check if there are inquiry definitions for data objects
         generateMissingInquiryDefinitions();
         timer.stop();
 
-        if (allowConcurrentValidation) {
-            Thread t = new Thread(ddIndex);
-            t.start();
-
-            Thread t2 = new Thread(uifIndex);
-            t2.start();
-            LOG.info( "Completed Data Dictionary Post Processing - Not Including Indexing");
-        } else {
-            timer.start("Data Dictionary Indexing");
-            ddIndex.run();
-            timer.stop();
-            timer.start("UIF Indexing");
-            uifIndex.run();
-            timer.stop();
-            LOG.info( "Completed Data Dictionary Post Processing");
-        }
+        timer.start("UIF Indexing");
+        uifIndex.run();
+        timer.stop();
+        LOG.info( "Completed Data Dictionary Post Processing");
+//        }
     }
 
     protected void generateMissingInquiryDefinitions() {

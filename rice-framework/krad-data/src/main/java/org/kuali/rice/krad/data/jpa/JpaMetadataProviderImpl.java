@@ -154,6 +154,9 @@ public abstract class JpaMetadataProviderImpl extends MetadataProviderBase imple
 		try {
 			List<DataObjectAttribute> attributes = getSingularAttributes(persistableClass,
 					entityType.getSingularAttributes(), metadata.getPrimaryKeyAttributeNames());
+			for (DataObjectAttribute attr : attributes) {
+				metadata.getOrderedAttributeList().add(attr.getName());
+			}
 			metadata.setAttributes(attributes);
 		} catch (RuntimeException ex) {
 			LOG.error("Error processing attribute metadata for " + entityType.getBindableJavaType().getName());

@@ -29,10 +29,12 @@ import org.kuali.rice.krad.data.metadata.MetadataRepository;
 import org.kuali.rice.krad.data.provider.annotation.UifDisplayHint;
 import org.kuali.rice.krad.data.provider.annotation.UifDisplayHintType;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
+import org.kuali.rice.krad.datadictionary.CollectionDefinition;
 import org.kuali.rice.krad.datadictionary.DataObjectEntry;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.HiddenControl;
@@ -241,18 +243,15 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
         return group;
     }
 
-    /**
-     * This overridden method ...
-     *
-     * @see org.kuali.rice.krad.uif.service.UifDefaultingService#deriveInquiryViewFromMetadata(org.kuali.rice.krad.datadictionary.DataObjectEntry)
-     */
-    @Override
-    public InquiryView deriveInquiryViewFromMetadata(DataObjectEntry dataObjectEntry) {
-        // Create the main view object and set the title and BO class
-        InquiryView view = ComponentFactory.getInquiryView();
-        view.setHeaderText(dataObjectEntry.getObjectLabel());
-        view.setDataObjectClassName(dataObjectEntry.getDataObjectClass());
+    protected CollectionGroup createCollectionInquirySection( String groupId, String headerText ) {
+        CollectionGroup group = ComponentFactory.getCollectionWithDisclosureGroup();
+        group.setId(groupId);
+        group.setHeaderText(headerText);
+        group.setItems(new ArrayList<Component>());
+        return group;
+    }
 
+    protected void addAttributeSectionsToInquiryView( InquiryView view, DataObjectEntry dataObjectEntry ) {
         // Set up data structures to manage the creation of sections
         Map<String,Group> inquirySectionsById = new HashMap<String,Group>();
         Group currentGroup = createInquirySection("default",dataObjectEntry.getObjectLabel());
@@ -291,9 +290,55 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
             dataField.setPropertyName(attr.getName());
             items.add(dataField);
         }
+    }
+
+    protected void addCollectionSectionsToInquiryView( InquiryView view, DataObjectEntry dataObjectEntry ) {
+        for ( CollectionDefinition coll : dataObjectEntry.getCollections() ) {
+            // Create a new section
+            DataObjectEntry collectionEntry = dataDictionaryService.getDataDictionary().getDataObjectEntry(coll.getDataObjectClass());
+            if ( collectionEntry != null ) {
+                CollectionGroup section = createCollectionInquirySection(coll.getName(), coll.getLabel());
+                try {
+                    section.setCollectionObjectClass(Class.forName(coll.getDataObjectClass()));
+                } catch (ClassNotFoundException e) {
+                    LOG.warn( "Unable to set class on collection section - class not found: " + coll.getDataObjectClass());
+                }
+                section.setPropertyName(coll.getName());
+                // summary title : collection object label
+                // Summary fields : PK fields?
+                // add the attributes to the section
+                for ( AttributeDefinition attr : collectionEntry.getAttributes() ) {
+                    if ( attr.getControlField() instanceof HiddenControl ) {
+                        continue;
+                    }
+                    // TODO: Auto-exclude the parent object's PK fields (or related key fields if we can determine those)
+                    DataField dataField = ComponentFactory.getDataField();
+                    dataField.setPropertyName(attr.getName());
+                    ((List<Component>)section.getItems()).add(dataField);
+                }
+                ((List<Group>)view.getItems()).add(section);
+            } else {
+                LOG.warn( "Unable to find DataObjectEntry for collection class: " + coll.getDataObjectClass());
+            }
+        }
+    }
+    /**
+     * @see org.kuali.rice.krad.uif.service.UifDefaultingService#deriveInquiryViewFromMetadata(org.kuali.rice.krad.datadictionary.DataObjectEntry)
+     */
+    @Override
+    public InquiryView deriveInquiryViewFromMetadata(DataObjectEntry dataObjectEntry) {
+        // Create the main view object and set the title and BO class
+        InquiryView view = ComponentFactory.getInquiryView();
+        view.setHeaderText(dataObjectEntry.getObjectLabel());
+        view.setDataObjectClassName(dataObjectEntry.getDataObjectClass());
+
+        addAttributeSectionsToInquiryView(view, dataObjectEntry);
+
         // TODO: if there are updatable reference objects, include sections for them
 
-        // TODO: If there are collections on the object, include sections for them
+        // If there are collections on the object, include sections for them
+        addCollectionSectionsToInquiryView( view, dataObjectEntry );
+
 
         return view;
     }

@@ -50,7 +50,7 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 	// DataObjectAttribute so that properties (E.g., label) are inherited from there
 	protected Class<?> inheritedFromType;
 	protected String inheritedFromAttributeName;
-
+	protected String inheritedFromParentAttributeName;
 	protected String displayAttributeName;
 	protected Boolean caseInsensitive;
 	protected Boolean forceUppercase;
@@ -327,6 +327,21 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 
 	public void setInheritedFromAttributeName(String inheritedFromAttributeName) {
 		this.inheritedFromAttributeName = inheritedFromAttributeName;
+	}
+
+	@Override
+	public String getInheritedFromParentAttributeName() {
+		if (inheritedFromParentAttributeName != null) {
+			return inheritedFromParentAttributeName;
+		}
+		if (embeddedAttribute != null) {
+			return embeddedAttribute.getInheritedFromParentAttributeName();
+		}
+		return null;
+	}
+
+	public void setInheritedFromParentAttributeName(String inheritedFromParentAttributeName) {
+		this.inheritedFromParentAttributeName = inheritedFromParentAttributeName;
 	}
 
 	@Override

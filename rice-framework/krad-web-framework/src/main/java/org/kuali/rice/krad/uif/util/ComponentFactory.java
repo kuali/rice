@@ -143,6 +143,7 @@ public class ComponentFactory {
     public static final String TREE_GROUP = "Uif-TreeSection";
     public static final String LINK_GROUP = "Uif-LinkGroup";
     public static final String COLLECTION_GROUP = "Uif-StackedCollectionSection";
+    public static final String COLLECTION_WITH_DISCLOSURE_GROUP = "Uif-Disclosure-StackedCollectionSection";
     public static final String COLLECTION_GROUP_TABLE_LAYOUT = "Uif-TableCollectionSection";
     public static final String LIST_GROUP = "Uif-ListCollectionSection";
 
@@ -1033,6 +1034,16 @@ public class ComponentFactory {
     public static CollectionGroup getCollectionGroup() {
         return (CollectionGroup) getNewComponentInstance(COLLECTION_GROUP);
     }
+
+    /**
+     * Gets the collection group with disclosure behavior
+     *
+     * @return collection group
+     */
+    public static CollectionGroup getCollectionWithDisclosureGroup() {
+        return (CollectionGroup) getNewComponentInstance(COLLECTION_WITH_DISCLOSURE_GROUP);
+    }
+
 
     /**
      * Gets the collection group table layout

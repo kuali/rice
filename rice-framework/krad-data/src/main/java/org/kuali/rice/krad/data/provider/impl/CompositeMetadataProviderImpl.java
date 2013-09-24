@@ -93,9 +93,9 @@ public class CompositeMetadataProviderImpl extends MetadataProviderBase implemen
 			for (DataObjectAttribute attr : metadata.getAttributes()) {
 				if (attr.isInherited()) {
 					if (LOG.isDebugEnabled()) {
-						LOG.debug("Processing inherited attribute on " + metadata.getType() + "."
- + attr.getName()
+						LOG.debug("Processing inherited attribute on " + metadata.getType() + "." + attr.getName()
 								+ " : " + attr.getInheritedFromType() + " / "
+								+ attr.getInheritedFromParentAttributeName() + "."
 								+ attr.getInheritedFromAttributeName());
 					}
 					// now that we know there is a cross-data object inheritance, we pull the attribute with the

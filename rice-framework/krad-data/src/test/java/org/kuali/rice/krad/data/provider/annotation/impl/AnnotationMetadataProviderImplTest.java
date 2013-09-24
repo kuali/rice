@@ -198,12 +198,14 @@ public class AnnotationMetadataProviderImplTest {
 		assertNotNull("getAttribute(" + propName + ") should not have returned null", attr);
 		assertTrue("Attribute should have isInherited", attr.isInherited());
 		assertEquals("Inherited data object type not set", ReferencedDataObject.class, attr.getInheritedFromType());
+		assertEquals("Inherited data object parent attribute not set", "referencedObject",
+				attr.getInheritedFromParentAttributeName());
 		assertEquals("Inherited data object attribute not set", "someOtherStringProperty",
 				attr.getInheritedFromAttributeName());
 		assertEquals("Label incorrect", "RDOs Business Key", attr.getLabel());
 	}
 
-	//@Test
+	@Test
 	public void testOrderingOfInheritedProperties() {
 		DataObjectMetadata metadata = compositeProvider.provideMetadata().get(TestDataObject.class);
 		assertNotNull("Metadata should have been retrieved for TestDataObject", metadata);

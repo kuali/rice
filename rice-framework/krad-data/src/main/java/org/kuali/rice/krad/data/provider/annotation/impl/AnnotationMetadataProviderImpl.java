@@ -282,7 +282,7 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 	protected boolean processFieldLevelAnnotations(Class<?> clazz, DataObjectMetadataImpl metadata) {
 		boolean fieldAnnotationsFound = false;
 		boolean additionalClassAnnotationsFound = false;
-		List<DataObjectAttribute> attributes = new ArrayList<DataObjectAttribute>(metadata.getAttributes());
+		List<DataObjectAttribute> attributes = new ArrayList<DataObjectAttribute>();
 		for (Field f : clazz.getDeclaredFields()) {
 			boolean fieldAnnotationFound = false;
 			String propertyName = f.getName();
@@ -464,7 +464,7 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Processing Method Annotations on " + clazz);
 		}
-		List<DataObjectAttribute> attributes = new ArrayList<DataObjectAttribute>(metadata.getAttributes());
+		List<DataObjectAttribute> attributes = new ArrayList<DataObjectAttribute>();
 		for (Method m : clazz.getDeclaredMethods()) {
 			// we only care about properties which are designated as non-persistent
 			// we don't want to load metadata about everything just because it's there
@@ -621,11 +621,17 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Processing InheritProperties field Annotations on " + clazz);
 		}
-		List<DataObjectAttribute> attributes = new ArrayList<DataObjectAttribute>(metadata.getAttributes());
+		List<DataObjectAttribute> attributes = new ArrayList<DataObjectAttribute>();
 		boolean fieldAnnotationsFound = false;
+		int lastIndexOfNormalAttribute = -1;
 		for (Field f : clazz.getDeclaredFields()) {
 			boolean fieldAnnotationFound = false;
 			String propertyName = f.getName();
+
+			if (metadata.getAttribute(propertyName) != null) {
+				lastIndexOfNormalAttribute = attributes.indexOf(metadata.getAttribute(propertyName));
+			}
+
 			if (!f.isAnnotationPresent(InheritProperties.class) && !f.isAnnotationPresent(InheritProperty.class)) {
 				continue;
 			}
@@ -674,11 +680,17 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 					attr.setOwningType(metadata.getType());
 					attr.setInheritedFromType(relatedClass);
 					attr.setInheritedFromAttributeName(inheritedPropertyName);
+					attr.setInheritedFromParentAttributeName(propertyName);
 
 					// Handle the label override, if present
 					processAnnotationForAttribute(inheritedProperty.label(), attr, metadata);
 
-					attributes.add(attr);
+					if (lastIndexOfNormalAttribute != -1) {
+						lastIndexOfNormalAttribute++;
+						attributes.add(lastIndexOfNormalAttribute, attr);
+					} else {
+						attributes.add(attr);
+					}
 				}
 			}
 

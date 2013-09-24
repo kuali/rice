@@ -52,8 +52,8 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t0 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t0");
 
-        // buildAgenda uses the ruleManagementServiceImpl.createAgendaItem method
-        AgendaDefinition.Builder agendaBuilder = buildAgenda(t0.object0);
+        // createTestAgenda uses the ruleManagementServiceImpl.createAgendaItem method
+        AgendaDefinition.Builder agendaBuilder = createTestAgenda(t0.object0);
 
         assertEquals("Expected Context not found",t0.contextId,agendaBuilder.getContextId());
         assertEquals("Expected AgendaId not found",t0.agenda_Id,agendaBuilder.getId());
@@ -73,7 +73,7 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t1 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t1");
 
-        // buildComplexAgenda uses the ruleManagementServiceImpl.createAgendaItem method
+        // createComplexAgenda uses the ruleManagementServiceImpl.createAgendaItem method
         buildComplexAgenda(t1);
         List<AgendaItemDefinition> agendaItems = ruleManagementServiceImpl.getAgendaItemsByContext(t1.contextId);
 
@@ -133,13 +133,13 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
     public void testGetAgendaItemsByType() {
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t3 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t3");
-        buildComplexAgenda(t3.namespaceName, t3.namespaceType, t3);
+        createComplexAgenda(t3.namespaceName, t3.namespaceType, t3);
 
         // get a second set of object names for the creation of second agenda
         RuleManagementBaseTestObjectNames t4 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t4");
 
         // create second agenda with same namespace type as the first agenda
-        buildComplexAgenda(t4.namespaceName, t3.namespaceType, t4);
+        createComplexAgenda(t4.namespaceName, t3.namespaceType, t4);
 
         // get agendaItems for all agendas of this type
         // these complex agendas are both of type namespaceType
@@ -178,11 +178,11 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
     public void testGetAgendaItemsByTypeAndContext() {
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t7 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t7");
-        buildComplexAgenda(t7.namespaceName, t7.namespaceType, t7);
+        createComplexAgenda(t7.namespaceName, t7.namespaceType, t7);
 
         // get a second set of object names for the creation of second agenda
         RuleManagementBaseTestObjectNames t8 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t8");
-        buildComplexAgenda(t8.namespaceName, t7.namespaceType, t8);
+        createComplexAgenda(t8.namespaceName, t7.namespaceType, t8);
 
         // get agendaItems for all agendas of this type with this Context
         // each complex agenda has 7 agendaItems

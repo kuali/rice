@@ -85,6 +85,10 @@ public class RuleManagementBaseTestObjectNames {
     protected String namespaceType;
 
     protected String nlUsage0_Id;
+    protected String nlUsage1_Id;
+    protected String nlUsage2_Id;
+    protected String nlUsage3_Id;
+
     protected String nlUsage0_Name;
     protected String nlUsage0_Descr;
     protected String nlUsage0_KrmsType;
@@ -193,12 +197,14 @@ public class RuleManagementBaseTestObjectNames {
         context2_Name = "ContextName" + object2;
         context3_Name = "ContextName" + object3;
 
-
-
         namespaceName = "Namespace" + object0;
         namespaceType = "NamespaceType" + object0;
 
         nlUsage0_Id = "krms.nl." + object0;
+        nlUsage1_Id = "krms.nl." + object1;
+        nlUsage2_Id = "krms.nl." + object2;
+        nlUsage3_Id = "krms.nl." + object3;
+
         nlUsage0_Name = object0;
         nlUsage0_Descr = "Description-" + object0;
         nlUsage0_KrmsType = object0;
@@ -229,6 +235,7 @@ public class RuleManagementBaseTestObjectNames {
         rule_5_Name = "RuleName" + object5;
         rule_6_Name = "RuleName" + object6;
         rule_7_Name = "RuleName" + object7;
+
         proposition_0_Id = "P" + object0;
         proposition_1_Id = "P" + object1;
         proposition_2_Id = "P" + object2;

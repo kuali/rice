@@ -57,7 +57,8 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t0 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t0");
 
-        RuleDefinition ruleDefinition = ruleManagementServiceImpl.createRule(newTestRuleDefinition(t0.namespaceName,t0.object0));
+        RuleDefinition ruleDefinition = ruleManagementServiceImpl.createRule(buildTestRuleDefinition(t0.namespaceName,
+                t0.object0));
 
         RuleDefinition returnRuleDefinition = ruleManagementServiceImpl.getRuleByNameAndNamespace(
                 ruleDefinition.getName(), ruleDefinition.getNamespace());
@@ -110,7 +111,8 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
         RuleManagementBaseTestObjectNames t1 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t1");
 
         // create a Rule
-        RuleDefinition ruleFirstCreate = ruleManagementServiceImpl.createRule(newTestRuleDefinition(t1.namespaceName,t1.object0));
+        RuleDefinition ruleFirstCreate = ruleManagementServiceImpl.createRule(buildTestRuleDefinition(t1.namespaceName,
+                t1.object0));
         assertTrue("created Rule not found", ruleManagementServiceImpl.getRule(ruleFirstCreate.getId()).getId().contains(t1.rule_0_Id));
 
         // try to create a duplicate Rule
@@ -122,7 +124,7 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
         }
 
         // try to create a malformed Rule
-        RuleDefinition malformedRule = newTestRuleDefinition(t1.namespaceName,t1.object1);
+        RuleDefinition malformedRule = buildTestRuleDefinition(t1.namespaceName, t1.object1);
         RuleDefinition.Builder builder = RuleDefinition.Builder.create(malformedRule);
         builder.setPropId("invalidValue");
         malformedRule =  builder.build();
@@ -146,7 +148,7 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
 
         // build a rule to test with
         RuleDefinition.Builder ruleBuilder0 = RuleDefinition.Builder.create(
-                ruleManagementServiceImpl.createRule(newTestRuleDefinition(t2.namespaceName,t2.object0)));
+                ruleManagementServiceImpl.createRule(buildTestRuleDefinition(t2.namespaceName, t2.object0)));
 
         // update the rule's Name
         ruleBuilder0.setName("updatedName");
@@ -159,7 +161,7 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
 
         // build new rule to for test
         RuleDefinition.Builder ruleBuilder1 = RuleDefinition.Builder.create(
-                ruleManagementServiceImpl.createRule(newTestRuleDefinition(t2.namespaceName,t2.object1)));
+                ruleManagementServiceImpl.createRule(buildTestRuleDefinition(t2.namespaceName, t2.object1)));
         assertEquals("Expected Proposition not found in Rule",t2.proposition_1_Descr,ruleBuilder1.getProposition().getDescription());
 
         // create new proposition to update rule with
@@ -188,7 +190,7 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
         RuleManagementBaseTestObjectNames t3 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t3");
 
         // create a Rule
-        RuleDefinition rule = ruleManagementServiceImpl.createRule(newTestRuleDefinition(t3.namespaceName,t3.object0));
+        RuleDefinition rule = ruleManagementServiceImpl.createRule(buildTestRuleDefinition(t3.namespaceName, t3.object0));
         assertTrue("created Rule not found", ruleManagementServiceImpl.getRule(rule.getId()).getId().contains(t3.rule_0_Id));
         String propositionId = rule.getPropId();
         assertEquals("Proposition for Rule not found", t3.proposition_0_Descr,ruleManagementServiceImpl.getProposition(propositionId).getDescription());
@@ -217,10 +219,14 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t4 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t4");
 
-        RuleDefinition rule0 = ruleManagementServiceImpl.createRule(newTestRuleDefinition(t4.namespaceName,t4.object0));
-        RuleDefinition rule1 = ruleManagementServiceImpl.createRule(newTestRuleDefinition(t4.namespaceName,t4.object1));
-        RuleDefinition rule2 = ruleManagementServiceImpl.createRule(newTestRuleDefinition(t4.namespaceName,t4.object2));
-        RuleDefinition rule3 = ruleManagementServiceImpl.createRule(newTestRuleDefinition(t4.namespaceName,t4.object3));
+        RuleDefinition rule0 = ruleManagementServiceImpl.createRule(buildTestRuleDefinition(t4.namespaceName,
+                t4.object0));
+        RuleDefinition rule1 = ruleManagementServiceImpl.createRule(buildTestRuleDefinition(t4.namespaceName,
+                t4.object1));
+        RuleDefinition rule2 = ruleManagementServiceImpl.createRule(buildTestRuleDefinition(t4.namespaceName,
+                t4.object2));
+        RuleDefinition rule3 = ruleManagementServiceImpl.createRule(buildTestRuleDefinition(t4.namespaceName,
+                t4.object3));
         String ruleNameSpace = rule0.getNamespace();
         List<String> ruleNames =  new ArrayList<String>();
         ruleNames.add(rule0.getName());
@@ -255,7 +261,8 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
         RuleManagementBaseTestObjectNames t5 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t5");
 
         // create a rule to test with
-        RuleDefinition ruleDefinition = ruleManagementServiceImpl.createRule(newTestRuleDefinition(t5.namespaceName,t5.object0));
+        RuleDefinition ruleDefinition = ruleManagementServiceImpl.createRule(buildTestRuleDefinition(t5.namespaceName,
+                t5.object0));
 
         assertNotNull(ruleManagementServiceImpl.getRule(ruleDefinition.getId()));
 
@@ -275,8 +282,8 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
         RuleManagementBaseTestObjectNames t6 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t6");
 
         // build two rules for testing
-        ruleManagementServiceImpl.createRule(newTestRuleDefinition(t6.namespaceName,t6.object0));
-        ruleManagementServiceImpl.createRule(newTestRuleDefinition(t6.namespaceName,t6.object1));
+        ruleManagementServiceImpl.createRule(buildTestRuleDefinition(t6.namespaceName, t6.object0));
+        ruleManagementServiceImpl.createRule(buildTestRuleDefinition(t6.namespaceName, t6.object1));
 
         // build List rule ids for the rules created
         List<String> ruleIds = new ArrayList<String>();

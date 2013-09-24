@@ -22,14 +22,12 @@ import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.krad.criteria.CriteriaLookupDaoProxy;
 import org.kuali.rice.krad.criteria.CriteriaLookupServiceImpl;
-import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.springmodules.orm.ojb.OjbOperationException;
 
-import javax.persistence.OptimisticLockException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -63,8 +61,8 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t0 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t0");
 
-        // buildAgenda utilizes the ruleManagementServiceImpl.createAgenda method
-        AgendaDefinition.Builder agendaBuilder = buildAgenda(t0.object0);
+        // createTestAgenda utilizes the ruleManagementServiceImpl.createAgenda method
+        AgendaDefinition.Builder agendaBuilder = createTestAgenda(t0.object0);
 
         assertTrue("Created agenda is not active", agendaBuilder.isActive());
 
@@ -84,7 +82,7 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
     public void testGetAgendaByNameAndContextId() {
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t1 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t1");
-        buildAgenda(t1.object0);
+        createTestAgenda(t1.object0);
         AgendaDefinition agendaDefinition = ruleManagementServiceImpl.getAgendaByNameAndContextId(t1.agenda_Name,t1.contextId);
 
         assertEquals("Invalid agendaId name found",t1.agenda_Id,agendaDefinition.getId());
@@ -153,7 +151,7 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
         }
 
         // create a new agendaItem to update the agenda with
-        AgendaItemDefinition agendaItem = newTestAgendaItemDefinition("AINew" + t2.action0 , t2.agenda_Id, null);
+        AgendaItemDefinition agendaItem = buildTestAgendaItemDefinition("AINew" + t2.action0, t2.agenda_Id, null);
         AgendaItemDefinition.Builder itemBuilder = AgendaItemDefinition.Builder.create(agendaItem);
         itemBuilder = AgendaItemDefinition.Builder.create(ruleManagementServiceImpl.createAgendaItem(itemBuilder.build()));
 
@@ -175,7 +173,7 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
     public void testGetAgenda() {
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t3 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t3");
-        AgendaDefinition.Builder agendaBuilder = buildAgenda(t3.object0);
+        AgendaDefinition.Builder agendaBuilder = createTestAgenda(t3.object0);
 
         assertEquals("Agenda not found", t3.agenda_Name, ruleManagementServiceImpl.getAgenda(t3.agenda_Id).getName());
 
@@ -208,11 +206,11 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
     public void testGetAgendasByContext() {
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t4 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t4");
-        buildAgenda(t4.object0);
+        createTestAgenda(t4.object0);
 
         // get a second set of object names for the creation of second agenda
         RuleManagementBaseTestObjectNames t5 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t5");
-        buildAgenda(t5.object0);
+        createTestAgenda(t5.object0);
 
         // set second agendaContextId to same as first
         AgendaDefinition.Builder agendaBuilder = AgendaDefinition.Builder.create(ruleManagementServiceImpl.getAgenda(t5.agenda_Id));
@@ -263,7 +261,7 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
     public void testUpdateAgenda() {
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t6 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t6");
-        buildAgenda(t6.object0);
+        createTestAgenda(t6.object0);
         // create krms type AGENDA
         KrmsTypeDefinition krmsType = createKrmsTypeDefinition(t6.namespaceName, "AGENDA", null);
 
@@ -288,7 +286,7 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
 
         assertNull("Agenda should not yet exist",ruleManagementServiceImpl.getAgenda(t7.agenda_Id));
 
-        AgendaDefinition.Builder agendaBuilder = buildAgenda(t7.object0);
+        AgendaDefinition.Builder agendaBuilder = createTestAgenda(t7.object0);
         assertNotNull("Agenda should exist",ruleManagementServiceImpl.getAgenda(t7.agenda_Id));
 
         ruleManagementServiceImpl.deleteAgenda(t7.agenda_Id);
@@ -318,11 +316,11 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
     public void testGetAgendasByType() {
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t8 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t8");
-        buildAgenda(t8.object0);
+        createTestAgenda(t8.object0);
 
         // get a second set of object names for the creation of second agenda
         RuleManagementBaseTestObjectNames t9 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t9");
-        buildAgenda(t9.object0);
+        createTestAgenda(t9.object0);
 
         // create krms type AGENDA5008
         KrmsTypeDefinition krmsType = createKrmsTypeDefinition(t8.namespaceName, t8.namespaceType, null);
@@ -360,11 +358,11 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
     public void testGetAgendasByTypeAndContext() {
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t10 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t10");
-        buildAgenda(t10.object0);
+        createTestAgenda(t10.object0);
 
         // get a second set of object names for the creation of second agenda
         RuleManagementBaseTestObjectNames t11 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t11");
-        buildAgenda(t11.object0);
+        createTestAgenda(t11.object0);
 
         // create krms type AGENDA5010
         KrmsTypeDefinition krmsType = createKrmsTypeDefinition(t10.namespaceName, t10.namespaceType, null);
@@ -403,15 +401,15 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
     public void testFindAgendaIds() {
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t12 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t12");
-        buildAgenda(t12.object0);
+        createTestAgenda(t12.object0);
 
         // get a second set of object names for the creation of second agenda
         RuleManagementBaseTestObjectNames t13 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t13");
-        buildAgenda(t13.object0);
+        createTestAgenda(t13.object0);
 
         // get a third set of object names for the creation of thrid agenda
         RuleManagementBaseTestObjectNames t14 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t14");
-        buildAgenda(t14.object0);
+        createTestAgenda(t14.object0);
 
         // create krms type t12.AGENDA
         KrmsTypeDefinition krmsType = createKrmsTypeDefinition(t12.namespaceName, t12.namespaceType, null);

@@ -22,9 +22,7 @@ import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.krms.api.repository.reference.ReferenceObjectBinding;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -47,14 +45,14 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
     /**
      *  Test testCreateReferenceObjectBinding()
      *
-     *  This test focuses specifically on the RuleManagementServiceImpl .createReferenceObjectBinding(ReferenceObjectBinding) method
+     *  This test focuses specifically on the RuleManagementServiceImpl .createTestReferenceObjectBinding(ReferenceObjectBinding) method
      */
     @Test
     public void testCreateReferenceObjectBinding() {
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t0 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t0");
 
-        ReferenceObjectBinding.Builder refObjBindingBuilder =  buildReferenceObjectBinding(t0.object0);
+        ReferenceObjectBinding.Builder refObjBindingBuilder =  createTestReferenceObjectBinding(t0.object0);
         ReferenceObjectBinding refObjBinding = ruleManagementServiceImpl.getReferenceObjectBinding(
                 refObjBindingBuilder.getId());
         refObjBindingBuilder =  ReferenceObjectBinding.Builder.create(refObjBinding);
@@ -97,7 +95,7 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t1 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t1");
 
-        ReferenceObjectBinding.Builder refObjBindingBuilder =  buildReferenceObjectBinding(t1.object0);
+        ReferenceObjectBinding.Builder refObjBindingBuilder =  createTestReferenceObjectBinding(t1.object0);
 
         ReferenceObjectBinding refObjBinding = ruleManagementServiceImpl.getReferenceObjectBinding(
                 refObjBindingBuilder.getId());
@@ -125,9 +123,9 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
         RuleManagementBaseTestObjectNames t2 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t2");
 
         List<String> referenceObjectBindingIds = new ArrayList<String>();
-        referenceObjectBindingIds.add(buildReferenceObjectBinding(t2.object0).getId());
-        referenceObjectBindingIds.add(buildReferenceObjectBinding(t2.object1).getId());
-        referenceObjectBindingIds.add(buildReferenceObjectBinding(t2.object2).getId());
+        referenceObjectBindingIds.add(createTestReferenceObjectBinding(t2.object0).getId());
+        referenceObjectBindingIds.add(createTestReferenceObjectBinding(t2.object1).getId());
+        referenceObjectBindingIds.add(createTestReferenceObjectBinding(t2.object2).getId());
 
         List<ReferenceObjectBinding> referenceObjectBindings = ruleManagementServiceImpl.getReferenceObjectBindings(referenceObjectBindingIds);
         int objectsFound = 0;
@@ -172,7 +170,7 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
     public void testFindReferenceObjectBindingsByReferenceObject() {
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t3 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t3");
-        ReferenceObjectBinding.Builder refObjBindingBuilder =  buildReferenceObjectBinding(t3.object0);
+        ReferenceObjectBinding.Builder refObjBindingBuilder =  createTestReferenceObjectBinding(t3.object0);
 
         //assertEquals("",refObjBindingBuilder.getId(),
         List<ReferenceObjectBinding> referenceObjectBindings = ruleManagementServiceImpl.findReferenceObjectBindingsByReferenceObject(
@@ -212,11 +210,11 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
         RuleManagementBaseTestObjectNames t4 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t4");
 
         // create two ReferenceObjectBindings with same ReferenceDiscriminatorType
-        ReferenceObjectBinding.Builder refObjBindingBuilder =  buildReferenceObjectBinding(t4.object0);
+        ReferenceObjectBinding.Builder refObjBindingBuilder =  createTestReferenceObjectBinding(t4.object0);
         refObjBindingBuilder.setReferenceDiscriminatorType("ParkingAffiliationType" + t4.discriminator);
         ruleManagementServiceImpl.updateReferenceObjectBinding(refObjBindingBuilder.build());
 
-        refObjBindingBuilder =  buildReferenceObjectBinding(t4.object1);
+        refObjBindingBuilder =  createTestReferenceObjectBinding(t4.object1);
         refObjBindingBuilder.setReferenceDiscriminatorType("ParkingAffiliationType" + t4.discriminator);
         ruleManagementServiceImpl.updateReferenceObjectBinding(refObjBindingBuilder.build());
 
@@ -253,9 +251,9 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
         RuleManagementBaseTestObjectNames t5 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t5");
 
         // create two ReferenceObjectBindings with same KrmsDiscriminatorType
-        ReferenceObjectBinding.Builder refObjBindingBuilder6008 =  buildReferenceObjectBinding(t5.object0);
+        ReferenceObjectBinding.Builder refObjBindingBuilder6008 =  createTestReferenceObjectBinding(t5.object0);
 
-        ReferenceObjectBinding.Builder refObjBindingBuilder6009 =  buildReferenceObjectBinding(t5.object1);
+        ReferenceObjectBinding.Builder refObjBindingBuilder6009 =  createTestReferenceObjectBinding(t5.object1);
         refObjBindingBuilder6009.setKrmsDiscriminatorType(refObjBindingBuilder6008.getKrmsDiscriminatorType());
         ruleManagementServiceImpl.updateReferenceObjectBinding(refObjBindingBuilder6009.build());
 
@@ -291,9 +289,9 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
         RuleManagementBaseTestObjectNames t6 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t6");
 
         // create two ReferenceObjectBindings with same KrmsObjectId
-        ReferenceObjectBinding.Builder refObjBindingBuilder0 =  buildReferenceObjectBinding(t6.object0);
+        ReferenceObjectBinding.Builder refObjBindingBuilder0 =  createTestReferenceObjectBinding(t6.object0);
 
-        ReferenceObjectBinding.Builder refObjBindingBuilder1 =  buildReferenceObjectBinding(t6.object1);
+        ReferenceObjectBinding.Builder refObjBindingBuilder1 =  createTestReferenceObjectBinding(t6.object1);
         refObjBindingBuilder1.setKrmsObjectId(refObjBindingBuilder0.getKrmsObjectId());
         ruleManagementServiceImpl.updateReferenceObjectBinding(refObjBindingBuilder1.build());
 
@@ -328,7 +326,7 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t7 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t7");
 
-        ReferenceObjectBinding.Builder refObjBindingBuilder =  buildReferenceObjectBinding(t7.object0);
+        ReferenceObjectBinding.Builder refObjBindingBuilder =  createTestReferenceObjectBinding(t7.object0);
 
         ReferenceObjectBinding refObjBinding = ruleManagementServiceImpl.getReferenceObjectBinding(refObjBindingBuilder.getId());
         refObjBindingBuilder =  ReferenceObjectBinding.Builder.create(refObjBinding);
@@ -390,7 +388,7 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t8 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t8");
 
-        ReferenceObjectBinding.Builder refObjBindingBuilder =  buildReferenceObjectBinding(t8.object0);
+        ReferenceObjectBinding.Builder refObjBindingBuilder =  createTestReferenceObjectBinding(t8.object0);
         ReferenceObjectBinding refObjBinding = ruleManagementServiceImpl.getReferenceObjectBinding(refObjBindingBuilder.getId());
         refObjBindingBuilder =  ReferenceObjectBinding.Builder.create(refObjBinding);
 
@@ -429,11 +427,11 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
 
         // build three objects to search for.  Two active and one not active
         List<String> refObjBindingBuilderIds = new ArrayList<String>();
-        ReferenceObjectBinding.Builder refObjBindingBuilder =  buildReferenceObjectBinding(t9.object0);
+        ReferenceObjectBinding.Builder refObjBindingBuilder =  createTestReferenceObjectBinding(t9.object0);
         refObjBindingBuilderIds.add(refObjBindingBuilder.getId());
-        refObjBindingBuilder =  buildReferenceObjectBinding(t9.object1);
+        refObjBindingBuilder =  createTestReferenceObjectBinding(t9.object1);
         refObjBindingBuilderIds.add(refObjBindingBuilder.getId());
-        refObjBindingBuilder =  buildReferenceObjectBinding(t9.object2);
+        refObjBindingBuilder =  createTestReferenceObjectBinding(t9.object2);
         refObjBindingBuilderIds.add(refObjBindingBuilder.getId());
         refObjBindingBuilder.setActive(false);
         ruleManagementServiceImpl.updateReferenceObjectBinding(refObjBindingBuilder.build());

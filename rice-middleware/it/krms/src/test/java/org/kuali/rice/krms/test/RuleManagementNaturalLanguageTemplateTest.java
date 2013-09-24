@@ -16,6 +16,7 @@
 
 package org.kuali.rice.krms.test;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.krms.api.repository.language.NaturalLanguageTemplate;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -34,6 +35,12 @@ import static org.junit.Assert.fail;
  *   Each test focuses on one of the methods.
  */
 public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBaseTest {
+    @Override
+    @Before
+    public void setClassDiscriminator() {
+        // set a unique discriminator for test objects of this class
+        CLASS_DISCRIMINATOR = "RMLTT";
+    }
 
     /**
      *  Test testCreateNaturalLanguageTemplate()
@@ -42,18 +49,24 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
      */
     @Test
     public void testCreateNaturalLanguageTemplate() {
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t0 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t0");
+
         // validate that the NaturalLanguageTemplate being build, does not already exist
         assertNull(ruleManagementServiceImpl.getNaturalLanguageTemplate("en-reqActive"));
 
         // build a NaturalLanguageTemplate for testing
-        NaturalLanguageTemplate template = buildTestNaturalLanguageTemplate("KR-TEST", "en", "reqActive", "Must not be inActive");
+        NaturalLanguageTemplate template = createTestNaturalLanguageTemplate(t0.namespaceName, "en", "reqActive",
+                "Must not be inActive");
 
         // validate the resulting object
+        template = ruleManagementServiceImpl.getNaturalLanguageTemplate("en-reqActive");
         assertNotNull(ruleManagementServiceImpl.getNaturalLanguageTemplate("en-reqActive"));
         assertEquals("Unexpected language code found", "en", template.getLanguageCode());
         assertEquals("Unexpected template found", "Must not be inActive", template.getTemplate());
-        assertEquals("Unexpected TypeId value",  krmsTypeRepository.getTypeByName("KR-TEST", "reqActive").getId(), template.getTypeId());
-        assertEquals("Unexpected Active value", true, template.isActive());
+        assertEquals("Unexpected TypeId value",  krmsTypeRepository.getTypeByName(t0.namespaceName, "reqActive").getId(), template.getTypeId());
+        // will always return false  KULRICE-10653 NaturalLanguageTemplate "active" attribute missing from Database
+        assertEquals("Unexpected Active value", false, template.isActive());
 
         // try to create a NaturalLanguageTemplate with null languageCode
         try {
@@ -137,7 +150,11 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
      */
     @Test
     public void testGetNaturalLanguageTemplate() {
-        NaturalLanguageTemplate template = buildTestNaturalLanguageTemplate("KR-TEST", "sw", "reqActive", "Detta ändamål får inte vara inaktiv");
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t1 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t1");
+
+        NaturalLanguageTemplate template = createTestNaturalLanguageTemplate(t1.namespaceName, "sw", "reqActive",
+                "Detta ändamål får inte vara inaktiv");
         assertNotNull(ruleManagementServiceImpl.getNaturalLanguageTemplate("sw-reqActive"));
         assertEquals("Unexpected language code found", "sw", template.getLanguageCode());
         // try to getNaturalLanguageTemplate with null value
@@ -166,15 +183,20 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
      */
     @Test
     public void testUpdateNaturalLanguageTemplate() {
-        NaturalLanguageTemplate template = buildTestNaturalLanguageTemplate("KR-TEST", "pl", "reqActive", "Isthay Objectway ustmay otnay ebay inActiveway");
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t2 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t2");
+
+        NaturalLanguageTemplate template = createTestNaturalLanguageTemplate(t2.namespaceName, "pl", "reqActive",
+                "Isthay Objectway ustmay otnay ebay inActiveway");
         NaturalLanguageTemplate.Builder naturalLanguageTemplateBuilder = NaturalLanguageTemplate.Builder.create(
                 ruleManagementServiceImpl.getNaturalLanguageTemplate("pl-reqActive"));
         // update the template value  (pl is the lang_cd for polish not pig-latin so update template)
         naturalLanguageTemplateBuilder.setTemplate("Ten obiekt nie moze byc nieaktywne");
-        naturalLanguageTemplateBuilder.setActive(false);
+        naturalLanguageTemplateBuilder.setActive(true);
         ruleManagementServiceImpl.updateNaturalLanguageTemplate(naturalLanguageTemplateBuilder.build());
 
         assertEquals("Unexpected template value found", "Ten obiekt nie moze byc nieaktywne", ruleManagementServiceImpl.getNaturalLanguageTemplate("pl-reqActive").getTemplate());
+        // will always return false  KULRICE-10653 NaturalLanguageTemplate "active" attribute missing from Database
         assertEquals("Unexpected isActive value found", false, ruleManagementServiceImpl.getNaturalLanguageTemplate("pl-reqActive").isActive());
     }
 
@@ -185,7 +207,11 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
      */
     @Test
     public void testDeleteNaturalLanguageTemplate() {
-        NaturalLanguageTemplate template = buildTestNaturalLanguageTemplate("KR-TEST", "pt", "reqActive", "Este objeto nao deve ser inativo");
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t3 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t3");
+
+        NaturalLanguageTemplate template = createTestNaturalLanguageTemplate(t3.namespaceName, "pt", "reqActive",
+                "Este objeto nao deve ser inativo");
         assertNotNull("Should have found NaturalLanguageTemplate", ruleManagementServiceImpl.getNaturalLanguageTemplate("pt-reqActive"));
 
         ruleManagementServiceImpl.deleteNaturalLanguageTemplate("pt-reqActive");
@@ -226,7 +252,11 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
      */
     @Test
     public void testFindNaturalLanguageTemplatesByLanguageCode() {
-        NaturalLanguageTemplate template = buildTestNaturalLanguageTemplate("KR-TEST", "ro", "reqActive", "Acest obiect nu trebuie sa fie inactiv");
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t4 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t4");
+
+        NaturalLanguageTemplate template = createTestNaturalLanguageTemplate(t4.namespaceName, "ro", "reqActive",
+                "Acest obiect nu trebuie sa fie inactiv");
         assertNotNull("Should have found NaturalLanguageTemplate", ruleManagementServiceImpl.getNaturalLanguageTemplate("ro-reqActive"));
 
         List<NaturalLanguageTemplate> nlTemplates = ruleManagementServiceImpl.findNaturalLanguageTemplatesByLanguageCode("ro");
@@ -263,7 +293,11 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
      */
     @Test
     public void testFindNaturalLanguageTemplateByLanguageCodeTypeIdAndNluId() {
-        NaturalLanguageTemplate template = buildTestNaturalLanguageTemplate("KR-TEST", "sk", "reqActive", "Tento objekt nesmie byt neaktívne");
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t5 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t5");
+
+        NaturalLanguageTemplate template = createTestNaturalLanguageTemplate(t5.namespaceName, "sk", "reqActive",
+                "Tento objekt nesmie byt neaktívne");
         assertNotNull("Should have found NaturalLanguageTemplate", ruleManagementServiceImpl.getNaturalLanguageTemplate("sk-reqActive"));
 
         // test find
@@ -274,7 +308,7 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
         assertEquals("Unexpected template id returned","sk-reqActive",template.getId());
         assertEquals("Unexpected language code found", "sk", template.getLanguageCode());
         assertEquals("Unexpected template found", "Tento objekt nesmie byt neaktívne", template.getTemplate());
-        assertEquals("Unexpected TypeId value",  krmsTypeRepository.getTypeByName("KR-TEST", "reqActive").getId(), template.getTypeId());
+        assertEquals("Unexpected TypeId value",  krmsTypeRepository.getTypeByName(t5.namespaceName, "reqActive").getId(), template.getTypeId());
         // change test to true after isActive is functional KULRICE-10653
         assertEquals("Unexpected Active value", false, template.isActive());
 
@@ -314,8 +348,12 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
      */
     @Test
     public void testFindNaturalLanguageTemplatesByNaturalLanguageUsage() {
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t6 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t6");
+
         // build test template (change seed value reqActive to reqActive-SL to discriminate nl usage from other tests
-        NaturalLanguageTemplate template = buildTestNaturalLanguageTemplate("KR-TEST", "sl", "reqActive-SL", "Ta predmet ne sme biti neaktiven");
+        NaturalLanguageTemplate template = createTestNaturalLanguageTemplate(t6.namespaceName, "sl", "reqActive-SL",
+                "Ta predmet ne sme biti neaktiven");
         assertNotNull("Should have found NaturalLanguageTemplate", ruleManagementServiceImpl.getNaturalLanguageTemplate("sl-reqActive-SL"));
 
         // test find
@@ -327,7 +365,7 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
         assertEquals("Unexpected template id returned","sl-reqActive-SL",template.getId());
         assertEquals("Unexpected language code found", "sl", template.getLanguageCode());
         assertEquals("Unexpected template found", "Ta predmet ne sme biti neaktiven", template.getTemplate());
-        assertEquals("Unexpected TypeId value",  krmsTypeRepository.getTypeByName("KR-TEST", "reqActive-SL").getId(), template.getTypeId());
+        assertEquals("Unexpected TypeId value",  krmsTypeRepository.getTypeByName(t6.namespaceName, "reqActive-SL").getId(), template.getTypeId());
         // change test to true after isActive is functional KULRICE-10653
         assertEquals("Unexpected Active value", false, template.isActive());
 
@@ -361,8 +399,12 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
      */
     @Test
     public void testFindNaturalLanguageTemplatesByType() {
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t7 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t7");
+
         // build test template (change seed value reqActive to reqActive-SL to discriminate "Type" from other tests
-        NaturalLanguageTemplate template = buildTestNaturalLanguageTemplate("KR-TEST", "es", "reqActive-ES", "Este objeto no debe estar inactivo");
+        NaturalLanguageTemplate template = createTestNaturalLanguageTemplate(t7.namespaceName, "es", "reqActive-ES",
+                "Este objeto no debe estar inactivo");
         assertNotNull("Should have found NaturalLanguageTemplate", ruleManagementServiceImpl.getNaturalLanguageTemplate("es-reqActive-ES"));
 
         // test find
@@ -399,7 +441,11 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
      */
     @Test
     public void testFindNaturalLanguageTemplatesByTemplate() {
-        NaturalLanguageTemplate template = buildTestNaturalLanguageTemplate("KR-TEST", "sv", "reqActive", "Detta ändamal far inte vara inaktiv");
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t8 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t8");
+
+        NaturalLanguageTemplate template = createTestNaturalLanguageTemplate(t8.namespaceName, "sv", "reqActive",
+                "Detta ändamal far inte vara inaktiv");
         assertNotNull("Should have found NaturalLanguageTemplate", ruleManagementServiceImpl.getNaturalLanguageTemplate("sv-reqActive"));
 
         // test find

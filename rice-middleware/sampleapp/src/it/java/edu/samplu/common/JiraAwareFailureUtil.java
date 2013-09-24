@@ -60,6 +60,8 @@ public class JiraAwareFailureUtil {
 
         regexJiraMatches.put(".*NullPointerException.*", "KULRICE-10522 KRAD Demo Library Client Responsiveness Progressive Disclosure Ajax Retrieval NullPointer Incident Report");
 
+        regexJiraMatches.put(".*dataObjectClassName.*must be given to find views of type: INQUIRY", "KULRICE-10691 KRAD Demo Travel Account Inquiry Back Button Incident Report");
+
 
         jiraMatches = new HashMap<String, String>();
 

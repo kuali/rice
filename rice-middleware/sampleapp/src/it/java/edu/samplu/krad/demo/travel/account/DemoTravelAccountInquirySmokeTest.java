@@ -74,19 +74,19 @@ public class DemoTravelAccountInquirySmokeTest extends SmokeTestBase {
         assertTextPresent("Travel Account Number:");
         assertTextPresent(EXPAND_ALL);
         assertTextPresent(COLLAPSE_ALL);
-        assertIsVisibleByXpath(ANCHOR_TITLE_TRAVEL_ACCOUNT, "");
+//        assertIsVisibleByXpath(ANCHOR_TITLE_TRAVEL_ACCOUNT, ""); // sub accounts removed
 
         waitAndClickButtonByText(COLLAPSE_ALL);
         Thread.sleep(2000);
-        assertIsNotVisible(By.linkText("a"), " after clicking " + COLLAPSE_ALL);
+        assertIsNotVisible(By.linkText("a14"), " after clicking " + COLLAPSE_ALL);
 
         waitAndClickButtonByText(EXPAND_ALL);
         Thread.sleep(2000);
-        assertIsVisible(By.linkText("a"), " after clicking " + EXPAND_ALL);
+        assertIsVisible(By.linkText("a14"), " after clicking " + EXPAND_ALL);
     }
 
     protected void testInquiryLightBox() throws Exception {
-        waitAndClickByLinkText("a");
+        waitAndClickByLinkText("a14");
         assertIsVisibleByXpath(ANCHOR_TITLE_TRAVEL_ACCOUNT, "");
     }
 

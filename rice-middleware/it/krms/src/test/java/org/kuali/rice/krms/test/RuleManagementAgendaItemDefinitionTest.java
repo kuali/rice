@@ -55,7 +55,7 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
         // buildAgenda uses the ruleManagementServiceImpl.createAgendaItem method
         AgendaDefinition.Builder agendaBuilder = buildAgenda(t0.object0);
 
-        assertEquals("Expected Context not found",t0.contextId,agendaBuilder.getContextId());
+        assertEquals("Break for Jenkins IT changeset test.  Expected Context not found",t0.contextId,agendaBuilder.getContextId());
         assertEquals("Expected AgendaId not found",t0.agenda_Id,agendaBuilder.getId());
 
         assertEquals("Expected AgendaItemId not found",t0.agendaItem_0_Id,agendaBuilder.getFirstItemId());

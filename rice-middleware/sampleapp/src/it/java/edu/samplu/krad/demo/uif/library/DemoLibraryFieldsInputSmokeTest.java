@@ -207,7 +207,7 @@ public class DemoLibraryFieldsInputSmokeTest extends DemoLibraryBase {
 
         driver.switchTo().frame(driver.findElement(By.cssSelector(".fancybox-iframe")));
         checkForIncidentReport("Travel Account Inquiry");
-        assertTextPresent("Travel Account Inquiry");
+        assertTextPresent("Travel Account");
         selectTopFrame();
 
         waitAndClick(By.cssSelector("div[title='Close']"));

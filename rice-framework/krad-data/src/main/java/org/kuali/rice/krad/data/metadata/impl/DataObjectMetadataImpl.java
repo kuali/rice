@@ -233,18 +233,26 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 
 	@Override
 	public List<DataObjectAttribute> getAttributes() {
-		if (mergedAttributes != null) {
-			return mergedAttributes;
-		}
 		// We have a local list and no overrides - return the existing list
 		if (attributes != null && embedded == null) {
-			mergedAttributes = orderAttributesByDefinedOrder(attributes);
-		} else if (embedded != null) {
-			mergedAttributes = orderAttributesByDefinedOrder(mergeLists(embedded.getAttributes(), attributes));
-		} else {
-			mergedAttributes = Collections.emptyList();
+			return orderAttributesByDefinedOrder(attributes);
 		}
-		return mergedAttributes;
+		if (embedded != null) {
+			return orderAttributesByDefinedOrder(mergeLists(embedded.getAttributes(), attributes));
+		}
+		return Collections.emptyList();
+		// if (mergedAttributes != null) {
+		// return mergedAttributes;
+		// }
+		// // We have a local list and no overrides - return the existing list
+		// if (attributes != null && embedded == null) {
+		// mergedAttributes = orderAttributesByDefinedOrder(attributes);
+		// } else if (embedded != null) {
+		// mergedAttributes = orderAttributesByDefinedOrder(mergeLists(embedded.getAttributes(), attributes));
+		// } else {
+		// mergedAttributes = Collections.emptyList();
+		// }
+		// return mergedAttributes;
 	}
 
 	public void setAttributes(List<DataObjectAttribute> attributes) {

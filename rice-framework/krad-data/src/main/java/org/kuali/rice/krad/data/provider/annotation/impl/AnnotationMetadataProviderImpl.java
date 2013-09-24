@@ -151,7 +151,7 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 		boolean classAnnotationFound = false;
 		boolean fieldAnnotationsFound = false;
 		// get the class annotations
-		List<DataObjectAttribute> attributes = new ArrayList<DataObjectAttribute>();
+		List<DataObjectAttribute> attributes = new ArrayList<DataObjectAttribute>(metadata.getAttributes());
 		Annotation[] classAnnotations = clazz.getAnnotations();
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Class-level annotations: " + Arrays.asList(classAnnotations));
@@ -464,7 +464,7 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Processing Method Annotations on " + clazz);
 		}
-		List<DataObjectAttribute> attributes = new ArrayList<DataObjectAttribute>();
+		List<DataObjectAttribute> attributes = new ArrayList<DataObjectAttribute>(metadata.getAttributes());
 		for (Method m : clazz.getDeclaredMethods()) {
 			// we only care about properties which are designated as non-persistent
 			// we don't want to load metadata about everything just because it's there

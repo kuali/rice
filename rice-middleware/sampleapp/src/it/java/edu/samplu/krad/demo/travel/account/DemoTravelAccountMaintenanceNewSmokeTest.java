@@ -71,7 +71,7 @@ public class DemoTravelAccountMaintenanceNewSmokeTest extends SmokeTestBase {
     /**
      * Travel sub account field
      */
-    public static final String SUB_ACCOUNT_FIELD_XPATH = "//div[@data-label='Travel Sub Account Number']/input";
+    public static final String SUB_ACCOUNT_FIELD_XPATH = "//div[@data-label='Travel Sub Account Number']/fieldset/input";
 
     /**
      * Travel sub account name field

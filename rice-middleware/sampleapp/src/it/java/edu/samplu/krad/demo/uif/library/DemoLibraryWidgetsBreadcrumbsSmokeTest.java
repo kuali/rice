@@ -29,9 +29,24 @@ public class DemoLibraryWidgetsBreadcrumbsSmokeTest extends SmokeTestBase {
      */
     public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-Breadcrumbs-View&methodToCall=start";
 
+    /**
+     * inputField9
+     */
     public static final String FIELD_TO_CHECK = "inputField9";
+
+    /**
+     * Kuali
+     */
     public static final String START_PAGE_TITLE = "Kuali";
+
+    /**
+     * Kuali :: View Title
+     */
     public static final String TARGET_PAGE_TITLE = "Kuali :: View Title";
+
+    /**
+     * /kr-krad/kradsampleapp?viewId=Demo-Breadcrumbs-View
+     */
     public static final String TARGET_URL_CHECK = "/kr-krad/kradsampleapp?viewId=Demo-Breadcrumbs-View";
 
     @Override
@@ -48,76 +63,49 @@ public class DemoLibraryWidgetsBreadcrumbsSmokeTest extends SmokeTestBase {
 
     protected void testWidgetsBreadcrumbDefault() throws Exception {
         waitAndClickByLinkText("Default Breadcrumbs");
-        switchToWindow(TARGET_PAGE_TITLE);
-        SeleneseTestBase.assertTrue(driver.getCurrentUrl().contains(TARGET_URL_CHECK + "1"));
-        assertElementPresentByName(FIELD_TO_CHECK);
-        driver.close();
-        switchToWindow(START_PAGE_TITLE);
+        assertNewWindow("1");
     }
 
     protected void testWidgetsBreadcrumbParentLocation() throws Exception {
         waitAndClickByLinkText("ParentLocation");
         waitAndClickByLinkText("Home ParentLocation");
-        switchToWindow(TARGET_PAGE_TITLE);
-        SeleneseTestBase.assertTrue(driver.getCurrentUrl().contains(TARGET_URL_CHECK + "2"));
-        assertElementPresentByName(FIELD_TO_CHECK);
-        driver.close();
-        switchToWindow(START_PAGE_TITLE);
+        assertNewWindow("2");
     }
 
     protected void testWidgetsBreadcrumbParentLocationChain() throws Exception {
         waitAndClickByLinkText("ParentLocation Chain");
         waitAndClickByLinkText("ParentLocation Chain/Trail");
-        switchToWindow(TARGET_PAGE_TITLE);
-        SeleneseTestBase.assertTrue(driver.getCurrentUrl().contains(TARGET_URL_CHECK + "3"));
-        assertElementPresentByName(FIELD_TO_CHECK);
-        driver.close();
-        switchToWindow(START_PAGE_TITLE);
+        assertNewWindow("3");
     }
 
     protected void testWidgetsBreadcrumbParentLocationPage() throws Exception {
         waitAndClickByLinkText("ParentLocation Page");
         waitAndClickByLinkText("ParentLocation View and Page");
-        switchToWindow(TARGET_PAGE_TITLE);
-        SeleneseTestBase.assertTrue(driver.getCurrentUrl().contains(TARGET_URL_CHECK + "4"));
-        assertElementPresentByName(FIELD_TO_CHECK);
-        driver.close();
-        switchToWindow(START_PAGE_TITLE);
+        assertNewWindow("4");
     }
 
     protected void testWidgetsBreadcrumbPreViewAndPrePage() throws Exception {
         waitAndClickByLinkText("preView and prePage");
         waitAndClickByLinkText("preView and prePage breadcrumbs");
-        switchToWindow(TARGET_PAGE_TITLE);
-        SeleneseTestBase.assertTrue(driver.getCurrentUrl().contains(TARGET_URL_CHECK + "5"));
-        assertElementPresentByName(FIELD_TO_CHECK);
-        driver.close();
-        switchToWindow(START_PAGE_TITLE);
+        assertNewWindow("5");
     }
 
     protected void testWidgetsBreadcrumbBreadcrumbLabel() throws Exception {
         waitAndClickByLinkText("Breadcrumb Label");
         waitAndClickByLinkText("Override Breadcrumb Label");
-        switchToWindow(TARGET_PAGE_TITLE);
-        SeleneseTestBase.assertTrue(driver.getCurrentUrl().contains(TARGET_URL_CHECK + "6"));
-        assertElementPresentByName(FIELD_TO_CHECK);
-        driver.close();
-        switchToWindow(START_PAGE_TITLE);
+        assertNewWindow("6");
     }
 
     protected void testWidgetsBreadcrumbHomewardPath() throws Exception {
         waitAndClickByLinkText("Homeward Path");
         waitAndClickByLinkText("Homeward Path Breadcrumbs");
-        switchToWindow(TARGET_PAGE_TITLE);
-        SeleneseTestBase.assertTrue(driver.getCurrentUrl().contains(TARGET_URL_CHECK + "7"));
-        assertElementPresentByName(FIELD_TO_CHECK);
-        driver.close();
-        switchToWindow(START_PAGE_TITLE);
+        assertNewWindow("7");
     }
 
     protected void testWidgetsBreadcrumbPathBased() throws Exception {
         waitAndClickByLinkText("Path-based");
         waitAndClickByLinkText("Path-based Breadcrumbs");
+        waitForPageToLoad();
         switchToWindow(TARGET_PAGE_TITLE);
         SeleneseTestBase.assertTrue(driver.getCurrentUrl().contains(TARGET_URL_CHECK + "8"));
         waitAndClickByLinkText("Page 2");
@@ -129,18 +117,19 @@ public class DemoLibraryWidgetsBreadcrumbsSmokeTest extends SmokeTestBase {
     protected void testWidgetsBreadcrumbOverrides() throws Exception {
         waitAndClickByLinkText("Overrides");
         waitAndClickByLinkText("Breadcrumb Overrides");
-        switchToWindow(TARGET_PAGE_TITLE);
-        SeleneseTestBase.assertTrue(driver.getCurrentUrl().contains(TARGET_URL_CHECK + "9"));
-        assertElementPresentByName(FIELD_TO_CHECK);
-        driver.close();
-        switchToWindow(START_PAGE_TITLE);
+        assertNewWindow("9");
     }
 
     protected void testWidgetsBreadcrumbSiblingBreadcrumbs() throws Exception {
         waitAndClickByLinkText("Sibling Breadcrumbs");
         waitAndClickById("u100164");
+        assertNewWindow("10");
+    }
+
+    private void assertNewWindow(String urlNumber) throws InterruptedException {
+        waitForPageToLoad();
         switchToWindow(TARGET_PAGE_TITLE);
-        SeleneseTestBase.assertTrue(driver.getCurrentUrl().contains(TARGET_URL_CHECK + "10"));
+        SeleneseTestBase.assertTrue(driver.getCurrentUrl().contains(TARGET_URL_CHECK + urlNumber));
         assertElementPresentByName(FIELD_TO_CHECK);
         driver.close();
         switchToWindow(START_PAGE_TITLE);

@@ -1462,7 +1462,7 @@
           <listitem>
             <para>Section Permission Checks</para>
             <para>The viewability of sections in Inquiries are controlled by a KIM permission only when a
-              <emphasis role="keyword">componentSecurity</emphasis> is configured in the section of the InquiryView and
+              <emphasis role="keyword">componentSecurity</emphasis> is configured in the section of the Uif-InquiryView and
               the appropriate KIM permission exists.  The conversion requires that any sections listed in an override of
               the method <emphasis role="keyword">InquiryAuthorizer.getSecurePotentiallyHiddenSectionIds()</emphasis>
               will need to have these configurations added, and that new KRAD permissions are created.
@@ -2386,20 +2386,6 @@
             <para><programlisting>&lt;form-bean name="BalanceInquiryForm"
                 type="org.kuali.kfs.gl.web.struts.BalanceInquiryForm" /> </programlisting></para>
           </listitem>
-          <listitem>
-            <para><?oxy_comment_start author="cniesen" timestamp="20130919T143137-0500" comment="This sounds like stuff that should go into the KRAD documentation.  Since the configuration of referenceToRefresh has not changed, this should be removed"?>Refreshing
-              Reference objects </para>
-            <para>Specifying which reference objects to refresh on a document can be configured by
-              using the <emphasis>referencesToRefresh</emphasis> property on a lookup. Specifically,
-              the <emphasis>referencesToRefresh</emphasis> property specifies primary keys of
-              reference objects, which are then used to pull those objects from where they are
-              persisted. <?oxy_comment_end?></para>
-            <para><emphasis role="bold">KRAD Configuration
-              Sample</emphasis></para>
-            <para>
-              <programlisting/>
-            </para>
-          </listitem>
         </itemizedlist>
       </para>
     </section>
@@ -2486,34 +2472,34 @@
                   <para>MaintenanceDocument.getNewMaintainableObject</para>
                  </listitem>
                   <listitem>
-                    <para>Maintainable.setupNewFromExisting</para>
+                 <para> Maintainable.setupNewFromExisting</para>
                   </listitem>
                   <listitem>
-                    <para>Maintainable.processBeforeAddLine</para>
+                  <para>Maintainable.processBeforeAddLine</para>
                   </listitem>
                   <listitem>
-                    <para>Maintainable.processAfterPost</para>
+                  <para>Maintainable.processAfterPost</para>
                 </listitem>
               </itemizedlist>
               Similar functionality can be obtained in KRAD using the following methods:
               <itemizedlist>
                 <listitem>
-                  <para>MaintenanceDocumentController.setupMaintenance</para>
+                <para>MaintenanceDocumentController.setupMaintenance</para>
                 </listitem>
                 <listitem>
-                  <para>Maintainable.setupNewFromExisting</para>
+                <para>Maintainable.setupNewFromExisting</para>
                 </listitem>
                 <listitem>
-                  <para>Maintainable.retrieveObjectForEditOrCopy</para>
+                <para>Maintainable.retrieveObjectForEditOrCopy</para>
                 </listitem>
                 <listitem>
-                  <para>Maintainable.processAfterPost</para>
+                <para>Maintainable.processAfterPost</para>
                 </listitem>
                 <listitem>
-                  <para>ViewHelperServiceImpl.processBeforeAddLine</para>
+                <para>ViewHelperServiceImpl.processBeforeAddLine</para>
                 </listitem>
                 <listitem>
-                  <para>ViewHelperServiceImpl.processAfterAddLine</para>
+                <para>ViewHelperServiceImpl.processAfterAddLine</para>
                 </listitem>
               </itemizedlist>
               </para>
@@ -2542,10 +2528,10 @@
         using the <emphasis>referencesToRefresh</emphasis> property. It specifies primary keys of
         reference objects, which are then used to pull those objects from where they are
         persisted. </para>
-      <para>
+        <para>
         In KNS this was done using the AbstractLookupableHelperServiceImpl.referencesToRefresh and KualiMaintainableImpl.refreshReferences.
         In KRAD this has been replaced by  LookupForm.referencesToRefresh and ViewHelperService.refreshReferences.
-      </para>
+        </para>
     </section>
     <section>
       <title>Document Error Handling</title>

@@ -30,8 +30,6 @@
     <property name="demoGroups">
       <list>
         <ref bean="Demo-CollectionMVServerPaging-Example1"/>
-        <ref bean="Demo-CollectionMVServerPaging-Example2"/>
-        <ref bean="Demo-CollectionMVServerPaging-Example3"/>
       </list>
     </property>
   </bean>
@@ -65,59 +63,6 @@
         </bean>
         <!-- ex:Demo-CollectionServerPaging-Example1 end-->
 
-      </list>
-    </property>
-  </bean>
-
-
-  <bean id="Demo-CollectionMVServerPaging-Example2" parent="Uif-VerticalBoxSection">
-    <property name="items">
-      <list>
-        <!-- ex:Demo-CollectionServerPaging-Example2 start-->
-        <bean parent="Uif-StackedCollectionSection">
-          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
-          <property name="propertyName" value="collection2"/>
-          <property name="useServerPaging" value="true"/>
-          <property name="items">
-            <list>
-              <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1" p:required="true"/>
-              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2" p:required="true"/>
-              <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3" p:required="true"/>
-              <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4" p:required="true"/>
-            </list>
-          </property>
-        </bean>
-        <!-- ex:Demo-CollectionServerPaging-Example2 end-->
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Demo-CollectionMVServerPaging-Example3" parent="Uif-VerticalBoxSection">
-    <property name="items">
-      <list>
-        <bean parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4">
-          <property name="headerText" value="Server Paging"/>
-          <property name="collectionObjectClass"
-                    value="org.kuali.rice.krad.demo.uif.form.ServerPagingTestObject"/>
-          <property name="propertyName" value="collection3"/>
-
-          <!-- ex:Demo-CollectionServerPaging-Example3 start-->
-          <!-- disable DataTables and use server paging -->
-          <property name="layoutManager.richTable.render" value="false"/>
-          <property name="useServerPaging" value="true"/>
-          <!-- ex:Demo-CollectionServerPaging-Example3 end-->
-
-          <property name="items">
-            <list>
-              <!-- Using Spring EL expressions to make fields writable on the add line only -->
-              <bean parent="Uif-InputField" p:label="xkcd#" p:propertyName="integerField" p:readOnly="@{!#isAddLine}"/>
-              <bean parent="Uif-InputField" p:label="Comment" p:propertyName="stringField" p:readOnly="@{!#isAddLine}"/>
-              <bean parent="Uif-InputField" p:label="Rating" p:propertyName="doubleField" p:readOnly="@{!#isAddLine}"/>
-              <bean parent="Uif-LinkField" p:label="link" p:href="http://xkcd.com/@{#line.integerField}/"
-                    p:linkText="xkcd.com/@{#line.integerField}" p:target="_blank"/>
-            </list>
-          </property>
-        </bean>
       </list>
     </property>
   </bean>

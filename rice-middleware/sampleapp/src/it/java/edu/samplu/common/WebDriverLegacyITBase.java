@@ -134,11 +134,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     public static final String CREATE_NEW_XPATH = "//img[@alt='create new']";
 
     /**
-     * Default "long" wait period is 30 seconds.  See REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY to configure
-     */
-    public static final int DEFAULT_WAIT_SEC = 30;
-
-    /**
      * //div[@class='left-errmsg-tab']/div/div
      */
     public static final String DIV_LEFT_ERRMSG = "//div[@class='left-errmsg-tab']/div/div";
@@ -274,11 +269,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     public static final String REMOTE_PUBLIC_USERPOOL_PROPERTY = "remote.public.userpool";
 
     /**
-     * Set -Dremote.public.wait.seconds to override DEFAULT_WAIT_SEC
-     */
-    public static final String REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY = "remote.public.wait.seconds";
-
-    /**
      * return value
      */
     public static final String RETURN_VALUE_LINK_TEXT = "return value";
@@ -379,7 +369,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected WebDriver driver;
     protected String user = "admin";
-    protected int waitSeconds = DEFAULT_WAIT_SEC;
+    protected int waitSeconds;
     protected boolean passed = false;
     protected String uiFramework = ITUtil.REMOTE_UIF_KNS;   // default to KNS
 
@@ -440,7 +430,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
                 testMethodName = testName.getMethodName();
             }
 
-            waitSeconds = Integer.parseInt(System.getProperty(REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY, DEFAULT_WAIT_SEC + ""));
+            waitSeconds = WebDriverUtil.configuredImplicityWait();
             String givenUser = WebDriverUtil.determineUser(this.toString());
             if (givenUser != null) {
                 user = givenUser;
@@ -1136,7 +1126,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected String[] waitAndGetText(By by) throws InterruptedException {
-        WebDriverUtil.waitFors(driver, DEFAULT_WAIT_SEC, by, "");
+        WebDriverUtil.waitFors(driver, WebDriverUtil.configuredImplicityWait(), by, "");
         List<WebElement> found = findElements(by);
         String[] texts = new String[found.size()];
         int i = 0;
@@ -4599,7 +4589,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
         checkForIncidentReport(by.toString()); // after timeout to be sure page is loaded
 
-        driver.manage().timeouts().implicitlyWait(DEFAULT_WAIT_SEC, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
 
         if (failed) {
             failableFail("timeout of " + waitSeconds + " seconds waiting for " + by + " " + message + " " + driver.getCurrentUrl());

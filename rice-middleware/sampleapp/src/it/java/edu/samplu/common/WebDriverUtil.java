@@ -57,7 +57,6 @@ public class WebDriverUtil {
     public static boolean jsHighlightEnabled = false;
 
     /**
-     * TODO apparent dup WebDriverITBase.DEFAULT_WAIT_SEC
      * TODO parametrize for JVM Arg
      * 30 Seconds
      */
@@ -125,6 +124,11 @@ public class WebDriverUtil {
      * Set -Dremote.public.chrome= or WEBDRIVER_CHROME_DRIVER
      */
     public static final String REMOTE_PUBLIC_CHROME = "remote.public.chrome";
+
+    /**
+     * Set -Dremote.public.wait.seconds to override DEFAULT_WAIT_SEC
+     */
+    public static final String REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY = "remote.public.wait.seconds";
 
     /**
      * Time to wait for the URL used in setup to load.  Sometimes this is the first hit on the app and it needs a bit
@@ -374,6 +378,10 @@ public class WebDriverUtil {
             }
         }
         return null;
+    }
+
+    public static int configuredImplicityWait() {
+        return Integer.parseInt(System.getProperty(REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY, DEFAULT_IMPLICIT_WAIT_TIME + ""));
     }
 
     /**

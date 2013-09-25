@@ -57,17 +57,17 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t0 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t0");
 
-        RuleDefinition ruleDefinition = ruleManagementServiceImpl.createRule(buildTestRuleDefinition(t0.namespaceName,
+        RuleDefinition ruleDefinition = ruleManagementService.createRule(buildTestRuleDefinition(t0.namespaceName,
                 t0.object0));
 
-        RuleDefinition returnRuleDefinition = ruleManagementServiceImpl.getRuleByNameAndNamespace(
+        RuleDefinition returnRuleDefinition = ruleManagementService.getRuleByNameAndNamespace(
                 ruleDefinition.getName(), ruleDefinition.getNamespace());
 
         assertEquals("rule not found", ruleDefinition.getId(), returnRuleDefinition.getId());
 
         // try getRuleByNameAndNamespace with null Name parameter
         try {
-            ruleManagementServiceImpl.getRuleByNameAndNamespace(null, t0.namespaceName);
+            ruleManagementService.getRuleByNameAndNamespace(null, t0.namespaceName);
             fail("Should have thrown IllegalArgumentException: name is null or blank");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: name is null or blank
@@ -75,7 +75,7 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
 
         // try getRuleByNameAndNamespace with null Name parameter
         try {
-            ruleManagementServiceImpl.getRuleByNameAndNamespace("   ", t0.namespaceName);
+            ruleManagementService.getRuleByNameAndNamespace("   ", t0.namespaceName);
             fail("Should have thrown IllegalArgumentException: name is null or blank");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: name is null or blank
@@ -83,7 +83,7 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
 
         // try getRuleByNameAndNamespace with null namespace parameter
         try {
-            ruleManagementServiceImpl.getRuleByNameAndNamespace(ruleDefinition.getName(),null);
+            ruleManagementService.getRuleByNameAndNamespace(ruleDefinition.getName(),null);
             fail("should throw IllegalArgumentException: namespace is null or blank");
         } catch (IllegalArgumentException e) {
             // IllegalArgumentException: namespace is null or blank
@@ -91,7 +91,7 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
 
         // try getRuleByNameAndNamespace with blank namespace parameter
         try {
-            ruleManagementServiceImpl.getRuleByNameAndNamespace(ruleDefinition.getName(),"    ");
+            ruleManagementService.getRuleByNameAndNamespace(ruleDefinition.getName(),"    ");
             fail("should throw IllegalArgumentException: namespace is null or blank");
         } catch (IllegalArgumentException e) {
             // IllegalArgumentException: namespace is null or blank
@@ -111,13 +111,13 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
         RuleManagementBaseTestObjectNames t1 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t1");
 
         // create a Rule
-        RuleDefinition ruleFirstCreate = ruleManagementServiceImpl.createRule(buildTestRuleDefinition(t1.namespaceName,
+        RuleDefinition ruleFirstCreate = ruleManagementService.createRule(buildTestRuleDefinition(t1.namespaceName,
                 t1.object0));
-        assertTrue("created Rule not found", ruleManagementServiceImpl.getRule(ruleFirstCreate.getId()).getId().contains(t1.rule_0_Id));
+        assertTrue("created Rule not found", ruleManagementService.getRule(ruleFirstCreate.getId()).getId().contains(t1.rule_0_Id));
 
         // try to create a duplicate Rule
         try {
-            RuleDefinition ruleSecondCreate = ruleManagementServiceImpl.createRule(ruleFirstCreate);
+            RuleDefinition ruleSecondCreate = ruleManagementService.createRule(ruleFirstCreate);
             fail("should have thrown RiceIllegalArgumentException");
         } catch (RiceIllegalArgumentException e) {
             //  throw new RiceIllegalArgumentException(ruleDefinition.getId());
@@ -129,7 +129,7 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
         builder.setPropId("invalidValue");
         malformedRule =  builder.build();
         try {
-            ruleManagementServiceImpl.createRule(malformedRule);
+            ruleManagementService.createRule(malformedRule);
             fail("should have thrown RiceIllegalArgumentException");
         } catch (RiceIllegalArgumentException e) {
             // throw new RiceIllegalArgumentException("propId does not match proposition.getId"
@@ -148,20 +148,20 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
 
         // build a rule to test with
         RuleDefinition.Builder ruleBuilder0 = RuleDefinition.Builder.create(
-                ruleManagementServiceImpl.createRule(buildTestRuleDefinition(t2.namespaceName, t2.object0)));
+                ruleManagementService.createRule(buildTestRuleDefinition(t2.namespaceName, t2.object0)));
 
         // update the rule's Name
         ruleBuilder0.setName("updatedName");
-        ruleManagementServiceImpl.updateRule(ruleBuilder0.build());
+        ruleManagementService.updateRule(ruleBuilder0.build());
 
         // verify update
-        RuleDefinition rule0 = ruleManagementServiceImpl.getRule(t2.rule_0_Id);
+        RuleDefinition rule0 = ruleManagementService.getRule(t2.rule_0_Id);
         assertNotEquals("Rule Name Not Updated", t2.rule_0_Name, rule0.getName());
         assertEquals("Rule Name Not Updated", "updatedName", rule0.getName());
 
         // build new rule to for test
         RuleDefinition.Builder ruleBuilder1 = RuleDefinition.Builder.create(
-                ruleManagementServiceImpl.createRule(buildTestRuleDefinition(t2.namespaceName, t2.object1)));
+                ruleManagementService.createRule(buildTestRuleDefinition(t2.namespaceName, t2.object1)));
         assertEquals("Expected Proposition not found in Rule",t2.proposition_1_Descr,ruleBuilder1.getProposition().getDescription());
 
         // create new proposition to update rule with
@@ -173,9 +173,9 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
         ruleBuilder1.setProposition(propBuilder);
 
         // Update Proposition in rule
-        ruleManagementServiceImpl.updateRule(ruleBuilder1.build());
+        ruleManagementService.updateRule(ruleBuilder1.build());
 
-        rule0 = ruleManagementServiceImpl.getRule(ruleBuilder1.getId());
+        rule0 = ruleManagementService.getRule(ruleBuilder1.getId());
         assertEquals("Expected Proposition not found in Rule","PropNewId_simple_proposition",rule0.getProposition().getDescription());
     }
 
@@ -190,19 +190,20 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
         RuleManagementBaseTestObjectNames t3 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t3");
 
         // create a Rule
-        RuleDefinition rule = ruleManagementServiceImpl.createRule(buildTestRuleDefinition(t3.namespaceName, t3.object0));
-        assertTrue("created Rule not found", ruleManagementServiceImpl.getRule(rule.getId()).getId().contains(t3.rule_0_Id));
+        RuleDefinition rule = ruleManagementService.createRule(buildTestRuleDefinition(t3.namespaceName, t3.object0));
+        assertTrue("created Rule not found", ruleManagementService.getRule(rule.getId()).getId().contains(t3.rule_0_Id));
         String propositionId = rule.getPropId();
-        assertEquals("Proposition for Rule not found", t3.proposition_0_Descr,ruleManagementServiceImpl.getProposition(propositionId).getDescription());
+        assertEquals("Proposition for Rule not found", t3.proposition_0_Descr,
+                ruleManagementService.getProposition(propositionId).getDescription());
 
 
-        ruleManagementServiceImpl.deleteRule(rule.getId());
+        ruleManagementService.deleteRule(rule.getId());
 
-        assertNull("Rule was not deleted", ruleManagementServiceImpl.getRule(rule.getId()));
+        assertNull("Rule was not deleted", ruleManagementService.getRule(rule.getId()));
 
         // make sure proposition was cleaned up when rule was deleted
         try {
-            ruleManagementServiceImpl.deleteProposition(propositionId);
+            ruleManagementService.deleteProposition(propositionId);
             fail("should fail with IllegalStateException: the Proposition to delete does not exists");
         } catch (IllegalStateException e) {
             // IllegalStateException: the Proposition to delete does not exists
@@ -219,13 +220,13 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t4 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t4");
 
-        RuleDefinition rule0 = ruleManagementServiceImpl.createRule(buildTestRuleDefinition(t4.namespaceName,
+        RuleDefinition rule0 = ruleManagementService.createRule(buildTestRuleDefinition(t4.namespaceName,
                 t4.object0));
-        RuleDefinition rule1 = ruleManagementServiceImpl.createRule(buildTestRuleDefinition(t4.namespaceName,
+        RuleDefinition rule1 = ruleManagementService.createRule(buildTestRuleDefinition(t4.namespaceName,
                 t4.object1));
-        RuleDefinition rule2 = ruleManagementServiceImpl.createRule(buildTestRuleDefinition(t4.namespaceName,
+        RuleDefinition rule2 = ruleManagementService.createRule(buildTestRuleDefinition(t4.namespaceName,
                 t4.object2));
-        RuleDefinition rule3 = ruleManagementServiceImpl.createRule(buildTestRuleDefinition(t4.namespaceName,
+        RuleDefinition rule3 = ruleManagementService.createRule(buildTestRuleDefinition(t4.namespaceName,
                 t4.object3));
         String ruleNameSpace = rule0.getNamespace();
         List<String> ruleNames =  new ArrayList<String>();
@@ -238,11 +239,7 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
 
         builder.setPredicates(equal("namespace", ruleNameSpace),in("name", ruleNames.toArray(new String[]{})));
 
-        CriteriaLookupServiceImpl criteriaLookupService = new CriteriaLookupServiceImpl();
-        criteriaLookupService.setCriteriaLookupDao(new CriteriaLookupDaoProxy());
-        ruleManagementServiceImpl.setCriteriaLookupService( criteriaLookupService);
-
-        List<String> ruleIds = ruleManagementServiceImpl.findRuleIds(builder.build());
+        List<String> ruleIds = ruleManagementService.findRuleIds(builder.build());
         assertEquals("Wrong number of RuleIds returned",4,ruleIds.size());
 
         if(!ruleIds.contains(rule0.getId())){
@@ -261,14 +258,14 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
         RuleManagementBaseTestObjectNames t5 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t5");
 
         // create a rule to test with
-        RuleDefinition ruleDefinition = ruleManagementServiceImpl.createRule(buildTestRuleDefinition(t5.namespaceName,
+        RuleDefinition ruleDefinition = ruleManagementService.createRule(buildTestRuleDefinition(t5.namespaceName,
                 t5.object0));
 
-        assertNotNull(ruleManagementServiceImpl.getRule(ruleDefinition.getId()));
+        assertNotNull(ruleManagementService.getRule(ruleDefinition.getId()));
 
-        assertNull("Should have returned null", ruleManagementServiceImpl.getRule(null));
-        assertNull("Should have returned null",ruleManagementServiceImpl.getRule("   "));
-        assertNull("Should have returned null",ruleManagementServiceImpl.getRule("badValueId"));
+        assertNull("Should have returned null", ruleManagementService.getRule(null));
+        assertNull("Should have returned null", ruleManagementService.getRule("   "));
+        assertNull("Should have returned null", ruleManagementService.getRule("badValueId"));
     }
 
     /**
@@ -282,8 +279,8 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
         RuleManagementBaseTestObjectNames t6 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t6");
 
         // build two rules for testing
-        ruleManagementServiceImpl.createRule(buildTestRuleDefinition(t6.namespaceName, t6.object0));
-        ruleManagementServiceImpl.createRule(buildTestRuleDefinition(t6.namespaceName, t6.object1));
+        ruleManagementService.createRule(buildTestRuleDefinition(t6.namespaceName, t6.object0));
+        ruleManagementService.createRule(buildTestRuleDefinition(t6.namespaceName, t6.object1));
 
         // build List rule ids for the rules created
         List<String> ruleIds = new ArrayList<String>();
@@ -291,7 +288,7 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
         ruleIds.add(t6.rule_1_Id);
 
         // get test rules by List of rule ids
-        List<RuleDefinition> ruleDefinitions = ruleManagementServiceImpl.getRules(ruleIds);
+        List<RuleDefinition> ruleDefinitions = ruleManagementService.getRules(ruleIds);
         assertEquals("Two RuleDefintions should have been returned",2,ruleDefinitions.size());
 
         for(RuleDefinition ruleDefinition : ruleDefinitions) {
@@ -301,15 +298,16 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
         }
 
         try {
-            ruleManagementServiceImpl.getRules(null);
+            ruleManagementService.getRules(null);
             fail("Should have failed with RiceIllegalArgumentException: ruleIds must not be null");
         } catch (RiceIllegalArgumentException e) {
             // throws RiceIllegalArgumentException: ruleIds must not be null
         }
 
-        assertEquals("No RuleDefinitions should have been returned",0,ruleManagementServiceImpl.getRules(new ArrayList<String>()).size());
+        assertEquals("No RuleDefinitions should have been returned",0,
+                ruleManagementService.getRules(new ArrayList<String>()).size());
 
         ruleIds = Arrays.asList("badValueId");
-        assertEquals("No RuleDefinitions should have been returned",0,ruleManagementServiceImpl.getRules(ruleIds).size());
+        assertEquals("No RuleDefinitions should have been returned",0, ruleManagementService.getRules(ruleIds).size());
     }
 }

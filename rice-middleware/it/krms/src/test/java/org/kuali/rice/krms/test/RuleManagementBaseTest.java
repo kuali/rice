@@ -19,6 +19,7 @@ package org.kuali.rice.krms.test;
 import org.junit.Before;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krms.api.repository.LogicalOperator;
+import org.kuali.rice.krms.api.repository.RuleManagementService;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
@@ -37,7 +38,6 @@ import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 import org.kuali.rice.krms.impl.repository.NaturalLanguageTemplateBoServiceImpl;
 import org.kuali.rice.krms.impl.repository.NaturalLanguageTemplateIntegrationGenTest;
-import org.kuali.rice.krms.impl.repository.RuleManagementServiceImpl;
 import org.kuali.rice.test.BaselineTestCase;
 
 import java.util.ArrayList;
@@ -55,20 +55,14 @@ import static org.junit.Assert.assertTrue;
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class RuleManagementBaseTest extends AbstractAgendaBoTest{
 
-    protected RuleManagementServiceImpl ruleManagementServiceImpl;
+    protected RuleManagementService ruleManagementService;
     protected String CLASS_DISCRIMINATOR;
 
     @Override
     @Before
     public void setup() {
-        ruleManagementServiceImpl = new RuleManagementServiceImpl();
-        NaturalLanguageTemplateBoServiceImpl naturalLanguageTemplateBoServiceImpl = new NaturalLanguageTemplateBoServiceImpl();
-        naturalLanguageTemplateBoServiceImpl.setNaturalLanguageTemplater(
-                NaturalLanguageTemplateIntegrationGenTest.newStringReplaceTemplater());
-        ruleManagementServiceImpl.setNaturalLanguageTemplateBoService(naturalLanguageTemplateBoServiceImpl);
-        ruleManagementServiceImpl.setBusinessObjectService(getBoService()); // Business Object Service gets set to other Services
+        ruleManagementService = KrmsRepositoryServiceLocator.getService("ruleManagementService");
         termBoService = KrmsRepositoryServiceLocator.getTermBoService();
-
         contextRepository = KrmsRepositoryServiceLocator.getContextBoService();
         krmsTypeRepository = KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService();
         ruleBoService = KrmsRepositoryServiceLocator.getRuleBoService();
@@ -105,7 +99,7 @@ public class RuleManagementBaseTest extends AbstractAgendaBoTest{
      * @return {@link RuleDefinition}
      */
     protected RuleDefinition createTestRule(String namespace, String ruleId) {
-        return ruleManagementServiceImpl.createRule(buildTestRuleDefinition(namespace, ruleId));
+        return ruleManagementService.createRule(buildTestRuleDefinition(namespace, ruleId));
     }
 
     /**
@@ -158,7 +152,7 @@ public class RuleManagementBaseTest extends AbstractAgendaBoTest{
         KrmsTypeDefinition krmsTypeDefinition = createKrmsActionTypeDefinition(namespace);
 
         // create rule if it does not exist
-        if(ruleManagementServiceImpl.getRule(ruleId) == null) {
+        if(ruleManagementService.getRule(ruleId) == null) {
             RuleDefinition ruleDefinition = createTestRule(namespace, ruleId);
             ruleId = ruleDefinition.getId();
         }
@@ -166,16 +160,16 @@ public class RuleManagementBaseTest extends AbstractAgendaBoTest{
         ActionDefinition actionDefinition = ActionDefinition.Builder.create(actionId,actionName,
                 NAMESPACE1,krmsTypeDefinition.getId(),ruleId,actionSequence).build();
 
-        assertNull("action[" + actionId + "] should not already be in database:", ruleManagementServiceImpl.getAction(
+        assertNull("action[" + actionId + "] should not already be in database:", ruleManagementService.getAction(
                 actionId));
 
-        actionDefinition =  ruleManagementServiceImpl.createAction(actionDefinition);
-        ActionDefinition returnActionDefinition = ruleManagementServiceImpl.getAction(actionDefinition.getId());
+        actionDefinition =  ruleManagementService.createAction(actionDefinition);
+        ActionDefinition returnActionDefinition = ruleManagementService.getAction(actionDefinition.getId());
         ActionDefinition.Builder builder = ActionDefinition.Builder.create(returnActionDefinition);
         builder.setDescription(actionDescr);
-        ruleManagementServiceImpl.updateAction(builder.build());
+        ruleManagementService.updateAction(builder.build());
 
-        return ruleManagementServiceImpl.getAction(actionDefinition.getId());
+        return ruleManagementService.getAction(actionDefinition.getId());
     }
 
     /**
@@ -241,7 +235,7 @@ public class RuleManagementBaseTest extends AbstractAgendaBoTest{
                 PropositionType.SIMPLE.getCode(), ruleId, krmsTypeDefinition.getId(), propParam);
         propBuilder.setDescription(propId + "_simple_proposition");
 
-        return ruleManagementServiceImpl.createProposition(propBuilder.build());
+        return ruleManagementService.createProposition(propBuilder.build());
     }
 
     /**
@@ -313,28 +307,28 @@ public class RuleManagementBaseTest extends AbstractAgendaBoTest{
                 namespace, "ContextName" + objectDiscriminator);
         contextDefinitionBuilder.setId("ContextId" + objectDiscriminator);
         ContextDefinition contextDefinition = contextDefinitionBuilder.build();
-        contextDefinition = ruleManagementServiceImpl.createContext(contextDefinition);
+        contextDefinition = ruleManagementService.createContext(contextDefinition);
 
         // create an agenda ( a agendaItem cannot be created without an existing agenda.
         AgendaDefinition.Builder agendaBuilder = AgendaDefinition.Builder.create(
                 "AgendaId" + objectDiscriminator, "AgendaName" + objectDiscriminator, null, "ContextId" + objectDiscriminator);
         AgendaDefinition agenda = agendaBuilder.build();
-        agenda = ruleManagementServiceImpl.createAgenda(agenda);
+        agenda = ruleManagementService.createAgenda(agenda);
 
         // create a rule
-        RuleDefinition rule = ruleManagementServiceImpl.createRule(buildTestRuleDefinition(namespace,
+        RuleDefinition rule = ruleManagementService.createRule(buildTestRuleDefinition(namespace,
                 objectDiscriminator));
 
         // create a agendaItem using the context agenda and rule above
         AgendaItemDefinition agendaItem = buildTestAgendaItemDefinition("AI" + objectDiscriminator, agenda.getId(),
                 rule.getId());
-        agendaItem = ruleManagementServiceImpl.createAgendaItem(agendaItem);
+        agendaItem = ruleManagementService.createAgendaItem(agendaItem);
 
-        agendaBuilder = AgendaDefinition.Builder.create(ruleManagementServiceImpl.getAgenda("AgendaId" + objectDiscriminator));
+        agendaBuilder = AgendaDefinition.Builder.create(ruleManagementService.getAgenda("AgendaId" + objectDiscriminator));
         agendaBuilder.setFirstItemId("AI" + objectDiscriminator);
-        ruleManagementServiceImpl.updateAgenda(agendaBuilder.build());
+        ruleManagementService.updateAgenda(agendaBuilder.build());
 
-        return AgendaDefinition.Builder.create(ruleManagementServiceImpl.getAgenda(agenda.getId()));
+        return AgendaDefinition.Builder.create(ruleManagementService.getAgenda(agenda.getId()));
     }
 
     protected AgendaDefinition.Builder buildComplexAgenda(RuleManagementBaseTestObjectNames names) {
@@ -374,7 +368,7 @@ public class RuleManagementBaseTest extends AbstractAgendaBoTest{
                 namespace, names.contextName);
         contextBuilder.setId(names.contextId);
         ContextDefinition context = contextBuilder.build();
-        ruleManagementServiceImpl.createContext(context );
+        ruleManagementService.createContext(context );
 
         // create krms type AGENDA
         createKrmsTypeDefinition(namespace, namespaceType, null);
@@ -383,83 +377,83 @@ public class RuleManagementBaseTest extends AbstractAgendaBoTest{
         AgendaDefinition.Builder agendaBuilder = AgendaDefinition.Builder.create(
                 names.agenda_Id, names.agenda_Name, namespaceType, names.contextId);
         AgendaDefinition agenda = agendaBuilder.build();
-        agenda = ruleManagementServiceImpl.createAgenda(agenda);
+        agenda = ruleManagementService.createAgenda(agenda);
 
         // create rules
-        RuleDefinition rule0 = ruleManagementServiceImpl.createRule(buildTestRuleDefinition(namespace, names.object0));
-        RuleDefinition rule1 = ruleManagementServiceImpl.createRule(buildTestRuleDefinition(namespace, names.object1));
-        RuleDefinition rule2 = ruleManagementServiceImpl.createRule(buildTestRuleDefinition(namespace, names.object2));
-        RuleDefinition rule3 = ruleManagementServiceImpl.createRule(buildTestRuleDefinition(namespace, names.object3));
-        RuleDefinition rule4 = ruleManagementServiceImpl.createRule(buildTestRuleDefinition(namespace, names.object4));
-        RuleDefinition rule5 = ruleManagementServiceImpl.createRule(buildTestRuleDefinition(namespace, names.object5));
-        RuleDefinition rule6 = ruleManagementServiceImpl.createRule(buildTestRuleDefinition(namespace, names.object6));
+        RuleDefinition rule0 = ruleManagementService.createRule(buildTestRuleDefinition(namespace, names.object0));
+        RuleDefinition rule1 = ruleManagementService.createRule(buildTestRuleDefinition(namespace, names.object1));
+        RuleDefinition rule2 = ruleManagementService.createRule(buildTestRuleDefinition(namespace, names.object2));
+        RuleDefinition rule3 = ruleManagementService.createRule(buildTestRuleDefinition(namespace, names.object3));
+        RuleDefinition rule4 = ruleManagementService.createRule(buildTestRuleDefinition(namespace, names.object4));
+        RuleDefinition rule5 = ruleManagementService.createRule(buildTestRuleDefinition(namespace, names.object5));
+        RuleDefinition rule6 = ruleManagementService.createRule(buildTestRuleDefinition(namespace, names.object6));
 
         // create agendaItems
         AgendaItemDefinition agendaItemOBJECT6 = buildTestAgendaItemDefinition(names.agendaItem_6_Id, agenda.getId(),
                 rule6.getId());
         AgendaItemDefinition.Builder itemBuilderOBJECT6 = AgendaItemDefinition.Builder.create(agendaItemOBJECT6);
-        itemBuilderOBJECT6 = AgendaItemDefinition.Builder.create(ruleManagementServiceImpl.createAgendaItem(itemBuilderOBJECT6.build()));
+        itemBuilderOBJECT6 = AgendaItemDefinition.Builder.create(ruleManagementService.createAgendaItem(itemBuilderOBJECT6.build()));
 
         AgendaItemDefinition agendaItemOBJECT5 = buildTestAgendaItemDefinition(names.agendaItem_5_Id, agenda.getId(),
                 rule5.getId());
         AgendaItemDefinition.Builder itemBuilderOBJECT5 = AgendaItemDefinition.Builder.create(agendaItemOBJECT5);
-        itemBuilderOBJECT5 = AgendaItemDefinition.Builder.create(ruleManagementServiceImpl.createAgendaItem(itemBuilderOBJECT5.build()));
+        itemBuilderOBJECT5 = AgendaItemDefinition.Builder.create(ruleManagementService.createAgendaItem(itemBuilderOBJECT5.build()));
 
         AgendaItemDefinition agendaItemOBJECT4 = buildTestAgendaItemDefinition(names.agendaItem_4_Id, agenda.getId(),
                 rule4.getId());
         AgendaItemDefinition.Builder itemBuilderOBJECT4 = AgendaItemDefinition.Builder.create(agendaItemOBJECT4);
-        itemBuilderOBJECT4 = AgendaItemDefinition.Builder.create(ruleManagementServiceImpl.createAgendaItem(
+        itemBuilderOBJECT4 = AgendaItemDefinition.Builder.create(ruleManagementService.createAgendaItem(
                 itemBuilderOBJECT4.build()));
 
         AgendaItemDefinition agendaItemOBJECT3 = buildTestAgendaItemDefinition(names.agendaItem_3_Id, agenda.getId(),
                 rule3.getId());
         AgendaItemDefinition.Builder itemBuilderOBJECT3 = AgendaItemDefinition.Builder.create(agendaItemOBJECT3);
-        itemBuilderOBJECT3 = AgendaItemDefinition.Builder.create(ruleManagementServiceImpl.createAgendaItem(
+        itemBuilderOBJECT3 = AgendaItemDefinition.Builder.create(ruleManagementService.createAgendaItem(
                 itemBuilderOBJECT3.build()));
 
         AgendaItemDefinition agendaItemOBJECT2 = buildTestAgendaItemDefinition(names.agendaItem_2_Id, agenda.getId(),
                 rule2.getId());
         AgendaItemDefinition.Builder itemBuilderOBJECT2 = AgendaItemDefinition.Builder.create(agendaItemOBJECT2);
-        itemBuilderOBJECT4 = AgendaItemDefinition.Builder.create(ruleManagementServiceImpl.getAgendaItem(itemBuilderOBJECT4.getId()));
+        itemBuilderOBJECT4 = AgendaItemDefinition.Builder.create(ruleManagementService.getAgendaItem(itemBuilderOBJECT4.getId()));
         itemBuilderOBJECT2.setWhenFalse(itemBuilderOBJECT4);
         itemBuilderOBJECT2.setWhenFalseId(itemBuilderOBJECT4.getId());
-        itemBuilderOBJECT6 = AgendaItemDefinition.Builder.create(ruleManagementServiceImpl.getAgendaItem(itemBuilderOBJECT6.getId()));
+        itemBuilderOBJECT6 = AgendaItemDefinition.Builder.create(ruleManagementService.getAgendaItem(itemBuilderOBJECT6.getId()));
         itemBuilderOBJECT2.setAlways(itemBuilderOBJECT6);
         itemBuilderOBJECT2.setAlwaysId(itemBuilderOBJECT6.getId());
-        itemBuilderOBJECT2 = AgendaItemDefinition.Builder.create(ruleManagementServiceImpl.createAgendaItem(
+        itemBuilderOBJECT2 = AgendaItemDefinition.Builder.create(ruleManagementService.createAgendaItem(
                 itemBuilderOBJECT2.build()));
 
         AgendaItemDefinition agendaItemOBJECT1 = buildTestAgendaItemDefinition(names.agendaItem_1_Id, agenda.getId(),
                 rule1.getId());
         AgendaItemDefinition.Builder itemBuilderOBJECT1 = AgendaItemDefinition.Builder.create(agendaItemOBJECT1);
-        itemBuilderOBJECT5 = AgendaItemDefinition.Builder.create(ruleManagementServiceImpl.getAgendaItem(itemBuilderOBJECT5.getId()));
+        itemBuilderOBJECT5 = AgendaItemDefinition.Builder.create(ruleManagementService.getAgendaItem(itemBuilderOBJECT5.getId()));
         itemBuilderOBJECT1.setAlways(itemBuilderOBJECT5);
         itemBuilderOBJECT1.setAlwaysId(itemBuilderOBJECT5.getId());
-        itemBuilderOBJECT1 = AgendaItemDefinition.Builder.create(ruleManagementServiceImpl.createAgendaItem(
+        itemBuilderOBJECT1 = AgendaItemDefinition.Builder.create(ruleManagementService.createAgendaItem(
                 itemBuilderOBJECT1.build()));
 
         AgendaItemDefinition agendaItemOBJECT0 = buildTestAgendaItemDefinition(names.agendaItem_0_Id, agenda.getId(),
                 rule0.getId());
         AgendaItemDefinition.Builder itemBuilderOBJECT0 = AgendaItemDefinition.Builder.create(agendaItemOBJECT0);
-        itemBuilderOBJECT1 = AgendaItemDefinition.Builder.create(ruleManagementServiceImpl.getAgendaItem(itemBuilderOBJECT1.getId()));
+        itemBuilderOBJECT1 = AgendaItemDefinition.Builder.create(ruleManagementService.getAgendaItem(itemBuilderOBJECT1.getId()));
         itemBuilderOBJECT0.setWhenTrue(itemBuilderOBJECT1);
         itemBuilderOBJECT0.setWhenTrueId(itemBuilderOBJECT1.getId());
-        itemBuilderOBJECT2 = AgendaItemDefinition.Builder.create(ruleManagementServiceImpl.getAgendaItem(itemBuilderOBJECT2.getId()));
+        itemBuilderOBJECT2 = AgendaItemDefinition.Builder.create(ruleManagementService.getAgendaItem(itemBuilderOBJECT2.getId()));
         itemBuilderOBJECT0.setWhenFalse(itemBuilderOBJECT2);
         itemBuilderOBJECT0.setWhenFalseId(itemBuilderOBJECT2.getId());
-        itemBuilderOBJECT3 = AgendaItemDefinition.Builder.create(ruleManagementServiceImpl.getAgendaItem(itemBuilderOBJECT3.getId()));
+        itemBuilderOBJECT3 = AgendaItemDefinition.Builder.create(ruleManagementService.getAgendaItem(itemBuilderOBJECT3.getId()));
         itemBuilderOBJECT0.setAlways(itemBuilderOBJECT3);
         itemBuilderOBJECT0.setAlwaysId(itemBuilderOBJECT3.getId());
-        itemBuilderOBJECT0 = AgendaItemDefinition.Builder.create(ruleManagementServiceImpl.createAgendaItem(itemBuilderOBJECT0.build()));
+        itemBuilderOBJECT0 = AgendaItemDefinition.Builder.create(ruleManagementService.createAgendaItem(itemBuilderOBJECT0.build()));
 
-        agendaBuilder = AgendaDefinition.Builder.create(ruleManagementServiceImpl.getAgenda(agenda.getId()));
+        agendaBuilder = AgendaDefinition.Builder.create(ruleManagementService.getAgenda(agenda.getId()));
         agendaBuilder.setFirstItemId(itemBuilderOBJECT0.getId());
-        ruleManagementServiceImpl.updateAgenda(agendaBuilder.build());
-        List<AgendaItemDefinition> agendaItems = ruleManagementServiceImpl.getAgendaItemsByContext(names.contextId);
+        ruleManagementService.updateAgenda(agendaBuilder.build());
+        List<AgendaItemDefinition> agendaItems = ruleManagementService.getAgendaItemsByContext(names.contextId);
 
         assertEquals("Invalid number of agendaItems created", 7, agendaItems.size());
 
-        return AgendaDefinition.Builder.create(ruleManagementServiceImpl.getAgenda(agenda.getId()));
+        return AgendaDefinition.Builder.create(ruleManagementService.getAgenda(agenda.getId()));
     }
 
     /**
@@ -500,7 +494,7 @@ public class RuleManagementBaseTest extends AbstractAgendaBoTest{
         refObjBindingBuilder.setCollectionName(collectionName);
         refObjBindingBuilder.setActive(active);
 
-        return  ReferenceObjectBinding.Builder.create(ruleManagementServiceImpl.createReferenceObjectBinding(
+        return  ReferenceObjectBinding.Builder.create(ruleManagementService.createReferenceObjectBinding(
                 refObjBindingBuilder.build()));
     }
 
@@ -535,12 +529,12 @@ public class RuleManagementBaseTest extends AbstractAgendaBoTest{
         KrmsTypeDefinition  krmsType = createKrmsTypeDefinition(namespace, nlObjectName, null);
 
         // create NaturalLanguageUsage if it does not exist
-        if (ObjectUtils.isNull(ruleManagementServiceImpl.getNaturalLanguageUsage(nlUsage))) {
+        if (ObjectUtils.isNull(ruleManagementService.getNaturalLanguageUsage(nlUsage))) {
             NaturalLanguageUsage.Builder naturalLanguageUsageBuilder =  NaturalLanguageUsage.Builder.create(nlObjectName,namespace );
             naturalLanguageUsageBuilder.setId(nlUsage);
             naturalLanguageUsageBuilder.setDescription("Description-" + nlObjectName);
             naturalLanguageUsageBuilder.setActive(true);
-            NaturalLanguageUsage naturalLangumageUsage =  ruleManagementServiceImpl.createNaturalLanguageUsage(naturalLanguageUsageBuilder.build());
+            NaturalLanguageUsage naturalLangumageUsage =  ruleManagementService.createNaturalLanguageUsage(naturalLanguageUsageBuilder.build());
         }
 
         // create  NaturalLanguageTemplate attributes if they don't exist
@@ -553,12 +547,13 @@ public class RuleManagementBaseTest extends AbstractAgendaBoTest{
         // create NaturalLanguageTemplate
         String naturalLanguageUsageId = nlUsage;
         String typeId = krmsType.getId();
-        NaturalLanguageTemplate.Builder naturalLanguageTemplateBuilder = NaturalLanguageTemplate.Builder.create(langCode,naturalLanguageUsageId,template,typeId);
+        NaturalLanguageTemplate.Builder naturalLanguageTemplateBuilder = NaturalLanguageTemplate.Builder.create(
+                langCode, naturalLanguageUsageId, template, typeId);
         naturalLanguageTemplateBuilder.setActive(true);
         naturalLanguageTemplateBuilder.setId(langCode + "-" + nlObjectName);
         naturalLanguageTemplateBuilder.setAttributes(nlAttributes);
 
-        return ruleManagementServiceImpl.createNaturalLanguageTemplate(naturalLanguageTemplateBuilder.build());
+        return ruleManagementService.createNaturalLanguageTemplate(naturalLanguageTemplateBuilder.build());
     }
 
     /**
@@ -607,7 +602,7 @@ public class RuleManagementBaseTest extends AbstractAgendaBoTest{
         naturalLanguageUsageBuilder.setDescription("Description-" + nlUsageName);
         naturalLanguageUsageBuilder.setActive(true);
 
-        return  ruleManagementServiceImpl.createNaturalLanguageUsage(naturalLanguageUsageBuilder.build());
+        return  ruleManagementService.createNaturalLanguageUsage(naturalLanguageUsageBuilder.build());
     }
 
     /**
@@ -628,7 +623,7 @@ public class RuleManagementBaseTest extends AbstractAgendaBoTest{
         contextDefinitionBuilder.setId("ContextId" + objectDiscriminator);
         ContextDefinition contextDefinition = contextDefinitionBuilder.build();
 
-        return ruleManagementServiceImpl.createContext(contextDefinition );
+        return ruleManagementService.createContext(contextDefinition );
     }
 
     /**
@@ -666,6 +661,6 @@ public class RuleManagementBaseTest extends AbstractAgendaBoTest{
         propBuilderC1.setDescription("C1_compound_proposition");
         propBuilderC1.setTypeId(krmsTypeDefinition.getId());
 
-        return ruleManagementServiceImpl.createProposition(propBuilderC1.build());
+        return ruleManagementService.createProposition(propBuilderC1.build());
     }
 }

@@ -60,7 +60,7 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
         NaturalLanguageUsage usage = buildTestNaturalLanguageUsage(t0.namespaceName, t0.object0 );
 
         // verify created NaturalLanguageUsage
-        usage = ruleManagementServiceImpl.getNaturalLanguageUsage(t0.nlUsage0_Id);
+        usage = ruleManagementService.getNaturalLanguageUsage(t0.nlUsage0_Id);
         assertEquals("Unexpected Name returned",t0.nlUsage0_Name,usage.getName());
         assertEquals("Unexpected Namespace returned ", t0.namespaceName, usage.getNamespace());
         assertEquals("Unexpected Description returned", t0.nlUsage0_Descr, usage.getDescription());
@@ -68,7 +68,7 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
 
         // test createNaturalLanguageUsage with null
         try {
-            ruleManagementServiceImpl.createNaturalLanguageUsage(null);
+            ruleManagementService.createNaturalLanguageUsage(null);
             fail("Should have thrown IllegalArgumentException: naturalLanguageUsage was null");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: naturalLanguageUsage was null
@@ -91,11 +91,11 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
 
         // verify correct NaturalLanguageUsage returned
         assertEquals("Unexpected Description returned",
-                t1.nlUsage0_Descr,ruleManagementServiceImpl.getNaturalLanguageUsage(t1.nlUsage0_Id).getDescription());
+                t1.nlUsage0_Descr, ruleManagementService.getNaturalLanguageUsage(t1.nlUsage0_Id).getDescription());
 
         // test getNaturalLanguageUsage with null
         try {
-            ruleManagementServiceImpl.getNaturalLanguageUsage(null);
+            ruleManagementService.getNaturalLanguageUsage(null);
             fail("Should have thrown IllegalArgumentException: naturalLanguageUsageId was null");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: naturalLanguageUsageId was null
@@ -103,14 +103,14 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
 
         // test getNaturalLanguageUsage with blank
         try {
-            ruleManagementServiceImpl.getNaturalLanguageUsage("   ");
+            ruleManagementService.getNaturalLanguageUsage("   ");
             fail("Should have thrown IllegalArgumentException: naturalLanguageUsageId was blank");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: naturalLanguageUsageId was blank
         }
 
         // test getNaturalLanguageUsage wih non-existent Id
-        assertNull("Should not have return object", ruleManagementServiceImpl.getNaturalLanguageUsage("badValue"));
+        assertNull("Should not have return object", ruleManagementService.getNaturalLanguageUsage("badValue"));
     }
 
 
@@ -129,7 +129,7 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
         NaturalLanguageUsage usage = buildTestNaturalLanguageUsage(t2.namespaceName, t2.object0 );
 
         // verify created NaturalLanguageUsage
-        usage = ruleManagementServiceImpl.getNaturalLanguageUsage(t2.nlUsage0_Id);
+        usage = ruleManagementService.getNaturalLanguageUsage(t2.nlUsage0_Id);
         assertEquals("Unexpected Name returned",t2.nlUsage0_Name,usage.getName());
         assertEquals("Unexpected Namespace returned ", t2.namespaceName, usage.getNamespace());
         assertEquals("Unexpected Description returned", t2.nlUsage0_Descr, usage.getDescription());
@@ -141,10 +141,10 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
         usageBuilder.setName(t2.nlUsage0_Name + "Changed");
         usageBuilder.setDescription(t2.nlUsage0_Descr + "Changed");
         usageBuilder.setActive(false);
-        ruleManagementServiceImpl.updateNaturalLanguageUsage(usageBuilder.build());
+        ruleManagementService.updateNaturalLanguageUsage(usageBuilder.build());
 
         // verify updated NaturalLanguageUsage values
-        usage = ruleManagementServiceImpl.getNaturalLanguageUsage(t2.nlUsage0_Id);
+        usage = ruleManagementService.getNaturalLanguageUsage(t2.nlUsage0_Id);
         assertEquals("Unexpected Name returned",t2.nlUsage0_Name + "Changed",usage.getName());
         assertEquals("Unexpected Namespace returned ", t2.namespaceName + "Changed", usage.getNamespace());
         assertEquals("Unexpected Description returned", t2.nlUsage0_Descr + "Changed", usage.getDescription());
@@ -152,7 +152,7 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
 
         // test updateNaturalLanguageUsage with null
         try {
-            ruleManagementServiceImpl.updateNaturalLanguageUsage(null);
+            ruleManagementService.updateNaturalLanguageUsage(null);
             fail("Should have thrown IllegalArgumentException: naturalLanguageUsage was null");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: naturalLanguageUsage was null
@@ -176,17 +176,17 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
 
         // verify correct NaturalLanguageUsage exists
         assertEquals("Unexpected Description returned",
-                t3.nlUsage0_Descr,ruleManagementServiceImpl.getNaturalLanguageUsage(t3.nlUsage0_Id).getDescription());
+                t3.nlUsage0_Descr, ruleManagementService.getNaturalLanguageUsage(t3.nlUsage0_Id).getDescription());
 
         // test deleteNaturalLanguageUsage
-        ruleManagementServiceImpl.deleteNaturalLanguageUsage(t3.nlUsage0_Id);
+        ruleManagementService.deleteNaturalLanguageUsage(t3.nlUsage0_Id);
 
         // verify object deleted
-        assertNull("Should not have returned deleted entry", ruleManagementServiceImpl.getNaturalLanguageUsage(t3.nlUsage0_Id));
+        assertNull("Should not have returned deleted entry", ruleManagementService.getNaturalLanguageUsage(t3.nlUsage0_Id));
 
         // test deleteNaturalLanguageUsage with null
         try {
-            ruleManagementServiceImpl.deleteNaturalLanguageUsage(null);
+            ruleManagementService.deleteNaturalLanguageUsage(null);
             fail("Should have thrown IllegalArgumentException: naturalLanguageUsageId was null");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: naturalLanguageUsageId was null
@@ -194,7 +194,7 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
 
         // test deleteNaturalLanguageUsage with blank
         try {
-            ruleManagementServiceImpl.deleteNaturalLanguageUsage("   ");
+            ruleManagementService.deleteNaturalLanguageUsage("   ");
             fail("Should have thrown IllegalArgumentException: naturalLanguageUsageId was blank");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: naturalLanguageUsageId was blank
@@ -202,7 +202,7 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
 
         // test deleteNaturalLanguageUsage with badValue
         try {
-            ruleManagementServiceImpl.deleteNaturalLanguageUsage("badValue");
+            ruleManagementService.deleteNaturalLanguageUsage("badValue");
             fail("Should have thrown IllegalStateException: the NaturalLanguageUsage to delete does not exists: badValue");
         } catch (IllegalStateException e) {
             // throws IllegalStateException: the NaturalLanguageUsage to delete does not exists: badValue
@@ -228,7 +228,7 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
         List<String> usageIds = Arrays.asList(t4.nlUsage0_Id, t4.nlUsage1_Id, t4.nlUsage2_Id);
 
         // test getNaturalLanguageUsagesByNamespace
-        List<NaturalLanguageUsage> usages = ruleManagementServiceImpl.getNaturalLanguageUsagesByNamespace(t4.namespaceName);
+        List<NaturalLanguageUsage> usages = ruleManagementService.getNaturalLanguageUsagesByNamespace(t4.namespaceName);
 
         assertEquals("Should have returned 3 entries",3,usages.size());
         for (NaturalLanguageUsage usage : usages) {
@@ -237,7 +237,7 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
 
         // test getNaturalLanguageUsagesByNamespace with null
         try {
-            ruleManagementServiceImpl.getNaturalLanguageUsagesByNamespace(null);
+            ruleManagementService.getNaturalLanguageUsagesByNamespace(null);
             fail("Should have thrown IllegalArgumentException: namespace is null or blank");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: namespace is null or blank
@@ -245,14 +245,14 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
 
         // test getNaturalLanguageUsagesByNamespace with blank
         try {
-            ruleManagementServiceImpl.getNaturalLanguageUsagesByNamespace("  ");
+            ruleManagementService.getNaturalLanguageUsagesByNamespace("  ");
             fail("Should have thrown IllegalArgumentException: namespace is null or blank");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: namespace is null or blank
         }
 
         // test getNaturalLanguageUsagesByNamespace with non-existent namespace value
-        assertEquals("Should have returned 0 entries", 0, ruleManagementServiceImpl.getNaturalLanguageUsagesByNamespace(
+        assertEquals("Should have returned 0 entries", 0, ruleManagementService.getNaturalLanguageUsagesByNamespace(
                 "badValue").size());
     }
 
@@ -273,12 +273,12 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
         buildTestNaturalLanguageUsage(t5.namespaceName, t5.object1 );
 
         assertEquals("Unexpected Description on entry returned",
-             t5.nlUsage0_Descr,ruleManagementServiceImpl.getNaturalLanguageUsageByNameAndNamespace(
+             t5.nlUsage0_Descr, ruleManagementService.getNaturalLanguageUsageByNameAndNamespace(
                    t5.nlUsage0_Name,t5.namespaceName).getDescription());
 
         // test getNaturalLanguageUsageByNameAndNamespace with null name
         try {
-            ruleManagementServiceImpl.getNaturalLanguageUsageByNameAndNamespace(null, t5.namespaceName);
+            ruleManagementService.getNaturalLanguageUsageByNameAndNamespace(null, t5.namespaceName);
             fail("Should have thrown RiceIllegalArgumentException: name was a null or blank value");
         } catch (RiceIllegalArgumentException e) {
             // throws RiceIllegalArgumentException: name was a null or blank value
@@ -286,7 +286,7 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
 
         // test getNaturalLanguageUsageByNameAndNamespace with blank name
         try {
-            ruleManagementServiceImpl.getNaturalLanguageUsageByNameAndNamespace("  ",t5.namespaceName);
+            ruleManagementService.getNaturalLanguageUsageByNameAndNamespace("  ",t5.namespaceName);
             fail("Should have thrown RiceIllegalArgumentException: name was a null or blank value");
         } catch (RiceIllegalArgumentException e) {
             // throws RiceIllegalArgumentException: name was a null or blank value
@@ -294,11 +294,11 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
 
         // test getNaturalLanguageUsageByNameAndNamespace with non-existent name value
         assertNull("Should not have return object",
-                ruleManagementServiceImpl.getNaturalLanguageUsageByNameAndNamespace("badValue", t5.namespaceName));
+                ruleManagementService.getNaturalLanguageUsageByNameAndNamespace("badValue", t5.namespaceName));
 
         // test getNaturalLanguageUsageByNameAndNamespace with null namespace
         try {
-            ruleManagementServiceImpl.getNaturalLanguageUsageByNameAndNamespace(t5.nlUsage0_Name,null);
+            ruleManagementService.getNaturalLanguageUsageByNameAndNamespace(t5.nlUsage0_Name,null);
             fail("Should have thrown RiceIllegalArgumentException: namespace was a null or blank value");
         } catch (RiceIllegalArgumentException e) {
             // throws RiceIllegalArgumentException: namespace was a null or blank value
@@ -306,7 +306,7 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
 
         // test getNaturalLanguageUsageByNameAndNamespace with blank namespace
         try {
-            ruleManagementServiceImpl.getNaturalLanguageUsageByNameAndNamespace(t5.nlUsage0_Name,"  ");
+            ruleManagementService.getNaturalLanguageUsageByNameAndNamespace(t5.nlUsage0_Name,"  ");
             fail("Should have thrown RiceIllegalArgumentException: namespace was a null or blank value");
         } catch (RiceIllegalArgumentException e) {
             // throws RiceIllegalArgumentException: namespace was a null or blank value
@@ -314,7 +314,7 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
 
         // test getNaturalLanguageUsageByNameAndNamespace with non-existent namespace value
         assertNull("Should not have return object",
-                ruleManagementServiceImpl.getNaturalLanguageUsageByNameAndNamespace(t5.nlUsage0_Name,"badValue"));
+                ruleManagementService.getNaturalLanguageUsageByNameAndNamespace(t5.nlUsage0_Name,"badValue"));
     }
 
 
@@ -340,19 +340,19 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
         NaturalLanguageTemplate template = createTestNaturalLanguageTemplate(t6.namespaceName, "sw", "proposition",
                 "Detta ändamål får inte vara inaktiv");
 
-        String translation = ruleManagementServiceImpl.translateNaturalLanguageForObject(
+        String translation = ruleManagementService.translateNaturalLanguageForObject(
                 template.getNaturalLanguageUsageId(),"proposition",propositionDefinition.getId(),"sw");
 
-        assertTrue("Translation should have contained 'applied with the following'",translation.contains("applied with the following"));
+        assertEquals("Unexpected translation returned","Detta ändamål får inte vara inaktiv. ",translation);
 
         //test with null NaturalLanguageUsageId
         assertEquals("Should have returned '. ' String", ". ",
-                ruleManagementServiceImpl.translateNaturalLanguageForObject(null, "proposition",
+                ruleManagementService.translateNaturalLanguageForObject(null, "proposition",
                         propositionDefinition.getId(), "sw"));
 
         // test with null typeId
         try {
-            ruleManagementServiceImpl.translateNaturalLanguageForObject(
+            ruleManagementService.translateNaturalLanguageForObject(
                     template.getNaturalLanguageUsageId(),null,propositionDefinition.getId(),"sw");
             fail("Should have thrown NullPointerException");
         } catch (NullPointerException e) {
@@ -361,7 +361,7 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
 
         // test with null krmsObjectId
         try {
-            ruleManagementServiceImpl.translateNaturalLanguageForObject(
+            ruleManagementService.translateNaturalLanguageForObject(
                     template.getNaturalLanguageUsageId(),"proposition",null,"sw");
             fail("Should have thrown RiceIllegalArgumentException: Proposition id must not be null or blank");
         } catch (RiceIllegalArgumentException e) {
@@ -370,7 +370,7 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
 
         // test with null languageCode
         try {
-            ruleManagementServiceImpl.translateNaturalLanguageForObject(
+            ruleManagementService.translateNaturalLanguageForObject(
                     template.getNaturalLanguageUsageId(),"proposition",propositionDefinition.getId(),null);
             fail("Should have thrown IllegalArgumentException: languageCode is null or blank");
         } catch (IllegalArgumentException e) {
@@ -378,19 +378,19 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
         }
 
         // test with blank NaturalLanguageUsageId
-        assertEquals("Should have returned '. ' String", ". ",ruleManagementServiceImpl.translateNaturalLanguageForObject(
+        assertEquals("Should have returned '. ' String", ". ", ruleManagementService.translateNaturalLanguageForObject(
                     "   ","proposition",propositionDefinition.getId(),"sw"));
 
 
         // test with blank typeId
         assertEquals("Should have returned empty String", StringUtils.EMPTY,
-                ruleManagementServiceImpl.translateNaturalLanguageForObject(template.getNaturalLanguageUsageId(),
+                ruleManagementService.translateNaturalLanguageForObject(template.getNaturalLanguageUsageId(),
                         "    ", propositionDefinition.getId(), "sw"));
 
 
         // test with blank krmsObjectId
         try {
-            ruleManagementServiceImpl.translateNaturalLanguageForObject(
+            ruleManagementService.translateNaturalLanguageForObject(
                     template.getNaturalLanguageUsageId(),"proposition","    ","sw");
             fail("Should have thrown RiceIllegalArgumentException: Proposition id must not be null or blank");
         } catch (RiceIllegalArgumentException e) {
@@ -399,7 +399,7 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
 
         // test with blank languageCode
         try {
-            ruleManagementServiceImpl.translateNaturalLanguageForObject(
+            ruleManagementService.translateNaturalLanguageForObject(
                     template.getNaturalLanguageUsageId(),"proposition",propositionDefinition.getId(),"  ");
             fail("Should have thrown IllegalArgumentException: languageCode is null or blank");
         } catch (IllegalArgumentException e) {
@@ -408,17 +408,17 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
 
         //test with non-existent NaturalLanguageUsageId
         assertEquals("Should have returned '. ' String", ". ",
-                ruleManagementServiceImpl.translateNaturalLanguageForObject("badValue", "proposition",
+                ruleManagementService.translateNaturalLanguageForObject("badValue", "proposition",
                         propositionDefinition.getId(), "sw"));
 
         // test with non-existent typeId
         assertEquals("Should have returned empty String", StringUtils.EMPTY,
-                ruleManagementServiceImpl.translateNaturalLanguageForObject(template.getNaturalLanguageUsageId(),
+                ruleManagementService.translateNaturalLanguageForObject(template.getNaturalLanguageUsageId(),
                         "badValue", propositionDefinition.getId(), "sw"));
 
         // test with non-existent krmsObjectId
         try {
-            ruleManagementServiceImpl.translateNaturalLanguageForObject(
+            ruleManagementService.translateNaturalLanguageForObject(
                     template.getNaturalLanguageUsageId(),"proposition","badValue","sw");
             fail("Should have thrown RiceIllegalArgumentException: badValue is not an Id for a proposition");
         } catch (RiceIllegalArgumentException e) {
@@ -426,7 +426,7 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
         }
 
         // test with non-existent languageCode
-        assertEquals("Should have returned '. ' String", ". ",ruleManagementServiceImpl.translateNaturalLanguageForObject(
+        assertEquals("Should have returned '. ' String", ". ", ruleManagementService.translateNaturalLanguageForObject(
                 template.getNaturalLanguageUsageId(),"proposition",propositionDefinition.getId(),"xx"));
     }
 
@@ -446,18 +446,18 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
 
         PropositionDefinition propositionDefinition = createTestPropositionForTranslation(t7.object0, t7.namespaceName, "proposition" );
         NaturalLanguageTemplate template = createTestNaturalLanguageTemplate(t7.namespaceName, "tr", "proposition",
-                "Bu nesne inaktif olmamalıdır");
+                "Bu nesne inaktif olmamalidir");
 
-        String translation = ruleManagementServiceImpl.translateNaturalLanguageForProposition(template.getNaturalLanguageUsageId(),propositionDefinition,"tr");
+        String translation = ruleManagementService.translateNaturalLanguageForProposition(template.getNaturalLanguageUsageId(),propositionDefinition,"tr");
 
-        assertTrue("Translation should have contained 'applied with the following'",translation.contains("applied with the following"));
+        assertEquals("Unexpected translation returned","Bu nesne inaktif olmamalidir. ",translation);
 
         // test with null naturalLanguageUsageId
-        assertEquals("Should have returned '. ' String",". ",ruleManagementServiceImpl.translateNaturalLanguageForProposition(null, propositionDefinition, "tr"));
+        assertEquals("Should have returned '. ' String",". ", ruleManagementService.translateNaturalLanguageForProposition(null, propositionDefinition, "tr"));
 
         // test with null PropositionDefinition
         try {
-            ruleManagementServiceImpl.translateNaturalLanguageForProposition(
+            ruleManagementService.translateNaturalLanguageForProposition(
                     template.getNaturalLanguageUsageId(), null, "tr");
             fail("Should have thrown NullPointerException");
         } catch (NullPointerException e) {
@@ -466,7 +466,7 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
 
             // test with null languageCode
         try {
-            ruleManagementServiceImpl.translateNaturalLanguageForProposition(template.getNaturalLanguageUsageId(),
+            ruleManagementService.translateNaturalLanguageForProposition(template.getNaturalLanguageUsageId(),
                     propositionDefinition, null);
             fail("Should have thrown IllegalArgumentException: languageCode is null or blank");
         } catch (IllegalArgumentException e) {
@@ -475,11 +475,11 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
 
         // test with blank naturalLanguageUsageId
         assertEquals("Should have returned '. ' String", ". ",
-                ruleManagementServiceImpl.translateNaturalLanguageForProposition("    ", propositionDefinition, "tr"));
+                ruleManagementService.translateNaturalLanguageForProposition("    ", propositionDefinition, "tr"));
 
         // test with blank languageCode
         try {
-            ruleManagementServiceImpl.translateNaturalLanguageForProposition(template.getNaturalLanguageUsageId(),propositionDefinition,"    ");
+            ruleManagementService.translateNaturalLanguageForProposition(template.getNaturalLanguageUsageId(),propositionDefinition,"    ");
             fail("Should have thrown IllegalArgumentException: languageCode is null or blank");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: languageCode is null or blank
@@ -487,11 +487,11 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
 
         // test with non-existent naturalLanguageUsageId
         assertEquals("Should have returned '. ' String",". ",
-                ruleManagementServiceImpl.translateNaturalLanguageForProposition("badValue",propositionDefinition,"tr"));
+                ruleManagementService.translateNaturalLanguageForProposition("badValue",propositionDefinition,"tr"));
 
         // test with non-existent languageCode
         assertEquals("Should have returned '. ' String",". ",
-                ruleManagementServiceImpl.translateNaturalLanguageForProposition(
+                ruleManagementService.translateNaturalLanguageForProposition(
                 template.getNaturalLanguageUsageId(),propositionDefinition,"badValue"));
     }
 
@@ -514,11 +514,11 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
         NaturalLanguageTemplate template = createTestNaturalLanguageTemplate(t8.namespaceName, "cy", "proposition",
                 "Ni ddylai hyn fod yn segur, Gwrthrych");
 
-        NaturalLanguageTree naturalLanguageTree = ruleManagementServiceImpl.translateNaturalLanguageTreeForProposition(
+        NaturalLanguageTree naturalLanguageTree = ruleManagementService.translateNaturalLanguageTreeForProposition(
                 template.getNaturalLanguageUsageId(), propositionDefinition, "cy");
 
         String translation = naturalLanguageTree.getNaturalLanguage();
-        assertTrue("Translation should have contained 'applied with the following'",translation.contains("applied with the following"));
+        assertEquals("Unexpected translation returned","Ni ddylai hyn fod yn segur, Gwrthrych",translation);
 
         // SIMPLE proposition should not have children
         assertNull("Should have returned null",naturalLanguageTree.getChildren());
@@ -553,14 +553,14 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
                 "krms.nl.proposition");
 
         // test the call to translateNaturalLanguageTreeForProposition
-        NaturalLanguageTree naturalLanguageTree = ruleManagementServiceImpl.translateNaturalLanguageTreeForProposition(
+        NaturalLanguageTree naturalLanguageTree = ruleManagementService.translateNaturalLanguageTreeForProposition(
                 template.getNaturalLanguageUsageId(), propositionDefinition, "ms");
         List<NaturalLanguageTree> naturalLanguageTrees = naturalLanguageTree.getChildren();
         assertEquals("Should have found 2 child entries",2,naturalLanguageTrees.size());
 
         // test with null NaturalLanguageUsageId
         try {
-            ruleManagementServiceImpl.translateNaturalLanguageTreeForProposition(
+            ruleManagementService.translateNaturalLanguageTreeForProposition(
                     null, propositionDefinition, "ms");
             fail("Should have thrown RiceIllegalArgumentException: ms.xxxxx.null");
         } catch (RiceIllegalArgumentException e) {
@@ -569,7 +569,7 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
 
         // test with null PropositionDefinition
         try {
-            ruleManagementServiceImpl.translateNaturalLanguageTreeForProposition(
+            ruleManagementService.translateNaturalLanguageTreeForProposition(
                     template.getNaturalLanguageUsageId(), null, "ms");
             fail("Should have thrown NullPointerException");
         } catch (NullPointerException e) {
@@ -578,7 +578,7 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
 
         // test with a null LanguageCode;
         try {
-            ruleManagementServiceImpl.translateNaturalLanguageTreeForProposition(
+            ruleManagementService.translateNaturalLanguageTreeForProposition(
                     template.getNaturalLanguageUsageId(), propositionDefinition, null);
             fail("Should have thrown IllegalArgumentException: languageCode is null or blank");
         } catch (IllegalArgumentException e) {
@@ -586,9 +586,9 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
         }
 
         // test with a missing template
-        ruleManagementServiceImpl.deleteNaturalLanguageTemplate("ms-Account");
+        ruleManagementService.deleteNaturalLanguageTemplate("ms-Account");
         try {
-            ruleManagementServiceImpl.translateNaturalLanguageTreeForProposition(
+            ruleManagementService.translateNaturalLanguageTreeForProposition(
                     template.getNaturalLanguageUsageId(), propositionDefinition, "ms");
             fail("Should have thrown RiceIllegalArgumentException: ms.xxxxx.krms.nl.proposition");
         } catch (RiceIllegalArgumentException e) {

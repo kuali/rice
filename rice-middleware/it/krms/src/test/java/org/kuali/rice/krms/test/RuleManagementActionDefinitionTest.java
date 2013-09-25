@@ -65,12 +65,12 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
         ActionDefinition actionDefinition = ActionDefinition.Builder.create(t0.action0_Id, t0.action0_Name,
                 t0.namespaceName,krmsTypeDefinition.getId(),ruleDefintion.getId(),1).build();
 
-        assertNull("action should not be in database", ruleManagementServiceImpl.getAction(t0.action0_Id));
+        assertNull("action should not be in database", ruleManagementService.getAction(t0.action0_Id));
 
         // primary statement for test
-        actionDefinition =  ruleManagementServiceImpl.createAction(actionDefinition);
+        actionDefinition =  ruleManagementService.createAction(actionDefinition);
 
-        ActionDefinition returnActionDefinition = ruleManagementServiceImpl.getAction(actionDefinition.getId());
+        ActionDefinition returnActionDefinition = ruleManagementService.getAction(actionDefinition.getId());
 
         assertNotNull("created action not found", (Object) returnActionDefinition);
         assertEquals("create action error:", t0.action0_Id, returnActionDefinition.getId());
@@ -92,18 +92,18 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
         ActionDefinition actionDefinition = ActionDefinition.Builder.create(t1.action0_Id,t1.action0_Name,
                 t1.namespaceName,krmsTypeDefinition.getId(),ruleDefinition.getId(),1).build();
 
-        assertNull("action should not be in database",ruleManagementServiceImpl.getAction(t1.action0_Id));
+        assertNull("action should not be in database", ruleManagementService.getAction(t1.action0_Id));
 
-        actionDefinition =  ruleManagementServiceImpl.createAction(actionDefinition);
+        actionDefinition =  ruleManagementService.createAction(actionDefinition);
 
-        ActionDefinition returnActionDefinition = ruleManagementServiceImpl.getAction(actionDefinition.getId());
+        ActionDefinition returnActionDefinition = ruleManagementService.getAction(actionDefinition.getId());
         ActionDefinition.Builder builder = ActionDefinition.Builder.create(returnActionDefinition);
         builder.setDescription("ChangedDescr");
 
         // primary statement for test
-        ruleManagementServiceImpl.updateAction(builder.build());
+        ruleManagementService.updateAction(builder.build());
 
-        returnActionDefinition = ruleManagementServiceImpl.getAction(actionDefinition.getId());
+        returnActionDefinition = ruleManagementService.getAction(actionDefinition.getId());
 
         assertNotNull("action not found", returnActionDefinition);
         assertEquals("update action error:","ChangedDescr", returnActionDefinition.getDescription());
@@ -125,21 +125,21 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
         ActionDefinition actionDefinition = ActionDefinition.Builder.create(t2.action0_Id,t2.action0_Name,
                 t2.namespaceName,krmsTypeDefinition.getId(),ruleDefintion.getId(),1).build();
 
-        assertNull("action should not be in database",ruleManagementServiceImpl.getAction(t2.action0_Id));
+        assertNull("action should not be in database", ruleManagementService.getAction(t2.action0_Id));
 
-        actionDefinition =  ruleManagementServiceImpl.createAction(actionDefinition);
-        actionDefinition = ruleManagementServiceImpl.getAction(actionDefinition.getId());
-        assertNotNull("action not found",ruleManagementServiceImpl.getAction(actionDefinition.getId()));
+        actionDefinition =  ruleManagementService.createAction(actionDefinition);
+        actionDefinition = ruleManagementService.getAction(actionDefinition.getId());
+        assertNotNull("action not found", ruleManagementService.getAction(actionDefinition.getId()));
 
         try {
             // primary statement for test
-            ruleManagementServiceImpl.deleteAction(t2.action0_Id);
+            ruleManagementService.deleteAction(t2.action0_Id);
             fail("should fail deleteAction not implemented");
         }   catch (RiceIllegalArgumentException e) {
             // RiceIllegalArgumentException ("not implemented yet because not supported by the bo service");
         }
 
-        actionDefinition = ruleManagementServiceImpl.getAction(actionDefinition.getId());
+        actionDefinition = ruleManagementService.getAction(actionDefinition.getId());
         assertNotNull("action not found", (Object) actionDefinition);
     }
 
@@ -159,11 +159,11 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
         ActionDefinition actionDefinition = ActionDefinition.Builder.create(t3.action0_Id,t3.action0_Name,
                 t3.namespaceName,krmsTypeDefinition.getId(),ruleDefintion.getId(),1).build();
 
-        assertNull("action should not be in database", ruleManagementServiceImpl.getAction(t3.action0_Id));
-        actionDefinition =  ruleManagementServiceImpl.createAction(actionDefinition);
+        assertNull("action should not be in database", ruleManagementService.getAction(t3.action0_Id));
+        actionDefinition =  ruleManagementService.createAction(actionDefinition);
 
         // primary statement being tested
-        ActionDefinition returnActionDefinition = ruleManagementServiceImpl.getAction(actionDefinition.getId());
+        ActionDefinition returnActionDefinition = ruleManagementService.getAction(actionDefinition.getId());
 
         assertNotNull("action not found", (Object) returnActionDefinition);
         assertEquals("getAction error:", t3.action0_Id, returnActionDefinition.getId());
@@ -187,7 +187,7 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
         List<String> actionIds = Arrays.asList(t4.action0_Id, t4.action1_Id, t4.action2_Id, t4.action3_Id);
 
         // primary statement being tested
-        List<ActionDefinition> returnActionDefinitions = ruleManagementServiceImpl.getActions(actionIds);
+        List<ActionDefinition> returnActionDefinitions = ruleManagementService.getActions(actionIds);
 
         assertEquals("incorrect number of actions returned",4,returnActionDefinitions.size());
 
@@ -200,10 +200,10 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
         }
 
         assertEquals("incorrect number of actions returned",4,actionsFound);
-        assertEquals("action not found",t4.action0_Descr, ruleManagementServiceImpl.getAction(t4.action0_Id).getDescription());
-        assertEquals("action not found",t4.action1_Descr, ruleManagementServiceImpl.getAction(t4.action1_Id).getDescription());
-        assertEquals("action not found",t4.action2_Descr, ruleManagementServiceImpl.getAction(t4.action2_Id).getDescription());
-        assertEquals("action not found",t4.action3_Descr, ruleManagementServiceImpl.getAction(t4.action3_Id).getDescription());
+        assertEquals("action not found",t4.action0_Descr, ruleManagementService.getAction(t4.action0_Id).getDescription());
+        assertEquals("action not found",t4.action1_Descr, ruleManagementService.getAction(t4.action1_Id).getDescription());
+        assertEquals("action not found",t4.action2_Descr, ruleManagementService.getAction(t4.action2_Id).getDescription());
+        assertEquals("action not found",t4.action3_Descr, ruleManagementService.getAction(t4.action3_Id).getDescription());
     }
 
     /**
@@ -220,11 +220,7 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
         QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
         builder.setPredicates(equal("name",t5.action0_Name));
 
-        CriteriaLookupServiceImpl criteriaLookupService = new CriteriaLookupServiceImpl();
-        criteriaLookupService.setCriteriaLookupDao(new CriteriaLookupDaoProxy());
-        ruleManagementServiceImpl.setCriteriaLookupService( criteriaLookupService);
-
-        List<String> actionIds = ruleManagementServiceImpl.findActionIds(builder.build());
+        List<String> actionIds = ruleManagementService.findActionIds(builder.build());
 
         if(!actionIds.contains(t5.action0_Id)){
             fail("actionId not found");

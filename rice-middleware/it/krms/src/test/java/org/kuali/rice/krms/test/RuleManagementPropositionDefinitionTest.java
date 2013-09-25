@@ -17,7 +17,6 @@
 package org.kuali.rice.krms.test;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
@@ -26,14 +25,10 @@ import org.kuali.rice.krad.criteria.CriteriaLookupServiceImpl;
 import org.kuali.rice.krms.api.repository.LogicalOperator;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
-import org.kuali.rice.krms.api.repository.proposition.PropositionParameterType;
 import org.kuali.rice.krms.api.repository.proposition.PropositionType;
-import org.kuali.rice.krms.api.repository.term.TermDefinition;
-import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -70,7 +65,7 @@ public class RuleManagementPropositionDefinitionTest extends RuleManagementBaseT
 
         try {
             // returnPropositionDefinition has existing propositionId
-            ruleManagementServiceImpl.createProposition(propositionDefinition);
+            ruleManagementService.createProposition(propositionDefinition);
             fail("should throw exception if trying to create and already exists");
         } catch (RiceIllegalArgumentException e) {
             //  throw new RiceIllegalArgumentException(propositionDefinition.getId());
@@ -127,15 +122,15 @@ public class RuleManagementPropositionDefinitionTest extends RuleManagementBaseT
         compoundComponentsC1.add(propBuilderC2);
         propBuilderC1.setCompoundComponents(compoundComponentsC1);
         propBuilderC1.setDescription("C1_compound_proposition");
-        PropositionDefinition propC1 = ruleManagementServiceImpl.createProposition(propBuilderC1.build());
+        PropositionDefinition propC1 = ruleManagementService.createProposition(propBuilderC1.build());
 
-        propC1 = ruleManagementServiceImpl.getProposition(propC1.getId());
+        propC1 = ruleManagementService.getProposition(propC1.getId());
         assertEquals("proposition not in database","C1_compound_proposition",propC1.getDescription());
 
         List<String> propositionDescrs = Arrays.asList("C1_compound_proposition", "C2_compound_proposition",
                 "S1_simple_proposition", "S2_simple_proposition", "S3_simple_proposition");
 
-        Set<PropositionDefinition> propsFound = ruleManagementServiceImpl.getPropositionsByRule(t1.rule_0_Id);
+        Set<PropositionDefinition> propsFound = ruleManagementService.getPropositionsByRule(t1.rule_0_Id);
         for (PropositionDefinition propTemp : propsFound) {
             assertTrue(propositionDescrs.contains(propTemp.getDescription()));
         }
@@ -155,13 +150,13 @@ public class RuleManagementPropositionDefinitionTest extends RuleManagementBaseT
 
         PropositionDefinition propositionDefinition = createTestPropositionForRule(t2.object0);
 
-        PropositionDefinition returnPropositionDefinition = ruleManagementServiceImpl.getProposition(propositionDefinition.getId());
+        PropositionDefinition returnPropositionDefinition = ruleManagementService.getProposition(propositionDefinition.getId());
 
         //  match ruleIds from returned proposition returned by get by propositionId
         assertEquals("", propositionDefinition.getRuleId(), returnPropositionDefinition.getRuleId());
 
         try {
-            ruleManagementServiceImpl.getProposition(null);
+            ruleManagementService.getProposition(null);
             fail("should throw RiceIllegalArgumentException");
         } catch (RiceIllegalArgumentException e) {
             // throw new RiceIllegalArgumentException (id);
@@ -180,7 +175,7 @@ public class RuleManagementPropositionDefinitionTest extends RuleManagementBaseT
 
         PropositionDefinition propositionDefinition = createTestPropositionForRule(t3.object0);
 
-        Set<PropositionDefinition> propositionDefinitionSet = ruleManagementServiceImpl.getPropositionsByType(propositionDefinition.getTypeId());
+        Set<PropositionDefinition> propositionDefinitionSet = ruleManagementService.getPropositionsByType(propositionDefinition.getTypeId());
 
         boolean propositionFound = false;
         for ( PropositionDefinition pd : propositionDefinitionSet ) {
@@ -205,7 +200,7 @@ public class RuleManagementPropositionDefinitionTest extends RuleManagementBaseT
 
         PropositionDefinition propositionDefinition = createTestPropositionForRule(t4.object0);
 
-        Set<PropositionDefinition> propositionDefinitionSet = ruleManagementServiceImpl.getPropositionsByRule(
+        Set<PropositionDefinition> propositionDefinitionSet = ruleManagementService.getPropositionsByRule(
                 propositionDefinition.getRuleId());
 
         boolean propositionFound = false;
@@ -234,9 +229,9 @@ public class RuleManagementPropositionDefinitionTest extends RuleManagementBaseT
         builder.setPropositionTypeCode(PropositionType.COMPOUND.getCode());
 
         // focus of test is on this instruction
-        ruleManagementServiceImpl.updateProposition(builder.build());
+        ruleManagementService.updateProposition(builder.build());
 
-        PropositionDefinition returnPropositionDefinition = ruleManagementServiceImpl.getProposition(propositionDefinition.getId());
+        PropositionDefinition returnPropositionDefinition = ruleManagementService.getProposition(propositionDefinition.getId());
 
         assertEquals("description was not updated", "UpdatedDescription", returnPropositionDefinition.getDescription());
         assertEquals("propositionType was not updated", PropositionType.COMPOUND.getCode(), returnPropositionDefinition.getPropositionTypeCode());
@@ -254,12 +249,12 @@ public class RuleManagementPropositionDefinitionTest extends RuleManagementBaseT
 
         PropositionDefinition propositionDefinition = createTestPropositionForRule(t6.object0);
 
-        ruleManagementServiceImpl.deleteProposition(propositionDefinition.getId());
+        ruleManagementService.deleteProposition(propositionDefinition.getId());
 
-        assertTrue("proposition should have been deleted", ruleManagementServiceImpl.getPropositionsByRule(propositionDefinition.getRuleId()).isEmpty());
+        assertTrue("proposition should have been deleted", ruleManagementService.getPropositionsByRule(propositionDefinition.getRuleId()).isEmpty());
 
         try {
-            ruleManagementServiceImpl.deleteProposition(propositionDefinition.getId());
+            ruleManagementService.deleteProposition(propositionDefinition.getId());
             fail("should fail with IllegalStateException: the Proposition to delete does not exists");
         } catch (IllegalStateException e) {
             // IllegalStateException: the Proposition to delete does not exists
@@ -284,19 +279,15 @@ public class RuleManagementPropositionDefinitionTest extends RuleManagementBaseT
 
         for (String propositionId : propositionIds) {
             PropositionDefinition.Builder builder = PropositionDefinition.Builder.create(
-                    ruleManagementServiceImpl.getProposition(propositionId));
+                    ruleManagementService.getProposition(propositionId));
             builder.setDescription("targetOfQuery");
-            ruleManagementServiceImpl.updateProposition(builder.build());
+            ruleManagementService.updateProposition(builder.build());
         }
 
         QueryByCriteria.Builder query = QueryByCriteria.Builder.create();
         query.setPredicates(equal("description", "targetOfQuery"));
 
-        CriteriaLookupServiceImpl criteriaLookupService = new CriteriaLookupServiceImpl();
-        criteriaLookupService.setCriteriaLookupDao(new CriteriaLookupDaoProxy());
-        ruleManagementServiceImpl.setCriteriaLookupService( criteriaLookupService);
-
-        List<String> returnedPropositionIds = ruleManagementServiceImpl.findPropositionIds(query.build());
+        List<String> returnedPropositionIds = ruleManagementService.findPropositionIds(query.build());
 
         for (String returnedPropositionId : returnedPropositionIds ) {
             assertTrue(propositionIds.contains(returnedPropositionId));

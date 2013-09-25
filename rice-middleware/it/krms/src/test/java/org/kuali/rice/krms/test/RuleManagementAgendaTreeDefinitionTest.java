@@ -109,7 +109,7 @@ public class RuleManagementAgendaTreeDefinitionTest  extends RuleManagementBaseT
         AgendaDefinition.Builder agendaBuilder = buildComplexAgenda(t0);
 
         // Get the AgendaTreeDefinition and drill down a branch to one of the lowest levels for information
-        AgendaTreeDefinition agendaTreeDefinition = ruleManagementServiceImpl.getAgendaTree(agendaBuilder.getId());
+        AgendaTreeDefinition agendaTreeDefinition = ruleManagementService.getAgendaTree(agendaBuilder.getId());
         assertNotNull("Should have returned a AgendaTreeDefinition", agendaTreeDefinition);
 
         List<AgendaTreeEntryDefinitionContract> agendaTreeRuleEntrys = agendaTreeDefinition.getEntries();
@@ -136,7 +136,7 @@ public class RuleManagementAgendaTreeDefinitionTest  extends RuleManagementBaseT
 
         // Test call with blank parameter
         try {
-            agendaTreeDefinition = ruleManagementServiceImpl.getAgendaTree(" ");
+            agendaTreeDefinition = ruleManagementService.getAgendaTree(" ");
             fail("Should have thrown RiceIllegalArgumentException: agenda id is null or blank");
         } catch (RiceIllegalArgumentException e) {
             // throws RiceIllegalArgumentException: agenda id is null or blank
@@ -144,13 +144,13 @@ public class RuleManagementAgendaTreeDefinitionTest  extends RuleManagementBaseT
 
         // Test call with null parameter
         try {
-            agendaTreeDefinition = ruleManagementServiceImpl.getAgendaTree(null);
+            agendaTreeDefinition = ruleManagementService.getAgendaTree(null);
             fail("Should have thrown RiceIllegalArgumentException: agenda id is null or blank");
         } catch (RiceIllegalArgumentException e) {
             // throws RiceIllegalArgumentException: agenda id is null or blank
         }
 
-        assertNull("Should have return null",ruleManagementServiceImpl.getAgendaTree("badValueId"));
+        assertNull("Should have return null", ruleManagementService.getAgendaTree("badValueId"));
     }
 
     /**
@@ -176,7 +176,7 @@ public class RuleManagementAgendaTreeDefinitionTest  extends RuleManagementBaseT
         agendaIds.add(t2.agenda_Id);
 
 
-        List<AgendaTreeDefinition> agendaTreeDefinitions = ruleManagementServiceImpl.getAgendaTrees( agendaIds);
+        List<AgendaTreeDefinition> agendaTreeDefinitions = ruleManagementService.getAgendaTrees( agendaIds);
         assertEquals("Two agendaTree definitions should have been return",2,agendaTreeDefinitions.size());
         for (AgendaTreeDefinition agendaTreeDefinition: agendaTreeDefinitions ) {
             if (!agendaIds.contains(agendaTreeDefinition.getAgendaId())) {
@@ -184,10 +184,11 @@ public class RuleManagementAgendaTreeDefinitionTest  extends RuleManagementBaseT
             }
         }
 
-        assertEquals("No AgendaTreeDefinitions should have been returned", 0, ruleManagementServiceImpl.getAgendaTrees(
+        assertEquals("No AgendaTreeDefinitions should have been returned", 0, ruleManagementService.getAgendaTrees(
                 null).size());
 
         agendaIds = Arrays.asList("badValueId");
-        assertEquals("No AgendaTreeDefinitions should have been returned",0,ruleManagementServiceImpl.getAgendaTrees( agendaIds).size());
+        assertEquals("No AgendaTreeDefinitions should have been returned",0,
+                ruleManagementService.getAgendaTrees( agendaIds).size());
     }
 }

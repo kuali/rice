@@ -59,7 +59,8 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
         assertEquals("Expected AgendaId not found",t0.agenda_Id,agendaBuilder.getId());
 
         assertEquals("Expected AgendaItemId not found",t0.agendaItem_0_Id,agendaBuilder.getFirstItemId());
-        assertEquals("Expected Rule of AgendaItem not found",t0.rule_0_Id,ruleManagementServiceImpl.getAgendaItem(agendaBuilder.getFirstItemId()).getRule().getId());
+        assertEquals("Expected Rule of AgendaItem not found",t0.rule_0_Id,
+                ruleManagementService.getAgendaItem(agendaBuilder.getFirstItemId()).getRule().getId());
     }
 
     /**
@@ -75,7 +76,7 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
 
         // createComplexAgenda uses the ruleManagementServiceImpl.createAgendaItem method
         buildComplexAgenda(t1);
-        List<AgendaItemDefinition> agendaItems = ruleManagementServiceImpl.getAgendaItemsByContext(t1.contextId);
+        List<AgendaItemDefinition> agendaItems = ruleManagementService.getAgendaItemsByContext(t1.contextId);
 
         // the complex agendas created should have 7 agendaItems associated with it
         assertEquals("Invalid number of agendaItems created", 7, agendaItems.size());
@@ -93,7 +94,7 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
 
         AgendaDefinition.Builder agendaBuilder = buildComplexAgenda(t2);
 
-        AgendaItemDefinition agendaItem = ruleManagementServiceImpl.getAgendaItem(t2.agendaItem_0_Id);
+        AgendaItemDefinition agendaItem = ruleManagementService.getAgendaItem(t2.agendaItem_0_Id);
         assertEquals("Invalid AgendaItem value",t2.agendaItem_0_Id,agendaItem.getId());
         assertEquals("Invalid AgendaItem value",t2.agenda_Id,agendaItem.getAgendaId());
         assertEquals("Invalid AgendaItem value",t2.agendaItem_3_Id,agendaItem.getAlwaysId());
@@ -112,12 +113,12 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
         assertEquals("Invalid RuleId found for agendaItem","S",ruleDefinition.getProposition().getPropositionTypeCode());
 
         // check agendaItem count of associated items
-        List<AgendaItemDefinition> agendaItems = ruleManagementServiceImpl.getAgendaItemsByContext(t2.contextId);
+        List<AgendaItemDefinition> agendaItems = ruleManagementService.getAgendaItemsByContext(t2.contextId);
         assertEquals("Invalid number of agendaItems created", 7, agendaItems.size());
 
         // look for agendaItem which should not exist
         try {
-             AgendaItemDefinition junkAgendaItem = ruleManagementServiceImpl.getAgendaItem("junk");
+             AgendaItemDefinition junkAgendaItem = ruleManagementService.getAgendaItem("junk");
              fail("should have thrown a NullPointerException");
         } catch (NullPointerException e) {
             // throws NullPointerException RuleManagementServiceImpl.getAgendaItem(RuleManagementServiceImpl.java:
@@ -144,7 +145,8 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
         // get agendaItems for all agendas of this type
         // these complex agendas are both of type namespaceType
         // each complex agenda has 7 agendaItems
-        assertEquals("Incorrect number of agendaItems found",14,ruleManagementServiceImpl.getAgendaItemsByType(t3.namespaceType).size());
+        assertEquals("Incorrect number of agendaItems found",14,
+                ruleManagementService.getAgendaItemsByType(t3.namespaceType).size());
     }
 
     /**
@@ -165,8 +167,9 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
         // get agendaItems for all agendas with this Context
         // each complex agenda has 7 agendaItems
         // each complex agenda has a unique Context
-        assertEquals("Incorrect number of agendaItems returned", 7, ruleManagementServiceImpl.getAgendaItemsByContext(t5.contextId).size());
-        assertEquals("No agendaItems should have been returned",0,ruleManagementServiceImpl.getAgendaItemsByContext("junk").size());
+        assertEquals("Incorrect number of agendaItems returned", 7, ruleManagementService.getAgendaItemsByContext(t5.contextId).size());
+        assertEquals("No agendaItems should have been returned",0,
+                ruleManagementService.getAgendaItemsByContext("junk").size());
     }
 
     /**
@@ -188,27 +191,31 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
         // each complex agenda has 7 agendaItems
         // complex agendas are of type "firstNamespaceType"
         // each complex agenda has a unique Context
-        assertEquals("Incorrect number of agendaItems returned",7,ruleManagementServiceImpl.getAgendaItemsByTypeAndContext(t7.namespaceType,t8.contextId).size());
-        assertEquals("Incorrect number of agendaItems returned",7,ruleManagementServiceImpl.getAgendaItemsByTypeAndContext(t7.namespaceType,t7.contextId).size());
-        assertEquals("Incorrect number of agendaItems returned",0,ruleManagementServiceImpl.getAgendaItemsByTypeAndContext("badType",t7.contextId).size());
-        assertEquals("Incorrect number of agendaItems returned",0,ruleManagementServiceImpl.getAgendaItemsByTypeAndContext(t7.namespaceType,"badContext").size());
+        assertEquals("Incorrect number of agendaItems returned",7,
+                ruleManagementService.getAgendaItemsByTypeAndContext(t7.namespaceType,t8.contextId).size());
+        assertEquals("Incorrect number of agendaItems returned",7,
+                ruleManagementService.getAgendaItemsByTypeAndContext(t7.namespaceType,t7.contextId).size());
+        assertEquals("Incorrect number of agendaItems returned",0,
+                ruleManagementService.getAgendaItemsByTypeAndContext("badType",t7.contextId).size());
+        assertEquals("Incorrect number of agendaItems returned",0,
+                ruleManagementService.getAgendaItemsByTypeAndContext(t7.namespaceType,"badContext").size());
 
         try {
-            ruleManagementServiceImpl.getAgendaItemsByTypeAndContext(null,t7.contextId);
+            ruleManagementService.getAgendaItemsByTypeAndContext(null,t7.contextId);
             fail("Should have thrown RiceIllegalArgumentException: type ID is null or blank");
         } catch (RiceIllegalArgumentException e) {
             // throws RiceIllegalArgumentException: type ID is null or blank
         }
 
         try {
-            ruleManagementServiceImpl.getAgendaItemsByTypeAndContext("    ",t7.contextId);
+            ruleManagementService.getAgendaItemsByTypeAndContext("    ",t7.contextId);
             fail("Should have thrown RiceIllegalArgumentException: type ID is null or blank");
         } catch (RiceIllegalArgumentException e) {
             // throws RiceIllegalArgumentException: type ID is null or blank
         }
 
         try {
-            ruleManagementServiceImpl.getAgendaItemsByTypeAndContext(t7.namespaceType,null);
+            ruleManagementService.getAgendaItemsByTypeAndContext(t7.namespaceType,null);
             fail("Should have thrown RiceIllegalArgumentException: context ID is null or blank");
         } catch (RiceIllegalArgumentException e) {
             // throws RiceIllegalArgumentException: context ID is null or blank
@@ -228,19 +235,19 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
         // each complex agenda has 7 agendaItems
         AgendaDefinition.Builder agendaBuilder4900 = buildComplexAgenda(t9);
         // check the number created before delete
-        List<AgendaItemDefinition> agendaItems = ruleManagementServiceImpl.getAgendaItemsByContext(t9.contextId);
+        List<AgendaItemDefinition> agendaItems = ruleManagementService.getAgendaItemsByContext(t9.contextId);
         assertEquals("Invalid number of agendaItems created", 7, agendaItems.size());
 
         // delete one of the seven agendaItems
-        ruleManagementServiceImpl.deleteAgendaItem(t9.agendaItem_0_Id);
+        ruleManagementService.deleteAgendaItem(t9.agendaItem_0_Id);
 
         // check agendaItem count of items for Agenda, one should now be deleted
-        agendaItems = ruleManagementServiceImpl.getAgendaItemsByContext(t9.contextId);
+        agendaItems = ruleManagementService.getAgendaItemsByContext(t9.contextId);
         assertEquals("Invalid number of agendaItems created", 6, agendaItems.size());
 
         // look for a agendaItem which does not exist
         try {
-            AgendaItemDefinition junkAgendaItem = ruleManagementServiceImpl.getAgendaItem("junk");
+            AgendaItemDefinition junkAgendaItem = ruleManagementService.getAgendaItem("junk");
             fail("should have thrown a NullPointerException");
         } catch (NullPointerException e) {
             // throws NullPointerException RuleManagementServiceImpl.getAgendaItem(RuleManagementServiceImpl.java:
@@ -260,7 +267,7 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
         AgendaDefinition.Builder agendaBuilder = buildComplexAgenda(t10);
 
         // validate default attributes before update
-        AgendaItemDefinition agendaItem = ruleManagementServiceImpl.getAgendaItem(t10.agendaItem_0_Id);
+        AgendaItemDefinition agendaItem = ruleManagementService.getAgendaItem(t10.agendaItem_0_Id);
         assertEquals("Invalid AgendaItem value",t10.agendaItem_0_Id,agendaItem.getId());
         assertEquals("Invalid AgendaItem value",t10.agenda_Id,agendaItem.getAgendaId());
         assertEquals("Invalid AgendaItem value",t10.agendaItem_3_Id,agendaItem.getAlwaysId());
@@ -273,16 +280,16 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
 
         // update some of the agendaItem attributes  ( reverse whenTrue and whenFalse values and unset always
         AgendaItemDefinition.Builder agendaItemBuilder = AgendaItemDefinition.Builder.create(agendaItem);
-        agendaItemBuilder.setWhenFalse(AgendaItemDefinition.Builder.create(ruleManagementServiceImpl.getAgendaItem(t10.agendaItem_1_Id)));
+        agendaItemBuilder.setWhenFalse(AgendaItemDefinition.Builder.create(ruleManagementService.getAgendaItem(t10.agendaItem_1_Id)));
         agendaItemBuilder.setWhenFalseId(t10.agendaItem_1_Id);
-        agendaItemBuilder.setWhenTrue(AgendaItemDefinition.Builder.create(ruleManagementServiceImpl.getAgendaItem(t10.agendaItem_2_Id)));
+        agendaItemBuilder.setWhenTrue(AgendaItemDefinition.Builder.create(ruleManagementService.getAgendaItem(t10.agendaItem_2_Id)));
         agendaItemBuilder.setWhenTrueId(t10.agendaItem_2_Id);
         agendaItemBuilder.setAlways(null);
         agendaItemBuilder.setAlwaysId(null);
-        ruleManagementServiceImpl.updateAgendaItem(agendaItemBuilder.build());
+        ruleManagementService.updateAgendaItem(agendaItemBuilder.build());
 
         // check the update
-        agendaItem = ruleManagementServiceImpl.getAgendaItem(t10.agendaItem_0_Id);
+        agendaItem = ruleManagementService.getAgendaItem(t10.agendaItem_0_Id);
         assertEquals("Invalid AgendaItem value",t10.agendaItem_0_Id,agendaItem.getId());
         assertEquals("Invalid AgendaItem value",t10.agenda_Id,agendaItem.getAgendaId());
         assertEquals("Invalid AgendaItem value",null,agendaItem.getAlwaysId());
@@ -294,14 +301,14 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
         assertEquals("Invalid AgendaItem value",t10.agendaItem_1_Id,agendaItem.getWhenFalseId());
 
         // update some of the agendaItem attributes
-        agendaItem = ruleManagementServiceImpl.getAgendaItem(t10.agendaItem_1_Id);
+        agendaItem = ruleManagementService.getAgendaItem(t10.agendaItem_1_Id);
         agendaItemBuilder = AgendaItemDefinition.Builder.create(agendaItem);
         agendaItemBuilder.setWhenFalseId(null);
         agendaItemBuilder.setWhenTrueId(null);
         agendaItemBuilder.setAlwaysId(null);
-        ruleManagementServiceImpl.updateAgendaItem(agendaItemBuilder.build());
+        ruleManagementService.updateAgendaItem(agendaItemBuilder.build());
         // check the update  ( should be no change - clearing Ids should not effect agendaItem
-        agendaItem = ruleManagementServiceImpl.getAgendaItem(t10.agendaItem_0_Id);
+        agendaItem = ruleManagementService.getAgendaItem(t10.agendaItem_0_Id);
         assertEquals("Invalid AgendaItem value",null,agendaItem.getAlwaysId());
         assertEquals("Invalid AgendaItem value",null,agendaItem.getAlways());
         assertEquals("Invalid AgendaItem value",t10.agendaItem_2_Id,agendaItem.getWhenTrue().getId());
@@ -310,14 +317,14 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
         assertEquals("Invalid AgendaItem value",t10.agendaItem_1_Id,agendaItem.getWhenFalseId());
 
         // update some of the agendaItem attributes  ( unset when true false and always
-        agendaItem = ruleManagementServiceImpl.getAgendaItem(t10.agendaItem_0_Id);
+        agendaItem = ruleManagementService.getAgendaItem(t10.agendaItem_0_Id);
         agendaItemBuilder = AgendaItemDefinition.Builder.create(agendaItem);
         agendaItemBuilder.setWhenFalse(null);
         agendaItemBuilder.setWhenTrue(null);
         agendaItemBuilder.setAlways(null);
-        ruleManagementServiceImpl.updateAgendaItem(agendaItemBuilder.build());
+        ruleManagementService.updateAgendaItem(agendaItemBuilder.build());
         // check the update  ( should have removed when true and false
-        agendaItem = ruleManagementServiceImpl.getAgendaItem(t10.agendaItem_0_Id);
+        agendaItem = ruleManagementService.getAgendaItem(t10.agendaItem_0_Id);
         assertEquals("Invalid AgendaItem value",null,agendaItem.getAlwaysId());
         assertEquals("Invalid AgendaItem value",null,agendaItem.getAlways());
         assertEquals("Invalid AgendaItem value",null,agendaItem.getWhenTrue());

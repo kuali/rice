@@ -53,15 +53,15 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
         RuleManagementBaseTestObjectNames t0 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t0");
 
         // validate that the NaturalLanguageTemplate being build, does not already exist
-        assertNull(ruleManagementServiceImpl.getNaturalLanguageTemplate("en-reqActive"));
+        assertNull(ruleManagementService.getNaturalLanguageTemplate("en-reqActive"));
 
         // build a NaturalLanguageTemplate for testing
         NaturalLanguageTemplate template = createTestNaturalLanguageTemplate(t0.namespaceName, "en", "reqActive",
                 "Must not be inActive");
 
         // validate the resulting object
-        template = ruleManagementServiceImpl.getNaturalLanguageTemplate("en-reqActive");
-        assertNotNull(ruleManagementServiceImpl.getNaturalLanguageTemplate("en-reqActive"));
+        template = ruleManagementService.getNaturalLanguageTemplate("en-reqActive");
+        assertNotNull(ruleManagementService.getNaturalLanguageTemplate("en-reqActive"));
         assertEquals("Unexpected language code found", "en", template.getLanguageCode());
         assertEquals("Unexpected template found", "Must not be inActive", template.getTemplate());
         assertEquals("Unexpected TypeId value",  krmsTypeRepository.getTypeByName(t0.namespaceName, "reqActive").getId(), template.getTypeId());
@@ -136,7 +136,7 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
         NaturalLanguageTemplate.Builder naturalLanguageTemplateBuilder = NaturalLanguageTemplate.Builder.create("da",template.getNaturalLanguageUsageId(),"Dette formål må ikke være inaktiv","badId");
         naturalLanguageTemplateBuilder.setId("da" + "-" + "reqActive");
         try {
-            ruleManagementServiceImpl.createNaturalLanguageTemplate(naturalLanguageTemplateBuilder.build());
+            ruleManagementService.createNaturalLanguageTemplate(naturalLanguageTemplateBuilder.build());
             fail("Should have thrown DataIntegrityViolationException: OJB operation; SQL []; Cannot add or update a child row: a foreign key constraint fails");
         } catch (DataIntegrityViolationException e) {
             // throws DataIntegrityViolationException: OJB operation; SQL []; Cannot add or update a child row: a foreign key constraint fails
@@ -155,11 +155,11 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
 
         NaturalLanguageTemplate template = createTestNaturalLanguageTemplate(t1.namespaceName, "sw", "reqActive",
                 "Detta ändamål får inte vara inaktiv");
-        assertNotNull(ruleManagementServiceImpl.getNaturalLanguageTemplate("sw-reqActive"));
+        assertNotNull(ruleManagementService.getNaturalLanguageTemplate("sw-reqActive"));
         assertEquals("Unexpected language code found", "sw", template.getLanguageCode());
         // try to getNaturalLanguageTemplate with null value
         try {
-            ruleManagementServiceImpl.getNaturalLanguageTemplate(null);
+            ruleManagementService.getNaturalLanguageTemplate(null);
             fail("Should have thrown IllegalArgumentException: naturalLanguageTemplateId was null");
         } catch (IllegalArgumentException e) {
             //throws g.IllegalArgumentException: naturalLanguageTemplateId was null
@@ -167,13 +167,13 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
 
         // try to getNaturalLanguageTemplate with blank value
         try {
-            ruleManagementServiceImpl.getNaturalLanguageTemplate("  ");
+            ruleManagementService.getNaturalLanguageTemplate("  ");
             fail("Should have thrown IllegalArgumentException: naturalLanguageTemplateId was blank");
         } catch (IllegalArgumentException e) {
             //throws IllegalArgumentException: naturalLanguageTemplateId was blank
         }
 
-        assertNull(ruleManagementServiceImpl.getNaturalLanguageTemplate("badId"));
+        assertNull(ruleManagementService.getNaturalLanguageTemplate("badId"));
     }
 
     /**
@@ -189,15 +189,15 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
         NaturalLanguageTemplate template = createTestNaturalLanguageTemplate(t2.namespaceName, "pl", "reqActive",
                 "Isthay Objectway ustmay otnay ebay inActiveway");
         NaturalLanguageTemplate.Builder naturalLanguageTemplateBuilder = NaturalLanguageTemplate.Builder.create(
-                ruleManagementServiceImpl.getNaturalLanguageTemplate("pl-reqActive"));
+                ruleManagementService.getNaturalLanguageTemplate("pl-reqActive"));
         // update the template value  (pl is the lang_cd for polish not pig-latin so update template)
         naturalLanguageTemplateBuilder.setTemplate("Ten obiekt nie moze byc nieaktywne");
         naturalLanguageTemplateBuilder.setActive(true);
-        ruleManagementServiceImpl.updateNaturalLanguageTemplate(naturalLanguageTemplateBuilder.build());
+        ruleManagementService.updateNaturalLanguageTemplate(naturalLanguageTemplateBuilder.build());
 
-        assertEquals("Unexpected template value found", "Ten obiekt nie moze byc nieaktywne", ruleManagementServiceImpl.getNaturalLanguageTemplate("pl-reqActive").getTemplate());
+        assertEquals("Unexpected template value found", "Ten obiekt nie moze byc nieaktywne", ruleManagementService.getNaturalLanguageTemplate("pl-reqActive").getTemplate());
         // will always return false  KULRICE-10653 NaturalLanguageTemplate "active" attribute missing from Database
-        assertEquals("Unexpected isActive value found", false, ruleManagementServiceImpl.getNaturalLanguageTemplate("pl-reqActive").isActive());
+        assertEquals("Unexpected isActive value found", false, ruleManagementService.getNaturalLanguageTemplate("pl-reqActive").isActive());
     }
 
     /**
@@ -212,16 +212,16 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
 
         NaturalLanguageTemplate template = createTestNaturalLanguageTemplate(t3.namespaceName, "pt", "reqActive",
                 "Este objeto nao deve ser inativo");
-        assertNotNull("Should have found NaturalLanguageTemplate", ruleManagementServiceImpl.getNaturalLanguageTemplate("pt-reqActive"));
+        assertNotNull("Should have found NaturalLanguageTemplate", ruleManagementService.getNaturalLanguageTemplate("pt-reqActive"));
 
-        ruleManagementServiceImpl.deleteNaturalLanguageTemplate("pt-reqActive");
+        ruleManagementService.deleteNaturalLanguageTemplate("pt-reqActive");
 
         // verify it was deleted
-        assertNull("Should not have found NaturalLanguageTemplate",ruleManagementServiceImpl.getNaturalLanguageTemplate("pt-reqActive"));
+        assertNull("Should not have found NaturalLanguageTemplate", ruleManagementService.getNaturalLanguageTemplate("pt-reqActive"));
 
         // test delete using null
         try {
-            ruleManagementServiceImpl.deleteNaturalLanguageTemplate(null);
+            ruleManagementService.deleteNaturalLanguageTemplate(null);
             fail("Should have thrown IllegalArgumentException: naturalLanguageTemplateId was null");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: naturalLanguageTemplateId was null
@@ -229,7 +229,7 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
 
         // test delete using blank
         try {
-            ruleManagementServiceImpl.deleteNaturalLanguageTemplate("    ");
+            ruleManagementService.deleteNaturalLanguageTemplate("    ");
             fail("Should have thrown IllegalArgumentException: naturalLanguageTemplateId was blank");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: naturalLanguageTemplateId was blank
@@ -237,7 +237,7 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
 
         // test delete using bad value
         try {
-            ruleManagementServiceImpl.deleteNaturalLanguageTemplate("badValue");
+            ruleManagementService.deleteNaturalLanguageTemplate("badValue");
             fail("Should have thrown IllegalStateException: the NaturalLanguageTemplate to delete does not exists: badValue");
         } catch (IllegalStateException e) {
             // throws IllegalStateException: the NaturalLanguageTemplate to delete does not exists: badValue
@@ -257,15 +257,15 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
 
         NaturalLanguageTemplate template = createTestNaturalLanguageTemplate(t4.namespaceName, "ro", "reqActive",
                 "Acest obiect nu trebuie sa fie inactiv");
-        assertNotNull("Should have found NaturalLanguageTemplate", ruleManagementServiceImpl.getNaturalLanguageTemplate("ro-reqActive"));
+        assertNotNull("Should have found NaturalLanguageTemplate", ruleManagementService.getNaturalLanguageTemplate("ro-reqActive"));
 
-        List<NaturalLanguageTemplate> nlTemplates = ruleManagementServiceImpl.findNaturalLanguageTemplatesByLanguageCode("ro");
+        List<NaturalLanguageTemplate> nlTemplates = ruleManagementService.findNaturalLanguageTemplatesByLanguageCode("ro");
         assertEquals("Unexpected number of templates returned ",1,nlTemplates.size());
         assertEquals("Unexpected template id returned","ro-reqActive",nlTemplates.get(0).getId());
 
         // test find with null LanguageCode
         try {
-            ruleManagementServiceImpl.findNaturalLanguageTemplatesByLanguageCode(null);
+            ruleManagementService.findNaturalLanguageTemplatesByLanguageCode(null);
             fail("Should have thrown IllegalArgumentException: languageCode is null or blank");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: languageCode is null or blank
@@ -273,7 +273,7 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
 
         // test find with blank LanguageCode
         try {
-            ruleManagementServiceImpl.findNaturalLanguageTemplatesByLanguageCode("  ");
+            ruleManagementService.findNaturalLanguageTemplatesByLanguageCode("  ");
             fail("Should have thrown IllegalArgumentException: languageCode is null or blank");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: languageCode is null or blank
@@ -281,7 +281,7 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
 
         // test find with non-existing LanguageCode
         assertEquals("Unexpected number of templates returned ",0,
-                ruleManagementServiceImpl.findNaturalLanguageTemplatesByLanguageCode("badValue").size());
+                ruleManagementService.findNaturalLanguageTemplatesByLanguageCode("badValue").size());
     }
 
 
@@ -298,10 +298,10 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
 
         NaturalLanguageTemplate template = createTestNaturalLanguageTemplate(t5.namespaceName, "sk", "reqActive",
                 "Tento objekt nesmie byt neaktívne");
-        assertNotNull("Should have found NaturalLanguageTemplate", ruleManagementServiceImpl.getNaturalLanguageTemplate("sk-reqActive"));
+        assertNotNull("Should have found NaturalLanguageTemplate", ruleManagementService.getNaturalLanguageTemplate("sk-reqActive"));
 
         // test find
-        template = ruleManagementServiceImpl.findNaturalLanguageTemplateByLanguageCodeTypeIdAndNluId(
+        template = ruleManagementService.findNaturalLanguageTemplateByLanguageCodeTypeIdAndNluId(
                 template.getLanguageCode(),template.getTypeId(),template.getNaturalLanguageUsageId());
 
         // validate the returned object
@@ -314,7 +314,7 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
 
         // test find with null language code
         try {
-             ruleManagementServiceImpl.findNaturalLanguageTemplateByLanguageCodeTypeIdAndNluId(
+             ruleManagementService.findNaturalLanguageTemplateByLanguageCodeTypeIdAndNluId(
                 null,template.getTypeId(),template.getNaturalLanguageUsageId());
              fail("Should have thrown IllegalArgumentException: languageCode is null or blank");
         } catch (IllegalArgumentException e) {
@@ -322,16 +322,16 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
         }
 
         // test find with null TypeId
-        ruleManagementServiceImpl.findNaturalLanguageTemplateByLanguageCodeTypeIdAndNluId(
+        ruleManagementService.findNaturalLanguageTemplateByLanguageCodeTypeIdAndNluId(
                 template.getLanguageCode(),null,template.getNaturalLanguageUsageId());
 
         // test find with null NaturalLanguageUsageId
-        ruleManagementServiceImpl.findNaturalLanguageTemplateByLanguageCodeTypeIdAndNluId(
+        ruleManagementService.findNaturalLanguageTemplateByLanguageCodeTypeIdAndNluId(
                 template.getLanguageCode(),template.getTypeId(),null);
 
         // test find with blank language code
         try {
-            ruleManagementServiceImpl.findNaturalLanguageTemplateByLanguageCodeTypeIdAndNluId(
+            ruleManagementService.findNaturalLanguageTemplateByLanguageCodeTypeIdAndNluId(
                     "  ",template.getTypeId(),template.getNaturalLanguageUsageId());
             fail("Should have thrown IllegalArgumentException: languageCode is null or blank");
         } catch (IllegalArgumentException e) {
@@ -354,10 +354,10 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
         // build test template (change seed value reqActive to reqActive-SL to discriminate nl usage from other tests
         NaturalLanguageTemplate template = createTestNaturalLanguageTemplate(t6.namespaceName, "sl", "reqActive-SL",
                 "Ta predmet ne sme biti neaktiven");
-        assertNotNull("Should have found NaturalLanguageTemplate", ruleManagementServiceImpl.getNaturalLanguageTemplate("sl-reqActive-SL"));
+        assertNotNull("Should have found NaturalLanguageTemplate", ruleManagementService.getNaturalLanguageTemplate("sl-reqActive-SL"));
 
         // test find
-        List<NaturalLanguageTemplate> templates = ruleManagementServiceImpl.findNaturalLanguageTemplatesByNaturalLanguageUsage(template.getNaturalLanguageUsageId());
+        List<NaturalLanguageTemplate> templates = ruleManagementService.findNaturalLanguageTemplatesByNaturalLanguageUsage(template.getNaturalLanguageUsageId());
         assertEquals("Unexpected number of templates returned ",1,templates.size());
         template = templates.get(0);
 
@@ -371,7 +371,7 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
 
         // test find with null NaturalLanguageUsage
         try {
-            ruleManagementServiceImpl.findNaturalLanguageTemplatesByNaturalLanguageUsage(null);
+            ruleManagementService.findNaturalLanguageTemplatesByNaturalLanguageUsage(null);
             fail("Should have thrown IllegalArgumentException: naturalLanguageUsageId is null or blank");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: naturalLanguageUsageId is null or blank
@@ -379,7 +379,7 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
 
         // test find with blank NaturalLanguageUsage
         try {
-            ruleManagementServiceImpl.findNaturalLanguageTemplatesByNaturalLanguageUsage("   ");
+            ruleManagementService.findNaturalLanguageTemplatesByNaturalLanguageUsage("   ");
             fail("Should have thrown IllegalArgumentException: naturalLanguageUsageId is null or blank");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: naturalLanguageUsageId is null or blank
@@ -387,7 +387,7 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
 
         // test find with nonexistant NaturalLanguageUsage code
         assertEquals("Unexpected number of templates returned ",0,
-                ruleManagementServiceImpl.findNaturalLanguageTemplatesByNaturalLanguageUsage("badValue").size());
+                ruleManagementService.findNaturalLanguageTemplatesByNaturalLanguageUsage("badValue").size());
     }
 
 
@@ -405,15 +405,15 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
         // build test template (change seed value reqActive to reqActive-SL to discriminate "Type" from other tests
         NaturalLanguageTemplate template = createTestNaturalLanguageTemplate(t7.namespaceName, "es", "reqActive-ES",
                 "Este objeto no debe estar inactivo");
-        assertNotNull("Should have found NaturalLanguageTemplate", ruleManagementServiceImpl.getNaturalLanguageTemplate("es-reqActive-ES"));
+        assertNotNull("Should have found NaturalLanguageTemplate", ruleManagementService.getNaturalLanguageTemplate("es-reqActive-ES"));
 
         // test find
-        List<NaturalLanguageTemplate> templates = ruleManagementServiceImpl.findNaturalLanguageTemplatesByType(template.getTypeId());
+        List<NaturalLanguageTemplate> templates = ruleManagementService.findNaturalLanguageTemplatesByType(template.getTypeId());
         assertEquals("Unexpected number of templates returned ",1,templates.size());
 
         // test find with null typeId
         try {
-            ruleManagementServiceImpl.findNaturalLanguageTemplatesByType(null);
+            ruleManagementService.findNaturalLanguageTemplatesByType(null);
             fail("Should have thrown IllegalArgumentException: typeId is null or blank");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: typeId is null or blank
@@ -421,7 +421,7 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
 
         // test find with null typeId
         try {
-            ruleManagementServiceImpl.findNaturalLanguageTemplatesByType("   ");
+            ruleManagementService.findNaturalLanguageTemplatesByType("   ");
             fail("Should have thrown IllegalArgumentException: typeId is null or blank");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: typeId is null or blank
@@ -429,7 +429,7 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
 
         // test find non-existent  value for typeId
         assertEquals("Unexpected number of templates returned ",0,
-                ruleManagementServiceImpl.findNaturalLanguageTemplatesByType("badValue").size());
+                ruleManagementService.findNaturalLanguageTemplatesByType("badValue").size());
     }
 
 
@@ -446,16 +446,16 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
 
         NaturalLanguageTemplate template = createTestNaturalLanguageTemplate(t8.namespaceName, "sv", "reqActive",
                 "Detta ändamal far inte vara inaktiv");
-        assertNotNull("Should have found NaturalLanguageTemplate", ruleManagementServiceImpl.getNaturalLanguageTemplate("sv-reqActive"));
+        assertNotNull("Should have found NaturalLanguageTemplate", ruleManagementService.getNaturalLanguageTemplate("sv-reqActive"));
 
         // test find
         List<NaturalLanguageTemplate> templates =
-                ruleManagementServiceImpl.findNaturalLanguageTemplatesByTemplate("Detta ändamal far inte vara inaktiv");
+                ruleManagementService.findNaturalLanguageTemplatesByTemplate("Detta ändamal far inte vara inaktiv");
         assertEquals("Unexpected number of templates returned ",1,templates.size());
 
         // test find with null Template
         try {
-            ruleManagementServiceImpl.findNaturalLanguageTemplatesByTemplate(null);
+            ruleManagementService.findNaturalLanguageTemplatesByTemplate(null);
             fail("Should have thrown IllegalArgumentException: template is null or blank");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: template is null or blank
@@ -463,7 +463,7 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
 
         // test find with null Template
         try {
-            ruleManagementServiceImpl.findNaturalLanguageTemplatesByTemplate("   ");
+            ruleManagementService.findNaturalLanguageTemplatesByTemplate("   ");
             fail("Should have thrown IllegalArgumentException: template is null or blank");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: template is null or blank
@@ -471,6 +471,6 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
 
         // test find non-existent value for Template
         assertEquals("Unexpected number of templates returned ",0,
-                ruleManagementServiceImpl.findNaturalLanguageTemplatesByTemplate("badValue").size());
+                ruleManagementService.findNaturalLanguageTemplatesByTemplate("badValue").size());
     }
 }

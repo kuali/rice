@@ -106,15 +106,22 @@ class DictionaryConverter {
      */
     public void convertDataDictionaryFiles() {
         // Load Configurable Properties
-        log.finer "finished loading config files";
+        log.finer("finished loading config files");
 
         def inputResourceDir = FilenameUtils.normalize(inputDir, true) + inputPaths.src.resources;
         def outputResourceDir = FilenameUtils.normalize(outputDir, true) + outputPaths.src.resources;
 
-        // locate all relevant spring bean files based on bean parent and properties
-        def springBeanFiles = locateSpringBeanFiles(inputResourceDir, preprocessInclPattern,
-                preprocessExclPattern, ["MaintenanceDocumentEntry"], ["businessObjectClass"]);
-        preloadSpringData(springBeanFiles);
+        // locate all files, filter out to
+        def files = ConversionUtils.findFilesByPattern(inputResourceDir, preprocessInclPattern,
+                preprocessExclPattern);
+
+        def preloadedSpringBeanFiles = findSpringBeanFiles(files, [], []);
+
+        log.info "Dictionary conversion - preloaded spring files found: " + preloadedSpringBeanFiles?.size();
+        preloadSpringData(preloadedSpringBeanFiles);
+
+        def springBeanFiles = findTransformableSpringBeanFiles(preloadedSpringBeanFiles);
+        log.info "Dictionary conversion - transformable spring files found: " + springBeanFiles?.size();
         processSpringBeanFiles(springBeanFiles, inputResourceDir, outputResourceDir);
 
     }
@@ -274,30 +281,62 @@ class DictionaryConverter {
     /**
      * locate spring xml files and filters based on bean and property values inside the  file
      *
-     * @param srcPath
-     * @param inclPatterns
-     * @param exclPatterns
-     * @param inclBeanType
-     * @param inclPropType
-     * @return
+     * @param files file list being reviewed for spring beans
+     * @param inclBeanType list of bean parent names to search for
+     * @param inclPropType list of property names to search for
+     * @return springBeanFiles
      */
-    def locateSpringBeanFiles(String srcPath, Pattern includeFilePattern, Pattern excludeFilePattern, List<String> inclBeanTypes, List<String> inclPropTypes) {
-        def fileList = [];
+    def findSpringBeanFiles(List files, List<String> inclBeanTypes, List<String> inclPropTypes) {
+        def springBeanFiles = [];
         log.finer "lookup path for " + srcPath;
-        def patternResultList = ConversionUtils.findFilesByPattern(srcPath, includeFilePattern, excludeFilePattern)
 
-        patternResultList.each { resultFile ->
+        files.each { file ->
             try {
-                def ddRootNode = parseSpringXml(resultFile.text);
-                if (ddRootNode.bean.find { inclBeanTypes.contains(it.@parent) } || ddRootNode.bean.property.find { inclPropTypes.contains(it.@name) }) {
-                    log.finer "processing file path " + resultFile.path + " for IBT " + inclBeanTypes + " or IPT " + inclPropTypes;
-                    fileList << resultFile;
+                def ddRootNode = parseSpringXml(file.text);
+                if (hasSpringBeans(ddRootNode)) {
+                    if (inclBeanTypes?.size() > 0 || inclPropTypes?.size() > 0) {
+                        if (ddRootNode.bean.find { inclBeanTypes.contains(it.@parent) } || ddRootNode.bean.property.find { inclPropTypes.contains(it.@name) }) {
+                            log.finer "processing file path " + file.path + " for IBT " + inclBeanTypes + " or IPT " + inclPropTypes;
+                            springBeanFiles << file;
+                        }
+                    } else {
+                        springBeanFiles << file;
+                    }
                 }
             } catch (Exception e) {
-                log.info "failed loading " + resultFile.path + "\n" + e.message + "\n---\n" + resultFile.text + "\n----\n";
+                log.info "failed loading " + file.path + "\n" + e.message + "\n---\n" + file.text + "\n----\n";
+            }
+        }
+        return springBeanFiles;
+    }
+
+    /**
+     * locates bean files that can be transformed; requires
+     *
+     * @param springBeanFiles
+     * @return
+     */
+    def findTransformableSpringBeanFiles(List springBeanFiles) {
+        def fileList = [];
+        springBeanFiles.each { springBeanFile ->
+            try {
+                def ddRootNode = parseSpringXml(springBeanFile.text);
+                if (hasSpringBeans(ddRootNode) && ddRootNode.bean.findAll { isBeanTransformable(it) }.size() > 0) {
+                    fileList << springBeanFile;
+                }
+            } catch (Exception e) {
+                log.info "failed loading " + springBeanFile.path + "\n" + e.message + "\n---\n" + springBeanFile.text + "\n----\n";
             }
         }
         return fileList;
+    }
+
+    private boolean hasSpringBeans(def rootNode) {
+        if (rootNode?.bean?.size() > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

@@ -104,12 +104,45 @@ class DictionaryConverterTest {
             resultNode = dictionaryConverter.transformBusinessObjectEntryBean(beanNode)
         } catch (Exception e) {
             e.printStackTrace()
-            Assert.fail("exception occurred in testing")
+            Assert.fail("exception occurred in testing");
         }
 
         log.finer "result for transforming business object entry - " + getNodeString(resultNode);
         def expectedProperties = [];
         Assert.assertEquals("properties copied or renamed properly", beanNode.findAll { expectedProperties.contains(it.@name) }.size(), expectedProperties.size())
+    }
+
+    @Test
+    void testFindSpringBeanFiles() {
+        List files = [new File(dictTestDir + "AttributePropertySample.xml")];
+        try {
+            def simpleBeanFileList = dictionaryConverter.findSpringBeanFiles(files, [], []);
+            def beanBasedFileList = dictionaryConverter.findSpringBeanFiles(files, ["MaintenanceDocumentEntry"], []);
+            def emptyBeanFileList = dictionaryConverter.findSpringBeanFiles(files, ["BusinessObjectEntry"], []);
+            def propBasedFileList = dictionaryConverter.findSpringBeanFiles(files, [], ["maintainableSections"]);
+
+            Assert.assertEquals("simple bean list count", 1, simpleBeanFileList.size());
+            Assert.assertEquals("bean based list count", 1, beanBasedFileList.size());
+            Assert.assertEquals("invalid bean type list count", 0, emptyBeanFileList.size());
+            Assert.assertEquals("property based list count", 1, propBasedFileList.size());
+        } catch (Exception e) {
+            e.printStackTrace()
+            Assert.fail("exception occurred in testing");
+        }
+    }
+
+    @Test
+    void testFindTransformableSpringBeanFiles() {
+        List files = [new File(dictTestDir + "AttributePropertySample.xml")];
+        List transformableFiles = [];
+        try {
+            // should find file containing MaintenanceDocumentEntry transformable
+            transformableFiles = dictionaryConverter.findTransformableSpringBeanFiles(files);
+            Assert.assertEquals("simple bean list count", 1, transformableFiles.size());
+        } catch (Exception e) {
+            e.printStackTrace()
+            Assert.fail("exception occurred in testing");
+        }
     }
 
     @Test

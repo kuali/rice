@@ -384,10 +384,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
     //// 
     @Override
     public AgendaDefinition createAgenda(AgendaDefinition agendaDefinition) throws RiceIllegalArgumentException {
-        AgendaDefinition agenda = agendaBoService.createAgenda(agendaDefinition);        
-        agenda = this.getAgenda(agenda.getId());
-
-        return agenda;
+        return agendaBoService.createAgenda(agendaDefinition);
     }
 
     @Override
@@ -702,7 +699,12 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
     @Override
     public AgendaItemDefinition getAgendaItem(String id) throws RiceIllegalArgumentException {
         AgendaItemDefinition agendaItem = agendaBoService.getAgendaItemById(id);
-        return setTermValuesForAgendaItem(agendaItem).build();
+
+        if (agendaItem != null) {
+            return setTermValuesForAgendaItem(agendaItem).build();
+        }
+
+        return agendaItem;
     }
 
     private AgendaItemDefinition.Builder setTermValuesForAgendaItem(AgendaItemDefinition agendaItem) {

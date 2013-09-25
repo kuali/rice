@@ -20,10 +20,12 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
+import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.api.repository.language.NaturalLanguageUsage;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.reference.ReferenceObjectBinding;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 
 import javax.jws.WebMethod;
@@ -37,7 +39,6 @@ import java.util.List;
 import java.util.Set;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaTreeDefinition;
-import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.api.repository.context.ContextSelectionCriteria;
 import org.kuali.rice.krms.api.repository.language.NaturalLanguageTemplate;
 
@@ -216,6 +217,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      */
     @WebMethod(operationName = "createAgenda")
     @WebResult(name = "agenda")
+    @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
     public AgendaDefinition createAgenda(@WebParam(name = "AgendaDefinition") AgendaDefinition agendaDefinition) throws RiceIllegalArgumentException;
 
     /**
@@ -228,6 +230,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      */
     @WebMethod(operationName = "findCreateAgenda")
     @WebResult(name = "agenda")
+    @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
     public AgendaDefinition findCreateAgenda(@WebParam(name = "AgendaDefinition") AgendaDefinition agendaDefinition) throws RiceIllegalArgumentException;
 
     /**
@@ -239,6 +242,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      */
     @WebMethod(operationName = "getAgenda")
     @WebResult(name = "agenda")
+    @Cacheable(value= AgendaDefinition.Cache.NAME, key="'id=' + #p0")
     public AgendaDefinition getAgenda(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
 
     /**
@@ -253,6 +257,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      */
     @WebMethod(operationName = "getAgendaByNameAndContextId")
     @WebResult(name = "agenda")
+    @Cacheable(value= AgendaDefinition.Cache.NAME, key="'name=' + #p0 + '|' + 'contextId=' + #p1")
     public AgendaDefinition getAgendaByNameAndContextId (@WebParam(name = "name") String name,
                                                          @WebParam(name = "contextId") String contextId);
     
@@ -268,6 +273,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
     @XmlElementWrapper(name = "agendas", required = true)
     @XmlElement(name = "agenda", required = false)
     @WebResult(name = "agendas")
+    @Cacheable(value= AgendaDefinition.Cache.NAME, key="'typeId=' + #p0")
     public List<AgendaDefinition> getAgendasByType(@WebParam(name = "typeId") String typeId) throws RiceIllegalArgumentException;
 
     /**
@@ -282,6 +288,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
     @XmlElementWrapper(name = "agendas", required = true)
     @XmlElement(name = "agenda", required = false)
     @WebResult(name = "agendas")
+    @Cacheable(value= AgendaDefinition.Cache.NAME, key="'contextId=' + #p0")
     public List<AgendaDefinition> getAgendasByContext(@WebParam(name = "contextId") String contextId) throws RiceIllegalArgumentException;
 
     /**
@@ -297,6 +304,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
     @XmlElementWrapper(name = "agendas", required = true)
     @XmlElement(name = "agenda", required = false)
     @WebResult(name = "agendas")
+    @Cacheable(value= AgendaDefinition.Cache.NAME, key="'typeId=' + #p0 + '|' + 'contextId=' + #p1")
     public List<AgendaDefinition> getAgendasByTypeAndContext(@WebParam(name = "typeId") String typeId,
             @WebParam(name = "contextId") String contextId) throws RiceIllegalArgumentException;
 
@@ -308,6 +316,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      *                                      null or invalid
      */
     @WebMethod(operationName = "updateAgenda")
+    @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
     public void updateAgenda(@WebParam(name = "agendaDefinition") AgendaDefinition agendaDefinition) throws RiceIllegalArgumentException;
 
     /**
@@ -317,6 +326,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      * @throws RiceIllegalArgumentException if the given id is null or invalid
      */
     @WebMethod(operationName = "deleteAgenda")
+    @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
     public void deleteAgenda(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
 
     ////
@@ -332,6 +342,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      */
     @WebMethod(operationName = "createAgendaItem")
     @WebResult(name = "agendaItem")
+    @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, AgendaItemDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
     public AgendaItemDefinition createAgendaItem(@WebParam(name = "AgendaItemDefinition") AgendaItemDefinition agendaItemDefinition) throws RiceIllegalArgumentException;
 
     /**
@@ -343,6 +354,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      */
     @WebMethod(operationName = "getAgendaItem")
     @WebResult(name = "agendaItem")
+    @Cacheable(value= AgendaItemDefinition.Cache.NAME, key="'id=' + #p0")
     public AgendaItemDefinition getAgendaItem(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
 
     /**
@@ -357,6 +369,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
     @XmlElementWrapper(name = "agendaItems", required = true)
     @XmlElement(name = "agendaItem", required = false)
     @WebResult(name = "agendaItems")
+    @Cacheable(value= AgendaItemDefinition.Cache.NAME, key="'typeId=' + #p0")
     public List<AgendaItemDefinition> getAgendaItemsByType(@WebParam(name = "typeId") String typeId) throws RiceIllegalArgumentException;
 
     /**
@@ -371,6 +384,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
     @XmlElementWrapper(name = "agendaItems", required = true)
     @XmlElement(name = "agendaItem", required = false)
     @WebResult(name = "agendaItems")
+    @Cacheable(value= AgendaItemDefinition.Cache.NAME, key="'contextId=' + #p0")
     public List<AgendaItemDefinition> getAgendaItemsByContext(@WebParam(name = "contextId") String contextId) throws RiceIllegalArgumentException;
 
     /**
@@ -386,6 +400,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
     @XmlElementWrapper(name = "agendaItems", required = true)
     @XmlElement(name = "agendaItem", required = false)
     @WebResult(name = "agendaItems")
+    @Cacheable(value= AgendaItemDefinition.Cache.NAME, key="'typeId=' + #p0 + '|' + 'contextId=' + #p1")
     public List<AgendaItemDefinition> getAgendaItemsByTypeAndContext(@WebParam(name = "typeId") String typeId,
             @WebParam(name = "contextId") String contextId) throws RiceIllegalArgumentException;
 
@@ -397,6 +412,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      *                                      is null or invalid
      */
     @WebMethod(operationName = "updateAgendaItem")
+    @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, AgendaItemDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
     public void updateAgendaItem(@WebParam(name = "agendaItemDefinition") AgendaItemDefinition agendaItemDefinition) throws RiceIllegalArgumentException;
 
     /**
@@ -406,6 +422,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      * @throws RiceIllegalArgumentException if the given id is null or invalid
      */
     @WebMethod(operationName = "deleteAgendaItem")
+    @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, AgendaItemDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
     public void deleteAgendaItem(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
 
     ////
@@ -452,7 +469,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      */
     @WebMethod(operationName = "getRuleByNameAndNamespace")
     @WebResult(name = "rule")
-    public RuleDefinition getRuleByNameAndNamespace(@WebParam(name = "name") String name, 
+    public RuleDefinition getRuleByNameAndNamespace(@WebParam(name = "name") String name,
                                                     @WebParam(name = "namespace") String namespace);
 	
     /**
@@ -1110,6 +1127,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      */
     @WebMethod(operationName = "getAgendaTree")
     @WebResult(name = "agendaTree")
+    @Cacheable(value= AgendaTreeDefinition.Cache.NAME, key="'agendaId=' + #p0")
     public AgendaTreeDefinition getAgendaTree(@WebParam(name = "agendaId") String agendaId)
             throws RiceIllegalArgumentException;
 
@@ -1138,6 +1156,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
     @XmlElementWrapper(name = "agendaTrees", required = true)
     @XmlElement(name = "agendaTree", required = false)
     @WebResult(name = "agendaTrees")
+    @Cacheable(value= AgendaTreeDefinition.Cache.NAME, key="'agendaIds=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p0)")
     public List<AgendaTreeDefinition> getAgendaTrees(@WebParam(name = "agendaIds") List<String> agendaIds)
             throws RiceIllegalArgumentException;
 

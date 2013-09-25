@@ -16,16 +16,22 @@
 
 package org.kuali.rice.krms.test;
 
+import org.apache.commons.lang.StringUtils;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaTreeDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaTreeEntryDefinitionContract;
+import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 /**
@@ -116,13 +122,8 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
         List<AgendaItemDefinition> agendaItems = ruleManagementService.getAgendaItemsByContext(t2.contextId);
         assertEquals("Invalid number of agendaItems created", 7, agendaItems.size());
 
-        // look for agendaItem which should not exist
-        try {
-             AgendaItemDefinition junkAgendaItem = ruleManagementService.getAgendaItem("junk");
-             fail("should have thrown a NullPointerException");
-        } catch (NullPointerException e) {
-            // throws NullPointerException RuleManagementServiceImpl.getAgendaItem(RuleManagementServiceImpl.java:
-        }
+        AgendaItemDefinition junkAgendaItem = ruleManagementService.getAgendaItem("junk");
+        assertNull("AgendaItem is not null", junkAgendaItem);
     }
 
     /**
@@ -246,12 +247,8 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
         assertEquals("Invalid number of agendaItems created", 6, agendaItems.size());
 
         // look for a agendaItem which does not exist
-        try {
-            AgendaItemDefinition junkAgendaItem = ruleManagementService.getAgendaItem("junk");
-            fail("should have thrown a NullPointerException");
-        } catch (NullPointerException e) {
-            // throws NullPointerException RuleManagementServiceImpl.getAgendaItem(RuleManagementServiceImpl.java:
-        }
+        AgendaItemDefinition junkAgendaItem = ruleManagementService.getAgendaItem("junk");
+        assertNull("AgendaItem is not null", junkAgendaItem);
     }
 
     /**
@@ -331,5 +328,90 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
         assertEquals("Invalid AgendaItem value",null,agendaItem.getWhenTrueId());
         assertEquals("Invalid AgendaItem value",null,agendaItem.getWhenFalse());
         assertEquals("Invalid AgendaItem value",null,agendaItem.getWhenFalseId());
+    }
+
+    /**
+     * Tests whether the {@code AgendaItemDefinition} cache is being evicted properly by checking the status the
+     * dependent objects before and after creating an {@code AgendaItemDefinition} (and consequently emptying the cache).
+     *
+     * <p>
+     * The following object caches are affected:
+     * {@code AgendaItemDefinition}, {@code AgendaDefinition}, {@code ContextDefinition}, {@code AgendaTreeDefinition}
+     * </p>
+     */
+    @Test
+    public void testAgendaItemCacheEvict() {
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t11 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t11");
+
+        verifyEmptyAgendaItem(t11);
+
+        createTestAgenda(t11.object0);
+
+        verifyFullAgendaItem(t11);
+    }
+
+    private void verifyEmptyAgendaItem(RuleManagementBaseTestObjectNames t) {
+        AgendaItemDefinition agendaItem = ruleManagementService.getAgendaItem(t.agendaItem_Id);
+        assertNull("AgendaItem is not null", agendaItem);
+
+        AgendaDefinition agenda = ruleManagementService.getAgenda(t.agenda_Id);
+        Assert.assertFalse("AgendaItem in Agenda found", agenda != null && agenda.getFirstItemId() != null);
+
+        boolean foundAgendaItem = false;
+        ContextDefinition context = ruleManagementService.getContext(t.contextId);
+        if (context != null) {
+            for (AgendaDefinition contextAgenda : context.getAgendas()) {
+                if (StringUtils.equals(t.agendaItem_Id, contextAgenda.getFirstItemId())) {
+                    foundAgendaItem = true;
+                    break;
+                }
+            }
+        }
+        Assert.assertFalse("AgendaItem in Context found", foundAgendaItem);
+
+        foundAgendaItem = false;
+        AgendaTreeDefinition agendaTree = ruleManagementService.getAgendaTree(t.agenda_Id);
+        if (agendaTree != null) {
+            for (AgendaTreeEntryDefinitionContract agendaTreeEntry : agendaTree.getEntries()) {
+                if (StringUtils.equals(t.agendaItem_Id, agendaTreeEntry.getAgendaItemId())) {
+                    foundAgendaItem = true;
+                    break;
+                }
+            }
+        }
+        Assert.assertFalse("AgendaItem in AgendaTree found", foundAgendaItem);
+    }
+
+    private void verifyFullAgendaItem(RuleManagementBaseTestObjectNames t) {
+        AgendaItemDefinition agendaItem = ruleManagementService.getAgendaItem(t.agendaItem_Id);
+        Assert.assertNotNull("AgendaItem is null", agendaItem);
+
+        AgendaDefinition agenda = ruleManagementService.getAgenda(t.agenda_Id);
+        Assert.assertTrue("AgendaItem in Agenda not found", agenda != null && agenda.getFirstItemId() != null);
+
+        boolean foundAgendaItem = false;
+        ContextDefinition context = ruleManagementService.getContext(t.contextId);
+        if (context != null) {
+            for (AgendaDefinition contextAgenda : context.getAgendas()) {
+                if (StringUtils.equals(t.agendaItem_Id, contextAgenda.getFirstItemId())) {
+                    foundAgendaItem = true;
+                    break;
+                }
+            }
+        }
+        Assert.assertTrue("AgendaItem in Context not found", foundAgendaItem);
+
+        foundAgendaItem = false;
+        AgendaTreeDefinition agendaTree = ruleManagementService.getAgendaTree(t.agenda_Id);
+        if (agendaTree != null) {
+            for (AgendaTreeEntryDefinitionContract agendaTreeEntry : agendaTree.getEntries()) {
+                if (StringUtils.equals(t.agendaItem_Id, agendaTreeEntry.getAgendaItemId())) {
+                    foundAgendaItem = true;
+                    break;
+                }
+            }
+        }
+        Assert.assertTrue("AgendaItem in AgendaTree not found", foundAgendaItem);
     }
 }

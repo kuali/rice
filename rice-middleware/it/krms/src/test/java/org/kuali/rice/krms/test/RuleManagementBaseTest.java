@@ -16,6 +16,7 @@
 
 package org.kuali.rice.krms.test;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krms.api.repository.LogicalOperator;
@@ -36,8 +37,6 @@ import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
-import org.kuali.rice.krms.impl.repository.NaturalLanguageTemplateBoServiceImpl;
-import org.kuali.rice.krms.impl.repository.NaturalLanguageTemplateIntegrationGenTest;
 import org.kuali.rice.test.BaselineTestCase;
 
 import java.util.ArrayList;
@@ -302,33 +301,45 @@ public class RuleManagementBaseTest extends AbstractAgendaBoTest{
      */
     protected AgendaDefinition.Builder createTestAgenda(String objectDiscriminator) {
         String namespace =  "Namespace" + objectDiscriminator;
-        // create a context
+
+        // create a type and load it into cache
+        KrmsTypeDefinition.Builder typeDefinitionBuilder = KrmsTypeDefinition.Builder.create(
+                "TypeName" + objectDiscriminator, namespace);
+        typeDefinitionBuilder.setId("TypeId" + objectDiscriminator);
+        krmsTypeRepository.createKrmsType(typeDefinitionBuilder.build());
+        KrmsTypeDefinition typeDefinition = krmsTypeRepository.getTypeById(typeDefinitionBuilder.getId());
+        Assert.assertNotNull(typeDefinition);
+
+        // create a context and load it into cache
         ContextDefinition.Builder contextDefinitionBuilder = ContextDefinition.Builder.create(
                 namespace, "ContextName" + objectDiscriminator);
         contextDefinitionBuilder.setId("ContextId" + objectDiscriminator);
-        ContextDefinition contextDefinition = contextDefinitionBuilder.build();
-        contextDefinition = ruleManagementService.createContext(contextDefinition);
+        ruleManagementService.createContext(contextDefinitionBuilder.build());
+        ContextDefinition contextDefinition = ruleManagementService.getContext(contextDefinitionBuilder.getId());
+        Assert.assertNotNull(contextDefinition);
+
+        // create a rule and load it into cache
+        ruleManagementService.createRule(buildTestRuleDefinition(namespace, objectDiscriminator));
+        RuleDefinition ruleDefinition = ruleManagementService.getRule("RuleId" + objectDiscriminator);
+        Assert.assertNotNull(ruleDefinition);
 
         // create an agenda ( a agendaItem cannot be created without an existing agenda.
         AgendaDefinition.Builder agendaBuilder = AgendaDefinition.Builder.create(
-                "AgendaId" + objectDiscriminator, "AgendaName" + objectDiscriminator, null, "ContextId" + objectDiscriminator);
-        AgendaDefinition agenda = agendaBuilder.build();
-        agenda = ruleManagementService.createAgenda(agenda);
-
-        // create a rule
-        RuleDefinition rule = ruleManagementService.createRule(buildTestRuleDefinition(namespace,
-                objectDiscriminator));
-
-        // create a agendaItem using the context agenda and rule above
-        AgendaItemDefinition agendaItem = buildTestAgendaItemDefinition("AI" + objectDiscriminator, agenda.getId(),
-                rule.getId());
-        agendaItem = ruleManagementService.createAgendaItem(agendaItem);
+                "AgendaId" + objectDiscriminator, "AgendaName" + objectDiscriminator, "TypeId" + objectDiscriminator,
+                "ContextId" + objectDiscriminator);
+        ruleManagementService.createAgenda(agendaBuilder.build());
+        AgendaDefinition agendaDefinition = ruleManagementService.getAgenda(agendaBuilder.getId());
+        
+        // create a agendaItem using the objects above
+        ruleManagementService.createAgendaItem(buildTestAgendaItemDefinition("AI" + objectDiscriminator,
+                agendaDefinition.getId(), ruleDefinition.getId()));
+        AgendaItemDefinition agendaItem = ruleManagementService.getAgendaItem("AI" + objectDiscriminator);
 
         agendaBuilder = AgendaDefinition.Builder.create(ruleManagementService.getAgenda("AgendaId" + objectDiscriminator));
-        agendaBuilder.setFirstItemId("AI" + objectDiscriminator);
+        agendaBuilder.setFirstItemId(agendaItem.getId());
         ruleManagementService.updateAgenda(agendaBuilder.build());
 
-        return AgendaDefinition.Builder.create(ruleManagementService.getAgenda(agenda.getId()));
+        return agendaBuilder;
     }
 
     protected AgendaDefinition.Builder buildComplexAgenda(RuleManagementBaseTestObjectNames names) {

@@ -16,14 +16,16 @@
 
 package org.kuali.rice.krms.test;
 
+import org.apache.commons.lang.StringUtils;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.krad.criteria.CriteriaLookupDaoProxy;
-import org.kuali.rice.krad.criteria.CriteriaLookupServiceImpl;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaTreeDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaTreeEntryDefinitionContract;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.springmodules.orm.ojb.OjbOperationException;
@@ -88,7 +90,7 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
 
         assertEquals("Invalid agendaId name found",t1.agenda_Id,agendaDefinition.getId());
         assertEquals("Invalid contextId found",t1.contextId,agendaDefinition.getContextId());
-        assertNull("Agenda typeId should not have been set", agendaDefinition.getTypeId());
+        assertEquals("Invalid typeId found", t1.typeId,agendaDefinition.getTypeId());
         assertEquals("Incorrect agendaName found",t1.agenda_Name,agendaDefinition.getName());
         assertEquals("Invalid agendaFirstItemId found",t1.agendaItem_0_Id,agendaDefinition.getFirstItemId());
 
@@ -460,5 +462,84 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
         }
 
         assertEquals("Incorrect results of findAgendaIds",3,agendasFound);
+    }
+
+    /**
+     * Tests whether the {@code AgendaDefinition} cache is being evicted properly by checking the status the dependent
+     * objects before and after creating an {@code AgendaDefinition} (and consequently emptying the cache).
+     *
+     * <p>
+     * The following object caches are affected:
+     * {@code AgendaDefinition}, {@code ContextDefinition}, {@code AgendaTreeDefinition}
+     * </p>
+     */
+    @Test
+    public void testAgendaCacheEvict() {
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t15 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t15");
+
+        verifyEmptyAgenda(t15);
+
+        createTestAgenda(t15.object0);
+
+        verifyFullAgenda(t15);
+    }
+
+    private void verifyEmptyAgenda(RuleManagementBaseTestObjectNames t) {
+        AgendaDefinition agenda = ruleManagementService.getAgenda(t.agenda_Id);
+        Assert.assertNull("Agenda is not null", agenda);
+
+        boolean foundAgenda = false;
+        ContextDefinition context = ruleManagementService.getContext(t.contextId);
+        if (context != null) {
+            for (AgendaDefinition contextAgenda : context.getAgendas()) {
+                if (StringUtils.equals(t.agenda_Id, contextAgenda.getId())) {
+                    foundAgenda = true;
+                    break;
+                }
+            }
+        }
+        Assert.assertFalse("Agenda in Context found", foundAgenda);
+
+        boolean foundAgendaItem = false;
+        AgendaTreeDefinition agendaTree = ruleManagementService.getAgendaTree(t.agenda_Id);
+        if (agendaTree != null) {
+            for (AgendaTreeEntryDefinitionContract agendaTreeEntry : agendaTree.getEntries()) {
+                if (StringUtils.equals(t.agendaItem_Id, agendaTreeEntry.getAgendaItemId())) {
+                    foundAgendaItem = true;
+                    break;
+                }
+            }
+        }
+        Assert.assertFalse("AgendaItem in AgendaTree found", foundAgendaItem);
+    }
+
+    private void verifyFullAgenda(RuleManagementBaseTestObjectNames t) {
+        AgendaDefinition agenda = ruleManagementService.getAgenda(t.agenda_Id);
+        Assert.assertNotNull("Agenda is null", agenda);
+
+        boolean foundAgenda = false;
+        ContextDefinition context = ruleManagementService.getContext(t.contextId);
+        if (context != null) {
+            for (AgendaDefinition contextAgenda : context.getAgendas()) {
+                if (StringUtils.equals(t.agenda_Id, contextAgenda.getId())) {
+                    foundAgenda = true;
+                    break;
+                }
+            }
+        }
+        Assert.assertTrue("Agenda in Context not found", foundAgenda);
+
+        boolean foundAgendaItem = false;
+        AgendaTreeDefinition agendaTree = ruleManagementService.getAgendaTree(t.agenda_Id);
+        if (agendaTree != null) {
+            for (AgendaTreeEntryDefinitionContract agendaTreeEntry : agendaTree.getEntries()) {
+                if (StringUtils.equals(t.agendaItem_Id, agendaTreeEntry.getAgendaItemId())) {
+                    foundAgendaItem = true;
+                    break;
+                }
+            }
+        }
+        Assert.assertTrue("AgendaItem in AgendaTree not found", foundAgendaItem);
     }
 }

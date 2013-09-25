@@ -54,6 +54,7 @@ public class RuleManagementBaseTestObjectNames {
     protected String action4_Descr;
     protected String agenda_Id;
     protected String agenda_Name;
+    protected String agendaItem_Id;
     protected String agendaItem_0_Id;
     protected String agendaItem_1_Id;
     protected String agendaItem_2_Id;
@@ -62,6 +63,9 @@ public class RuleManagementBaseTestObjectNames {
     protected String agendaItem_5_Id;
     protected String agendaItem_6_Id;
     protected String agendaItem_7_Id;
+
+    protected String typeId;
+    protected String type0_Id;
 
     protected String contextId;
     protected String context0_Id;
@@ -111,7 +115,6 @@ public class RuleManagementBaseTestObjectNames {
     protected String referenceObject_1_DiscriminatorType;
     protected String referenceObject_2_DiscriminatorType;
     protected String referenceObject_3_DiscriminatorType;
-
 
     protected String rule_0_Id;
     protected String rule_1_Id;
@@ -170,6 +173,7 @@ public class RuleManagementBaseTestObjectNames {
         agenda_Id = "AgendaId" + object0;
         agenda_Name = "AgendaName" + object0;
 
+        agendaItem_Id = "AI" + object0;
         agendaItem_0_Id = "AI" + object0;
         agendaItem_1_Id = "AI" + object1;
         agendaItem_2_Id = "AI" + object2;
@@ -178,6 +182,9 @@ public class RuleManagementBaseTestObjectNames {
         agendaItem_5_Id = "AI" + object5;
         agendaItem_6_Id = "AI" + object6;
         agendaItem_7_Id = "AI" + object7;
+
+        typeId = "TypeId" + object0;
+        type0_Id = "TypeId" + object0;
 
         contextId = "ContextId" + object0;
         context0_Id = "ContextId" + object0;

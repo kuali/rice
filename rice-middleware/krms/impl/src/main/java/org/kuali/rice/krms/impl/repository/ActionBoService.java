@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
+import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 
@@ -38,7 +39,7 @@ public interface ActionBoService {
      * @throws IllegalArgumentException if the action is null
      * @throws IllegalStateException if the action already exists in the system
      */
-    @CacheEvict(value={ActionDefinition.Cache.NAME}, allEntries = true)
+    @CacheEvict(value={ActionDefinition.Cache.NAME, RuleDefinition.Cache.NAME}, allEntries = true)
 	public ActionDefinition createAction(ActionDefinition action);
 	
     /**
@@ -48,7 +49,7 @@ public interface ActionBoService {
      * @throws IllegalArgumentException if the Action is null
      * @throws IllegalStateException if the Action does not exists in the system
      */
-    @CacheEvict(value={ActionDefinition.Cache.NAME}, allEntries = true)
+    @CacheEvict(value={ActionDefinition.Cache.NAME, RuleDefinition.Cache.NAME}, allEntries = true)
 	public void updateAction(ActionDefinition action);
 	
     /**

@@ -544,6 +544,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      */
     @WebMethod(operationName = "createAction")
     @WebResult(name = "action")
+    @CacheEvict(value={ActionDefinition.Cache.NAME, RuleDefinition.Cache.NAME}, allEntries = true)
     public ActionDefinition createAction(@WebParam(name = "actionDefinition") ActionDefinition actionDefinition) throws RiceIllegalArgumentException;
 
     /**
@@ -559,6 +560,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      */
     @WebMethod(operationName = "getAction")
     @WebResult(name = "action")
+    @Cacheable(value= ActionDefinition.Cache.NAME, key="'actionId=' + #p0")
     public ActionDefinition getAction(@WebParam(name = "actionId") String actionId) throws RiceIllegalArgumentException;
 
     /**
@@ -581,6 +583,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
     @XmlElementWrapper(name = "actions", required = true)
     @XmlElement(name = "action", required = false)
     @WebResult(name = "actions")
+    @Cacheable(value= ActionDefinition.Cache.NAME, key="'actionIds=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p0)")
     public List<ActionDefinition> getActions(@WebParam(name = "actionIds") List<String> actionIds)  throws RiceIllegalArgumentException;
 
     /**
@@ -592,6 +595,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      * or invalid
      */
     @WebMethod(operationName = "updateAction")
+    @CacheEvict(value={ActionDefinition.Cache.NAME, RuleDefinition.Cache.NAME}, allEntries = true)
     public void updateAction(@WebParam(name = "actionDefinition") ActionDefinition actionDefinition) throws RiceIllegalArgumentException;
 
     /**
@@ -601,6 +605,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      * @throws RiceIllegalArgumentException if the given id is null or invalid
      */
     @WebMethod(operationName = "deleteAction")
+    @CacheEvict(value={ActionDefinition.Cache.NAME, RuleDefinition.Cache.NAME}, allEntries = true)
     public void deleteAction(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
   
     

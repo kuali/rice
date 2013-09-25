@@ -16,6 +16,7 @@
 
 package org.kuali.rice.krms.test;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
@@ -27,10 +28,7 @@ import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 /**
@@ -234,5 +232,52 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
         if(!actionIds.contains(t5.action0_Id)){
             fail("actionId not found");
         }
+    }
+
+    /**
+     * Tests whether the {@code AgendaItemDefinition} cache is being evicted properly by checking the status the
+     * dependent objects before and after creating an {@code AgendaItemDefinition} (and consequently emptying the cache).
+     *
+     * <p>
+     * The following object caches are affected:
+     * {@code ActionDefinition}, {@code RuleDefinition}
+     * </p>
+     */
+    @Test
+    public void testActionCacheEvict() {
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t6 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t6");
+
+        verifyEmptyAction(t6);
+
+        RuleDefinition ruleDefinition = buildTestRuleDefinition(t6.namespaceName, t6.object0);
+        buildTestActionDefinition(t6.action_Id, t6.action_Name, t6.action_Descr, 1, ruleDefinition.getId(), t6.namespaceName);
+
+        verifyFullAction(t6);
+    }
+
+    private void verifyEmptyAction(RuleManagementBaseTestObjectNames t) {
+        ActionDefinition action = ruleManagementService.getAction(t.action_Id);
+        assertNull("Action is not null", action);
+
+        RuleDefinition rule = ruleManagementService.getRule(t.rule_Id);
+        assertFalse("Action in Rule found", rule != null);
+    }
+
+    private void verifyFullAction(RuleManagementBaseTestObjectNames t) {
+        ActionDefinition action = ruleManagementService.getAction(t.action_Id);
+        assertNotNull("Action is null", action);
+
+        boolean foundRule = false;
+        RuleDefinition rule = ruleManagementService.getRule(t.rule_Id);
+        if (rule != null) {
+            for (ActionDefinition ruleAction : rule.getActions()) {
+                if (StringUtils.equals(t.rule_Id, ruleAction.getRuleId())) {
+                    foundRule = true;
+                    break;
+                }
+            }
+        }
+        assertTrue("Action in Rule not found", foundRule);
     }
 }

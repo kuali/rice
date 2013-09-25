@@ -335,7 +335,7 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
      *
      * <p>
      * The following object caches are affected:
-     * {@code AgendaItemDefinition}, {@code AgendaDefinition}, {@code ContextDefinition}, {@code AgendaTreeDefinition}
+     * {@code AgendaTreeDefinition}, {@code AgendaDefinition}, {@code AgendaItemDefinition}, {@code ContextDefinition}
      * </p>
      */
     @Test

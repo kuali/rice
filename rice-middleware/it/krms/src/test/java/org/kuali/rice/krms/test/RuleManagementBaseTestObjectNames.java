@@ -23,6 +23,7 @@ package org.kuali.rice.krms.test;
  */
 public class RuleManagementBaseTestObjectNames {
     protected String discriminator;
+
     protected String object0;
     protected String object1;
     protected String object2;
@@ -32,6 +33,11 @@ public class RuleManagementBaseTestObjectNames {
     protected String object6;
     protected String object7;
     protected String object8;
+
+    protected String action;
+    protected String action_Id;
+    protected String action_Name;
+    protected String action_Descr;
     protected String action0;
     protected String action0_Id;
     protected String action0_Name;
@@ -52,6 +58,7 @@ public class RuleManagementBaseTestObjectNames {
     protected String action4_Id;
     protected String action4_Name;
     protected String action4_Descr;
+
     protected String agenda_Id;
     protected String agenda_Name;
     protected String agendaItem_Id;
@@ -116,6 +123,7 @@ public class RuleManagementBaseTestObjectNames {
     protected String referenceObject_2_DiscriminatorType;
     protected String referenceObject_3_DiscriminatorType;
 
+    protected String rule_Id;
     protected String rule_0_Id;
     protected String rule_1_Id;
     protected String rule_2_Id;
@@ -149,6 +157,10 @@ public class RuleManagementBaseTestObjectNames {
         object7 = classDiscriminator + testDiscriminator + "07";
         object8 = classDiscriminator + testDiscriminator + "08";
 
+        action = "Action" + object0;
+        action_Id = "ActionId" + object0;
+        action_Name = "ActionName" + object0;
+        action_Descr = "ActionDesc" + object0;
         action0 = "Action" + object0;
         action0_Id = "ActionId" + object0;
         action0_Name = "ActionName" + object0;
@@ -226,6 +238,7 @@ public class RuleManagementBaseTestObjectNames {
         referenceObject_2_DiscriminatorType = "ParkingAffiliationType";
         referenceObject_3_DiscriminatorType = "ParkingAffiliationType";
 
+        rule_Id = "RuleId" + object0;
         rule_0_Id = "RuleId" + object0;
         rule_1_Id = "RuleId" + object1;
         rule_2_Id = "RuleId" + object2;

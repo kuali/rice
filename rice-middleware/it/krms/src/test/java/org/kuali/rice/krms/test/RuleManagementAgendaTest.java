@@ -26,6 +26,7 @@ import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaTreeDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaTreeEntryDefinitionContract;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
+import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.springmodules.orm.ojb.OjbOperationException;
 
@@ -60,17 +61,19 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t0 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t0");
 
-        // createTestAgenda utilizes the ruleManagementServiceImpl.createAgenda method
-        AgendaDefinition.Builder agendaBuilder = createTestAgenda(t0.object0);
+        String ruleId = buildTestRuleDefinition(t0.namespaceName, t0.object0).getId();
+        String agendaId = createTestAgenda(t0.object0).getId();
+        buildTestAgendaItemDefinition(t0.agendaItem_Id, agendaId, ruleId);
+        AgendaDefinition agendaDefinition = ruleManagementService.getAgenda(agendaId);
 
-        assertTrue("Created agenda is not active", agendaBuilder.isActive());
+        assertTrue("Created agenda is not active", agendaDefinition.isActive());
 
-        assertEquals("Expected Context not found",t0.contextId,agendaBuilder.getContextId());
-        assertEquals("Expected AgendaId not found",t0.agenda_Id,agendaBuilder.getId());
+        assertEquals("Expected Context not found",t0.contextId,agendaDefinition.getContextId());
+        assertEquals("Expected AgendaId not found",t0.agenda_Id,agendaDefinition.getId());
 
-        assertEquals("Expected AgendaItemId not found",t0.agendaItem_0_Id,agendaBuilder.getFirstItemId());
+        assertEquals("Expected AgendaItemId not found",t0.agendaItem_0_Id,agendaDefinition.getFirstItemId());
         assertEquals("Expected Rule of AgendaItem not found",t0.rule_0_Id,
-                ruleManagementService.getAgendaItem(agendaBuilder.getFirstItemId()).getRule().getId());
+                ruleManagementService.getAgendaItem(agendaDefinition.getFirstItemId()).getRule().getId());
     }
 
     /**
@@ -82,7 +85,11 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
     public void testGetAgendaByNameAndContextId() {
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t1 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t1");
-        createTestAgenda(t1.object0);
+
+        String ruleId = buildTestRuleDefinition(t1.namespaceName, t1.object0).getId();
+        String agendaId = createTestAgenda(t1.object0).getId();
+        buildTestAgendaItemDefinition(t1.agendaItem_Id, agendaId, ruleId);
+
         AgendaDefinition agendaDefinition = ruleManagementService.getAgendaByNameAndContextId(t1.agenda_Name,t1.contextId);
 
         assertEquals("Invalid agendaId name found",t1.agenda_Id,agendaDefinition.getId());
@@ -152,12 +159,10 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
 
         // create a new agendaItem to update the agenda with
         AgendaItemDefinition agendaItem = buildTestAgendaItemDefinition("AINew" + t2.action0, t2.agenda_Id, null);
-        AgendaItemDefinition.Builder itemBuilder = AgendaItemDefinition.Builder.create(agendaItem);
-        itemBuilder = AgendaItemDefinition.Builder.create(ruleManagementService.createAgendaItem(itemBuilder.build()));
 
         //  findCreateAgenda with changed agendaFirstItemId
-        agendaBuilder = AgendaDefinition.Builder.create(t2.agenda_Id, t2.agenda_Name, null, t2.contextId);
-        agendaBuilder.setFirstItemId(itemBuilder.getId());
+        agendaBuilder = AgendaDefinition.Builder.create(t2.agenda_Id, t2.agenda_Name, t2.typeId, t2.contextId);
+        agendaBuilder.setFirstItemId(agendaItem.getId());
         agenda = ruleManagementService.findCreateAgenda(agendaBuilder.build());
 
         assertEquals("Agenda should have been changed by findCreateAgenda","AINew" + t2.action0,
@@ -173,7 +178,7 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
     public void testGetAgenda() {
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t3 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t3");
-        AgendaDefinition.Builder agendaBuilder = createTestAgenda(t3.object0);
+        AgendaDefinition agendaDefinition = createTestAgenda(t3.object0);
 
         assertEquals("Agenda not found", t3.agenda_Name, ruleManagementService.getAgenda(t3.agenda_Id).getName());
 
@@ -264,7 +269,7 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
         RuleManagementBaseTestObjectNames t6 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t6");
         createTestAgenda(t6.object0);
         // create krms type AGENDA
-        KrmsTypeDefinition krmsType = createKrmsTypeDefinition(t6.namespaceName, "AGENDA", null);
+        KrmsTypeDefinition krmsType = createKrmsTypeDefinition(null, t6.namespaceName, "AGENDA", null);
 
         AgendaDefinition.Builder agendaBuilder = AgendaDefinition.Builder.create(ruleManagementService.getAgenda(t6.agenda_Id));
         agendaBuilder.setTypeId(krmsType.getId());
@@ -288,7 +293,7 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
 
         assertNull("Agenda should not yet exist", ruleManagementService.getAgenda(t7.agenda_Id));
 
-        AgendaDefinition.Builder agendaBuilder = createTestAgenda(t7.object0);
+        AgendaDefinition agendaDefinition = createTestAgenda(t7.object0);
         assertNotNull("Agenda should exist", ruleManagementService.getAgenda(t7.agenda_Id));
 
         ruleManagementService.deleteAgenda(t7.agenda_Id);
@@ -325,7 +330,7 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
         createTestAgenda(t9.object0);
 
         // create krms type AGENDA5008
-        KrmsTypeDefinition krmsType = createKrmsTypeDefinition(t8.namespaceName, t8.namespaceType, null);
+        KrmsTypeDefinition krmsType = createKrmsTypeDefinition(null, t8.namespaceName, t8.namespaceType, null);
 
         // set agendaType for both agendas
         AgendaDefinition.Builder agendaBuilder = AgendaDefinition.Builder.create(ruleManagementService.getAgenda(t8.agenda_Id));
@@ -367,7 +372,7 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
         createTestAgenda(t11.object0);
 
         // create krms type AGENDA5010
-        KrmsTypeDefinition krmsType = createKrmsTypeDefinition(t10.namespaceName, t10.namespaceType, null);
+        KrmsTypeDefinition krmsType = createKrmsTypeDefinition(null, t10.namespaceName, t10.namespaceType, null);
 
         // set agendaType for both agendas and contextId of 5011 to match 5010
         AgendaDefinition.Builder agendaBuilder = AgendaDefinition.Builder.create(ruleManagementService.getAgenda(t10.agenda_Id));
@@ -414,7 +419,7 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
         createTestAgenda(t14.object0);
 
         // create krms type t12.AGENDA
-        KrmsTypeDefinition krmsType = createKrmsTypeDefinition(t12.namespaceName, t12.namespaceType, null);
+        KrmsTypeDefinition krmsType = createKrmsTypeDefinition(null, t12.namespaceName, t12.namespaceType, null);
 
         // set agendaType for all agendas to match / and contextId of 5013 to match 5012 but not match 5014
         AgendaDefinition.Builder agendaBuilder = AgendaDefinition.Builder.create(ruleManagementService.getAgenda(
@@ -477,7 +482,9 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
 
         verifyEmptyAgenda(t15);
 
-        createTestAgenda(t15.object0);
+        RuleDefinition ruleDefinition = buildTestRuleDefinition(t15.namespaceName, t15.object0);
+        AgendaDefinition agendaDefinition = createTestAgenda(t15.object0);
+        buildTestAgendaItemDefinition(t15.agendaItem_Id, agendaDefinition.getId(), ruleDefinition.getId());
 
         verifyFullAgenda(t15);
     }

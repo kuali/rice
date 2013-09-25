@@ -447,6 +447,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      */
     @WebMethod(operationName = "createRule")
     @WebResult(name = "rule")
+    @CacheEvict(value={RuleDefinition.Cache.NAME, PropositionDefinition.Cache.NAME, ActionDefinition.Cache.NAME, AgendaItemDefinition.Cache.NAME}, allEntries = true)
     public RuleDefinition createRule(@WebParam(name = "ruleDefinition") RuleDefinition ruleDefinition) throws RiceIllegalArgumentException;
 
     /**
@@ -462,6 +463,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      */
     @WebMethod(operationName = "getRule")
     @WebResult(name = "rule")
+    @Cacheable(value= RuleDefinition.Cache.NAME, key="'ruleId=' + #p0")
     public RuleDefinition getRule(@WebParam(name = "ruleId") String ruleId);
 
     /**
@@ -478,6 +480,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      */
     @WebMethod(operationName = "getRuleByNameAndNamespace")
     @WebResult(name = "rule")
+    @Cacheable(value= RuleDefinition.Cache.NAME, key="'name=' + #p0 + '|' + 'namespace=' + #p1")
     public RuleDefinition getRuleByNameAndNamespace(@WebParam(name = "name") String name,
                                                     @WebParam(name = "namespace") String namespace);
 	
@@ -504,6 +507,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
     @XmlElementWrapper(name = "rules", required = true)
     @XmlElement(name = "rule", required = false)
     @WebResult(name = "rules")
+    @Cacheable(value= RuleDefinition.Cache.NAME, key="'ruleIds=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p0)")
     public List<RuleDefinition> getRules(@WebParam(name = "ruleIds") List<String> ruleIds);
 
     /**
@@ -514,6 +518,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      *                                      or invalid
      */
     @WebMethod(operationName = "updateRule")
+    @CacheEvict(value={RuleDefinition.Cache.NAME, PropositionDefinition.Cache.NAME, ActionDefinition.Cache.NAME, AgendaItemDefinition.Cache.NAME}, allEntries = true)
     public void updateRule(@WebParam(name = "ruleDefinition") RuleDefinition ruleDefinition) throws RiceIllegalArgumentException;
 
     /**
@@ -523,6 +528,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      * @throws RiceIllegalArgumentException if the given id is null or invalid
      */
     @WebMethod(operationName = "deleteRule")
+    @CacheEvict(value={RuleDefinition.Cache.NAME, PropositionDefinition.Cache.NAME, ActionDefinition.Cache.NAME, AgendaItemDefinition.Cache.NAME}, allEntries = true)
     public void deleteRule(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
 
     ////

@@ -55,15 +55,17 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t0 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t0");
 
-        // createTestAgenda uses the ruleManagementServiceImpl.createAgendaItem method
-        AgendaDefinition.Builder agendaBuilder = createTestAgenda(t0.object0);
+        String ruleId = buildTestRuleDefinition(t0.namespaceName, t0.object0).getId();
+        String agendaId = createTestAgenda(t0.object0).getId();
+        buildTestAgendaItemDefinition(t0.agendaItem_Id, agendaId, ruleId);
+        AgendaDefinition agendaDefinition = ruleManagementService.getAgenda(agendaId);
 
-        assertEquals("Expected Context not found",t0.contextId,agendaBuilder.getContextId());
-        assertEquals("Expected AgendaId not found",t0.agenda_Id,agendaBuilder.getId());
+        assertEquals("Expected Context not found",t0.contextId,agendaDefinition.getContextId());
+        assertEquals("Expected AgendaId not found",t0.agenda_Id,agendaDefinition.getId());
 
-        assertEquals("Expected AgendaItemId not found",t0.agendaItem_0_Id,agendaBuilder.getFirstItemId());
+        assertEquals("Expected AgendaItemId not found",t0.agendaItem_0_Id,agendaDefinition.getFirstItemId());
         assertEquals("Expected Rule of AgendaItem not found",t0.rule_0_Id,
-                ruleManagementService.getAgendaItem(agendaBuilder.getFirstItemId()).getRule().getId());
+                ruleManagementService.getAgendaItem(agendaDefinition.getFirstItemId()).getRule().getId());
     }
 
     /**
@@ -95,7 +97,7 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t2 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t2");
 
-        AgendaDefinition.Builder agendaBuilder = buildComplexAgenda(t2);
+        buildComplexAgenda(t2);
 
         AgendaItemDefinition agendaItem = ruleManagementService.getAgendaItem(t2.agendaItem_0_Id);
         assertEquals("Invalid AgendaItem value",t2.agendaItem_0_Id,agendaItem.getId());
@@ -343,7 +345,9 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
 
         verifyEmptyAgendaItem(t11);
 
-        createTestAgenda(t11.object0);
+        RuleDefinition ruleDefinition = buildTestRuleDefinition(t11.namespaceName, t11.object0);
+        AgendaDefinition agendaDefinition = createTestAgenda(t11.object0);
+        buildTestAgendaItemDefinition(t11.agendaItem_Id, agendaDefinition.getId(), ruleDefinition.getId());
 
         verifyFullAgendaItem(t11);
     }

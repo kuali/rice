@@ -16,18 +16,20 @@
 
 package org.kuali.rice.krms.test;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.krad.criteria.CriteriaLookupDaoProxy;
-import org.kuali.rice.krad.criteria.CriteriaLookupServiceImpl;
+import org.kuali.rice.krms.api.repository.action.ActionDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
@@ -57,8 +59,7 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t0 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t0");
 
-        RuleDefinition ruleDefinition = ruleManagementService.createRule(buildTestRuleDefinition(t0.namespaceName,
-                t0.object0));
+        RuleDefinition ruleDefinition = buildTestRuleDefinition(t0.namespaceName, t0.object0);
 
         RuleDefinition returnRuleDefinition = ruleManagementService.getRuleByNameAndNamespace(
                 ruleDefinition.getName(), ruleDefinition.getNamespace());
@@ -111,8 +112,7 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
         RuleManagementBaseTestObjectNames t1 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t1");
 
         // create a Rule
-        RuleDefinition ruleFirstCreate = ruleManagementService.createRule(buildTestRuleDefinition(t1.namespaceName,
-                t1.object0));
+        RuleDefinition ruleFirstCreate = buildTestRuleDefinition(t1.namespaceName, t1.object0);
         assertTrue("created Rule not found", ruleManagementService.getRule(ruleFirstCreate.getId()).getId().contains(t1.rule_0_Id));
 
         // try to create a duplicate Rule
@@ -147,8 +147,8 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
         RuleManagementBaseTestObjectNames t2 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t2");
 
         // build a rule to test with
-        RuleDefinition.Builder ruleBuilder0 = RuleDefinition.Builder.create(
-                ruleManagementService.createRule(buildTestRuleDefinition(t2.namespaceName, t2.object0)));
+        RuleDefinition.Builder ruleBuilder0 = RuleDefinition.Builder.create(buildTestRuleDefinition(t2.namespaceName,
+                t2.object0));
 
         // update the rule's Name
         ruleBuilder0.setName("updatedName");
@@ -160,8 +160,8 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
         assertEquals("Rule Name Not Updated", "updatedName", rule0.getName());
 
         // build new rule to for test
-        RuleDefinition.Builder ruleBuilder1 = RuleDefinition.Builder.create(
-                ruleManagementService.createRule(buildTestRuleDefinition(t2.namespaceName, t2.object1)));
+        RuleDefinition.Builder ruleBuilder1 = RuleDefinition.Builder.create(buildTestRuleDefinition(t2.namespaceName,
+                t2.object1));
         assertEquals("Expected Proposition not found in Rule",t2.proposition_1_Descr,ruleBuilder1.getProposition().getDescription());
 
         // create new proposition to update rule with
@@ -190,7 +190,7 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
         RuleManagementBaseTestObjectNames t3 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t3");
 
         // create a Rule
-        RuleDefinition rule = ruleManagementService.createRule(buildTestRuleDefinition(t3.namespaceName, t3.object0));
+        RuleDefinition rule = buildTestRuleDefinition(t3.namespaceName, t3.object0);
         assertTrue("created Rule not found", ruleManagementService.getRule(rule.getId()).getId().contains(t3.rule_0_Id));
         String propositionId = rule.getPropId();
         assertEquals("Proposition for Rule not found", t3.proposition_0_Descr,
@@ -220,14 +220,10 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t4 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t4");
 
-        RuleDefinition rule0 = ruleManagementService.createRule(buildTestRuleDefinition(t4.namespaceName,
-                t4.object0));
-        RuleDefinition rule1 = ruleManagementService.createRule(buildTestRuleDefinition(t4.namespaceName,
-                t4.object1));
-        RuleDefinition rule2 = ruleManagementService.createRule(buildTestRuleDefinition(t4.namespaceName,
-                t4.object2));
-        RuleDefinition rule3 = ruleManagementService.createRule(buildTestRuleDefinition(t4.namespaceName,
-                t4.object3));
+        RuleDefinition rule0 = buildTestRuleDefinition(t4.namespaceName, t4.object0);
+        RuleDefinition rule1 = buildTestRuleDefinition(t4.namespaceName, t4.object1);
+        RuleDefinition rule2 = buildTestRuleDefinition(t4.namespaceName, t4.object2);
+        RuleDefinition rule3 = buildTestRuleDefinition(t4.namespaceName, t4.object3);
         String ruleNameSpace = rule0.getNamespace();
         List<String> ruleNames =  new ArrayList<String>();
         ruleNames.add(rule0.getName());
@@ -237,10 +233,10 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
 
         QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
 
-        builder.setPredicates(equal("namespace", ruleNameSpace),in("name", ruleNames.toArray(new String[]{})));
+        builder.setPredicates(equal("namespace", ruleNameSpace), in("name", ruleNames.toArray(new String[]{})));
 
         List<String> ruleIds = ruleManagementService.findRuleIds(builder.build());
-        assertEquals("Wrong number of RuleIds returned",4,ruleIds.size());
+        assertEquals("Wrong number of RuleIds returned", 4, ruleIds.size());
 
         if(!ruleIds.contains(rule0.getId())){
             fail("RuleId not found in results");
@@ -258,8 +254,7 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
         RuleManagementBaseTestObjectNames t5 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t5");
 
         // create a rule to test with
-        RuleDefinition ruleDefinition = ruleManagementService.createRule(buildTestRuleDefinition(t5.namespaceName,
-                t5.object0));
+        RuleDefinition ruleDefinition = buildTestRuleDefinition(t5.namespaceName, t5.object0);
 
         assertNotNull(ruleManagementService.getRule(ruleDefinition.getId()));
 
@@ -279,8 +274,8 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
         RuleManagementBaseTestObjectNames t6 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t6");
 
         // build two rules for testing
-        ruleManagementService.createRule(buildTestRuleDefinition(t6.namespaceName, t6.object0));
-        ruleManagementService.createRule(buildTestRuleDefinition(t6.namespaceName, t6.object1));
+        buildTestRuleDefinition(t6.namespaceName, t6.object0);
+        buildTestRuleDefinition(t6.namespaceName, t6.object1);
 
         // build List rule ids for the rules created
         List<String> ruleIds = new ArrayList<String>();
@@ -309,5 +304,68 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
 
         ruleIds = Arrays.asList("badValueId");
         assertEquals("No RuleDefinitions should have been returned",0, ruleManagementService.getRules(ruleIds).size());
+    }
+
+    /**
+     * Tests whether the {@code RuleDefinition} cache is being evicted properly by checking the status the dependent
+     * objects before and after creating an {@code RuleDefinition} (and consequently emptying the cache).
+     *
+     * <p>
+     * The following object caches are affected:
+     * {@code AgendaItemDefinition}, {@code AgendaDefinition}, {@code ContextDefinition}, {@code AgendaTreeDefinition}
+     * </p>
+     */
+    @Test
+    public void testRuleCacheEvict() {
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t7 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t7");
+
+        verifyEmptyRule(t7);
+
+        String ruleId = buildTestRuleDefinition(t7.namespaceName, t7.object0).getId();
+        buildTestActionDefinition(t7.action_Id, t7.action_Name, t7.action_Descr, 1, ruleId, t7.namespaceName);
+        String agendaId = createTestAgenda(t7.object0).getId();
+        buildTestAgendaItemDefinition(t7.agendaItem_Id, agendaId, ruleId);
+
+        verifyFullRule(t7);
+    }
+
+    private void verifyEmptyRule(RuleManagementBaseTestObjectNames t) {
+        RuleDefinition rule = ruleManagementService.getRule(t.rule_Id);
+        assertNull("Rule is not null", rule);
+
+        Set<PropositionDefinition> propositions = ruleManagementService.getPropositionsByRule(t.rule_Id);
+        assertFalse("Rule in Proposition found", propositions != null && !propositions.isEmpty());
+
+        ActionDefinition action = ruleManagementService.getAction(t.action_Id);
+        assertFalse("Rule in Action found", action != null);
+
+        AgendaItemDefinition agendaItem = ruleManagementService.getAgendaItem(t.agendaItem_Id);
+        assertFalse("Rule in AgendaItem found", agendaItem != null);
+    }
+
+    private void verifyFullRule(RuleManagementBaseTestObjectNames t) {
+        RuleDefinition rule = ruleManagementService.getRule(t.rule_Id);
+        assertNotNull("Rule is null", rule);
+
+        boolean foundRule = false;
+        Set<PropositionDefinition> propositions = ruleManagementService.getPropositionsByRule(t.rule_Id);
+        if (propositions != null) {
+            for (PropositionDefinition proposition : propositions) {
+                if (StringUtils.equals(t.rule_Id, proposition.getRuleId())) {
+                    foundRule = true;
+                    break;
+                }
+            }
+        }
+        assertTrue("Rule in Proposition not found", foundRule);
+
+        ActionDefinition action = ruleManagementService.getAction(t.action_Id);
+        assertTrue("Rule in Action not found", action != null);
+        assertTrue("Rule in Action not found", StringUtils.equals(t.rule_Id, action.getRuleId()));
+
+        AgendaItemDefinition agendaItem = ruleManagementService.getAgendaItem(t.agendaItem_Id);
+        assertTrue("Rule in AgendaItem not found", agendaItem != null);
+        assertTrue("Rule in AgendaItem not found", StringUtils.equals(t.rule_Id, agendaItem.getRuleId()));
     }
 }

@@ -20,8 +20,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.krad.criteria.CriteriaLookupDaoProxy;
-import org.kuali.rice.krad.criteria.CriteriaLookupServiceImpl;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
@@ -60,7 +58,7 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
         RuleManagementBaseTestObjectNames t0 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t0");
 
         KrmsTypeDefinition krmsTypeDefinition = createKrmsActionTypeDefinition(t0.namespaceName);
-        RuleDefinition ruleDefintion = createTestRule(t0.namespaceName, t0.discriminator);
+        RuleDefinition ruleDefintion = buildTestRuleDefinition(t0.namespaceName, t0.discriminator);
 
         ActionDefinition actionDefinition = ActionDefinition.Builder.create(t0.action0_Id, t0.action0_Name,
                 t0.namespaceName,krmsTypeDefinition.getId(),ruleDefintion.getId(),1).build();
@@ -87,7 +85,7 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
         RuleManagementBaseTestObjectNames t1 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t1");
 
         KrmsTypeDefinition krmsTypeDefinition = createKrmsActionTypeDefinition(t1.namespaceName);
-        RuleDefinition ruleDefinition = createTestRule(t1.namespaceName, t1.object0);
+        RuleDefinition ruleDefinition = buildTestRuleDefinition(t1.namespaceName, t1.object0);
 
         ActionDefinition actionDefinition = ActionDefinition.Builder.create(t1.action0_Id,t1.action0_Name,
                 t1.namespaceName,krmsTypeDefinition.getId(),ruleDefinition.getId(),1).build();
@@ -120,7 +118,7 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
         RuleManagementBaseTestObjectNames t2 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t2");
 
         KrmsTypeDefinition krmsTypeDefinition = createKrmsActionTypeDefinition(t2.namespaceName);
-        RuleDefinition ruleDefintion = createTestRule(t2.namespaceName, t2.object0);
+        RuleDefinition ruleDefintion = buildTestRuleDefinition(t2.namespaceName, t2.object0);
 
         ActionDefinition actionDefinition = ActionDefinition.Builder.create(t2.action0_Id,t2.action0_Name,
                 t2.namespaceName,krmsTypeDefinition.getId(),ruleDefintion.getId(),1).build();
@@ -154,7 +152,7 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
         RuleManagementBaseTestObjectNames t3 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t3");
 
         KrmsTypeDefinition krmsTypeDefinition = createKrmsActionTypeDefinition(t3.namespaceName);
-        RuleDefinition ruleDefintion = createTestRule(t3.namespaceName,t3.object0);
+        RuleDefinition ruleDefintion = buildTestRuleDefinition(t3.namespaceName, t3.object0);
 
         ActionDefinition actionDefinition = ActionDefinition.Builder.create(t3.action0_Id,t3.action0_Name,
                 t3.namespaceName,krmsTypeDefinition.getId(),ruleDefintion.getId(),1).build();
@@ -180,10 +178,19 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t4 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t4");
 
-        createTestActions(t4.action0_Id, t4.action0_Name, t4.action0_Descr, 1, t4.object0, t4.namespaceName);
-        createTestActions(t4.action1_Id, t4.action1_Name, t4.action1_Descr, 1, t4.object1, t4.namespaceName);
-        createTestActions(t4.action2_Id, t4.action2_Name, t4.action2_Descr, 1, t4.object2, t4.namespaceName);
-        createTestActions(t4.action3_Id, t4.action3_Name, t4.action3_Descr, 1, t4.object3, t4.namespaceName);
+        RuleDefinition ruleDefinition0 = buildTestRuleDefinition(t4.namespaceName, t4.object0);
+        RuleDefinition ruleDefinition1 = buildTestRuleDefinition(t4.namespaceName, t4.object1);
+        RuleDefinition ruleDefinition2 = buildTestRuleDefinition(t4.namespaceName, t4.object2);
+        RuleDefinition ruleDefinition3 = buildTestRuleDefinition(t4.namespaceName, t4.object3);
+
+        buildTestActionDefinition(t4.action0_Id, t4.action0_Name, t4.action0_Descr, 1, ruleDefinition0.getId(),
+                t4.namespaceName);
+        buildTestActionDefinition(t4.action1_Id, t4.action1_Name, t4.action1_Descr, 1, ruleDefinition1.getId(),
+                t4.namespaceName);
+        buildTestActionDefinition(t4.action2_Id, t4.action2_Name, t4.action2_Descr, 1, ruleDefinition2.getId(),
+                t4.namespaceName);
+        buildTestActionDefinition(t4.action3_Id, t4.action3_Name, t4.action3_Descr, 1, ruleDefinition3.getId(),
+                t4.namespaceName);
         List<String> actionIds = Arrays.asList(t4.action0_Id, t4.action1_Id, t4.action2_Id, t4.action3_Id);
 
         // primary statement being tested
@@ -215,10 +222,12 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
     public void testFindActionIds() {
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t5 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t5");
-        createTestActions(t5.action0_Id, t5.action0_Name, t5.action0_Descr, 1, t5.object0, t5.namespaceName);
+        RuleDefinition ruleDefinition = buildTestRuleDefinition(t5.namespaceName, t5.object0);
+        buildTestActionDefinition(t5.action0_Id, t5.action0_Name, t5.action0_Descr, 1, ruleDefinition.getId(),
+                t5.namespaceName);
 
         QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
-        builder.setPredicates(equal("name",t5.action0_Name));
+        builder.setPredicates(equal("name", t5.action0_Name));
 
         List<String> actionIds = ruleManagementService.findActionIds(builder.build());
 

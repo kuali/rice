@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.util;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.apache.commons.lang.Validate;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.framework.util.ReflectionUtils;
@@ -22,9 +25,6 @@ import org.kuali.rice.krad.data.metadata.MetadataRepository;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.springframework.util.ClassUtils;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Utility class which is used to determine whether the given object or class has been configured in the "legacy" KRAD/KNS
@@ -185,9 +185,9 @@ class LegacyDetector {
     public boolean useLegacy(Class<?> dataObjectClass) {
         // if we are in a legacy context, always use the legacy framework, if they are using stuff that's not mapped
         // up properly then they are doing it wrong
-        if (isInLegacyContext()) {
-            return true;
-        }
+//        if (isInLegacyContext()) {
+//            return true;
+//        }
         // if it's only loaded in legacy, then we can indicate to use the legacy framework
         if (isLegacyDataFrameworkEnabled() && isOjbLoadedClass(dataObjectClass) && !isKradDataManaged(dataObjectClass)) {
             return true;

@@ -31,7 +31,6 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PostLoad;
-import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
@@ -912,7 +911,9 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         if (getNewMaintainableObject().getDataObject() instanceof PersistableBusinessObject) {
             PersistableBusinessObject bo = (PersistableBusinessObject) getNewMaintainableObject().getDataObject();
             if (bo instanceof GlobalBusinessObject) {
-                KRADServiceLocatorWeb.getLegacyDataAdapter().save(bo);
+                bo = KRADServiceLocatorWeb.getLegacyDataAdapter().save(bo);
+                // KRAD/JPA - have to change the handle to object to that just saved
+                getNewMaintainableObject().setDataObject(bo);
             }
         }
 
@@ -1068,31 +1069,6 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     protected void postLoad() {
         super.postLoad();
         setDocumentHeader(KRADServiceLocatorWeb.getLegacyDataAdapter().getByDocumentHeaderId(getDocumentNumber()));
-    }
-
-//    /**
-//     * This overridden method is used to insert the {@link DocumentHeader} object due to the system not being able to
-//     * manage the {@link DocumentHeader} object via mapping files
-//     *
-//     * @see org.kuali.rice.krad.bo.PersistableBusinessObjectBase#prePersist()
-//     */
-//    @Override
-//    @PrePersist
-//    protected void prePersist() {
-//        super.prePersist();
-//    }
-
-    /**
-     * This overridden method is used to save the {@link DocumentHeader} object due to the system not being able to
-     * manage the {@link DocumentHeader} object via mapping files
-     *
-     * @see org.kuali.rice.krad.bo.PersistableBusinessObjectBase#preUpdate()
-     */
-    @Override
-    @PreUpdate
-    protected void preUpdate() {
-        super.preUpdate();
-        KRADServiceLocatorWeb.getLegacyDataAdapter().save(getDocumentHeader());
     }
 
     /**

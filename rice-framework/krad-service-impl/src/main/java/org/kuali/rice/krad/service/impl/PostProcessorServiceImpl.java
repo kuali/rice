@@ -87,7 +87,7 @@ public class PostProcessorServiceImpl implements PostProcessorService {
                         // be a problem anytime where the user can continue to edit the document after a
                         // workflow state change, without reloading the form.
                         if (!document.getDocumentHeader().getWorkflowDocument().isSaved()) {
-                            documentService.updateDocument(document);
+                            document = documentService.updateDocument(document);
                         }
                     }
                     if (LOG.isInfoEnabled()) {

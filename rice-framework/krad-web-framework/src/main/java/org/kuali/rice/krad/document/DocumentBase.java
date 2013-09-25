@@ -15,6 +15,22 @@
  */
 package org.kuali.rice.krad.document;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Transient;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.api.KewApiConstants;
@@ -58,20 +74,6 @@ import org.kuali.rice.krad.workflow.KualiDocumentXmlMaterializer;
 import org.kuali.rice.krad.workflow.KualiTransactionalDocumentInformation;
 import org.springframework.util.AutoPopulatingList;
 import org.springframework.util.CollectionUtils;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
-import javax.persistence.Transient;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @see Document
@@ -660,7 +662,19 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     @PrePersist
     protected void prePersist() {
         super.prePersist();
+        // KRAD/JPA - have to change the handle to object to that just saved
         documentHeader = KRADServiceLocatorWeb.getLegacyDataAdapter().save(documentHeader);
+    }
+
+    /**
+     * Save the KRAD document header via the document header service.
+     */
+    @Override
+    @PreUpdate
+    protected void preUpdate() {
+        super.preUpdate();
+        // KRAD/JPA - have to change the handle to object to that just saved
+        documentHeader = KRADServiceLocatorWeb.getLegacyDataAdapter().save(getDocumentHeader());
     }
 
     /**

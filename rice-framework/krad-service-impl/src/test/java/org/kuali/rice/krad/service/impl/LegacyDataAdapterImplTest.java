@@ -15,6 +15,22 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Matchers.anyMapOf;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.Callable;
+
+import javax.xml.namespace.QName;
+
 import org.apache.ojb.broker.metadata.ClassDescriptor;
 import org.apache.ojb.broker.metadata.MetadataManager;
 import org.junit.Before;
@@ -40,18 +56,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.support.StaticListableBeanFactory;
-
-import javax.xml.namespace.QName;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.concurrent.Callable;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 
 /**
  * Unit test for the {@link LegacyDataAdapterImpl}. Tests that the various methods delegate to KNS or KRAD under the
@@ -506,19 +510,19 @@ public class LegacyDataAdapterImplTest {
         verifyZeroInteractions(knsLegacyDataAdapter);
     }
 
-    @Test
-    public void testGetDocumentHeaderBaseClass_Legacy() throws Exception {
-        enableLegacy();
-        LegacyUtils.doInLegacyContext(new Callable<Object>() {
-            @Override
-            public Object call() throws Exception {
-                lda.getDocumentHeaderBaseClass();
-                return null;
-            }
-        });
-        verify(knsLegacyDataAdapter).getDocumentHeaderBaseClass();
-        verifyZeroInteractions(kradLegacyDataAdapter);
-    }
+//    @Test
+//    public void testGetDocumentHeaderBaseClass_Legacy() throws Exception {
+//        enableLegacy();
+//        LegacyUtils.doInLegacyContext(new Callable<Object>() {
+//            @Override
+//            public Object call() throws Exception {
+//                lda.getDocumentHeaderBaseClass();
+//                return null;
+//            }
+//        });
+//        verify(knsLegacyDataAdapter).getDocumentHeaderBaseClass();
+//        verifyZeroInteractions(kradLegacyDataAdapter);
+//    }
 
     @Test
     public void testDeleteLocks() throws Exception {
@@ -527,19 +531,19 @@ public class LegacyDataAdapterImplTest {
         verifyZeroInteractions(knsLegacyDataAdapter);
     }
 
-    @Test
-    public void testDeleteLocks_Legacy() throws Exception {
-        enableLegacy();
-        LegacyUtils.doInLegacyContext(new Callable<Object>() {
-            @Override
-            public Object call() throws Exception {
-                lda.deleteLocks("1234");
-                return null;
-            }
-        });
-        verify(knsLegacyDataAdapter).deleteLocks("1234");
-        verifyZeroInteractions(kradLegacyDataAdapter);
-    }
+//    @Test
+//    public void testDeleteLocks_Legacy() throws Exception {
+//        enableLegacy();
+//        LegacyUtils.doInLegacyContext(new Callable<Object>() {
+//            @Override
+//            public Object call() throws Exception {
+//                lda.deleteLocks("1234");
+//                return null;
+//            }
+//        });
+//        verify(knsLegacyDataAdapter).deleteLocks("1234");
+//        verifyZeroInteractions(kradLegacyDataAdapter);
+//    }
 
     @Test
     public void testGetLockingDocumentNumber() throws Exception {
@@ -548,19 +552,19 @@ public class LegacyDataAdapterImplTest {
         verifyZeroInteractions(knsLegacyDataAdapter);
     }
 
-    @Test
-    public void testGetLockingDocumentNumber_Legacy() throws Exception {
-        enableLegacy();
-        LegacyUtils.doInLegacyContext(new Callable<Object>() {
-            @Override
-            public Object call() throws Exception {
-                lda.getLockingDocumentNumber("blah1", "blah2");
-                return null;
-            }
-        });
-        verify(knsLegacyDataAdapter).getLockingDocumentNumber(eq("blah1"), eq("blah2"));
-        verifyZeroInteractions(kradLegacyDataAdapter);
-    }
+//    @Test
+//    public void testGetLockingDocumentNumber_Legacy() throws Exception {
+//        enableLegacy();
+//        LegacyUtils.doInLegacyContext(new Callable<Object>() {
+//            @Override
+//            public Object call() throws Exception {
+//                lda.getLockingDocumentNumber("blah1", "blah2");
+//                return null;
+//            }
+//        });
+//        verify(knsLegacyDataAdapter).getLockingDocumentNumber(eq("blah1"), eq("blah2"));
+//        verifyZeroInteractions(kradLegacyDataAdapter);
+//    }
 
     @Test
     public void testStoreLocks() throws Exception {
@@ -569,19 +573,19 @@ public class LegacyDataAdapterImplTest {
         verifyZeroInteractions(knsLegacyDataAdapter);
     }
 
-    @Test
-    public void testStoreLocks_Legacy() throws Exception {
-        enableLegacy();
-        LegacyUtils.doInLegacyContext(new Callable<Object>() {
-            @Override
-            public Object call() throws Exception {
-                lda.storeLocks(new ArrayList<MaintenanceLock>());
-                return null;
-            }
-        });
-        verify(knsLegacyDataAdapter).storeLocks(anyListOf(MaintenanceLock.class));
-        verifyZeroInteractions(kradLegacyDataAdapter);
-    }
+//    @Test
+//    public void testStoreLocks_Legacy() throws Exception {
+//        enableLegacy();
+//        LegacyUtils.doInLegacyContext(new Callable<Object>() {
+//            @Override
+//            public Object call() throws Exception {
+//                lda.storeLocks(new ArrayList<MaintenanceLock>());
+//                return null;
+//            }
+//        });
+//        verify(knsLegacyDataAdapter).storeLocks(anyListOf(MaintenanceLock.class));
+//        verifyZeroInteractions(kradLegacyDataAdapter);
+//    }
 
     @Test
     public void testListPrimaryKeyFieldNames() throws Exception {

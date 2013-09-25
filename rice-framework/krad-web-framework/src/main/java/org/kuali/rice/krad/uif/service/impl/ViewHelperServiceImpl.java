@@ -237,20 +237,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     public void performComponentLifecycle(View view, Object model, Component component, String origId) {
         Component origComponent = view.getViewIndex().getComponentById(origId);
 
-        // run through and assign any ids starting with the id for the refreshed component (this might be
-        // necessary if we are getting a new component instance from the bean factory)
-        Integer currentSequenceVal = view.getIdSequence();
-        Integer startingSequenceVal = view.getViewIndex().getIdSequenceSnapshot().get(component.getId());
-        // if the component was retrieved from the initial states map in ViewIndex, startingSequenceVal is null
-        if (startingSequenceVal != null) {
-            view.setIdSequence(startingSequenceVal);
-        }
-
         view.assignComponentIds(component);
-
-        // now set back from the ending view sequence so IDs for any dynamically created (newly) will not stomp
-        // on existing components
-        view.setIdSequence(currentSequenceVal);
 
         Map<String, Object> origContext = origComponent.getContext();
 

@@ -107,7 +107,7 @@
     <property name="layoutManager.generateAutoSequence" value="true"/>
     <property name="readOnly" value="false"/>
     <property name="layoutManager.showToggleAllDetails" value="true"/>
-    <!-- Cant figure out how to get this to work at this time
+    <!--Cant figure out how to get this to work at this time
        <property name="layoutManager.separateAddLine" value="true"/>
 <property name="layoutManager.addLineGroup.items">
       <list>
@@ -413,8 +413,9 @@
                 <list>
                   <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"
                         p:required="true"/>
-                  <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"
-                        p:required="true" p:render="false"/>
+<!--                  <bean id="Uif-DeleteLineAction" parent="Uif-SecondaryActionButton-Small" p:methodToCall="deleteLine"
+                        p:actionLabel="delete" p:onClickScript="jQuery.fancybox.close();"
+                        p:id="@{#collectionGroup.id}_del@{#lineSuffix}"/>-->
                 </list>
               </property>
             </bean>

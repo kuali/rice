@@ -367,17 +367,8 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
         }
         assertFalse("AgendaItem in Context found", foundAgendaItem);
 
-        foundAgendaItem = false;
         AgendaTreeDefinition agendaTree = ruleManagementService.getAgendaTree(t.agenda_Id);
-        if (agendaTree != null) {
-            for (AgendaTreeEntryDefinitionContract agendaTreeEntry : agendaTree.getEntries()) {
-                if (StringUtils.equals(t.agendaItem_Id, agendaTreeEntry.getAgendaItemId())) {
-                    foundAgendaItem = true;
-                    break;
-                }
-            }
-        }
-        assertFalse("AgendaItem in AgendaTree found", foundAgendaItem);
+        assertFalse("AgendaItem in AgendaTree found", agendaTree != null);
     }
 
     private void verifyFullAgendaItem(RuleManagementBaseTestObjectNames t) {

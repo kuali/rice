@@ -13,14 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.samplu.krad.library.generalfeatures;
+package edu.samplu.krad.library.general;
 
 import org.junit.Test;
 
-import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
 import edu.samplu.common.SmokeTestBase;
-import edu.samplu.common.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

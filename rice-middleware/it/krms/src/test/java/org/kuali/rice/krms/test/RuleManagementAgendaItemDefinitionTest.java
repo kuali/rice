@@ -17,7 +17,6 @@
 package org.kuali.rice.krms.test;
 
 import org.apache.commons.lang.StringUtils;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
@@ -30,9 +29,7 @@ import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 /**
  *   RuleManagementAgendaItemDefinitionTest is to test the methods of ruleManagementServiceImpl relating to krms AgendaItems
@@ -356,7 +353,7 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
         assertNull("AgendaItem is not null", agendaItem);
 
         AgendaDefinition agenda = ruleManagementService.getAgenda(t.agenda_Id);
-        Assert.assertFalse("AgendaItem in Agenda found", agenda != null && agenda.getFirstItemId() != null);
+        assertFalse("AgendaItem in Agenda found", agenda != null);
 
         boolean foundAgendaItem = false;
         ContextDefinition context = ruleManagementService.getContext(t.contextId);
@@ -368,7 +365,7 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
                 }
             }
         }
-        Assert.assertFalse("AgendaItem in Context found", foundAgendaItem);
+        assertFalse("AgendaItem in Context found", foundAgendaItem);
 
         foundAgendaItem = false;
         AgendaTreeDefinition agendaTree = ruleManagementService.getAgendaTree(t.agenda_Id);
@@ -380,15 +377,16 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
                 }
             }
         }
-        Assert.assertFalse("AgendaItem in AgendaTree found", foundAgendaItem);
+        assertFalse("AgendaItem in AgendaTree found", foundAgendaItem);
     }
 
     private void verifyFullAgendaItem(RuleManagementBaseTestObjectNames t) {
         AgendaItemDefinition agendaItem = ruleManagementService.getAgendaItem(t.agendaItem_Id);
-        Assert.assertNotNull("AgendaItem is null", agendaItem);
+        assertNotNull("AgendaItem is null", agendaItem);
 
         AgendaDefinition agenda = ruleManagementService.getAgenda(t.agenda_Id);
-        Assert.assertTrue("AgendaItem in Agenda not found", agenda != null && agenda.getFirstItemId() != null);
+        assertTrue("AgendaItem in Agenda not found", agenda != null);
+        assertTrue("AgendaItem in Agenda not found", StringUtils.equals(t.agendaItem_Id, agenda.getFirstItemId()));
 
         boolean foundAgendaItem = false;
         ContextDefinition context = ruleManagementService.getContext(t.contextId);
@@ -400,7 +398,7 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
                 }
             }
         }
-        Assert.assertTrue("AgendaItem in Context not found", foundAgendaItem);
+        assertTrue("AgendaItem in Context not found", foundAgendaItem);
 
         foundAgendaItem = false;
         AgendaTreeDefinition agendaTree = ruleManagementService.getAgendaTree(t.agenda_Id);
@@ -412,6 +410,6 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
                 }
             }
         }
-        Assert.assertTrue("AgendaItem in AgendaTree not found", foundAgendaItem);
+        assertTrue("AgendaItem in AgendaTree not found", foundAgendaItem);
     }
 }

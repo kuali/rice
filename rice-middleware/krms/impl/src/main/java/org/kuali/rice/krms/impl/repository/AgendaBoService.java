@@ -42,7 +42,7 @@ public interface AgendaBoService {
      * @throws IllegalArgumentException if the Agenda is null
      * @throws IllegalStateException if the Agenda already exists in the system
      */
-    @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
+    @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, AgendaItemDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
 	public AgendaDefinition createAgenda(AgendaDefinition agenda);
 	
     /**
@@ -52,7 +52,7 @@ public interface AgendaBoService {
      * @throws IllegalArgumentException if the Agenda is null
      * @throws IllegalStateException if the Agenda does not exists in the system
      */
-    @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
+    @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, AgendaItemDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
 	public void updateAgenda(AgendaDefinition agenda);
 
     /**
@@ -63,7 +63,7 @@ public interface AgendaBoService {
      * @throws IllegalStateException if the Agenda does not exists in the system
      *
      */
-    @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
+    @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, AgendaItemDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
     public void deleteAgenda(String agendaId);
 
     /**

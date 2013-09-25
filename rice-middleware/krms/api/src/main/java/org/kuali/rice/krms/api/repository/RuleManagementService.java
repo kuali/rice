@@ -217,7 +217,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      */
     @WebMethod(operationName = "createAgenda")
     @WebResult(name = "agenda")
-    @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
+    @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, AgendaItemDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
     public AgendaDefinition createAgenda(@WebParam(name = "AgendaDefinition") AgendaDefinition agendaDefinition) throws RiceIllegalArgumentException;
 
     /**
@@ -230,7 +230,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      */
     @WebMethod(operationName = "findCreateAgenda")
     @WebResult(name = "agenda")
-    @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
+    @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, AgendaItemDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
     public AgendaDefinition findCreateAgenda(@WebParam(name = "AgendaDefinition") AgendaDefinition agendaDefinition) throws RiceIllegalArgumentException;
 
     /**
@@ -316,7 +316,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      *                                      null or invalid
      */
     @WebMethod(operationName = "updateAgenda")
-    @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
+    @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, AgendaItemDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
     public void updateAgenda(@WebParam(name = "agendaDefinition") AgendaDefinition agendaDefinition) throws RiceIllegalArgumentException;
 
     /**
@@ -326,7 +326,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      * @throws RiceIllegalArgumentException if the given id is null or invalid
      */
     @WebMethod(operationName = "deleteAgenda")
-    @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
+    @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, AgendaItemDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
     public void deleteAgenda(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
 
     ////

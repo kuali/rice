@@ -541,6 +541,8 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionInactiveFilter-View&amp;methodToCall=start"/>
         <bean parent="Uif-Link" p:linkText="Multi-Value Lookup"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionLookup-View"/>
+        <bean parent="Uif-Link" p:linkText="Multi-Value Lookup Server Paging"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-MultiValueSelectServerSidePaging-View"/>
         <bean parent="Uif-Link" p:linkText="Server Paging"
               p:href="@{#ConfigProperties['krad.url']}/serverpaging"/>
         <bean parent="Uif-Link" p:linkText="Light Table"

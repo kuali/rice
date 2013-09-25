@@ -335,6 +335,7 @@ public class LightTable extends Group implements DataBinding {
         Pattern expressionPattern = Pattern.compile(EXPRESSION_TOKEN + "(.*?)" + EXPRESSION_TOKEN);
 
         ExpressionEvaluator expressionEvaluator = view.getViewHelperService().getExpressionEvaluator();
+        expressionEvaluator.initializeEvaluationContext(model);
 
         int lineIndex = 0;
         for (Object obj : collectionObjects) {

@@ -25,7 +25,24 @@
   </info>
   <section>
     <title>Introduction</title>
-    <para>Identify audience</para>
+    <para>This technical documentation assists with the conversion of existing Kuali Rice
+      application to utelize the new KRAD framework. It does so by identifying the changes between
+      the KNS and KRAD implementations of Kuali Rice application features. Overview and detailed
+      documentation of features of the KRAD frame work can be found in the <link xlink:show="new"
+        xlink:href="KRAD_Guide.html">KRAD Guide</link> and are omitted in this document.</para>
+    <para>The KNS2KRAD Conversion Script is a tool provided by Kuali Rice to automatize as much as
+      reasonably possible. Throughout this document the following items are used to indicate if the
+      utility supports the conversion: </para>
+    <para><inlinemediaobject>
+        <imageobject>
+          <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+        </imageobject>
+      </inlinemediaobject> Feature can be converted with the conversion script. </para>
+    <para><inlinemediaobject>
+        <imageobject>
+          <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
+        </imageobject>
+      </inlinemediaobject> Feature needs to be converted manually.</para>
   </section>
   <section>
     <title>Data Dictionary</title>
@@ -86,7 +103,7 @@
                 >DataObjectEntry</emphasis> instead of the KNS <emphasis role="keyword"
                 >BusinessObjectEntry</emphasis>. [KNS line: 2, KRAD line: 2] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -97,7 +114,7 @@
                 >businessObject</emphasis> is no longer required and any object can be used. [KNS
               line: 3, KRAD line: 3] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -158,7 +175,7 @@
               in KRAD in place of the KNS property <emphasis role="keyword"
                 >validationPattern</emphasis>. [KNS line: 11, KRAD line: 11] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -167,7 +184,7 @@
               replaces the KNS pattern <emphasis role="keyword"
                 >AnyCharacterValidationPattern</emphasis>. [KNS line: 12, KRAD line: 12] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -176,7 +193,7 @@
                 <emphasis role="keyword">control</emphasis> to define the control used to represent
               this field. [KNS line: 14, KRAD line: 14] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -185,7 +202,7 @@
                 <emphasis role="keyword">TextControlDefinition</emphasis>. [KNS line: 5, KRAD line:
               15] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -199,7 +216,7 @@
             <para>The size property and similar properties of TextControl are converted or carried over by
               the script. [KNS line: 15, KRAD line: 15] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -232,7 +249,7 @@
               in KRAD in place of the KNS property <emphasis role="keyword"
                 >validationPattern</emphasis>.<inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -241,7 +258,7 @@
               replaces the KNS pattern <emphasis role="keyword"
                 >AnyCharacterValidationPattern</emphasis>.<inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -250,7 +267,7 @@
               replaces the KNS pattern <emphasis role="keyword"
                 >AlphaNumericValidationPattern</emphasis>.<inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -258,7 +275,7 @@
             <para>The constraint <emphasis role="keyword">AlphaPatternConstraint</emphasis> replaces
               the KNS pattern <emphasis role="keyword">AlphaValidationPattern</emphasis>.<inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -266,7 +283,7 @@
             <para>The constraint <emphasis role="keyword">CharsetPatternConstraint</emphasis>
               replaces the KNS pattern <emphasis role="keyword">CharsetValidationPattern</emphasis>.<inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -274,7 +291,7 @@
             <para>The constraint <emphasis role="keyword">RegexPatternConstraint</emphasis> replaces
               the KNS pattern <emphasis role="keyword">RegexValidationPattern</emphasis>.<inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -283,7 +300,7 @@
               replaces the KNS pattern <emphasis role="keyword"
                 >FixedPointValidationPattern</emphasis>.<inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -292,7 +309,7 @@
               replaces the KNS pattern <emphasis role="keyword"
                 >FloatingPointValidationPattern</emphasis>.<inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -300,7 +317,7 @@
             <para>The constraint <emphasis role="keyword">ZipcodePatternConstraint</emphasis>
               replaces the KNS pattern <emphasis role="keyword">ZipcodeValidationPattern</emphasis>.<inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -308,7 +325,7 @@
             <para>The constraint <emphasis role="keyword">YearPatternConstraint</emphasis> replaces
               the KNS pattern <emphasis role="keyword">YearValidationPattern</emphasis>.<inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -317,7 +334,7 @@
               replaces the KNS pattern <emphasis role="keyword"
                 >TimestampValidationPattern</emphasis>.<inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -326,7 +343,7 @@
               replaces the KNS pattern <emphasis role="keyword"
                 >PhoneNumberValidationPattern</emphasis>.<inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -334,7 +351,7 @@
             <para>The constraint <emphasis role="keyword">MonthPatternConstraint</emphasis> replaces
               the KNS pattern <emphasis role="keyword">MonthValidationPattern</emphasis>.<inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -343,7 +360,7 @@
               replaces the KNS pattern <emphasis role="keyword"
                 >JavaClassValidationPattern</emphasis>.<inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -351,7 +368,7 @@
             <para>The constraint <emphasis role="keyword">EmailPatternConstraint</emphasis> replaces
               the KNS pattern <emphasis role="keyword">EmailAddressValidationPattern</emphasis>.<inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -359,7 +376,7 @@
             <para>The constraint <emphasis role="keyword">DatePatternConstraint</emphasis> replaces
               the KNS pattern <emphasis role="keyword">DateValidationPattern</emphasis>.<inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -368,7 +385,7 @@
                 >UTF8AnyCharacterValidationPattern</emphasis> replaces the KNS pattern <emphasis
                 role="keyword">UTF8AnyCharacterValidationPattern</emphasis>.<inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -377,7 +394,7 @@
                     >allowWhitespace="true"</emphasis> in the above example are either carried over or converted
               as appropriate.<inlinemediaobject>
               <imageobject>
-                <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
               </imageobject>
             </inlinemediaobject></para>
           </listitem>
@@ -466,7 +483,7 @@
                 <emphasis role="keyword">control</emphasis> to define the control used to represent
               this field. [KNS line: 1, KRAD line: 1]<inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -479,7 +496,7 @@
                 <emphasis role="keyword">Uif-TextControl</emphasis> replaces the KNS <emphasis
                 role="keyword">TextControlDefinition</emphasis>.[KNS line: 2, KRAD line: 2]<inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -487,7 +504,7 @@
             <para>The sub-properties for the various controls, ex: <emphasis role="keyword">
                 p:size="10"</emphasis> are converted or carried over by the script. [KNS line: 2, KRAD line: 2]<inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -512,7 +529,7 @@
               <para>The property <emphasis role="keyword">Uif-PrimaryActionButton</emphasis>
                 replaces the KNS <emphasis role="keyword">ButtonControlDefinition</emphasis>.<inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                   </imageobject>
                 </inlinemediaobject></para>
             </listitem>
@@ -558,7 +575,7 @@
               <para>The property <emphasis role="keyword">Uif-CheckboxControl</emphasis> replaces
                 the KNS <emphasis role="keyword">CheckboxControlDefinition</emphasis>.<inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                   </imageobject>
                 </inlinemediaobject></para>
             </listitem>
@@ -591,7 +608,7 @@
               <para>The property <emphasis role="keyword">Uif-CurrencyTextControl</emphasis>
                 replaces the KNS <emphasis role="keyword">CurrencyControlDefinition</emphasis>.[KNS line: 2, KRAD line: 2]<inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                   </imageobject>
                 </inlinemediaobject></para>
             </listitem>
@@ -599,7 +616,7 @@
               <para>The sub-property <emphasis role="keyword">maxlength</emphasis>
                 replaces the KNS <emphasis role="keyword">formattedMaxLength</emphasis> property.[KNS line: 2, KRAD line: 2]<inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                   </imageobject>
                 </inlinemediaobject></para>
             </listitem>
@@ -625,7 +642,7 @@
               <para>The property <emphasis role="keyword">Uif-FileControl</emphasis> replaces the
                 KNS <emphasis role="keyword">FileControlDefinition</emphasis>.<inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                   </imageobject>
                 </inlinemediaobject></para>
             </listitem>
@@ -651,7 +668,7 @@
               <para>The property <emphasis role="keyword">Uif-HiddenControl</emphasis> replaces the
                 KNS <emphasis role="keyword">HiddenControlDefinition</emphasis>.<inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                   </imageobject>
                 </inlinemediaobject></para>
             </listitem>
@@ -677,7 +694,7 @@
               <para>The property <emphasis role="keyword">Uif-KimPersonControl</emphasis> replaces
                 the KNS <emphasis role="keyword">KualiUserControlDefinition</emphasis>.<inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                   </imageobject>
                 </inlinemediaobject></para>
             </listitem>
@@ -702,7 +719,7 @@
               <para>The property <emphasis role="keyword">Uif-Link</emphasis> replaces the KNS
                   <emphasis role="keyword">LinkControlDefinition</emphasis>.[KNS line: 2, KRAD line: 2]<inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                   </imageobject>
                 </inlinemediaobject></para>
             </listitem>
@@ -710,7 +727,7 @@
               <para>The sub-property <emphasis role="keyword">target</emphasis>
                 is carried over during conversion.[KNS line: 2, KRAD line: 2]<inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                   </imageobject>
                 </inlinemediaobject></para>
             </listitem>
@@ -718,7 +735,7 @@
               <para>The sub-property <emphasis role="keyword">linkText</emphasis>
                 replaces the KNS <emphasis role="keyword">jrefText</emphasis> property.[KNS line: 2, KRAD line: 2]<inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                   </imageobject>
                 </inlinemediaobject></para>
             </listitem>
@@ -726,7 +743,7 @@
               <para>The sub-property <emphasis role="keyword">fieldLabel.cssClasses</emphasis>
                 replaces the KNS <emphasis role="keyword">styleClass</emphasis> property.[KNS line: 2, KRAD line: 2]<inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                   </imageobject>
                 </inlinemediaobject></para>
             </listitem>
@@ -752,7 +769,7 @@
               <para>The property <emphasis role="keyword">Uif-TextAreaControl</emphasis> replaces
                 the KNS <emphasis role="keyword">TextareaControlDefinition</emphasis>.<inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                   </imageobject>
                 </inlinemediaobject></para>
             </listitem>
@@ -778,7 +795,7 @@
               <para>The property <emphasis role="keyword">Uif-TextControl</emphasis> replaces the
                 KNS <emphasis role="keyword">TextControlDefinition</emphasis>.<inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                   </imageobject>
                 </inlinemediaobject></para>
             </listitem>
@@ -830,7 +847,7 @@
                   role="keyword">RadioControlDefinition</emphasis>
                 <inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                   </imageobject>
                 </inlinemediaobject></para>
             </listitem>
@@ -839,7 +856,7 @@
                   <emphasis role="keyword">valuesFinderClass</emphasis>. [KNS line: 2, KRAD lines:
                 5-7] <inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                   </imageobject>
                 </inlinemediaobject></para>
             </listitem>
@@ -847,7 +864,7 @@
               <para>The sub-property <emphasis role="keyword">includeKeyInLabel</emphasis>
                 is carried over during conversion.[KNS line: 2, KRAD line: 3]<inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                   </imageobject>
                 </inlinemediaobject></para>
             </listitem>
@@ -908,7 +925,7 @@
                 the KNS <emphasis role="keyword">SelectControlDefinition</emphasis>. [KNS line: 11,
                 KRAD line: 11] <inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                   </imageobject>
                 </inlinemediaobject></para>
             </listitem>
@@ -917,7 +934,7 @@
                   <emphasis role="keyword">valuesFinderClass</emphasis>. [KNS line: 12, KRAD lines:
                 13-15] <inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                   </imageobject>
                 </inlinemediaobject></para>
             </listitem>
@@ -925,7 +942,7 @@
               <para>The sub-properties for the SelectControlDefinition in KNS ex: <emphasis
                   role="keyword"> p:includeBlankRow="true"</emphasis> carried over by the conversion script. [KNS line: 13] <inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                   </imageobject>
                 </inlinemediaobject></para>
             </listitem>
@@ -935,7 +952,7 @@
                 You may also specify multi value select capability from a Uif-DropdownContro, by
                 setting property <emphasis role="keyword">multiple</emphasis> to true.<inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                   </imageobject>
                 </inlinemediaobject></para>
             </listitem>
@@ -961,7 +978,7 @@
               <para>The property <emphasis role="keyword">Uif-DateControl</emphasis> replaces the
                 KNS <emphasis role="keyword">DateControlDefinition</emphasis>.<inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                   </imageobject>
                 </inlinemediaobject></para>
             </listitem>
@@ -975,7 +992,7 @@
             <listitem>
               <para>No conversion for Workflow Workgroup Control yet. <inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/badge-manualconv.png" contentdepth="9"/>
+                    <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
                   </imageobject>
                 </inlinemediaobject></para>
             </listitem>
@@ -1086,7 +1103,7 @@
               definitions instead of the KNS <emphasis role="keyword">InquiryDefinition</emphasis>
               beans. [KNS line: 1, KRAD line: 1] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject>
             </para>
@@ -1096,7 +1113,7 @@
                 >headerText</emphasis> property instead of the <emphasis role="keyword"
                 >title</emphasis> property. [KNS line: 2, KRAD line: 2] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject>
             </para>
@@ -1108,7 +1125,7 @@
               anymore. A <emphasis role="keyword">businessObject</emphasis> is no longer required
               and any object can be used. [KNS line: n/a, KRAD line: 3] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject>
             </para>
@@ -1118,7 +1135,7 @@
                 <emphasis role="keyword">viewHelperServiceClass</emphasis>, along with a class
               parent change. See below for more information. [KNS line: 3, KRAD line: 4] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject>
             </para>
@@ -1135,7 +1152,7 @@
                 role="keyword">inquirySections</emphasis> to <emphasis role="keyword"
                 >items</emphasis>. [KNS line: 4, KRAD line: 5] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject>
             </para>
@@ -1146,7 +1163,7 @@
               although the default is a child of <emphasis role="keyword"
                 >Uif-Disclosure-GridSection</emphasis>. [KNS line: 6, KRAD line: 7] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject>
             </para>
@@ -1156,7 +1173,7 @@
                 >headerText</emphasis> property instead of the <emphasis role="keyword"
                 >title</emphasis> property. [KNS line: 7, KRAD line: 8] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject>
             </para>
@@ -1167,7 +1184,7 @@
                 >Disclosure</emphasis> object and is now accessed via <emphasis role="keyword"
                 >disclosure.defaultOpen</emphasis>. [KNS line: 8, KRAD line: 9] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject>
             </para>
@@ -1180,7 +1197,7 @@
               their own columns and therefore the old <emphasis role="keyword"
                 >numberOfColumns</emphasis> value needs to be doubled. [KNS line: 9, KRAD line: 10] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject>
             </para>
@@ -1212,7 +1229,7 @@
                 role="keyword">inquiryFields</emphasis> to <emphasis role="keyword"
               >items</emphasis>. [KNS line: 10, KRAD line: 11] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject>
             </para>
@@ -1222,7 +1239,7 @@
                 <emphasis role="keyword">Uif-DataField</emphasis>. [KNS line: 12-14, KRAD line:
               13-15] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject>
             </para>
@@ -1232,7 +1249,7 @@
               a <emphasis role="keyword">propertyName</emphasis> property. [KNS line: 12-14, KRAD
               line: 13-15] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject>
             </para>
@@ -1245,7 +1262,7 @@
                 >noInquiry="true"</emphasis> is equivalent to <emphasis role="keyword"
                 >inquiry.render="false"</emphasis>. [KNS line: 12, KRAD line: 13] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject>
             </para>
@@ -1264,7 +1281,7 @@
                 role="keyword">Uif-Disclosure-StackedCollectionSection</emphasis>. [KNS line: 24,
               KRAD line: 19] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject>
             </para>
@@ -1274,7 +1291,7 @@
               collection has been changed to <emphasis role="keyword"
                 >collectionObjectClass</emphasis>. [KNS line: 25, KRAD line: 23] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject>
             </para>
@@ -1284,7 +1301,7 @@
               has been changed to <emphasis role="keyword">propertyName</emphasis>. [KNS line: 26,
               KRAD line: 24] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject>
             </para>
@@ -1294,7 +1311,7 @@
                 role="keyword">inquiryFields</emphasis> to <emphasis role="keyword"
               >items</emphasis>. [KNS line: 27, KRAD line: 25] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject>
             </para>
@@ -1304,7 +1321,7 @@
                 <emphasis role="keyword">layoutManager.summaryTitle</emphasis>. [KNS line: 33, KRAD
               line: 31] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject>
             </para>
@@ -1314,7 +1331,7 @@
                 <emphasis role="keyword">layoutManager.summaryFields</emphasis> and simplified to
               just take a list of values. [KNS line: 34, KRAD line: 32] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject>
             </para>
@@ -1327,7 +1344,7 @@
                 >InquiryCollectionDefinition</emphasis> are not supported and will need to be
               converted manually. <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject>
             </para>
@@ -1351,7 +1368,7 @@
             <emphasis role="keyword">inquiry.getInquiryLink().setHref</emphasis>.
             <inlinemediaobject>
               <imageobject>
-                <imagedata fileref="../images/badge-manualconv.png" contentdepth="9"/>
+                <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
               </imageobject>
             </inlinemediaobject>
           </para>
@@ -1368,7 +1385,7 @@
         need to be migrated to <emphasis role="keyword">canViewGroup</emphasis> (for sections) and
           <emphasis role="keyword">canViewField</emphasis> (for fields). <inlinemediaobject>
           <imageobject>
-            <imagedata fileref="../images/badge-manualconv.png" contentdepth="9"/>
+            <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
           </imageobject>
         </inlinemediaobject>
       </para>
@@ -1384,7 +1401,7 @@
         methods will need to be migrated to <emphasis role="keyword">canViewGroup</emphasis> (for
         sections) and <emphasis role="keyword">canViewField</emphasis> (for fields). <inlinemediaobject>
           <imageobject>
-            <imagedata fileref="../images/badge-manualconv.png" contentdepth="9"/>
+            <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
           </imageobject>
         </inlinemediaobject>
       </para>
@@ -1404,7 +1421,7 @@
             configuration in these methods should be folded directly into <emphasis role="keyword"
               >getExternalizableDataObjectInquiryUrl</emphasis>. <inlinemediaobject>
               <imageobject>
-                <imagedata fileref="../images/badge-manualconv.png" contentdepth="9"/>
+                <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
               </imageobject>
             </inlinemediaobject>
           </para>
@@ -1418,7 +1435,7 @@
         to be extended unless advanced customizations are required, but any implementer already
         extending this class will have to make the switch manually. <inlinemediaobject>
           <imageobject>
-            <imagedata fileref="../images/badge-manualconv.png" contentdepth="9"/>
+            <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
           </imageobject>
         </inlinemediaobject>
       </para>
@@ -1431,7 +1448,7 @@
                 role="keyword">InquiryController</emphasis> and adapted to the new Spring MVC
               format. <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -1449,7 +1466,7 @@
               manually.
               <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject>
             </para>
@@ -1468,7 +1485,7 @@
               will need to have these configurations added, and that new KRAD permissions are created.
               <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject>
             </para>
@@ -1496,7 +1513,7 @@
               and the appropriate KIM permission exists.  The conversion requires that new KRAD permissions are created.
               <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject>
             </para>
@@ -1559,6 +1576,7 @@
       &lt;/property>
     &lt;/bean>
   &lt;/property>
+  &lt;property name="translateCodes" value="true"/>
 &lt;/bean></programlisting>
       </para>
       <para>
@@ -1596,7 +1614,7 @@
     &lt;list>
       &lt;bean parent="Uif-DataField" p:propertyName="code"/>
       &lt;bean parent="Uif-DataField" p:propertyName="name"/>
-      &lt;bean parent="Uif-DataField" p:propertyName="sortCode"/>
+      &lt;bean parent="Uif-DataField" p:propertyName="sortCode" p:enableAutoDirectInquiry="false"/>
       &lt;bean parent="Uif-DataField" p:propertyName="amount"/>
       &lt;bean parent="Uif-DataField" p:propertyName="active"/>
     &lt;/list>
@@ -1612,6 +1630,7 @@
       &lt;bean parent="Uif-ColumnCalculationInfo-Sum" p:propertyName="amount" />
     &lt;/list>
   &lt;/property>
+  &lt;property name="translateCodesOnReadOnlyDisplay" value="true"/>
 &lt;/bean></programlisting>
       </para>
     </section>
@@ -1624,7 +1643,7 @@
               definitions instead of the KNS <emphasis role="keyword">LookupDefinition</emphasis>
               beans. [KNS line: 1, KRAD line: 1] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -1633,7 +1652,7 @@
                 >headerText</emphasis> property instead of the <emphasis role="keyword"
                 >title</emphasis> property. [KNS line: 2, KRAD line: 3] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -1644,7 +1663,7 @@
               anymore. A <emphasis role="keyword">businessObject</emphasis> is no longer required
               and any object can be used. [KNS line: n/a, KRAD line: 2] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -1654,7 +1673,7 @@
                 >page.header.lowerGroup.items</emphasis> property is used. [KNS line: 3-4, KRAD
               line: 4-9] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -1670,25 +1689,25 @@
                 role="keyword">lookupFields</emphasis> to <emphasis role="keyword"
                 >criteriaFields</emphasis>. [KNS line: 9, KRAD line: 22] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
           <listitem xml:id="LCF2">
             <para>Criteria fields changed from <emphasis role="keyword">FieldDefinition</emphasis>
-              to <emphasis role="keyword">Uif-LookupCriteriaInputField</emphasis>. [KNS line: 11-13,
-              KRAD line: 24-26] <inlinemediaobject>
+              to <emphasis role="keyword">Uif-LookupCriteriaInputField</emphasis>. [KNS line: 11-14,
+              KRAD line: 24-27] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
           <listitem xml:id="LCF3">
             <para>The <emphasis role="keyword">attributeName</emphasis> property on the field is now
-              a <emphasis role="keyword">propertyName</emphasis> property. [KNS line: 11-13, KRAD
-              line: 24-26] <inlinemediaobject>
+              a <emphasis role="keyword">propertyName</emphasis> property. [KNS line: 11-14, KRAD
+              line: 24-27] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -1697,7 +1716,7 @@
                 the<emphasis role="keyword">enableAutoQuickfinder</emphasis> property instead of the
                 <emphasis role="keyword">noLookup</emphasis> property. [KNS line: 12, KRAD line 25] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -1708,7 +1727,7 @@
                 <emphasis role="keyword">extraButtonSource</emphasis> and <emphasis role="keyword"
                 >extraButtonParms</emphasis> properties. [KNS line: 6-7, KRAD line: 12-20] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -1717,7 +1736,7 @@
                 <emphasis role="keyword">disableSearchButtons</emphasis> to <emphasis role="keyword"
                 >renderSearchButtons</emphasis>. [KNS line: 8, KRAD line: 21] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -1729,7 +1748,7 @@
                 >renderLookupCriteria</emphasis> can be set on the Uif-LookupView. [KNS line: n/a,
               KRAD line: 10] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -1742,7 +1761,7 @@
                 role="keyword">numOfColumns</emphasis> value needs to be doubled. [KNS line: 5, KRAD
               line: 11] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -1752,9 +1771,26 @@
                 role="keyword">disableWildcardsAndOperators</emphasis> on <emphasis role="keyword"
                 >Uif-LookupCriteriaInputField</emphasis>. [KNS line: 13, KRAD line: 26] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
+          </listitem>
+          <listitem>
+            <para>A default value could be specified in KNS by adding the <emphasis role="keyword"
+                >&lt;attribute-name></emphasis> parameter to the URL. In KRAD the URL parameter
+              naming convention changed to <emphasis role="keyword"
+                >lookupCriteria[&lt;attribute-name>]</emphasis>. Aleernatively the defaultValue can
+              be set on the Uif-LookupCriteriaInputField. [KNS line: n/a, KRAD line: 14] <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject></para>
+            <para><emphasis role="bold">KNS
+              example:</emphasis><programlisting linenumbering="numbered">http://demo.rice.kuali.org/kr/lookup.do?methodToCall=start
+  &amp;businessObjectClassName=org.kuali.rice.location.impl.country.CountryBo&amp;<emphasis role="bold">code=us</emphasis></programlisting></para>
+            <para><emphasis role="bold">KRAD
+              example:</emphasis><programlisting linenumbering="numbered">http://demo.rice.kuali.org/kr/lookup.do?methodToCall=start
+  &amp;businessObjectClassName=org.kuali.rice.location.impl.country.CountryBo<emphasis role="bold">&amp;lookupCriteria[code]=us</emphasis></programlisting></para>
           </listitem>
         </itemizedlist>
       </para>
@@ -1765,30 +1801,30 @@
         <itemizedlist>
           <listitem xml:id="LRF1">
             <para>Result fields changed from <emphasis role="keyword">FieldDefinition</emphasis> to
-                <emphasis role="keyword">Uif-DataField</emphasis>. [KNS line: 18-21, KRAD line:
-              30-33] <inlinemediaobject>
+                <emphasis role="keyword">Uif-DataField</emphasis>. [KNS line: 19-23, KRAD line:
+              32-36] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
           <listitem xml:id="LRF2">
             <para>The <emphasis role="keyword">attributeName</emphasis> property on the field is now
-              a <emphasis role="keyword">propertyName</emphasis> property. [KNS line: 18-21, KRAD
-              line: 30-33] <inlinemediaobject>
+              a <emphasis role="keyword">propertyName</emphasis> property. [KNS line: 19-23, KRAD
+              line: 32-36] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
           <listitem xml:id="LRF3">
             <para>The <emphasis role="keyword">forceInquiry</emphasis> property does not need to be
               set as inquiry links are rendered automatically. Set the <emphasis role="keyword"
-                >inquiry.render</emphasis> property on the <emphasis role="keyword"
+                >enableAutoDirectInquiry</emphasis> property on the <emphasis role="keyword"
                 >Uif-DataField</emphasis> to false to supress the rendering of the inquiry link.
-              [KNS line: 20, KRAD line: n/a] <inlinemediaobject>
+              [KNS line: 21, KRAD line: 34] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -1797,13 +1833,10 @@
                 <emphasis role="keyword">getCustomActionUrls</emphasis> method of <emphasis
                 role="keyword">LookupableHelperService</emphasis>. Instead the <emphasis
                 role="keyword">resultsGroup.lineActions</emphasis> property list is extended or
-              overridden.
-              <?oxy_comment_start author="cniesen" timestamp="20130425T151431-0500" comment="Do we need to add detailed example of how to add custom actions?"?>Look
-              in <emphasis role="keyword">UifLookupDefinition.xml</emphasis> to see how the edit,
-              copy and delete actions are defined.<?oxy_comment_end?>
-              <inlinemediaobject>
+              overridden. Look in <emphasis role="keyword">UifLookupDefinition.xml</emphasis> to see
+              how the edit, copy and delete actions are defined. <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -1813,10 +1846,10 @@
                 >attributeName</emphasis> properties has been replaced. The sort order is specified
               via the <emphasis role="keyword">defaultSortAscending</emphasis> property and the sort
               fields via the <emphasis role="keyword">defaultSortAttributeName</emphasis> property
-              list on the <emphasis role="keyword">Uif-Lookup-View</emphasis>. [KNS line: 24-33,
-              KRAD line: 36-43] <inlinemediaobject>
+              list on the <emphasis role="keyword">Uif-Lookup-View</emphasis>. [KNS line: 26-35,
+              KRAD line: 39-44] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -1824,18 +1857,18 @@
             <para>Column totaling is now specified with the <emphasis role="keyword"
                 >Uif-ColumnCalculationInfo-Sum</emphasis> property on the layout manager instead via
               the <emphasis role="keyword">total</emphasis> property on the field definition. [KNS
-              line: , KRAD line: ] <inlinemediaobject>
+              line: 22, KRAD line: 45-49] <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
           <listitem xml:id="LRF7">
             <para>To display the maintenance links (create new, edit, copy, delete) on non
               maintenance documents the <emphasis role="keyword">showMaintenanceLinks</emphasis> on
-              the LookupForm needs to be set.<inlinemediaobject>
+              the LookupForm needs to be set. <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
@@ -1843,8 +1876,9 @@
             <para>For automatic translation of code fields in lookup the <emphasis role="keyword"
                 >translateCodes</emphasis> of the <emphasis role="keyword"
                 >LookupDefinition</emphasis> was set. In KRAD the automatic translation is enabled
-              by setting the <emphasis role="keyword">translateCodesOnReadOnlyDisplay</emphasis> of the
-                <emphasis role="keyword">Uif-LookupView</emphasis></para>
+              by setting the <emphasis role="keyword">translateCodesOnReadOnlyDisplay</emphasis> of
+              the <emphasis role="keyword">Uif-LookupView</emphasis>. [KNS line: 36, KRAD line:
+              50]</para>
           </listitem>
         </itemizedlist>
       </para>
@@ -2168,7 +2202,7 @@
       <title>QuickFinder Specifics</title>
       <para>
         <itemizedlist>
-          <listitem>
+          <listitem xml:id="LQF1">
             <para>The <emphasis role="keyword">overrideLookupClass</emphasis> and <emphasis
                 role="keyword">overrideFieldConversions</emphasis> don't exist in KRAD since the
               quickfinder can be directly configured via the <emphasis role="keyword"
@@ -2176,7 +2210,7 @@
                 >quickfinder.fieldConversions properties</emphasis>
               <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="9"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
             <para><emphasis role="bold">KNS code

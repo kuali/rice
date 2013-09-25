@@ -145,6 +145,9 @@ public class RuleManagementContextDefinitionTest  extends RuleManagementBaseTest
 
         // build test Context
         ContextDefinition context = buildTestContext(t2.object0);
+        // make sure it is cached to test update CacheEvict
+        context = ruleManagementService.getContext(context.getId());
+
         // verify created context
         assertEquals("Unexpected namespace on created context",t2.namespaceName,context.getNamespace());
         assertEquals("Unexpected name on created context",t2.context0_Name,context.getName());

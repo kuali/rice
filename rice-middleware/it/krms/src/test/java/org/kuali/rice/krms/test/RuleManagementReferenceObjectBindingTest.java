@@ -52,11 +52,13 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t0 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t0");
 
+        // create a ReferenceObjectBinding entry
         ReferenceObjectBinding.Builder refObjBindingBuilder =  createTestReferenceObjectBinding(t0.object0);
         ReferenceObjectBinding refObjBinding = ruleManagementService.getReferenceObjectBinding(
                 refObjBindingBuilder.getId());
         refObjBindingBuilder =  ReferenceObjectBinding.Builder.create(refObjBinding);
 
+        // verify the Created entry
         assertNotNull("Created ReferenceObjectBinding not found", refObjBindingBuilder);
         assertEquals("Invalid CollectionName of refObjBindingBuilder found", "ParkingPolicies",
                 refObjBindingBuilder.getCollectionName());
@@ -69,6 +71,7 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
                 t0.referenceObject_0_DiscriminatorType, refObjBindingBuilder.getReferenceDiscriminatorType());
         assertEquals("Invalid Active value of refObjBindingBuilder found",true, refObjBindingBuilder.isActive());
 
+        // try to create a ReferenceObjectBinding which already exists
         try {
             ruleManagementService.createReferenceObjectBinding(refObjBindingBuilder.build());
             fail("Should have thrown IllegalStateException: the ReferenceObjectBinding to create already exists");
@@ -76,7 +79,8 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
             // throws IllegalStateException: the ReferenceObjectBinding to create already exists
         }
 
-        refObjBindingBuilder.setId("RefObjBind6000");
+        // try to create a ReferenceObjectBinding entry which exists using a different Id
+        refObjBindingBuilder.setId("RefObjBindIdChanged");
         try {
             ruleManagementService.createReferenceObjectBinding(refObjBindingBuilder.build());
             fail("Should have thrown DataIntegrityViolationException: OJB operation; SQL []; Duplicate entry");
@@ -102,6 +106,7 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
         assertNotNull("ReferenceObjectBinding should have been returned",refObjBinding);
         assertEquals("Incorrect value found on returned ReferenceObjectBinding",t1.referenceObject_0_Id,refObjBinding.getReferenceObjectId());
 
+        // try to getReferenceObjectBinding using null Id
         try {
             refObjBinding = ruleManagementService.getReferenceObjectBinding(null);
             fail("Should have thrown IllegalArgumentException: referenceObjectBindingId was null");
@@ -109,6 +114,7 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
             // throws IllegalArgumentException: referenceObjectBindingId was null
         }
 
+        // try to find a ReferenceObjectBinding using a non-existent Id
         assertNull("ReferenceObjectBinding should not have been found", ruleManagementService.getReferenceObjectBinding("junk_value"));
     }
 
@@ -138,6 +144,7 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
         }
         assertEquals("Expected number of objects not returned",3,objectsFound);
 
+        // try to getReferenceObjectBindings using a null Id List
         try {
             ruleManagementService.getReferenceObjectBindings(null);
             fail("Should have thrown IllegalArgumentException: reference binding object ids must not be null");
@@ -391,8 +398,9 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
         ReferenceObjectBinding.Builder refObjBindingBuilder =  createTestReferenceObjectBinding(t8.object0);
         ReferenceObjectBinding refObjBinding = ruleManagementService.getReferenceObjectBinding(refObjBindingBuilder.getId());
         refObjBindingBuilder =  ReferenceObjectBinding.Builder.create(refObjBinding);
-
         assertNotNull("Created ReferenceObjectBinding not found", refObjBindingBuilder);
+
+        // delete the ReferenceObjectBinding entry
         ruleManagementService.deleteReferenceObjectBinding(refObjBinding.getId());
         assertNull("Deleted ReferenceObjectBinding found", ruleManagementService.getReferenceObjectBinding(
                 refObjBindingBuilder.getId()));

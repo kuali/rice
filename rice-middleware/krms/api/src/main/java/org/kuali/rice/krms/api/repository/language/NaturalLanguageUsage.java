@@ -18,6 +18,7 @@ package org.kuali.rice.krms.api.repository.language;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.krms.api.KrmsConstants;
 import org.w3c.dom.Element;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -309,6 +310,10 @@ public final class NaturalLanguageUsage
         final static String ID = "id";
         final static String ACTIVE = "active";
 
+    }
+
+    public static class Cache {
+        public static final String NAME = KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0 + "/" + NaturalLanguageUsage.Constants.TYPE_NAME;
     }
 
 }

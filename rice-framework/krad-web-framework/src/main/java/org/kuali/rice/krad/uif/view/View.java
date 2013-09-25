@@ -418,12 +418,12 @@ public class View extends ContainerBase {
             return;
         }
 
-        int tempSequence = -1;
+        int origIdSequence = -1;
 
         // Get the old sequence if the baseId exists in the sequence snapshot
         if (component.getBaseId() != null && viewIndex != null && viewIndex.getIdSequenceSnapshot() != null &&
                 viewIndex.getIdSequenceSnapshot().containsKey(component.getBaseId())){
-            tempSequence = idSequence;
+            origIdSequence = idSequence;
             idSequence = viewIndex.getIdSequenceSnapshot().get(component.getBaseId());
         }
 
@@ -436,8 +436,8 @@ public class View extends ContainerBase {
             assignComponentIds(nestedComponent);
         }
 
-        if (tempSequence != -1){
-            idSequence = tempSequence;
+        if (origIdSequence != -1){
+            idSequence = origIdSequence;
         }
     }
 

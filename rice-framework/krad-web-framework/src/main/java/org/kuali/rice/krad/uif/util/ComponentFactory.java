@@ -145,6 +145,8 @@ public class ComponentFactory {
     public static final String COLLECTION_GROUP = "Uif-StackedCollectionSection";
     public static final String COLLECTION_WITH_DISCLOSURE_GROUP = "Uif-Disclosure-StackedCollectionSection";
     public static final String COLLECTION_GROUP_TABLE_LAYOUT = "Uif-TableCollectionSection";
+    public static final String COLLECTION_WITH_DISCLOSURE_GROUP_TABLE_LAYOUT = "Uif-Disclosure-TableCollectionSection";
+
     public static final String LIST_GROUP = "Uif-ListCollectionSection";
 
     public static final String HEADER = "Uif-HeaderFieldBase";
@@ -1052,6 +1054,15 @@ public class ComponentFactory {
      */
     public static CollectionGroup getCollectionGroupTableLayout() {
         return (CollectionGroup) getNewComponentInstance(COLLECTION_GROUP_TABLE_LAYOUT);
+    }
+
+    /**
+     * Gets the collection group table layout with disclosure behavior
+     *
+     * @return collection group table layout
+     */
+    public static CollectionGroup getCollectionWithDisclosureGroupTableLayout() {
+        return (CollectionGroup) getNewComponentInstance(COLLECTION_WITH_DISCLOSURE_GROUP_TABLE_LAYOUT);
     }
 
     /**

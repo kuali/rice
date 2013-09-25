@@ -16,13 +16,16 @@
 package org.kuali.rice.krad.uif.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.krad.data.metadata.DataObjectAttribute;
+import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
 import org.kuali.rice.krad.data.metadata.MetadataRepository;
@@ -42,6 +45,7 @@ import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.control.UserControl;
 import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.service.UifDefaultingService;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.InquiryView;
@@ -244,13 +248,15 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
     }
 
     protected CollectionGroup createCollectionInquirySection( String groupId, String headerText ) {
-        CollectionGroup group = ComponentFactory.getCollectionWithDisclosureGroup();
+        CollectionGroup group = ComponentFactory.getCollectionWithDisclosureGroupTableLayout();
         group.setId(groupId);
         group.setHeaderText(headerText);
         group.setItems(new ArrayList<Component>());
+        ((TableLayoutManager)group.getLayoutManager()).setRenderSequenceField(false);
         return group;
     }
 
+    @SuppressWarnings("unchecked")
     protected void addAttributeSectionsToInquiryView( InquiryView view, DataObjectEntry dataObjectEntry ) {
         // Set up data structures to manage the creation of sections
         Map<String,Group> inquirySectionsById = new HashMap<String,Group>();
@@ -273,6 +279,7 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
                         if ( StringUtils.isBlank(sectionLabel) ) {
                             sectionLabel = deriveHumanFriendlyNameFromPropertyName(sectionHint.id() );
                         }
+
                         currentGroup = createInquirySection(sectionHint.id(), sectionHint.label());
                         inquirySectionsById.put(currentGroup.getId(), currentGroup);
                         ((List<Group>)view.getItems()).add(currentGroup);
@@ -283,43 +290,65 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
                 }
                 items = (List<Component>) currentGroup.getItems();
             }
+
+            // This is checked after the section test, since the @Section annotation
+            // would be on the FK field
             if ( attr.getControlField() instanceof HiddenControl ) {
                 continue;
             }
+
             DataField dataField = ComponentFactory.getDataField();
             dataField.setPropertyName(attr.getName());
             items.add(dataField);
         }
     }
 
+    @SuppressWarnings("unchecked")
     protected void addCollectionSectionsToInquiryView( InquiryView view, DataObjectEntry dataObjectEntry ) {
         for ( CollectionDefinition coll : dataObjectEntry.getCollections() ) {
             // Create a new section
             DataObjectEntry collectionEntry = dataDictionaryService.getDataDictionary().getDataObjectEntry(coll.getDataObjectClass());
-            if ( collectionEntry != null ) {
-                CollectionGroup section = createCollectionInquirySection(coll.getName(), coll.getLabel());
-                try {
-                    section.setCollectionObjectClass(Class.forName(coll.getDataObjectClass()));
-                } catch (ClassNotFoundException e) {
-                    LOG.warn( "Unable to set class on collection section - class not found: " + coll.getDataObjectClass());
+            // Extract the key fields on the collection which are linked to the parent.
+            // When auto-generating the Inquiry Collection table, we want to exclude those.
+            Collection<String> collectionFieldsLinkedToParent = new HashSet<String>();
+
+            if ( coll.getDataObjectCollection() != null ) {
+                for ( DataObjectAttributeRelationship rel : coll.getDataObjectCollection().getAttributeRelationships() ) {
+                    collectionFieldsLinkedToParent.add(rel.getChildAttributeName());
                 }
-                section.setPropertyName(coll.getName());
-                // summary title : collection object label
-                // Summary fields : PK fields?
-                // add the attributes to the section
-                for ( AttributeDefinition attr : collectionEntry.getAttributes() ) {
-                    if ( attr.getControlField() instanceof HiddenControl ) {
-                        continue;
-                    }
-                    // TODO: Auto-exclude the parent object's PK fields (or related key fields if we can determine those)
-                    DataField dataField = ComponentFactory.getDataField();
-                    dataField.setPropertyName(attr.getName());
-                    ((List<Component>)section.getItems()).add(dataField);
-                }
-                ((List<Group>)view.getItems()).add(section);
-            } else {
-                LOG.warn( "Unable to find DataObjectEntry for collection class: " + coll.getDataObjectClass());
             }
+
+            if ( collectionEntry == null ) {
+                LOG.warn( "Unable to find DataObjectEntry for collection class: " + coll.getDataObjectClass());
+                continue;
+            }
+
+            CollectionGroup section = createCollectionInquirySection(coll.getName(), coll.getLabel());
+            try {
+                section.setCollectionObjectClass(Class.forName(coll.getDataObjectClass()));
+            } catch (ClassNotFoundException e) {
+                LOG.warn( "Unable to set class on collection section - class not found: " + coll.getDataObjectClass());
+            }
+
+            section.setPropertyName(coll.getName());
+            // summary title : collection object label
+            // Summary fields : PK fields?
+            // add the attributes to the section
+            for ( AttributeDefinition attr : collectionEntry.getAttributes() ) {
+                if ( attr.getControlField() instanceof HiddenControl ) {
+                    continue;
+                }
+
+                // Auto-exclude fields linked to the parent object
+                if ( collectionFieldsLinkedToParent.contains( attr.getName() )) {
+                    continue;
+                }
+
+                DataField dataField = ComponentFactory.getDataField();
+                dataField.setPropertyName(attr.getName());
+                ((List<Component>)section.getItems()).add(dataField);
+            }
+            ((List<Group>)view.getItems()).add(section);
         }
     }
     /**
@@ -338,7 +367,6 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
 
         // If there are collections on the object, include sections for them
         addCollectionSectionsToInquiryView( view, dataObjectEntry );
-
 
         return view;
     }

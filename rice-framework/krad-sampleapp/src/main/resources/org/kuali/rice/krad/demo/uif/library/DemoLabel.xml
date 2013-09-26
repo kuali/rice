@@ -28,6 +28,8 @@
     <property name="demoGroups">
       <list>
         <ref bean="Demo-Label-Example1"/>
+        <ref bean="Demo-Label-Example2"/>
+        <ref bean="Demo-Label-Example3"/>
       </list>
     </property>
   </bean>
@@ -38,10 +40,32 @@
       <list>
         <!-- ex:Demo-Label-Example1 start-->
         <bean parent="Uif-Label" p:labelText="Default Label"/>
-        <bean parent="Uif-Label" p:labelText="No Colon Label" p:renderColon="false"/>
         <!-- ex:Demo-Label-Example1 end-->
       </list>
     </property>
   </bean>
 
+  <bean id="Demo-Label-Example2"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Label-Example2 start-->
+        <bean parent="Uif-Label" p:labelText="No Colon Label" p:renderColon="false"/>
+        <!-- ex:Demo-Label-Example2 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Label-Example3"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Label-Example3 start-->
+        <bean parent="Uif-Label" p:labelText="Label with required message">
+          <property name="RequiredMessage">
+            <bean parent="Uif-Message" p:messageText="This is required."/>
+          </property>
+        </bean>
+        <!-- ex:Demo-Label-Example3 end-->
+      </list>
+    </property>
+  </bean>
 </beans>

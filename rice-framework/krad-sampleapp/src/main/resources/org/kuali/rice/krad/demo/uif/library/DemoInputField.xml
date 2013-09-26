@@ -39,6 +39,7 @@
         <ref bean="Demo-InputField-Example10"/>
         <ref bean="Demo-InputField-Example11"/>
         <ref bean="Demo-InputField-Example12"/>
+        <ref bean="Demo-InputField-Example13"/>
       </list>
     </property>
   </bean>
@@ -213,6 +214,19 @@
               p:uppercaseValue="true">
         </bean>
         <!-- ex:Demo-InputField-Example12 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- Disable Native Autocomplete -->
+  <bean id="Demo-InputField-Example13" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-InputField-Example13 start-->
+        <bean parent="Uif-InputField-LabelTop" p:label="Disable Native Autocomplete field" p:propertyName="inputField13"
+              p:disableNativeAutocomplete="true">
+        </bean>
+        <!-- ex:Demo-InputField-Example13 end-->
       </list>
     </property>
   </bean>

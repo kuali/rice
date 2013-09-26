@@ -357,25 +357,25 @@
     <property name="items">
       <list>
         <bean parent="Uif-Link" p:linkText="Action"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Action-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Action-View"/>
         <bean parent="Uif-Link" p:linkText="Dropdown Menu"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DropdownMenu-View"/>
         <bean parent="Uif-Link" p:linkText="Header"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Header-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Header-View"/>
         <bean parent="Uif-Link" p:linkText="Image"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Image-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Image-View"/>
         <bean parent="Uif-Link" p:linkText="Space"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Space-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Space-View"/>
         <bean parent="Uif-Link" p:linkText="Iframe"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Iframe-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Iframe-View"/>
         <bean parent="Uif-Link" p:linkText="Link"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Link-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Link-View"/>
         <bean parent="Uif-Link" p:linkText="Label"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Label-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Label-View"/>
         <bean parent="Uif-Link" p:linkText="Data Table"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DataTable-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DataTable-View"/>
         <bean parent="Uif-Link" p:linkText="Message"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Message-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Message-View"/>
       </list>
     </property>
   </bean>
@@ -389,31 +389,31 @@
     <property name="items">
       <list>
         <bean parent="Uif-Link" p:linkText="Checkbox"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CheckboxControl-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CheckboxControl-View"/>
         <bean parent="Uif-Link" p:linkText="Checkbox Group"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CheckboxGroupControl-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CheckboxGroupControl-View"/>
         <bean parent="Uif-Link" p:linkText="File"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-FileControl-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-FileControl-View"/>
         <bean parent="Uif-Link" p:linkText="KIM Group"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-KIMGroupControl-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-KIMGroupControl-View"/>
         <bean parent="Uif-Link" p:linkText="KIM User"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-KIMUserControl-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-KIMUserControl-View"/>
         <bean parent="Uif-Link" p:linkText="Radio"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-RadioControl-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-RadioControl-View"/>
         <bean parent="Uif-Link" p:linkText="Select"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-SelectControl-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-SelectControl-View"/>
         <bean parent="Uif-Link" p:linkText="Option List"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-OptionList-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-OptionList-View"/>
         <bean parent="Uif-Link" p:linkText="Password"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-PasswordControl-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-PasswordControl-View"/>
         <bean parent="Uif-Link" p:linkText="Spinner"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-SpinnerControl-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-SpinnerControl-View"/>
         <bean parent="Uif-Link" p:linkText="Text"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TextControl-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TextControl-View"/>
         <bean parent="Uif-Link" p:linkText="Text Area"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TextAreaControl-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TextAreaControl-View"/>
         <bean parent="Uif-Link" p:linkText="Hidden"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-HiddenControl-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-HiddenControl-View"/>
       </list>
     </property>
   </bean>
@@ -427,17 +427,17 @@
     <property name="items">
       <list>
         <bean parent="Uif-Link" p:linkText="Action Field"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ActionField-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ActionField-View"/>
         <bean parent="Uif-Link" p:linkText="Data Field"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DataField-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DataField-View"/>
         <bean parent="Uif-Link" p:linkText="Input Field"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-InputField-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-InputField-View"/>
         <bean parent="Uif-Link" p:linkText="Image Field"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ImageField-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ImageField-View"/>
         <bean parent="Uif-Link" p:linkText="Link Field"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-LinkField-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-LinkField-View"/>
         <bean parent="Uif-Link" p:linkText="Message Field"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-MessageField-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-MessageField-View"/>
       </list>
     </property>
   </bean>
@@ -446,25 +446,25 @@
     <property name="items">
       <list>
         <bean parent="Uif-Link" p:linkText="Group"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Group-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Group-View"/>
         <bean parent="Uif-Link" p:linkText="Accordion Group"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-AccordionGroup-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-AccordionGroup-View"/>
         <bean parent="Uif-Link" p:linkText="Link Group"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-LinkGroup-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-LinkGroup-View"/>
         <bean parent="Uif-Link" p:linkText="Tab Group"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TabGroup-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TabGroup-View"/>
         <bean parent="Uif-Link" p:linkText="Collection Group"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionGroup-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionGroup-View"/>
         <bean parent="Uif-Link" p:linkText="Dialog Group"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DialogGroup-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DialogGroup-View"/>
         <bean parent="Uif-Link" p:linkText="Navigation Group"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-NavigationGroup-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-NavigationGroup-View"/>
         <bean parent="Uif-Link" p:linkText="Tree Group"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TreeGroup-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TreeGroup-View"/>
         <bean parent="Uif-Link" p:linkText="Page Group"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-PageGroup-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-PageGroup-View"/>
         <bean parent="Uif-Link" p:linkText="Field Group"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-FieldGroup-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-FieldGroup-View"/>
       </list>
     </property>
   </bean>
@@ -473,15 +473,15 @@
     <property name="items">
       <list>
         <bean parent="Uif-Link" p:linkText="Grid Layout"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-GridLayoutManager-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-GridLayoutManager-View"/>
         <bean parent="Uif-Link" p:linkText="Box Layout"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-BoxLayoutManager-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-BoxLayoutManager-View"/>
         <bean parent="Uif-Link" p:linkText="Css Grid Layout"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CssGridLayoutManager-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CssGridLayoutManager-View"/>
         <bean parent="Uif-Link" p:linkText="List Layout"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ListLayoutManager-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ListLayoutManager-View"/>
         <bean parent="Uif-Link" p:linkText="Stacked Layout"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-StackedLayoutManager-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-StackedLayoutManager-View"/>
       </list>
     </property>
   </bean>
@@ -490,21 +490,23 @@
     <property name="items">
       <list>
         <bean parent="Uif-Link" p:linkText="Breadcrumbs"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Breadcrumbs-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Breadcrumbs-View"/>
         <bean parent="Uif-Link" p:linkText="Disclosure"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Disclosure-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Disclosure-View"/>
         <bean parent="Uif-Link" p:linkText="Suggest"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Suggest-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Suggest-View"/>
         <bean parent="Uif-Link" p:linkText="Help"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Help-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Help-View"/>
         <bean parent="Uif-Link" p:linkText="Tooltip"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Tooltip-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Tooltip-View"/>
         <bean parent="Uif-Link" p:linkText="DatePicker"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DatePicker-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DatePicker-View"/>
         <bean parent="Uif-Link" p:linkText="SyntaxHighlighter"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-SyntaxHighlighter-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-SyntaxHighlighter-View"/>
         <bean parent="Uif-Link" p:linkText="Growls"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Growls-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Growls-View"/>
+        <bean parent="Uif-Link" p:linkText="Accordion"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Accordion-View"/>
       </list>
     </property>
   </bean>
@@ -513,7 +515,7 @@
     <property name="items">
       <list>
         <bean parent="Uif-Link" p:linkText="Navigation Group"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-NavigationGroup-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-NavigationGroup-View"/>
       </list>
     </property>
   </bean>
@@ -522,23 +524,23 @@
     <property name="items">
       <list>
         <bean parent="Uif-Link" p:linkText="Sequence Column"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionSequence-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionSequence-View"/>
         <bean parent="Uif-Link" p:linkText="Row Css"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutRowCss-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutRowCss-View"/>
         <bean parent="Uif-Link" p:linkText="Row Details"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutDetails-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutDetails-View"/>
         <bean parent="Uif-Link" p:linkText="Column Calculations"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutTotaling-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutTotaling-View"/>
         <bean parent="Uif-Link" p:linkText="Row Grouping"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutGrouping-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutGrouping-View"/>
         <bean parent="Uif-Link" p:linkText="Add Line"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionAddLine-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionAddLine-View"/>
         <bean parent="Uif-Link" p:linkText="Select Line"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionSelectLine-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionSelectLine-View"/>
         <bean parent="Uif-Link" p:linkText="Action Placement"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionActionPlacement-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionActionPlacement-View"/>
         <bean parent="Uif-Link" p:linkText="Inactive Filter"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionInactiveFilter-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionInactiveFilter-View"/>
         <bean parent="Uif-Link" p:linkText="Multi-Value Lookup"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionLookup-View"/>
         <bean parent="Uif-Link" p:linkText="Multi-Value Lookup Server Paging"
@@ -546,7 +548,7 @@
         <bean parent="Uif-Link" p:linkText="Server Paging"
               p:href="@{#ConfigProperties['krad.url']}/serverpaging"/>
         <bean parent="Uif-Link" p:linkText="Light Table"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-LightTable-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-LightTable-View"/>
       </list>
     </property>
   </bean>
@@ -555,33 +557,33 @@
     <property name="items">
       <list>
         <bean parent="Uif-Link" p:linkText="Simple Constraints"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-SimpleConstraint-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-SimpleConstraint-View"/>
         <bean parent="Uif-Link" p:linkText="Prerequisite Constraint"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-PrerequisiteConstraint-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-PrerequisiteConstraint-View"/>
         <bean parent="Uif-Link" p:linkText="Must Occur Constraint"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-MustOccurConstraint-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-MustOccurConstraint-View"/>
         <bean parent="Uif-Link" p:linkText="Case Constraint"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CaseConstraint-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CaseConstraint-View"/>
         <bean parent="Uif-Link" p:linkText="Any Character Constraint"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-AnyCharacterPatternConstraint-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-AnyCharacterPatternConstraint-View"/>
         <bean parent="Uif-Link" p:linkText="Charset Constraint"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CharsetPatternConstraint-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CharsetPatternConstraint-View"/>
         <bean parent="Uif-Link" p:linkText="Alpha Constraint"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-AlphaPatternConstraint-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-AlphaPatternConstraint-View"/>
         <bean parent="Uif-Link" p:linkText="AlphaNumeric Constraint"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-AlphaNumericPatternConstraint-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-AlphaNumericPatternConstraint-View"/>
         <bean parent="Uif-Link" p:linkText="Numeric Constraint"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-NumericPatternConstraint-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-NumericPatternConstraint-View"/>
         <bean parent="Uif-Link" p:linkText="Integer Constraint"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-IntegerPatternConstraint-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-IntegerPatternConstraint-View"/>
         <bean parent="Uif-Link" p:linkText="Fixed Point Constraint"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-FixedPointPatternConstraint-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-FixedPointPatternConstraint-View"/>
         <bean parent="Uif-Link" p:linkText="Floating Point Constraint"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-FloatingPointPatternConstraint-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-FloatingPointPatternConstraint-View"/>
         <bean parent="Uif-Link" p:linkText="Date Constraint"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DatePatternConstraint-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DatePatternConstraint-View"/>
         <bean parent="Uif-Link" p:linkText="Regex Based Constraints"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ConfigurationBasedRegexPatternConstraint-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ConfigurationBasedRegexPatternConstraint-View"/>
       </list>
     </property>
   </bean>
@@ -591,11 +593,11 @@
     <property name="items">
       <list>
         <bean parent="Uif-Link" p:linkText="Disable"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Disable-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Disable-View"/>
         <bean parent="Uif-Link" p:linkText="Progressive Disclosure"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ProgressiveDisclosure-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ProgressiveDisclosure-View"/>
         <bean parent="Uif-Link" p:linkText="Conditional Refresh"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ConditionalRefresh-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ConditionalRefresh-View"/>
       </list>
     </property>
   </bean>
@@ -604,15 +606,15 @@
     <property name="items">
       <list>
         <bean parent="Uif-Link" p:linkText="Rich Messages"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-RichMessages-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-RichMessages-View"/>
         <bean parent="Uif-Link" p:linkText="Unified View Header"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-UnifiedHeader-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-UnifiedHeader-View"/>
         <bean parent="Uif-Link" p:linkText="Sticky Header Options"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-StickyHeader-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-StickyHeader-View"/>
         <bean parent="Uif-Link" p:linkText="Sticky Footer Options"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-StickyFooter-View&amp;methodToCall=start"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-StickyFooter-View"/>
         <!--        <bean parent="Uif-Link" p:linkText="Incident Page"
-        p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-IncidentPage-View&amp;methodToCall=start"/>-->
+        p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-IncidentPage-View"/>-->
       </list>
     </property>
   </bean>

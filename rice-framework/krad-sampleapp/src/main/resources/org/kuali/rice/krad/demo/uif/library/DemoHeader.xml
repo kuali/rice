@@ -34,10 +34,6 @@
         <ref bean="Demo-Header-Example5"/>
         <ref bean="Demo-Header-Example6"/>
         <ref bean="Demo-Header-Example7"/>
-        <ref bean="Demo-Header-Example8"/>
-        <ref bean="Demo-Header-Example9"/>
-        <ref bean="Demo-Header-Example10"/>
-        <ref bean="Demo-Header-Example11"/>
         <ref bean="Demo-Header-Example12"/>
         <ref bean="Demo-Header-Example13"/>
         <ref bean="Demo-Header-Example14"/>
@@ -105,42 +101,6 @@
         <!-- ex:Demo-Header-Example7 start-->
         <bean parent="Uif-HeaderSix"/>
         <!-- ex:Demo-Header-Example7 end-->
-      </list>
-    </property>
-  </bean>
-  <bean id="Demo-Header-Example8"  parent="Uif-VerticalBoxSection">
-    <property name="items">
-      <list>
-        <!-- ex:Demo-Header-Example8 start-->
-        <bean parent="Uif-PageHeader"/>
-        <!-- ex:Demo-Header-Example8 end-->
-      </list>
-    </property>
-  </bean>
-  <bean id="Demo-Header-Example9"  parent="Uif-VerticalBoxSection">
-    <property name="items">
-      <list>
-        <!-- ex:Demo-Header-Example9 start-->
-        <bean parent="Uif-SectionHeader"/>
-        <!-- ex:Demo-Header-Example9 end-->
-      </list>
-    </property>
-  </bean>
-  <bean id="Demo-Header-Example10"  parent="Uif-VerticalBoxSection">
-    <property name="items">
-      <list>
-        <!-- ex:Demo-Header-Example10 start-->
-        <bean parent="Uif-SubSectionHeader"/>
-        <!-- ex:Demo-Header-Example10 end-->
-      </list>
-    </property>
-  </bean>
-  <bean id="Demo-Header-Example11"  parent="Uif-VerticalBoxSection">
-    <property name="items">
-      <list>
-        <!-- ex:Demo-Header-Example11 start-->
-        <bean parent="Uif-SubCollectionHeader"/>
-        <!-- ex:Demo-Header-Example11 end-->
       </list>
     </property>
   </bean>

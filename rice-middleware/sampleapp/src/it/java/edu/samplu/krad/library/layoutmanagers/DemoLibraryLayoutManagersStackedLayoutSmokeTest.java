@@ -49,15 +49,15 @@ public class DemoLibraryLayoutManagersStackedLayoutSmokeTest extends SmokeTestBa
     
     protected void testLayoutManagersStackedWithTableSubCollectionLayout() throws Exception {
         selectByName("exampleShown","Stacked Collection With Table Sub-Collection");
-        waitForElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-Collection2']/div[2]/div[2]/table/tbody/tr/td/div/input[@name='collection4[0].field1']");
-        assertElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-Collection2']/div[2]/div[2]/table/tbody/tr[5]/td/div/fieldset/div/div[2]/div[2]/table");
-        assertElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-Collection2']/div[2]/div[3]/table/tbody/tr/td/div/input[@name='collection4[1].field1']");
+        waitForElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-Collection2']/div[2]/div[2]/div/table/tbody/tr/td/div/input");
+        assertElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-Collection2']/div[2]/div[2]/div[@class='uif-collectionItem uif-gridCollectionItem']/table");
+//        assertElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-Collection2']/div[2]/div[3]/table/tbody/tr/td/div/input[@name='collection4[1].field1']");
     }
     
     protected void testLayoutManagersStackedWithStackedSubCollectionLayout() throws Exception {
         selectByName("exampleShown","Stacked Collection with a Stacked Sub-Collection");
-        waitForElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-Collection3']/div[2]/div[2]/table/tbody/tr/td/div/input[@name='collection5[0].field1']");
-        assertElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-Collection3']/div[2]/div[2]/table/tbody/tr[5]/td/div/fieldset/div/div[3]/div/table");
+        waitForElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-Collection3']/div[2]/div[2]/div[@class='uif-collectionItem uif-gridCollectionItem']/table/tbody/tr/td/div/input");
+        assertElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-Collection3']/div[2]/div[2]/div[@class='uif-collectionItem uif-gridCollectionItem']/table/tbody/tr[5]/td/div/fieldset/div/div[3]/div/table");
     }
     
     protected void testLayoutManagersStackedCollectionWithServersidePaging() throws Exception {

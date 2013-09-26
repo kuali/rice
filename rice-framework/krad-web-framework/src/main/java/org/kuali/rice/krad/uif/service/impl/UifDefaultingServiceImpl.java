@@ -45,10 +45,13 @@ import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.control.UserControl;
 import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.field.LookupInputField;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.service.UifDefaultingService;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.InquiryView;
+import org.kuali.rice.krad.uif.view.LookupView;
+import org.kuali.rice.krad.util.KRADPropertyConstants;
 
 public class UifDefaultingServiceImpl implements UifDefaultingService {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(UifDefaultingServiceImpl.class);
@@ -367,6 +370,72 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
 
         // If there are collections on the object, include sections for them
         addCollectionSectionsToInquiryView( view, dataObjectEntry );
+
+        return view;
+    }
+
+    protected void addAttributesToLookupCriteria( LookupView view, DataObjectEntry dataObjectEntry ) {
+        AttributeDefinition activeAttribute = null;
+        for ( AttributeDefinition attr : dataObjectEntry.getAttributes() ) {
+            // Check if we have been told not to display this attribute here
+            boolean dontDisplay = hasHintOfType(attr.getDataObjectAttribute(), UifDisplayHintType.NO_LOOKUP_CRITERIA);
+            if ( dontDisplay ) {
+                continue;
+            }
+            if ( attr.getName().equals( KRADPropertyConstants.ACTIVE ) ) {
+                activeAttribute = attr;
+                continue; // leave until the end of the lookup criteria
+            }
+            LookupInputField field = ComponentFactory.getLookupCriteriaInputField();
+            field.setPropertyName(attr.getName());
+            view.getCriteriaFields().add(field);
+        }
+        // If there was one, add the active attribute at the end
+        if ( activeAttribute != null ) {
+            LookupInputField field = ComponentFactory.getLookupCriteriaInputField();
+            field.setPropertyName(activeAttribute.getName());
+            view.getCriteriaFields().add(field);
+        }
+    }
+
+    protected void addAttributesToLookupResults( LookupView view, DataObjectEntry dataObjectEntry ) {
+        AttributeDefinition activeAttribute = null;
+        for ( AttributeDefinition attr : dataObjectEntry.getAttributes() ) {
+            // Check if we have been told not to display this attribute here
+            boolean dontDisplay = hasHintOfType(attr.getDataObjectAttribute(), UifDisplayHintType.NO_LOOKUP_RESULT);
+            if ( dontDisplay ) {
+                continue;
+            }
+            if ( attr.getName().equals( KRADPropertyConstants.ACTIVE ) ) {
+                activeAttribute = attr;
+                continue; // leave until the end of the lookup results
+            }
+            DataField field = ComponentFactory.getDataField();
+            field.setPropertyName(attr.getName());
+            view.getResultFields().add(field);
+        }
+        // If there was one, add the active attribute at the end
+        if ( activeAttribute != null ) {
+            DataField field = ComponentFactory.getDataField();
+            field.setPropertyName(activeAttribute.getName());
+            view.getResultFields().add(field);
+        }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.service.UifDefaultingService#deriveLookupViewFromMetadata(org.kuali.rice.krad.datadictionary.DataObjectEntry)
+     */
+    @Override
+    public LookupView deriveLookupViewFromMetadata(DataObjectEntry dataObjectEntry) {
+        LookupView view = ComponentFactory.getLookupView();
+        view.setHeaderText( dataObjectEntry.getObjectLabel() + " Lookup" );
+        view.setDataObjectClassName(dataObjectEntry.getDataObjectClass());
+        view.setCriteriaFields( new ArrayList<Component>() );
+        view.setResultFields( new ArrayList<Component>() );
+        view.setDefaultSortAttributeNames( dataObjectEntry.getPrimaryKeys() );
+
+        addAttributesToLookupCriteria( view, dataObjectEntry );
+        addAttributesToLookupResults( view, dataObjectEntry );
 
         return view;
     }

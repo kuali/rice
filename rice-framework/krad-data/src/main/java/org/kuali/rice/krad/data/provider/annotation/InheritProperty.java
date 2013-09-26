@@ -32,4 +32,6 @@ public @interface InheritProperty {
 	String name();
 
 	Label label() default @Label("");
+
+	UifDisplayHints displayHints() default @UifDisplayHints(@UifDisplayHint(UifDisplayHintType.NONE));
 }

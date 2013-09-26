@@ -373,6 +373,9 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 	 */
 	protected boolean processAnnotationForAttribute(Annotation a, DataObjectAttributeImpl attr,
 			DataObjectMetadataImpl metadata) {
+		if (a == null) {
+			return false;
+		}
 		if (a instanceof NonPersistentProperty) {
 			attr.setPersisted(false);
 			return true;
@@ -679,6 +682,8 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 
 					// Handle the label override, if present
 					processAnnotationForAttribute(inheritedProperty.label(), attr, metadata);
+					// Handle the UIF displayoverride, if present
+					processAnnotationForAttribute(inheritedProperty.displayHints(), attr, metadata);
 
 					attributes.add(attr);
 				}

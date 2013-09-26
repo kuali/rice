@@ -20,7 +20,7 @@
   xsi:schemaLocation="http://www.springframework.org/schema/beans  
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-
+<!-- 
   <bean id="TravelAccount-LookupView" parent="Uif-LookupView">
     <property name="headerText" value="Travel Account Lookup" />
     <property name="dataObjectClassName" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount" />
@@ -45,5 +45,5 @@
       </list>
     </property>
   </bean>
-
+ -->
 </beans>

@@ -78,9 +78,11 @@ import org.kuali.rice.krad.uif.field.GenericField;
 import org.kuali.rice.krad.uif.field.ImageField;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.LinkField;
+import org.kuali.rice.krad.uif.field.LookupInputField;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.field.SpaceField;
 import org.kuali.rice.krad.uif.view.InquiryView;
+import org.kuali.rice.krad.uif.view.LookupView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.LightBox;
@@ -170,6 +172,9 @@ public class ComponentFactory {
     public static final String SESSION_TIMEOUT_DIALOG = "Uif-SessionTimeout-DialogGroup";
 
     public static final String INQUIRY_VIEW = "Uif-InquiryView";
+    public static final String LOOKUP_VIEW = "Uif-LookupView";
+    public static final String LOOKUP_CRITERIA_FIELD = "Uif-LookupCriteriaInputField";
+    public static final String LOOKUP_CRITERIA_ACTIVE_INDICATOR_FIELD = "Uif-LookupActiveInputField";
 
     public static final String URL_INFO = "Uif-Url";
 
@@ -1203,9 +1208,33 @@ public class ComponentFactory {
     /**
      * Gets an empty inquiry view configuration for population.
      *
-     * @return Inquiry component
+     * @return InquiryView component
      */
     public static InquiryView getInquiryView() {
         return (InquiryView) getNewComponentInstance(INQUIRY_VIEW);
+    }
+
+    /**
+     * Gets an empty lookup view configuration for population.
+     *
+     * @return LookupView component
+     */
+    public static LookupView getLookupView() {
+        return (LookupView) getNewComponentInstance(LOOKUP_VIEW);
+    }
+
+    /**
+     * Gets a component instance for an input field in the lookup criteria section
+     */
+    public static LookupInputField getLookupCriteriaInputField() {
+        return (LookupInputField) getNewComponentInstance(LOOKUP_CRITERIA_FIELD);
+    }
+
+    /**
+     * Gets a component instance for an input field for the active indicator
+     * in the lookup criteria section
+     */
+    public static LookupInputField getLookupCriteriaActiveIndicatorInputField() {
+        return (LookupInputField) getNewComponentInstance(LOOKUP_CRITERIA_ACTIVE_INDICATOR_FIELD);
     }
 }

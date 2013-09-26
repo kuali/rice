@@ -27,10 +27,13 @@ import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.provider.annotation.Label;
 import org.kuali.rice.krad.data.provider.annotation.NonPersistentProperty;
 import org.kuali.rice.krad.data.provider.annotation.ShortLabel;
+import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViewType;
+import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViews;
 import org.kuali.rice.krad.data.provider.annotation.UifValidCharactersConstraintBeanName;
 
 @Entity
 @Table(name="TRV_ACCT_TYPE")
+@UifAutoCreateViews({UifAutoCreateViewType.INQUIRY,UifAutoCreateViewType.LOOKUP})
 public class TravelAccountType extends DataObjectBase implements Serializable {
     private static final long serialVersionUID = 413236253897119667L;
 

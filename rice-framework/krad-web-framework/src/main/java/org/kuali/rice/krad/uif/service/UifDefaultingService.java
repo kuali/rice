@@ -15,11 +15,14 @@
  */
 package org.kuali.rice.krad.uif.service;
 
+import org.kuali.rice.krad.data.metadata.DataObjectAttribute;
+import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.DataObjectEntry;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.view.InquiryView;
+import org.kuali.rice.krad.uif.view.LookupView;
 
 /**
  * This service helps build/define default controls for the UIF based on the associated data-level metadata.
@@ -60,5 +63,24 @@ public interface UifDefaultingService {
      */
     ValidCharactersConstraint deriveValidCharactersConstraint( AttributeDefinition attrDef );
 
+    /**
+     * Build an instance of an {@link InquiryView} for the given data object entry.
+     * Information will be pulled from the {@link DataObjectEntry} and the embedded
+     * {@link DataObjectMetadata} and {@link DataObjectAttribute} instances as needed.
+     *
+     * In the present implementation, all non-hidden properties on the DataObjectEntry
+     * will be added to the inquiry.  Additionally, any collections on the object will be
+     * displayed in their own sections.
+     */
     InquiryView deriveInquiryViewFromMetadata( DataObjectEntry dataObjectEntry );
+
+    /**
+     * Build an instance of an {@link LookupView} for the given data object entry.
+     * Information will be pulled from the {@link DataObjectEntry} and the embedded
+     * {@link DataObjectMetadata} and {@link DataObjectAttribute} instances as needed.
+     *
+     * In the present implementation, all non-hidden properties on the DataObjectEntry
+     * will be added to the lookup search criteria and results.
+     */
+    LookupView deriveLookupViewFromMetadata( DataObjectEntry dataObjectEntry );
 }

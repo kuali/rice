@@ -54,7 +54,7 @@ import org.kuali.rice.krad.demo.travel.options.AccountTypeKeyValues;
 
 @Entity
 @Table(name="TRV_ACCT")
-@UifAutoCreateViews(UifAutoCreateViewType.INQUIRY)
+@UifAutoCreateViews({UifAutoCreateViewType.INQUIRY,UifAutoCreateViewType.LOOKUP})
 public class TravelAccount extends DataObjectBase implements Serializable {
 	private static final long serialVersionUID = -7739303391609093875L;
 
@@ -75,16 +75,18 @@ public class TravelAccount extends DataObjectBase implements Serializable {
     @Label("Travel Account Type Code")
     @Description("Type code grouping for account")
     @KeyValuesFinderClass(AccountTypeKeyValues.class)
-    @UifDisplayHints(@UifDisplayHint(UifDisplayHintType.RADIO))
+    @UifDisplayHints({
+    	@UifDisplayHint(UifDisplayHintType.RADIO),
+    	@UifDisplayHint(UifDisplayHintType.NO_LOOKUP_RESULT)})
     protected String accountTypeCode;
 
     @ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.REFRESH})
     @JoinColumn(name="ACCT_TYPE", insertable=false, updatable=false)
-    @InheritProperty(name="codeAndDescription")
-    @UifDisplayHints(@UifDisplayHint(UifDisplayHintType.HIDDEN))
+    @InheritProperty(name="codeAndDescription",displayHints=@UifDisplayHints(@UifDisplayHint(UifDisplayHintType.NO_LOOKUP_CRITERIA)))
     private TravelAccountType accountType;
 
     @Column(name="SUBSIDIZED_PCT",length=5,precision=2)
+    @UifDisplayHints(@UifDisplayHint(UifDisplayHintType.NO_LOOKUP_CRITERIA))
 	private KualiPercent subsidizedPercent;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -94,14 +96,15 @@ public class TravelAccount extends DataObjectBase implements Serializable {
 
     @Column(name="ACCT_FO_ID",length=40)
     @Size(max=40)
-    @UifDisplayHints({@UifDisplayHint(UifDisplayHintType.HIDDEN),@UifDisplayHint(value=UifDisplayHintType.SECTION,id="fo",label="Fiscal Officer")})
+    @UifDisplayHints({@UifDisplayHint(UifDisplayHintType.HIDDEN),
+    	@UifDisplayHint(value=UifDisplayHintType.SECTION,id="fo",label="Fiscal Officer")})
 	private String foId;
 
     @Relationship(foreignKeyFields="foId")
     @Transient
     @InheritProperties({
     		@InheritProperty(name="principalName",label=@Label("Fiscal Officer User ID")),
-    		@InheritProperty(name="name",label=@Label("Fiscal Officer Name"))
+    		@InheritProperty(name="name",label=@Label("Fiscal Officer Name"),displayHints=@UifDisplayHints(@UifDisplayHint(UifDisplayHintType.NO_LOOKUP_CRITERIA)))
     })
 	private Person fiscalOfficer;
 

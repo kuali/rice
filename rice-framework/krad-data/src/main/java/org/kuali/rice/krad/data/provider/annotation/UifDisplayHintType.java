@@ -17,6 +17,10 @@ package org.kuali.rice.krad.data.provider.annotation;
 
 public enum UifDisplayHintType {
 	/**
+	 * Does nothing. Just a placeholder so defaults can be defined.
+	 */
+	NONE,
+	/**
 	 * Tells the defaulter to hide this field and not generate an input field for it.
 	 */
 	HIDDEN,
@@ -35,5 +39,13 @@ public enum UifDisplayHintType {
 	/**
 	 * Indicates that this hint tells that the attribute should be put in a specific section.
 	 */
-	SECTION;
+	SECTION,
+	/**
+	 * Don't include this attribute in the lookup criteria.
+	 */
+	NO_LOOKUP_CRITERIA,
+	/**
+	 * Don't include this attribute in the lookup results.
+	 */
+	NO_LOOKUP_RESULT;
 }

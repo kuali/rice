@@ -16,12 +16,12 @@
     limitations under the License.
 
 -->
-  <bean id="TravelAccountType" parent="TravelAccountType-parentBean"/>
 
-  <bean id="TravelAccountType-parentBean" abstract="true" parent="DataObjectEntry">
+  <bean id="TravelAccountType" parent="DataObjectEntry">
     <property name="dataObjectClass" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccountType"/>
   </bean>
-
+  
+<!-- 
   <bean id="TravelAccountType-InquiryView" parent="Uif-InquiryView">
     <property name="headerText" value="Travel Account Type Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccountType"/>
@@ -40,5 +40,5 @@
          </list>
      </property>
   </bean>
-
+ -->
 </beans>

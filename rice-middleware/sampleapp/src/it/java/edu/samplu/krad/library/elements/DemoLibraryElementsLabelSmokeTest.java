@@ -50,18 +50,35 @@ public class DemoLibraryElementsLabelSmokeTest extends SmokeTestBase {
 
     protected void testLibraryElementsLabel() throws Exception {
         assertElementPresentByXpath("//div[@id='Demo-Label-Example1']/div[@class='uif-verticalBoxLayout clearfix']/span/label");
-        assertElementPresentByXpath("//div[@id='Demo-Label-Example1']/div[@class='uif-verticalBoxLayout clearfix']/span[2]/label");
+        assertTextPresent("Default Label:");
     }
-    
+
+    protected void testLibraryElementsLabelNoColon() throws Exception {
+        waitAndClickByLinkText("No Colon Label");
+        assertElementPresentByXpath("//div[@id='Demo-Label-Example2']/div[@class='uif-verticalBoxLayout clearfix']/span/label");
+        assertTextPresent("No Colon Label");
+        assertTextNotPresent("No Colon Label:");
+    }
+
+    protected void testLibraryElementsLabelRequiredText() throws Exception {
+        waitAndClickByLinkText("Required Message");
+        assertElementPresentByXpath("//div[@id='Demo-Label-Example2']/div[@class='uif-verticalBoxLayout clearfix']/span/label");
+        assertTextPresent("This is required");
+    }
+
     @Test
     public void testLibraryElementsLabelBookmark() throws Exception {
         testLibraryElementsLabel();
+        testLibraryElementsLabelNoColon();
+        testLibraryElementsLabelRequiredText();
         passed();
     }
 
     @Test
     public void testLibraryElementsLabelNav() throws Exception {
         testLibraryElementsLabel();
+        testLibraryElementsLabelNoColon();
+        testLibraryElementsLabelRequiredText();
         passed();
     }  
 }

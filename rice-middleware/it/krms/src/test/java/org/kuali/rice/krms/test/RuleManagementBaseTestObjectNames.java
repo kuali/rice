@@ -104,10 +104,12 @@ public class RuleManagementBaseTestObjectNames {
     protected String nlUsage0_Descr;
     protected String nlUsage0_KrmsType;
 
+    protected String proposition_Id;
     protected String proposition_0_Id;
     protected String proposition_1_Id;
     protected String proposition_2_Id;
     protected String proposition_3_Id;
+    protected String proposition_Descr;
     protected String proposition_0_Descr;
     protected String proposition_1_Descr;
     protected String proposition_2_Descr;
@@ -256,11 +258,13 @@ public class RuleManagementBaseTestObjectNames {
         rule_6_Name = "RuleName" + object6;
         rule_7_Name = "RuleName" + object7;
 
+        proposition_Id = "P" + object0;
         proposition_0_Id = "P" + object0;
         proposition_1_Id = "P" + object1;
         proposition_2_Id = "P" + object2;
         proposition_3_Id = "P" + object3;
 
+        proposition_Descr = "P" + object0 + "_simple_proposition";
         proposition_0_Descr = "P" + object0 + "_simple_proposition";
         proposition_1_Descr = "P" + object1 + "_simple_proposition";
         proposition_2_Descr = "P" + object2 + "_simple_proposition";

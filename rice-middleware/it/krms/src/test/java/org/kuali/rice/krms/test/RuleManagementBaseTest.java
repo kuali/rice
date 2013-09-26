@@ -57,7 +57,7 @@ import static org.junit.Assert.*;
  * Base test case and methods for testing RuleManagementServiceImpl
  */
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
-public class RuleManagementBaseTest extends KRMSTestCase {
+public abstract class RuleManagementBaseTest extends KRMSTestCase {
 
     protected RuleManagementService ruleManagementService;
     protected TermBoService termBoService;
@@ -71,8 +71,13 @@ public class RuleManagementBaseTest extends KRMSTestCase {
 
     protected String CLASS_DISCRIMINATOR;
 
+    private static String lastTestClass = null;
+
     @Before
     public void setup() {
+        // Reset TestActionTypeService
+        TestActionTypeService.resetActionsFired();
+
         ruleManagementService = KrmsRepositoryServiceLocator.getService("ruleManagementService");
         termBoService = KrmsRepositoryServiceLocator.getTermBoService();
         contextRepository = KrmsRepositoryServiceLocator.getContextBoService();
@@ -100,6 +105,25 @@ public class RuleManagementBaseTest extends KRMSTestCase {
     public void setClassDiscriminator() {
         // set a unique discriminator for test objects of this class should be uniquely set by each extending class
         CLASS_DISCRIMINATOR = "BaseTest";
+    }
+
+    /**
+     *
+     * Setting it up so that KRMS tables are not reset between test methods to make it run much faster
+     *
+     * @return
+     */
+    @Override
+    protected List<String> getPerTestTablesNotToClear() {
+        List<String> tablesNotToClear = super.getPerTestTablesNotToClear();
+
+        // HACK: clear KRMS tables for first test method run, but not subsequent methods in the same class
+        if (getClass().getName().equals(lastTestClass)) { //
+            tablesNotToClear.add("KRMS_.*");
+        }
+        lastTestClass = getClass().getName();
+
+        return tablesNotToClear;
     }
 
     /**

@@ -235,8 +235,8 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
     }
 
     /**
-     * Tests whether the {@code AgendaItemDefinition} cache is being evicted properly by checking the status the
-     * dependent objects before and after creating an {@code AgendaItemDefinition} (and consequently emptying the cache).
+     * Tests whether the {@code ActionDefinition} cache is being evicted properly by checking the status the
+     * dependent objects before and after creating an {@code ActionDefinition} (and consequently emptying the cache).
      *
      * <p>
      * The following object caches are affected:

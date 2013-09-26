@@ -622,6 +622,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      */
     @WebMethod(operationName = "createProposition")
     @WebResult(name = "proposition")
+    @CacheEvict(value={PropositionDefinition.Cache.NAME, RuleDefinition.Cache.NAME}, allEntries = true)
     public PropositionDefinition createProposition(@WebParam(name = "propositionDefinition") PropositionDefinition propositionDefinition) throws RiceIllegalArgumentException;
 
     /**
@@ -633,6 +634,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      */
     @WebMethod(operationName = "getProposition")
     @WebResult(name = "proposition")
+    @Cacheable(value= PropositionDefinition.Cache.NAME, key="'id=' + #p0")
     public PropositionDefinition getProposition(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
 
     /**
@@ -647,6 +649,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
     @XmlElementWrapper(name = "propositions", required = true)
     @XmlElement(name = "proposition", required = false)
     @WebResult(name = "propositions")
+    @Cacheable(value= PropositionDefinition.Cache.NAME, key="'typeId=' + #p0")
     public Set<PropositionDefinition> getPropositionsByType(@WebParam(name = "typeId") String typeId) throws RiceIllegalArgumentException;
 
     /**
@@ -661,6 +664,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
     @XmlElementWrapper(name = "propositions", required = true)
     @XmlElement(name = "proposition", required = false)
     @WebResult(name = "propositions")
+    @Cacheable(value= PropositionDefinition.Cache.NAME, key="'ruleId=' + #p0")
     public Set<PropositionDefinition> getPropositionsByRule(@WebParam(name = "ruleId") String ruleId) throws RiceIllegalArgumentException;
 
     /**
@@ -671,6 +675,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      *                                      is null or invalid
      */
     @WebMethod(operationName = "updateProposition")
+    @CacheEvict(value={PropositionDefinition.Cache.NAME, RuleDefinition.Cache.NAME}, allEntries = true)
     public void updateProposition(
             @WebParam(name = "propositionDefinition") PropositionDefinition propositionDefinition) throws RiceIllegalArgumentException;
 
@@ -681,6 +686,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      * @throws RiceIllegalArgumentException if the given id is null or invalid
      */
     @WebMethod(operationName = "deleteProposition")
+    @CacheEvict(value={PropositionDefinition.Cache.NAME, RuleDefinition.Cache.NAME}, allEntries = true)
     public void deleteProposition(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
 
     ////

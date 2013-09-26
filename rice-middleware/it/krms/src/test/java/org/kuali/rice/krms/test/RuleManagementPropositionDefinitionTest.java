@@ -16,16 +16,16 @@
 
 package org.kuali.rice.krms.test;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.krad.criteria.CriteriaLookupDaoProxy;
-import org.kuali.rice.krad.criteria.CriteriaLookupServiceImpl;
 import org.kuali.rice.krms.api.repository.LogicalOperator;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
 import org.kuali.rice.krms.api.repository.proposition.PropositionType;
+import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -294,5 +294,46 @@ public class RuleManagementPropositionDefinitionTest extends RuleManagementBaseT
         }
 
         assertEquals("incorrect number of Propositions found", 4, returnedPropositionIds.size());
+    }
+
+    /**
+     * Tests whether the {@code PropositionDefinition} cache is being evicted properly by checking the status the
+     * dependent objects before and after creating an {@code PropositionDefinition} (and consequently emptying the cache).
+     *
+     * <p>
+     * The following object caches are affected:
+     * {@code PropositionDefinition}, {@code RuleDefinition}
+     * </p>
+     */
+    @Test
+    public void testPropositionCacheEvict() {
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t7 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t7");
+
+        verifyEmptyProposition(t7);
+
+        // Proposition is built as part of a Rule
+        buildTestRuleDefinition(t7.namespaceName, t7.object0);
+
+        verifyFullProposition(t7);
+    }
+
+    private void verifyEmptyProposition(RuleManagementBaseTestObjectNames t) {
+        Set<PropositionDefinition> propositions = ruleManagementService.getPropositionsByRule(t.rule_Id);
+        assertFalse("Proposition is not null", propositions != null && !propositions.isEmpty());
+
+        RuleDefinition rule = ruleManagementService.getRule(t.rule_Id);
+        assertFalse("Proposition in Rule found", rule != null);
+    }
+
+    private void verifyFullProposition(RuleManagementBaseTestObjectNames t) {
+        Set<PropositionDefinition> propositions = ruleManagementService.getPropositionsByRule(t.rule_Id);
+        assertTrue("Proposition is not null", propositions != null && !propositions.isEmpty());
+
+        String propositionId = new ArrayList<PropositionDefinition>(propositions).get(0).getId();
+
+        RuleDefinition rule = ruleManagementService.getRule(t.rule_Id);
+        assertTrue("Proposition in Rule not found", rule != null);
+        assertTrue("Proposition in Rule not found", StringUtils.equals(propositionId, rule.getPropId()));
     }
 }

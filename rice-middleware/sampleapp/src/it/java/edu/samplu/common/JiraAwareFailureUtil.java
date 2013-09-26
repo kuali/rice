@@ -144,6 +144,8 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("select all items server side paging failure", "KULRICE-10534 : Multivalue lookup server side select for server side paging");
 
         jiraMatches.put("not enough results for next page", "KULRICE-10680 Apply 2013-09-21.sql and mysql-2013-09-21.sql");
+
+        jiraMatches.put("calculation column contains no text", "KULRICE-10728 Collection footer not displaying for the rich table");
         //jiraMatches.put("", "");
     }
 

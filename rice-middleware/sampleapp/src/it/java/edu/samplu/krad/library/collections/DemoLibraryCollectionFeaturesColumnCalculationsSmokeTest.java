@@ -15,6 +15,7 @@
  */
 package edu.samplu.krad.library.collections;
 
+import edu.samplu.common.JiraAwareFailureUtil;
 import edu.samplu.common.SmokeTestBase;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Assert;
@@ -47,7 +48,9 @@ public class DemoLibraryCollectionFeaturesColumnCalculationsSmokeTest extends Sm
     protected void testCollectionFeaturesColumnCalculations() throws Exception {
         String preValueString = waitAndGetText(By.xpath(
                 "//div[@id='Demo-TableLayoutTotaling-Section1']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]"))[0];
-        Assert.assertTrue("calculation column contains no text", !StringUtils.isBlank(preValueString));
+        if (StringUtils.isBlank(preValueString)) {
+            JiraAwareFailureUtil.fail("calculation column contains no text", this);
+        }
         Integer preValue = Integer.parseInt(preValueString);
         clearTextByName("collection1[0].field1");
         waitAndTypeByName("collection1[0].field1", "0");

@@ -1877,8 +1877,11 @@
                 >translateCodes</emphasis> of the <emphasis role="keyword"
                 >LookupDefinition</emphasis> was set. In KRAD the automatic translation is enabled
               by setting the <emphasis role="keyword">translateCodesOnReadOnlyDisplay</emphasis> of
-              the <emphasis role="keyword">Uif-LookupView</emphasis>. [KNS line: 36, KRAD line:
-              50]</para>
+              the <emphasis role="keyword">Uif-LookupView</emphasis>. [KNS line: 36, KRAD line: 50] <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject></para>
           </listitem>
         </itemizedlist>
       </para>
@@ -1895,18 +1898,24 @@
         <para>
           <itemizedlist>
             <listitem xml:id="LLA1">
-              <para><emphasis role="keyword">set/getBusinessObjectClass</emphasis>have been renamed
+              <para><emphasis role="keyword">set/getBusinessObjectClass</emphasis> have been renamed
                 to set/getDataObjectClass. Since now all data objects are supported the requirement
                 that the object is a BusinessObject has been removed. The rename of these methods
-                reflect this change. However, don't use this method. In KRAD the data object is be
+                reflect this change. However, don't use this method. In KRAD the data object is
                 specified via the dataObjectClassName property of the extended Uif-LookupView bean.
                 <programlisting linenumbering="numbered">&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
   &lt;property name="dataObjectClassName" value="org.kuali.rice.SampleBo" />
   ...
-&lt;/bean></programlisting></para>
+&lt;/bean></programlisting>
+                The KNS2KRAD conversion script adds this property based on the dataObjectClass
+                property of the MaintenanceDocumentEntry in KNS. <inlinemediaobject>
+                  <imageobject>
+                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+                  </imageobject>
+                </inlinemediaobject></para>
             </listitem>
             <listitem xml:id="LLA2">
-              <para><emphasis role="keyword">getHtmlMenuBar/getSupplementalMenuBar</emphasis>have
+              <para><emphasis role="keyword">getHtmlMenuBar/getSupplementalMenuBar</emphasis> have
                 been removed. Instead these menu bars are configred via Uif. The HtmlMenuBar used to
                 add additional HTML content to the right of the "Create New" button, while the
                 SupplementalMenuBar replaces the "Create New" button with the specified HTML
@@ -1941,7 +1950,7 @@
   &lt;/property>
   ...
 &lt;/bean></programlisting>Instead
-                of "rightGroup", "upperGroup" and "lowerGroup" can be used to position components
+                of "rightGroup" the "upperGroup" and "lowerGroup" can be used to position components
                 above and below the header. </para>
             </listitem>
             <listitem xml:id="LLA3">
@@ -2238,18 +2247,13 @@
 
     <section>
       <title>Multiple Value Lookups</title>
-      <para>
-        <itemizedlist>
-          <listitem>
-            <para>Multiple value lookups allow for a collection on a maintenance document to be
-              populated with multiple results at once, rather than forcing the user to iteratively
-              add results one after another. For a maintenance document to use a multiple value
-              lookup, the maintenance document must contain a collection, and a collection lookup
-              must be configured for that collection. </para>
-          </listitem>
-          <listitem>
+      <para>Multiple value lookups allow for a collection on a maintenance document to be populated
+        with multiple results at once, rather than forcing the user to iteratively add results one
+        after another. For a maintenance document to use a multiple value lookup, the maintenance
+        document must contain a collection, and a collection lookup must be configured for that
+        collection. </para>
             <para><emphasis role="bold">KNS code example</emphasis>
-              <programlisting>&lt;bean parent="MaintainableCollectionDefinition">
+        <programlisting linenumbering="numbered">&lt;bean parent="MaintainableCollectionDefinition">
   &lt;property name="name" value="delegateGlobals"/>
   &lt;property name="businessObjectClass" value="org.kuali.kfs.coa.businessobject.AccountDelegateGlobalDetail"/>
   &lt;property name="sourceClassName" value="org.kuali.kfs.coa.businessobject.AccountDelegate"/>
@@ -2265,9 +2269,11 @@
 	&lt;list>
 	  &lt;bean parent="MaintainableFieldDefinition" p:name="financialDocumentTypeCode" p:required="true"/>
 	  &lt;bean parent="MaintainableFieldDefinition" p:name="accountDelegatePrimaryRoutingIndicator"/>
-	  &lt;bean parent="MaintainableFieldDefinition" p:name="accountDelegateStartDate" p:required="true" p:defaultValueFinderClass="org.kuali.kfs.sys.businessobject.defaultvalue.CurrentDateMMDDYYYYFinder"/>
+	  &lt;bean parent="MaintainableFieldDefinition" p:name="accountDelegateStartDate" p:required="true" 
+	          p:defaultValueFinderClass="org.kuali.kfs.sys.businessobject.defaultvalue.CurrentDateMMDDYYYYFinder"/>
 	  &lt;bean parent="MaintainableFieldDefinition" p:name="accountDelegateUniversalId" p:unconditionallyReadOnly="true" p:required="true"/>
-	  &lt;bean parent="MaintainableFieldDefinition" p:name="accountDelegate.principalName" p:required="true" p:webUILeaveFieldFunction="principalNameLookup"/>
+	  &lt;bean parent="MaintainableFieldDefinition" p:name="accountDelegate.principalName" p:required="true" 
+	          p:webUILeaveFieldFunction="principalNameLookup"/>
 	  &lt;bean parent="MaintainableFieldDefinition" p:name="accountDelegate.name" p:unconditionallyReadOnly="true" p:required="false"/>              
 	  &lt;bean parent="MaintainableFieldDefinition" p:name="approvalFromThisAmount"/>
 	  &lt;bean parent="MaintainableFieldDefinition" p:name="approvalToThisAmount"/>
@@ -2282,10 +2288,10 @@
 	&lt;/list>
   &lt;/property>
 &lt;/bean></programlisting>
-            </para>
-            <para><emphasis role="bold">KRAD code example:</emphasis>
-            </para>
-            <programlisting>&lt;bean parent="Uif-MaintenanceStackedCollectionSection">
+        <emphasis role="bold">KRAD code example:</emphasis>
+      </para>
+      <para>
+            <programlisting linenumbering="numbered">&lt;bean parent="Uif-MaintenanceStackedCollectionSection">
   &lt;property name="headerText" value="Account Delegates"/>
   &lt;property name="collectionObjectClass" value="org.kuali.kfs.coa.businessobject.AccountDelegateGlobalDetail"/>
   &lt;property name="propertyName" value="delegateGlobals"/>
@@ -2315,8 +2321,6 @@
 	&lt;/list>
   &lt;/property>
 &lt;/bean></programlisting>
-          </listitem>
-        </itemizedlist>
       </para>
     </section>
 

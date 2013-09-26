@@ -61,13 +61,13 @@ class BusinessObjectEntryBeanTransformer extends SpringBeanTransformer {
             if (controlFieldProperty && replace) {
                 this.removeProperties(beanNode, ["control"]);
             } else if (renamedControlBeans.get(controlDefParent) != null) {
-                if (replace){
+                if (replace) {
                     controlProperty.replaceNode {
                         property(name: "controlField") {
                             transformControlDefinitionBean(delegate, controlDefBean, renamedControlBeans)
                         }
                     }
-                }else {
+                } else {
                     controlProperty.plus {
                         property(name: "controlField") {
                             transformControlDefinitionBean(delegate, controlDefBean, renamedControlBeans)
@@ -75,8 +75,7 @@ class BusinessObjectEntryBeanTransformer extends SpringBeanTransformer {
                     }
                 }
 
-                if ("Uif-VerticalRadioControl".equals(renamedControlBeans.get(controlDefParent)) ||
-                        "Uif-DropdownControl".equals(renamedControlBeans.get(controlDefParent))) {
+                if ("Uif-VerticalRadioControl".equals(renamedControlBeans.get(controlDefParent)) || "Uif-DropdownControl".equals(renamedControlBeans.get(controlDefParent))) {
                     def attributes = genericGatherAttributes(controlDefBean, ["*valuesFinderClass": "p:optionsFinder"]);
                     controlProperty.plus {
                         property(name: "optionsFinder") {
@@ -99,18 +98,21 @@ class BusinessObjectEntryBeanTransformer extends SpringBeanTransformer {
     def transformControlDefinitionBean(NodeBuilder builder, Node controlDefBean, Map<String, String> controlDefReplacements) {
         String controlDefParent = controlDefBean.@parent.toString()
         def controlDefReplacementBean = controlDefReplacements[controlDefParent]
-        def attributes = gatherControlAttributes (controlDefBean)
+        def attributes = gatherControlAttributes(controlDefBean)
         if ("Uif-DropdownControl".equals(controlDefReplacementBean)) {
-            attributes.putAll(genericGatherAttributes(controlDefBean, ["*includeKeyInLabel": "p:includeKeyInLabel"]))
+            // attributes.putAll(genericGatherAttributes(controlDefBean, ["*includeKeyInLabel": "p:includeKeyInLabel"]))
             attributes.put("parent", "Uif-DropdownControl")
         } else if ("Uif-VerticalRadioControl".equals(controlDefReplacementBean)) {
-            attributes.putAll(genericGatherAttributes(controlDefBean, ["*includeKeyInLabel": "p:includeKeyInLabel"]))
+            // attributes.putAll(genericGatherAttributes(controlDefBean, ["*includeKeyInLabel": "p:includeKeyInLabel"]))
             attributes.put("parent", "Uif-VerticalRadioControl")
         } else if ("Uif-TextAreaControl".equals(controlDefReplacementBean)) {
             attributes.putAll(genericGatherAttributes(controlDefBean, ["*rows": "p:rows", "*cols": "p:cols"]))
             attributes.put("parent", "Uif-TextAreaControl")
+        } else if ("Uif-TextControl".equals(controlDefReplacementBean)) {
+            attributes.putAll(genericGatherAttributes(controlDefBean, ["*size": "p:size"]))
+            attributes.put("parent", "Uif-TextControl")
         } else if ("Uif-LinkField".equals(controlDefReplacementBean)) {
-            attributes.putAll(genericGatherAttributes(controlDefBean, ["*target": "p:target", "*hrefText": "p:linkText", "*styleClass":"p:fieldLabel.cssClasses"]))
+            attributes.putAll(genericGatherAttributes(controlDefBean, ["*target": "p:target", "*hrefText": "p:linkText", "*styleClass": "p:fieldLabel.cssClasses"]))
             attributes.put("parent", "Uif-LinkField")
             attributes.put("href", "@{#propertyName}")
         } else if ("Uif-CurrencyTextControl".equals(controlDefReplacementBean)) {
@@ -118,7 +120,7 @@ class BusinessObjectEntryBeanTransformer extends SpringBeanTransformer {
             attributes.put("parent", "Uif-CurrencyTextControl")
         } else if (controlDefReplacementBean != null) {
             attributes.put("parent", controlDefReplacements[controlDefParent])
-        }else {
+        } else {
             attributes.put("parent", "Uif-" + controlDefParent.replace("Definition", ""))
         }
         genericBeanTransform(builder, attributes)
@@ -133,13 +135,13 @@ class BusinessObjectEntryBeanTransformer extends SpringBeanTransformer {
      */
     def transformValidationPatternProperty(Node beanNode, boolean replace) {
         def validationPatternProperty = beanNode?.property?.find { "validationPattern".equals(it.@name) };
-        if (validationPatternProperty){
-            if (replace){
+        if (validationPatternProperty) {
+            if (replace) {
                 // transform the existing validationPattern node into KRAD validCharactersConstraint
                 validationPatternProperty.replaceNode {
                     buildValidationPatternProperty(delegate, validationPatternProperty);
                 }
-            }  else {
+            } else {
                 // build a new KRAD validationCharactersConstraint and add it to the parent, keeping the existing KNS validationPattern
                 validationPatternProperty.plus {
                     buildValidationPatternProperty(delegate, validationPatternProperty);
@@ -156,7 +158,7 @@ class BusinessObjectEntryBeanTransformer extends SpringBeanTransformer {
      */
     def buildValidationPatternProperty(NodeBuilder builder, Node beanNode) {
         def patternBean = beanNode.bean.find { return true; }
-        def beanAttributes  = gatherValidationPatternAttributes(patternBean)
+        def beanAttributes = gatherValidationPatternAttributes(patternBean)
         def propertyAttributes = [name: 'validCharactersConstraint']
         if (beanNode.@id) {
             propertyAttributes.put("id", beanNode.@id)

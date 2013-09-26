@@ -825,13 +825,13 @@
         <title>Radio Control Group</title>
         <para> KNS Radio Group control example:
           <programlisting linenumbering="numbered">&lt;property name="control">
-  &lt;bean parent="RadioControlDefinition" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.DelegateRuleValuesFinder" p:includeKeyInLabel="true"/>
+  &lt;bean parent="RadioControlDefinition" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.DelegateRuleValuesFinder"/>
 &lt;/property> </programlisting>
         </para>
         <para> KRAD Radio Group control example:
           <programlisting linenumbering="numbered">&lt;bean parent="Uif-InputField" p:propertyName="selectedOpt" p:label="Radio 1">
   &lt;property name="control">
-    &lt;bean parent="Uif-VerticalRadioControl" p:includeKeyInLabel="true"/>
+    &lt;bean parent="Uif-VerticalRadioControl"/>
   &lt;/property&gt;
   &lt;property name="optionsFinder">
     &lt;bean class="org.kuali.rice.krad.keyvalues.DelegateRuleValuesFinder"/>
@@ -855,14 +855,6 @@
               <para>The property <emphasis role="keyword">optionsFinder</emphasis> replaces the KNS
                   <emphasis role="keyword">valuesFinderClass</emphasis>. [KNS line: 2, KRAD lines:
                 5-7] <inlinemediaobject>
-                  <imageobject>
-                    <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
-                  </imageobject>
-                </inlinemediaobject></para>
-            </listitem>
-            <listitem>
-              <para>The sub-property <emphasis role="keyword">includeKeyInLabel</emphasis>
-                is carried over during conversion.[KNS line: 2, KRAD line: 3]<inlinemediaobject>
                   <imageobject>
                     <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                   </imageobject>

@@ -730,6 +730,13 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     @Override
     public void performApplyModel(View view, Object model) {
         ProcessLogger.trace("apply-model:" + view.getId());
+
+        // apply default values if they have not been applied yet
+        if (!((ViewModel) model).isDefaultsApplied()) {
+            applyDefaultValues(view, view, model);
+            ((ViewModel) model).setDefaultsApplied(true);
+        }
+
         // get action flag and edit modes from authorizer/presentation controller
         retrieveEditModesAndActionFlags(view, (UifFormBase) model);
 
@@ -1204,12 +1211,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         String clientStateScript = buildClientSideStateScript(view, model);
         view.setPreLoadScript(ScriptUtils.appendScript(view.getPreLoadScript(), clientStateScript));
-
-        // apply default values if they have not been applied yet
-        if (!((ViewModel) model).isDefaultsApplied()) {
-            applyDefaultValues(view, view, model);
-            ((ViewModel) model).setDefaultsApplied(true);
-        }
 
         setExpressionEvaluator(null);
     }

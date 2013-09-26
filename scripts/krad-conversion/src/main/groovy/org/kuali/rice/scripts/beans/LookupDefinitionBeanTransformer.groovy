@@ -52,7 +52,7 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
         List ignoreAttributes = [];
 
         // these properties are being converted and should not be copied when carryoverProperties is enabled
-        List ignoreOnCopyProperties = ["title", "menubar", "defaultSort", "numOfColumns", "extraButtonSource", "extraButtonParams", "disableSearchButtons", "lookupFields", "resultFields"]
+        List ignoreOnCopyProperties = ["title", "translateCodes", "menubar", "defaultSort", "numOfColumns", "extraButtonSource", "extraButtonParams", "disableSearchButtons", "lookupFields", "resultFields"]
 
         def beanAttributes = convertBeanAttributes(beanNode, lookupDefinitionBeanType, lookupViewBeanType, ignoreAttributes);
 
@@ -73,12 +73,11 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
                 addCommentIfNotExists(beanNode.parent(),"Lookup View");
                 bean(beanAttributes) {
                     addViewNameProperty(delegate, lookupTitle)
-                    if (lookupTitle) {
-                        property(name: "headerText", value: lookupTitle)
-                    }
                     if (objClassName) {
                         property(name: "dataObjectClassName", value: objClassName)
                     }
+                    renameProperties(delegate, lookupDefParentBeanNode, ["title": "headerText",
+                            "translateCodes": "translateCodesOnReadOnlyDisplay"])
                     copyProperties(delegate, beanNode, copiedProperties);
                     transformMenubarProperty(delegate, beanNode)
                     transformDefaultSortProperty(delegate, beanNode)

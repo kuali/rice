@@ -30,7 +30,6 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
 
     MaintenanceDocumentEntryBeanTransformer maintenanceDocumentEntryBeanTransformer;
     String defaultTestFilePath;
-    ;
 
     @Before
     void setUp() {

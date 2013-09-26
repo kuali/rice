@@ -150,8 +150,9 @@ class ConversionUtils {
         def files = []
         log.finer "searching " + searchDirPath + " for files matching pattern: " + inclPattern
         dir.eachFileRecurse { resultFile ->
-            boolean isInclFile = inclPattern != null && resultFile.path.find(inclPattern)
-            boolean isExclFile = exclPattern != null && resultFile.path.find(exclPattern)
+            String fileRelativePath = ConversionUtils.getRelativePath(searchDirPath, resultFile.path) + resultFile.name
+            boolean isInclFile = inclPattern != null && fileRelativePath.find(inclPattern)
+            boolean isExclFile = exclPattern != null && fileRelativePath.find(exclPattern)
 
             if (isInclFile && !isExclFile) {
                 files << resultFile

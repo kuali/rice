@@ -43,11 +43,9 @@ def outputPathList = config.output.path.list
 def outputResourceDir = outputDir + config.output.path.src.resources
 def projectApp = config.project.app
 def templateDir = config.script.path.template
-def groupId = config.project.artifact.groupId
-def artifactId = config.project.artifact.artifactId
-def version = config.project.artifact.version
-def projectIsWar = config.project.artifact.isWar
-def artifact = config.project.parent
+def projectArtifact = config.project.artifact
+def isWarProject = "war".equals(config.project.artifact.war)
+def projectParent = config.project.parent
 def dependencies = config.project.dependencies
 
 def performDictionaryConversion = config.bool.script.performDictionaryConversion;
@@ -69,19 +67,19 @@ if (StringUtils.isBlank(inputDir) || StringUtils.isBlank(outputDir)) {
     System.exit(1);
 }
 
-if (!performDictionaryConversion && !(performStrutsConversion && projectIsWar)) {
+if (!performDictionaryConversion && !(performStrutsConversion && isWarProject)) {
     System.out.println "Error:\nall conversion bypassed; exiting\n\n";
     System.exit(1);
 } else {
     ConversionUtils.buildDirectoryStructure(outputDir, outputPathList, true)
-    ScaffoldGenerator.buildWarOverlayPom(outputDir, projectApp, artifact, dependencies, [])
+    ScaffoldGenerator.buildOverlayPom(outputDir, projectApp, projectArtifact, projectParent, dependencies, [])
 
-    if (projectIsWar && copyWebXml) {
+    if (isWarProject && copyWebXml) {
         System.out.println "Copy web.xml"
         ScaffoldGenerator.copyWebXml(inputDir, outputDir)
     }
 
-    if (projectIsWar && copyPortalTags) {
+    if (isWarProject && copyPortalTags) {
         System.out.println "Copy portal tags"
         ScaffoldGenerator.copyPortalTags(inputDir, outputDir, projectApp);
     }

@@ -49,7 +49,7 @@ class LookupDefinitionBeanTransformerTest extends BeanTransformerTestBase {
     void testTransformLookupDefinitionBean() {
         def ddRootNode = getFileRootNode(defaultTestFilePath);
         def resultNode;
-        def beanNode = ddRootNode.bean.find { defaultTestBeanID.equals(it.@id) }; ;
+        def beanNode = ddRootNode.bean.find { defaultTestBeanID.equals(it.@id) };
         try {
             resultNode = lookupDefinitionBeanTransformer.transformLookupDefinitionBean(beanNode);
         } catch (Exception e) {

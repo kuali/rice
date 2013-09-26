@@ -214,13 +214,15 @@ class ScaffoldGenerator {
      * build a war overlay pom for testing purposes
      *
      * @param targetPath
-     * @param groupId
-     * @param artifactId
-     * @param version
-     * @param systemlibs - for ant projects with no dependency management
+     * @param app application name
+     * @param artifact artifact information for the project
+     * @param parent parent artifact, used in war projects for overlay
+     * @param dependencies any jars to be added as dependencies
+     * @param systemlibs any special libraries external to the project (usually tomcat dependencies)
      */
-    static def buildWarOverlayPom(targetPath, app, artifact, dependencies, systemlibs) {
-        def binding = ["app": app, "artifact": artifact, "dependencies": dependencies, "systemlibs": systemlibs]
+    static def buildOverlayPom(targetPath, app, artifact, parent, dependencies, systemlibs) {
+        // for time being parent and artifact are matching
+        def binding = ["app": app, "artifact": artifact, "parent": parent, "dependencies": dependencies, "systemlibs": systemlibs]
         ConversionUtils.buildTemplateFile(targetPath, "pom.xml", ConversionUtils.getTemplateDir(), "pom.xml.tmpl", binding)
     }
 

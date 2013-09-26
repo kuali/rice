@@ -34,6 +34,7 @@
 
   <!-- Default -->
   <bean id="Demo-HiddenMVControl-Example1" parent="Uif-VerticalBoxSection">
+    <property name="headerText" value="Server Paging"/>
     <property name="items">
       <list>
         <!-- ex:Demo-HiddenControl-Example1 start-->

@@ -78,36 +78,26 @@ public class DemoLibraryElementsHeaderSmokeTest extends SmokeTestBase {
         assertElementPresentByXpath("//div[@id='Demo-Header-Example7']/div[@class='uif-verticalBoxLayout clearfix']/div/div/h6/span");
     }
     
-    protected void testLibraryElementsHeaderPageHeader() throws Exception {
-        waitAndClickByLinkText("Page Header");
-        assertElementPresentByXpath("//div[@id='Demo-Header-Example8']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-pageHeader clearfix uif-boxLayoutVerticalItem clearfix']/h2/span");
-    }
-    
-    protected void testLibraryElementsHeaderSectionHeader() throws Exception {
-        waitAndClickByLinkText("Section Header");
-        assertElementPresentByXpath("//div[@id='Demo-Header-Example9']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-sectionHeader uif-boxLayoutVerticalItem clearfix']/h3/span");
-    }
-    
-    protected void testLibraryElementsHeaderSubSectionHeader() throws Exception {
-        waitAndClickByLinkText("SubSection Header");
-        assertElementPresentByXpath("//div[@id='Demo-Header-Example10']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-subSectionHeader uif-boxLayoutVerticalItem clearfix']/h4/span");
-    }
-
-    protected void testLibraryElementsHeaderSubCollectionHeader() throws Exception {
-        waitAndClickByLinkText("SubCollection Header");
-        assertElementPresentByXpath("//div[@id='Demo-Header-Example11']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-subCollectionHeader uif-boxLayoutVerticalItem clearfix']/label/span");
-    }
-
     protected void testLibraryElementsHeaderEditableHeader() throws Exception {
         waitAndClickByLinkText("EditablePage Header");
         assertElementPresentByXpath("//div[@id='Demo-Header-Example12']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-pageHeader clearfix uif-boxLayoutVerticalItem clearfix']/h2/span");
     }
     
     protected void testLibraryElementsHeaderReadOnlyPageHeader() throws Exception {
-        waitAndClickByLinkText("ReadOnlyPage Header");
+        waitAndClickByLinkText("Disclosure Header");
         assertElementPresentByXpath("//div[@id='Demo-Header-Example13']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-pageHeader clearfix uif-boxLayoutVerticalItem clearfix']/h2/span");
     }
-    
+
+    protected void testLibraryElementsHeaderImageCaptionHeader() throws Exception {
+        waitAndClickByLinkText("ImageCaption Header");
+        assertElementPresentByXpath("//div[@id='Demo-Header-Example14']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-pageHeader clearfix uif-boxLayoutVerticalItem clearfix']/h2/span");
+    }
+
+    protected void testLibraryElementsHeaderGroupsHeader() throws Exception {
+        waitAndClickByLinkText("Header Groups");
+        assertElementPresentByXpath("//div[@id='Demo-Header-Example15']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-pageHeader clearfix uif-boxLayoutVerticalItem clearfix']/h2/span");
+    }
+
     @Test
     public void testElementsHeaderBookmark() throws Exception {
         testLibraryElementsHeaderBaseHeader();
@@ -117,10 +107,6 @@ public class DemoLibraryElementsHeaderSmokeTest extends SmokeTestBase {
         testLibraryElementsHeader4();
         testLibraryElementsHeader5();
         testLibraryElementsHeader6();
-        testLibraryElementsHeaderPageHeader();
-        testLibraryElementsHeaderSectionHeader();
-        testLibraryElementsHeaderSubSectionHeader();
-        testLibraryElementsHeaderSubCollectionHeader();
         testLibraryElementsHeaderEditableHeader();
         testLibraryElementsHeaderReadOnlyPageHeader();
         passed();
@@ -135,10 +121,6 @@ public class DemoLibraryElementsHeaderSmokeTest extends SmokeTestBase {
         testLibraryElementsHeader4();
         testLibraryElementsHeader5();
         testLibraryElementsHeader6();
-        testLibraryElementsHeaderPageHeader();
-        testLibraryElementsHeaderSectionHeader();
-        testLibraryElementsHeaderSubSectionHeader();
-        testLibraryElementsHeaderSubCollectionHeader();
         testLibraryElementsHeaderEditableHeader();
         testLibraryElementsHeaderReadOnlyPageHeader();
         passed();

@@ -2005,7 +2005,7 @@
                 <programlisting linenumbering="numbered">&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
   ...
   &lt;property name="resultsReturnField">
-    &lt;bean parent="Uif-linkField" p:href="http://www.kuali.org" p:linkText="Kuali"/>
+    &lt;bean parent="Uif-LinkField" p:href="http://www.kuali.org" p:linkText="Kuali"/>
   &lt;/property>
   ...
 &lt;/bean></programlisting></para>

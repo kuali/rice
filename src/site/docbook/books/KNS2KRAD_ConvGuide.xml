@@ -1631,6 +1631,7 @@
     &lt;/list>
   &lt;/property>
   &lt;property name="translateCodesOnReadOnlyDisplay" value="true"/>
+  &lt;property name="multipleValuesSelectResultSetLimit" value="100"/>
 &lt;/bean></programlisting>
       </para>
     </section>
@@ -2256,37 +2257,9 @@
         <programlisting linenumbering="numbered">&lt;bean parent="MaintainableCollectionDefinition">
   &lt;property name="name" value="delegateGlobals"/>
   &lt;property name="businessObjectClass" value="org.kuali.kfs.coa.businessobject.AccountDelegateGlobalDetail"/>
-  &lt;property name="sourceClassName" value="org.kuali.kfs.coa.businessobject.AccountDelegate"/>
-  &lt;property name="summaryTitle" value="Account Delegate"/>
-  &lt;property name="summaryFields">
-	&lt;list>
-	  &lt;bean parent="MaintainableFieldDefinition" p:name="financialDocumentTypeCode"/>
-	  &lt;bean parent="MaintainableFieldDefinition" p:name="accountDelegatePrimaryRoutingIndicator"/>
-	  &lt;bean parent="MaintainableFieldDefinition" p:name="accountDelegate.principalName"/>
-	&lt;/list>
-  &lt;/property>
-  &lt;property name="maintainableFields">
-	&lt;list>
-	  &lt;bean parent="MaintainableFieldDefinition" p:name="financialDocumentTypeCode" p:required="true"/>
-	  &lt;bean parent="MaintainableFieldDefinition" p:name="accountDelegatePrimaryRoutingIndicator"/>
-	  &lt;bean parent="MaintainableFieldDefinition" p:name="accountDelegateStartDate" p:required="true" 
-	          p:defaultValueFinderClass="org.kuali.kfs.sys.businessobject.defaultvalue.CurrentDateMMDDYYYYFinder"/>
-	  &lt;bean parent="MaintainableFieldDefinition" p:name="accountDelegateUniversalId" p:unconditionallyReadOnly="true" p:required="true"/>
-	  &lt;bean parent="MaintainableFieldDefinition" p:name="accountDelegate.principalName" p:required="true" 
-	          p:webUILeaveFieldFunction="principalNameLookup"/>
-	  &lt;bean parent="MaintainableFieldDefinition" p:name="accountDelegate.name" p:unconditionallyReadOnly="true" p:required="false"/>              
-	  &lt;bean parent="MaintainableFieldDefinition" p:name="approvalFromThisAmount"/>
-	  &lt;bean parent="MaintainableFieldDefinition" p:name="approvalToThisAmount"/>
-	  &lt;bean parent="MaintainableFieldDefinition" p:name="newCollectionRecord"/>
-	&lt;/list>
-  &lt;/property>
+  ...
   &lt;property name="includeMultipleLookupLine" value="true"/>
-  &lt;property name="duplicateIdentificationFields">
-	&lt;list>
-		&lt;bean parent="MaintainableFieldDefinition" p:name="accountDelegate.principalName"/>
-		&lt;bean parent="MaintainableFieldDefinition" p:name="financialDocumentTypeCode"/>
-	&lt;/list>
-  &lt;/property>
+  ... 
 &lt;/bean></programlisting>
         <emphasis role="bold">KRAD code example:</emphasis>
       </para>
@@ -2294,34 +2267,33 @@
             <programlisting linenumbering="numbered">&lt;bean parent="Uif-MaintenanceStackedCollectionSection">
   &lt;property name="headerText" value="Account Delegates"/>
   &lt;property name="collectionObjectClass" value="org.kuali.kfs.coa.businessobject.AccountDelegateGlobalDetail"/>
-  &lt;property name="propertyName" value="delegateGlobals"/>
+  &lt;property name="propertyName" value="collectionOfItemsToBePopulated"/>
+  ...
   &lt;property name="collectionLookup">
 	&lt;bean parent="Uif-CollectionQuickFinder">
      &lt;property name="lightBoxLookup.render" value="false" />
     &lt;/bean>
   &lt;/property>
-  &lt;property name="items">
-	&lt;list>
-	  &lt;bean parent="Uif-InputField" p:propertyName="financialDocumentTypeCode"/>
-	  &lt;bean parent="Uif-InputField" p:propertyName="accountDelegatePrimaryRoutingIndicator"/>
-	  &lt;bean parent="Uif-InputField" p:propertyName="accountDelegate.principalName">
-  &lt;/bean>
-	&lt;/list>
-  &lt;/property>
-  &lt;property name="layoutManager.summaryTitle" value="Account"/>
-  &lt;property name="layoutManager.summaryFields">
-	&lt;list>
-	  &lt;value>financialDocumentTypeCode&lt;/value>
-	  &lt;value>accountDelegatePrimaryRoutingIndicator&lt;/value>
-	  &lt;value>accountDelegateStartDate&lt;/value>
-	  &lt;value>accountDelegateUniversalId&lt;/value>
-	  &lt;value>accountDelegate.principalName&lt;/value>
-	  &lt;value>approvalFromThisAmount&lt;/value>
-	  &lt;value>approvalToThisAmount&lt;/value>
-	&lt;/list>
-  &lt;/property>
+  ...
 &lt;/bean></programlisting>
       </para>
+      <para>
+        <itemizedlist>
+          <listitem>
+            <para>In the KNS, the multiple value lookup determined which collection to populate with
+              the results of the lookup by the property <emphasis>name</emphasis> (or is it
+                <emphasis>lookedUpCollectionName</emphasis> ) of the
+              MaintainableCollectionDefinition bean containing the lookup.  In KRAD, the collection
+              property name can be configured by using the <emphasis>propertyName</emphasis> value
+              of a component, so long as that component is an implementation of a
+              CollectionGroup.</para>
+          </listitem>
+          <listitem>
+            <para> </para>
+          </listitem>
+        </itemizedlist>
+      </para>
+      <para/>
     </section>
 
     <section>

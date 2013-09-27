@@ -16,20 +16,23 @@
 package org.kuali.rice.krad.kim;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
-import org.kuali.rice.coreservice.api.namespace.Namespace;
+import org.kuali.rice.core.api.criteria.CriteriaLookupService;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
+import org.kuali.rice.coreservice.impl.namespace.NamespaceBo;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
-import org.kuali.rice.krad.kim.NamespacePermissionTypeServiceImpl;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.like;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -41,6 +44,8 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
 	protected String exactMatchStringAttributeName;
 	protected boolean namespaceRequiredOnStoredMap;
     private List<String> requiredAttributes = new ArrayList<String>();
+
+    private CriteriaLookupService criteriaLookupService;
 
     @Override
     protected List<String> getRequiredAttributes() {
@@ -105,25 +110,44 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
 	protected List<RemotableAttributeError> validateReferencesExistAndActive(KimType kimType, Map<String, String> attributes, List<RemotableAttributeError> previousValidationErrors) {
 		List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
 		Map<String, String> nonNamespaceCodeAttributes = new HashMap<String, String>(attributes);
+
 		// Check if "namespaceCode" is one of the permission detail values.
 		if (attributes.containsKey(NAMESPACE_CODE)) {
 			nonNamespaceCodeAttributes.remove(NAMESPACE_CODE);
 
-            final Namespace namespace =
-                    StringUtils.isBlank(attributes.get(NAMESPACE_CODE)) ?
-                            null : CoreServiceApiServiceLocator.getNamespaceService().getNamespace(attributes.get(NAMESPACE_CODE));
+            String namespaceCode = attributes.get(NAMESPACE_CODE);
 
-            if (namespace != null) {
-			    errors.addAll(super.validateReferencesExistAndActive(kimType, Collections.singletonMap(NAMESPACE_CODE,
-                        namespace.getCode()), previousValidationErrors));
+            QueryByCriteria criteria = QueryByCriteria.Builder.fromPredicates(like("code", namespaceCode));
+            List<NamespaceBo> namespaces = getCriteriaLookupService().lookup(NamespaceBo.class, criteria).getResults();
+
+            if (!namespaces.isEmpty()) {
+                // If namespaces were found, let the superclass generate any appropriate errors
+                for (NamespaceBo namespace : namespaces) {
+                    errors.addAll(super.validateReferencesExistAndActive(kimType,
+                        Collections.singletonMap(NAMESPACE_CODE, namespace.getCode()), previousValidationErrors));
+                }
 			} else {
 				// If no namespaces were found, let the superclass generate an appropriate error.
-				errors.addAll(super.validateReferencesExistAndActive(kimType, Collections.singletonMap(NAMESPACE_CODE,
-                        attributes.get(NAMESPACE_CODE)), previousValidationErrors));
+				errors.addAll(super.validateReferencesExistAndActive(kimType,
+                    Collections.singletonMap(NAMESPACE_CODE, namespaceCode), previousValidationErrors));
 			}
 		}
+
 		// Validate all non-namespaceCode attributes.
 		errors.addAll(super.validateReferencesExistAndActive(kimType, nonNamespaceCodeAttributes, previousValidationErrors));
+
 		return errors;
 	}
+
+    public CriteriaLookupService getCriteriaLookupService() {
+       if (criteriaLookupService == null) {
+           criteriaLookupService = KRADServiceLocatorWeb.getService("criteriaLookupService");
+       }
+
+       return criteriaLookupService;
+    }
+
+    public void setCriteriaLookupService(CriteriaLookupService criteriaLookupService) {
+        this.criteriaLookupService = criteriaLookupService;
+    }
 }

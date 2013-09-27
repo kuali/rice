@@ -388,12 +388,14 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
             }
             LookupInputField field = ComponentFactory.getLookupCriteriaInputField();
             field.setPropertyName(attr.getName());
+            field.setLabel(attr.getLabel());
             view.getCriteriaFields().add(field);
         }
         // If there was one, add the active attribute at the end
         if ( activeAttribute != null ) {
             LookupInputField field = ComponentFactory.getLookupCriteriaInputField();
             field.setPropertyName(activeAttribute.getName());
+            field.setLabel(activeAttribute.getLabel());
             view.getCriteriaFields().add(field);
         }
     }

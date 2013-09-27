@@ -2273,9 +2273,8 @@
         <itemizedlist>
           <listitem>
             <para>In the KNS, the multiple value lookup determined which collection to populate with
-              the results of the lookup by the property <emphasis>name</emphasis> (or is it
-                <emphasis>lookedUpCollectionName</emphasis> ) of the
-              MaintainableCollectionDefinition bean containing the lookup.  In KRAD, the collection
+              the results of the lookup by the property <emphasis>name</emphasis> of the
+              MaintainableCollectionDefinition bean containing the lookup. In KRAD, the collection
               property name can be configured by using the <emphasis>propertyName</emphasis> value
               of a component, so long as that component is an implementation of a
               CollectionGroup.</para>

@@ -702,7 +702,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      */
     @WebMethod(operationName = "createNaturalLanguageUsage")
     @WebResult(name = "naturalLanguageUsage")
-    @CacheEvict(value={NaturalLanguageUsage.Cache.NAME}, allEntries = true)
+    @CacheEvict(value={NaturalLanguageUsage.Cache.NAME, NaturalLanguageTemplate.Cache.NAME}, allEntries = true)
     public NaturalLanguageUsage createNaturalLanguageUsage(@WebParam(name = "naturalLanguageUsage") NaturalLanguageUsage naturalLanguageUsage) throws RiceIllegalArgumentException;
 
     /**
@@ -743,7 +743,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      *                                      null or invalid
      */
     @WebMethod(operationName = "updateNaturalLanguageUsage")
-    @CacheEvict(value={NaturalLanguageUsage.Cache.NAME}, allEntries = true)
+    @CacheEvict(value={NaturalLanguageUsage.Cache.NAME, NaturalLanguageTemplate.Cache.NAME}, allEntries = true)
     public void updateNaturalLanguageUsage(@WebParam(name = "naturalLanguageUsage") NaturalLanguageUsage naturalLanguageUsage) throws RiceIllegalArgumentException;
 
     /**
@@ -753,7 +753,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      * @throws RiceIllegalArgumentException  if the given naturalLanguageUsageId is null or invalid
      */
     @WebMethod(operationName = "deleteNaturalLanguageUsage")
-    @CacheEvict(value={NaturalLanguageUsage.Cache.NAME}, allEntries = true)
+    @CacheEvict(value={NaturalLanguageUsage.Cache.NAME, NaturalLanguageTemplate.Cache.NAME}, allEntries = true)
     public void deleteNaturalLanguageUsage(@WebParam(name = "naturalLanguageUsageId") String naturalLanguageUsageId) throws RiceIllegalArgumentException;
 
     /**

@@ -335,14 +335,17 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t6 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t6");
 
+        // build proposition and NaturalLanguageTemplate for testing
         PropositionDefinition propositionDefinition = createTestPropositionForTranslation(t6.object0, t6.namespaceName,
                 "proposition");
         NaturalLanguageTemplate template = createTestNaturalLanguageTemplate(t6.namespaceName, "sw", "proposition",
                 "Detta ändamål får inte vara inaktiv");
 
+        // test translateNaturalLanguageForObject call
         String translation = ruleManagementService.translateNaturalLanguageForObject(
                 template.getNaturalLanguageUsageId(),"proposition",propositionDefinition.getId(),"sw");
 
+        // check result of test
         assertEquals("Unexpected translation returned","Detta ändamål får inte vara inaktiv. ",translation);
 
         //test with null NaturalLanguageUsageId

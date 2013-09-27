@@ -20,25 +20,5 @@
   <bean id="TravelAccountType" parent="DataObjectEntry">
     <property name="dataObjectClass" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccountType"/>
   </bean>
-  
-<!-- 
-  <bean id="TravelAccountType-InquiryView" parent="Uif-InquiryView">
-    <property name="headerText" value="Travel Account Type Inquiry"/>
-    <property name="dataObjectClassName" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccountType"/>
-     <property name="Items">
-         <list>
-           <bean id="TravelAccount-InquiryView-General" parent="Uif-Disclosure-GridSection">
-             <property name="headerText" value="Account Type Information"/>
-             <property name="items">
-               <list>
-                <bean parent="Uif-DataField" p:propertyName="accountTypeCode"/>
-                <bean parent="Uif-DataField" p:propertyName="name"/>
-                <bean parent="Uif-DataField" p:propertyName="codeAndDescription"/>
-               </list>
-             </property>
-           </bean>
-         </list>
-     </property>
-  </bean>
- -->
+
 </beans>

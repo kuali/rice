@@ -146,6 +146,14 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("not enough results for next page", "KULRICE-10680 Apply 2013-09-21.sql and mysql-2013-09-21.sql");
 
         jiraMatches.put("calculation column contains no text", "KULRICE-10728 Collection footer not displaying for the rich table");
+
+        jiraMatches.put("Probably KULRICE-10763", "KULRICE-10763 500 Error Lookup not defined for business object class org.kuali.rice.coreservice.impl.component.ComponentBo");
+
+        jiraMatches.put("Probably KULRICE-10765", "KULRICE-10765 Namespace 500 Error Lookup not defined for business object class org.kuali.rice.coreservice.impl.namespace.NamespaceBo");
+
+        jiraMatches.put("Probably KULRICE-10766", "KULRICE-10766 Parameter 500 Error Lookup not defined for business object class org.kuali.rice.coreservice.impl.parameter.ParameterBo");
+
+        jiraMatches.put("Probably KULRICE-10768", "KULRICE-10768 Postal Code 500 Error Lookup not defined for business object class org.kuali.rice.location.impl.postalcode.PostalCodeBo");
         //jiraMatches.put("", "");
     }
 

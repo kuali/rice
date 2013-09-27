@@ -57,8 +57,9 @@ public class WebDriverUtil {
     public static boolean jsHighlightEnabled = false;
 
     /**
-     * TODO parametrize for JVM Arg
-     * 30 Seconds
+     * {@see REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY} to configure
+     * Default 30 Seconds
+     * In code don't use this variable but call {@see configuredImplicityWait} to get the configured value.
      */
     public static int DEFAULT_IMPLICIT_WAIT_TIME = 30;
 
@@ -127,6 +128,7 @@ public class WebDriverUtil {
 
     /**
      * Set -Dremote.public.wait.seconds to override DEFAULT_WAIT_SEC
+     * {@see DEFAULT_IMPLICIT_WAIT_TIME}
      */
     public static final String REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY = "remote.public.wait.seconds";
 
@@ -205,7 +207,7 @@ public class WebDriverUtil {
         }
 
         driver.get(url);
-        driver.manage().timeouts().implicitlyWait(DEFAULT_IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(configuredImplicityWait(), TimeUnit.SECONDS);
         return driver;
     }
 
@@ -481,7 +483,7 @@ public class WebDriverUtil {
         }
 
         WebElement element = driver.findElement(by);  // NOTICE just the find, no action, so by is found, but might not be visible or enabled.
-        driver.manage().timeouts().implicitlyWait(DEFAULT_IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(configuredImplicityWait(), TimeUnit.SECONDS);
         return element;
     }
 

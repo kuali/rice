@@ -1096,7 +1096,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         }
 
         WebElement element = getElementByAttributeValue(attribute, attributeValue);
-        driver.manage().timeouts().implicitlyWait(WebDriverUtil.DEFAULT_IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(WebDriverUtil.configuredImplicityWait(), TimeUnit.SECONDS);
         return element;
     }
 
@@ -1121,7 +1121,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         }
 
         List<WebElement> elements = getElementsByAttributeValue(attribute, attributeValue);
-        driver.manage().timeouts().implicitlyWait(WebDriverUtil.DEFAULT_IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(WebDriverUtil.configuredImplicityWait(), TimeUnit.SECONDS);
         return elements;
     }
 
@@ -1780,7 +1780,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void testConfigParamaterBlanketApprove() throws Exception {
         selectFrameIframePortlet();
-        waitAndCreateNew();
+        waitAndCreateNew("Probably KULRICE-10766 Parameter 500 Error Lookup not defined for business object class org.kuali.rice.coreservice.impl.parameter.ParameterBo");
         String docId = waitForDocId();
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Parameter ");
         assertBlanketApproveButtonsPresent();
@@ -2332,7 +2332,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void testLocationPostBlanketApprove() throws Exception {
         selectFrameIframePortlet();
-        waitAndCreateNew();        
+        waitAndCreateNew("Probably KULRICE-10768 Postal Code 500 Error Lookup not defined for business object class org.kuali.rice.location.impl.postalcode.PostalCodeBo");
         String docId = waitForDocId();
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Postal Code");
         assertBlanketApproveButtonsPresent();
@@ -4389,11 +4389,15 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected void waitAndCreateNew() throws InterruptedException {
+        waitAndCreateNew("");
+    }
+
+    protected void waitAndCreateNew(String message) throws InterruptedException {
         checkForIncidentReport();
         selectFrameIframePortlet();
         try {
             jGrowl("Create New");
-            waitAndClickCreateNew(); // timing out in CI rice-trunk-smoke-test-jdk7/494
+            waitAndClickCreateNew(message); // timing out in CI rice-trunk-smoke-test-jdk7/494
         } catch (Exception e) {
             System.out.println("waitAndClickByXpath(\"//img[@alt='create new']\") failed trying title method with " + e.getMessage());
             waitAndClickByXpath("//a[@title='Create a new record']");
@@ -4406,6 +4410,10 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      */
     protected void waitAndClickCreateNew() throws InterruptedException {
         waitAndClickByXpath(CREATE_NEW_XPATH);
+    }
+
+    protected void waitAndClickCreateNew(String message) throws InterruptedException {
+        waitAndClickByXpath(CREATE_NEW_XPATH, message);
     }
 
     protected void waitAndClickEdit() throws InterruptedException {

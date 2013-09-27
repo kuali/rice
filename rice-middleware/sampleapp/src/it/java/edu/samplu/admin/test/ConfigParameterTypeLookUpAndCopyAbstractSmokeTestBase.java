@@ -55,7 +55,7 @@ public abstract class ConfigParameterTypeLookUpAndCopyAbstractSmokeTestBase exte
     public void testConfigParameterTypeLookUpAndCopy() throws Exception
     {
         selectFrameIframePortlet();
-        waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]");
+        waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]", "Probably KULRICE-10766 Parameter 500 Error Lookup not defined for business object class org.kuali.rice.coreservice.impl.parameter.ParameterBo");
         waitAndClickByLinkText("copy");
         waitAndTypeByName("document.documentHeader.documentDescription","Test description of parameter type copy");
         waitAndTypeByName("document.newMaintainableObject.code","AUTH2");

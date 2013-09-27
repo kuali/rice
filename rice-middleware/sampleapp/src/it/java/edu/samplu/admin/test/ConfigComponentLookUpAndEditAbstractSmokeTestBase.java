@@ -54,7 +54,7 @@ public abstract class ConfigComponentLookUpAndEditAbstractSmokeTestBase extends 
     
     public void testConfigComponentLookUpAndEdit() throws Exception {
         selectFrameIframePortlet();
-        waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]");
+        waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]", "Probably KULRICE-10763 500 Error Lookup not defined for business object class org.kuali.rice.coreservice.impl.component.ComponentBo");
         waitAndClickByLinkText("edit");
         waitAndTypeByName("document.documentHeader.documentDescription","Test description of Component");
         waitAndClickByName("methodToCall.route");

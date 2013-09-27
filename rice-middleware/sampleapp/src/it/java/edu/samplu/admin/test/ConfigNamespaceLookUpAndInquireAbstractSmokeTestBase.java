@@ -55,7 +55,7 @@ public abstract class ConfigNamespaceLookUpAndInquireAbstractSmokeTestBase exten
     public void testConfigNamespaceLookUpAndInquire() throws Exception
     {
         selectFrameIframePortlet();
-        waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]");
+        waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]", "Probably KULRICE-10765 Namespace 500 Error Lookup not defined for business object class org.kuali.rice.coreservice.impl.namespace.NamespaceBo");
         waitAndClickByLinkText("Enterprise Infrastructure");
         switchToWindow("Kuali :: Inquiry");
         selectFrameIframePortlet();

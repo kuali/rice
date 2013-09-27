@@ -29,6 +29,7 @@
     <property name="demoGroups">
       <list>
         <ref bean="Demo-CollectionLookup-Example1"/>
+        <ref bean="Demo-CollectionLookup-Example2"/>
       </list>
     </property>
   </bean>
@@ -61,6 +62,38 @@
           </property>
         </bean>
         <!-- ex:Demo-CollectionLookup-Example1 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-CollectionLookup-Example2" parent="Uif-VerticalBoxSection">
+    <property name="headerText" value="Multi Value Select with Server Paging"/>
+    <property name="items">
+      <list>
+        <!-- ex:Demo-CollectionLookup-Example2 start-->
+        <bean parent="Uif-TableCollectionSection">
+          <property name="headerText" value="Collection Multi-Value Lookup" />
+          <property name="collectionObjectClass"
+                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+          <property name="propertyName" value="emptyCollection" />
+          <property name="layoutManager.generateAutoSequence" value="true" />
+
+          <!-- here is the configuration for the lookup -->
+          <property name="collectionLookup">
+            <bean parent="Uif-CollectionQuickFinder"
+                  p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
+                  p:fieldConversions="number:field1,name:field2,accountTypeCode:field3"/>
+          </property>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"/>
+              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"/>
+              <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3"/>
+              <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-CollectionLookup-Example2 end-->
       </list>
     </property>
   </bean>

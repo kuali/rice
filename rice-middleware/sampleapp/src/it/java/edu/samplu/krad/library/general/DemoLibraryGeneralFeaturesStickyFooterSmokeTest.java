@@ -42,7 +42,7 @@ public class DemoLibraryGeneralFeaturesStickyFooterSmokeTest extends SmokeTestBa
     }
 
     protected void testGeneralFeaturesExample1() throws Exception {
-        waitAndClickByLinkText("Example 1");
+        waitAndClickByLinkText("Sticky Application Footer");
        waitAndClickByLinkText("Sticky application footer");
        switchToWindow("Kuali :: View Header");
        assertElementPresentByXpath("//div[@id='Uif-ApplicationFooter-Wrapper' and @data-sticky_footer='true']");
@@ -50,7 +50,7 @@ public class DemoLibraryGeneralFeaturesStickyFooterSmokeTest extends SmokeTestBa
     }
     
     protected void testGeneralFeaturesExample2() throws Exception {
-        waitAndClickByLinkText("Example 2");
+        waitAndClickByLinkText("Sticky Page Footer");
         waitAndClickByLinkText("Sticky page footer");
         switchToWindow("Kuali :: View Header");
         assertElementPresentByXpath("//div[@class='uif-horizontalBoxGroup uif-stickyFooter uif-stickyButtonFooter' and @data-sticky_footer='true']");
@@ -58,7 +58,7 @@ public class DemoLibraryGeneralFeaturesStickyFooterSmokeTest extends SmokeTestBa
     }
     
     protected void testGeneralFeaturesExample3() throws Exception {
-        waitAndClickByLinkText("Example 3");
+        waitAndClickByLinkText("Sticky View Footer");
         waitAndClickByLinkText("Sticky view footer");
         switchToWindow("Kuali :: View Header");
         assertElementPresentByXpath("//div[@class='uif-horizontalBoxGroup uif-stickyFooter uif-stickyButtonFooter' and @data-sticky_footer='true']");
@@ -66,7 +66,7 @@ public class DemoLibraryGeneralFeaturesStickyFooterSmokeTest extends SmokeTestBa
     }
     
     protected void testGeneralFeaturesExample4() throws Exception {
-        waitAndClickByLinkText("Example 4");
+        waitAndClickByLinkText("Sticky View Footer and Page Footer");
         waitAndClickByLinkText("Sticky page and view footer");
         switchToWindow("Kuali :: View Header");
         assertElementPresentByXpath("//div[@class='uif-horizontalBoxGroup uif-stickyFooter uif-stickyButtonFooter' and @data-sticky_footer='true']");
@@ -74,7 +74,7 @@ public class DemoLibraryGeneralFeaturesStickyFooterSmokeTest extends SmokeTestBa
     }
     
     protected void testGeneralFeaturesExample5() throws Exception {
-        waitAndClickByLinkText("Example 5");
+        waitAndClickByLinkText("Sticky Everything");
         waitAndClickByLinkText("All footer content sticky");
         switchToWindow("Kuali :: View Header");
         assertElementPresentByXpath("//div[@class='uif-horizontalBoxGroup uif-stickyFooter uif-stickyButtonFooter' and @data-sticky_footer='true']");

@@ -77,7 +77,8 @@ public class TravelAccount extends DataObjectBase implements Serializable {
     @KeyValuesFinderClass(AccountTypeKeyValues.class)
     @UifDisplayHints({
     	@UifDisplayHint(UifDisplayHintType.RADIO),
-    	@UifDisplayHint(UifDisplayHintType.NO_LOOKUP_RESULT)})
+    	@UifDisplayHint(UifDisplayHintType.NO_LOOKUP_RESULT),
+    	@UifDisplayHint(UifDisplayHintType.NO_INQUIRY)})
     protected String accountTypeCode;
 
     @ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.REFRESH})

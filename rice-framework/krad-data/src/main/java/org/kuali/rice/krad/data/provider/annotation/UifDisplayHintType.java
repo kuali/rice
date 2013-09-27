@@ -41,6 +41,10 @@ public enum UifDisplayHintType {
 	 */
 	SECTION,
 	/**
+	 * Don't include this attribute in the inquiry page.
+	 */
+	NO_INQUIRY,
+	/**
 	 * Don't include this attribute in the lookup criteria.
 	 */
 	NO_LOOKUP_CRITERIA,

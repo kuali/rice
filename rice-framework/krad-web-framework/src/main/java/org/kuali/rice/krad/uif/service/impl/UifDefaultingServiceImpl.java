@@ -271,6 +271,8 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
         // If we have an @Section notation, switch to the section, creating if the ID is unknown
         List<Component> items = (List<Component>) currentGroup.getItems(); // needed to deal with generics issue
         for ( AttributeDefinition attr : dataObjectEntry.getAttributes() ) {
+            boolean dontDisplay = hasHintOfType(attr.getDataObjectAttribute(), UifDisplayHintType.NO_INQUIRY);
+            dontDisplay |= (attr.getControlField() instanceof HiddenControl);
             // Check for a section hint
             // Create or retrieve existing section as determined by the ID on the annotation
             UifDisplayHint sectionHint = getHintOfType(attr.getDataObjectAttribute(), UifDisplayHintType.SECTION);
@@ -296,7 +298,7 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
 
             // This is checked after the section test, since the @Section annotation
             // would be on the FK field
-            if ( attr.getControlField() instanceof HiddenControl ) {
+            if ( dontDisplay ) {
                 continue;
             }
 
@@ -338,12 +340,12 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
             // Summary fields : PK fields?
             // add the attributes to the section
             for ( AttributeDefinition attr : collectionEntry.getAttributes() ) {
-                if ( attr.getControlField() instanceof HiddenControl ) {
-                    continue;
-                }
-
+                boolean dontDisplay = hasHintOfType(attr.getDataObjectAttribute(), UifDisplayHintType.NO_INQUIRY);
+                dontDisplay |= (attr.getControlField() instanceof HiddenControl);
                 // Auto-exclude fields linked to the parent object
-                if ( collectionFieldsLinkedToParent.contains( attr.getName() )) {
+                dontDisplay |= collectionFieldsLinkedToParent.contains( attr.getName() );
+
+                if ( dontDisplay ) {
                     continue;
                 }
 
@@ -379,6 +381,8 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
         for ( AttributeDefinition attr : dataObjectEntry.getAttributes() ) {
             // Check if we have been told not to display this attribute here
             boolean dontDisplay = hasHintOfType(attr.getDataObjectAttribute(), UifDisplayHintType.NO_LOOKUP_CRITERIA);
+            dontDisplay |= (attr.getControlField() instanceof HiddenControl);
+
             if ( dontDisplay ) {
                 continue;
             }
@@ -405,6 +409,7 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
         for ( AttributeDefinition attr : dataObjectEntry.getAttributes() ) {
             // Check if we have been told not to display this attribute here
             boolean dontDisplay = hasHintOfType(attr.getDataObjectAttribute(), UifDisplayHintType.NO_LOOKUP_RESULT);
+            dontDisplay |= (attr.getControlField() instanceof HiddenControl);
             if ( dontDisplay ) {
                 continue;
             }

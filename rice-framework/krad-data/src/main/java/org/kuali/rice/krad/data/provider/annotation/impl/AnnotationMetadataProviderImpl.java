@@ -426,9 +426,11 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 		}
 		if (a instanceof Sensitive) {
 			attr.setSensitive(true);
+			return true;
 		}
 		if (a instanceof UifDisplayHints) {
 			attr.setDisplayHints(new HashSet<UifDisplayHint>(Arrays.asList(((UifDisplayHints) a).value())));
+			return true;
 		}
 		if (a instanceof MergeAction) {
 			MetadataMergeAction mma = ((MergeAction) a).value();

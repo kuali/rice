@@ -290,6 +290,8 @@ public class UifConstants {
 
     public static class ComponentProperties {
         public static final String HEADER_TEXT = "headerText";
+        public static final String DEFAULT_VALUE = "defaultValue";
+        public static final String DEFAULT_VALUES = "defaultValues";
     }
 
     public static class UrlParams {

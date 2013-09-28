@@ -224,10 +224,12 @@ public class UifComponentsTestForm extends UifFormBase {
     private Tree<String, String> tree1 = new Tree<String, String>();
     private Tree<UITestObject, String> tree2 = new Tree<UITestObject, String>();
 
-    private boolean bField1;
+    private Boolean bField1;
     private boolean bField2;
     private boolean bField3;
     private boolean booleanField;
+
+    private int intField;
 
     private Date date1;
     private Date date2;
@@ -1405,17 +1407,11 @@ public class UifComponentsTestForm extends UifFormBase {
         this.field34 = field34;
     }
 
-    /**
-     * @return the bField1
-     */
-    public boolean isbField1() {
-        return this.bField1;
+    public Boolean getbField1() {
+        return bField1;
     }
 
-    /**
-     * @param bField1 the bField1 to set
-     */
-    public void setbField1(boolean bField1) {
+    public void setbField1(Boolean bField1) {
         this.bField1 = bField1;
     }
 
@@ -1453,6 +1449,14 @@ public class UifComponentsTestForm extends UifFormBase {
 
     public void setBooleanField(boolean booleanField) {
         this.booleanField = booleanField;
+    }
+
+    public int getIntField() {
+        return intField;
+    }
+
+    public void setIntField(int intField) {
+        this.intField = intField;
     }
 
     /**

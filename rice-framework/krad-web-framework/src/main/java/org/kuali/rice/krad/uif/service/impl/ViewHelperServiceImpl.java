@@ -2108,6 +2108,11 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         String defaultValue = dataField.getDefaultValue();
         Object[] defaultValues = dataField.getDefaultValues();
 
+        if (!ObjectPropertyUtils.isReadableProperty(object, bindingPath)
+                || !ObjectPropertyUtils.isWritableProperty(object, bindingPath)){
+            return;
+        }
+
         Object currentValue = ObjectPropertyUtils.getPropertyValue(object, bindingPath);
 
         // Default value only applies when the value being set is null (has no value on the form)
@@ -2151,7 +2156,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             }
 
             // populate default value if given and path is valid
-            if (StringUtils.isNotBlank(defaultValue) && ObjectPropertyUtils.isWritableProperty(object, bindingPath)) {
+            if (StringUtils.isNotBlank(defaultValue)) {
                 // evaluate if defaultValue is backed by an expression
                 if (getExpressionEvaluator().containsElPlaceholder(defaultValue)) {
                     Map<String, Object> context = getPreModelContext(view);

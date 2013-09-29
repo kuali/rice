@@ -27,7 +27,7 @@ public class DemoTravelAccountInquirySmokeTest extends SmokeTestBase {
     /**
      * //a[@title='Travel Account ']
      */
-    public static final String ANCHOR_TITLE_TRAVEL_ACCOUNT = "//a[@id='TravelAccount-InquiryView-SubAccounts_toggle']";
+    public static final String ANCHOR_TITLE_TRAVEL_ACCOUNT = "//a[@id='subAccounts_toggle']";
 
     /**
      * /kr-krad/inquiry?methodToCall=start&number=a14&dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount
@@ -52,7 +52,7 @@ public class DemoTravelAccountInquirySmokeTest extends SmokeTestBase {
     @Override
     protected void navigate() throws Exception {
         waitAndClickById("Demo-DemoLink", "");
-        waitAndClickByLinkText("Account Inquiry");
+        waitAndClickByLinkText("Travel Account Inquiry");
     }
 
     protected void testInquiryBackButton() throws Exception {

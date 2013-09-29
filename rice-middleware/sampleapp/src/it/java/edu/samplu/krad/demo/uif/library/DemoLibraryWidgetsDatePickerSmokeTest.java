@@ -15,18 +15,12 @@
  */
 package edu.samplu.krad.demo.uif.library;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
-import edu.samplu.krad.demo.uif.library.DemoLibraryBase;
 import org.junit.Test;
-import edu.samplu.common.SmokeTestBase;
-import org.kuali.rice.krad.uif.UifConstants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -45,8 +39,7 @@ public class DemoLibraryWidgetsDatePickerSmokeTest extends DemoLibraryBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-LibraryLink", "");
-        waitAndClickByLinkText("Widgets");
+        navigateToExample("Widgets");
         waitAndClickByLinkText("DatePicker");
     }
 

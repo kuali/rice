@@ -154,6 +154,8 @@ public class JiraAwareFailureUtil {
         jiraMatches.put("Probably KULRICE-10766", "KULRICE-10766 Parameter 500 Error Lookup not defined for business object class org.kuali.rice.coreservice.impl.parameter.ParameterBo");
 
         jiraMatches.put("Probably KULRICE-10768", "KULRICE-10768 Postal Code 500 Error Lookup not defined for business object class org.kuali.rice.location.impl.postalcode.PostalCodeBo");
+
+        jiraMatches.put("Fields Data Field Default Value 2012 not displayed", "KULRICE-10807 KRAD Demo Library Fields Data Fields - Default Value not displayed");
         //jiraMatches.put("", "");
     }
 

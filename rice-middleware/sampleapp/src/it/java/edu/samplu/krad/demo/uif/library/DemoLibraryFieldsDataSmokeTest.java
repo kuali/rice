@@ -15,13 +15,13 @@
  */
 package edu.samplu.krad.demo.uif.library;
 
+import edu.samplu.common.JiraAwareFailureUtil;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -115,7 +115,9 @@ public class DemoLibraryFieldsDataSmokeTest extends DemoLibraryBase {
 
     protected void testDataFieldDefaultValue() throws Exception {
         String valueText = textValueUnderTest("Demo-DataField-Example4", "DataField 2");
-        Assert.assertEquals("2012", valueText);
+        if(!"2012".equals(valueText)) {
+            JiraAwareFailureUtil.fail("Fields Data Field Default Value 2012 not displayed", this);
+        }
     }
 
     protected void testDataFieldAppendProperty() throws Exception {

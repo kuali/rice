@@ -71,7 +71,7 @@ public class DemoTravelAccountLookUpSmokeTest extends SmokeTestBase {
     @Override
     protected void navigate() throws Exception {
         waitAndClickById("Demo-DemoLink", "");
-        waitAndClickByLinkText("Account Lookup");
+        waitAndClickByLinkText("Travel Account Lookup");
     }
 
     protected void testTravelAccountLookUp() throws Exception {

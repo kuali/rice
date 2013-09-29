@@ -120,7 +120,7 @@ public interface UiDocumentService {
 	 * 
 	 * @param identityManagementGroupDocument
 	 */
-    @CacheEvict(value={Group.Cache.NAME,GroupMember.Cache.NAME}, allEntries = true)
+    @CacheEvict(value={Group.Cache.NAME,GroupMember.Cache.NAME, Role.Cache.NAME}, allEntries = true)
 	public void saveGroup(IdentityManagementGroupDocument identityManagementGroupDocument);
 
 	public BusinessObject getMember(MemberType memberType, String memberId);

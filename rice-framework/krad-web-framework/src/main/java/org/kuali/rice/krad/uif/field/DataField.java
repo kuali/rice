@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.field;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.util.type.TypeUtils;
@@ -34,6 +35,7 @@ import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.component.DataBinding;
+import org.kuali.rice.krad.uif.component.KeepExpression;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
@@ -287,10 +289,11 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
             //two types - delimited and html list
             if (getReadOnlyListDisplayType().equalsIgnoreCase(UifConstants.ReadOnlyListTypes.UL.name())
                     || getReadOnlyListDisplayType().equalsIgnoreCase(UifConstants.ReadOnlyListTypes.OL.name())) {
-                generatedHtml = generatedHtml + "<li>" + value.toString() + "</li>";
+                generatedHtml = generatedHtml + "<li>" + StringEscapeUtils.escapeHtml(value.toString()) + "</li>";
             } else {
                 //no matching needed - delimited is always the fallback and break uses same logic
-                generatedHtml = generatedHtml + value.toString() + this.getReadOnlyListDelimiter();
+                generatedHtml = generatedHtml + StringEscapeUtils.escapeHtml(value.toString())
+                        + this.getReadOnlyListDelimiter();
             }
         }
 
@@ -619,7 +622,18 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * <p>
      * When a new <code>View</code> instance is requested, the corresponding
      * model will be newly created. During this initialization process the value
-     * for the model property will be set to the given default value (if set)
+     * for the model property will be set to the given default value, if it was null.
+     * This will only work on properties which can be determined to be null.
+     * Therefore a String property with an empty string value will
+     * not be ovewritten with the defaultValue set here.
+     * </p>
+     *
+     * <p>
+     * In addition, int, boolean, and other primitive types
+     * will not use this default value because they inherently have a value in Java (0 for int, false for boolean, etc).
+     * To use such types either using a primitive wrapper type (Integer, Boolean, etc) so an unset variable can
+     * be determined to be null, or explicitly set the default value on the form/object itself for these types and
+     * not through this property.
      * </p>
      *
      * @return default value
@@ -1187,7 +1201,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
      */
     @Override
     protected <T> void copyProperties(T component) {
@@ -1253,11 +1267,11 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
         }
 
         // Checks that the default values  present
-        if (getDefaultValue() != null && getDefaultValues() != null) {
+/*        if (getDefaultValue() != null && getDefaultValues() != null) {
             String currentValues[] =
                     {"defaultValue =" + getDefaultValue(), "defaultValues Size =" + getDefaultValues().length};
             tracer.createWarning("Both Default Value and Default Values set", currentValues);
-        }
+        }*/
 
         // Checks that a mask formatter is set if the data field is to be masked
         if (isApplyMask()) {

@@ -415,9 +415,13 @@ public class View extends ContainerBase {
             return;
         }
 
-        // handle view specially to insure each page always gets the same generated id
-        if (component instanceof View) {
-            assignPageIds((View) component);
+        int origIdSequence = -1;
+
+        // Get the old sequence if the baseId exists in the sequence snapshot
+        if (component.getBaseId() != null && viewIndex != null && viewIndex.getIdSequenceSnapshot() != null &&
+                viewIndex.getIdSequenceSnapshot().containsKey(component.getBaseId())){
+            origIdSequence = idSequence;
+            idSequence = viewIndex.getIdSequenceSnapshot().get(component.getBaseId());
         }
 
         assignComponentId(component);
@@ -427,6 +431,10 @@ public class View extends ContainerBase {
         allNested.addAll(component.getComponentPrototypes());
         for (Component nestedComponent : allNested) {
             assignComponentIds(nestedComponent);
+        }
+
+        if (origIdSequence != -1){
+            idSequence = origIdSequence;
         }
     }
 

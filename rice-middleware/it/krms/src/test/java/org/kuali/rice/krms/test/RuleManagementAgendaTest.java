@@ -16,26 +16,24 @@
 
 package org.kuali.rice.krms.test;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.krad.criteria.CriteriaLookupDaoProxy;
-import org.kuali.rice.krad.criteria.CriteriaLookupServiceImpl;
-import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaTreeDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaTreeEntryDefinitionContract;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
+import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.springmodules.orm.ojb.OjbOperationException;
 
-import javax.persistence.OptimisticLockException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.fail;
 import static org.junit.Assert.*;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.in;
@@ -63,16 +61,19 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t0 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t0");
 
-        // buildAgenda utilizes the ruleManagementServiceImpl.createAgenda method
-        AgendaDefinition.Builder agendaBuilder = buildAgenda(t0.object0);
+        String ruleId = buildTestRuleDefinition(t0.namespaceName, t0.object0).getId();
+        String agendaId = createTestAgenda(t0.object0).getId();
+        buildTestAgendaItemDefinition(t0.agendaItem_Id, agendaId, ruleId);
+        AgendaDefinition agendaDefinition = ruleManagementService.getAgenda(agendaId);
 
-        assertTrue("Created agenda is not active", agendaBuilder.isActive());
+        assertTrue("Created agenda is not active", agendaDefinition.isActive());
 
-        assertEquals("Expected Context not found",t0.contextId,agendaBuilder.getContextId());
-        assertEquals("Expected AgendaId not found",t0.agenda_Id,agendaBuilder.getId());
+        assertEquals("Expected Context not found",t0.contextId,agendaDefinition.getContextId());
+        assertEquals("Expected AgendaId not found",t0.agenda_Id,agendaDefinition.getId());
 
-        assertEquals("Expected AgendaItemId not found",t0.agendaItem_0_Id,agendaBuilder.getFirstItemId());
-        assertEquals("Expected Rule of AgendaItem not found",t0.rule_0_Id,ruleManagementServiceImpl.getAgendaItem(agendaBuilder.getFirstItemId()).getRule().getId());
+        assertEquals("Expected AgendaItemId not found",t0.agendaItem_0_Id,agendaDefinition.getFirstItemId());
+        assertEquals("Expected Rule of AgendaItem not found",t0.rule_0_Id,
+                ruleManagementService.getAgendaItem(agendaDefinition.getFirstItemId()).getRule().getId());
     }
 
     /**
@@ -84,30 +85,34 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
     public void testGetAgendaByNameAndContextId() {
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t1 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t1");
-        buildAgenda(t1.object0);
-        AgendaDefinition agendaDefinition = ruleManagementServiceImpl.getAgendaByNameAndContextId(t1.agenda_Name,t1.contextId);
+
+        String ruleId = buildTestRuleDefinition(t1.namespaceName, t1.object0).getId();
+        String agendaId = createTestAgenda(t1.object0).getId();
+        buildTestAgendaItemDefinition(t1.agendaItem_Id, agendaId, ruleId);
+
+        AgendaDefinition agendaDefinition = ruleManagementService.getAgendaByNameAndContextId(t1.agenda_Name,t1.contextId);
 
         assertEquals("Invalid agendaId name found",t1.agenda_Id,agendaDefinition.getId());
         assertEquals("Invalid contextId found",t1.contextId,agendaDefinition.getContextId());
-        assertNull("Agenda typeId should not have been set", agendaDefinition.getTypeId());
+        assertEquals("Invalid typeId found", t1.typeId,agendaDefinition.getTypeId());
         assertEquals("Incorrect agendaName found",t1.agenda_Name,agendaDefinition.getName());
         assertEquals("Invalid agendaFirstItemId found",t1.agendaItem_0_Id,agendaDefinition.getFirstItemId());
 
-        agendaDefinition = ruleManagementServiceImpl.getAgendaByNameAndContextId(t1.agenda_Name,"badContext");
+        agendaDefinition = ruleManagementService.getAgendaByNameAndContextId(t1.agenda_Name,"badContext");
         assertNull("Invalid Context, no agendas should have been found",agendaDefinition);
 
-        agendaDefinition = ruleManagementServiceImpl.getAgendaByNameAndContextId("badName",t1.contextId);
+        agendaDefinition = ruleManagementService.getAgendaByNameAndContextId("badName",t1.contextId);
         assertNull("Invalid Name, no agendas should have been found",agendaDefinition);
 
         try {
-            agendaDefinition = ruleManagementServiceImpl.getAgendaByNameAndContextId(null,t1.contextId);
+            agendaDefinition = ruleManagementService.getAgendaByNameAndContextId(null,t1.contextId);
             fail("Null Name specified for search, should have thrown .RiceIllegalArgumentException: name is blank ");
         } catch (RiceIllegalArgumentException e) {
             // thrown .RiceIllegalArgumentException: name is blank
         }
 
         try {
-            agendaDefinition = ruleManagementServiceImpl.getAgendaByNameAndContextId(t1.agenda_Name,null);
+            agendaDefinition = ruleManagementService.getAgendaByNameAndContextId(t1.agenda_Name,null);
             fail("Null Context specified for search, should have thrown .RiceIllegalArgumentException: contextId is blank");
         } catch (RiceIllegalArgumentException e) {
             // thrown .RiceIllegalArgumentException: contextId is blank
@@ -129,41 +134,39 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
                 t2.namespaceName, t2.contextName);
         contextDefinitionBuilder.setId(t2.contextId);
         ContextDefinition contextDefinition = contextDefinitionBuilder.build();
-        contextDefinition = ruleManagementServiceImpl.findCreateContext(contextDefinition);
+        contextDefinition = ruleManagementService.findCreateContext(contextDefinition);
 
-        assertNull("Agenda should not have already existed", ruleManagementServiceImpl.getAgenda(t2.agendaItem_0_Id));
+        assertNull("Agenda should not have already existed", ruleManagementService.getAgenda(t2.agendaItem_0_Id));
 
         // create an agenda
         AgendaDefinition.Builder agendaBuilder = AgendaDefinition.Builder.create(
                 t2.agenda_Id, t2.agenda_Name, null, t2.contextId);
         AgendaDefinition agenda = agendaBuilder.build();
-        agenda = ruleManagementServiceImpl.findCreateAgenda(agenda);
+        agenda = ruleManagementService.findCreateAgenda(agenda);
 
-        assertNotNull("Agenda should have been created", ruleManagementServiceImpl.getAgenda(t2.agenda_Id));
+        assertNotNull("Agenda should have been created", ruleManagementService.getAgenda(t2.agenda_Id));
 
         // update an agenda using findCreateAgenda - invalid attempt
         // ( cannot change name or context as these are used to uniquely identify agenda for findCreateAgenda
         agendaBuilder = AgendaDefinition.Builder.create(t2.agenda_Id, "ChangedName", null, t2.contextId);
         agenda = agendaBuilder.build();
         try {
-            agenda = ruleManagementServiceImpl.findCreateAgenda(agenda);
+            agenda = ruleManagementService.findCreateAgenda(agenda);
             fail( "should have failed with OjbOperationException: OJB operation failed");
         } catch (OjbOperationException e) {
             // thrown OjbOperationException: OJB operation failed ...OptimisticLockException: Object has been modified by someone else
         }
 
         // create a new agendaItem to update the agenda with
-        AgendaItemDefinition agendaItem = newTestAgendaItemDefinition("AINew" + t2.action0 , t2.agenda_Id, null);
-        AgendaItemDefinition.Builder itemBuilder = AgendaItemDefinition.Builder.create(agendaItem);
-        itemBuilder = AgendaItemDefinition.Builder.create(ruleManagementServiceImpl.createAgendaItem(itemBuilder.build()));
+        AgendaItemDefinition agendaItem = buildTestAgendaItemDefinition("AINew" + t2.action0, t2.agenda_Id, null);
 
         //  findCreateAgenda with changed agendaFirstItemId
-        agendaBuilder = AgendaDefinition.Builder.create(t2.agenda_Id, t2.agenda_Name, null, t2.contextId);
-        agendaBuilder.setFirstItemId(itemBuilder.getId());
-        agenda = ruleManagementServiceImpl.findCreateAgenda(agendaBuilder.build());
+        agendaBuilder = AgendaDefinition.Builder.create(t2.agenda_Id, t2.agenda_Name, t2.typeId, t2.contextId);
+        agendaBuilder.setFirstItemId(agendaItem.getId());
+        agenda = ruleManagementService.findCreateAgenda(agendaBuilder.build());
 
         assertEquals("Agenda should have been changed by findCreateAgenda","AINew" + t2.action0,
-                ruleManagementServiceImpl.getAgenda(t2.agenda_Id).getFirstItemId());
+                ruleManagementService.getAgenda(t2.agenda_Id).getFirstItemId());
     }
 
     /**
@@ -175,13 +178,13 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
     public void testGetAgenda() {
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t3 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t3");
-        AgendaDefinition.Builder agendaBuilder = buildAgenda(t3.object0);
+        AgendaDefinition agendaDefinition = createTestAgenda(t3.object0);
 
-        assertEquals("Agenda not found", t3.agenda_Name, ruleManagementServiceImpl.getAgenda(t3.agenda_Id).getName());
+        assertEquals("Agenda not found", t3.agenda_Name, ruleManagementService.getAgenda(t3.agenda_Id).getName());
 
         // call getAgenda method with null
         try {
-            ruleManagementServiceImpl.getAgenda(null);
+            ruleManagementService.getAgenda(null);
             fail("Should have thrown RiceIllegalArgumentException: agenda id is null or blank");
         } catch (RiceIllegalArgumentException e) {
             // throws RiceIllegalArgumentException: agenda id is null or blank
@@ -189,14 +192,14 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
 
         // call getAgenda method with blank
         try {
-            ruleManagementServiceImpl.getAgenda("  ");
+            ruleManagementService.getAgenda("  ");
             fail("Should have thrown RiceIllegalArgumentException: agenda id is null or blank");
         } catch (RiceIllegalArgumentException e) {
             // throws RiceIllegalArgumentException: agenda id is null or blank
         }
 
         // call get Agenda with bad AgendaId
-        assertNull("Agenda should not have been found", ruleManagementServiceImpl.getAgenda("badAgendaId"));
+        assertNull("Agenda should not have been found", ruleManagementService.getAgenda("badAgendaId"));
     }
 
     /**
@@ -208,18 +211,18 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
     public void testGetAgendasByContext() {
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t4 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t4");
-        buildAgenda(t4.object0);
+        createTestAgenda(t4.object0);
 
         // get a second set of object names for the creation of second agenda
         RuleManagementBaseTestObjectNames t5 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t5");
-        buildAgenda(t5.object0);
+        createTestAgenda(t5.object0);
 
         // set second agendaContextId to same as first
-        AgendaDefinition.Builder agendaBuilder = AgendaDefinition.Builder.create(ruleManagementServiceImpl.getAgenda(t5.agenda_Id));
+        AgendaDefinition.Builder agendaBuilder = AgendaDefinition.Builder.create(ruleManagementService.getAgenda(t5.agenda_Id));
         agendaBuilder.setContextId(t4.contextId);
-        ruleManagementServiceImpl.updateAgenda(agendaBuilder.build());
+        ruleManagementService.updateAgenda(agendaBuilder.build());
 
-        List<AgendaDefinition> agendas = ruleManagementServiceImpl.getAgendasByContext(t4.contextId);
+        List<AgendaDefinition> agendas = ruleManagementService.getAgendasByContext(t4.contextId);
         assertEquals("Incorrect number of Agendas returned",2,agendas.size());
 
         List<String> agendaIds = Arrays.asList(t4.agenda_Id, t5.agenda_Id);
@@ -235,7 +238,7 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
 
         // call getAgendasByContext method with null
         try {
-            ruleManagementServiceImpl.getAgendasByContext(null);
+            ruleManagementService.getAgendasByContext(null);
             fail("Should have thrown RiceIllegalArgumentException: context ID is null or blank");
         } catch (RiceIllegalArgumentException e) {
             // throws RiceIllegalArgumentException: context ID is null or blank
@@ -243,14 +246,15 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
 
         // call getAgendasByContext method with blank ContextId
         try {
-            ruleManagementServiceImpl.getAgendasByContext("   ");
+            ruleManagementService.getAgendasByContext("   ");
             fail("Should have thrown RiceIllegalArgumentException: context ID is null or blank");
         } catch (RiceIllegalArgumentException e) {
             // throws RiceIllegalArgumentException: context ID is null or blank
         }
 
         // call getAgendasByContext with bad ContextId
-        assertEquals("No Agenda's should have been found",0,ruleManagementServiceImpl.getAgendasByContext("badContextId").size());
+        assertEquals("No Agenda's should have been found",0,
+                ruleManagementService.getAgendasByContext("badContextId").size());
 
     }
 
@@ -263,17 +267,18 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
     public void testUpdateAgenda() {
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t6 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t6");
-        buildAgenda(t6.object0);
+        createTestAgenda(t6.object0);
         // create krms type AGENDA
-        KrmsTypeDefinition krmsType = createKrmsTypeDefinition(t6.namespaceName, "AGENDA", null);
+        KrmsTypeDefinition krmsType = createKrmsTypeDefinition(null, t6.namespaceName, "AGENDA", null);
 
-        AgendaDefinition.Builder agendaBuilder = AgendaDefinition.Builder.create(ruleManagementServiceImpl.getAgenda(t6.agenda_Id));
+        AgendaDefinition.Builder agendaBuilder = AgendaDefinition.Builder.create(ruleManagementService.getAgenda(t6.agenda_Id));
         agendaBuilder.setTypeId(krmsType.getId());
         agendaBuilder.setActive(false);
-        ruleManagementServiceImpl.updateAgenda(agendaBuilder.build());
+        ruleManagementService.updateAgenda(agendaBuilder.build());
 
-        assertEquals("Updated agendaType not found",krmsType.getId(), ruleManagementServiceImpl.getAgenda(t6.agenda_Id).getTypeId());
-        assertEquals("Agenda should have been changed to inActive",false,ruleManagementServiceImpl.getAgenda(t6.agenda_Id).isActive());
+        assertEquals("Updated agendaType not found",krmsType.getId(), ruleManagementService.getAgenda(t6.agenda_Id).getTypeId());
+        assertEquals("Agenda should have been changed to inActive",false,
+                ruleManagementService.getAgenda(t6.agenda_Id).isActive());
     }
 
     /**
@@ -286,23 +291,23 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t7 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t7");
 
-        assertNull("Agenda should not yet exist",ruleManagementServiceImpl.getAgenda(t7.agenda_Id));
+        assertNull("Agenda should not yet exist", ruleManagementService.getAgenda(t7.agenda_Id));
 
-        AgendaDefinition.Builder agendaBuilder = buildAgenda(t7.object0);
-        assertNotNull("Agenda should exist",ruleManagementServiceImpl.getAgenda(t7.agenda_Id));
+        AgendaDefinition agendaDefinition = createTestAgenda(t7.object0);
+        assertNotNull("Agenda should exist", ruleManagementService.getAgenda(t7.agenda_Id));
 
-        ruleManagementServiceImpl.deleteAgenda(t7.agenda_Id);
-        assertNull("Agenda should not exist after deletion",ruleManagementServiceImpl.getAgenda(t7.agenda_Id));
+        ruleManagementService.deleteAgenda(t7.agenda_Id);
+        assertNull("Agenda should not exist after deletion", ruleManagementService.getAgenda(t7.agenda_Id));
 
         try {
-            ruleManagementServiceImpl.deleteAgenda("junkAgenda");
+            ruleManagementService.deleteAgenda("junkAgenda");
             fail("Should have failed with IllegalStateException: the Agenda to delete does not exists");
         } catch (IllegalStateException e) {
             // throws  IllegalStateException: the Agenda to delete does not exists: junkAgenda
         }
 
         try {
-            ruleManagementServiceImpl.deleteAgenda(null);
+            ruleManagementService.deleteAgenda(null);
             fail("Should have failed with .RiceIllegalArgumentException: agendaId is null");
         } catch (RiceIllegalArgumentException e) {
             // throws .RiceIllegalArgumentException: agendaId is null
@@ -318,24 +323,24 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
     public void testGetAgendasByType() {
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t8 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t8");
-        buildAgenda(t8.object0);
+        createTestAgenda(t8.object0);
 
         // get a second set of object names for the creation of second agenda
         RuleManagementBaseTestObjectNames t9 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t9");
-        buildAgenda(t9.object0);
+        createTestAgenda(t9.object0);
 
         // create krms type AGENDA5008
-        KrmsTypeDefinition krmsType = createKrmsTypeDefinition(t8.namespaceName, t8.namespaceType, null);
+        KrmsTypeDefinition krmsType = createKrmsTypeDefinition(null, t8.namespaceName, t8.namespaceType, null);
 
         // set agendaType for both agendas
-        AgendaDefinition.Builder agendaBuilder = AgendaDefinition.Builder.create(ruleManagementServiceImpl.getAgenda(t8.agenda_Id));
+        AgendaDefinition.Builder agendaBuilder = AgendaDefinition.Builder.create(ruleManagementService.getAgenda(t8.agenda_Id));
         agendaBuilder.setTypeId(krmsType.getId());
-        ruleManagementServiceImpl.updateAgenda(agendaBuilder.build());
-        agendaBuilder = AgendaDefinition.Builder.create(ruleManagementServiceImpl.getAgenda(t9.agenda_Id));
+        ruleManagementService.updateAgenda(agendaBuilder.build());
+        agendaBuilder = AgendaDefinition.Builder.create(ruleManagementService.getAgenda(t9.agenda_Id));
         agendaBuilder.setTypeId(krmsType.getId());
-        ruleManagementServiceImpl.updateAgenda(agendaBuilder.build());
+        ruleManagementService.updateAgenda(agendaBuilder.build());
 
-        List<AgendaDefinition> agendas = ruleManagementServiceImpl.getAgendasByType(krmsType.getId());
+        List<AgendaDefinition> agendas = ruleManagementService.getAgendasByType(krmsType.getId());
         assertEquals("Incorrect number of Agendas returned",2,agendas.size());
 
         List<String> agendaIds = Arrays.asList(t8.agenda_Id, t9.agenda_Id);
@@ -360,25 +365,25 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
     public void testGetAgendasByTypeAndContext() {
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t10 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t10");
-        buildAgenda(t10.object0);
+        createTestAgenda(t10.object0);
 
         // get a second set of object names for the creation of second agenda
         RuleManagementBaseTestObjectNames t11 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t11");
-        buildAgenda(t11.object0);
+        createTestAgenda(t11.object0);
 
         // create krms type AGENDA5010
-        KrmsTypeDefinition krmsType = createKrmsTypeDefinition(t10.namespaceName, t10.namespaceType, null);
+        KrmsTypeDefinition krmsType = createKrmsTypeDefinition(null, t10.namespaceName, t10.namespaceType, null);
 
         // set agendaType for both agendas and contextId of 5011 to match 5010
-        AgendaDefinition.Builder agendaBuilder = AgendaDefinition.Builder.create(ruleManagementServiceImpl.getAgenda(t10.agenda_Id));
+        AgendaDefinition.Builder agendaBuilder = AgendaDefinition.Builder.create(ruleManagementService.getAgenda(t10.agenda_Id));
         agendaBuilder.setTypeId(krmsType.getId());
-        ruleManagementServiceImpl.updateAgenda(agendaBuilder.build());
-        agendaBuilder = AgendaDefinition.Builder.create(ruleManagementServiceImpl.getAgenda(t11.agenda_Id));
+        ruleManagementService.updateAgenda(agendaBuilder.build());
+        agendaBuilder = AgendaDefinition.Builder.create(ruleManagementService.getAgenda(t11.agenda_Id));
         agendaBuilder.setTypeId(krmsType.getId());
-        agendaBuilder.setContextId(ruleManagementServiceImpl.getAgenda(t10.agenda_Id).getContextId());
-        ruleManagementServiceImpl.updateAgenda(agendaBuilder.build());
+        agendaBuilder.setContextId(ruleManagementService.getAgenda(t10.agenda_Id).getContextId());
+        ruleManagementService.updateAgenda(agendaBuilder.build());
 
-        List<AgendaDefinition> agendas = ruleManagementServiceImpl.getAgendasByTypeAndContext(krmsType.getId(),t10.contextId);
+        List<AgendaDefinition> agendas = ruleManagementService.getAgendasByTypeAndContext(krmsType.getId(),t10.contextId);
         assertEquals("Incorrect number of Agendas returned",2,agendas.size());
 
         List<String> agendaIds = Arrays.asList(t10.agenda_Id, t11.agenda_Id);
@@ -403,65 +408,140 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
     public void testFindAgendaIds() {
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t12 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t12");
-        buildAgenda(t12.object0);
+        createTestAgenda(t12.object0);
 
         // get a second set of object names for the creation of second agenda
         RuleManagementBaseTestObjectNames t13 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t13");
-        buildAgenda(t13.object0);
+        createTestAgenda(t13.object0);
 
         // get a third set of object names for the creation of thrid agenda
         RuleManagementBaseTestObjectNames t14 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t14");
-        buildAgenda(t14.object0);
+        createTestAgenda(t14.object0);
 
         // create krms type t12.AGENDA
-        KrmsTypeDefinition krmsType = createKrmsTypeDefinition(t12.namespaceName, t12.namespaceType, null);
+        KrmsTypeDefinition krmsType = createKrmsTypeDefinition(null, t12.namespaceName, t12.namespaceType, null);
 
         // set agendaType for all agendas to match / and contextId of 5013 to match 5012 but not match 5014
-        AgendaDefinition.Builder agendaBuilder = AgendaDefinition.Builder.create(ruleManagementServiceImpl.getAgenda(
+        AgendaDefinition.Builder agendaBuilder = AgendaDefinition.Builder.create(ruleManagementService.getAgenda(
                 t12.agenda_Id));
         agendaBuilder.setTypeId(krmsType.getId());
-        ruleManagementServiceImpl.updateAgenda(agendaBuilder.build());
-        agendaBuilder = AgendaDefinition.Builder.create(ruleManagementServiceImpl.getAgenda(t13.agenda_Id));
+        ruleManagementService.updateAgenda(agendaBuilder.build());
+        agendaBuilder = AgendaDefinition.Builder.create(ruleManagementService.getAgenda(t13.agenda_Id));
         agendaBuilder.setTypeId(krmsType.getId());
-        agendaBuilder.setContextId(ruleManagementServiceImpl.getAgenda(t12.agenda_Id).getContextId());
-        ruleManagementServiceImpl.updateAgenda(agendaBuilder.build());
-        agendaBuilder = AgendaDefinition.Builder.create(ruleManagementServiceImpl.getAgenda(t14.agenda_Id));
+        agendaBuilder.setContextId(ruleManagementService.getAgenda(t12.agenda_Id).getContextId());
+        ruleManagementService.updateAgenda(agendaBuilder.build());
+        agendaBuilder = AgendaDefinition.Builder.create(ruleManagementService.getAgenda(t14.agenda_Id));
         agendaBuilder.setTypeId(krmsType.getId());
-        ruleManagementServiceImpl.updateAgenda(agendaBuilder.build());
+        ruleManagementService.updateAgenda(agendaBuilder.build());
         // create list of agendas with same ContextId
         List<String> agendaNames =  new ArrayList<String>();
         agendaNames.add(t12.agenda_Name);
         agendaNames.add(t13.agenda_Name);
         agendaNames.add(t14.agenda_Name);
 
-        CriteriaLookupServiceImpl criteriaLookupService = new CriteriaLookupServiceImpl();
-        criteriaLookupService.setCriteriaLookupDao(new CriteriaLookupDaoProxy());
-        ruleManagementServiceImpl.setCriteriaLookupService( criteriaLookupService);
-
         QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
         // find active agendas with same agendaType
         builder.setPredicates(equal("active","Y"),equal("typeId", krmsType.getId()));
-        List<String> agendaIds = ruleManagementServiceImpl.findAgendaIds(builder.build());
+        List<String> agendaIds = ruleManagementService.findAgendaIds(builder.build());
         assertEquals("Wrong number of Agendas returned",3,agendaIds.size());
 
         // find agendas with the same Context
         builder.setPredicates(equal("contextId", t12.contextId));
-        agendaIds = ruleManagementServiceImpl.findAgendaIds(builder.build());
+        agendaIds = ruleManagementService.findAgendaIds(builder.build());
         assertEquals("Wrong number of Agendas returned",2,agendaIds.size());
 
         // find agendas in list of agendaNames
         builder.setPredicates(in("name", agendaNames.toArray(new String[]{})));
-        agendaIds = ruleManagementServiceImpl.findAgendaIds(builder.build());
+        agendaIds = ruleManagementService.findAgendaIds(builder.build());
         assertEquals("Wrong number of Agendas returned",3,agendaIds.size());
 
         // verify expected agendas returned & count the returned agendas
         int agendasFound = 0;
         for( String agendaId : agendaIds ) {
-            if(agendaNames.contains(ruleManagementServiceImpl.getAgenda(agendaId).getName())) {
+            if(agendaNames.contains(ruleManagementService.getAgenda(agendaId).getName())) {
                 agendasFound++;
             }
         }
 
         assertEquals("Incorrect results of findAgendaIds",3,agendasFound);
+    }
+
+    /**
+     * Tests whether the {@code AgendaDefinition} cache is being evicted properly by checking the status the dependent
+     * objects before and after creating an {@code AgendaDefinition} (and consequently emptying the cache).
+     *
+     * <p>
+     * The following object caches are affected:
+     * {@code AgendaTreeDefinition}, {@code AgendaDefinition}, {@code AgendaItemDefinition}, {@code ContextDefinition}
+     * </p>
+     */
+    @Test
+    public void testAgendaCacheEvict() {
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t15 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t15");
+
+        verifyEmptyAgenda(t15);
+
+        RuleDefinition ruleDefinition = buildTestRuleDefinition(t15.namespaceName, t15.object0);
+        AgendaDefinition agendaDefinition = createTestAgenda(t15.object0);
+        buildTestAgendaItemDefinition(t15.agendaItem_Id, agendaDefinition.getId(), ruleDefinition.getId());
+
+        verifyFullAgenda(t15);
+    }
+
+    private void verifyEmptyAgenda(RuleManagementBaseTestObjectNames t) {
+        AgendaDefinition agenda = ruleManagementService.getAgenda(t.agenda_Id);
+        assertNull("Agenda is not null", agenda);
+
+        AgendaItemDefinition agendaItem = ruleManagementService.getAgendaItem(t.agendaItem_Id);
+        assertFalse("Agenda in AgendaItem found", agendaItem != null);
+
+        boolean foundAgenda = false;
+        ContextDefinition context = ruleManagementService.getContext(t.contextId);
+        if (context != null) {
+            for (AgendaDefinition contextAgenda : context.getAgendas()) {
+                if (StringUtils.equals(t.agenda_Id, contextAgenda.getId())) {
+                    foundAgenda = true;
+                    break;
+                }
+            }
+        }
+        assertFalse("Agenda in Context found", foundAgenda);
+
+        AgendaTreeDefinition agendaTree = ruleManagementService.getAgendaTree(t.agenda_Id);
+        assertFalse("Agenda in AgendaTree found", agendaTree != null);
+    }
+
+    private void verifyFullAgenda(RuleManagementBaseTestObjectNames t) {
+        AgendaDefinition agenda = ruleManagementService.getAgenda(t.agenda_Id);
+        assertNotNull("Agenda is null", agenda);
+
+        AgendaItemDefinition agendaItem = ruleManagementService.getAgendaItem(t.agendaItem_Id);
+        assertTrue("Agenda in AgendaItem not found", agendaItem != null);
+        assertTrue("Agenda in AgendaItem not found", StringUtils.equals(t.agenda_Id, agendaItem.getAgendaId()));
+
+        boolean foundAgenda = false;
+        ContextDefinition context = ruleManagementService.getContext(t.contextId);
+        if (context != null) {
+            for (AgendaDefinition contextAgenda : context.getAgendas()) {
+                if (StringUtils.equals(t.agenda_Id, contextAgenda.getId())) {
+                    foundAgenda = true;
+                    break;
+                }
+            }
+        }
+        assertTrue("Agenda in Context not found", foundAgenda);
+
+        foundAgenda = false;
+        AgendaTreeDefinition agendaTree = ruleManagementService.getAgendaTree(t.agenda_Id);
+        if (agendaTree != null) {
+            for (AgendaTreeEntryDefinitionContract agendaTreeEntry : agendaTree.getEntries()) {
+                if (StringUtils.equals(t.agendaItem_Id, agendaTreeEntry.getAgendaItemId())) {
+                    foundAgenda = true;
+                    break;
+                }
+            }
+        }
+        assertTrue("Agenda in AgendaTree not found", foundAgenda);
     }
 }

@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
+import org.kuali.rice.krms.api.repository.action.ActionDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
+import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -33,7 +36,7 @@ public interface RuleBoService {
      * @throws IllegalArgumentException if the rule is null
      * @throws IllegalStateException if the rule already exists in the system
      */
-    @CacheEvict(value={RuleDefinition.Cache.NAME}, allEntries = true)
+    @CacheEvict(value={RuleDefinition.Cache.NAME, PropositionDefinition.Cache.NAME, ActionDefinition.Cache.NAME, AgendaItemDefinition.Cache.NAME}, allEntries = true)
 	public RuleDefinition createRule(RuleDefinition rule);
 
     /**
@@ -43,7 +46,7 @@ public interface RuleBoService {
      * @throws IllegalArgumentException if the Rule is null
      * @throws IllegalStateException if the Rule does not exists in the system
      */
-    @CacheEvict(value={RuleDefinition.Cache.NAME}, allEntries = true)
+    @CacheEvict(value={RuleDefinition.Cache.NAME, PropositionDefinition.Cache.NAME, ActionDefinition.Cache.NAME, AgendaItemDefinition.Cache.NAME}, allEntries = true)
 	public void updateRule(RuleDefinition rule);
 
     /**

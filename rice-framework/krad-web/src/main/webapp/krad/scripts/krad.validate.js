@@ -1163,7 +1163,7 @@ function generateSummaries(id, messageMap, sections, order, newList) {
 
         //if there are more fields which occur after the final section - generate a sublist summary of those fields
         if (currentFields.length > 0) {
-            var sublist = generateFieldLinkSublist(currentFields, messageMap, currentSectionId, false);
+            var sublist = generateFieldLinkSublist(data, currentFields, messageMap, currentSectionId, false);
             newList = writeMessageItemToList(sublist, newList);
         }
     }

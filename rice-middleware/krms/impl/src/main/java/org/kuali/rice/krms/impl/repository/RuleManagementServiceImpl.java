@@ -234,7 +234,11 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
     public void setTermRepositoryService(TermRepositoryService termRepositoryService) {
         this.termRepositoryService = termRepositoryService;
     }
-    
+
+    /**
+     * get the {@link SequenceAccessorService}
+     * @return the {@link SequenceAccessorService}
+     */
     public SequenceAccessorService getSequenceAccessorService() {
         if (this.sequenceAccessorService == null) {
             this.sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
@@ -380,17 +384,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
     //// 
     @Override
     public AgendaDefinition createAgenda(AgendaDefinition agendaDefinition) throws RiceIllegalArgumentException {
-        AgendaDefinition agenda = agendaBoService.createAgenda(agendaDefinition);
-        AgendaItemDefinition.Builder itemBldr = AgendaItemDefinition.Builder.create(null, agenda.getId());
-        AgendaItemDefinition item = this.createAgendaItem(itemBldr.build());
-
-        // now go back and mark the agenda with the item and make it active
-        AgendaDefinition.Builder agendaBldr = AgendaDefinition.Builder.create(agenda);
-        agendaBldr.setFirstItemId(item.getId());
-        this.updateAgenda(agendaBldr.build());
-        agenda = this.getAgenda(agenda.getId());
-
-        return agenda;
+        return agendaBoService.createAgenda(agendaDefinition);
     }
 
     @Override
@@ -705,7 +699,12 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
     @Override
     public AgendaItemDefinition getAgendaItem(String id) throws RiceIllegalArgumentException {
         AgendaItemDefinition agendaItem = agendaBoService.getAgendaItemById(id);
-        return setTermValuesForAgendaItem(agendaItem).build();
+
+        if (agendaItem != null) {
+            return setTermValuesForAgendaItem(agendaItem).build();
+        }
+
+        return agendaItem;
     }
 
     private AgendaItemDefinition.Builder setTermValuesForAgendaItem(AgendaItemDefinition agendaItem) {

@@ -22,9 +22,7 @@ import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.krms.api.repository.reference.ReferenceObjectBinding;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -47,18 +45,20 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
     /**
      *  Test testCreateReferenceObjectBinding()
      *
-     *  This test focuses specifically on the RuleManagementServiceImpl .createReferenceObjectBinding(ReferenceObjectBinding) method
+     *  This test focuses specifically on the RuleManagementServiceImpl .createTestReferenceObjectBinding(ReferenceObjectBinding) method
      */
     @Test
     public void testCreateReferenceObjectBinding() {
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t0 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t0");
 
-        ReferenceObjectBinding.Builder refObjBindingBuilder =  buildReferenceObjectBinding(t0.object0);
-        ReferenceObjectBinding refObjBinding = ruleManagementServiceImpl.getReferenceObjectBinding(
+        // create a ReferenceObjectBinding entry
+        ReferenceObjectBinding.Builder refObjBindingBuilder =  createTestReferenceObjectBinding(t0.object0);
+        ReferenceObjectBinding refObjBinding = ruleManagementService.getReferenceObjectBinding(
                 refObjBindingBuilder.getId());
         refObjBindingBuilder =  ReferenceObjectBinding.Builder.create(refObjBinding);
 
+        // verify the Created entry
         assertNotNull("Created ReferenceObjectBinding not found", refObjBindingBuilder);
         assertEquals("Invalid CollectionName of refObjBindingBuilder found", "ParkingPolicies",
                 refObjBindingBuilder.getCollectionName());
@@ -71,16 +71,18 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
                 t0.referenceObject_0_DiscriminatorType, refObjBindingBuilder.getReferenceDiscriminatorType());
         assertEquals("Invalid Active value of refObjBindingBuilder found",true, refObjBindingBuilder.isActive());
 
+        // try to create a ReferenceObjectBinding which already exists
         try {
-            ruleManagementServiceImpl.createReferenceObjectBinding(refObjBindingBuilder.build());
+            ruleManagementService.createReferenceObjectBinding(refObjBindingBuilder.build());
             fail("Should have thrown IllegalStateException: the ReferenceObjectBinding to create already exists");
         } catch (Exception e) {
             // throws IllegalStateException: the ReferenceObjectBinding to create already exists
         }
 
-        refObjBindingBuilder.setId("RefObjBind6000");
+        // try to create a ReferenceObjectBinding entry which exists using a different Id
+        refObjBindingBuilder.setId("RefObjBindIdChanged");
         try {
-            ruleManagementServiceImpl.createReferenceObjectBinding(refObjBindingBuilder.build());
+            ruleManagementService.createReferenceObjectBinding(refObjBindingBuilder.build());
             fail("Should have thrown DataIntegrityViolationException: OJB operation; SQL []; Duplicate entry");
         } catch (Exception e) {
             // throws DataIntegrityViolationException: OJB operation; SQL []; Duplicate entry
@@ -97,21 +99,23 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t1 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t1");
 
-        ReferenceObjectBinding.Builder refObjBindingBuilder =  buildReferenceObjectBinding(t1.object0);
+        ReferenceObjectBinding.Builder refObjBindingBuilder =  createTestReferenceObjectBinding(t1.object0);
 
-        ReferenceObjectBinding refObjBinding = ruleManagementServiceImpl.getReferenceObjectBinding(
+        ReferenceObjectBinding refObjBinding = ruleManagementService.getReferenceObjectBinding(
                 refObjBindingBuilder.getId());
         assertNotNull("ReferenceObjectBinding should have been returned",refObjBinding);
         assertEquals("Incorrect value found on returned ReferenceObjectBinding",t1.referenceObject_0_Id,refObjBinding.getReferenceObjectId());
 
+        // try to getReferenceObjectBinding using null Id
         try {
-            refObjBinding = ruleManagementServiceImpl.getReferenceObjectBinding(null);
+            refObjBinding = ruleManagementService.getReferenceObjectBinding(null);
             fail("Should have thrown IllegalArgumentException: referenceObjectBindingId was null");
         } catch (Exception e) {
             // throws IllegalArgumentException: referenceObjectBindingId was null
         }
 
-        assertNull("ReferenceObjectBinding should not have been found",ruleManagementServiceImpl.getReferenceObjectBinding("junk_value"));
+        // try to find a ReferenceObjectBinding using a non-existent Id
+        assertNull("ReferenceObjectBinding should not have been found", ruleManagementService.getReferenceObjectBinding("junk_value"));
     }
 
     /**
@@ -125,11 +129,11 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
         RuleManagementBaseTestObjectNames t2 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t2");
 
         List<String> referenceObjectBindingIds = new ArrayList<String>();
-        referenceObjectBindingIds.add(buildReferenceObjectBinding(t2.object0).getId());
-        referenceObjectBindingIds.add(buildReferenceObjectBinding(t2.object1).getId());
-        referenceObjectBindingIds.add(buildReferenceObjectBinding(t2.object2).getId());
+        referenceObjectBindingIds.add(createTestReferenceObjectBinding(t2.object0).getId());
+        referenceObjectBindingIds.add(createTestReferenceObjectBinding(t2.object1).getId());
+        referenceObjectBindingIds.add(createTestReferenceObjectBinding(t2.object2).getId());
 
-        List<ReferenceObjectBinding> referenceObjectBindings = ruleManagementServiceImpl.getReferenceObjectBindings(referenceObjectBindingIds);
+        List<ReferenceObjectBinding> referenceObjectBindings = ruleManagementService.getReferenceObjectBindings(referenceObjectBindingIds);
         int objectsFound = 0;
         for ( ReferenceObjectBinding referenceObjectBinding : referenceObjectBindings) {
             if ( referenceObjectBindingIds.contains( referenceObjectBinding.getId())) {
@@ -140,18 +144,19 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
         }
         assertEquals("Expected number of objects not returned",3,objectsFound);
 
+        // try to getReferenceObjectBindings using a null Id List
         try {
-            ruleManagementServiceImpl.getReferenceObjectBindings(null);
+            ruleManagementService.getReferenceObjectBindings(null);
             fail("Should have thrown IllegalArgumentException: reference binding object ids must not be null");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: reference binding object ids must not be null
         }
 
-        assertEquals("Incorrect number of objects returned", 0, ruleManagementServiceImpl.getReferenceObjectBindings(new ArrayList<String>()).size());
+        assertEquals("Incorrect number of objects returned", 0, ruleManagementService.getReferenceObjectBindings(new ArrayList<String>()).size());
 
         // try requesting a list of objects with a bad value in it
         referenceObjectBindingIds.add("junkValue");
-        referenceObjectBindings = ruleManagementServiceImpl.getReferenceObjectBindings(referenceObjectBindingIds);
+        referenceObjectBindings = ruleManagementService.getReferenceObjectBindings(referenceObjectBindingIds);
         objectsFound = 0;
         for ( ReferenceObjectBinding referenceObjectBinding : referenceObjectBindings) {
             if ( referenceObjectBindingIds.contains( referenceObjectBinding.getId())) {
@@ -172,16 +177,16 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
     public void testFindReferenceObjectBindingsByReferenceObject() {
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t3 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t3");
-        ReferenceObjectBinding.Builder refObjBindingBuilder =  buildReferenceObjectBinding(t3.object0);
+        ReferenceObjectBinding.Builder refObjBindingBuilder =  createTestReferenceObjectBinding(t3.object0);
 
         //assertEquals("",refObjBindingBuilder.getId(),
-        List<ReferenceObjectBinding> referenceObjectBindings = ruleManagementServiceImpl.findReferenceObjectBindingsByReferenceObject(
+        List<ReferenceObjectBinding> referenceObjectBindings = ruleManagementService.findReferenceObjectBindingsByReferenceObject(
                 refObjBindingBuilder.getReferenceDiscriminatorType(), refObjBindingBuilder.getReferenceObjectId());
         assertEquals("Incorrect number of objects returned",1,referenceObjectBindings.size());
 
         // test findReferenceObjectBindingsByReferenceObject with null object discriminator
         try {
-            ruleManagementServiceImpl.findReferenceObjectBindingsByReferenceObject(null,refObjBindingBuilder.getReferenceObjectId());
+            ruleManagementService.findReferenceObjectBindingsByReferenceObject(null,refObjBindingBuilder.getReferenceObjectId());
             fail("should have thrown RiceIllegalArgumentException: reference binding object discriminator type must not be null");
         } catch (RiceIllegalArgumentException e) {
             // throws RiceIllegalArgumentException: reference binding object discriminator type must not be null
@@ -189,14 +194,14 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
 
         // test findReferenceObjectBindingsByReferenceObject with null reference object id
         try {
-            ruleManagementServiceImpl.findReferenceObjectBindingsByReferenceObject(refObjBindingBuilder.getReferenceDiscriminatorType(),null);
+            ruleManagementService.findReferenceObjectBindingsByReferenceObject(refObjBindingBuilder.getReferenceDiscriminatorType(),null);
             fail("should have thrown RiceIllegalArgumentException: reference object id must not be null");
         } catch (RiceIllegalArgumentException e) {
             // throws RiceIllegalArgumentException: reference object id must not be null
         }
 
         // test with bad values for object discriminator and object id
-        referenceObjectBindings = ruleManagementServiceImpl.findReferenceObjectBindingsByReferenceObject("junkvalue","junkvalue");
+        referenceObjectBindings = ruleManagementService.findReferenceObjectBindingsByReferenceObject("junkvalue","junkvalue");
         assertEquals("Incorrect number of objects returned",0,referenceObjectBindings.size());
     }
 
@@ -212,21 +217,21 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
         RuleManagementBaseTestObjectNames t4 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t4");
 
         // create two ReferenceObjectBindings with same ReferenceDiscriminatorType
-        ReferenceObjectBinding.Builder refObjBindingBuilder =  buildReferenceObjectBinding(t4.object0);
+        ReferenceObjectBinding.Builder refObjBindingBuilder =  createTestReferenceObjectBinding(t4.object0);
         refObjBindingBuilder.setReferenceDiscriminatorType("ParkingAffiliationType" + t4.discriminator);
-        ruleManagementServiceImpl.updateReferenceObjectBinding(refObjBindingBuilder.build());
+        ruleManagementService.updateReferenceObjectBinding(refObjBindingBuilder.build());
 
-        refObjBindingBuilder =  buildReferenceObjectBinding(t4.object1);
+        refObjBindingBuilder =  createTestReferenceObjectBinding(t4.object1);
         refObjBindingBuilder.setReferenceDiscriminatorType("ParkingAffiliationType" + t4.discriminator);
-        ruleManagementServiceImpl.updateReferenceObjectBinding(refObjBindingBuilder.build());
+        ruleManagementService.updateReferenceObjectBinding(refObjBindingBuilder.build());
 
-        List<ReferenceObjectBinding> referenceObjectBindings = ruleManagementServiceImpl.findReferenceObjectBindingsByReferenceDiscriminatorType(
+        List<ReferenceObjectBinding> referenceObjectBindings = ruleManagementService.findReferenceObjectBindingsByReferenceDiscriminatorType(
                 refObjBindingBuilder.getReferenceDiscriminatorType());
         assertEquals("Incorrect number of objects returned",2,referenceObjectBindings.size());
 
         // check with blank ReferenceDiscriminatorType
         try {
-            ruleManagementServiceImpl.findReferenceObjectBindingsByReferenceDiscriminatorType("   ");
+            ruleManagementService.findReferenceObjectBindingsByReferenceDiscriminatorType("   ");
             fail("Should have thrown IllegalArgumentException: referenceDiscriminatorType is null or blank");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: referenceDiscriminatorType is null or blank
@@ -234,7 +239,7 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
 
         // check with null ReferenceDiscriminatorType
         try {
-            ruleManagementServiceImpl.findReferenceObjectBindingsByReferenceDiscriminatorType(null);
+            ruleManagementService.findReferenceObjectBindingsByReferenceDiscriminatorType(null);
             fail("Should have thrown IllegalArgumentException: referenceDiscriminatorType is null or blank");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: referenceDiscriminatorType is null or blank
@@ -253,18 +258,18 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
         RuleManagementBaseTestObjectNames t5 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t5");
 
         // create two ReferenceObjectBindings with same KrmsDiscriminatorType
-        ReferenceObjectBinding.Builder refObjBindingBuilder6008 =  buildReferenceObjectBinding(t5.object0);
+        ReferenceObjectBinding.Builder refObjBindingBuilder6008 =  createTestReferenceObjectBinding(t5.object0);
 
-        ReferenceObjectBinding.Builder refObjBindingBuilder6009 =  buildReferenceObjectBinding(t5.object1);
+        ReferenceObjectBinding.Builder refObjBindingBuilder6009 =  createTestReferenceObjectBinding(t5.object1);
         refObjBindingBuilder6009.setKrmsDiscriminatorType(refObjBindingBuilder6008.getKrmsDiscriminatorType());
-        ruleManagementServiceImpl.updateReferenceObjectBinding(refObjBindingBuilder6009.build());
+        ruleManagementService.updateReferenceObjectBinding(refObjBindingBuilder6009.build());
 
-        List<ReferenceObjectBinding> referenceObjectBindings = ruleManagementServiceImpl.findReferenceObjectBindingsByKrmsDiscriminatorType(refObjBindingBuilder6008.getKrmsDiscriminatorType());
+        List<ReferenceObjectBinding> referenceObjectBindings = ruleManagementService.findReferenceObjectBindingsByKrmsDiscriminatorType(refObjBindingBuilder6008.getKrmsDiscriminatorType());
         assertEquals("Incorrect number of objects returned",2,referenceObjectBindings.size());
 
         // check with blank KrmsDiscriminatorType
         try {
-            ruleManagementServiceImpl.findReferenceObjectBindingsByKrmsDiscriminatorType("   ");
+            ruleManagementService.findReferenceObjectBindingsByKrmsDiscriminatorType("   ");
             fail("Should have thrown IllegalArgumentException: krmsDiscriminatorType is null or blank");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: krmsDiscriminatorType is null or blank
@@ -272,7 +277,7 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
 
         // check with null KrmsDiscriminatorType
         try {
-            ruleManagementServiceImpl.findReferenceObjectBindingsByKrmsDiscriminatorType(null);
+            ruleManagementService.findReferenceObjectBindingsByKrmsDiscriminatorType(null);
             fail("Should have thrown IllegalArgumentException: krmsDiscriminatorType is null or blank");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: krmsDiscriminatorType is null or blank
@@ -291,19 +296,19 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
         RuleManagementBaseTestObjectNames t6 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t6");
 
         // create two ReferenceObjectBindings with same KrmsObjectId
-        ReferenceObjectBinding.Builder refObjBindingBuilder0 =  buildReferenceObjectBinding(t6.object0);
+        ReferenceObjectBinding.Builder refObjBindingBuilder0 =  createTestReferenceObjectBinding(t6.object0);
 
-        ReferenceObjectBinding.Builder refObjBindingBuilder1 =  buildReferenceObjectBinding(t6.object1);
+        ReferenceObjectBinding.Builder refObjBindingBuilder1 =  createTestReferenceObjectBinding(t6.object1);
         refObjBindingBuilder1.setKrmsObjectId(refObjBindingBuilder0.getKrmsObjectId());
-        ruleManagementServiceImpl.updateReferenceObjectBinding(refObjBindingBuilder1.build());
+        ruleManagementService.updateReferenceObjectBinding(refObjBindingBuilder1.build());
 
-        List<ReferenceObjectBinding> referenceObjectBindings = ruleManagementServiceImpl.findReferenceObjectBindingsByKrmsObject(
+        List<ReferenceObjectBinding> referenceObjectBindings = ruleManagementService.findReferenceObjectBindingsByKrmsObject(
                 refObjBindingBuilder0.getKrmsObjectId());
         assertEquals("Incorrect number of objects returned",2,referenceObjectBindings.size());
 
         // check with blank KrmsObjectId
         try {
-            ruleManagementServiceImpl.findReferenceObjectBindingsByKrmsObject("   ");
+            ruleManagementService.findReferenceObjectBindingsByKrmsObject("   ");
             fail("Should have thrown IllegalArgumentException: krmsObjectId is null or blank");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: krmsObjectId is null or blank
@@ -311,7 +316,7 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
 
         // check with null KrmsObjectId
         try {
-            ruleManagementServiceImpl.findReferenceObjectBindingsByKrmsObject(null);
+            ruleManagementService.findReferenceObjectBindingsByKrmsObject(null);
             fail("Should have thrown IllegalArgumentException: krmsObjectId is null or blank");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: krmsObjectId is null or blank
@@ -328,9 +333,9 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t7 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t7");
 
-        ReferenceObjectBinding.Builder refObjBindingBuilder =  buildReferenceObjectBinding(t7.object0);
+        ReferenceObjectBinding.Builder refObjBindingBuilder =  createTestReferenceObjectBinding(t7.object0);
 
-        ReferenceObjectBinding refObjBinding = ruleManagementServiceImpl.getReferenceObjectBinding(refObjBindingBuilder.getId());
+        ReferenceObjectBinding refObjBinding = ruleManagementService.getReferenceObjectBinding(refObjBindingBuilder.getId());
         refObjBindingBuilder =  ReferenceObjectBinding.Builder.create(refObjBinding);
 
         // verify all current values
@@ -354,10 +359,10 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
         refObjBindingBuilder.setReferenceObjectId("PA6Changed");
         refObjBindingBuilder.setReferenceDiscriminatorType("ParkingAffiliationTypeChanged");
         refObjBindingBuilder.setActive(false);
-        ruleManagementServiceImpl.updateReferenceObjectBinding(refObjBindingBuilder.build());
+        ruleManagementService.updateReferenceObjectBinding(refObjBindingBuilder.build());
 
         // verify updated values
-        refObjBinding = ruleManagementServiceImpl.getReferenceObjectBinding(refObjBindingBuilder.getId());
+        refObjBinding = ruleManagementService.getReferenceObjectBinding(refObjBindingBuilder.getId());
         refObjBindingBuilder =  ReferenceObjectBinding.Builder.create(refObjBinding);
         assertNotNull("Created ReferenceObjectBinding not found", refObjBindingBuilder);
         assertEquals("Invalid CollectionName of refObjBindingBuilder found", "ParkingPolicies6Changed",
@@ -372,7 +377,7 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
         // update a object which does not exist
         refObjBindingBuilder.setId("junkValue");
         try {
-            ruleManagementServiceImpl.updateReferenceObjectBinding(refObjBindingBuilder.build());
+            ruleManagementService.updateReferenceObjectBinding(refObjBindingBuilder.build());
             fail("Should have thrown IllegalStateException: the ReferenceObjectBinding to update does not exists");
         } catch (IllegalStateException e) {
             // throws IllegalStateException: the ReferenceObjectBinding to update does not exists
@@ -390,18 +395,19 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t8 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t8");
 
-        ReferenceObjectBinding.Builder refObjBindingBuilder =  buildReferenceObjectBinding(t8.object0);
-        ReferenceObjectBinding refObjBinding = ruleManagementServiceImpl.getReferenceObjectBinding(refObjBindingBuilder.getId());
+        ReferenceObjectBinding.Builder refObjBindingBuilder =  createTestReferenceObjectBinding(t8.object0);
+        ReferenceObjectBinding refObjBinding = ruleManagementService.getReferenceObjectBinding(refObjBindingBuilder.getId());
         refObjBindingBuilder =  ReferenceObjectBinding.Builder.create(refObjBinding);
-
         assertNotNull("Created ReferenceObjectBinding not found", refObjBindingBuilder);
-        ruleManagementServiceImpl.deleteReferenceObjectBinding(refObjBinding.getId());
-        assertNull("Deleted ReferenceObjectBinding found", ruleManagementServiceImpl.getReferenceObjectBinding(
+
+        // delete the ReferenceObjectBinding entry
+        ruleManagementService.deleteReferenceObjectBinding(refObjBinding.getId());
+        assertNull("Deleted ReferenceObjectBinding found", ruleManagementService.getReferenceObjectBinding(
                 refObjBindingBuilder.getId()));
 
         // try to delete it a second time
         try {
-            ruleManagementServiceImpl.deleteReferenceObjectBinding(refObjBinding.getId());
+            ruleManagementService.deleteReferenceObjectBinding(refObjBinding.getId());
             fail("should have thrown IllegalStateException: the ReferenceObjectBinding to delete does not exists");
         } catch (IllegalStateException e) {
             // throws IllegalStateException: the ReferenceObjectBinding to delete does not exists
@@ -409,7 +415,7 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
 
         // try to delete using null
         try {
-            ruleManagementServiceImpl.deleteReferenceObjectBinding(null);
+            ruleManagementService.deleteReferenceObjectBinding(null);
             fail("should have thrown IllegalArgumentException: referenceObjectBindingId was null");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: referenceObjectBindingId was null
@@ -429,20 +435,20 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
 
         // build three objects to search for.  Two active and one not active
         List<String> refObjBindingBuilderIds = new ArrayList<String>();
-        ReferenceObjectBinding.Builder refObjBindingBuilder =  buildReferenceObjectBinding(t9.object0);
+        ReferenceObjectBinding.Builder refObjBindingBuilder =  createTestReferenceObjectBinding(t9.object0);
         refObjBindingBuilderIds.add(refObjBindingBuilder.getId());
-        refObjBindingBuilder =  buildReferenceObjectBinding(t9.object1);
+        refObjBindingBuilder =  createTestReferenceObjectBinding(t9.object1);
         refObjBindingBuilderIds.add(refObjBindingBuilder.getId());
-        refObjBindingBuilder =  buildReferenceObjectBinding(t9.object2);
+        refObjBindingBuilder =  createTestReferenceObjectBinding(t9.object2);
         refObjBindingBuilderIds.add(refObjBindingBuilder.getId());
         refObjBindingBuilder.setActive(false);
-        ruleManagementServiceImpl.updateReferenceObjectBinding(refObjBindingBuilder.build());
+        ruleManagementService.updateReferenceObjectBinding(refObjBindingBuilder.build());
 
         // Find the three ReferenceObjectBindings by id list
         QueryByCriteria.Builder query = QueryByCriteria.Builder.create();
         query.setPredicates(in("id", refObjBindingBuilderIds.toArray(new String[]{})));
 
-        List<String> referenceObjectBindingIds = ruleManagementServiceImpl.findReferenceObjectBindingIds(query.build());
+        List<String> referenceObjectBindingIds = ruleManagementService.findReferenceObjectBindingIds(query.build());
         for (String referenceObjectBindingId : referenceObjectBindingIds ) {
             assertTrue(refObjBindingBuilderIds.contains(referenceObjectBindingId));
         }
@@ -453,7 +459,7 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
         query = QueryByCriteria.Builder.create();
         query.setPredicates( equal("active","Y"), in("id", refObjBindingBuilderIds.toArray(new String[]{})));
 
-        referenceObjectBindingIds = ruleManagementServiceImpl.findReferenceObjectBindingIds(query.build());
+        referenceObjectBindingIds = ruleManagementService.findReferenceObjectBindingIds(query.build());
         for (String referenceObjectBindingId : referenceObjectBindingIds ) {
             assertTrue(refObjBindingBuilderIds.contains(referenceObjectBindingId));
         }

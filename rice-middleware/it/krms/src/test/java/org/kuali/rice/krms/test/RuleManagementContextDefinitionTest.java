@@ -58,18 +58,18 @@ public class RuleManagementContextDefinitionTest  extends RuleManagementBaseTest
         // create a context
         ContextDefinition.Builder contextDefinitionBuilder = ContextDefinition.Builder.create(t0.namespaceName, t0.context0_Name);
         contextDefinitionBuilder.setId(t0.context0_Id);
-        ruleManagementServiceImpl.createContext(contextDefinitionBuilder.build());
+        ruleManagementService.createContext(contextDefinitionBuilder.build());
 
         // try to create context that already exists
         try {
-            ruleManagementServiceImpl.createContext(contextDefinitionBuilder.build());
+            ruleManagementService.createContext(contextDefinitionBuilder.build());
             fail("Should have thrown IllegalStateException: the context to create already exists");
         } catch (IllegalStateException e) {
             // throws IllegalStateException: the context to create already exists
         }
 
         // verify created context
-        ContextDefinition context = ruleManagementServiceImpl.getContext(t0.context0_Id);
+        ContextDefinition context = ruleManagementService.getContext(t0.context0_Id);
         assertEquals("Unexpected namespace on created context",t0.namespaceName,context.getNamespace());
         assertEquals("Unexpected name on created context",t0.context0_Name,context.getName());
         assertEquals("Unexpected context id on returned context",t0.context0_Id,context.getId());
@@ -106,7 +106,7 @@ public class RuleManagementContextDefinitionTest  extends RuleManagementBaseTest
         // findCreateContext a context which does not already exist
         ContextDefinition.Builder contextDefinitionBuilder = ContextDefinition.Builder.create(t1.namespaceName, t1.context0_Name);
         contextDefinitionBuilder.setId(t1.context0_Id);
-        ContextDefinition context = ruleManagementServiceImpl.findCreateContext(contextDefinitionBuilder.build());
+        ContextDefinition context = ruleManagementService.findCreateContext(contextDefinitionBuilder.build());
 
         // verify created context
         assertEquals("Unexpected namespace on created context",t1.namespaceName,context.getNamespace());
@@ -115,7 +115,7 @@ public class RuleManagementContextDefinitionTest  extends RuleManagementBaseTest
 
         // try to findCreate context that already exists
         contextDefinitionBuilder = ContextDefinition.Builder.create(t1.namespaceName, t1.context0_Name);
-        context = ruleManagementServiceImpl.findCreateContext(contextDefinitionBuilder.build());
+        context = ruleManagementService.findCreateContext(contextDefinitionBuilder.build());
 
         // re-verify created context - id should be from original create
         assertEquals("Unexpected context id on returned context",t1.context0_Id,context.getId());
@@ -124,7 +124,7 @@ public class RuleManagementContextDefinitionTest  extends RuleManagementBaseTest
 
         // test findCreate with null ContextDefinition
         try {
-            ruleManagementServiceImpl.findCreateContext(null);
+            ruleManagementService.findCreateContext(null);
             fail("Should have thrown NullPointerException");
         } catch (NullPointerException e) {
             // throws NullPointerException
@@ -145,6 +145,9 @@ public class RuleManagementContextDefinitionTest  extends RuleManagementBaseTest
 
         // build test Context
         ContextDefinition context = buildTestContext(t2.object0);
+        // make sure it is cached to test update CacheEvict
+        context = ruleManagementService.getContext(context.getId());
+
         // verify created context
         assertEquals("Unexpected namespace on created context",t2.namespaceName,context.getNamespace());
         assertEquals("Unexpected name on created context",t2.context0_Name,context.getName());
@@ -158,9 +161,9 @@ public class RuleManagementContextDefinitionTest  extends RuleManagementBaseTest
         contextBuilder.setName(t2.context0_Name + "Changed");
         contextBuilder.setDescription(t2.context0_Descr + "Changed");
         contextBuilder.setActive(false);
-        ruleManagementServiceImpl.updateContext(contextBuilder.build());
+        ruleManagementService.updateContext(contextBuilder.build());
 
-        context = ruleManagementServiceImpl.getContext(t2.context0_Id);
+        context = ruleManagementService.getContext(t2.context0_Id);
         // verify updated context
         assertEquals("Unexpected namespace on created context",t2.namespaceName + "Changed",context.getNamespace());
         assertEquals("Unexpected name on created context",t2.context0_Name + "Changed",context.getName());
@@ -170,7 +173,7 @@ public class RuleManagementContextDefinitionTest  extends RuleManagementBaseTest
 
         // try update on null Content
         try {
-            ruleManagementServiceImpl.updateContext(null);
+            ruleManagementService.updateContext(null);
             fail("Should have thrown IllegalArgumentException: context is null");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: context is null
@@ -192,12 +195,12 @@ public class RuleManagementContextDefinitionTest  extends RuleManagementBaseTest
         // build test Context
         ContextDefinition context = buildTestContext(t3.object0);
         // proof text context exists
-        context = ruleManagementServiceImpl.getContext(t3.context0_Id);
+        context = ruleManagementService.getContext(t3.context0_Id);
         assertEquals("Unexpected contex name returned ",t3.context0_Name,context.getName());
 
         // delete Context
         try {
-            ruleManagementServiceImpl.deleteContext(t3.context0_Id);
+            ruleManagementService.deleteContext(t3.context0_Id);
             fail("Should have thrown RiceIllegalArgumentException: not implemented yet");
         } catch (RiceIllegalArgumentException e) {
             // throws RiceIllegalArgumentException: not implemented yet
@@ -224,14 +227,14 @@ public class RuleManagementContextDefinitionTest  extends RuleManagementBaseTest
         buildTestContext(t4.object0);
 
         // read context
-        ContextDefinition context = ruleManagementServiceImpl.getContext(t4.context0_Id);
+        ContextDefinition context = ruleManagementService.getContext(t4.context0_Id);
 
         //proof context was read
         assertEquals("Unexpected contex name returned ",t4.context0_Name,context.getName());
 
-        assertNull("Should be null",ruleManagementServiceImpl.getContext(null));
-        assertNull("Should be null", ruleManagementServiceImpl.getContext("   "));
-        assertNull("Should be null", ruleManagementServiceImpl.getContext("badValue"));
+        assertNull("Should be null", ruleManagementService.getContext(null));
+        assertNull("Should be null", ruleManagementService.getContext("   "));
+        assertNull("Should be null", ruleManagementService.getContext("badValue"));
     }
 
 
@@ -250,7 +253,7 @@ public class RuleManagementContextDefinitionTest  extends RuleManagementBaseTest
         buildTestContext(t5.object0);
 
         // read context  ByNameAndNamespace
-        ContextDefinition context = ruleManagementServiceImpl.getContextByNameAndNamespace(t5.context0_Name,
+        ContextDefinition context = ruleManagementService.getContextByNameAndNamespace(t5.context0_Name,
                 t5.namespaceName);
 
         assertEquals("Unexpected namespace on created context",t5.namespaceName,context.getNamespace());
@@ -258,7 +261,7 @@ public class RuleManagementContextDefinitionTest  extends RuleManagementBaseTest
 
         // test call with null name
         try {
-            ruleManagementServiceImpl.getContextByNameAndNamespace(null,t5.namespaceName);
+            ruleManagementService.getContextByNameAndNamespace(null,t5.namespaceName);
             fail("Should have thrown IllegalArgumentException: name is null or blank");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: name is null or blank
@@ -266,7 +269,7 @@ public class RuleManagementContextDefinitionTest  extends RuleManagementBaseTest
 
         // test call with null namespace
         try {
-            ruleManagementServiceImpl.getContextByNameAndNamespace(null,t5.namespaceName);
+            ruleManagementService.getContextByNameAndNamespace(null,t5.namespaceName);
             fail("Should have thrown IllegalArgumentException: namespace is null or blank");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: namespace is null or blank
@@ -274,7 +277,7 @@ public class RuleManagementContextDefinitionTest  extends RuleManagementBaseTest
 
         // test call with blank name
         try {
-            ruleManagementServiceImpl.getContextByNameAndNamespace("  ",t5.namespaceName);
+            ruleManagementService.getContextByNameAndNamespace("  ",t5.namespaceName);
             fail("Should have thrown IllegalArgumentException: name is null or blank");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: name is null or blank
@@ -282,15 +285,15 @@ public class RuleManagementContextDefinitionTest  extends RuleManagementBaseTest
 
         // test call with null namespace
         try {
-            ruleManagementServiceImpl.getContextByNameAndNamespace(t5.context0_Name,"  ");
+            ruleManagementService.getContextByNameAndNamespace(t5.context0_Name,"  ");
             fail("Should have thrown IllegalArgumentException: namespace is null or blank");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: namespace is null or blank
         }
 
         // test get with values for non-existent name and namespace
-        assertNull("Should be null",ruleManagementServiceImpl.getContextByNameAndNamespace("badValue", t5.namespaceName));
-        assertNull("Should be null",ruleManagementServiceImpl.getContextByNameAndNamespace(t5.context0_Name, "badValue"));
+        assertNull("Should be null", ruleManagementService.getContextByNameAndNamespace("badValue", t5.namespaceName));
+        assertNull("Should be null", ruleManagementService.getContextByNameAndNamespace(t5.context0_Name, "badValue"));
     }
 
 
@@ -316,11 +319,7 @@ public class RuleManagementContextDefinitionTest  extends RuleManagementBaseTest
 
         builder.setPredicates(in("id", contextIds.toArray(new String[]{})));
 
-        CriteriaLookupServiceImpl criteriaLookupService = new CriteriaLookupServiceImpl();
-        criteriaLookupService.setCriteriaLookupDao(new CriteriaLookupDaoProxy());
-        ruleManagementServiceImpl.setCriteriaLookupService( criteriaLookupService);
-
-        List<String> foundIds = ruleManagementServiceImpl.findContextIds(builder.build());
+        List<String> foundIds = ruleManagementService.findContextIds(builder.build());
         assertEquals("Should of found 4 contexts",4,foundIds.size());
 
         for (String contactId : contextIds) {
@@ -328,7 +327,7 @@ public class RuleManagementContextDefinitionTest  extends RuleManagementBaseTest
         }
 
         try {
-            ruleManagementServiceImpl.findContextIds(null);
+            ruleManagementService.findContextIds(null);
             fail("Should have thrown IllegalArgumentException: criteria is null");
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: criteria is null

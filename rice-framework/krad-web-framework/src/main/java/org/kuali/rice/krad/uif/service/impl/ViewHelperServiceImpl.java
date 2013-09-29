@@ -243,20 +243,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             public void run() {
                 Component origComponent = view.getViewIndex().getComponentById(origId);
 
-                // run through and assign any ids starting with the id for the refreshed component, so the ids are the
-                // same as they were for the full view build
-                Integer currentSequenceVal = view.getIdSequence();
-
-                Integer startingSequenceVal = view.getViewIndex().getIdSequenceSnapshot().get(component.getId());
-                if (startingSequenceVal != null) {
-                    view.setIdSequence(startingSequenceVal);
-                }
-
                 view.assignComponentIds(component);
-
-                // now set back from the ending view sequence so IDs for any dynamically created (newly) will not stomp
-                // on existing components
-                view.setIdSequence(currentSequenceVal);
 
                 Map<String, Object> origContext = origComponent.getContext();
 
@@ -921,6 +908,12 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     public void performApplyModel(View view, Object model) {
         ProcessLogger.trace("apply-model:" + view.getId());
 
+        // apply default values if they have not been applied yet
+        if (!((ViewModel) model).isDefaultsApplied()) {
+            applyDefaultValues(view, view, model);
+            ((ViewModel) model).setDefaultsApplied(true);
+        }
+
         // get action flag and edit modes from authorizer/presentation controller
         retrieveEditModesAndActionFlags(view, (UifFormBase) model);
 
@@ -1397,12 +1390,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         String clientStateScript = buildClientSideStateScript(view, model);
         view.setPreLoadScript(ScriptUtils.appendScript(view.getPreLoadScript(), clientStateScript));
-
-        // apply default values if they have not been applied yet
-        if (!((ViewModel) model).isDefaultsApplied()) {
-            applyDefaultValues(view, view, model);
-            ((ViewModel) model).setDefaultsApplied(true);
-        }
 
         setExpressionEvaluator(null);
     }
@@ -2304,29 +2291,66 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         String defaultValue = dataField.getDefaultValue();
         Object[] defaultValues = dataField.getDefaultValues();
 
-        if (StringUtils.isBlank(defaultValue) && defaultValues != null && defaultValues.length > 0) {
-            ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValues);
+        if (!ObjectPropertyUtils.isReadableProperty(object, bindingPath)
+                || !ObjectPropertyUtils.isWritableProperty(object, bindingPath)){
+            return;
+        }
+
+        Object currentValue = ObjectPropertyUtils.getPropertyValue(object, bindingPath);
+
+        // Default value only applies when the value being set is null (has no value on the form)
+        if (currentValue != null) {
+            return;
+        }
+
+        if (StringUtils.isBlank(defaultValue)) {
+            String defaultValuesExpression = null;
+
+            // Check for expression, this would exist in a comma seperated list case that uses expressions
+            if (dataField.getExpressionGraph().containsKey(UifConstants.ComponentProperties.DEFAULT_VALUES)) {
+                defaultValuesExpression = dataField.getExpressionGraph().get(
+                        UifConstants.ComponentProperties.DEFAULT_VALUES);
+            }
+
+            // evaluate and set if defaultValues are backed by an expression
+            if (defaultValuesExpression != null && getExpressionEvaluator().containsElPlaceholder(
+                    defaultValuesExpression)) {
+                Map<String, Object> context = getPreModelContext(view);
+                context.putAll(dataField.getContext());
+                defaultValuesExpression = expressionEvaluator.replaceBindingPrefixes(view, object,
+                        defaultValuesExpression);
+
+                ExpressionEvaluator expressionEvaluator = getExpressionEvaluator();
+                defaultValuesExpression = expressionEvaluator.evaluateExpressionTemplate(context,
+                        defaultValuesExpression);
+
+                ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValuesExpression);
+            } else if (defaultValues != null) {
+                ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValues);
+            }
         } else {
             if (StringUtils.isBlank(defaultValue) && (dataField.getDefaultValueFinderClass() != null)) {
                 ValueFinder defaultValueFinder = DataObjectUtils.newInstance(dataField.getDefaultValueFinderClass());
                 defaultValue = defaultValueFinder.getValue();
             }
 
+            if (dataField.getExpressionGraph().containsKey(UifConstants.ComponentProperties.DEFAULT_VALUE)) {
+                defaultValue = dataField.getExpressionGraph().get(UifConstants.ComponentProperties.DEFAULT_VALUE);
+            }
+
             // populate default value if given and path is valid
-            if (StringUtils.isNotBlank(defaultValue) && ObjectPropertyUtils.isWritableProperty(object, bindingPath)) {
+            if (StringUtils.isNotBlank(defaultValue)) {
+                // evaluate if defaultValue is backed by an expression
                 if (getExpressionEvaluator().containsElPlaceholder(defaultValue)) {
                     Map<String, Object> context = getPreModelContext(view);
-                    defaultValue = getExpressionEvaluator().evaluateExpressionTemplate(context, defaultValue);
+                    context.putAll(dataField.getContext());
+                    defaultValue = expressionEvaluator.replaceBindingPrefixes(view, object, defaultValue);
+
+                    ExpressionEvaluator expressionEvaluator = getExpressionEvaluator();
+                    defaultValue = expressionEvaluator.evaluateExpressionTemplate(context, defaultValue);
                 }
 
-                // TODO: this should go through our formatters
-                // Skip nullable non-null non-empty objects when setting default
-                Object currentValue = ObjectPropertyUtils.getPropertyValue(object, bindingPath);
-                Class currentClazz = ObjectPropertyUtils.getPropertyType(object, bindingPath);
-                if (currentValue == null || StringUtils.isBlank(currentValue.toString()) ||
-                        ClassUtils.isPrimitiveOrWrapper(currentClazz)) {
-                    ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValue);
-                }
+                ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValue);
             }
         }
     }

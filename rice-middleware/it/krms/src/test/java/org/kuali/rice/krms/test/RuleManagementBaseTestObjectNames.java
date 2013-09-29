@@ -23,6 +23,7 @@ package org.kuali.rice.krms.test;
  */
 public class RuleManagementBaseTestObjectNames {
     protected String discriminator;
+
     protected String object0;
     protected String object1;
     protected String object2;
@@ -32,6 +33,11 @@ public class RuleManagementBaseTestObjectNames {
     protected String object6;
     protected String object7;
     protected String object8;
+
+    protected String action;
+    protected String action_Id;
+    protected String action_Name;
+    protected String action_Descr;
     protected String action0;
     protected String action0_Id;
     protected String action0_Name;
@@ -52,8 +58,10 @@ public class RuleManagementBaseTestObjectNames {
     protected String action4_Id;
     protected String action4_Name;
     protected String action4_Descr;
+
     protected String agenda_Id;
     protected String agenda_Name;
+    protected String agendaItem_Id;
     protected String agendaItem_0_Id;
     protected String agendaItem_1_Id;
     protected String agendaItem_2_Id;
@@ -62,6 +70,9 @@ public class RuleManagementBaseTestObjectNames {
     protected String agendaItem_5_Id;
     protected String agendaItem_6_Id;
     protected String agendaItem_7_Id;
+
+    protected String typeId;
+    protected String type0_Id;
 
     protected String contextId;
     protected String context0_Id;
@@ -85,14 +96,20 @@ public class RuleManagementBaseTestObjectNames {
     protected String namespaceType;
 
     protected String nlUsage0_Id;
+    protected String nlUsage1_Id;
+    protected String nlUsage2_Id;
+    protected String nlUsage3_Id;
+
     protected String nlUsage0_Name;
     protected String nlUsage0_Descr;
     protected String nlUsage0_KrmsType;
 
+    protected String proposition_Id;
     protected String proposition_0_Id;
     protected String proposition_1_Id;
     protected String proposition_2_Id;
     protected String proposition_3_Id;
+    protected String proposition_Descr;
     protected String proposition_0_Descr;
     protected String proposition_1_Descr;
     protected String proposition_2_Descr;
@@ -108,7 +125,7 @@ public class RuleManagementBaseTestObjectNames {
     protected String referenceObject_2_DiscriminatorType;
     protected String referenceObject_3_DiscriminatorType;
 
-
+    protected String rule_Id;
     protected String rule_0_Id;
     protected String rule_1_Id;
     protected String rule_2_Id;
@@ -142,6 +159,10 @@ public class RuleManagementBaseTestObjectNames {
         object7 = classDiscriminator + testDiscriminator + "07";
         object8 = classDiscriminator + testDiscriminator + "08";
 
+        action = "Action" + object0;
+        action_Id = "ActionId" + object0;
+        action_Name = "ActionName" + object0;
+        action_Descr = "ActionDesc" + object0;
         action0 = "Action" + object0;
         action0_Id = "ActionId" + object0;
         action0_Name = "ActionName" + object0;
@@ -166,6 +187,7 @@ public class RuleManagementBaseTestObjectNames {
         agenda_Id = "AgendaId" + object0;
         agenda_Name = "AgendaName" + object0;
 
+        agendaItem_Id = "AI" + object0;
         agendaItem_0_Id = "AI" + object0;
         agendaItem_1_Id = "AI" + object1;
         agendaItem_2_Id = "AI" + object2;
@@ -174,6 +196,9 @@ public class RuleManagementBaseTestObjectNames {
         agendaItem_5_Id = "AI" + object5;
         agendaItem_6_Id = "AI" + object6;
         agendaItem_7_Id = "AI" + object7;
+
+        typeId = "TypeId" + object0;
+        type0_Id = "TypeId" + object0;
 
         contextId = "ContextId" + object0;
         context0_Id = "ContextId" + object0;
@@ -193,12 +218,14 @@ public class RuleManagementBaseTestObjectNames {
         context2_Name = "ContextName" + object2;
         context3_Name = "ContextName" + object3;
 
-
-
         namespaceName = "Namespace" + object0;
         namespaceType = "NamespaceType" + object0;
 
         nlUsage0_Id = "krms.nl." + object0;
+        nlUsage1_Id = "krms.nl." + object1;
+        nlUsage2_Id = "krms.nl." + object2;
+        nlUsage3_Id = "krms.nl." + object3;
+
         nlUsage0_Name = object0;
         nlUsage0_Descr = "Description-" + object0;
         nlUsage0_KrmsType = object0;
@@ -213,6 +240,7 @@ public class RuleManagementBaseTestObjectNames {
         referenceObject_2_DiscriminatorType = "ParkingAffiliationType";
         referenceObject_3_DiscriminatorType = "ParkingAffiliationType";
 
+        rule_Id = "RuleId" + object0;
         rule_0_Id = "RuleId" + object0;
         rule_1_Id = "RuleId" + object1;
         rule_2_Id = "RuleId" + object2;
@@ -229,11 +257,14 @@ public class RuleManagementBaseTestObjectNames {
         rule_5_Name = "RuleName" + object5;
         rule_6_Name = "RuleName" + object6;
         rule_7_Name = "RuleName" + object7;
+
+        proposition_Id = "P" + object0;
         proposition_0_Id = "P" + object0;
         proposition_1_Id = "P" + object1;
         proposition_2_Id = "P" + object2;
         proposition_3_Id = "P" + object3;
 
+        proposition_Descr = "P" + object0 + "_simple_proposition";
         proposition_0_Descr = "P" + object0 + "_simple_proposition";
         proposition_1_Descr = "P" + object1 + "_simple_proposition";
         proposition_2_Descr = "P" + object2 + "_simple_proposition";

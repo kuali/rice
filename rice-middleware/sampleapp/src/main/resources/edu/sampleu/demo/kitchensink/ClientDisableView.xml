@@ -271,6 +271,29 @@
         parent="Uif-HorizontalBoxSection">
     <property name="items">
       <list>
+        <bean parent="Uif-InputField" p:propertyName="field90" p:defaultValue="course">
+          <property name="control">
+            <bean parent="Uif-VerticalRadioControl">
+              <property name="options">
+                <list>
+                  <bean parent="Uif-KeyLabelPair" p:key="course" p:value="Course or a course placeholder"/>
+                  <bean parent="Uif-KeyLabelPair" p:key="general" p:value="General placeholder"/>
+                </list>
+              </property>
+            </bean>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField" p:propertyName="field91">
+          <property name="control">
+            <bean parent="Uif-TextControl">
+              <property name="watermarkText" value="e.g. BIOL 180"/>
+              <property name="maxLength" value="11"/>
+              <property name="disabled" value="@{#form.field90 NE 'course'}"/>
+            </bean>
+          </property>
+        </bean>
+
         <bean parent="Uif-InputField-LabelTop" p:propertyName="stringList2" p:label="Checkboxes 1"
               p:instructionalText="Make selections to disable the following controls" p:width="auto">
           <property name="control">

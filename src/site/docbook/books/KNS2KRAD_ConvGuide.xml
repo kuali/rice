@@ -2293,7 +2293,7 @@
         <itemizedlist>
           <listitem>
             <para>Permission Check </para>
-            <para>Permission checks in KRAD are configurable by editting the
+            <para>Permission checks in KRAD are configurable by editing the
                 <emphasis>AttributeDefinition</emphasis> tag of a data dictionary xml file, in
               conjunction with the creation of specific permissions in KIM, specifically the
               attributeSecurity tags found in a DataDictionary xml file:</para>
@@ -2534,6 +2534,43 @@
         In KRAD this has been replaced by  LookupForm.referencesToRefresh and ViewHelperService.refreshReferences.
         </para>
     </section>
+    <section>
+      <title>Permission Checks</title>
+      <para>
+              Permission checks for maintenance documents in KRAD can be setup the same way
+              as specified in the Other Lookup Features.</para>
+        <itemizedlist>
+          <listitem>
+            <para>
+              Partial Unmask Field checks if a security-masked field can be partially displayed. In KNS this was
+              checked using the <emphasis>BusinessObjectAuthorizationServiceImpl.canPartiallyUnmaskField.</emphasis>
+              In KRAD the method name has changed to  <emphasis>ViewAuthorizer.canPartialUnmaskField.</emphasis>
+              Enabled by setting  <emphasis>attributeSecurity.partialMask</emphasis> to true on the data field security
+              object of the data. Implementers will have manually do the conversion and move any custom logic in the new
+              method.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Full Unmask Field checks if a security-masked field can be displayed in the clear. In KNS this was
+              checked using the <emphasis>BusinessObjectAuthorizationServiceImpl.canFullyUnmaskField.</emphasis>
+              In KRAD the method name has changed to  <emphasis>ViewAuthorizer.canUnmaskField.</emphasis>
+              Enabled by setting  <emphasis>attributeSecurity.mask</emphasis> to true on the data field security
+              object of the data. Implementers will have manually do the conversion and move any custom logic in the new
+              method.
+            </para>
+          </listitem>
+          <listitem>
+          <para>Modify Maintenance Document Section - In KNS this was accomplished using the  <emphasis>
+            BusinessObjectAuthorizationServiceImpl.considerMaintenanceDocumentAuthorizer </emphasis> and a permission
+            extending the KR-NS <emphasis>Modify Maintenance Document Section.</emphasis> In KRAD  the method has changed
+            to <emphasis>ViewAuthorizer.canEditGroup.</emphasis> Any custom logic will need to be moved to the new method.
+            A new permission which extends the KR-KRAD <emphasis>Edit Group template</emphasis> will have to be created.
+          </para>
+          </listitem>
+        </itemizedlist>
+      </section>
+
     <section>
       <title>Document Error Handling</title>
       <para>

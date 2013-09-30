@@ -15,20 +15,19 @@
  */
 package org.kuali.rice.krms.impl.repository
 
-
+import org.apache.commons.lang.StringUtils
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
-
-import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
-import org.kuali.rice.krms.api.repository.proposition.PropositionDefinitionContract;
-import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.service.BusinessObjectService
 import org.kuali.rice.krad.service.KRADServiceLocator
-import org.kuali.rice.krms.api.repository.proposition.PropositionType
-import org.kuali.rice.krms.api.repository.proposition.PropositionParameterType
 import org.kuali.rice.krad.service.SequenceAccessorService
 import org.kuali.rice.krms.api.repository.LogicalOperator
-import org.apache.commons.lang.StringUtils
-import org.kuali.rice.krms.impl.ui.TermParameter;
-
+import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition
+import org.kuali.rice.krms.api.repository.proposition.PropositionDefinitionContract
+import org.kuali.rice.krms.api.repository.proposition.PropositionParameterType
+import org.kuali.rice.krms.api.repository.proposition.PropositionType
+import org.kuali.rice.krms.impl.ui.CustomOperatorUiTranslator
+import org.kuali.rice.krms.impl.ui.TermParameter
+import org.kuali.rice.krms.impl.util.KrmsServiceLocatorInternal
 
 public class PropositionBo extends PersistableBusinessObjectBase implements PropositionDefinitionContract {
 
@@ -81,10 +80,19 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
         }
     }
 
-    private String getParamValue(PropositionParameterBo prop){
-        if (PropositionParameterType.TERM.getCode().equalsIgnoreCase(prop.getParameterType())){
+    /**
+     * returns the string summary value for the given proposition parameter.
+     *
+     * @param the proposition parameter to get the summary value for
+     * @return the summary value
+     */
+    private String getParamValue(PropositionParameterBo param) {
+        CustomOperatorUiTranslator customOperatorUiTranslator =
+            KrmsServiceLocatorInternal.getCustomOperatorUiTranslator();
+
+        if (PropositionParameterType.TERM.getCode().equalsIgnoreCase(param.getParameterType())) {
             String termName = "";
-            String termId = prop.getValue();
+            String termId = param.getValue();
             if (termId != null && termId.length()>0){
                 if (termId.startsWith("parameterized:")) {
                     if (!StringUtils.isBlank(newTermDescription)) {
@@ -99,11 +107,24 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
                     termName = term.getSpecification().getName();
                 }
             }
+
             return termName;
-        } else {
-            return prop.getValue();
+
+        } else if (
+                PropositionParameterType.FUNCTION.getCode().equalsIgnoreCase(param.getParameterType()) ||
+                PropositionParameterType.OPERATOR.getCode().equalsIgnoreCase(param.getParameterType()) ) {
+
+            if (customOperatorUiTranslator.isCustomOperatorFormValue(param.getValue())) {
+                String functionName = customOperatorUiTranslator.getCustomOperatorName(param.getValue());
+                if (!StringUtils.isEmpty(functionName)) {
+                    return functionName;
+                }
+            }
         }
+
+        return param.getValue();
     }
+
     /**
      * @return the parameterDisplayString
      */

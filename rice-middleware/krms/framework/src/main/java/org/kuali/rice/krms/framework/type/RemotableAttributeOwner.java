@@ -41,7 +41,7 @@ import java.util.Map;
 public interface RemotableAttributeOwner {
 
     /**
-     * <p>get the attributes supported by the people flow type with the given krmsTypeId.</p>
+     * <p>get the attributes supported by the type with the given krmsTypeId.</p>
      *
      * @param krmsTypeId the people flow type identifier.  Must not be null or blank.
      * @return the {@link RemotableAttributeField}s that the PeopleFlow type with the given id supports.

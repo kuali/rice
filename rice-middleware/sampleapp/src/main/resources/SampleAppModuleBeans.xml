@@ -217,6 +217,16 @@
 
   <bean id="testActionTypeService" class="org.kuali.rice.krms.impl.type.ActionTypeServiceBase"/>
 
+  <bean id="sampleAppContainsOperatorService" class="edu.sampleu.krms.impl.ContainsOperator"/>
+
+  <bean id="sampleAppContainsOperatorService.exporter"
+        class="org.kuali.rice.ksb.api.bus.support.CallbackServiceExporter"
+        p:serviceBus-ref="rice.ksb.serviceBus"
+        p:callbackService-ref="sampleAppContainsOperatorService"
+        p:serviceNameSpaceURI="KR-SAP"
+        p:localServiceName="sampleAppContainsOperatorService"
+        p:serviceInterface="org.kuali.rice.krms.api.repository.operator.CustomOperator"/>
+
   <bean id="dataTableRestServiceTest" class="edu.sampleu.demo.kitchensink.DataTableRestServiceTestImpl"/>
 
   <bean id="DataTableRestServiceTest" class="org.kuali.rice.ksb.api.bus.support.RestServiceDefinition">

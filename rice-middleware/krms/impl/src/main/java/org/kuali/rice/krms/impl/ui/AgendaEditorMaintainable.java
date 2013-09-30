@@ -26,9 +26,9 @@ import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.maintenance.Maintainable;
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
@@ -43,7 +43,10 @@ import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaTreeDefinition;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
+import org.kuali.rice.krms.api.repository.function.FunctionDefinition;
+import org.kuali.rice.krms.api.repository.operator.CustomOperator;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
+import org.kuali.rice.krms.api.repository.proposition.PropositionParameterType;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.kuali.rice.krms.api.repository.term.TermDefinition;
 import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
@@ -63,6 +66,7 @@ import org.kuali.rice.krms.impl.repository.TermBo;
 import org.kuali.rice.krms.impl.repository.TermParameterBo;
 import org.kuali.rice.krms.impl.util.KrmsImplConstants;
 import org.kuali.rice.krms.impl.util.KrmsRetriever;
+import org.kuali.rice.krms.impl.util.KrmsServiceLocatorInternal;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -322,11 +326,12 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
     public void saveDataObject() {
         AgendaBo agendaBo = ((AgendaEditor) getDataObject()).getAgenda();
 
-        // handle saving new parameterized terms
+        // handle saving new parameterized terms and processing custom operators
         for (AgendaItemBo agendaItem : agendaBo.getItems()) {
             PropositionBo propositionBo = agendaItem.getRule().getProposition();
             if (propositionBo != null) {
                 saveNewParameterizedTerms(propositionBo);
+                processCustomOperators(propositionBo);
             }
         }
 
@@ -403,6 +408,34 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
             // recurse
             for (PropositionBo childProp : propositionBo.getCompoundComponents()) {
                 saveNewParameterizedTerms(childProp);
+            }
+        }
+    }
+
+    /**
+     * walk the proposition tree and process any custom operators found, converting them to custom function invocations.
+     *
+     * @param propositionBo the root proposition from which to search and convert
+     */
+    private void processCustomOperators(PropositionBo propositionBo) {
+        if (StringUtils.isBlank(propositionBo.getCompoundOpCode())) {
+            // if it is a simple proposition with a custom operator
+            if (!propositionBo.getParameters().isEmpty() && propositionBo.getParameters().get(2).getValue().startsWith(
+                    KrmsImplConstants.CUSTOM_OPERATOR_PREFIX)) {
+                PropositionParameterBo operatorParam = propositionBo.getParameters().get(2);
+
+                CustomOperator customOperator =
+                        KrmsServiceLocatorInternal.getCustomOperatorUiTranslator().getCustomOperator(operatorParam.getValue());
+
+                FunctionDefinition operatorFunctionDefinition = customOperator.getOperatorFunctionDefinition();
+
+                operatorParam.setParameterType(PropositionParameterType.FUNCTION.getCode());
+                operatorParam.setValue(operatorFunctionDefinition.getId());
+            }
+        } else {
+            // recurse
+            for (PropositionBo childProp : propositionBo.getCompoundComponents()) {
+                processCustomOperators(childProp);
             }
         }
     }

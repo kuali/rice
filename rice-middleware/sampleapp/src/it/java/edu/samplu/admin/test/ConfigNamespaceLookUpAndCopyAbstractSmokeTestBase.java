@@ -55,7 +55,7 @@ public abstract class ConfigNamespaceLookUpAndCopyAbstractSmokeTestBase extends 
     public void testConfigNamespaceLookUpAndCopy() throws Exception
     {
         selectFrameIframePortlet();
-        waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]");
+        waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]", "Probably KULRICE-10765 Namespace 500 Error Lookup not defined for business object class org.kuali.rice.coreservice.impl.namespace.NamespaceBo");
         waitAndClickByLinkText("copy");
         waitAndTypeByName("document.documentHeader.documentDescription","Test description of Namespace copy" + ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits());
         waitAndTypeByName("document.newMaintainableObject.code","KR-SYS2" + ITUtil.createUniqueDtsPlusTwoRandomChars());

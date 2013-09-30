@@ -56,7 +56,7 @@ public abstract class ConfigComponentLookUpAndCopyAbstractSmokeTestBase extends 
     public void testConfigComponentLookUpAndCopy() throws Exception
     {
         selectFrameIframePortlet();
-        waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]");
+        waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]", "Probably KULRICE-10763 500 Error Lookup not defined for business object class org.kuali.rice.coreservice.impl.component.ComponentBo");
         waitAndClickByLinkText("copy");
         String fourLetters = RandomStringUtils.randomAlphabetic(4);
         waitAndTypeByName("document.documentHeader.documentDescription","Test description of Component copy " + ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits());

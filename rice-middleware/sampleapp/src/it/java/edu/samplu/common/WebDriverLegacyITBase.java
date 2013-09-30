@@ -2453,6 +2453,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).sendKeys("kr");
         findElement(By.cssSelector("button[data-loadingmessage='Adding Line...']")).click();
         Thread.sleep(3000);
+        checkForIncidentReport();
 
         jGrowl("Add Member admin");
         findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).clear();

@@ -58,6 +58,8 @@ public class JiraAwareFailureUtil {
 
         regexJiraMatches.put(".*RiceIllegalArgumentException.*KimTypeInfoServiceImpl.incomingParamCheck.*", "KULRICE-10647 KRAD Demo LIbrary Control KIM Group null id Incident Report");
 
+        regexJiraMatches.put(".*PeopleFlow-MaintenanceView.*NullPointerException.*ViewHelperServiceImpl.populateDefaultValueForField.*", "KULRICE-10819 Adding new stop results in NPE on PF Screen.  Should be fixed next merge from 2.3");
+
         regexJiraMatches.put(".*NullPointerException.*", "KULRICE-10522 KRAD Demo Library Client Responsiveness Progressive Disclosure Ajax Retrieval NullPointer Incident Report");
 
         regexJiraMatches.put(".*dataObjectClassName.*must be given to find views of type: INQUIRY", "KULRICE-10691 KRAD Demo Travel Account Inquiry Back Button Incident Report");

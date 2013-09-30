@@ -2104,6 +2104,11 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * @param bindingPath path to the property on the object that should be populated
      */
     protected void populateDefaultValueForField(View view, Object object, DataField dataField, String bindingPath) {
+        // check if dataField is somehow null
+        if (dataField == null) {
+            return;
+        }
+
         // check for configured default value
         String defaultValue = dataField.getDefaultValue();
         Object[] defaultValues = dataField.getDefaultValues();
@@ -2115,7 +2120,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         Object currentValue = ObjectPropertyUtils.getPropertyValue(object, bindingPath);
 
-        // Default value only applies when the value being set is null (has no value on the form)
+        // Default value only applies when the value being set is null (ie, has no value on the form)
         if (currentValue != null) {
             return;
         }
@@ -2124,7 +2129,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             String defaultValuesExpression = null;
 
             // Check for expression, this would exist in a comma seperated list case that uses expressions
-            if (dataField.getExpressionGraph().containsKey(UifConstants.ComponentProperties.DEFAULT_VALUES)) {
+            if (dataField.getExpressionGraph() != null &&
+                    dataField.getExpressionGraph().containsKey(UifConstants.ComponentProperties.DEFAULT_VALUES)) {
                 defaultValuesExpression = dataField.getExpressionGraph().get(
                         UifConstants.ComponentProperties.DEFAULT_VALUES);
             }
@@ -2151,7 +2157,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 defaultValue = defaultValueFinder.getValue();
             }
 
-            if (dataField.getExpressionGraph().containsKey(UifConstants.ComponentProperties.DEFAULT_VALUE)) {
+            // check for expression in defaultValue
+            if (dataField.getExpressionGraph() != null &&
+                    dataField.getExpressionGraph().containsKey(UifConstants.ComponentProperties.DEFAULT_VALUE)) {
                 defaultValue = dataField.getExpressionGraph().get(UifConstants.ComponentProperties.DEFAULT_VALUE);
             }
 

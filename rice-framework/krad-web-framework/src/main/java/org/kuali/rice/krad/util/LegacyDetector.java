@@ -185,9 +185,9 @@ class LegacyDetector {
     public boolean useLegacy(Class<?> dataObjectClass) {
         // if we are in a legacy context, always use the legacy framework, if they are using stuff that's not mapped
         // up properly then they are doing it wrong
-//        if (isInLegacyContext()) {
-//            return true;
-//        }
+        if (isInLegacyContext()) {
+            return true;
+        }
         // if it's only loaded in legacy, then we can indicate to use the legacy framework
         if (isLegacyDataFrameworkEnabled() && isOjbLoadedClass(dataObjectClass) && !isKradDataManaged(dataObjectClass)) {
             return true;

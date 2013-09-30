@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import static com.thoughtworks.selenium.SeleneseTestBase.fail;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -142,9 +141,9 @@ public abstract class WebDriverITBase implements Failable {
      * @return true if the element is present, false otherwise
      */
     public boolean isElementPresentQuick(By by) {
-        driver.manage().timeouts().implicitlyWait(WebDriverUtil.SHORT_IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(WebDriverUtil.IMPLICIT_WAIT_TIME_LOOP_MS, TimeUnit.MILLISECONDS);
         boolean result = isElementPresent(by);
-        driver.manage().timeouts().implicitlyWait(WebDriverUtil.DEFAULT_IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(WebDriverUtil.IMPLICIT_WAIT_TIME_SECONDS_DEFAULT, TimeUnit.SECONDS);
         return result;
     }
 
@@ -174,19 +173,18 @@ public abstract class WebDriverITBase implements Failable {
     }
 
     /**
-     * 
+     * TODO Investigate using WebDriverUtil.waitFor
      *
      * @param by The locating mechanism of the element
      * @param message User defined message to display
      */
     protected void waitFor(By by, String message) throws InterruptedException {
-//        for (int second = 0;; second++) {
-            Thread.sleep(1000);
-//            if (second >= DEFAULT_WAIT_SEC) fail(by.toString() + " " + message + " " + DEFAULT_WAIT_SEC + " sec timeout.");
-            try { driver.findElement(by);
-                //break;
-            } catch (Exception e) {}
-//        }
+        Thread.sleep(1000);
+        try {
+            driver.findElement(by);
+        } catch (Exception e) {
+            // ignore, fail on use if required
+        }
     }
 
     /**

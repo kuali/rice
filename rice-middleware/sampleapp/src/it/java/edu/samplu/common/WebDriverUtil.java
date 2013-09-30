@@ -57,11 +57,17 @@ public class WebDriverUtil {
     public static boolean jsHighlightEnabled = false;
 
     /**
-     * {@see REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY} to configure
+     * TODO parametrize for JVM Arg
+     * 1000 Milliseconds
+     */
+    public static int IMPLICIT_WAIT_TIME_LOOP_MS = 1000;
+
+    /**
+     * {@see IMPLICIT_WAIT_TIME_SECONDS_DEFAULT} to configure
      * Default 30 Seconds
      * In code don't use this variable but call {@see configuredImplicityWait} to get the configured value.
      */
-    public static int DEFAULT_IMPLICIT_WAIT_TIME = 30;
+    public static int IMPLICIT_WAIT_TIME_SECONDS_DEFAULT = 30;
 
     /**
      * false
@@ -100,13 +106,6 @@ public class WebDriverUtil {
     public static final String JS_HIGHLIGHT_INPUT_PROPERTY = "remote.driver.highlight.input";
 
     /**
-     * TODO introduce SHORT_IMPLICIT_WAIT_TIME with param in WebDriverITBase
-     * TODO parametrize for JVM Arg
-     * 1 Second
-     */
-    public static int SHORT_IMPLICIT_WAIT_TIME = 1;
-
-    /**
      * Selenium's webdriver.chrome.driver parameter, you can set -Dwebdriver.chrome.driver= or Rice's REMOTE_PUBLIC_CHROME
      */
     public static final String WEBDRIVER_CHROME_DRIVER = "webdriver.chrome.driver";
@@ -128,7 +127,7 @@ public class WebDriverUtil {
 
     /**
      * Set -Dremote.public.wait.seconds to override DEFAULT_WAIT_SEC
-     * {@see DEFAULT_IMPLICIT_WAIT_TIME}
+     * {@see IMPLICIT_WAIT_TIME_SECONDS_DEFAULT}
      */
     public static final String REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY = "remote.public.wait.seconds";
 
@@ -383,7 +382,7 @@ public class WebDriverUtil {
     }
 
     public static int configuredImplicityWait() {
-        return Integer.parseInt(System.getProperty(REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY, DEFAULT_IMPLICIT_WAIT_TIME + ""));
+        return Integer.parseInt(System.getProperty(REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY, IMPLICIT_WAIT_TIME_SECONDS_DEFAULT + ""));
     }
 
     /**
@@ -463,11 +462,11 @@ public class WebDriverUtil {
      * @throws InterruptedException
      */
     public static WebElement waitFor(WebDriver driver, int waitSeconds, By by, String message) throws InterruptedException {
-// jenkins implies that implicitlyWait is worse than sleep loop for finding elements by 100+ test failures on the old sampleapp
-//        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
-//        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        // jenkins implies that implicitlyWait is worse than sleep loop for finding elements by 100+ test failures on the old sampleapp
+        //        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
+        //        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(IMPLICIT_WAIT_TIME_LOOP_MS, TimeUnit.MILLISECONDS);
 
         boolean failed = false;
 
@@ -497,11 +496,28 @@ public class WebDriverUtil {
      * @param message String
      * @throws InterruptedException
      */
-    public static void waitFors(WebDriver driver, int waitSeconds, By by, String message) throws InterruptedException {
-        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
-        Thread.sleep(1000);
-        driver.findElements(by);  // NOTICE just the find, no action, so by is found, but might not be visible or enabled.
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+    public static List<WebElement> waitFors(WebDriver driver, int waitSeconds, By by, String message) throws InterruptedException {
+        // jenkins implies that implicitlyWait is worse than sleep loop for finding elements by 100+ test failures on the old sampleapp
+        //        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
+        //        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+
+        driver.manage().timeouts().implicitlyWait(IMPLICIT_WAIT_TIME_LOOP_MS, TimeUnit.MILLISECONDS);
+
+        boolean failed = false;
+
+        for (int second = 0;; second++) {
+            Thread.sleep(1000);
+            if (second >= waitSeconds)
+                failed = true;
+            try {
+                if (failed || (driver.findElements(by)).size() > 0) {
+                    break;
+                }
+            } catch (Exception e) {}
+        }
+
+        driver.manage().timeouts().implicitlyWait(configuredImplicityWait(), TimeUnit.SECONDS);
+        return driver.findElements(by);  // NOTICE just the find, no action, so by is found, but might not be visible or enabled.
     }
 
 

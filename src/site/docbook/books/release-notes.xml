@@ -28,18 +28,8 @@
         <section>
             <title>Release Highlights</title>
             <para>This version of Rice is a patch release consisting of bug fixes and small items
-        needed by Kuali application partners.</para>
-            <para>
-                <itemizedlist>
-                    <title>Highlights of this release include:</title>
-          <listitem>
-            <para>Performance improvements</para>
-          </listitem>
-          <listitem>
-            <para>Numerous Bug Fixes</para>
-          </listitem>
-                </itemizedlist>
-            </para>
+        needed by Kuali application partners. There are no database changes and it should be a
+        drop-in replacement.</para>
         </section>
         <section>
             <title>Download</title>
@@ -76,76 +66,19 @@
         <para>
           <itemizedlist>
             <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9142'>KULRICE-9142</link>] - Modify the existing Recall permission to apply to RiceDocument</para>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9846'>KULRICE-9846</link>] - defaultValue not applied before disabled expression evaluation on initialization</para>
             </listitem>
             <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9643'>KULRICE-9643</link>] - Maintenance document still editable after submit</para>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10567'>KULRICE-10567</link>] - readOnlyListDisplayType on DataField does not work, Html is escaped</para>
             </listitem>
             <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9887'>KULRICE-9887</link>] - KRMS Attribute with name 'peopleFlowName' has invalid namespace</para>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10604'>KULRICE-10604</link>] - Light table examples not rendering freemarker exception in logs</para>
             </listitem>
             <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9998'>KULRICE-9998</link>] - Country Name is defined as 40 characters in the database, but 50 characters in the data dictionary</para>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10729'>KULRICE-10729</link>] - Function call in krad.validate.js is using wrong method signature</para>
             </listitem>
             <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10129'>KULRICE-10129</link>] - Fix Critical Sonar Issue related to StringBuffer usage in RichTable</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10166'>KULRICE-10166</link>] - Adding an attachment or note to a people flow maintenance doc doesn't add the attachment</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10170'>KULRICE-10170</link>] - KRMS: Add button doesn't work when adding a proposition to a rule without selecting  an existing proposition.</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10171'>KULRICE-10171</link>] - XSS protect field display by encoding them properly</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10177'>KULRICE-10177</link>] - Copy issue on UrlInfo causes exception with use of Breadcrumbs</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10209'>KULRICE-10209</link>] - Stack trace with invalid Specification ID on Term Creation </para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10251'>KULRICE-10251</link>] - Maintain KRMS Agenda permission has confusing and unused permission detail</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10252'>KULRICE-10252</link>] - ResponsibilityServiceImpl.getResponsibilityAction returning only one of multiple ResponsibilityActions </para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10262'>KULRICE-10262</link>] - Doc search returns duplicate doc with multiple iteration to fetch more</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10266'>KULRICE-10266</link>] - Optimistic Lock Exception in Person Document.</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10351'>KULRICE-10351</link>] - AgendaBoServiceImpl.findAgendaItemsForAgendas throws NPE</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10370'>KULRICE-10370</link>] - Broken spinner image in Loading modal panel</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10493'>KULRICE-10493</link>] - Notification message that lookup is by primary key is not working.</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10559'>KULRICE-10559</link>] - create new link for PeopleFlow results in incident report for NPE</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10587'>KULRICE-10587</link>] - Create New Agenda NPE upon Add Rule selection </para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10588'>KULRICE-10588</link>] - Collection kitchen sink page does not render</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10608'>KULRICE-10608</link>] - JS Error on env2 KRAD kitchen sink Progressive Disclosure tab (page functionality broken)</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10619'>KULRICE-10619</link>] - Stacked Layout gives a javascript error when deleting lines</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10624'>KULRICE-10624</link>] - Incident report on second progressive disclosure demo</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10625'>KULRICE-10625</link>] - Conditional refresh demo view does not load correctly</para>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10819'>KULRICE-10819</link>] - Adding new stop results in NPE on PF Screen</para>
             </listitem>
           </itemizedlist>
         </para>
@@ -157,28 +90,10 @@
         <para>
           <itemizedlist>
             <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9918'>KULRICE-9918</link>] - Provide a way for application modules to specify their own custom document types for notifications generated for them by KEN.</para>
-            </listitem>
-          </itemizedlist>
-        </para>
-      </section>
-      
-      
-      <section>
-        <title>Improvement</title>
-        <para>
-          <itemizedlist>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10063'>KULRICE-10063</link>] - Replace ObjectPropertyUtils BeanWrapper implementation</para>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9963'>KULRICE-9963</link>] - Enhance KRMS to support "contains" operator for collections</para>
             </listitem>
             <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10079'>KULRICE-10079</link>] - Allow for light table to be used in details</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10200'>KULRICE-10200</link>] - Allow full min file path to be specified when using manual theme configuration</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10353'>KULRICE-10353</link>] - Inline processing of FreeMarker templates</para>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10142'>KULRICE-10142</link>] - KS KRMS service changes</para>
             </listitem>
           </itemizedlist>
         </para>
@@ -190,96 +105,30 @@
         <para>
           <itemizedlist>
             <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9034'>KULRICE-9034</link>] - KR-KRAD - RESULTS_LIMIT parameter should be added and the code should be changed to use it </para>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10146'>KULRICE-10146</link>] - add RuleManagementService tests for NaturalLanguageUsage, NaturalLanguageTemplate related methods</para>
             </listitem>
             <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9781'>KULRICE-9781</link>] - Integrate KRMS service changes from KS branch</para>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10147'>KULRICE-10147</link>] - add caching to RuleManagementService methods related to Agenda, Rule, Action, Proposition</para>
             </listitem>
             <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10005'>KULRICE-10005</link>] - several message with key not found errors in KRMS</para>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10148'>KULRICE-10148</link>] - KRMS support for "contains" operator</para>
             </listitem>
             <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10015'>KULRICE-10015</link>] - Incident report when attempting to copy a rule with an action</para>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10167'>KULRICE-10167</link>] - add caching to RuleManagementService methods related to Context, ReferenceObjectBinding, NaturalLanguage</para>
             </listitem>
             <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10020'>KULRICE-10020</link>] - Cannot copy a rule right after the agenda is created</para>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10613'>KULRICE-10613</link>] - Merge remaining changes from the ks-krms branch in rice-2.3</para>
             </listitem>
             <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10080'>KULRICE-10080</link>] - Some pages are submitted to workflow twice because Firefox is not able to discern the encoding of the document.</para>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10658'>KULRICE-10658</link>] - GroupService assignPrincipalToGroup addition needs to evict role cache too</para>
             </listitem>
             <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10086'>KULRICE-10086</link>] - Continue Server Side Paging Work - Stacked Collection</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10094'>KULRICE-10094</link>] - Default closed disclosures should have ajax retrieval option</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10102'>KULRICE-10102</link>] - Update KIM permissions for edit document in master data source</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10109'>KULRICE-10109</link>] - Continue Server Side Paging Work - Column/Row Span</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10111'>KULRICE-10111</link>] - Document ViewTheme and theme builder</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10138'>KULRICE-10138</link>] - component library formatting problem / bottom scroll bar in Elements -&gt; Actions and Fields -&gt; Action Fields</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10141'>KULRICE-10141</link>] - Analysis for allowing application modules to send notifications with custom doc types</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10143'>KULRICE-10143</link>] - add RuleManagementService tests for AgendaTreeDefinition, AgendaDefinition, AgendaItemDefinition related methods</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10144'>KULRICE-10144</link>] - add RuleManagementService tests for RuleDefinition, ActionDefinition, PropositionDefinition related methods</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10145'>KULRICE-10145</link>] - add RuleManagementService tests for ContextDefinition, ReferenceObjectBinding related methods</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10168'>KULRICE-10168</link>] - Components stored in view index are not getting all cleaned</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10169'>KULRICE-10169</link>] - Make TranslationUtility Spring injectible</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10175'>KULRICE-10175</link>] - implementation for allowing application modules to send notifications with custom doc types</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10183'>KULRICE-10183</link>] - Questions about thread safety of KRAD UserSessionUtils</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10184'>KULRICE-10184</link>] - docbook for allowing application modules to send notifications with custom doc types</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10189'>KULRICE-10189</link>] - Split impacting changes wiki page into multiple pages</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10193'>KULRICE-10193</link>] - Create a ViewPostMetadata object to contain post information about a view</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10268'>KULRICE-10268</link>] - coerceValue js performance enhancement</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10331'>KULRICE-10331</link>] - RuleManagementServiceImpl.deleteProposition(id) throws DataIntegrityViolationException </para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10438'>KULRICE-10438</link>] - Analysis for delaying lifecycle row details component before it is needed</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10551'>KULRICE-10551</link>] - 2.3.1 Coordinated Developer Testing </para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10645'>KULRICE-10645</link>] - Roll back recent ObjectPropertyUtils changes in rice-2.3 branch</para>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10688'>KULRICE-10688</link>] - Binding path is lost after refresh of parent collection for child ajax retrieved components</para>
             </listitem>
           </itemizedlist>
         </para>
       </section>
       
       
-
-
-        
     </section>
 </article>

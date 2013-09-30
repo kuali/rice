@@ -85,10 +85,27 @@ public enum DataType {
 		if (clazz == null) {
 			return null;
 		}
-		for (DataType dataType : DataType.values()) {
-			if (dataType.type.isAssignableFrom(clazz)) {
-				return dataType;
-			}
+		if ( clazz.isPrimitive() ) {
+		    // primitives are special cases
+		    if ( clazz == boolean.class ) {
+                return BOOLEAN;
+            } else if ( clazz == int.class || clazz == byte.class || clazz == short.class ) {
+                return INTEGER;
+            } else if ( clazz == long.class ) {
+                return LONG;
+            } else if ( clazz == float.class ) {
+                return FLOAT;
+            } else if ( clazz == double.class ) {
+                return DOUBLE;
+            } else if ( clazz == char.class ) {
+                return STRING;
+		    }
+		} else {
+    		for (DataType dataType : DataType.values()) {
+    			if (dataType.type.isAssignableFrom(clazz)) {
+    				return dataType;
+    			}
+    		}
 		}
 		return null;
 	}

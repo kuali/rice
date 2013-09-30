@@ -27,6 +27,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Transient;
@@ -649,6 +650,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * @see org.kuali.rice.krad.bo.PersistableBusinessObjectBase#postLoad()
      */
     @Override
+    @PostLoad
     protected void postLoad() {
         super.postLoad();
         documentHeader = KRADServiceLocatorWeb.getLegacyDataAdapter().getByDocumentHeaderId(documentNumber);
@@ -674,7 +676,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     protected void preUpdate() {
         super.preUpdate();
         // KRAD/JPA - have to change the handle to object to that just saved
-        documentHeader = KRADServiceLocatorWeb.getLegacyDataAdapter().save(getDocumentHeader());
+        documentHeader = KRADServiceLocatorWeb.getLegacyDataAdapter().save(documentHeader);
     }
 
     /**
@@ -783,9 +785,11 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      *
      * For any other property, it works as before.
      *
+     * @deprecated This is a KNS/OJB-related method.  It should not be used on KRAD/JPA-based documents.
      * @see org.kuali.rice.krad.bo.PersistableBusinessObjectBase#refreshReferenceObject(java.lang.String)
      */
     @Override
+    @Deprecated
     public void refreshReferenceObject(String referenceObjectName) {
         if ( StringUtils.equals( referenceObjectName, "documentHeader" ) ) {
             documentHeader = KRADServiceLocatorWeb.getLegacyDataAdapter().getByDocumentHeaderId(documentNumber);

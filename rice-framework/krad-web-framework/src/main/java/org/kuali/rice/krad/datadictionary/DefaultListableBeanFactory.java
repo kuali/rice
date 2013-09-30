@@ -614,9 +614,11 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	}
 
 	public void preInstantiateSingletons() throws BeansException {
-		if (this.logger.isInfoEnabled()) {
+		if (this.logger.isTraceEnabled()) {
 			this.logger.info("Pre-instantiating singletons in " + this);
-		}
+		} else if (this.logger.isInfoEnabled()) {
+            this.logger.info("Pre-instantiating singletons");
+        }
 		List<String> beanNames;
 		synchronized (this.beanDefinitionMap) {
 			// Iterate over a copy to allow for init methods which in turn register new bean definitions.

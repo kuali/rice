@@ -191,7 +191,7 @@
     <saucelabs.connect.skip>true</saucelabs.connect.skip>
     <saucelabs.user>SAUCELABS_USER</saucelabs.user>
     <saucelabs.key>SAUCELABS_KEY</saucelabs.key>
-    <selenium-java.version>2.33.0</selenium-java.version>
+    <selenium-java.version>2.35.0</selenium-java.version>
     <stests.excludes>NOT_NULL</stests.excludes>
     <stests.includes>**/*SeTest.java</stests.includes>
     <stests.skip>true</stests.skip>

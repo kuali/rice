@@ -541,6 +541,11 @@ function initFieldHandlers() {
         }, 300);
     });
 
+    // multi value select handler to enable/disable return selected button for checkboxes with kr-select-line
+    jQuery(document).on("change", "table.dataTable input:checkbox.kr-select-line", function (e) {
+        setMultivalueLookupReturnButton(this);
+    });
+
     time(false, "field-handlers");
 }
 

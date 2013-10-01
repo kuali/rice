@@ -213,10 +213,29 @@ img.uif-disclosure-image {
 .btn {
   margin-bottom: 2px;
 }
-.uif-primaryActionButton {
+.uif-primaryActionButton, {
   .btn;
   .btn-primary;
 }
+
+.uif-primaryDialogButton {
+  .btn;
+  .btn-primary;
+  .btn-sm;
+}
+
+input[type="radio"].uif-dialogButtons{
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+
 .uif-secondaryActionButton {
   .btn;
   .btn-default;
@@ -229,6 +248,8 @@ img.uif-disclosure-image {
 .kr-button-primary, .kr-button-primary-disabled {
   .btn;
 }
+
+
 
 
 /** Breadcrumbs *****************************************************************************************/

@@ -53,11 +53,11 @@ public abstract class ClearIndividualCashesAbstractSmokeTestBase extends AdminTm
     public void testClearIndividualCashes() throws Exception
     {
         selectFrameIframePortlet();
-        waitAndClickByXpath("//li[@id='u27_node_3_parent_root']/ins");
-        waitAndClickByXpath("//li[@id='u27_node_11_parent_node_3_parent_root']/a/ins");
-        waitAndClickByXpath("//button[@id='u50']");
+        waitAndClickByXpath("//ul[@class='jstree-no-icons']/li[4]/ins");
+        waitAndClickByXpath("//ul[@class='jstree-no-icons']/li[4]/ul/li[15]/a/ins");
+        waitAndClickButtonByText("Flush");
         Thread.sleep(10000);
-        assertTextPresent("Cache: http://rice.kuali.org/krms/v2_0/TermSpecificationType was flushed for the CacheManager: krmsDistributedCacheManager.");
-        assertTextPresent(" Cache Management ");
+        assertTextPresent(" Cache: http://rice.kuali.org/krms/v2_0/TermSpecificationType was flushed for the CacheManager: krmsDistributedCacheManager.");
+        assertTextPresent("Cache Management");
     }
 }

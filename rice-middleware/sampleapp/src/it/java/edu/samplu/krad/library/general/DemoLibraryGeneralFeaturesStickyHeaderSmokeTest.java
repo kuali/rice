@@ -42,15 +42,15 @@ public class DemoLibraryGeneralFeaturesStickyHeaderSmokeTest extends SmokeTestBa
     }
 
     protected void testGeneralFeaturesExample1() throws Exception {
-        waitAndClickByLinkText("Example 1");
-       waitAndClickByLinkText("Sticky View header");
-       switchToWindow("Kuali :: View Header");
-       assertElementPresentByXpath("//div[@class='uif-viewHeader-contentWrapper uif-sticky' and @data-sticky='true']");
-       switchToWindow("Kuali");
+        waitAndClickByLinkText("Sticky View Header");
+        waitAndClickByLinkText("Sticky View header");
+        switchToWindow("Kuali :: View Header");
+        assertElementPresentByXpath("//div[@class='uif-viewHeader-contentWrapper uif-sticky' and @data-sticky='true']");
+        switchToWindow("Kuali");
     }
     
     protected void testGeneralFeaturesExample2() throws Exception {
-        waitAndClickByLinkText("Example 2");
+        waitAndClickByLinkText("Sticky Application Header and View Header");
         waitAndClickByLinkText("Sticky application header and View header");
         switchToWindow("Kuali :: View Header");
         assertElementPresentByXpath("//div[@id='Uif-ApplicationHeader-Wrapper' and @data-sticky='true']");
@@ -59,7 +59,7 @@ public class DemoLibraryGeneralFeaturesStickyHeaderSmokeTest extends SmokeTestBa
     }
     
     protected void testGeneralFeaturesExample3() throws Exception {
-        waitAndClickByLinkText("Example 3");
+        waitAndClickByLinkText("Sticky Breadcrumbs, Application Header and View Header");
         waitAndClickByLinkText("Sticky application header, breadcrumbs, and View header");
         switchToWindow("Kuali :: View Header");
         assertElementPresentByXpath("//div[@id='Uif-BreadcrumbWrapper' and @data-sticky='true']");
@@ -67,7 +67,7 @@ public class DemoLibraryGeneralFeaturesStickyHeaderSmokeTest extends SmokeTestBa
     }
     
     protected void testGeneralFeaturesExample4() throws Exception {
-        waitAndClickByLinkText("Example 4");
+        waitAndClickByLinkText("Sticky Application Header, Top Group and View Header");
         waitAndClickByLinkText("Sticky application header, top group, and View header");
         switchToWindow("Kuali :: View Header");
         assertElementPresentByXpath("//div[@id='Uif-TopGroupWrapper' and @data-sticky='true']");
@@ -76,7 +76,7 @@ public class DemoLibraryGeneralFeaturesStickyHeaderSmokeTest extends SmokeTestBa
     }
     
     protected void testGeneralFeaturesExample5() throws Exception {
-        waitAndClickByLinkText("Example 5");
+        waitAndClickByLinkText("Sticky Everything");
         waitAndClickByLinkText("All header content sticky");
         switchToWindow("Kuali :: View Header");
         assertElementPresentByXpath("//div[@id='Uif-TopGroupWrapper' and @data-sticky='true']");

@@ -82,7 +82,7 @@
           <property name="suggest">
             <bean parent="Uif-Suggest" p:render="true" p:valuePropertyName="number">
               <property name="suggestQuery">
-                <bean parent="Uif-AttributeQueryConfig" p:queryMethodToCall="retrieveTravelAccountsBySubAcct"
+                <bean parent="Uif-AttributeQueryConfig" p:queryMethodToCall="retrieveTravelAccountsBySubAcctAndTerm"
                       p:queryMethodArgumentFieldList="inputField3"/>
               </property>
               <property name="templateOptions">

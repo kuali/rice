@@ -209,8 +209,9 @@ public class DemoLibraryFieldsInputSmokeTest extends DemoLibraryBase {
         checkForIncidentReport("Travel Account Inquiry");
         assertTextPresent("Travel Account");
         selectTopFrame();
+        gotoIframeByXpath("//iframe[@class='fancybox-iframe']");
 
-        waitAndClick(By.cssSelector("div[title='Close']"));
+        waitAndClickButtonByText("Close");
     }
 
     protected void testInputFieldRequired() throws Exception {

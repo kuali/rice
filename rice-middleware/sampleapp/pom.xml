@@ -37,6 +37,10 @@
     <kuali.generate.reports>false</kuali.generate.reports>
     <!-- csv based JMeter tests result in one graph in Jenkins, we want a graph per test -->
     <jmeter.excludeJmeterTestFile>**/KRAD.jmx</jmeter.excludeJmeterTestFile>
+    <saucelabs.connect.excludes>**/krad/labs/**/*.java,**/krad/demo/**/*.java,**/krad/library/**/*.java</saucelabs.connect.excludes>
+    <saucelabs.connect.includes>**/*IT.java,**/*Gen.java</saucelabs.connect.includes>
+    <stests.excludes>**/krad/labs/**/*.java,**/krad/demo/**/*.java,**/krad/library/**/*.java</stests.excludes>
+    <stests.includes>**/*IT.java,**/*Gen.java</stests.includes>
   </properties>
 
   <build>
@@ -159,10 +163,10 @@
       <properties>
         <saucelabs.connect.skip>false</saucelabs.connect.skip>
         <saucelabs.connect.excludes>
-          **/krad/labs/**/*.java, **/krad/demo/**/*.java
+          ${saucelabs.connect.excludes}
         </saucelabs.connect.excludes>
         <saucelabs.connect.includes>
-          **/*IT.java, **/*Gen.java
+          ${saucelabs.connect.includes}
         </saucelabs.connect.includes>
       </properties>
     </profile>
@@ -172,10 +176,10 @@
       <properties>
         <stests.skip>false</stests.skip>
         <stests.excludes>
-          **/krad/labs/**/*.java, **/krad/demo/**/*.java
+          ${stests.excludes}
         </stests.excludes>
         <stests.includes>
-          **/*IT.java, **/*Gen.java
+          ${stests.includes}
         </stests.includes>
       </properties>
     </profile>

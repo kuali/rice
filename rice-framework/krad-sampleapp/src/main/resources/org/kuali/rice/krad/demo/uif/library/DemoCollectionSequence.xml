@@ -70,16 +70,16 @@
           <property name="collectionObjectClass"
                     value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
           <property name="propertyName" value="collection1" />
-          <property name="layoutManager.sequencePropertyName" value="field1" />
           <property name="layoutManager.generateAutoSequence" value ="false"/>
+          <property name="layoutManager.sequencePropertyName" value="field3"/>
           <property name="layoutManager.sequenceFieldPrototype">
-            <bean parent="Uif-InputField" p:propertyName="field1" p:readOnly="true"/>
+            <bean parent="Uif-InputField" p:propertyName="field3" p:readOnly="true"/>
           </property>
-          <property name="layoutManager.richTable.render" value="true" />
+          <property name="layoutManager.richTable.render" value="true"/>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"/>
               <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3"/>
+              <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4"/>
             </list>
           </property>
         </bean>
@@ -102,8 +102,8 @@
           <property name="layoutManager.richTable.render" value="true" />
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"/>
-              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"/>
+              <bean parent="Uif-InputField" p:label="Field 5" p:propertyName="field5"/>
+              <bean parent="Uif-InputField" p:label="Field 6" p:propertyName="field6"/>
             </list>
           </property>
         </bean>

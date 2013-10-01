@@ -147,18 +147,18 @@ public class KradSampleAppForm extends UifFormBase {
 
         messageField1 = "fruits";
 
-        getCollection1().add(new UITestObject("13", "14", "15", "16"));
-        getCollection1().add(new UITestObject("17", "18", "19", "20"));
-        getCollection1().add(new UITestObject("5", "6", "7", "8"));
-        getCollection1().add(new UITestObject("1", "2", "3", "4"));
-        getCollection1().add(new UITestObject("9", "10", "11", "12"));
-        getCollection1().add(new UITestObject("13", "14", "15", "16"));
-        getCollection1().add(new UITestObject("213", "143", "151", "126"));
-        getCollection1().add(new UITestObject("133", "144", "155", "156"));
-        getCollection1().add(new UITestObject("25", "14", "15", "15"));
-        getCollection1().add(new UITestObject("1", "5", "5", "4"));
-        getCollection1().add(new UITestObject("5", "5", "5", "5"));
-        getCollection1().add(new UITestObject("5", "7", "3", "1"));
+        getCollection1().add(new UITestObject("13", "14", "15", "16", "17", "18"));
+        getCollection1().add(new UITestObject("19", "20", "21", "22", "23", "24"));
+        getCollection1().add(new UITestObject("7", "8", "9", "10", "11", "12"));
+        getCollection1().add(new UITestObject("1", "2", "3", "4", "5", "6"));
+        getCollection1().add(new UITestObject("13", "14", "15", "16", "17", "18"));
+        getCollection1().add(new UITestObject("19", "20", "21", "22", "23", "24"));
+        getCollection1().add(new UITestObject("213", "143", "151", "126", "137", "164"));
+        getCollection1().add(new UITestObject("133", "144", "155", "166", "177", "188"));
+        getCollection1().add(new UITestObject("25", "14", "15", "15", "17", "17"));
+        getCollection1().add(new UITestObject("1", "5", "5", "4", "6", "6"));
+        getCollection1().add(new UITestObject("5", "5", "5", "5", "5", "5"));
+        getCollection1().add(new UITestObject("5", "7", "3", "1", "9", "11"));
 
         collection1_2.addAll(collection1);
         collection1_3.addAll(collection1);

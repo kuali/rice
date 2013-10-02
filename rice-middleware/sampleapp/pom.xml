@@ -162,12 +162,6 @@
       <id>sauceconnect</id>
       <properties>
         <saucelabs.connect.skip>false</saucelabs.connect.skip>
-        <saucelabs.connect.excludes>
-          ${saucelabs.connect.excludes}
-        </saucelabs.connect.excludes>
-        <saucelabs.connect.includes>
-          ${saucelabs.connect.includes}
-        </saucelabs.connect.includes>
       </properties>
     </profile>
 
@@ -175,12 +169,6 @@
       <id>stests</id>
       <properties>
         <stests.skip>false</stests.skip>
-        <stests.excludes>
-          ${stests.excludes}
-        </stests.excludes>
-        <stests.includes>
-          ${stests.includes}
-        </stests.includes>
       </properties>
     </profile>
 

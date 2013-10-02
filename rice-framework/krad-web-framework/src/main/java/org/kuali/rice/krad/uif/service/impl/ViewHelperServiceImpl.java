@@ -2307,7 +2307,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             String defaultValuesExpression = null;
 
             // Check for expression, this would exist in a comma seperated list case that uses expressions
-            if (dataField.getExpressionGraph().containsKey(UifConstants.ComponentProperties.DEFAULT_VALUES)) {
+            if (!(dataField.getExpressionGraph() == null) && dataField.getExpressionGraph().containsKey(UifConstants.ComponentProperties.DEFAULT_VALUES)) {
                 defaultValuesExpression = dataField.getExpressionGraph().get(
                         UifConstants.ComponentProperties.DEFAULT_VALUES);
             }

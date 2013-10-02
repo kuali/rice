@@ -99,8 +99,6 @@
            (!#empty(returnFormKey) and !#empty(returnLocation) and !view.hideReturnLinks)}"/>
     <property name="layoutManager.actionColumnPlacement" value="LEFT"/>
     <property name="layoutManager.selectFieldPrototype.finalizeMethodToCall" value="setMultiValueLookupSelect"/>
-    <property name="layoutManager.selectFieldPrototype.control.onChangeScript"
-              value="setMultivalueLookupReturnButton(this)"/>
     <property name="renderAddLine" value="false"/>
     <property name="readOnly" value="false"/>
     <property name="includeLineSelectionField" value="@{#view.multipleValuesSelect}"/>

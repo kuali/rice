@@ -1,9 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager" inherit-compiler-output="false">
+  <component name="FacetManager">
+    <facet type="jpa" name="JPA">
+      <configuration>
+        <setting name="validation-enabled" value="true" />
+        <setting name="provider-name" value="" />
+        <datasource-mapping />
+        <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/../../../rice-framework/krad-data/target/test-classes/META-INF/persistence.xml" />
+      </configuration>
+    </facet>
+    <facet type="Spring" name="Spring">
+      <configuration>
+        <fileset id="fileset" name="Spring Application Context" removed="false">
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-data/target/test-classes/org/kuali/rice/krad/data/provider/jpa/eclipselink/KradEclipseLinkEntityManagerFactoryBeanTest_Minimal.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-data/target/classes/org/kuali/rice/krad/data/provider/spring/krad-metadata-parent-beans.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-data/src/test/resources/org/kuali/rice/krad/data/provider/jpa/eclipselink/KradEclipseLinkEntityManagerFactoryBeanTest_Jta.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-data/src/test/resources/org/kuali/rice/krad/data/provider/spring/test-spring-metadata.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-data/src/main/resources/org/kuali/rice/krad/data/config/KRADDataSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-data/src/test/resources/org/kuali/rice/krad/data/provider/jpa/eclipselink/KradEclipseLinkEntityManagerFactoryBeanTest_Minimal.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-data/src/test/resources/org/kuali/rice/krad/data/provider/jpa/eclipselink/KradEclipseLinkEntityManagerFactoryBeanTest_Full.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-data/target/test-classes/org/kuali/rice/krad/data/provider/jpa/eclipselink/KradEclipseLinkEntityManagerFactoryBeanTest_Jta.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-data/target/test-classes/org/kuali/rice/krad/data/provider/jpa/eclipselink/KradEclipseLinkEntityManagerFactoryBeanTest_Full.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-data/target/test-classes/org/kuali/rice/krad/data/provider/jpa/eclipselink/KradEclipseLinkEntityManagerFactoryBeanTest_LoadTimeWeaving.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-data/target/test-classes/org/kuali/rice/krad/data/provider/spring/test-spring-metadata.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-data/src/main/resources/org/kuali/rice/krad/data/provider/spring/krad-metadata-parent-beans.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-data/target/classes/org/kuali/rice/krad/data/config/KRADDataSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/../../../rice-framework/krad-data/src/test/resources/org/kuali/rice/krad/data/provider/jpa/eclipselink/KradEclipseLinkEntityManagerFactoryBeanTest_LoadTimeWeaving.xml</file>
+        </fileset>
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/../../../rice-framework/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../rice-framework/target/test-classes" />
-    <exclude-output />
     <content url="file://$MODULE_DIR$/../../../rice-framework">
       <excludeFolder url="file://$MODULE_DIR$/../../../rice-framework/target" />
     </content>

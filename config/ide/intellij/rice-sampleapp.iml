@@ -11,11 +11,11 @@
         </webroots>
         <sourceRoots>
           <root url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/annotations" />
+          <root url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/it/resources" />
+          <root url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/test/resources/jmeter" />
           <root url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/main/java" />
           <root url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/main/groovy" />
           <root url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/main/resources" />
-          <root url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/it/resources" />
-          <root url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/test/resources/jmeter" />
         </sourceRoots>
       </configuration>
       <facet type="struts" name="Struts">
@@ -92,11 +92,11 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-test-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/annotations" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/it/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/test/resources/jmeter" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/main/resources" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/it/resources" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/test/resources/jmeter" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/it/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/src/test/groovy" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/sampleapp/target" />
@@ -196,12 +196,14 @@
     <orderEntry type="library" name="Maven: commons-dbcp:commons-dbcp:1.4" level="project" />
     <orderEntry type="module" module-name="rice-kim-framework" />
     <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:3.2.3.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.freemarker:freemarker:2.3.19-patch3" level="project" />
+    <orderEntry type="library" name="Maven: org.freemarker:freemarker:2.3.20-patch2" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-core-asl:1.8.8" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.8.8" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjrt:1.6.8" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.6.8" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: commons-digester:commons-digester:2.0" level="project" />
+    <orderEntry type="library" name="Maven: javax.json:javax.json-api:1.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.glassfish:javax.json:1.0.1" level="project" />
     <orderEntry type="module" module-name="rice-kim-impl" />
     <orderEntry type="module" module-name="rice-kns" />
     <orderEntry type="library" name="Maven: org.apache.struts:struts-core:1.3.10" level="project" />
@@ -233,12 +235,12 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.cxf:cxf-rt-databinding-jaxb:2.7.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-bindings-xml:2.7.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-frontend-simple:2.7.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-transports-http:2.7.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-ws-addr:2.7.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-ws-policy:2.7.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.neethi:neethi:3.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-frontend-jaxrs:2.7.0" level="project" />
     <orderEntry type="library" name="Maven: javax.ws.rs:javax.ws.rs-api:2.0-m10" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-transports-http:2.7.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-ws-security:2.7.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.ws.security:wss4j:1.6.7" level="project" />
     <orderEntry type="library" name="Maven: org.apache.santuario:xmlsec:1.5.2" level="project" />
@@ -284,7 +286,7 @@
     <orderEntry type="library" name="Maven: sslext:sslext:1.2-0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.velocity:velocity:1.6.4" level="project" />
     <orderEntry type="module" module-name="rice-it-krad" scope="TEST" production-on-test="" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.kuali.rice:rice-it-krad:test-jar:tests:2.4.0-M1-SNAPSHOT" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.kuali.rice:rice-it-krad:test-jar:tests:2.4.0-M2-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="rice-it-internal-tools" scope="TEST" />
     <orderEntry type="module" module-name="rice-ksb-web" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Maven: no.geosoft:filemonitor:1.0-kuali" level="project" />
@@ -322,6 +324,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.webbitserver:webbit:0.4.14" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: io.netty:netty:3.5.2.Final" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.seleniumhq.selenium:selenium-support:2.33.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: com.saucelabs:sauce-connect:3.0.28" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.saucelabs:sauce_junit:1.0.19" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.saucelabs:sauce_java_common:1.0.19" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.saucelabs:saucerest:1.0.0" level="project" />

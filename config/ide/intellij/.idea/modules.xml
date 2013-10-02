@@ -65,13 +65,13 @@
       <module fileurl="file://$PROJECT_DIR$/rice-kim-ldap.iml" filepath="$PROJECT_DIR$/rice-kim-ldap.iml" group="rice-middleware and modules/rice-kim and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-kns.iml" filepath="$PROJECT_DIR$/rice-kns.iml" group="rice-middleware and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-krad-app-framework.iml" filepath="$PROJECT_DIR$/rice-krad-app-framework.iml" group="rice-framework and modules" />
-      <module fileurl="file://$PROJECT_DIR$/../../../rice-framework/krad-data/rice-krad-data.iml" filepath="$PROJECT_DIR$/../../../rice-framework/krad-data/rice-krad-data.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../../rice-framework/krad-data/rice-krad-data.iml" filepath="$PROJECT_DIR$/../../../rice-framework/krad-data/rice-krad-data.iml" group="rice-framework and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-krad-development-tools.iml" filepath="$PROJECT_DIR$/rice-krad-development-tools.iml" group="rice-framework and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-krad-sampleapp.iml" filepath="$PROJECT_DIR$/rice-krad-sampleapp.iml" group="rice-framework and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-krad-service-impl.iml" filepath="$PROJECT_DIR$/rice-krad-service-impl.iml" group="rice-framework and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-krad-theme-builder.iml" filepath="$PROJECT_DIR$/rice-krad-theme-builder.iml" group="rice-framework and modules" />
       <module fileurl="file://$PROJECT_DIR$/../../../rice-framework/krad-theme-builder/rice-krad-theme-builder.iml" filepath="$PROJECT_DIR$/../../../rice-framework/krad-theme-builder/rice-krad-theme-builder.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../rice-framework/krad-theme-builder/src/test/builder/rice-krad-theme-builder-test.iml" filepath="$PROJECT_DIR$/../../../rice-framework/krad-theme-builder/src/test/builder/rice-krad-theme-builder-test.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-krad-web.iml" filepath="$PROJECT_DIR$/rice-krad-web.iml" group="rice-framework and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-krad-web-framework.iml" filepath="$PROJECT_DIR$/rice-krad-web-framework.iml" group="rice-framework and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-krms.iml" filepath="$PROJECT_DIR$/rice-krms.iml" group="rice-middleware and modules/rice-krms and modules" />

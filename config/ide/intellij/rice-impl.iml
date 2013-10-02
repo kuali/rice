@@ -94,6 +94,38 @@
         </fileset>
       </configuration>
     </facet>
+    <facet type="web" name="Web">
+      <configuration>
+        <descriptors>
+          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/java/org/kuali/rice/kew/rule/RuleExpressionResult.java" />
+        </descriptors>
+        <webroots>
+          <root url="file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/java/org/kuali/rice/kew/rule" relative="/WEB-INF" />
+        </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/../../../rice-middleware/impl/target/generated-sources/annotations" />
+          <root url="file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/java" />
+          <root url="file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/groovy" />
+          <root url="file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/resources" />
+        </sourceRoots>
+      </configuration>
+    </facet>
+    <facet type="web" name="Web2">
+      <configuration>
+        <descriptors>
+          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/java/org/kuali/rice/kcb/service/impl/MessagingServiceImpl.java" />
+        </descriptors>
+        <webroots>
+          <root url="file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/java/org/kuali/rice/kcb/service/impl" relative="/WEB-INF" />
+        </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/../../../rice-middleware/impl/target/generated-sources/annotations" />
+          <root url="file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/java" />
+          <root url="file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/groovy" />
+          <root url="file://$MODULE_DIR$/../../../rice-middleware/impl/src/main/resources" />
+        </sourceRoots>
+      </configuration>
+    </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/../../../rice-middleware/impl/target/classes" />
@@ -111,7 +143,6 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/impl/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/impl/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/impl/target/maven-status" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/impl/target/surefire-reports" />
       <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/impl/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -187,12 +218,14 @@
     <orderEntry type="library" name="Maven: commons-dbcp:commons-dbcp:1.4" level="project" />
     <orderEntry type="module" module-name="rice-kim-framework" />
     <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:3.2.3.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.freemarker:freemarker:2.3.19-patch3" level="project" />
+    <orderEntry type="library" name="Maven: org.freemarker:freemarker:2.3.20-patch2" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-core-asl:1.8.8" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.8.8" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjrt:1.6.8" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.6.8" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: commons-digester:commons-digester:2.0" level="project" />
+    <orderEntry type="library" name="Maven: javax.json:javax.json-api:1.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.glassfish:javax.json:1.0.1" level="project" />
     <orderEntry type="module" module-name="rice-kim-impl" />
     <orderEntry type="module" module-name="rice-kns" />
     <orderEntry type="library" name="Maven: org.apache.struts:struts-core:1.3.10" level="project" />
@@ -224,12 +257,12 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.cxf:cxf-rt-databinding-jaxb:2.7.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-bindings-xml:2.7.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-frontend-simple:2.7.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-transports-http:2.7.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-ws-addr:2.7.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-ws-policy:2.7.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.neethi:neethi:3.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-frontend-jaxrs:2.7.0" level="project" />
     <orderEntry type="library" name="Maven: javax.ws.rs:javax.ws.rs-api:2.0-m10" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-transports-http:2.7.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-ws-security:2.7.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.ws.security:wss4j:1.6.7" level="project" />
     <orderEntry type="library" name="Maven: org.apache.santuario:xmlsec:1.5.2" level="project" />

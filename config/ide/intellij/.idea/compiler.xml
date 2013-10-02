@@ -225,6 +225,7 @@
         <module name="rice-krad-sampleapp" />
         <module name="rice-krad-service-impl" />
         <module name="rice-krad-theme-builder" />
+        <module name="rice-krad-theme-builder-test" />
         <module name="rice-krad-web" />
         <module name="rice-krad-web-framework" />
         <module name="rice-krms-api" />

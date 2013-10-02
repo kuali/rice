@@ -134,6 +134,11 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     public static final String CREATE_NEW_XPATH = "//img[@alt='create new']";
 
     /**
+     * //a[@title='Create a new record']
+     */
+    public static final String CREATE_NEW_XPATH2 = "//a[@title='Create a new record']";
+
+    /**
      * //div[@class='left-errmsg-tab']/div/div
      */
     public static final String DIV_LEFT_ERRMSG = "//div[@class='left-errmsg-tab']/div/div";
@@ -4518,13 +4523,8 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     protected void waitAndCreateNew(String message) throws InterruptedException {
         checkForIncidentReport();
         selectFrameIframePortlet();
-        try {
-            jGrowl("Create New");
-            waitAndClickCreateNew(message); // timing out in CI rice-trunk-smoke-test-jdk7/494
-        } catch (Exception e) {
-            System.out.println("waitAndClickByXpath(\"//img[@alt='create new']\") failed trying title method with " + e.getMessage());
-            waitAndClickByXpath("//a[@title='Create a new record']");
-        }
+        jGrowl("Create New");
+        waitAndClickCreateNew(message);
     }
 
     /**
@@ -4532,11 +4532,16 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * @throws InterruptedException
      */
     protected void waitAndClickCreateNew() throws InterruptedException {
-        waitAndClickByXpath(CREATE_NEW_XPATH);
+        waitAndClickCreateNew("");
     }
 
     protected void waitAndClickCreateNew(String message) throws InterruptedException {
-        waitAndClickByXpath(CREATE_NEW_XPATH, message);
+        if (WebDriverUtil.waitFors(driver, By.xpath(CREATE_NEW_XPATH)).size() > 0) {
+            waitAndClickByXpath(CREATE_NEW_XPATH, message);
+        } else {
+            System.out.println("waitAndClickByXpath(" + CREATE_NEW_XPATH + ") wasn't found trying " + CREATE_NEW_XPATH2);
+            waitAndClickByXpath(CREATE_NEW_XPATH2, message);
+        }
     }
 
     protected void waitAndClickDropDown(String dropDownText) throws InterruptedException {

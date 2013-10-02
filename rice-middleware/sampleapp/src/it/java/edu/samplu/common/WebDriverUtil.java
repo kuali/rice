@@ -486,16 +486,24 @@ public class WebDriverUtil {
         return element;
     }
 
+    public static List<WebElement> waitFors(WebDriver driver, By by) throws InterruptedException {
+        return waitFors(driver, configuredImplicityWait(), by, "");
+    }
+
+    public static List<WebElement> waitFors(WebDriver driver, By by, String message) throws InterruptedException {
+        return waitFors(driver, configuredImplicityWait(), by, message);
+    }
+
     /**
-     * Wait for the given amount of seconds, for the given by, using the given driver.  The message is displayed if the
-     * by cannot be found.  No action is performed on the by, so it is possible that the by found is not visible or enabled.
-     *
-     * @param driver WebDriver
-     * @param waitSeconds int
-     * @param by By
-     * @param message String
-     * @throws InterruptedException
-     */
+    * Wait for the given amount of seconds, for the given by, using the given driver.  The message is displayed if the
+    * by cannot be found.  No action is performed on the by, so it is possible that the by found is not visible or enabled.
+    *
+    * @param driver WebDriver
+    * @param waitSeconds int
+    * @param by By
+    * @param message String
+    * @throws InterruptedException
+    */
     public static List<WebElement> waitFors(WebDriver driver, int waitSeconds, By by, String message) throws InterruptedException {
         // jenkins implies that implicitlyWait is worse than sleep loop for finding elements by 100+ test failures on the old sampleapp
         //        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);

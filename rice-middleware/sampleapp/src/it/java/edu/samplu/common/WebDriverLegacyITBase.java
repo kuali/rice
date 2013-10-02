@@ -269,6 +269,11 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     public static final String REMOTE_PUBLIC_USERPOOL_PROPERTY = "remote.public.userpool";
 
     /**
+     * return selected
+     */
+    public static final String RETURN_SELECTED_BUTTON_TEXT = "return selected";
+
+    /**
      * return value
      */
     public static final String RETURN_VALUE_LINK_TEXT = "return value";
@@ -298,6 +303,11 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * //input[@title='search' and @name='methodToCall.search']
      */
     public static final String SAVE_XPATH_3 = "//input[@title='search' and @name='methodToCall.search']";
+
+    /**
+     * Search
+     */
+    public static final String SEARCH = "Search";
 
     /**
      * //input[@name='methodToCall.search' and @value='search']
@@ -558,6 +568,28 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         alert.dismiss();
     }
 
+    protected boolean areAllMultiValueSelectsChecked() throws InterruptedException {
+        WebElement tbody = waitAndGetElementByAttributeValue("role", "alert"); // results table body
+        List<WebElement> checkboxes = findElements(By.className("uif-checkboxControl"),tbody);
+        for (WebElement checkbox: checkboxes) {
+            if (!"true".equals(checkbox.getAttribute("checked"))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    protected boolean areNoMultiValueSelectsChecked() throws InterruptedException {
+        WebElement tbody = waitAndGetElementByAttributeValue("role", "alert"); // results table body
+        List<WebElement> checkboxes = findElements(By.className("uif-checkboxControl"),tbody);
+        for (WebElement checkbox: checkboxes) {
+            if (null != checkbox.getAttribute("checked")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     protected void assertAttributeClassRegexDoesntMatch(String field, String regex) throws InterruptedException {
         Thread.sleep(1000);
         String attribute = waitAndGetAttributeByName(field, "class");
@@ -732,6 +764,22 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void assertLabelFor(String forElementId, String labelText) {
         SeleneseTestBase.assertEquals(labelText, getForLabelText(forElementId));
+    }
+
+    protected void assertMultiValueDeselectAllThisPage() throws InterruptedException {
+        waitAndClickDropDown("deselect all items on this page");
+        if (!areNoMultiValueSelectsChecked()) {
+            JiraAwareFailureUtil.fail("deselect all items on this page failure", this);
+        }
+        assertButtonDisabledByText(RETURN_SELECTED_BUTTON_TEXT);
+    }
+
+    protected void assertMultiValueSelectAllThisPage() throws InterruptedException {
+        waitAndClickDropDown("select all items on this page");
+        if (!areAllMultiValueSelectsChecked()) {
+            JiraAwareFailureUtil.fail("select all items on this page failure", this);
+        }
+        assertButtonEnabledByText(RETURN_SELECTED_BUTTON_TEXT);
     }
 
     /**
@@ -1554,6 +1602,13 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
             jiraAwareFail(by, message, t);
         }
         return null; // required, but the jiraAwareFail will will end test before this statement is reached
+    }
+
+    protected String multiValueResultCount() throws InterruptedException {
+        List<WebElement> resultLi = waitAndGetElementsByAttributeValue("class", "uif-infoMessageItem");
+        String resultsCount = resultLi.get(1).getText(); // second uif-infoMessageItem contains count
+        resultsCount = resultsCount.substring(0, resultsCount.indexOf((" ")));
+        return resultsCount;
     }
 
     protected void open(String url) {
@@ -3457,10 +3512,83 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         SeleneseTestBase.assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
     }
 
+    protected void testMultiValueSelectAllPages() throws InterruptedException {
+        waitAndClickButtonByText(SEARCH);
+        assertButtonDisabledByText(RETURN_SELECTED_BUTTON_TEXT);
+
+        // select all, all checkboxes should be checked and return button enabled
+        waitAndClickDropDown("select all items");
+        if (!areAllMultiValueSelectsChecked()) {
+            JiraAwareFailureUtil.fail("select all items failure", this);
+        }
+        assertButtonEnabledByText(RETURN_SELECTED_BUTTON_TEXT);
+
+        boolean anotherPageOfResults = false;
+        if (Integer.parseInt(multiValueResultCount()) > 10) {
+            anotherPageOfResults = true;
+        }
+
+        // all should be checked and button enabled on the next page as well (server side paging)
+        if (!anotherPageOfResults) {
+            JiraAwareFailureUtil.fail("select all items server side paging failure not enough results for next page", this);
+        }
+        waitAndClickByLinkText("Next");
+
+        if (!areAllMultiValueSelectsChecked()) {
+            JiraAwareFailureUtil.fail("select all items server side paging failure", this);
+        }
+        assertButtonEnabledByText(RETURN_SELECTED_BUTTON_TEXT);
+
+        // deselect all no checkboxes should be checked and return button disabled
+        waitAndClickDropDown("deselect all items");
+        if (!areNoMultiValueSelectsChecked()) {
+            JiraAwareFailureUtil.fail("deselect all items failure", this);
+        }
+        assertButtonDisabledByText(RETURN_SELECTED_BUTTON_TEXT);
+
+        waitAndClickByLinkText("Previous");
+        if (!areNoMultiValueSelectsChecked()) {
+            JiraAwareFailureUtil.fail("deselect all items failure", this);
+        }
+        assertButtonDisabledByText(RETURN_SELECTED_BUTTON_TEXT);
+    }
+
+    protected void testMultiValueSelectAllThisPage() throws InterruptedException {
+        waitAndClickButtonByText(SEARCH);
+        assertButtonDisabledByText(RETURN_SELECTED_BUTTON_TEXT);
+
+        // select all on this page, all checkboxes should be checked and return button enabled
+        assertMultiValueSelectAllThisPage();
+
+        boolean anotherPageOfResults = false;
+        if (Integer.parseInt(multiValueResultCount()) > 10) {
+            anotherPageOfResults = true;
+        }
+
+        // the next page should not have any checkboxes checked return button should still be enabled
+        waitAndClickByLinkText("Next");
+        if (!areNoMultiValueSelectsChecked()) {
+            if (anotherPageOfResults) {
+                JiraAwareFailureUtil.fail("select all items on this page failure", this);
+            } else {
+                JiraAwareFailureUtil.fail("select all items on this page failure not enough results for next page", this);
+            }
+        }
+        assertButtonEnabledByText(RETURN_SELECTED_BUTTON_TEXT);
+
+        // back to the previous page, checkboxes should be checked and return button enabled still
+        waitAndClickByLinkText("Previous");
+        if (!areAllMultiValueSelectsChecked()) {
+            JiraAwareFailureUtil.fail("select all items on previous page failure", this);
+        }
+
+        // deselect no checkboxes should be checked and the return button should be disabled
+        assertMultiValueDeselectAllThisPage();
+    }
+
     /**
      * Test the external help on the section and fields
      */
-
     protected void testExternalHelp2() throws Exception {
         // test external help of section
         assertPopUpWindowUrl(By.cssSelector("input[title=\"Help for External Help\"]"), "HelpWindow", "http://www.kuali.org/?section");
@@ -4409,6 +4537,13 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void waitAndClickCreateNew(String message) throws InterruptedException {
         waitAndClickByXpath(CREATE_NEW_XPATH, message);
+    }
+
+    protected void waitAndClickDropDown(String dropDownText) throws InterruptedException {
+        WebElement dropdownMenu = waitAndGetElementByAttributeValue("class", "dropdown-toggle");
+        Thread.sleep(1000);
+        dropdownMenu.click();
+        waitAndClickLinkContainingText(dropDownText, "dropdown click " + dropDownText + " problem");
     }
 
     protected void waitAndClickEdit() throws InterruptedException {

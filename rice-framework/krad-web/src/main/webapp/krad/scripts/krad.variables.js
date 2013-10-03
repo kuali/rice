@@ -126,6 +126,7 @@ JavascriptKradVariables.prototype = {
     RETURN_SELECTED_ACTION_CLASS: "uif-returnSelectedAction",
     REQUIRED_MESSAGE_CLASS: "uif-requiredMessage",
     SAVE_LINE_ACTION_CLASS: "uif-saveLineAction",
+    SELECT_FIELD_STYLE_CLASS: "uif-select-line",
     SERVER_MESSAGE_ITEMS_CLASS: "uif-serverMessageItems",
     SESSION_TIMEOUT_WARNING_DIALOG: "Uif-SessionTimeoutWarning-DialogGroup",
     SESSION_TIMEOUT_DIALOG: "Uif-SessionTimeout-DialogGroup",

@@ -541,8 +541,8 @@ function initFieldHandlers() {
         }, 300);
     });
 
-    // multi value select handler to enable/disable return selected button for checkboxes with kr-select-line
-    jQuery(document).on("change", "table.dataTable input:checkbox.kr-select-line", function (e) {
+    // multi value select handler to enable/disable return selected button for checkboxes with uif-select-line
+    jQuery(document).on("change", "table.dataTable input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS, function (e) {
         setMultivalueLookupReturnButton(this);
     });
 

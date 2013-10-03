@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.layout;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.DataBinding;
@@ -71,7 +72,7 @@ public class CollectionLayoutUtils {
         if (selectField instanceof InputField) {
             Control selectControl = ((InputField) selectField).getControl();
 
-            selectControl.addStyleClass("kr-select-line");
+            selectControl.addStyleClass(CssConstants.Classes.SELECT_FIELD_STYLE_CLASS);
 
             if ((selectControl != null) && (selectControl instanceof ValueConfiguredControl)) {
                 String lineIdentifier =

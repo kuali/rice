@@ -41,6 +41,14 @@
     <property name="page">
       <bean parent="Uif-MaintenancePage"/>
     </property>
+    <property name="help">
+      <bean parent="Uif-Help">
+        <property name="helpDefinition">
+          <bean parent="HelpDefinition" p:parameterNamespace="KR-KRAD" p:parameterName="DEFAULT_HELP_URL"
+                p:parameterDetailType="Maintenance"/>
+        </property>
+      </bean>
+    </property>
   </bean>
 
   <bean id="Uif-MaintenancePage" abstract="true" parent="Uif-MaintenancePage-parentBean"/>

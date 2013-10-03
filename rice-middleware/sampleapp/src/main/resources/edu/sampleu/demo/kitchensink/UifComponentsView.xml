@@ -130,7 +130,7 @@ color:#FFF;">
             <bean parent="Uif-Help">
               <property name="helpDefinition">
                 <bean parent="HelpDefinition" p:parameterNamespace="KR-SAP" p:parameterName="TEST_PARAM"
-                      p:parameterDetailType="TEST_COMPONENT"/>
+                      p:parameterDetailType="TestComponent"/>
               </property>
             </bean>
           </property>

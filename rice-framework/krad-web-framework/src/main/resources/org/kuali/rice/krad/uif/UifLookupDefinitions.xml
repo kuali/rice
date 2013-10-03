@@ -54,6 +54,14 @@
     <property name="rangedToMessage">
       <bean parent="Uif-Message" p:messageText="to"/>
     </property>
+    <property name="help">
+      <bean parent="Uif-Help">
+        <property name="helpDefinition">
+          <bean parent="HelpDefinition" p:parameterNamespace="KR-KRAD" p:parameterName="DEFAULT_HELP_URL"
+                p:parameterDetailType="Lookup"/>
+        </property>
+      </bean>
+    </property>
   </bean>
 
   <bean id="Uif-LookupView-ResultActions" parent="Uif-LinkGroup">

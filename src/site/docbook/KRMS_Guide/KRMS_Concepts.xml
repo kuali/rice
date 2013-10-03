@@ -174,11 +174,7 @@
                                         <para>resolve to a value</para>
                                     </listitem>
                                     <listitem>
-                                        <para>could themselves take parameters of their own</para>
-                                    </listitem>
-                                    <listitem>
-                                        <para>typically defined externally to KRMS and then plugged
-                                            in via a custom term resolver</para>
+                                        <para>Take a fixed number of parameters</para>
                                     </listitem>
                                 </itemizedlist></para>
                         </listitem>
@@ -210,6 +206,9 @@
                                                 </listitem>
                                             </itemizedlist></para>
                                     </listitem>
+                              <listitem>
+                                <para>custom operators can be can be configured for use in specific Contexts.</para>
+                              </listitem>
                                 </itemizedlist></para>
                         </listitem>
                     </orderedlist>
@@ -327,6 +326,48 @@
                 
                 </section>
             </section>
+        </section>
+        <section>
+          <title>KRMS Types</title>
+          <para>Many of the key concepts in KRMS are implemented by what are known as
+            <emphasis role="bold">type services</emphasis>, and are customizable or pluggable using the
+            service bus and the KRMS type table.  You can add custom attributes and behavior that affects
+            the options and execution behavior associated with a number of system components:
+            <itemizedlist>
+              <listitem>
+                <para>ActionTypeService</para>
+                <para>Enables custom actions that can be configured on rules.</para>
+              </listitem>
+              <listitem>
+                <para>AgendaTypeService</para>
+                <para>Enables agendas that support custom execution behavior and have custom attributes
+                  associated with them.</para>
+              </listitem>
+              <listitem>
+                <para>FunctionTypeService</para>
+                <para>Defines reusable execution logic (functions) that can be utilized at the proposition
+                  level during rule execution.  Note that at present, functions are not directly supported
+                  within the rule authoring user interface.
+                </para>
+              </listitem>
+              <listitem>
+                <para>RuleTypeService</para>
+                <para>Enables custom rule-level execution and action triggering behavior, as well as custom
+                  attributes at the Rule level.
+                </para>
+              </listitem>
+              <listitem>
+                <para>TermResolverTypeService</para>
+                <para>Enables custom resolution/reification of runtime values for Terms.
+                </para>
+              </listitem>
+              <listitem>
+                <para>CustomOperator</para>
+                <para>Enables richer expressions within simple propositions.
+                </para>
+              </listitem>
+            </itemizedlist>
+          </para>
         </section>
         <!-- Commenting out until content is added
         <section>

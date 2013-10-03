@@ -979,30 +979,30 @@ function toggleRowDetails(actionComponent) {
 }
 
 /**
- * Select all checkboxes within the collection div that are marked with class 'kr-select-line' (used
+ * Select all checkboxes within the collection div that are marked with class 'uif-select-line' (used
  * for multi-value select collections)
  *
  * @param collectionId - id for the collection to select checkboxes for
  */
 function selectAllLines(collectionId) {
-    jQuery("#" + collectionId + " input:checkbox.kr-select-line").attr('checked', true);
-    setMultivalueLookupReturnButton(jQuery("#" + collectionId + " input:checkbox.kr-select-line"));
+    jQuery("#" + collectionId + " input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS).attr('checked', true);
+    setMultivalueLookupReturnButton(jQuery("#" + collectionId + " input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS));
 
 }
 
 /**
- * Deselects all checkboxes within the collection div that are marked with class 'kr-select-line' (used
+ * Deselects all checkboxes within the collection div that are marked with class 'uif-select-line' (used
  * for multi-value select collections)
  *
  * @param collectionId - id for the collection to deselect checkboxes for
  */
 function deselectAllLines(collectionId) {
-    jQuery("#" + collectionId + " input:checkbox.kr-select-line").attr('checked', false);
-    setMultivalueLookupReturnButton(jQuery("#" + collectionId + " input:checkbox.kr-select-line"));
+    jQuery("#" + collectionId + " input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS).attr('checked', false);
+    setMultivalueLookupReturnButton(jQuery("#" + collectionId + " input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS));
 }
 
 /**
- * Select all checkboxes within the datatable (all pages) that are marked with class 'kr-select-line' (used
+ * Select all checkboxes within the datatable (all pages) that are marked with class 'uif-select-line' (used
  * for multi-value select collections)
  *
  * @param collectionId - id for the collection to select checkboxes for
@@ -1010,12 +1010,13 @@ function deselectAllLines(collectionId) {
 function selectAllPagesLines(collectionId) {
     // get a handle on the datatables plugin object for the results collection
     var oTable = getDataTableHandle(jQuery("#" + collectionId).find("table").attr('id'));
-    jQuery('input:checkbox.kr-select-line', oTable.fnGetNodes()).prop('checked', true);
-    setMultivalueLookupReturnButton(jQuery("#" + collectionId + " input:checkbox.kr-select-line"));
+    var query = "input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS;
+    jQuery(query, oTable.fnGetNodes()).prop('checked', true);
+    setMultivalueLookupReturnButton(jQuery("#" + collectionId + " input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS));
 }
 
 /**
- * Deselects all checkboxes within the datatable (all pages) that are marked with class 'kr-select-line' (used
+ * Deselects all checkboxes within the datatable (all pages) that are marked with class 'uif-select-line' (used
  * for multi-value select collections)
  *
  * @param collectionId - id for the collection to deselect checkboxes for
@@ -1023,8 +1024,9 @@ function selectAllPagesLines(collectionId) {
 function deselectAllPagesLines(collectionId) {
     // get a handle on the datatables plugin object for the results collection
     var oTable = getDataTableHandle(jQuery("#" + collectionId).find("table").attr('id'));
-    jQuery('input:checkbox.kr-select-line', oTable.fnGetNodes()).prop('checked', false);
-    setMultivalueLookupReturnButton(jQuery("#" + collectionId + " input:checkbox.kr-select-line"));
+    var query = "input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS;
+    jQuery(query, oTable.fnGetNodes()).prop('checked', false);
+    setMultivalueLookupReturnButton(jQuery("#" + collectionId + " input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS));
 }
 
 /**

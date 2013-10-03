@@ -158,7 +158,15 @@
   <bean id="Uif-EditablePageHeader" parent="Uif-EditablePageHeader-parentBean"/>
   <bean id="Uif-EditablePageHeader-parentBean" abstract="true" parent="Uif-PageHeader">
     <property name="lowerGroup">
-      <bean parent="Uif-DisclosureActions-ReqMessageGroup"/>
+      <bean parent="Uif-VerticalBoxGroup">
+        <property name="items">
+          <list>
+            <bean parent="Uif-DisclosureActionsGroup"/>
+            <bean parent="Uif-DisclosureActions-ReqMessageGroup"/>
+          </list>
+        </property>
+      </bean>
+
     </property>
   </bean>
 

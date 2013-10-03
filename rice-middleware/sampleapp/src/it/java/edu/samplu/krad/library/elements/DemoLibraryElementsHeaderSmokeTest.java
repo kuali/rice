@@ -81,6 +81,9 @@ public class DemoLibraryElementsHeaderSmokeTest extends SmokeTestBase {
     protected void testLibraryElementsHeaderEditableHeader() throws Exception {
         waitAndClickByLinkText("EditablePage Header");
         assertElementPresentByXpath("//div[@id='Demo-Header-Example12']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-pageHeader clearfix uif-boxLayoutVerticalItem clearfix']/h2/span");
+        assertElementPresentByXpath("//div[@id='Demo-Header-Example12']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-verticalBoxGroup uif-header-lowerGroup']/div[@class='uif-verticalBoxLayout clearfix']/div[1]/div/button[@class='btn btn-small uif-expandDisclosuresButton uif-boxLayoutHorizontalItem']");
+        assertElementPresentByXpath("//div[@id='Demo-Header-Example12']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-verticalBoxGroup uif-header-lowerGroup']/div[@class='uif-verticalBoxLayout clearfix']/div[1]/div/button[@class='btn btn-small uif-collapseDisclosuresButton uif-boxLayoutHorizontalItem']");
+        assertElementPresentByXpath("//div[@id='Demo-Header-Example12']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-verticalBoxGroup uif-header-lowerGroup']/div[@class='uif-verticalBoxLayout clearfix']/div[2]/div/span[@class='uif-requiredInstructionsMessage uif-boxLayoutHorizontalItem']");
     }
     
     protected void testLibraryElementsHeaderReadOnlyPageHeader() throws Exception {

@@ -35,6 +35,7 @@ import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.UrlFactory;
+import org.kuali.rice.krad.web.form.InquiryForm;
 
 import java.security.GeneralSecurityException;
 import java.util.HashMap;
@@ -42,6 +43,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
+
+import static org.kuali.rice.krad.uif.UifConstants.*;
 
 /**
  * Widget for rendering an Inquiry link or DirectInquiry action field
@@ -122,6 +125,14 @@ public class Inquiry extends WidgetBase {
             } catch (Exception e) {
                 // if we can't get the value just swallow the exception and don't set an inquiry
                 return;
+            }
+
+            // [KULRICE-6856] skip creating the inquiry link if it will be the same as it's parent inquiry
+            // this helps avoid recursive links
+            if (view.getViewTypeName() == ViewType.INQUIRY) {
+                if (requestParameterContainsField((InquiryForm) model, (DataField) parent, view)) {
+                    return;
+                }
             }
         }
 
@@ -215,7 +226,7 @@ public class Inquiry extends WidgetBase {
         Properties urlParameters = new Properties();
 
         urlParameters.setProperty(UifParameters.DATA_OBJECT_CLASS_NAME, inquiryObjectClass.getName());
-        urlParameters.setProperty(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.START);
+        urlParameters.setProperty(UifParameters.METHOD_TO_CALL, MethodToCallNames.START);
         if (StringUtils.isNotBlank(this.viewName)) {
             urlParameters.setProperty(UifParameters.VIEW_NAME, this.viewName);
         }
@@ -583,6 +594,42 @@ public class Inquiry extends WidgetBase {
      */
     protected void setFieldBindingInfo(BindingInfo fieldBindingInfo) {
         this.fieldBindingInfo = fieldBindingInfo;
+    }
+
+    /**
+     * Check if request parameters contains the field
+     *
+     * <p>
+     * Checks whether the request parameters contain the field.  if it it, we don't want to create
+     * an inquiry link because it would be to the same inquiry as it's parent.  This would cause
+     * recursive links.
+     * </p>
+     *
+     * @param view Container View
+     * @param model model
+     * @param field The parent Attribute field
+     */
+    public boolean requestParameterContainsField(InquiryForm model,DataField field,View view)
+    {
+        // check if business object classes are the same
+        if (!model.getDataObjectClassName().equals(field.getDictionaryObjectEntry())) {
+            return false;
+        }
+
+        // get value of request parameter based on field name
+        Object parameterValue = model.getInitialRequestParameters().get(field.getPropertyName());
+
+        // get value of field
+        Object fieldValue = ObjectPropertyUtils.getPropertyValue(ViewModelUtils.getParentObjectForMetadata(
+                view, model, field), field.getPropertyName());
+
+        // check if field names/values are the same
+        // assume if parameter value is null, named parameter doesn't exist
+        if (parameterValue != null && fieldValue.equals(parameterValue)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

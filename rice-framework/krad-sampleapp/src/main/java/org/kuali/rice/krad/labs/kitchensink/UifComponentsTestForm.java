@@ -23,7 +23,10 @@ import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.impl.role.RoleBo;
+import org.kuali.rice.kim.impl.role.RoleMemberBo;
 import org.kuali.rice.krad.demo.uif.form.UITestObject;
+import org.kuali.rice.krad.labs.LabsRoleMember;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -238,6 +241,8 @@ public class UifComponentsTestForm extends UifFormBase {
     private Map<String, Object> remoteFieldValuesMap2;
 
     private String sourceCodeField;
+
+    private LabsRoleMember labsRoleMember;
 
     public UifComponentsTestForm() {
         super();
@@ -480,6 +485,8 @@ public class UifComponentsTestForm extends UifFormBase {
         catch(Exception e){
 
         }
+
+        labsRoleMember = new LabsRoleMember();
     }
 
     @Override
@@ -2516,5 +2523,13 @@ public class UifComponentsTestForm extends UifFormBase {
 
     public void setSourceCodeField(String sourceCodeField) {
         this.sourceCodeField = sourceCodeField;
+    }
+
+    public LabsRoleMember getLabsRoleMember() {
+        return labsRoleMember;
+    }
+
+    public void setLabsRoleMember(LabsRoleMember labsRoleMember) {
+        this.labsRoleMember = labsRoleMember;
     }
 }

@@ -22,6 +22,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <bean id="lookups1" parent="Uif-VerticalBoxSection" p:layoutManager.orientation="VERTICAL">
+      <property name="headerText" value="Lookup"/>
       <property name="disclosure.render" value="false" />
       
       <property name="items">
@@ -95,7 +96,44 @@
                       p:suggestQuery.dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
             </property>
           </bean>
-        </list>
+
+          <bean id="refreshLookups1" parent="Uif-GridSection">
+            <property name="headerText" value="Lookup Refresh"/>
+            <property name="instructionalText" value="Change either one of the quickfinder fields to see the fields refresh"/>
+            <property name="items">
+              <list>
+                <bean parent="Uif-InputField" p:propertyName="labsRoleMember.id">
+                  <property name="quickfinder">
+                    <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.kim.impl.role.RoleMemberBo">
+                      <property name="referencesToRefresh" value="labsRoleMember.role"/>
+                      <property name="fieldConversions">
+                        <map>
+                          <entry key="id" value="labsRoleMember.id" />
+                          <entry key="roleId" value="labsRoleMember.roleId" />
+                        </map>
+                      </property>
+                    </bean>
+                  </property>
+                </bean>
+                <bean parent="Uif-InputField" p:propertyName="labsRoleMember.roleId">
+                  <property name="quickfinder">
+                    <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.kim.impl.role.RoleBo">
+                      <property name="referencesToRefresh" value="labsRoleMember.role"/>
+                      <property name="fieldConversions">
+                        <map>
+                          <entry key="id" value="labsRoleMember.roleId" />
+                        </map>
+                      </property>
+                    </bean>
+                  </property>
+                </bean>
+                <bean parent="Uif-DataField" p:propertyName="labsRoleMember.roleNamespaceCode"/>
+                <bean parent="Uif-DataField" p:propertyName="labsRoleMember.roleName"/>
+                <bean parent="Uif-DataField" p:propertyName="labsRoleMember.roleDescription"/>
+              </list>
+            </property>
+          </bean>
+         </list>
       </property>
     </bean>
 

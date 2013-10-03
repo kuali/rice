@@ -146,6 +146,7 @@
     <property name="items">
       <list>
         <bean id="LabsMenuLookup-Row7-Col1" parent="KradSampleAppDemo-DemoGroup"/>
+        <bean id="LabsMenuLookup-Row7-Col2" parent="KradSampleAppDemo-DemoGroup"/>
       </list>
     </property>
   </bean>

@@ -29,7 +29,6 @@
     <property name="demoGroups">
       <list>
         <ref bean="Demo-CollectionLookup-Example1"/>
-        <ref bean="Demo-CollectionLookup-Example2"/>
       </list>
     </property>
   </bean>
@@ -62,43 +61,6 @@
           </property>
         </bean>
         <!-- ex:Demo-CollectionLookup-Example1 end-->
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Demo-CollectionLookup-Example2" parent="Uif-VerticalBoxSection">
-    <property name="headerText" value="Multi Value Select with Server Paging"/>
-    <property name="items">
-      <list>
-        <!-- ex:Demo-CollectionServerPaging-Example1 start-->
-        <bean parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4"
-              p:refreshWhenChangedPropertyNames="collection1Size">
-          <property name="headerText" value="Multi Value Select with Server Paging"/>
-          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
-          <property name="propertyName" value="collection1"/>
-
-          <!--
-          <property name="layoutManager.selectFieldPrototype.finalizeMethodToCall" value="setMultiValueLookupSelect"/>
-          <property name="layoutManager.selectFieldPrototype.control.onChangeScript"
-                    value="setMultivalueLookupReturnButton(this)"/>
-          <property name="includeLineSelectionField" value="@{#view.multipleValuesSelect}"/>
-          -->
-          <property name="renderAddLine" value="false"/>
-
-          <!-- disable DataTables and use server paging -->
-          <property name="layoutManager.richTable.render" value="false"/>
-          <property name="useServerPaging" value="true"/>
-
-          <property name="items">
-            <list>
-              <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1" p:readOnly="true"/>
-              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2" p:readOnly="true"/>
-              <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3" p:readOnly="true"/>
-              <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4" p:readOnly="true"/>
-            </list>
-          </property>
-        </bean>
-        <!-- ex:Demo-CollectionLookup-Example2 end-->
       </list>
     </property>
   </bean>

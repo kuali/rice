@@ -61,6 +61,39 @@
     <property name="multipleValuesSelect" value="true"/>
   </bean>
 
+  <bean id="LabsLookup-MultipleValuesReturnView" parent="LabsLookup-DefaultView">
+    <property name="viewName" value="LabsLookup-MultipleValuesReturnView"/>
+    <property name="headerText" value="Lookup Sample - Multiple Values Return in View"/>
+    <property name="multipleValuesSelect" value="true"/>
+    <property name="items">
+      <list>
+        <bean parent="Uif-TableCollectionSection">
+          <property name="headerText" value="Collection Multi-Value Lookup" />
+          <property name="collectionObjectClass"
+                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+          <property name="propertyName" value="emptyCollection" />
+          <property name="layoutManager.generateAutoSequence" value="true" />
+
+          <!-- here is the configuration for the lookup -->
+          <property name="collectionLookup">
+            <bean parent="Uif-CollectionQuickFinder"
+                  p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
+                  p:fieldConversions="number:field1,name:field2,accountTypeCode:field3">
+            </bean>
+          </property>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"/>
+              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"/>
+              <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3"/>
+              <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
   <bean id="LabsLookup-UseResultsLimitOnParentView" parent="LabsLookup-ResultsLimitView">
     <property name="viewName" value="LabsLookup-UseResultsLimitOnParentView"/>
     <property name="headerText"

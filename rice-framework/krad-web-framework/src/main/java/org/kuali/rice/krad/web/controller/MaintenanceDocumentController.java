@@ -22,6 +22,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.bo.PersistableAttachment;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
@@ -181,6 +182,21 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
             BindingResult result, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         setupMaintenance(form, request, KRADConstants.MAINTENANCE_NEWWITHEXISTING_ACTION);
+
+        return getUIFModelAndView(form);
+    }
+
+    /**
+     * Setups a new <code>MaintenanceDocumentView</code> with the delete maintenance
+     * action
+     */
+    @RequestMapping(params = "methodToCall=" + KRADConstants.Maintenance.METHOD_TO_CALL_DELETE)
+    public ModelAndView maintenanceDelete(@ModelAttribute("KualiForm") MaintenanceDocumentForm form,
+            BindingResult result, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        GlobalVariables.getMessageMap().putInfo(KRADConstants.GLOBAL_MESSAGES, RiceKeyConstants.MESSAGE_DELETE);
+
+        setupMaintenance(form, request, KRADConstants.MAINTENANCE_DELETE_ACTION);
 
         return getUIFModelAndView(form);
     }

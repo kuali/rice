@@ -190,11 +190,9 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
 
             // invoke custom processing method
             document.getNewMaintainableObject().processAfterEdit(document, requestParameters);
-        }
-        // 3070
-        else if (KRADConstants.MAINTENANCE_DELETE_ACTION.equals(maintenanceAction)) {
+        } else if (KRADConstants.MAINTENANCE_DELETE_ACTION.equals(maintenanceAction)) {
             boolean allowsDelete = getDataObjectAuthorizationService()
-                    .canMaintain((BusinessObject) oldBusinessObject, GlobalVariables.getUserSession().getPerson(),
+                    .canMaintain(oldBusinessObject, GlobalVariables.getUserSession().getPerson(),
                             document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
             if (!allowsDelete) {
                 LOG.error("Document type " + document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName() +

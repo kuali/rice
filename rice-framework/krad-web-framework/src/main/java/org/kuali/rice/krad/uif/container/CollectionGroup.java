@@ -98,7 +98,7 @@ import java.util.List;
         @BeanTag(name = "maintenanceStackedSubCollection-withinSection-bean",
                 parent = "Uif-MaintenanceStackedSubCollection-WithinSection"),
         @BeanTag(name = "maintenanceTableCollectionSection-bean", parent = "Uif-MaintenanceTableCollectionSection"),
-        @BeanTag(name = "maintenanceTableSubCollection-WithinSection-bean",
+        @BeanTag(name = "maintenanceTableSubCollection-withinSection-bean",
                 parent = "Uif-MaintenanceTableSubCollection-WithinSection")})
 public class CollectionGroup extends Group implements DataBinding {
     private static final long serialVersionUID = -6496712566071542452L;

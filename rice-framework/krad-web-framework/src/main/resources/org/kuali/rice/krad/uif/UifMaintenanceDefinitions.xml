@@ -211,9 +211,9 @@
     </property>
   </bean>
 
-  <bean id="Uif-MaintenanceTableSubCollection-withinSection" abstract="true"
-        parent="Uif-MaintenanceTableSubCollection-withinSection-parentBean"/>
-  <bean id="Uif-MaintenanceTableSubCollection-withinSection-parentBean"
+  <bean id="Uif-MaintenanceTableSubCollection-WithinSection" abstract="true"
+        parent="Uif-MaintenanceTableSubCollection-WithinSection-parentBean"/>
+  <bean id="Uif-MaintenanceTableSubCollection-WithinSection-parentBean"
         parent="Uif-Disclosure-TableSubCollection-WithinSection">
     <property name="activeCollectionFilter">
       <bean class="org.kuali.rice.krad.uif.container.MaintenanceActiveCollectionFilter"

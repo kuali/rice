@@ -1,4 +1,4 @@
-<#--
+h<#--
 
     Copyright 2005-2013 The Kuali Foundation
 
@@ -342,7 +342,17 @@
     <#-- Start Kuali enhancements and changes -->
 	<@bind path />
     <#local name="${status.expression}">
-    <#local isSelected = status.value?? && status.value?string=="true">
+    <#local isSelected = false>
+    <#if status.value??>
+        <#if status.value?is_sequence>
+            <#local start = attributes?index_of("value=\"") + 7 >
+            <#local end = attributes?index_of("\"",start) >
+            <#local value = attributes?substring(start, end) >
+            <#local isSelected = status.value?seq_contains(value)>
+        <#else>
+            <#local isSelected = status.value?string=="true">
+        </#if>
+    </#if>
 	<input type="hidden" name="_${name}" value="on"/>
 	<input type="checkbox" id="${id!}" name="${name}"<#if isSelected> checked="checked"</#if> ${attributes}/>
     <#if label?has_content>

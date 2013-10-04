@@ -39,18 +39,18 @@ public class DemoLabsLookupMVURLSearchSmokeTest extends DemoLabsLookupBase {
     }
 
     @Test
-    public void testLabsLookupMVViewBookmark() throws Exception {
-        testLabsLookupMVView();
+    public void testLabsLookupMVURLSearchBookmark() throws Exception {
+        testLabsLookupMVURLSearch();
         passed();
     }
 
     @Test
-    public void testLabsLookupMVViewNav() throws Exception {
-        testLabsLookupMVView();
+    public void testLabsLookupMVURLSearchNav() throws Exception {
+        testLabsLookupMVURLSearch();
         passed();
     }
     
-    protected void testLabsLookupMVView()throws Exception {
+    protected void testLabsLookupMVURLSearch()throws Exception {
         if(isElementPresentByXpath("//button[contains(text(), 'Search')]"))
         {
             fail("Search Button Present");

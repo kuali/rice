@@ -15,9 +15,21 @@
  */
 package org.kuali.rice.krad.sampleapp_2_4_M2.demo.uif.components;
 
+import java.io.File;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
-import org.kuali.rice.core.api.util.AbstractKeyValue;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -32,24 +44,11 @@ import org.kuali.rice.krad.uif.control.MultiValueControl;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
 import org.springframework.util.StringUtils;
-
-import javax.swing.text.StyleContext;
-import java.io.File;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * View for the ComponentLibrary demo examples of Uif Components
@@ -87,8 +86,8 @@ public class ComponentLibraryView extends FormView {
      * @see Component#performInitialization(org.kuali.rice.krad.uif.view.View, Object)
      */
     @Override
-    public void performInitialization(View view, Object model) {
-        super.performInitialization(view, model);
+    public void performInitialization(Object model) {
+        super.performInitialization(model);
 
         MessageService messageService = KRADServiceLocatorWeb.getMessageService();
 
@@ -146,6 +145,8 @@ public class ComponentLibraryView extends FormView {
 
         tabGroup.addStyleClass("demo-componentDetailsTabs");
 
+        View view = ViewLifecycle.getActiveLifecycle().getView();
+        
         //Add tabGroup to detailsGroup
         List<Component> detailsItems = new ArrayList<Component>();
         detailsItems.addAll(detailsGroup.getItems());

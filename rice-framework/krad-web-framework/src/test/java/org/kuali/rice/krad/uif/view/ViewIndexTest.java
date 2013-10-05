@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.uif.view;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,9 +25,11 @@ import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.service.ViewHelperService;
 
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 /**
  * ViewIndexTest has various tests for ViewIndex
@@ -46,41 +50,60 @@ public class ViewIndexTest {
      */
     @Test
     public void testClearIndexesAfterRender() throws Exception {
-        ViewIndex viewIndex = new ViewIndex();
         // create an input field
-        InputField field = new InputField();
-        BindingInfo bindingInfo = new BindingInfo();
-        bindingInfo.setBindingPath("property1");
-        field.setBindingInfo(bindingInfo);
-        String fieldId = "field1";
-        field.setId(fieldId);
-        if (field.getRefreshWhenChangedPropertyNames() == null) {
-            field.setRefreshWhenChangedPropertyNames(new ArrayList<String>());
-        }
-        field.getRefreshWhenChangedPropertyNames().add("#lp.allDay eq true");
-        // set a control
-        TextControl textControl = new TextControl();
-        String controlId = "text1";
-        textControl.setId(controlId);
-        field.setControl(textControl);
+        final InputField field = ViewLifecycle.encapsulateInitialization(new Callable<InputField>(){
+            @Override
+            public InputField call() throws Exception {
+                InputField field = new InputField();
+                BindingInfo bindingInfo = new BindingInfo();
+                bindingInfo.setBindingPath("property1");
+                field.setBindingInfo(bindingInfo);
+                String fieldId = "field1";
+                field.setId(fieldId);
 
-        //add to view index
-        Component[] components = {field};
-        for (Component component : components) {
-            viewIndex.indexComponent(component);
-            viewIndex.addInitialComponentStateIfNeeded(component);
-        }
+                List<String> refreshWhenChangedPropertyNames = field.getRefreshWhenChangedPropertyNames();
+                refreshWhenChangedPropertyNames = refreshWhenChangedPropertyNames == null ?
+                        new ArrayList<String>() : new ArrayList<String>(refreshWhenChangedPropertyNames);
+                refreshWhenChangedPropertyNames.add("#lp.allDay eq true");
+                field.setRefreshWhenChangedPropertyNames(refreshWhenChangedPropertyNames);
 
-        // verify initial view index state
-        for (Component component : components) {
-            assertNotNull(viewIndex.getComponentById(component.getId()));
-        }
+                // set a control
+                TextControl textControl = new TextControl();
+                String controlId = "text1";
+                textControl.setId(controlId);
+                field.setControl(textControl);
+                return field;
+            }
+        });
 
-        viewIndex.clearIndexesAfterRender();
-        // confirm that the index still has the components
-        for (Component component : components) {
-            assertNotNull(viewIndex.getComponentById(component.getId()));
-            assertTrue(viewIndex.getInitialComponentStates().containsKey(component.getId()));
-        }
+        final ViewIndex viewIndex = new ViewIndex();
+        View view = mock(View.class);
+        ViewHelperService helper = mock(ViewHelperService.class);
+        when(view.getViewHelperService()).thenReturn(helper);
+
+        ViewLifecycle.encapsulateLifecycle(view, new Runnable(){
+            @Override
+            public void run() {
+                Component[] components = {field.copy()};
+
+                //add to view index
+                for (Component component : components) {
+                    viewIndex.indexComponent(component);
+                    viewIndex.addInitialComponentStateIfNeeded(component);
+                }
+
+                // verify initial view index state
+                for (Component component : components) {
+                    assertNotNull(viewIndex.getComponentById(component.getId()));
+                }
+
+                viewIndex.clearIndexesAfterRender();
+                // confirm that the index still has the components
+                for (Component component : components) {
+                    assertNotNull(viewIndex.getComponentById(component.getId()));
+                    assertTrue(viewIndex.getInitialComponentStates().containsKey(component.getId()));
+                }
+            }});
+        
     }
 }

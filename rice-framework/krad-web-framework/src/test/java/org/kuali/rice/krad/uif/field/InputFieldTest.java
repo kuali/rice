@@ -21,6 +21,7 @@ import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinderFactory;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.BindingInfo;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.view.View;
 import org.mockito.Mockito;
@@ -28,6 +29,7 @@ import org.mockito.Mockito;
 import static org.mockito.Mockito.*;
 
 import java.util.*;
+import java.util.concurrent.Callable;
 
 /**
  * tests InputField object and methods
@@ -46,6 +48,7 @@ public class InputFieldTest {
         view = Mockito.mock(View.class);
         ViewHelperService mockViewHelperService = mock(ViewHelperService.class);
         when(view.getViewHelperService()).thenReturn(mockViewHelperService);
+        when(view.copy()).thenReturn(view);
 
         optionsFinder = Mockito.mock(KeyValuesFinder.class);
         bindingInfo = Mockito.mock(BindingInfo.class);
@@ -62,14 +65,24 @@ public class InputFieldTest {
         // setup preconditions (view status is final; bindinginfo return testInteger)
         when(view.getViewStatus()).thenReturn(UifConstants.ViewStatus.FINAL);
         when(bindingInfo.getBindingPath()).thenReturn("testInteger");
+        when(bindingInfo.copy()).thenReturn(bindingInfo);
 
         // setup input field with binding info and readonly
-        InputField testObj = new InputField();        
-        testObj.setBindingInfo(bindingInfo);
-        testObj.setReadOnly(true);
-        testObj.setOptionsFinder(optionsFinder);
-
-        testObj.performFinalize(view, model, testObj);
+        final InputField testObj = ViewLifecycle.encapsulateInitialization(new Callable<InputField>(){
+            @Override
+            public InputField call() throws Exception {
+                InputField testObj = new InputField();        
+                testObj.setBindingInfo(bindingInfo);
+                testObj.setReadOnly(true);
+                testObj.setOptionsFinder(optionsFinder);
+                return testObj;
+            }});
+        
+        ViewLifecycle.encapsulateLifecycle(view, new Runnable(){
+            @Override
+            public void run() {
+                testObj.<InputField> copy().performFinalize(model, testObj);
+            }});
 
     }
 

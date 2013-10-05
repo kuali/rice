@@ -21,23 +21,18 @@ package org.kuali.rice.krad.uif.component;
  @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
+import java.util.TreeMap;
+import java.util.concurrent.Callable;
+
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.krad.uif.control.FileControl;
-import org.kuali.rice.krad.uif.control.TextAreaControl;
-import org.kuali.rice.krad.uif.control.TextControl;
-import org.kuali.rice.krad.uif.control.UserControl;
 import org.kuali.rice.krad.uif.element.Action;
-import org.kuali.rice.krad.uif.element.Image;
-import org.kuali.rice.krad.uif.element.Message;
-import org.kuali.rice.krad.uif.field.LinkField;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.service.ViewHelperService;
+import org.kuali.rice.krad.uif.view.View;
 
-import java.util.TreeMap;
-
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -48,15 +43,20 @@ public class ComponentBaseTest {
 
     @Before
     public void setUp() throws Exception {
-        // use an action field, since ComponentBase is abstract
-        component = new Action();
-        component.setId("action1");
-        // used a TreeMap since it makes specific guarantees as to the order of entries
-        dataAttributes = new TreeMap<String, String>();
-        // set data attributes - for testing purposes only - they do not have any functional significance
-        dataAttributes.put("iconTemplateName", "cool-icon-%s.png");
-        dataAttributes.put("transitions", "3");
-        component.setDataAttributes(dataAttributes);
+        ViewLifecycle.encapsulateInitialization(new Callable<Void>(){
+            @Override
+            public Void call() throws Exception {
+                // use an action field, since ComponentBase is abstract
+                component = new Action();
+                component.setId("action1");
+                // used a TreeMap since it makes specific guarantees as to the order of entries
+                dataAttributes = new TreeMap<String, String>();
+                // set data attributes - for testing purposes only - they do not have any functional significance
+                dataAttributes.put("iconTemplateName", "cool-icon-%s.png");
+                dataAttributes.put("transitions", "3");
+                component.setDataAttributes(dataAttributes);
+                return null;
+            }});
     }
 
     @Test
@@ -74,7 +74,15 @@ public class ComponentBaseTest {
      * test that simple data attributes are converted into inline attributes ok  when data attributes are null
      */
     public void testGetSimpleDataAttributesWhenNull() throws Exception {
-        component.setDataAttributes(null);
-        assertEquals("simple attributes did not match", "", component.getSimpleDataAttributes());
+        View view = mock(View.class);
+        ViewHelperService helper = mock(ViewHelperService.class);
+        when(view.getViewHelperService()).thenReturn(helper);
+        ViewLifecycle.encapsulateLifecycle(view, new Runnable(){
+            @Override
+            public void run() {
+                Component copy = component.copy();
+                copy.setDataAttributes(null);
+                assertEquals("simple attributes did not match", "", copy.getSimpleDataAttributes());
+            }});
     }
 }

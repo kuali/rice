@@ -15,16 +15,16 @@
  */
 package org.kuali.rice.krad.sampleapp_2_4_M2.demo.uif.components;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.container.TabGroup;
 import org.kuali.rice.krad.uif.element.ContentElementBase;
 import org.kuali.rice.krad.uif.field.FieldGroup;
-import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.widget.SyntaxHighlighter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The ComponentExhibit component is used to display demostrations of various components along with their source code
@@ -50,13 +50,13 @@ public class ComponentExhibit extends ContentElementBase {
      * @see Component#performInitialization(org.kuali.rice.krad.uif.view.View, Object)
      */
     @Override
-    public void performInitialization(View view, Object model) {
+    public void performInitialization(Object model) {
         //Setup tabGroup
         List<Component> tabItems = new ArrayList<Component>();
         tabItems.addAll(tabGroup.getItems());
         tabItems.addAll(demoGroups);
         tabGroup.setItems(tabItems);
-        view.assignComponentIds(tabGroup);
+        ViewLifecycle.getActiveLifecycle().getView().assignComponentIds(tabGroup);
 
         //source code viewer setup
         if(demoSourceCode != null && !demoSourceCode.isEmpty()){

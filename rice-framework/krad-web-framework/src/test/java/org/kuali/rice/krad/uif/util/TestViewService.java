@@ -27,7 +27,7 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationController;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
-import org.kuali.rice.krad.uif.service.ViewHelperService;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.service.ViewTypeService;
 import org.kuali.rice.krad.uif.view.View;
@@ -112,14 +112,15 @@ public class TestViewService implements ViewService, Lifecycle {
      * @see org.kuali.rice.krad.uif.service.ViewService#buildView(org.kuali.rice.krad.uif.view.View, java.lang.Object, java.util.Map)
      */
     @Override
-    public void buildView(final View view, final Object model, final Map<String, String> parameters) {
-        // get the configured helper service for the view
-        final ViewHelperService helperService = view.getViewHelperService();
-        helperService.encapsulateViewLifecycle(new Runnable(){
+    public View buildView(View view, final Object model, final Map<String, String> parameters) {
+        return ViewLifecycle.encapsulateLifecycle(view, new Runnable(){
             @Override
             public void run() {
+                ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
+                View view = viewLifecycle.getView();
+                
                 // populate view from request parameters
-                helperService.populateViewFromRequestParameters(view, parameters);
+                viewLifecycle.populateViewFromRequestParameters(parameters);
 
                 // backup view request parameters on form for recreating lost views (session timeout)
                 ((UifFormBase) model).setViewRequestParameters(view.getViewRequestParameters());
@@ -129,7 +130,7 @@ public class TestViewService implements ViewService, Lifecycle {
                 if (LOG.isInfoEnabled()) {
                     LOG.info("performing initialize phase for view: " + view.getId());
                 }
-                helperService.performInitialization(view, model);
+                viewLifecycle.performInitialization(model);
 
                 // do indexing                               
                 if (LOG.isDebugEnabled()) {
@@ -147,7 +148,7 @@ public class TestViewService implements ViewService, Lifecycle {
                 if (LOG.isInfoEnabled()) {
                     LOG.info("performing apply model phase for view: " + view.getId());
                 }
-                helperService.performApplyModel(view, model);
+                viewLifecycle.performApplyModel(model);
 
                 // do indexing
                 if (LOG.isInfoEnabled()) {
@@ -159,7 +160,7 @@ public class TestViewService implements ViewService, Lifecycle {
                 if (LOG.isInfoEnabled()) {
                     LOG.info("performing finalize phase for view: " + view.getId());
                 }
-                helperService.performFinalize(view, model);
+                viewLifecycle.performFinalize(model);
 
                 // do indexing
                 if (LOG.isInfoEnabled()) {
@@ -180,8 +181,7 @@ public class TestViewService implements ViewService, Lifecycle {
                     Log tempLogger = LogFactory.getLog(TestViewService.class);
                     validator.validate(view, tempLogger, false);
                 }
-            }});
-
+            }}).getView();
     }
 
     /**

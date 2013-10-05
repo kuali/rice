@@ -98,7 +98,7 @@ public class ObjectPropertyReference {
          *      java.lang.String, boolean)
          */
         @Override
-        public Object parse(String parentPath, Object node, String next, boolean inherit) {
+        public Object parse(String parentPath, Object node, String next) {
             ObjectPropertyReference current = (ObjectPropertyReference) node;
 
             // At the initial parse node, copy to a new property reference.
@@ -146,40 +146,6 @@ public class ObjectPropertyReference {
             current.name = next;
 
             return current;
-        }
-
-        /**
-         * {@inheritDoc}
-         * 
-         * <p>
-         * NOTE: Preparation is not needed for this implementation.
-         * </p>
-         * 
-         * @see org.kuali.rice.krad.uif.util.ObjectPathExpressionParser.PathEntry#prepare(java.lang.Object)
-         */
-        @Override
-        public Object prepare(Object prev) {
-            return prev;
-        }
-
-        /**
-         * Resolve the current parse node, and return as a string.
-         * 
-         * @see org.kuali.rice.krad.uif.util.ObjectPathExpressionParser.PathEntry#dereference(java.lang.Object)
-         * @throws ClassCastException If a bean property is used as a key reference in a
-         *         subexpression, and that bean property does not resolve to a String
-         */
-        @Override
-        public String dereference(Object prev) {
-            ObjectPropertyReference prevReference = (ObjectPropertyReference) prev;
-
-            // Detect integer literal and return as-is, rather than parse/toString()
-            if (prevReference.name != null && Character.isDigit(prevReference.name.charAt(0))) {
-                return prevReference.name;
-            }
-
-            // Expect that any other reference resolves to null or a string
-            return (String) prevReference.get();
         }
     }
 
@@ -378,9 +344,7 @@ public class ObjectPropertyReference {
             reference.beanClass = beanClass;
 
             ObjectPropertyReference resolved = (ObjectPropertyReference) ObjectPathExpressionParser
-                    .parsePathExpression(
-                            reference,
-                            propertyPath, true,
+                    .parsePathExpression(reference, propertyPath,
                             grow ? MUTATE_REF_PATH_ENTRY : LOOKUP_REF_PATH_ENTRY);
 
             reference.bean = resolved.bean;
@@ -843,7 +807,7 @@ public class ObjectPropertyReference {
             assert writeMethod == null || writeMethod.getParameterTypes().length == 1 : "Invalid write method "
                     + writeMethod;
             
-            if (isWarning()) {
+            if (writeMethod == null && isWarning()) {
                 IllegalArgumentException missingPropertyException = new IllegalArgumentException("No property name '"
                         + name + "' is readable or writable on " +
                         (implClass == beanClass ? implClass.toString() : "impl " + implClass + ", bean " + beanClass));

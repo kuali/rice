@@ -69,17 +69,17 @@ public class ObjectPropertyUtils {
                 beanInfo = null;
             }
 
-            Map<String, PropertyDescriptor> unsynchronizedPropertyDescriptorMap = new java.util.LinkedHashMap<String, PropertyDescriptor>();
+            Map<String, PropertyDescriptor> mutablePropertyDescriptorMap = new java.util.LinkedHashMap<String, PropertyDescriptor>();
 
             if (beanInfo != null) {
                 for (PropertyDescriptor propertyDescriptor : beanInfo
                         .getPropertyDescriptors()) {
-                    unsynchronizedPropertyDescriptorMap.put(propertyDescriptor.getName(), propertyDescriptor);
+                    mutablePropertyDescriptorMap.put(propertyDescriptor.getName(), propertyDescriptor);
                 }
             }
 
-            PROPERTY_DESCRIPTOR_CACHE.put(beanClass, propertyDescriptors = Collections.unmodifiableMap(Collections
-                    .synchronizedMap(unsynchronizedPropertyDescriptorMap)));
+            PROPERTY_DESCRIPTOR_CACHE.put(beanClass,
+                    propertyDescriptors = Collections.unmodifiableMap(mutablePropertyDescriptorMap));
         }
 
         return propertyDescriptors;
@@ -192,13 +192,21 @@ public class ObjectPropertyUtils {
     /**
      * Get the type of a bean property.
      * 
+     * <p>
+     * Note that this method does not instantiate the bean class before performing introspection, so
+     * will not dynamic initialization behavior into account. When dynamic initialization is needed
+     * to accurate inspect the inferred property type, use {@link #getPropertyType(Object, String)}
+     * instead of this method. This method is, however, intended for use on the implementation
+     * class; to avoid instantiation simply to infer the property type, consider overriding the
+     * return type on the property read method.
+     * </p>
+     * 
      * @param beanClass The bean class.
      * @param propertyPath A valid property path expression in the context of the bean class.
      * @return The property type referred to by the provided bean class and property path.
      * @see ObjectPathExpressionParser
      */
     public static Class<?> getPropertyType(Class<?> beanClass, String propertyPath) {
-//        Object object = BeanUtils.instantiateClass(beanClass);
         try {
             ObjectPropertyReference.setWarning(true);
             return ObjectPropertyReference.resolvePath(null, beanClass, propertyPath, false).getPropertyType();
@@ -236,7 +244,8 @@ public class ObjectPropertyUtils {
      */
     @SuppressWarnings("unchecked")
     public static <T extends Object> T getPropertyValue(Object object, String propertyPath) {
-        if (ProcessLogger.isTraceActive() && object != null) {
+        boolean trace = ProcessLogger.isTraceActive() && object != null; 
+        if (trace) {
             // May be uncommented for debugging high execution count
             // ProcessLogger.ntrace(object.getClass().getSimpleName() + ":r:" + propertyPath, "", 1000);
             ProcessLogger.countBegin("bean-property-read");
@@ -244,18 +253,18 @@ public class ObjectPropertyUtils {
 
         try {
             ObjectPropertyReference.setWarning(true);
-        
+
             return (T) ObjectPropertyReference.resolvePath(object, object.getClass(), propertyPath, false).get();
-        
+
         } catch (RuntimeException e) {
             throw new RuntimeException("Error getting property '" + propertyPath + "' from " + object, e);
         } finally {
             ObjectPropertyReference.setWarning(false);
-            if (ProcessLogger.isTraceActive() && object != null) {
+            if (trace) {
                 ProcessLogger.countEnd("bean-property-read", object.getClass().getSimpleName() + ":" + propertyPath);
             }
         }
-        
+
     }
 
     /**
@@ -308,12 +317,12 @@ public class ObjectPropertyUtils {
             // ProcessLogger.ntrace(object.getClass().getSimpleName() + ":w:" + propertyPath + ":", "", 1000);
             ProcessLogger.countBegin("bean-property-write");
         }
-        
+
         try {
             ObjectPropertyReference.setWarning(true);
 
             ObjectPropertyReference.resolvePath(object, object.getClass(), propertyPath, true).set(propertyValue);
-        
+
         } catch (RuntimeException e) {
             throw new RuntimeException("Error setting property '" + propertyPath + "' on " + object + " with "
                     + propertyValue, e);
@@ -323,7 +332,7 @@ public class ObjectPropertyUtils {
                 ProcessLogger.countEnd("bean-property-write", object.getClass().getSimpleName() + ":" + propertyPath);
             }
         }
-        
+
     }
 
     /**

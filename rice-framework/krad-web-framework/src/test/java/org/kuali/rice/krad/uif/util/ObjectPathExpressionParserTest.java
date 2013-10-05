@@ -33,7 +33,7 @@ public class ObjectPathExpressionParserTest extends ProcessLoggingUnitTest {
     private static class DoIt implements PathEntry {
 
         @Override
-        public String parse(String parentPath, Object node, String next, boolean inherit) {
+        public String parse(String parentPath, Object node, String next) {
             if (next == null) {
                 return "";
             }
@@ -42,51 +42,37 @@ public class ObjectPathExpressionParserTest extends ProcessLoggingUnitTest {
             if (snode != null && snode.length() > 0) {
                 rv.append(snode);
             }
-            if (inherit) {
-                rv.append('<');
-            } else if (rv.length() > 0) {
+
+            if (rv.length() > 0) {
                 rv.append('+');
             }
+            
             rv.append(next);
-            if (inherit) {
-                rv.append('>');
-            }
 
             return rv.toString();
         }
-
-        @Override
-        public Object prepare(Object prev) {
-            return prev;
-        }
-
-        @Override
-        public String dereference(Object prev) {
-            return (String) prev;
-        }
-
     }
 
     @Test
     public void testParsePathExpression() {
         assertEquals("foo+bar",
-                ObjectPathExpressionParser.parsePathExpression(null, "foo.bar", false, new DoIt())
+                ObjectPathExpressionParser.parsePathExpression(null, "foo.bar", new DoIt())
                         .toString());
-        assertEquals("foo<bar>",
-                ObjectPathExpressionParser.parsePathExpression(null, "foo[bar]", false, new DoIt())
+        assertEquals("foo+bar",
+                ObjectPathExpressionParser.parsePathExpression(null, "foo[bar]", new DoIt())
                         .toString());
-        assertEquals("foo<bar>+baz",
+        assertEquals("foo+bar+baz",
                 ObjectPathExpressionParser
-                        .parsePathExpression(null, "foo[bar].baz", false, new DoIt())
+                        .parsePathExpression(null, "foo[bar].baz", new DoIt())
                         .toString());
         assertEquals(
-                "foo<bar<baz>>",
+                "foo+bar[baz]",
                 ObjectPathExpressionParser.parsePathExpression(null, "foo[bar[baz]]",
-                        false, new DoIt()).toString());
+                        new DoIt()).toString());
         assertEquals(
                 "foo+bar-bar.baz+fez",
                 ObjectPathExpressionParser.parsePathExpression(null, "foo(bar-bar.baz)+fez",
-                        false, new DoIt()).toString());
+                        new DoIt()).toString());
     }
 
 }

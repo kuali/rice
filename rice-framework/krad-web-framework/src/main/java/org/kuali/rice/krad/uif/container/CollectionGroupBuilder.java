@@ -15,6 +15,13 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -36,6 +43,7 @@ import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.RemoteFieldsHolder;
 import org.kuali.rice.krad.uif.layout.CollectionLayoutManager;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
@@ -47,13 +55,6 @@ import org.kuali.rice.krad.uif.view.ViewPresentationController;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Builds out the {@code Field} instances for a collection group with a
@@ -294,7 +295,6 @@ public class CollectionGroupBuilder implements Serializable {
      * @param lineIndex index of the line in the collection, or -1 if we are
      * building the add line
      */
-    @SuppressWarnings("unchecked")
     protected void buildLine(View view, Object model, CollectionGroup collectionGroup, String bindingPath,
             List<Action> actions, boolean bindToForm, Object currentLine, int lineIndex) {
         CollectionLayoutManager layoutManager = (CollectionLayoutManager) collectionGroup.getLayoutManager();
@@ -971,7 +971,8 @@ public class CollectionGroupBuilder implements Serializable {
 
         // apply default values if a new line was created
         if (newLine != null) {
-            view.getViewHelperService().applyDefaultValuesForCollectionLine(view, model, collectionGroup, newLine);
+            ViewLifecycle.getActiveLifecycle()
+                .applyDefaultValuesForCollectionLine(view, model, collectionGroup, newLine);
         }
     }
 

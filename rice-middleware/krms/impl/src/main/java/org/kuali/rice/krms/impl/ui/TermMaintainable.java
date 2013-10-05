@@ -179,7 +179,7 @@ public class TermMaintainable extends MaintainableImpl {
     }
 
     @Override
-    protected void processBeforeAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
+    public void processBeforeAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
         super.processBeforeAddLine(view, collectionGroup, model, addLine);
     }
 

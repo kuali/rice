@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.Callable;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -29,9 +30,10 @@ import org.kuali.rice.krad.datadictionary.DataDictionaryException;
 import org.kuali.rice.krad.datadictionary.DefaultListableBeanFactory;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.ViewTypeService;
-import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -51,7 +53,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
  */
 public class UifDictionaryIndex implements Runnable {
     private static final Log LOG = LogFactory.getLog(UifDictionaryIndex.class);
-
+    
     private static final int VIEW_CACHE_SIZE = 1000;
 
     private DefaultListableBeanFactory ddBeans;
@@ -87,39 +89,14 @@ public class UifDictionaryIndex implements Runnable {
      * @return View instance with the given id
      * @throws org.kuali.rice.krad.datadictionary.DataDictionaryException if view doesn't exist for id
      */
-    public View getViewById(String viewId) {
-        View cachedView = viewCache.get(viewId);
-        if ( cachedView == null ) {
-            if ( LOG.isDebugEnabled() ) {
-                LOG.debug( "View " + viewId + " not in cache - creating and storing to cache");
-            }
+    public View getViewById(final String viewId) {
+        View view = getImmutableViewById(viewId);
 
-            String beanName = viewBeanEntriesById.get(viewId);
-            if (StringUtils.isBlank(beanName)) {
-                throw new DataDictionaryException("Unable to find View with id: " + viewId);
-            }
-
-            View newView = ddBeans.getBean(beanName, View.class);
-
-            boolean inDevMode = ConfigContext.getCurrentContextConfig().getBooleanProperty(
-                    KRADConstants.ConfigParameters.KRAD_DEV_MODE);
-
-            if (!inDevMode) {
-                synchronized (viewCache) {
-                    viewCache.put(viewId, newView);
-                }
-            }
-
-            cachedView = newView;
-        } else {
-            if ( LOG.isDebugEnabled() ) {
-                LOG.debug("Pulled view " + viewId + " from Cache.  Cloning..." );
-            }
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("Pulled view " + viewId + " from Cache.  Cloning..." );
         }
-
-        View clonedView = ComponentUtils.copy(cachedView);
-
-        return clonedView;
+        
+        return ViewLifecycle.getMutableCopy(view);
     }
 
     /**
@@ -130,14 +107,44 @@ public class UifDictionaryIndex implements Runnable {
      * @return View instance with the given id
      */
     public View getImmutableViewById(String viewId) {
-        // check for preloaded view
         View cachedView = viewCache.get(viewId);
-        // If not already cached, pull and cache as normal
-        // This makes the first call to this method more expensive, as it
-        // will get a cloned copy instead of the original from the cache
         if ( cachedView == null ) {
-            return getViewById(viewId);
+            if ( LOG.isDebugEnabled() ) {
+                LOG.debug( "View " + viewId + " not in cache - creating and storing to cache");
+            }
+
+            final String beanName = viewBeanEntriesById.get(viewId);
+            if (StringUtils.isBlank(beanName)) {
+                throw new DataDictionaryException("Unable to find View with id: " + viewId);
+            }
+
+            View newView = ViewLifecycle.encapsulateInitialization(new Callable<View>(){
+                @Override
+                public View call() throws Exception {
+                    View view = ddBeans.getBean(beanName, View.class);
+                    
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Updating view status to CREATED for view: " + view.getId());
+                    }
+
+                    view.setViewStatus(ViewStatus.CREATED);
+                    return view;
+                }});
+
+            boolean inDevMode = ConfigContext.getCurrentContextConfig().getBooleanProperty(
+                    KRADConstants.ConfigParameters.KRAD_DEV_MODE);
+
+            if (!inDevMode) {
+                synchronized (viewCache) {
+                    viewCache.put(viewId, newView);
+                }
+            } else if ( LOG.isDebugEnabled() ) {
+                LOG.debug( "DEV MODE - View " + viewId + " will not be cached");
+            }
+            
+            cachedView = newView;
         }
+
         return cachedView;
     }
 

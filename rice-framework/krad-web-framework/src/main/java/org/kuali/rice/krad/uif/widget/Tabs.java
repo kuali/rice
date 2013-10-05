@@ -25,7 +25,6 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.ClientSideState;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.TabGroup;
-import org.kuali.rice.krad.uif.view.View;
 
 /**
  * Widget used for configuring tab options, use componentOptions for most options.
@@ -54,8 +53,8 @@ public class Tabs extends WidgetBase {
      * </ul>
      */
     @Override
-    public void performFinalize(View view, Object model, Component component) {
-        super.performFinalize(view, model, component);
+    public void performFinalize(Object model, Component component) {
+        super.performFinalize(model, component);
 
         if (!(component instanceof TabGroup)) {
             throw new RuntimeException("Parent for tabs widget should be tab group, not " + component.getClass());

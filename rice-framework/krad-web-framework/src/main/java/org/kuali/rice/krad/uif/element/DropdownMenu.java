@@ -15,12 +15,11 @@
  */
 package org.kuali.rice.krad.uif.element;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.view.View;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.uif.component.Component;
 
 /**
  * Renders a dropdown menu (context menu) of actions
@@ -55,8 +54,8 @@ public class DropdownMenu extends ContentElementBase {
      *      org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performApplyModel(View view, Object model, Component parent) {
-        super.performApplyModel(view, model, parent);
+    public void performApplyModel(Object model, Component parent) {
+        super.performApplyModel(model, parent);
 
         if (StringUtils.isNotBlank(dropdownToggleText) && StringUtils.isBlank(dropdownToggle.getMessageText())) {
             dropdownToggle.setMessageText(dropdownToggleText);

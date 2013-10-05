@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.uif.layout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -23,10 +26,6 @@ import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.view.View;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Layout manager that organizes its components in a table based grid
@@ -80,8 +79,8 @@ public class GridLayoutManager extends LayoutManagerBase {
      *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
      */
     @Override
-    public void performFinalize(View view, Object model, Container container) {
-        super.performFinalize(view, model, container);
+    public void performFinalize(Object model, Container container) {
+        super.performFinalize(model, container);
 
         if (suppressLineWrapping) {
             numberOfColumns = container.getItems().size();

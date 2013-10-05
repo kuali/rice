@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.field;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.data.DataObjectUtils;
@@ -23,15 +25,12 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.Position;
-import org.kuali.rice.krad.uif.component.ComponentSecurity;
-import org.kuali.rice.krad.uif.element.Label;
-import org.kuali.rice.krad.uif.util.MessageStructureUtils;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
+import org.kuali.rice.krad.uif.component.ComponentSecurity;
+import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
-
-import java.util.List;
+import org.kuali.rice.krad.uif.util.MessageStructureUtils;
 
 /**
  * Base class for <code>Field</code> implementations
@@ -68,19 +67,6 @@ public class FieldBase extends ComponentBase implements Field {
     }
 
     /**
-     * The following initialization is performed:
-     *
-     * <ul>
-     * </ul>
-     *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
-     */
-    @Override
-    public void performInitialization(View view, Object model) {
-        super.performInitialization(view, model);
-    }
-
-    /**
      * The following finalization is performed:
      *
      * <ul>
@@ -96,8 +82,8 @@ public class FieldBase extends ComponentBase implements Field {
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
+    public void performFinalize(Object model, Component parent) {
+        super.performFinalize(model, parent);
 
         if (fieldLabel != null) {
             fieldLabel.setLabelForComponentId(this.getId());

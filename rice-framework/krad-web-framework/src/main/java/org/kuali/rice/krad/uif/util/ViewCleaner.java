@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
+
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
@@ -25,11 +29,9 @@ import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.layout.StackedLayoutManager;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewIndex;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Utility class for trimming component instances for storage
@@ -47,43 +49,55 @@ public class ViewCleaner {
     /**
      * Cleans a view instance removing all pages except the current page and then invoking the view
      * index to perform cleaning on contained components
-     *
+     * 
+     * <p>
+     * Invoked after the view has been rendered to clear out objects that are not necessary to keep
+     * around for the post, this helps reduce the view size and overall cost to store the form in
+     * session.
+     * </p>
+     * 
      * @param view view instance to clean
      */
-    public static void cleanView(View view) {
-        view.setApplicationHeader(null);
-        view.setApplicationFooter(null);
-        view.setBreadcrumbs(null);
-        view.setBreadcrumbOptions(null);
-        view.setBreadcrumbItem(null);
-        view.setParentLocation(null);
-        view.setPathBasedBreadcrumbs(null);
-        view.setNavigation(null);
-        view.setPage(null);
-        view.setNavigation(null);
-        view.setAdditionalCssFiles(null);
-        view.setAdditionalScriptFiles(null);
-        view.setActionFlags(null);
-        view.setEditModes(null);
-        view.setViewMenuLink(null);
-        view.setViewMenuLink(null);
-        view.setPreLoadScript(null);
-        view.setViewTemplates(new ArrayList<String>());
-        view.setSessionPolicy(null);
-        view.setViewHelperServiceClass(null);
+    public static void cleanView(final View view) {
+        ViewLifecycle.encapsulateInitialization(new Callable<Void>(){
+            @Override
+            public Void call() throws Exception {
+                view.setApplicationHeader(null);
+                view.setApplicationFooter(null);
+                view.setBreadcrumbs(null);
+                view.setBreadcrumbOptions(null);
+                view.setBreadcrumbItem(null);
+                view.setParentLocation(null);
+                view.setPathBasedBreadcrumbs(null);
+                view.setNavigation(null);
+                view.setPage(null);
+                view.setNavigation(null);
+                view.setAdditionalCssFiles(null);
+                view.setAdditionalScriptFiles(null);
+                view.setActionFlags(null);
+                view.setEditModes(null);
+                view.setViewMenuLink(null);
+                view.setViewMenuLink(null);
+                view.setPreLoadScript(null);
+                view.setViewTemplates(new ArrayList<String>());
+                view.setSessionPolicy(null);
+                view.setViewHelperServiceClass(null);
 
-        view.getViewIndex().clearIndexesAfterRender();
+                view.getViewIndex().clearIndexesAfterRender();
 
-        // clear all view pages exception the current page
-        PageGroup currentPage = view.getCurrentPage();
-        cleanComponent(currentPage, view.getViewIndex());
+                // clear all view pages exception the current page
+                PageGroup currentPage = view.getCurrentPage();
+                cleanComponent(currentPage, view.getViewIndex());
 
-        cleanComponent(view, view.getViewIndex());
+                cleanComponent(view, view.getViewIndex());
 
-        List<Component> pages = new ArrayList<Component>();
-        pages.add(currentPage);
+                List<Component> pages = new ArrayList<Component>();
+                pages.add(currentPage);
 
-        view.setItems(pages);
+                view.setItems(pages);
+                return null;
+            }
+        });
     }
 
     /**

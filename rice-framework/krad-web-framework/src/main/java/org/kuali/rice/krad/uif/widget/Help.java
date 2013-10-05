@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
+import java.text.MessageFormat;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
@@ -25,11 +28,8 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Action;
-import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
-
-import java.text.MessageFormat;
-import java.util.List;
 
 /**
  * Widget that renders help on a component
@@ -62,8 +62,8 @@ public class Help extends WidgetBase {
      *      java.lang.Object)
      */
     @Override
-    public void performInitialization(View view, Object model) {
-        super.performInitialization(view, model);
+    public void performInitialization(Object model) {
+        super.performInitialization(model);
 
         if (helpAction == null) {
             // TODO: check for expressions on helpDefinition?
@@ -72,7 +72,7 @@ public class Help extends WidgetBase {
                     && StringUtils.isNotBlank(helpDefinition.getParameterDetailType())) {
                 helpAction = ComponentFactory.getHelpAction();
 
-                view.assignComponentIds(helpAction);
+                ViewLifecycle.getActiveLifecycle().getView().assignComponentIds(helpAction);
                 helpAction.addDataAttribute(UifConstants.DataAttributes.ROLE, "help");
             }
         }
@@ -95,10 +95,10 @@ public class Help extends WidgetBase {
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
+    public void performFinalize(Object model, Component parent) {
+        super.performFinalize(model, parent);
 
-        buildExternalHelp(view, parent);
+        buildExternalHelp(parent);
         buildTooltipHelp(parent);
 
         // if help is not configured don't render the component
@@ -127,10 +127,10 @@ public class Help extends WidgetBase {
      * @param view used to get the default namespace
      * @param parent used to get the help title text used in the html title attribute of the help icon
      */
-    protected void buildExternalHelp(View view, Component parent) {
+    protected void buildExternalHelp(Component parent) {
         if (StringUtils.isBlank(externalHelpUrl) && (helpDefinition != null)) {
             if (StringUtils.isBlank(helpDefinition.getParameterNamespace())) {
-                helpDefinition.setParameterNamespace(view.getNamespaceCode());
+                helpDefinition.setParameterNamespace(ViewLifecycle.getActiveLifecycle().getView().getNamespaceCode());
             }
 
             if (StringUtils.isNotBlank(helpDefinition.getParameterNamespace())

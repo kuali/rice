@@ -55,8 +55,8 @@ public class ImageField extends FieldBase {
      * @param parent the parent component
      */
     @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
+    public void performFinalize(Object model, Component parent) {
+        super.performFinalize(model, parent);
 
         //determine what id to use for the for attribute of the label, if present
         if (this.getFieldLabel() != null && this.getImage() != null && StringUtils.isNotBlank(this.getImage().getId())) {

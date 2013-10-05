@@ -25,6 +25,7 @@ import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
 
 import java.util.HashMap;
@@ -48,8 +49,8 @@ public class GroupControl extends TextControl implements FilterableLookupCriteri
     }
 
     @Override
-    public void performApplyModel(View view, Object model, Component parent) {
-        super.performApplyModel(view, model, parent);
+    public void performApplyModel(Object model, Component parent) {
+        super.performApplyModel(model, parent);
 
         if (!(parent instanceof InputField)) {
             return;
@@ -61,10 +62,10 @@ public class GroupControl extends TextControl implements FilterableLookupCriteri
             field.getAdditionalHiddenPropertyNames().add(groupIdPropertyName);
         }
 
-        buildGroupQuickfinder(view, model, field);
+        buildGroupQuickfinder(model, field);
     }
 
-    protected void buildGroupQuickfinder(View view,Object model, InputField field) {
+    protected void buildGroupQuickfinder(Object model, InputField field) {
         QuickFinder quickFinder = field.getQuickfinder();
 
         // don't build quickfinder if explicitly turned off
@@ -72,6 +73,7 @@ public class GroupControl extends TextControl implements FilterableLookupCriteri
             return;
         }
 
+        View view = ViewLifecycle.getActiveLifecycle().getView();
         boolean quickfinderCreated = false;
         if (quickFinder == null) {
             quickFinder = ComponentFactory.getQuickFinder();
@@ -109,7 +111,7 @@ public class GroupControl extends TextControl implements FilterableLookupCriteri
         // if we created the quickfinder here it will have missed the initialize and apply model phase (it
         // will be attached to the field for finalize)
         if (quickfinderCreated) {
-            view.getViewHelperService().spawnSubLifecyle(view, model, quickFinder, field,
+            ViewLifecycle.getActiveLifecycle().spawnSubLifecyle(model, quickFinder, field,
                     UifConstants.ViewPhases.INITIALIZE, UifConstants.ViewPhases.APPLY_MODEL);
         }
 

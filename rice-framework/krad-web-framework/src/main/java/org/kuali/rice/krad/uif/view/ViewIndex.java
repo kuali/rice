@@ -15,21 +15,20 @@
  */
 package org.kuali.rice.krad.uif.view;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.container.CollectionGroup;
-import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.field.DataField;
-import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.util.ComponentUtils;
-import org.kuali.rice.krad.uif.util.ViewCleaner;
-
 import java.beans.PropertyEditor;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.container.CollectionGroup;
+import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.ViewCleaner;
 
 /**
  * Holds component indexes of a <code>View</code> instance for convenient retrieval during the lifecycle

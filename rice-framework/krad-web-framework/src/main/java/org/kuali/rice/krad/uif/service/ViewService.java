@@ -94,8 +94,10 @@ public interface ViewService {
      * <code>View</code>, this is generally comes from the request
      * and can be the request parameter Map itself. Any parameters
      * not valid for the View will be filtered out
+     * 
+     * @return A copy of the view, built for rendering.
      */
-    public void buildView(View view, Object model, Map<String, String> parameters);
+    public View buildView(View view, Object model, Map<String, String> parameters);
 
     // TODO: remove once can get beans by type
     public ViewTypeService getViewTypeService(UifConstants.ViewType viewType);

@@ -15,23 +15,21 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import org.apache.commons.lang.StringUtils;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.BreadcrumbItem;
 import org.kuali.rice.krad.uif.util.BreadcrumbOptions;
 import org.kuali.rice.krad.uif.util.PageBreadcrumbOptions;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.web.form.UifFormBase;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * A PageGroup represents a page of a View.
@@ -66,8 +64,8 @@ public class PageGroup extends Group {
      *      Object)
      */
     @Override
-    public void performInitialization(View view, Object model) {
-        super.performInitialization(view, model);
+    public void performInitialization(Object model) {
+        super.performInitialization(model);
 
         //check to see if one of the items is a page, if so throw an exception
         for (Component item : this.getItems()) {
@@ -84,7 +82,7 @@ public class PageGroup extends Group {
             }
         }
 
-        breadcrumbOptions.setupBreadcrumbs(view, model);
+        breadcrumbOptions.setupBreadcrumbs(model);
     }
 
     /**
@@ -96,8 +94,8 @@ public class PageGroup extends Group {
      *      Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
+    public void performFinalize(Object model, Component parent) {
+        super.performFinalize(model, parent);
 
         this.addDataAttribute(UifConstants.DataAttributes.TYPE, "Page");
 
@@ -106,13 +104,14 @@ public class PageGroup extends Group {
             prefixScript = this.getOnDocumentReadyScript();
         }
 
+        View view = ViewLifecycle.getActiveLifecycle().getView();
         if (view instanceof FormView && ((FormView) view).isValidateClientSide()) {
             this.setOnDocumentReadyScript(prefixScript + "\nsetupPage(true);");
         } else {
             this.setOnDocumentReadyScript(prefixScript + "\nsetupPage(false);");
         }
 
-        breadcrumbOptions.finalizeBreadcrumbs(view, model, this, breadcrumbItem);
+        breadcrumbOptions.finalizeBreadcrumbs(model, this, breadcrumbItem);
     }
 
     /**

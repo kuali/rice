@@ -15,22 +15,23 @@
  */
 package org.kuali.rice.krad.web.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
-import org.kuali.rice.krad.web.form.HistoryManager;
-import org.kuali.rice.krad.web.form.UifFormManager;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
+import org.kuali.rice.krad.uif.util.ViewCleaner;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
+import org.kuali.rice.krad.web.form.HistoryManager;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.kuali.rice.krad.web.form.UifFormManager;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Spring controller intercepter for KRAD controllers
@@ -120,7 +121,7 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
             // full view render, clean view and back up
             View view = uifForm.getView();
             if (view != null) {
-                view.getViewHelperService().cleanViewAfterRender(view);
+                ViewCleaner.cleanView(view);
             }
 
             uifForm.setPostedView(view);
@@ -129,7 +130,7 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
             // partial refresh on posted view
             View postedView = uifForm.getPostedView();
             if (postedView != null) {
-                postedView.getViewHelperService().cleanViewAfterRender(postedView);
+                ViewCleaner.cleanView(postedView);
             }
         }
 

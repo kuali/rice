@@ -15,17 +15,16 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Tabs;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * A group that presents its child Groups as tabs.  Items in this group's item list must be Groups
@@ -59,8 +58,8 @@ public class TabGroup extends Group {
     }
 
     @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
+    public void performFinalize(Object model, Component parent) {
+        super.performFinalize(model, parent);
         this.addDataAttribute(UifConstants.DataAttributes.TYPE, "Uif-TabGroup");
     }
 

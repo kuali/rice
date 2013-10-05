@@ -15,7 +15,10 @@
  */
 package org.kuali.rice.krad.web.controller;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,9 +31,10 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -40,12 +44,6 @@ import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krad.web.form.UifFormManager;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Provides helper methods that will be used during the request lifecycle
@@ -88,7 +86,9 @@ public class UifControllerHelper {
             }
 
             if (viewType != null) {
-                Map<String, String> parameterMap = KRADUtils.translateRequestParameterMap(request.getParameterMap());
+                @SuppressWarnings("unchecked")
+                Map<String, String> parameterMap =
+                        KRADUtils.translateRequestParameterMap(request.getParameterMap());
                 viewId = getViewService().getViewIdForViewType(viewType, parameterMap);
             }
         }
@@ -162,8 +162,9 @@ public class UifControllerHelper {
 
             // Change properties on the the final component
             if (StringUtils.isNotBlank(changeProperties) && component != null){
-                HashMap<String,Object> changePropertiesMap = new ObjectMapper().readValue(changeProperties,
-                        HashMap.class);
+                @SuppressWarnings("unchecked")
+                HashMap<String, Object> changePropertiesMap =
+                        new ObjectMapper().readValue(changeProperties, HashMap.class);
 
                 for (String changePropertyPath : changePropertiesMap.keySet()){
                     Object value = changePropertiesMap.get(changePropertyPath);
@@ -220,7 +221,7 @@ public class UifControllerHelper {
      * @param request - request object
      * @param form - form instance containing the data and view instance
      */
-    public static void prepareViewForRendering(HttpServletRequest request, UifFormBase form) {
+    public static void prepareViewForRendering(HttpServletRequest request, final UifFormBase form) {
         // for component refreshes only lifecycle for component is performed
         if (form.isUpdateComponentRequest() || form.isUpdateDialogRequest()) {
             String refreshComponentId = form.getUpdateComponentId();
@@ -243,39 +244,58 @@ public class UifControllerHelper {
             }
 
             // get a new instance of the component
-            Component comp = ComponentFactory.getNewInstanceForRefresh(form.getPostedView(), refreshComponentId);
+            final Component comp =
+                    ComponentFactory.getNewInstanceForRefresh(form.getPostedView(), refreshComponentId);
 
             // run lifecycle and update in view
-            postedView.getViewHelperService().performComponentLifecycle(postedView, form, comp, refreshComponentId);
+            form.setPostedView(postedView = ViewLifecycle
+                    .performComponentLifecycle(postedView, form, comp, refreshComponentId).getView());
 
             // TODO: this should be in ViewHelperServiceImpl#performComponentLifecycle where other
             // adjustments are made, and it should use constants
 
-            // add the layout item style that should happen in the parent BoxLayoutManager
-            // and is skipped in a child component refresh
-            if (boxLayoutHorizontalItem) {
-                comp.addStyleClass("uif-boxLayoutHorizontalItem");
-            } else if (boxLayoutVerticalItem) {
-                comp.addStyleClass("uif-boxLayoutVerticalItem");
-            }
+            final boolean addHorizontal = boxLayoutHorizontalItem;
+            final boolean addVertical = boxLayoutVerticalItem;
+            ViewLifecycle.encapsulateInitialization(new Callable<Void>(){
+                @Override
+                public Void call() throws Exception {
+                    // add the layout item style that should happen in the parent BoxLayoutManager
+                    // and is skipped in a child component refresh
+                    if (addHorizontal) {
+                        comp.addStyleClass("uif-boxLayoutHorizontalItem");
+                    } else if (addVertical) {
+                        comp.addStyleClass("uif-boxLayoutVerticalItem");
+                    }
 
-            // regenerate server message content for page
-            postedView.getCurrentPage().getValidationMessages().generateMessages(false, postedView, form,
-                    postedView.getCurrentPage());
+                    View postedView = form.getPostedView();
+                    // regenerate server message content for page
+                    postedView.getCurrentPage().getValidationMessages().generateMessages(
+                            false, postedView, form, postedView.getCurrentPage());
+                    return null;
+                }});
+
         } else {
             // full view build
-            View view = form.getView();
+            final View view = form.getView();
             if ( view != null ) {
                 // set view page to page requested on form
                 if (StringUtils.isNotBlank(form.getPageId())) {
-                    view.setCurrentPageId(form.getPageId());
+                    // TODO: Move to within lifecycle
+                    ViewLifecycle.encapsulateInitialization(new Callable<Void>(){
+                        @Override
+                        public Void call() throws Exception {
+                            view.setCurrentPageId(form.getPageId());
+                            return null;
+                        }});
                 }
 
-                Map<String, String> parameterMap = KRADUtils.translateRequestParameterMap(request.getParameterMap());
+                @SuppressWarnings("unchecked")
+                Map<String, String> parameterMap =
+                    KRADUtils.translateRequestParameterMap(request.getParameterMap());
                 parameterMap.putAll(form.getViewRequestParameters());
 
                 // build view which will prepare for rendering
-                getViewService().buildView(view, form, parameterMap);
+                form.setView(getViewService().buildView(view, form, parameterMap));
             } else {
                 LOG.warn( "View in form was null: " + form);
             }

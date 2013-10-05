@@ -18,11 +18,12 @@ package org.kuali.rice.krad.uif.component;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -31,9 +32,12 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.control.ControlBase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
+import org.kuali.rice.krad.uif.util.LifecycleAwareList;
+import org.kuali.rice.krad.uif.util.LifecycleAwareMap;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
@@ -54,7 +58,15 @@ import org.kuali.rice.krad.util.KRADUtils;
  */
 @BeanTag(name = "componentBase-bean", parent = "Uif-ComponentBase")
 public abstract class ComponentBase extends UifDictionaryBeanBase implements Component {
+
     private static final long serialVersionUID = -4449335748129894350L;
+    
+    private static final Logger LOG = Logger.getLogger(ComponentBase.class);
+
+    /**
+     * Track mutability status.
+     */
+    private boolean mutable;
 
     private String id;
     private String baseId;
@@ -105,6 +117,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     private String cellWidth;
 
     private String style;
+    
     private List<String> libraryCssClasses;
     private List<String> cssClasses;
     private List<String> additionalCssClasses;
@@ -148,14 +161,12 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     private List<ComponentModifier> componentModifiers;
 
-    private Map<String, String> templateOptions;
+    protected Map<String, String> templateOptions;
+
     private String templateOptionsJSString;
 
     @ReferenceCopy(newCollectionInstance = true)
     private transient Map<String, Object> context;
-
-    @ReferenceCopy
-    private transient Map<String, Object> unmodifiableContext;
 
     private List<PropertyReplacer> propertyReplacers;
 
@@ -182,20 +193,78 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         disableSessionPersistence = false;
         forceSessionPersistence = false;
 
-        // TODO : lazy init
-        //    DONE: refreshWhenChangedPropertyNames = new ArrayList<String>();
-        //    DONE: additionalComponentsToRefresh = new ArrayList<String>();
-        //    DONE: finalizeMethodAdditionalArguments = new ArrayList<Object>();
-        //    DONE: cellCssClasses = new ArrayList<String>();
-        //    DONE: cssClasses = new ArrayList<String>();
-        //    DONE: componentModifiers = new ArrayList<ComponentModifier>();
-        //    DONE: templateOptions = new HashMap<String, String>();
-        //    DONE: context = new HashMap<String, Object>();
-        //    DONE: propertyReplacers = new ArrayList<PropertyReplacer>();
-        //    DONE: dataAttributes = new HashMap<String, String>();
-        // TODO: KULRICE-8954 test for NPE
+        context = Collections.emptyMap();
+        dataAttributes = Collections.emptyMap();
+        templateOptions = Collections.emptyMap();
         
-        unmodifiableContext = context = Collections.emptyMap();
+        cssClasses = Collections.emptyList();
+        libraryCssClasses = Collections.emptyList();
+        additionalCssClasses = Collections.emptyList();
+    }
+    
+    /**
+     * Check for mutability on the component before modifying state.
+     * 
+     * @param legalDuringInitialization True if the operation is legal during view configuration,
+     *        false if the operation is part of the component lifecycle.
+     * @throws IllegalStateException If the component is not mutable.
+     */
+    public void checkMutable(boolean legalDuringInitialization) {
+        try {
+            if (!ViewLifecycle.isActive()) {
+                throw new IllegalStateException("View context is not active");
+            }
+
+            if (ViewLifecycle.isCopyActive()) {
+                return;
+            }
+
+            if (ViewLifecycle.isLifecycleActive() && !(mutable && ViewLifecycle.isMutable(this))) {
+                throw new IllegalStateException(
+                        "Component " + getId() + " is immutable, use copy() to get a mutable instance");
+            }
+
+            if (ViewLifecycle.isInitializing() && !legalDuringInitialization) {
+                throw new IllegalStateException("View has not been fully initialized");
+            }
+        } catch (IllegalStateException e) {
+            
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Attempted to change an immutable component " + getClass() + " " + getId(), e);
+            }
+
+            throw e;
+        }
+    }
+
+    /**
+     * Determine if this layout manager is mutable.
+     * 
+     * <p>
+     * Most layout managers are immutable, and all are immutable expect during initialization
+     * and the during the view lifecycle. Those that have been copied within the view lifecycle,
+     * however, may be modified during the same lifecycle.
+     * </p>
+     * 
+     * @return True if the component is mutable.
+     */
+    public boolean isMutable(boolean legalBeforeConfiguration) {
+        return (ViewLifecycle.isLifecycleActive() && mutable && ViewLifecycle.isMutable(this)) ||
+                (ViewLifecycle.isInitializing() && legalBeforeConfiguration);
+    }
+    
+    /**
+     * Mark this component as mutable within the current view lifecycle.
+     * 
+     * @param mutable True to allow component state to change within the current view lifecycle.
+     */
+    public void allowModification() {
+        if (!ViewLifecycle.isLifecycleActive()) {
+            throw new IllegalStateException("View lifecycle is not active");
+        }
+        
+        this.mutable = true;
+        ViewLifecycle.setMutable(this);
     }
 
     /**
@@ -208,8 +277,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#performInitialization(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object)
      */
-    public void performInitialization(View view, Object model) {
-
+    @Override
+    public void performInitialization(Object model) {
+        checkMutable(false);
     }
 
     /**
@@ -223,7 +293,12 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#performApplyModel(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
-    public void performApplyModel(View view, Object model, Component parent) {
+    @Override
+    public void performApplyModel(Object model, Component parent) {
+        checkMutable(false);
+        
+        View view = ViewLifecycle.getActiveLifecycle().getView();
+        
         if (this.render && StringUtils.isNotEmpty(progressiveRender)) {
             // progressive anded with render, will not render at least one of the two are false
             ExpressionEvaluator expressionEvaluator = view.getViewHelperService().getExpressionEvaluator();
@@ -231,7 +306,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
             String adjustedProgressiveRender = expressionEvaluator.replaceBindingPrefixes(view, this,
                     progressiveRender);
 
-            Boolean progRenderEval = (Boolean) expressionEvaluator.evaluateExpression(unmodifiableContext,
+            Boolean progRenderEval = (Boolean) expressionEvaluator.evaluateExpression(context,
                     adjustedProgressiveRender);
 
             this.setRender(progRenderEval);
@@ -250,8 +325,13 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#performFinalize(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
-    public void performFinalize(View view, Object model, Component parent) {
-        ExpressionEvaluator expressionEvaluator = view.getViewHelperService().getExpressionEvaluator();
+    @Override
+    public void performFinalize(Object model, Component parent) {
+        checkMutable(false);
+
+        ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
+        View view = viewLifecycle.getView();
+        ExpressionEvaluator expressionEvaluator = viewLifecycle.getHelper().getExpressionEvaluator();
 
         // progressiveRender expression setup
         if (StringUtils.isNotEmpty(progressiveRender)) {
@@ -435,6 +515,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setId(java.lang.String)
      */
     public void setId(String id) {
+        checkMutable(true);
         this.id = id;
     }
 
@@ -449,6 +530,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setBaseId(java.lang.String)
      */
     public void setBaseId(String baseId) {
+        checkMutable(true);
         this.baseId = baseId;
     }
 
@@ -464,6 +546,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setTemplate(java.lang.String)
      */
     public void setTemplate(String template) {
+        checkMutable(true);
         this.template = template;
     }
 
@@ -479,6 +562,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setTemplateName(java.lang.String)
      */
     public void setTemplateName(String templateName) {
+        checkMutable(true);
         this.templateName = templateName;
     }
 
@@ -494,6 +578,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setTitle(java.lang.String)
      */
     public void setTitle(String title) {
+        checkMutable(true);
         this.title = title;
     }
 
@@ -509,6 +594,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setHidden(boolean)
      */
     public void setHidden(boolean hidden) {
+        checkMutable(true);
         this.hidden = hidden;
     }
 
@@ -524,6 +610,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setReadOnly(boolean)
      */
     public void setReadOnly(boolean readOnly) {
+        checkMutable(true);
         this.readOnly = readOnly;
     }
 
@@ -539,6 +626,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setRequired(java.lang.Boolean)
      */
     public void setRequired(Boolean required) {
+        checkMutable(true);
         this.required = required;
     }
 
@@ -554,6 +642,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setRender(boolean)
      */
     public void setRender(boolean render) {
+        checkMutable(true);
         this.render = render;
     }
 
@@ -569,6 +658,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setRetrieveViaAjax(boolean)
      */
     public void setRetrieveViaAjax(boolean retrieveViaAjax) {
+        checkMutable(true);
         this.retrieveViaAjax = retrieveViaAjax;
     }
 
@@ -584,6 +674,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setColSpan(int)
      */
     public void setColSpan(int colSpan) {
+        checkMutable(true);
         this.colSpan = colSpan;
     }
 
@@ -599,6 +690,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setRowSpan(int)
      */
     public void setRowSpan(int rowSpan) {
+        checkMutable(true);
         this.rowSpan = rowSpan;
     }
 
@@ -613,6 +705,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setCellCssClasses(java.util.List)
      */
     public void setCellCssClasses(List<String> cellCssClasses) {
+        checkMutable(true);
         this.cellCssClasses = cellCssClasses;
     }
 
@@ -620,6 +713,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#addCellCssClass(String)
      */
     public void addCellCssClass(String cssClass) {
+        checkMutable(false);
         if (this.cellCssClasses == null) {
             this.cellCssClasses = new ArrayList<String>();
         }
@@ -654,6 +748,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setCellStyle(java.lang.String)
      */
     public void setCellStyle(String cellStyle) {
+        checkMutable(true);
         this.cellStyle = cellStyle;
     }
 
@@ -668,6 +763,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setCellWidth(java.lang.String)
      */
     public void setCellWidth(String cellWidth) {
+        checkMutable(true);
         this.cellWidth = cellWidth;
     }
 
@@ -683,6 +779,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setAlign(java.lang.String)
      */
     public void setAlign(String align) {
+        checkMutable(true);
         this.align = align;
     }
 
@@ -698,6 +795,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setValign(java.lang.String)
      */
     public void setValign(String valign) {
+        checkMutable(true);
         this.valign = valign;
     }
 
@@ -713,6 +811,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setWidth(java.lang.String)
      */
     public void setWidth(String width) {
+        checkMutable(true);
         this.width = width;
     }
 
@@ -728,6 +827,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setStyle(java.lang.String)
      */
     public void setStyle(String style) {
+        checkMutable(true);
         this.style = style;
     }
 
@@ -742,6 +842,10 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @return the library cssClasses
      */
     public List<String> getLibraryCssClasses() {
+        if (libraryCssClasses == Collections.EMPTY_LIST && isMutable(true)) {
+            libraryCssClasses = new LifecycleAwareList<String>(this);
+        }
+        
         return libraryCssClasses;
     }
 
@@ -751,7 +855,13 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @param libraryCssClasses
      */
     public void setLibraryCssClasses(List<String> libraryCssClasses) {
-        this.libraryCssClasses = libraryCssClasses;
+        checkMutable(true);
+
+        if (libraryCssClasses == null) {
+            this.libraryCssClasses = Collections.emptyList();
+        } else {
+            this.libraryCssClasses = new LifecycleAwareList<String>(this, libraryCssClasses);
+        }
     }
 
     /**
@@ -759,14 +869,23 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     @BeanTagAttribute(name = "cssClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getCssClasses() {
-        return this.cssClasses;
+        if (cssClasses == Collections.EMPTY_LIST && isMutable(true)) {
+            cssClasses = new LifecycleAwareList<String>(this);
+        }
+        
+        return cssClasses;
     }
 
     /**
      * @see org.kuali.rice.krad.uif.component.Component#setCssClasses(java.util.List)
      */
     public void setCssClasses(List<String> cssClasses) {
-        this.cssClasses = cssClasses;
+        checkMutable(true);
+        if (cssClasses == null) {
+            this.cssClasses = Collections.emptyList();
+        } else {
+            this.cssClasses = new LifecycleAwareList<String>(this, cssClasses);
+        }
     }
 
     /**
@@ -774,14 +893,23 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     @BeanTagAttribute(name = "additionalCssClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getAdditionalCssClasses() {
-        return this.additionalCssClasses;
+        if (additionalCssClasses == Collections.EMPTY_LIST && isMutable(true)) {
+            additionalCssClasses = new LifecycleAwareList<String>(this);
+        }
+        
+        return additionalCssClasses;
     }
 
     /**
      * @see org.kuali.rice.krad.uif.component.Component#setAdditionalCssClasses(java.util.List)
      */
     public void setAdditionalCssClasses(List<String> additionalCssClasses) {
-        this.additionalCssClasses = additionalCssClasses;
+        checkMutable(true);
+        if (additionalCssClasses == null) {
+            this.additionalCssClasses = Collections.emptyList();
+        } else {
+            this.additionalCssClasses = new LifecycleAwareList<String>(this, additionalCssClasses);
+        }
     }
 
     /**
@@ -802,9 +930,15 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#addStyleClass(java.lang.String)
      */
     public void addStyleClass(String styleClass) {
-        if (cssClasses == null) {
-            cssClasses = new LinkedList<String>();
+        checkMutable(false);
+        if (StringUtils.isEmpty(styleClass)) {
+            return;
         }
+        
+        if (cssClasses.isEmpty()) {
+            setCssClasses(new ArrayList<String>());
+        }
+        
         if (!cssClasses.contains(styleClass)) {
             cssClasses.add(styleClass);
         }
@@ -814,6 +948,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#appendToStyle(java.lang.String)
      */
     public void appendToStyle(String styleRules) {
+        checkMutable(false);
         if (style == null) {
             style = "";
         }
@@ -834,6 +969,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @param finalizeMethodToCall
      */
     public void setFinalizeMethodToCall(String finalizeMethodToCall) {
+        checkMutable(true);
         this.finalizeMethodToCall = finalizeMethodToCall;
     }
 
@@ -851,6 +987,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @param finalizeMethodAdditionalArguments
      */
     public void setFinalizeMethodAdditionalArguments(List<Object> finalizeMethodAdditionalArguments) {
+        checkMutable(true);
         this.finalizeMethodAdditionalArguments = finalizeMethodAdditionalArguments;
     }
 
@@ -868,6 +1005,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @param finalizeMethodInvoker
      */
     public void setFinalizeMethodInvoker(MethodInvokerConfig finalizeMethodInvoker) {
+        checkMutable(true);
         this.finalizeMethodInvoker = finalizeMethodInvoker;
     }
 
@@ -883,6 +1021,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setSelfRendered(boolean)
      */
     public void setSelfRendered(boolean selfRendered) {
+        checkMutable(true);
         this.selfRendered = selfRendered;
     }
 
@@ -898,6 +1037,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setRenderedHtmlOutput(java.lang.String)
      */
     public void setRenderedHtmlOutput(String renderedHtmlOutput) {
+        checkMutable(true);
         this.renderedHtmlOutput = renderedHtmlOutput;
     }
 
@@ -913,6 +1053,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setDisableSessionPersistence(boolean)
      */
     public void setDisableSessionPersistence(boolean disableSessionPersistence) {
+        checkMutable(true);
         this.disableSessionPersistence = disableSessionPersistence;
     }
 
@@ -928,6 +1069,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setForceSessionPersistence(boolean)
      */
     public void setForceSessionPersistence(boolean forceSessionPersistence) {
+        checkMutable(true);
         this.forceSessionPersistence = forceSessionPersistence;
     }
 
@@ -943,6 +1085,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setComponentSecurity(org.kuali.rice.krad.uif.component.ComponentSecurity)
      */
     public void setComponentSecurity(ComponentSecurity componentSecurity) {
+        checkMutable(true);
         this.componentSecurity = componentSecurity;
     }
 
@@ -968,6 +1111,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.ComponentSecurity#setEditAuthz(boolean)
      */
     public void setEditAuthz(Boolean editAuthz) {
+        checkMutable(true);
         initializeComponentSecurity();
 
         this.componentSecurity.setEditAuthz(editAuthz);
@@ -986,6 +1130,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.ComponentSecurity#setViewAuthz(boolean)
      */
     public void setViewAuthz(Boolean viewAuthz) {
+        checkMutable(true);
         initializeComponentSecurity();
 
         this.componentSecurity.setViewAuthz(viewAuthz);
@@ -1003,7 +1148,10 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setComponentModifiers(java.util.List)
      */
     public void setComponentModifiers(List<ComponentModifier> componentModifiers) {
-        this.componentModifiers = componentModifiers;
+        checkMutable(true);
+        this.componentModifiers = componentModifiers == null
+                ? Collections.<ComponentModifier> emptyList()
+                : Collections.<ComponentModifier> unmodifiableList(componentModifiers);
     }
 
     /**
@@ -1011,18 +1159,23 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     @BeanTagAttribute(name = "context", type = BeanTagAttribute.AttributeType.MAPBEAN)
     public Map<String, Object> getContext() {
-        return this.unmodifiableContext;
+        if (context == Collections.EMPTY_MAP && isMutable(true)) {
+            context = new LifecycleAwareMap<String, Object>(this);
+        }
+        
+        return context;
     }
 
     /**
      * @see org.kuali.rice.krad.uif.component.Component#setContext(java.util.Map)
      */
     public void setContext(Map<String, Object> context) {
-        if (context == null || context.isEmpty()) {
-            this.unmodifiableContext = this.context = Collections.emptyMap();
+        checkMutable(true);
+
+        if (context == null) {
+            this.context = Collections.emptyMap();
         } else {
-            this.context = context;
-            this.unmodifiableContext = Collections.unmodifiableMap(this.context);
+            this.context = new LifecycleAwareMap<String, Object>(this, context);
         }
     }
 
@@ -1031,13 +1184,13 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      *      java.lang.Object)
      */
     public void pushObjectToContext(String objectName, Object object) {
-        if (this.context.isEmpty()) {
-            this.context = new HashMap<String, Object>();
-            this.unmodifiableContext = Collections.unmodifiableMap(this.context);
+        checkMutable(false);
+        if (context == Collections.EMPTY_MAP && isMutable(true)) {
+            context = new LifecycleAwareMap<String, Object>(this);
         }
 
         pushToPropertyReplacerContext(objectName, object);
-        this.context.put(objectName, object);
+        context.put(objectName, object);
     }
 
     /*
@@ -1045,6 +1198,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     * PropertyReplacer object. Only checks for a list, map or component.
     */
     protected void pushToPropertyReplacerContext(String objectName, Object object) {
+        checkMutable(false);
         List<Component> propertyReplacerComponents = getPropertyReplacerComponents();
         if (propertyReplacerComponents != null) {
             for (Component replacerComponent : propertyReplacerComponents) {
@@ -1057,15 +1211,15 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.ComponentBase#pushAllToContext
      */
     public void pushAllToContext(Map<String, Object> objects) {
+        checkMutable(false);
         if (objects == null || objects.isEmpty()) {
             return;
         }
         
-        if (this.context.isEmpty()) {
-            this.context = new HashMap<String, Object>();
-            this.unmodifiableContext = Collections.unmodifiableMap(this.context);
+        if (context == Collections.EMPTY_MAP && isMutable(true)) {
+            context = new LifecycleAwareMap<String, Object>(this);
         }
-
+        
         context.putAll(objects);
 
         List<Component> propertyReplacerComponents = getPropertyReplacerComponents();
@@ -1088,7 +1242,10 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setPropertyReplacers(java.util.List)
      */
     public void setPropertyReplacers(List<PropertyReplacer> propertyReplacers) {
-        this.propertyReplacers = propertyReplacers;
+        checkMutable(true);
+        this.propertyReplacers = propertyReplacers == null
+                ? Collections.<PropertyReplacer> emptyList()
+                : Collections.<PropertyReplacer> unmodifiableList(propertyReplacers);
     }
 
     /**
@@ -1105,6 +1262,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @param order
      */
     public void setOrder(int order) {
+        checkMutable(true);
         this.order = order;
     }
 
@@ -1120,6 +1278,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setToolTip(Tooltip)
      */
     public void setToolTip(Tooltip toolTip) {
+        checkMutable(true);
         this.toolTip = toolTip;
     }
 
@@ -1127,7 +1286,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see Component#getEventHandlerScript()
      */
     public String getEventHandlerScript() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append(ScriptUtils.buildEventHandlerScript(getId(), "load", getOnLoadScript()));
 
@@ -1168,6 +1327,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see ScriptEventSupport#setOnLoadScript(java.lang.String)
      */
     public void setOnLoadScript(String onLoadScript) {
+        checkMutable(true);
         this.onLoadScript = onLoadScript;
     }
 
@@ -1183,6 +1343,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see ScriptEventSupport#setOnDocumentReadyScript(java.lang.String)
      */
     public void setOnDocumentReadyScript(String onDocumentReadyScript) {
+        checkMutable(true);
         this.onDocumentReadyScript = onDocumentReadyScript;
     }
 
@@ -1198,6 +1359,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see ScriptEventSupport#setOnUnloadScript(java.lang.String)
      */
     public void setOnUnloadScript(String onUnloadScript) {
+        checkMutable(true);
         this.onUnloadScript = onUnloadScript;
     }
 
@@ -1213,6 +1375,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see ScriptEventSupport#setOnCloseScript(java.lang.String)
      */
     public void setOnCloseScript(String onCloseScript) {
+        checkMutable(true);
         this.onCloseScript = onCloseScript;
     }
 
@@ -1228,6 +1391,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see ScriptEventSupport#setOnBlurScript(java.lang.String)
      */
     public void setOnBlurScript(String onBlurScript) {
+        checkMutable(true);
         this.onBlurScript = onBlurScript;
     }
 
@@ -1243,6 +1407,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see ScriptEventSupport#setOnChangeScript(java.lang.String)
      */
     public void setOnChangeScript(String onChangeScript) {
+        checkMutable(true);
         this.onChangeScript = onChangeScript;
     }
 
@@ -1258,6 +1423,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see ScriptEventSupport#setOnClickScript(java.lang.String)
      */
     public void setOnClickScript(String onClickScript) {
+        checkMutable(true);
         this.onClickScript = onClickScript;
     }
 
@@ -1273,6 +1439,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see ScriptEventSupport#setOnDblClickScript(java.lang.String)
      */
     public void setOnDblClickScript(String onDblClickScript) {
+        checkMutable(true);
         this.onDblClickScript = onDblClickScript;
     }
 
@@ -1288,6 +1455,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see ScriptEventSupport#setOnFocusScript(java.lang.String)
      */
     public void setOnFocusScript(String onFocusScript) {
+        checkMutable(true);
         this.onFocusScript = onFocusScript;
     }
 
@@ -1303,6 +1471,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see ScriptEventSupport#setOnSubmitScript(java.lang.String)
      */
     public void setOnSubmitScript(String onSubmitScript) {
+        checkMutable(true);
         this.onSubmitScript = onSubmitScript;
     }
 
@@ -1318,6 +1487,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see ScriptEventSupport#setOnKeyPressScript(java.lang.String)
      */
     public void setOnKeyPressScript(String onKeyPressScript) {
+        checkMutable(true);
         this.onKeyPressScript = onKeyPressScript;
     }
 
@@ -1333,6 +1503,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see ScriptEventSupport#setOnKeyUpScript(java.lang.String)
      */
     public void setOnKeyUpScript(String onKeyUpScript) {
+        checkMutable(true);
         this.onKeyUpScript = onKeyUpScript;
     }
 
@@ -1348,6 +1519,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see ScriptEventSupport#setOnKeyDownScript(java.lang.String)
      */
     public void setOnKeyDownScript(String onKeyDownScript) {
+        checkMutable(true);
         this.onKeyDownScript = onKeyDownScript;
     }
 
@@ -1363,6 +1535,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see ScriptEventSupport#setOnMouseOverScript(java.lang.String)
      */
     public void setOnMouseOverScript(String onMouseOverScript) {
+        checkMutable(true);
         this.onMouseOverScript = onMouseOverScript;
     }
 
@@ -1378,6 +1551,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see ScriptEventSupport#setOnMouseOutScript(java.lang.String)
      */
     public void setOnMouseOutScript(String onMouseOutScript) {
+        checkMutable(true);
         this.onMouseOutScript = onMouseOutScript;
     }
 
@@ -1393,6 +1567,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see ScriptEventSupport#setOnMouseUpScript(java.lang.String)
      */
     public void setOnMouseUpScript(String onMouseUpScript) {
+        checkMutable(true);
         this.onMouseUpScript = onMouseUpScript;
     }
 
@@ -1408,6 +1583,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see ScriptEventSupport#setOnMouseDownScript(java.lang.String)
      */
     public void setOnMouseDownScript(String onMouseDownScript) {
+        checkMutable(true);
         this.onMouseDownScript = onMouseDownScript;
     }
 
@@ -1423,6 +1599,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see ScriptEventSupport#setOnMouseMoveScript(java.lang.String)
      */
     public void setOnMouseMoveScript(String onMouseMoveScript) {
+        checkMutable(true);
         this.onMouseMoveScript = onMouseMoveScript;
     }
 
@@ -1431,14 +1608,23 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     @BeanTagAttribute(name = "templateOptions", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getTemplateOptions() {
-        return this.templateOptions;
+        if (templateOptions == Collections.EMPTY_MAP && isMutable(true)) {
+            templateOptions = new LifecycleAwareMap<String, String>(this);
+        }
+        
+        return templateOptions;
     }
 
     /**
      * @see Component#setTemplateOptions(java.util.Map)
      */
     public void setTemplateOptions(Map<String, String> templateOptions) {
-        this.templateOptions = templateOptions;
+        checkMutable(true);
+        if (templateOptions == null) {
+            this.templateOptions = Collections.emptyMap();
+        } else {
+            this.templateOptions = new LifecycleAwareMap<String, String>(this, templateOptions);
+        }
     }
 
     /**
@@ -1455,23 +1641,22 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         }
 
         if (templateOptions == null) {
-            templateOptions = new HashMap<String, String>();
+            return "{}";
         }
+        
         StringBuilder sb = new StringBuilder();
-
         sb.append("{");
 
-        for (String optionKey : templateOptions.keySet()) {
-            String optionValue = templateOptions.get(optionKey);
+        for (Entry<String, String> option : templateOptions.entrySet()) {
 
             if (sb.length() > 1) {
                 sb.append(",");
             }
 
-            sb.append(optionKey);
+            sb.append(option.getKey());
             sb.append(":");
 
-            sb.append(ScriptUtils.convertToJsValue(optionValue));
+            sb.append(ScriptUtils.convertToJsValue(option.getValue()));
         }
 
         sb.append("}");
@@ -1481,6 +1666,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     @Override
     public void setTemplateOptionsJSString(String templateOptionsJSString) {
+        checkMutable(true);
         this.templateOptionsJSString = templateOptionsJSString;
     }
 
@@ -1515,6 +1701,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @param progressiveRender the progressiveRender to set.
      */
     public void setProgressiveRender(String progressiveRender) {
+        checkMutable(true);
         this.progressiveRender = progressiveRender;
     }
 
@@ -1549,6 +1736,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @param conditionalRefresh the conditionalRefresh to set
      */
     public void setConditionalRefresh(String conditionalRefresh) {
+        checkMutable(true);
         this.conditionalRefresh = conditionalRefresh;
     }
 
@@ -1612,6 +1800,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @param progressiveRenderViaAJAX the progressiveRenderViaAJAX to set.
      */
     public void setProgressiveRenderViaAJAX(boolean progressiveRenderViaAJAX) {
+        checkMutable(true);
         this.progressiveRenderViaAJAX = progressiveRenderViaAJAX;
     }
 
@@ -1638,6 +1827,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @param progressiveRenderAndRefresh the progressiveRenderAndRefresh to set.
      */
     public void setProgressiveRenderAndRefresh(boolean progressiveRenderAndRefresh) {
+        checkMutable(true);
         this.progressiveRenderAndRefresh = progressiveRenderAndRefresh;
     }
 
@@ -1655,7 +1845,10 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      *      List<java.lang.String>)
      */
     public void setRefreshWhenChangedPropertyNames(List<String> refreshWhenChangedPropertyNames) {
-        this.refreshWhenChangedPropertyNames = refreshWhenChangedPropertyNames;
+        checkMutable(true);
+        this.refreshWhenChangedPropertyNames = refreshWhenChangedPropertyNames == null ?
+                Collections.<String> emptyList() :
+                Collections.<String> unmodifiableList(refreshWhenChangedPropertyNames);
     }
 
     /**
@@ -1667,19 +1860,23 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see 
-     *      org.kuali.rice.krad.uif.component.Component#setAdditionalComponentsToRefresh(java.util.List
-     *      <java.lang.String>)
+     * @see org.kuali.rice.krad.uif.component.Component#setAdditionalComponentsToRefresh(java.util.List<java.lang.String>)
      */
     public void setAdditionalComponentsToRefresh(List<String> additionalComponentsToRefresh) {
-        this.additionalComponentsToRefresh = additionalComponentsToRefresh;
+        checkMutable(true);
+        this.additionalComponentsToRefresh = additionalComponentsToRefresh == null
+                ? Collections.<String> emptyList()
+                : Collections.<String> unmodifiableList(additionalComponentsToRefresh);
+        this.additionalComponentsToRefreshJs = null;
     }
 
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getAdditionalComponentsToRefreshJs
      */
     public String getAdditionalComponentsToRefreshJs() {
-        if (additionalComponentsToRefresh != null && !additionalComponentsToRefresh.isEmpty()) {
+        if (additionalComponentsToRefreshJs == null
+                && additionalComponentsToRefresh != null
+                && !additionalComponentsToRefresh.isEmpty()) {
             additionalComponentsToRefreshJs = ScriptUtils.convertStringListToJsArray(
                     this.getAdditionalComponentsToRefresh());
         }
@@ -1698,6 +1895,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setRefreshedByAction(boolean)
      */
     public void setRefreshedByAction(boolean refreshedByAction) {
+        checkMutable(true);
         this.refreshedByAction = refreshedByAction;
     }
 
@@ -1712,6 +1910,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see Component#setDisclosedByAction(boolean)
      */
     public void setDisclosedByAction(boolean disclosedByAction) {
+        checkMutable(true);
         this.disclosedByAction = disclosedByAction;
     }
 
@@ -1737,6 +1936,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @param refreshTimer
      */
     public void setRefreshTimer(int refreshTimer) {
+        checkMutable(true);
         this.refreshTimer = refreshTimer;
     }
 
@@ -1752,6 +1952,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setResetDataOnRefresh(boolean)
      */
     public void setResetDataOnRefresh(boolean resetDataOnRefresh) {
+        checkMutable(true);
         this.resetDataOnRefresh = resetDataOnRefresh;
     }
 
@@ -1785,6 +1986,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @param methodToCallOnRefresh
      */
     public void setMethodToCallOnRefresh(String methodToCallOnRefresh) {
+        checkMutable(true);
         this.methodToCallOnRefresh = methodToCallOnRefresh;
     }
 
@@ -1792,6 +1994,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @param skipInTabOrder flag
      */
     public void setSkipInTabOrder(boolean skipInTabOrder) {
+        checkMutable(true);
         this.skipInTabOrder = skipInTabOrder;
     }
 
@@ -1819,6 +2022,10 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     @BeanTagAttribute(name = "dataAttributes", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getDataAttributes() {
+        if (dataAttributes == Collections.EMPTY_MAP) {
+            dataAttributes = new LifecycleAwareMap<String, String>(this);
+        }
+        
         return dataAttributes;
     }
 
@@ -1829,7 +2036,12 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @param dataAttributes the data attributes to set for this component
      */
     public void setDataAttributes(Map<String, String> dataAttributes) {
-        this.dataAttributes = dataAttributes;
+        checkMutable(true);
+        if (dataAttributes == null) {
+            this.dataAttributes = Collections.emptyMap();
+        } else {
+            this.dataAttributes = new LifecycleAwareMap<String, String>(this, dataAttributes);
+        }
     }
 
     /**
@@ -1839,8 +2051,10 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @param value value of the data attribute
      */
     public void addDataAttribute(String key, String value) {
-        if (this.dataAttributes == null) {
-            this.dataAttributes = new HashMap<String, String>();
+        checkMutable(true);
+        
+        if (dataAttributes == Collections.EMPTY_MAP) {
+            dataAttributes = new LifecycleAwareMap<String, String>(this);
         }
 
         dataAttributes.put(key, value);
@@ -1895,6 +2109,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see Component#setPreRenderContent(String)
      */
     public void setPreRenderContent(String preRenderContent) {
+        checkMutable(true);
         this.preRenderContent = preRenderContent;
     }
 
@@ -1910,7 +2125,36 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see Component#setPostRenderContent(String)
      */
     public void setPostRenderContent(String postRenderContent) {
+        checkMutable(true);
         this.postRenderContent = postRenderContent;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copy()
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T copy() {
+        if (!ViewLifecycle.isActive()) {
+            throw new IllegalStateException("View context is not active");
+        }
+        
+        ComponentBase copy = null;
+        try {
+            copy = (ComponentBase) this.getClass().newInstance();
+        } catch (InstantiationException e) {
+            throw new IllegalStateException("Failed to copy component", e);
+        } catch (IllegalAccessException e) {
+            throw new IllegalStateException("Failed to copy component", e);
+        }
+
+        if (ViewLifecycle.isLifecycleActive()) {
+            copy.allowModification();
+        }
+        
+        copyProperties(copy);
+
+        return (T) copy;
     }
 
     /**
@@ -2036,11 +2280,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
             componentCopy.setToolTip((Tooltip) this.toolTip.copy());
         }
 
-        if (!this.context.isEmpty()) {
-            Map<String, Object> contextCopy = new HashMap<String, Object>(this.context);
-
-            componentCopy.setContext(contextCopy);
-        }
+        componentCopy.setContext(new HashMap<String, Object>(this.context));
 
         if (propertyReplacers != null) {
             List<PropertyReplacer> propertyReplacersCopy = new ArrayList<PropertyReplacer>();

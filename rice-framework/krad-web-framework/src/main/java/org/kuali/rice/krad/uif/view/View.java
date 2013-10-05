@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.view;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -46,6 +48,7 @@ import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.element.ViewHeader;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.BooleanMap;
 import org.kuali.rice.krad.uif.util.BreadcrumbItem;
@@ -54,11 +57,14 @@ import org.kuali.rice.krad.uif.util.ClientValidationUtils;
 import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.LifecycleAwareList;
+import org.kuali.rice.krad.uif.util.LifecycleAwareMap;
 import org.kuali.rice.krad.uif.util.ParentLocation;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.widget.BlockUI;
 import org.kuali.rice.krad.uif.widget.Breadcrumbs;
 import org.kuali.rice.krad.uif.widget.Growls;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
@@ -91,8 +97,6 @@ import org.kuali.rice.krad.web.form.UifFormBase;
         @BeanTag(name = "view-knsTheme-bean", parent = "Uif-View-KnsTheme")})
 public class View extends ContainerBase {
     private static final long serialVersionUID = -1220009725554576953L;
-
-    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(View.class);
 
     private String namespaceCode;
     private String viewName;
@@ -162,8 +166,8 @@ public class View extends ContainerBase {
     private ViewPresentationController presentationController;
     private ViewAuthorizer authorizer;
 
-    private BooleanMap actionFlags;
-    private BooleanMap editModes;
+    private Map<String, Boolean> actionFlags;
+    private Map<String, Boolean> editModes;
 
     private Map<String, String> expressionVariables;
 
@@ -171,13 +175,12 @@ public class View extends ContainerBase {
     private boolean mergeWithPageItems;
     private PageGroup page;
 
-    private List<? extends Group> items;
     private List<Group> dialogs;
 
     private Link viewMenuLink;
     private String viewMenuGroupName;
 
-    private boolean applyDirtyCheck;
+    protected boolean applyDirtyCheck;
     private boolean translateCodesOnReadOnlyDisplay;
     private boolean supportsRequestOverrideOfReadOnlyFields;
     private boolean disableNativeAutocomplete;
@@ -185,12 +188,15 @@ public class View extends ContainerBase {
 
     private String preLoadScript;
 
+    private List<Group> items;
     private List<String> viewTemplates;
     
     private Class<? extends ViewHelperService> viewHelperServiceClass;
 
     @ReferenceCopy
     private ViewHelperService viewHelperService;
+
+    private Map<String, Object> preModelContext;
 
     public View() {
         singlePageView = false;
@@ -207,15 +213,16 @@ public class View extends ContainerBase {
         idSequence = 0;
         this.viewIndex = new ViewIndex();
 
-        additionalScriptFiles = new ArrayList<String>();
-        additionalCssFiles = new ArrayList<String>();
-        items = new ArrayList<Group>();
-        objectPathToConcreteClassMapping = new HashMap<String, Class<?>>();
-        viewRequestParameters = new HashMap<String, String>();
-        expressionVariables = new HashMap<String, String>();
+        additionalScriptFiles = Collections.emptyList();
+        additionalCssFiles = Collections.emptyList();
+        objectPathToConcreteClassMapping = Collections.emptyMap();
+        viewRequestParameters = Collections.emptyMap();
+        expressionVariables = Collections.emptyMap();
 
-        dialogs = new ArrayList<Group>();
-        viewTemplates = new ArrayList<String>();
+        dialogs = Collections.emptyList();
+
+        items = Collections.emptyList();
+        viewTemplates = Collections.emptyList();
     }
 
     /**
@@ -233,8 +240,10 @@ public class View extends ContainerBase {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public void performInitialization(View view, Object model) {
-        super.performInitialization(view, model);
+    public void performInitialization(Object model) {
+        super.performInitialization(model);
+        
+        assert this == ViewLifecycle.getActiveLifecycle().getView();
 
         // populate items on page for single paged view
         if (singlePageView) {
@@ -244,7 +253,7 @@ public class View extends ContainerBase {
                     page.setItems(new ArrayList<Group>());
                 }
 
-                view.assignComponentIds(page);
+                assignComponentIds(page);
 
                 // add the items configured on the view to the page items, and set as the
                 // new page items
@@ -272,17 +281,17 @@ public class View extends ContainerBase {
             Group warningDialog = ComponentFactory.getSessionTimeoutWarningDialog();
 
             warningDialog.setId(ComponentFactory.SESSION_TIMEOUT_WARNING_DIALOG);
-            view.assignComponentIds(warningDialog);
+            assignComponentIds(warningDialog);
             getDialogs().add(warningDialog);
 
             Group timeoutDialog = ComponentFactory.getSessionTimeoutDialog();
 
             timeoutDialog.setId(ComponentFactory.SESSION_TIMEOUT_DIALOG);
-            view.assignComponentIds(timeoutDialog);
+            assignComponentIds(timeoutDialog);
             getDialogs().add(timeoutDialog);
         }
 
-        breadcrumbOptions.setupBreadcrumbs(view, model);
+        breadcrumbOptions.setupBreadcrumbs(model);
     }
 
     /**
@@ -293,12 +302,14 @@ public class View extends ContainerBase {
      * <li>Invoke theme to configure defaults</li>
      * </ul>
      */
-    public void performApplyModel(View view, Object model, Component parent) {
-        super.performApplyModel(view, model, parent);
+    @Override
+    public void performApplyModel(Object model, Component parent) {
+        super.performApplyModel(model, parent);
 
+        View view = ViewLifecycle.getActiveLifecycle().getView();
         if (theme != null) {
-            view.getViewHelperService().getExpressionEvaluator().evaluateExpressionsOnConfigurable(view, theme,
-                    getContext());
+            ViewLifecycle.getActiveLifecycle().getHelper().getExpressionEvaluator()
+                .evaluateExpressionsOnConfigurable(view, theme, getContext());
 
             theme.configureThemeDefaults();
         }
@@ -319,8 +330,10 @@ public class View extends ContainerBase {
      *      Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
+    public void performFinalize(Object model, Component parent) {
+        super.performFinalize(model, parent);
+        
+        assert this == ViewLifecycle.getActiveLifecycle().getView();
 
         String preLoadScript = "";
         if (this.getPreLoadScript() != null) {
@@ -328,12 +341,12 @@ public class View extends ContainerBase {
         }
 
         // Retrieve Growl and BlockUI settings
-        Growls gw = view.getGrowls();
+        Growls gw = getGrowls();
         if (!gw.getTemplateOptions().isEmpty()) {
             preLoadScript += "setGrowlDefaults(" + gw.getTemplateOptionsJSString() + ");";
         }
 
-        BlockUI navBlockUI = view.getNavigationBlockUI();
+        BlockUI navBlockUI = getNavigationBlockUI();
         if (!navBlockUI.getTemplateOptions().isEmpty()) {
             preLoadScript += "setBlockUIDefaults("
                     + navBlockUI.getTemplateOptionsJSString()
@@ -342,7 +355,7 @@ public class View extends ContainerBase {
                     + "');";
         }
 
-        BlockUI refBlockUI = view.getRefreshBlockUI();
+        BlockUI refBlockUI = getRefreshBlockUI();
         if (!refBlockUI.getTemplateOptions().isEmpty()) {
             preLoadScript += "setBlockUIDefaults("
                     + refBlockUI.getTemplateOptionsJSString()
@@ -388,7 +401,7 @@ public class View extends ContainerBase {
         this.setOnDocumentReadyScript(onReadyScript);
 
         // breadcrumb handling
-        breadcrumbOptions.finalizeBreadcrumbs(view, model, this, breadcrumbItem);
+        breadcrumbOptions.finalizeBreadcrumbs(model, this, breadcrumbItem);
 
         // add validation default js options for validation framework to View's data attributes
         Object groupValidationDataDefaults = KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
@@ -426,10 +439,13 @@ public class View extends ContainerBase {
 
         assignComponentId(component);
 
+        // TODO: Tail recursion
         // assign id to nested components
-        List<Component> allNested = new ArrayList<Component>(component.getComponentsForLifecycle());
-        allNested.addAll(component.getComponentPrototypes());
-        for (Component nestedComponent : allNested) {
+        for (Component nestedComponent : component.getComponentsForLifecycle()) {
+            assignComponentIds(nestedComponent);
+        }
+        
+        for (Component nestedComponent : component.getComponentPrototypes()) {
             assignComponentIds(nestedComponent);
         }
 
@@ -451,6 +467,7 @@ public class View extends ContainerBase {
      * @param view view instance containing the pages
      */
     protected void assignPageIds(View view) {
+        checkMutable(false);
         // single page view
         if (view.isSinglePageView() && view.getPage() != null) {
             assignComponentId(view.getPage());
@@ -483,6 +500,7 @@ public class View extends ContainerBase {
      * @param component component to assign id to
      */
     protected void assignComponentId(Component component) {
+        checkMutable(false);
         Integer currentSequenceVal = idSequence;
 
         // assign ID if necessary
@@ -584,9 +602,9 @@ public class View extends ContainerBase {
      * will get pushed into the configured page and sorted through the page
      */
     @Override
-    protected void sortItems(View view, Object model) {
+    protected void sortItems(Object model) {
         if (!singlePageView) {
-            super.sortItems(view, model);
+            super.sortItems(model);
         }
     }
 
@@ -611,6 +629,7 @@ public class View extends ContainerBase {
      * @param namespaceCode
      */
     public void setNamespaceCode(String namespaceCode) {
+        checkMutable(true);
         this.namespaceCode = namespaceCode;
     }
 
@@ -639,6 +658,7 @@ public class View extends ContainerBase {
      * @param viewName
      */
     public void setViewName(String viewName) {
+        checkMutable(true);
         this.viewName = viewName;
     }
 
@@ -659,6 +679,7 @@ public class View extends ContainerBase {
      * @param unifiedHeader
      */
     public void setUnifiedHeader(boolean unifiedHeader) {
+        checkMutable(true);
         this.unifiedHeader = unifiedHeader;
     }
 
@@ -678,6 +699,7 @@ public class View extends ContainerBase {
      * @param topGroup
      */
     public void setTopGroup(Group topGroup) {
+        checkMutable(true);
         this.topGroup = topGroup;
     }
 
@@ -703,6 +725,7 @@ public class View extends ContainerBase {
      * @param applicationHeader
      */
     public void setApplicationHeader(Header applicationHeader) {
+        checkMutable(true);
         this.applicationHeader = applicationHeader;
     }
 
@@ -728,6 +751,7 @@ public class View extends ContainerBase {
      * @param applicationFooter
      */
     public void setApplicationFooter(Group applicationFooter) {
+        checkMutable(true);
         this.applicationFooter = applicationFooter;
     }
 
@@ -747,6 +771,7 @@ public class View extends ContainerBase {
      * @param stickyTopGroup
      */
     public void setStickyTopGroup(boolean stickyTopGroup) {
+        checkMutable(true);
         this.stickyTopGroup = stickyTopGroup;
     }
 
@@ -766,6 +791,7 @@ public class View extends ContainerBase {
      * @param stickyBreadcrumbs
      */
     public void setStickyBreadcrumbs(boolean stickyBreadcrumbs) {
+        checkMutable(true);
         this.stickyBreadcrumbs = stickyBreadcrumbs;
     }
 
@@ -789,6 +815,7 @@ public class View extends ContainerBase {
      * @param stickyHeader
      */
     public void setStickyHeader(boolean stickyHeader) {
+        checkMutable(true);
         this.stickyHeader = stickyHeader;
         if (this.getHeader() != null && this.getHeader() instanceof ViewHeader) {
             ((ViewHeader) this.getHeader()).setSticky(stickyHeader);
@@ -811,6 +838,7 @@ public class View extends ContainerBase {
      * @param stickyApplicationHeader
      */
     public void setStickyApplicationHeader(boolean stickyApplicationHeader) {
+        checkMutable(true);
         this.stickyApplicationHeader = stickyApplicationHeader;
     }
 
@@ -830,6 +858,7 @@ public class View extends ContainerBase {
      * @param stickyFooter
      */
     public void setStickyFooter(boolean stickyFooter) {
+        checkMutable(true);
         this.stickyFooter = stickyFooter;
         if (this.getFooter() != null) {
             this.getFooter().addDataAttribute(UifConstants.DataAttributes.STICKY_FOOTER, Boolean.toString(
@@ -853,6 +882,7 @@ public class View extends ContainerBase {
      * @param stickyApplicationFooter
      */
     public void setStickyApplicationFooter(boolean stickyApplicationFooter) {
+        checkMutable(true);
         this.stickyApplicationFooter = stickyApplicationFooter;
     }
 
@@ -871,6 +901,7 @@ public class View extends ContainerBase {
      * @param idSequence
      */
     public void setIdSequence(int idSequence) {
+        checkMutable(true);
         this.idSequence = idSequence;
     }
 
@@ -880,6 +911,7 @@ public class View extends ContainerBase {
      * @return next id available
      */
     public String getNextId() {
+        checkMutable(false);
         idSequence += 1;
         return Integer.toString(idSequence);
     }
@@ -902,6 +934,7 @@ public class View extends ContainerBase {
      * @param entryPageId
      */
     public void setEntryPageId(String entryPageId) {
+        checkMutable(true);
         this.entryPageId = entryPageId;
     }
 
@@ -916,6 +949,10 @@ public class View extends ContainerBase {
      * @return id of the page that should be displayed
      */
     public String getCurrentPageId() {
+        if (!isFinal()) {
+            checkMutable(false);
+        }
+        
         // default current page if not set
         if (StringUtils.isBlank(currentPageId)) {
             if (StringUtils.isNotBlank(entryPageId)) {
@@ -935,6 +972,7 @@ public class View extends ContainerBase {
      * @param currentPageId
      */
     public void setCurrentPageId(String currentPageId) {
+        checkMutable(true);
         this.currentPageId = currentPageId;
     }
 
@@ -959,6 +997,7 @@ public class View extends ContainerBase {
      * @param navigation
      */
     public void setNavigation(Group navigation) {
+        checkMutable(true);
         this.navigation = navigation;
     }
 
@@ -982,6 +1021,7 @@ public class View extends ContainerBase {
      * @param formClass
      */
     public void setFormClass(Class<?> formClass) {
+        checkMutable(true);
         this.formClass = formClass;
     }
 
@@ -1005,6 +1045,7 @@ public class View extends ContainerBase {
      * @param defaultBindingObjectPath
      */
     public void setDefaultBindingObjectPath(String defaultBindingObjectPath) {
+        checkMutable(true);
         this.defaultBindingObjectPath = defaultBindingObjectPath;
     }
 
@@ -1043,6 +1084,7 @@ public class View extends ContainerBase {
      * @param objectPathToConcreteClassMapping
      */
     public void setObjectPathToConcreteClassMapping(Map<String, Class<?>> objectPathToConcreteClassMapping) {
+        checkMutable(true);
         this.objectPathToConcreteClassMapping = objectPathToConcreteClassMapping;
     }
 
@@ -1061,7 +1103,11 @@ public class View extends ContainerBase {
      */
     @BeanTagAttribute(name = "additionalScriptFiles", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getAdditionalScriptFiles() {
-        return this.additionalScriptFiles;
+        if (additionalScriptFiles == Collections.EMPTY_LIST && isMutable(true)) {
+            additionalScriptFiles = new LifecycleAwareList<String>(this);
+        }
+        
+        return additionalScriptFiles;
     }
 
     /**
@@ -1071,7 +1117,12 @@ public class View extends ContainerBase {
      * @param additionalScriptFiles
      */
     public void setAdditionalScriptFiles(List<String> additionalScriptFiles) {
-        this.additionalScriptFiles = additionalScriptFiles;
+        checkMutable(true);
+        if (additionalScriptFiles == null) {
+            this.additionalScriptFiles = Collections.emptyList();
+        } else {
+            this.additionalScriptFiles = new LifecycleAwareList<String>(this, additionalScriptFiles);
+        }
     }
 
     /**
@@ -1089,7 +1140,11 @@ public class View extends ContainerBase {
      */
     @BeanTagAttribute(name = "additionalCssFiles", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getAdditionalCssFiles() {
-        return this.additionalCssFiles;
+        if (additionalCssFiles == Collections.EMPTY_LIST && isMutable(true)) {
+            additionalCssFiles = new LifecycleAwareList<String>(this);
+        }
+        
+        return additionalCssFiles;
     }
 
     /**
@@ -1099,7 +1154,12 @@ public class View extends ContainerBase {
      * @param additionalCssFiles
      */
     public void setAdditionalCssFiles(List<String> additionalCssFiles) {
-        this.additionalCssFiles = additionalCssFiles;
+        checkMutable(true);
+        if (additionalCssFiles == null) {
+            this.additionalCssFiles = Collections.emptyList();
+        } else {
+            this.additionalCssFiles = new LifecycleAwareList<String>(this, additionalCssFiles);
+        }
     }
 
     /**
@@ -1117,6 +1177,7 @@ public class View extends ContainerBase {
      * @param useLibraryCssClasses
      */
     public void setUseLibraryCssClasses(boolean useLibraryCssClasses) {
+        checkMutable(true);
         this.useLibraryCssClasses = useLibraryCssClasses;
     }
 
@@ -1139,7 +1200,30 @@ public class View extends ContainerBase {
      * @return list of template names that should be included for rendering the view
      */
     public List<String> getViewTemplates() {
+        if (viewTemplates == Collections.EMPTY_LIST && isMutable(true)) {
+            viewTemplates = new LifecycleAwareList<String>(this);
+        }
+        
         return viewTemplates;
+    }
+
+    /**
+     * This method ...
+     * 
+     * @param template
+     */
+    public void addViewTemplate(String template) {
+        if (StringUtils.isEmpty(template)) {
+            return;
+        }
+        
+        if (viewTemplates.isEmpty()) {
+            setViewTemplates(new ArrayList<String>());
+        }
+        
+        if (!viewTemplates.contains(template)) {
+            viewTemplates.add(template);
+        }
     }
 
     /**
@@ -1148,7 +1232,13 @@ public class View extends ContainerBase {
      * @param viewTemplates
      */
     public void setViewTemplates(List<String> viewTemplates) {
-        this.viewTemplates = viewTemplates;
+        checkMutable(true);
+        
+        if (viewTemplates == null) {
+            this.viewTemplates = Collections.emptyList();
+        } else {
+            this.viewTemplates = new LifecycleAwareList<String>(this, viewTemplates);
+        }
     }
 
     /**
@@ -1175,6 +1265,7 @@ public class View extends ContainerBase {
      * @param viewTypeName
      */
     public void setViewTypeName(ViewType viewTypeName) {
+        checkMutable(true);
         this.viewTypeName = viewTypeName;
     }
 
@@ -1197,6 +1288,7 @@ public class View extends ContainerBase {
      * @param viewHelperServiceClass
      */
     public void setViewHelperServiceClass(Class<? extends ViewHelperService> viewHelperServiceClass) {
+        checkMutable(true);
         this.viewHelperServiceClass = viewHelperServiceClass;
         if ((this.viewHelperService == null) && (this.viewHelperServiceClass != null)) {
             viewHelperService = DataObjectUtils.newInstance(viewHelperServiceClass);
@@ -1219,6 +1311,7 @@ public class View extends ContainerBase {
      * @param viewHelperService
      */
     public void setViewHelperService(ViewHelperService viewHelperService) {
+        checkMutable(true);
         this.viewHelperService = viewHelperService;
     }
 
@@ -1226,6 +1319,7 @@ public class View extends ContainerBase {
      * Invoked to produce a ViewIndex of the current view's components
      */
     public void index() {
+        checkMutable(false);
         if (this.viewIndex == null) {
             this.viewIndex = new ViewIndex();
         }
@@ -1272,7 +1366,8 @@ public class View extends ContainerBase {
      * @param viewRequestParameters
      */
     public void setViewRequestParameters(Map<String, String> viewRequestParameters) {
-        this.viewRequestParameters = viewRequestParameters;
+        checkMutable(true);
+        this.viewRequestParameters = Collections.unmodifiableMap(viewRequestParameters);
     }
 
     /**
@@ -1314,6 +1409,7 @@ public class View extends ContainerBase {
      * @param persistFormToSession
      */
     public void setPersistFormToSession(boolean persistFormToSession) {
+        checkMutable(true);
         this.persistFormToSession = persistFormToSession;
     }
 
@@ -1322,6 +1418,7 @@ public class View extends ContainerBase {
     }
 
     public void setSessionPolicy(ViewSessionPolicy sessionPolicy) {
+        checkMutable(true);
         this.sessionPolicy = sessionPolicy;
     }
 
@@ -1349,6 +1446,7 @@ public class View extends ContainerBase {
      * @param presentationController
      */
     public void setPresentationController(ViewPresentationController presentationController) {
+        checkMutable(true);
         this.presentationController = presentationController;
     }
 
@@ -1359,6 +1457,7 @@ public class View extends ContainerBase {
      */
     public void setPresentationControllerClass(
             Class<? extends ViewPresentationController> presentationControllerClass) {
+        checkMutable(true);
         this.presentationController = DataObjectUtils.newInstance(presentationControllerClass);
     }
 
@@ -1389,6 +1488,7 @@ public class View extends ContainerBase {
      * @param authorizer
      */
     public void setAuthorizer(ViewAuthorizer authorizer) {
+        checkMutable(true);
         this.authorizer = authorizer;
     }
 
@@ -1398,6 +1498,7 @@ public class View extends ContainerBase {
      * @param authorizerClass
      */
     public void setAuthorizerClass(Class<? extends ViewAuthorizer> authorizerClass) {
+        checkMutable(true);
         this.authorizer = DataObjectUtils.newInstance(authorizerClass);
     }
 
@@ -1411,8 +1512,12 @@ public class View extends ContainerBase {
      * @return action flags
      */
     @BeanTagAttribute(name = "actionFlags", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public BooleanMap getActionFlags() {
-        return this.actionFlags;
+    public Map<String, Boolean> getActionFlags() {
+        if (actionFlags == Collections.EMPTY_MAP && isMutable(true)) {
+            actionFlags = new LifecycleAwareMap<String, Boolean>(this);
+        }
+        
+        return actionFlags;
     }
 
     /**
@@ -1420,8 +1525,13 @@ public class View extends ContainerBase {
      *
      * @param actionFlags
      */
-    public void setActionFlags(BooleanMap actionFlags) {
-        this.actionFlags = actionFlags;
+    public void setActionFlags(Map<String, Boolean> actionFlags) {
+        checkMutable(true);
+        if (actionFlags == null) {
+            this.actionFlags = Collections.emptyMap();
+        } else {
+            this.actionFlags = new LifecycleAwareMap<String, Boolean>(this, actionFlags);
+        }
     }
 
     /**
@@ -1435,8 +1545,12 @@ public class View extends ContainerBase {
      * @return edit modes
      */
     @BeanTagAttribute(name = "editModes", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public BooleanMap getEditModes() {
-        return this.editModes;
+    public Map<String, Boolean> getEditModes() {
+        if (editModes == Collections.EMPTY_MAP && isMutable(true)) {
+            editModes = new LifecycleAwareMap<String, Boolean>(this);
+        }
+        
+        return editModes;
     }
 
     /**
@@ -1444,8 +1558,13 @@ public class View extends ContainerBase {
      *
      * @param editModes
      */
-    public void setEditModes(BooleanMap editModes) {
-        this.editModes = editModes;
+    public void setEditModes(Map<String, Boolean> editModes) {
+        checkMutable(true);
+        if (editModes == null) {
+            this.editModes = Collections.emptyMap();
+        } else {
+            this.editModes = new LifecycleAwareMap<String, Boolean>(this, actionFlags);
+        }
     }
 
     /**
@@ -1474,7 +1593,8 @@ public class View extends ContainerBase {
      * @param expressionVariables
      */
     public void setExpressionVariables(Map<String, String> expressionVariables) {
-        this.expressionVariables = expressionVariables;
+        checkMutable(true);
+        this.expressionVariables = Collections.unmodifiableMap(expressionVariables);
     }
 
     /**
@@ -1499,6 +1619,7 @@ public class View extends ContainerBase {
      * @param singlePageView
      */
     public void setSinglePageView(boolean singlePageView) {
+        checkMutable(true);
         this.singlePageView = singlePageView;
     }
 
@@ -1519,6 +1640,7 @@ public class View extends ContainerBase {
      * @param mergeWithPageItems
      */
     public void setMergeWithPageItems(boolean mergeWithPageItems) {
+        checkMutable(true);
         this.mergeWithPageItems = mergeWithPageItems;
     }
 
@@ -1541,6 +1663,7 @@ public class View extends ContainerBase {
      * @param page
      */
     public void setPage(PageGroup page) {
+        checkMutable(true);
         this.page = page;
     }
 
@@ -1550,7 +1673,11 @@ public class View extends ContainerBase {
     @Override
     @BeanTagAttribute(name = "items", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<? extends Group> getItems() {
-        return this.items;
+        if (items == Collections.EMPTY_LIST && isMutable(true)) {
+            items = new LifecycleAwareList<Group>(this);
+        }
+        
+        return items;
     }
 
     /**
@@ -1558,10 +1685,17 @@ public class View extends ContainerBase {
      *
      * @param items
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void setItems(List<? extends Component> items) {
-        // TODO: fix this generic issue
-        this.items = (List<? extends Group>) items;
+        checkMutable(true);
+        
+        if (items == null) {
+            items = Collections.emptyList();
+        } else {
+            // TODO: Fix this unchecked condition.
+            this.items = new LifecycleAwareList<Group>(this, (List<Group>) items);
+        }
     }
 
     /**
@@ -1580,7 +1714,8 @@ public class View extends ContainerBase {
      * @param dialogs List of dialog groups
      */
     public void setDialogs(List<Group> dialogs) {
-        this.dialogs = dialogs;
+        checkMutable(true);
+        this.dialogs = Collections.unmodifiableList(dialogs);
     }
 
     /**
@@ -1600,6 +1735,7 @@ public class View extends ContainerBase {
      * @param viewMenuLink
      */
     public void setViewMenuLink(Link viewMenuLink) {
+        checkMutable(true);
         this.viewMenuLink = viewMenuLink;
     }
 
@@ -1620,6 +1756,7 @@ public class View extends ContainerBase {
      * @param viewMenuGroupName
      */
     public void setViewMenuGroupName(String viewMenuGroupName) {
+        checkMutable(true);
         this.viewMenuGroupName = viewMenuGroupName;
     }
 
@@ -1647,6 +1784,7 @@ public class View extends ContainerBase {
      * @param viewStatus
      */
     public void setViewStatus(String viewStatus) {
+        checkMutable(true);
         this.viewStatus = viewStatus;
     }
 
@@ -1684,6 +1822,7 @@ public class View extends ContainerBase {
      * @param breadcrumbs the breadcrumbs to set
      */
     public void setBreadcrumbs(Breadcrumbs breadcrumbs) {
+        checkMutable(true);
         this.breadcrumbs = breadcrumbs;
     }
 
@@ -1709,6 +1848,7 @@ public class View extends ContainerBase {
      * @param breadcrumbOptions
      */
     public void setBreadcrumbOptions(BreadcrumbOptions breadcrumbOptions) {
+        checkMutable(true);
         this.breadcrumbOptions = breadcrumbOptions;
     }
 
@@ -1729,6 +1869,7 @@ public class View extends ContainerBase {
      * @param breadcrumbItem
      */
     public void setBreadcrumbItem(BreadcrumbItem breadcrumbItem) {
+        checkMutable(true);
         this.breadcrumbItem = breadcrumbItem;
     }
 
@@ -1757,6 +1898,7 @@ public class View extends ContainerBase {
      * @param parentLocation
      */
     public void setParentLocation(ParentLocation parentLocation) {
+        checkMutable(true);
         this.parentLocation = parentLocation;
     }
 
@@ -1775,7 +1917,9 @@ public class View extends ContainerBase {
      * @param pathBasedBreadcrumbs
      */
     public void setPathBasedBreadcrumbs(List<BreadcrumbItem> pathBasedBreadcrumbs) {
-        this.pathBasedBreadcrumbs = pathBasedBreadcrumbs;
+        checkMutable(true);
+        this.pathBasedBreadcrumbs = pathBasedBreadcrumbs == null ? null :
+            new LifecycleAwareList<BreadcrumbItem>(this, pathBasedBreadcrumbs);
     }
 
     /**
@@ -1793,6 +1937,7 @@ public class View extends ContainerBase {
      * @param growls the growls to set
      */
     public void setGrowls(Growls growls) {
+        checkMutable(true);
         this.growls = growls;
     }
 
@@ -1803,6 +1948,7 @@ public class View extends ContainerBase {
      * @param refreshBlockUI
      */
     public void setRefreshBlockUI(BlockUI refreshBlockUI) {
+        checkMutable(true);
         this.refreshBlockUI = refreshBlockUI;
     }
 
@@ -1821,6 +1967,7 @@ public class View extends ContainerBase {
      * @param navigationBlockUI
      */
     public void setNavigationBlockUI(BlockUI navigationBlockUI) {
+        checkMutable(true);
         this.navigationBlockUI = navigationBlockUI;
     }
 
@@ -1858,6 +2005,7 @@ public class View extends ContainerBase {
      * @param growlMessagingEnabled the growlMessagingEnabled to set
      */
     public void setGrowlMessagingEnabled(boolean growlMessagingEnabled) {
+        checkMutable(true);
         this.growlMessagingEnabled = growlMessagingEnabled;
     }
 
@@ -1882,6 +2030,7 @@ public class View extends ContainerBase {
      * Setter for dirty validation.
      */
     public void setApplyDirtyCheck(boolean applyDirtyCheck) {
+        checkMutable(true);
         this.applyDirtyCheck = applyDirtyCheck;
     }
 
@@ -1891,6 +2040,7 @@ public class View extends ContainerBase {
      * @param translateCodesOnReadOnlyDisplay indicates whether <code>KualiCode</code>'s name should be included.
      */
     public void setTranslateCodesOnReadOnlyDisplay(boolean translateCodesOnReadOnlyDisplay) {
+        checkMutable(true);
         this.translateCodesOnReadOnlyDisplay = translateCodesOnReadOnlyDisplay;
     }
 
@@ -1925,6 +2075,7 @@ public class View extends ContainerBase {
      * @param supportsRequestOverrideOfReadOnlyFields
      */
     public void setSupportsRequestOverrideOfReadOnlyFields(boolean supportsRequestOverrideOfReadOnlyFields) {
+        checkMutable(true);
         this.supportsRequestOverrideOfReadOnlyFields = supportsRequestOverrideOfReadOnlyFields;
     }
 
@@ -1949,6 +2100,7 @@ public class View extends ContainerBase {
      * @param disableNativeAutocomplete
      */
     public void setDisableNativeAutocomplete(boolean disableNativeAutocomplete) {
+        checkMutable(true);
         this.disableNativeAutocomplete = disableNativeAutocomplete;
     }
 
@@ -1975,6 +2127,7 @@ public class View extends ContainerBase {
      * @param disableBrowserCache
      */
     public void setDisableBrowserCache(boolean disableBrowserCache) {
+        checkMutable(true);
         this.disableBrowserCache = disableBrowserCache;
     }
 
@@ -1998,6 +2151,7 @@ public class View extends ContainerBase {
      * @param preLoadScript
      */
     public void setPreLoadScript(String preLoadScript) {
+        checkMutable(true);
         this.preLoadScript = preLoadScript;
     }
 
@@ -2017,6 +2171,7 @@ public class View extends ContainerBase {
      * @return
      */
     public void setTheme(ViewTheme theme) {
+        checkMutable(true);
         this.theme = theme;
     }
 
@@ -2038,6 +2193,7 @@ public class View extends ContainerBase {
      * @param stateObjectBindingPath
      */
     public void setStateObjectBindingPath(String stateObjectBindingPath) {
+        checkMutable(true);
         this.stateObjectBindingPath = stateObjectBindingPath;
     }
 
@@ -2065,7 +2221,33 @@ public class View extends ContainerBase {
      * @param stateMapping
      */
     public void setStateMapping(StateMapping stateMapping) {
+        checkMutable(true);
         this.stateMapping = stateMapping;
+    }
+
+    /**
+     * Returns the general context that is available before the apply model phase (during the
+     * initialize phase)
+     * 
+     * @param view view instance for context
+     * @return context map
+     */
+    public Map<String, Object> getPreModelContext() {
+        if (preModelContext == null) {
+            Map<String, Object> context = new HashMap<String, Object>();
+
+            context.put(UifConstants.ContextVariableNames.VIEW, this);
+            context.put(UifConstants.ContextVariableNames.VIEW_HELPER, viewHelperService);
+
+            Map<String, String> properties = CoreApiServiceLocator.getKualiConfigurationService().getAllProperties();
+            context.put(UifConstants.ContextVariableNames.CONFIG_PROPERTIES, properties);
+            context.put(UifConstants.ContextVariableNames.CONSTANTS, KRADConstants.class);
+            context.put(UifConstants.ContextVariableNames.UIF_CONSTANTS, UifConstants.class);
+            
+            preModelContext = Collections.unmodifiableMap(context);
+        }
+        
+        return preModelContext;
     }
 
     /**

@@ -15,6 +15,12 @@
  */
 package org.kuali.rice.krad.uif.layout;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
@@ -22,14 +28,10 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
 import org.kuali.rice.krad.uif.container.Container;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.util.LifecycleAwareList;
+import org.kuali.rice.krad.uif.util.LifecycleAwareMap;
 import org.kuali.rice.krad.uif.view.View;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Base class for all layout managers
@@ -49,19 +51,68 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     private String templateName;
 
     private String style;
+    
     private List<String> libraryCssClasses;
     private List<String> cssClasses;
     private List<String> additionalCssClasses;
 
     @ReferenceCopy(newCollectionInstance = true)
     private Map<String, Object> context;
-    private Map<String, Object> unmodifiableContext;
 
     private List<PropertyReplacer> propertyReplacers;
+    
+    private boolean mutable;
 
     public LayoutManagerBase() {
         super();
-        unmodifiableContext = context = Collections.emptyMap();
+        context = Collections.emptyMap();
+        cssClasses = Collections.emptyList();
+        libraryCssClasses = Collections.emptyList();
+        additionalCssClasses = Collections.emptyList();
+    }
+
+    /**
+     * Check for mutability on the component before modifying state.
+     * 
+     * @param legalDuringInitialization True if the operation is legal during view configuration,
+     *        false if the operation is part of the component lifecycle.
+     * @throws IllegalStateException If the component is not mutable.
+     */
+    public void checkMutable(boolean legalDuringInitialization) {
+        if (!ViewLifecycle.isActive()) {
+            throw new IllegalStateException("View context is not active");
+        }
+        
+        if (ViewLifecycle.isLifecycleActive() && !(mutable && ViewLifecycle.isMutable(this))) {
+            throw new IllegalStateException(
+                    "Component " + getId() + " is immutable, use copy() to get a mutable instance");
+        }
+        
+        if (ViewLifecycle.isInitializing() && !legalDuringInitialization) {
+            throw new IllegalStateException("View has not been fully initialized");
+        }
+    }
+
+    /**
+     * @return the mutable
+     */
+    public boolean isMutable(boolean legalDuringInitialization) {
+        return (ViewLifecycle.isLifecycleActive() && mutable && ViewLifecycle.isMutable(this)) ||
+                (ViewLifecycle.isInitializing() && legalDuringInitialization);
+    }
+
+    /**
+     * Mark this layout manager as mutable within the current view lifecycle.
+     * 
+     * @param mutable True to allow state to change within the current view lifecycle.
+     */
+    public void allowModification() {
+        if (!ViewLifecycle.isLifecycleActive()) {
+            throw new IllegalStateException("View lifecycle is not active");
+        }
+        
+        this.mutable = true;
+        ViewLifecycle.setMutable(this);
     }
 
     /**
@@ -69,7 +120,8 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
      */
     @Override
-    public void performInitialization(View view, Object model, Container container) {
+    public void performInitialization(Object model, Container container) {
+        checkMutable(false);
         // set id of layout manager from container
         if (StringUtils.isBlank(id)) {
             id = container.getId() + "_layout";
@@ -81,8 +133,8 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
      */
     @Override
-    public void performApplyModel(View view, Object model, Container container) {
-
+    public void performApplyModel(Object model, Container container) {
+        checkMutable(false);
     }
 
     /**
@@ -90,9 +142,12 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
      */
     @Override
-    public void performFinalize(View view, Object model, Container container) {
+    public void performFinalize(Object model, Container container) {
+        checkMutable(false);
         // put together all css class names for this component, in order
         List<String> finalCssClasses = new ArrayList<String>();
+        
+        View view = ViewLifecycle.getActiveLifecycle().getView();
 
         if (this.libraryCssClasses != null && view.isUseLibraryCssClasses()) {
             finalCssClasses.addAll(libraryCssClasses);
@@ -151,6 +206,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      */
     @Override
     public void setId(String id) {
+        checkMutable(true);
         this.id = id;
     }
 
@@ -168,6 +224,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      */
     @Override
     public void setTemplate(String template) {
+        checkMutable(true);
         this.template = template;
     }
 
@@ -183,6 +240,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      * @see org.kuali.rice.krad.uif.layout.LayoutManager#setTemplateName(java.lang.String)
      */
     public void setTemplateName(String templateName) {
+        checkMutable(true);
         this.templateName = templateName;
     }
 
@@ -200,58 +258,89 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      */
     @Override
     public void setStyle(String style) {
+        checkMutable(true);
         this.style = style;
     }
 
     /**
-     * @see LayoutManager#getLibraryCssClasses()
+     * Additional css classes that come before css classes listed in the cssClasses property
+     * 
+     * <p>
+     * These are used by the framework for styling with a library (for example, bootstrap), and
+     * should normally not be overridden.
+     * </p>
+     * 
+     * @return the library cssClasses
      */
-    @Override
-    @BeanTagAttribute(name = "libraryCssClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getLibraryCssClasses() {
+        if (libraryCssClasses == Collections.EMPTY_LIST && isMutable(true)) {
+            libraryCssClasses = new LifecycleAwareList<String>(this);
+        }
+        
         return libraryCssClasses;
     }
 
     /**
-     * @see LayoutManager#setLibraryCssClasses(java.util.List)
+     * Set the libraryCssClasses
+     * 
+     * @param libraryCssClasses
      */
-    @Override
     public void setLibraryCssClasses(List<String> libraryCssClasses) {
-        this.libraryCssClasses = libraryCssClasses;
+        checkMutable(true);
+
+        if (libraryCssClasses == null) {
+            this.libraryCssClasses = Collections.emptyList();
+        } else {
+            this.libraryCssClasses = new LifecycleAwareList<String>(this, libraryCssClasses);
+        }
     }
 
     /**
      * @see org.kuali.rice.krad.uif.layout.LayoutManager#getCssClasses()
      */
-    @Override
     @BeanTagAttribute(name = "cssClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getCssClasses() {
-        return this.cssClasses;
-    }
-
-    /**
-     * @see LayoutManager#getAdditionalCssClasses()
-     */
-    @Override
-    @BeanTagAttribute(name = "additionalCssClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
-    public List<String> getAdditionalCssClasses() {
-        return additionalCssClasses;
-    }
-
-    /**
-     * @see LayoutManager#setAdditionalCssClasses(java.util.List)
-     */
-    @Override
-    public void setAdditionalCssClasses(List<String> additionalCssClasses) {
-        this.additionalCssClasses = additionalCssClasses;
+        if (cssClasses == Collections.EMPTY_LIST && isMutable(true)) {
+            cssClasses = new LifecycleAwareList<String>(this);
+        }
+        
+        return cssClasses;
     }
 
     /**
      * @see org.kuali.rice.krad.uif.layout.LayoutManager#setCssClasses(java.util.List)
      */
-    @Override
     public void setCssClasses(List<String> cssClasses) {
-        this.cssClasses = cssClasses;
+        checkMutable(true);
+        if (cssClasses == null) {
+            this.cssClasses = Collections.emptyList();
+        } else {
+            this.cssClasses = new LifecycleAwareList<String>(this, cssClasses);
+        }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.layout.LayoutManager#getAdditionalCssClasses()
+     */
+    @BeanTagAttribute(name = "additionalCssClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    public List<String> getAdditionalCssClasses() {
+        if (additionalCssClasses == Collections.EMPTY_LIST && isMutable(true)) {
+            additionalCssClasses = new LifecycleAwareList<String>(this);
+        }
+        
+        return additionalCssClasses;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.layout.LayoutManager#setAdditionalCssClasses(java.util.List)
+     */
+    public void setAdditionalCssClasses(List<String> additionalCssClasses) {
+        checkMutable(true);
+        if (additionalCssClasses == null) {
+            this.additionalCssClasses = Collections.emptyList();
+        } else {
+            this.additionalCssClasses = new LifecycleAwareList<String>(this, additionalCssClasses);
+        }
     }
 
     /**
@@ -277,6 +366,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      * @param styleClasses
      */
     public void setStyleClasses(String styleClasses) {
+        checkMutable(true);
         String[] classes = StringUtils.split(styleClasses);
         this.cssClasses = Arrays.asList(classes);
     }
@@ -286,6 +376,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      */
     @Override
     public void addStyleClass(String styleClass) {
+        checkMutable(false);
         if (cssClasses == null || cssClasses.isEmpty()) {
             cssClasses = new ArrayList<String>();
         }
@@ -300,6 +391,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      */
     @Override
     public void appendToStyle(String styleRules) {
+        checkMutable(false);
         if (style == null) {
             style = "";
         }
@@ -312,7 +404,11 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     @Override
     @BeanTagAttribute(name = "context", type = BeanTagAttribute.AttributeType.MAPBEAN)
     public Map<String, Object> getContext() {
-        return this.unmodifiableContext;
+        if (context == Collections.EMPTY_MAP && isMutable(true)) {
+            context = new LifecycleAwareMap<String, Object>(this);
+        }
+        
+        return context;
     }
 
     /**
@@ -320,11 +416,12 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      */
     @Override
     public void setContext(Map<String, Object> context) {
-        if (context == null || context.isEmpty()) {
-            this.unmodifiableContext = this.context = Collections.emptyMap();
+        checkMutable(true);
+
+        if (context == null) {
+            this.context = Collections.emptyMap();
         } else {
-            this.context = context;
-            this.unmodifiableContext = Collections.unmodifiableMap(this.context);
+            this.context = new LifecycleAwareMap<String, Object>(this, context);
         }
     }
 
@@ -334,12 +431,12 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      */
     @Override
     public void pushObjectToContext(String objectName, Object object) {
-        if (this.context.isEmpty()) {
-            this.context = new HashMap<String, Object>();
-            this.unmodifiableContext = Collections.unmodifiableMap(this.context);
+        checkMutable(false);
+        if (context == Collections.EMPTY_MAP && isMutable(true)) {
+            context = new LifecycleAwareMap<String, Object>(this);
         }
 
-        this.context.put(objectName, object);
+        context.put(objectName, object);
     }
 
     /**
@@ -347,13 +444,13 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      */
     @Override
     public void pushAllToContext(Map<String, Object> sourceContext) {
+        checkMutable(false);
         if (sourceContext == null || sourceContext.isEmpty()) {
             return;
         }
         
-        if (this.context.isEmpty()) {
-            this.context = new HashMap<String, Object>();
-            this.unmodifiableContext = Collections.unmodifiableMap(this.context);
+        if (context == Collections.EMPTY_MAP && isMutable(true)) {
+            context = new LifecycleAwareMap<String, Object>(this);
         }
 
         this.context.putAll(sourceContext);
@@ -373,7 +470,37 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      */
     @Override
     public void setPropertyReplacers(List<PropertyReplacer> propertyReplacers) {
+        checkMutable(true);
         this.propertyReplacers = propertyReplacers;
+    }
+
+    
+    /**
+     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copy()
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T copy() {
+        if (!ViewLifecycle.isActive()) {
+            throw new IllegalStateException("View context is not active");
+        }
+        
+        LayoutManagerBase copy = null;
+        try {
+            copy = (LayoutManagerBase) this.getClass().newInstance();
+        } catch (InstantiationException e) {
+            throw new IllegalStateException("Failed to copy layout manager", e);
+        } catch (IllegalAccessException e) {
+            throw new IllegalStateException("Failed to copy layout manager", e);
+        }
+
+        if (ViewLifecycle.isLifecycleActive()) {
+            copy.allowModification();
+        }
+        
+        copyProperties(copy);
+
+        return (T) copy;
     }
 
     /**
@@ -394,7 +521,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
             layoutManagerBaseCopy.setLibraryCssClasses(new ArrayList<String>(libraryCssClasses));
         }
 
-        if (cssClasses != null && !cssClasses.isEmpty()) {
+        if (cssClasses != null) {
             layoutManagerBaseCopy.setCssClasses(new ArrayList<String>(cssClasses));
         }
 

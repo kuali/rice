@@ -442,7 +442,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
      *
      */
     @Override
-    protected void processAfterAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine,
+    public void processAfterAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine,
             boolean isValidLine) {
         super.processAfterAddLine(view, collectionGroup, model, addLine, isValidLine);
 
@@ -489,7 +489,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
      *      org.kuali.rice.krad.uif.container.CollectionGroup, java.lang.Object,  int)
      */
     @Override
-    protected void processAfterDeleteLine(View view, CollectionGroup collectionGroup, Object model, int lineIndex) {
+    public void processAfterDeleteLine(View view, CollectionGroup collectionGroup, Object model, int lineIndex) {
         super.processAfterDeleteLine(view, collectionGroup, model, lineIndex);
 
         // Check for maintenance documents in edit but exclude notes and ad hoc recipients

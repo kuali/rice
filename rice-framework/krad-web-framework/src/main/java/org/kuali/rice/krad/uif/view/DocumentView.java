@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif.view;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -64,8 +63,8 @@ public class DocumentView extends FormView {
      *      java.lang.Object)
      */
     @Override
-    public void performInitialization(View view, Object model) {
-        super.performInitialization(view, model);
+    public void performInitialization(Object model) {
+        super.performInitialization(model);
 
         // get document entry
         DocumentEntry documentEntry = getDocumentEntryForView();

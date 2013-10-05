@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.uif.layout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -24,10 +27,6 @@ import org.kuali.rice.krad.uif.CssConstants.Padding;
 import org.kuali.rice.krad.uif.UifConstants.Orientation;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.view.View;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Layout manager that organizes components in a single row (horizontal) or
@@ -71,8 +70,8 @@ public class BoxLayoutManager extends LayoutManagerBase {
      *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
      */
     @Override
-    public void performFinalize(View view, Object model, Container container) {
-        super.performFinalize(view, model, container);
+    public void performFinalize(Object model, Container container) {
+        super.performFinalize(model, container);
 
         if (StringUtils.isBlank(itemStyle)) {
             itemStyle = "";
@@ -94,21 +93,22 @@ public class BoxLayoutManager extends LayoutManagerBase {
 
         for (Component c : container.getItems()) {
             if (c != null) {
-                // add item styles to the the item
-                List<String> styleClasses = c.getCssClasses();
-                if (styleClasses == null) {
-                    styleClasses = new ArrayList<String>();
-                }
-
                 if (orientation.equals(Orientation.HORIZONTAL)) {
-                    styleClasses.add("uif-boxLayoutHorizontalItem");
-                    styleClasses.addAll(this.getItemStyleClasses());
+                    c.addStyleClass("uif-boxLayoutHorizontalItem");
+                    
+                    for (String styleClass : this.getItemStyleClasses()) {
+                        c.addStyleClass(styleClass);
+                    }
+                    
                 } else {
-                    styleClasses.add("uif-boxLayoutVerticalItem");
-                    styleClasses.addAll(this.getItemStyleClasses());
-                    styleClasses.add("clearfix");
+                    c.addStyleClass("uif-boxLayoutVerticalItem");
+
+                    for (String styleClass : this.getItemStyleClasses()) {
+                        addStyleClass(styleClass);
+                    }
+                    
+                    c.addStyleClass("clearfix");
                 }
-                c.setCssClasses(styleClasses);
 
                 if (c.getStyle() != null && !c.getStyle().endsWith(";")) {
                     c.appendToStyle(";" + this.getItemStyle());

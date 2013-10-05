@@ -48,11 +48,6 @@ public class SyntaxHighlighter extends WidgetBase {
         showCopyConfirmation = false;
     }
 
-    @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
-    }
-
     @BeanTagAttribute(name="header")
     public Header getHeader() {
         return header;

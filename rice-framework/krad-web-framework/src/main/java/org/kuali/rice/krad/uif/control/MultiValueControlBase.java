@@ -15,7 +15,9 @@
  */
 package org.kuali.rice.krad.uif.control;
 
-import org.kuali.rice.core.api.util.ConcreteKeyValue;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -23,17 +25,15 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.util.ComponentUtils;
-import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
+import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.KeyMessage;
-import org.kuali.rice.krad.uif.util.UrlInfo;
 import org.kuali.rice.krad.uif.util.UifKeyValueLocation;
+import org.kuali.rice.krad.uif.util.UrlInfo;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Base class for controls that accept/display multiple values
@@ -60,12 +60,13 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
      *      Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performApplyModel(View view, Object model, Component parent) {
-        super.performApplyModel(view, model, parent);
+    public void performApplyModel(Object model, Component parent) {
+        super.performApplyModel(model, parent);
 
         if (options != null && richOptions == null) {
             richOptions = new ArrayList<KeyMessage>();
 
+            View view = ViewLifecycle.getActiveLifecycle().getView();
             for (KeyValue option : options) {
                 Message message = ComponentFactory.getMessage();
                 view.assignComponentIds(message);
@@ -73,7 +74,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
                 message.setInlineComponents(inlineComponents);
                 message.setGenerateSpan(false);
 
-                view.getViewHelperService().performComponentInitialization(view, model, message);
+                ViewLifecycle.getActiveLifecycle().performComponentInitialization(model, message);
                 richOptions.add(new KeyMessage(option.getKey(), option.getValue(), message));
             }
         }
@@ -86,10 +87,10 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
      *      org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
+    public void performFinalize(Object model, Component parent) {
+        super.performFinalize(model, parent);
 
-        ExpressionEvaluator expressionEvaluator = view.getViewHelperService().getExpressionEvaluator();
+        ExpressionEvaluator expressionEvaluator = ViewLifecycle.getActiveLifecycle().getHelper().getExpressionEvaluator();
 
         if (options != null && !options.isEmpty()) {
             for (KeyValue option : options) {
@@ -98,6 +99,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
 
                     UrlInfo url = ((UifKeyValueLocation) option).getLocation();
 
+                    View view = ViewLifecycle.getActiveLifecycle().getView();
                     ExpressionUtils.populatePropertyExpressionsFromGraph(url, false);
                     expressionEvaluator.evaluateExpressionsOnConfigurable(view, url, view.getContext());
                 }

@@ -15,8 +15,15 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.annotation.Nullable;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ClassUtils;
@@ -47,6 +54,7 @@ import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.LookupView;
 import org.kuali.rice.krad.uif.view.View;
@@ -54,15 +62,8 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
-import javax.annotation.Nullable;
-
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 
 /**
  * Decorates a HTML Table client side with various tools
@@ -115,8 +116,8 @@ public class RichTable extends WidgetBase {
      * </ul>
      */
     @Override
-    public void performFinalize(View view, Object model, Component component) {
-        super.performFinalize(view, model, component);
+    public void performFinalize(Object model, Component component) {
+        super.performFinalize(model, component);
 
         UifFormBase formBase = (UifFormBase) model;
 
@@ -124,20 +125,18 @@ public class RichTable extends WidgetBase {
             return;
         }
 
-        if (StringUtils.isNotBlank(getEmptyTableMessage()) && !getTemplateOptions().containsKey(
+        if (templateOptions.isEmpty()) {
+            setTemplateOptions(new HashMap<String, String>());
+        }
+
+        if (StringUtils.isNotBlank(getEmptyTableMessage()) && !templateOptions.containsKey(
                 UifConstants.TableToolsKeys.LANGUAGE)) {
-            Map<String, String> oTemplateOptions = this.getTemplateOptions();
-
-            if (oTemplateOptions == null) {
-                setTemplateOptions(oTemplateOptions = new HashMap<String, String>());
-            }
-
-            oTemplateOptions.put(UifConstants.TableToolsKeys.LANGUAGE,
+            templateOptions.put(UifConstants.TableToolsKeys.LANGUAGE,
                     "{\"" + UifConstants.TableToolsKeys.EMPTY_TABLE + "\" : \"" + getEmptyTableMessage() + "\"}");
         }
 
         if (!isShowSearchAndExportOptions()) {
-            Object domOption = getTemplateOptions().get(UifConstants.TableToolsKeys.SDOM);
+            Object domOption = templateOptions.get(UifConstants.TableToolsKeys.SDOM);
             if (domOption instanceof String) {
                 String sDomOption = (String) domOption;
 
@@ -148,7 +147,7 @@ public class RichTable extends WidgetBase {
                     if (!isShowSearchOption()) {
                         sDomOption = StringUtils.remove(sDomOption, "f"); //Removes search option
                     }
-                    getTemplateOptions().put(UifConstants.TableToolsKeys.SDOM, sDomOption);
+                    templateOptions.put(UifConstants.TableToolsKeys.SDOM, sDomOption);
                 }
             }
         }
@@ -156,7 +155,7 @@ public class RichTable extends WidgetBase {
         // for add events, disable initial sorting
         if (UifConstants.ActionEvents.ADD_LINE.equals(formBase.getActionEvent()) || UifConstants.ActionEvents
                 .ADD_BLANK_LINE.equals(formBase.getActionEvent())) {
-            getTemplateOptions().put(UifConstants.TableToolsKeys.AASORTING, "[]");
+            templateOptions.put(UifConstants.TableToolsKeys.AASORTING, "[]");
         }
 
         if ((component instanceof CollectionGroup)) {
@@ -172,25 +171,26 @@ public class RichTable extends WidgetBase {
             buildTableOptions(collectionGroup);
             setTotalOptions(collectionGroup);
 
+            View view = ViewLifecycle.getActiveLifecycle().getView();
             if (view instanceof LookupView) {
                 buildSortOptions((LookupView) view, collectionGroup);
             }
         }
 
         if (isDisableTableSort()) {
-            getTemplateOptions().put(UifConstants.TableToolsKeys.TABLE_SORT, "false");
+            templateOptions.put(UifConstants.TableToolsKeys.TABLE_SORT, "false");
         }
 
         String kradUrl = getConfigurationService().getPropertyValueAsString(UifConstants.ConfigProperties.KRAD_URL);
         if (StringUtils.isNotBlank(ajaxSource)) {
-            getTemplateOptions().put(UifConstants.TableToolsKeys.SAJAX_SOURCE, ajaxSource);
+            templateOptions.put(UifConstants.TableToolsKeys.SAJAX_SOURCE, ajaxSource);
         } else if (component instanceof CollectionGroup && ((CollectionGroup) component).isUseServerPaging()) {
             // enable required dataTables options for server side paging
-            getTemplateOptions().put(UifConstants.TableToolsKeys.BPROCESSING, "true");
-            getTemplateOptions().put(UifConstants.TableToolsKeys.BSERVER_SIDE, "true");
+            templateOptions.put(UifConstants.TableToolsKeys.BPROCESSING, "true");
+            templateOptions.put(UifConstants.TableToolsKeys.BSERVER_SIDE, "true");
 
             //build sAjaxSource url to call
-            getTemplateOptions().put(UifConstants.TableToolsKeys.SAJAX_SOURCE, kradUrl
+            templateOptions.put(UifConstants.TableToolsKeys.SAJAX_SOURCE, kradUrl
                     + ((UifFormBase) model).getControllerMapping()
                     + "?"
                     + UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME
@@ -214,12 +214,13 @@ public class RichTable extends WidgetBase {
                     + "true");
 
             // store col defs so columns can be built on paging request
-            view.getViewIndex().addPostContextEntry(component.getId(), UifConstants.TableToolsKeys.AO_COLUMN_DEFS,
-                    getTemplateOptions().get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS));
+            ViewLifecycle.getActiveLifecycle().getView().getViewIndex()
+                .addPostContextEntry(component.getId(), UifConstants.TableToolsKeys.AO_COLUMN_DEFS,
+                    templateOptions.get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS));
         }
 
         //build sAjaxSource url to call
-        getTemplateOptions().put(UifConstants.TableToolsKeys.SDOWNLOAD_SOURCE, kradUrl
+        templateOptions.put(UifConstants.TableToolsKeys.SDOWNLOAD_SOURCE, kradUrl
                 + ((UifFormBase) model).getControllerMapping()
                 + "?"
                 + UifParameters.TABLE_ID
@@ -274,12 +275,7 @@ public class RichTable extends WidgetBase {
                 array = StringUtils.removeEnd(array, ",");
                 array = array + "]";
 
-                Map<String, String> oTemplateOptions = this.getTemplateOptions();
-                if (oTemplateOptions == null) {
-                    setTemplateOptions(oTemplateOptions = new HashMap<String, String>());
-                }
-
-                oTemplateOptions.put(UifConstants.TableToolsKeys.FOOTER_CALLBACK,
+                templateOptions.put(UifConstants.TableToolsKeys.FOOTER_CALLBACK,
                         "function (nRow, aaData, iStart, iEnd, aiDisplay) {initializeTotalsFooter (nRow, aaData, iStart, iEnd, aiDisplay, "
                                 + array
                                 + " )}");
@@ -293,8 +289,14 @@ public class RichTable extends WidgetBase {
      * @param collectionGroup
      */
     protected void buildTableOptions(CollectionGroup collectionGroup) {
+        checkMutable(false);
+        
         LayoutManager layoutManager = collectionGroup.getLayoutManager();
         final boolean isUseServerPaging = collectionGroup.isUseServerPaging();
+
+        if (templateOptions.isEmpty()) {
+            setTemplateOptions(new HashMap<String, String>());
+        }
 
         // if sub collection exists, don't allow the table sortable
         if (!collectionGroup.getSubCollections().isEmpty()) {
@@ -307,13 +309,8 @@ public class RichTable extends WidgetBase {
                     && !collectionGroup.isReadOnly()
                     && !((layoutManager instanceof TableLayoutManager) && ((TableLayoutManager) layoutManager)
                             .isSeparateAddLine())) {
-                Map<String, String> oTemplateOptions = this.getTemplateOptions();
 
-                if (oTemplateOptions == null) {
-                    setTemplateOptions(oTemplateOptions = new HashMap<String, String>());
-                }
-
-                oTemplateOptions.put(UifConstants.TableToolsKeys.SORT_SKIP_ROWS,
+                templateOptions.put(UifConstants.TableToolsKeys.SORT_SKIP_ROWS,
                         "[" + UifConstants.TableToolsValues.ADD_ROW_DEFAULT_INDEX + "]");
             }
 
@@ -381,9 +378,9 @@ public class RichTable extends WidgetBase {
             }
 
             // if data dictionary defines aoColumns, copy here and skip default sorting/visibility behaviour
-            if (!StringUtils.isEmpty(getTemplateOptions().get(UifConstants.TableToolsKeys.AO_COLUMNS))) {
+            if (!StringUtils.isEmpty(templateOptions.get(UifConstants.TableToolsKeys.AO_COLUMNS))) {
                 // get the contents of the JS array string
-                String jsArray = getTemplateOptions().get(UifConstants.TableToolsKeys.AO_COLUMNS);
+                String jsArray = templateOptions.get(UifConstants.TableToolsKeys.AO_COLUMNS);
                 int startBrace = StringUtils.indexOf(jsArray, "[");
                 int endBrace = StringUtils.lastIndexOf(jsArray, "]");
                 tableToolsColumnOptions.append(StringUtils.substring(jsArray, startBrace + 1, endBrace) + ", ");
@@ -399,10 +396,10 @@ public class RichTable extends WidgetBase {
                 }
 
                 tableToolsColumnOptions.append("]");
-                getTemplateOptions().put(UifConstants.TableToolsKeys.AO_COLUMNS, tableToolsColumnOptions.toString());
-            } else if (!StringUtils.isEmpty(getTemplateOptions().get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS))
+                templateOptions.put(UifConstants.TableToolsKeys.AO_COLUMNS, tableToolsColumnOptions.toString());
+            } else if (!StringUtils.isEmpty(templateOptions.get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS))
                     && forceAoColumnDefsOverride) {
-                String jsArray = getTemplateOptions().get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
+                String jsArray = templateOptions.get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
                 int startBrace = StringUtils.indexOf(jsArray, "[");
                 int endBrace = StringUtils.lastIndexOf(jsArray, "]");
                 tableToolsColumnOptions.append(StringUtils.substring(jsArray, startBrace + 1, endBrace) + ", ");
@@ -418,7 +415,7 @@ public class RichTable extends WidgetBase {
                 }
 
                 tableToolsColumnOptions.append("]");
-                getTemplateOptions().put(UifConstants.TableToolsKeys.AO_COLUMN_DEFS,
+                templateOptions.put(UifConstants.TableToolsKeys.AO_COLUMN_DEFS,
                         tableToolsColumnOptions.toString());
             } else if (layoutManager instanceof TableLayoutManager) {
                 List<Field> rowFields = ((TableLayoutManager) layoutManager).getFirstRowFields();
@@ -532,15 +529,15 @@ public class RichTable extends WidgetBase {
                 }
 
                 //merge the aoColumnDefs passed in
-                if (!StringUtils.isEmpty(getTemplateOptions().get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS))) {
-                    String origAoOptions = getTemplateOptions().get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS).trim();
+                if (!StringUtils.isEmpty(templateOptions.get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS))) {
+                    String origAoOptions = templateOptions.get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS).trim();
                     origAoOptions = StringUtils.removeStart(origAoOptions, "[");
                     origAoOptions = StringUtils.removeEnd(origAoOptions, "]");
                     tableToolsColumnOptions.append("," + origAoOptions);
                 }
 
                 tableToolsColumnOptions.append("]");
-                getTemplateOptions().put(UifConstants.TableToolsKeys.AO_COLUMN_DEFS,
+                templateOptions.put(UifConstants.TableToolsKeys.AO_COLUMN_DEFS,
                         tableToolsColumnOptions.toString());
             }
         }
@@ -593,11 +590,10 @@ public class RichTable extends WidgetBase {
 
                 tableToolsSortOptions.append("]");
 
-                Map<String, String> oTemplateOptions = this.getTemplateOptions();
-                if (oTemplateOptions == null) {
-                    setTemplateOptions(oTemplateOptions = new HashMap<String, String>());
+                if (templateOptions.isEmpty()) {
+                    setTemplateOptions(new HashMap<String, String>());
                 }
-                oTemplateOptions.put(UifConstants.TableToolsKeys.AASORTING, tableToolsSortOptions.toString());
+                templateOptions.put(UifConstants.TableToolsKeys.AASORTING, tableToolsSortOptions.toString());
             }
         }
     }
@@ -1049,6 +1045,10 @@ public class RichTable extends WidgetBase {
      */
     public void addRowToTableData(String row) {
         String escape = "";
+        
+        if (templateOptions.isEmpty()) {
+            setTemplateOptions(new HashMap<String, String>());
+        }
 
         // if nestedLevel is set add the appropriate amount of escape characters per a level of nesting
         for (int i = 0; i < nestedLevel && forceLocalJsonData; i++) {
@@ -1070,14 +1070,9 @@ public class RichTable extends WidgetBase {
         if (StringUtils.isBlank(aaData)) {
             aaData = "[" + row + "]";
 
-            Map<String, String> oTemplateOptions = this.getTemplateOptions();
-            if (oTemplateOptions == null) {
-                setTemplateOptions(oTemplateOptions = new HashMap<String, String>());
-            }
-
-            if (oTemplateOptions.get(UifConstants.TableToolsKeys.DEFER_RENDER) == null) {
+            if (templateOptions.get(UifConstants.TableToolsKeys.DEFER_RENDER) == null) {
                 //make sure deferred rendering is forced if not explicitly set
-                oTemplateOptions.put(UifConstants.TableToolsKeys.DEFER_RENDER,
+                templateOptions.put(UifConstants.TableToolsKeys.DEFER_RENDER,
                         UifConstants.TableToolsValues.TRUE);
             }
 
@@ -1087,12 +1082,7 @@ public class RichTable extends WidgetBase {
 
         //force json data use if forceLocalJsonData flag is set
         if (forceLocalJsonData) {
-            Map<String, String> oTemplateOptions = this.getTemplateOptions();
-            if (oTemplateOptions == null) {
-                setTemplateOptions(oTemplateOptions = new HashMap<String, String>());
-            }
-
-            this.getTemplateOptions().put(UifConstants.TableToolsKeys.AA_DATA, aaData);
+            templateOptions.put(UifConstants.TableToolsKeys.AA_DATA, aaData);
         }
     }
 

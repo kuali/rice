@@ -15,14 +15,15 @@
  */
 package org.kuali.rice.krad.uif.element;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.view.View;
-
-import java.util.List;
 
 /**
  * The ViewHeader component represents the header for the view
@@ -48,9 +49,10 @@ public class ViewHeader extends Header {
      * @see Component#performFinalize(org.kuali.rice.krad.uif.view.View, Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
+    public void performFinalize(Object model, Component parent) {
+        super.performFinalize(model, parent);
 
+        View view = ViewLifecycle.getActiveLifecycle().getView();
         if (supportTitleMessage != null &&
                 view.getCurrentPage() != null && view.getCurrentPage().getHeader() != null &&
                 view.isUnifiedHeader()) {

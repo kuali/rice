@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.uif.modifier;
 
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.Ordered;
 
@@ -70,7 +69,7 @@ public interface ComponentModifier extends UifDictionaryBean, Serializable, Orde
      * @param component - Component the modifier is configured on
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#performInitialization
      */
-    public void performInitialization(View view, Object model, Component component);
+    public void performInitialization(Object model, Component component);
 
     /**
      * Invoked within the configured phase of the component lifecycle. This is
@@ -83,7 +82,7 @@ public interface ComponentModifier extends UifDictionaryBean, Serializable, Orde
      * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performModification
      *      (View, Object, Component)
      */
-    public void performModification(View view, Object model, Component component);
+    public void performModification(Object model, Component component);
 
     /**
      * <code>Set</code> of <code>Component</code> classes that may be sent to

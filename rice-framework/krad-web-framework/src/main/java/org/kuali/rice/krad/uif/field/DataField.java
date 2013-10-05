@@ -15,6 +15,11 @@
  */
 package org.kuali.rice.krad.uif.field;
 
+import java.beans.PropertyEditor;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
@@ -35,8 +40,9 @@ import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.component.DataBinding;
-import org.kuali.rice.krad.uif.component.KeepExpression;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
+import org.kuali.rice.krad.uif.util.LifecycleAwareList;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
@@ -46,10 +52,6 @@ import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.Tooltip;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
-
-import java.beans.PropertyEditor;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Field that renders data from the application, such as the value of a data object property
@@ -111,8 +113,8 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
         enableAutoInquiry = true;
         escapeHtmlInPropertyValue = true;
 
-        additionalHiddenPropertyNames = new ArrayList<String>();
-        propertyNamesForAdditionalDisplay = new ArrayList<String>();
+        additionalHiddenPropertyNames = Collections.emptyList();
+        propertyNamesForAdditionalDisplay = Collections.emptyList();
     }
 
     /**
@@ -127,11 +129,11 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *      java.lang.Object)
      */
     @Override
-    public void performInitialization(View view, Object model) {
-        super.performInitialization(view, model);
+    public void performInitialization(Object model) {
+        super.performInitialization(model);
 
         if (bindingInfo != null) {
-            bindingInfo.setDefaults(view, getPropertyName());
+            bindingInfo.setDefaults(ViewLifecycle.getActiveLifecycle().getView(), getPropertyName());
         }
     }
 
@@ -142,11 +144,12 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * <li>If readOnlyHidden set to true, set field to readonly and add to hidden property names</li>
      * </ul>
      */
-    public void performApplyModel(View view, Object model, Component parent) {
-        super.performApplyModel(view, model, parent);
+    @Override
+    public void performApplyModel(Object model, Component parent) {
+        super.performApplyModel(model, parent);
 
         if (this.enableAutoInquiry && (this.inquiry == null) && isReadOnly()) {
-            buildAutomaticInquiry(view, model, false);
+            buildAutomaticInquiry(model, false);
         }
 
         if (isAddHiddenWhenReadOnly()) {
@@ -170,8 +173,8 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
+    public void performFinalize(Object model, Component parent) {
+        super.performFinalize(model, parent);
 
         // adjust the path for hidden fields
         // TODO: should this check the view#readOnly?
@@ -207,7 +210,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
 
         } else {
             // Additional and Alternate display value
-            setAlternateAndAdditionalDisplayValue(view, model);
+            setAlternateAndAdditionalDisplayValue(ViewLifecycle.getActiveLifecycle().getView(), model);
         }
 
         if (this.getFieldLabel() != null && StringUtils.isNotBlank(this.getId())) {
@@ -223,10 +226,10 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * @param model object containing the view data
      * @param enableDirectInquiry whether direct inquiry should be enabled if an inquiry is found
      */
-    protected void buildAutomaticInquiry(View view, Object model, boolean enableDirectInquiry) {
+    protected void buildAutomaticInquiry(Object model, boolean enableDirectInquiry) {
         Inquiry autoInquiry = ComponentFactory.getInquiry();
 
-        view.getViewHelperService().spawnSubLifecyle(view, model, autoInquiry, this, null, null);
+        ViewLifecycle.getActiveLifecycle().spawnSubLifecyle(model, autoInquiry, this, null, null);
 
         // if render flag is true, that means the inquiry was able to find a relationship
         if (autoInquiry.isRender()) {
@@ -1068,6 +1071,10 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      */
     @BeanTagAttribute(name = "additionalHiddenPropertyNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getAdditionalHiddenPropertyNames() {
+        if (additionalHiddenPropertyNames == Collections.EMPTY_LIST && isMutable(true)) {
+            additionalHiddenPropertyNames = new LifecycleAwareList<String>(this);
+        }
+        
         return additionalHiddenPropertyNames;
     }
 
@@ -1077,7 +1084,12 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * @param additionalHiddenPropertyNames
      */
     public void setAdditionalHiddenPropertyNames(List<String> additionalHiddenPropertyNames) {
-        this.additionalHiddenPropertyNames = additionalHiddenPropertyNames;
+        if (additionalHiddenPropertyNames == null) {
+            this.additionalHiddenPropertyNames = Collections.emptyList();
+        } else {
+            this.additionalHiddenPropertyNames =
+                    new LifecycleAwareList<String>(this, additionalHiddenPropertyNames);
+        }
     }
 
     /**
@@ -1100,6 +1112,10 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      */
     @BeanTagAttribute(name = "propertyNamesForAdditionalDisplay", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getPropertyNamesForAdditionalDisplay() {
+        if (propertyNamesForAdditionalDisplay == Collections.EMPTY_LIST && isMutable(true)) {
+            propertyNamesForAdditionalDisplay = new LifecycleAwareList<String>(this);
+        }
+        
         return propertyNamesForAdditionalDisplay;
     }
 
@@ -1109,7 +1125,12 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * @param propertyNamesForAdditionalDisplay
      */
     public void setPropertyNamesForAdditionalDisplay(List<String> propertyNamesForAdditionalDisplay) {
-        this.propertyNamesForAdditionalDisplay = propertyNamesForAdditionalDisplay;
+        if (propertyNamesForAdditionalDisplay == null) {
+            this.propertyNamesForAdditionalDisplay = Collections.emptyList();
+        } else {
+            this.propertyNamesForAdditionalDisplay =
+                    new LifecycleAwareList<String>(this, propertyNamesForAdditionalDisplay);
+        }
     }
 
     /**

@@ -15,15 +15,15 @@
  */
 package org.kuali.rice.krad.uif.component;
 
-import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
-import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
-import org.kuali.rice.krad.uif.modifier.ComponentModifier;
-import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.widget.Tooltip;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+import org.kuali.rice.krad.uif.modifier.ComponentModifier;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
+import org.kuali.rice.krad.uif.widget.Tooltip;
 
 /**
  * Component defines basic properties and methods that all rendering element implement
@@ -52,7 +52,7 @@ import java.util.Map;
  * @see org.kuali.rice.krad.uif.field.Field
  * @see org.kuali.rice.krad.uif.widget.Widget
  */
-public interface Component extends UifDictionaryBean, Serializable, Ordered, ScriptEventSupport {
+public interface Component extends UifDictionaryBean, LifecycleElement, Serializable, Ordered, ScriptEventSupport {
 
     /**
      * The unique id (within a given tree) for the component
@@ -185,12 +185,11 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
      * once per component lifecycle and is invoked within the initialize phase of the view lifecylce.
      * </p>
      *
-     * @param view - view instance in which the component belongs
      * @param model - object instance containing the view data
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#performInitialization(org.kuali.rice.krad.uif.view.View,
      *      Object)
      */
-    void performInitialization(View view, Object model);
+    void performInitialization(Object model);
 
     /**
      * Called after the initialize phase to perform conditional logic based on the model data
@@ -200,11 +199,10 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
      * based on the given data
      * </p>
      *
-     * @param view - view instance to which the component belongs
      * @param model - Top level object containing the data (could be the form or a
      * top level business object, dto)
      */
-    void performApplyModel(View view, Object model, Component parent);
+    void performApplyModel(Object model, Component parent);
 
     /**
      * The last phase before the view is rendered
@@ -217,7 +215,7 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
      * @param model - top level object containing the data
      * @param parent - parent component
      */
-    void performFinalize(View view, Object model, Component parent);
+    void performFinalize(Object model, Component parent);
 
     /**
      * List of components that are contained within the component and should be sent through
@@ -1277,10 +1275,4 @@ public interface Component extends UifDictionaryBean, Serializable, Ordered, Scr
      */
     public void setPostRenderContent(String postRenderContent);
 
-    /**
-     * Copy the object
-     *
-     * @return the copied object
-     */
-    public <T> T copy();
 }

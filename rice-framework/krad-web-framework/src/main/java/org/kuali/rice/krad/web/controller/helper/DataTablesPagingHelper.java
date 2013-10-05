@@ -15,29 +15,30 @@
  */
 package org.kuali.rice.krad.web.controller.helper;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.UifParameters;
-import org.kuali.rice.krad.uif.component.BindingInfo;
-import org.kuali.rice.krad.uif.container.CollectionGroup;
-import org.kuali.rice.krad.uif.layout.TableLayoutManager;
-import org.kuali.rice.krad.uif.util.ColumnSort;
-import org.kuali.rice.krad.uif.util.ComponentFactory;
-import org.kuali.rice.krad.uif.util.MultiColumnComparator;
-import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
-import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.web.form.UifFormBase;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.servlet.http.HttpServletRequest;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.container.CollectionGroup;
+import org.kuali.rice.krad.uif.layout.TableLayoutManager;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleResult;
+import org.kuali.rice.krad.uif.util.ColumnSort;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
+import org.kuali.rice.krad.uif.util.MultiColumnComparator;
+import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -49,9 +50,11 @@ public class DataTablesPagingHelper {
 
     private TableLayoutManager tableLayoutManager;
 
-    public void processPagingRequest(View view, String tableId, UifFormBase form, DataTablesInputs dataTablesInputs) {
+    public void processPagingRequest(String tableId, UifFormBase form, DataTablesInputs dataTablesInputs) {
         // Set property to trigger special JSON rendering logic in uifRender.ftl
         form.setRequestJsonTemplate(UifConstants.TableToolsValues.JSON_TEMPLATE);
+        
+        View view = form.getPostedView();
 
         if (view != null) { // avoid blowing the stack if the session expired
             // don't set the component to update unless we have a postedView, otherwise we'll get an NPE later
@@ -87,8 +90,11 @@ public class DataTablesPagingHelper {
                 newCollectionGroup.setDisplayLength(dataTablesInputs.iDisplayLength);
 
                 // run lifecycle on the table component and update in view
-                view.getViewHelperService().performComponentLifecycle(view, form, newCollectionGroup,
-                        oldCollectionGroup.getId());
+                ViewLifecycleResult result = ViewLifecycle
+                        .performComponentLifecycle(view, form, newCollectionGroup, oldCollectionGroup.getId());
+                newCollectionGroup = result.getRefreshComponent();
+                form.setPostedView(result.getView());
+                
             }
 
             this.tableLayoutManager = (TableLayoutManager) newCollectionGroup.getLayoutManager();

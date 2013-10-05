@@ -33,6 +33,7 @@ import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.View;
@@ -190,11 +191,13 @@ public class CollectionGroup extends Group implements DataBinding {
      *      java.lang.Object)
      */
     @Override
-    public void performInitialization(View view, Object model) {
+    public void performInitialization(Object model) {
         setFieldBindingObjectPath(getBindingInfo().getBindingObjectPath());
 
-        super.performInitialization(view, model);
+        super.performInitialization(model);
 
+        View view = ViewLifecycle.getActiveLifecycle().getView();
+        
         if (bindingInfo != null) {
             bindingInfo.setDefaults(view, getPropertyName());
         }
@@ -279,8 +282,8 @@ public class CollectionGroup extends Group implements DataBinding {
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performApplyModel(View view, Object model, Component parent) {
-        super.performApplyModel(view, model, parent);
+    public void performApplyModel(Object model, Component parent) {
+        super.performApplyModel(model, parent);
 
         // If we are using server paging, determine if a displayStart value has been set for this collection
         // and used that value as the displayStart
@@ -293,6 +296,8 @@ public class CollectionGroup extends Group implements DataBinding {
             }
         }
 
+        View view = ViewLifecycle.getActiveLifecycle().getView();
+        
         // adds the script to the add line buttons to keep collection on the same page
         if (this.renderAddBlankLineButton) {
             if (this.addBlankLineAction == null) {

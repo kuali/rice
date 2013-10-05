@@ -469,7 +469,7 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
     }
 
     @Override
-    protected void processBeforeAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
+    public void processBeforeAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
         AgendaEditor agendaEditor = getAgendaEditor(model);
         if (addLine instanceof ActionBo) {
             ((ActionBo) addLine).setNamespace(agendaEditor.getAgendaItemLine().getRule().getNamespace());

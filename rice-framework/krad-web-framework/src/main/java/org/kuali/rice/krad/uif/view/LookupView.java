@@ -35,6 +35,7 @@ import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.LookupInputField;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -131,7 +132,7 @@ public class LookupView extends FormView {
      *      java.lang.Object)
      */
     @Override
-    public void performInitialization(View view, Object model) {
+    public void performInitialization(Object model) {
 
         boolean isInactivatableClass = Inactivatable.class.isAssignableFrom(dataObjectClassName);
 
@@ -142,14 +143,14 @@ public class LookupView extends FormView {
         initializeGroups();
 
         // since we don't have these as prototypes need to assign ids here
-        view.assignComponentIds(getCriteriaGroup());
-        view.assignComponentIds(getResultsGroup());
+        assignComponentIds(getCriteriaGroup());
+        assignComponentIds(getResultsGroup());
 
         if (getItems().isEmpty()) {
             setItems(Arrays.asList(getCriteriaGroup(), getResultsGroup()));
         }
 
-        super.performInitialization(view, model);
+        super.performInitialization(model);
 
         // if this is a multi-value lookup, don't show return column
         if (multipleValuesSelect) {
@@ -211,7 +212,7 @@ public class LookupView extends FormView {
      * org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performApplyModel(View view, Object model, Component parent) {
+    public void performApplyModel(Object model, Component parent) {
         LookupForm lookupForm = (LookupForm) model;
 
         if (!renderSearchButtons) {
@@ -226,7 +227,7 @@ public class LookupView extends FormView {
             getHeader().setRender(false);
         }
 
-        setupLookupCriteriaFields(view, model);
+        setupLookupCriteriaFields(model);
 
         // Get the search action button for trigger on change and trigger on enter
         Group actionGroup = criteriaGroup.getFooter();
@@ -241,7 +242,7 @@ public class LookupView extends FormView {
             }
         }
 
-        super.performApplyModel(view, model, parent);
+        super.performApplyModel(model, parent);
     }
 
     /**
@@ -249,8 +250,8 @@ public class LookupView extends FormView {
      *      Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
+    public void performFinalize(Object model, Component parent) {
+        super.performFinalize(model, parent);
 
         // force session persistence of criteria fields so we can validate the search input
         List<InputField> fields = ComponentUtils.getComponentsOfTypeDeep(criteriaGroup, InputField.class);
@@ -297,11 +298,12 @@ public class LookupView extends FormView {
     /**
      * Helper method to do any lookup specific changes to the criteria fields
      */
-    private void setupLookupCriteriaFields(View view, Object model) {
+    private void setupLookupCriteriaFields(Object model) {
         HashMap<Integer, Component> dateRangeFieldMap = new HashMap<Integer, Component>();
 
+        View view = ViewLifecycle.getActiveLifecycle().getView();
         ExpressionEvaluator expressionEvaluator =
-                view.getViewHelperService().getExpressionEvaluator();
+                ViewLifecycle.getActiveLifecycle().getHelper().getExpressionEvaluator();
 
         int rangeIndex = 0;
         for (Component criteriaField : criteriaGroup.getItems()) {

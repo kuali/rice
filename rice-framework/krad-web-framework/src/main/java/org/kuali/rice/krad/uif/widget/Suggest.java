@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -23,11 +26,9 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
 import org.kuali.rice.krad.uif.field.AttributeQuery;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.View;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Widget that provides dynamic select options to the user as they
@@ -69,12 +70,12 @@ public class Suggest extends WidgetBase {
      * <li>Invoke expression evaluation on the suggestQuery</li>
      * </ul>
      */
-    public void performApplyModel(View view, Object model, Component parent) {
-        super.performApplyModel(view, model, parent);
+    public void performApplyModel(Object model, Component parent) {
+        super.performApplyModel(model, parent);
 
         if (suggestQuery != null) {
-            view.getViewHelperService().getExpressionEvaluator().evaluateExpressionsOnConfigurable(view,
-                    suggestQuery, getContext());
+            ViewLifecycle.getActiveLifecycle().getHelper().getExpressionEvaluator().evaluateExpressionsOnConfigurable(
+                    ViewLifecycle.getActiveLifecycle().getView(), suggestQuery, getContext());
         }
     }
 
@@ -90,8 +91,8 @@ public class Suggest extends WidgetBase {
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
+    public void performFinalize(Object model, Component parent) {
+        super.performFinalize(model, parent);
 
         // check for necessary configuration
         if (!isSuggestConfigured()) {
@@ -106,7 +107,7 @@ public class Suggest extends WidgetBase {
             if (suggestOptions == null || suggestOptions.isEmpty()) {
                 // execute query method to retrieve up front suggestions
                 if (suggestQuery.hasConfiguredMethod()) {
-                    retrieveSuggestOptions(view);
+                    retrieveSuggestOptions(ViewLifecycle.getActiveLifecycle().getView());
                 }
             } else {
                 suggestOptionsJsString = ScriptUtils.translateValue(suggestOptions);

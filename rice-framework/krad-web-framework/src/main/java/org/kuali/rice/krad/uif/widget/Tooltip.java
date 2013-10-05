@@ -46,15 +46,6 @@ public class Tooltip extends WidgetBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
-     *      Object, org.kuali.rice.krad.uif.component.Component)
-     */
-    @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
-    }
-
-    /**
      * Plain text or HTML string that will be used to render the tooltip div
      *
      * @return String

@@ -15,19 +15,18 @@
  */
 package org.kuali.rice.krad.uif.layout;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADUtils;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Css Grid Layout manager is a layout manager which creates div "rows" and "cells" to replicate a
@@ -68,8 +67,8 @@ public class CssGridLayoutManager extends LayoutManagerBase {
      *      org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performFinalize(View view, Object model, Container container) {
-        super.performFinalize(view, model, container);
+    public void performFinalize(Object model, Container container) {
+        super.performFinalize(model, container);
 
         int rowSpaceLeft = NUMBER_OF_COLUMNS;
         int rowIndex = 0;

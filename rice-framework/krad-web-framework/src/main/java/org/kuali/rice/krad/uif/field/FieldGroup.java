@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.field;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -22,9 +24,6 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.view.View;
-
-import java.util.List;
 
 /**
  * Field that contains a nested <code>Group</code>. Can be used to group
@@ -57,8 +56,8 @@ public class FieldGroup extends FieldBase {
      *      java.lang.Object)
      */
     @Override
-    public void performInitialization(View view, Object model) {
-        super.performInitialization(view, model);
+    public void performInitialization(Object model) {
+        super.performInitialization(model);
 
         if (StringUtils.isNotBlank(getAlign()) && group != null) {
             group.setAlign(getAlign());
@@ -66,8 +65,8 @@ public class FieldGroup extends FieldBase {
     }
 
     @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
+    public void performFinalize(Object model, Component parent) {
+        super.performFinalize(model, parent);
 
         this.addDataAttribute(UifConstants.DataAttributes.PARENT, parent.getId());
         if (group != null) {

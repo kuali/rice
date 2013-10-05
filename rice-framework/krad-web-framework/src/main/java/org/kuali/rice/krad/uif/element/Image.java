@@ -15,19 +15,18 @@
  */
 package org.kuali.rice.krad.uif.element;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
-import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.View;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Content element that renders a HTML <code>&lt;IMG&gt;</code> tag
@@ -71,9 +70,10 @@ public class Image extends ContentElementBase {
      *      java.lang.Object)
      */
     @Override
-    public void performInitialization(View view, Object model) {
-        super.performInitialization(view, model);
+    public void performInitialization(Object model) {
+        super.performInitialization(model);
 
+        View view = ViewLifecycle.getActiveLifecycle().getView();
         if ((StringUtils.isNotBlank(captionHeaderText) || (getPropertyExpression("captionHeaderText") != null)) && (
                 captionHeader == null)) {
             captionHeader = ComponentFactory.getImageCaptionHeader();
@@ -99,8 +99,8 @@ public class Image extends ContentElementBase {
      * org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performApplyModel(View view, Object model, Component parent) {
-        super.performApplyModel(view, model, parent);
+    public void performApplyModel(Object model, Component parent) {
+        super.performApplyModel(model, parent);
 
         if (StringUtils.isNotBlank(captionHeaderText)) {
             captionHeader.setHeaderText(captionHeaderText);

@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.data.DataType;
@@ -47,6 +48,7 @@ import org.kuali.rice.krad.uif.control.UserControl;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.LookupInputField;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.UifDefaultingService;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.InquiryView;
@@ -198,48 +200,61 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
     }
 
     @Override
-    public Control deriveControlAttributeFromMetadata( AttributeDefinition attrDef ) {
-        DataObjectAttribute dataObjectAttribute = attrDef.getDataObjectAttribute();
-        Control c = getControlInstance(attrDef, dataObjectAttribute);
-        // If we a have a control...we should - but just in case - don't want to be too dependent on assumptions of the above code
-        if ( c != null ) {
-            customizeControlInstance( c, attrDef, dataObjectAttribute );
-        }
-        return c;
+    public Control deriveControlAttributeFromMetadata( final AttributeDefinition attrDef ) {
+        return ViewLifecycle.encapsulateInitialization(new Callable<Control>(){
+            @Override
+            public Control call() throws Exception {
+                DataObjectAttribute dataObjectAttribute = attrDef.getDataObjectAttribute();
+                Control c = getControlInstance(attrDef, dataObjectAttribute);
+                // If we a have a control...we should - but just in case - don't want to be too dependent on assumptions of the above code
+                if ( c != null ) {
+                    customizeControlInstance( c, attrDef, dataObjectAttribute );
+                }
+                return c;
+            }});
     }
 
     @Override
-    public ValidCharactersConstraint deriveValidCharactersConstraint(AttributeDefinition attrDef) {
-        ValidCharactersConstraint validCharactersConstraint = null;
-        // First - see if one was defined in the metadata (provided by krad-data module annotations)
-        if ( attrDef.getDataObjectAttribute() != null ) {
-            if ( StringUtils.isNotBlank( attrDef.getDataObjectAttribute().getValidCharactersConstraintBeanName() ) ) {
-                Object consObj = dataDictionaryService.getDictionaryObject(attrDef.getDataObjectAttribute().getValidCharactersConstraintBeanName());
-                if ( consObj != null && consObj instanceof ValidCharactersConstraint ) {
-                    validCharactersConstraint  = (ValidCharactersConstraint) consObj;
-                }
-            }
-        }
-        // if not, make an intelligent guess from the data type
-        if ( validCharactersConstraint == null ) {
-            if ( attrDef.getDataType() != null ) {
-                if ( attrDef.getDataType().isNumeric() ) {
-                    validCharactersConstraint = (ValidCharactersConstraint) dataDictionaryService.getDictionaryObject(FLOATING_POINT_PATTERN_CONSTRAINT);
-                } else if ( attrDef.getDataType().isTemporal() ) {
-                    if ( attrDef.getDataType() == DataType.DATE ) {
-                        validCharactersConstraint = (ValidCharactersConstraint) dataDictionaryService.getDictionaryObject(DATE_PATTERN_CONSTRAINT);
-                    } else if ( attrDef.getDataType() == DataType.TIMESTAMP ) {
-                        validCharactersConstraint = (ValidCharactersConstraint) dataDictionaryService.getDictionaryObject(TIMESTAMP_PATTERN_CONSTRAINT);
+    public ValidCharactersConstraint deriveValidCharactersConstraint(final AttributeDefinition attrDef) {
+        return ViewLifecycle.encapsulateInitialization(new Callable<ValidCharactersConstraint>(){
+            @Override
+            public ValidCharactersConstraint call() throws Exception {
+                ValidCharactersConstraint validCharactersConstraint = null;
+                // First - see if one was defined in the metadata (provided by krad-data module annotations)
+                if (attrDef.getDataObjectAttribute() != null) {
+                    if (StringUtils.isNotBlank(attrDef.getDataObjectAttribute().getValidCharactersConstraintBeanName())) {
+                        Object consObj = dataDictionaryService.getDictionaryObject(attrDef.getDataObjectAttribute()
+                                .getValidCharactersConstraintBeanName());
+                        if (consObj != null && consObj instanceof ValidCharactersConstraint) {
+                            validCharactersConstraint = (ValidCharactersConstraint) consObj;
+                        }
                     }
                 }
-            }
-        }
-        // default to UTF8
-        if ( validCharactersConstraint == null ) {
-            validCharactersConstraint = (ValidCharactersConstraint) dataDictionaryService.getDictionaryObject(ANY_CHARACTER_PATTERN_CONSTRAINT);
-        }
+                // if not, make an intelligent guess from the data type
+                if (validCharactersConstraint == null) {
+                    if (attrDef.getDataType() != null) {
+                        if (attrDef.getDataType().isNumeric()) {
+                            validCharactersConstraint = (ValidCharactersConstraint) dataDictionaryService
+                                    .getDictionaryObject(FLOATING_POINT_PATTERN_CONSTRAINT);
+                        } else if (attrDef.getDataType().isTemporal()) {
+                            if (attrDef.getDataType() == DataType.DATE) {
+                                validCharactersConstraint = (ValidCharactersConstraint) dataDictionaryService
+                                        .getDictionaryObject(DATE_PATTERN_CONSTRAINT);
+                            } else if (attrDef.getDataType() == DataType.TIMESTAMP) {
+                                validCharactersConstraint = (ValidCharactersConstraint) dataDictionaryService
+                                        .getDictionaryObject(TIMESTAMP_PATTERN_CONSTRAINT);
+                            }
+                        }
+                    }
+                }
+                // default to UTF8
+                if (validCharactersConstraint == null) {
+                    validCharactersConstraint = (ValidCharactersConstraint) dataDictionaryService
+                            .getDictionaryObject(ANY_CHARACTER_PATTERN_CONSTRAINT);
+                }
 
-        return validCharactersConstraint;
+                return validCharactersConstraint;
+            }});
     }
 
     protected Group createInquirySection( String groupId, String headerText ) {
@@ -360,20 +375,24 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
      * @see org.kuali.rice.krad.uif.service.UifDefaultingService#deriveInquiryViewFromMetadata(org.kuali.rice.krad.datadictionary.DataObjectEntry)
      */
     @Override
-    public InquiryView deriveInquiryViewFromMetadata(DataObjectEntry dataObjectEntry) {
-        // Create the main view object and set the title and BO class
-        InquiryView view = ComponentFactory.getInquiryView();
-        view.setHeaderText(dataObjectEntry.getObjectLabel());
-        view.setDataObjectClassName(dataObjectEntry.getDataObjectClass());
+    public InquiryView deriveInquiryViewFromMetadata(final DataObjectEntry dataObjectEntry) {
+        return ViewLifecycle.encapsulateInitialization(new Callable<InquiryView>(){
+            @Override
+            public InquiryView call() throws Exception {
+                // Create the main view object and set the title and BO class
+                InquiryView view = ComponentFactory.getInquiryView();
+                view.setHeaderText(dataObjectEntry.getObjectLabel());
+                view.setDataObjectClassName(dataObjectEntry.getDataObjectClass());
 
-        addAttributeSectionsToInquiryView(view, dataObjectEntry);
+                addAttributeSectionsToInquiryView(view, dataObjectEntry);
 
-        // TODO: if there are updatable reference objects, include sections for them
+                // TODO: if there are updatable reference objects, include sections for them
 
-        // If there are collections on the object, include sections for them
-        addCollectionSectionsToInquiryView( view, dataObjectEntry );
+                // If there are collections on the object, include sections for them
+                addCollectionSectionsToInquiryView( view, dataObjectEntry );
 
-        return view;
+                return view;
+            }});
     }
 
     protected void addAttributesToLookupCriteria( LookupView view, DataObjectEntry dataObjectEntry ) {
@@ -433,18 +452,23 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
      * @see org.kuali.rice.krad.uif.service.UifDefaultingService#deriveLookupViewFromMetadata(org.kuali.rice.krad.datadictionary.DataObjectEntry)
      */
     @Override
-    public LookupView deriveLookupViewFromMetadata(DataObjectEntry dataObjectEntry) {
-        LookupView view = ComponentFactory.getLookupView();
-        view.setHeaderText( dataObjectEntry.getObjectLabel() + " Lookup" );
-        view.setDataObjectClassName(dataObjectEntry.getDataObjectClass());
-        view.setCriteriaFields( new ArrayList<Component>() );
-        view.setResultFields( new ArrayList<Component>() );
-        view.setDefaultSortAttributeNames( dataObjectEntry.getPrimaryKeys() );
+    public LookupView deriveLookupViewFromMetadata(final DataObjectEntry dataObjectEntry) {
+        return ViewLifecycle.encapsulateInitialization(new Callable<LookupView>() {
+            @Override
+            public LookupView call() throws Exception {
+                LookupView view = ComponentFactory.getLookupView();
+                view.setHeaderText(dataObjectEntry.getObjectLabel() + " Lookup");
+                view.setDataObjectClassName(dataObjectEntry.getDataObjectClass());
+                view.setCriteriaFields(new ArrayList<Component>());
+                view.setResultFields(new ArrayList<Component>());
+                view.setDefaultSortAttributeNames(dataObjectEntry.getPrimaryKeys());
 
-        addAttributesToLookupCriteria( view, dataObjectEntry );
-        addAttributesToLookupResults( view, dataObjectEntry );
+                addAttributesToLookupCriteria(view, dataObjectEntry);
+                addAttributesToLookupResults(view, dataObjectEntry);
 
-        return view;
+                return view;
+            }
+        });
     }
 
     public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {

@@ -17,15 +17,6 @@ package org.kuali.rice.krad.uif.widget;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.uif.util.ExpressionUtils;
-import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.component.Component;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * The breadcrumb widget contains various settings for setting up
@@ -42,21 +33,6 @@ public class Breadcrumbs extends WidgetBase {
 
     public Breadcrumbs() {
         super();
-    }
-
-    /**
-     * The following updates are done here:
-     *
-     * <ul>
-     * <li>Evaluate expression on homeward path list</li>
-     * </ul>
-     *
-     * @see org.kuali.rice.krad.uif.component.Component#performApplyModel(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
-     */
-    @Override
-    public void performApplyModel(View view, Object model, Component parent) {
-        super.performApplyModel(view, model, parent);
     }
 
     /**

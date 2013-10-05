@@ -38,8 +38,4 @@ public class Spinner extends WidgetBase {
         super();
     }
 
-    @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
-    }
 }

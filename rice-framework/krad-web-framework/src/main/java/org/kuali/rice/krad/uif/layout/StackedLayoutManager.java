@@ -99,8 +99,8 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
      */
     @Override
-    public void performInitialization(View view, Object model, Container container) {
-        super.performInitialization(view, model, container);
+    public void performInitialization(Object model, Container container) {
+        super.performInitialization(model, container);
 
         stackedGroups = new ArrayList<Group>();
     }
@@ -116,8 +116,8 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
      */
     @Override
-    public void performApplyModel(View view, Object model, Container container) {
-        super.performApplyModel(view, model, container);
+    public void performApplyModel(Object model, Container container) {
+        super.performApplyModel(model, container);
 
         if (wrapperGroup != null) {
             wrapperGroup.setItems(stackedGroups);
@@ -131,8 +131,8 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      *      org.kuali.rice.krad.uif.container.Container)
      */
     @Override
-    public void performFinalize(View view, Object model, Container container) {
-        super.performFinalize(view, model, container);
+    public void performFinalize(Object model, Container container) {
+        super.performFinalize(model, container);
 
         // Calculate the number of pages for the pager widget if we are using server paging
         if (container instanceof CollectionGroup
@@ -588,7 +588,10 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
             stackedLayoutManagerCopy.setStackedGroups(stackedGroupsCopy);
         }
 
-        stackedLayoutManagerCopy.setPagerWidget((Pager) this.getPagerWidget().copy());
+        Pager pager = this.getPagerWidget();
+        if (pager != null) {
+            stackedLayoutManagerCopy.setPagerWidget(pager.<Pager> copy());
+        }
 
         stackedLayoutManagerCopy.setActionsInLineGroup(this.isActionsInLineGroup());
     }

@@ -15,17 +15,16 @@
  */
 package org.kuali.rice.krad.uif.modifier;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.datadictionary.parse.BeanTag;
-import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.field.Field;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.field.Field;
 
 /**
  * Pulls <code>Label</code> instances out of a contained field so they will
@@ -51,7 +50,7 @@ public class LabelSeparateModifier extends ComponentModifierBase {
 	 *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
 	 */
 	@Override
-	public void performModification(View view, Object model, Component component) {
+	public void performModification(Object model, Component component) {
 		if ((component != null) && !(component instanceof Group)) {
 			throw new IllegalArgumentException("Compare field initializer only support Group components, found type: "
 					+ component.getClass());

@@ -49,6 +49,7 @@ import org.kuali.rice.krad.uif.control.UifKeyValuesFinder;
 import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.element.ValidationMessages;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ClientValidationUtils;
 import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
@@ -158,8 +159,10 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *      java.lang.Object)
      */
     @Override
-    public void performInitialization(View view, Object model) {
-        super.performInitialization(view, model);
+    public void performInitialization(Object model) {
+        super.performInitialization(model);
+        
+        View view = ViewLifecycle.getActiveLifecycle().getView();
 
         if ((StringUtils.isNotBlank(constraintText) || (getPropertyExpression("constraintText") != null)) && (
                 constraintMessage
@@ -181,8 +184,8 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * @see Component#performApplyModel(org.kuali.rice.krad.uif.view.View, Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performApplyModel(View view, Object model, Component parent) {
-        super.performApplyModel(view, model, parent);
+    public void performApplyModel(Object model, Component parent) {
+        super.performApplyModel(model, parent);
 
         // Done in apply model so we have the message text for additional rich message processing in Message
         // Sets message
@@ -230,11 +233,11 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         }
 
         if (this.enableAutoDirectInquiry && (getInquiry() == null) && !isReadOnly()) {
-            buildAutomaticInquiry(view, model, true);
+            buildAutomaticInquiry(model, true);
         }
 
         if (this.enableAutoQuickfinder && (getQuickfinder() == null)) {
-            buildAutomaticQuickfinder(view, model);
+            buildAutomaticQuickfinder(model);
         }
 
         // if read only do key/value translation if necessary (if alternative and additional properties not set)
@@ -273,8 +276,8 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
+    public void performFinalize(Object model, Component parent) {
+        super.performFinalize(model, parent);
 
         setupIds();
 
@@ -317,6 +320,8 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         }
 
         setupFieldQuery();
+        
+        View view = ViewLifecycle.getActiveLifecycle().getView();
 
         // special requiredness indicator handling, if this was previously not required reset its required
         // message to be ** for indicating required in the next state
@@ -356,10 +361,10 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * @param view view instance being processed
      * @param model object containing the view data
      */
-    protected void buildAutomaticQuickfinder(View view, Object model) {
+    protected void buildAutomaticQuickfinder(Object model) {
         QuickFinder autoQuickfinder = ComponentFactory.getQuickFinder();
 
-        view.getViewHelperService().spawnSubLifecyle(view, model, autoQuickfinder, this,
+        ViewLifecycle.getActiveLifecycle().spawnSubLifecyle(model, autoQuickfinder, this,
                 UifConstants.ViewPhases.INITIALIZE, UifConstants.ViewPhases.APPLY_MODEL);
 
         // if render flag is true, that means the quickfinder was able to find a relationship
@@ -565,10 +570,10 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
 
         // control
         if ((getControl() == null) && (attributeDefinition.getControlField() != null)) {
-            Control control = attributeDefinition.getControlField();
+            Control control = ComponentUtils.copy(attributeDefinition.getControlField());
             view.assignComponentIds(control);
 
-            setControl(ComponentUtils.copy(control));
+            setControl(control);
         }
 
         // constraint

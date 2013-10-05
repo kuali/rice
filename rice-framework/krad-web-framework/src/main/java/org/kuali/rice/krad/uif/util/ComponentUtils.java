@@ -55,6 +55,10 @@ public class ComponentUtils {
     }
 
     public static <T extends Component> T copy(T component, String idSuffix) {
+        if (component == null) {
+            return null;
+        }
+        
         T copy = component.copy();
 
         if (StringUtils.isNotBlank(idSuffix)) {
@@ -760,19 +764,19 @@ public class ComponentUtils {
      * @see org.kuali.rice.krad.uif.component.Component#getOrder()
      * @see @see org.springframework.core.Ordered
      */
-    public static List<? extends Ordered> sort(List<? extends Ordered> items, int defaultOrderSequence) {
+    public static <T extends Ordered> List<T> sort(List<T> items, int defaultOrderSequence) {
         if (items == null) {
             return null;
         }
         
-        List<Ordered> orderedItems = new ArrayList<Ordered>(items.size());
+        List<T> orderedItems = new ArrayList<T>(items.size());
 
         // do replacement for items with the same order property value
         Set<Integer> foundOrders = new HashSet<Integer>();
 
         // reverse the list, so items later in the list win
         for (int i = items.size()-1; i >= 0; i--) {
-            Ordered component = items.get(i);
+            T component = items.get(i);
             int order = component.getOrder();
 
             // if order not set just add to list

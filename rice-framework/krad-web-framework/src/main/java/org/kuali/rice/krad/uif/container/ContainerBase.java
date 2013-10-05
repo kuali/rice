@@ -15,9 +15,11 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
@@ -26,14 +28,11 @@ import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.element.ValidationMessages;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Help;
 import org.kuali.rice.krad.uif.widget.Tooltip;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Base <code>Container</code> implementation which container implementations
@@ -82,19 +81,19 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
 	 */
 	@Override
-	public void performInitialization(View view, Object model) {
-		super.performInitialization(view, model);
+	public void performInitialization(Object model) {
+		super.performInitialization(model);
 
-        sortItems(view, model);
+        sortItems(model);
 
         if ((StringUtils.isNotBlank(instructionalText) || (getPropertyExpression("instructionalText") != null)) && (
                 instructionalMessage == null)) {
             instructionalMessage = ComponentFactory.getInstructionalMessage();
-            view.assignComponentIds(instructionalMessage);
+            ViewLifecycle.getActiveLifecycle().getView().assignComponentIds(instructionalMessage);
         }
 
 		if (layoutManager != null) {
-			layoutManager.performInitialization(view, model, this);
+			layoutManager.performInitialization(model, this);
 		}
 	}
 
@@ -103,8 +102,8 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
 	 */
 	@Override
-	public void performApplyModel(View view, Object model, Component parent) {
-		super.performApplyModel(view, model, parent);
+	public void performApplyModel(Object model, Component parent) {
+		super.performApplyModel(model, parent);
 
 		// setup summary message field if necessary
 		if (instructionalMessage != null && StringUtils.isBlank(instructionalMessage.getMessageText())) {
@@ -112,7 +111,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 		}
 
 		if (layoutManager != null) {
-			layoutManager.performApplyModel(view, model, this);
+			layoutManager.performApplyModel(model, this);
 		}
 	}
 
@@ -129,15 +128,15 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
 	 */
 	@Override
-	public void performFinalize(View view, Object model, Component parent) {
-		super.performFinalize(view, model, parent);
+	public void performFinalize(Object model, Component parent) {
+		super.performFinalize(model, parent);
 
         if(header != null){
             header.addDataAttribute(UifConstants.DataAttributes.HEADER_FOR, this.getId());
         }
 
 		if (layoutManager != null) {
-			layoutManager.performFinalize(view, model, this);
+			layoutManager.performFinalize(model, this);
 		}
 
 	}
@@ -186,10 +185,9 @@ public abstract class ContainerBase extends ComponentBase implements Container {
      * @param view view instance containing the container
      * @param model model object containing the view data
      */
-    protected void sortItems(View view, Object model) {
+    protected void sortItems(Object model) {
         // sort items list by the order property
-        List<? extends Component> sortedItems = (List<? extends Component>) ComponentUtils.sort(getItems(),
-                defaultItemPosition);
+        List<? extends Component> sortedItems = ComponentUtils.sort(getItems(), defaultItemPosition);
         setItems(sortedItems);
     }
 

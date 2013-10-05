@@ -15,20 +15,20 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.Copyable;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.container.Container;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.HistoryFlow;
 import org.kuali.rice.krad.web.form.UifFormBase;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * BreadcrumbOptions represents the options for the current view breadcrumbs that are displayed.
@@ -59,7 +59,9 @@ public class BreadcrumbOptions implements Serializable, Copyable {
      *
      * @param model the model
      */
-    public void setupBreadcrumbs(View view, Object model) {
+    public void setupBreadcrumbs(Object model) {
+        View view = ViewLifecycle.getActiveLifecycle().getView();
+        
         if (model != null && model instanceof UifFormBase) {
             UifFormBase form = (UifFormBase) model;
 
@@ -111,7 +113,9 @@ public class BreadcrumbOptions implements Serializable, Copyable {
      *
      * @param model the model
      */
-    public void finalizeBreadcrumbs(View view, Object model, Container parent, BreadcrumbItem breadcrumbItem) {
+    public void finalizeBreadcrumbs(Object model, Container parent, BreadcrumbItem breadcrumbItem) {
+        View view = ViewLifecycle.getActiveLifecycle().getView();
+        
         //set breadcrumbItem label same as the header, if not set
         if (StringUtils.isBlank(breadcrumbItem.getLabel()) && view.getHeader() != null && !StringUtils.isBlank(
                 view.getHeader().getHeaderText()) && model instanceof UifFormBase) {

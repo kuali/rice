@@ -20,7 +20,6 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.util.UrlInfo;
-import org.kuali.rice.krad.uif.view.View;
 
 /**
  * A special action component that is used within a {@link DropdownMenu}
@@ -51,14 +50,14 @@ public class MenuAction extends Action {
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performFinalize(View view, Object model, Component parent) {
+    public void performFinalize(Object model, Component parent) {
         if (StringUtils.isBlank(getActionScript()) && (actionUrl != null) && actionUrl.isFullyConfigured()) {
             String actionScript = ScriptUtils.buildFunctionCall(UifConstants.JsFunctions.REDIRECT, actionUrl.getHref());
 
             setActionScript(actionScript);
         }
 
-        super.performFinalize(view, model, parent);
+        super.performFinalize(model, parent);
     }
 
     /**

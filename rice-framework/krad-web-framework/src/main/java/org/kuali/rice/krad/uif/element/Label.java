@@ -15,20 +15,19 @@
  */
 package org.kuali.rice.krad.uif.element;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.UifConstants.Position;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Content element that renders a label
@@ -66,20 +65,21 @@ public class Label extends ContentElementBase {
      * @see Component#performApplyModel(org.kuali.rice.krad.uif.view.View, Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performApplyModel(View view, Object model, Component parent) {
-        super.performApplyModel(view, model, parent);
+    public void performApplyModel(Object model, Component parent) {
+        super.performApplyModel(model, parent);
 
         if (richLabelMessage == null && labelText != null &&
                 labelText.contains(KRADConstants.MessageParsing.LEFT_TOKEN) &&
                 labelText.contains(KRADConstants.MessageParsing.RIGHT_TOKEN)) {
             Message message = ComponentFactory.getMessage();
-            view.assignComponentIds(message);
+            ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
+            viewLifecycle.getView().assignComponentIds(message);
 
             message.setMessageText(labelText);
             message.setInlineComponents(inlineComponents);
             message.setGenerateSpan(false);
 
-            view.getViewHelperService().performComponentInitialization(view, model, message);
+            viewLifecycle.performComponentInitialization(model, message);
 
             this.setRichLabelMessage(message);
         }
@@ -95,8 +95,8 @@ public class Label extends ContentElementBase {
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
+    public void performFinalize(Object model, Component parent) {
+        super.performFinalize(model, parent);
 
         if (StringUtils.isBlank(getLabelText())) {
             setRender(false);

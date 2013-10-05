@@ -43,7 +43,7 @@ public class FormView extends View {
         renderForm = true;
         validateServerSide = true;
         validateClientSide = true;
-        setApplyDirtyCheck(true);
+        applyDirtyCheck = true;
     }
 
     /**

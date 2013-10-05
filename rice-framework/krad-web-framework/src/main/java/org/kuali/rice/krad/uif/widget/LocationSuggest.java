@@ -15,16 +15,15 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADUtils;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * LocationSuggest widget for providing suggestions that represent locations.  When the suggestion is clicked, the
@@ -47,8 +46,8 @@ public class LocationSuggest extends Suggest {
      * @see Component#performFinalize(org.kuali.rice.krad.uif.view.View, Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
+    public void performFinalize(Object model, Component parent) {
+        super.performFinalize(model, parent);
 
         if (requestParameterPropertyNames == null) {
             requestParameterPropertyNames = new HashMap<String, String>();

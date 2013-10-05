@@ -43,6 +43,7 @@ import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.MessageField;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ColumnCalculationInfo;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
@@ -53,8 +54,6 @@ import org.kuali.rice.krad.uif.widget.Pager;
 import org.kuali.rice.krad.uif.widget.RichTable;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
-
-import com.google.common.collect.Lists;
 
 /**
  * Layout manager that works with {@code CollectionGroup} components and renders the collection as a
@@ -162,23 +161,23 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
      */
     @Override
-    public void performInitialization(View view, Object model, Container container) {
+    public void performInitialization(Object model, Container container) {
         CollectionGroup collectionGroup = (CollectionGroup) container;
 
-        this.setupDetails(collectionGroup, view);
-        this.setupGrouping(collectionGroup, view);
+        this.setupDetails(collectionGroup);
+        this.setupGrouping(collectionGroup);
 
         if (collectionGroup.isAddViaLightBox()) {
             setSeparateAddLine(true);
         }
 
-        super.performInitialization(view, model, container);
+        super.performInitialization(model, container);
 
         getRowCssClasses().clear();
 
         if (generateAutoSequence && !(getSequenceFieldPrototype() instanceof MessageField)) {
             sequenceFieldPrototype = ComponentFactory.getMessageField();
-            view.assignComponentIds(getSequenceFieldPrototype());
+            ViewLifecycle.getActiveLifecycle().getView().assignComponentIds(getSequenceFieldPrototype());
         }
     }
 
@@ -192,8 +191,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * @param container
      */
     @Override
-    public void performApplyModel(View view, Object model, Container container) {
-        super.performApplyModel(view, model, container);
+    public void performApplyModel(Object model, Container container) {
+        super.performApplyModel(model, container);
 
         for (ColumnCalculationInfo cInfo : columnCalculations) {
             ExpressionUtils.populatePropertyExpressionsFromGraph(cInfo, false);
@@ -208,8 +207,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
      */
     @Override
-    public void performFinalize(View view, Object model, Container container) {
-        super.performFinalize(view, model, container);
+    public void performFinalize(Object model, Container container) {
+        super.performFinalize(model, container);
 
         UifFormBase formBase = (UifFormBase) model;
 
@@ -243,7 +242,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         //setup the column calculations functionality and components
         if (columnCalculations != null && richTable != null &&
                 this.getAllRowFields() != null && !this.getAllRowFields().isEmpty()) {
-            setupColumnCalculations(view, model, container, totalColumns);
+            setupColumnCalculations(model, container, totalColumns);
         }
 
         //set the js properties for rowGrouping on richTables
@@ -275,7 +274,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * @param collectionGroup collection group for this layout
      * @param view the view
      */
-    private void setupGrouping(CollectionGroup collectionGroup, View view) {
+    private void setupGrouping(CollectionGroup collectionGroup) {
         //Grouping setup
         String groupingTitleExpression = "";
         if (StringUtils.isNotBlank(this.getPropertyExpression(UifPropertyPaths.GROUPING_TITLE))) {
@@ -302,7 +301,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             groupingMessageField.addDataAttribute(UifConstants.DataAttributes.ROLE,
                     UifConstants.RoleTypes.ROW_GROUPING);
 
-            view.assignComponentIds(groupingMessageField);
+            ViewLifecycle.getActiveLifecycle().getView().assignComponentIds(groupingMessageField);
 
             List<Component> theItems = new ArrayList<Component>();
             theItems.add(groupingMessageField);
@@ -319,7 +318,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * @param container the parent container
      * @param totalColumns total number of columns in the table
      */
-    protected void setupColumnCalculations(View view, Object model, Container container, int totalColumns) {
+    protected void setupColumnCalculations(Object model, Container container, int totalColumns) {
         footerCalculationComponents = new ArrayList<Component>(totalColumns);
 
         //add nulls for each column to start - nulls will be processed by the ftl as a blank cell
@@ -395,6 +394,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
             calculationFieldGroup.setItems(calculationFieldGroupItems);
 
+            View view = ViewLifecycle.getActiveLifecycle().getView();
             view.assignComponentIds(calculationFieldGroup);
 
             //Determine if there is already a fieldGroup present for this column's footer
@@ -427,6 +427,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         //special processing for the left labels - when there are no total fields in this column
         //add the label to the column footer directly
         if (this.renderOnlyLeftTotalLabels && footerCalculationComponents.get(leftLabelColumnIndex) == null) {
+            View view = ViewLifecycle.getActiveLifecycle().getView();
+            
             Group labelGroup = ComponentFactory.getVerticalBoxGroup();
             view.assignComponentIds(labelGroup);
             List<Component> groupItems = new ArrayList<Component>();
@@ -459,9 +461,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         //column calculations
         for (Component component : footerCalculationComponents) {
             if (component != null) {
-                component.performInitialization(view, model);
-                component.performApplyModel(view, model, container);
-                component.performFinalize(view, model, container);
+                component.performInitialization(model);
+                component.performApplyModel(model, container);
+                component.performFinalize(model, container);
             }
         }
     }
@@ -519,13 +521,15 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     public void buildLine(View view, Object model, CollectionGroup collectionGroup, List<Field> lineFields,
             List<FieldGroup> subCollectionFields, String bindingPath, List<Action> actions, String idSuffix,
             Object currentLine, int lineIndex) {
+        
+        ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
 
         // since expressions are not evaluated on child components yet, we need to evaluate any properties
         // we are going to read for building the table
-        ExpressionEvaluator expressionEvaluator = view.getViewHelperService().getExpressionEvaluator();
+        ExpressionEvaluator expressionEvaluator = viewLifecycle.getHelper().getExpressionEvaluator();
         for (Field lineField : lineFields) {
             lineField.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, collectionGroup);
-            lineField.pushAllToContext(view.getViewHelperService().getCommonContext(view, lineField));
+            lineField.pushAllToContext(viewLifecycle.getCommonContext(lineField));
 
             expressionEvaluator.evaluatePropertyExpression(view, lineField.getContext(), lineField,
                     UifPropertyPaths.ROW_SPAN, true);
@@ -1561,7 +1565,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * @param collectionGroup the CollectionGroup for this TableLayoutManager
      * @param view the current view
      */
-    public void setupDetails(CollectionGroup collectionGroup, View view) {
+    public void setupDetails(CollectionGroup collectionGroup) {
         if (getRowDetailsGroup() == null || this.getRichTable() == null || !this.getRichTable().isRender()) {
             return;
         }
@@ -1601,7 +1605,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         detailsItems.add(getRowDetailsGroup());
         detailsFieldGroup.setItems(detailsItems);
         detailsFieldGroup.setId(collectionGroup.getId() + UifConstants.IdSuffixes.DETAIL_GROUP);
-        view.assignComponentIds(detailsFieldGroup);
+        ViewLifecycle.getActiveLifecycle().getView().assignComponentIds(detailsFieldGroup);
 
         List<Component> theItems = new ArrayList<Component>();
         theItems.add(detailsFieldGroup);

@@ -15,16 +15,15 @@
  */
 package org.kuali.rice.krad.uif.control;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.DatePicker;
-
-import java.util.List;
 
 /**
  * Represents a HTML Text control, generally rendered as a input field of type
@@ -76,8 +75,8 @@ public class TextControl extends ControlBase implements SizedControl {
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
+    public void performFinalize(Object model, Component parent) {
+        super.performFinalize(model, parent);
 
         if (parent instanceof InputField) {
             InputField field = (InputField) parent;

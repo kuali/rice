@@ -22,6 +22,7 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.ContentElementBase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.view.View;
@@ -68,16 +69,17 @@ public abstract class ControlBase extends ContentElementBase implements Control 
      * top level business object, dto)
      * @param parent
      */
-    public void performApplyModel(View view, Object model, Component parent) {
-        super.performApplyModel(view, model, parent);
+    @Override
+    public void performApplyModel(Object model, Component parent) {
+        super.performApplyModel(model, parent);
 
         disabledExpression = this.getPropertyExpression("disabled");
         if(disabledExpression != null){
             ExpressionEvaluator expressionEvaluator =
-                    view.getViewHelperService().getExpressionEvaluator();
+                    ViewLifecycle.getActiveLifecycle().getHelper().getExpressionEvaluator();
 
-            disabledExpression = expressionEvaluator.replaceBindingPrefixes(view, this,
-                    disabledExpression);
+            disabledExpression = expressionEvaluator.replaceBindingPrefixes(
+                    ViewLifecycle.getActiveLifecycle().getView(), this, disabledExpression);
             disabled = (Boolean) expressionEvaluator.evaluateExpression(this.getContext(), disabledExpression);
         }
     }
@@ -90,11 +92,11 @@ public abstract class ControlBase extends ContentElementBase implements Control 
      * @param model top level object containing the data
      * @param parent parent component
      */
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performApplyModel(view, model, parent);
+    public void performFinalize(Object model, Component parent) {
+        super.performFinalize(model, parent);
 
         ExpressionEvaluator expressionEvaluator =
-                view.getViewHelperService().getExpressionEvaluator();
+                ViewLifecycle.getActiveLifecycle().getHelper().getExpressionEvaluator();
 
         if (StringUtils.isNotEmpty(disabledExpression) && !disabledExpression.equalsIgnoreCase("true")
                 && !disabledExpression.equalsIgnoreCase("false")) {
@@ -102,7 +104,8 @@ public abstract class ControlBase extends ContentElementBase implements Control 
             disabledConditionJs = ExpressionUtils.parseExpression(disabledExpression,
                     disabledConditionControlNames);
         }
-
+        
+        View view = ViewLifecycle.getActiveLifecycle().getView();
         List<String> adjustedDisablePropertyNames = new ArrayList<String>();
         for (String propertyName : disabledWhenChangedPropertyNames) {
             adjustedDisablePropertyNames.add(expressionEvaluator.replaceBindingPrefixes(view, this,

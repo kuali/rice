@@ -328,7 +328,7 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
     }
 
     @Override
-    protected DataDictionaryService getDataDictionaryService() {
+    public DataDictionaryService getDataDictionaryService() {
         return KRADServiceLocatorWeb.getDataDictionaryService();
     }
 

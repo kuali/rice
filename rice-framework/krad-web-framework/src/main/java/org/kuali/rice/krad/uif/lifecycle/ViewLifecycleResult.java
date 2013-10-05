@@ -1,11 +1,11 @@
-/**
- * Copyright 2005-2013 The Kuali Foundation
+/*
+ * Copyright 2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl2.php
+ * http://www.opensource.org/licenses/ecl1.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,21 +19,25 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.view.View;
 
 /**
- * Interface that must be implemented by components that wish to be notified of a lifecycle event.
- *
+ * Interface for encapsulting the completed processing results for an view lifecycle process.
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface LifecycleEventListener {
+public interface ViewLifecycleResult {
 
     /**
-     * Invoked on a component listener when an event occurs for the given event component.
-     *
-     * @param lifecycleEvent event that occurred
-     * @param view view instance the lifecycle is being processed for
-     * @param model object containing the model data
-     * @param eventComponent component instance the event occurred on/for
+     * Get the view.
+     * 
+     * @return A copy of the original view passed in at the start of the lifecycle process, but with
+     *         lifecycle processing applied.
      */
-    void processEvent(ViewLifecycle.LifecycleEvent lifecycleEvent, View view, Object model,
-            Component eventComponent);
+    View getView();
+    
+    /**
+     * Get the component initialized by a refresh lifecycle.
+     * 
+     * @return A copy of the original component passed in for a refresh lifecycle.
+     */
+    <T extends Component> T getRefreshComponent();
     
 }

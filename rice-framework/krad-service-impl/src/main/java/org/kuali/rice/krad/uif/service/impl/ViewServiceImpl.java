@@ -15,10 +15,12 @@
  */
 package org.kuali.rice.krad.uif.service.impl;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.krad.datadictionary.validator.ValidationController;
 import org.kuali.rice.krad.service.DataDictionaryService;
@@ -26,14 +28,10 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.service.ViewTypeService;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.web.form.UifFormBase;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Implementation of <code>ViewService</code>
@@ -57,22 +55,12 @@ public class ViewServiceImpl implements ViewService {
     /**
      * @see org.kuali.rice.krad.uif.service.ViewService#getViewById(java.lang.String)
      */
-    public View getViewById(String viewId) {
+    public View getViewById(final String viewId) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("retrieving view instance for id: " + viewId);
         }
-
-        View view = dataDictionaryService.getViewById(viewId);
-        if (view == null) {
-            LOG.warn("View not found for id: " + viewId);
-        } else {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Updating view status to CREATED for view: " + view.getId());
-            }
-            view.setViewStatus(ViewStatus.CREATED);
-        }
-
-        return view;
+        
+        return dataDictionaryService.getViewById(viewId);
     }
 
     /**
@@ -94,9 +82,6 @@ public class ViewServiceImpl implements ViewService {
         View view = dataDictionaryService.getViewByTypeIndex(viewType, typeParameters);
         if (view == null) {
             LOG.warn("View not found for type: " + viewType);
-        } else {
-            LOG.debug("Updating view status to CREATED for view: " + view.getId());
-            view.setViewStatus(ViewStatus.CREATED);
         }
 
         return view;
@@ -118,54 +103,30 @@ public class ViewServiceImpl implements ViewService {
     }
 
     /**
+     * TODO: Consider moving this method to ViewLifecycle
      * @see org.kuali.rice.krad.uif.service.ViewService#buildView(org.kuali.rice.krad.uif.view.View, java.lang.Object,
      *      java.util.Map<java.lang.String,java.lang.String>)
      */
-    public void buildView(View view, Object model, Map<String, String> parameters) {
-        // get the configured helper service for the view
-        ViewHelperService helperService = view.getViewHelperService();
-
-        // populate view from request parameters
-        helperService.populateViewFromRequestParameters(view, parameters);
-
-        // backup view request parameters on form for recreating lost views (session timeout)
-        ((UifFormBase) model).setViewRequestParameters(view.getViewRequestParameters());
-
-        // run view lifecycle
-        performViewLifecycle(view, model, parameters);
-
-        // Validation of the page's beans
-        if (CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsBoolean(
-                UifConstants.VALIDATE_VIEWS_ONBUILD)) {
-            ValidationController validator = new ValidationController(true, true, true, true, false);
-            Log tempLogger = LogFactory.getLog(ViewServiceImpl.class);
-            validator.validate(view, tempLogger, false);
-        }
-    }
-
-    /**
-     * Initializes a newly created <code>View</code> instance. Each component of the tree is invoked
-     * to perform setup based on its configuration. In addition helper service methods are invoked to
-     * perform custom initialization
-     *
-     * @param view - view instance to initialize
-     * @param model - object instance containing the view data
-     * @param parameters - Map of key values pairs that provide configuration for the <code>View</code>, this
-     * is generally comes from the request and can be the request parameter Map itself. Any parameters
-     * not valid for the View will be filtered out
-     */
-    protected void performViewLifecycle(final View view, final Object model, final Map<String, String> parameters) {
-        // get the configured helper service for the view
-        final ViewHelperService helperService = view.getViewHelperService();
-
-        helperService.encapsulateViewLifecycle(new Runnable(){
+    public View buildView(View view, final Object model, final Map<String, String> parameters) {
+        View builtView = ViewLifecycle.encapsulateLifecycle(view, new Runnable(){
 			@Override
 			public void run() {
+				ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
+				View view = viewLifecycle.getView();
+				
+				// populate view from request parameters
+				viewLifecycle.populateViewFromRequestParameters(parameters);
+
+				// backup view request parameters on form for recreating lost
+				// views (session timeout)
+				((UifFormBase) model).setViewRequestParameters(view
+						.getViewRequestParameters());
+
 		        // invoke initialize phase on the views helper service
-		        if (LOG.isEnabledFor(Priority.INFO)) {
+		        if (LOG.isInfoEnabled()) {
 		            LOG.info("performing initialize phase for view: " + view.getId());
 		        }
-		        helperService.performInitialization(view, model);
+		        viewLifecycle.performInitialization(model);
 
 		        // do indexing                               
 		        if (LOG.isDebugEnabled()) {
@@ -180,25 +141,25 @@ public class ViewServiceImpl implements ViewService {
 		        view.setViewStatus(ViewStatus.INITIALIZED);
 
 		        // Apply Model Phase
-		        if (LOG.isEnabledFor(Priority.INFO)) {
+		        if (LOG.isInfoEnabled()) {
 		            LOG.info("performing apply model phase for view: " + view.getId());
 		        }
-		        helperService.performApplyModel(view, model);
+		        viewLifecycle.performApplyModel(model);
 
 		        // do indexing
-		        if (LOG.isEnabledFor(Priority.INFO)) {
+		        if (LOG.isInfoEnabled()) {
 		            LOG.info("reindexing after apply model for view: " + view.getId());
 		        }
 		        view.index();
 
 		        // Finalize Phase
-		        if (LOG.isEnabledFor(Priority.INFO)) {
+		        if (LOG.isInfoEnabled()) {
 		            LOG.info("performing finalize phase for view: " + view.getId());
 		        }
-		        helperService.performFinalize(view, model);
+		        viewLifecycle.performFinalize(model);
 
 		        // do indexing
-		        if (LOG.isEnabledFor(Priority.INFO)) {
+		        if (LOG.isInfoEnabled()) {
 		            LOG.info("processing final indexing for view: " + view.getId());
 		        }
 		        view.index();
@@ -208,7 +169,17 @@ public class ViewServiceImpl implements ViewService {
 		            LOG.debug("Updating view status to FINAL for view: " + view.getId());
 		        }
 		        view.setViewStatus(ViewStatus.FINAL);
-			}});
+			}}).getView();
+
+        // Validation of the page's beans
+        if (CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsBoolean(
+                UifConstants.VALIDATE_VIEWS_ONBUILD)) {
+            ValidationController validator = new ValidationController(true, true, true, true, false);
+            Log tempLogger = LogFactory.getLog(ViewServiceImpl.class);
+            validator.validate(builtView, tempLogger, false);
+        }
+        
+        return builtView;
     }
 
     public ViewTypeService getViewTypeService(UifConstants.ViewType viewType) {

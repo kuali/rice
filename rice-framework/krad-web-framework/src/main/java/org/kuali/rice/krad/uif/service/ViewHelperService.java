@@ -15,14 +15,13 @@
  */
 package org.kuali.rice.krad.uif.service;
 
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.container.Container;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.widget.Inquiry;
-
-import java.util.Map;
 
 /**
  * Provides methods for implementing the various phases of a <code>View</code>
@@ -37,161 +36,133 @@ import java.util.Map;
 public interface ViewHelperService {
 
     /**
-     * Populates the <code>View</code> properties from the given request
-     * parameters
+     * Return an instance of {@link org.kuali.rice.krad.uif.view.ExpressionEvaluator} that can be used for evaluating
+     * expressions
+     * contained on the view
      *
      * <p>
-     * The <code>View</code> instance is inspected for fields that have the
-     * <code>RequestParameter</code> annotation and if corresponding parameters
-     * are found in the request parameter map, the request value is used to set
-     * the view property. The Map of parameter name/values that match are placed
-     * in the view so they can be later retrieved to rebuild the view. Custom
-     * <code>ViewServiceHelper</code> implementations can add additional
-     * parameter key/value pairs to the returned map if necessary.
+     * A ExpressionEvaluator must be initialized with a model for expression evaluation. One instance is
+     * constructed for the view lifecycle and made available to all components/helpers through this method
      * </p>
      *
-     * @see org.kuali.rice.krad.uif.component.RequestParameter
+     * @return instance of ExpressionEvaluator
      */
-    public void populateViewFromRequestParameters(View view, Map<String, String> parameters);
+    ExpressionEvaluator getExpressionEvaluator();
 
     /**
-     * Performs the Initialization phase for the <code>View</code>. During this
-     * phase each component of the tree is invoked to setup state based on the
-     * configuration and request options.
-     *
-     * <p>
-     * The initialize phase is only called once per <code>View</code> lifecycle
-     * </p>
-     *
-     * <p>
-     * Note the <code>View</code> instance also contains the context Map that
-     * was created based on the parameters sent to the view service
-     * </p>
-     *
-     * @param view View instance that should be initialized
-     * @param model object instance containing the view data
+     * Hook for service overrides to perform custom initialization prior to view initialization.
+     * 
+     * @param model The model.
      */
-    public void performInitialization(View view, Object model);
+    void performCustomViewInitialization(Object model);
 
     /**
-     * Performs the Initialization phase for the given <code>Component</code>
-     *
-     * <p>
-     * Can be called for component instances constructed via code or prototypes
-     * to initialize the constructed component
-     * </p>
-     *
-     * @param view view instance the component belongs to
-     * @param model object instance containing the view data
-     * @param component component instance that should be initialized
+     * Hook for service overrides to perform custom initialization on the component
+     * 
+     * @param view view instance containing the component
+     * @param component component instance to initialize
      */
-    public void performComponentInitialization(View view, Object model, Component component);
+    void performCustomInitialization(Component component);
 
     /**
-     * Executes the ApplyModel phase. During this phase each component of the
-     * tree if invoked to setup any state based on the given model data
-     *
-     * <p>
-     * Part of the view lifecycle that applies the model data to the view.
-     * Should be called after the model has been populated before the view is
-     * rendered. The main things that occur during this phase are:
-     * <ul>
-     * <li>Generation of dynamic fields (such as collection rows)</li>
-     * <li>Execution of conditional logic (hidden, read-only, required settings
-     * based on model values)</li>
-     * </ul>
-     * </p>
-     *
-     * <p>
-     * The update phase can be called multiple times for the view's lifecycle
-     * (typically only once per request)
-     * </p>
-     *
-     * @param view View instance that the model should be applied to
-     * @param model Top level object containing the data (could be the form or a
-     * top level business object, dto)
+     * Hook for service overrides to perform custom apply model logic on the component
+     * 
+     * @param view view instance containing the component
+     * @param component component instance to apply model to
+     * @param model Top level object containing the data (could be the model or a top level business
+     *        object, dto)
      */
-    public void performApplyModel(View view, Object model);
+    void performCustomApplyModel(Component component, Object model);
 
     /**
-     * Gets global objects for the context map and pushes them to the context
-     * for the component
-     *
-     * @param view view instance for component
-     * @param component component instance to push context to
+     * Hook for service overrides to perform custom component finalization
+     * 
+     * @param component component instance to update
+     * @param model Top level object containing the data
+     * @param parent Parent component for the component being finalized
      */
-    public Map<String, Object> getCommonContext(View view, Component component);
+    void performCustomFinalize(Component component, Object model, Component parent);
 
     /**
-     * The last phase before the view is rendered. Here final preparations can
-     * be made based on the updated view state
-     *
+     * Hook for service overrides to perform view component finalization
+     * 
+     * @param model Top level object containing the data
+     */
+    void performCustomViewFinalize(Object model);
+
+    /**
+     * Hook for service overrides to process the new collection line before it is added to the
+     * collection
+     * 
+     * @param view view instance that is being presented (the action was taken on)
+     * @param collectionGroup collection group component for the collection the line will be added
+     *        to
+     * @param model object instance that contain's the views data
+     * @param addLine the new line instance to be processed
+     */
+    void processBeforeAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine);
+
+    /**
+     * Hook for service overrides to process the new collection line after it has been added to the
+     * collection
+     * 
+     * @param view view instance that is being presented (the action was taken on)
+     * @param collectionGroup collection group component for the collection the line that was added
+     * @param model object instance that contain's the views data
+     * @param addLine the new line that was added
+     * @param isValidLine indicates if the line is valid
+     */
+    void processAfterAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine,
+            boolean isValidLine);
+
+    /**
+     * Hook for service overrides to process the save collection line before it is validated
+     * 
+     * @param view view instance that is being presented (the action was taken on)
+     * @param collectionGroup collection group component for the collection
+     * @param model object instance that contain's the views data
+     * @param addLine the new line instance to be processed
+     */
+    void processBeforeSaveLine(View view, CollectionGroup collectionGroup, Object model, Object addLine);
+
+    /**
+     * Hook for service overrides to process the save collection line after it has been validated
+     * 
+     * @param view view instance that is being presented (the action was taken on)
+     * @param collectionGroup collection group component for the collection
+     * @param model object instance that contains the views data
+     * @param addLine the new line that was added
+     */
+    void processAfterSaveLine(View view, CollectionGroup collectionGroup, Object model, Object addLine);
+
+    /**
+     * Hook for service overrides to process the collection line after it has been deleted
+     * 
+     * @param view view instance that is being presented (the action was taken on)
+     * @param collectionGroup collection group component for the collection the line that was added
+     * @param model object instance that contains the views data
+     * @param lineIndex index of the line that was deleted
+     */
+    void processAfterDeleteLine(View view, CollectionGroup collectionGroup, Object model, int lineIndex);
+
+    /**
+     * Hook for creating new components with code and adding them to a container
+     * 
      * <p>
-     * The finalize phase runs after the apply model phase and can be called
-     * multiple times for the view's lifecylce (however typically only once per
-     * request)
+     * Subclasses can override this method to check for one or more containers by id and then adding
+     * components created in code. This is invoked before the initialize method on the container
+     * component, so the full lifecycle will be run on the components returned.
      * </p>
-     *
-     * @param view view instance that should be finalized for rendering
-     * @param model top level object containing the data
-     */
-    public void performFinalize(View view, Object model);
-
-    /**
-     * Invoked after the view has been rendered to clear out objects that are not necessary to keep around for
-     * the post, this helps reduce the view size and overall cost to store the form in session
-     *
-     * @param view view instance to be cleaned
-     */
-    public void cleanViewAfterRender(View view);
-
-    /**
-     * Performs the complete component lifecycle on the component passed in for use during a refresh process
-     *
+     * 
      * <p>
-     * Runs the three lifecycle phases on the component passed in. Some adjustments are made to account for the
-     * component being processed without its parent. The component within the view (contained on the form) is
-     * retrieved to obtain the context to use (such as parent). The created components id is then updated to match
-     * the current id within the view.
+     * New components instances can be retrieved using {@link ComponentFactory}
      * </p>
-     *
-     * @param view view instance the component belongs to
-     * @param model object containing the full view data
-     * @param component component instance to perform lifecycle for
-     * @param origId id of the component within the view, used to pull the current component from the view
+     * 
+     * @param view view instance the container belongs to
+     * @param model object containing the view data
+     * @param container container instance to add components to
      */
-    public void performComponentLifecycle(View view, Object model, Component component, String origId);
-
-    /**
-     * Runs the lifecycle process for the given component starting at the given start phase and ending with
-     * the given end phase
-     *
-     * <p>
-     * Start or end phase can be null to indicate the first phase or last phase respectively
-     * </p>
-     *
-     * @param view view instance the component belongs to
-     * @param model object providing the view data
-     * @param component component to run the lifecycle phases for
-     * @param parent parent component for the component being processed
-     * @param startPhase lifecycle phase to start with, or null to indicate the first phase
-     * @param endPhase lifecycle phase to end with, or null to indicate the last phase
-     */
-    public void spawnSubLifecyle(View view, Object model, Component component, Component parent, String startPhase,
-            String endPhase);
-
-    /**
-     * Update the reference objects listed in referencesToRefresh of the model
-     *
-     * <p>
-     * The the individual references in the referencesToRefresh string are separated by
-     * KRADConstants.REFERENCES_TO_REFRESH_SEPARATOR).
-     * </p>
-     *
-     * @param model top level object containing the data
-     * @param referencesToRefresh list of references to refresh (
-     */
-    public void refreshReferences(Object model, String referencesToRefresh);
+    void addCustomContainerComponents(Object model, Container container);
 
     /**
      * Invoked when the add line action is chosen for a collection. The
@@ -258,6 +229,17 @@ public interface ViewHelperService {
     public void processMultipleValueLookupResults(View view, Object model, String collectionPath, String lookupResultValues);
 
     /**
+     * Generates table formatted data based on data collected from the table model
+     *
+     * @param view view instance where the table is located
+     * @param model top level object containing the data
+     * @param tableId id of the table being generated
+     * @param formatType format which the table should be generated in
+     * @return
+     */
+    public String buildExportTableData(View view, Object model, String tableId, String formatType);
+
+    /**
      * Invoked by the <code>Inquiry</code> widget to build the inquiry link
      *
      * <p>
@@ -275,60 +257,5 @@ public interface ViewHelperService {
      * @param inquiry instance of the inquiry widget being built for the property
      */
     public void buildInquiryLink(Object dataObject, String propertyName, Inquiry inquiry);
-
-    /**
-     * Applies configured default values for the line fields to the line
-     * instance
-     *
-     * @param view view instance the collection line belongs to
-     * @param model object containing the full view data
-     * @param collectionGroup collection group component the line belongs to
-     * @param line line instance to apply default values to
-     */
-    public void applyDefaultValuesForCollectionLine(View view, Object model, CollectionGroup collectionGroup, Object line);
-
-    /**
-     * Return an instance of {@link org.kuali.rice.krad.uif.view.ExpressionEvaluator} that can be used for evaluating
-     * expressions
-     * contained on the view
-     *
-     * <p>
-     * A ExpressionEvaluator must be initialized with a model for expression evaluation. One instance is
-     * constructed for the view lifecycle and made available to all components/helpers through this method
-     * </p>
-     *
-     * @return instance of ExpressionEvaluator
-     */
-    public ExpressionEvaluator getExpressionEvaluator();
-
-    /**
-     * Generates table formatted data based on data collected from the table model
-     *
-     * @param view view instance where the table is located
-     * @param model top level object containing the data
-     * @param tableId id of the table being generated
-     * @param formatType format which the table should be generated in
-     * @return
-     */
-    public String buildExportTableData(View view, Object model, String tableId, String formatType);
-
-    /**
-     * Gets the {@code ViewLifecycle} instance associated with the view helper.
-     *
-     * <p>
-     * Components can retrieve the view lifecycle through the view helper for event registration (such as
-     * when the lifecycle is complete for another component)
-     * </p>
-     *
-     * @return view lifecycle instance
-     */
-    public ViewLifecycle getViewLifecycle();
-    
-    /**
-     * Encapsulate a new view lifecycle on the current thread.
-     * 
-     * @param lifecycleProcess The view lifecycle process.
-     */
-    public void encapsulateViewLifecycle(Runnable lifecycleProcess);
 
 }

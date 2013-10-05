@@ -15,6 +15,11 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -35,11 +40,6 @@ import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Widget for navigating to a lookup from a field (called a quickfinder)
@@ -98,15 +98,14 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      *      java.lang.Object)
      */
     @Override
-    public void performInitialization(View view, Object model) {
-        super.performInitialization(view, model);
+    public void performInitialization(Object model) {
+        super.performInitialization(model);
 
         if (quickfinderAction != null && (lightBoxLookup != null && lightBoxLookup.isRender())) {
             quickfinderAction.setActionScript("voidAction");
         }
 
-        ViewHelperService viewHelperService = view.getViewHelperService();
-        ViewLifecycle viewLifecycle = viewHelperService.getViewLifecycle();
+        ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
         viewLifecycle.registerLifecycleCompleteListener(quickfinderAction, this);
     }
 
@@ -131,8 +130,8 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
+    public void performFinalize(Object model, Component parent) {
+        super.performFinalize(model, parent);
 
         // TODO: add flag to enable quick finder when the input field (parent) is read-only
         if (parent.isReadOnly()) {
@@ -149,7 +148,8 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
             // determine lookup class, field conversions and lookup parameters in
             // not set
             if (StringUtils.isBlank(dataObjectClassName)) {
-                DataObjectRelationship relationship = getRelationshipForField(view, model, field);
+                DataObjectRelationship relationship =
+                        getRelationshipForField(ViewLifecycle.getActiveLifecycle().getView(),model, field);
 
                 // if no relationship found cannot have a quickfinder
                 if (relationship == null) {

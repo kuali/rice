@@ -46,8 +46,8 @@ public class MessageView extends FormView {
      *
      * @see org.kuali.rice.krad.uif.container.ContainerBase#performInitialization(View, java.lang.Object)
      */
-    public void performInitialization(View view, Object model) {
-        super.performInitialization(view, model);
+    public void performInitialization(Object model) {
+        super.performInitialization(model);
 
         List<Component> newItems = (List<Component>) getPage().getItems();
         newItems.add(message);

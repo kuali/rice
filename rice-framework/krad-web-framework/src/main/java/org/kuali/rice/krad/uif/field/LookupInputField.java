@@ -30,6 +30,7 @@ import org.kuali.rice.krad.uif.control.MultiValueControl;
 import org.kuali.rice.krad.uif.control.RadioGroupControl;
 import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.element.Message;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.KeyMessage;
@@ -74,8 +75,8 @@ public class LookupInputField extends InputField {
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
+    public void performFinalize(Object model, Component parent) {
+        super.performFinalize(model, parent);
 
         // if enabled add option to select all values
         if (addControlSelectAllOption && (getControl() != null) && getControl() instanceof MultiValueControl) {
@@ -90,7 +91,7 @@ public class LookupInputField extends InputField {
             if (multiValueControl.getRichOptions() != null) {
                 Message message = ComponentFactory.getMessage();
 
-                view.assignComponentIds(message);
+                ViewLifecycle.getActiveLifecycle().getView().assignComponentIds(message);
                 message.setMessageText(allOptionText);
                 message.setGenerateSpan(false);
 

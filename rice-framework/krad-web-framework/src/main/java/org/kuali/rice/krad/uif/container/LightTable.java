@@ -44,6 +44,7 @@ import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
@@ -119,13 +120,13 @@ public class LightTable extends Group implements DataBinding {
      * expressionConversionMap
      */
     @Override
-    public void performInitialization(View view, Object model) {
-        super.performInitialization(view, model);
+    public void performInitialization(Object model) {
+        super.performInitialization(model);
         richTable.setForceLocalJsonData(true);
 
         //init binding info
         if (bindingInfo != null) {
-            bindingInfo.setDefaults(view, getPropertyName());
+            bindingInfo.setDefaults(ViewLifecycle.getActiveLifecycle().getView(), getPropertyName());
         }
 
         //iterate over this collections items to initialize
@@ -263,8 +264,8 @@ public class LightTable extends Group implements DataBinding {
      * performFinalize override corrects the binding path for the DataFields and turns off rendering on some components
      */
     @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
+    public void performFinalize(Object model, Component parent) {
+        super.performFinalize(model, parent);
 
         headerLabels = new ArrayList<Label>();
         for (Component item : this.getItems()) {

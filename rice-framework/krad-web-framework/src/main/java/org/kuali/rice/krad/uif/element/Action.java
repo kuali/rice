@@ -15,6 +15,11 @@
  */
 package org.kuali.rice.krad.uif.element;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.data.DataObjectUtils;
@@ -28,17 +33,13 @@ import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.field.DataField;
-import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADUtils;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Field that presents an action that can be taken on the UI such as submitting
@@ -151,14 +152,15 @@ public class Action extends ContentElementBase {
      * @param model top level object containing the data (could be the form or a
      * @param parent
      */
-    public void performApplyModel(View view, Object model, Component parent) {
-        super.performApplyModel(view, model, parent);
+    public void performApplyModel(Object model, Component parent) {
+        super.performApplyModel(model, parent);
 
         disabledExpression = this.getPropertyExpression("disabled");
         if (disabledExpression != null) {
-            ExpressionEvaluator expressionEvaluator = view.getViewHelperService().getExpressionEvaluator();
+            ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
+            ExpressionEvaluator expressionEvaluator = viewLifecycle.getHelper().getExpressionEvaluator();
 
-            disabledExpression = expressionEvaluator.replaceBindingPrefixes(view, this, disabledExpression);
+            disabledExpression = expressionEvaluator.replaceBindingPrefixes(viewLifecycle.getView(), this, disabledExpression);
             disabled = (Boolean) expressionEvaluator.evaluateExpression(this.getContext(), disabledExpression);
         }
     }
@@ -179,10 +181,13 @@ public class Action extends ContentElementBase {
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
+    public void performFinalize(Object model, Component parent) {
+        super.performFinalize(model, parent);
+        
+        ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
+        View view = viewLifecycle.getView();
 
-        ExpressionEvaluator expressionEvaluator = view.getViewHelperService().getExpressionEvaluator();
+        ExpressionEvaluator expressionEvaluator = viewLifecycle.getHelper().getExpressionEvaluator();
 
         if (StringUtils.isNotEmpty(disabledExpression)
                 && !disabledExpression.equalsIgnoreCase("true")

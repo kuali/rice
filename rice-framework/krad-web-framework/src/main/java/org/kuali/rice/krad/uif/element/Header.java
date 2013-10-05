@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.uif.element;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -23,13 +26,11 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Content element that renders a header element and optionally a <code>Group</code> to
@@ -86,20 +87,23 @@ public class Header extends ContentElementBase {
      *      org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performApplyModel(View view, Object model, Component parent) {
-        super.performApplyModel(view, model, parent);
+    public void performApplyModel(Object model, Component parent) {
+        super.performApplyModel(model, parent);
 
         if (richHeaderMessage == null && headerText != null && headerText.contains(
                 KRADConstants.MessageParsing.LEFT_TOKEN) && headerText.contains(
                 KRADConstants.MessageParsing.RIGHT_TOKEN)) {
             Message message = ComponentFactory.getMessage();
+            
+            ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
+            View view = viewLifecycle.getView();
             view.assignComponentIds(message);
 
             message.setMessageText(headerText);
             message.setInlineComponents(inlineComponents);
             message.setGenerateSpan(false);
 
-            view.getViewHelperService().performComponentInitialization(view, model, message);
+            viewLifecycle.performComponentInitialization(model, message);
 
             this.setRichHeaderMessage(message);
         }
@@ -116,8 +120,8 @@ public class Header extends ContentElementBase {
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
+    public void performFinalize(Object model, Component parent) {
+        super.performFinalize(model, parent);
 
         // don't render header groups if no items were configured
         if ((getUpperGroup() != null) && (getUpperGroup().getItems().isEmpty())) {

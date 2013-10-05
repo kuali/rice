@@ -15,14 +15,15 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.container.Container;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.web.form.UifFormBase;
-
-import java.util.Map;
 
 /**
  * BreadcrumbOptions specific to page.  Render options are only available at the page level.
@@ -45,7 +46,8 @@ public class PageBreadcrumbOptions extends BreadcrumbOptions {
      * @param model the model
      */
     @Override
-    public void setupBreadcrumbs(View view, Object model) {
+    public void setupBreadcrumbs(Object model) {
+        View view = ViewLifecycle.getActiveLifecycle().getView();
         BreadcrumbOptions viewBreadcrumbOptions = view.getBreadcrumbOptions();
 
         //inherit prePageBreadcrumbs, preViewBreadcrumbs, and overrides from the view if not set
@@ -98,7 +100,7 @@ public class PageBreadcrumbOptions extends BreadcrumbOptions {
      * @param model the model
      */
     @Override
-    public void finalizeBreadcrumbs(View view, Object model, Container parent, BreadcrumbItem breadcrumbItem) {
+    public void finalizeBreadcrumbs(Object model, Container parent, BreadcrumbItem breadcrumbItem) {
         //set breadcrumbItem label same as the header, if not set
         if (StringUtils.isBlank(breadcrumbItem.getLabel()) && parent.getHeader() != null && StringUtils.isNotBlank(
                 parent.getHeader().getHeaderText())) {
@@ -143,7 +145,7 @@ public class PageBreadcrumbOptions extends BreadcrumbOptions {
         }
 
         if (breadcrumbItem.getUrl().getViewId() == null) {
-            breadcrumbItem.getUrl().setViewId(view.getId());
+            breadcrumbItem.getUrl().setViewId(ViewLifecycle.getActiveLifecycle().getView().getId());
         }
 
         if (breadcrumbItem.getUrl().getPageId() == null) {

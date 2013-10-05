@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -81,6 +82,7 @@ import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.field.LookupInputField;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.field.SpaceField;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.view.InquiryView;
 import org.kuali.rice.krad.uif.view.LookupView;
 import org.kuali.rice.krad.uif.view.View;
@@ -187,30 +189,35 @@ public class ComponentFactory {
      * @param id id for the component in the view index
      * @return Component new instance
      */
-    public static Component getNewInstanceForRefresh(View view, String id) {
-        Component component = null;
-        Component origComponent = view.getViewIndex().getComponentById(id);
+    public static Component getNewInstanceForRefresh(final View view, final String id) {
+        final Component origComponent = view.getViewIndex().getComponentById(id);
 
         if (origComponent == null) {
             throw new RuntimeException(id + " not found in view index try setting p:forceSessionPersistence=\"true\" in xml");
         }
 
-        if (view.getViewIndex().getInitialComponentStates().containsKey(origComponent.getBaseId())) {
-            component = view.getViewIndex().getInitialComponentStates().get(origComponent.getBaseId());
-            LOG.debug("getNewInstanceForRefresh: id '" + id + "' was found in initialStates");
-        } else {
-            component = (Component) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
-                    origComponent.getBaseId());
-            LOG.debug("getNewInstanceForRefresh: id '" + id
-                    + "' was NOT found in initialStates. New one fetched from DD");
-        }
+        return ViewLifecycle.encapsulateInitialization(new Callable<Component>() {
+            @Override
+            public Component call() throws Exception {
+                Component component = null;
+                if (view.getViewIndex().getInitialComponentStates().containsKey(origComponent.getBaseId())) {
+                    component = view.getViewIndex().getInitialComponentStates().get(origComponent.getBaseId());
+                    LOG.debug("getNewInstanceForRefresh: id '" + id + "' was found in initialStates");
+                } else {
+                    component = (Component) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
+                            origComponent.getBaseId());
+                    LOG.debug("getNewInstanceForRefresh: id '" + id
+                            + "' was NOT found in initialStates. New one fetched from DD");
+                }
 
-        if (component != null) {
-            component = ComponentUtils.copy(component);
-            component.setId(origComponent.getBaseId());
-        }
-
-        return component;
+                if (component != null) {
+                    component = ComponentUtils.copy(component);
+                    component.setId(origComponent.getBaseId());
+                }
+                
+                return component;
+            }
+        });
     }
 
     /**
@@ -219,25 +226,39 @@ public class ComponentFactory {
      * @param beanId id of the bean definition
      * @return new component instance or null if no such component definition was found
      */
-    public static Component getNewComponentInstance(String beanId) {
-        Component component = null;
+    public static Component getNewComponentInstance(final String beanId) {
+        Component component;
 
         if (cache.containsKey(beanId)) {
-            component = ComponentUtils.copy(cache.get(beanId));
+            component = cache.get(beanId);
         } else {
-            component = (Component) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(beanId);
+            component = ViewLifecycle.encapsulateInitialization(new Callable<Component>() {
+                @Override
+                public Component call() throws Exception {
+                    Component component = (Component) KRADServiceLocatorWeb.getDataDictionaryService()
+                            .getDictionaryObject(beanId);
 
-            // clear id before returning so duplicates do not occur
-            component.setId(null);
-            component.setBaseId(null);
+                    // clear id before returning so duplicates do not occur
+                    component.setId(null);
+                    component.setBaseId(null);
 
-            // populate property expressions from expression graph
-            ExpressionUtils.populatePropertyExpressionsFromGraph(component, true);
+                    // populate property expressions from expression graph
+                    ExpressionUtils.populatePropertyExpressionsFromGraph(component, true);
 
+                    return component;
+                }
+            });
+            
             // add to cache
-            cache.put(beanId, ComponentUtils.copy(component));
+            synchronized (cache) {
+                cache.put(beanId, component);
+            }
         }
-
+        
+        if (ViewLifecycle.isLifecycleActive()) {
+            component = ComponentUtils.copy(component);
+        }
+        
         return component;
     }
 

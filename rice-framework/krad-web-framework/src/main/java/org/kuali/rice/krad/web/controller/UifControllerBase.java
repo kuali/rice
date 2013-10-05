@@ -15,6 +15,15 @@
  */
 package org.kuali.rice.krad.web.controller;
 
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
@@ -26,6 +35,8 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.field.AttributeQueryResult;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleResult;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
 import org.kuali.rice.krad.uif.view.DialogManager;
@@ -50,14 +61,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
 
 /**
  * Base controller class for views within the KRAD User Interface Framework
@@ -244,16 +247,23 @@ public abstract class UifControllerBase {
      * the view helper service to add the line
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addLine")
-    public ModelAndView addLine(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
+    public ModelAndView addLine(@ModelAttribute("KualiForm") final UifFormBase uifForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
 
-        String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELLECTED_COLLECTION_PATH);
+        final String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELLECTED_COLLECTION_PATH);
         if (StringUtils.isBlank(selectedCollectionPath)) {
             throw new RuntimeException("Selected collection was not set for add line action, cannot add new line");
         }
 
-        View view = uifForm.getPostedView();
-        view.getViewHelperService().processCollectionAddLine(view, uifForm, selectedCollectionPath);
+        ViewLifecycleResult lifecycleResult = ViewLifecycle.encapsulateLifecycle(uifForm.getPostedView(), new Runnable(){
+            @Override
+            public void run() {
+                ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
+                View view = viewLifecycle.getView();
+                view.getViewHelperService().processCollectionAddLine(view, uifForm, selectedCollectionPath);
+            }});
+        
+        uifForm.setPostedView(lifecycleResult.getView());
 
         return getUIFModelAndView(uifForm);
     }
@@ -270,15 +280,22 @@ public abstract class UifControllerBase {
      * @return the  ModelAndView object
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addBlankLine")
-    public ModelAndView addBlankLine(@ModelAttribute("KualiForm") UifFormBase uifForm) {
+    public ModelAndView addBlankLine(@ModelAttribute("KualiForm") final UifFormBase uifForm) {
 
-        String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELLECTED_COLLECTION_PATH);
+        final String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELLECTED_COLLECTION_PATH);
         if (StringUtils.isBlank(selectedCollectionPath)) {
             throw new RuntimeException("Selected collection was not set for add line action, cannot add new line");
         }
 
-        View view = uifForm.getPostedView();
-        view.getViewHelperService().processCollectionAddBlankLine(view, uifForm, selectedCollectionPath);
+        ViewLifecycleResult lifecycleResult = ViewLifecycle.encapsulateLifecycle(uifForm.getPostedView(), new Runnable(){
+            @Override
+            public void run() {
+                ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
+                View view = viewLifecycle.getView();
+                view.getViewHelperService().processCollectionAddBlankLine(view, uifForm, selectedCollectionPath);
+            }});
+        
+        uifForm.setPostedView(lifecycleResult.getView());
 
         return getUIFModelAndView(uifForm);
     }
@@ -288,26 +305,36 @@ public abstract class UifControllerBase {
      * for client application to persist specific data.
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=saveLine")
-    public ModelAndView saveLine(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
+    public ModelAndView saveLine(@ModelAttribute("KualiForm") final UifFormBase uifForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
 
-        String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELLECTED_COLLECTION_PATH);
+        final String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELLECTED_COLLECTION_PATH);
         if (StringUtils.isBlank(selectedCollectionPath)) {
             throw new RuntimeException("Selected collection was not set for add line action, cannot add new line");
         }
 
-        int selectedLineIndex = -1;
         String selectedLine = uifForm.getActionParamaterValue(UifParameters.SELECTED_LINE_INDEX);
+        final int selectedLineIndex;
         if (StringUtils.isNotBlank(selectedLine)) {
             selectedLineIndex = Integer.parseInt(selectedLine);
+        } else {
+            selectedLineIndex = -1;
         }
 
         if (selectedLineIndex == -1) {
             throw new RuntimeException("Selected line index was not set for delete line action, cannot delete line");
         }
 
-        View view = uifForm.getPostedView();
-        view.getViewHelperService().processCollectionSaveLine(view, uifForm, selectedCollectionPath, selectedLineIndex);
+        ViewLifecycleResult lifecycleResult = ViewLifecycle.encapsulateLifecycle(uifForm.getPostedView(), new Runnable(){
+            @Override
+            public void run() {
+                ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
+                View view = viewLifecycle.getView();
+                view.getViewHelperService().processCollectionSaveLine(
+                        view, uifForm, selectedCollectionPath, selectedLineIndex);
+            }});
+        
+        uifForm.setPostedView(lifecycleResult.getView());
 
         return getUIFModelAndView(uifForm);
     }
@@ -319,27 +346,37 @@ public abstract class UifControllerBase {
      * process the action
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=deleteLine")
-    public ModelAndView deleteLine(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
+    public ModelAndView deleteLine(@ModelAttribute("KualiForm") final UifFormBase uifForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
 
-        String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELLECTED_COLLECTION_PATH);
+        final String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELLECTED_COLLECTION_PATH);
         if (StringUtils.isBlank(selectedCollectionPath)) {
             throw new RuntimeException("Selected collection was not set for delete line action, cannot delete line");
         }
 
-        int selectedLineIndex = -1;
         String selectedLine = uifForm.getActionParamaterValue(UifParameters.SELECTED_LINE_INDEX);
+        final int selectedLineIndex;
         if (StringUtils.isNotBlank(selectedLine)) {
             selectedLineIndex = Integer.parseInt(selectedLine);
+        } else {
+            selectedLineIndex = -1;
         }
-
+        
         if (selectedLineIndex == -1) {
             throw new RuntimeException("Selected line index was not set for delete line action, cannot delete line");
         }
 
-        View view = uifForm.getPostedView();
-        view.getViewHelperService().processCollectionDeleteLine(view, uifForm, selectedCollectionPath,
-                selectedLineIndex);
+        ViewLifecycleResult lifecycleResult = ViewLifecycle.encapsulateLifecycle(uifForm.getPostedView(), new Runnable(){
+            @Override
+            public void run() {
+                ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
+                View view = viewLifecycle.getView();
+                view.getViewHelperService().processCollectionDeleteLine(
+                        view, uifForm, selectedCollectionPath, selectedLineIndex);
+            }});
+        
+        uifForm.setPostedView(lifecycleResult.getView());
+
 
         return getUIFModelAndView(uifForm);
     }
@@ -466,69 +503,78 @@ public abstract class UifControllerBase {
      * Invoked to refresh a view, generally when returning from another view (for example a lookup))
      */
     @RequestMapping(params = "methodToCall=refresh")
-    public ModelAndView refresh(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView refresh(@ModelAttribute("KualiForm") final UifFormBase form, BindingResult result,
+            final HttpServletRequest request, HttpServletResponse response) throws Exception {
         View view = form.getPostedView();
+        
+        ViewLifecycle.encapsulateLifecycle(view, new Runnable(){
 
-        String flashMapSelectedLineValues = "";
-        if (RequestContextUtils.getInputFlashMap(request) != null) {
-            flashMapSelectedLineValues = (String) RequestContextUtils.getInputFlashMap(request).get(
-                    UifParameters.SELECTED_LINE_VALUES);
-        }
+            @Override
+            public void run() {
+                ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
+                View view = viewLifecycle.getView();
+                
+                String flashMapSelectedLineValues = "";
+                if (RequestContextUtils.getInputFlashMap(request) != null) {
+                    flashMapSelectedLineValues = (String) RequestContextUtils.getInputFlashMap(request).get(
+                            UifParameters.SELECTED_LINE_VALUES);
+                }
 
-        String refreshCallerType = "";
-        if (request.getParameterMap().containsKey(KRADConstants.REFRESH_CALLER_TYPE)) {
-            refreshCallerType = request.getParameter(KRADConstants.REFRESH_CALLER_TYPE);
-        }
+                String refreshCallerType = "";
+                if (request.getParameterMap().containsKey(KRADConstants.REFRESH_CALLER_TYPE)) {
+                    refreshCallerType = request.getParameter(KRADConstants.REFRESH_CALLER_TYPE);
+                }
 
-        // process multi-value lookup returns
-        if (StringUtils.equals(refreshCallerType, UifConstants.RefreshCallerTypes.MULTI_VALUE_LOOKUP)) {
-            String lookupCollectionName = "";
-            if (request.getParameterMap().containsKey(UifParameters.LOOKUP_COLLECTION_NAME)) {
-                lookupCollectionName = request.getParameter(UifParameters.LOOKUP_COLLECTION_NAME);
-            }
+                // process multi-value lookup returns
+                if (StringUtils.equals(refreshCallerType, UifConstants.RefreshCallerTypes.MULTI_VALUE_LOOKUP)) {
+                    String lookupCollectionName = "";
+                    if (request.getParameterMap().containsKey(UifParameters.LOOKUP_COLLECTION_NAME)) {
+                        lookupCollectionName = request.getParameter(UifParameters.LOOKUP_COLLECTION_NAME);
+                    }
 
-            if (StringUtils.isBlank(lookupCollectionName)) {
-                throw new RuntimeException(
-                        "Lookup collection name is required for processing multi-value lookup results");
-            }
+                    if (StringUtils.isBlank(lookupCollectionName)) {
+                        throw new RuntimeException(
+                                "Lookup collection name is required for processing multi-value lookup results");
+                    }
 
-            String selectedLineValues = "";
-            if (request.getParameterMap().containsKey(UifParameters.SELECTED_LINE_VALUES)) {
-                selectedLineValues = request.getParameter(UifParameters.SELECTED_LINE_VALUES);
-            }
-            if (!StringUtils.isBlank(flashMapSelectedLineValues)) {
-                selectedLineValues = flashMapSelectedLineValues;
-            }
+                    String selectedLineValues = "";
+                    if (request.getParameterMap().containsKey(UifParameters.SELECTED_LINE_VALUES)) {
+                        selectedLineValues = request.getParameter(UifParameters.SELECTED_LINE_VALUES);
+                    }
+                    if (!StringUtils.isBlank(flashMapSelectedLineValues)) {
+                        selectedLineValues = flashMapSelectedLineValues;
+                    }
 
-            // invoked view helper to populate the collection from lookup results
-            view.getViewHelperService().processMultipleValueLookupResults(form.getPostedView(), form,
-                    lookupCollectionName, selectedLineValues);
-        }
+                    // invoked view helper to populate the collection from lookup results
+                    viewLifecycle.getHelper().processMultipleValueLookupResults(form.getPostedView(), form,
+                            lookupCollectionName, selectedLineValues);
+                }
 
-        // refresh references
-        if (request.getParameterMap().containsKey(KRADConstants.REFERENCES_TO_REFRESH)) {
-            String referencesToRefresh = request.getParameter(KRADConstants.REFERENCES_TO_REFRESH);
+                // refresh references
+                if (request.getParameterMap().containsKey(KRADConstants.REFERENCES_TO_REFRESH)) {
+                    String referencesToRefresh = request.getParameter(KRADConstants.REFERENCES_TO_REFRESH);
 
-            view.getViewHelperService().refreshReferences(form, referencesToRefresh);
-        }
+                    ViewLifecycle.getActiveLifecycle().refreshReferences(form, referencesToRefresh);
+                }
 
-        // set focus and jump position for returning from a quickfinder
-        if (request.getParameterMap().containsKey(UifParameters.QUICKFINDER_ID)) {
-            String quickfinderId = request.getParameter(UifParameters.QUICKFINDER_ID);
+                // set focus and jump position for returning from a quickfinder
+                if (request.getParameterMap().containsKey(UifParameters.QUICKFINDER_ID)) {
+                    String quickfinderId = request.getParameter(UifParameters.QUICKFINDER_ID);
 
-            String focusId = (String) view.getViewIndex().getPostContextEntry(quickfinderId,
-                    UifConstants.PostContextKeys.QUICKFINDER_FOCUS_ID);
-            if (StringUtils.isNotBlank(focusId)) {
-                form.setFocusId(focusId);
-            }
+                    String focusId = (String) view.getViewIndex().getPostContextEntry(quickfinderId,
+                            UifConstants.PostContextKeys.QUICKFINDER_FOCUS_ID);
+                    if (StringUtils.isNotBlank(focusId)) {
+                        form.setFocusId(focusId);
+                    }
 
-            String jumpToId = (String) view.getViewIndex().getPostContextEntry(quickfinderId,
-                    UifConstants.PostContextKeys.QUICKFINDER_JUMP_TO_ID);
-            if (StringUtils.isNotBlank(jumpToId)) {
-                form.setJumpToId(jumpToId);
-            }
-        }
+                    String jumpToId = (String) view.getViewIndex().getPostContextEntry(quickfinderId,
+                            UifConstants.PostContextKeys.QUICKFINDER_JUMP_TO_ID);
+                    if (StringUtils.isNotBlank(jumpToId)) {
+                        form.setJumpToId(jumpToId);
+                    }
+                }
+
+            }});
 
         return getUIFModelAndView(form);
     }
@@ -1072,7 +1118,8 @@ public abstract class UifControllerBase {
         }
 
         LOG.debug("identifying table from model and form");
-        tableData = view.getViewHelperService().buildExportTableData(view, currentForm, tableId, formatType);
+        tableData = view.getViewHelperService()
+                .buildExportTableData(view, currentForm, tableId, formatType);
 
         // if table data to be returned, format response appropriately
         setAttachmentResponseHeader(response, "export." + formatType, contentType);
@@ -1193,7 +1240,7 @@ public abstract class UifControllerBase {
         DataTablesPagingHelper.DataTablesInputs dataTablesInputs = new DataTablesPagingHelper.DataTablesInputs(request);
 
         DataTablesPagingHelper pagingHelper = createDataTablesPagingHelperInstance(form, request);
-        pagingHelper.processPagingRequest(form.getPostedView(), tableId, form, dataTablesInputs);
+        pagingHelper.processPagingRequest(tableId, form, dataTablesInputs);
 
         Map<String, Object> additionalViewAttributes = new HashMap<String, Object>();
         additionalViewAttributes.put(UifParameters.DATA_TABLES_PAGING_HELPER, pagingHelper);

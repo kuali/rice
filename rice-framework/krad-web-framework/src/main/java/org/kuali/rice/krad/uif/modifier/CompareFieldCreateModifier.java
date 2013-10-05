@@ -15,8 +15,14 @@
  */
 package org.kuali.rice.krad.uif.modifier;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
@@ -29,18 +35,12 @@ import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.SpaceField;
 import org.kuali.rice.krad.uif.layout.GridLayoutManager;
-import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Generates <code>Field</code> instances to produce a comparison view among
@@ -60,7 +60,6 @@ import java.util.Set;
 @BeanTags({@BeanTag(name = "compareFieldCreate-modifier-bean", parent = "Uif-CompareFieldCreate-Modifier"),
         @BeanTag(name = "maintenanceCompare-modifier-bean", parent = "Uif-MaintenanceCompare-Modifier")})
 public class CompareFieldCreateModifier extends ComponentModifierBase {
-    private static final Logger LOG = Logger.getLogger(CompareFieldCreateModifier.class);
 
     private static final long serialVersionUID = -6285531580512330188L;
 
@@ -84,11 +83,11 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performInitialization(View view, Object model, Component component) {
-        super.performInitialization(view, model, component);
+    public void performInitialization(Object model, Component component) {
+        super.performInitialization(model, component);
 
         if (headerFieldPrototype != null) {
-            view.getViewHelperService().performComponentInitialization(view, model, headerFieldPrototype);
+            ViewLifecycle.getActiveLifecycle().performComponentInitialization(model, headerFieldPrototype);
         }
     }
 
@@ -109,9 +108,8 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performModification(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
-    @SuppressWarnings("unchecked")
     @Override
-    public void performModification(View view, Object model, Component component) {
+    public void performModification(Object model, Component component) {
         if ((component != null) && !(component instanceof Group)) {
             throw new IllegalArgumentException(
                     "Compare field initializer only support Group components, found type: " + component.getClass());
@@ -132,6 +130,8 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
 
         // evaluate expressions on comparables
         Map<String, Object> context = new HashMap<String, Object>();
+        
+        View view = ViewLifecycle.getActiveLifecycle().getView();
         
         Map<String, Object> viewContext = view.getContext();
         if (viewContext != null) {

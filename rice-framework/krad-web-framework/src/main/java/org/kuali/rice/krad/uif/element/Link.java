@@ -62,8 +62,8 @@ public class Link extends ContentElementBase {
      *      org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performApplyModel(View view, Object model, Component parent) {
-        super.performApplyModel(view, model, parent);
+    public void performApplyModel(Object model, Component parent) {
+        super.performApplyModel(model, parent);
 
         if (openInLightbox && (lightBox == null)) {
             lightBox = ComponentFactory.getLightBox();
@@ -74,8 +74,8 @@ public class Link extends ContentElementBase {
      * Special handling for lightbox links to add and onclick data attribute to be handled by a global handler
      */
     @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
+    public void performFinalize(Object model, Component parent) {
+        super.performFinalize(model, parent);
 
         if (lightBox != null && lightBox.isRender()){
             this.addDataAttribute(UifConstants.DataAttributes.ONCLICK, "handleLightboxOpen(jQuery(this), " +

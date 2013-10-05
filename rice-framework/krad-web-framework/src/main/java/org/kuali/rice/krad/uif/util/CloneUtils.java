@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.util;
 import org.apache.commons.lang.ArrayUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
@@ -77,10 +78,15 @@ public class CloneUtils {
 
         // Deep clone
         Object clone = null;
-        if (List.class.isAssignableFrom(original.getClass())) {
+        if ((original instanceof LifecycleElement) && ViewLifecycle.isActive()) {
+            clone = ((LifecycleElement) original).copy();
+        }
+        else if (!(original instanceof LifecycleAwareList) &&
+                List.class.isAssignableFrom(original.getClass())) {
             clone = deepCloneList(original, cache, referenceCollectionCopy);
         }
-        else if (Map.class.isAssignableFrom(original.getClass())) {
+        else if (!(original instanceof LifecycleAwareMap) &&
+                Map.class.isAssignableFrom(original.getClass())) {
             clone = deepCloneMap(original, cache, referenceCollectionCopy);
         }
         else if ( original.getClass().isArray() ) {
@@ -283,8 +289,12 @@ public class CloneUtils {
         return false;
     }
 
-    protected static final Object instantiate(Object original) throws InstantiationException, IllegalAccessException {
-        return original.getClass().newInstance();
+    protected static final Object instantiate(Object original) throws InstantiationException, IllegalAccessException, CloneNotSupportedException {
+        if (original instanceof UifCloneable) {
+            return ((UifCloneable) original).clone();
+        } else {
+            return original.getClass().newInstance();
+        }
     }
 
     public static Field[] getFields(Object object, boolean includeStatic) {

@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.uif.control;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.Person;
@@ -24,17 +27,14 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.util.ComponentFactory;
-import org.kuali.rice.krad.uif.util.ScriptUtils;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
 import org.kuali.rice.krad.uif.field.AttributeQuery;
+import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
+import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Represents a user control, which is a special control to handle the input of a Person
@@ -58,8 +58,8 @@ public class UserControl extends TextControl implements FilterableLookupCriteria
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performApplyModel(View view, Object model, Component parent) {
-        super.performApplyModel(view, model, parent);
+    public void performApplyModel(Object model, Component parent) {
+        super.performApplyModel(model, parent);
 
         if (!(parent instanceof InputField)) {
             return;
@@ -120,7 +120,7 @@ public class UserControl extends TextControl implements FilterableLookupCriteria
         }
         field.setAttributeQuery(attributeQuery);
 
-        buildUserQuickfinder(view, model, field);
+        buildUserQuickfinder(model, field);
     }
 
     /**
@@ -157,7 +157,7 @@ public class UserControl extends TextControl implements FilterableLookupCriteria
      * @param model object containing the view's data
      * @param field field instance the quickfinder should be associated with
      */
-    protected void buildUserQuickfinder(View view, Object model, InputField field) {
+    protected void buildUserQuickfinder(Object model, InputField field) {
         QuickFinder quickFinder = field.getQuickfinder();
 
         // don't build quickfinder if explicitly turned off
@@ -168,7 +168,7 @@ public class UserControl extends TextControl implements FilterableLookupCriteria
         boolean quickfinderCreated = false;
         if (quickFinder == null) {
             quickFinder = ComponentFactory.getQuickFinder();
-            view.assignComponentIds(quickFinder);
+            ViewLifecycle.getActiveLifecycle().getView().assignComponentIds(quickFinder);
 
             field.setQuickfinder(quickFinder);
 
@@ -197,7 +197,7 @@ public class UserControl extends TextControl implements FilterableLookupCriteria
         // if we created the quickfinder here it will have missed the initialize and apply model phase (it
         // will be attached to the field for finalize)
         if (quickfinderCreated) {
-            view.getViewHelperService().spawnSubLifecyle(view, model, quickFinder, field,
+            ViewLifecycle.getActiveLifecycle().spawnSubLifecyle(model, quickFinder, field,
                     UifConstants.ViewPhases.INITIALIZE, UifConstants.ViewPhases.APPLY_MODEL);
         }
     }

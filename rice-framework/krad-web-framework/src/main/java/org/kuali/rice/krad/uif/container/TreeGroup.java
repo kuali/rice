@@ -15,6 +15,11 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
@@ -26,14 +31,9 @@ import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.element.Message;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
-import org.kuali.rice.krad.uif.view.View;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Group component that is backed by a <code>Tree</code> data structure and typically
@@ -74,23 +74,23 @@ public class TreeGroup extends Group implements DataBinding {
      * </ul>
      */
     @Override
-    public void performInitialization(View view, Object model) {
+    public void performInitialization(Object model) {
         setFieldBindingObjectPath(getBindingInfo().getBindingObjectPath());
 
-        super.performInitialization(view, model);
+        super.performInitialization(model);
 
         if (bindingInfo != null) {
-            bindingInfo.setDefaults(view, getPropertyName());
+            bindingInfo.setDefaults(ViewLifecycle.getActiveLifecycle().getView(), getPropertyName());
         }
 
         // TODO: set object path for prototypes equal to the tree group object path?
     }
 
     @Override
-    public void performApplyModel(View view, Object model, Component parent) {
-        super.performApplyModel(view, model, parent);
+    public void performApplyModel(Object model, Component parent) {
+        super.performApplyModel(model, parent);
 
-        buildTreeGroups(view, model);
+        buildTreeGroups(model);
     }
 
     /**
@@ -107,7 +107,7 @@ public class TreeGroup extends Group implements DataBinding {
      * @param view view instance the tree group belongs to
      * @param model object containing the view data from which the tree data will be retrieved
      */
-    protected void buildTreeGroups(View view, Object model) {
+    protected void buildTreeGroups(Object model) {
         // get Tree data property
         Tree<Object, String> treeData = ObjectPropertyUtils.getPropertyValue(model, getBindingInfo().getBindingPath());
 

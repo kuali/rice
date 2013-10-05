@@ -15,21 +15,19 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.kuali.rice.krad.inquiry.InquirableImpl;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.SpaceField;
-import org.kuali.rice.krad.uif.layout.BoxLayoutManager;
 import org.kuali.rice.krad.uif.layout.GridLayoutManager;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.web.form.InquiryForm;
 import org.kuali.rice.krms.api.repository.proposition.PropositionType;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class is responsible for building the recursive components on the Rule Inquiry View.
@@ -67,7 +65,7 @@ public class RuleStudentInquiryViewHelperServiceImpl extends InquirableImpl {
 
 
     @Override
-    protected void addCustomContainerComponents(View view, Object model, Container container) {
+    public void addCustomContainerComponents(Object model, Container container) {
         if (PROPOSITION_GROUP_ID.equals(container.getId())) {
             RuleBo ruleDataObj = (RuleBo)((InquiryForm)model).getDataObject();
             PropositionBo proposition = ruleDataObj.getProposition();

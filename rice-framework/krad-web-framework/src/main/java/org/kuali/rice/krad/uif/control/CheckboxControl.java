@@ -20,6 +20,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Message;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.View;
@@ -53,16 +54,17 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
      * @see Component#performApplyModel(org.kuali.rice.krad.uif.view.View, Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performApplyModel(View view, Object model, Component parent) {
-        super.performApplyModel(view, model, parent);
+    public void performApplyModel(Object model, Component parent) {
+        super.performApplyModel(model, parent);
 
+        View view = ViewLifecycle.getActiveLifecycle().getView();
         if (richLabelMessage == null) {
             Message message = ComponentFactory.getMessage();
             view.assignComponentIds(message);
             message.setMessageText(checkboxLabel);
             message.setInlineComponents(inlineComponents);
             message.setGenerateSpan(false);
-            view.getViewHelperService().performComponentInitialization(view, model, message);
+            ViewLifecycle.getActiveLifecycle().performComponentInitialization(model, message);
             this.setRichLabelMessage(message);
         }
     }

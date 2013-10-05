@@ -24,6 +24,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.control.MultiValueControl;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.MessageField;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.View;
 
@@ -101,14 +102,16 @@ public class DialogGroup extends Group {
      *      java.lang.Object)
      */
     @Override
-    public void performInitialization(View view, Object model) {
-        super.performInitialization(view, model);
+    public void performInitialization(Object model) {
+        super.performInitialization(model);
 
         // move dialogGroup custom properties into the items property.
         // where they will be rendered by group.jsp
         List<Component> newItems = new ArrayList<Component>();
         List<? extends Component> items = getItems();
 
+        View view = ViewLifecycle.getActiveLifecycle().getView();
+        
         // do not add the custom properties if they are already present
         if (!(items.contains(prompt))) {
             view.assignComponentIds(prompt);
@@ -147,8 +150,8 @@ public class DialogGroup extends Group {
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performApplyModel(View view, Object model, Component parent) {
-        super.performApplyModel(view, model, parent);
+    public void performApplyModel(Object model, Component parent) {
+        super.performApplyModel(model, parent);
 
         // set the messageTest to the promptText
         prompt.setMessageText(promptText);
@@ -186,8 +189,8 @@ public class DialogGroup extends Group {
      * @param parent parent component
      */
     @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
+    public void performFinalize(Object model, Component parent) {
+        super.performFinalize(model, parent);
 
         if (responseInputField != null) {
             String responseInputSelector = "#" + responseInputField.getId() + " [name='" +

@@ -15,17 +15,16 @@
  */
 package org.kuali.rice.krad.uif.layout;
 
-import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
-import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.component.PropertyReplacer;
-import org.kuali.rice.krad.uif.service.ViewHelperService;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.PropertyReplacer;
+import org.kuali.rice.krad.uif.container.Container;
+import org.kuali.rice.krad.uif.service.ViewHelperService;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Manages the rendering of <code>Component</code> instances within a
@@ -33,7 +32,7 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface LayoutManager extends UifDictionaryBean, Serializable {
+public interface LayoutManager extends UifDictionaryBean, LifecycleElement, Serializable {
 
 	/**
 	 * The unique id (within a given tree) for the layout manager instance
@@ -121,7 +120,7 @@ public interface LayoutManager extends UifDictionaryBean, Serializable {
 	 *            - Container the layout manager applies to
 	 * @see ViewHelperService#performInitialization
 	 */
-	public void performInitialization(View view, Object model, Container container);
+	public void performInitialization(Object model, Container container);
 
 	/**
 	 * Called after the initialize phase to perform conditional logic based on
@@ -135,7 +134,7 @@ public interface LayoutManager extends UifDictionaryBean, Serializable {
 	 * @param container
 	 *            - Container the layout manager applies to
 	 */
-	public void performApplyModel(View view, Object model, Container container);
+	public void performApplyModel(Object model, Container container);
 
 	/**
 	 * The last phase before the view is rendered. Here final preparations can
@@ -149,7 +148,7 @@ public interface LayoutManager extends UifDictionaryBean, Serializable {
 	 * @param container
 	 *            - Container the layout manager applies to
 	 */
-	public void performFinalize(View view, Object model, Container container);
+	public void performFinalize(Object model, Container container);
 
 	/**
 	 * Determines what <code>Container</code> classes are supported by the
@@ -323,12 +322,5 @@ public interface LayoutManager extends UifDictionaryBean, Serializable {
 	 * @param propertyReplacers
 	 */
 	public void setPropertyReplacers(List<PropertyReplacer> propertyReplacers);
-
-    /**
-     * Copy the object
-     *
-     * @return the copied object
-     */
-    public <T> T copy();
 
 }

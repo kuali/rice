@@ -43,6 +43,7 @@ import org.kuali.rice.krad.uif.control.ValueConfiguredControl;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.LookupInputField;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
@@ -91,7 +92,9 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      *      java.lang.Object)
      */
     @Override
-    public void performInitialization(View view, Object model) {
+    public void performCustomViewInitialization(Object model) {
+        View view = ViewLifecycle.getActiveLifecycle().getView();
+        
         if (!LookupView.class.isAssignableFrom(view.getClass())) {
             throw new IllegalArgumentException(
                     "View class '" + view.getClass() + " is not assignable from the '" + LookupView.class + "'");
@@ -99,8 +102,6 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
         LookupView lookupView = (LookupView) view;
         setDataObjectClass(lookupView.getDataObjectClassName());
-
-        super.performInitialization(view, model);
     }
 
     /**

@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.element;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -23,13 +25,10 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.MessageStructureUtils;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Encapsulates a text message to be displayed
@@ -75,8 +74,8 @@ public class Message extends ContentElementBase {
      * @see Component#performApplyModel(org.kuali.rice.krad.uif.view.View, Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performApplyModel(View view, Object model, Component parent) {
-        super.performApplyModel(view, model, parent);
+    public void performApplyModel(Object model, Component parent) {
+        super.performApplyModel(model, parent);
 
         //if messageText contains the special characters [] then parse and fill in the messageComponentStructure
         //but if messageComponentStructure has already been set it overrides messageText by default
@@ -84,12 +83,14 @@ public class Message extends ContentElementBase {
                 messageText.contains(KRADConstants.MessageParsing.RIGHT_TOKEN) &&
                 (messageComponentStructure == null || messageComponentStructure.isEmpty())) {
 
+            ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
+            
             messageComponentStructure = MessageStructureUtils.parseMessage(this.getId(), this.getMessageText(),
-                    this.getInlineComponents(), view, parseComponents);
+                    this.getInlineComponents(), viewLifecycle.getView(), parseComponents);
 
             if (messageComponentStructure != null) {
                 for (Component component : messageComponentStructure) {
-                    view.getViewHelperService().performComponentInitialization(view, model, component);
+                    viewLifecycle.performComponentInitialization(model, component);
                 }
             }
         }
@@ -99,8 +100,8 @@ public class Message extends ContentElementBase {
      * @see Component#performFinalize(org.kuali.rice.krad.uif.view.View, Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
+    public void performFinalize(Object model, Component parent) {
+        super.performFinalize(model, parent);
 
         // message needs to be aware of its own parent because it now contains content that can have validation
         this.addDataAttribute(UifConstants.DataAttributes.PARENT, parent.getId());

@@ -15,16 +15,17 @@
  */
 package edu.sampleu.demo.layout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.View;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -32,10 +33,11 @@ import java.util.List;
 public class UifGeneratedTestViewHelperServiceImpl extends ViewHelperServiceImpl {
 
     @Override
-    protected void performCustomInitialization(View view, Component component) {
-        super.performCustomInitialization(view, component);
+    public void performCustomInitialization(Component component) {
+        super.performCustomInitialization(component);
         List<Component> fields = new ArrayList<Component>();
         if(component instanceof PageGroup && component.getId().equals("UifGeneratedFields-Page1")){
+            View view = ViewLifecycle.getActiveLifecycle().getView();
             for(int i=0; i < 400; i++){
                 InputField field = ComponentFactory.getInputField();
                 view.assignComponentIds(field);

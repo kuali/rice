@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.uif.widget;
 
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.view.View;
 
 /**
  * The Pager widget is used to display a list of links horizontally in a page selection user interface.  The user can
@@ -51,8 +50,8 @@ public class Pager extends WidgetBase {
      * @param parent parent container
      */
     @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
+    public void performFinalize(Object model, Component parent) {
+        super.performFinalize(model, parent);
 
         // if no pages or 1 page, do not render
         if (numberOfPages == 0 || numberOfPages == 1) {

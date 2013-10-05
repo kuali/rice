@@ -19,7 +19,6 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.component.ClientSideState;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.view.View;
 
 /**
  * Decorates a group with collapse/expand functionality
@@ -55,8 +54,8 @@ public class Disclosure extends WidgetBase {
      * @see Component#performApplyModel(org.kuali.rice.krad.uif.view.View, Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performApplyModel(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
+    public void performApplyModel(Object model, Component parent) {
+        super.performFinalize(model, parent);
 
         if(ajaxRetrievalWhenOpened){
             parent.setForceSessionPersistence(true);

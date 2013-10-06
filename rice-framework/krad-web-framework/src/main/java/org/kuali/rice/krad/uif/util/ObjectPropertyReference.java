@@ -53,28 +53,28 @@ public class ObjectPropertyReference {
     /**
      * Reference for single use.
      */
-    private static ThreadLocal<ObjectPropertyReference> TL_BUILDER_REF = new ThreadLocal<ObjectPropertyReference>();
+    private static final ThreadLocal<ObjectPropertyReference> TL_BUILDER_REF = new ThreadLocal<ObjectPropertyReference>();
 
     /**
      * Reference for single use.
      */
-    private static ThreadLocal<Boolean> TL_WARN = new ThreadLocal<Boolean>();
+    private static final ThreadLocal<Boolean> TL_WARN = new ThreadLocal<Boolean>();
 
     /**
      * Singleton reference path entry, to be used when parsing for looking up a bean property
      * without modifying.
      */
-    private static ReferencePathEntry LOOKUP_REF_PATH_ENTRY = new ReferencePathEntry(false);
+    private static final ReferencePathEntry LOOKUP_REF_PATH_ENTRY = new ReferencePathEntry(false);
 
     /**
      * Singleton reference path entry, to be used when parsing for modifying the bean property.
      */
-    private static ReferencePathEntry MUTATE_REF_PATH_ENTRY = new ReferencePathEntry(true);
+    private static final ReferencePathEntry MUTATE_REF_PATH_ENTRY = new ReferencePathEntry(true);
 
     /**
      * Internal path entry implementation.
      */
-    private static class ReferencePathEntry implements PathEntry {
+    private static final class ReferencePathEntry implements PathEntry {
 
         /**
          * Determine if {@link ObjectPropertyReference#get()} or
@@ -118,7 +118,7 @@ public class ObjectPropertyReference {
             Object bean = current.get();
             Class<?> beanClass = current.getPropertyType();
 
-            // Determine the parameterized proprty type, if applicable.
+            // Determine the parameterized property type, if applicable.
             // This facilitates type conversion when setting/getting typed collections.
             Type beanType;
             Method readMethod = ObjectPropertyUtils.getReadMethod(current.getImplClass(), current.name);
@@ -158,24 +158,27 @@ public class ObjectPropertyReference {
      * @return The property value for the specific bean property on the given bean.
      */
     private static Object initialize(Object propertyValue, Class<?> propertyType) {
+        Object returnValue = propertyValue;
+        
         if (propertyValue == null) {
             if (List.class.equals(propertyType)) {
-                propertyValue = new java.util.LinkedList<Object>();
+                returnValue = new java.util.LinkedList<Object>();
 
             } else if (Map.class.equals(propertyType)) {
-                propertyValue = new java.util.HashMap<Object, Object>();
+                returnValue = new java.util.HashMap<Object, Object>();
 
             } else if (!String.class.equals(propertyType)) {
                 try {
-                    propertyValue = propertyType.newInstance();
+                    returnValue = propertyType.newInstance();
                 } catch (InstantiationException e) {
-                    throw new RuntimeException("Failed to create new object for setting property value");
+                    throw new IllegalStateException("Failed to create new object for setting property value", e);
                 } catch (IllegalAccessException e) {
-                    throw new RuntimeException("Failed to create new object for setting property value");
+                    throw new IllegalStateException("Failed to create new object for setting property value", e);
                 }
             }
         }
-        return propertyValue;
+        
+        return returnValue;
     }
 
     /**
@@ -193,17 +196,6 @@ public class ObjectPropertyReference {
      *         an integer and used as the array index.
      */
     private static Object getArray(Object array, String name) {
-        int length;
-        if (array == null) {
-            length = 0;
-        } else {
-            length = Array.getLength(array);
-        }
-
-        if ("length".equals(name) || "size".equals(name)) {
-            return new Integer(length);
-        }
-
         if (array == null) {
             return null;
         }
@@ -215,7 +207,8 @@ public class ObjectPropertyReference {
         }
 
         int i = Integer.parseInt(name);
-        if (i >= length) {
+
+        if (i >= Array.getLength(array)) {
             return null;
         }
 
@@ -378,7 +371,8 @@ public class ObjectPropertyReference {
     public static ObjectPropertyReference resolveProperty(Object bean, Class<?> beanClass, String propertyPath) {
         ObjectPropertyReference reference = TL_BUILDER_REF.get();
         if (reference == null) {
-            TL_BUILDER_REF.set(reference = new ObjectPropertyReference());
+            reference = new ObjectPropertyReference();
+            TL_BUILDER_REF.set(reference);
         }
         reference.bean = bean;
         reference.beanClass = beanClass;
@@ -445,73 +439,101 @@ public class ObjectPropertyReference {
     private ObjectPropertyReference() {}
 
     /**
+     * Convert a string property value to the targeted property type.
+     * 
+     * @param propertyValue The string property value.
+     * @return The property value, converted to the property type.
+     */
+    private Object convertStringToPropertyType(String propertyValue) {
+        Class<?> propertyType = getPropertyType();
+
+        // TODO: these methods, and their inversions (below) need to be either support escaping
+        // or be removed.  Both have been included for equivalence with previous BeanWrapper
+        // implementation.
+        if (List.class.equals(propertyType)) {
+            return KRADUtils.convertStringParameterToList(propertyValue);
+
+        } else if (Map.class.equals(propertyType)) {
+            return KRADUtils.convertStringParameterToMap(propertyValue);
+
+        } else {
+
+            // TODO: Determine if a different PropertyEditor registry exists for KRAD
+            PropertyEditor editor = PropertyEditorManager
+                    .findEditor(getPrimitiveType(propertyType));
+            if (editor == null) {
+                throw new IllegalArgumentException("No property editor available for converting '" + propertyValue
+                        + "' to " + propertyType);
+            }
+
+            editor.setAsText((String) propertyValue);
+            return editor.getValue();
+        }
+
+    }
+    
+    /**
+     * Convert a property value to a string.
+     * 
+     * @param propertyValue The property value.
+     * @return The property value, converted to a string.
+     */
+    private Object convertPropertyValueToString(Object propertyValue) {
+
+        // TODO: these methods, and their inversions (above) need to be either support escaping
+        // or be removed.  Both have been included for equivalence with previous BeanWrapper
+        // implementation.
+        // FIXME: Where are these conversions used?  Can they be removed?
+        if (propertyValue instanceof List) {
+            StringBuilder listStringBuilder = new StringBuilder();
+            for (Object item : (List<?>) propertyValue) {
+                if (listStringBuilder.length() > 0) {
+                    listStringBuilder.append(',');
+                }
+                listStringBuilder.append((String) item);
+            }
+            return listStringBuilder.toString();
+
+        } else if (propertyValue instanceof Map) {
+            @SuppressWarnings("unchecked")
+            Map<String, String> mapPropertyValue = (Map<String, String>) propertyValue;
+            return KRADUtils.buildMapParameterString(mapPropertyValue);
+
+        } else {
+
+            // TODO: Determine if a different PropertyEditor registry exists for KRAD
+            PropertyEditor editor = PropertyEditorManager
+                    .findEditor(getPrimitiveType(propertyValue.getClass()));
+            if (editor == null) {
+                throw new IllegalArgumentException("No property editor available for converting '" + propertyValue
+                        + "' from " + propertyValue.getClass());
+            }
+
+            editor.setValue(propertyValue);
+            return editor.getAsText();
+        }
+    }
+
+    /**
      * Convert a property value to the targeted property type.
      * 
      * @param propertyValue The property value.
      * @param propertyType The property type.
      * @return The property value, converted to the property type.
      */
-    @SuppressWarnings("unchecked")
     private Object convertToPropertyType(Object propertyValue) {
         Class<?> propertyType = getPropertyType();
-
-        if ((propertyValue instanceof String) && !propertyType.equals(String.class)) {
-
-            // TODO: these methods, and their inversions (below) need to be either support escaping
-            // or be removed.  Both have been included for equivalence with previous BeanWrapper
-            // implementation.
-            if (List.class.equals(propertyType)) {
-                return KRADUtils.convertStringParameterToList((String) propertyValue);
-
-            } else if (Map.class.equals(propertyType)) {
-                return KRADUtils.convertStringParameterToMap((String) propertyValue);
-
-            } else {
-
-                // TODO: Determine if a different PropertyEditor registry exists for KRAD
-                PropertyEditor editor = PropertyEditorManager
-                        .findEditor(getPrimitiveType(propertyType));
-                if (editor == null) {
-                    throw new IllegalArgumentException("No property editor available for converting '" + propertyValue
-                            + "' to " + propertyType);
-                }
-
-                editor.setAsText((String) propertyValue);
-                return editor.getValue();
-            }
+        
+        if (propertyValue == null || propertyType.isInstance(propertyValue)) {
+            return propertyValue;
         }
 
-        if (propertyValue != null && !(propertyValue instanceof String) && propertyType.equals(String.class)) {
-
-            // TODO: these methods, and their inversions (above) need to be either support escaping
-            // or be removed.  Both have been included for equivalence with previous BeanWrapper
-            // implementation.
-            if (propertyValue instanceof List) {
-                StringBuilder listStringBuilder = new StringBuilder();
-                for (String item : (List<String>) propertyValue) {
-                    if (listStringBuilder.length() > 0) {
-                        listStringBuilder.append(',');
-                    }
-                    listStringBuilder.append(item);
-                }
-                return listStringBuilder.toString();
-
-            } else if (Map.class.equals(propertyType)) {
-                return KRADUtils.buildMapParameterString((Map<String, String>) propertyValue);
-
-            } else {
-
-                // TODO: Determine if a different PropertyEditor registry exists for KRAD
-                PropertyEditor editor = PropertyEditorManager
-                        .findEditor(getPrimitiveType(propertyValue.getClass()));
-                if (editor == null) {
-                    throw new IllegalArgumentException("No property editor available for converting '" + propertyValue
-                            + "' from " + propertyValue.getClass());
-                }
-
-                editor.setValue(propertyValue);
-                return editor.getAsText();
-            }
+        if (propertyValue instanceof String) {
+            return convertStringToPropertyType((String) propertyValue);
+        }
+        
+        if (propertyType.equals(String.class)) {
+            return convertPropertyValueToString(propertyValue);
         }
 
         return propertyValue;
@@ -563,13 +585,38 @@ public class ObjectPropertyReference {
     public String getName() {
         return this.name;
     }
-
+    
     /**
-     * Determine if the bean property is readable.
+     * Determine if a list or array property is readable.
      * 
-     * @return True if the property is readable, false if not.
+     * @return True if the property is a list or array, and is readable, false if not.
      */
-    public boolean canRead() {
+    private boolean isListOrArrayAndCanReadOrWrite() {
+        Class<?> implClass = getImplClass();
+
+        if (!implClass.isArray() && !List.class.isAssignableFrom(implClass)) {
+            return false;
+        }
+        
+        if (name.length() == 0) {
+            return false;
+        }
+
+        for (int i = 0; i < name.length(); i++) {
+            if (!Character.isDigit(name.charAt(i))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+    
+    /**
+     * Determine if a list or array property is readable.
+     * 
+     * @return True if the property is a list or array, and is readable, false if not.
+     */
+    private Boolean canReadOrWriteSimple() {
         if (name == null) {
             // self reference
             return true;
@@ -581,29 +628,30 @@ public class ObjectPropertyReference {
             return false;
         }
 
-        if (implClass.isArray() || List.class.isAssignableFrom(implClass)) {
-            if ("length".equals(name) || "size".equals(name)) {
-                return true;
-            }
-
-            if (name.length() == 0) {
-                return false;
-            }
-
-            for (int i = 0; i < name.length(); i++) {
-                if (!Character.isDigit(name.charAt(i))) {
-                    return false;
-                }
-            }
-
+        if (isListOrArrayAndCanReadOrWrite()) {
             return true;
         }
-
+        
         if (Map.class.isAssignableFrom(implClass)) {
             return true;
         }
 
-        return ObjectPropertyUtils.getReadMethod(implClass, name) != null;
+        return null;
+    }
+
+    /**
+     * Determine if the bean property is readable.
+     * 
+     * @return True if the property is readable, false if not.
+     */
+    public boolean canRead() {
+        Boolean simple = canReadOrWriteSimple();
+        
+        if (simple != null) {
+            return simple;
+        }
+
+        return ObjectPropertyUtils.getReadMethod(getImplClass(), name) != null;
     }
 
     /**
@@ -612,38 +660,15 @@ public class ObjectPropertyReference {
      * @return True if the property is writable, false if not.
      */
     public boolean canWrite() {
-        if (name == null) {
-            // self reference
-            return false;
-        }
-
-        Class<?> implClass = getImplClass();
+        Boolean simple = canReadOrWriteSimple();
         
-        if (implClass == null) {
-            return false;
+        if (simple != null) {
+            return simple;
         }
 
-        if (implClass.isArray() || List.class.isAssignableFrom(implClass)) {
-            if (name.length() == 0) {
-                return false;
-            }
-
-            for (int i = 0; i < name.length(); i++) {
-                if (!Character.isDigit(name.charAt(i))) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        if (Map.class.isAssignableFrom(implClass)) {
-            return true;
-        }
-
-        return ObjectPropertyUtils.getWriteMethod(implClass, name) != null;
+        return ObjectPropertyUtils.getWriteMethod(getImplClass(), name) != null;
     }
-
+    
     /**
      * Get the property value for a specific bean property of a known bean class.
      * 
@@ -652,67 +677,12 @@ public class ObjectPropertyReference {
      * @param name The name of the property.
      * @return The property value for the specific bean property on the given bean.
      */
-    public Object get() {
-        if (name == null) {
-            return bean;
-        }
-
+    public Object getFromReadMethod() {
         Class<?> implClass = getImplClass();
 
-        if (implClass == null) {
-            return false;
-        }
-
-        if (bean != null) {
-            if (implClass.isArray()) {
-                return getArray(bean, name);
-            }
-
-            if (List.class.isAssignableFrom(implClass)) {
-                return getList((List<?>) bean, name);
-            }
-
-            if (Map.class.isAssignableFrom(implClass)) {
-                return getMap((Map<?, ?>) bean, name);
-            }
-        }
-
-        if (name != null && name.length() > 0) {
-            // Inspect the first character in the name to detect literals
-            char firstChar = name.charAt(0);
-
-            // String literal
-            if (firstChar == '\'' || firstChar == '\"') {
-                assert firstChar == name.charAt(name.length() - 1);
-                StringBuilder stringLiteral = new StringBuilder(name);
-                stringLiteral.deleteCharAt(0);
-                stringLiteral.deleteCharAt(stringLiteral.length() - 1);
-                for (int i = 0; i < stringLiteral.length(); i++) {
-                    if (stringLiteral.charAt(i) == '\\') {
-                        stringLiteral.deleteCharAt(i);
-                    }
-                }
-                return stringLiteral.toString();
-            }
-
-            // Integer literal
-            if (Character.isDigit(firstChar)) {
-                return Integer.parseInt(name);
-            }
-
-            // Null literal
-            if ("null".equals(name)) {
-                return null;
-            }
-        }
-
-        if (bean == null) {
-            return null;
-        }
-
         Method readMethod = ObjectPropertyUtils.getReadMethod(implClass, name);
+
         if (readMethod == null) {
-            
             if (isWarning()) {
                 IllegalArgumentException missingPropertyException = new IllegalArgumentException("No property name '"
                         + name + "' is readable on " +
@@ -740,11 +710,114 @@ public class ObjectPropertyReference {
     }
 
     /**
+     * Get the property value for a specific bean property of a known bean class.
+     * 
+     * @return The property value for the specific bean property on the given bean.
+     */
+    public Object get() {
+        if (name == null) {
+            return bean;
+        }
+
+        Class<?> implClass = getImplClass();
+
+        if (implClass == null || bean == null) {
+            return null;
+
+        } else if (implClass.isArray()) {
+            return getArray(bean, name);
+        
+        } else if (List.class.isAssignableFrom(implClass)) {
+            return getList((List<?>) bean, name);
+        
+        } else if (Map.class.isAssignableFrom(implClass)) {
+            return getMap((Map<?, ?>) bean, name);
+        
+        } else {
+            return getFromReadMethod();
+        }
+    }
+
+    /**
+     * Get the type of a specific property on a collection.
+     * 
+     * @return The type of the referenced element in the collection, if non-null. When null, the
+     *         parameterized type of the collection will be returned, or Object if the collection is
+     *         not parameterized. If this is not a reference to an indexed collection, the null is
+     *         returned.
+     */
+    private Class<?> getCollectionPropertyType() {
+        Class<?> implClass = getImplClass();
+        boolean isMap = Map.class.isAssignableFrom(implClass);
+        boolean isList = List.class.isAssignableFrom(implClass);
+
+        Object refBean;
+
+        if (isMap) {
+            refBean = getMap((Map<?, ?>) bean, name);
+        } else if (isList) {
+            refBean = getList((List<?>) bean, name);
+        } else {
+            return null;
+        }
+
+        if (refBean != null) {
+            return refBean.getClass();
+        }
+
+        if (beanType instanceof ParameterizedType) {
+            ParameterizedType parameterizedType = (ParameterizedType) beanType;
+            Type valueType = parameterizedType.getActualTypeArguments()[isList ? 0 : 1];
+
+            if (valueType instanceof Class) {
+                return (Class<?>) valueType;
+            }
+        }
+
+        return Object.class;
+    }
+    
+    /**
      * Get the type of a specific property on a given bean class.
      * 
      * @param bc The bean class.
      * @param name The name of the property;
      * @return The type of the specific property on the given bean class.
+     */
+    private Class<?> getPropertyTypeFromReadOrWriteMethod() {
+        Class<?> implClass = getImplClass();
+
+        Method readMethod = ObjectPropertyUtils.getReadMethod(implClass, name);
+        Method writeMethod;
+
+        if (readMethod == null) {
+
+            writeMethod = ObjectPropertyUtils.getWriteMethod(implClass, name);
+            assert writeMethod == null || writeMethod.getParameterTypes().length == 1 : "Invalid write method "
+                    + writeMethod;
+
+            if (writeMethod == null && isWarning()) {
+                IllegalArgumentException missingPropertyException = new IllegalArgumentException("No property name '"
+                        + name + "' is readable or writable on " +
+                        (implClass == beanClass ? implClass.toString() : "impl " + implClass + ", bean " + beanClass));
+                LOG.warn(missingPropertyException, missingPropertyException);
+            }
+
+            return writeMethod == null ? null : writeMethod.getParameterTypes()[0];
+
+        } else {
+            Class<?> returnType = readMethod.getReturnType();
+            assert (writeMethod = ObjectPropertyUtils.getWriteMethod(implClass, name)) == null
+                    || writeMethod.getParameterTypes()[0].equals(returnType) : "Property types don't match "
+                    + readMethod + " " + writeMethod;
+            return returnType;
+        }
+    }
+    
+    /**
+     * Get the type of a specific property on the implementation class.
+     * 
+     * @return The type of the specific property on the implementation class.
      */
     public Class<?> getPropertyType() {
         Class<?> implClass = getImplClass();
@@ -758,69 +831,43 @@ public class ObjectPropertyReference {
             return getImplClass();
         }
 
-        if (implClass.isArray()) {
-            if ("length".equals(name) || "size".equals(name)) {
-                return int.class;
-            } else {
-                return implClass.getComponentType();
-            }
-        }
+        Class<?> propertyType = getCollectionPropertyType();
 
-        boolean isMap = Map.class.isAssignableFrom(implClass);
-        boolean isList = List.class.isAssignableFrom(implClass);
-        if (isMap || isList) {
-
-            if (isList && ("length".equals(name) || "size".equals(name))) {
-                return int.class;
-            } else {
-                Object refBean = null;
-
-                if (isMap) {
-                    refBean = getMap((Map<?, ?>) bean, name);
-                } else if (isList) {
-                    refBean = getList((List<?>) bean, name);
-                }
-
-                if (refBean != null) {
-                    return refBean.getClass();
-                }
-
-                if (!(beanType instanceof ParameterizedType)) {
-                    return Object.class;
-                }
-
-                ParameterizedType parameterizedType = (ParameterizedType) beanType;
-                Type valueType = parameterizedType.getActualTypeArguments()[isList ? 0 : 1];
-
-                if (valueType instanceof Class) {
-                    return (Class<?>) valueType;
-                }
-
-                return Object.class;
-            }
-        }
-
-        Method readMethod = ObjectPropertyUtils.getReadMethod(implClass, name);
-        Method writeMethod;
-        if (readMethod == null) {
-            writeMethod = ObjectPropertyUtils.getWriteMethod(implClass, name);
-            assert writeMethod == null || writeMethod.getParameterTypes().length == 1 : "Invalid write method "
-                    + writeMethod;
-            
-            if (writeMethod == null && isWarning()) {
-                IllegalArgumentException missingPropertyException = new IllegalArgumentException("No property name '"
-                        + name + "' is readable or writable on " +
-                        (implClass == beanClass ? implClass.toString() : "impl " + implClass + ", bean " + beanClass));
-                LOG.warn(missingPropertyException, missingPropertyException);
-            }
-
-            return writeMethod == null ? null : writeMethod.getParameterTypes()[0];
+        if (propertyType != null) {
+            return propertyType;
         } else {
-            Class<?> returnType = readMethod.getReturnType();
-            assert (writeMethod = ObjectPropertyUtils.getWriteMethod(implClass, name)) == null
-                    || writeMethod.getParameterTypes()[0].equals(returnType) : "Property types don't match "
-                    + readMethod + " " + writeMethod;
-            return returnType;
+            return getPropertyTypeFromReadOrWriteMethod();
+        }
+    }
+
+    /**
+     * Set the property to a specific value using the property's write method.
+     * 
+     * @param propertyValue The property value.
+     */
+    private void setUsingWriteMethod(Object propertyValue) {
+        Class<?> implClass = getImplClass();
+        Method writeMethod = ObjectPropertyUtils.getWriteMethod(implClass, name);
+        
+        if (writeMethod == null) {
+            throw new IllegalArgumentException("No property name '" + name + "' is writable on " +
+                    (implClass == beanClass ? implClass.toString() : "impl " + implClass + ", bean " + beanClass));
+        }
+
+        try {
+            writeMethod.invoke(bean, propertyValue);
+        } catch (IllegalAccessException e) {
+            throw new IllegalArgumentException("Illegal access invoking property write method " + writeMethod, e);
+        } catch (InvocationTargetException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof RuntimeException) {
+                throw (RuntimeException) cause;
+            } else if (cause instanceof Error) {
+                throw (Error) cause;
+            }
+            throw new IllegalStateException(
+                    "Unexpected invocation target exception invoking property write method "
+                            + writeMethod, e);
         }
     }
 
@@ -858,28 +905,7 @@ public class ObjectPropertyReference {
             uncheckedMap.put(name, propertyValue);
 
         } else {
-
-            Method writeMethod = ObjectPropertyUtils.getWriteMethod(implClass, name);
-            if (writeMethod == null) {
-                throw new IllegalArgumentException("No property name '" + name + "' is writable on " +
-                        (implClass == beanClass ? implClass.toString() : "impl " + implClass + ", bean " + beanClass));
-            }
-
-            try {
-                writeMethod.invoke(bean, propertyValue);
-            } catch (IllegalAccessException e) {
-                throw new IllegalArgumentException("Illegal access invoking property write method " + writeMethod, e);
-            } catch (InvocationTargetException e) {
-                Throwable cause = e.getCause();
-                if (cause instanceof RuntimeException) {
-                    throw (RuntimeException) cause;
-                } else if (cause instanceof Error) {
-                    throw (Error) cause;
-                }
-                throw new IllegalStateException(
-                        "Unexpected invocation target exception invoking property write method "
-                                + writeMethod, e);
-            }
+            setUsingWriteMethod(propertyValue);
         }
     }
 

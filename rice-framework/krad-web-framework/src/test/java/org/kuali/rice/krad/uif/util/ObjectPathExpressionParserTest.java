@@ -71,7 +71,7 @@ public class ObjectPathExpressionParserTest extends ProcessLoggingUnitTest {
                         new DoIt()).toString());
         assertEquals(
                 "foo+bar-bar.baz+fez",
-                ObjectPathExpressionParser.parsePathExpression(null, "foo(bar-bar.baz)+fez",
+                ObjectPathExpressionParser.parsePathExpression(null, "foo[bar-bar.baz]+fez",
                         new DoIt()).toString());
     }
 

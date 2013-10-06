@@ -24,13 +24,31 @@ package org.kuali.rice.krad.uif.util;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ObjectPathExpressionParser {
+public final class ObjectPathExpressionParser {
 
     /**
      * Used by {@link #parsePathExpression(Object, String, PathEntry)} to track parse state without
      * the need to construct a new parser stack for each expression.
      */
     private static final ThreadLocal<ParseState> TL_EL_PARSE_STATE = new ThreadLocal<ParseState>();
+
+    /**
+     * Path entry interface for use with
+     * {@link ObjectPathExpressionParser#parsePathExpression(Object, String, PathEntry)}.
+     */
+    public static interface PathEntry {
+
+        /**
+         * Parse one node.
+         * 
+         * @param parentPath The path expression parsed so far.
+         * @param node The current parse node.
+         * @param next The next path token.
+         * @return A reference to the next parse node.
+         */
+        Object parse(String parentPath, Object node, String next);
+
+    }
 
     /**
      * Tracks parser state for
@@ -105,123 +123,44 @@ public class ObjectPathExpressionParser {
          * </p>
          * 
          * @param path The path expression from the current continuation point.
-         * @return The path expression, with parentheses related to a grouping on the left removed.
+         * @return The path expression, with brackets and quotes related to a collection reference removed.
          */
         public String prepareNextScan(String path) {
             nextScanIndex = 0;
-            
+
             if (path.length() == 0) {
                 throw new IllegalArgumentException("Unexpected end of input " + parentPath);
             }
 
-            char firstChar = path.charAt(0);
-
-            boolean quote = firstChar == '\'' || firstChar == '\"';
-            boolean paren = firstChar == '(';
-            boolean bracket = firstChar == '[';
-
-            if (!quote && !paren && !bracket) {
+            int endOfCollectionReference = indexOfCloseBracket(path, 0);
+            
+            if (endOfCollectionReference == -1) {
                 return path;
             }
 
-            // Track paren, bracket, and quote state.
-            int parenCount = firstChar == '(' ? 1 : 0;
-            int bracketCount = firstChar == '[' ? 1 : 0;
-            char inQuote = quote ? firstChar : '\0';
+            // Strip brackets from parse path.
+            StringBuilder pathBuilder = new StringBuilder(path);
+            pathBuilder.deleteCharAt(endOfCollectionReference);
+            pathBuilder.deleteCharAt(0);
 
-            // Look back during lexical scanning to detect quote and escape characters.
-            char lastChar = firstChar;
-            char currentChar;
-
-            // Position of the last character in the path
-            int pathLen = path.length() - 1;
-
-            while (nextScanIndex < pathLen
-                    && ((paren && parenCount > 0) || (bracket && bracketCount > 0) || (quote && inQuote != '\0'))) {
-                nextScanIndex++;
-                currentChar = path.charAt(nextScanIndex);
-
-                // Ignore escaped characters.
-                if (lastChar == '\\') {
-                    continue;
-                }
-
-                // Toggle quote state when a quote is encountered.
-                if (inQuote == '\0') {
-                    if (currentChar == '\'' || currentChar == '\"') {
-                        inQuote = currentChar;
-                    }
-                } else if (currentChar == inQuote) {
-                    inQuote = '\0';
-                }
-
-                // Ignore quoted characters.
-                if (inQuote != '\0') {
-                    continue;
-                }
-
-                switch (currentChar) {
-                    case '(':
-                        if (paren) {
-                            parenCount++;
-                        }
-                        break;
-                    case ')':
-                        if (paren) {
-                            parenCount--;
-                        }
-                        break;
-                    case '[':
-                        if (bracket) {
-                            bracketCount++;
-                        }
-                        break;
-                    case ']':
-                        if (bracket) {
-                            bracketCount--;
-                        }
-                        break;
-                }
+            // Also strip quotes from the front/back of the collection reference.
+            char firstChar = pathBuilder.charAt(0);
+            if ((firstChar == '\'' || firstChar == '\"') &&
+                    path.charAt(endOfCollectionReference - 1) == firstChar) {
+                
+                pathBuilder.deleteCharAt(endOfCollectionReference - 2);
+                pathBuilder.deleteCharAt(0);
             }
+            
+            int diff = path.length() - pathBuilder.length();
 
-            if (parenCount > 0) {
-                throw new IllegalArgumentException("Unmatched '(': " + path);
-            }
+            // Step scan index past collection reference, accounting for stripped characters.
+            nextScanIndex += endOfCollectionReference + 1 - diff;
 
-            if (bracketCount > 0) {
-                throw new IllegalArgumentException("Unmatched '[': " + path);
-            }
+            // Move original path index forward to correct for stripped characters.
+            originalPathIndex += diff;
 
-            if (paren || bracket) {
-
-                assert (paren && path.charAt(nextScanIndex) == ')') || (bracket && path.charAt(nextScanIndex) == ']');
-                if (nextScanIndex < pathLen) {
-                    path = path.substring(1, nextScanIndex) + path.substring(nextScanIndex + 1);
-                } else {
-                    path = path.substring(1, nextScanIndex);
-                }
-                nextScanIndex--;
-
-                // Move original path index forward to correct for stripped brackets
-                originalPathIndex += 2;
-
-            } else {
-                nextScanIndex++;
-            }
-
-            // Also strip quotes from the front/back of a bracket subexpression when using Spring syntax
-            if (bracket && nextScanIndex <= path.length()) {
-                firstChar = path.charAt(0);
-                if ((firstChar == '\'' || firstChar == '\"') && path.charAt(nextScanIndex - 1) == firstChar) {
-                    path = path.substring(1, nextScanIndex - 1) + path.substring(nextScanIndex);
-                    nextScanIndex -= 2;
-
-                    // Move original path index forward to correct for stripped quotes
-                    originalPathIndex += 2;
-                }
-            }
-
-            return path;
+            return pathBuilder.toString();
         }
 
         /**
@@ -235,16 +174,10 @@ public class ObjectPathExpressionParser {
             // Scan the character sequence, starting with the character following the open marker.
             for (int currentIndex = nextScanIndex; currentIndex < path.length(); currentIndex++) {
                 switch (path.charAt(currentIndex)) {
-                    case ')':
-                        // should have been removed by prepareNextScan
-                        throw new IllegalArgumentException("Unmatched ')': " + path);
                     case ']':
                         // should have been removed by prepareNextScan
                         throw new IllegalArgumentException("Unmatched ']': " + path);
                         // else fall through
-                    case '\'':
-                    case '\"':
-                    case '(':
                     case '[':
                     case '.':
                         if (nextTokenIndex == -1) {
@@ -286,16 +219,13 @@ public class ObjectPathExpressionParser {
             switch (nextToken) {
 
                 case '[':
-                case '(':
-                    // Approaching a parenthetical expression, not preceded by a subexpression,
-                    // resolve the key reference as the current continuation
+                    // Approaching a collection reference.
                     currentContinuation = pathEntry.parse(parentPath, currentContinuation,
                             path.substring(0, nextTokenIndex));
                     return path.substring(nextTokenIndex); // Keep the left parenthesis
 
                 case '.':
-                    // Crossing a period, not preceded by a subexpression,
-                    // resolve the key reference as the current continuation
+                    // Crossing a period, not preceded by a collection reference.
                     currentContinuation = pathEntry.parse(parentPath, currentContinuation,
                             path.substring(0, nextTokenIndex));
 
@@ -312,21 +242,48 @@ public class ObjectPathExpressionParser {
     }
 
     /**
-     * Path entry interface for use with
-     * {@link ObjectPathExpressionParser#parsePathExpression(Object, String, PathEntry)}.
+     * Return the index of the close bracket that matches the bracket at the start of the path.
+     * 
+     * @param path The string to scan.
+     * @param leftBracketIndex The index of the left bracket.
+     * @return The index of the right bracket that matches the left bracket at index given. If the
+     *         path does not begin with an open bracket, then -1 is returned.
+     * @throw IllegalArgumentException If the left bracket is unmatched by the right bracket in the
+     *        parse string.
      */
-    public static interface PathEntry {
+    public static int indexOfCloseBracket(String path, int leftBracketIndex) {
+        if (path == null || path.length() <= leftBracketIndex || path.charAt(leftBracketIndex) != '[') {
+            return -1;
+        }
 
-        /**
-         * Parse one node.
-         * 
-         * @param parentPath The path expression parsed so far.
-         * @param node The current parse node.
-         * @param next The next path token.
-         * @return A reference to the next parse node.
-         */
-        Object parse(String parentPath, Object node, String next);
+        char inQuote = '\0';
+        int pathLen = path.length() - 1;
+        int bracketCount = 1;
+        int currentPos = leftBracketIndex;
 
+        do {
+            char currentChar = path.charAt(++currentPos);
+
+            // Toggle quoted state as applicable.
+            if (inQuote == '\0' && (currentChar == '\'' || currentChar == '\"')) {
+                inQuote = currentChar;
+            } else if (inQuote == currentChar) {
+                inQuote = '\0';
+            }
+
+            // Ignore quoted characters.
+            if (inQuote != '\0') continue;
+
+            // Adjust bracket count as applicable.
+            if (currentChar == '[') bracketCount++;
+            if (currentChar == ']') bracketCount--;
+        } while (currentPos < pathLen && bracketCount > 0);
+
+        if (bracketCount > 0) {
+            throw new IllegalArgumentException("Unmatched '[': " + path);
+        }
+        
+        return currentPos;
     }
 
     /**

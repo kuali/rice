@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ObjectPropertyUtils {
+public final class ObjectPropertyUtils {
 
     private static final Logger LOG = Logger.getLogger(ObjectPropertyUtils.class);
 
@@ -47,7 +47,7 @@ public class ObjectPropertyUtils {
      * maintenance is not necessary.
      * </p>
      */
-    private static Map<Class<?>, Map<String, PropertyDescriptor>> PROPERTY_DESCRIPTOR_CACHE = Collections
+    private static final Map<Class<?>, Map<String, PropertyDescriptor>> PROPERTY_DESCRIPTOR_CACHE = Collections
             .synchronizedMap(new WeakHashMap<Class<?>, Map<String, PropertyDescriptor>>(2048));
 
     /**
@@ -78,8 +78,8 @@ public class ObjectPropertyUtils {
                 }
             }
 
-            PROPERTY_DESCRIPTOR_CACHE.put(beanClass,
-                    propertyDescriptors = Collections.unmodifiableMap(mutablePropertyDescriptorMap));
+            propertyDescriptors = Collections.unmodifiableMap(mutablePropertyDescriptorMap);
+            PROPERTY_DESCRIPTOR_CACHE.put(beanClass, propertyDescriptors);
         }
 
         return propertyDescriptors;
@@ -107,6 +107,42 @@ public class ObjectPropertyUtils {
     }
 
     /**
+     * Infer the read method based on method name.
+     * 
+     * @param beanClass The bean class.
+     * @param propertyName The property name.
+     * @return The read method for the property.
+     */
+    private static Method getReadMethodByName(Class<?> beanClass, String propertyName) {
+
+        try {
+            return beanClass.getMethod("get" + Character.toUpperCase(propertyName.charAt(0))
+                    + propertyName.substring(1));
+        } catch (SecurityException e) {
+            // Ignore
+        } catch (NoSuchMethodException e) {
+            // Ignore
+        }
+
+        try {
+            Method readMethod = beanClass.getMethod("is"
+                    + Character.toUpperCase(propertyName.charAt(0))
+                    + propertyName.substring(1));
+            
+            if (readMethod.getReturnType() == Boolean.class
+                    || readMethod.getReturnType() == Boolean.TYPE) {
+                return readMethod;
+            }
+        } catch (SecurityException e) {
+            // Ignore
+        } catch (NoSuchMethodException e) {
+            // Ignore
+        }
+        
+        return null;
+    }
+    
+    /**
      * Get the read method for a specific property on a bean class.
      * 
      * @param beanClass The bean class.
@@ -118,40 +154,17 @@ public class ObjectPropertyUtils {
             return null;
         }
 
-        Method readMethod = null;
+        PropertyDescriptor propertyDescriptor = getPropertyDescriptors(beanClass).get(propertyName);
 
-        PropertyDescriptor propertyDescriptor = ObjectPropertyUtils.getPropertyDescriptors(beanClass).get(propertyName);
         if (propertyDescriptor != null) {
-            readMethod = propertyDescriptor.getReadMethod();
-        }
-
-        if (readMethod == null) {
-            try {
-                readMethod = beanClass.getMethod("get" + Character.toUpperCase(propertyName.charAt(0))
-                        + propertyName.substring(1));
-            } catch (SecurityException e) {
-                // Ignore
-            } catch (NoSuchMethodException e) {
-                // Ignore
+            Method readMethod = propertyDescriptor.getReadMethod();
+            
+            if (readMethod != null) {
+                return readMethod;
             }
         }
 
-        if (readMethod == null) {
-            try {
-                Method trm = beanClass.getMethod("is"
-                        + Character.toUpperCase(propertyName.charAt(0))
-                        + propertyName.substring(1));
-                if (trm.getReturnType() == Boolean.class
-                        || trm.getReturnType() == Boolean.TYPE)
-                    readMethod = trm;
-            } catch (SecurityException e) {
-                // Ignore
-            } catch (NoSuchMethodException e) {
-                // Ignore
-            }
-        }
-
-        return readMethod;
+        return getReadMethodByName(beanClass, propertyName);
     }
 
     /**
@@ -257,7 +270,7 @@ public class ObjectPropertyUtils {
             return (T) ObjectPropertyReference.resolvePath(object, object.getClass(), propertyPath, false).get();
 
         } catch (RuntimeException e) {
-            throw new RuntimeException("Error getting property '" + propertyPath + "' from " + object, e);
+            throw new IllegalArgumentException("Error getting property '" + propertyPath + "' from " + object, e);
         } finally {
             ObjectPropertyReference.setWarning(false);
             if (trace) {
@@ -289,7 +302,7 @@ public class ObjectPropertyUtils {
             // just set the value to null
             setPropertyValue(object, propertyPath, null);
         } catch (IllegalAccessException e) {
-            throw new RuntimeException("Unable to set new instance for property: " + propertyPath, e);
+            throw new IllegalArgumentException("Unable to set new instance for property: " + propertyPath, e);
         }
     }
 
@@ -324,10 +337,11 @@ public class ObjectPropertyUtils {
             ObjectPropertyReference.resolvePath(object, object.getClass(), propertyPath, true).set(propertyValue);
 
         } catch (RuntimeException e) {
-            throw new RuntimeException("Error setting property '" + propertyPath + "' on " + object + " with "
-                    + propertyValue, e);
+            throw new IllegalArgumentException(
+                    "Error setting property '" + propertyPath + "' on " + object + " with " + propertyValue, e);
         } finally {
             ObjectPropertyReference.setWarning(false);
+
             if (ProcessLogger.isTraceActive() && object != null) {
                 ProcessLogger.countEnd("bean-property-write", object.getClass().getSimpleName() + ":" + propertyPath);
             }

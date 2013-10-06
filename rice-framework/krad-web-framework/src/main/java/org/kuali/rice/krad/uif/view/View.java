@@ -156,7 +156,6 @@ public class View extends ContainerBase {
 
     private ViewType viewTypeName;
 
-    private String viewStatus;
     protected ViewIndex viewIndex;
     private Map<String, String> viewRequestParameters;
 
@@ -203,7 +202,6 @@ public class View extends ContainerBase {
         mergeWithPageItems = true;
         translateCodesOnReadOnlyDisplay = false;
         viewTypeName = ViewType.DEFAULT;
-        viewStatus = ViewStatus.CREATED;
         formClass = UifFormBase.class;
         supportsRequestOverrideOfReadOnlyFields = true;
         disableBrowserCache = true;
@@ -1761,54 +1759,6 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Indicates what lifecycle phase the View instance is in
-     *
-     * <p>
-     * The view lifecycle begins with the CREATED status. In this status a new
-     * instance of the view has been retrieved from the dictionary, but no
-     * further processing has been done. After the initialize phase has been run
-     * the status changes to INITIALIZED. After the model has been applied and
-     * the view is ready for render the status changes to FINAL
-     * </p>
-     *
-     * @return view status
-     * @see org.kuali.rice.krad.uif.UifConstants.ViewStatus
-     */
-    public String getViewStatus() {
-        return this.viewStatus;
-    }
-
-    /**
-     * Setter for the view status
-     *
-     * @param viewStatus
-     */
-    public void setViewStatus(String viewStatus) {
-        checkMutable(true);
-        this.viewStatus = viewStatus;
-    }
-
-    /**
-     * Indicates whether the view has been initialized
-     *
-     * @return true if the view has been initialized, false if not
-     */
-    public boolean isInitialized() {
-        return StringUtils.equals(viewStatus, ViewStatus.INITIALIZED) || StringUtils.equals(viewStatus,
-                ViewStatus.FINAL);
-    }
-
-    /**
-     * Indicates whether the view has been updated from the model and final
-     * updates made
-     *
-     * @return true if the view has been updated, false if not
-     */
-    public boolean isFinal() {
-        return StringUtils.equals(viewStatus, ViewStatus.FINAL);
-    }
-
-    /**
      * Breadcrumb widget used for displaying homeward path and history
      *
      * @return the breadcrumbs
@@ -2353,7 +2303,6 @@ public class View extends ContainerBase {
 
         viewCopy.setUseLibraryCssClasses(this.useLibraryCssClasses);
         viewCopy.setViewTypeName(this.viewTypeName);
-        viewCopy.setViewStatus(this.viewStatus);
 
         if (this.viewIndex != null) {
             viewCopy.viewIndex = this.viewIndex.copy();

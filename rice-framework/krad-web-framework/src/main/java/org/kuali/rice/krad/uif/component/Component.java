@@ -21,6 +21,7 @@ import java.util.Map;
 
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.widget.Tooltip;
@@ -108,6 +109,22 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      * @return String type name
      */
     String getComponentTypeName();
+    
+    /**
+     * Get the view lifecycle processing status for this component.
+     * 
+     * @return The view lifecycle processing status for this component.
+     * @see UifConstants.ViewStatus
+     */
+    String getViewStatus();
+
+    /**
+     * Set the view lifecycle processing status for this component.
+     * 
+     * @param status The view lifecycle processing status for this component.
+     * @see UifConstants.ViewStatus
+     */
+    void setViewStatus(String status);
 
     /**
      * The path to the JSP file that should be called to render the component

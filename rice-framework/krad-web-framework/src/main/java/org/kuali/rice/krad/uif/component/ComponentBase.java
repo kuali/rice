@@ -31,6 +31,7 @@ import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.CssConstants;
+import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.control.ControlBase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
@@ -73,6 +74,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     private String template;
     private String templateName;
 
+    private String viewStatus;
+    
     private String title;
 
     private boolean render;
@@ -184,6 +187,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         colSpan = 1;
         rowSpan = 1;
 
+        viewStatus = ViewStatus.CREATED;
+        
         render = true;
         selfRendered = false;
         progressiveRenderViaAJAX = false;
@@ -265,6 +270,71 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         
         this.mutable = true;
         ViewLifecycle.setMutable(this);
+    }
+
+    /**
+     * Indicates what lifecycle phase the component instance is in
+     *
+     * <p>
+     * The view lifecycle begins with the CREATED status. In this status a new
+     * instance of the view has been retrieved from the dictionary, but no
+     * further processing has been done. After the initialize phase has been run
+     * the status changes to INITIALIZED. After the model has been applied and
+     * the view is ready for render the status changes to FINAL
+     * </p>
+     *
+     * @return view status
+     * @see org.kuali.rice.krad.uif.UifConstants.ViewStatus
+     */
+    public String getViewStatus() {
+        return this.viewStatus;
+    }
+
+    /**
+     * Setter for the view status
+     *
+     * @param viewStatus
+     */
+    public void setViewStatus(String viewStatus) {
+        checkMutable(true);
+        this.viewStatus = viewStatus;
+    }
+
+    /**
+     * Indicates whether the component has been initialized.
+     *
+     * @return True if the component has been initialized, false if not.
+     */
+    public boolean isInitialized() {
+        return StringUtils.equals(viewStatus, ViewStatus.INITIALIZED) || isModelApplied();
+    }
+
+    /**
+     * Indicates whether the component has been updated from the model.
+     *
+     * @return True if the component has been updated, false if not.
+     */
+    public boolean isModelApplied() {
+        return StringUtils.equals(viewStatus, ViewStatus.MODEL_APPLIED) || isFinal();
+    }
+
+    /**
+     * Indicates whether the component has been updated from the model and final
+     * updates made.
+     *
+     * @return True if the component has been updated, false if not.
+     */
+    public boolean isFinal() {
+        return StringUtils.equals(viewStatus, ViewStatus.FINAL) || isRendered();
+    }
+
+    /**
+     * Indicates whether the component has been fully rendered.
+     *
+     * @return True if the component has fully rendered, false if not.
+     */
+    public boolean isRendered() {
+        return StringUtils.equals(viewStatus, ViewStatus.RENDERED);
     }
 
     /**
@@ -2169,6 +2239,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         componentCopy.setId(this.id);
         componentCopy.setBaseId(this.baseId);
 
+        componentCopy.setViewStatus(this.viewStatus);
+        
         List<String> copyAdditionalComponentsToRefresh = this.getAdditionalComponentsToRefresh();
         if (copyAdditionalComponentsToRefresh != null) {
             componentCopy.setAdditionalComponentsToRefresh(new ArrayList<String>(copyAdditionalComponentsToRefresh));

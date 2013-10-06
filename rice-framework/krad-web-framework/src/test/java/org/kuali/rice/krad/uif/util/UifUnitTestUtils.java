@@ -21,16 +21,27 @@ import java.util.Properties;
 
 import javax.xml.namespace.QName;
 
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.framework.config.property.SimpleConfig;
 import org.kuali.rice.core.framework.resourceloader.SpringResourceLoader;
 import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.uif.freemarker.FreeMarkerInlineRenderBootstrap;
 import org.kuali.rice.krad.uif.view.ViewAuthorizer;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.springframework.beans.MutablePropertyValues;
 import org.springframework.mock.web.MockServletContext;
+import org.springframework.web.context.ConfigurableWebApplicationContext;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.StaticWebApplicationContext;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 /**
  * Utilities class for establishing a minimal environment for testing operations involving Uif
@@ -38,9 +49,41 @@ import org.springframework.mock.web.MockServletContext;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UifUnitTestUtils {
+public final class UifUnitTestUtils {
 
-    private static ThreadLocal<Properties> TL_CONFIG_PROPERTIES = new ThreadLocal<Properties>();
+    private final static ThreadLocal<Properties> TL_CONFIG_PROPERTIES = new ThreadLocal<Properties>();
+
+    private static ConfigurableWebApplicationContext webApplicationContext;
+
+    /**
+     * Create a web application context suitable for FreeMarker unit testing.
+     */
+    private static void configureKradWebApplicationContext() {
+        MockServletContext sctx = new MockServletContext();
+        StaticWebApplicationContext ctx = new StaticWebApplicationContext();
+        ctx.setServletContext(sctx);
+
+        MutablePropertyValues mpv = new MutablePropertyValues();
+        mpv.add("preferFileSystemAccess", false);
+        mpv.add("templateLoaderPath", "/krad-web_2_4_M2");
+        Properties props = new Properties();
+        props.put("number_format", "computer");
+        props.put("template_update_delay", "2147483647");
+        mpv.add("freemarkerSettings", props);
+        ctx.registerSingleton("freemarkerConfig", FreeMarkerConfigurer.class, mpv);
+
+        mpv = new MutablePropertyValues();
+        mpv.add("cache", true);
+        mpv.add("prefix", "");
+        mpv.add("suffix", ".ftl");
+        ctx.registerSingleton("viewResolver", FreeMarkerViewResolver.class, mpv);
+
+        ctx.registerSingleton("freeMarkerInputBootstrap", FreeMarkerInlineRenderBootstrap.class);
+
+        ctx.refresh();
+        ctx.start();
+        webApplicationContext = ctx;
+    }
 
     /**
      * Get the config properties for the current thread.
@@ -48,6 +91,13 @@ public class UifUnitTestUtils {
      */
     public static Properties getConfigProperties() {
         return TL_CONFIG_PROPERTIES.get();
+    }
+    
+    /**
+     * Get the web application context.
+     */
+    public static WebApplicationContext getWebApplicationContext() {
+        return webApplicationContext;
     }
 
     /**
@@ -73,7 +123,7 @@ public class UifUnitTestUtils {
 
         config.putProperties(configProperties);
         config.putProperty("application.id", applicationId);
-        
+
         ConfigContext.init(config);
 
         MockServletContext servletContext = new MockServletContext();
@@ -86,14 +136,25 @@ public class UifUnitTestUtils {
         try {
             GlobalResourceLoader.start();
             Lifecycle viewService = GlobalResourceLoader.getService("viewService");
-            
+
             if (viewService != null) {
                 viewService.start();
             }
-            
+
         } finally {
             TL_CONFIG_PROPERTIES.remove();
         }
+
+        configureKradWebApplicationContext();
+    }
+
+    /**
+     * Shut down the mock configuration. When {@link #establishMockConfig(String)} is used with
+     * {@link BeforeClass}, then this method should be used with {@link AfterClass} to tear down
+     * resources.
+     */
+    public static void tearDownMockConfig() throws Exception {
+        GlobalResourceLoader.stop();
     }
 
     /**
@@ -109,6 +170,15 @@ public class UifUnitTestUtils {
     public static void establishMockUserSession(String principalName) {
         UserSession session = new UserSession(principalName);
         GlobalVariables.setUserSession(session);
+    }
+
+    /**
+     * Shut down the mock user session. When {@link #establishMockUserSession(String)} is used with
+     * {@link Before}, then this method should be used with {@link After} to tear down resources.
+     */
+    public static void tearDownMockUserSession() {
+        GlobalVariables.setUserSession(null);
+        GlobalVariables.clear();
     }
 
     /**

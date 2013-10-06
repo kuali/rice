@@ -15,6 +15,11 @@
  */
 package org.kuali.rice.krad.uif.component;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+
 import java.io.StringWriter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -22,22 +27,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Properties;
 import java.util.concurrent.Callable;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kuali.rice.krad.uif.element.Message;
-import org.kuali.rice.krad.uif.freemarker.FreeMarkerInlineRenderBootstrap;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
+import org.kuali.rice.krad.uif.util.ProcessLoggingUnitTest;
+import org.kuali.rice.krad.uif.util.UifUnitTestUtils;
 import org.kuali.rice.krad.uif.view.View;
-import org.springframework.beans.MutablePropertyValues;
-import org.springframework.mock.web.MockServletContext;
-import org.springframework.web.context.ConfigurableWebApplicationContext;
-import org.springframework.web.context.support.StaticWebApplicationContext;
-import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerView;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
@@ -46,47 +46,17 @@ import freemarker.core.Expression;
 import freemarker.core.Macro;
 import freemarker.core.TemplateElement;
 import freemarker.template.Template;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
-public class ComponentFreemarkerTest {
-
-    private static ConfigurableWebApplicationContext webApplicationContext;
+public class ComponentFreemarkerTest extends ProcessLoggingUnitTest {
 
     @BeforeClass
-    public static void setupClass() {
-        MockServletContext sctx = new MockServletContext();
-        StaticWebApplicationContext ctx = new StaticWebApplicationContext();
-        ctx.setServletContext(sctx);
-
-        MutablePropertyValues mpv = new MutablePropertyValues();
-        mpv.add("preferFileSystemAccess", false);
-        mpv.add("templateLoaderPath", "/krad-web_2_4_M2");
-        Properties props = new Properties();
-        props.put("number_format", "computer");
-        props.put("template_update_delay", "2147483647");
-        mpv.add("freemarkerSettings", props);
-        ctx.registerSingleton("freemarkerConfig", FreeMarkerConfigurer.class, mpv);
-
-        mpv = new MutablePropertyValues();
-        mpv.add("cache", true);
-        mpv.add("prefix", "");
-        mpv.add("suffix", ".ftl");
-        ctx.registerSingleton("viewResolver", FreeMarkerViewResolver.class, mpv);
-
-        ctx.registerSingleton("freeMarkerInputBootstrap", FreeMarkerInlineRenderBootstrap.class);
-
-        ctx.refresh();
-        ctx.start();
-        webApplicationContext = ctx;
+    public static void setUpClass() throws Throwable {
+        UifUnitTestUtils.establishMockConfig("KRAD-ComponentFreemarkerTest");
     }
 
     @AfterClass
-    public static void teardownClass() {
-        if (webApplicationContext != null) {
-            webApplicationContext.stop();
-            webApplicationContext.close();
-        }
+    public static void tearDownClass() throws Throwable {
+        UifUnitTestUtils.tearDownMockConfig();
     }
 
     @Test
@@ -95,16 +65,14 @@ public class ComponentFreemarkerTest {
 
             @Override
             public Message call() throws Exception {
-                Message m = new Message();
-                m.setTemplate("/krad/WEB-INF/ftl/components/element/message.ftl");
-                m.setTemplateName("uif_message");
-                m.setCssClasses(Arrays.asList("uif-message"));
-                m.setMessageText("foobar");
-                return m;
+                Message msg = ComponentFactory.getMessage().copy();
+                msg.setMessageText("foobar");
+                return msg;
             }
         });
 
-        FreeMarkerViewResolver viewResolver = (FreeMarkerViewResolver) webApplicationContext.getBean("viewResolver");
+        FreeMarkerViewResolver viewResolver = (FreeMarkerViewResolver)
+                UifUnitTestUtils.getWebApplicationContext().getBean("viewResolver");
         assertNotNull(viewResolver);
 
         assert m.getTemplate().endsWith(".ftl");
@@ -146,23 +114,13 @@ public class ComponentFreemarkerTest {
 
     @Test
     public void testMessageNoReflection() throws Throwable {
-        final Message m = ViewLifecycle.encapsulateInitialization(new Callable<Message>() {
-            @Override
-            public Message call() throws Exception {
-                Message m = new Message();
-                m.setTemplate("/krad/WEB-INF/ftl/components/element/message.ftl");
-                m.setTemplateName("uif_message");
-                m.setCssClasses(Arrays.asList("uif-message"));
-                m.setMessageText("foobar");
-                return m;
-            }
-        });
-
         View view = mock(View.class);
         ViewLifecycle.encapsulateLifecycle(view, new Runnable() {
             @Override
             public void run() {
-                Message msg = m.copy();
+                Message msg = ComponentFactory.getMessage().copy();
+                msg.setMessageText("foobar");
+
                 ViewLifecycle.getActiveLifecycle().performComponentRender(msg);
                 
                 assertTrue(msg.isSelfRendered());

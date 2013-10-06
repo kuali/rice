@@ -28,7 +28,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.krad.sampleapp_2_4_M2.labs.KradLabsForm;
 import org.kuali.rice.krad.sampleapp_2_4_M2.labs.transaction.TransactionForm;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -44,7 +43,6 @@ import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.util.ProcessLoggingUnitTest;
 import org.kuali.rice.krad.uif.util.UifUnitTestUtils;
 import org.kuali.rice.krad.uif.util.ViewCleaner;
-import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.bind.UifServletRequestDataBinder;
 import org.kuali.rice.krad.web.controller.UifControllerHelper;
 import org.kuali.rice.krad.web.controller.helper.DataTablesPagingHelper;
@@ -59,12 +57,9 @@ import org.springframework.mock.web.MockHttpServletRequest;
  */
 public class ViewHelperServiceTest extends ProcessLoggingUnitTest {
 
-    private static ViewService viewService;
-
     @BeforeClass
     public static void setUpClass() throws Throwable {
         UifUnitTestUtils.establishMockConfig("KRAD-ViewHelperServiceTest");
-        viewService = KRADServiceLocatorWeb.getViewService();
     }
 
     @Before
@@ -74,13 +69,12 @@ public class ViewHelperServiceTest extends ProcessLoggingUnitTest {
 
     @After
     public void tearDown() throws Throwable {
-        GlobalVariables.setUserSession(null);
-        GlobalVariables.clear();
+        UifUnitTestUtils.tearDownMockUserSession();
     }
 
     @AfterClass
     public static void tearDownClass() throws Throwable {
-        GlobalResourceLoader.stop();
+        UifUnitTestUtils.tearDownMockConfig();
     }
 
     @Test
@@ -101,6 +95,7 @@ public class ViewHelperServiceTest extends ProcessLoggingUnitTest {
     
     @Test
     public void testTransactionView() throws Throwable {
+        ViewService viewService = KRADServiceLocatorWeb.getViewService();
         View transactionView = viewService.getViewById("TransactionView");
         TransactionForm tform = new TransactionForm();
         viewService.buildView(transactionView, tform, Collections.<String, String> emptyMap());
@@ -108,11 +103,13 @@ public class ViewHelperServiceTest extends ProcessLoggingUnitTest {
     
     @Test
     public void testTransactionViewOnly() throws Throwable {
+        ViewService viewService = KRADServiceLocatorWeb.getViewService();
         viewService.getViewById("TransactionView");
     }
     
     @Test
     public void testTransactionInitPhase() throws Throwable {
+        ViewService viewService = KRADServiceLocatorWeb.getViewService();
         final View transactionView = viewService.getViewById("TransactionView");
         final UifFormBase tform = new UifFormBase();
         ViewLifecycle.encapsulateLifecycle(transactionView, new Runnable() {
@@ -146,6 +143,7 @@ public class ViewHelperServiceTest extends ProcessLoggingUnitTest {
 
     @Test
     public void testPerformanceMediumAll() throws Throwable {
+        ViewService viewService = KRADServiceLocatorWeb.getViewService();
         View performanceView = viewService.getViewById("Lab-PerformanceMedium");
         KradLabsForm pform = new KradLabsForm();
         performanceView = viewService.buildView(performanceView, pform, Collections.<String, String> emptyMap());
@@ -237,6 +235,7 @@ public class ViewHelperServiceTest extends ProcessLoggingUnitTest {
     @SuppressWarnings("unchecked")
     @Test
     public void testMutability() throws Throwable {
+        ViewService viewService = KRADServiceLocatorWeb.getViewService();
         final View loginView = viewService.getViewById("DummyLoginView");
         Group group = ViewLifecycle.encapsulateInitialization(new Callable<Group>(){
             @Override

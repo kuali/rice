@@ -185,12 +185,15 @@ public class UifConstants {
         public static final String INITIALIZE = "INITIALIZE";
         public static final String APPLY_MODEL = "APPLY_MODEL";
         public static final String FINALIZE = "FINALIZE";
+        public static final String RENDER = "RENDER";
     }
 
     public static class ViewStatus {
         public static final String CREATED = "C";
         public static final String INITIALIZED = "I";
+        public static final String MODEL_APPLIED = "M";
         public static final String FINAL = "F";
+        public static final String RENDERED = "R";
     }
 
     public static class ContextVariableNames {

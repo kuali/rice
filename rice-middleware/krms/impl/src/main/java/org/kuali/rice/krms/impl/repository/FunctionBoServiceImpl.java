@@ -15,20 +15,23 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.mo.ModelObjectUtils;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krms.api.repository.function.FunctionDefinition;
 import org.kuali.rice.krms.api.repository.function.FunctionRepositoryService;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Default implementation of the {@link FunctionService}.
+ * Default implementation of the {@link FunctionRepositoryService}.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -36,6 +39,14 @@ import java.util.Map;
 public class FunctionBoServiceImpl implements FunctionRepositoryService, FunctionBoService {
 		
     private BusinessObjectService businessObjectService;
+
+    // used for converting lists of BOs to model objects
+    private static final ModelObjectUtils.Transformer<FunctionBo, FunctionDefinition> toFunctionDefinition =
+            new ModelObjectUtils.Transformer<FunctionBo, FunctionDefinition>() {
+                public FunctionDefinition transform(FunctionBo input) {
+                    return FunctionBo.to(input);
+                };
+            };
     
 	@Override
 	public FunctionDefinition getFunction(String functionId) {
@@ -146,7 +157,38 @@ public class FunctionBoServiceImpl implements FunctionRepositoryService, Functio
 		FunctionBo functionBo = businessObjectService.findByPrimaryKey(FunctionBo.class, Collections.unmodifiableMap(map));
 		return FunctionBo.to(functionBo);
 	}
-	
+
+    /**
+     * Gets all of the {@link FunctionDefinition}s within the given namespace
+     *
+     * @param namespace the namespace in which to get the functions
+     * @return the list of function definitions, or if none are found, an empty list
+     */
+    public List<FunctionDefinition> getFunctionsByNamespace(String namespace) {
+        if (StringUtils.isBlank(namespace)){
+            throw new IllegalArgumentException("namespace is null or blank");
+        }
+
+        final Map<String, Object> map = new HashMap<String, Object>();
+        map.put("namespace", namespace);
+        Collection<FunctionBo> functionBos = businessObjectService.findMatching(FunctionBo.class, map);
+
+        return convertFunctionBosToImmutables(functionBos);
+    }
+
+    /**
+     * Converts a Collection of FunctionBos to an Unmodifiable List of Agendas
+     *
+     * @param functionBos a mutable List of FunctionBos to made completely immutable.
+     * @return An unmodifiable List of FunctionDefinitions
+     */
+    private List<FunctionDefinition> convertFunctionBosToImmutables(final Collection<FunctionBo> functionBos) {
+        if (CollectionUtils.isEmpty(functionBos)) {
+            return Collections.emptyList();
+        }
+        return Collections.unmodifiableList(ModelObjectUtils.transform(functionBos, toFunctionDefinition));
+    }
+
     public void setBusinessObjectService(BusinessObjectService businessObjectService) {
         this.businessObjectService = businessObjectService;
     }

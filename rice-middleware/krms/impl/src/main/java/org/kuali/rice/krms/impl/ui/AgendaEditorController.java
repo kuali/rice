@@ -17,6 +17,8 @@ package org.kuali.rice.krms.impl.ui;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
+import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -32,6 +34,8 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krms.api.KrmsApiServiceLocator;
 import org.kuali.rice.krms.api.engine.expression.ComparisonOperatorService;
 import org.kuali.rice.krms.api.repository.LogicalOperator;
+import org.kuali.rice.krms.api.repository.operator.CustomOperator;
+import org.kuali.rice.krms.api.repository.proposition.PropositionParameterType;
 import org.kuali.rice.krms.api.repository.proposition.PropositionType;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.kuali.rice.krms.api.repository.term.TermDefinition;
@@ -42,16 +46,18 @@ import org.kuali.rice.krms.impl.repository.ActionBo;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.AgendaItemBo;
 import org.kuali.rice.krms.impl.repository.ContextBoService;
+import org.kuali.rice.krms.impl.repository.FunctionBoService;
 import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionService;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 import org.kuali.rice.krms.impl.repository.PropositionBo;
+import org.kuali.rice.krms.impl.repository.PropositionParameterBo;
 import org.kuali.rice.krms.impl.repository.RuleBo;
 import org.kuali.rice.krms.impl.repository.RuleBoService;
 import org.kuali.rice.krms.impl.repository.TermBo;
 import org.kuali.rice.krms.impl.rule.AgendaEditorBusRule;
-import org.kuali.rice.krms.impl.ui.RuleTreeNode;
 import org.kuali.rice.krms.impl.util.KRMSPropertyConstants;
 import org.kuali.rice.krms.impl.util.KrmsImplConstants;
+import org.kuali.rice.krms.impl.util.KrmsServiceLocatorInternal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -81,13 +87,13 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 
     private SequenceAccessorService sequenceAccessorService;
 
-     /**
+    /**
      * Override route to set the setSelectedAgendaItemId to empty and disable all the buttons
      *
-     * @see org.kuali.rice.krad.web.controller.MaintenanceDocumentController.route
-     *      (DocumentFormBase, HttpServletRequest, HttpServletResponse)
+     * @see org.kuali.rice.krad.web.controller.MaintenanceDocumentController#route
+     *     (DocumentFormBase, BindingResult, HttpServletRequest, HttpServletResponse)
      */
-     @Override
+    @Override
     @RequestMapping(params = "methodToCall=route")
     public ModelAndView route(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
@@ -251,10 +257,63 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         String selectedItemId = agendaEditor.getSelectedAgendaItemId();
         AgendaItemBo node = getAgendaItemById(firstItem, selectedItemId);
 
+        preprocessCustomOperators(node.getRule().getProposition(), getCustomOperatorValueMap(form));
+
         setAgendaItemLine(form, node);
 
         form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-EditRule-Page");
         return super.navigate(form, result, request, response);
+    }
+
+    /**
+     * Gets a map from function ID to custom operator key.
+     *
+     * <p>The key for a custom operator uses a special prefix and format.</p>
+     *
+     * @param form the form containing the agenda editor
+     * @return the map from function id to custom operator key
+     */
+    protected Map<String,String> getCustomOperatorValueMap(UifFormBase form) {
+        List<KeyValue> allPropositionOpCodes = new PropositionOpCodeValuesFinder().getKeyValues(form);
+
+        // filter to just custom operators
+        Map<String, String> functionIdToCustomOpCodeMap = new HashMap<String, String>();
+        for (KeyValue opCode : allPropositionOpCodes) {
+            if (opCode.getKey().startsWith(KrmsImplConstants.CUSTOM_OPERATOR_PREFIX)) {
+                CustomOperator customOperator = getCustomOperatorUiTranslator().getCustomOperator(opCode.getKey());
+                functionIdToCustomOpCodeMap.put(customOperator.getOperatorFunctionDefinition().getId(), opCode.getKey());
+            }
+        }
+
+        return functionIdToCustomOpCodeMap;
+    }
+
+    /**
+     * Looks for any custom function calls within simple propositions and attempts to convert them to custom
+     * operator keys.
+     *
+     * @param proposition the proposition to search within and convert
+     * @param customOperatorValuesMap a map from function ID to custom operator key, used for the conversion
+     */
+    protected void preprocessCustomOperators(PropositionBo proposition, Map<String, String> customOperatorValuesMap) {
+        if (proposition == null) { return; }
+
+        if (proposition.getParameters() != null && proposition.getParameters().size() > 0) {
+            for (PropositionParameterBo param : proposition.getParameters()) {
+                if (PropositionParameterType.FUNCTION.getCode().equals(param.getParameterType())) {
+                    // convert to our convention of customOperator:<functionNamespace>:<functionName>
+                    String convertedValue = customOperatorValuesMap.get(param.getValue());
+                    if (!StringUtils.isEmpty(convertedValue)) {
+                        param.setValue(convertedValue);
+                    }
+                }
+            }
+        } else if (proposition.getCompoundComponents() != null && proposition.getCompoundComponents().size() > 0) {
+            for (PropositionBo childProposition : proposition.getCompoundComponents()) {
+                // recurse
+                preprocessCustomOperators(childProposition, customOperatorValuesMap);
+            }
+        }
     }
 
     /**
@@ -379,15 +438,16 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         if (proposition.getParameters().get(1) != null) {
             propConstant = proposition.getParameters().get(1).getValue();
         }
-        String operator = null;
+        String operatorCode = null;
         if (proposition.getParameters().get(2) != null) {
-            operator = proposition.getParameters().get(2).getValue();
+            operatorCode = proposition.getParameters().get(2).getValue();
         }
 
         String termId = null;
         if (proposition.getParameters().get(0) != null) {
             termId = proposition.getParameters().get(0).getValue();
         }
+
         // Simple proposition requires all of propConstant, termId and operator to be specified
         if (StringUtils.isBlank(termId)) {
             GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
@@ -396,29 +456,45 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         } else {
             result = validateTerm(proposition, namespace);
         }
-        if (StringUtils.isBlank(operator)) {
+
+        if (StringUtils.isBlank(operatorCode)) {
             GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
                     "error.rule.proposition.simple.blankField", proposition.getDescription(), "Operator");
             result &= false;
         }
-        if (StringUtils.isBlank(propConstant) && !operator.endsWith("null")) { // ==null and !=null operators have blank values.
+
+        if (StringUtils.isBlank(propConstant) && !operatorCode.endsWith("null")) { // ==null and !=null operators have blank values.
             GlobalVariables.getMessageMap().putErrorForSectionId(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
                     "error.rule.proposition.simple.blankField", proposition.getDescription(), "Value");
             result &= false;
-        }  else if (operator.endsWith("null")) { // ==null and !=null operators have blank values.
+        }  else if (operatorCode.endsWith("null")) { // ==null and !=null operators have blank values.
             if (propConstant != null) {
                 proposition.getParameters().get(1).setValue(null);
             }
         } else if (!StringUtils.isBlank(termId)) {
             // validate that the constant value is comparable against the term
             String termType = lookupTermType(termId);
-            ComparisonOperatorService comparisonOperatorService = KrmsApiServiceLocator.getComparisonOperatorService();
-            if (comparisonOperatorService.canCoerce(termType, propConstant)) {
-                if (comparisonOperatorService.coerce(termType, propConstant) == null) { // HMM, what if we wanted a rule that
-                // checked a null value?
-                    GlobalVariables.getMessageMap().putError(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
-                            "error.rule.proposition.simple.invalidValue", proposition.getDescription(), propConstant);
+
+            if (operatorCode.startsWith(KrmsImplConstants.CUSTOM_OPERATOR_PREFIX)) {
+                CustomOperator customOperator = getCustomOperatorUiTranslator().getCustomOperator(operatorCode);
+                List<RemotableAttributeError> errors = customOperator.validateOperandClasses(termType, String.class.getName());
+
+                if (!CollectionUtils.isEmpty(errors)) {
+                    for (RemotableAttributeError error : errors) {
+                        GlobalVariables.getMessageMap().putError(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
+                                error.getMessage(), proposition.getDescription(), termType);
+                    }
+
                     result &= false;
+                }
+            } else {
+                ComparisonOperatorService comparisonOperatorService = KrmsApiServiceLocator.getComparisonOperatorService();
+                if (comparisonOperatorService.canCoerce(termType, propConstant)) {
+                    if (comparisonOperatorService.coerce(termType, propConstant) == null) {
+                        GlobalVariables.getMessageMap().putError(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
+                                "error.rule.proposition.simple.invalidValue", proposition.getDescription(), propConstant);
+                        result &= false;
+                    }
                 }
             }
         }
@@ -428,6 +504,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                     "error.rule.proposition.simple.hasChildren", proposition.getDescription());
             result &= false; // simple prop should not have compound components
         }
+
         return result;
     }
 
@@ -1518,6 +1595,10 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return sequenceAccessorService;
     }
 
+    private FunctionBoService getFunctionBoService() {
+        return KrmsRepositoryServiceLocator.getFunctionBoService();
+    }
+
     /**
      * return the contextBoService
      */
@@ -1530,6 +1611,10 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      */
     private RuleBoService getRuleBoService() {
         return KrmsRepositoryServiceLocator.getRuleBoService();
+    }
+
+    private CustomOperatorUiTranslator getCustomOperatorUiTranslator() {
+        return KrmsServiceLocatorInternal.getCustomOperatorUiTranslator();
     }
 
     /**

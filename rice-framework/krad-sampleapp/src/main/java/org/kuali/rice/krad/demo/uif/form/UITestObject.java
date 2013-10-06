@@ -64,6 +64,13 @@ public class UITestObject implements Serializable {
         this.field4 = field4;
     }
 
+    public UITestObject(String field1, String field2, String field3, String field4, String field5, String field6) {
+        this(field1, field2, field3, field4);
+
+        this.field5 = field5;
+        this.field6 = field6;
+    }
+
     public UITestObject(String field1, String field2, String field3, String field4, String field5, String field6,
             String field7, String field8) {
         this(field1, field2, field3, field4);

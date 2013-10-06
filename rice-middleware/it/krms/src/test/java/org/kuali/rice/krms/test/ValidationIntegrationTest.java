@@ -41,7 +41,6 @@ import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
-import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
 import org.kuali.rice.krms.framework.engine.expression.ComparisonOperator;
 import org.kuali.rice.krms.framework.type.ValidationActionType;
 import org.kuali.rice.krms.framework.type.ValidationActionTypeService;
@@ -72,7 +71,7 @@ import org.kuali.rice.krms.impl.repository.RuleBoService;
 import org.kuali.rice.krms.impl.repository.RuleBoServiceImpl;
 import org.kuali.rice.krms.impl.repository.TermBoService;
 import org.kuali.rice.krms.impl.repository.TermBoServiceImpl;
-import org.kuali.rice.krms.impl.util.KRMSServiceLocatorInternal;
+import org.kuali.rice.krms.impl.util.KrmsServiceLocatorInternal;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 import org.springframework.transaction.annotation.Transactional;
@@ -582,7 +581,7 @@ public class ValidationIntegrationTest extends AbstractBoTest {
 
 
     private KrmsAttributeDefinitionBo createEventAttributeDefinition() {
-        KrmsAttributeDefinitionService service = KRMSServiceLocatorInternal.getService("krmsAttributeDefinitionService");
+        KrmsAttributeDefinitionService service = KrmsServiceLocatorInternal.getService("krmsAttributeDefinitionService");
         assertNotNull(service);
         KrmsAttributeDefinitionBo attributeDefinitionBo = new KrmsAttributeDefinitionBo();
         attributeDefinitionBo.setNamespace(KrmsConstants.KRMS_NAMESPACE);

@@ -20,9 +20,10 @@ import org.kuali.rice.core.api.util.jaxb.EnumStringAdapter;
 import org.kuali.rice.krms.api.KrmsApiServiceLocator;
 import org.kuali.rice.krms.api.engine.expression.ComparisonOperatorService;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Operators enumeration for comparing objects.  EQUALS NOT_EQUALS GREATER_THAN GREATER_THAN_EQUAL LESS_THAN LESS_THAN_EQUAL.
@@ -147,16 +148,25 @@ public enum ComparisonOperator implements Coded {
     /**
      * Operator codes, unmodifiable Collection
      */
-    public static final Collection<String> OPERATOR_CODES =
-        Collections.unmodifiableCollection(Arrays.asList(EQUALS.getCode(), NOT_EQUALS.getCode(), GREATER_THAN.getCode(),
-                GREATER_THAN_EQUAL.getCode(), LESS_THAN.getCode(), LESS_THAN_EQUAL.getCode()));
+    public static final Collection<String> OPERATOR_CODES;
 
     /**
      * Operator names, unmodifiable Collection
      */
-    public static final Collection<String> OPERATOR_NAMES =
-        Collections.unmodifiableCollection(Arrays.asList(EQUALS.name(), NOT_EQUALS.name(), GREATER_THAN.name(),
-                GREATER_THAN_EQUAL.name(), LESS_THAN.name(), LESS_THAN_EQUAL.name()));
+    public static final Collection<String> OPERATOR_NAMES;
+
+    static {
+        List<String> operatorCodes = new ArrayList<String>();
+        List<String> operatorNames = new ArrayList<String>();
+
+        for (ComparisonOperator operator : values()) {
+            operatorCodes.add(operator.getCode());
+            operatorNames.add(operator.name());
+        }
+
+        OPERATOR_CODES = Collections.unmodifiableCollection(operatorCodes);
+        OPERATOR_NAMES = Collections.unmodifiableCollection(operatorNames);
+    }
 
     public void setComparisonOperatorService(ComparisonOperatorService comparisonOperatorService) {
         this.comparisonOperatorService = comparisonOperatorService;

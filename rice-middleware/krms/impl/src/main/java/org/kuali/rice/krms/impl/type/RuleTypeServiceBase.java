@@ -22,7 +22,6 @@ import org.kuali.rice.krms.framework.engine.Rule;
 import org.kuali.rice.krms.framework.type.RuleTypeService;
 import org.kuali.rice.krms.impl.provider.repository.RepositoryToEngineTranslator;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
-import org.kuali.rice.krms.impl.util.KRMSServiceLocatorInternal;
 
 /**
  * Base class for {@link org.kuali.rice.krms.framework.type.RuleTypeService} implementations, providing

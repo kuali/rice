@@ -70,7 +70,7 @@
               <suggest-bean render="true" valuePropertyName="number">
                 <suggestQuery>
                   <attributeQueryConfig-bean queryMethodArgumentFieldList="field63"
-                                             queryMethodToCall="retrieveTravelAccountsBySubAcct"/>
+                                             queryMethodToCall="retrieveTravelAccountsBySubAcctAndTerm"/>
                 </suggestQuery>
                 <templateOptions merge="true">
                   <spring:entry key="minLength" value="1"/>

@@ -83,7 +83,7 @@ public class UIfComponentsViewHelperServiceImpl extends ViewHelperServiceImpl {
         return matchingAccounts;
     }
 
-    public List<TravelAccount> retrieveTravelAccountsBySubAcct(String subAccount, String term) {
+    public List<TravelAccount> retrieveTravelAccountsBySubAcctAndTerm(String subAccount, String term) {
         List<TravelAccount> matchingAccounts = new ArrayList<TravelAccount>();
 
         Map<String, String> lookupCriteria = new HashMap<String, String>();

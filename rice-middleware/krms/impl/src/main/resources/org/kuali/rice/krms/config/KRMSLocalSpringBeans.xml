@@ -221,4 +221,7 @@
     <property name="templater" ref="propositionNaturalLanguageTemplater"/>
   </bean>
 
+  <!-- UI specific services -->
+  <bean id="rice.krms.customOperatorUiTranslator" class="org.kuali.rice.krms.impl.ui.CustomOperatorUiTranslator"/>
+
 </beans>

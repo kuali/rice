@@ -16,15 +16,13 @@
 package org.kuali.rice.krms.impl.type;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.krms.api.KrmsApiServiceLocator;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.framework.engine.Agenda;
 import org.kuali.rice.krms.framework.engine.BasicAgenda;
 import org.kuali.rice.krms.framework.type.AgendaTypeService;
 import org.kuali.rice.krms.impl.provider.repository.LazyAgendaTree;
 import org.kuali.rice.krms.impl.provider.repository.RepositoryToEngineTranslator;
-import org.kuali.rice.krms.impl.provider.repository.RepositoryToEngineTranslatorImpl;
-import org.kuali.rice.krms.impl.util.KRMSServiceLocatorInternal;
+import org.kuali.rice.krms.impl.util.KrmsServiceLocatorInternal;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,6 +57,7 @@ public class AgendaTypeServiceBase extends KrmsTypeServiceBase implements Agenda
 
     // Lazy initialization holder class, see Effective Java item #71
     private static class RepositoryToEngineTranslatorHolder {
-        static final RepositoryToEngineTranslator instance = KRMSServiceLocatorInternal.getRepositoryToEngineTranslator();
+        static final RepositoryToEngineTranslator instance = KrmsServiceLocatorInternal
+                .getRepositoryToEngineTranslator();
     }
 }

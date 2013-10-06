@@ -22,6 +22,7 @@ public class KrmsImplConstants {
      * regular old term ids.
      */
     public static final String PARAMETERIZED_TERM_PREFIX = "parameterized:";
+    public static final String CUSTOM_OPERATOR_PREFIX = "customOperator:";
 
     public static final String STUDENT_LOOKUP_VIEW = "StudentLookupView";
     public static final String STUDENT_INQUIRY_VIEW = "StudentInquiryView";

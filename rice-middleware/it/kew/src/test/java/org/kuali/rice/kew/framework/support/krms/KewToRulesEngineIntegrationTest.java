@@ -39,7 +39,7 @@ import org.kuali.rice.krms.impl.repository.ContextBo;
 import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo;
 import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionService;
 import org.kuali.rice.krms.impl.repository.RuleBo;
-import org.kuali.rice.krms.impl.util.KRMSServiceLocatorInternal;
+import org.kuali.rice.krms.impl.util.KrmsServiceLocatorInternal;
 import org.kuali.rice.test.BaselineTestCase;
 
 import java.util.ArrayList;
@@ -118,7 +118,7 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
      * Create an attribute definition for "peopleFlow" using given attribute and label
      */
     private KrmsAttributeDefinition createPeopleFlowAttributeDefinition(String attribute, String label) {
-        KrmsAttributeDefinitionService service = KRMSServiceLocatorInternal.getService("krmsAttributeDefinitionService");
+        KrmsAttributeDefinitionService service = KrmsServiceLocatorInternal.getService("krmsAttributeDefinitionService");
         assertNotNull(service);
         KrmsAttributeDefinitionBo attributeDefinitionBo = new KrmsAttributeDefinitionBo();
         attributeDefinitionBo.setNamespace(KrmsConstants.KRMS_NAMESPACE);
@@ -222,7 +222,7 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
      * Create an attribute definition for "Event" which is used to define the triggering event on an agenda.
      */
     private KrmsAttributeDefinitionBo createEventAttributeDefinition() {
-        KrmsAttributeDefinitionService service = KRMSServiceLocatorInternal.getService("krmsAttributeDefinitionService");
+        KrmsAttributeDefinitionService service = KrmsServiceLocatorInternal.getService("krmsAttributeDefinitionService");
         assertNotNull(service);
         KrmsAttributeDefinitionBo attributeDefinitionBo = new KrmsAttributeDefinitionBo();
         attributeDefinitionBo.setNamespace(KrmsConstants.KRMS_NAMESPACE);

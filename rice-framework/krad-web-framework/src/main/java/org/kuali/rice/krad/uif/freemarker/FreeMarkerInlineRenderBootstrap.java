@@ -15,16 +15,58 @@
  */
 package org.kuali.rice.krad.uif.freemarker;
 
+import java.io.IOException;
+
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import freemarker.core.InlineTemplateElement;
+import freemarker.template.Configuration;
+import freemarker.template.TemplateException;
 
 /**
  * Register inline template processing adaptors for high-traffic KRAD templates.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class FreeMarkerInlineRenderBootstrap implements InitializingBean {
+public class FreeMarkerInlineRenderBootstrap implements InitializingBean, ApplicationContextAware {
+    
+    /**
+     * The freemarker configuration.
+     */
+    private static Configuration freeMarkerConfig;
+    
+    /**
+     * Get the FreeMarker configuration initialized for the current KRAD application. 
+     * 
+     * @return The FreeMarker configuration initialized for the current KRAD application.
+     */
+    public static Configuration getFreeMarkerConfig() {
+        if (freeMarkerConfig == null) {
+            throw new IllegalStateException("FreeMarker configuruation is not available, "
+                    + "use krad-base-servlet.xml or define FreeMarkerInlineRenderBootstrap in servlet.xml");
+        }
+        
+        return freeMarkerConfig;
+    }
+
+    /**
+     * @see org.springframework.context.ApplicationContextAware#setApplicationContext(org.springframework.context.ApplicationContext)
+     */
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        try {
+            freeMarkerConfig = ((FreeMarkerConfigurer) applicationContext.getBean("freemarkerConfig"))
+                    .createConfiguration();
+        } catch (IOException e) {
+            throw new IllegalStateException("Error loading freemarker configuration", e);
+        } catch (TemplateException e) {
+            throw new IllegalStateException("Error loading freemarker configuration", e);
+        }
+    }
 
     /**
      * Register high-traffic KRAD template adaptors.  

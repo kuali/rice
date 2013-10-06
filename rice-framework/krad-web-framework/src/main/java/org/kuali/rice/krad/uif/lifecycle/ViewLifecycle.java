@@ -15,10 +15,14 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.lang.annotation.Annotation;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -62,6 +66,8 @@ import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.RemoteFieldsHolder;
+import org.kuali.rice.krad.uif.freemarker.FreeMarkerInlineRenderBootstrap;
+import org.kuali.rice.krad.uif.freemarker.FreeMarkerInlineRenderUtils;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
@@ -92,6 +98,13 @@ import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.util.MethodInvoker;
+
+import freemarker.cache.TemplateCache;
+import freemarker.core.Environment;
+import freemarker.core.ParseException;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import freemarker.template.TemplateModel;
 
 /**
  * Lifecycle object created during the view processing to hold event registrations.
@@ -240,6 +253,21 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
     private final boolean copy;
 
     /**
+     * The FreeMarker environment to use for rendering.
+     */
+    private Environment freeMarkerEnvironment;
+    
+    /**
+     * Set of imported FreeMarker templates.
+     */
+    private Set<String> importedFreeMarkerTemplates;
+
+    /**
+     * The FreeMarker writer, for capturing rendered output.
+     */
+    private StringWriter freeMarkerWriter;
+
+    /**
      * Private constructor, for spawning an initialization context.
      * 
      * @see #getActiveLifecycle() For access to a thread-local instance.
@@ -265,6 +293,57 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
         this.copy = copy;
     }
 
+    private void importFreeMarkerTemplate(Component component) {
+        String templateName = component.getTemplateName();
+        
+        if (templateName == null || !importedFreeMarkerTemplates.add(templateName)) {
+            // No template for component, or already imported in this lifecycle.
+            return;
+        }
+        
+        try {
+            Environment env = getFreeMarkerEnvironment();
+            String templateNameString = TemplateCache.getFullTemplatePath(env, "", component.getTemplate());
+            env.include(env.getTemplateForInclusion(templateNameString, null, true));
+        } catch (ParseException e) {
+            throw new IllegalStateException("Error parsing imported template " + templateName, e);
+        } catch (TemplateException e) {
+            throw new IllegalStateException("Error importing template " + templateName, e);
+        } catch (IOException e) {
+            throw new IllegalStateException("Error importing template " + templateName, e);
+        }
+    }
+
+    /**
+     * Get the FreeMarker environment for processing the rendering phase, initializing the
+     * environment if needed.
+     * 
+     * @return The FreeMarker environment for processing the rendering phase, initializing the
+     *         environment if needed.
+     */
+    private Environment getFreeMarkerEnvironment() {
+        if (freeMarkerEnvironment == null) {
+            try {
+                StringWriter out = new StringWriter();
+                Template template = new Template("", new StringReader(""),
+                        FreeMarkerInlineRenderBootstrap.getFreeMarkerConfig());
+                Environment env = template
+                        .createProcessingEnvironment(Collections.emptyMap(), out);
+                env.importLib("/krad/WEB-INF/ftl/lib/krad.ftl", "krad");
+                env.importLib("/krad/WEB-INF/ftl/lib/spring.ftl", "spring");
+                freeMarkerEnvironment = env;
+                freeMarkerWriter = out;
+                importedFreeMarkerTemplates = new HashSet<String>();
+            } catch (IOException e) {
+                throw new IllegalStateException("Failed to initialize FreeMarker for rendering", e);
+            } catch (TemplateException e) {
+                throw new IllegalStateException("Failed to initialize FreeMarker for rendering", e);
+            }
+        }
+
+        return freeMarkerEnvironment;
+    }
+    
     /**
      * Helper method for optimzing a call to
      * {@link ViewModelUtils#getPropertyTypeByClassAndView(View, String)} while parsing a path
@@ -929,7 +1008,33 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
         performComponentFinalize(view, component, model, parent);
         view.getViewIndex().indexComponent(component);
     }
+    
+    /**
+     * Perform rendering on the given component.
+     * 
+     * @param view view instance the component belongs to
+     * @param component the component instance that should be updated
+     * @param model top level object containing the data
+     * @param parent parent component for the component being finalized
+     */
+    public void performComponentRender(Component component) {
+        Environment env = getFreeMarkerEnvironment();
+        importFreeMarkerTemplate(component);
+        freeMarkerWriter.getBuffer().setLength(0);
+        
+        try {
+            FreeMarkerInlineRenderUtils.renderTemplate(env, component,
+                    null, false, false, Collections.<String, TemplateModel> emptyMap());
+        } catch (TemplateException e) {
+            throw new IllegalStateException("Error rendering component " + component.getId(), e);
+        } catch (IOException e) {
+            throw new IllegalStateException("Error rendering component " + component.getId(), e);
+        }
 
+        component.setSelfRendered(true);
+        component.setRenderedHtmlOutput(freeMarkerWriter.toString());
+    }
+    
     /**
      * Checks against the visited ids to see if the id is duplicate, if so it is adjusted to make an
      * unique id by appending an unique sequence number

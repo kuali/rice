@@ -324,7 +324,11 @@ public class LookupView extends FormView {
                 expressionEvaluator.evaluatePropertyExpression(view, criteriaField.getContext(), criteriaField,
                         "required", true);
                 rangeFieldGroup.setRequired(criteriaField.getRequired());
-                ((LookupInputField) criteriaField).getFieldLabel().setRequiredMessage(new Message());
+
+                // need to explicitly set "mutable" state on Message instance or we'll blow up later in the lifecycle
+                Message requiredMessage = new Message();
+                requiredMessage.allowModification();
+                ((LookupInputField) criteriaField).getFieldLabel().setRequiredMessage(requiredMessage);
 
                 // Evaluate and set the render property
                 expressionEvaluator.evaluatePropertyExpression(view, criteriaField.getContext(), criteriaField,

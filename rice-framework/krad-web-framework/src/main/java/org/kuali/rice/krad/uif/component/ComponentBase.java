@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -39,7 +38,7 @@ import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.LifecycleAwareList;
 import org.kuali.rice.krad.uif.util.LifecycleAwareMap;
-import org.kuali.rice.krad.uif.util.ProcessLogger;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
@@ -62,8 +61,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     private static final long serialVersionUID = -4449335748129894350L;
     
-    private static final Logger LOG = Logger.getLogger(ComponentBase.class);
-
     /**
      * Track mutability status.
      */
@@ -208,54 +205,40 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
     
     /**
-     * Check for mutability on the component before modifying state.
-     * 
-     * @param legalDuringInitialization True if the operation is legal during view configuration,
-     *        false if the operation is part of the component lifecycle.
-     * @throws IllegalStateException If the component is not mutable.
+     * @see LifecycleElement#checkMutable(boolean)
      */
     public void checkMutable(boolean legalDuringInitialization) {
-        try {
-            if (!ViewLifecycle.isActive()) {
-                throw new IllegalStateException("View context is not active");
-            }
+        if (!ViewLifecycle.isActive()) {
+            ViewLifecycle.reportIllegalState(
+                    "View context is not active, attempting to change component "
+                            + getClass() + " " + getId());
+            return;
+        }
 
-            if (ViewLifecycle.isCopyActive()) {
-                return;
-            }
+        if (ViewLifecycle.isCopyActive()) {
+            return;
+        }
 
-            if (ViewLifecycle.isLifecycleActive() && !(mutable && ViewLifecycle.isMutable(this))) {
-                throw new IllegalStateException(
-                        "Component " + getId() + " is immutable, use copy() to get a mutable instance");
-            }
+        if (ViewLifecycle.isLifecycleActive() && !(mutable && ViewLifecycle.isMutable(this))) {
+            ViewLifecycle.reportIllegalState("Component " + getClass() + " " + getId()
+                    + " is immutable, use copy() to get a mutable instance");
+            return;
+        }
 
-            if (ViewLifecycle.isInitializing() && !legalDuringInitialization) {
-                throw new IllegalStateException("View has not been fully initialized");
-            }
-        } catch (IllegalStateException e) {
-            
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Attempted to change an immutable component " + getClass() + " " + getId(), e);
-            }
-
-            throw e;
+        if (ViewLifecycle.isInitializing() && !legalDuringInitialization) {
+            ViewLifecycle.reportIllegalState(
+                    "View has not been fully initialized, attempting to change component "
+                    + getClass() + " " + getId());
+            return;
         }
     }
 
     /**
-     * Determine if this layout manager is mutable.
-     * 
-     * <p>
-     * Most layout managers are immutable, and all are immutable expect during initialization
-     * and the during the view lifecycle. Those that have been copied within the view lifecycle,
-     * however, may be modified during the same lifecycle.
-     * </p>
-     * 
-     * @return True if the component is mutable.
+     * @see LifecycleElement#isMutable(boolean)
      */
-    public boolean isMutable(boolean legalBeforeConfiguration) {
+    public boolean isMutable(boolean legalDuringInitialization) {
         return (ViewLifecycle.isLifecycleActive() && mutable && ViewLifecycle.isMutable(this)) ||
-                (ViewLifecycle.isInitializing() && legalBeforeConfiguration);
+                (ViewLifecycle.isInitializing() && legalDuringInitialization);
     }
     
     /**

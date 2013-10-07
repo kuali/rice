@@ -52,10 +52,9 @@ public abstract class AbstractViewLifecyclePhase implements ViewLifecyclePhase {
         this.component = component;
 
         if (component.getViewStatus().equals(getEndViewStatus())) {
-            IllegalArgumentException wrongStatusWarning =
-                    new IllegalArgumentException("Component is already in the expected end status " + getEndViewStatus()
-                    + " before this phase " + component.getClass() + " " + component.getId());
-            LOG.warn(wrongStatusWarning.getMessage(), wrongStatusWarning);
+            ViewLifecycle.reportIllegalState(
+                    "Component is already in the expected end status " + getEndViewStatus()
+                            + " before this phase " + component.getClass() + " " + component.getId());
         }
 
         this.model = model;
@@ -179,11 +178,10 @@ public abstract class AbstractViewLifecyclePhase implements ViewLifecyclePhase {
             viewLifecycle.setActivePhase(this);
 
             if (!component.getViewStatus().equals(getStartViewStatus())) {
-                IllegalStateException wrongStatusWarning =
-                        new IllegalStateException("Component is not in the expected status " + getStartViewStatus()
-                                + " at the start of this phase, found " + component.getClass() + " " + component.getId() + " "
-                                + component.getViewStatus());
-                LOG.warn(wrongStatusWarning.getMessage(), wrongStatusWarning);
+                ViewLifecycle.reportIllegalState(
+                        "Component is not in the expected status " + getStartViewStatus()
+                                + " at the start of this phase, found " + component.getClass() + " "
+                                + component.getId() + " " + component.getViewStatus());
             }
 
             performLifecyclePhase();

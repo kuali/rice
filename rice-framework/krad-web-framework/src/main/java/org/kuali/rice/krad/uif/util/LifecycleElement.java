@@ -23,10 +23,10 @@ package org.kuali.rice.krad.uif.util;
 public interface LifecycleElement {
 
     /**
-     * Determine if this layout manager is mutable.
+     * Determine if this lifecycle element is mutable.
      * 
      * <p>
-     * Most layout managers are immutable, and all are immutable expect during initialization
+     * Most lifecycle element are immutable, and all are immutable expect during initialization
      * and the during the view lifecycle. Those that have been copied within the view lifecycle,
      * however, may be modified during the same lifecycle.
      * </p>
@@ -36,11 +36,13 @@ public interface LifecycleElement {
     boolean isMutable(boolean legalBeforeConfiguration);
     
     /**
-     * Check for mutability on the component before modifying state.
+     * Check for mutability on the element before modifying state.
      * 
-     * @param legalDuringInitialization True if the operation is legal during view configuration,
-     *        false if the operation is part of the component lifecycle.
-     * @throws IllegalStateException If the component is not mutable.
+     * @param legalDuringInitialization True if the operation is legal during view initialization,
+     *        false if the operation is only allowed during the component lifecycle.
+     * @throws IllegalStateException If the component is not mutable and the lifecycle is operating
+     *         in strict mode.
+     * @see ViewLifecycle#isStrict()
      */
     void checkMutable(boolean legalDuringInitialization);
 

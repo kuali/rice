@@ -95,7 +95,7 @@ public class ViewHelperServiceTest extends ProcessLoggingUnitTest {
         
         ViewCleaner.cleanView(dummyLogin);
     }
-    
+
     @Test
     public void testKitchenSinkView() throws Throwable {
         ViewService viewService = KRADServiceLocatorWeb.getViewService();

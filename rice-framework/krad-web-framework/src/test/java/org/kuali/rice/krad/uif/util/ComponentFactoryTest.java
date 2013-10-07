@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.util;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.util.concurrent.Callable;
 
@@ -64,6 +65,16 @@ public class ComponentFactoryTest extends ProcessLoggingUnitTest {
             }
         });
         assertEquals("uif-formView", inquiryView.getCssClasses().get(0));
+    }
+
+    @Test
+    public void testStrict() throws Throwable {
+        try {
+            ComponentFactory.getMessage();
+            fail("Should have thrown IllegalStateException");
+        } catch (IllegalStateException e) {
+            // OK
+        }
     }
 
 }

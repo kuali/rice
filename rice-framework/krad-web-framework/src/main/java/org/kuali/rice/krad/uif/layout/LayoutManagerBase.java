@@ -31,6 +31,7 @@ import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.LifecycleAwareList;
 import org.kuali.rice.krad.uif.util.LifecycleAwareMap;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.View;
 
 /**
@@ -72,35 +73,42 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     }
 
     /**
-     * Check for mutability on the component before modifying state.
-     * 
-     * @param legalDuringInitialization True if the operation is legal during view configuration,
-     *        false if the operation is part of the component lifecycle.
-     * @throws IllegalStateException If the component is not mutable.
+     * @see LifecycleElement#checkMutable(boolean)
      */
     public void checkMutable(boolean legalDuringInitialization) {
         if (!ViewLifecycle.isActive()) {
-            throw new IllegalStateException("View context is not active");
+            ViewLifecycle.reportIllegalState(
+                    "View context is not active, attempting to change layout manager "
+                            + getClass() + " " + getId());
+            return;
         }
-        
+
+        if (ViewLifecycle.isCopyActive()) {
+            return;
+        }
+
         if (ViewLifecycle.isLifecycleActive() && !(mutable && ViewLifecycle.isMutable(this))) {
-            throw new IllegalStateException(
-                    "Component " + getId() + " is immutable, use copy() to get a mutable instance");
+            ViewLifecycle.reportIllegalState("Layout manager " + getClass() + " " + getId()
+                    + " is immutable, use copy() to get a mutable instance");
+            return;
         }
-        
+
         if (ViewLifecycle.isInitializing() && !legalDuringInitialization) {
-            throw new IllegalStateException("View has not been fully initialized");
+            ViewLifecycle.reportIllegalState(
+                    "View has not been fully initialized, attempting to change layout manager "
+                    + getClass() + " " + getId());
+            return;
         }
     }
 
     /**
-     * @return the mutable
+     * @see LifecycleElement#isMutable(boolean)
      */
     public boolean isMutable(boolean legalDuringInitialization) {
         return (ViewLifecycle.isLifecycleActive() && mutable && ViewLifecycle.isMutable(this)) ||
                 (ViewLifecycle.isInitializing() && legalDuringInitialization);
     }
-
+    
     /**
      * Mark this layout manager as mutable within the current view lifecycle.
      * 

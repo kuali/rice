@@ -952,7 +952,7 @@ public class View extends ContainerBase {
      */
     public String getCurrentPageId() {
         if (!isFinal()) {
-            checkMutable(false);
+            checkMutable(true);
         }
         
         // default current page if not set

@@ -40,6 +40,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.data.DataObjectUtils;
@@ -119,6 +120,8 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
     public static enum LifecycleEvent {
         LIFECYCLE_COMPLETE
     }
+
+    private static Boolean strict;
 
     /**
      * Registration of an event.
@@ -203,6 +206,52 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
          */
         public void setEventListener(LifecycleEventListener eventListener) {
             this.eventListener = eventListener;
+        }
+    }
+    
+    /**
+     * Determine whether or not the lifecycle is operating in strict mode. In general, strict mode
+     * is preferred and should be used in development. However, due to it's recent addition several
+     * applications may not operate in a stable manner in strict mode so its use is optional. Once
+     * strictness violations have been resolved, then strict mode may be enabled to ensure that
+     * further violations are not introduced.
+     * 
+     * <p>
+     * This value is controlled by the configuration parameter
+     * &quot;krad.uif.lifecycle.strict&quot;. In Rice 2.4, the view lifecycle is *not* strict by
+     * default.
+     * </p>
+     * 
+     * @return True if exceptions will be thrown due to strictness violations, false if a warning
+     *         should be logged instead.
+     */
+    public static boolean isStrict() {
+        if (strict == null) {
+            strict = ConfigContext.getCurrentContextConfig().getBooleanProperty(
+                    KRADConstants.ConfigParameters.KRAD_STRICT_LIFECYCLE, false);
+        }
+
+        return strict;
+    }
+
+    /**
+     * Report an illegal state in the view lifecycle.
+     * 
+     * <p>
+     * When {@link #isStrict()} returns true, {@link IllegalStateException} will be thrown.
+     * Otherwise, a warning will be logged.
+     * </p>
+     * 
+     * @param message The message describing the illegal state.
+     * @throws IllegalStateException If strict mode is enabled.
+     */
+    public static void reportIllegalState(String message) {
+        IllegalStateException illegalState = new IllegalStateException(message);
+
+        if (ViewLifecycle.isStrict()) {
+            throw illegalState;
+        } else {
+            LOG.warn(illegalState.getMessage(), illegalState);
         }
     }
 

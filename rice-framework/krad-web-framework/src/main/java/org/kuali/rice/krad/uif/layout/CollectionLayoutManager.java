@@ -17,10 +17,10 @@ package org.kuali.rice.krad.uif.layout;
 
 import java.util.List;
 
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
-import org.kuali.rice.krad.uif.element.Action;
-import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.field.Field;
 
 /**
  * Layout manager implementations that work with a collection (such as a table
@@ -78,7 +78,7 @@ public interface CollectionLayoutManager extends LayoutManager {
 	 *            the add line
 	 */
 	public void buildLine(Object model, CollectionGroup collectionGroup, List<Field> lineFields,
-			List<FieldGroup> subCollectionFields, String bindingPath, List<Action> actions, String idSuffix,
+			List<FieldGroup> subCollectionFields, String bindingPath, List<? extends Component> actions, String idSuffix,
 			Object currentLine, int lineIndex);
 
 	/**

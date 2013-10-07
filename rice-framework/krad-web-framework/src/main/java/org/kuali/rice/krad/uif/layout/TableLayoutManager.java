@@ -520,7 +520,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *      int)
      */
     public void buildLine(Object model, CollectionGroup collectionGroup, List<Field> lineFields,
-            List<FieldGroup> subCollectionFields, String bindingPath, List<Action> actions, String idSuffix,
+            List<FieldGroup> subCollectionFields, String bindingPath, List<? extends Component> actions, String idSuffix,
             Object currentLine, int lineIndex) {
         
         ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
@@ -830,7 +830,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * @param actions
      */
     private void addActionColumn(String idSuffix, Object currentLine, int lineIndex, int rowSpan,
-            List<Action> actions) {
+            List<? extends Component> actions) {
         FieldGroup lineActionsField = ComponentUtils.copy(getActionFieldPrototype(), idSuffix);
 
         ComponentUtils.updateContextForLine(lineActionsField, currentLine, lineIndex, idSuffix);

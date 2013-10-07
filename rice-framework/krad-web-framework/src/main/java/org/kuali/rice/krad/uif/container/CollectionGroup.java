@@ -118,7 +118,7 @@ public class CollectionGroup extends Group implements DataBinding {
     private List<Action> addLineActions;
 
     private boolean renderLineActions;
-    private List<Action> lineActions;
+    private List<? extends Component> lineActions;
 
     private boolean includeLineSelectionField;
     private String lineSelectPropertyName;
@@ -484,7 +484,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * @return line action fields
      */
     @BeanTagAttribute(name = "lineActions", type = BeanTagAttribute.AttributeType.LISTBEAN)
-    public List<Action> getLineActions() {
+    public List<? extends Component> getLineActions() {
         return this.lineActions;
     }
 
@@ -493,7 +493,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @param lineActions
      */
-    public void setLineActions(List<Action> lineActions) {
+    public void setLineActions(List<? extends Component> lineActions) {
         this.lineActions = lineActions;
     }
 
@@ -1373,7 +1373,7 @@ public class CollectionGroup extends Group implements DataBinding {
         collectionGroupCopy.setDisplayLength(this.displayLength);
 
         if (lineActions != null && !lineActions.isEmpty()) {
-            List<Action> lineActionsCopy = ComponentUtils.copy(lineActions);
+            List<? extends Component> lineActionsCopy = ComponentUtils.copy(lineActions);
             collectionGroupCopy.setLineActions(lineActionsCopy);
         }
         

@@ -160,7 +160,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      *      String, Object, int)
      */
     public void buildLine(Object model, CollectionGroup collectionGroup, List<Field> lineFields,
-            List<FieldGroup> subCollectionFields, String bindingPath, List<Action> actions, String idSuffix,
+            List<FieldGroup> subCollectionFields, String bindingPath, List<? extends Component> actions, String idSuffix,
             Object currentLine, int lineIndex) {
         boolean isAddLine = lineIndex == -1;
 

@@ -201,7 +201,7 @@ public class CollectionGroupBuilder implements Serializable {
                 bindingPathPrefix = collectionGroup.getBindingInfo().getBindByNamePrefix() + "." + bindingPathPrefix;
             }
 
-            List<Action> lineActions = initializeLineActions(collectionGroup.getLineActions(), view, model,
+            List<? extends Component> lineActions = initializeLineActions(collectionGroup.getLineActions(), view, model,
                     collectionGroup, currentLine, indexedElement.index);
 
             buildLine(view, model, collectionGroup, bindingPathPrefix, lineActions, false, currentLine,
@@ -288,7 +288,7 @@ public class CollectionGroupBuilder implements Serializable {
      * @param model top level object containing the data
      * @param collectionGroup collection group component for the collection
      * @param bindingPath binding path for the line fields (if DataBinding)
-     * @param actions List of actions to set in the lines action column
+     * @param actionList List of actions to set in the lines action column
      * @param bindToForm whether the bindToForm property on the items bindingInfo
      * should be set to true (needed for add line)
      * @param currentLine object instance for the current line, or null if add line
@@ -296,7 +296,7 @@ public class CollectionGroupBuilder implements Serializable {
      * building the add line
      */
     protected void buildLine(View view, Object model, CollectionGroup collectionGroup, String bindingPath,
-            List<Action> actions, boolean bindToForm, Object currentLine, int lineIndex) {
+            List<? extends Component> actionList, boolean bindToForm, Object currentLine, int lineIndex) {
         CollectionLayoutManager layoutManager = (CollectionLayoutManager) collectionGroup.getLayoutManager();
 
         // copy group items for new line
@@ -341,11 +341,11 @@ public class CollectionGroupBuilder implements Serializable {
         // update contexts before add line fields are added to the index below
         ComponentUtils.updateContextsForLine(lineFields, currentLine, lineIndex, lineSuffix);
 
+        List<Action> actions = ComponentUtils.getComponentsOfTypeDeep(actionList, Action.class);
         for (Action action : actions) {
             if (action != null && StringUtils.isNotBlank(action.getFocusOnIdAfterSubmit()) &&
-                    action.getFocusOnIdAfterSubmit().equalsIgnoreCase(UifConstants.Order.LINE_FIRST.toString()) && (
-                    lineFields.size()
-                            > 0)) {
+                    action.getFocusOnIdAfterSubmit().equalsIgnoreCase(UifConstants.Order.LINE_FIRST.toString()) &&
+                    (lineFields.size() > 0)) {
                 action.setFocusOnIdAfterSubmit(lineFields.get(0).getId() + UifConstants.IdSuffixes.CONTROL);
             }
         }
@@ -619,11 +619,11 @@ public class CollectionGroupBuilder implements Serializable {
      * @param readOnlyLine flag indicating whether the line has been marked as read only (which will force the fields
      * to be read only)
      * @param lineFields list of fields instances for the line
-     * @param actions list of action field instances for the line
+     * @param actionList list of action field instances for the line
      */
     protected void applyLineFieldAuthorizationAndPresentationLogic(View view, ViewModel model,
             CollectionGroup collectionGroup, Object line, boolean readOnlyLine, List<Field> lineFields,
-            List<Action> actions) {
+            List<? extends Component> actionList) {
         ViewPresentationController presentationController = view.getPresentationController();
         ViewAuthorizer authorizer = view.getAuthorizer();
 
@@ -687,6 +687,7 @@ public class CollectionGroupBuilder implements Serializable {
         }
 
         // check auth on line actions
+        List<Action> actions = ComponentUtils.getComponentsOfTypeDeep(actionList, Action.class);
         for (Action action : actions) {
             if (action.isRender()) {
                 boolean canPerformAction = authorizer.canPerformLineAction(view, model, collectionGroup,
@@ -759,14 +760,16 @@ public class CollectionGroupBuilder implements Serializable {
      * @param collectionLine object instance for the current line
      * @param lineIndex index of the line the actions should apply to
      */
-    protected List<Action> initializeLineActions(List<Action> lineActions, View view, Object model,
+    protected List<? extends Component> initializeLineActions(List<? extends Component> lineActions, View view, Object model,
             CollectionGroup collectionGroup, Object collectionLine, int lineIndex) {
         String lineSuffix = UifConstants.IdSuffixes.LINE + Integer.toString(lineIndex);
         if (StringUtils.isNotBlank(collectionGroup.getSubCollectionSuffix())) {
             lineSuffix = collectionGroup.getSubCollectionSuffix() + lineSuffix;
         }
-        List<Action> actions = ComponentUtils.copyComponentList(lineActions, lineSuffix);
+        List<? extends Component> actionComponents = ComponentUtils.copyComponentList(lineActions, lineSuffix);
 
+        // Initialize Action related properties for all nested actions in the list of components
+        List<Action> actions = ComponentUtils.getComponentsOfTypeDeep(actionComponents, Action.class);
         for (Action action : actions) {
             if (ComponentUtils.containsPropertyExpression(action, UifPropertyPaths.ACTION_PARAMETERS, true)) {
                 // need to update the actions expressions so our settings do not get overridden
@@ -807,9 +810,9 @@ public class CollectionGroupBuilder implements Serializable {
             }
         }
 
-        ComponentUtils.updateContextsForLine(actions, collectionLine, lineIndex, lineSuffix);
+        ComponentUtils.updateContextsForLine(actionComponents, collectionLine, lineIndex, lineSuffix);
 
-        return actions;
+        return actionComponents;
     }
 
     /**

@@ -165,7 +165,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         CollectionGroup collectionGroup = (CollectionGroup) container;
 
         this.setupDetails(collectionGroup);
-        this.setupGrouping(collectionGroup);
+        this.setupGrouping(model, collectionGroup);
 
         if (collectionGroup.isAddViaLightBox()) {
             setSeparateAddLine(true);
@@ -177,7 +177,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
         if (generateAutoSequence && !(getSequenceFieldPrototype() instanceof MessageField)) {
             sequenceFieldPrototype = ComponentFactory.getMessageField();
-            ViewLifecycle.getActiveLifecycle().getView().assignComponentIds(getSequenceFieldPrototype());
+            ViewLifecycle.getActiveLifecycle().getView().assignComponentIds(sequenceFieldPrototype);
         }
     }
 
@@ -274,7 +274,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * @param collectionGroup collection group for this layout
      * @param view the view
      */
-    private void setupGrouping(CollectionGroup collectionGroup) {
+    private void setupGrouping(Object model, CollectionGroup collectionGroup) {
         //Grouping setup
         String groupingTitleExpression = "";
         if (StringUtils.isNotBlank(this.getPropertyExpression(UifPropertyPaths.GROUPING_TITLE))) {
@@ -301,7 +301,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             groupingMessageField.addDataAttribute(UifConstants.DataAttributes.ROLE,
                     UifConstants.RoleTypes.ROW_GROUPING);
 
-            ViewLifecycle.getActiveLifecycle().getView().assignComponentIds(groupingMessageField);
+            ViewLifecycle.getActiveLifecycle().spawnSubLifecyle(model, groupingMessageField, collectionGroup,
+                    null, UifConstants.ViewPhases.INITIALIZE);
 
             List<Component> theItems = new ArrayList<Component>();
             theItems.add(groupingMessageField);
@@ -518,18 +519,21 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *      java.util.List, java.lang.String, java.util.List, java.lang.String, java.lang.Object,
      *      int)
      */
-    public void buildLine(View view, Object model, CollectionGroup collectionGroup, List<Field> lineFields,
+    public void buildLine(Object model, CollectionGroup collectionGroup, List<Field> lineFields,
             List<FieldGroup> subCollectionFields, String bindingPath, List<Action> actions, String idSuffix,
             Object currentLine, int lineIndex) {
         
         ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
+        View view = viewLifecycle.getView();
 
         // since expressions are not evaluated on child components yet, we need to evaluate any properties
         // we are going to read for building the table
         ExpressionEvaluator expressionEvaluator = viewLifecycle.getHelper().getExpressionEvaluator();
         for (Field lineField : lineFields) {
             lineField.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, collectionGroup);
-            lineField.pushAllToContext(viewLifecycle.getCommonContext(lineField));
+            lineField.pushAllToContext(view.getContext());
+            lineField.pushObjectToContext(UifConstants.ContextVariableNames.THEME_IMAGES, view.getTheme().getImageDirectory());
+            lineField.pushObjectToContext(UifConstants.ContextVariableNames.COMPONENT, lineField);
 
             expressionEvaluator.evaluatePropertyExpression(view, lineField.getContext(), lineField,
                     UifPropertyPaths.ROW_SPAN, true);
@@ -674,9 +678,11 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                 }
             } else {
                 sequenceField = ComponentFactory.getMessageField();
-                view.assignComponentIds(sequenceField);
+                viewLifecycle.spawnSubLifecyle(model, sequenceField, collectionGroup,
+                        null, UifConstants.ViewPhases.INITIALIZE);
 
                 Message sequenceMessage = ComponentUtils.copy(collectionGroup.getAddLineLabel(), idSuffix);
+                sequenceMessage.setViewStatus(UifConstants.ViewStatus.CREATED);
                 ((MessageField) sequenceField).setMessage(sequenceMessage);
 
                 // adjusting add line label to match sequence prototype cells attributes

@@ -23,8 +23,10 @@ import java.lang.annotation.Annotation;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -34,22 +36,22 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.data.DataObjectUtils;
+import org.kuali.rice.krad.datadictionary.validator.ValidationController;
 import org.kuali.rice.krad.messages.MessageService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
-import org.kuali.rice.krad.uif.component.BindingInfo;
-import org.kuali.rice.krad.uif.component.ClientSideState;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.component.RequestParameter;
@@ -57,14 +59,11 @@ import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.container.LightTable;
-import org.kuali.rice.krad.uif.element.Action;
-import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.freemarker.FreeMarkerInlineRenderBootstrap;
 import org.kuali.rice.krad.uif.freemarker.FreeMarkerInlineRenderUtils;
-import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.BooleanMap;
@@ -80,7 +79,6 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewAuthorizer;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.view.ViewPresentationController;
-import org.kuali.rice.krad.uif.widget.Widget;
 import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.GrowlMessage;
@@ -89,7 +87,6 @@ import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
 import org.kuali.rice.krad.web.form.UifFormBase;
-import org.springframework.util.MethodInvoker;
 
 import freemarker.cache.TemplateCache;
 import freemarker.core.Environment;
@@ -248,7 +245,7 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
      * The FreeMarker environment to use for rendering.
      */
     private Environment freeMarkerEnvironment;
-    
+
     /**
      * Set of imported FreeMarker templates.
      */
@@ -258,6 +255,16 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
      * The FreeMarker writer, for capturing rendered output.
      */
     private StringWriter freeMarkerWriter;
+
+    /**
+     * The phase currently active on this lifecycle.
+     */
+    private ViewLifecyclePhase activePhase;
+
+    /**
+     * Pending lifecycle phases.
+     */
+    private final Deque<ViewLifecyclePhase> pendingPhases;
 
     /**
      * Private constructor, for spawning an initialization context.
@@ -270,6 +277,7 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
         this.eventRegistrations = null;
         this.mutableIdentities = null;
         this.copy = false;
+        this.pendingPhases = null;
     }
 
     /**
@@ -283,16 +291,17 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
         this.eventRegistrations = new ArrayList<EventRegistration>();
         this.mutableIdentities = new HashSet<Long>();
         this.copy = copy;
+        this.pendingPhases = new LinkedList<ViewLifecyclePhase>();
     }
 
     private void importFreeMarkerTemplate(Component component) {
         String templateName = component.getTemplateName();
-        
+
         if (templateName == null || !importedFreeMarkerTemplates.add(templateName)) {
             // No template for component, or already imported in this lifecycle.
             return;
         }
-        
+
         try {
             Environment env = getFreeMarkerEnvironment();
             String templateNameString = TemplateCache.getFullTemplatePath(env, "", component.getTemplate());
@@ -335,7 +344,54 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
 
         return freeMarkerEnvironment;
     }
-    
+
+    /**
+     * Report a phase as active on this lifecycle thread.
+     * 
+     * <p>
+     * Since each {@link ViewLifecycle} instance is specific to a thread, only one phase may be
+     * active at a time.
+     * </p>
+     * 
+     * @param phase The phase to report as activate. Set as null to when the phase has been
+     *        completed to indicate that no phase is active.
+     */
+    void setActivePhase(ViewLifecyclePhase phase) {
+        if (activePhase != null && phase != null) {
+            throw new IllegalStateException("Another phase is already active on this lifecycle thread " + activePhase);
+        }
+
+        activePhase = phase;
+    }
+
+    /**
+     * Get the active phase on this lifecycle.
+     * 
+     * @return The active phase on this lifecycle, or null if no phase is currently active.
+     */
+    public ViewLifecyclePhase getActivePhase() {
+        return activePhase;
+    }
+
+    /**
+     * Push a pending phase, to be executed directly after the completion of the active phase.
+     * 
+     * @param pendingPhase The pending phase.
+     */
+    public void pushPendingPhase(ViewLifecyclePhase pendingPhase) {
+        pendingPhases.push(pendingPhase);
+    }
+
+    /**
+     * Offer a pending phase, to be executed after the completion of the active phase and all
+     * currently pending phases.
+     * 
+     * @param pendingPhase The pending phase.
+     */
+    public void offerPendingPhase(ViewLifecyclePhase pendingPhase) {
+        pendingPhases.offer(pendingPhase);
+    }
+
     /**
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#applyDefaultValuesForCollectionLine(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object, org.kuali.rice.krad.uif.container.CollectionGroup, java.lang.Object)
@@ -354,27 +410,6 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
 
             populateDefaultValueForField(view, line, dataField, bindingPath);
         }
-    }
-
-    /**
-     * Gets global objects for the context map and pushes them to the context for the component
-     * 
-     * @param view view instance for component
-     * @param component component instance to push context to
-     */
-    public Map<String, Object> getCommonContext(Component component) {
-        Map<String, Object> context = new HashMap<String, Object>();
-
-        View view = ViewLifecycle.getActiveLifecycle().getView();
-        Map<String, Object> viewContext = view.getContext();
-        if (viewContext != null) {
-            context.putAll(view.getContext());
-        }
-
-        context.put(UifConstants.ContextVariableNames.THEME_IMAGES, view.getTheme().getImageDirectory());
-        context.put(UifConstants.ContextVariableNames.COMPONENT, component);
-
-        return context;
     }
 
     /**
@@ -406,7 +441,8 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
     /**
      * Get the view active within this context.
      * 
-     * <p>After the lifecycle has completed, this view becomes the resulting view.
+     * <p>
+     * After the lifecycle has completed, this view becomes the resulting view.
      * 
      * @see ViewLifecycleResult#getRefreshComponent()
      */
@@ -487,53 +523,10 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
 
         ProcessLogger.trace("apply-comp-model:" + view.getId());
 
-        Map<String, Integer> visitedIds = new HashMap<String, Integer>();
-        performComponentApplyModel(view, view, model, visitedIds);
+        offerPendingPhase(new ApplyModelComponentPhase(view, model));
+        performPendingPhases();
 
         ProcessLogger.trace("apply-model-end:" + view.getId());
-    }
-
-    /**
-     * Performs the Initialization phase for the given <code>Component</code> by these steps:
-     * 
-     * <ul>
-     * <li>For <code>DataField</code> instances, set defaults from the data dictionary.</li>
-     * <li>Invoke the initialize method on the component. Here the component can setup defaults and
-     * do other initialization that is specific to that component.</li>
-     * <li>Invoke any configured <code>ComponentModifier</code> instances for the component.</li>
-     * <li>Call the component to get the List of components that are nested within and recursively
-     * call this method to initialize those components.</li>
-     * <li>Call custom initialize hook for service overrides</li>
-     * </ul>
-     * 
-     * <p>
-     * Note the order various initialize points are called, this can sometimes be an important
-     * factor to consider when initializing a component
-     * </p>
-     * 
-     * <p>
-     * Can be called for component instances constructed via code or prototypes to initialize the
-     * constructed component
-     * </p>
-     * 
-     * @param model object instance containing the view data
-     * @param component component instance that should be initialized
-     * @throws RiceRuntimeException if the component id or factoryId is not specified
-     * @see org.kuali.rice.krad.uif.service.ViewHelperService#performComponentInitialization(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
-     */
-    public void performComponentInitialization(Object model, Component component) {
-        InitializeComponentPhase top = new InitializeComponentPhase(component, model);
-        Queue<ViewLifecyclePhase> initPhaseQueue = new LinkedList<ViewLifecyclePhase>();
-        initPhaseQueue.offer(top);
-
-        while (!initPhaseQueue.isEmpty()) {
-            ViewLifecyclePhase initialize = initPhaseQueue.poll();
-            initialize.run();
-            initPhaseQueue.addAll(initialize.getSuccessors());
-        }
-        
-        assert top.isComplete();
     }
 
     /**
@@ -557,7 +550,8 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
         String growlScript = buildGrowlScript();
         ((ViewModel) model).setGrowlScript(growlScript);
 
-        performComponentFinalize(view, view, model, null);
+        offerPendingPhase(new FinalizeComponentPhase(view, model));
+        performPendingPhases();
 
         String clientStateScript = buildClientSideStateScript(model);
         view.setPreLoadScript(ScriptUtils.appendScript(view.getPreLoadScript(), clientStateScript));
@@ -583,13 +577,15 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
      */
     public void performInitialization(Object model) {
         helper.performCustomViewInitialization(model);
-        
+
         view.assignComponentIds(view);
 
         // increment the id sequence so components added later to the static view components
         // will not conflict with components on the page when navigation happens
         view.setIdSequence(100000);
-        performComponentInitialization(model, view);
+
+        offerPendingPhase(new InitializeComponentPhase(view, model));
+        performPendingPhases();
 
         // initialize the expression evaluator impl
         helper.getExpressionEvaluator().initializeEvaluationContext(model);
@@ -609,14 +605,13 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
      * 
      * <p>
      * The <code>View</code> instance is inspected for fields that have the
-     * <code>RequestParameter</code> annotation and if corresponding parameters
-     * are found in the request parameter map, the request value is used to set
-     * the view property. The Map of parameter name/values that match are placed
-     * in the view so they can be later retrieved to rebuild the view. Custom
-     * <code>ViewServiceHelper</code> implementations can add additional
+     * <code>RequestParameter</code> annotation and if corresponding parameters are found in the
+     * request parameter map, the request value is used to set the view property. The Map of
+     * parameter name/values that match are placed in the view so they can be later retrieved to
+     * rebuild the view. Custom <code>ViewServiceHelper</code> implementations can add additional
      * parameter key/value pairs to the returned map if necessary.
      * </p>
-     *
+     * 
      * <p>
      * For each field found, if there is a corresponding key/value pair in the request parameters,
      * the value is used to populate the field. In addition, any conditional properties of
@@ -691,12 +686,12 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
 
     /**
      * Update the reference objects listed in referencesToRefresh of the model
-     *
+     * 
      * <p>
      * The the individual references in the referencesToRefresh string are separated by
      * KRADConstants.REFERENCES_TO_REFRESH_SEPARATOR).
      * </p>
-     *
+     * 
      * @param model top level object containing the data
      * @param referencesToRefresh list of references to refresh (
      */
@@ -765,11 +760,12 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
      */
     public void spawnSubLifecyle(Object model, Component component, Component parent,
             String startPhase, String endPhase) {
-        View view = ViewLifecycle.getActiveLifecycle().getView();
-
         if (component == null) {
             return;
         }
+
+        ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
+        View view = viewLifecycle.getView();
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("Spawning sub-lifecycle for component: " + component.getId());
@@ -793,32 +789,29 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
             throw new RuntimeException("Invalid end phase given: " + endPhase);
         }
 
-        if (UifConstants.ViewPhases.INITIALIZE.equals(startPhase)) {
-            performComponentInitialization(model, component);
-            view.getViewIndex().indexComponent(component);
+        // Push sub-lifecycle phases in reverse order.  These will be processed immediately after
+        // the active phase ends, starting with the last phase pushed.
 
-            startPhase = UifConstants.ViewPhases.APPLY_MODEL;
+        if (UifConstants.ViewPhases.FINALIZE.equals(endPhase)) {
+            pushPendingPhase(new FinalizeComponentPhase(component, model, parent));
         }
 
-        if (UifConstants.ViewPhases.INITIALIZE.equals(endPhase)) {
+        if (UifConstants.ViewPhases.FINALIZE.equals(startPhase)) {
             return;
         }
 
-        component.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, parent);
+        if (UifConstants.ViewPhases.FINALIZE.equals(endPhase) ||
+                UifConstants.ViewPhases.APPLY_MODEL.equals(endPhase)) {
+            pushPendingPhase(new ApplyModelComponentPhase(component, model, parent));
+        }
 
         if (UifConstants.ViewPhases.APPLY_MODEL.equals(startPhase)) {
-            performComponentApplyModel(view, component, model, new HashMap<String, Integer>());
-            view.getViewIndex().indexComponent(component);
-        }
-
-        if (UifConstants.ViewPhases.APPLY_MODEL.equals(endPhase)) {
             return;
         }
 
-        performComponentFinalize(view, component, model, parent);
-        view.getViewIndex().indexComponent(component);
+        pushPendingPhase(new InitializeComponentPhase(component, model));
     }
-    
+
     /**
      * Perform rendering on the given component.
      * 
@@ -831,7 +824,7 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
         Environment env = getFreeMarkerEnvironment();
         importFreeMarkerTemplate(component);
         freeMarkerWriter.getBuffer().setLength(0);
-        
+
         try {
             FreeMarkerInlineRenderUtils.renderTemplate(env, component,
                     null, false, false, Collections.<String, TemplateModel> emptyMap());
@@ -844,208 +837,491 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
         component.setSelfRendered(true);
         component.setRenderedHtmlOutput(freeMarkerWriter.toString());
     }
-    
+
     /**
-     * Checks against the visited ids to see if the id is duplicate, if so it is adjusted to make an
-     * unique id by appending an unique sequence number
+     * Determine the identity of a lifecycle element.
      * 
-     * @param id id to adjust if necessary
-     * @param visitedIds tracks components ids that have been seen for adjusting duplicates
-     * @return original or adjusted id
+     * @param element The lifecycle element.
+     * @return An identifier for the element, unique to its instance.
      */
-    protected String adjustIdIfNecessary(String id, Map<String, Integer> visitedIds) {
-        String adjustedId = id;
-
-        if (visitedIds.containsKey(id)) {
-            Integer nextAdjustSeq = visitedIds.get(id);
-            adjustedId = id + nextAdjustSeq;
-
-            // verify the adjustedId does not already exist
-            while (visitedIds.containsKey(adjustedId)) {
-                nextAdjustSeq = nextAdjustSeq + 1;
-                adjustedId = id + nextAdjustSeq;
-            }
-
-            visitedIds.put(adjustedId, Integer.valueOf(1));
-
-            nextAdjustSeq = nextAdjustSeq + 1;
-            visitedIds.put(id, nextAdjustSeq);
-        } else {
-            visitedIds.put(id, Integer.valueOf(1));
-        }
-
-        return adjustedId;
+    private static long getIdentity(LifecycleElement element) {
+        return System.identityHashCode(element) + (element.getClass().hashCode() >>> 32);
     }
 
     /**
-     * Invokes the view's configured {@link ViewAuthorizer} and {@link ViewPresentationController}
-     * to set state of the component
-     * 
-     * <p>
-     * The following authorization is done here: Fields: edit, view, required, mask, and partial
-     * mask Groups: edit and view Actions: take action
-     * </p>
-     * 
-     * <p>
-     * Note additional checks are also done for fields that are part of a collection group. This
-     * authorization is found in {@link org.kuali.rice.krad.uif.container.CollectionGroupBuilder}
-     * </p>
-     * 
-     * @param view view instance the component belongs to and from which the authorizer and
-     *        presentation controller will be pulled
-     * @param component component instance to authorize
-     * @param model model object containing the data for the view
+     * Encapsulate a new view initialization process on the current thread.
      */
-    protected void applyAuthorizationAndPresentationLogic(View view, Component component, ViewModel model) {
-        ViewPresentationController presentationController = view.getPresentationController();
-        ViewAuthorizer authorizer = view.getAuthorizer();
+    public static <T> T encapsulateInitialization(Callable<T> initializationProcess) {
+        ViewLifecycle oldViewContext = TL_VIEW_LIFECYCLE.get();
 
-        // if user session is not established cannot perform authorization
-        if (GlobalVariables.getUserSession() == null) {
-            return;
-        }
+        try {
+            TL_VIEW_LIFECYCLE.set(new ViewLifecycle());
 
-        Person user = GlobalVariables.getUserSession().getPerson();
+            try {
+                return initializationProcess.call();
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Exception e) {
+                throw new IllegalStateException("Unexpected initialization error", e);
+            }
 
-        // if component not flagged for render no need to check auth and controller logic
-        if (!component.isRender()) {
-            return;
-        }
-
-        // check top level view edit authorization
-        if (component instanceof View) {
-            if (!view.isReadOnly()) {
-                boolean canEditView = authorizer.canEditView(view, model, user);
-                if (canEditView) {
-                    canEditView = presentationController.canEditView(view, model);
-                }
-                view.setReadOnly(!canEditView);
+        } finally {
+            if (oldViewContext == null) {
+                TL_VIEW_LIFECYCLE.remove();
+            } else {
+                TL_VIEW_LIFECYCLE.set(oldViewContext);
             }
         }
+    }
 
-        // perform group authorization and presentation logic
-        else if (component instanceof Group) {
-            Group group = (Group) component;
+    /**
+     * Encapsulate a new view lifecycle process on the current thread.
+     * 
+     * @param lifecycleProcess The lifecycle process to encapsulate.
+     * @return
+     */
+    public static View getMutableCopy(View view) {
+        ViewLifecycle oldViewContext = TL_VIEW_LIFECYCLE.get();
 
-            // if group is not hidden, do authorization for viewing the group
-            if (!group.isHidden()) {
-                boolean canViewGroup = authorizer.canViewGroup(view, model, group, group.getId(), user);
-                if (canViewGroup) {
-                    canViewGroup = presentationController.canViewGroup(view, model, group, group.getId());
-                }
-                group.setHidden(!canViewGroup);
-                group.setRender(canViewGroup);
-            }
+        try {
+            ViewLifecycle copyLifecycle = new ViewLifecycle(view, true);
+            TL_VIEW_LIFECYCLE.set(copyLifecycle);
 
-            // if group is editable, do authorization for editing the group
-            if (!group.isReadOnly()) {
-                boolean canEditGroup = authorizer.canEditGroup(view, model, group, group.getId(), user);
-                if (canEditGroup) {
-                    canEditGroup = presentationController.canEditGroup(view, model, group, group.getId());
-                }
-                group.setReadOnly(!canEditGroup);
+            return view.copy();
+
+        } finally {
+            if (oldViewContext == null) {
+                TL_VIEW_LIFECYCLE.remove();
+            } else {
+                TL_VIEW_LIFECYCLE.set(oldViewContext);
             }
         }
+    }
 
-        // perform field authorization and presentation logic
-        else if (component instanceof Field && !(component instanceof ActionField)) {
-            Field field = (Field) component;
+    /**
+     * Encapsulate a new view lifecycle process on the current thread.
+     * 
+     * @param lifecycleProcess The lifecycle process to encapsulate.
+     * @return
+     */
+    public static ViewLifecycleResult encapsulateLifecycle(View view, Runnable lifecycleProcess) {
+        ViewLifecycle viewLifecycle = TL_VIEW_LIFECYCLE.get();
+        if (viewLifecycle != null) {
+            throw new IllegalStateException("Another view context already active on this thread");
+        }
 
-            String propertyName = null;
-            if (field instanceof DataBinding) {
-                propertyName = ((DataBinding) field).getPropertyName();
-            }
+        try {
+            TL_VIEW_LIFECYCLE.set(viewLifecycle = new ViewLifecycle(view, false));
+            viewLifecycle.view = view;
 
-            // if field is not hidden, do authorization for viewing the field
-            if (!field.isHidden()) {
-                boolean canViewField = authorizer.canViewField(view, model, field, propertyName, user);
-                if (canViewField) {
-                    canViewField = presentationController.canViewField(view, model, field, propertyName);
+            lifecycleProcess.run();
+
+            return viewLifecycle;
+        } finally {
+            TL_VIEW_LIFECYCLE.remove();
+        }
+    }
+
+    /**
+     * Get the view context active on the current thread.
+     * 
+     * @return The view context active on the current thread.
+     */
+    public static ViewLifecycle getActiveLifecycle() {
+        ViewLifecycle viewLifecycle = TL_VIEW_LIFECYCLE.get();
+
+        if (viewLifecycle == null) {
+            throw new IllegalStateException("No view lifecycle is active on this thread");
+        }
+
+        return viewLifecycle;
+    }
+
+    /**
+     * Determine any view context is active on the current thread.
+     * 
+     * @return True if a view context is active on the current thread.
+     */
+    public static boolean isActive() {
+        ViewLifecycle viewLifecycle = TL_VIEW_LIFECYCLE.get();
+        return viewLifecycle != null;
+    }
+
+    /**
+     * Determine if view initialization is active on the current thread.
+     * 
+     * @return True if a view initialization context is active on the current thread.
+     */
+    public static boolean isInitializing() {
+        ViewLifecycle viewLifecycle = TL_VIEW_LIFECYCLE.get();
+        return viewLifecycle != null && viewLifecycle.originalView == null;
+    }
+
+    /**
+     * Determine if a view lifecycle context is active on the current thread.
+     * 
+     * @return True if a view lifecycle context is active on the current thread.
+     */
+    public static boolean isLifecycleActive() {
+        ViewLifecycle viewLifecycle = TL_VIEW_LIFECYCLE.get();
+        return viewLifecycle != null && viewLifecycle.originalView != null;
+    }
+
+    /**
+     * Determine if a lifecycle element is mutable within the current lifecycle.
+     * 
+     * @param element The lifecycle element.
+     * @return True if the lifecycle element has been registered as mutable within the current
+     *         lifecycle.
+     */
+    public static boolean isMutable(LifecycleElement element) {
+        ViewLifecycle viewLifecycle = TL_VIEW_LIFECYCLE.get();
+
+        if (viewLifecycle == null || viewLifecycle.mutableIdentities == null) {
+            throw new IllegalStateException("No view lifecycle is active on this thread");
+        }
+
+        // TODO: Isolate mutability to same lifecycle
+        // viewLifecycle.mutableIdentities.contains(getIdentity(element));
+        return true;
+    }
+
+    /**
+     * Determine if a call to {@link #getMutableCopy(View)} is in progress.
+     * 
+     * @return True if a call to {@link #getMutableCopy(View)} is in progress.
+     */
+    public static boolean isCopyActive() {
+        ViewLifecycle viewLifecycle = TL_VIEW_LIFECYCLE.get();
+        return viewLifecycle != null && viewLifecycle.copy;
+    }
+
+    /**
+     * Executes the view lifecycle on the given <code>View</code> instance which will prepare it for
+     * rendering
+     * 
+     * <p>
+     * Any configuration sent through the options Map is used to initialize the View. This map
+     * contains present options the view is aware of and will typically come from request
+     * parameters. e.g. For maintenance Views there is the maintenance type option (new, edit, copy)
+     * </p>
+     * 
+     * <p>
+     * After view retrieval, applies updates to the view based on the model data which Performs
+     * dynamic generation of fields (such as collection rows), conditional logic, and state updating
+     * (conditional hidden, read-only, required).
+     * </p>
+     * 
+     * @param view - view instance that should be built
+     * @param model - object instance containing the view data
+     * @param parameters - Map of key values pairs that provide configuration for the
+     *        <code>View</code>, this is generally comes from the request and can be the request
+     *        parameter Map itself. Any parameters not valid for the View will be filtered out
+     * 
+     * @return A copy of the view, built for rendering.
+     */
+    public static View buildView(View view, final Object model, final Map<String, String> parameters) {
+        View builtView = ViewLifecycle.encapsulateLifecycle(view, new Runnable() {
+            @Override
+            public void run() {
+                ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
+                View view = viewLifecycle.getView();
+
+                // populate view from request parameters
+                viewLifecycle.populateViewFromRequestParameters(parameters);
+
+                // backup view request parameters on form for recreating lost
+                // views (session timeout)
+                ((UifFormBase) model).setViewRequestParameters(view
+                        .getViewRequestParameters());
+
+                // invoke initialize phase on the views helper service
+                if (LOG.isInfoEnabled()) {
+                    LOG.info("performing initialize phase for view: " + view.getId());
                 }
-                field.setHidden(!canViewField);
-                field.setRender(canViewField);
-            }
+                viewLifecycle.performInitialization(model);
 
-            // if field is not readOnly, check edit authorization
-            if (!field.isReadOnly()) {
-                // check field edit authorization
-                boolean canEditField = authorizer.canEditField(view, model, field, propertyName, user);
-                if (canEditField) {
-                    canEditField = presentationController.canEditField(view, model, field, propertyName);
+                // do indexing                               
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("processing indexing for view: " + view.getId());
                 }
-                field.setReadOnly(!canEditField);
+                view.index();
+
+                // update status on view
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Updating view status to INITIALIZED for view: " + view.getId());
+                }
+                view.setViewStatus(ViewStatus.INITIALIZED);
+
+                // Apply Model Phase
+                if (LOG.isInfoEnabled()) {
+                    LOG.info("performing apply model phase for view: " + view.getId());
+                }
+                viewLifecycle.performApplyModel(model);
+
+                // do indexing
+                if (LOG.isInfoEnabled()) {
+                    LOG.info("reindexing after apply model for view: " + view.getId());
+                }
+                view.index();
+
+                // Finalize Phase
+                if (LOG.isInfoEnabled()) {
+                    LOG.info("performing finalize phase for view: " + view.getId());
+                }
+                viewLifecycle.performFinalize(model);
+
+                // do indexing
+                if (LOG.isInfoEnabled()) {
+                    LOG.info("processing final indexing for view: " + view.getId());
+                }
+                view.index();
+
+                // update status on view
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Updating view status to FINAL for view: " + view.getId());
+                }
+                view.setViewStatus(ViewStatus.FINAL);
             }
+        }).getView();
 
-            // if field is not already required, invoke presentation logic to determine if it should be
-            if ((field.getRequired() == null) || !field.getRequired().booleanValue()) {
-                // boolean fieldIsRequired = 
-                presentationController.fieldIsRequired(view, model, field, propertyName);
-            }
+        // Validation of the page's beans
+        if (CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsBoolean(
+                UifConstants.VALIDATE_VIEWS_ONBUILD)) {
+            ValidationController validator = new ValidationController(true, true, true, true, false);
+            Log tempLogger = LogFactory.getLog(ViewLifecycle.class);
+            validator.validate(builtView, tempLogger, false);
+        }
 
-            if (field instanceof DataField) {
-                DataField dataField = (DataField) field;
+        return builtView;
+    }
 
-                // check mask authorization
-                boolean canUnmaskValue = authorizer.canUnmaskField(view, model, dataField, dataField.getPropertyName(),
-                        user);
-                if (!canUnmaskValue) {
-                    dataField.setApplyMask(true);
-                    dataField.setMaskFormatter(dataField.getDataFieldSecurity().getAttributeSecurity().
-                            getMaskFormatter());
-                } else {
-                    // check partial mask authorization
-                    boolean canPartiallyUnmaskValue = authorizer.canPartialUnmaskField(view, model, dataField,
-                            dataField.getPropertyName(), user);
-                    if (!canPartiallyUnmaskValue) {
-                        dataField.setApplyMask(true);
-                        dataField.setMaskFormatter(
-                                dataField.getDataFieldSecurity().getAttributeSecurity().getPartialMaskFormatter());
+/**
+     * Performs the complete component lifecycle on the component passed in for use during a refresh process.
+     *
+     * <p>
+     * Performs the complete component lifecycle on the component passed in, in this order:
+     * performComponentInitialization, performComponentApplyModel, and performComponentFinalize.
+     * </p>
+     * 
+     * <p>
+     * Some adjustments are made to account for the
+     * component being processed without its parent. The component within the view (contained on the form) is
+     * retrieved to obtain the context to use (such as parent). The created components id is then updated to match
+     * the current id within the view.
+     * </p>
+     *
+     * @param view view instance the component belongs to
+     * @param model object containing the full view data
+     * @param component component instance to perform lifecycle for
+     * @param origId id of the component within the view, used to pull the current component from the view
+     * @return The results of performing the lifecycle on the provided view.
+     * @see {@link org.kuali.rice.krad.uif.service.ViewHelperService#performComponentLifecycle(
+     *org.kuali.rice.krad.uif.view.View, java.lang.Object, org.kuali.rice.krad.uif.component.Component,
+     *      java.lang.String)
+     * @see {@link #performComponentInitialization(org.kuali.rice.krad.uif.view.View, Object,
+     *      org.kuali.rice.krad.uif.component.Component)}
+     * @see {@link #performComponentApplyModel(View, Component, Object)}
+     * @see {@link #performComponentFinalize(View, Component, Object, Component, Map)}
+     */
+    public static ViewLifecycleResult performComponentLifecycle(
+            View view, final Object model, final Component component, final String origId) {
+        return encapsulateLifecycle(view, new Runnable() {
+            @Override
+            public void run() {
+                ViewLifecycle viewLifecycle = getActiveLifecycle();
+                View view = viewLifecycle.getView();
+                Component newComponent = component.copy();
+
+                Component origComponent = view.getViewIndex().getComponentById(origId);
+
+                view.assignComponentIds(newComponent);
+
+                Map<String, Object> origContext = origComponent.getContext();
+
+                Component parent = origContext == null ? null : (Component) origContext
+                        .get(UifConstants.ContextVariableNames.PARENT);
+
+                // update context on all components within the refresh component to catch context set by parent
+                if (origContext != null) {
+                    newComponent.pushAllToContext(origContext);
+
+                    List<Component> nestedComponents = ComponentUtils.getAllNestedComponents(newComponent);
+                    for (Component nestedComponent : nestedComponents) {
+                        nestedComponent.pushAllToContext(origContext);
                     }
                 }
-            }
-        }
 
-        // perform action authorization and presentation logic
-        else if (component instanceof ActionField || component instanceof Action) {
-            Action action = null;
-            if (component instanceof ActionField) {
-                action = ((ActionField) component).getAction();
-            } else {
-                action = (Action) component;
-            }
+                // make sure the dataAttributes are the same as original
+                newComponent.setDataAttributes(origComponent.getDataAttributes());
 
-            boolean canTakeAction = authorizer.canPerformAction(view, model, action, action.getActionEvent(),
-                    action.getId(), user);
-            if (canTakeAction) {
-                canTakeAction = presentationController.canPerformAction(view, model, action, action.getActionEvent(),
-                        action.getId());
-            }
-            action.setRender(canTakeAction);
-        }
+                // initialize the expression evaluator
+                view.getViewHelperService().getExpressionEvaluator().initializeEvaluationContext(model);
 
-        // perform widget authorization and presentation logic
-        else if (component instanceof Widget) {
-            Widget widget = (Widget) component;
+                // the expression graph for refreshed components is captured in the view index (initially it might expressions
+                // might have come from a parent), after getting the expression graph then we need to populate the expressions
+                // on the configurable for which they apply
+                Map<String, String> expressionGraph = view.getViewIndex().getComponentExpressionGraphs().get(
+                        newComponent.getBaseId());
+                newComponent.setExpressionGraph(expressionGraph);
+                ExpressionUtils.populatePropertyExpressionsFromGraph(newComponent, false);
 
-            // if widget is not hidden, do authorization for viewing the widget
-            if (!widget.isHidden()) {
-                boolean canViewWidget = authorizer.canViewWidget(view, model, widget, widget.getId(), user);
-                if (canViewWidget) {
-                    canViewWidget = presentationController.canViewWidget(view, model, widget, widget.getId());
+                // binding path should stay the same
+                if (newComponent instanceof DataBinding) {
+                    ((DataBinding) newComponent).setBindingInfo(((DataBinding) origComponent).getBindingInfo());
+                    ((DataBinding) newComponent).getBindingInfo().setBindingPath(
+                            ((DataBinding) origComponent).getBindingInfo().getBindingPath());
                 }
-                widget.setHidden(!canViewWidget);
-                widget.setRender(canViewWidget);
-            }
 
-            // if widget is not readOnly, check edit authorization
-            if (!widget.isReadOnly()) {
-                boolean canEditWidget = authorizer.canEditWidget(view, model, widget, widget.getId(), user);
-                if (canEditWidget) {
-                    canEditWidget = presentationController.canEditWidget(view, model, widget, widget.getId());
+                // copy properties that are set by parent components in the full view lifecycle
+                if (newComponent instanceof Field) {
+                    ((Field) newComponent).setLabelRendered(((Field) origComponent).isLabelRendered());
                 }
-                widget.setReadOnly(!canEditWidget);
+
+                if (origComponent.isRefreshedByAction()) {
+                    newComponent.setRefreshedByAction(true);
+                }
+
+                // reset data if needed
+                if (newComponent.isResetDataOnRefresh()) {
+                    // TODO: this should handle groups as well, going through nested data fields
+                    if (newComponent instanceof DataField) {
+                        // TODO: should check default value
+
+                        // clear value
+                        ObjectPropertyUtils.initializeProperty(model,
+                                ((DataField) newComponent).getBindingInfo().getBindingPath());
+                    }
+                }
+
+                viewLifecycle.offerPendingPhase(new InitializeComponentPhase(newComponent, model));
+                viewLifecycle.performPendingPhases();
+
+                // adjust IDs for suffixes that might have been added by a parent component during the full view lifecycle
+                String suffix = StringUtils.replaceOnce(origComponent.getId(), origComponent.getBaseId(), "");
+                if (StringUtils.isNotBlank(suffix)) {
+                    ComponentUtils.updateIdWithSuffix(newComponent, suffix);
+                    ComponentUtils.updateChildIdsWithSuffixNested(newComponent, suffix);
+                }
+
+                // for collections that are nested in the refreshed group, we need to adjust the binding prefix and
+                // set the sub collection id prefix from the original component (this is needed when the group being
+                // refreshed is part of another collection)
+                if (newComponent instanceof Group || newComponent instanceof FieldGroup) {
+                    List<CollectionGroup> origCollectionGroups = ComponentUtils.getComponentsOfTypeShallow(
+                            origComponent,
+                            CollectionGroup.class);
+                    List<CollectionGroup> collectionGroups = ComponentUtils.getComponentsOfTypeShallow(newComponent,
+                            CollectionGroup.class);
+
+                    for (int i = 0; i < collectionGroups.size(); i++) {
+                        CollectionGroup origCollectionGroup = origCollectionGroups.get(i);
+                        CollectionGroup collectionGroup = collectionGroups.get(i);
+
+                        String prefix = origCollectionGroup.getBindingInfo().getBindByNamePrefix();
+                        if (StringUtils.isNotBlank(prefix) && StringUtils.isBlank(
+                                collectionGroup.getBindingInfo().getBindByNamePrefix())) {
+                            ComponentUtils.prefixBindingPath(collectionGroup, prefix);
+                        }
+
+                        String lineSuffix = origCollectionGroup.getSubCollectionSuffix();
+                        collectionGroup.setSubCollectionSuffix(lineSuffix);
+                    }
+
+                    // Handle LightTables, as well
+                    List<LightTable> origLightTables = ComponentUtils.getComponentsOfTypeShallow(origComponent,
+                            LightTable.class);
+                    List<LightTable> lightTables = ComponentUtils.getComponentsOfTypeShallow(newComponent,
+                            LightTable.class);
+
+                    for (int i = 0; i < lightTables.size(); i++) {
+                        LightTable origLightTable = origLightTables.get(i);
+                        LightTable lightTable = lightTables.get(i);
+
+                        String prefix = origLightTable.getBindingInfo().getBindByNamePrefix();
+                        if (StringUtils.isNotBlank(prefix) && StringUtils.isBlank(
+                                lightTable.getBindingInfo().getBindByNamePrefix())) {
+                            ComponentUtils.prefixBindingPath(lightTable, prefix);
+                        }
+                    }
+                }
+
+                // if disclosed by action and request was made, make sure the component will display
+                if (newComponent.isDisclosedByAction()) {
+                    ComponentUtils.setComponentPropertyFinal(newComponent, UifPropertyPaths.RENDER, true);
+                    ComponentUtils.setComponentPropertyFinal(newComponent, UifPropertyPaths.HIDDEN, false);
+                }
+
+                viewLifecycle.offerPendingPhase(new ApplyModelComponentPhase(newComponent, model, parent));
+                viewLifecycle.performPendingPhases();
+
+                // adjust nestedLevel property on some specific collection cases
+                if (newComponent instanceof Container) {
+                    ComponentUtils.adjustNestedLevelsForTableCollections((Container) newComponent, 0);
+                } else if (newComponent instanceof FieldGroup) {
+                    ComponentUtils.adjustNestedLevelsForTableCollections(((FieldGroup) newComponent).getGroup(), 0);
+                }
+
+                viewLifecycle.offerPendingPhase(new FinalizeComponentPhase(newComponent, model, parent));
+                viewLifecycle.performPendingPhases();
+
+                // make sure id, binding, and label settings stay the same as initial
+                if (newComponent instanceof Group || newComponent instanceof FieldGroup) {
+                    List<Component> nestedGroupComponents = ComponentUtils.getAllNestedComponents(newComponent);
+                    List<Component> originalNestedGroupComponents = ComponentUtils
+                            .getAllNestedComponents(origComponent);
+
+                    for (Component nestedComponent : nestedGroupComponents) {
+                        Component origNestedComponent = ComponentUtils.findComponentInList(
+                                originalNestedGroupComponents,
+                                nestedComponent.getId());
+
+                        if (origNestedComponent != null) {
+                            // update binding
+                            if (nestedComponent instanceof DataBinding) {
+                                ((DataBinding) nestedComponent).setBindingInfo(
+                                        ((DataBinding) origNestedComponent).getBindingInfo());
+                                ((DataBinding) nestedComponent).getBindingInfo().setBindingPath(
+                                        ((DataBinding) origNestedComponent).getBindingInfo().getBindingPath());
+                            }
+
+                            // update label rendered flag
+                            if (nestedComponent instanceof Field) {
+                                ((Field) nestedComponent).setLabelRendered(((Field) origNestedComponent)
+                                        .isLabelRendered());
+                            }
+
+                            if (origNestedComponent.isRefreshedByAction()) {
+                                nestedComponent.setRefreshedByAction(true);
+                            }
+                        }
+                    }
+                }
+
+                // get script for generating growl messages
+                String growlScript = viewLifecycle.buildGrowlScript();
+                ((ViewModel) model).setGrowlScript(growlScript);
+
+                view.getViewIndex().indexComponent(newComponent);
+
+                viewLifecycle.refreshComponent = newComponent;
             }
+        });
+    }
+
+    /**
+     * Indicate that a lifecycle element is mutable within the current lifecycle.
+     * 
+     * @param element The lifecycle element.
+     */
+    public static void setMutable(LifecycleElement element) {
+        ViewLifecycle viewLifecycle = TL_VIEW_LIFECYCLE.get();
+
+        if (viewLifecycle == null) {
+            throw new IllegalStateException("No view lifecycle is active on this thread");
         }
+
+        viewLifecycle.mutableIdentities.add(getIdentity(element));
     }
 
     /**
@@ -1184,249 +1460,6 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
     }
 
     /**
-     * Invokes the finalize method for the component (if configured) and sets the render output for
-     * the component to the returned method string (if method is not a void type)
-     * 
-     * @param view view instance that contains the component
-     * @param component component to run finalize method for
-     * @param model top level object containing the data
-     */
-    protected void invokeMethodFinalizer(View view, Component component, Object model) {
-        String finalizeMethodToCall = component.getFinalizeMethodToCall();
-        MethodInvoker finalizeMethodInvoker = component.getFinalizeMethodInvoker();
-
-        if (StringUtils.isBlank(finalizeMethodToCall) && (finalizeMethodInvoker == null)) {
-            return;
-        }
-
-        if (finalizeMethodInvoker == null) {
-            finalizeMethodInvoker = new MethodInvoker();
-        }
-
-        // if method not set on invoker, use finalizeMethodToCall, note staticMethod could be set(don't know since
-        // there is not a getter), if so it will override the target method in prepare
-        if (StringUtils.isBlank(finalizeMethodInvoker.getTargetMethod())) {
-            finalizeMethodInvoker.setTargetMethod(finalizeMethodToCall);
-        }
-
-        // if target class or object not set, use view helper service
-        if ((finalizeMethodInvoker.getTargetClass() == null) && (finalizeMethodInvoker.getTargetObject() == null)) {
-            finalizeMethodInvoker.setTargetObject(view.getViewHelperService());
-        }
-
-        // setup arguments for method
-        List<Object> additionalArguments = component.getFinalizeMethodAdditionalArguments();
-        if (additionalArguments == null) {
-            additionalArguments = new ArrayList<Object>();
-        }
-
-        Object[] arguments = new Object[2 + additionalArguments.size()];
-        arguments[0] = component;
-        arguments[1] = model;
-
-        int argumentIndex = 1;
-        for (Object argument : additionalArguments) {
-            argumentIndex++;
-            arguments[argumentIndex] = argument;
-        }
-        finalizeMethodInvoker.setArguments(arguments);
-
-        // invoke finalize method
-        try {
-            LOG.debug("Invoking finalize method: "
-                    + finalizeMethodInvoker.getTargetMethod()
-                    + " for component: "
-                    + component.getId());
-            finalizeMethodInvoker.prepare();
-
-            Class<?> methodReturnType = finalizeMethodInvoker.getPreparedMethod().getReturnType();
-            if (StringUtils.equals("void", methodReturnType.getName())) {
-                finalizeMethodInvoker.invoke();
-            } else {
-                String renderOutput = (String) finalizeMethodInvoker.invoke();
-
-                component.setSelfRendered(true);
-                component.setRenderedHtmlOutput(renderOutput);
-            }
-        } catch (Exception e) {
-            LOG.error("Error invoking finalize method for component: " + component.getId(), e);
-            throw new RuntimeException("Error invoking finalize method for component: " + component.getId(), e);
-        }
-    }
-
-    /**
-     * Applies the model data to a component of the View instance
-     * 
-     * <p>
-     * The component is invoked to to apply the model data. Here the component can generate any
-     * additional fields needed or alter the configured fields. After the component is invoked a
-     * hook for custom helper service processing is invoked. Finally the method is recursively
-     * called for all the component children
-     * </p>
-     * 
-     * @param view view instance the component belongs to
-     * @param component the component instance the model should be applied to
-     * @param model top level object containing the data
-     * @param visitedIds tracks components ids that have been seen for adjusting duplicates
-     */
-    protected void performComponentApplyModel(View view, Component component, Object model,
-            Map<String, Integer> visitedIds) {
-        if (component == null) {
-            return;
-        }
-
-        // ProcessLogger.ntrace("comp-model:", ":" + component.getClass().getSimpleName(), 500);
-        // ProcessLogger.countBegin("comp-model");
-
-        // set context on component for evaluating expressions
-        component.pushAllToContext(getCommonContext(component));
-
-        ExpressionEvaluator expressionEvaluator = helper.getExpressionEvaluator();
-        
-        List<PropertyReplacer> componentPropertyReplacers = component.getPropertyReplacers();
-        if (componentPropertyReplacers != null) {
-            for (PropertyReplacer replacer : componentPropertyReplacers) {
-                expressionEvaluator.evaluateExpressionsOnConfigurable(view, replacer, component.getContext());
-            }
-        }
-
-        List<ComponentModifier> componentModifiers = component.getComponentModifiers();
-        if (componentModifiers != null) {
-            for (ComponentModifier modifier : component.getComponentModifiers()) {
-                expressionEvaluator.evaluateExpressionsOnConfigurable(view, modifier, component.getContext());
-            }
-        }
-
-        expressionEvaluator.evaluateExpressionsOnConfigurable(view, component, component.getContext());
-
-        // evaluate expressions on component security
-        ComponentSecurity componentSecurity = component.getComponentSecurity();
-        expressionEvaluator.evaluateExpressionsOnConfigurable(view, componentSecurity, component.getContext());
-
-        // evaluate expressions on the binding info object
-        if (component instanceof DataBinding) {
-            BindingInfo bindingInfo = ((DataBinding) component).getBindingInfo();
-            expressionEvaluator.evaluateExpressionsOnConfigurable(view, bindingInfo, component.getContext());
-        }
-
-        // set context evaluate expressions on the layout manager
-        if (component instanceof Container) {
-            LayoutManager layoutManager = ((Container) component).getLayoutManager();
-
-            if (layoutManager != null) {
-                layoutManager.pushAllToContext(getCommonContext(component));
-                layoutManager.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, component);
-                layoutManager.pushObjectToContext(UifConstants.ContextVariableNames.MANAGER, layoutManager);
-
-                expressionEvaluator.evaluateExpressionsOnConfigurable(view, layoutManager,
-                        layoutManager.getContext());
-
-                layoutManager.setId(adjustIdIfNecessary(layoutManager.getId(), visitedIds));
-            }
-        }
-
-        // sync the component with previous client side state
-        syncClientSideStateForComponent(component, ((ViewModel) model).getClientStateForSyncing());
-
-        // invoke authorizer and presentation controller to set component state
-        applyAuthorizationAndPresentationLogic(view, component, (ViewModel) model);
-
-        // adjust ids for duplicates if necessary
-        //component.setId(adjustIdIfNecessary(component.getId(), visitedIds));
-
-        // invoke component to perform its conditional logic
-        Map<String, Object> parentContext = component.getContext();
-        Component parent = parentContext == null ? null : (Component) parentContext
-                .get(UifConstants.ContextVariableNames.PARENT);
-
-        component.performApplyModel(model, parent);
-
-        // invoke service override hook
-        helper.performCustomApplyModel(component, model);
-
-        // invoke component modifiers configured to run in the apply model phase
-        runComponentModifiers(component, model, UifConstants.ViewPhases.APPLY_MODEL);
-
-        // ProcessLogger.countEnd("comp-model", view.getId() + " " + component.getClass() + " " + component.getId());
-
-        // get children and recursively perform conditional logic
-        Queue<Component> nested = new LinkedList<Component>();
-        for (Component nestedComponent : component.getComponentsForLifecycle()) {
-            if (nestedComponent != null) {
-                nested.offer(nestedComponent);
-            }
-        }
-
-        if (!nested.isEmpty()) {
-            // ProcessLogger.countBegin("comp-nest");
-            while (!nested.isEmpty()) {
-                Component nestedComponent = nested.poll();
-                nestedComponent.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, component);
-                performComponentApplyModel(view, nestedComponent, model, visitedIds);
-            }
-            // ProcessLogger.countEnd("comp-nest", view.getId() + " " + component.getClass() + " " + component.getId());
-        }
-    }
-
-    /**
-     * Update state of the given component and does final preparation for rendering
-     * 
-     * @param view view instance the component belongs to
-     * @param component the component instance that should be updated
-     * @param model top level object containing the data
-     * @param parent parent component for the component being finalized
-     */
-    protected void performComponentFinalize(View view, Component component, Object model, Component parent) {
-        if (component == null) {
-            return;
-        }
-
-        // implement readonly request overrides
-        ViewModel viewModel = (ViewModel) model;
-        if ((component instanceof DataBinding) && view.isSupportsRequestOverrideOfReadOnlyFields() && !viewModel
-                .getReadOnlyFieldsList().isEmpty()) {
-            String propertyName = ((DataBinding) component).getPropertyName();
-            if (viewModel.getReadOnlyFieldsList().contains(propertyName)) {
-                component.setReadOnly(true);
-            }
-        }
-
-        // invoke configured method finalizers
-        invokeMethodFinalizer(view, component, model);
-
-        // invoke component to update its state
-        component.performFinalize(model, parent);
-
-        // invoke service override hook
-        helper.performCustomFinalize(component, model, parent);
-
-        // invoke component modifiers setup to run in the finalize phase
-        runComponentModifiers(component, model, UifConstants.ViewPhases.FINALIZE);
-
-        // add the components template to the views list of components
-        if (!component.isSelfRendered() && StringUtils.isNotBlank(component.getTemplate())) {
-            view.addViewTemplate(component.getTemplate());
-        }
-
-        if (component instanceof Container) {
-            LayoutManager layoutManager = ((Container) component).getLayoutManager();
-
-            if (layoutManager != null) {
-                view.addViewTemplate(layoutManager.getTemplate());
-            }
-        }
-
-        // get components children and recursively update state
-        for (Component nestedComponent : component.getComponentsForLifecycle()) {
-            performComponentFinalize(view, nestedComponent, model, component);
-        }
-
-        // trigger lifecycle complete event for component
-        ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
-        viewLifecycle.invokeEventListeners(ViewLifecycle.LifecycleEvent.LIFECYCLE_COMPLETE, view, model, component);
-    }
-
-    /**
      * Applies the default value configured for the given field (if any) to the line given object
      * property that is determined by the given binding path
      * 
@@ -1503,7 +1536,7 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
                     defaultValue = expressionEvaluator.replaceBindingPrefixes(view, object, defaultValue);
                     defaultValue = expressionEvaluator.evaluateExpressionTemplate(context, defaultValue);
                 }
-                
+
                 ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValue);
             }
         }
@@ -1511,11 +1544,11 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
 
     /**
      * Perform a database or data dictionary based refresh of a specific property object
-     *
+     * 
      * <p>
      * The object needs to be of type PersistableBusinessObject.
      * </p>
-     *
+     * 
      * @param parentObject parent object that references the object to be refreshed
      * @param referenceObjectName property name of the parent object to be refreshed
      */
@@ -1525,7 +1558,7 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
                     .getName() + ". Class not of type PersistableBusinessObject");
             return;
         }
-        
+
         LegacyDataAdapter legacyDataAdapter = KRADServiceLocatorWeb.getLegacyDataAdapter();
         DataDictionaryService dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
 
@@ -1658,427 +1691,50 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
     }
 
     /**
-     * Updates the properties of the given component instance with the value found from the
-     * corresponding map of client state (if found)
-     * 
-     * @param component component instance to update
-     * @param clientSideState map of state to sync with
+     * Execute all pending lifecycle phases.
      */
-    @SuppressWarnings("unchecked")
-    protected void syncClientSideStateForComponent(Component component, Map<String, Object> clientSideState) {
-        // find the map of state that was sent for component (if any)
-        Map<String, Object> componentState = null;
-        if (component instanceof View) {
-            componentState = clientSideState;
-        } else {
-            if (clientSideState.containsKey(component.getId())) {
-                componentState = (Map<String, Object>) clientSideState.get(component.getId());
-            }
-        }
+    protected void performPendingPhases() {
+        Queue<FinalizeComponentPhase> finalizeComponentsToNotify = new LinkedList<FinalizeComponentPhase>();
+        Queue<ViewLifecyclePhase> initialPhases = new LinkedList<ViewLifecyclePhase>(pendingPhases);
 
-        // if state was sent, match with fields on the component that are annotated to have client state
-        if ((componentState != null) && (!componentState.isEmpty())) {
-            Map<String, Annotation> annotatedFields = CloneUtils.getFieldsWithAnnotation(component.getClass(),
-                    ClientSideState.class);
+        while (!pendingPhases.isEmpty()) {
+            ViewLifecyclePhase phase = pendingPhases.poll();
 
-            for (Entry<String, Annotation> annotatedField : annotatedFields.entrySet()) {
-                ClientSideState clientSideStateAnnot = (ClientSideState) annotatedField.getValue();
+            if (phase instanceof FinalizeComponentPhase) {
+                boolean registered = false;
 
-                String variableName = clientSideStateAnnot.variableName();
-                if (StringUtils.isBlank(variableName)) {
-                    variableName = annotatedField.getKey();
+                for (EventRegistration registration : eventRegistrations) {
+                    registered = registered || registration.getEventComponent() == phase.getComponent();
                 }
 
-                if (componentState.containsKey(variableName)) {
-                    Object value = componentState.get(variableName);
-                    ObjectPropertyUtils.setPropertyValue(component, annotatedField.getKey(), value);
+                if (registered) {
+                    finalizeComponentsToNotify.offer((FinalizeComponentPhase) phase);
                 }
             }
-        }
-    }
 
-    /**
-     * Determine the identity of a lifecycle element.
-     * 
-     * @param element The lifecycle element.
-     * @return An identifier for the element, unique to its instance.
-     */
-    private static long getIdentity(LifecycleElement element) {
-        return System.identityHashCode(element) + (element.getClass().hashCode() >>> 32);
-    }
+            phase.run();
 
-    /**
-     * Encapsulate a new view initialization process on the current thread.
-     */
-    public static <T> T encapsulateInitialization(Callable<T> initializationProcess) {
-        ViewLifecycle oldViewContext = TL_VIEW_LIFECYCLE.get();
-
-        try {
-            TL_VIEW_LIFECYCLE.set(new ViewLifecycle());
-
-            try {
-                return initializationProcess.call();
-            } catch (RuntimeException e) {
-                throw e;
-            } catch (Exception e) {
-                throw new IllegalStateException("Unexpected initialization error", e);
-            }
-
-        } finally {
-            if (oldViewContext == null) {
-                TL_VIEW_LIFECYCLE.remove();
-            } else {
-                TL_VIEW_LIFECYCLE.set(oldViewContext);
-            }
-        }
-    }
-
-    /**
-     * Encapsulate a new view lifecycle process on the current thread.
-     * 
-     * @param lifecycleProcess The lifecycle process to encapsulate.
-     * @return
-     */
-    public static View getMutableCopy(View view) {
-        ViewLifecycle oldViewContext = TL_VIEW_LIFECYCLE.get();
-
-        try {
-            ViewLifecycle copyLifecycle = new ViewLifecycle(view, true); 
-            TL_VIEW_LIFECYCLE.set(copyLifecycle);
-
-            return view.copy();
-            
-        } finally {
-            if (oldViewContext == null) {
-                TL_VIEW_LIFECYCLE.remove();
-            } else {
-                TL_VIEW_LIFECYCLE.set(oldViewContext);
-            }
-        }
-    }
-    
-    /**
-     * Encapsulate a new view lifecycle process on the current thread.
-     * 
-     * @param lifecycleProcess The lifecycle process to encapsulate.
-     * @return
-     */
-    public static ViewLifecycleResult encapsulateLifecycle(View view, Runnable lifecycleProcess) {
-        ViewLifecycle viewLifecycle = TL_VIEW_LIFECYCLE.get();
-        if (viewLifecycle != null) {
-            throw new IllegalStateException("Another view context already active on this thread");
+            pendingPhases.addAll(phase.getSuccessors());
         }
 
-        try {
-            TL_VIEW_LIFECYCLE.set(viewLifecycle = new ViewLifecycle(view, false));
-            viewLifecycle.view = view;
+        Iterator<FinalizeComponentPhase> finalizePhaseIterator = finalizeComponentsToNotify.iterator();
+        while (finalizePhaseIterator.hasNext()) {
+            FinalizeComponentPhase finalizePhase = finalizePhaseIterator.next();
 
-            lifecycleProcess.run();
+            assert finalizePhase.isComplete();
 
-            return viewLifecycle;
-        } finally {
-            TL_VIEW_LIFECYCLE.remove();
-        }
-    }
-
-    /**
-     * Get the view context active on the current thread.
-     * 
-     * @return The view context active on the current thread.
-     */
-    public static ViewLifecycle getActiveLifecycle() {
-        ViewLifecycle viewLifecycle = TL_VIEW_LIFECYCLE.get();
-
-        if (viewLifecycle == null) {
-            throw new IllegalStateException("No view lifecycle is active on this thread");
+            // trigger lifecycle complete event for component
+            invokeEventListeners(ViewLifecycle.LifecycleEvent.LIFECYCLE_COMPLETE, view,
+                    finalizePhase.getModel(), finalizePhase.getComponent());
         }
 
-        return viewLifecycle;
-    }
+        Iterator<ViewLifecyclePhase> initialPhaseIterator = initialPhases.iterator();
+        while (initialPhaseIterator.hasNext()) {
+            ViewLifecyclePhase top = initialPhaseIterator.next();
 
-    /**
-     * Determine any view context is active on the current thread.
-     * 
-     * @return True if a view context is active on the current thread.
-     */
-    public static boolean isActive() {
-        ViewLifecycle viewLifecycle = TL_VIEW_LIFECYCLE.get();
-        return viewLifecycle != null;
-    }
-
-    /**
-     * Determine if view initialization is active on the current thread.
-     * 
-     * @return True if a view initialization context is active on the current thread.
-     */
-    public static boolean isInitializing() {
-        ViewLifecycle viewLifecycle = TL_VIEW_LIFECYCLE.get();
-        return viewLifecycle != null && viewLifecycle.originalView == null;
-    }
-
-    /**
-     * Determine if a view lifecycle context is active on the current thread.
-     * 
-     * @return True if a view lifecycle context is active on the current thread.
-     */
-    public static boolean isLifecycleActive() {
-        ViewLifecycle viewLifecycle = TL_VIEW_LIFECYCLE.get();
-        return viewLifecycle != null && viewLifecycle.originalView != null;
-    }
-
-    /**
-     * Determine if a lifecycle element is mutable within the current lifecycle.
-     * 
-     * @param element The lifecycle element.
-     * @return True if the lifecycle element has been registered as mutable within the current
-     *         lifecycle.
-     */
-    public static boolean isMutable(LifecycleElement element) {
-        ViewLifecycle viewLifecycle = TL_VIEW_LIFECYCLE.get();
-
-        if (viewLifecycle == null || viewLifecycle.mutableIdentities == null) {
-            throw new IllegalStateException("No view lifecycle is active on this thread");
+            assert top.isComplete();
+            view.getViewIndex().indexComponent(top.getComponent());
         }
-
-        // TODO: Isolate mutability to same lifecycle
-        // viewLifecycle.mutableIdentities.contains(getIdentity(element));
-        return true;
-    }
-
-    /**
-     * Determine if a call to {@link #getMutableCopy(View)} is in progress.
-     * 
-     * @return True if a call to {@link #getMutableCopy(View)} is in progress.
-     */
-    public static boolean isCopyActive() {
-        ViewLifecycle viewLifecycle = TL_VIEW_LIFECYCLE.get();
-        return viewLifecycle != null && viewLifecycle.copy;
-    }
-
-    /**
-     * Performs the complete component lifecycle on the component passed in for use during a refresh process.
-     *
-     * <p>
-     * Performs the complete component lifecycle on the component passed in, in this order:
-     * performComponentInitialization, performComponentApplyModel, and performComponentFinalize.
-     * </p>
-     * 
-     * <p>
-     * Some adjustments are made to account for the
-     * component being processed without its parent. The component within the view (contained on the form) is
-     * retrieved to obtain the context to use (such as parent). The created components id is then updated to match
-     * the current id within the view.
-     * </p>
-     *
-     * @param view view instance the component belongs to
-     * @param model object containing the full view data
-     * @param component component instance to perform lifecycle for
-     * @param origId id of the component within the view, used to pull the current component from the view
-     * @return The results of performing the lifecycle on the provided view.
-     * @see {@link org.kuali.rice.krad.uif.service.ViewHelperService#performComponentLifecycle(
-     *org.kuali.rice.krad.uif.view.View, java.lang.Object, org.kuali.rice.krad.uif.component.Component,
-     *      java.lang.String)
-     * @see {@link #performComponentInitialization(org.kuali.rice.krad.uif.view.View, Object,
-     *      org.kuali.rice.krad.uif.component.Component)}
-     * @see {@link #performComponentApplyModel(View, Component, Object)}
-     * @see {@link #performComponentFinalize(View, Component, Object, Component, Map)}
-     */
-    public static ViewLifecycleResult performComponentLifecycle(
-            View view, final Object model, final Component component, final String origId) {
-        return encapsulateLifecycle(view, new Runnable() {
-            @Override
-            public void run() {
-                ViewLifecycle viewLifecycle = getActiveLifecycle();
-                View view = viewLifecycle.getView();
-                Component newComponent = component.copy();
-
-                Component origComponent = view.getViewIndex().getComponentById(origId);
-
-                view.assignComponentIds(newComponent);
-
-                Map<String, Object> origContext = origComponent.getContext();
-
-                Component parent = origContext == null ? null : (Component) origContext
-                        .get(UifConstants.ContextVariableNames.PARENT);
-
-                // update context on all components within the refresh component to catch context set by parent
-                if (origContext != null) {
-                    newComponent.pushAllToContext(origContext);
-
-                    List<Component> nestedComponents = ComponentUtils.getAllNestedComponents(newComponent);
-                    for (Component nestedComponent : nestedComponents) {
-                        nestedComponent.pushAllToContext(origContext);
-                    }
-                }
-
-                // make sure the dataAttributes are the same as original
-                newComponent.setDataAttributes(origComponent.getDataAttributes());
-
-                // initialize the expression evaluator
-                view.getViewHelperService().getExpressionEvaluator().initializeEvaluationContext(model);
-
-                // the expression graph for refreshed components is captured in the view index (initially it might expressions
-                // might have come from a parent), after getting the expression graph then we need to populate the expressions
-                // on the configurable for which they apply
-                Map<String, String> expressionGraph = view.getViewIndex().getComponentExpressionGraphs().get(
-                        newComponent.getBaseId());
-                newComponent.setExpressionGraph(expressionGraph);
-                ExpressionUtils.populatePropertyExpressionsFromGraph(newComponent, false);
-
-                // binding path should stay the same
-                if (newComponent instanceof DataBinding) {
-                    ((DataBinding) newComponent).setBindingInfo(((DataBinding) origComponent).getBindingInfo());
-                    ((DataBinding) newComponent).getBindingInfo().setBindingPath(
-                            ((DataBinding) origComponent).getBindingInfo().getBindingPath());
-                }
-
-                // copy properties that are set by parent components in the full view lifecycle
-                if (newComponent instanceof Field) {
-                    ((Field) newComponent).setLabelRendered(((Field) origComponent).isLabelRendered());
-                }
-
-                if (origComponent.isRefreshedByAction()) {
-                    newComponent.setRefreshedByAction(true);
-                }
-
-                // reset data if needed
-                if (newComponent.isResetDataOnRefresh()) {
-                    // TODO: this should handle groups as well, going through nested data fields
-                    if (newComponent instanceof DataField) {
-                        // TODO: should check default value
-
-                        // clear value
-                        ObjectPropertyUtils.initializeProperty(model,
-                                ((DataField) newComponent).getBindingInfo().getBindingPath());
-                    }
-                }
-
-                viewLifecycle.performComponentInitialization(model, newComponent);
-
-                // adjust IDs for suffixes that might have been added by a parent component during the full view lifecycle
-                String suffix = StringUtils.replaceOnce(origComponent.getId(), origComponent.getBaseId(), "");
-                if (StringUtils.isNotBlank(suffix)) {
-                    ComponentUtils.updateIdWithSuffix(newComponent, suffix);
-                    ComponentUtils.updateChildIdsWithSuffixNested(newComponent, suffix);
-                }
-
-                // for collections that are nested in the refreshed group, we need to adjust the binding prefix and
-                // set the sub collection id prefix from the original component (this is needed when the group being
-                // refreshed is part of another collection)
-                if (newComponent instanceof Group || newComponent instanceof FieldGroup) {
-                    List<CollectionGroup> origCollectionGroups = ComponentUtils.getComponentsOfTypeShallow(
-                            origComponent,
-                            CollectionGroup.class);
-                    List<CollectionGroup> collectionGroups = ComponentUtils.getComponentsOfTypeShallow(newComponent,
-                            CollectionGroup.class);
-
-                    for (int i = 0; i < collectionGroups.size(); i++) {
-                        CollectionGroup origCollectionGroup = origCollectionGroups.get(i);
-                        CollectionGroup collectionGroup = collectionGroups.get(i);
-
-                        String prefix = origCollectionGroup.getBindingInfo().getBindByNamePrefix();
-                        if (StringUtils.isNotBlank(prefix) && StringUtils.isBlank(
-                                collectionGroup.getBindingInfo().getBindByNamePrefix())) {
-                            ComponentUtils.prefixBindingPath(collectionGroup, prefix);
-                        }
-
-                        String lineSuffix = origCollectionGroup.getSubCollectionSuffix();
-                        collectionGroup.setSubCollectionSuffix(lineSuffix);
-                    }
-
-                    // Handle LightTables, as well
-                    List<LightTable> origLightTables = ComponentUtils.getComponentsOfTypeShallow(origComponent,
-                            LightTable.class);
-                    List<LightTable> lightTables = ComponentUtils.getComponentsOfTypeShallow(newComponent,
-                            LightTable.class);
-
-                    for (int i = 0; i < lightTables.size(); i++) {
-                        LightTable origLightTable = origLightTables.get(i);
-                        LightTable lightTable = lightTables.get(i);
-
-                        String prefix = origLightTable.getBindingInfo().getBindByNamePrefix();
-                        if (StringUtils.isNotBlank(prefix) && StringUtils.isBlank(
-                                lightTable.getBindingInfo().getBindByNamePrefix())) {
-                            ComponentUtils.prefixBindingPath(lightTable, prefix);
-                        }
-                    }
-                }
-
-                // if disclosed by action and request was made, make sure the component will display
-                if (newComponent.isDisclosedByAction()) {
-                    ComponentUtils.setComponentPropertyFinal(newComponent, UifPropertyPaths.RENDER, true);
-                    ComponentUtils.setComponentPropertyFinal(newComponent, UifPropertyPaths.HIDDEN, false);
-                }
-
-                viewLifecycle.performComponentApplyModel(view, newComponent, model, new HashMap<String, Integer>());
-                view.getViewIndex().indexComponent(newComponent);
-
-                // adjust nestedLevel property on some specific collection cases
-                if (newComponent instanceof Container) {
-                    ComponentUtils.adjustNestedLevelsForTableCollections((Container) newComponent, 0);
-                } else if (newComponent instanceof FieldGroup) {
-                    ComponentUtils.adjustNestedLevelsForTableCollections(((FieldGroup) newComponent).getGroup(), 0);
-                }
-
-                viewLifecycle.performComponentFinalize(view, newComponent, model, parent);
-
-                // make sure id, binding, and label settings stay the same as initial
-                if (newComponent instanceof Group || newComponent instanceof FieldGroup) {
-                    List<Component> nestedGroupComponents = ComponentUtils.getAllNestedComponents(newComponent);
-                    List<Component> originalNestedGroupComponents = ComponentUtils
-                            .getAllNestedComponents(origComponent);
-
-                    for (Component nestedComponent : nestedGroupComponents) {
-                        Component origNestedComponent = ComponentUtils.findComponentInList(
-                                originalNestedGroupComponents,
-                                nestedComponent.getId());
-
-                        if (origNestedComponent != null) {
-                            // update binding
-                            if (nestedComponent instanceof DataBinding) {
-                                ((DataBinding) nestedComponent).setBindingInfo(
-                                        ((DataBinding) origNestedComponent).getBindingInfo());
-                                ((DataBinding) nestedComponent).getBindingInfo().setBindingPath(
-                                        ((DataBinding) origNestedComponent).getBindingInfo().getBindingPath());
-                            }
-
-                            // update label rendered flag
-                            if (nestedComponent instanceof Field) {
-                                ((Field) nestedComponent).setLabelRendered(((Field) origNestedComponent)
-                                        .isLabelRendered());
-                            }
-
-                            if (origNestedComponent.isRefreshedByAction()) {
-                                nestedComponent.setRefreshedByAction(true);
-                            }
-                        }
-                    }
-                }
-
-                // get script for generating growl messages
-                String growlScript = viewLifecycle.buildGrowlScript();
-                ((ViewModel) model).setGrowlScript(growlScript);
-
-                view.getViewIndex().indexComponent(newComponent);
-                
-                viewLifecycle.refreshComponent = newComponent;
-            }
-        });
-    }
-
-    /**
-     * Indicate that a lifecycle element is mutable within the current lifecycle.
-     * 
-     * @param element The lifecycle element.
-     */
-    public static void setMutable(LifecycleElement element) {
-        ViewLifecycle viewLifecycle = TL_VIEW_LIFECYCLE.get();
-
-        if (viewLifecycle == null) {
-            throw new IllegalStateException("No view lifecycle is active on this thread");
-        }
-
-        viewLifecycle.mutableIdentities.add(getIdentity(element));
     }
 
 }

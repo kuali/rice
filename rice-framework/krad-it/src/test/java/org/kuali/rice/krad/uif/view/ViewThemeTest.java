@@ -15,18 +15,19 @@
  */
 package org.kuali.rice.krad.uif.view;
 
-import org.junit.Test;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.test.KRADTestCase;
-import org.kuali.rice.krad.web.form.UifFormBase;
-
-import java.util.HashMap;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
+
+import java.util.HashMap;
+
+import org.junit.Test;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.test.KRADTestCase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
  * Test cases for {@link ViewTheme}
@@ -54,7 +55,7 @@ public class ViewThemeTest extends KRADTestCase {
         doReturn(true).when(theme).inDevMode();
         view.setTheme(theme);
 
-        KRADServiceLocatorWeb.getViewService().buildView(view, new UifFormBase(), new HashMap<String, String>());
+        ViewLifecycle.buildView(view, new UifFormBase(), new HashMap<String, String>());
 
         assertEquals(2, theme.getCssFiles().size());
         assertEquals(2, theme.getScriptFiles().size());
@@ -69,7 +70,7 @@ public class ViewThemeTest extends KRADTestCase {
         doReturn(false).when(theme).inDevMode();
         view.setTheme(theme);
 
-        KRADServiceLocatorWeb.getViewService().buildView(view, new UifFormBase(), new HashMap<String, String>());
+        ViewLifecycle.buildView(view, new UifFormBase(), new HashMap<String, String>());
 
         assertEquals(1, theme.getCssFiles().size());
         assertEquals(1, theme.getScriptFiles().size());

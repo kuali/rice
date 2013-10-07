@@ -21,6 +21,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.util.ProcessLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Base abstract implementation for a lifecycle phase.
@@ -28,6 +31,8 @@ import org.kuali.rice.krad.uif.component.Component;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class AbstractViewLifecyclePhase implements ViewLifecyclePhase {
+
+    private final Logger LOG = LoggerFactory.getLogger(AbstractViewLifecyclePhase.class);
 
     private final Component component;
     private final Object model;
@@ -45,6 +50,14 @@ public abstract class AbstractViewLifecyclePhase implements ViewLifecyclePhase {
      */
     protected AbstractViewLifecyclePhase(Component component, Object model, List<ViewLifecyclePhase> predecessors) {
         this.component = component;
+
+        if (component.getViewStatus().equals(getEndViewStatus())) {
+            IllegalArgumentException wrongStatusWarning =
+                    new IllegalArgumentException("Component is already in the expected end status " + getEndViewStatus()
+                    + " before this phase " + component.getClass() + " " + component.getId());
+            LOG.warn(wrongStatusWarning.getMessage(), wrongStatusWarning);
+        }
+
         this.model = model;
         this.predecessors = Collections.unmodifiableList(new ArrayList<ViewLifecyclePhase>(predecessors));
         this.successors = new LinkedList<ViewLifecyclePhase>();
@@ -60,7 +73,8 @@ public abstract class AbstractViewLifecyclePhase implements ViewLifecyclePhase {
      * Initialize list of successor phases.
      * 
      * <p>
-     * This method will be called after {@link #performLifecyclePhase()} while processing this phase.
+     * This method will be called after {@link #performLifecyclePhase()} while processing this
+     * phase.
      * </p>
      */
     protected abstract void initializeSuccessors(List<ViewLifecyclePhase> successors);
@@ -140,21 +154,51 @@ public abstract class AbstractViewLifecyclePhase implements ViewLifecyclePhase {
         }
 
         for (ViewLifecyclePhase predecessor : getPredecessors()) {
-            if (!predecessor.isComplete()) {
+            if (!predecessor.isProcessed()) {
                 throw new IllegalStateException("Predecessor phase has not completely processed");
             }
         }
 
-        if (!component.getViewStatus().equals(getStartViewStatus())) {
-            throw new IllegalStateException("Component is not in the expected status " + getStartViewStatus()
-                    + " at the start of this phase, found " + component.getViewStatus());
+        if (!ViewLifecycle.isLifecycleActive()) {
+            throw new IllegalStateException("No view lifecyle is not active on the current thread");
+        }
+        
+        if (ProcessLogger.isTraceActive()) {
+            ProcessLogger.ntrace("lc-" + getStartViewStatus() + "-" + getEndViewStatus() + ":", ":"
+                    + getComponent().getClass().getSimpleName(), 1000);
+            ProcessLogger.countBegin("lc-" + getStartViewStatus() + "-" + getEndViewStatus());
         }
 
-        performLifecyclePhase();
-        initializeSuccessors(successors);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug(getComponent().getClass() + " " + getComponent().getId() + " " +
+                    getStartViewStatus() + " -> " + getEndViewStatus());
+        }
+        
+        ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
+        try {
+            viewLifecycle.setActivePhase(this);
 
-        component.setViewStatus(getEndViewStatus());
-        processed = true;
+            if (!component.getViewStatus().equals(getStartViewStatus())) {
+                IllegalStateException wrongStatusWarning =
+                        new IllegalStateException("Component is not in the expected status " + getStartViewStatus()
+                                + " at the start of this phase, found " + component.getClass() + " " + component.getId() + " "
+                                + component.getViewStatus());
+                LOG.warn(wrongStatusWarning.getMessage(), wrongStatusWarning);
+            }
+
+            performLifecyclePhase();
+            initializeSuccessors(successors);
+
+            component.setViewStatus(getEndViewStatus());
+            processed = true;
+        } finally {
+            viewLifecycle.setActivePhase(null);
+
+            if (ProcessLogger.isTraceActive()) {
+                ProcessLogger.countEnd("lc-" + getStartViewStatus() + "-" + getEndViewStatus(), getComponent()
+                        .getClass() + " " + getComponent().getId());
+            }
+        }
     }
 
 }

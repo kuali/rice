@@ -147,7 +147,9 @@ public class FieldBase extends ComponentBase implements Field {
     public List<Component> getComponentsForLifecycle() {
         List<Component> components = super.getComponentsForLifecycle();
 
-        components.add(fieldLabel);
+        if (!isLabelRendered()) {
+            components.add(fieldLabel);
+        }
 
         return components;
     }

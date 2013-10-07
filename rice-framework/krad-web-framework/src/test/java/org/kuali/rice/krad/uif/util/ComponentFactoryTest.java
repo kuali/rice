@@ -17,16 +17,12 @@ package org.kuali.rice.krad.uif.util;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Callable;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.view.InquiryView;
@@ -50,13 +46,23 @@ public class ComponentFactoryTest extends ProcessLoggingUnitTest {
 
     @Test
     public void testSanity() throws Throwable {
-        Message message = ComponentFactory.getMessage();
+        Message message = ViewLifecycle.encapsulateInitialization(new Callable<Message>() {
+            @Override
+            public Message call() throws Exception {
+                return ComponentFactory.getMessage();
+            }
+        });
         assertEquals("uif-message", message.getCssClasses().get(0));
     }
-    
+
     @Test
     public void testInquiry() throws Throwable {
-        InquiryView inquiryView = ComponentFactory.getInquiryView();
+        InquiryView inquiryView = ViewLifecycle.encapsulateInitialization(new Callable<InquiryView>() {
+            @Override
+            public InquiryView call() throws Exception {
+                return ComponentFactory.getInquiryView();
+            }
+        });
         assertEquals("uif-formView", inquiryView.getCssClasses().get(0));
     }
 

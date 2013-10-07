@@ -54,6 +54,7 @@
                     p:queryFieldMapping="field76:number"/>
             </property>
           </bean>
+          <!-- 
           <bean parent="GenericTextField" p:propertyName="field79">
             <property name="propertyNamesForAdditionalDisplay" value="field80,field81"/>
             <property name="attributeQuery">
@@ -69,7 +70,7 @@
               </bean>
             </property>
           </bean>
-
+           -->
 
           <bean parent="GenericTextField" p:propertyName="field60">
             <property name="quickfinder">

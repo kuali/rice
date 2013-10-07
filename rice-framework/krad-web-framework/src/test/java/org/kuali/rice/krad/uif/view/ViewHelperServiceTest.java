@@ -23,15 +23,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import org.apache.ojb.otm.Kit;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kuali.rice.krad.sampleapp_2_4_M2.labs.KradLabsForm;
+import org.kuali.rice.krad.sampleapp_2_4_M2.labs.kitchensink.UifComponentsTestForm;
 import org.kuali.rice.krad.sampleapp_2_4_M2.labs.transaction.TransactionForm;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
@@ -85,7 +88,7 @@ public class ViewHelperServiceTest extends ProcessLoggingUnitTest {
         new UifServletRequestDataBinder(loginForm).bind(request);
         UifControllerHelper.prepareViewForRendering(request, loginForm);
         View dummyLogin = loginForm.getView();
-        assertEquals("F", dummyLogin.getViewStatus());
+        assertEquals(UifConstants.ViewStatus.FINAL, dummyLogin.getViewStatus());
         assertEquals("LoginPage", dummyLogin.getCurrentPage().getId());
         assertEquals("Rice-UserName",
                 ObjectPropertyUtils.getPropertyValue(dummyLogin, "currentPage.items[0].items[1].items[1].items[1].items[3].id"));
@@ -94,11 +97,20 @@ public class ViewHelperServiceTest extends ProcessLoggingUnitTest {
     }
     
     @Test
+    public void testKitchenSinkView() throws Throwable {
+        ViewService viewService = KRADServiceLocatorWeb.getViewService();
+        View uifCompView = viewService.getViewById("UifCompView");
+        UifComponentsTestForm uifcompform = new UifComponentsTestForm();
+        // TODO:
+        //        ViewLifecycle.buildView(uifCompView, uifcompform, Collections.<String, String> emptyMap());
+    }
+    
+    @Test
     public void testTransactionView() throws Throwable {
         ViewService viewService = KRADServiceLocatorWeb.getViewService();
         View transactionView = viewService.getViewById("TransactionView");
         TransactionForm tform = new TransactionForm();
-        viewService.buildView(transactionView, tform, Collections.<String, String> emptyMap());
+        ViewLifecycle.buildView(transactionView, tform, Collections.<String, String> emptyMap());
     }
     
     @Test
@@ -146,7 +158,7 @@ public class ViewHelperServiceTest extends ProcessLoggingUnitTest {
         ViewService viewService = KRADServiceLocatorWeb.getViewService();
         View performanceView = viewService.getViewById("Lab-PerformanceMedium");
         KradLabsForm pform = new KradLabsForm();
-        performanceView = viewService.buildView(performanceView, pform, Collections.<String, String> emptyMap());
+        performanceView = ViewLifecycle.buildView(performanceView, pform, Collections.<String, String> emptyMap());
         
         ViewCleaner.cleanView(performanceView);
         pform.setPostedView(performanceView);

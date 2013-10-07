@@ -255,10 +255,7 @@ public class ComponentFactory {
             }
         }
         
-        if (ViewLifecycle.isLifecycleActive()) {
-            component = ComponentUtils.copy(component);
-        }
-        
+        component = ComponentUtils.copy(component);
         return component;
     }
 

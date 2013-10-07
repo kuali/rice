@@ -69,6 +69,17 @@
 						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/LabsStickyHeaderFooter.xml</value>
 						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/LabsUserControl.xml</value>
 						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/XmlIngester.xml</value>
+						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/kitchensink/UifComponentsView.xml</value>
+						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/kitchensink/UifComponentsViewP2.xml</value>
+						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/kitchensink/UifComponentsViewP3.xml</value>
+						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/kitchensink/UifComponentsViewP4.xml</value>
+						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/kitchensink/UifComponentsViewP5.xml</value>
+						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/kitchensink/UifComponentsViewP6.xml</value>
+						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/kitchensink/UifComponentsViewP7.xml</value>
+						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/kitchensink/UifComponentsViewP8.xml</value>
+						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/kitchensink/UifComponentsViewP9.xml</value>
+						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/kitchensink/UifComponentsViewPx10.xml</value>
+						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/kitchensink/UifComponentsViewPx11.xml</value>
  					</list>
 	 			</entry>
 	 		</map>

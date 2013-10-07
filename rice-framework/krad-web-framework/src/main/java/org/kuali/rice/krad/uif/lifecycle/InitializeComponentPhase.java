@@ -63,6 +63,16 @@ public class InitializeComponentPhase extends AbstractViewLifecyclePhase {
      * @param component The component.
      * @param model The model
      */
+    private InitializeComponentPhase(Component component, Object model, InitializeComponentPhase parentPhase) {
+        super(component, model, Collections.<ViewLifecyclePhase> singletonList(parentPhase));
+    }
+
+    /**
+     * Create a new lifecycle phase processing task for performing initialization on a component.
+     * 
+     * @param component The component.
+     * @param model The model
+     */
     public InitializeComponentPhase(Component component, Object model) {
         super(component, model, Collections.<ViewLifecyclePhase> emptyList());
     }
@@ -184,6 +194,14 @@ public class InitializeComponentPhase extends AbstractViewLifecyclePhase {
     }
 
     /**
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase#getViewPhase()
+     */
+    @Override
+    public String getViewPhase() {
+        return UifConstants.ViewPhases.INITIALIZE;
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase#getStartViewStatus()
      */
     @Override
@@ -201,8 +219,31 @@ public class InitializeComponentPhase extends AbstractViewLifecyclePhase {
 
 
     /**
-     * Perform component initialization.
+     * Performs the Initialization phase for the given <code>Component</code> by these steps:
      * 
+     * <ul>
+     * <li>For <code>DataField</code> instances, set defaults from the data dictionary.</li>
+     * <li>Invoke the initialize method on the component. Here the component can setup defaults and
+     * do other initialization that is specific to that component.</li>
+     * <li>Invoke any configured <code>ComponentModifier</code> instances for the component.</li>
+     * <li>Call the component to get the List of components that are nested within and recursively
+     * call this method to initialize those components.</li>
+     * <li>Call custom initialize hook for service overrides</li>
+     * </ul>
+     * 
+     * <p>
+     * Note the order various initialize points are called, this can sometimes be an important
+     * factor to consider when initializing a component
+     * </p>
+     * 
+     * <p>
+     * Can be called for component instances constructed via code or prototypes to initialize the
+     * constructed component
+     * </p>
+     * 
+     * @param model object instance containing the view data
+     * @param component component instance that should be initialized
+     * @throws RiceRuntimeException if the component id or factoryId is not specified
      * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecyclePhase#performLifecyclePhase()
      */
     @Override
@@ -295,14 +336,14 @@ public class InitializeComponentPhase extends AbstractViewLifecyclePhase {
         // initialize nested components
         for (Component nestedComponent : component.getComponentsForLifecycle()) {
             if (nestedComponent != null) {
-                successors.add(new InitializeComponentPhase(nestedComponent, model));
+                successors.add(new InitializeComponentPhase(nestedComponent, model, this));
             }
         }
 
         // initialize component prototypes
         for (Component nestedComponent : component.getComponentPrototypes()) {
             if (nestedComponent != null) {
-                successors.add(new InitializeComponentPhase(nestedComponent, model));
+                successors.add(new InitializeComponentPhase(nestedComponent, model, this));
             }
         }
     }

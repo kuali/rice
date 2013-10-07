@@ -540,7 +540,11 @@ public class View extends ContainerBase {
         if (parentLocation != null) {
             components.add(parentLocation.getPageBreadcrumbItem());
             components.add(parentLocation.getViewBreadcrumbItem());
-            components.addAll(parentLocation.getResolvedBreadcrumbItems());
+            for (BreadcrumbItem item : parentLocation.getResolvedBreadcrumbItems()) {
+                if (!components.contains(item)) {
+                    components.add(item);
+                }
+            }
         }
 
         // Note super items should be added after navigation and other view components so

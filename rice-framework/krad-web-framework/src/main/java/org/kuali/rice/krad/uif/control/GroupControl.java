@@ -112,7 +112,7 @@ public class GroupControl extends TextControl implements FilterableLookupCriteri
         // will be attached to the field for finalize)
         if (quickfinderCreated) {
             ViewLifecycle.getActiveLifecycle().spawnSubLifecyle(model, quickFinder, field,
-                    UifConstants.ViewPhases.INITIALIZE, UifConstants.ViewPhases.APPLY_MODEL);
+                    null, UifConstants.ViewPhases.INITIALIZE);
         }
 
     }

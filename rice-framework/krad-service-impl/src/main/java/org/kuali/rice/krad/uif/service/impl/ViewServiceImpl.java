@@ -18,20 +18,13 @@ package org.kuali.rice.krad.uif.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.krad.datadictionary.validator.ValidationController;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.service.ViewTypeService;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
  * Implementation of <code>ViewService</code>
@@ -100,86 +93,6 @@ public class ViewServiceImpl implements ViewService {
         Map<String, String> typeParameters = typeService.getParametersFromRequest(parameters);
 
         return dataDictionaryService.getViewIdByTypeIndex(viewType, typeParameters);
-    }
-
-    /**
-     * TODO: Consider moving this method to ViewLifecycle
-     * @see org.kuali.rice.krad.uif.service.ViewService#buildView(org.kuali.rice.krad.uif.view.View, java.lang.Object,
-     *      java.util.Map<java.lang.String,java.lang.String>)
-     */
-    public View buildView(View view, final Object model, final Map<String, String> parameters) {
-        View builtView = ViewLifecycle.encapsulateLifecycle(view, new Runnable(){
-			@Override
-			public void run() {
-				ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
-				View view = viewLifecycle.getView();
-				
-				// populate view from request parameters
-				viewLifecycle.populateViewFromRequestParameters(parameters);
-
-				// backup view request parameters on form for recreating lost
-				// views (session timeout)
-				((UifFormBase) model).setViewRequestParameters(view
-						.getViewRequestParameters());
-
-		        // invoke initialize phase on the views helper service
-		        if (LOG.isInfoEnabled()) {
-		            LOG.info("performing initialize phase for view: " + view.getId());
-		        }
-		        viewLifecycle.performInitialization(model);
-
-		        // do indexing                               
-		        if (LOG.isDebugEnabled()) {
-		            LOG.debug("processing indexing for view: " + view.getId());
-		        }
-		        view.index();
-
-		        // update status on view
-		        if (LOG.isDebugEnabled()) {
-		            LOG.debug("Updating view status to INITIALIZED for view: " + view.getId());
-		        }
-		        view.setViewStatus(ViewStatus.INITIALIZED);
-
-		        // Apply Model Phase
-		        if (LOG.isInfoEnabled()) {
-		            LOG.info("performing apply model phase for view: " + view.getId());
-		        }
-		        viewLifecycle.performApplyModel(model);
-
-		        // do indexing
-		        if (LOG.isInfoEnabled()) {
-		            LOG.info("reindexing after apply model for view: " + view.getId());
-		        }
-		        view.index();
-
-		        // Finalize Phase
-		        if (LOG.isInfoEnabled()) {
-		            LOG.info("performing finalize phase for view: " + view.getId());
-		        }
-		        viewLifecycle.performFinalize(model);
-
-		        // do indexing
-		        if (LOG.isInfoEnabled()) {
-		            LOG.info("processing final indexing for view: " + view.getId());
-		        }
-		        view.index();
-
-		        // update status on view
-		        if (LOG.isDebugEnabled()) {
-		            LOG.debug("Updating view status to FINAL for view: " + view.getId());
-		        }
-		        view.setViewStatus(ViewStatus.FINAL);
-			}}).getView();
-
-        // Validation of the page's beans
-        if (CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsBoolean(
-                UifConstants.VALIDATE_VIEWS_ONBUILD)) {
-            ValidationController validator = new ValidationController(true, true, true, true, false);
-            Log tempLogger = LogFactory.getLog(ViewServiceImpl.class);
-            validator.validate(builtView, tempLogger, false);
-        }
-        
-        return builtView;
     }
 
     public ViewTypeService getViewTypeService(UifConstants.ViewType viewType) {

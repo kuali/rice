@@ -15,13 +15,12 @@
  */
 package org.kuali.rice.krad.uif.layout;
 
+import java.util.List;
+
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.element.Action;
-import org.kuali.rice.krad.uif.field.FieldGroup;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.field.Field;
-
-import java.util.List;
+import org.kuali.rice.krad.uif.field.FieldGroup;
 
 /**
  * Layout manager implementations that work with a collection (such as a table
@@ -45,7 +44,7 @@ public interface CollectionLayoutManager extends LayoutManager {
 
 	/**
 	 * Call to the layout manager to build the components necessary for the
-	 * given collection line
+	 * given collection line, within an active view lifecycle.
 	 *
 	 * <p>
 	 * As the collection is being iterated over by the
@@ -54,8 +53,6 @@ public interface CollectionLayoutManager extends LayoutManager {
 	 * the line and pass into the layout manager so they can be assembled
 	 * </p>
 	 *
-	 * @param view
-	 *            - view instance the collection belongs to
 	 * @param model
 	 *            - object containing the data
 	 * @param collectionGroup
@@ -80,7 +77,7 @@ public interface CollectionLayoutManager extends LayoutManager {
 	 *            - index of the collection line being iterated over, or -1 if
 	 *            the add line
 	 */
-	public void buildLine(View view, Object model, CollectionGroup collectionGroup, List<Field> lineFields,
+	public void buildLine(Object model, CollectionGroup collectionGroup, List<Field> lineFields,
 			List<FieldGroup> subCollectionFields, String bindingPath, List<Action> actions, String idSuffix,
 			Object currentLine, int lineIndex);
 

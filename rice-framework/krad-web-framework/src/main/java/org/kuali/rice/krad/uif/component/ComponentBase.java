@@ -181,7 +181,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     public ComponentBase() {
         super();
 
-        ProcessLogger.ntrace("new-comp:", ":" + getClass().getSimpleName(), 1000);
+//        ProcessLogger.ntrace("new-comp:", ":" + getClass().getSimpleName(), 1000);
 
         order = 0;
         colSpan = 1;

@@ -90,7 +90,7 @@ public class Message extends ContentElementBase {
 
             if (messageComponentStructure != null) {
                 for (Component component : messageComponentStructure) {
-                    viewLifecycle.performComponentInitialization(model, component);
+                    viewLifecycle.spawnSubLifecyle(model, component, this, null, UifConstants.ViewPhases.INITIALIZE);
                 }
             }
         }

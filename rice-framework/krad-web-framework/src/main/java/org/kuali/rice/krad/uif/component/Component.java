@@ -19,9 +19,11 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.widget.Tooltip;
@@ -125,6 +127,35 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      * @see UifConstants.ViewStatus
      */
     void setViewStatus(String status);
+
+    /**
+     * Indicates whether the component has been initialized.
+     *
+     * @return True if the component has been initialized, false if not.
+     */
+    boolean isInitialized();
+
+    /**
+     * Indicates whether the component has been updated from the model.
+     *
+     * @return True if the component has been updated, false if not.
+     */
+    boolean isModelApplied();
+
+    /**
+     * Indicates whether the component has been updated from the model and final
+     * updates made.
+     *
+     * @return True if the component has been updated, false if not.
+     */
+    boolean isFinal();
+
+    /**
+     * Indicates whether the component has been fully rendered.
+     *
+     * @return True if the component has fully rendered, false if not.
+     */
+    boolean isRendered();
 
     /**
      * The path to the JSP file that should be called to render the component

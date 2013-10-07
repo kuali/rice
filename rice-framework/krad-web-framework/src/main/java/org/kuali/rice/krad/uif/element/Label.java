@@ -22,6 +22,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.Position;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
@@ -79,7 +80,7 @@ public class Label extends ContentElementBase {
             message.setInlineComponents(inlineComponents);
             message.setGenerateSpan(false);
 
-            viewLifecycle.performComponentInitialization(model, message);
+            viewLifecycle.spawnSubLifecyle(model, message, this, null, UifConstants.ViewPhases.INITIALIZE);
 
             this.setRichLabelMessage(message);
         }

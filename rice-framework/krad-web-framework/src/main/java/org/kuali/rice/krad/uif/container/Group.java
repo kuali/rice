@@ -32,6 +32,7 @@ import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.LifecycleAwareList;
 import org.kuali.rice.krad.uif.widget.Disclosure;
 import org.kuali.rice.krad.uif.widget.Scrollpane;
 
@@ -339,6 +340,10 @@ public class Group extends ContainerBase {
     @Override
     @BeanTagAttribute(name = "items", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<? extends Component> getItems() {
+        if (items == Collections.EMPTY_LIST && isMutable(true)) {
+            items = new LifecycleAwareList<Component>(this);
+        }
+        
         return this.items;
     }
 
@@ -347,9 +352,14 @@ public class Group extends ContainerBase {
      *
      * @param items
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void setItems(List<? extends Component> items) {
-        this.items = items;
+        if (items == null) {
+            this.items = Collections.emptyList();
+        } else {
+            this.items = new LifecycleAwareList<Component>(this, (List<Component>) items);
+        }
     }
 
     /**

@@ -93,6 +93,7 @@ public class BreadcrumbOptions implements Serializable, Copyable {
             //get the pastItems from the flow and set them so they can be picked up by the Breadcrumbs widget
             if (view.getBreadcrumbs() != null
                     && view.getBreadcrumbs().isUsePathBasedBreadcrumbs()
+                    && form.getHistoryFlow() != null
                     && form.getHistoryFlow().getPastItems() != null) {
                 List<BreadcrumbItem> pastItems = form.getHistoryFlow().getPastItems();
 

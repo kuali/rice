@@ -295,7 +295,7 @@ public class UifControllerHelper {
                 parameterMap.putAll(form.getViewRequestParameters());
 
                 // build view which will prepare for rendering
-                form.setView(getViewService().buildView(view, form, parameterMap));
+                form.setView(ViewLifecycle.buildView(view, form, parameterMap));
             } else {
                 LOG.warn( "View in form was null: " + form);
             }

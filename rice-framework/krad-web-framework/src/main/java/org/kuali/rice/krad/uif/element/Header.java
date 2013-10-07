@@ -24,6 +24,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
@@ -103,7 +104,7 @@ public class Header extends ContentElementBase {
             message.setInlineComponents(inlineComponents);
             message.setGenerateSpan(false);
 
-            viewLifecycle.performComponentInitialization(model, message);
+            viewLifecycle.spawnSubLifecyle(model, message, this, null, UifConstants.ViewPhases.INITIALIZE);
 
             this.setRichHeaderMessage(message);
         }

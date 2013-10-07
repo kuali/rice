@@ -70,35 +70,6 @@ public interface ViewService {
      */
     public String getViewIdForViewType(ViewType viewType, Map<String, String> parameters);
 
-    /**
-     * Executes the view lifecycle on the given <code>View</code> instance which will
-     * prepare it for rendering
-     *
-     * <p>
-     * Any configuration sent through the options Map is used to initialize the
-     * View. This map contains present options the view is aware of and will
-     * typically come from request parameters. e.g. For maintenance Views there
-     * is the maintenance type option (new, edit, copy)
-     * </p>
-     *
-     * <p>
-     * After view retrieval, applies updates to the view based on the model data which
-     * Performs dynamic generation of fields (such as collection rows),
-     * conditional logic, and state updating (conditional hidden, read-only,
-     * required).
-     * </p>
-     *
-     * @param view - view instance that should be built
-     * @param model - object instance containing the view data
-     * @param parameters - Map of key values pairs that provide configuration for the
-     * <code>View</code>, this is generally comes from the request
-     * and can be the request parameter Map itself. Any parameters
-     * not valid for the View will be filtered out
-     * 
-     * @return A copy of the view, built for rendering.
-     */
-    public View buildView(View view, Object model, Map<String, String> parameters);
-
     // TODO: remove once can get beans by type
     public ViewTypeService getViewTypeService(UifConstants.ViewType viewType);
 

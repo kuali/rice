@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.uif.layout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -27,16 +30,14 @@ import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.element.Action;
+import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Pager;
 import org.kuali.rice.krad.web.form.UifFormBase;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Layout manager that works with {@code CollectionGroup} containers and
@@ -158,7 +159,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      *      java.util.List, java.util.List, String, java.util.List,
      *      String, Object, int)
      */
-    public void buildLine(View view, Object model, CollectionGroup collectionGroup, List<Field> lineFields,
+    public void buildLine(Object model, CollectionGroup collectionGroup, List<Field> lineFields,
             List<FieldGroup> subCollectionFields, String bindingPath, List<Action> actions, String idSuffix,
             Object currentLine, int lineIndex) {
         boolean isAddLine = lineIndex == -1;
@@ -196,14 +197,15 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
         // build header for the group
         if (isAddLine) {
             if (lineGroup.getHeader() != null) {
-                lineGroup.getHeader().setRichHeaderMessage(collectionGroup.getAddLineLabel());
+                Message headerMessage = ComponentUtils.copy(collectionGroup.getAddLineLabel());
+                lineGroup.getHeader().setRichHeaderMessage(headerMessage);
             }
         } else {
             // get the collection for this group from the model
             List<Object> modelCollection = ObjectPropertyUtils.getPropertyValue(model,
                     ((DataBinding) collectionGroup).getBindingInfo().getBindingPath());
 
-            String headerText = buildLineHeaderText(view, modelCollection.get(lineIndex), lineGroup);
+            String headerText = buildLineHeaderText(modelCollection.get(lineIndex), lineGroup);
 
             // don't set header if text is blank (could already be set by other means)
             if (StringUtils.isNotBlank(headerText) && lineGroup.getHeader() != null) {
@@ -252,9 +254,9 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      * @param lineGroup Group instance for rendering the line and whose title should be built
      * @return header text for line
      */
-    protected String buildLineHeaderText(View view, Object line, Group lineGroup) {
+    protected String buildLineHeaderText(Object line, Group lineGroup) {
         // check for expression on summary title
-        if (view.getViewHelperService().getExpressionEvaluator().containsElPlaceholder(summaryTitle)) {
+        if (ViewLifecycle.getActiveLifecycle().getHelper().getExpressionEvaluator().containsElPlaceholder(summaryTitle)) {
             lineGroup.getPropertyExpressions().put(UifPropertyPaths.HEADER_TEXT, summaryTitle);
             return null;
         }

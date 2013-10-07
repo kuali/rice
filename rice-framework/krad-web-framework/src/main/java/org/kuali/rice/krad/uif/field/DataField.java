@@ -229,7 +229,8 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     protected void buildAutomaticInquiry(Object model, boolean enableDirectInquiry) {
         Inquiry autoInquiry = ComponentFactory.getInquiry();
 
-        ViewLifecycle.getActiveLifecycle().spawnSubLifecyle(model, autoInquiry, this, null, null);
+        ViewLifecycle.getActiveLifecycle().spawnSubLifecyle(model, autoInquiry, this,
+                null, UifConstants.ViewPhases.INITIALIZE);
 
         // if render flag is true, that means the inquiry was able to find a relationship
         if (autoInquiry.isRender()) {

@@ -87,7 +87,9 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
         super.performInitialization(model, component);
 
         if (headerFieldPrototype != null) {
-            ViewLifecycle.getActiveLifecycle().performComponentInitialization(model, headerFieldPrototype);
+            ViewLifecycle.getActiveLifecycle()
+                .spawnSubLifecyle(model, headerFieldPrototype, component,
+                        null, UifConstants.ViewPhases.INITIALIZE);
         }
     }
 

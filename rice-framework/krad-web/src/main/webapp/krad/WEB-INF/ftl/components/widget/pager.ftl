@@ -25,8 +25,7 @@
         <#local style="style=\"${widget.style}\""/>
     </#if>
 
-<div ${style!} ${styleClass!}>
-    <ul>
+    <ul ${style!} ${styleClass!}>
         <#if widget.currentPage == 1>
             <#local prevClass="class='disabled'"/>
         </#if>
@@ -75,7 +74,6 @@
             </li>
         </#if>
     </ul>
-</div>
 
 </#macro>
 

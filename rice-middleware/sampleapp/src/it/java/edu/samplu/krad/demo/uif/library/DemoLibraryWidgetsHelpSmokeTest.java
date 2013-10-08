@@ -43,9 +43,7 @@ public class DemoLibraryWidgetsHelpSmokeTest extends DemoLibraryBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-LibraryLink", "");
-        waitAndClickByLinkText("Widgets");
-        waitAndClickByLinkText("Help");
+        navigateToLibraryDemo("Widgets", "Help");
     }
 
     protected void testWidgetsTooltipHelp() throws Exception {

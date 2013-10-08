@@ -36,9 +36,7 @@ public class DemoLibraryWidgetsGrowlSmokeTest extends DemoLibraryBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-LibraryLink", "");
-        waitAndClickByLinkText("Widgets");
-        waitAndClickByLinkText("Growls");
+        navigateToLibraryDemo("Widgets", "Growls");
     }
 
     protected void testWidgetsGrowlDefault() throws Exception {

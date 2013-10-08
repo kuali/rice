@@ -22,7 +22,7 @@ import edu.samplu.common.SmokeTestBase;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoLibraryWidgetsBreadcrumbsSmokeTest extends SmokeTestBase {
+public class DemoLibraryWidgetsBreadcrumbsSmokeTest extends DemoLibraryBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-Breadcrumbs-View&methodToCall=start
@@ -56,9 +56,7 @@ public class DemoLibraryWidgetsBreadcrumbsSmokeTest extends SmokeTestBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-LibraryLink", "");
-        waitAndClickByLinkText("Widgets");
-        waitAndClickByLinkText("Breadcrumbs");
+        navigateToLibraryDemo("Widgets", "Breadcrumbs");
     }
 
     protected void testWidgetsBreadcrumbDefault() throws Exception {

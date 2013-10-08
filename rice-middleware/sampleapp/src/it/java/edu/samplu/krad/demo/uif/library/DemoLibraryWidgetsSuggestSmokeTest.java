@@ -36,9 +36,7 @@ public class DemoLibraryWidgetsSuggestSmokeTest extends DemoLibraryBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-LibraryLink", "");
-        waitAndClickByLinkText("Widgets");
-        waitAndClickByLinkText("Suggest");
+        navigateToLibraryDemo("Widgets", "Suggest");
     }
 
     protected void testWidgetsSuggest(String exampleLink, String inputFieldName, String search,

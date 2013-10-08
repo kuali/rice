@@ -36,9 +36,7 @@ public class DemoLibraryWidgetsDisclosureSmokeTest extends DemoLibraryBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-LibraryLink", "");
-        waitAndClickByLinkText("Widgets");
-        waitAndClickByLinkText("Disclosure");
+        navigateToLibraryDemo("Widgets", "Disclosure");
     }
 
     protected void testWidgetsDisclosureDefault() throws Exception {

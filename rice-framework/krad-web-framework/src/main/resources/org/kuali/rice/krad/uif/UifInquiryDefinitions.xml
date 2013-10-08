@@ -44,14 +44,6 @@
     <property name="footer">
       <bean parent="Uif-InquiryFooter"/>
     </property>
-    <property name="help">
-      <bean parent="Uif-Help">
-        <property name="helpDefinition">
-          <bean parent="HelpDefinition" p:parameterNamespace="KR-KRAD" p:parameterName="DEFAULT_HELP_URL"
-                p:parameterDetailType="Inquiry"/>
-        </property>
-      </bean>
-    </property>
     <property name="propertyReplacers">
       <list>
         <bean parent="Uif-ConditionalBeanPropertyReplacer" p:propertyName="page.items" p:condition="dataObject eq null">

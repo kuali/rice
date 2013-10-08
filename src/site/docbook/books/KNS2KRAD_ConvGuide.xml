@@ -2306,27 +2306,6 @@
       <para>
         <itemizedlist>
           <listitem>
-            <para>Permission Check </para>
-            <para>Permission checks in KRAD are configurable by editing the
-                <emphasis>AttributeDefinition</emphasis> tag of a data dictionary xml file, in
-              conjunction with the creation of specific permissions in KIM, specifically the
-              attributeSecurity tags found in a DataDictionary xml file:</para>
-            <para>Data dictionary
-              configuration:<programlisting>    &lt;property name="attributeSecurity">
-      &lt;bean parent="AttributeSecurity">
-        &lt;property name="mask" value="true"/>
-        &lt;property name="maskFormatter">
-          &lt;bean parent="MaskFormatterLiteral" p:literal="*********"/>
-        &lt;/property>
-      &lt;/bean>
-    &lt;/property>
-</programlisting></para>
-            <para>KIM Configuration:</para>
-            <para>A permission which extends the KR-NS <emphasis>Look Up Records</emphasis> template
-              will have to be created. A namespace code will restrict a user to accessing lookups in
-              the particluar namespace.</para>
-          </listitem>
-          <listitem>
             <para>In KNS custom forms are specified in the struts-config.xml file.
               <programlisting>&lt;form-bean name="TravelAuthorizationForm" 
            type="org.kuali.rice.kns.demo.travel.authorization.TravelAuthorizationForm"/></programlisting>

@@ -441,7 +441,7 @@ public class CollectionGroupBuilder implements Serializable {
         }
 
         // invoke layout manager to build the complete line
-        layoutManager.buildLine(model, collectionGroup, lineFields, subCollectionFields, bindingPath, actions,
+        layoutManager.buildLine(model, collectionGroup, lineFields, subCollectionFields, bindingPath, actionList,
                 lineSuffix, currentLine, lineIndex);
 
         //add additional information to the group and fields to allow for correct add control selection

@@ -162,9 +162,13 @@ public class LegacyDataAdapterImpl implements LegacyDataAdapter {
         return selectAdapter(Attachment.class).getAttachmentByNoteId(noteId);
     }
 
+    /*
+     * The documentHeader is always persisted and retrieved using JPA. Client apps referencing the docHeader
+     * in their OJB repository mapping should remove the reference so OJB does not attempt to save it.
+     */
     @Override
     public DocumentHeader getByDocumentHeaderId(String id) {
-        return selectAdapter(DocumentHeader.class).getByDocumentHeaderId(id);
+        return getKradLegacyDataAdapter().getByDocumentHeaderId(id);
     }
 
     @Override

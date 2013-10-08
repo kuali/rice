@@ -36,6 +36,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
@@ -665,18 +666,8 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     protected void prePersist() {
         super.prePersist();
         // KRAD/JPA - have to change the handle to object to that just saved
-        documentHeader = KRADServiceLocatorWeb.getLegacyDataAdapter().save(documentHeader);
-    }
+        documentHeader = KradDataServiceLocator.getDataObjectService().save(documentHeader);
 
-    /**
-     * Save the KRAD document header via the document header service.
-     */
-    @Override
-    @PreUpdate
-    protected void preUpdate() {
-        super.preUpdate();
-        // KRAD/JPA - have to change the handle to object to that just saved
-        documentHeader = KRADServiceLocatorWeb.getLegacyDataAdapter().save(documentHeader);
     }
 
     /**

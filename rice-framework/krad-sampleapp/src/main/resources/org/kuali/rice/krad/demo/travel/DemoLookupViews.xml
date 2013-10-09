@@ -71,7 +71,7 @@
         <property name="items">
           <list>
             <bean parent="Uif-Message" p:colSpan="3"
-                  p:messageText="Note that range operators use alpabetic/lexicographic ordering for string fields, so 'a14' &lt; 'a2'" p:style="font-weight: bold;" />
+                  p:messageText="Note that range operators use alphabetic/lexicographic ordering for string fields, so 'a14' &lt; 'a2'" p:style="font-weight: bold;" />
             <bean parent="Uif-Link" p:linkText="'a1*': account number starts with 'a1'"
                   p:href="/krad-dev/kr-krad/lookup?lookupCriteria['number']=a1*&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
             <bean parent="Uif-Link" p:linkText="'!a1': account number is NOT 'a1' "

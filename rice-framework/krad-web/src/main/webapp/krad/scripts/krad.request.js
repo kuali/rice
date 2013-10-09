@@ -172,7 +172,11 @@ KradRequest.prototype = {
 
         // check for non-ajax request
         if (!this.ajaxSubmit) {
+            dirtyFormState.reset();
+
+            // submit non ajax call
             this._submit();
+            clearHiddens();
 
             return;
         }

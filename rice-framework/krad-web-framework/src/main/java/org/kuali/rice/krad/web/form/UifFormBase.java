@@ -1002,7 +1002,7 @@ public class UifFormBase implements ViewModel {
      */
     @Override
     public boolean isUpdatePageRequest() {
-        return isAjaxRequest() && StringUtils.isNotBlank(getAjaxReturnType()) && getAjaxReturnType().equals(
+        return StringUtils.isNotBlank(getAjaxReturnType()) && getAjaxReturnType().equals(
                 UifConstants.AjaxReturnTypes.UPDATEPAGE.getKey());
     }
 
@@ -1011,7 +1011,9 @@ public class UifFormBase implements ViewModel {
      */
     @Override
     public boolean isUpdateNoneRequest() {
-        return isAjaxRequest() && StringUtils.isNotBlank(getAjaxReturnType()) && getAjaxReturnType().equals(
+        //return isAjaxRequest() && StringUtils.isNotBlank(getAjaxReturnType()) && getAjaxReturnType().equals(
+        //        UifConstants.AjaxReturnTypes.UPDATENONE.getKey());
+        return StringUtils.isNotBlank(getAjaxReturnType()) && getAjaxReturnType().equals(
                 UifConstants.AjaxReturnTypes.UPDATENONE.getKey());
     }
 

@@ -59,7 +59,7 @@ import org.springframework.util.ClassUtils;
  * </ol>
  */
 class LegacyDetector {
-
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LegacyDetector.class);
     /**
      * The "legacy" (OJB) metadata provider class
      */
@@ -154,23 +154,35 @@ class LegacyDetector {
         if (dataObjectClass == null) {
             return false;
         }
+        // some OJB objects may come in as proxies, we need to clear the CGLIB portion of the generated class name
+        // before we can check it properly
+        String dataObjectClassName = dataObjectClass.getName().replaceAll("\\$\\$EnhancerByCGLIB\\$\\$[0-9a-f]{0,8}", "" );
+        try {
+            dataObjectClass = Class.forName(dataObjectClassName);
+        } catch (ClassNotFoundException ex) {
+            LOG.warn( "Unable to resolve converted class name: " + dataObjectClassName + " from original: " + dataObjectClass + " -- Using as is" );
+        }
         Boolean isLegacyLoaded = legacyLoadedCache.get(dataObjectClass);
         if (isLegacyLoaded == null) {
-            try {
-                Class<?> metadataManager = Class.forName(OJB_METADATA_MANAGER_CLASS, false, ClassUtils.getDefaultClassLoader());
+            if ( dataObjectClass.getPackage().getName().startsWith( "org.apache.ojb." ) ) {
+                isLegacyLoaded = Boolean.TRUE;
+            } else {
+                try {
+                    Class<?> metadataManager = Class.forName(OJB_METADATA_MANAGER_CLASS, false, ClassUtils.getDefaultClassLoader());
 
-                // determine, via reflection, whether the legacy persistence layer has loaded the given class
-                Object metadataManagerInstance = ReflectionUtils.invokeViaReflection(metadataManager, (Object) null, "getInstance", null);
-                Validate.notNull(metadataManagerInstance , "unable to obtain " + OJB_METADATA_MANAGER_CLASS + " instance");
+                    // determine, via reflection, whether the legacy persistence layer has loaded the given class
+                    Object metadataManagerInstance = ReflectionUtils.invokeViaReflection(metadataManager, (Object) null, "getInstance", null);
+                    Validate.notNull(metadataManagerInstance , "unable to obtain " + OJB_METADATA_MANAGER_CLASS + " instance");
 
-                Object descriptorRepository = ReflectionUtils.invokeViaReflection(metadataManagerInstance, "getGlobalRepository", null);
-                Validate.notNull(descriptorRepository, "unable to invoke legacy metadata provider (" + OJB_METADATA_MANAGER_CLASS + ")");
+                    Object descriptorRepository = ReflectionUtils.invokeViaReflection(metadataManagerInstance, "getGlobalRepository", null);
+                    Validate.notNull(descriptorRepository, "unable to invoke legacy metadata provider (" + OJB_METADATA_MANAGER_CLASS + ")");
 
-                isLegacyLoaded = ReflectionUtils.invokeViaReflection(descriptorRepository, "hasDescriptorFor", new Class[] { Class.class }, dataObjectClass);
+                    isLegacyLoaded = ReflectionUtils.invokeViaReflection(descriptorRepository, "hasDescriptorFor", new Class[] { Class.class }, dataObjectClass);
 
-            } catch (ClassNotFoundException e) {
-                // the legacy provider does not exist, so this class can't possibly have been loaded through it
-                isLegacyLoaded = Boolean.FALSE;
+                } catch (ClassNotFoundException e) {
+                    // the legacy provider does not exist, so this class can't possibly have been loaded through it
+                    isLegacyLoaded = Boolean.FALSE;
+                }
             }
             legacyLoadedCache.put(dataObjectClass, isLegacyLoaded);
         }

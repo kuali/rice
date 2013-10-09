@@ -119,7 +119,7 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
 
     @Override
     public <T> T saveDocument(T document) {
-        return dataObjectService.save(document);
+        return dataObjectService.save(document, PersistenceOption.FLUSH);
     }
 
     @Override
@@ -1242,7 +1242,8 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
         return document;
     }
 
-    public <T extends Document> List<T> findByDocumentHeaderIds(Class<T> documentClass, List<String> ids) {
+    @Override
+	public <T extends Document> List<T> findByDocumentHeaderIds(Class<T> documentClass, List<String> ids) {
         List<T> documents = new ArrayList<T>();
         for (String id : ids) {
             documents.add(findByDocumentHeaderId(documentClass, id));
